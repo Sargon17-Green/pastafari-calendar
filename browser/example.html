@@ -30,12 +30,10 @@
 
     h1, h2 { margin-block: 0; }
 
-    .intro {
-      margin-bottom: 1.4rem;
-    }
+    .intro { margin-bottom: 1.4rem; }
 
     .intro p {
-      max-width: 52rem;
+      max-width: 55rem;
       margin: .55rem 0 0;
       color: #5e614f;
       line-height: 1.65;
@@ -55,10 +53,40 @@
       font-size: 1.08rem;
     }
 
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: .65rem 1rem;
+    }
+
+    .toolbar label {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      font-size: .9rem;
+    }
+
+    .toolbar button,
+    .api-form button {
+      min-height: 2.55rem;
+      border: 1px solid #9f936f;
+      border-radius: .6rem;
+      padding: .5rem .8rem;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .toolbar button {
+      background: #fffdf5;
+      color: #3e402f;
+    }
+
     .status-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
       gap: .65rem;
+      margin-top: .8rem;
     }
 
     .status-card {
@@ -96,24 +124,31 @@
       font-weight: 700;
     }
 
-    .api-form input,
-    .api-form button {
+    .api-form input {
       min-height: 2.7rem;
       border: 1px solid #bdb394;
       border-radius: .6rem;
       padding: .55rem .7rem;
+      direction: ltr;
+      background: #fff;
       font: inherit;
     }
 
-    .api-form input {
-      direction: ltr;
-      background: #fff;
+    .api-form .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
     }
 
     .api-form button {
+      flex: 1 1 11rem;
       background: #665817;
       color: white;
-      cursor: pointer;
+    }
+
+    .api-form button.secondary {
+      background: #fffdf5;
+      color: #3e402f;
     }
 
     .api-result {
@@ -133,7 +168,7 @@
       line-height: 1.55;
     }
 
-    .error { color: #922; }
+    .error { color: #922 !important; }
   </style>
 </head>
 <body>
@@ -141,15 +176,25 @@
     <header class="intro">
       <h1>לוח השנה הפסטפרי</h1>
       <p>
-        הדוגמה הראשית משתמשת בתאריך המקומי וביום המעשה הנוכחי. אפשר לגלול בין
-        קציצות, לבחור יום מתוך הלוח, ולעבור לתאריך אחר דרך הקישור שבתחתית הרכיב.
+        בדף מופעל רכיב חזותי אחד בלבד. הוא משתמש כברירת מחדל בתאריך המקומי
+        וביום המעשה הנוכחי, ומאפשר לגלול לקציצות סמוכות, לבחור יום מתוך הלוח
+        ולעבור לתאריך אחר דרך הכלי המשני שבתחתית הרכיב.
       </p>
     </header>
 
     <pastafari-date id="calendar"></pastafari-date>
 
-    <section class="panel" aria-labelledby="event-heading">
-      <h2 id="event-heading">מצב הרכיב</h2>
+    <section class="panel" aria-labelledby="state-heading">
+      <h2 id="state-heading">מצב הרכיב והנתב</h2>
+
+      <div class="toolbar">
+        <label>
+          <input id="toggle-editor" type="checkbox" checked>
+          הצג את כלי המעבר לתאריך
+        </label>
+        <button id="retry-router" type="button">הפעל מחדש את מנגנון האימות</button>
+      </div>
+
       <div class="status-grid">
         <div class="status-card">
           <strong>התוצאה האחרונה</strong>
@@ -164,31 +209,15 @@
           <output id="router-status">טרם הופעל.</output>
         </div>
       </div>
-    </section>
 
-    <section class="panel" aria-labelledby="fixed-heading">
-      <h2 id="fixed-heading">רכיב מוגדר מראש, ללא כלי מעבר</h2>
-      <pastafari-date
-        id="fixed-calendar"
-        date="2026-08-06"
-        calculation-date="2026-08-06"
-        no-editor>
-      </pastafari-date>
       <p class="hint">
-        התכונה <code>no-editor</code> מסתירה את כלי המעבר, אך משאירה את הלוח ואת
-        הגלילה בין הקציצות.
+        ביטול הסימון מוסיף לרכיב את התכונה <code>no-editor</code>. אותו רכיב
+        חזותי נשאר פעיל; לא נוצר לוח נוסף רק לצורך ההדגמה.
       </p>
     </section>
 
     <section class="panel" aria-labelledby="api-heading">
-      <h2 id="api-heading">המרה אסינכרונית ללא תצוגה</h2>
-
-      <pastafari-date
-        id="headless-calendar"
-        date="2026-08-06"
-        calculation-date="2026-08-06"
-        headless>
-      </pastafari-date>
+      <h2 id="api-heading">המרה אסינכרונית ללא תצוגת לוח</h2>
 
       <form id="api-form" class="api-form">
         <label>
@@ -199,11 +228,17 @@
           יום המעשה
           <input id="api-calculation" value="2026-08-06" inputmode="numeric" autocomplete="off">
         </label>
-        <button type="submit">המרה</button>
+        <div class="buttons">
+          <button type="submit" value="headless">המרה באמצעות רכיב headless</button>
+          <button class="secondary" type="submit" value="function">המרה באמצעות הפונקציה</button>
+        </div>
       </form>
 
       <pre id="api-result" class="api-result">ממתין להפעלה.</pre>
       <p class="hint">
+        רכיב ה־<code>headless</code> נוצר רק לאחר לחיצה ואינו מחובר למסמך;
+        לכן הוא אינו מפעיל חישוב נוסף בזמן פתיחת הדף. במצב זה הוא מבצע המרה
+        יחידה בלבד, בלי לבנות לוח, בלי לטעון קציצות סמוכות ובלי ליצור תאי ימים.
         גם <code>getPastafariDate()</code> וגם <code>getPastafariDateAsync()</code>
         הן אסינכרוניות ומחזירות <code>Promise</code>.
       </p>
@@ -219,15 +254,17 @@
     } from "./pastafari-calendar-router.js";
 
     const calendar = document.querySelector("#calendar");
-    const fixedCalendar = document.querySelector("#fixed-calendar");
-    const headlessCalendar = document.querySelector("#headless-calendar");
     const componentValue = document.querySelector("#component-value");
     const eventValue = document.querySelector("#event-value");
     const routerStatus = document.querySelector("#router-status");
+    const toggleEditor = document.querySelector("#toggle-editor");
+    const retryRouter = document.querySelector("#retry-router");
     const apiForm = document.querySelector("#api-form");
     const apiTarget = document.querySelector("#api-target");
     const apiCalculation = document.querySelector("#api-calculation");
     const apiResult = document.querySelector("#api-result");
+
+    let detachedHeadless = null;
 
     function formatPastafari(value) {
       return [
@@ -245,24 +282,38 @@
       ));
     }
 
-    async function showInitialValues() {
-      try {
-        const [mainValue, fixedValue, headlessValue] = await Promise.all([
-          calendar.ready,
-          fixedCalendar.ready,
-          headlessCalendar.ready,
-        ]);
-        componentValue.textContent = formatPastafari(mainValue);
-        apiResult.textContent = JSON.stringify(headlessValue, null, 2);
-      } catch (error) {
-        componentValue.textContent = error.message;
-        componentValue.classList.add("error");
-      }
+    function getDetachedHeadless() {
+      if (detachedHeadless) return detachedHeadless;
+      detachedHeadless = document.createElement("pastafari-date");
+      detachedHeadless.setAttribute("headless", "");
+      return detachedHeadless;
     }
 
     calendar.addEventListener("pastafari-change", (event) => {
       componentValue.textContent = formatPastafari(event.detail);
+      componentValue.classList.remove("error");
       eventValue.textContent = JSON.stringify(event.detail);
+    });
+
+    toggleEditor.addEventListener("change", () => {
+      calendar.toggleAttribute("no-editor", !toggleEditor.checked);
+    });
+
+    retryRouter.addEventListener("click", async () => {
+      retryRouter.disabled = true;
+      componentValue.textContent = "מפעיל מחדש…";
+      componentValue.classList.remove("error");
+
+      try {
+        await sharedPastafariRouter.retry();
+        const value = await calendar.refresh();
+        if (value) componentValue.textContent = formatPastafari(value);
+      } catch (error) {
+        componentValue.textContent = error.message;
+        componentValue.classList.add("error");
+      } finally {
+        retryRouter.disabled = false;
+      }
     });
 
     apiForm.addEventListener("submit", async (event) => {
@@ -271,11 +322,24 @@
       apiResult.textContent = "מחשב…";
 
       try {
-        const result = await getPastafariDateAsync(
-          apiTarget.value,
-          apiCalculation.value,
-        );
-        apiResult.textContent = JSON.stringify(result, null, 2);
+        let result;
+        let method;
+
+        if (event.submitter?.value === "headless") {
+          const headless = getDetachedHeadless();
+          headless.setAttribute("date", apiTarget.value);
+          headless.setAttribute("calculation-date", apiCalculation.value);
+          result = await headless.refresh();
+          method = "רכיב headless";
+        } else {
+          result = await getPastafariDateAsync(
+            apiTarget.value,
+            apiCalculation.value,
+          );
+          method = "getPastafariDateAsync()";
+        }
+
+        apiResult.textContent = `${method}\n${JSON.stringify(result, null, 2)}`;
       } catch (error) {
         apiResult.textContent = error.message;
         apiResult.classList.add("error");
@@ -291,7 +355,12 @@
       sharedPastafariRouter.dispose();
     }, { once: true });
 
-    void showInitialValues();
+    calendar.ready.then((value) => {
+      componentValue.textContent = formatPastafari(value);
+    }).catch((error) => {
+      componentValue.textContent = error.message;
+      componentValue.classList.add("error");
+    });
   </script>
 </body>
 </html>
