@@ -434,6 +434,11 @@ export async function getPastafariDateAsync(targetDate = null, calculationDate =
   return Object.freeze(await sharedRouter.convert(gregorianToJdn(target), gregorianToJdn(action)));
 }
 
+const MONTH_ACCENTS = Object.freeze([
+  "#8a7132", "#3f7b68", "#8b5c4d", "#5d6f9b", "#8b6b8d",
+  "#6e7d3c", "#9a6b2f", "#467487", "#7a5f47", "#6b6896",
+]);
+
 const HTMLElementBase = globalThis.HTMLElement ?? class {};
 
 export class PastafariDateElement extends HTMLElementBase {
@@ -533,40 +538,45 @@ export class PastafariDateElement extends HTMLElementBase {
         }
 
         .calendar-header {
-          padding: 1rem 1.1rem .9rem;
+          display: grid;
+          grid-template-columns: 2.85rem minmax(0, 1fr) 2.85rem;
+          align-items: center;
+          gap: .65rem;
+          padding: .9rem 1rem;
           border-bottom: 1px solid var(--pastafari-border, #c8c2aa);
           background: var(--pastafari-header-background, #f4eed7);
         }
+        .heading-copy {
+          min-width: 0;
+          text-align: center;
+        }
         .eyebrow {
-          margin: 0 0 .2rem;
+          margin: 0 0 .18rem;
           color: var(--pastafari-muted, #67604d);
-          font-size: .82rem;
+          font-size: .8rem;
         }
         .title {
           margin: 0;
-          font-size: clamp(1.35rem, 3vw, 2rem);
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          font-size: clamp(1.3rem, 3vw, 1.9rem);
           line-height: 1.25;
           font-weight: 500;
         }
         .name { font-weight: 850; }
         .selected-summary {
-          margin: .45rem 0 0;
-          line-height: 1.55;
+          margin: .38rem 0 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          line-height: 1.4;
           color: var(--pastafari-muted, #514b3d);
-        }
-
-        .cutlet-nav {
-          display: grid;
-          grid-template-columns: 2.75rem minmax(0, 1fr) 2.75rem;
-          align-items: center;
-          gap: .5rem;
-          padding: .7rem .85rem;
-          border-bottom: 1px solid var(--pastafari-border, #c8c2aa);
-          background: var(--pastafari-nav-background, #faf6e8);
+          font-size: .88rem;
         }
         .nav-button {
-          width: 2.6rem;
-          height: 2.6rem;
+          width: 2.65rem;
+          height: 2.65rem;
           border: 1px solid transparent;
           border-radius: 50%;
           background: transparent;
@@ -581,21 +591,6 @@ export class PastafariDateElement extends HTMLElementBase {
           background: var(--pastafari-hover, #eee5c7);
           outline: none;
         }
-        .cutlet-caption {
-          min-width: 0;
-          text-align: center;
-        }
-        .cutlet-caption strong {
-          display: block;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          font-size: 1.02rem;
-        }
-        .cutlet-caption span {
-          color: var(--pastafari-muted, #67604d);
-          font-size: .78rem;
-        }
 
         .calendar-viewport {
           max-height: var(--pastafari-calendar-height, 32rem);
@@ -609,6 +604,7 @@ export class PastafariDateElement extends HTMLElementBase {
         .month-group {
           margin: 0 0 1rem;
           border: 1px solid var(--pastafari-month-border, #ddd5bc);
+          border-inline-start: .38rem solid var(--month-accent, #8d7c38);
           border-radius: .85rem;
           overflow: clip;
           background: var(--pastafari-month-background, #fff);
@@ -683,7 +679,7 @@ export class PastafariDateElement extends HTMLElementBase {
           align-items: center;
           justify-content: space-between;
           gap: .75rem;
-          padding: .7rem .9rem;
+          padding: .62rem .9rem;
           border-top: 1px solid var(--pastafari-border, #c8c2aa);
           background: var(--pastafari-footer-background, #faf6e8);
         }
@@ -695,8 +691,9 @@ export class PastafariDateElement extends HTMLElementBase {
         .text-button {
           border: 0;
           background: transparent;
-          color: var(--pastafari-link, #514813);
-          padding: .25rem 0;
+          color: var(--pastafari-link, #625b43);
+          padding: .2rem 0;
+          font-size: .8rem;
           text-decoration: underline;
           text-decoration-thickness: .06em;
           text-underline-offset: .16em;
@@ -801,6 +798,9 @@ export class PastafariDateElement extends HTMLElementBase {
           .calendar-footer { align-items: flex-start; flex-direction: column; }
         }
         @media (max-width: 420px) {
+          .calendar-header { grid-template-columns: 2.55rem minmax(0, 1fr) 2.55rem; padding-inline: .55rem; }
+          .nav-button { width: 2.4rem; height: 2.4rem; }
+          .selected-summary { white-space: normal; }
           .days-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
           .day { min-height: 3.8rem; }
         }
@@ -814,31 +814,25 @@ export class PastafariDateElement extends HTMLElementBase {
           <span class="loading-track" aria-hidden="true"></span>
           <span class="loading-elapsed">מתחיל בחישוב…</span>
         </div>
-        <header class="calendar-header" part="header">
-          <p class="eyebrow">שנה <span data-field="year"></span></p>
-          <h2 class="title">קציצת <strong class="name" data-field="cutletName"></strong></h2>
-          <p class="selected-summary" part="sentence" aria-live="polite">
-            היום ה־<span data-field="dayInCutlet"></span> בקציצה,
-            היום ה־<span data-field="dayInMonth"></span> בחודש
-            <strong class="name" data-field="monthName"></strong>
-          </p>
-        </header>
-
-        <nav class="cutlet-nav" aria-label="ניווט בין קציצות" part="navigation">
+        <header class="calendar-header" part="header navigation">
           <button class="nav-button next-cutlet" type="button" aria-label="הקציצה הבאה" title="הקציצה הבאה">‹</button>
-          <div class="cutlet-caption">
-            <strong>קציצה <span class="nav-cutlet-name"></span></strong>
-            <span class="cutlet-length"></span>
+          <div class="heading-copy">
+            <p class="eyebrow">שנה <span data-field="year"></span> · <span class="cutlet-length"></span></p>
+            <h2 class="title">קציצת <strong class="name" data-field="cutletName"></strong></h2>
+            <p class="selected-summary" part="sentence" aria-live="polite">
+              היום ה־<strong data-field="dayInCutlet"></strong> בקציצה ·
+              חודש <strong class="name" data-field="monthName"></strong>, היום ה־<strong data-field="dayInMonth"></strong>
+            </p>
           </div>
           <button class="nav-button previous-cutlet" type="button" aria-label="הקציצה הקודמת" title="הקציצה הקודמת">›</button>
-        </nav>
+        </header>
 
         <div class="calendar-viewport" part="days" aria-label="ימי הקציצה"></div>
 
         <footer class="calendar-footer" part="footer">
           <div class="footer-actions tools">
-            <button class="text-button today-button" type="button">היום</button>
-            <button class="text-button convert-button" type="button">המרת תאריך</button>
+            <button class="text-button today-button" type="button">חזרה להיום</button>
+            <button class="text-button convert-button" type="button">מעבר לתאריך…</button>
           </div>
           <span class="status"></span>
         </footer>
@@ -848,16 +842,16 @@ export class PastafariDateElement extends HTMLElementBase {
 
       <dialog part="dialog">
         <form class="converter-form" method="dialog">
-          <h2 class="dialog-title">המרת תאריך ללוח הפסטפרי</h2>
-          <p class="dialog-note">התאריך האזרחי משמש רק לזיהוי היום שיוצג בלוח.</p>
+          <h2 class="dialog-title">מעבר ליום אחר</h2>
+          <p class="dialog-note">בחר תאריך אזרחי כדי לעבור אל היום המתאים בלוח.</p>
 
           <label>
-            התאריך להמרה
+            יום להצגה
             <input class="target-input" type="date" required>
           </label>
 
           <details class="advanced">
-            <summary>הגדרות מתקדמות</summary>
+            <summary>אפשרויות חישוב</summary>
             <div class="advanced-body">
               <label>
                 יום המעשה
@@ -869,7 +863,7 @@ export class PastafariDateElement extends HTMLElementBase {
           </details>
 
           <div class="dialog-actions">
-            <button class="apply" type="button">הצג בלוח</button>
+            <button class="apply" type="button">עבור ליום</button>
             <button class="cancel" value="cancel">ביטול</button>
           </div>
         </form>
@@ -892,7 +886,6 @@ export class PastafariDateElement extends HTMLElementBase {
     this._nextButton = this.shadowRoot.querySelector(".next-cutlet");
     this._viewport = this.shadowRoot.querySelector(".calendar-viewport");
     this._status = this.shadowRoot.querySelector(".status");
-    this._navCutletName = this.shadowRoot.querySelector(".nav-cutlet-name");
     this._cutletLength = this.shadowRoot.querySelector(".cutlet-length");
     this._tools = this.shadowRoot.querySelector(".tools");
 
@@ -1050,10 +1043,8 @@ export class PastafariDateElement extends HTMLElementBase {
 
     this._cutletStartJdn = view.startJdn;
     this._cutletEndJdn = view.endJdn;
-    this._navCutletName.textContent = view.cutletName;
     this._cutletLength.textContent = `${days.length} ימים`;
-    const engineLabel = sharedRouter.status === "verified" ? "מנוע מהיר מאומת" : "מנוע ראשי";
-    this._status.textContent = `יום ${selectedValue.dayInCutlet} מתוך ${days.length} · ${engineLabel}`;
+    this._status.textContent = `היום ה־${selectedValue.dayInCutlet} מתוך ${days.length}`;
 
     const groups = [];
     for (const day of days) {
@@ -1067,10 +1058,17 @@ export class PastafariDateElement extends HTMLElementBase {
     }
 
     const fragment = document.createDocumentFragment();
+    const monthAccents = new Map();
+    let nextAccent = 0;
     for (const group of groups) {
+      if (!monthAccents.has(group.name)) {
+        monthAccents.set(group.name, MONTH_ACCENTS[nextAccent % MONTH_ACCENTS.length]);
+        nextAccent += 1;
+      }
       const section = document.createElement("section");
       section.className = "month-group";
       section.setAttribute("part", "month");
+      section.style.setProperty("--month-accent", monthAccents.get(group.name));
 
       const heading = document.createElement("h3");
       heading.className = "month-heading";
@@ -1104,7 +1102,7 @@ export class PastafariDateElement extends HTMLElementBase {
 
         const cutletDay = document.createElement("span");
         cutletDay.className = "cutlet-day";
-        cutletDay.textContent = `בקציצה: ${day.value.dayInCutlet}`;
+        cutletDay.textContent = `יום ה־${day.value.dayInCutlet} בקציצה`;
 
         button.append(monthDay, cutletDay);
         button.addEventListener("click", () => this._selectJdn(day.jdn));
