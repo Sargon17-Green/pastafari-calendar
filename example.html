@@ -1,0 +1,79 @@
+# רכיב HTML ללוח הפסטפרי
+
+## הטמעה רגילה
+
+לאחר העלאת התיקייה `browser` למאגר ויצירת תגית גרסה, די בשתי שורות:
+
+```html
+<script type="module" src="https://cdn.jsdelivr.net/gh/bwtbdyqtmsprytgydym-cpu/pastafari-calendar@v1.1.0/browser/pastafari-date.js"></script>
+<pastafari-date></pastafari-date>
+```
+
+ברירת המחדל:
+
+- התאריך המוצג הוא היום המקומי של הדפדפן;
+- יום המעשה הוא היום המקומי של הדפדפן;
+- התצוגה עצמה מציגה תאריך פסטפרי בלבד;
+- הכפתור "הזנת תאריך אחר" מאפשר לשנות את התאריך המוצג ואת יום המעשה.
+
+## קביעת תאריך או יום מעשה מראש
+
+```html
+<pastafari-date
+  date="2026-08-06"
+  calculation-date="2026-08-06">
+</pastafari-date>
+```
+
+שני המאפיינים הם ימים מוחלטים בפורמט `YYYY-MM-DD`. הם אינם חלק מחמשת רכיבי הפלט.
+
+## ללא תצוגת ברירת המחדל
+
+```html
+<script type="module" src="https://cdn.jsdelivr.net/gh/bwtbdyqtmsprytgydym-cpu/pastafari-calendar@v1.1.0/browser/pastafari-date.js"></script>
+<pastafari-date id="pc" headless></pastafari-date>
+<script type="module">
+  const pc = document.querySelector("#pc");
+  const { year, cutletName, dayInCutlet, monthName, dayInMonth } = await pc.ready;
+  document.querySelector("#my-output").textContent =
+    `${dayInMonth} ${monthName}, קציצה ${cutletName}, שנה ${year}`;
+</script>
+<div id="my-output"></div>
+```
+
+לאחר שינוי התאריך מתקבל האירוע `pastafari-change`. השדה `event.detail` הוא אובייקט הכולל בדיוק:
+
+```js
+{
+  year,
+  cutletName,
+  dayInCutlet,
+  monthName,
+  dayInMonth
+}
+```
+
+ניתן גם לקרוא את האובייקט מן המאפיין `element.value` או להפעיל `element.refresh()`.
+
+## שימוש כפונקציה בלבד
+
+```js
+import { getPastafariDate } from "./pastafari-date.js";
+
+const value = getPastafariDate("2026-08-06", "2026-08-06");
+```
+
+## עיצוב
+
+הרכיב משתמש ב-Shadow DOM. אפשר לשנות משתני CSS, למשל:
+
+```css
+pastafari-date {
+  --pastafari-background: #fffdf4;
+  --pastafari-button-background: #362c16;
+  --pastafari-button-color: white;
+  --pastafari-radius: 4px;
+}
+```
+
+אפשר גם לעצב חלקים באמצעות `::part(card)`, `::part(sentence)`, `::part(fields)` ו-`::part(edit-button)`.
