@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>בדיקת עשן בדפדפן — הלוח הפסטפרי</title>
+  <style>
+    :root { font-family: Arial, "Noto Sans Hebrew", sans-serif; color-scheme: light; }
+    body { margin: 0; background: #f5f2e8; color: #27291f; }
+    main { width: min(72rem, calc(100% - 2rem)); margin: 1.25rem auto 4rem; }
+    h1, h2 { margin-block: 0 .75rem; }
+    .intro, .panel { border: 1px solid #c9c1a8; border-radius: 14px; background: #fffdf7; box-shadow: 0 8px 26px rgb(50 43 24 / 8%); }
+    .intro { padding: 1rem 1.15rem; margin-bottom: 1rem; }
+    .intro p { margin: .45rem 0; line-height: 1.55; }
+    .actions { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: .85rem; }
+    button { border: 1px solid #a89e7e; border-radius: .6rem; padding: .58rem .9rem; background: #f3ecd4; color: inherit; font: inherit; cursor: pointer; }
+    button.primary { background: #675817; border-color: #675817; color: white; }
+    button:disabled { cursor: wait; opacity: .55; }
+    .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: .7rem; margin: 1rem 0; }
+    .metric { padding: .8rem; border: 1px solid #d7cfb6; border-radius: .75rem; background: #fff; }
+    .metric span { display: block; color: #6d6756; font-size: .78rem; }
+    .metric strong { display: block; margin-top: .25rem; font-size: 1.1rem; }
+    .panel { padding: 1rem; margin-top: 1rem; }
+    #results { display: grid; gap: .45rem; margin: 0; padding: 0; list-style: none; }
+    #results li { display: grid; grid-template-columns: 1.7rem minmax(0, 1fr) auto; align-items: start; gap: .55rem; padding: .58rem .65rem; border-radius: .55rem; background: #f8f5ea; }
+    #results li.pass { background: #eaf5e8; }
+    #results li.fail { background: #fae9e7; }
+    #results li.running { background: #fff3d6; }
+    .mark { font-weight: 900; text-align: center; }
+    .duration { color: #6d6756; direction: ltr; font-size: .78rem; white-space: nowrap; }
+    .details { grid-column: 2 / -1; direction: ltr; white-space: pre-wrap; overflow-wrap: anywhere; color: #71342f; font: .75rem/1.45 ui-monospace, SFMono-Regular, Consolas, monospace; }
+    #fixture { margin-top: 1rem; }
+    #fixture[hidden] { display: none; }
+    pre { direction: ltr; text-align: left; white-space: pre-wrap; overflow-wrap: anywhere; padding: .8rem; border-radius: .65rem; background: #201f1a; color: #eee9d9; }
+    .note { color: #696452; font-size: .84rem; }
+  </style>
+</head>
+<body>
+<main>
+  <section class="intro">
+    <h1>בדיקת עשן בדפדפן</h1>
+    <p>הדף בודק את קובצי <code>browser</code> מתוך עותק מקומי של הפרויקט. יש להפעיל אותו דרך שרת HTTP, לא באמצעות פתיחה ישירה כקובץ.</p>
+    <p class="note">הבדיקה הבסיסית מפעילה יום־מעשה אחד. הבדיקה המורחבת מוסיפה יום־מעשה שני ולכן עשויה לבצע אימות כבד נוסף.</p>
+    <div class="actions">
+      <button id="run-core" class="primary" type="button">הרץ בדיקה בסיסית</button>
+      <button id="run-extended" type="button">הרץ גם בדיקה מורחבת</button>
+      <button id="reset" type="button">נקה והתחל מחדש</button>
+    </div>
+  </section>
+
+  <section class="summary" aria-live="polite">
+    <div class="metric"><span>מצב</span><strong id="state">טרם הופעלה בדיקה</strong></div>
+    <div class="metric"><span>עברו</span><strong id="passed">0</strong></div>
+    <div class="metric"><span>נכשלו</span><strong id="failed">0</strong></div>
+    <div class="metric"><span>זמן כולל</span><strong id="elapsed">0.00 s</strong></div>
+  </section>
+
+  <section class="panel">
+    <h2>תוצאות</h2>
+    <ol id="results"></ol>
+  </section>
+
+  <section id="fixture" class="panel" hidden>
+    <h2>הרכיב הנבדק</h2>
+    <div id="visual-host"></div>
+    <h3>מצב הנתב</h3>
+    <pre id="router-status">—</pre>
+  </section>
+</main>
+
+<script type="module">
+  import {
+    getPastafariDateAsync,
+  } from "../browser/pastafari-date.js";
+  import {
+    sharedPastafariRouter,
+  } from "../browser/pastafari-calendar-router.js";
+
+  const EXPECTED = Object.freeze({
+    year: "5000",
+    cutletName: "כליה",
+    dayInCutlet: 306,
+    monthName: "לשון",
+    dayInMonth: 23,
+  });
+  const TARGET_DATE = "2026-08-06";
+  const CALCULATION_DATE = "2026-08-06";
+  const SECOND_CALCULATION_DATE = "2026-08-07";
+  const TEST_TIMEOUT_MS = 360_000;
+
+  const ui = {
+    runCore: document.querySelector("#run-core"),
+    runExtended: document.querySelector("#run-extended"),
+    reset: document.querySelector("#reset"),
+    state: document.querySelector("#state"),
+    passed: document.querySelector("#passed"),
+    failed: document.querySelector("#failed"),
+    elapsed: document.querySelector("#elapsed"),
+    results: document.querySelector("#results"),
+    fixture: document.querySelector("#fixture"),
+    visualHost: document.querySelector("#visual-host"),
+    routerStatus: document.querySelector("#router-status"),
+  };
+
+  let running = false;
+  let startedAt = 0;
+  let passed = 0;
+  let failed = 0;
+  let visualElement = null;
+  let eventDetail = null;
+  let timer = null;
+
+  function formatValue(value) {
+    return JSON.stringify(value, (_key, item) => typeof item === "bigint" ? `${item}n` : item, 2);
+  }
+
+  function sameResult(actual, expected) {
+    return Object.keys(expected).every((key) => actual?.[key] === expected[key]);
+  }
+
+  function assert(condition, message) {
+    if (!condition) throw new Error(message);
+  }
+
+  function delay(milliseconds) {
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
+  }
+
+  async function waitFor(predicate, description, timeoutMs = TEST_TIMEOUT_MS, intervalMs = 50) {
+    const deadline = performance.now() + timeoutMs;
+    let lastError = null;
+    while (performance.now() < deadline) {
+      try {
+        const value = await predicate();
+        if (value) return value;
+      } catch (error) {
+        lastError = error;
+      }
+      await delay(intervalMs);
+    }
+    const suffix = lastError ? `\nLast error: ${lastError.stack || lastError.message}` : "";
+    throw new Error(`Timed out while waiting for: ${description}.${suffix}`);
+  }
+
+  function setRunning(value) {
+    running = value;
+    ui.runCore.disabled = value;
+    ui.runExtended.disabled = value;
+    ui.reset.disabled = value;
+    if (value) {
+      startedAt = performance.now();
+      timer = setInterval(() => {
+        ui.elapsed.textContent = `${((performance.now() - startedAt) / 1000).toFixed(2)} s`;
+      }, 100);
+    } else {
+      clearInterval(timer);
+      timer = null;
+      ui.elapsed.textContent = `${((performance.now() - startedAt) / 1000).toFixed(2)} s`;
+    }
+  }
+
+  function updateStatus() {
+    ui.passed.textContent = String(passed);
+    ui.failed.textContent = String(failed);
+    ui.routerStatus.textContent = formatValue(sharedPastafariRouter.getStatus());
+  }
+
+  function createResultRow(name) {
+    const row = document.createElement("li");
+    row.className = "running";
+    const mark = document.createElement("span");
+    mark.className = "mark";
+    mark.textContent = "…";
+    const label = document.createElement("span");
+    label.textContent = name;
+    const duration = document.createElement("span");
+    duration.className = "duration";
+    duration.textContent = "";
+    row.append(mark, label, duration);
+    ui.results.append(row);
+    return { row, mark, duration };
+  }
+
+  async function test(name, operation) {
+    const item = createResultRow(name);
+    const start = performance.now();
+    try {
+      await operation();
+      passed += 1;
+      item.row.className = "pass";
+      item.mark.textContent = "✓";
+    } catch (error) {
+      failed += 1;
+      item.row.className = "fail";
+      item.mark.textContent = "✗";
+      const details = document.createElement("pre");
+      details.className = "details";
+      details.textContent = error?.stack || error?.message || String(error);
+      item.row.append(details);
+      console.error(`[browser-smoke] ${name}`, error);
+    } finally {
+      item.duration.textContent = `${(performance.now() - start).toFixed(0)} ms`;
+      updateStatus();
+    }
+  }
+
+  function makeElement(attributes = {}) {
+    const element = document.createElement("pastafari-date");
+    for (const [name, value] of Object.entries(attributes)) {
+      if (value === true) element.setAttribute(name, "");
+      else if (value !== false && value != null) element.setAttribute(name, String(value));
+    }
+    return element;
+  }
+
+  async function ensureVisualElement() {
+    if (visualElement?.isConnected) return visualElement;
+    eventDetail = null;
+    visualElement = makeElement({
+      date: TARGET_DATE,
+      "calculation-date": CALCULATION_DATE,
+    });
+    visualElement.addEventListener("pastafari-change", (event) => {
+      eventDetail = event.detail;
+      updateStatus();
+    });
+    ui.visualHost.replaceChildren(visualElement);
+    ui.fixture.hidden = false;
+    return visualElement;
+  }
+
+  async function runCoreTests() {
+    await test("מודול הרכיב נטען והרכיב נרשם", async () => {
+      assert(typeof getPastafariDateAsync === "function", "getPastafariDateAsync is not a function.");
+      assert(customElements.get("pastafari-date"), "The pastafari-date custom element is not registered.");
+    });
+
+    await test("מחוון הטעינה מופיע לפני השלמת החישוב", async () => {
+      const element = await ensureVisualElement();
+      const loading = element.shadowRoot?.querySelector(".overlay.loading");
+      const calendar = element.shadowRoot?.querySelector(".calendar");
+      assert(loading, "Loading overlay was not created.");
+      assert(calendar?.getAttribute("aria-busy") === "true", "aria-busy was not true during startup.");
+      assert(!loading.hidden, "Loading overlay was hidden before the initial result.");
+    });
+
+    await test("הרכיב מחזיר את חמשת השדות הצפויים", async () => {
+      const element = await ensureVisualElement();
+      const value = await element.ready;
+      assert(sameResult(value, EXPECTED), `Unexpected value:\n${formatValue(value)}`);
+      assert(sameResult(element.value, EXPECTED), `element.value differs:\n${formatValue(element.value)}`);
+    });
+
+    await test("האירוע pastafari-change נשלח עם התוצאה הנכונה", async () => {
+      await waitFor(() => eventDetail, "pastafari-change event");
+      assert(sameResult(eventDetail, EXPECTED), `Unexpected event detail:\n${formatValue(eventDetail)}`);
+    });
+
+    await test("התצוגה מסיימת טעינה ומסמנת את היום הנבחר", async () => {
+      const element = await ensureVisualElement();
+      await element.ready;
+      const root = element.shadowRoot;
+      assert(root.querySelector(".calendar")?.getAttribute("aria-busy") === "false", "aria-busy remained true.");
+      assert(root.querySelector(".overlay.loading")?.hidden === true, "Loading overlay remained visible.");
+      const selected = root.querySelector('.day[aria-current="date"]');
+      assert(selected, "No selected day was rendered.");
+      assert(selected.dataset.jdn, "Selected day has no JDN.");
+      assert(root.querySelectorAll(".days").length > 0, "No month grids were rendered.");
+    });
+
+    await test("קציצות סמוכות נטענות ואפשר לנווט לקציצה הקודמת", async () => {
+      const element = await ensureVisualElement();
+      const root = element.shadowRoot;
+      await waitFor(() => root.querySelectorAll(".cutlet").length >= 3, "three rendered cutlets");
+      const before = element._activeStartJdn;
+      root.querySelector(".nav-button.previous")?.click();
+      await waitFor(() => element._activeStartJdn != null && element._activeStartJdn !== before, "previous-cutlet navigation");
+      assert(root.querySelectorAll(".cutlet").length >= 3, "Adjacent cutlets disappeared after navigation.");
+    });
+
+    await test("חלון מעבר לתאריך נפתח", async () => {
+      const element = await ensureVisualElement();
+      const root = element.shadowRoot;
+      root.querySelector(".editor-link")?.click();
+      const dialog = root.querySelector("dialog");
+      assert(dialog?.open || dialog?.hasAttribute("open"), "The date dialog did not open.");
+      assert(root.querySelector('input[name="target"]')?.value === TARGET_DATE, "The dialog target date is incorrect.");
+      dialog.close?.();
+      dialog.removeAttribute("open");
+    });
+
+    await test("מצב no-editor מסתיר את קישור העריכה בלי לחשב מחדש", async () => {
+      const element = await ensureVisualElement();
+      const previousGeneration = element._generation;
+      element.setAttribute("no-editor", "");
+      await delay(0);
+      const link = element.shadowRoot.querySelector(".editor-link");
+      assert(getComputedStyle(link).display === "none", "Editor link is still displayed.");
+      assert(element._generation === previousGeneration, "no-editor triggered an unnecessary refresh.");
+      element.removeAttribute("no-editor");
+    });
+
+    await test("רכיב headless מחזיר תוצאה בלי לבנות לוח", async () => {
+      const headless = makeElement({
+        headless: true,
+        date: TARGET_DATE,
+        "calculation-date": CALCULATION_DATE,
+      });
+      document.body.append(headless);
+      try {
+        const value = await headless.ready;
+        assert(sameResult(value, EXPECTED), `Unexpected headless value:\n${formatValue(value)}`);
+        assert(headless.shadowRoot.querySelectorAll(".cutlet").length === 0, "Headless component rendered cutlets.");
+        assert(headless.shadowRoot.querySelectorAll(".day").length === 0, "Headless component rendered days.");
+        assert(headless._orderedStarts.length === 0, "Headless component loaded cutlet boundaries.");
+      } finally {
+        headless.remove();
+      }
+    });
+
+    await test("ה־API האסינכרוני מחזיר אותה תוצאה", async () => {
+      const value = await getPastafariDateAsync(TARGET_DATE, CALCULATION_DATE);
+      assert(sameResult(value, EXPECTED), `Unexpected API value:\n${formatValue(value)}`);
+    });
+
+    await test("האימות מגיע למצב verified או fallback תקין", async () => {
+      const element = await ensureVisualElement();
+      await waitFor(() => {
+        const status = sharedPastafariRouter.getStatus(element._calculationJdn);
+        return status.status === "verified" || status.status === "authoritative-only" ? status : null;
+      }, "router verification result");
+      const status = sharedPastafariRouter.getStatus(element._calculationJdn);
+      assert(["verified", "authoritative-only"].includes(status.status), `Unexpected router status: ${formatValue(status)}`);
+      if (status.status === "authoritative-only") {
+        console.warn("[browser-smoke] Router used authoritative-only fallback:", status.error);
+      }
+    });
+  }
+
+  async function runExtendedTests() {
+    await test("שינוי יום־המעשה יוצר מצב אימות נפרד", async () => {
+      const element = makeElement({
+        headless: true,
+        date: TARGET_DATE,
+        "calculation-date": SECOND_CALCULATION_DATE,
+      });
+      let changes = 0;
+      element.addEventListener("pastafari-change", () => { changes += 1; });
+      document.body.append(element);
+      try {
+        const value = await element.ready;
+        assert(value && typeof value === "object", "No value was returned for the second calculation day.");
+        assert(changes === 1, `Expected one change event; got ${changes}.`);
+        const secondJdn = element._calculationJdn;
+        const status = sharedPastafariRouter.getStatus(secondJdn);
+        assert(status.status !== "unverified", `Second calculation day was not registered: ${formatValue(status)}`);
+
+        const all = sharedPastafariRouter.getStatus();
+        const keys = new Set(all.calculations.map((item) => item.calculationJdn.toString()));
+        assert(keys.has(secondJdn.toString()), "Second calculation day is missing from the router state map.");
+        assert(keys.size >= 2, `Expected at least two calculation-day states; got ${keys.size}.`);
+      } finally {
+        element.remove();
+      }
+    });
+
+    await test("האימות של יום־המעשה השני מסתיים בלי להשבית את הנתב", async () => {
+      const all = sharedPastafariRouter.getStatus();
+      const second = all.calculations.find((item) => item.calculationJdn !== visualElement?._calculationJdn);
+      assert(second, "Second calculation-day state was not found.");
+      await waitFor(() => {
+        const status = sharedPastafariRouter.getStatus(second.calculationJdn);
+        return status.status === "verified" || status.status === "authoritative-only" ? status : null;
+      }, "verification for second calculation day");
+      const result = await getPastafariDateAsync(TARGET_DATE, SECOND_CALCULATION_DATE);
+      assert(result && Object.keys(EXPECTED).every((key) => key in result), `Second-day conversion is malformed:\n${formatValue(result)}`);
+    });
+  }
+
+  async function run({ extended }) {
+    if (running) return;
+    passed = 0;
+    failed = 0;
+    ui.results.replaceChildren();
+    ui.state.textContent = extended ? "מריץ בדיקה מורחבת" : "מריץ בדיקה בסיסית";
+    ui.fixture.hidden = false;
+    setRunning(true);
+    updateStatus();
+
+    try {
+      await runCoreTests();
+      if (extended) await runExtendedTests();
+      ui.state.textContent = failed === 0 ? "כל הבדיקות עברו" : "הבדיקה הסתיימה עם כשלים";
+    } catch (error) {
+      failed += 1;
+      ui.state.textContent = "הבדיקה נעצרה בשגיאה";
+      const item = createResultRow("שגיאה כללית במנהל הבדיקה");
+      item.row.className = "fail";
+      item.mark.textContent = "✗";
+      const details = document.createElement("pre");
+      details.className = "details";
+      details.textContent = error?.stack || error?.message || String(error);
+      item.row.append(details);
+      console.error(error);
+    } finally {
+      setRunning(false);
+      updateStatus();
+      document.title = failed === 0
+        ? `✓ בדיקת עשן עברה (${passed})`
+        : `✗ בדיקת עשן נכשלה (${failed})`;
+      window.__PASTAFARI_SMOKE_RESULT__ = Object.freeze({
+        complete: true,
+        passed,
+        failed,
+        status: sharedPastafariRouter.getStatus(),
+      });
+    }
+  }
+
+  async function reset() {
+    if (running) return;
+    visualElement?.remove();
+    visualElement = null;
+    eventDetail = null;
+    ui.visualHost.replaceChildren();
+    ui.results.replaceChildren();
+    ui.fixture.hidden = true;
+    passed = 0;
+    failed = 0;
+    ui.state.textContent = "טרם הופעלה בדיקה";
+    ui.elapsed.textContent = "0.00 s";
+    document.title = "בדיקת עשן בדפדפן — הלוח הפסטפרי";
+    window.__PASTAFARI_SMOKE_RESULT__ = Object.freeze({ complete: false, passed: 0, failed: 0 });
+    await sharedPastafariRouter.retry();
+    updateStatus();
+  }
+
+  ui.runCore.addEventListener("click", () => void run({ extended: false }));
+  ui.runExtended.addEventListener("click", () => void run({ extended: true }));
+  ui.reset.addEventListener("click", () => void reset());
+
+  window.addEventListener("beforeunload", () => sharedPastafariRouter.dispose());
+  window.__PASTAFARI_SMOKE_RESULT__ = Object.freeze({ complete: false, passed: 0, failed: 0 });
+  updateStatus();
+</script>
+</body>
+</html>
