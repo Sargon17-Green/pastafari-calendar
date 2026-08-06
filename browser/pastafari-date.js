@@ -1,9 +1,9 @@
 import {
   GregorianDate,
-  PastafariCalendar,
+  PastafariCalendar as FastPastafariCalendar,
   gregorianToJdn,
   validateGregorian,
-} from "./pastafari-calendar-core.js";
+} from "./pastafari-calendar-fast.js";
 
 const OUTPUT_FIELDS = Object.freeze([
   "year",
@@ -99,15 +99,339 @@ function sameMonthRun(previous, current) {
   return previous.monthName === current.monthName && current.dayInMonth > previous.dayInMonth;
 }
 
+
+const FAST_MODULE_URL = new URL("./pastafari-calendar-fast.js", import.meta.url).href;
+const AUTHORITATIVE_MODULE_URL = new URL("./pastafari-calendar-core.js", import.meta.url).href;
+
+function sameFiveFields(left, right) {
+  return OUTPUT_FIELDS.every((field) => left[field] === right[field]);
+}
+
+function sameCutletViews(left, right) {
+  if (
+    left.selectedJdn !== right.selectedJdn
+    || left.selectedIndex !== right.selectedIndex
+    || left.startJdn !== right.startJdn
+    || left.endJdn !== right.endJdn
+    || left.previousCutletJdn !== right.previousCutletJdn
+    || left.nextCutletJdn !== right.nextCutletJdn
+    || left.year !== right.year
+    || left.cutletName !== right.cutletName
+    || left.days.length !== right.days.length
+  ) return false;
+
+  for (let i = 0; i < left.days.length; i += 1) {
+    if (left.days[i].jdn !== right.days[i].jdn || !sameFiveFields(left.days[i], right.days[i])) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function normalizeWorkerView(view) {
+  return Object.freeze({
+    selectedJdn: BigInt(view.selectedJdn),
+    selectedIndex: view.selectedIndex,
+    startJdn: BigInt(view.startJdn),
+    endJdn: BigInt(view.endJdn),
+    previousCutletJdn: BigInt(view.previousCutletJdn),
+    nextCutletJdn: BigInt(view.nextCutletJdn),
+    year: view.year,
+    cutletName: view.cutletName,
+    days: Object.freeze(view.days.map((day) => Object.freeze({
+      jdn: BigInt(day.jdn),
+      year: day.year,
+      cutletName: day.cutletName,
+      dayInCutlet: day.dayInCutlet,
+      monthName: day.monthName,
+      dayInMonth: day.dayInMonth,
+    }))),
+  });
+}
+
+function createWorkerSource(moduleUrl) {
+  return `
+    const MODULE_URL = ${JSON.stringify(moduleUrl)};
+    const MAX_CUTLET_DAYS = ${MAX_CUTLET_DAYS};
+    let moduleNamespace;
+    let calendar;
+
+    function canonical(value) {
+      const json = typeof value?.toJSON === "function" ? value.toJSON() : value;
+      return {
+        year: String(json.year),
+        cutletName: json.cutletName,
+        dayInCutlet: json.dayInCutlet,
+        monthName: json.monthName,
+        dayInMonth: json.dayInMonth,
+      };
+    }
+
+    function serializableView(view) {
+      return {
+        selectedJdn: String(view.selectedJdn),
+        selectedIndex: view.selectedIndex,
+        startJdn: String(view.startJdn),
+        endJdn: String(view.endJdn),
+        previousCutletJdn: String(view.previousCutletJdn),
+        nextCutletJdn: String(view.nextCutletJdn),
+        year: String(view.year),
+        cutletName: view.cutletName,
+        days: view.days.map((day) => ({
+          jdn: String(day.jdn),
+          year: String(day.year),
+          cutletName: day.cutletName,
+          dayInCutlet: day.dayInCutlet,
+          monthName: day.monthName,
+          dayInMonth: day.dayInMonth,
+        })),
+      };
+    }
+
+    function deriveCutletView(targetJdn, calculationJdn) {
+      const selected = canonical(calendar.convertJdn(targetJdn, { calculationJdn }));
+      const startJdn = targetJdn - BigInt(selected.dayInCutlet - 1);
+      const days = [];
+      for (let offset = 0; offset < MAX_CUTLET_DAYS; offset += 1) {
+        const jdn = startJdn + BigInt(offset);
+        const value = canonical(calendar.convertJdn(jdn, { calculationJdn }));
+        if (offset > 0 && value.dayInCutlet === 1) break;
+        days.push({ jdn, ...value });
+      }
+      if (days.length === MAX_CUTLET_DAYS) {
+        throw new RangeError("Cutlet length exceeded the safety limit.");
+      }
+      const endJdn = startJdn + BigInt(days.length - 1);
+      return {
+        selectedJdn: targetJdn,
+        selectedIndex: Number(targetJdn - startJdn),
+        startJdn,
+        endJdn,
+        previousCutletJdn: startJdn - 1n,
+        nextCutletJdn: endJdn + 1n,
+        year: selected.year,
+        cutletName: selected.cutletName,
+        days,
+      };
+    }
+
+    try {
+      moduleNamespace = await import(MODULE_URL);
+      const fixedToday = () => new moduleNamespace.GregorianDate(2000n, 1, 1);
+      calendar = new moduleNamespace.PastafariCalendar({ todayProvider: fixedToday });
+      self.postMessage({ type: "ready" });
+    } catch (error) {
+      self.postMessage({ type: "fatal", error: { name: error?.name, message: error?.message, stack: error?.stack } });
+    }
+
+    self.onmessage = ({ data }) => {
+      const { id, operation } = data;
+      try {
+        const targetJdn = BigInt(data.targetJdn);
+        const calculationJdn = BigInt(data.calculationJdn);
+        let value;
+        if (operation === "convert") {
+          value = canonical(calendar.convertJdn(targetJdn, { calculationJdn }));
+        } else if (operation === "cutletView") {
+          const raw = typeof moduleNamespace.getCutletView === "function"
+            ? moduleNamespace.getCutletView(targetJdn, { calculationJdn })
+            : deriveCutletView(targetJdn, calculationJdn);
+          value = serializableView(raw);
+        } else {
+          throw new TypeError("Unknown worker operation: " + operation);
+        }
+        self.postMessage({ id, ok: true, value });
+      } catch (error) {
+        self.postMessage({ id, ok: false, error: { name: error?.name, message: error?.message, stack: error?.stack } });
+      }
+    };
+  `;
+}
+
+class CalendarWorkerClient {
+  constructor(moduleUrl, name) {
+    if (typeof Worker !== "function") {
+      throw new Error("Web Workers אינם זמינים בסביבה זו.");
+    }
+    const blob = new Blob([createWorkerSource(moduleUrl)], { type: "text/javascript" });
+    this._blobUrl = URL.createObjectURL(blob);
+    this._worker = new Worker(this._blobUrl, { type: "module", name });
+    this._nextId = 1;
+    this._pending = new Map();
+    this._ready = new Promise((resolve, reject) => {
+      this._resolveReady = resolve;
+      this._rejectReady = reject;
+    });
+    this._worker.addEventListener("message", ({ data }) => this._onMessage(data));
+    this._worker.addEventListener("error", (event) => {
+      const error = new Error(event.message || `טעינת ${name} נכשלה.`);
+      this._rejectAll(error);
+    });
+  }
+
+  _onMessage(data) {
+    if (data?.type === "ready") {
+      this._resolveReady();
+      return;
+    }
+    if (data?.type === "fatal") {
+      const error = new Error(data.error?.message || "טעינת מנוע הלוח נכשלה.");
+      this._rejectAll(error);
+      return;
+    }
+    const pending = this._pending.get(data?.id);
+    if (!pending) return;
+    this._pending.delete(data.id);
+    if (data.ok) pending.resolve(data.value);
+    else pending.reject(new Error(data.error?.message || "חישוב התאריך נכשל."));
+  }
+
+  _rejectAll(error) {
+    this._rejectReady?.(error);
+    for (const pending of this._pending.values()) pending.reject(error);
+    this._pending.clear();
+  }
+
+  async request(operation, targetJdn, calculationJdn) {
+    await this._ready;
+    return new Promise((resolve, reject) => {
+      const id = this._nextId++;
+      this._pending.set(id, { resolve, reject });
+      this._worker.postMessage({
+        id,
+        operation,
+        targetJdn: String(targetJdn),
+        calculationJdn: String(calculationJdn),
+      });
+    });
+  }
+
+  convert(targetJdn, calculationJdn) {
+    return this.request("convert", targetJdn, calculationJdn);
+  }
+
+  async cutletView(targetJdn, calculationJdn) {
+    return normalizeWorkerView(await this.request("cutletView", targetJdn, calculationJdn));
+  }
+
+  terminate() {
+    this._worker?.terminate();
+    if (this._blobUrl) URL.revokeObjectURL(this._blobUrl);
+    this._worker = null;
+    this._blobUrl = null;
+  }
+}
+
+class VerifiedCalendarRouter {
+  constructor() {
+    this.status = "unverified";
+    this._verification = null;
+    this._fast = null;
+    this._authoritative = null;
+  }
+
+  _ensureWorkers() {
+    this._fast ??= new CalendarWorkerClient(FAST_MODULE_URL, "pastafari-fast");
+    this._authoritative ??= new CalendarWorkerClient(AUTHORITATIVE_MODULE_URL, "pastafari-authoritative");
+  }
+
+  async verify(targetJdn, calculationJdn) {
+    if (this.status === "verified" || this.status === "rejected") return;
+    if (this._verification) return this._verification;
+    this._ensureWorkers();
+    this.status = "verifying";
+    this._verification = (async () => {
+      const [authoritativeResult, fastResult] = await Promise.allSettled([
+        this._authoritative.convert(targetJdn, calculationJdn),
+        this._fast.convert(targetJdn, calculationJdn),
+      ]);
+      if (authoritativeResult.status === "rejected") throw authoritativeResult.reason;
+      const authoritativeValue = authoritativeResult.value;
+      let verified = fastResult.status === "fulfilled" && sameFiveFields(authoritativeValue, fastResult.value);
+      let verificationDetails = null;
+
+      if (verified) {
+        const [authoritativeCurrent, fastCurrent] = await Promise.all([
+          this._authoritative.cutletView(targetJdn, calculationJdn),
+          this._fast.cutletView(targetJdn, calculationJdn),
+        ]);
+        verified = sameCutletViews(authoritativeCurrent, fastCurrent);
+        verificationDetails = { authoritativeCurrent, fastCurrent };
+
+        if (verified) {
+          for (const anchor of [fastCurrent.previousCutletJdn, fastCurrent.nextCutletJdn]) {
+            const [authoritativeAdjacent, fastAdjacent] = await Promise.all([
+              this._authoritative.cutletView(anchor, calculationJdn),
+              this._fast.cutletView(anchor, calculationJdn),
+            ]);
+            if (!sameCutletViews(authoritativeAdjacent, fastAdjacent)) {
+              verified = false;
+              verificationDetails = { authoritativeAdjacent, fastAdjacent };
+              break;
+            }
+          }
+        }
+      }
+
+      if (verified) {
+        this.status = "verified";
+        this._authoritative.terminate();
+        this._authoritative = null;
+      } else {
+        this.status = "rejected";
+        this._fast?.terminate();
+        this._fast = null;
+        console.error("המימוש המהיר לא עבר אימות; השימוש נשאר במימוש הראשי.", {
+          authoritativeValue,
+          fastValue: fastResult.status === "fulfilled" ? fastResult.value : null,
+          fastError: fastResult.status === "rejected" ? fastResult.reason : null,
+          verificationDetails,
+        });
+      }
+      return authoritativeValue;
+    })();
+    try {
+      return await this._verification;
+    } catch (error) {
+      this.status = "unverified";
+      this._verification = null;
+      throw error;
+    }
+  }
+
+  async convert(targetJdn, calculationJdn) {
+    if (this.status === "verified") return this._fast.convert(targetJdn, calculationJdn);
+    if (this.status === "rejected") return this._authoritative.convert(targetJdn, calculationJdn);
+    return this.verify(targetJdn, calculationJdn);
+  }
+
+  async cutletView(targetJdn, calculationJdn) {
+    if (this.status === "unverified" || this.status === "verifying") {
+      await this.verify(targetJdn, calculationJdn);
+    }
+    const client = this.status === "verified" ? this._fast : this._authoritative;
+    return client.cutletView(targetJdn, calculationJdn);
+  }
+}
+
+const sharedRouter = new VerifiedCalendarRouter();
+
 /**
- * מחזיר את חמשת רכיבי התאריך הפסטפרי.
- * שני התאריכים הם ימים מוחלטים בפורמט ISO; ברירת המחדל של שניהם היא היום המקומי.
+ * ממשק סינכרוני תואם־לאחור. הוא משתמש ישירות במימוש המהיר.
+ * רכיב ברירת־המחדל משתמש בנתיב המאומת והלא־חוסם של Web Workers.
  */
 export function getPastafariDate(targetDate = null, calculationDate = null) {
   const target = normalizeInput(targetDate, "תאריך היעד");
   const action = normalizeInput(calculationDate, "יום המעשה");
-  const calendar = new PastafariCalendar({ todayProvider: localToday });
+  const calendar = new FastPastafariCalendar({ todayProvider: localToday });
   return fiveFields(calendar.convert(target, { calculationDate: action }));
+}
+
+/** ממשק אסינכרוני מאומת שאינו חוסם את שרשור התצוגה. */
+export async function getPastafariDateAsync(targetDate = null, calculationDate = null) {
+  const target = normalizeInput(targetDate, "תאריך היעד");
+  const action = normalizeInput(calculationDate, "יום המעשה");
+  return Object.freeze(await sharedRouter.convert(gregorianToJdn(target), gregorianToJdn(action)));
 }
 
 const HTMLElementBase = globalThis.HTMLElement ?? class {};
@@ -122,7 +446,7 @@ export class PastafariDateElement extends HTMLElementBase {
     this._value = null;
     this._connected = false;
     this._refreshQueued = false;
-    this._calendar = null;
+    this._refreshSequence = 0;
     this._targetJdn = null;
     this._calculationJdn = null;
     this._cutletStartJdn = null;
@@ -149,11 +473,63 @@ export class PastafariDateElement extends HTMLElementBase {
         button, input { font: inherit; }
 
         .calendar {
+          position: relative;
+          min-height: 18rem;
           overflow: hidden;
           border: 1px solid var(--pastafari-border, #c8c2aa);
           border-radius: var(--pastafari-radius, 16px);
           background: var(--pastafari-background, #fffdf4);
           box-shadow: var(--pastafari-shadow, 0 10px 32px rgb(66 55 24 / 10%));
+        }
+
+        .calendar.loading > :not(.loading-panel):not(.error) { visibility: hidden; }
+        .loading-panel {
+          position: absolute;
+          inset: 0;
+          z-index: 20;
+          display: grid;
+          place-content: center;
+          justify-items: center;
+          gap: .85rem;
+          min-height: 18rem;
+          padding: 2rem;
+          text-align: center;
+          background: var(--pastafari-background, #fffdf4);
+        }
+        .loading-panel[hidden] { display: none; }
+        .loading-spinner {
+          width: 3.25rem;
+          height: 3.25rem;
+          border: .32rem solid var(--pastafari-month-border, #ddd5bc);
+          border-top-color: var(--pastafari-accent, #665718);
+          border-radius: 50%;
+          animation: pastafari-spin .9s linear infinite;
+        }
+        .loading-title { margin: 0; font-size: 1.05rem; font-weight: 800; }
+        .loading-note { margin: 0; color: var(--pastafari-muted, #67604d); font-size: .82rem; }
+        .loading-track {
+          width: min(18rem, 75vw);
+          height: .38rem;
+          overflow: hidden;
+          border-radius: 999px;
+          background: var(--pastafari-month-border, #ddd5bc);
+        }
+        .loading-track::after {
+          content: "";
+          display: block;
+          width: 38%;
+          height: 100%;
+          border-radius: inherit;
+          background: var(--pastafari-accent, #665718);
+          animation: pastafari-progress 1.35s ease-in-out infinite;
+        }
+        @keyframes pastafari-spin { to { transform: rotate(1turn); } }
+        @keyframes pastafari-progress {
+          from { transform: translateX(165%); }
+          to { transform: translateX(-265%); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .loading-spinner, .loading-track::after { animation-duration: 3s; }
         }
 
         .calendar-header {
@@ -430,7 +806,14 @@ export class PastafariDateElement extends HTMLElementBase {
         }
       </style>
 
-      <article class="calendar" part="calendar card">
+      <article class="calendar loading" part="calendar card" aria-busy="true">
+        <div class="loading-panel" role="status" aria-live="polite">
+          <span class="loading-spinner" aria-hidden="true"></span>
+          <p class="loading-title">הלוח הפסטפרי נטען</p>
+          <p class="loading-note">המימוש הראשי נטען ברקע; שאר הדף נשאר זמין.</p>
+          <span class="loading-track" aria-hidden="true"></span>
+          <span class="loading-elapsed">מתחיל בחישוב…</span>
+        </div>
         <header class="calendar-header" part="header">
           <p class="eyebrow">שנה <span data-field="year"></span></p>
           <h2 class="title">קציצת <strong class="name" data-field="cutletName"></strong></h2>
@@ -493,6 +876,10 @@ export class PastafariDateElement extends HTMLElementBase {
       </dialog>
     `;
 
+    this._calendarElement = this.shadowRoot.querySelector(".calendar");
+    this._loadingPanel = this.shadowRoot.querySelector(".loading-panel");
+    this._loadingElapsed = this.shadowRoot.querySelector(".loading-elapsed");
+    this._loadingTimer = null;
     this._error = this.shadowRoot.querySelector(".error");
     this._dialog = this.shadowRoot.querySelector("dialog");
     this._targetInput = this.shadowRoot.querySelector(".target-input");
@@ -539,11 +926,16 @@ export class PastafariDateElement extends HTMLElementBase {
     if (!this.shadowRoot) return;
     this._connected = true;
     this._syncEditorVisibility();
-    queueMicrotask(() => {
-      const value = this.refresh();
+    this._startLoadingClock();
+    queueMicrotask(async () => {
+      const value = await this.refresh();
       this._readyResolve?.(value);
       this._readyResolve = null;
     });
+  }
+
+  disconnectedCallback() {
+    this._stopLoadingClock();
   }
 
   attributeChangedCallback() {
@@ -581,8 +973,9 @@ export class PastafariDateElement extends HTMLElementBase {
     else this._dialog.setAttribute("open", "");
   }
 
-  refresh(targetDate = this.date, calculationDate = this.calculationDate) {
+  async refresh(targetDate = this.date, calculationDate = this.calculationDate) {
     if (!this.shadowRoot) return null;
+    const sequence = ++this._refreshSequence;
     this._error.hidden = true;
 
     try {
@@ -590,17 +983,21 @@ export class PastafariDateElement extends HTMLElementBase {
       const action = normalizeInput(calculationDate, "יום המעשה");
       const targetJdn = gregorianToJdn(target);
       const calculationJdn = gregorianToJdn(action);
-      const calendar = new PastafariCalendar({ todayProvider: localToday });
-      const value = fiveFields(calendar.convertJdn(targetJdn, { calculationJdn }));
+      const value = Object.freeze(await sharedRouter.convert(targetJdn, calculationJdn));
+      if (sequence !== this._refreshSequence) return null;
 
-      this._calendar = calendar;
       this._targetJdn = targetJdn;
       this._calculationJdn = calculationJdn;
       this._value = value;
 
       this._renderHeader(value);
-      if (!this.hasAttribute("headless")) this._renderCutlet(value);
+      if (!this.hasAttribute("headless")) {
+        const view = await sharedRouter.cutletView(targetJdn, calculationJdn);
+        if (sequence !== this._refreshSequence) return null;
+        this._renderCutletView(view);
+      }
 
+      this._finishInitialLoading();
       this.dispatchEvent(new CustomEvent("pastafari-change", {
         detail: value,
         bubbles: true,
@@ -610,6 +1007,7 @@ export class PastafariDateElement extends HTMLElementBase {
       return value;
     } catch (error) {
       this._value = null;
+      this._finishInitialLoading();
       this._showError(error);
       this.dispatchEvent(new CustomEvent("pastafari-error", {
         detail: { error },
@@ -625,7 +1023,7 @@ export class PastafariDateElement extends HTMLElementBase {
     this._refreshQueued = true;
     queueMicrotask(() => {
       this._refreshQueued = false;
-      this.refresh();
+      void this.refresh();
     });
   }
 
@@ -637,29 +1035,25 @@ export class PastafariDateElement extends HTMLElementBase {
     }
   }
 
-  _renderCutlet(selectedValue) {
-    const startJdn = this._targetJdn - BigInt(selectedValue.dayInCutlet - 1);
-    const days = [];
+  _renderCutletView(view) {
+    const days = view.days.map((day) => ({
+      jdn: day.jdn,
+      value: Object.freeze({
+        year: day.year,
+        cutletName: day.cutletName,
+        dayInCutlet: day.dayInCutlet,
+        monthName: day.monthName,
+        dayInMonth: day.dayInMonth,
+      }),
+    }));
+    const selectedValue = days[view.selectedIndex]?.value ?? this._value;
 
-    for (let offset = 0; offset < MAX_CUTLET_DAYS; offset += 1) {
-      const jdn = startJdn + BigInt(offset);
-      const value = fiveFields(this._calendar.convertJdn(jdn, {
-        calculationJdn: this._calculationJdn,
-      }));
-
-      if (offset > 0 && value.dayInCutlet === 1) break;
-      days.push({ jdn, value });
-    }
-
-    if (days.length === MAX_CUTLET_DAYS) {
-      throw new RangeError(`אורך הקציצה חורג מן הגבול המותר: ${MAX_CUTLET_DAYS} ימים.`);
-    }
-
-    this._cutletStartJdn = startJdn;
-    this._cutletEndJdn = startJdn + BigInt(days.length - 1);
-    this._navCutletName.textContent = selectedValue.cutletName;
+    this._cutletStartJdn = view.startJdn;
+    this._cutletEndJdn = view.endJdn;
+    this._navCutletName.textContent = view.cutletName;
     this._cutletLength.textContent = `${days.length} ימים`;
-    this._status.textContent = `יום ${selectedValue.dayInCutlet} מתוך ${days.length}`;
+    const engineLabel = sharedRouter.status === "verified" ? "מנוע מהיר מאומת" : "מנוע ראשי";
+    this._status.textContent = `יום ${selectedValue.dayInCutlet} מתוך ${days.length} · ${engineLabel}`;
 
     const groups = [];
     for (const day of days) {
@@ -734,6 +1128,31 @@ export class PastafariDateElement extends HTMLElementBase {
   _selectJdn(jdn) {
     const gregorian = jdnToGregorian(jdn);
     this.date = toIsoDate(gregorian);
+  }
+
+  _startLoadingClock() {
+    if (!this._loadingElapsed || this._loadingTimer) return;
+    const started = performance.now();
+    const update = () => {
+      const seconds = Math.max(0, Math.floor((performance.now() - started) / 1000));
+      this._loadingElapsed.textContent = seconds < 1
+        ? "מתחיל בחישוב…"
+        : `החישוב נמשך ${seconds} שניות…`;
+    };
+    update();
+    this._loadingTimer = setInterval(update, 1000);
+  }
+
+  _stopLoadingClock() {
+    if (this._loadingTimer) clearInterval(this._loadingTimer);
+    this._loadingTimer = null;
+  }
+
+  _finishInitialLoading() {
+    this._stopLoadingClock();
+    this._loadingPanel.hidden = true;
+    this._calendarElement.classList.remove("loading");
+    this._calendarElement.setAttribute("aria-busy", "false");
   }
 
   _showError(error) {
