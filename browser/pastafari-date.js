@@ -532,7 +532,7 @@ export class PastafariDateElement extends HTMLElementBase {
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (oldValue === newValue || !this._connected) return;
-    if (name === "headless" || name === "no-editor") return;
+    if (name === "no-editor") return;
     this._queueRefresh();
   }
 
@@ -546,15 +546,35 @@ export class PastafariDateElement extends HTMLElementBase {
     const calculationDate = normalizeInput(this.getAttribute("calculation-date"), "יום המעשה");
     const targetJdn = gregorianToJdn(targetDate);
     const calculationJdn = gregorianToJdn(calculationDate);
+    const headless = this.hasAttribute("headless");
 
     this._targetJdn = targetJdn;
     this._calculationJdn = calculationJdn;
     this._cutlets.clear();
     this._orderedStarts = [];
     this._activeStartJdn = null;
-    this._showLoading();
+
+    if (headless) {
+      // A headless component is a data source only. It must not request a
+      // cutlet view, create calendar-day DOM, or preload adjacent cutlets.
+      this._els?.list?.replaceChildren();
+      this._els?.calendar?.setAttribute("aria-busy", "true");
+    } else {
+      this._showLoading();
+    }
 
     try {
+      if (headless) {
+        const value = await sharedPastafariRouter.convert(targetJdn, calculationJdn);
+        if (generation !== this._generation) return null;
+
+        this._value = canonicalResult(value);
+        this._hideOverlays();
+        this._els?.calendar?.setAttribute("aria-busy", "false");
+        this._publishValue();
+        return this._value;
+      }
+
       const [value, currentView] = await Promise.all([
         sharedPastafariRouter.convert(targetJdn, calculationJdn),
         sharedPastafariRouter.getCutletView(targetJdn, calculationJdn),
@@ -569,28 +589,32 @@ export class PastafariDateElement extends HTMLElementBase {
       this._hideOverlays();
       this._els.calendar.setAttribute("aria-busy", "false");
       queueMicrotask(() => this._scrollSelectedIntoView());
-
-      if (!this._readySettled) {
-        this._readySettled = true;
-        this._resolveReady(this._value);
-      }
-      this.dispatchEvent(new CustomEvent("pastafari-change", {
-        bubbles: true,
-        composed: true,
-        detail: this._value,
-      }));
+      this._publishValue();
 
       void this._primeAdjacent(currentView, generation);
       return this._value;
     } catch (error) {
       if (generation !== this._generation) return null;
-      this._showError(error);
+      if (!headless) this._showError(error);
+      else this._els?.calendar?.setAttribute("aria-busy", "false");
       if (!this._readySettled) {
         this._readySettled = true;
         this._rejectReady(error);
       }
       throw error;
     }
+  }
+
+  _publishValue() {
+    if (!this._readySettled) {
+      this._readySettled = true;
+      this._resolveReady(this._value);
+    }
+    this.dispatchEvent(new CustomEvent("pastafari-change", {
+      bubbles: true,
+      composed: true,
+      detail: this._value,
+    }));
   }
 
   _queueRefresh() {
