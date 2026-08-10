@@ -1265,3 +1265,480 @@ export function clearFastCache() {
 export function getFastCacheStats() {
   return Object.freeze({ entries: resultCache.size, hits: cacheHits, misses: cacheMisses });
 }
+
+/*
+ * Reverse lookup archaeology
+ * ===========================
+ *
+ * This part is intentionally kept as the sequence of repairs by which the
+ * reverse operation grew.  Do not rewrite it as one elegant constraint
+ * solver: the detours are part of the implementation's documented history.
+ *
+ * R0  We first assumed that the calculation JDN was already known.  Under
+ *     that assumption year + unique cutlet name + day-in-cutlet identifies
+ *     one target day; month data is checked afterwards.
+ * R1  Calls arrived without a calculation day.  A snapshot of "today" was
+ *     taken once at the entrance and fed back into R0.
+ * R2  A calculation day arrived in another calendar.  Instead of teaching
+ *     the fast engine every calendar again, a side door was added: the
+ *     authoritative browser module is imported lazily only for that detour.
+ * R3  Then a Pastafari date was supplied as the calculation day.  That is not
+ *     an absolute day at all, so the reverse lookup now calls itself to find
+ *     the calculation day and sends each result back through R0.
+ * R4  R3 immediately ate its own tail when c=t was requested.  The explicit
+ *     SAME_AS_TARGET marker therefore jumps around the recursive path and
+ *     performs a bounded diagonal search instead.
+ * R5  The diagonal escape was needlessly expensive because most candidates
+ *     fail before month weaving.  A deliberately duplicated cutlet-only
+ *     probe was bolted in front of the full conversion.  The year==5000 test
+ *     remains even though c=t makes it redundant; it predates that
+ *     observation and is harmless.
+ * R6  R3 can return several possible calculation days.  R0 still accepts one
+ *     day, so a fan-out/fan-in adapter now repeatedly invokes the old path and
+ *     flattens the results afterwards.
+ * R7  Mutual Pastafari calculation references make a different sort of
+ *     cycle.  Object-identity breadcrumbs reject those cycles.  R4 remains
+ *     the one deliberately supported cycle.
+ * R8  Every route, however tortuous, must finish by computing F(c,t) again
+ *     and comparing all five fields.  No shortcut is authoritative.
+ */
+
+export const SAME_AS_TARGET = "same-as-target";
+
+const OTHER_CALENDAR_SIDE_DOOR = new URL("./pastafari-calendar-core.js", import.meta.url);
+let otherCalendarConverterPromise = null;
+
+function normalizePastafariLookup(value, fieldName = "pastafariDate") {
+  const source = typeof value?.toJSON === "function" ? value.toJSON() : value;
+  if (source === null || typeof source !== "object") {
+    fail(TypeError, `${fieldName} must be a Pastafari date object.`, "ERR_PASTAFARI_LOOKUP");
+  }
+
+  let year;
+  try {
+    year = normalizeYear(source.year);
+  } catch {
+    fail(TypeError, `${fieldName}.year must be an integer.`, "ERR_PASTAFARI_LOOKUP");
+  }
+  const dayInCutlet = Number(source.dayInCutlet);
+  const dayInMonth = Number(source.dayInMonth);
+  if (!Number.isSafeInteger(dayInCutlet) || dayInCutlet < 1) {
+    fail(RangeError, `${fieldName}.dayInCutlet must be a positive safe integer.`, "ERR_PASTAFARI_LOOKUP");
+  }
+  if (!Number.isSafeInteger(dayInMonth) || dayInMonth < 1) {
+    fail(RangeError, `${fieldName}.dayInMonth must be a positive safe integer.`, "ERR_PASTAFARI_LOOKUP");
+  }
+  if (typeof source.cutletName !== "string" || typeof source.monthName !== "string") {
+    fail(TypeError, `${fieldName} must contain string cutletName and monthName fields.`, "ERR_PASTAFARI_LOOKUP");
+  }
+
+  return Object.freeze({
+    year,
+    cutletName: source.cutletName,
+    dayInCutlet,
+    monthName: source.monthName,
+    dayInMonth,
+  });
+}
+
+function samePastafariValue(actual, wanted) {
+  const source = typeof actual?.toJSON === "function" ? actual.toJSON() : actual;
+  return source !== null
+    && typeof source === "object"
+    && BigInt(source.year) === wanted.year
+    && source.cutletName === wanted.cutletName
+    && Number(source.dayInCutlet) === wanted.dayInCutlet
+    && source.monthName === wanted.monthName
+    && Number(source.dayInMonth) === wanted.dayInMonth;
+}
+
+function jdnToGregorianForReverse(jdn) {
+  const a = jdn + 32044n;
+  const b = floorDiv(4n * a + 3n, 146097n);
+  const c = a - floorDiv(146097n * b, 4n);
+  const d = floorDiv(4n * c + 3n, 1461n);
+  const e = c - floorDiv(1461n * d, 4n);
+  const m = floorDiv(5n * e + 2n, 153n);
+  const day = e - floorDiv(153n * m + 2n, 5n) + 1n;
+  const month = m + 3n - 12n * floorDiv(m, 10n);
+  const year = 100n * b + d - 4800n + floorDiv(m, 10n);
+  return new GregorianDate(year, Number(month), Number(day));
+}
+
+function inverseCandidate(targetJdn, calculationJdn) {
+  return Object.freeze({
+    targetJdn,
+    targetDate: jdnToGregorianForReverse(targetJdn),
+    calculationJdn,
+    calculationDate: jdnToGregorianForReverse(calculationJdn),
+  });
+}
+
+// R0: the original reverse path.  It deliberately knows nothing about
+// recursion, "today", calendar conversion or c=t.
+function reverseWithKnownCalculation(wanted, calculationJdn) {
+  const state = getCalculationState(calculationJdn);
+  let year = state.getYear5000();
+  while (year.number < wanted.year) year = state.nextYear(year);
+  while (year.number > wanted.year) year = state.previousYear(year);
+
+  const structure = state.getStructure(year);
+  const cutlet = structure.cutletNames.indexOf(wanted.cutletName);
+  if (cutlet < 0) return [];
+
+  const startOffset = structure.cutletStartOffsets[cutlet];
+  const endOffset = structure.cutletEndOffsets[cutlet];
+  const offset = startOffset + wanted.dayInCutlet - 1;
+  if (offset < startOffset || offset > endOffset) return [];
+
+  const targetJdn = year.startJdn + BigInt(offset);
+
+  // R8: even R0 has to pass through the forward calculation.  In particular,
+  // this rejects a tempting year/cutlet/day match whose month fields disagree.
+  const forward = convertWithGlobalCache(targetJdn, calculationJdn);
+  return samePastafariValue(forward, wanted)
+    ? [inverseCandidate(targetJdn, calculationJdn)]
+    : [];
+}
+
+function isPastafariLike(value) {
+  if (value === null || typeof value !== "object") return false;
+  if (value.calendar === "pastafari") return true;
+  const source = value.date ?? value;
+  return source !== null
+    && typeof source === "object"
+    && "year" in source
+    && "cutletName" in source
+    && "dayInCutlet" in source
+    && "monthName" in source
+    && "dayInMonth" in source;
+}
+
+function parseReverseIsoGregorian(value, fieldName) {
+  const match = /^([+-]?\d+)-(\d{2})-(\d{2})$/.exec(value.trim());
+  if (!match) {
+    fail(RangeError, `${fieldName} must be an ISO Gregorian date (YYYY-MM-DD).`, "ERR_REVERSE_DATE");
+  }
+  const date = new GregorianDate(match[1], Number(match[2]), Number(match[3]));
+  validateGregorian(date);
+  return gregorianToJdn(date);
+}
+
+async function loadOtherCalendarConverter() {
+  if (otherCalendarConverterPromise === null) {
+    otherCalendarConverterPromise = import(OTHER_CALENDAR_SIDE_DOOR.href).then((moduleNamespace) => {
+      if (typeof moduleNamespace.calendarDateToJdn !== "function") {
+        fail(Error, "The authoritative calendar side door has no calendarDateToJdn().", "ERR_CALENDAR_SIDE_DOOR");
+      }
+      return moduleNamespace.calendarDateToJdn;
+    });
+  }
+  return otherCalendarConverterPromise;
+}
+
+// R2 side door.  Pastafari values are intentionally refused here; accepting
+// one would conceal the exact ambiguity for which R3 exists.
+async function absoluteDayThroughSideDoors(value, fieldName) {
+  if (typeof value === "bigint") return value;
+  if (value instanceof GregorianDate) return gregorianToJdn(value);
+  if (value instanceof Date) {
+    if (Number.isNaN(value.getTime())) {
+      fail(RangeError, `${fieldName} is an invalid Date.`, "ERR_REVERSE_DATE");
+    }
+    return gregorianToJdn(new GregorianDate(value.getFullYear(), value.getMonth() + 1, value.getDate()));
+  }
+  if (typeof value === "string") return parseReverseIsoGregorian(value, fieldName);
+  if (value === null || typeof value !== "object") {
+    fail(TypeError, `${fieldName} is not a supported absolute calendar date.`, "ERR_REVERSE_DATE");
+  }
+  if (isPastafariLike(value)) {
+    fail(TypeError, `${fieldName} is Pastafari and must be resolved recursively.`, "ERR_REVERSE_PASTAFARI_AS_ABSOLUTE");
+  }
+  if (Object.hasOwn(value, "jdn")) {
+    const jdn = value.jdn;
+    if (typeof jdn === "bigint") return jdn;
+    if (typeof jdn === "string" && /^[+-]?\d+$/.test(jdn)) return BigInt(jdn);
+    fail(TypeError, `${fieldName}.jdn must be a bigint or decimal integer string.`, "ERR_REVERSE_DATE");
+  }
+  if (!Object.hasOwn(value, "calendar") && "year" in value && "month" in value && "day" in value) {
+    const date = new GregorianDate(value.year, Number(value.month), Number(value.day));
+    validateGregorian(date);
+    return gregorianToJdn(date);
+  }
+
+  const converter = await loadOtherCalendarConverter();
+  try {
+    return BigInt(converter(value));
+  } catch (error) {
+    if (error && typeof error === "object" && !error.code) error.code = "ERR_REVERSE_DATE";
+    throw error;
+  }
+}
+
+// R5: this duplicates the cutlet half of buildYearStructure on purpose.  It
+// was attached later as a sieve, and the subsequent full conversion remains
+// responsible for the answer.
+function diagonalCutletSieve(jdn) {
+  const state = getCalculationState(jdn);
+  const year = state.getYear5000();
+  const s = state.getSauce(year.startJdn);
+  const gapCount = year.gaps;
+  const cutletCounts = [];
+  for (let n = 6; n <= 17 && n <= gapCount; n += 1) cutletCounts.push(n);
+  const cutletCountChoice = chooseUniform(s, 1, 20, BigInt(cutletCounts.length));
+  const cutletCount = cutletCounts[Number(cutletCountChoice - 1n)];
+
+  let mandatoryCut = null;
+  if (jdn >= year.startJdn && jdn <= year.endJdn) {
+    for (let k = year.p + 1n; k < year.q; k += 1n) {
+      if (gatePosition(k) === jdn) {
+        mandatoryCut = Number(k - year.p);
+        break;
+      }
+    }
+  }
+  const partitionCount = mandatoryCut === null
+    ? binomial(gapCount - 1, cutletCount - 1)
+    : binomial(gapCount - 2, cutletCount - 2);
+  const partitionChoice = chooseUniform(s, 1, 21, partitionCount);
+  const cutletGaps = unrankComposition(gapCount, cutletCount, mandatoryCut, partitionChoice);
+  const cutletNameCount = permutationsCount(CUTLET_NAMES.length, cutletCount);
+  const cutletNameChoice = chooseUniform(s, 4, 22, cutletNameCount);
+  const cutletNames = unrankPermutationNames(CUTLET_NAMES, cutletCount, cutletNameChoice);
+
+  let gapOffset = 0;
+  let startOffset = 0;
+  const targetOffset = Number(jdn - year.startJdn);
+  for (let i = 0; i < cutletCount; i += 1) {
+    gapOffset += cutletGaps[i];
+    const endJdn = gatePosition(year.p + BigInt(gapOffset));
+    const endOffset = Number(endJdn - year.startJdn);
+    if (targetOffset >= startOffset && targetOffset <= endOffset) {
+      return Object.freeze({
+        year: year.number,
+        cutletName: cutletNames[i],
+        dayInCutlet: targetOffset - startOffset + 1,
+      });
+    }
+    startOffset = endOffset + 1;
+  }
+  fail(Error, "The diagonal cutlet sieve lost its target day.", "ERR_REVERSE_SIEVE");
+}
+
+async function normalizeDiagonalRange(range, context) {
+  const source = range ?? context.rootSearchRange;
+  if (source === undefined || source === null) {
+    fail(
+      RangeError,
+      "same-as-target requires searchRange; an unbounded reverse search is not allowed.",
+      "ERR_SELF_RANGE_REQUIRED",
+    );
+  }
+  let first;
+  let last;
+  if (Array.isArray(source) && source.length === 2) {
+    [first, last] = source;
+  } else if (typeof source === "object" && source !== null && "start" in source && "end" in source) {
+    first = source.start;
+    last = source.end;
+  } else {
+    fail(TypeError, "searchRange must be [start,end] or {start,end}.", "ERR_SELF_RANGE");
+  }
+  if (isPastafariLike(first) || isPastafariLike(last)) {
+    fail(TypeError, "Pastafari search-range boundaries are not supported.", "ERR_SELF_RANGE_PASTAFARI");
+  }
+  const startJdn = await absoluteDayThroughSideDoors(first, "searchRange.start");
+  const endJdn = await absoluteDayThroughSideDoors(last, "searchRange.end");
+  if (endJdn < startJdn) {
+    fail(RangeError, "searchRange.end precedes searchRange.start.", "ERR_SELF_RANGE");
+  }
+  return Object.freeze({ startJdn, endJdn });
+}
+
+function reverseAbortError() {
+  const error = new Error("Pastafari reverse search was aborted.");
+  error.name = "AbortError";
+  error.code = "ERR_REVERSE_ABORTED";
+  return error;
+}
+
+async function letTheEventLoopBreathe() {
+  if (typeof setTimeout === "function") {
+    await new Promise((resolve) => setTimeout(resolve, 0));
+  } else {
+    await Promise.resolve();
+  }
+}
+
+// R4 diagonal escape, with the R5 sieve grafted onto it.
+async function diagonalEscape(wanted, range, context) {
+  const { startJdn, endJdn } = await normalizeDiagonalRange(range, context);
+  if (wanted.year !== 5000n) return Object.freeze([]);
+
+  const results = [];
+  const total = endJdn - startJdn + 1n;
+  let scanned = 0n;
+  for (let jdn = startJdn; jdn <= endJdn; jdn += 1n) {
+    if (context.signal?.aborted) throw reverseAbortError();
+    const cheap = diagonalCutletSieve(jdn);
+    scanned += 1n;
+    if (
+      cheap.year === wanted.year
+      && cheap.cutletName === wanted.cutletName
+      && cheap.dayInCutlet === wanted.dayInCutlet
+    ) {
+      // R8 is intentionally a complete conversion, even though R5 already
+      // repeated a substantial part of the work.
+      const forward = convertWithGlobalCache(jdn, jdn);
+      if (samePastafariValue(forward, wanted)) results.push(inverseCandidate(jdn, jdn));
+    }
+
+    if (context.onProgress && (scanned % BigInt(context.yieldEvery) === 0n || scanned === total)) {
+      context.onProgress(Object.freeze({ scanned, total, matches: results.length }));
+    }
+    if (scanned % BigInt(context.yieldEvery) === 0n && scanned !== total) {
+      await letTheEventLoopBreathe();
+    }
+  }
+  return Object.freeze(results);
+}
+
+function unpackPastafariCalculation(spec) {
+  if (spec && typeof spec === "object" && spec.calendar === "pastafari" && "date" in spec) {
+    return {
+      date: normalizePastafariLookup(spec.date, "calculationDate.date"),
+      calculationDate: spec.calculationDate,
+      searchRange: spec.searchRange,
+    };
+  }
+  return {
+    date: normalizePastafariLookup(spec, "calculationDate"),
+    calculationDate: spec?.calculationDate,
+    searchRange: spec?.searchRange,
+  };
+}
+
+function deduplicateReverseCandidates(candidates) {
+  const seen = new Set();
+  const result = [];
+  for (const candidate of candidates) {
+    const key = `${candidate.targetJdn}:${candidate.calculationJdn}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    result.push(candidate);
+  }
+  return Object.freeze(result);
+}
+
+// R3/R6/R7 dispatcher.  Its shape intentionally reflects the order in which
+// exceptions were discovered instead of reducing everything to one generic
+// graph solver.
+async function reverseThroughDetours(wanted, calculationSpec, localRange, context) {
+  if (calculationSpec === SAME_AS_TARGET) {
+    return diagonalEscape(wanted, localRange, context);
+  }
+
+  // R1: the old known-c path gets today's frozen snapshot when nobody said
+  // what c was.  The snapshot belongs to the root call, not to this recursion.
+  if (calculationSpec === undefined || calculationSpec === null || calculationSpec === "") {
+    return reverseWithKnownCalculation(wanted, context.todayJdn);
+  }
+
+  if (isPastafariLike(calculationSpec)) {
+    // R7 breadcrumbs use identity, not equality of the five date fields: two
+    // equal-looking dates in a finite nested chain are not themselves a cycle.
+    if (typeof calculationSpec === "object" && calculationSpec !== null) {
+      if (context.breadcrumbs.has(calculationSpec)) {
+        fail(
+          RangeError,
+          "Mutually recursive Pastafari calculation dates are not supported; use same-as-target for c=t.",
+          "ERR_UNSUPPORTED_CALCULATION_CYCLE",
+        );
+      }
+      context.breadcrumbs.add(calculationSpec);
+    }
+
+    try {
+      const unpacked = unpackPastafariCalculation(calculationSpec);
+      const inner = await reverseThroughDetours(
+        unpacked.date,
+        unpacked.calculationDate,
+        unpacked.searchRange,
+        context,
+      );
+
+      // R6: the original R0 routine still receives only one c at a time.
+      const calculationDaysSeen = new Set();
+      const collected = [];
+      for (const foundCalculationDay of inner) {
+        const c = foundCalculationDay.targetJdn;
+        const key = c.toString();
+        if (calculationDaysSeen.has(key)) continue;
+        calculationDaysSeen.add(key);
+        collected.push(...reverseWithKnownCalculation(wanted, c));
+      }
+      return deduplicateReverseCandidates(collected);
+    } finally {
+      if (typeof calculationSpec === "object" && calculationSpec !== null) {
+        context.breadcrumbs.delete(calculationSpec);
+      }
+    }
+  }
+
+  // R2, reached only after the Pastafari detour has declined the input.
+  const calculationJdn = await absoluteDayThroughSideDoors(calculationSpec, "calculationDate");
+  return reverseWithKnownCalculation(wanted, calculationJdn);
+}
+
+/**
+ * Find every absolute target compatible with a Pastafari date under the
+ * supplied calculation-day rule.
+ *
+ * calculationDate:
+ *   omitted                 -> one snapshot of today's local Gregorian day
+ *   absolute calendar date  -> that day (other calendars are converted lazily)
+ *   Pastafari date           -> recursively reverse it first
+ *   SAME_AS_TARGET           -> c=t, requiring a bounded searchRange
+ *
+ * A nested Pastafari calculation descriptor may be written as:
+ *   { calendar: "pastafari", date, calculationDate, searchRange }
+ */
+export async function findPastafariDate(pastafariDate, options = {}) {
+  if (options === null || typeof options !== "object") {
+    fail(TypeError, "findPastafariDate options must be an object.", "ERR_OPTIONS");
+  }
+  if (options.calculationDate !== undefined && options.calculationJdn !== undefined) {
+    fail(TypeError, "Provide calculationDate or calculationJdn, not both.", "ERR_CALCULATION_CONFLICT");
+  }
+  if (options.todayProvider !== undefined && typeof options.todayProvider !== "function") {
+    fail(TypeError, "todayProvider must be a function.", "ERR_TODAY_PROVIDER");
+  }
+  if (options.onProgress !== undefined && typeof options.onProgress !== "function") {
+    fail(TypeError, "onProgress must be a function.", "ERR_REVERSE_PROGRESS");
+  }
+  const yieldEvery = options.yieldEvery === undefined ? 256 : Number(options.yieldEvery);
+  if (!Number.isSafeInteger(yieldEvery) || yieldEvery < 1) {
+    fail(RangeError, "yieldEvery must be a positive safe integer.", "ERR_REVERSE_YIELD");
+  }
+
+  const wanted = normalizePastafariLookup(pastafariDate);
+  const snapshot = options.todayProvider === undefined ? localToday() : options.todayProvider();
+  if (isPastafariLike(snapshot)) {
+    fail(TypeError, "todayProvider must return an absolute calendar day, not a Pastafari date.", "ERR_TODAY_PROVIDER");
+  }
+  const todayJdn = await absoluteDayThroughSideDoors(snapshot, "todayProvider result");
+  const context = {
+    todayJdn,
+    rootSearchRange: options.searchRange,
+    breadcrumbs: new Set(),
+    signal: options.signal,
+    onProgress: options.onProgress,
+    yieldEvery,
+  };
+  const calculationSpec = options.calculationJdn === undefined
+    ? options.calculationDate
+    : { jdn: options.calculationJdn };
+  return deduplicateReverseCandidates(
+    await reverseThroughDetours(wanted, calculationSpec, options.searchRange, context),
+  );
+}
