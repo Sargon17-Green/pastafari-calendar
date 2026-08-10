@@ -125,20 +125,20 @@ http://localhost:8000/browser/example.html
 הגרסה המיועדת לעדכון זה היא:
 
 ```text
-v1.2.0
+v1.2.1
 ```
 
 הערך ב־`package.json` צריך להיות ללא האות `v`:
 
 ```json
-"version": "1.2.0"
+"version": "1.2.1"
 ```
 
 אפשר ליצור את התגית דרך ממשק Releases של GitHub, כאשר ה־target הוא ה־commit שנבדק, או בשורת הפקודה:
 
 ```bash
-git tag -a v1.2.0 -m "Pastafari Calendar browser component v1.2.0"
-git push origin v1.2.0
+git tag -a v1.2.1 -m "Pastafari Calendar browser component v1.2.1"
+git push origin v1.2.1
 ```
 
 אין להזיז תגית שכבר פורסמה אל commit אחר. אם נדרש תיקון לאחר הפרסום, יש ליצור גרסה חדשה, למשל `v1.2.1`.
@@ -149,7 +149,7 @@ git push origin v1.2.0
 
 ```html
 <script type="module"
-  src="https://cdn.jsdelivr.net/gh/bwtbdyqtmsprytgydym-cpu/pastafari-calendar@v1.2.0/browser/pastafari-date.js">
+  src="https://cdn.jsdelivr.net/gh/bwtbdyqtmsprytgydym-cpu/pastafari-calendar@v1.2.1/browser/pastafari-date.js">
 </script>
 
 <pastafari-date></pastafari-date>
