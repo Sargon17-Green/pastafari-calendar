@@ -4,6 +4,12 @@ import {
 } from "./5efdcc3e6fb071cbaffdcb117507a169dd76.js";
 
 export * from "./5efdcc3e6fb071cbaffdcb117507a169dd76.js";
+export {
+  findPastafariDate,
+  PastafariReverseClient,
+  SAME_AS_TARGET,
+  sharedPastafariReverseClient,
+} from "../browser/pastafari-reverse.js";
 
 // Keep the deliberately tangled implementation untouched.  The published
 // entry point only supplies the missing default binding from outside it.
