@@ -82,7 +82,7 @@ async function loadInstrumentedFastModule() {
     new URL("../browser/pastafari-calendar-fast.js", import.meta.url),
   );
   const source = await readFile(sourcePath, "utf8");
-  const instrumented = `${source}\n\nexport {\n  GATE_CHECKPOINTS as __testGateCheckpoints,\n  gateDistance as __testGateDistance,\n  gatePosition as __testGatePosition,\n};\n`;
+  const instrumented = `${source}\n\nexport {\n  GATE_CHECKPOINTS as __testGateCheckpoints,\n  gateDistance as __testGateDistance,\n  gatePosition as __testGatePosition,\n  sauce as __testSauce,\n  chooseUniform as __testChooseUniform,\n};\n`;
   const temporaryPath = join(
     tmpdir(),
     `pastafari-calendar-fast-instrumented-${process.pid}-${randomUUID()}.mjs`,
@@ -116,17 +116,18 @@ function assertCheckpointSides(instrumented, checkpointIndex) {
   const gateDistance = instrumented.__testGateDistance;
   const gatePosition = instrumented.__testGatePosition;
   const [gateIndex, expectedPosition] = checkpoints[checkpointIndex];
+  const gateIndexBigInt = BigInt(gateIndex);
 
-  const leftPosition = gatePosition(gateIndex - 1);
-  const rightPosition = gatePosition(gateIndex + 1);
+  const leftPosition = gatePosition(gateIndexBigInt - 1n);
+  const rightPosition = gatePosition(gateIndexBigInt + 1n);
   const expectedLeftDistance = gateIndex > 0
-    ? gateDistance(gateIndex)
-    : gateDistance(gateIndex - 1);
+    ? gateDistance(gateIndexBigInt)
+    : gateDistance(gateIndexBigInt - 1n);
   const expectedRightDistance = gateIndex < 0
-    ? gateDistance(gateIndex)
-    : gateDistance(gateIndex + 1);
+    ? gateDistance(gateIndexBigInt)
+    : gateDistance(gateIndexBigInt + 1n);
 
-  assert.equal(gatePosition(gateIndex), expectedPosition);
+  assert.equal(gatePosition(gateIndexBigInt), expectedPosition);
   assert.equal(
     expectedPosition - leftPosition,
     BigInt(expectedLeftDistance),
@@ -170,6 +171,53 @@ test(
       }
     });
 
+    await suite.test("deterministic pseudo-random target days match", () => {
+      let state = 0x7a5f_193d;
+      for (let index = 0; index < 16; index += 1) {
+        state = (Math.imul(state, 1_664_525) + 1_013_904_223) >>> 0;
+        const offset = BigInt((state % 20_001) - 10_000);
+        assertCompatible(
+          REFERENCE_JDN_2026_08_06 + offset,
+          REFERENCE_JDN_2026_08_06,
+          `Pseudo-random mismatch at offset ${offset}`,
+        );
+      }
+    });
+
+    await suite.test("short and wide uniform choices match", async () => {
+      const instrumented = await loadInstrumentedFastModule();
+      const fastSauce = instrumented.__testSauce(
+        REFERENCE_JDN_2026_08_06,
+        REFERENCE_JDN_2026_08_06 + 137n,
+      );
+      const authoritativeSauce = authoritative.makeSauce(
+        REFERENCE_JDN_2026_08_06,
+        REFERENCE_JDN_2026_08_06 + 137n,
+      );
+      const counts = [
+        1n,
+        2n,
+        authoritative.M - 1n,
+        authoritative.M,
+        authoritative.M + 1n,
+        authoritative.M * 3n + 17n,
+      ];
+
+      for (let bowl = 0; bowl < 6; bowl += 1) {
+        for (const seal of [1n, 21n, 31n, 97n]) {
+          for (const count of counts) {
+            const fastChoice = instrumented.__testChooseUniform(fastSauce, bowl, seal, count);
+            const authoritativeChoice = authoritativeSauce.chooseIndex(bowl + 1, seal, count) + 1n;
+            assert.equal(
+              fastChoice,
+              authoritativeChoice,
+              `Choice mismatch for bowl ${bowl + 1}, seal ${seal}, count ${count}`,
+            );
+          }
+        }
+      }
+    });
+
     await suite.test("complete previous, current and next cutlets match", async () => {
       const calculationJdn = REFERENCE_JDN_2026_08_06;
       const current = await compareWholeCutlet(calculationJdn, calculationJdn);
@@ -195,6 +243,17 @@ test(
       for (let index = 1; index < EXPECTED_GATE_CHECKPOINTS.length; index += 1) {
         assert.ok(EXPECTED_GATE_CHECKPOINTS[index - 1][0] < EXPECTED_GATE_CHECKPOINTS[index][0]);
         assert.ok(EXPECTED_GATE_CHECKPOINTS[index - 1][1] < EXPECTED_GATE_CHECKPOINTS[index][1]);
+      }
+    });
+
+    await suite.test("all 65 checkpoints match the authoritative gate index", () => {
+      const gateIndex = new authoritative.GateIndex();
+      for (const [index, expectedPosition] of EXPECTED_GATE_CHECKPOINTS) {
+        assert.equal(
+          gateIndex.gate(index),
+          expectedPosition,
+          `Authoritative checkpoint mismatch at gate ${index}`,
+        );
       }
     });
 
@@ -257,7 +316,7 @@ test(
 
           for (let gateIndex = leftIndex; gateIndex < rightIndex; gateIndex += 1) {
             const distanceIndex = gateIndex < 0 ? gateIndex : gateIndex + 1;
-            reconstructed += BigInt(gateDistance(distanceIndex));
+            reconstructed += BigInt(gateDistance(BigInt(distanceIndex)));
           }
 
           assert.equal(
