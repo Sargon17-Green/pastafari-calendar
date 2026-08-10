@@ -476,7 +476,7 @@ function chooseUniform(sauceResult, bowlId, seal, count) {
 
 const gateDistanceCache = new LruMap(4096);
 const dynamicGatePositions = new LruMap(4096);
-dynamicGatePositions.set(0, FOUNDATION_JDN);
+dynamicGatePositions.set(0n, FOUNDATION_JDN);
 
 // Build-time generated checkpoints are inserted here. The zero checkpoint alone is
 // correct; the generated table only reduces the cold-start cost for distant epochs.
@@ -517,12 +517,12 @@ const GATE_CHECKPOINTS = Object.freeze([
 ]);
 
 function gateDistance(index) {
-  if (!Number.isSafeInteger(index) || index === 0) {
-    fail(RangeError, "Gate distance index must be a non-zero safe integer.", "ERR_GATE_INDEX");
+  if (typeof index !== "bigint" || index === 0n) {
+    fail(TypeError, "Gate distance index must be a non-zero bigint.", "ERR_GATE_INDEX");
   }
   const cached = gateDistanceCache.get(index);
   if (cached !== undefined) return cached;
-  const target = FOUNDATION_JDN + BigInt(index);
+  const target = FOUNDATION_JDN + index;
   const result = sauce(FOUNDATION_JDN, target);
   const picked = chooseUniform(result, 0, 1, 922n);
   const distance = Number(picked) + 41;
@@ -535,7 +535,7 @@ function nearestCheckpoint(index) {
   let hi = GATE_CHECKPOINTS.length - 1;
   while (lo <= hi) {
     const mid = (lo + hi) >> 1;
-    const value = GATE_CHECKPOINTS[mid][0];
+    const value = BigInt(GATE_CHECKPOINTS[mid][0]);
     if (value === index) return GATE_CHECKPOINTS[mid];
     if (value < index) lo = mid + 1;
     else hi = mid - 1;
@@ -544,30 +544,32 @@ function nearestCheckpoint(index) {
   const right = lo < GATE_CHECKPOINTS.length ? GATE_CHECKPOINTS[lo] : null;
   if (left === null) return right;
   if (right === null) return left;
-  return Math.abs(index - left[0]) <= Math.abs(right[0] - index) ? left : right;
+  const leftDistance = index - BigInt(left[0]);
+  const rightDistance = BigInt(right[0]) - index;
+  return leftDistance <= rightDistance ? left : right;
 }
 
 function gatePosition(index) {
-  if (!Number.isSafeInteger(index)) {
-    fail(RangeError, "Gate index must be a safe integer.", "ERR_GATE_INDEX");
+  if (typeof index !== "bigint") {
+    fail(TypeError, "Gate index must be a bigint.", "ERR_GATE_INDEX");
   }
   const cached = dynamicGatePositions.get(index);
   if (cached !== undefined) return cached;
   const checkpoint = nearestCheckpoint(index);
-  let currentIndex = checkpoint[0];
+  let currentIndex = BigInt(checkpoint[0]);
   let position = checkpoint[1];
   if (currentIndex < index) {
     while (currentIndex < index) {
-      if (currentIndex < 0) position += BigInt(gateDistance(currentIndex));
-      else position += BigInt(gateDistance(currentIndex + 1));
-      currentIndex += 1;
+      if (currentIndex < 0n) position += BigInt(gateDistance(currentIndex));
+      else position += BigInt(gateDistance(currentIndex + 1n));
+      currentIndex += 1n;
       dynamicGatePositions.set(currentIndex, position);
     }
   } else {
     while (currentIndex > index) {
-      if (currentIndex > 0) position -= BigInt(gateDistance(currentIndex));
-      else position -= BigInt(gateDistance(currentIndex - 1));
-      currentIndex -= 1;
+      if (currentIndex > 0n) position -= BigInt(gateDistance(currentIndex));
+      else position -= BigInt(gateDistance(currentIndex - 1n));
+      currentIndex -= 1n;
       dynamicGatePositions.set(currentIndex, position);
     }
   }
@@ -582,9 +584,9 @@ function checkpointBracketForDay(jdn) {
     if (GATE_CHECKPOINTS[mid][1] < jdn) lo = mid + 1;
     else hi = mid;
   }
-  if (lo === 0) return GATE_CHECKPOINTS[0][0];
-  if (lo === GATE_CHECKPOINTS.length) return GATE_CHECKPOINTS.at(-1)[0];
-  return GATE_CHECKPOINTS[lo - 1][0];
+  if (lo === 0) return BigInt(GATE_CHECKPOINTS[0][0]);
+  if (lo === GATE_CHECKPOINTS.length) return BigInt(GATE_CHECKPOINTS.at(-1)[0]);
+  return BigInt(GATE_CHECKPOINTS[lo - 1][0]);
 }
 
 function containingGateInterval(jdn) {
@@ -592,25 +594,25 @@ function containingGateInterval(jdn) {
   let position = gatePosition(index);
   if (position >= jdn) {
     while (position >= jdn) {
-      index -= 1;
+      index -= 1n;
       position = gatePosition(index);
     }
     return index;
   }
-  while (gatePosition(index + 1) < jdn) index += 1;
+  while (gatePosition(index + 1n) < jdn) index += 1n;
   return index;
 }
 
 function enumerateYear5000Candidates(calculationJdn) {
   const interval = containingGateInterval(calculationJdn);
   const openings = [];
-  for (let p = interval; ; p -= 1) {
+  for (let p = interval; ; p -= 1n) {
     const position = gatePosition(p);
     if (calculationJdn - position > BigInt(MAX_YEAR_DAYS)) break;
     openings.push([p, position]);
   }
   const closings = [];
-  for (let q = interval + 1; ; q += 1) {
+  for (let q = interval + 1n; ; q += 1n) {
     const position = gatePosition(q);
     if (position - calculationJdn > BigInt(MAX_YEAR_DAYS)) break;
     closings.push([q, position]);
@@ -618,14 +620,14 @@ function enumerateYear5000Candidates(calculationJdn) {
   const candidates = [];
   for (const [p, opening] of openings) {
     for (const [q, closing] of closings) {
-      const gaps = q - p;
+      const gaps = Number(q - p);
       if (gaps < MIN_YEAR_GAPS) continue;
       const length = Number(closing - opening);
       if (length < MIN_YEAR_DAYS || length > MAX_YEAR_DAYS) continue;
       candidates.push({ p, q, opening, closing, length });
     }
   }
-  candidates.sort((a, b) => a.length - b.length || a.p - b.p);
+  candidates.sort((a, b) => a.length - b.length || (a.p < b.p ? -1 : a.p > b.p ? 1 : 0));
   return candidates;
 }
 
@@ -639,33 +641,33 @@ function yearObject(number, p, q) {
     startJdn: opening + 1n,
     endJdn: closing,
     length: Number(closing - opening),
-    gaps: q - p,
+    gaps: Number(q - p),
   });
 }
 
 function enumerateNextYears(openIndex) {
   const opening = gatePosition(openIndex);
   const candidates = [];
-  for (let q = openIndex + MIN_YEAR_GAPS; ; q += 1) {
+  for (let q = openIndex + BigInt(MIN_YEAR_GAPS); ; q += 1n) {
     const closing = gatePosition(q);
     const length = Number(closing - opening);
     if (length > MAX_YEAR_DAYS) break;
     if (length >= MIN_YEAR_DAYS) candidates.push({ q, length });
   }
-  candidates.sort((a, b) => a.length - b.length || a.q - b.q);
+  candidates.sort((a, b) => a.length - b.length || (a.q < b.q ? -1 : a.q > b.q ? 1 : 0));
   return candidates;
 }
 
 function enumeratePreviousYears(closeIndex) {
   const closing = gatePosition(closeIndex);
   const candidates = [];
-  for (let p = closeIndex - MIN_YEAR_GAPS; ; p -= 1) {
+  for (let p = closeIndex - BigInt(MIN_YEAR_GAPS); ; p -= 1n) {
     const opening = gatePosition(p);
     const length = Number(closing - opening);
     if (length > MAX_YEAR_DAYS) break;
     if (length >= MIN_YEAR_DAYS) candidates.push({ p, length });
   }
-  candidates.sort((a, b) => a.length - b.length || a.p - b.p);
+  candidates.sort((a, b) => a.length - b.length || (a.p < b.p ? -1 : a.p > b.p ? 1 : 0));
   return candidates;
 }
 
@@ -1011,9 +1013,9 @@ function buildYearStructure(state, year) {
 
   let mandatoryCut = null;
   if (state.calculationJdn >= year.startJdn && state.calculationJdn <= year.endJdn) {
-    for (let k = year.p + 1; k < year.q; k += 1) {
+    for (let k = year.p + 1n; k < year.q; k += 1n) {
       if (gatePosition(k) === state.calculationJdn) {
-        mandatoryCut = k - year.p;
+        mandatoryCut = Number(k - year.p);
         break;
       }
     }
@@ -1061,7 +1063,7 @@ function buildYearStructure(state, year) {
   for (let i = 0; i < cutletCount; i += 1) {
     cutletStartOffsets[i] = dayOffset;
     gapOffset += cutletGaps[i];
-    const endJdn = gatePosition(year.p + gapOffset);
+    const endJdn = gatePosition(year.p + BigInt(gapOffset));
     dayOffset = Number(endJdn - year.startJdn + 1n);
     cutletEndOffsets[i] = dayOffset - 1;
   }
@@ -1255,7 +1257,7 @@ export function clearFastCache() {
   resultCache.clear();
   gateDistanceCache.clear();
   dynamicGatePositions.clear();
-  dynamicGatePositions.set(0, FOUNDATION_JDN);
+  dynamicGatePositions.set(0n, FOUNDATION_JDN);
   cacheHits = 0;
   cacheMisses = 0;
 }
