@@ -1,12 +1,16 @@
 {
   "name": "pastafari-calendar",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "type": "module",
   "main": "./src/public-api.js",
   "exports": {
     ".": {
       "types": "./types/5fd0767aaf5331241ec60f8540edf2a6.d.ts",
       "import": "./src/public-api.js"
+    },
+    "./reverse": {
+      "types": "./types/5fd0767aaf5331241ec60f8540edf2a6.d.ts",
+      "import": "./browser/pastafari-reverse.js"
     },
     "./browser/*": "./browser/*",
     "./package.json": "./package.json"
