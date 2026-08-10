@@ -1,6 +1,6 @@
 # העלאת הגרסה המתוקנת ל־GitHub
 
-ההוראות האלה מיועדות להעלאת גרסה `1.2.1` של הפרויקט. אין להעלות את קובצי ה־ZIP עצמם, ואין להשאיר בקובצי JavaScript את סיומת ההורדה הנוספת `.txt`.
+ההוראות האלה מיועדות להעלאת גרסה `1.3.0` של הפרויקט. אין להעלות את קובצי ה־ZIP עצמם, ואין להשאיר בקובצי JavaScript את סיומת ההורדה הנוספת `.txt`.
 
 ## 1. הכנת הקבצים
 
@@ -33,23 +33,25 @@ browser/
 ├── pastafari-calendar-fast.js
 ├── pastafari-calendar-router.js
 ├── pastafari-date.js
-└── pastafari-fast-worker.js
+├── pastafari-fast-worker.js
+├── pastafari-reverse.js
+└── pastafari-reverse-worker.js
 ```
 
-כל שנים-עשר הקבצים צריכים להיות באותה תיקייה. אין להעביר את קובצי ה־Worker או את חלקי הליבה לתיקיות משנה, מפני שנתיבי הייבוא יחסיים למיקום הזה.
+כל ארבעה-עשר הקבצים צריכים להיות באותה תיקייה. אין להעביר את קובצי ה־Worker או את חלקי הליבה לתיקיות משנה, מפני שנתיבי הייבוא יחסיים למיקום הזה.
 
 ## 2. העלאה דרך אתר GitHub
 
 1. פתח את המאגר.
 2. היכנס לתיקייה `browser`.
 3. בחר `Add file` ולאחר מכן `Upload files`.
-4. גרור את כל שנים-עשר הקבצים מן התיקייה המקומית `browser`.
+4. גרור את כל ארבעה-עשר הקבצים מן התיקייה המקומית `browser`.
 5. ודא שכל הקבצים מופיעים בנתיבים ובשמות המפורטים לעיל. קבצים שכבר קיימים במאגר צריכים להיות מוחלפים בגרסאות החדשות, וקבצים שאינם קיימים עדיין צריכים להתווסף.
 6. אשר את ה־commit.
 
 אין קובץ בתיקייה שחורג ממגבלת ההעלאה הרגילה של GitHub. שני חלקי הליבה הגדולים הם בגודל של כ־15 MB כל אחד.
 
-בנוסף לתיקיית `browser`, יש להעלות את הקבצים והתיקיות המעודכנים של גרסה `1.2.1` במיקומם המקורי בפרויקט, ובכלל זה:
+בנוסף לתיקיית `browser`, יש להעלות את הקבצים והתיקיות המעודכנים של גרסה `1.3.0` במיקומם המקורי בפרויקט, ובכלל זה:
 
 ```text
 .github/workflows/test.yml
@@ -57,6 +59,7 @@ src/public-api.js
 test/public-api.test.js
 test/fast-compatibility.test.js
 test/router-fallback.test.js
+test/reverse.test.js
 LICENSE
 package.json
 UPLOAD-TO-GITHUB.md
@@ -144,26 +147,26 @@ http://localhost:8000/browser/example_weekly_colored.html
 הגרסה המיועדת לעדכון זה היא:
 
 ```text
-v1.2.1
+v1.3.0
 ```
 
 הערך ב־`package.json` צריך להיות ללא האות `v`:
 
 ```json
-"version": "1.2.1"
+"version": "1.3.0"
 ```
 
 אפשר ליצור את התגית דרך ממשק Releases של GitHub, כאשר ה־target הוא ה־commit שנבדק, או בשורת הפקודה:
 
 ```bash
-git tag -a v1.2.1 -m "Pastafari Calendar v1.2.1"
-git push origin v1.2.1
+git tag -a v1.3.0 -m "Pastafari Calendar v1.3.0"
+git push origin v1.3.0
 ```
 
-אין להזיז תגית שכבר פורסמה אל commit אחר. אם נדרש תיקון לאחר פרסום `v1.2.1`, יש ליצור גרסה חדשה, למשל:
+אין להזיז תגית שכבר פורסמה אל commit אחר. אם נדרש תיקון לאחר פרסום `v1.3.0`, יש ליצור גרסה חדשה, למשל:
 
 ```text
-v1.2.2
+v1.3.1
 ```
 
 ## 6. הטמעה באמצעות jsDelivr
@@ -172,7 +175,7 @@ v1.2.2
 
 ```html
 <script type="module"
-  src="https://cdn.jsdelivr.net/gh/bwtbdyqtmsprytgydym-cpu/pastafari-calendar@v1.2.1/browser/pastafari-date.js">
+  src="https://cdn.jsdelivr.net/gh/bwtbdyqtmsprytgydym-cpu/pastafari-calendar@v1.3.0/browser/pastafari-date.js">
 </script>
 
 <pastafari-date></pastafari-date>
