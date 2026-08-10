@@ -1,6 +1,6 @@
 # רכיב תאריך פסטפרי לדפדפן
 
-התיקייה `browser` מכילה רכיב Web עצמאי להצגת תאריך פסטפרי בדפדפן, וכן API אסינכרוני לשימוש ללא תצוגה.
+התיקייה `browser` מכילה רכיב Web עצמאי להצגת תאריך פסטפרי בדפדפן, API אסינכרוני לשימוש ללא תצוגה ומנוע הפוך מתאריך פסטפרי לתאריך גריגוריאני.
 
 הרכיב מפעיל שני מנועים:
 
@@ -19,16 +19,20 @@ year, cutletName, dayInCutlet, monthName, dayInMonth
 
 ```text
 browser/
+├── README.md
+├── UPLOAD-TO-GITHUB.md
+├── example.html
+├── example_weekly_colored.html
 ├── pastafari-date.js
 ├── pastafari-calendar-router.js
 ├── pastafari-authoritative-worker.js
 ├── pastafari-fast-worker.js
 ├── pastafari-calendar-fast.js
+├── pastafari-reverse.js
+├── pastafari-reverse-worker.js
 ├── pastafari-calendar-core.js
 ├── pastafari-calendar-core-1.js
-├── pastafari-calendar-core-2.js
-├── example.html
-└── README.md
+└── pastafari-calendar-core-2.js
 ```
 
 `pastafari-calendar-core.js` הוא קובץ מקשר לשני חלקי הליבה. אין לשנות את שמות שלושת קובצי הליבה או להפריד ביניהם.
@@ -62,7 +66,7 @@ browser/
 <pastafari-date></pastafari-date>
 ```
 
-יש להחליף את `VERSION` בתגית גרסה קבועה, לדוגמה `v1.2.1`. בפרסום אמיתי עדיף תג קבוע על פני `@main`, כדי למנוע ערבוב בין קבצים מגרסאות שונות ומטמון שאינו אחיד.
+יש להחליף את `VERSION` בתגית גרסה קבועה, לדוגמה `v1.3.0`. בפרסום אמיתי עדיף תג קבוע על פני `@main`, כדי למנוע ערבוב בין קבצים מגרסאות שונות ומטמון שאינו אחיד.
 
 הנתב מנסה להפעיל את המנועים בתוך Module Workers. כאשר הדפדפן או מדיניות האתר חוסמים Worker מן הכתובת שממנה נטען הרכיב, הנתב מנסה טעינה ישירה של אותם מודולים. במצב זה החישוב עדיין יכול לפעול, אך החישוב הכבד עלול להתבצע בשרשור הראשי. לביצועים הטובים והצפויים ביותר מומלץ להגיש את כל תיקיית `browser` מאותו origin של האתר.
 
@@ -183,6 +187,58 @@ const value = await getPastafariDateAsync(
 ```
 
 האובייקט המוחזר מוקפא באמצעות `Object.freeze()`.
+
+## API הפוך: מפסטפרי לגריגוריאני
+
+המודול `pastafari-reverse.js` מפעיל את החיפוש בתוך Worker נפרד, כדי שחיפוש ממושך לא יחסום את רכיב התצוגה:
+
+```js
+import {
+  findPastafariDate,
+  SAME_AS_TARGET,
+} from "/browser/pastafari-reverse.js";
+
+const candidates = await findPastafariDate(
+  {
+    year: "5000",
+    cutletName: "כליה",
+    dayInCutlet: 443,
+    monthName: "לבונה",
+    dayInMonth: 40,
+  },
+  {
+    calculationDate: "2026-08-06",
+    timeoutMs: 30_000,
+  },
+);
+```
+
+מבנה כל מועמד:
+
+```js
+{
+  targetJdn: 2461396n,
+  targetDate: { year: 2026n, month: 12, day: 21 },
+  calculationJdn: 2461259n,
+  calculationDate: { year: 2026n, month: 8, day: 6 },
+}
+```
+
+`calculationDate` יכול להיות תאריך מוחלט נתמך, תאריך פסטפרי שנפתר רקורסיבית או `SAME_AS_TARGET`. האפשרות האחרונה דורשת טווח חסום:
+
+```js
+const candidates = await findPastafariDate(value, {
+  calculationDate: SAME_AS_TARGET,
+  searchRange: [2461200n, 2461300n],
+  yieldEvery: 32,
+  onProgress: ({ scanned, total, matches }) => {
+    console.log(scanned, total, matches);
+  },
+  signal: abortController.signal,
+});
+```
+
+אפשר ליצור לקוח עצמאי באמצעות `new PastafariReverseClient()` ולסגור אותו באמצעות `dispose()`. ברוב המקרים די בפונקציה המשותפת `findPastafariDate()`.
 
 ## הממשק התכנותי של הרכיב
 
