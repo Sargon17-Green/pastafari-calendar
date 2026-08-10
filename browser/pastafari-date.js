@@ -13,6 +13,8 @@ const MONTH_ACCENTS = Object.freeze([
   "#6e7d3c", "#9a6b2f", "#467487", "#7a5f47", "#6b6896",
 ]);
 
+const MAX_CACHED_CUTLETS = 5;
+
 function floorDiv(a, b) {
   let quotient = a / b;
   const remainder = a % b;
@@ -71,7 +73,7 @@ function parseIsoDate(value, fieldName) {
     }, fieldName));
   }
 
-  const match = /^(?<year>[+-]?\d{1,18})-(?<month>\d{2})-(?<day>\d{2})$/.exec(
+  const match = /^(?<year>[+-]?\d+)-(?<month>\d{2})-(?<day>\d{2})$/.exec(
     String(value ?? "").trim(),
   );
   if (!match) throw new RangeError(`${fieldName} חייב להיות בפורמט YYYY-MM-DD.`);
@@ -147,7 +149,9 @@ function monthAccent(name, palette) {
 }
 
 /**
- * Public, verified, non-blocking conversion API.
+ * Public asynchronous conversion API. The router returns an authoritative
+ * first result, verifies the fast engine on the anchor and adjacent cutlets,
+ * and then uses the fast engine for browsing on the same calculation day.
  * Both names are asynchronous; the older name is retained as a compatibility alias.
  */
 export async function getPastafariDateAsync(targetDate = null, calculationDate = null) {
@@ -178,8 +182,8 @@ export class PastafariDateElement extends HTMLElementBase {
     this._calculationJdn = null;
     this._cutlets = new Map();
     this._orderedStarts = [];
-    this._loadingBefore = false;
-    this._loadingAfter = false;
+    this._loadingBefore = null;
+    this._loadingAfter = null;
     this._activeStartJdn = null;
     this._readySettled = false;
     this.ready = new Promise((resolve, reject) => {
@@ -460,7 +464,7 @@ export class PastafariDateElement extends HTMLElementBase {
         <div class="overlay loading" part="loading">
           <div class="spinner" aria-hidden="true"></div>
           <p class="loading-title">הלוח נטען</p>
-          <p class="loading-note">החישוב נעשה ברקע ואינו מעכב את שאר הדף.</p>
+          <p class="loading-note">החישוב הראשון עשוי להימשך זמן מה.</p>
         </div>
 
         <div class="overlay error" part="error" hidden>
@@ -553,6 +557,8 @@ export class PastafariDateElement extends HTMLElementBase {
     this._cutlets.clear();
     this._orderedStarts = [];
     this._activeStartJdn = null;
+    this._loadingBefore = null;
+    this._loadingAfter = null;
 
     if (headless) {
       // A headless component is a data source only. It must not request a
@@ -644,26 +650,72 @@ export class PastafariDateElement extends HTMLElementBase {
 
   async _loadCutletAt(targetJdn, direction, generation = this._generation) {
     const flag = direction === "before" ? "_loadingBefore" : "_loadingAfter";
-    if (this[flag]) return null;
-    this[flag] = true;
+    if (this[flag] === generation) return null;
+    this[flag] = generation;
     this._updateEdgeLoaders();
-    const viewport = this._els.viewport;
-    const oldHeight = viewport.scrollHeight;
-    const oldTop = viewport.scrollTop;
 
     try {
       const view = await sharedPastafariRouter.getCutletView(BigInt(targetJdn), this._calculationJdn);
       if (generation !== this._generation) return null;
       if (!this._storeCutlet(view)) return view;
+      const anchor = this._captureScrollAnchor();
+      this._trimCutlets(view.startJdn);
       this._renderCutlets();
-      if (direction === "before") {
-        viewport.scrollTop = oldTop + (viewport.scrollHeight - oldHeight);
-      }
+      this._restoreScrollAnchor(anchor);
       return view;
     } finally {
-      this[flag] = false;
-      this._updateEdgeLoaders();
+      if (this[flag] === generation) {
+        this[flag] = null;
+        this._updateEdgeLoaders();
+      }
     }
+  }
+
+  _trimCutlets(fallbackStartJdn) {
+    if (this._orderedStarts.length <= MAX_CACHED_CUTLETS) return;
+    const preferred = this._activeStartJdn != null && this._cutlets.has(this._activeStartJdn)
+      ? this._activeStartJdn
+      : BigInt(fallbackStartJdn);
+    const preferredIndex = Math.max(0, this._orderedStarts.findIndex((start) => start === preferred));
+    const firstKeep = Math.max(
+      0,
+      Math.min(
+        preferredIndex - Math.floor(MAX_CACHED_CUTLETS / 2),
+        this._orderedStarts.length - MAX_CACHED_CUTLETS,
+      ),
+    );
+    const keep = new Set(this._orderedStarts.slice(firstKeep, firstKeep + MAX_CACHED_CUTLETS));
+    for (const start of this._orderedStarts) {
+      if (!keep.has(start)) this._cutlets.delete(start);
+    }
+    this._orderedStarts = this._orderedStarts.filter((start) => keep.has(start));
+  }
+
+  _captureScrollAnchor() {
+    const viewport = this._els.viewport;
+    const sections = [...this._els.list.querySelectorAll(".cutlet")];
+    if (sections.length === 0) return null;
+    const viewportTop = viewport.getBoundingClientRect().top;
+    let anchor = sections[0];
+    for (const section of sections) {
+      if (section.getBoundingClientRect().top <= viewportTop + 1) anchor = section;
+      else break;
+    }
+    return {
+      startJdn: anchor.dataset.startJdn,
+      offset: anchor.getBoundingClientRect().top - viewportTop,
+    };
+  }
+
+  _restoreScrollAnchor(anchor) {
+    if (!anchor) return;
+    const viewport = this._els.viewport;
+    const section = this._els.list.querySelector(
+      `[data-start-jdn="${CSS.escape(anchor.startJdn)}"]`,
+    );
+    if (!section) return;
+    const newOffset = section.getBoundingClientRect().top - viewport.getBoundingClientRect().top;
+    viewport.scrollTop += newOffset - anchor.offset;
   }
 
   _renderSummary() {
@@ -812,8 +864,8 @@ export class PastafariDateElement extends HTMLElementBase {
   }
 
   _updateEdgeLoaders() {
-    this._els.beforeLoader.textContent = this._loadingBefore ? "טוען קציצה קודמת…" : "";
-    this._els.afterLoader.textContent = this._loadingAfter ? "טוען קציצה נוספת…" : "";
+    this._els.beforeLoader.textContent = this._loadingBefore !== null ? "טוען קציצה קודמת…" : "";
+    this._els.afterLoader.textContent = this._loadingAfter !== null ? "טוען קציצה נוספת…" : "";
   }
 
   _openDialog() {
