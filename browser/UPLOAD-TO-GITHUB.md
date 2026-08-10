@@ -1,6 +1,6 @@
 # העלאת תיקיית `browser` ל־GitHub
 
-הקובץ הזה מתייחס לתיקיית `browser` של Pastafari Calendar בגרסה `1.2.1`.
+הקובץ הזה מתייחס לתיקיית `browser` של Pastafari Calendar בגרסה `1.3.0`.
 
 אין להעלות את קובץ ה־ZIP עצמו. יש להעלות את הקבצים שבתיקייה תוך שמירה מדויקת על שמותיהם ועל מיקומם.
 
@@ -21,10 +21,12 @@ browser/
 ├── pastafari-calendar-fast.js
 ├── pastafari-calendar-router.js
 ├── pastafari-date.js
-└── pastafari-fast-worker.js
+├── pastafari-fast-worker.js
+├── pastafari-reverse.js
+└── pastafari-reverse-worker.js
 ```
 
-כל שנים-עשר הקבצים צריכים להישאר ישירות בתוך `browser`. אין להעביר את קובצי ה־Worker או את חלקי הליבה לתיקיות משנה, מפני שנתיבי הייבוא ביניהם יחסיים למיקום הזה.
+כל ארבעה-עשר הקבצים צריכים להישאר ישירות בתוך `browser`. אין להעביר את קובצי ה־Worker או את חלקי הליבה לתיקיות משנה, מפני שנתיבי הייבוא ביניהם יחסיים למיקום הזה.
 
 ## שמות הקבצים
 
@@ -51,7 +53,7 @@ pastafari-calendar-fast-CORRECTED.js
 1. פתח את מאגר Pastafari Calendar ב־GitHub.
 2. היכנס לתיקייה `browser`.
 3. בחר `Add file` ולאחר מכן `Upload files`.
-4. גרור את כל שנים-עשר הקבצים שבתיקיית `browser` המקומית.
+4. גרור את כל ארבעה-עשר הקבצים שבתיקיית `browser` המקומית.
 5. ודא שכל הקבצים מופיעים בשמות הנכונים.
 6. קבצים שכבר קיימים במאגר צריכים להיות מוחלפים בגרסאות החדשות.
 7. קבצים שאינם קיימים עדיין צריכים להתווסף.
@@ -61,7 +63,7 @@ pastafari-calendar-fast-CORRECTED.js
 
 ## אין להעלות רק את `browser`
 
-גרסה `1.2.1` כוללת גם שינויים מחוץ לתיקיית `browser`.
+גרסה `1.3.0` כוללת גם שינויים מחוץ לתיקיית `browser`.
 
 בעת פרסום הגרסה המלאה יש להעלות גם את יתר הקבצים והתיקיות המעודכנים במיקומם המקורי בפרויקט, ובכלל זה:
 
@@ -71,6 +73,7 @@ src/public-api.js
 test/public-api.test.js
 test/fast-compatibility.test.js
 test/router-fallback.test.js
+test/reverse.test.js
 LICENSE
 package.json
 UPLOAD-TO-GITHUB.md
@@ -168,13 +171,13 @@ http://localhost:8000/browser/example_weekly_colored.html
 הגרסה המיועדת לפרסום היא:
 
 ```text
-v1.2.1
+v1.3.0
 ```
 
 ב־`package.json` מספר הגרסה נכתב ללא `v`:
 
 ```json
-"version": "1.2.1"
+"version": "1.3.0"
 ```
 
 יש ליצור את תגית הגרסה רק לאחר שכל הקבצים, הבדיקות והגיבובים נמצאים באותו commit.
@@ -182,25 +185,25 @@ v1.2.1
 אפשר ליצור אותה דרך ממשק Releases של GitHub, כאשר ה־target הוא ה־commit שנבדק, או באמצעות:
 
 ```bash
-git tag -a v1.2.1 -m "Pastafari Calendar v1.2.1"
-git push origin v1.2.1
+git tag -a v1.3.0 -m "Pastafari Calendar v1.3.0"
+git push origin v1.3.0
 ```
 
 אין להזיז תגית שכבר פורסמה אל commit אחר.
 
-אם לאחר פרסום `v1.2.1` נדרש תיקון נוסף, יש ליצור גרסה חדשה, למשל:
+אם לאחר פרסום `v1.3.0` נדרש תיקון נוסף, יש ליצור גרסה חדשה, למשל:
 
 ```text
-v1.2.2
+v1.3.1
 ```
 
 ## שימוש באמצעות jsDelivr
 
-לאחר פרסום `v1.2.1`, ניתן לטעון את רכיב הדפדפן באמצעות:
+לאחר פרסום `v1.3.0`, ניתן לטעון את רכיב הדפדפן באמצעות:
 
 ```html
 <script type="module"
-  src="https://cdn.jsdelivr.net/gh/bwtbdyqtmsprytgydym-cpu/pastafari-calendar@v1.2.1/browser/pastafari-date.js">
+  src="https://cdn.jsdelivr.net/gh/bwtbdyqtmsprytgydym-cpu/pastafari-calendar@v1.3.0/browser/pastafari-date.js">
 </script>
 
 <pastafari-date></pastafari-date>
