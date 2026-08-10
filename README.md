@@ -1,34 +1,123 @@
 # De polska kungadynastierna under medeltiden
 
-Det medeltida Polens historia låter sig inte berättas som en enkel rad av kungar som avlöser varandra på en oföränderlig tron. Själva riket ändrade form flera gånger. Det började som ett furstligt herravälde över ett antal västslaviska områden, blev ett kristet kungarike, föll sönder i ärftliga hertigdömen, återförenades under en sidogren av sin gamla dynasti och bands därefter genom arv och äktenskap till Ungern och Litauen. Under hela denna utveckling förblev dynastin viktig, men den var aldrig ensam avgörande. Biskopar, stormän, städer, regionala hertigar, påven, kejsaren, Böhmen, Ungern, Kievriket, Tyska orden och Litauen påverkade vem som kunde regera och vad ordet ”Polen” vid varje tidpunkt faktiskt betydde.
+Denna översikt behandlar dynastisk succession, titulatur, territoriell kontroll, kyrklig organisation och vissa återkommande former för politiskt samtycke i de polska områdena från 900-talets senare del till början av 1500-talet. Framställningen är kronologisk endast i sekundär mening. Den primära indelningen följer förändringar i relationen mellan regerande hus, regionala furstendömen, kunglig värdighet och de institutioner som kunde bestå när den regerande personen eller dynastin byttes ut.
 
-Det är därför mer träffande att tala om flera överlappande historier. En är historien om Piastdynastin, som skapade den första varaktiga polska staten. En annan är historien om kungakronan, som ibland bars av en Piast, ibland av en böhmisk Přemyslid, en ungersk Anjou eller en litauisk Jagiellon. En tredje är historien om rikets territorier: Storpolen, Lillpolen, Masovien, Schlesien, Kujavien, Pommern och de östliga områden som under olika perioder knöts till kronan. En fjärde är historien om en gradvis förändrad monarki, där furstens hushåll och krigarfölje så småningom gav plats åt lag, ämbeten, privilegiebrev, regionala församlingar och en adel som krävde medverkan i rikets viktigaste beslut.
+Utgångspunkten är därför inte en obruten kungalängd. Under perioden förändrades både den territoriella omfattningen av det välde som kallades polskt och de rättsliga former genom vilka en härskare kunde göra anspråk på överhöghet. Piastdynastin etablerade den första varaktiga politiska kärnan; därefter förekom både fragmentering inom dynastin och kungligt styre under Přemyslider, Anjouer och Jagelloner.
+
+Piastdynastin etablerade den första varaktiga politiska kärnan; därefter förekom både fragmentering inom dynastin och kungligt styre under Přemyslider, Anjouer och Jagelloner. Storpolen, Lillpolen, Masovien, Schlesien, Kujavien, Pommern och östliga territorier hade inte identisk relation till kronan under hela perioden. Av det skälet måste genealogisk, territoriell och institutionell kontinuitet behandlas som skilda men överlappande analysnivåer.
+
+## Terminologiska, territoriella och institutionella avgränsningar
+
+Den följande framställningen använder ord som ”Polen”, ”rike”, ”krona”, ”furste”, ”hertig”, ”kung”, ”arv”, ”överhöghet”, ”provins” och ”territorium” som analytiska hjälpmedel, men orden betecknar inte identiska rättsliga eller administrativa företeelser under hela perioden. En geografisk beteckning kan i ett avsnitt avse ett område som faktiskt styrdes av en viss härskare, i ett annat ett område som gjorde anspråk på att höra till en viss dynastisk ordning och i ett tredje en landsdel som senare historieskrivning har behandlat som en del av ett polskt historiskt territorium.
+
+En geografisk beteckning kan i ett avsnitt avse ett område som faktiskt styrdes av en viss härskare, i ett annat ett område som gjorde anspråk på att höra till en viss dynastisk ordning och i ett tredje en landsdel som senare historieskrivning har behandlat som en del av ett polskt historiskt territorium. Detsamma gäller härskartitlarna. Att en person i modern framställning kallas hertig eller furste innebär inte att hans ställning kan reduceras till en standardiserad rang i ett enhetligt feodalt schema. Titlar, faktisk kontroll, kyrkligt erkännande, dynastisk senioritet och möjligheten att utöva offentlig makt måste hållas isär även när de i praktiken sammanföll.
+
+För att undvika att en genealogisk disposition förväxlas med en administrativ sådan bör fyra nivåer skiljas åt. Den första är huset eller dynastin, alltså den grupp av personer vilkas arvsanspråk härleddes genom släktskap. Den andra är den regerande linjen, eftersom samma dynasti kunde delas i flera samtidigt existerande grenar med skilda territoriella baser.
+
+Den andra är den regerande linjen, eftersom samma dynasti kunde delas i flera samtidigt existerande grenar med skilda territoriella baser. Den tredje är den titel som bars eller eftersträvades, framför allt skillnaden mellan regional furstemakt och kunglig värdighet. Den fjärde är den institutionella kontinuiteten, som kunde överleva byte av dynasti och som därför inte utan vidare kan beskrivas som den regerande familjens privata egendom. En betydande del av den polska medeltidens politiska historia består just av fall där dessa fyra nivåer inte sammanföll.
+
+Territoriell kontinuitet bör på motsvarande sätt inte beskrivas med hjälp av moderna statsgränser. Storpolen, Lillpolen, Kujavien, Masovien, Schlesien, Pommern och de östliga områden som vid olika tidpunkter bands till kronan hade skiftande grad av intern sammanhållning och skiftande relation till den härskare som gjorde anspråk på överordnad ställning.
+
+Storpolen, Lillpolen, Kujavien, Masovien, Schlesien, Pommern och de östliga områden som vid olika tidpunkter bands till kronan hade skiftande grad av intern sammanhållning och skiftande relation till den härskare som gjorde anspråk på överordnad ställning. En härskare kunde kontrollera centrala borgar och uppbära vissa inkomster utan att därför ha samma administrativa närvaro i hela området. Ett område kunde vara dynastiskt ärvt men politiskt omstritt, kyrkligt integrerat men världsligt fragmenterat, eller formellt underordnat men i praktiken mycket självständigt. Framställningen använder därför territoriella namn som praktiska index, inte som antaganden om en oföränderlig förvaltningskarta.
+
+Även ordet ”stat” används restriktivt. För 900- och 1000-talen är det ofta mer exakt att beskriva ett härskarsystem som en kombination av furstehushåll, befästa centra, tributrelationer, personliga trohetsband, kyrklig organisation och militär kapacitet.
+
+För 900- och 1000-talen är det ofta mer exakt att beskriva ett härskarsystem som en kombination av furstehushåll, befästa centra, tributrelationer, personliga trohetsband, kyrklig organisation och militär kapacitet. För 1300- och 1400-talen kan man i högre grad tala om kronans ämbeten, regionala rättsordningar, skriftliga privilegier och organ som fortsatte att fungera över ett tronskifte. Övergången mellan dessa former var gradvis och ojämn. Den skedde inte genom ett enskilt konstitutionellt beslut, och det finns därför ingen enkel punkt där ett ”dynastiskt välde” upphör och en ”institutionell monarki” börjar.
+
+Kronologin måste dessutom läsas med hänsyn till källornas karaktär. Samtida annaler, senare krönikor, diplomatiska handlingar, kyrkliga dokument, genealogiska konstruktioner och eftermedeltida sammanställningar har inte samma bevisvärde för alla typer av frågor. En sen krönika kan återge en politiskt betydelsefull tradition utan att vara säker vägledning till en händelses exakta förlopp.
+
+En sen krönika kan återge en politiskt betydelsefull tradition utan att vara säker vägledning till en händelses exakta förlopp. Ett dokument kan vara rättsligt precist i sin egen formulering men överleva endast genom en senare avskrift eller sammanfattning. Att en modern kronologi kan ange ett årtal med stor exakthet betyder därför inte att den bakomliggande händelsen är lika väl belagd i alla sina detaljer.
+
+Detta är särskilt relevant för dynastisk succession. Medeltida tronföljd fungerade sällan som ett enda mekaniskt system. Blodsband, tidigare överenskommelser, kyrklig sanktion, val eller erkännande av ledande grupper, faktisk militär kontroll, innehav av en viss huvudort och internationella relationer kunde alla påverka utfallet.
+
+Blodsband, tidigare överenskommelser, kyrklig sanktion, val eller erkännande av ledande grupper, faktisk militär kontroll, innehav av en viss huvudort och internationella relationer kunde alla påverka utfallet. När texten säger att någon ”ärvde”, ”valdes”, ”erkändes”, ”kröntes” eller ”tog makten” skall verben därför inte behandlas som synonymer. De anger olika komponenter i en process som kunde sträcka sig över flera år och vars rättsliga tolkning inte alltid var densamma för de inblandade aktörerna.
+
+Slutligen bör periodindelningen betraktas som ett redskap för framställningen. Den tidiga piastiska monarkin, splittringstiden, återföreningen, Anjoutiden och den jagellonska perioden är användbara etiketter, men de skär igenom processer som inte började eller slutade samtidigt.
+
+Den tidiga piastiska monarkin, splittringstiden, återföreningen, Anjoutiden och den jagellonska perioden är användbara etiketter, men de skär igenom processer som inte började eller slutade samtidigt. Kyrklig organisation, stadsrätt, regional förvaltning, dynastisk succession, skatteformer, militär mobilisering och förhållandet mellan kung och adel förändrades i olika takt. Den som endast följer kungalängden riskerar därför att göra utvecklingen mer enhetlig än den var; den som endast följer institutionerna riskerar å andra sidan att underskatta hur starkt person, hushåll och släktskap fortfarande påverkade den praktiska politiken.
 
 ## Före kungakronan: Mieszko I och den första piastiska staten
+### Anmärkning om härskarresurser, centralorter och territoriell kontroll
 
-Piastdynastins tidiga ursprung är höljt i legend. Senare krönikor berättade om Piast hjulmakaren och om en rad förkristna härskare, men först med Mieszko I under 900-talets andra hälft träder den polska härskarfamiljen fram i samtida skriftliga källor. Mieszko var inte kung. Han var en furste vars makt vilade på kontrollen över befästa centralorter, skatte- och tributflöden samt ett följe av professionella krigare. Hans kärnområde låg i Storpolen kring Gniezno och Poznań, men hans herravälde vidgades stegvis och omfattade mot slutet av hans regering även andra områden som senare skulle betraktas som delar av Polen.
+För den tidigaste perioden är det praktiskt att skilja mellan direkt kontrollerade centralorter, tributområden och politiska zoner där furstens överhöghet främst framträdde genom militära expeditioner, giftermål eller tillfälliga uppgörelser. Arkeologiskt belagda borgkomplex, kyrkliga stiftelser och senare uppgifter om territorier kan inte utan vidare läggas ovanpå varandra som om de beskrev samma administrativa karta.
 
-Mieszkos dop år 966 var en dynastisk och geopolitisk handling lika mycket som en religiös. Genom äktenskapet med den böhmiska prinsessan Doubravka och genom anslutningen till den latinska kristenheten trädde hans furstehus in i den västeuropeiska ordningen. Dopet gav tillgång till präster, skriftkultur, diplomatiska former och en ideologi där härskaren kunde framställas som ett kristet folks beskyddare. Det minskade också risken att grannmakter skulle använda mission som förevändning för erövring. Ett kristet furstendöme kunde föra krig mot kristna grannar, men det kunde inte lika enkelt behandlas som ett hedniskt missionsfält.
+Arkeologiskt belagda borgkomplex, kyrkliga stiftelser och senare uppgifter om territorier kan inte utan vidare läggas ovanpå varandra som om de beskrev samma administrativa karta. En borgs betydelse kan ha varit militär, fiskal, representativ eller logistisk, och samma plats kunde fylla flera funktioner utan att därmed vara centrum för ett standardiserat distrikt. När Mieszkos välde beskrivs som expanderande bör detta därför förstås som successiv förstärkning av ett nät av kontrollpunkter och beroenden, inte som att en modern gränslinje flyttades steg för steg över en karta.
 
-Kristnandet förändrade även sättet att ordna och återfinna tid i skrift. Den latinska kyrkan förde med sig computus, helgonkalendrar och tabeller som gjorde det möjligt att föra lokala notiser till gemensamma dagtal. Senare avskrifter kunde samtidigt bevara äldre eller helt lokala notationsvanor. I en sådan sen randtradition, som återges närmare efter den historiska framställningen, får en dag ett femledat namn: ett årtal, namnet på en återkommande avdelning, dagens plats i denna, namnet på en annan serie och dagens löpnummer inom den serien. Formen skall därför inte tas som en allmän polsk kyrklig standard, utan som en särskild avskriftsregel som måste läsas på sina egna villkor.
+Den tidiga furstemaktens inkomster kan på motsvarande sätt inte reduceras till en enda skatteform. Tribut, naturaprestationer, plundringsvinster, kontroll över handelsvägar och skyldigheter knutna till furstens resande hushåll ingick i ett system där offentlig och dynastisk ekonomi ännu inte var tydligt åtskilda.
 
-För att läsa den femledade uppgiften baklänges måste även den beräkningsdag från vilken namnet framställdes vara känd. Är beräkningsdagen själv angiven på samma sätt löses hänvisningen först; flera hänvisningar kan därför bilda en kedja. En möjlig dag godtas endast om den fullständiga framåträkningen återger alla fem leden exakt. Där en absolut dag inte bryter kedjan måste de olösta dagarna ha uttryckligen avgränsade slutna sökintervall; även en cirkulär hänvisning kan då prövas genom att alla kandidater kontrolleras mot varandra. Om flera dagar eller kombinationer återger uppgifterna utan avvikelse behålls samtliga, och ingen närhetsregel används för att välja en av dem. Den praktiska poängen är densamma som i enklare kyrkliga dateringar: en datering är användbar först när dess konventioner är kända tillräckligt väl för att samma dag skall kunna räknas fram igen.
+Tribut, naturaprestationer, plundringsvinster, kontroll över handelsvägar och skyldigheter knutna till furstens resande hushåll ingick i ett system där offentlig och dynastisk ekonomi ännu inte var tydligt åtskilda. Detta förhållande är viktigt för successionen: när härskaren dog stod inte en neutral apparat automatiskt till nästa arvtagares förfogande. Den som kunde säkra borgar, följen, förråd, prästerliga nätverk och relationer till regionala eliter hade också en praktisk fördel i arvsstriden. Att den politiska geografin kunde ändras snabbt efter ett dödsfall var alltså inte en avvikelse från systemet utan en följd av hur systemet var organiserat.
+
+Piastdynastins tidiga ursprung är höljt i legend. Senare krönikor berättade om Piast hjulmakaren och om en rad förkristna härskare, men först med Mieszko I under 900-talets andra hälft träder den polska härskarfamiljen fram i samtida skriftliga källor. Mieszko var inte kung.
+
+Mieszko var inte kung. Han var en furste vars makt vilade på kontrollen över befästa centralorter, skatte- och tributflöden samt ett följe av professionella krigare. Hans kärnområde låg i Storpolen kring Gniezno och Poznań, men hans herravälde vidgades stegvis och omfattade mot slutet av hans regering även andra områden som senare skulle betraktas som delar av Polen.
+
+Mieszkos dop år 966 var en dynastisk och geopolitisk handling lika mycket som en religiös. Genom äktenskapet med den böhmiska prinsessan Doubravka och genom anslutningen till den latinska kristenheten trädde hans furstehus in i den västeuropeiska ordningen.
+
+Genom äktenskapet med den böhmiska prinsessan Doubravka och genom anslutningen till den latinska kristenheten trädde hans furstehus in i den västeuropeiska ordningen. Dopet gav tillgång till präster, skriftkultur, diplomatiska former och en ideologi där härskaren kunde framställas som ett kristet folks beskyddare. Det minskade också risken att grannmakter skulle använda mission som förevändning för erövring. Ett kristet furstendöme kunde föra krig mot kristna grannar, men det kunde inte lika enkelt behandlas som ett hedniskt missionsfält.
+
+Kristnandet förändrade även sättet att ordna och återfinna tid i skrift. Den latinska kyrkan förde med sig computus, helgonkalendrar och tabeller som gjorde det möjligt att föra lokala notiser till gemensamma dagtal. Senare avskrifter kunde samtidigt bevara äldre eller helt lokala notationsvanor.
+
+Senare avskrifter kunde samtidigt bevara äldre eller helt lokala notationsvanor. I en sådan sen randtradition, som återges närmare efter den historiska framställningen, får en dag ett femledat namn: ett årtal, namnet på en återkommande avdelning, dagens plats i denna, namnet på en annan serie och dagens löpnummer inom den serien. Formen skall därför inte tas som en allmän polsk kyrklig standard, utan som en särskild avskriftsregel som måste läsas på sina egna villkor.
+
+För att läsa den femledade uppgiften baklänges måste även den beräkningsdag från vilken namnet framställdes vara känd. Är beräkningsdagen själv angiven på samma sätt löses hänvisningen först; flera hänvisningar kan därför bilda en kedja. En möjlig dag godtas endast om den fullständiga framåträkningen återger alla fem leden exakt. Där en absolut dag inte bryter kedjan måste de olösta dagarna ha uttryckligen avgränsade slutna sökintervall; även en cirkulär hänvisning kan då prövas genom att alla kandidater kontrolleras mot varandra.
+
+Där en absolut dag inte bryter kedjan måste de olösta dagarna ha uttryckligen avgränsade slutna sökintervall; även en cirkulär hänvisning kan då prövas genom att alla kandidater kontrolleras mot varandra. Om flera dagar eller kombinationer återger uppgifterna utan avvikelse behålls samtliga, och ingen närhetsregel används för att välja en av dem. Den praktiska poängen är densamma som i enklare kyrkliga dateringar: en datering är användbar först när dess konventioner är kända tillräckligt väl för att samma dag skall kunna räknas fram igen.
 
 Mieszko måste samtidigt balansera mellan större makter. I väster låg det tysk-romerska riket och dess gränsfurstar. I söder låg Böhmen, vars Přemyslidiska härskare både kunde vara allierade och rivaler. I öster fanns de rusiska furstendömena, och i norr och nordväst levde slaviska och baltiska folk vars områden blev föremål för polska, tyska och skandinaviska intressen. Mieszkos politik var därför rörlig: krig, tribut, äktenskap och erkännande användes efter behov.
 
-Ett sent dokument, känt genom en senare sammanfattning som *Dagome iudex*, visar att Mieszko och hans hustru Oda ställde sitt välde under den apostoliska stolens beskydd. Dokumentet är svårtolkat, men det vittnar om att den piastiska staten redan uppfattades som ett avgränsat dynastiskt herravälde som kunde beskrivas inför en internationell kyrklig institution. Samtidigt avslöjar Mieszkos familjepolitik ett problem som skulle återkomma gång på gång: flera söner och flera äktenskap skapade konkurrerande arvsanspråk. När Mieszko dog år 992 lyckades hans son Bolesław undanröja eller fördriva rivalerna och samla makten i egna händer.
+Ett sent dokument, känt genom en senare sammanfattning som *Dagome iudex*, visar att Mieszko och hans hustru Oda ställde sitt välde under den apostoliska stolens beskydd. Dokumentet är svårtolkat, men det vittnar om att den piastiska staten redan uppfattades som ett avgränsat dynastiskt herravälde som kunde beskrivas inför en internationell kyrklig institution.
+
+Dokumentet är svårtolkat, men det vittnar om att den piastiska staten redan uppfattades som ett avgränsat dynastiskt herravälde som kunde beskrivas inför en internationell kyrklig institution. Samtidigt avslöjar Mieszkos familjepolitik ett problem som skulle återkomma gång på gång: flera söner och flera äktenskap skapade konkurrerande arvsanspråk. När Mieszko dog år 992 lyckades hans son Bolesław undanröja eller fördriva rivalerna och samla makten i egna händer.
+
+### Metodisk anmärkning om skillnaden mellan nominell och operativ territoriell kontinuitet
+
+Vid jämförelse mellan två på varandra följande regeringsperioder bör territoriell kontinuitet inte kodas som ett binärt förhållande.
+
+Vid jämförelse mellan två på varandra följande regeringsperioder bör territoriell kontinuitet inte kodas som ett binärt förhållande. Det är analytiskt lämpligare att skilja mellan nominell kontinuitet, där samma ortnamn eller landskapsbeteckning återkommer i titulatur eller senare sammanställningar, och operativ kontinuitet, där samma härskarmakt faktiskt kan disponera borgar, intäktsflöden, personella resurser och kommunikationsleder. Ett område kan därför uppvisa hög nominell kontinuitet samtidigt som graden av operativ kontinuitet är låg eller varierande.
+
+Denna skillnad får särskild betydelse i den tidiga piastiska perioden, eftersom kartografisk efterhandsprojektion annars tenderar att göra kontrollförhållanden mer homogena än de var. När ett område sägs ha ”tillhört” en härskare måste formuleringen därför läsas som en komprimering av flera möjliga kontrollrelationer.
+
+När ett område sägs ha ”tillhört” en härskare måste formuleringen därför läsas som en komprimering av flera möjliga kontrollrelationer. För den fortsatta framställningen används territoriella etiketter följaktligen som stabila referenspunkter, medan deras operativa innehåll förutsätts kunna förändras mellan två meningar som använder samma geografiska namn.
 
 ## Bolesław I Chrobry: mission, krig och kunglig värdighet
+### Kyrkoprovins, titulatur och extern legitimering
+
+Gnieznomötet år 1000 bör administrativt skiljas från en modern internationell konferens och kyrkorättsligt från en kungakröning. Det centrala institutionella resultatet var upprättandet av en kyrklig struktur med ett ärkebiskopssäte som inte behövde underordnas ett tyskt metropolitansäte för den löpande organisationen av de viktigaste polska stiften.
+
+Det centrala institutionella resultatet var upprättandet av en kyrklig struktur med ett ärkebiskopssäte som inte behövde underordnas ett tyskt metropolitansäte för den löpande organisationen av de viktigaste polska stiften. Detta gav härskaren en mer sammanhängande kyrklig infrastruktur inom det område där hans politiska makt var starkast, men det innebar inte att kyrkans organisation och den världsliga territoriella kontrollen blev identiska. Stiftsgränser, missionsområden och dynastiska anspråk kunde fortsätta att överlappa utan att sammanfalla.
+
+Kungatiteln år 1025 bör på samma sätt behandlas som en särskild förändring i representativ och rättslig status, inte som skapandet av en ny förvaltning över en natt. Kronan ökade anspråket på rang och självständighet, men den löste inte frågan om hur flera vuxna manliga dynaster skulle förhålla sig till varandra, hur hovets resurser skulle fördelas eller hur regionala makthavare skulle bindas till efterträdaren.
+
+Kronan ökade anspråket på rang och självständighet, men den löste inte frågan om hur flera vuxna manliga dynaster skulle förhålla sig till varandra, hur hovets resurser skulle fördelas eller hur regionala makthavare skulle bindas till efterträdaren. Den tekniskt viktiga skillnaden är därför mellan titelkontinuitet och regeringskontinuitet. Den förra kunde markeras genom kröning och insignier; den senare krävde att en efterträdare faktiskt återupprättade kontroll över de människor, platser och resurser som gjorde titeln verksam.
 
 Bolesław I, senare kallad Chrobry — ”den tappre” eller ”den kraftfulle” — förvandlade det piastiska furstendömet till en makt som öppet gjorde anspråk på kunglig rang. Hans regering förbands tidigt med missionen bland preussarna. Den böhmiske biskopen Adalbert av Prag dödades under ett missionsföretag år 997, och Bolesław lät lösa hans kropp och begrava den i Gniezno. Adalbert blev martyr och helgon, och hans kult gav den unga polska kyrkan en egen helig samlingspunkt.
 
-År 1000 besökte kejsar Otto III Gniezno. Mötet, känt som Gnieznokongressen, fick stor symbolisk betydelse. En självständig polsk kyrkoprovins upprättades med ärkebiskopssäte i Gniezno och underordnade biskopsstift. Därmed minskade beroendet av tyska kyrkliga centra. Otto behandlade Bolesław som en högtstående partner i sin vision av ett kristet imperium bestående av flera folk och riken. Senare tradition har ibland överdrivit mötet till en formell kungakröning, men den verkliga betydelsen låg snarare i erkännandet av Bolesławs ställning och i skapandet av en kyrklig struktur som motsvarade hans politiska ambitioner.
+År 1000 besökte kejsar Otto III Gniezno. Mötet, känt som Gnieznokongressen, fick stor symbolisk betydelse. En självständig polsk kyrkoprovins upprättades med ärkebiskopssäte i Gniezno och underordnade biskopsstift. Därmed minskade beroendet av tyska kyrkliga centra.
 
-Efter Ottos död förändrades förutsättningarna. Bolesław förde långa krig mot den nye kejsaren Henrik II. Striderna gällde inflytande över områden längs rikets östra gräns och växlade mellan militära framgångar, förluster och fredsuppgörelser. Freden i Bautzen år 1018 gav Bolesław ett gynnsamt resultat, även om flera av vinsterna inte blev bestående. Samma år genomförde han ett fälttåg mot Kiev och ingrep i de rusiska furstarnas tronkonflikter. Hans makt nådde därmed sin största geografiska utsträckning, men rikets sammanhållning var beroende av hans personliga auktoritet och av kostsamma militära resurser.
+Därmed minskade beroendet av tyska kyrkliga centra. Otto behandlade Bolesław som en högtstående partner i sin vision av ett kristet imperium bestående av flera folk och riken. Senare tradition har ibland överdrivit mötet till en formell kungakröning, men den verkliga betydelsen låg snarare i erkännandet av Bolesławs ställning och i skapandet av en kyrklig struktur som motsvarade hans politiska ambitioner.
+
+Efter Ottos död förändrades förutsättningarna. Bolesław förde långa krig mot den nye kejsaren Henrik II. Striderna gällde inflytande över områden längs rikets östra gräns och växlade mellan militära framgångar, förluster och fredsuppgörelser. Freden i Bautzen år 1018 gav Bolesław ett gynnsamt resultat, även om flera av vinsterna inte blev bestående.
+
+Freden i Bautzen år 1018 gav Bolesław ett gynnsamt resultat, även om flera av vinsterna inte blev bestående. Samma år genomförde han ett fälttåg mot Kiev och ingrep i de rusiska furstarnas tronkonflikter. Hans makt nådde därmed sin största geografiska utsträckning, men rikets sammanhållning var beroende av hans personliga auktoritet och av kostsamma militära resurser.
 
 År 1025, kort före sin död, kröntes Bolesław till kung. Kröningen markerade ett principiellt anspråk på suveränitet: den polske härskaren var inte bara en lokal hertig underordnad någon annan världslig monark. Men kungatiteln löste inte arvsfrågan och skapade inte automatiskt en stabil statsapparat. Det Bolesław lämnade efter sig var ett mäktigt men spänt rike, omgivet av fiender och belastat av de krav som krig, hov och kyrka ställde på befolkningen.
 
+### Metodisk anmärkning om titulaturens räckvidd och dess administrativa översättning
+
+Kunglig titulatur och faktisk administrativ kapacitet bör behandlas som två skilda observationsserier. En kröning kan förändra den formella rang genom vilken en härskare uppfattas i diplomatiska och kyrkliga sammanhang utan att samtidigt skapa nya lokala ämbeten, nya uppbördsrutiner eller en likformig territoriell förvaltning. Titulaturens förändring kan alltså dateras till en bestämd händelse, medan dess administrativa konsekvenser endast kan beskrivas som en serie ojämnt fördelade processer.
+
+Av detta följer att uttrycket ”kungarike” i framställningen inte används som garanti för institutionell standardisering. När kunglig värdighet nämns avses först och främst en förändring i härskarens formella anspråk och erkända rang. Frågan om vilka resurser som därefter faktiskt kunde mobiliseras inom olika landsdelar måste behandlas separat och kan inte härledas enbart ur titeln.
+
 ## Mieszko II, Bezprym och den stora krisen
+### Krisens komponenter och frågan om administrativ uthållighet
+
+Händelserna under 1030-talet kan delas upp i åtminstone fyra analytiska komponenter: en dynastisk konflikt inom Piastätten, yttre militära angrepp, upplösning av central resursmobilisering och lokalt motstånd mot världsliga eller kyrkliga krav. Källmaterialet gör det inte möjligt att mekaniskt rangordna dessa faktorer som en enda orsakskedja.
+
+Källmaterialet gör det inte möjligt att mekaniskt rangordna dessa faktorer som en enda orsakskedja. Det är därför säkrare att beskriva dem som ömsesidigt förstärkande. En försvagad härskare kunde inte lika effektivt organisera försvar och uppbörd; minskad uppbörd försvagade följet; svagare militär närvaro ökade regional handlingsfrihet; och dynastiska rivaler kunde använda samma regionala missnöje som resurs.
+
+Ur institutionell synpunkt är det väsentligt att krisen visar begränsningen i att använda senare statliga kategorier bakåt i tiden. Ett territorium kunde fortsätta att ha befolkning, kyrkor, lokala eliter och etablerade kommunikationsvägar samtidigt som den centrala monarkins handlingsförmåga kollapsade.
+
+Ett territorium kunde fortsätta att ha befolkning, kyrkor, lokala eliter och etablerade kommunikationsvägar samtidigt som den centrala monarkins handlingsförmåga kollapsade. ”Statens sammanbrott” betyder här därför inte att alla former av ordning upphörde, utan att den särskilda kombination som hade gjort det möjligt för Piastfursten att samordna ett större område inte längre fungerade på samma sätt. Restaurationspolitiken efteråt var följaktligen både en återkomst och en omorganisation.
 
 Bolesławs son Mieszko II Lambert kröntes också till kung år 1025. Han var bildad, internationellt förbunden och till en början kapabel att fortsätta faderns offensiva politik. Men hans ställning underminerades av brödernas rivaliserande anspråk, av samtidiga angrepp från tysk och rusisk sida samt av inre missnöje. År 1031 bröt hans kungadöme samman. Mieszko tvingades fly, kungliga insignier överlämnades och hans halvbror Bezprym tog makten.
 
@@ -36,7 +125,24 @@ Bezpryms styre blev kort och våldsamt. Efter hans död återkom Mieszko, men ha
 
 Krisen visar hur ung den polska monarkin ännu var. Den vilade inte på en opersonlig förvaltning som kunde fortsätta fungera oberoende av härskarens öde. När dynastin splittrades, krigarföljet upplöstes och skatteflödena bröts kunde hela systemet falla samman. Samtidigt var den piastiska idén stark nog att återanvändas. Mieszko II:s son Kasimir I, senare kallad Restauratorn, återvände med stöd utifrån och återupprättade ett centraliserat herravälde.
 
+### Metodisk anmärkning om systemsammanbrott, funktionsbortfall och terminologisk överdrift
+
+Begrepp som ”kris”, ”sammanbrott” och ”upplösning” sammanför ofta flera typer av funktionsbortfall som inte behöver inträffa samtidigt. Dynastisk kontroll kan försvagas innan kyrkliga nätverk upphör att fungera; regional uppbörd kan fortsätta efter att central militär samordning har brutits; enskilda borgar kan bestå medan det politiska system som tidigare band dem samman förändras.
+
+Dynastisk kontroll kan försvagas innan kyrkliga nätverk upphör att fungera; regional uppbörd kan fortsätta efter att central militär samordning har brutits; enskilda borgar kan bestå medan det politiska system som tidigare band dem samman förändras. För en teknisk beskrivning bör dessa komponenter hållas åtskilda även när den löpande texten av språkliga skäl använder ett samlingsbegrepp.
+
+Ett ”sammanbrott” betyder därför här inte att varje tidigare institutionell relation upphör vid samma tidpunkt. Det betyder att tillräckligt många centrala samordningsfunktioner försvagas för att den tidigare regeringsformen inte längre skall kunna beskrivas som operativt sammanhängande. Den fortsatta återuppbyggnaden kan då bestå både av verklig rekonstruktion och av fortsatt användning av lokala strukturer som aldrig helt hade upphört.
+
 ## Kasimir I Restauratorn och rikets återuppbyggnad
+### Rekonstruktion snarare än enkel återställning
+
+Benämningen ”Restauratorn” kan ge intrycket att Kasimir återförde ett tidigare system till dess ursprungliga skick. En striktare beskrivning är att han återupprättade dynastisk överhöghet över en kärna av områden under förändrade förutsättningar.
+
+En striktare beskrivning är att han återupprättade dynastisk överhöghet över en kärna av områden under förändrade förutsättningar. Krakóws större praktiska betydelse, beroendet av externa allianser och behovet av att återorganisera kyrkliga institutioner innebar att den nya ordningen inte var en exakt kopia av den som hade existerat före 1030-talets kris. Återställning bör därför förstås funktionellt: det blev åter möjligt att upprätthålla ett piastiskt centrum som kunde föra utrikespolitik, stödja kyrklig organisation och fördela resurser över flera regioner.
+
+Det är också under sådana rekonstruktionsskeden som skriftliga och kyrkliga institutioner får oproportionerligt stor betydelse för senare historiker. Det som överlever i dokument och kyrkligt minne är lättare att följa än muntliga förpliktelser och lokala arrangemang.
+
+Det som överlever i dokument och kyrkligt minne är lättare att följa än muntliga förpliktelser och lokala arrangemang. Detta skapar en källkritisk asymmetri: institutionaliseringen kan framstå som snabbare i skrift än i den faktiska sociala praktiken. När texten talar om en mer formaliserad relation mellan fursten, kyrkan och de främsta männen bör detta därför inte läsas som att informella relationer upphörde, utan som att fler av dem kunde uttryckas i stabilare och återanvändbara former.
 
 Kasimir I regerade från 1030-talets slut till 1058. Han blev aldrig kung, men hans betydelse för dynastins överlevnad var grundläggande. Med stöd från det tysk-romerska riket och från rusiska förbindelser kunde han återta centrala områden och besegra regionala motståndare. Maktens tyngdpunkt flyttades i praktiken från det förstörda Gniezno till Kraków, som därefter skulle bli den viktigaste kungliga residens- och kröningsstaden.
 
@@ -44,15 +150,39 @@ Kasimir återuppbyggde kyrkans organisation och återställde de institutioner s
 
 Det var också under denna period som den polska furstemakten gradvis anpassades till feodala och kyrkliga strukturer som var vanliga i övriga latinska Europa. Kloster grundades eller återupprättades, latinsk skrift användes i förvaltning och minneskultur, och furstens relation till sina främsta män blev mer formaliserad. Samtidigt förblev riket ett dynastiskt patrimonium: landet betraktades i stor utsträckning som härskarfamiljens arv, vilket gjorde delning mellan söner både naturlig och farlig.
 
+### Metodisk anmärkning om återställning som jämförelse mellan funktioner snarare än former
+
+Benämningen ”restaurering” kan ge intryck av att en tidigare ordning återförs i oförändrat skick. I institutionell analys är det mer precist att fråga vilka funktioner som åter blir möjliga: stabil kontroll av centrala orter, regelbundenare resursöverföring, kyrklig organisering, dynastisk succession och extern representation. Om dessa funktioner återkommer genom andra orter, andra personella nätverk eller andra territoriella kompromisser är resultatet funktionellt jämförbart men strukturellt annorlunda.
+
+Denna distinktion gör det möjligt att tala om återupprättad centralmakt utan att anta att samtliga administrativa detaljer från den föregående perioden rekonstruerades. Det som återställs är således i första hand en kapacitet att samordna, inte en dokumenterbar kopia av varje tidigare organisationsform. Termen ”Restauratorn” bör därför inte användas som bevis för institutionell identitet mellan före- och efterkrisperioden.
+
 ## Bolesław II den djärve och konflikten med biskop Stanislaus
+### Konfliktens rättsliga och minnespolitiska efterliv
+
+För den senare politiska kulturen blev konflikten viktigare än vad vår möjlighet att rekonstruera dess exakta händelseförlopp motiverar. Det är därför nödvändigt att hålla isär den samtida maktkampen, den kyrkliga kulten kring Stanislaus och de tolkningar som senare krönikörer byggde upp kring kungens ansvar.
+
+Det är därför nödvändigt att hålla isär den samtida maktkampen, den kyrkliga kulten kring Stanislaus och de tolkningar som senare krönikörer byggde upp kring kungens ansvar. En händelse kan få konstitutionell eller moralisk betydelse i eftervärlden även om dess ursprungliga juridiska procedur är oklar. I detta fall kom berättelsen att användas som illustration av gränserna för monarkisk makt och av kyrkans rätt att värdera härskarens handlande.
+
+För en institutionell framställning är det mindre viktigt att välja en definitiv psykologisk förklaring till Bolesławs beslut än att notera koalitionsproblemet. En kung med sakral legitimitet kunde ändå förlora regeringsförmåga om relationerna till biskopar, stormän och dynastiska alternativ bröt samman samtidigt.
+
+En kung med sakral legitimitet kunde ändå förlora regeringsförmåga om relationerna till biskopar, stormän och dynastiska alternativ bröt samman samtidigt. Kröningen skapade alltså inte en juridiskt isolerad monark. Den placerade härskaren högre i rang, men hans praktiska handlingsutrymme fortsatte att bero på samarbete med grupper vars resurser inte helt kontrollerades av kronan.
 
 Kasimir Restauratorns son Bolesław II, kallad den djärve eller den frikostige, återupptog en aktiv utrikespolitik. Han ingrep i konflikter i Böhmen, Ungern och Rus och stödde påven Gregorius VII i investiturstridens större europeiska maktkamp. Den påvliga alliansen bidrog till att han kunde krönas till kung år 1076. För tredje gången inom ett halvt sekel bar en Piast den polska kungakronan.
 
-Hans fall blev emellertid lika dramatiskt som hans upphöjelse. Konflikten med biskop Stanislaus av Kraków slutade år 1079 med biskopens död och med kungens flykt. De exakta omständigheterna är omstridda redan i de medeltida källorna. Senare tradition framställde Stanislaus som martyr för kyrkans frihet och Bolesław som tyrann, medan modern forskning har försökt förstå händelsen som del av en politisk sammansvärjning eller ett uppror bland rikets elit. Det säkra är att kungen förlorade stödet från tillräckligt mäktiga grupper för att inte kunna stanna kvar.
+Hans fall blev emellertid lika dramatiskt som hans upphöjelse. Konflikten med biskop Stanislaus av Kraków slutade år 1079 med biskopens död och med kungens flykt. De exakta omständigheterna är omstridda redan i de medeltida källorna.
+
+De exakta omständigheterna är omstridda redan i de medeltida källorna. Senare tradition framställde Stanislaus som martyr för kyrkans frihet och Bolesław som tyrann, medan modern forskning har försökt förstå händelsen som del av en politisk sammansvärjning eller ett uppror bland rikets elit. Det säkra är att kungen förlorade stödet från tillräckligt mäktiga grupper för att inte kunna stanna kvar.
 
 Konflikten blev ett bestående motiv i polsk politisk kultur. Den visade att den sakrala kungavärdigheten inte gjorde monarken oangriplig. En härskare som bröt relationen till kyrkan och de ledande stormännen kunde avsättas. Samtidigt stärktes kulten kring Stanislaus under följande århundraden och kom att förknippas med tanken att ett söndrat Polen en dag skulle återförenas, liksom martyrens kropp enligt legenden hade fogats samman.
 
 ## Władysław Herman, Sieciech och kampen om arvet
+### Hovämbeten, delegerad makt och succession
+
+Sieciechs ställning illustrerar ett återkommande problem i tidigmedeltida monarkier: ett hovämbete kunde vara formellt beroende av fursten men i praktiken bli ett självständigt maktcentrum genom kontroll över utnämningar, borgar och tillgång till härskarens person.
+
+Sieciechs ställning illustrerar ett återkommande problem i tidigmedeltida monarkier: ett hovämbete kunde vara formellt beroende av fursten men i praktiken bli ett självständigt maktcentrum genom kontroll över utnämningar, borgar och tillgång till härskarens person. Att beskriva konflikten endast som rivalitet mellan individer döljer därför den administrativa frågan om vem som kontrollerade de resurser genom vilka furstens beslut verkställdes. När sönerna angrep Sieciechs ställning angrep de samtidigt en ordning som påverkade deras framtida möjlighet att ärva faktisk, inte bara nominell, makt.
+
+Den efterföljande konflikten mellan Zbigniew och Bolesław visar också att delad makt inte nödvändigtvis innebar territoriell federalism i modern mening. Två dynaster kunde ha skilda maktområden men konkurrera om överordnad legitimitet, internationella förbindelser och kontroll över gemensamma resurser. En uppdelning löste därför inte automatiskt successionen; den kunde endast flytta konflikten från frågan om omedelbart arv till frågan om vilken av delarna som skulle betraktas som överordnad.
 
 Efter Bolesławs fall tog hans bror Władysław Herman makten. Han lät sig inte krönas till kung och förde en försiktigare politik. Under hans regering fick palatinen Sieciech ett mycket stort inflytande, vilket väckte motstånd bland furstens söner och bland regionala stormän. Konflikten gällde inte enbart personlig makt; den handlade om vem som skulle kontrollera ämbeten, borgar och inkomster i ett rike där institutionerna fortfarande var tätt bundna till hovet.
 
@@ -60,7 +190,20 @@ Władysław hade två politiskt betydelsefulla söner: Zbigniew och Bolesław. D
 
 Bolesław III, kallad Krzywousty — ”Snedmun” — blev en av den tidiga Piasttidens mest energiska härskare. Han bedrev långvariga fälttåg i Pommern och lyckades underordna eller påverka delar av området. Missionen där följde den politiska expansionen, särskilt genom biskop Otto av Bamberg. Bolesław försvarade också sitt rike mot kejsar Henrik V:s fälttåg år 1109, en konflikt som senare polsk historieskrivning gav stark nationell symbolik.
 
+### Metodisk anmärkning om delegerad makt och skillnaden mellan ämbetsinnehav och suverän kompetens
+
+När ett hovämbete får stor praktisk betydelse uppstår lätt en terminologisk förskjutning där ämbetsinnehavaren beskrivs som om han själv bar den överordnade furstemakten. För analysen bör i stället skiljas mellan delegerad beslutskapacitet, kontroll över tillträde till härskaren, faktisk disposition över vissa resurser och den formella kompetens som fortfarande härleds ur furstens ställning. Dessa kategorier kan överlappa starkt utan att bli identiska.
+
+Ett ämbete kan alltså vara operativt dominerande men rättsligt sekundärt. Omvänt kan den formelle härskaren bevara den högsta titulaturen samtidigt som hans faktiska möjlighet att styra förmedlas genom ett begränsat antal personer. I successionskonflikter blir denna skillnad särskilt viktig, eftersom kontroll över ämbeten och kontroll över själva tronföljdsanspråket kan utvecklas i olika riktning.
+
 ## Testamentet år 1138: en ordnad delning som skapade oordning
+### Senioratets konstruktion som successionsmekanism
+
+Ordningen från 1138 kan beskrivas som ett försök att kombinera horisontell och vertikal succession. Den horisontella komponenten bestod i att överhögheten skulle följa dynastisk senioritet; den vertikala bestod i att vissa regionala områden skulle gå vidare inom respektive gren.
+
+Den horisontella komponenten bestod i att överhögheten skulle följa dynastisk senioritet; den vertikala bestod i att vissa regionala områden skulle gå vidare inom respektive gren. Problemet var inte bara att principerna kunde kollidera, utan att de krävde en accepterad metod för att fastställa vilka befogenheter som hörde till senioratet och vilka som hörde till den ärftliga regionalmakten. Så länge en överordnad instans saknades blev varje större konflikt också en konflikt om hur själva systemet skulle tolkas.
+
+Fragmenteringen ökade dessutom den administrativa variationen. När ett större furstendöme delades behövde inte varje ny del utvecklas på samma sätt. En hertig kunde prioritera stadsgrundningar, en annan kyrkliga donationer, en tredje militär expansion eller relationer till en extern länsherre. Med tiden skapade detta skillnader i rättslig praxis, ekonomisk orientering och politiska allianser. Att tala om ”splittringstiden” som en enda institutionell fas är därför endast möjligt på mycket hög abstraktionsnivå.
 
 Bolesław III:s mest långvariga arv blev hans successionsordning från 1138. Han försökte förena två oförenliga principer. Å ena sidan skulle varje son få ett eget ärftligt område. Å andra sidan skulle riket förbli en enhet under den äldste dynastens överhöghet. Den seniora hertigen skulle kontrollera Kraków och vissa centrala territorier samt företräda hela dynastin i utrikespolitiken.
 
@@ -70,7 +213,20 @@ Under de följande årtiondena blev Kraków en omstridd överhöghetsstad snarar
 
 Det är missvisande att se denna splittring enbart som förfall. De regionala hoven blev också centra för kolonisation, stadsgrundning, kyrkobyggande och rättslig utveckling. Hertigar konkurrerade om nybyggare, hantverkare och handelsvägar. Många städer fick självstyre enligt tysk stadsrätt, och jordbruket omorganiserades i nya bystrukturer. Den politiska fragmenteringen sammanföll alltså med ekonomisk och social omvandling.
 
+### Metodisk anmärkning om normativ successionsordning och faktisk reproduktion över generationer
+
+En successionsordning bör inte bedömas enbart efter den första fördelningen av territorier. För att vara institutionellt stabil måste den även kunna reproducera sin egen rangordning när nya arvingar tillkommer, när en gren utslocknar, när en innehavare av senior ställning avsätts eller när regionala eliter vägrar erkänna den tänkta hierarkin. Den normativa konstruktionen och dess fler-generationella funktion är därför skilda analytiska objekt.
+
+År 1138 är i detta avseende mindre en enkel delningspunkt än början på ett återkommande tolkningsproblem. Varje ny succession producerade frågor om arvsdel, senioritet, Krakóws ställning och förhållandet mellan personligt innehav och överordnad dynastisk rang. Systemets bristande reproducerbarhet är viktigare än om den ursprungliga formuleringen i princip kunde beskrivas som sammanhängande.
+
 ## De schlesiska Piastarna: rikedom, urbanisering och förlorad överhöghet
+### Regionalisering, länsrelationer och rättslig differentiering
+
+Schlesien är särskilt användbart för att visa skillnaden mellan dynastisk identitet och statsrättslig anslutning. Piastisk härkomst fortsatte att legitimera lokala hertigar samtidigt som deras länsrättsliga relationer allt tydligare bands till Böhmen. Detta innebar inte att ett kulturellt eller genealogiskt brott inträffade vid ett enda datum.
+
+Detta innebar inte att ett kulturellt eller genealogiskt brott inträffade vid ett enda datum. Snarare förändrades den överordnade rättsliga ramen stegvis genom en serie individuella relationer, avtal och erkännanden. Därför kan samma hertig i genealogiska tabeller stå under rubriken ”Piast” och i en statsrättslig framställning behandlas inom den böhmiska kronans system.
+
+Den ekonomiska utvecklingen bör också beskrivas utan att använda urbanisering som ett enda mått på ”modernisering”. Stadslokationer, rättsliga privilegier, inflyttning, klosteretableringar och förändrad jordbruksorganisation skapade tätare nät av rättigheter och skyldigheter. Detta ökade mängden skriftlig administration och lokalt definierade jurisdiktioner. Resultatet var inte nödvändigtvis starkare centralmakt; samma process kunde göra regionala enheter mer självständigt fungerande.
 
 Władysław den landsflyktiges efterkommande återvände till Schlesien och grundade en rad dynastiska linjer. Schlesien blev ett av de mest utvecklade områdena i de polska länderna. Närheten till Böhmen och det tysk-romerska riket, tillgången till handelsvägar och en omfattande inflyttning av tyskspråkiga nybyggare bidrog till en snabb urbanisering. Städer som Wrocław växte i betydelse, klosterordnar etablerades och lokala hertigar använde skriftliga privilegier för att locka kapital och arbetskraft.
 
@@ -80,7 +236,20 @@ Mongolernas fälttåg ledde inte till varaktig ockupation av Polen, men det slog
 
 Schlesiens utveckling visar att dynastisk härkomst inte automatiskt bestämde politisk tillhörighet. En piastisk hertig kunde vara kulturellt flerspråkig, rättsligt knuten till Böhmen och ekonomiskt orienterad mot Centraleuropas västliga handelsnät. Det moderna antagandet att varje dynast måste motsvara en nationell stat passar dåligt på denna värld.
 
+### Metodisk anmärkning om regional utveckling och felaktig användning av centrum-periferi-modeller
+
+Regional ekonomisk och administrativ utveckling skall inte automatiskt tolkas som funktion av närhet till eller avstånd från ett polskt politiskt centrum. Schlesiska hertigdömen kunde utveckla urbana, rättsliga och kyrkliga strukturer samtidigt som deras relation till Kraków försvagades och deras relation till Böhmen stärktes. En enkel centrum-periferi-modell riskerar därför att blanda samman politisk underordning med institutionell komplexitet.
+
+För den fortsatta framställningen betraktas regional kapacitet som en egen variabel. Ett territorium kan vara mindre integrerat i den polska kronan men mer administrativt differentierat än ett område som står närmare kronan. Politisk avskiljning och institutionell förenkling är således inte synonyma processer, och regionalisering kan sammanfalla med ökad lokal organisationsgrad.
+
 ## Storpolen, Lillpolen och kampen om Kraków
+### Kraków som kompetens- och legitimitetscentrum
+
+Krakóws betydelse under fragmenteringen bör inte förstås som att staden fungerade som huvudstad i modern administrativ mening under hela perioden. Dess vikt låg i en kombination av residensfunktion, dynastisk tradition, regionala resurser och möjligheten att knyta anspråk på överhöghet till kontrollen över Lillpolen.
+
+Dess vikt låg i en kombination av residensfunktion, dynastisk tradition, regionala resurser och möjligheten att knyta anspråk på överhöghet till kontrollen över Lillpolen. Den hertig som innehade Kraków kunde därför göra anspråk på en särskild rang utan att därmed effektivt styra alla andra piastiska territorier. Detta gör det nödvändigt att skilja mellan symbolisk prioritet och faktisk jurisdiktion.
+
+Storpolens ställning var på motsvarande sätt mer än en fråga om minnet av Gniezno. Regionen innehöll etablerade kyrkliga och dynastiska centra, men dess interna politiska struktur förändrades genom arv och delningar. När härskare från Storpolen försökte kontrollera Kraków var detta alltså inte en enkel rörelse från en periferi mot ett centrum, utan en konflikt mellan flera regionala resursbaser som var och en kunde stödja anspråk på större överhöghet.
 
 I Storpolen styrde flera Piastar över Poznań, Gniezno och angränsande områden. Regionen bar på minnet av den första statens kärna och på Gnieznos kyrkliga prestige. Hertigar som Mieszko III den gamle försökte använda senioratsprincipen för att kontrollera Kraków, men mötte återkommande motstånd. Hans långa politiska liv bestod av avsättningar, återkomster och nya koalitioner, vilket illustrerar hur överhögheten hade blivit beroende av lokala eliter.
 
@@ -88,7 +257,20 @@ Lillpolen med Kraków var symboliskt central men ofta svår att kontrollera. Hä
 
 Under denna tid utvecklades också ett politiskt språk där ”hela Polen” fortfarande var tänkbart trots att ingen furste styrde allt. Krönikor, kyrkoprovinsen i Gniezno och kulten av nationella helgon bevarade föreställningen om en gemensam ordning. Regionala hertigar kunde därför göra anspråk på mer än sitt eget arvland, och kontrollen över Kraków fortsatte att ge en särskild legitimitet.
 
+### Metodisk anmärkning om residensort, symboliskt centrum och faktisk beslutsplats
+
+Begreppet ”huvudstad” är olämpligt om det används utan precisering för större delen av perioden. Kraków kan samtidigt fungera som prestigefyllt innehav, kröningsort, residens, rättslig referenspunkt och mötesplats för regionala eliter, men dessa funktioner behöver inte vara identiska eller exklusiva. Att kontrollera orten kan därför ge legitimitetsfördelar som inte motsvarar en modern huvudstads fulla administrativa centralitet.
+
+När framställningen talar om Kraków som centrum bör läsaren därför fråga vilken centrumfunktion som avses i det aktuella sammanhanget. I vissa fall gäller det senioratsanspråk, i andra hovets vistelse, i andra kyrklig eller ceremoniell betydelse. Det tekniskt säkrare uttrycket är att Kraków ackumulerade flera centrala funktioner, inte att samtliga riksfunktioner alltid var lokaliserade där.
+
 ## Masovien, Konrad och Tyska orden
+### Avtal med en militär orden som institutionellt problem
+
+Konrads politik bör bedömas utifrån skillnaden mellan att anlita eller etablera en militär aktör i ett gränsområde och att på lång sikt kontrollera den rättsliga form som aktörens territorium skulle få.
+
+Konrads politik bör bedömas utifrån skillnaden mellan att anlita eller etablera en militär aktör i ett gränsområde och att på lång sikt kontrollera den rättsliga form som aktörens territorium skulle få. Tyska orden var inte en vanlig regional vasall utan en religiös-militär institution med egna privilegier, internationella förbindelser och kapacitet att söka rättslig bekräftelse utanför den masoviske hertigens omedelbara maktsfär. Därför kunde en lösning som på kort sikt ökade den militära kapaciteten vid gränsen på längre sikt skapa ett separat territoriellt centrum.
+
+För Masovien innebar detta att dess utrikespolitiska läge blev strukturellt annorlunda än för flera andra piastiska områden. Förhållandet till Litauen, Rus och orden gjorde att regional diplomati inte enbart kunde följa den politik som bedrevs från Kraków eller Storpolen. Den masoviska Piastlinjens långvariga existens visar dessutom att återupprättandet av ett polskt kungadöme på 1300-talet inte automatiskt absorberade alla piastiska sidogrenar i samma administrativa struktur.
 
 Masovien utvecklades under en egen piastisk gren. Området låg närmare baltiska och rusiska gränszoner och utsattes för andra strategiska problem än Schlesien eller Storpolen. Konrad av Masovien sökte hjälp mot de hedniska preussarna och bjöd under 1200-talets första hälft in Tyska orden att etablera sig i gränsområdet kring Chełmno.
 
@@ -96,7 +278,20 @@ Beslutet fick följder som vida översteg Konrads avsikt. Orden skapade en egen 
 
 Masoviens Piastar fortsatte samtidigt att regera långt efter att den polska kungakronan övergått till andra dynastier. De förde egen diplomati och kunde luta sig mot Polen, Litauen eller Tyska orden beroende på läget. Först på 1500-talet, när den masoviska manliga linjen dog ut, införlivades området fullständigt med kronan.
 
+### Metodisk anmärkning om avtalad hjälp, territoriell etablering och efterföljande autonomisering
+
+När en extern eller halvt extern militär aktör ges rättigheter inom ett gränsområde bör den ursprungliga avtalsrelationen skiljas från den institutionella utveckling som följer. En hjälpaktör kan över tid förvärva egna resurser, externa privilegier, territoriell kontinuitet och diplomatiska förbindelser som gör den mindre beroende av den furste som ursprungligen underlättade etableringen. Det slutliga maktförhållandet kan därmed inte läsas direkt ur den första överenskommelsens syfte.
+
+I fråga om Tyska orden är detta särskilt viktigt, eftersom retrospektiva formuleringar lätt gör den senare rivaliteten till ett redan färdigt innehåll i Konrads beslut. För en teknisk kronologi bör i stället ursprunglig funktion, rättslig etablering, territoriell expansion och senare suveränitetsliknande kapacitet beskrivas som skilda steg. Detta minskar berättelsens dramatik men ökar precisionen i orsakskedjan.
+
 ## Kyrkan som sammanhållande institution
+### Kyrklig enhet och jurisdiktionens begränsningar
+
+Att kyrkan fungerade sammanhållande betyder inte att den var politiskt neutral eller administrativt enhetlig i alla frågor. Ärkebiskopar, biskopar, domkapitel, kloster och lokala kyrkliga institutioner hade egna ekonomiska baser och rättsliga intressen.
+
+Ärkebiskopar, biskopar, domkapitel, kloster och lokala kyrkliga institutioner hade egna ekonomiska baser och rättsliga intressen. De kunde stödja territoriell återförening när denna skyddade kyrkliga rättigheter, men de kunde lika gärna motsätta sig en furste som försökte reducera immuniteter eller ingripa i kyrklig jurisdiktion. Kyrkans överregionala struktur bör därför förstås som ett nätverk som möjliggjorde kommunikation och gemensamma normer, inte som en central myndighet som automatiskt arbetade för en viss politisk lösning.
+
+Skriftkulturen ökade samtidigt möjligheten att behandla rättigheter som varaktiga över tid. Donationer, immuniteter och privilegier kunde hänvisas till efter en härskares död och därigenom begränsa efterträdarens handlingsutrymme. Detta är en av de processer genom vilka monarkin gradvis blev mer bunden av tidigare rättshandlingar. Kontinuiteten låg då inte endast i dynastin utan i dokumenterade anspråk som olika institutioner kunde lägga fram mot dynastin.
 
 Under splittringstiden var kyrkan en av få institutioner som omfattade de polska områdena som helhet. Ärkebiskopen av Gniezno och de regionala biskoparna verkade över dynastiska gränser. Kyrkliga synoder, gemensamma helgonkulter och latinsk skriftkultur höll föreställningen om Polen levande även när den världsliga makten var uppdelad.
 
@@ -104,13 +299,31 @@ Kanoniseringen av Stanislaus av Kraków år 1253 fick särskild politisk laddnin
 
 Kyrkan förmedlade dessutom utbildning och administrativa färdigheter. Präster skrev dokument, förde minne över donationer och utvecklade den begreppsvärld där krona, rike, lag och legitim succession kunde beskrivas. Den återförenade monarkin på 1300-talet byggde därför inte från ingenting; den använde institutioner som hade överlevt furstarnas delningar.
 
+### Metodisk anmärkning om kyrklig geografi som separat kontinuitetslager
+
+Kyrkliga gränser, stiftsrelationer och ärkebiskoplig överordning bör inte automatiskt översättas till världslig territoriell enhet. Kyrkan kunde bevara kommunikations- och jurisdiktionsmönster över områden vars furstliga styre var splittrat, men denna sammanhållning innebar inte att biskopar fungerade som ersättning för en gemensam världslig regering. Kyrklig kontinuitet är därför ett separat lager, inte en dold form av politisk centralisering.
+
+Samtidigt kan detta lager bidra till att vissa namn, rättsliga föreställningar och territoriella samband förblir begripliga över dynastiska avbrott. Den analytiska poängen är inte att kyrkan ”höll ihop staten” i modern mening, utan att den reproducerade vissa överregionala relationer som senare kunde användas av en återförenad monarki. Kontinuiteten är därmed infrastrukturell och normativ snarare än direkt regeringsmässig.
+
 ## Mongoliska invasioner och den regionala maktbalansen
+### Militär störning och efterföljande regional kontinuitet
+
+Mongolräderna bör analytiskt skiljas från en erövring som syftar till permanent territoriell införlivning. Deras betydelse låg i förstörelse, militär chock, omfördelning av lokala resurser och i att pågående regionala maktprojekt avbröts. När en ledande dynast stupade kunde följden bli större än den omedelbara materiella förlusten, eftersom hans person kunde vara den samlande nod som höll flera territoriella anspråk samman.
+
+Samtidigt skall avbrottet inte överdrivas till total samhällelig nollställning. Stadsutveckling, kolonisation, kyrkliga nätverk och regionala rättssystem fortsatte efter invasionerna. Den långsiktiga politiska effekten bestod därför främst i förändrade möjligheter för vissa dynastiska linjer och i att ingen enskild regional furste omedelbart kunde omsätta sin ställning i varaktig överhöghet över de övriga.
 
 Invasionen 1241 var den mest berömda, men mongoliska styrkor återkom 1259–1260 och 1287–1288. De senare fälttågen orsakade stor förstörelse i Lillpolen, även om de inte ledde till varaktig kontroll. Angreppen påverkade befästningar, militär organisation och regional politik. Samtidigt har deras demografiska konsekvenser ibland överdrivits; den långsiktiga ekonomiska utvecklingen fortsatte.
 
 Det avgörande politiska resultatet av 1241 var att den schlesiska samlingspolitiken bröts. Ingen annan piastisk gren kunde omedelbart ersätta Henrik II:s ställning. Därmed fortsatte konkurrensen mellan Schlesien, Storpolen, Kujavien och Lillpolen under ytterligare ett halvt sekel. Den som ville återförena riket måste inte bara besegra andra Piastar utan också hantera Böhmen, Brandenburg och Tyska orden.
 
 ## De första återföreningsförsöken i slutet av 1200-talet
+### Från regional aggregation till kunglig titel
+
+De sena 1200-talets återföreningsprojekt bör beskrivas som aggregationsförsök snarare än som återställande av en exakt tidigare gräns. En furste kunde lägga samman områden genom arv, avtal, militär kontroll eller erkännande utan att alla delarna därmed fick samma administrativa ordning.
+
+En furste kunde lägga samman områden genom arv, avtal, militär kontroll eller erkännande utan att alla delarna därmed fick samma administrativa ordning. Kungatiteln fungerade i detta sammanhang som ett instrument för att rangordna den samlade konstruktionen över konkurrerande regionala hertigdömen. Kröningen av Przemysł II gav därför större normativ betydelse åt en territoriellt ofullständig union än vad dess geografiska omfattning ensam skulle antyda.
+
+Det korta tidsspannet mellan kröningen och mordet visar samtidigt hur beroende projektet var av personen. Institutioner som kunde bära vidare en kunglig ordning fanns, men de var ännu inte tillräckligt starka för att neutralisera dynastisk konkurrens efter härskarens död. Därmed blev kronan åter ett objekt som flera dynastiska system kunde göra anspråk på.
 
 Mot slutet av 1200-talet ökade trycket mot politisk samling. Ekonomiska förbindelser korsade de furstliga gränserna, kyrkan förespråkade enhet och yttre makter hotade att ta kontroll över polska områden. Flera furstar försökte därför bygga en större monarki.
 
@@ -118,7 +331,20 @@ Henrik IV Probus av Wrocław kontrollerade Kraków och planerade sannolikt en ku
 
 Przemysłs kungadöme var territoriellt begränsat, men titeln hade stor symbolisk kraft. Den sade att Polen åter kunde vara ett kungarike trots att alla gamla områden ännu inte var förenade. Przemysł mördades redan år 1296, sannolikt i samband med brandenburgska intressen och lokala motståndare. Hans död öppnade vägen för både den kujaviske Piasten Władysław Łokietek och den böhmiske kungen Václav II.
 
+### Metodisk anmärkning om aggregation, inkorporation och överordnad titulatur
+
+Återförening kan ske genom flera tekniskt skilda mekanismer: arv av ett nytt område, personlig union mellan tidigare separata innehav, militär underordning, erkännande av överhöghet, rättslig inkorporation eller kontroll av en symboliskt central ort. Att flera sådana mekanismer samtidigt ökar en furstes räckvidd betyder inte att de berörda territorierna får samma status.
+
+Det är därför lämpligt att tala om territoriell aggregation innan man talar om full institutionell integration. En kunglig titel kan läggas ovanpå en sådan aggregation och skapa en gemensam representativ ram, medan regionala rätts- och förvaltningsskillnader består. Återföreningsprocessen bör följaktligen mätas i flera dimensioner och inte enbart i antalet områden som på en karta kan ges samma färg.
+
 ## Přemyslidernas polska kungadöme
+### Personal, ämbeten och dynastisk centrumförskjutning
+
+Václav II:s styre är administrativt intressant därför att det kombinerade en polsk kungatitel med ett dynastiskt centrum utanför Polen. Detta gjorde frågan om representation särskilt viktig.
+
+Detta gjorde frågan om representation särskilt viktig. Kungens närvaro kunde ersättas av lokala eller utsända ämbetsmän i större utsträckning än i en ordning där härskaren själv ständigt rörde sig mellan rikets viktigaste centra. Ett sådant system kunde öka graden av rutinmässig delegation samtidigt som det skapade motstånd mot personer som uppfattades som externt placerade eller mindre förankrade i regionala nätverk.
+
+Att Přemyslidernas huvudlinje dog ut innebar därmed inte att de institutionella former som hade använts under deras styre omedelbart försvann. Ämbetsbruk, skriftliga procedurer och föreställningen om en sammanhållen kunglig kompetens kunde återanvändas av deras efterträdare. Dynastibyte är i detta avseende inte detsamma som administrativ omstart.
 
 Václav II av Böhmen tillhörde Přemysliddynastin och var en av Centraleuropas mäktigaste härskare. Han utnyttjade de polska furstarnas rivalitet, vann stöd bland delar av eliten och kröntes år 1300 till kung av Polen. Hans styre innebar inte att Polen upphörde att existera som kungarike; tvärtom försökte han administrera det genom ämbetsmän och en mer enhetlig kunglig struktur. Men centrum för hans dynastiska makt låg i Prag, och Polen ingick i ett större böhmiskt projekt.
 
@@ -126,7 +352,18 @@ Václavs son Václav III ärvde kronorna men mördades år 1306 innan han kunde 
 
 Den böhmiska episoden bör inte behandlas som ett främmande avbrott i en annars obruten piastisk följd. Den visar snarare hur den polska kronan hade blivit en europeisk dynastisk tillgång. Legitimitet kunde vinnas genom kröning, arv, äktenskap, lokalt stöd och faktisk kontroll — inte enbart genom tillhörighet till Piastätten.
 
+### Metodisk anmärkning om dynastiskt centrum och administrativ periferisering
+
+När en härskare bär flera territoriellt skilda kronor uppstår frågan om var dynastins operativa centrum faktiskt ligger. Detta kan mätas genom residensmönster, rekrytering av ämbetsmän, diplomatiska prioriteringar och fördelning av hovets resurser, men ingen av dessa indikatorer behöver ensam avgöra den rättsliga ställningen för ett enskilt kungarike. Ett rike kan förbli formellt distinkt även när den regerande dynastins tyngdpunkt ligger någon annanstans.
+
+Přemyslidernas styre bör därför inte beskrivas som om Polen enkelt absorberades i Böhmen, men inte heller som om dynastiskt centrum saknade praktisk betydelse. Den tekniska frågan är hur ett separat kungligt titelområde administreras när den regerande familjens huvudsakliga institutionella nätverk är förlagt till ett annat centrum. Detta problem återkommer senare i andra personalunioner.
+
 ## Władysław I Łokietek: från landsflykt till kröning
+### Återföreningens territoriella ofullständighet
+
+Łokieteks framgång bör mätas mot den institutionella utgångspunkten snarare än mot en idealiserad karta över alla områden som någon gång hade styrts av Piastar. Hans kungadöme var territoriellt begränsat, men det kunde upprätthålla en återkommande kunglig succession och ge Kraków en stabilare ceremoniell funktion. Det gjorde skillnad mellan ett nätverk av konkurrerande hertigdömen där kungatiteln var sporadisk och en monarki där nästa regerande dynast kunde ärva själva kungliga ramen.
+
+Stadsupproret 1311–1312 visar samtidigt att politisk integration inte innebar enhetliga preferenser inom riket. Borgerskap, regional adel, kyrkliga institutioner och furstliga nätverk kunde värdera olika externa förbindelser olika. Återföreningen bör därför inte beskrivas som ett enkelt gemensamt nationellt projekt, utan som det resultat som en viss koalition lyckades göra mer varaktigt än konkurrerande alternativ.
 
 Władysław Łokietek, vars tillnamn ungefär betyder ”den armbågshöge” eller ”den lille”, tillhörde en kujavisk gren av Piastdynastin. Hans väg till kungamakten var långt ifrån rak. Han förlorade territorier, gick i landsflykt och stod länge svagare än sina rivaler. Efter Přemyslidernas fall lyckades han emellertid återvända och gradvis etablera kontroll över Lillpolen, Kujavien och Storpolen.
 
@@ -138,7 +375,20 @@ Konflikten med orden blev särskilt bitter. Pommerellen och Gdańsk hade år 130
 
 När Władysław dog år 1333 efterlämnade han ett mindre men återupprättat kungarike. Hans främsta prestation var inte territoriell fullständighet utan dynastisk och institutionell kontinuitet. Kronan hade återförts till en Piast, och hans son kunde regera som kung utan att först behöva erövra själva kungavärdigheten.
 
+### Metodisk anmärkning om de facto-kontroll och retroaktiv legitimitetskompression
+
+När en senare framgångsrik härskare rekonstrueras bakåt från sin kröning finns en tendens att tidigare osäkra innehav framstår som steg i en sammanhängande plan. En teknisk kronologi bör i stället beskriva varje fas utifrån den kontroll och de allianser som då faktiskt förelåg. Landsflykt, återkomst, regionalt erkännande och kunglig kröning är skilda tillstånd och bör inte reduceras till en enda stigande kurva.
+
+Kröningen fungerar därefter som en kraftig legitimitetskompression: flera tidigare konkurrerande anspråk kan i efterhand ordnas kring den person som slutligen lyckades etablera kunglig kontinuitet. Detta är historiografiskt praktiskt men analytiskt riskabelt. Framställningen behåller därför både slutresultatet och de tidigare osäkra mellanlägena.
+
 ## Kasimir III den store: lag, städer och diplomatisk realism
+### Regional rätt, kronans domsrätt och administrativ standardisering
+
+Kasimir III:s regering förknippas ofta med ”lagreformer”, men termen standardisering är i flera sammanhang mer precis än fullständig unifiering. Regionala rättstraditioner fortsatte att existera, och kunglig normgivning innebar inte att alla lokala skillnader avskaffades.
+
+Regionala rättstraditioner fortsatte att existera, och kunglig normgivning innebar inte att alla lokala skillnader avskaffades. Det viktiga var att kronan i större utsträckning kunde fungera som referenspunkt för rättskipning, privilegiebekräftelse och territoriell administration. En starkare monarki behöver i detta sammanhang inte betyda färre privilegier; den kan också betyda att privilegier registreras, bekräftas och förvaltas inom en tydligare kunglig ram.
+
+Den östliga expansionen ökade dessutom förvaltningsproblemets heterogenitet. Områden med olika språk, religioner och lokala rättsformer skulle knytas till kronan utan att omedelbart göras identiska med rikets västliga kärnområden. Detta skapade behov av differentierad administration snarare än enkel uniformitet. Samma monark kunde därför samtidigt främja central kunglig auktoritet och bekräfta särregler för särskilda grupper och territorier.
 
 Kasimir III regerade från 1333 till 1370 och blev den siste kungen ur Piastdynastins kungliga linje. Han ärvde ett rike med olösta gränskonflikter och valde ofta diplomati framför kostsamma krig. Genom uppgörelser med Johan av Luxemburg avstod den böhmiske kungen från sina anspråk på den polska kronan, medan Kasimir accepterade att större delen av Schlesien låg under böhmisk överhöghet. Det var en smärtsam men realistisk kompromiss.
 
@@ -152,7 +402,18 @@ Kungen stödde också judiska samhällen och bekräftade privilegier som gav sky
 
 Kasimir gifte sig flera gånger men fick ingen legitim son som kunde ärva kronan. Detta var hans dynastiska misslyckande och samtidigt orsaken till nästa stora förändring. Genom tidigare överenskommelser blev systersonen Ludvig av Ungern, ur huset Anjou, arvtagare. När Kasimir dog år 1370 upphörde den direkta piastiska kungalinjen.
 
+### Metodisk anmärkning om normproduktion, lokal variation och graden av rättslig standardisering
+
+Utfärdande eller sammanställning av rättsliga stadgor innebär inte automatiskt att hela riket lyder under en enda materiellt identisk lag. Regionala normer, lokala privilegier, kyrkliga jurisdiktioner och stadsrätter kan fortsätta parallellt med en starkare kunglig rättskipning. Standardisering bör därför mätas i procedurer, appellationsmöjligheter och kunglig normgivning lika väl som i textuell likformighet.
+
+Det är i detta avseende mer precist att tala om ökad koordination än om full rättsenhet. Kronan kan bli en viktigare referenspunkt samtidigt som regionala skillnader reproduceras inom den kungliga ordningen. Den administrativa effekten består då i att variationen ordnas och erkänns, inte nödvändigtvis i att den avskaffas.
+
 ## Anjoudynastin och personalunionen med Ungern
+### Från dynastisk succession till privilegierad förhandling
+
+Personalunionen med Ungern visar tydligt skillnaden mellan gemensam härskare och gemensam stat. Kronornas skilda rättsliga identitet gjorde att samma person måste förhandla med olika politiska grupper i respektive rike. Frånvaron från Polen förstärkte behovet av delegerad förvaltning och gjorde de lokala eliternas samarbete mer synligt som en nödvändig resurs för monarkin.
+
+Koszyceprivilegiet 1374 är administrativt viktigt eftersom en tillfällig dynastisk målsättning — att säkra successionen för en dotter — omvandlades till en mer varaktig begränsning av kunglig resursmobilisering. Det illustrerar hur konstitutionella strukturer ofta växte fram genom specifika förhandlingar snarare än genom abstrakta reformprogram. Ett privilegium som utfärdades för att lösa ett konkret successionsproblem kunde senare åberopas som allmän rätt.
 
 Ludvig I var redan kung av Ungern när han ärvde Polen. Hans välde skapade en personalunion, men de båda rikena förblev rättsligt och politiskt skilda. Ludvig vistades främst i Ungern och styrde Polen genom representanter, däribland sin mor Elisabet, som själv var piastisk prinsessa. Frånvaron stärkte de polska stormännens förhandlingsläge.
 
@@ -160,7 +421,18 @@ Den centrala frågan var successionen. Ludvig saknade söner och ville att en av
 
 När Ludvig dog år 1382 följde ett interregnum. Polens stormän ville inte nödvändigtvis fortsätta unionen med Ungern på de villkor som Ludvigs äldre dotter Maria och hennes trolovade Sigismund representerade. Till slut accepterades den yngre dottern Jadwiga. Hon anlände till Polen och kröntes år 1384 som *rex Poloniae*, ”kung av Polen”. Den maskulina titeln betonade att hon regerade i egen rätt och inte endast var en blivande kungs gemål.
 
+### Metodisk anmärkning om personalunion och frånvaron av automatisk institutionsunion
+
+En gemensam monark skapar inte i sig en gemensam statlig apparat. Två riken kan dela härskare men behålla skilda ämbeten, skattebaser, rättsordningar, elitförsamlingar och territoriella prioriteringar. Personalunion bör därför definieras minimalt som gemensamt innehav av monarkisk värdighet och först därefter kompletteras med en beskrivning av vilka praktiska samordningsmekanismer som faktiskt förekommer.
+
+Denna försiktighet är särskilt viktig när härskaren vistas oftare i det ena riket än i det andra. Frånvaro kan öka behovet av representanter och samtidigt stärka lokala eliters förhandlingsposition. Resultatet är inte nödvändigtvis svagare monarki i alla avseenden, men det förändrar den operativa fördelningen mellan central dynastisk auktoritet och regionalt samtycke.
+
 ## Jadwiga: arvtagare, monark och dynastisk förbindelse
+### Titulatur, äktenskap och unionskonstruktion
+
+Jadwigas titulatur visar att kön, dynastiskt arv och kunglig funktion inte alltid uttrycktes genom den terminologi som en modern läsare spontant förväntar sig. Den latinska användningen av *rex* markerade hennes innehav av kronan och skall inte reduceras till en språklig kuriositet. Äktenskapet med Jogaila var därefter inte endast en privat dynastisk handling, utan en mekanism för att länka två politiska ordningar vars institutioner fortsatte att vara skilda.
+
+Krevoöverenskommelsens juridiska språk har därför fått stor uppmärksamhet. Formuleringar om förening kan läsas olika beroende på om man frågar efter dynastiskt samband, territoriell inkorporation eller senare faktisk förvaltningspraxis. Den säkraste beskrivningen av den tidiga unionen är att en gemensam monarkisk och dynastisk ram skapades samtidigt som Polen och Litauen fortsatte att ha skilda ämbeten och rättsordningar.
 
 Jadwiga var mycket ung när hon kröntes, men hennes person fick snabbt en stark symbolisk betydelse. Hon var genom Anjouätten förbunden med Ungern och genom sin farmor med Piastdynastin. Hennes äktenskap blev en fråga om hela rikets orientering. Ett tidigare habsburgskt äktenskapsarrangemang övergavs, och de polska ledarna valde i stället en union med Litauen.
 
@@ -171,6 +443,13 @@ Jogaila döptes som Władysław, gifte sig med Jadwiga och kröntes år 1386. D�
 Jadwiga deltog i rikets politik och spelade en viktig roll i förhållandet till Ungern och de rutenska områdena. Hon stödde också kyrka och lärdom. Hennes donationer bidrog till att universitetet i Kraków kunde återupprättas efter hennes död. Hon dog år 1399 efter en förlossning, och hennes barn överlevde inte. Därmed försvann den direkta anjouska arvsförbindelsen, medan Jagiełłos ställning i Polen måste byggas på nytt genom politiskt samtycke.
 
 ## Władysław II Jagiełło och den polsk-litauiska unionens första sekel
+### Union som återkommande procedur snarare än engångshändelse
+
+Den polsk-litauiska unionen under Jagiełło bör inte behandlas som ett enda avtal som en gång för alla definierade relationen. Den måste snarare förstås som en serie arrangemang som reglerade frågor om monark, storfurstlig ställning, eliternas rättigheter och utrikespolitisk samordning.
+
+Den måste snarare förstås som en serie arrangemang som reglerade frågor om monark, storfurstlig ställning, eliternas rättigheter och utrikespolitisk samordning. Varje senare överenskommelse byggde på tidigare praxis men kunde också ändra maktbalansen. Institutionellt är unionen därför bättre beskriven som en process med återkommande bekräftelser än som en färdig konstitution från 1385 eller 1386.
+
+Kriget mot Tyska orden visar samma sak från militär sida. Den gemensamma mobiliseringen var möjlig därför att två politiska system kunde samordna resurser utan att vara administrativt sammansmälta. Segern vid Grunwald förändrade maktbalansen men skapade inte automatiskt en ny territoriell ordning; militära resultat måste omsättas i belägringar, förhandlingar och fredsvillkor. Skillnaden mellan slagfältets utfall och fredens juridiska innehåll är därför central för att förstå perioden.
 
 Jagiełło regerade i Polen i nästan ett halvt sekel. Hans långa styre formade relationen mellan kronan och Litauen. I Litauen utmanades hans ställning av kusinen Vytautas, som efter konflikter blev storfurste med omfattande självständighet men erkände den gemensamma dynastiska ordningen. Unionen blev därmed en kombination av samarbete och konkurrens.
 
@@ -182,7 +461,18 @@ Unionen i Horodło år 1413 fördjupade samarbetet men visade också dess begrä
 
 Jagiełłos succession blev ett nytt problem. Efter flera äktenskap fick han slutligen söner med Sofia av Halshany. För att säkra deras ställning måste han ge den polska adeln nya privilegier. Kronan var därmed formellt ärftligt präglad men praktiskt beroende av erkännande. Denna dubbelhet blev kännetecknande för den senare medeltida polska monarkin.
 
+### Metodisk anmärkning om unionsgrad som en variabel och inte som en ja-eller-nej-egenskap
+
+Polsk-litauisk union bör inte behandlas som ett tillstånd som antingen föreligger fullt ut eller saknas. Gemensam monark, dynastiska överenskommelser, militärt samarbete, elitprivilegier och skilda territoriella institutioner kan kombineras i olika proportioner över tid. Unionsgraden är därför en vektor av relationer snarare än ett enda konstitutionellt värde.
+
+Detta gör det möjligt att beskriva både kontinuitet och återkommande omförhandling utan motsägelse. Två politiska enheter kan vara varaktigt förenade på dynastisk nivå samtidigt som deras administrativa och rättsliga separation förblir betydande. Varje unionsakt bör således läsas som en justering av relationens parametrar, inte automatiskt som skapandet av en helt ny ordning.
+
 ## Władysław III: två kronor och nederlaget vid Varna
+### Multipel kungavärdighet och resurskonflikt
+
+Att samma person innehade den polska och den ungerska kronan innebar inte att rikenas militära skyldigheter, skatter eller institutioner slogs samman. Tvärtom kunde en gemensam monark ställas inför konkurrerande prioriteringar. Ett krig som var centralt för den ena kronans säkerhet kunde vara perifert eller kostsamt för den andra. Detta skapar ett grundläggande problem i personalunioner: dynastins geografiska räckvidd ökar snabbare än dess förmåga att standardisera resursuttaget.
+
+Varnafälttåget kan därför behandlas som ett exempel på hur internationell legitimitet, påvlig politik, ungerska säkerhetsfrågor och en ung kungs dynastiska ställning sammanföll. För den polska monarkin blev den mest direkta institutionella följden åter en successionsfråga och ett interregnum, inte en territoriell förändring i Polen självt.
 
 Jagiełłos son Władysław III blev kung av Polen som minderårig år 1434. Under hans första år spelade ledande kyrkomän och stormän en stor roll, särskilt biskop Zbigniew Oleśnicki. År 1440 valdes Władysław även till kung av Ungern, där osmansk expansion skapade ett akut militärt hot.
 
@@ -191,6 +481,13 @@ Den unge kungen drogs in i ett korstågsprojekt. Efter en framgångsrik fälttå
 Hans död visade åter riskerna med en dynasti som bar flera kronor. Polens intressen sammanföll inte alltid med Ungerns, och en kung som regerade över båda rikena kunde dras in i konflikter långt från den polska kärnan. Efter ett interregnum övergick den polska kronan till hans yngre bror Kasimir.
 
 ## Kasimir IV Jagellon och det trettonåriga kriget
+### Krigsfinansiering, privilegier och integrering av Kungliga Preussen
+
+Det trettonåriga kriget visar tydligt övergången från en militär ordning där adligt uppbåd kunde framställas som den normala resursen till en situation där långvarigt krig krävde kredit, beskattning, legosoldater och samarbete med ekonomiskt starka städer.
+
+Det trettonåriga kriget visar tydligt övergången från en militär ordning där adligt uppbåd kunde framställas som den normala resursen till en situation där långvarigt krig krävde kredit, beskattning, legosoldater och samarbete med ekonomiskt starka städer. Den politiska kostnaden för resursmobilisering ökade därmed betydelsen av förhandlingar med adeln. Privilegier bör i detta sammanhang inte betraktas som externa begränsningar som råkade läggas på krigföringen, utan som en del av själva mekanismen genom vilken kriget kunde finansieras och legitimeras.
+
+Kungliga Preussens anknytning till kronan efter 1466 skapade dessutom en territoriell enhet med starka regionala privilegier och betydande urbana intressen. Integrering innebar därför inte full administrativ homogenisering. Kronan kunde utvidgas samtidigt som den blev mer rättsligt sammansatt. Detta mönster återkommer i den senare polska monarkin och är viktigt för att undvika antagandet att territoriell expansion automatiskt gav centralisering.
 
 Kasimir IV hade före sin polska kröning varit storfurste av Litauen. När han blev kung år 1447 återförenades de båda kronorna under samma person, men han måste balansera mellan två politiska eliter som inte alltid hade samma mål. Han blev en skicklig dynastisk härskare och far till en stor familj vars medlemmar senare kom att regera i Polen-Litauen, Böhmen och Ungern.
 
@@ -200,7 +497,18 @@ Krigets inledning avslöjade svagheterna i den traditionella adliga uppbådsarm�
 
 Den andra freden i Thorn år 1466 förändrade regionen. Polen erhöll Kungliga Preussen, inklusive Gdańsk och områden vid Wisłas mynning, medan den återstående ordensstaten blev bunden till den polska kronan. Tillgången till Östersjön och kontrollen över spannmålshandelns viktigaste väg fick stor ekonomisk betydelse. Segern fullbordade inte all territoriell återställning men löste den konflikt som hade börjat med Pommerellens förlust på Łokieteks tid.
 
+### Metodisk anmärkning om militär kapacitet, finansiering och territoriellt utfall
+
+Krigsförmåga kan inte reduceras till antalet tillgängliga adliga krigare. Långvariga konflikter kräver finansiering, kredit, legosoldater, försörjningssystem, stadsmedverkan och förmåga att omsätta politiskt stöd i återkommande resurstilldelning. Militär mobilisering och fiskal kapacitet bör därför registreras som separata men kopplade variabler.
+
+Det territoriella resultatet av ett krig bör på motsvarande sätt skiljas från den institutionella kostnaden för att nå resultatet. Privilegier som utfärdas för att säkra stöd kan överleva själva konflikten och påverka senare regeringsformer. Ett framgångsrikt territoriellt utfall kan således sammanfalla med en mer förhandlingsberoende krona, utan att detta är en logisk motsägelse.
+
 ## Jagellonernas centraleuropeiska dynastiska system
+### Dynastiskt nätverk utan gemensam centralförvaltning
+
+Den jagellonska expansionen till Böhmen och Ungern kan beskrivas som ett system av kroninnehav snarare än som ett sammanhängande imperium. Gemensam dynasti underlättade diplomati, äktenskapspolitik och vissa former av samordning, men varje krona behöll egna politiska organ, finansieringsformer och rättsliga begränsningar. Dynastisk geografi och administrativ geografi måste därför åter hållas isär.
+
+Detta hade också betydelse för successionen. En stor dynasti med många möjliga arvtagare kunde minska risken för biologiskt utslocknande men samtidigt skapa fler alternativ för olika elitgrupper att stödja. Dynastisk styrka i genealogisk mening var således inte alltid liktydig med enkel politisk succession.
 
 Kasimir IV:s barn gjorde Jagellonätten till en av Europas mest vittförgrenade dynastier. Sonen Vladislav blev kung av Böhmen och senare av Ungern. En annan son, Johan Albrekt, efterträdde Kasimir i Polen. Alexander regerade först i Litauen och därefter i Polen. Sigismund den gamle kom att föra dynastin in i den tidigmoderna epoken.
 
@@ -209,6 +517,11 @@ Denna expansion skapade en jagellonsk maktsfär från Östersjön till Donau, me
 I Polen fortsatte kungamakten att förhandla med adeln. Regionala sejmiki och rikets sejm fick större betydelse. Privilegier som ursprungligen hade utfärdats för att lösa en viss succession eller finansiera ett visst krig blev delar av en permanent politisk ordning. Monarkin var stark nog att leda krig och utrikespolitik, men inte stark nog att ensidigt omforma skatter och lagar.
 
 ## Johan Albrekt, Alexander och den medeltida epokens slutskede
+### Samtycke, lagstiftning och ståndspolitisk procedur
+
+Utvecklingen fram till *Nihil novi* bör inte förstås som en plötslig övergång från envälde till parlamentarism. Den byggde på en lång serie privilegier, lokala församlingar, skatteförhandlingar och successionsuppgörelser. När allmän lagstiftning i högre grad bands till sejmens medverkan hade det därför redan etablerats en praktisk förväntan att betydande resurs- och rättsfrågor krävde samtycke från politiskt organiserade grupper inom adeln.
+
+Det betyder inte att kungamakten upphörde att vara central. Monarken hade fortsatt stor betydelse för utnämningar, utrikespolitik, domsrätt och dynastisk representation. Den institutionella förändringen bestod snarare i att vissa kategorier av beslut blev svårare att behandla som kungens ensidiga angelägenhet. Monarkin blev därmed mer procedurbunden utan att förlora sin dynastiska karaktär.
 
 Johan I Albrekt valdes till kung efter Kasimir IV:s död år 1492, medan brodern Alexander blev storfurste av Litauen. Därmed delades den personliga unionen tillfälligt mellan bröderna. Johan försökte föra en aktiv politik söderut och genomförde ett misslyckat fälttåg i Moldavien år 1497. Nederlaget försvagade hans prestige och visade åter hur svårt det var att mobilisera adelns uppbåd för långa operationer.
 
@@ -216,7 +529,18 @@ Efter Johans död blev Alexander kung år 1501 och förenade åter Polen och Lit
 
 När Sigismund I besteg tronen år 1506 började en ny fas. Renässanskultur, mer utvecklad ståndspolitik och den senare realunionen med Litauen låg framför riket. Ändå vilade den nya epoken på medeltidens dynastiska lager: Piastarnas territoriella kärna och kungliga minne, Anjouernas arvsuppgörelser och Jagellonernas förening av Polen och Litauen.
 
+### Metodisk anmärkning om privilegieackumulation och problemet med efterhandskonstitutionalism
+
+När flera privilegier över tid begränsar eller procedurreglerar kungliga beslut uppstår en frestelse att läsa utvecklingen som en linjär väg mot en färdig konstitutionell modell. För perioden är det säkrare att se varje privilegium som ett dokument med ett bestämt förhandlingssammanhang, vars senare betydelse kan bli större än dess ursprungliga funktion. Ackumulationen är verklig, men dess slutliga systemkaraktär är delvis retrospektiv.
+
+Detta innebär att en bestämmelse kan vara både situationsbunden och långsiktigt institutionell. Den tekniska analysen bör därför skilja mellan utfärdandeorsak, omedelbar rättsverkan, senare åberopande och plats i en efterhandskonstruerad konstitutionell berättelse. På så sätt undviks att senmedeltida procedurer beskrivs som om alla aktörer redan arbetade mot en känd senare ordning.
+
 ## Piastiska sidogrenar efter 1370
+### Biologisk dynasti och politisk dynasti som skilda kategorier
+
+År 1370 är en praktisk gräns för den piastiska kungalinjen men inte för Piastätten som genealogisk företeelse. Den skillnaden är metodiskt viktig. En dynasti kan upphöra att inneha en viss krona långt innan dess sista manliga eller kvinnliga medlem dör. Omvänt kan ett politiskt system fortsätta att hänvisa till en dynastis namn och minne efter att den biologiska linjen har försvunnit.
+
+De masoviska och schlesiska grenarnas fortsatta existens visar därför att ”Piasttidens slut” endast är meningsfullt om man anger vilken institution man avser: kungakronan, regionala hertigdömen, dynastiskt blod eller politisk symbolik. Utan denna precisering kan samma datum framstå som både korrekt och felaktigt beroende på frågan.
 
 Kasimir den stores död innebar inte att Piastätten som biologisk dynasti försvann. I Masovien regerade piastiska hertigar vidare, ibland som relativt självständiga aktörer och ibland närmare bundna till den polska kronan. Deras områden införlivades stegvis; den sista centrala masoviska linjen utslocknade på 1500-talet.
 
@@ -225,6 +549,13 @@ I Schlesien fanns ännu fler piastiska linjer. De styrde små och medelstora her
 Denna långa efterhistoria hade ideologisk betydelse. Piastnamnet kunde användas som symbol för inhemsk legitimitet, territoriell rätt och ett tänkt ursprungligt Polen. Senare valkungar jämfördes ibland med de gamla Piastarna, och ordet ”Piast” kunde i politiskt språkbruk beteckna en inhemsk kandidat i motsats till en utländsk prins.
 
 ## Vad dynastierna faktiskt förändrade
+### Sammanställning av förändringsvariabler
+
+För en mer teknisk jämförelse kan dynastiernas betydelse delas upp i ett antal variabler: successionens form, kungatitelns kontinuitet, den kyrkliga organisationens relation till kronan, territoriell omfattning, grad av delegerad förvaltning, privilegiestruktur, militär resursmobilisering och förhållandet till externa dynastiska system.
+
+För en mer teknisk jämförelse kan dynastiernas betydelse delas upp i ett antal variabler: successionens form, kungatitelns kontinuitet, den kyrkliga organisationens relation till kronan, territoriell omfattning, grad av delegerad förvaltning, privilegiestruktur, militär resursmobilisering och förhållandet till externa dynastiska system. Piastarna är avgörande för den första uppbyggnaden av dessa komponenter, men deras egen historia visar att de inte utvecklades linjärt. Přemysliderna förändrade främst centrum för dynastisk kontroll och administrationens geografiska orientering. Anjouperioden gjorde successionsförhandling och privilegier mer centrala. Jagellonerna lade till den permanenta unionsproblematiken med Litauen och en större roll för representativa institutioner.
+
+En sådan uppdelning gör också tydligt varför frågan ”vilken dynasti byggde Polen?” är analytiskt för grov. Olika delar av det senare kungarikets institutionella struktur härrörde från olika perioder och kunde förstärkas av härskare som inte tillhörde samma hus som de som ursprungligen etablerade dem.
 
 Piastarna skapade inte en färdig nationalstat, men de skapade den första varaktiga politiska ramen för ett polskt rike. De införde den latinska kristendomens institutioner, etablerade en egen kyrkoprovins och gjorde kungatiteln till ett återkommande suveränitetsanspråk. Deras splittring visade samtidigt att dynastiskt arv kunde försvaga den enhet som dynastin själv hade byggt.
 
@@ -235,6 +566,11 @@ Anjouätten förändrade maktbalansen mellan krona och adel. Ludvigs behov av at
 Jagellonerna förde in Polen i en långvarig union med Litauen. Den skapade en väldig maktsfär men krävde ständiga kompromisser mellan skilda lagar, religioner och eliter. Under deras tid besegrades Tyska orden som dominerande regional makt, Kungliga Preussen knöts till kronan och den polska adelns parlamentariska institutioner stärktes.
 
 ## Kronan, dynastin och den politiska nationen
+### Begreppet krona som bärare av kontinuitet
+
+När kronan gradvis kan behandlas som något mer varaktigt än den regerande personens hushåll förändras också typen av politiska anspråk. Ett territorium, ett privilegium eller ett ämbete kan då beskrivas som knutet till kronan även om den enskilde monarken byts ut. Denna opersonliga dimension skall inte överdrivas för tidigt, men under senmedeltiden blir den tillräckligt tydlig för att påverka hur succession, skatt och territoriella rättigheter formuleras.
+
+Den så kallade politiska nationen bör samtidigt beskrivas som en snäv juridisk och social kategori, inte som hela befolkningen. Att adelns samtycke fick större betydelse innebar inte bred folklig representation. Tvärtom byggde systemet på privilegierad differentiering. Den tekniska poängen är att monarkin blev mer kollektivt begränsad inom en elit utan att därför bli socialt universell.
 
 Under 900- och 1000-talen var riket nära identifierat med härskarens person och hushåll. Under 1400-talet hade ”kronan” blivit ett mer opersonligt begrepp. Territorier kunde tillhöra Polens krona även om den regerande kungen kom från Litauen eller Ungern. Ämbeten, domstolar och privilegier fortsatte över enskilda monarkers död.
 
@@ -243,6 +579,13 @@ Samtidigt blev adeln alltmer medveten om sig själv som rikets politiska bärare
 Detta innebar inte att dynastin blev oviktig. Tvärtom förblev ett erkänt kungahus en källa till kontinuitet, internationella allianser och fredlig succession. Men varje ny tronföljd måste förhandlas. Den polska monarkin rörde sig därför mot ett blandat system: dynastiskt i sitt symbolspråk och sina äktenskap, valpräglat i sitt politiska godkännande och rättsligt begränsat genom privilegier.
 
 ## En sammanhängande kronologi
+### Kronologisk kontrollista för dynastisk och institutionell kontinuitet
+
+Om perioden reduceras till successionspunkter kan följande kontrollfrågor användas för varje övergång: vem innehade den viktigaste titeln, på vilken grund erkändes innehavet, vilka territorier kontrollerades faktiskt, vilka sidogrenar fortsatte att existera, vilka externa makter gjorde konkurrerande anspråk och vilka institutioner fortsatte oberoende av tronskiftet.
+
+Om perioden reduceras till successionspunkter kan följande kontrollfrågor användas för varje övergång: vem innehade den viktigaste titeln, på vilken grund erkändes innehavet, vilka territorier kontrollerades faktiskt, vilka sidogrenar fortsatte att existera, vilka externa makter gjorde konkurrerande anspråk och vilka institutioner fortsatte oberoende av tronskiftet. Samma kronologiska datum kan få olika betydelse beroende på vilken av dessa frågor som ställs. År 1138 är exempelvis en successionsordning, inte början på omedelbar total decentralisering; år 1295 är en kungakröning, inte full territoriell återförening; år 1370 är slutet för den kungliga Piastlinjen, inte för alla Piastar; och år 1386 är början på en ny dynastisk union, inte en omedelbar administrativ sammansmältning.
+
+Den kronologiska översikten skall därför läsas som ett index till förändringsprocesser och inte som en serie diskreta regimskiften. Mellan varje välkänt årtal ligger förhandlingar, regionala variationer och rättsliga arrangemang som ofta är viktigare för den praktiska förvaltningen än själva årtalet.
 
 Från Mieszko I:s dop år 966 till Bolesław Chrobrys kröning år 1025 skapades den kristna piastiska monarkin. Mellan Mieszko II:s kris och Kasimir Restauratorns återkomst visade sig dess bräcklighet. Bolesław II återupprättade kungatiteln men förlorade makten i konflikt med kyrka och elit. Bolesław III försökte säkra arvet genom delning, vilket efter 1138 i stället öppnade två sekler av regional konkurrens.
 
@@ -251,6 +594,15 @@ Under splittringstiden utvecklades Schlesien, Storpolen, Lillpolen, Masovien och
 Kasimir den store stabiliserade och utvidgade staten men lämnade ingen legitim son. År 1370 övergick kronan till Anjouätten. Ludvigs privilegier stärkte adeln, och Jadwigas äktenskap med Jagiełło 1386 grundlade den jagellonska epoken. Under Jagiełło besegrades Tyska orden vid Grunwald; under Kasimir IV vann Polen Kungliga Preussen efter det trettonåriga kriget. Vid medeltidens slut hade Polen blivit en lagbunden ståndsmonarki förenad med Litauen och inskriven i ett jagellonskt centraleuropeiskt dynastisystem.
 
 ## Sammanfattning
+### Teknisk slutsats om periodens organisationsform
+
+Den mest ekonomiska sammanfattningen är att den polska monarkin under medeltiden successivt ökade antalet institutionella bärare av kontinuitet. I den tidigaste fasen var kontinuiteten starkt koncentrerad till dynastin, dess hushåll, militära följe och kyrkliga partners.
+
+I den tidigaste fasen var kontinuiteten starkt koncentrerad till dynastin, dess hushåll, militära följe och kyrkliga partners. Under fragmenteringen blev regionala hertigdömen, stift, kloster, städer och lokala rättsordningar mer självständigt reproducerbara. Vid återföreningen kunde kungamakten därför byggas ovanpå redan utvecklade regionala strukturer i stället för att ersätta dem. Under Anjou- och Jagellontiden tillkom dessutom mer formaliserade privilegie- och samtyckesmekanismer.
+
+Resultatet vid medeltidens slut var således inte en enhetlig centralstat utan en monarki vars styrka låg i förmågan att samordna en betydande mängd territoriell och rättslig variation.
+
+Resultatet vid medeltidens slut var således inte en enhetlig centralstat utan en monarki vars styrka låg i förmågan att samordna en betydande mängd territoriell och rättslig variation. Dynastin var fortfarande central för succession och internationell representation, men den fungerade inom en ordning där tidigare privilegier, regionala institutioner, kyrkliga jurisdiktioner och representativa organ hade blivit delar av den praktiska regeringen. Detta är en mindre dramatisk men administrativt mer användbar beskrivning än en berättelse om fortlöpande nationell konsolidering.
 
 De polska kungadynastiernas medeltida historia är alltså inte en berättelse om hur ett och samma kungahus obrutet byggde ett land. Det är berättelsen om hur en dynasti skapade ett rike, hur dess arvsregler sönderdelade det, hur sidogrenar och utländska hus tävlade om kronan och hur den återförenade staten till sist blev större än den familj som först hade grundat den.
 
