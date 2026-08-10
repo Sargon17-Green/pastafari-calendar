@@ -127,8 +127,8 @@ class EngineClient {
     const id = this._nextId++;
     return new Promise((resolve, reject) => {
       const timer = setTimeout(() => {
-        this._pending.delete(id);
-        reject(timeoutError(`${this.name}:${operation}`, timeoutMs, this.name));
+        const error = timeoutError(`${this.name}:${operation}`, timeoutMs, this.name);
+        this.terminate(error);
       }, timeoutMs);
 
       this._pending.set(id, { resolve, reject, timer });
