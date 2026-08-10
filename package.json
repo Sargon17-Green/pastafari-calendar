@@ -1,12 +1,12 @@
 {
   "name": "pastafari-calendar",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "type": "module",
-  "main": "./src/5efdcc3e6fb071cbaffdcb117507a169dd76.js",
+  "main": "./src/public-api.js",
   "exports": {
     ".": {
       "types": "./types/5fd0767aaf5331241ec60f8540edf2a6.d.ts",
-      "import": "./src/5efdcc3e6fb071cbaffdcb117507a169dd76.js"
+      "import": "./src/public-api.js"
     },
     "./browser/*": "./browser/*",
     "./package.json": "./package.json"
@@ -21,6 +21,9 @@
   ],
   "engines": {
     "node": ">=18"
+  },
+  "scripts": {
+    "test": "node --test"
   },
   "license": "MIT"
 }
