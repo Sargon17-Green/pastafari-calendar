@@ -208,6 +208,81 @@ export class PastafariDate {
   };
 }
 
+export interface PastafariDateValue {
+  year: IntegerLike | string;
+  cutletName: string;
+  dayInCutlet: number;
+  monthName: string;
+  dayInMonth: number;
+}
+
+export type PastafariDateInput = PastafariDate | PastafariDateValue;
+
+export type ReverseAbsoluteDate =
+  | CalendarDateInput
+  | bigint
+  | { jdn: bigint | string };
+
+export type ReverseSearchRange =
+  | readonly [ReverseAbsoluteDate, ReverseAbsoluteDate]
+  | { start: ReverseAbsoluteDate; end: ReverseAbsoluteDate };
+
+export interface PastafariCalculationDescriptor {
+  calendar: "pastafari";
+  date: PastafariDateInput;
+  calculationDate?: ReverseCalculationDate;
+  searchRange?: ReverseSearchRange;
+}
+
+export type ReverseCalculationDate =
+  | ReverseAbsoluteDate
+  | PastafariDateInput
+  | PastafariCalculationDescriptor
+  | typeof SAME_AS_TARGET
+  | null;
+
+export interface PastafariReverseProgress {
+  readonly scanned: bigint;
+  readonly total: bigint;
+  readonly matches: number;
+}
+
+export interface PastafariReverseOptions {
+  calculationDate?: ReverseCalculationDate;
+  calculationJdn?: bigint | string;
+  searchRange?: ReverseSearchRange;
+  todayProvider?: () => ReverseAbsoluteDate;
+  signal?: AbortSignal;
+  onProgress?: (progress: PastafariReverseProgress) => void;
+  yieldEvery?: number;
+  timeoutMs?: number;
+}
+
+export interface PastafariReverseCandidate {
+  readonly targetJdn: bigint;
+  readonly targetDate: GregorianDate;
+  readonly calculationJdn: bigint;
+  readonly calculationDate: GregorianDate;
+}
+
+export const SAME_AS_TARGET: "same-as-target";
+
+export function findPastafariDate(
+  pastafariDate: PastafariDateInput,
+  options?: PastafariReverseOptions,
+): Promise<readonly PastafariReverseCandidate[]>;
+
+export class PastafariReverseClient {
+  constructor(options?: { startupTimeoutMs?: number });
+  find(
+    pastafariDate: PastafariDateInput,
+    options?: PastafariReverseOptions,
+  ): Promise<readonly PastafariReverseCandidate[]>;
+  dispose(): void;
+}
+
+export const sharedPastafariReverseClient: PastafariReverseClient;
+
 export class YearBounds {
   readonly number: bigint;
   readonly openingGate: bigint;
