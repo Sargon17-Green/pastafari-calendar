@@ -49,6 +49,7 @@ function cutletView(targetJdn, calculationJdn) {
 function newScenario() {
   return {
     requests: [],
+    terminatedWorkers: [],
     authoritative: {
       failOperations: new Set(),
       hangOperations: new Set(),
@@ -108,6 +109,7 @@ class FakeWorker {
     this.engine = this.url.includes("authoritative") ? "authoritative" : "fast";
     this.listeners = new Map();
     this.terminated = false;
+    this.testScenario = scenario;
 
     queueMicrotask(() => {
       if (!this.terminated) this.#emit("message", { data: { kind: "ready" } });
@@ -160,6 +162,7 @@ class FakeWorker {
   }
 
   terminate() {
+    if (!this.terminated) this.testScenario.terminatedWorkers.push(this.id);
     this.terminated = true;
     this.listeners.clear();
   }
@@ -245,6 +248,40 @@ test("a verified fast-engine timeout falls back to the authoritative result", {
   assert.match(router.getStatus(calculationJdn).error, /did not finish within 30 ms/);
   assert.equal(requestsFor("fast", "convert", calculationJdn).length, 2);
   assert.equal(requestsFor("authoritative", "convert", calculationJdn).length, 2);
+
+  const timedOutFastRequest = requestsFor("fast", "convert", calculationJdn).at(-1);
+  assert.ok(scenario.terminatedWorkers.includes(timedOutFastRequest.workerId));
+
+  scenario.fast.hangOperations.delete("convert");
+  await router.retry(calculationJdn);
+  await router.convert(605n, calculationJdn);
+  await waitForStatus(router, calculationJdn, "verified");
+
+  const restartedFastRequest = requestsFor("fast", "convert", calculationJdn).at(-1);
+  assert.notEqual(restartedFastRequest.workerId, timedOutFastRequest.workerId);
+});
+
+test("an authoritative timeout terminates its worker and the next request starts a fresh one", {
+  concurrency: false,
+}, async (t) => {
+  const router = new PastafariCalendarRouter({ authoritativeRequestTimeoutMs: 30 });
+  t.after(() => router.dispose());
+
+  const calculationJdn = 2_150n;
+  scenario.authoritative.hangOperations.add("convert");
+  await assert.rejects(
+    router.convert(620n, calculationJdn),
+    (error) => error.code === "ERR_ENGINE_TIMEOUT",
+  );
+
+  const timedOutRequest = requestsFor("authoritative", "convert", calculationJdn).at(-1);
+  assert.ok(scenario.terminatedWorkers.includes(timedOutRequest.workerId));
+
+  scenario.authoritative.hangOperations.delete("convert");
+  const result = await router.convert(621n, calculationJdn);
+  assert.deepEqual(result, calendarValue(621n, calculationJdn));
+  const restartedRequest = requestsFor("authoritative", "convert", calculationJdn).at(-1);
+  assert.notEqual(restartedRequest.workerId, timedOutRequest.workerId);
 });
 
 test("a mismatch disables the fast engine globally and later calculation days stay authoritative", {
