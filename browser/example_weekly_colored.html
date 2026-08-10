@@ -1,0 +1,765 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>דוגמת הטמעה — לוח השנה הפסטפרי</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Arial, "Noto Sans Hebrew", sans-serif;
+      background: #f5f1e4;
+      color: #292d22;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 20% 0%, rgb(255 255 255 / 76%), transparent 28rem),
+        #f5f1e4;
+    }
+
+    main {
+      width: min(76rem, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 2rem 0 4rem;
+    }
+
+    h1, h2 { margin-block: 0; }
+
+    .intro { margin-bottom: 1.4rem; }
+
+    .intro p {
+      max-width: 55rem;
+      margin: .55rem 0 0;
+      color: #5e614f;
+      line-height: 1.65;
+    }
+
+    .panel {
+      margin-top: 1.25rem;
+      border: 1px solid #cec5a9;
+      border-radius: 1rem;
+      padding: 1rem;
+      background: rgb(255 253 246 / 88%);
+      box-shadow: 0 10px 34px rgb(66 55 24 / 8%);
+    }
+
+    .panel > h2 {
+      margin-bottom: .8rem;
+      font-size: 1.08rem;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: .65rem 1rem;
+    }
+
+    .toolbar label {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      font-size: .9rem;
+    }
+
+    .toolbar button,
+    .api-form button {
+      min-height: 2.55rem;
+      border: 1px solid #9f936f;
+      border-radius: .6rem;
+      padding: .5rem .8rem;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .toolbar button {
+      background: #fffdf5;
+      color: #3e402f;
+    }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+      gap: .65rem;
+      margin-top: .8rem;
+    }
+
+    .status-card {
+      min-height: 5.2rem;
+      border: 1px solid #ddd5bd;
+      border-radius: .75rem;
+      padding: .75rem;
+      background: #fffef9;
+    }
+
+    .status-card strong {
+      display: block;
+      margin-bottom: .35rem;
+    }
+
+    .status-card output,
+    .status-card code {
+      overflow-wrap: anywhere;
+      color: #5f5947;
+      font-size: .85rem;
+      line-height: 1.5;
+    }
+
+    .api-form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+      gap: .75rem;
+      align-items: end;
+    }
+
+    .api-form label {
+      display: grid;
+      gap: .3rem;
+      font-size: .85rem;
+      font-weight: 700;
+    }
+
+    .api-form input {
+      min-height: 2.7rem;
+      border: 1px solid #bdb394;
+      border-radius: .6rem;
+      padding: .55rem .7rem;
+      direction: ltr;
+      background: #fff;
+      font: inherit;
+    }
+
+    .api-form .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+    }
+
+    .api-form button {
+      flex: 1 1 11rem;
+      background: #665817;
+      color: white;
+    }
+
+    .api-form button.secondary {
+      background: #fffdf5;
+      color: #3e402f;
+    }
+
+    .api-result {
+      min-height: 3.2rem;
+      margin: .85rem 0 0;
+      border-radius: .65rem;
+      padding: .75rem;
+      background: #f1ead2;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .hint {
+      margin: .65rem 0 0;
+      color: #68634f;
+      font-size: .83rem;
+      line-height: 1.55;
+    }
+
+    .error { color: #922 !important; }
+
+    pastafari-date {
+      display: block;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header class="intro">
+      <h1>לוח השנה הפסטפרי</h1>
+      <p>
+        הלוח מוצג בשורות של שבועות, עם שבעה ימים בכל שורה. שם החודש הפסטפרי
+        נשאר גלוי בכל משבצת וצבוע בצבע עקבי משלו, גם כאשר החודשים אינם רצופים.
+        מספר היום בקציצה הוא המספר הבולט בכל משבצת.
+      </p>
+    </header>
+
+    <pastafari-date id="calendar"></pastafari-date>
+
+    <section class="panel" aria-labelledby="state-heading">
+      <h2 id="state-heading">מצב הרכיב והנתב</h2>
+
+      <div class="toolbar">
+        <label>
+          <input id="toggle-editor" type="checkbox" checked>
+          הצג את כלי המעבר לתאריך
+        </label>
+        <button id="retry-router" type="button">הפעל מחדש את מנגנון האימות</button>
+      </div>
+
+      <div class="status-grid">
+        <div class="status-card">
+          <strong>התוצאה האחרונה</strong>
+          <output id="component-value">ממתין לטעינה…</output>
+        </div>
+        <div class="status-card">
+          <strong>אירוע אחרון</strong>
+          <output id="event-value">טרם התקבל אירוע.</output>
+        </div>
+        <div class="status-card">
+          <strong>מצב הנתב</strong>
+          <output id="router-status">טרם הופעל.</output>
+        </div>
+      </div>
+
+      <p class="hint">
+        ביטול הסימון מוסיף לרכיב את התכונה <code>no-editor</code>. אותו רכיב
+        חזותי נשאר פעיל; לא נוצר לוח נוסף רק לצורך ההדגמה.
+      </p>
+    </section>
+
+    <section class="panel" aria-labelledby="api-heading">
+      <h2 id="api-heading">המרה אסינכרונית ללא תצוגת לוח</h2>
+
+      <form id="api-form" class="api-form">
+        <label>
+          תאריך לבדיקה
+          <input id="api-target" value="2026-08-06" inputmode="numeric" autocomplete="off">
+        </label>
+        <label>
+          יום המעשה
+          <input id="api-calculation" value="2026-08-06" inputmode="numeric" autocomplete="off">
+        </label>
+        <div class="buttons">
+          <button type="submit" value="headless">המרה באמצעות רכיב headless</button>
+          <button class="secondary" type="submit" value="function">המרה באמצעות הפונקציה</button>
+        </div>
+      </form>
+
+      <pre id="api-result" class="api-result">ממתין להפעלה.</pre>
+      <p class="hint">
+        רכיב ה־<code>headless</code> נוצר רק לאחר לחיצה ואינו מחובר למסמך;
+        לכן הוא אינו מפעיל חישוב נוסף בזמן פתיחת הדף. במצב זה הוא מבצע המרה
+        יחידה בלבד, בלי לבנות לוח, בלי לטעון קציצות סמוכות ובלי ליצור תאי ימים.
+        גם <code>getPastafariDate()</code> וגם <code>getPastafariDateAsync()</code>
+        הן אסינכרוניות ומחזירות <code>Promise</code>.
+      </p>
+    </section>
+  </main>
+
+  <script type="module">
+    import {
+      getPastafariDateAsync,
+    } from "./pastafari-date.js";
+    import {
+      sharedPastafariRouter,
+    } from "./pastafari-calendar-router.js";
+
+    const calendar = document.querySelector("#calendar");
+    const componentValue = document.querySelector("#component-value");
+    const eventValue = document.querySelector("#event-value");
+    const routerStatus = document.querySelector("#router-status");
+    const toggleEditor = document.querySelector("#toggle-editor");
+    const retryRouter = document.querySelector("#retry-router");
+    const apiForm = document.querySelector("#api-form");
+    const apiTarget = document.querySelector("#api-target");
+    const apiCalculation = document.querySelector("#api-calculation");
+    const apiResult = document.querySelector("#api-result");
+
+    let detachedHeadless = null;
+
+    // פלטת maximin תפיסתית: המרחק המינימלי בין זוג כלשהו בפלטה הוא
+    // כ־17.34 ΔE00 (CIEDE2000). הצבעים בכוונה אינם "הרמוניים" — המטרה היא הבחנה.
+    const MONTH_COLOR_PALETTE = [
+      "#604A4A", "#800B00", "#FF6A55", "#9F6A60", "#CA4000", "#FFCAAA",
+      "#FF800B", "#35200B", "#804A00", "#AA9F8A", "#AA802B", "#FFBF00",
+      "#40400B", "#FFFFDF", "#DFFF00", "#AABF60", "#6A8A00", "#000B00",
+      "#8AFF8A", "#007535", "#6AAA8A", "#00402B", "#6AFFDF", "#606A6A",
+      "#008A95", "#00BFEA", "#004A60", "#0080CA", "#CAEAFF", "#8AAAEA",
+      "#000020", "#4A4A80", "#00008A", "#4A4AFF", "#9575CA", "#DFAAFF",
+      "#8A00AA", "#FF00FF", "#FFEAFF", "#955580", "#AA959F", "#8A0040",
+      "#FF358A", "#D40040", "#2B000B", "#FF9FB5"
+    ];
+
+    // ההקצאה לחודשים עברה אופטימיזציה נוספת לפי סמיכויות החודשים
+    // ברצף המלא שסופק. עבור זוגות חודשים שמופיעים זה לצד זה, המרחק
+    // המינימלי בהקצאה זו הוא כ־18.23 ΔE00.
+    const MONTH_COLOR_INDEX = new Map([
+      ["אבן־גיר", 25],
+      ["אגס", 28],
+      ["אורוק", 23],
+      ["ארידו", 27],
+      ["באר", 33],
+      ["בבל", 2],
+      ["בדיל", 4],
+      ["בושה", 15],
+      ["גמל", 36],
+      ["דבש", 21],
+      ["הדלת הסגורה", 14],
+      ["זפת", 19],
+      ["חול", 10],
+      ["חלמון", 20],
+      ["חמור", 44],
+      ["חרוב", 39],
+      ["חרטה", 41],
+      ["טחול", 16],
+      ["טין", 43],
+      ["כוכב", 26],
+      ["כישור", 24],
+      ["כסף", 7],
+      ["לבונה", 38],
+      ["לשון", 11],
+      ["מלח", 22],
+      ["מרפק", 35],
+      ["משחת־שיניים", 6],
+      ["נחושת", 3],
+      ["נינוה", 32],
+      ["נמר", 17],
+      ["נר", 31],
+      ["סערה", 13],
+      ["עורף", 40],
+      ["ערפל", 37],
+      ["פשתן", 9],
+      ["צלע", 29],
+      ["צפרדע", 1],
+      ["קמח", 12],
+      ["קנאה", 30],
+      ["קשת", 0],
+      ["רימון", 8],
+      ["שומשום", 18],
+      ["שושן", 5],
+      ["שלושה חלקים מחמישה", 34],
+      ["שמחה", 45],
+      ["תאנה", 42]
+    ]);
+
+    const monthColors = new Map();
+    let weeklyObserver = null;
+    let enhanceScheduled = false;
+
+    function fallbackMonthIndex(monthName) {
+      let hash = 2166136261;
+      for (const char of monthName) {
+        hash ^= char.codePointAt(0);
+        hash = Math.imul(hash, 16777619);
+      }
+      return Math.abs(hash) % MONTH_COLOR_PALETTE.length;
+    }
+
+    function contrastTextForHex(hex) {
+      const channels = [1, 3, 5].map((start) => {
+        const value = parseInt(hex.slice(start, start + 2), 16) / 255;
+        return value <= 0.04045
+          ? value / 12.92
+          : ((value + 0.055) / 1.055) ** 2.4;
+      });
+      const luminance =
+        0.2126 * channels[0] +
+        0.7152 * channels[1] +
+        0.0722 * channels[2];
+
+      const contrastWithBlack = (luminance + 0.05) / 0.05;
+      const contrastWithWhite = 1.05 / (luminance + 0.05);
+      return contrastWithBlack >= contrastWithWhite ? "#050505" : "#FFFFFF";
+    }
+
+    function colorForMonth(monthName) {
+      if (!monthColors.has(monthName)) {
+        const index = MONTH_COLOR_INDEX.get(monthName) ?? fallbackMonthIndex(monthName);
+        const color = MONTH_COLOR_PALETTE[index];
+        monthColors.set(monthName, {
+          color,
+          text: contrastTextForHex(color),
+        });
+      }
+      return monthColors.get(monthName);
+    }
+
+    function ensureWeeklyStyles(root) {
+      if (root.querySelector("#pastafari-weekly-view-styles")) return;
+
+      const style = document.createElement("style");
+      style.id = "pastafari-weekly-view-styles";
+      style.textContent = `
+        .viewport {
+          padding: .8rem;
+          background: var(--pastafari-grid-background, #fffdf8);
+        }
+
+        .weekday-header {
+          position: sticky;
+          top: -.8rem;
+          z-index: 12;
+          display: grid;
+          grid-template-columns: repeat(7, minmax(0, 1fr));
+          gap: .48rem;
+          margin: 0 0 .75rem;
+          padding: .55rem;
+          border: 1px solid var(--pastafari-border, #c9c1a8);
+          border-radius: .8rem;
+          background: color-mix(
+            in srgb,
+            var(--pastafari-header-background, #f4eed8) 94%,
+            white
+          );
+          box-shadow: 0 3px 10px rgb(66 55 24 / 8%);
+          text-align: center;
+          font-size: .8rem;
+          font-weight: 800;
+        }
+
+        .cutlet-list {
+          display: grid;
+          grid-template-columns: repeat(7, minmax(0, 1fr));
+          gap: .55rem;
+        }
+
+        .cutlet,
+        .month-run,
+        .days {
+          display: contents;
+        }
+
+        .cutlet-heading {
+          grid-column: 1 / -1;
+          position: relative;
+          top: auto;
+          z-index: 1;
+          margin: .45rem 0 .15rem;
+          padding: .7rem .85rem;
+          border: 1px solid var(--pastafari-border, #c9c1a8);
+          border-radius: .8rem;
+          background: var(--pastafari-header-background, #f4eed8);
+          box-shadow: none;
+          text-align: center;
+          font-size: 1rem;
+          font-weight: 600;
+        }
+
+        .month-heading {
+          display: none !important;
+        }
+
+        .day {
+          --month-color: #74684d;
+          --month-text: #fff;
+          min-width: 0;
+          min-height: 7rem;
+          display: flex;
+          flex-direction: column;
+          align-items: stretch;
+          justify-content: space-between;
+          gap: .5rem;
+          border: 2px solid color-mix(in srgb, var(--month-text) 62%, transparent);
+          border-inline-start-width: .7rem;
+          border-radius: .75rem;
+          padding: .58rem;
+          background: var(--month-color);
+          color: var(--month-text);
+          box-shadow:
+            inset 0 0 0 2px color-mix(in srgb, var(--month-text) 18%, transparent);
+          text-align: center;
+        }
+
+        .day:hover,
+        .day:focus-visible {
+          border-color: var(--month-text);
+          box-shadow:
+            inset 0 0 0 4px color-mix(in srgb, var(--month-text) 38%, transparent);
+        }
+
+        .day[aria-current="date"] {
+          border: 4px solid var(--month-text);
+          border-inline-start-width: .75rem;
+          background: var(--month-color);
+          outline: 4px solid var(--pastafari-accent, #675817);
+          outline-offset: 2px;
+          box-shadow:
+            inset 0 0 0 2px color-mix(in srgb, var(--month-text) 35%, transparent);
+        }
+
+        .day-month-label {
+          display: block;
+          overflow: hidden;
+          border: 2px solid currentColor;
+          border-radius: 999px;
+          padding: .3rem .45rem;
+          background: color-mix(in srgb, var(--month-text) 16%, transparent);
+          color: var(--month-text);
+          text-shadow: none;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          font-size: .73rem;
+          font-weight: 900;
+          line-height: 1.3;
+        }
+
+        .day-in-month {
+          display: none !important;
+        }
+
+        .day-in-cutlet {
+          display: grid;
+          gap: .05rem;
+          color: inherit;
+          line-height: 1;
+        }
+
+        .cutlet-number {
+          display: block;
+          font-size: clamp(1.55rem, 3vw, 2.15rem);
+          font-weight: 900;
+          letter-spacing: -.03em;
+          color: var(--month-text);
+        }
+
+        .cutlet-label {
+          display: block;
+          color: var(--month-text);
+          opacity: .88;
+          font-size: .68rem;
+          font-weight: 650;
+          line-height: 1.25;
+        }
+
+        .edge-loader {
+          grid-column: 1 / -1;
+        }
+
+        @media (max-width: 38rem) {
+          .viewport {
+            padding: .48rem;
+          }
+
+          .weekday-header,
+          .cutlet-list {
+            gap: .28rem;
+          }
+
+          .weekday-header {
+            top: -.48rem;
+            padding: .42rem .25rem;
+            font-size: .72rem;
+          }
+
+          .day {
+            min-height: 6rem;
+            padding: .42rem .3rem;
+            border-inline-start-width: .28rem;
+          }
+
+          .day-month-label {
+          display: block;
+          overflow: hidden;
+          border: 2px solid currentColor;
+          border-radius: 999px;
+          padding: .3rem .45rem;
+          background: color-mix(in srgb, var(--month-text) 16%, transparent);
+          color: var(--month-text);
+          text-shadow: none;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          font-size: .73rem;
+          font-weight: 900;
+          line-height: 1.3;
+        }
+
+          .cutlet-number {
+            font-size: 1.45rem;
+          }
+
+          .cutlet-label {
+            font-size: .6rem;
+          }
+        }
+      `;
+      root.append(style);
+    }
+
+    function ensureWeekdayHeader(root) {
+      const viewport = root.querySelector(".viewport");
+      const cutletList = root.querySelector(".cutlet-list");
+      if (!viewport || !cutletList) return;
+
+      let header = root.querySelector(".weekday-header");
+      if (!header) {
+        header = document.createElement("div");
+        header.className = "weekday-header";
+        header.setAttribute("aria-label", "ימי השבוע");
+        header.innerHTML = "<span>א׳</span><span>ב׳</span><span>ג׳</span><span>ד׳</span><span>ה׳</span><span>ו׳</span><span>ש׳</span>";
+        viewport.insertBefore(header, cutletList);
+      }
+    }
+
+    function enhanceDay(day) {
+      if (day.dataset.weeklyEnhanced === "true") return;
+
+      const monthRun = day.closest(".month-run");
+      const monthName = monthRun?.querySelector(".month-heading strong")?.textContent?.trim();
+      const dayInMonth = day.querySelector(".day-in-month")?.textContent?.trim();
+      const dayInCutletElement = day.querySelector(".day-in-cutlet");
+      const dayInCutlet = dayInCutletElement?.textContent?.match(/\d+/)?.[0];
+
+      if (!monthName || !dayInMonth || !dayInCutlet || !dayInCutletElement) return;
+
+      day.dataset.weeklyEnhanced = "true";
+      const monthStyle = colorForMonth(monthName);
+      day.style.setProperty("--month-color", monthStyle.color);
+      day.style.setProperty("--month-text", monthStyle.text);
+
+      const monthLabel = document.createElement("span");
+      monthLabel.className = "day-month-label";
+      monthLabel.textContent = `${dayInMonth} · ${monthName}`;
+      day.prepend(monthLabel);
+
+      dayInCutletElement.textContent = "";
+
+      const number = document.createElement("strong");
+      number.className = "cutlet-number";
+      number.textContent = dayInCutlet;
+
+      const label = document.createElement("span");
+      label.className = "cutlet-label";
+      label.textContent = "היום בקציצה";
+
+      dayInCutletElement.append(number, label);
+    }
+
+    function enhanceWeeklyCalendar() {
+      const root = calendar.shadowRoot;
+      if (!root) return;
+
+      ensureWeeklyStyles(root);
+      ensureWeekdayHeader(root);
+      root.querySelectorAll(".day").forEach(enhanceDay);
+    }
+
+    function scheduleWeeklyEnhancement() {
+      if (enhanceScheduled) return;
+      enhanceScheduled = true;
+      queueMicrotask(() => {
+        enhanceScheduled = false;
+        enhanceWeeklyCalendar();
+      });
+    }
+
+    function installWeeklyCalendarView() {
+      const root = calendar.shadowRoot;
+      if (!root) return;
+
+      enhanceWeeklyCalendar();
+
+      weeklyObserver?.disconnect();
+      weeklyObserver = new MutationObserver(scheduleWeeklyEnhancement);
+      weeklyObserver.observe(root, {
+        childList: true,
+        subtree: true,
+      });
+    }
+
+
+    function formatPastafari(value) {
+      return [
+        `שנה ${value.year}`,
+        `קציצה ${value.cutletName}`,
+        `היום ה־${value.dayInCutlet} בקציצה`,
+        `חודש ${value.monthName}`,
+        `היום ה־${value.dayInMonth} בחודש`,
+      ].join(" · ");
+    }
+
+    function serializeStatus(status) {
+      return JSON.stringify(status, (_key, value) => (
+        typeof value === "bigint" ? value.toString() : value
+      ));
+    }
+
+    function getDetachedHeadless() {
+      if (detachedHeadless) return detachedHeadless;
+      detachedHeadless = document.createElement("pastafari-date");
+      detachedHeadless.setAttribute("headless", "");
+      return detachedHeadless;
+    }
+
+    calendar.addEventListener("pastafari-change", (event) => {
+      componentValue.textContent = formatPastafari(event.detail);
+      componentValue.classList.remove("error");
+      eventValue.textContent = JSON.stringify(event.detail);
+      scheduleWeeklyEnhancement();
+    });
+
+    toggleEditor.addEventListener("change", () => {
+      calendar.toggleAttribute("no-editor", !toggleEditor.checked);
+    });
+
+    retryRouter.addEventListener("click", async () => {
+      retryRouter.disabled = true;
+      componentValue.textContent = "מפעיל מחדש…";
+      componentValue.classList.remove("error");
+
+      try {
+        await sharedPastafariRouter.retry();
+        const value = await calendar.refresh();
+        if (value) componentValue.textContent = formatPastafari(value);
+        scheduleWeeklyEnhancement();
+      } catch (error) {
+        componentValue.textContent = error.message;
+        componentValue.classList.add("error");
+      } finally {
+        retryRouter.disabled = false;
+      }
+    });
+
+    apiForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      apiResult.classList.remove("error");
+      apiResult.textContent = "מחשב…";
+
+      try {
+        let result;
+        let method;
+
+        if (event.submitter?.value === "headless") {
+          const headless = getDetachedHeadless();
+          headless.setAttribute("date", apiTarget.value);
+          headless.setAttribute("calculation-date", apiCalculation.value);
+          result = await headless.refresh();
+          method = "רכיב headless";
+        } else {
+          result = await getPastafariDateAsync(
+            apiTarget.value,
+            apiCalculation.value,
+          );
+          method = "getPastafariDateAsync()";
+        }
+
+        apiResult.textContent = `${method}\n${JSON.stringify(result, null, 2)}`;
+      } catch (error) {
+        apiResult.textContent = error.message;
+        apiResult.classList.add("error");
+      }
+    });
+
+    const statusTimer = setInterval(() => {
+      routerStatus.textContent = serializeStatus(sharedPastafariRouter.getStatus());
+    }, 750);
+
+    window.addEventListener("pagehide", () => {
+      clearInterval(statusTimer);
+      weeklyObserver?.disconnect();
+      sharedPastafariRouter.dispose();
+    }, { once: true });
+
+    calendar.ready.then((value) => {
+      componentValue.textContent = formatPastafari(value);
+      installWeeklyCalendarView();
+    }).catch((error) => {
+      componentValue.textContent = error.message;
+      componentValue.classList.add("error");
+    });
+  </script>
+</body>
+</html>
