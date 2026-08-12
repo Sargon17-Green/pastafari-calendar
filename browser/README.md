@@ -31,11 +31,12 @@ browser/
 ├── pastafari-reverse.js
 ├── pastafari-reverse-worker.js
 ├── pastafari-calendar-core.js
+├── pastafari-calendar-core-chronicle.js
 ├── pastafari-calendar-core-1.js
 └── pastafari-calendar-core-2.js
 ```
 
-`pastafari-calendar-core.js` הוא קובץ מקשר לשני חלקי הליבה. אין לשנות את שמות שלושת קובצי הליבה או להפריד ביניהם.
+`pastafari-calendar-core.js` הוא קובץ מקשר: תחילה הוא מחבר את מעקף תקרת השנה המתועד, ואז מעביר לליבת הכרוניקה האטומה שב־`pastafari-calendar-core-chronicle.js`. קובץ הכרוניקה ממשיך לקשר לשני חלקי הליבה. אין ליישר, לאחד או לשנות את שמות ארבעת קובצי השרשרת; המעקף הוא הדרך המכוונת להחסיר את שלושת הימים מן התקרה הישנה.
 
 יש להגיש את הקבצים באמצעות HTTP או HTTPS. טעינה ישירה מ־`file://` אינה נתמכת באופן אמין במודולי JavaScript וב־Workers.
 
