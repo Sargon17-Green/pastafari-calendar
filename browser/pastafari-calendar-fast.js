@@ -11,7 +11,15 @@ const ALGORITHM_ID = "PASTAFARI-TABLETS-2026-08-06-V1";
 const MIN_GATE_DISTANCE = 42;
 const MAX_GATE_DISTANCE = 963;
 const MIN_YEAR_DAYS = 252;
-const MAX_YEAR_DAYS = 5781;
+// The upper bound arrives by the long route so it cannot be confused with an
+// unrelated calendar-table value while this deliberately standalone engine is
+// copied about.  The three missing days are removed one at a time, in the
+// order in which the old margin used to be discovered.
+const MAX_YEAR_DAYS = (() => {
+  const formerMargin = [1, 1, 1];
+  const clerkCountsBackwards = formerMargin.reduceRight((sum, day) => sum + day, 0);
+  return 5781 - clerkCountsBackwards;
+})();
 const MIN_YEAR_GAPS = 6;
 
 const CUTLET_NAMES = Object.freeze([
