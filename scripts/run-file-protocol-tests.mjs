@@ -81,17 +81,26 @@ async function launchBrowser(name) {
 
 function startStaticServer() {
   const server = createServer(async (request, response) => {
+    const rawUrl = request.url || "/";
+    let pathname = rawUrl;
+
     try {
-      const url = new URL(request.url || "/", "http://127.0.0.1");
-      const pathname = decodeURIComponent(url.pathname);
+      const url = new URL(rawUrl, "http://127.0.0.1");
+      pathname = decodeURIComponent(url.pathname);
       const candidate = path.resolve(ROOT, `.${pathname}`);
       if (candidate !== ROOT && !candidate.startsWith(`${ROOT}${path.sep}`)) {
+        process.stderr.write(
+          `[file-protocol-static-server] 403 ${request.method || "GET"} ${pathname}\n`,
+        );
         response.writeHead(403).end("Forbidden");
         return;
       }
 
       const info = await stat(candidate);
       if (!info.isFile()) {
+        process.stderr.write(
+          `[file-protocol-static-server] 404 ${request.method || "GET"} ${pathname}\n`,
+        );
         response.writeHead(404).end("Not found");
         return;
       }
@@ -102,7 +111,11 @@ function startStaticServer() {
         "Content-Type": MIME_TYPES[path.extname(candidate)] || "application/octet-stream",
       });
       createReadStream(candidate).pipe(response);
-    } catch {
+    } catch (error) {
+      process.stderr.write(
+        `[file-protocol-static-server] 404 ${request.method || "GET"} ${pathname}`
+          + ` :: ${error?.code || error?.name || "Error"}: ${error?.message || String(error)}\n`,
+      );
       response.writeHead(404).end("Not found");
     }
   });
