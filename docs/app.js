@@ -125,7 +125,7 @@ function renderSelection() {
   const primary = document.createElement("strong");
   primary.textContent = `${selected.cutletName} · שנה ${formatInteger(selected.year)}`;
   const measures = document.createElement("span");
-  measures.textContent = `${selected.dayInCutlet} בקציצה · ${selected.dayInMonth} בחודש`;
+  measures.textContent = `${formatInteger(selected.dayInCutlet)} בקציצה · ${formatInteger(selected.dayInMonth)} בחודש`;
   const meta = document.createElement("small");
   meta.textContent = selected.monthName;
   elements["selection-summary"].replaceChildren(label, primary, measures, meta);
@@ -168,36 +168,33 @@ function renderView(view) {
     button.style.setProperty("--month-edge", colors.edge);
     button.style.setProperty("--month-ink", "#fffdf8");
     button.setAttribute("aria-pressed", String(selected));
-    button.setAttribute("aria-label", `שנה ${formatInteger(day.year)}, קציצה ${day.cutletName}, יום ${day.dayInCutlet} בקציצה, ${day.monthName}, יום ${day.dayInMonth} בחודש`);
+    button.setAttribute("aria-label", `שנת ${formatInteger(day.year)} לבריאת העולם, יום ${formatInteger(day.dayInCutlet)} לקציצה ${day.cutletName}, ${formatInteger(day.dayInMonth)} בחודש ${day.monthName}`);
     if (selected) button.setAttribute("aria-current", "date");
 
-    const context = document.createElement("span");
-    context.className = "day-context";
-    context.textContent = `שנה ${formatInteger(day.year)} · ${day.cutletName}`;
-    const values = document.createElement("span");
-    values.className = "day-values";
-    values.setAttribute("aria-hidden", "true");
-    const cutletMeasure = document.createElement("span");
-    cutletMeasure.className = "day-measure";
-    const cutletNumber = document.createElement("span");
-    cutletNumber.className = "day-number";
-    cutletNumber.textContent = String(day.dayInCutlet);
-    const cutletLabel = document.createElement("span");
-    cutletLabel.textContent = "בקציצה";
-    cutletMeasure.append(cutletNumber, cutletLabel);
-    const monthMeasure = document.createElement("span");
-    monthMeasure.className = "day-measure";
-    const monthNumber = document.createElement("span");
-    monthNumber.className = "day-number";
-    monthNumber.textContent = String(day.dayInMonth);
-    const monthLabel = document.createElement("span");
-    monthLabel.textContent = "בחודש";
-    monthMeasure.append(monthNumber, monthLabel);
-    values.append(cutletMeasure, monthMeasure);
-    const monthName = document.createElement("span");
-    monthName.className = "month-name";
-    monthName.textContent = day.monthName;
-    button.append(context, values, monthName);
+    const emphasize = (value) => {
+      const strong = document.createElement("strong");
+      strong.textContent = value;
+      return strong;
+    };
+    const yearLine = document.createElement("span");
+    yearLine.className = "day-line";
+    yearLine.append("שנת ", emphasize(formatInteger(day.year)), " לבריאת העולם");
+    const cutletLine = document.createElement("span");
+    cutletLine.className = "day-line";
+    cutletLine.append(
+      "יום ",
+      emphasize(formatInteger(day.dayInCutlet)),
+      " לקציצה ",
+      emphasize(day.cutletName),
+    );
+    const monthLine = document.createElement("span");
+    monthLine.className = "day-line";
+    monthLine.append(
+      emphasize(formatInteger(day.dayInMonth)),
+      " בחודש ",
+      emphasize(day.monthName),
+    );
+    button.append(yearLine, cutletLine, monthLine);
     fragment.append(button);
   }
   elements["calendar-grid"].replaceChildren(fragment);
