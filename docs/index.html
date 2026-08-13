@@ -1,49 +1,50 @@
 <!doctype html>
-<html lang="he" dir="rtl">
+<html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#672013">
-    <meta name="description" content="לוח־שנה פסטפרי">
+    <meta name="description" content="A local, deterministic Pastafari calendar." data-i18n-attr="content:meta.description">
     <meta name="color-scheme" content="light">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; worker-src 'self'; manifest-src 'self'">
-    <title>לוח השנה הפסטפרי</title>
-    <link rel="manifest" href="./manifest.webmanifest">
-    <link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
+    <title data-i18n="app.title">Pastafari Calendar</title>
+    <link rel="manifest" href="./manifest.webmanifest?v=6-i18n-en-he">
+    <link rel="icon" href="./icons/icon.svg?v=6-i18n-en-he" type="image/svg+xml">
     <link rel="apple-touch-icon" href="./icons/icon-192.png">
-    <link rel="stylesheet" href="./styles.css">
-    <script type="module" src="./app.js"></script>
+    <link rel="stylesheet" href="./styles.css?v=6-i18n-en-he">
+    <script type="module" src="./app.js?v=6-i18n-en-he"></script>
   </head>
   <body>
-    <a class="skip-link" href="#calendar-workspace">דלגו ללוח</a>
+    <a class="skip-link" href="#calendar-workspace" data-i18n="nav.skip"></a>
     <main class="app-shell">
       <header class="masthead">
-        <div>
+        <div class="masthead-copy">
           <p class="eyebrow">PASTAFARI</p>
-          <h1>לוח השנה הפסטפרי</h1>
-          <p class="intro">
-            בכל משבצת מוצג התאריך בשלוש שורות: השנה, היום בקציצה והיום בחודש.
-            שם החודש קובע את צבע המשבצת.
-          </p>
-          <a class="guide-link" href="#guide">איך משתמשים באתר?</a>
+          <h1 data-i18n="app.title"></h1>
+          <p class="intro" data-i18n="app.intro"></p>
+          <a class="guide-link" href="#guide" data-i18n="guide.open"></a>
+        </div>
+        <div class="language-control">
+          <label for="language-selector" data-i18n="language.label"></label>
+          <select id="language-selector" autocomplete="off"></select>
         </div>
       </header>
 
-      <a class="floating-guide-link" href="#guide">איך משתמשים?</a>
+      <a class="floating-guide-link" href="#guide" data-i18n="guide.openShort"></a>
 
       <section class="status-panel" id="loading-panel" aria-live="polite" aria-busy="true">
         <span class="loader" aria-hidden="true"></span>
         <div>
-          <p class="status-kicker">מחשב מקומית</p>
-          <h2>מאתר את הקציצה של היום…</h2>
+          <p class="status-kicker" data-i18n="loading.kicker"></p>
+          <h2 data-i18n="loading.title"></h2>
         </div>
       </section>
 
       <section class="status-panel error-panel" id="error-panel" role="alert" hidden>
-        <p class="status-kicker">לא ניתן להציג את הלוח</p>
-        <h2>מנוע החישוב לא נטען</h2>
+        <p class="status-kicker" data-i18n="error.kicker"></p>
+        <h2 data-i18n="error.title"></h2>
         <p id="error-message"></p>
-        <button type="button" id="reload-button">טעינה מחדש</button>
+        <button type="button" id="reload-button" data-i18n="error.reload"></button>
       </section>
 
       <section class="calendar-workspace" id="calendar-workspace" aria-labelledby="cutlet-heading" hidden>
@@ -53,41 +54,43 @@
             <h2 id="cutlet-heading"></h2>
             <p id="cutlet-description"></p>
           </div>
-          <div class="toolbar-actions" aria-label="ניווט בין קציצות">
-            <button type="button" id="previous-cutlet">הקציצה הקודמת</button>
-            <button type="button" class="primary-action" id="today-button">היום</button>
-            <button type="button" id="next-cutlet">הקציצה הבאה</button>
+          <div class="toolbar-actions" data-i18n-attr="aria-label:calendar.toolbarAria">
+            <button type="button" id="previous-cutlet" data-i18n="calendar.previous"></button>
+            <button type="button" class="primary-action" id="today-button" data-i18n="calendar.today"></button>
+            <button type="button" id="next-cutlet" data-i18n="calendar.next"></button>
           </div>
         </div>
 
         <div class="selection-summary" id="selection-summary" aria-live="polite"></div>
-        <div class="calendar-grid" id="calendar-grid" aria-label="ימי הקציצה"></div>
+        <div class="calendar-grid" id="calendar-grid"></div>
       </section>
 
       <section class="public-guide" id="guide" aria-labelledby="guide-heading">
-        <p class="eyebrow">מדריך שימוש</p>
-        <h2 id="guide-heading">מה רואים כאן, ומה אפשר לעשות?</h2>
-        <p class="guide-intro">
-          לוח השנה הפסטפרי אינו מחלק את הזמן לשבועות. האתר מציג רצף ימים בתוך
-          קציצה אחת, ומחשב את התאריך כולו במכשיר שלכם.
-        </p>
+        <p class="eyebrow" data-i18n="guide.eyebrow"></p>
+        <h2 id="guide-heading" data-i18n="guide.heading"></h2>
+        <p class="guide-intro" data-i18n="guide.intro"></p>
         <div class="guide-grid">
-          <article><span class="guide-number">01</span><h3>מתחילים מן היום</h3><p>בפתיחת הקישור האתר מחשב אוטומטית את היום המקומי ומציג את הקציצה שמכילה אותו. היום מסומן במסגרת בולטת, ואין צורך להזין דבר או להתחבר לחשבון.</p></article>
-          <article><span class="guide-number">02</span><h3>קוראים משבצת</h3><p>השורה הראשונה מציגה את השנה; השנייה את היום בקציצה ואת שם הקציצה; והשלישית את היום בחודש ואת שם החודש. הערכים המשתנים מודגשים, וצבע זהה מציין ימים בעלי אותו שם חודש.</p></article>
-          <article><span class="guide-number">03</span><h3>בוחרים יום</h3><p>לחיצה על משבצת מסמנת אותה ומעדכנת את שורת הסיכום שמעל הלוח. השורה מציגה יחד את הקציצה, החודש ושני המונים, כדי שלא יהיה צורך להסיק את התאריך מצבע או ממספר יחיד.</p></article>
-          <article><span class="guide-number">04</span><h3>מדפדפים בין קציצות</h3><p>הכפתורים „הקציצה הקודמת” ו„הקציצה הבאה” עוברים לרצף הסמוך. הכפתור „היום” מחזיר בכל עת לקציצה ולמשבצת של היום המקומי.</p></article>
-          <article><span class="guide-number">05</span><h3>מבינים לפי איזה יום מחשבים</h3><p>בחישוב יש תפקיד גם ליום שמציגים וגם ליום שבו פותחים את האתר — זהו „יום המעשה”. הוא נקבע לפי היום המקומי בעת הפתיחה ונשאר קבוע בזמן הדפדוף, ולכן אפשר להשוות ימים שונים לפי אותה נקודת מוצא.</p></article>
-          <article><span class="guide-number">06</span><h3>פרטיות ונגישות</h3><p>החישוב נעשה בדפדפן ללא חשבון וללא שליחת תאריך לשרת. אפשר להשתמש בלחצני מקלדת רגילים, להגדיל את התצוגה ולהדפיס; סימון היום אינו נשען על צבע בלבד.</p></article>
+          <article><span class="guide-number">01</span><h3 data-i18n="guide.1.heading"></h3><p data-i18n="guide.1.body"></p></article>
+          <article><span class="guide-number">02</span><h3 data-i18n="guide.2.heading"></h3><p data-i18n="guide.2.body"></p></article>
+          <article><span class="guide-number">03</span><h3 data-i18n="guide.3.heading"></h3><p data-i18n="guide.3.body"></p></article>
+          <article><span class="guide-number">04</span><h3 data-i18n="guide.4.heading"></h3><p data-i18n="guide.4.body"></p></article>
+          <article><span class="guide-number">05</span><h3 data-i18n="guide.5.heading"></h3><p data-i18n="guide.5.body"></p></article>
+          <article><span class="guide-number">06</span><h3 data-i18n="guide.6.heading"></h3><p data-i18n="guide.6.body"></p></article>
         </div>
-        <p class="guide-note">השורות והעמודות הן רק דרך לסדר את המשבצות על המסך. אין להן משמעות של שבוע, והן עשויות להשתנות לפי רוחב החלון.</p>
-        <a class="back-to-calendar" href="#cutlet-heading">חזרה ללוח</a>
+        <p class="guide-note" data-i18n="guide.note"></p>
+        <a class="back-to-calendar" href="#cutlet-heading" data-i18n="guide.back"></a>
       </section>
 
       <footer class="site-footer">
-        <p>החישוב מתבצע במכשיר; אין באתר חשבון משתמש או קוד מעקב.</p>
-        <p>הקישור פתוח לכולם וטוען מיד גם בחלון גלישה בסתר.</p>
+        <p data-i18n="footer.local"></p>
+        <p data-i18n="footer.open"></p>
       </footer>
     </main>
-    <noscript><p class="noscript">נדרש JavaScript מקומי כדי לבצע את החישוב.</p></noscript>
+    <noscript>
+      <div class="noscript">
+        <p lang="en" dir="ltr">JavaScript is required to calculate the calendar locally.</p>
+        <p lang="he" dir="rtl">נדרש JavaScript מקומי כדי לבצע את החישוב.</p>
+      </div>
+    </noscript>
   </body>
 </html>
