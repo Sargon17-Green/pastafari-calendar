@@ -1,6 +1,6 @@
 "use strict";
 
-const VERSION = "pastafari-static-c5db804-fast-only-5-high-contrast-months";
+const VERSION = "pastafari-static-high-contrast-v2-20260813-1240";
 const CACHE = VERSION;
 const ASSETS = [
   "./index.html",
