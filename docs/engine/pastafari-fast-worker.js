@@ -3,7 +3,7 @@
 import {
   cutletIndexFromInternalName,
   monthIndexFromInternalName,
-} from "../i18n/calendar-identifiers.js";
+} from "../i18n/calendar-identifiers.js?v=7-search-compare";
 
 const FAST_MODULE_URL = new URL("./pastafari-calendar-fast.js", import.meta.url);
 const MAX_CUTLET_DAYS = 6_000;
@@ -133,17 +133,68 @@ function normalizeCutletView(rawView, requestedTargetJdn) {
   };
 }
 
-export async function handlePastafariWorkerRequest(operation, payload = {}) {
-  if (operation !== "getCutletView") {
-    throw new TypeError(`Unknown fast worker operation: ${String(operation)}`);
+function serializeDay(day) {
+  return {
+    jdn: day.jdn,
+    year: day.year,
+    cutletName: day.cutletName,
+    cutletIndex: day.cutletIndex,
+    dayInCutlet: day.dayInCutlet,
+    monthName: day.monthName,
+    monthIndex: day.monthIndex,
+    dayInMonth: day.dayInMonth,
+  };
+}
+
+function normalizeRangeBounds(payload) {
+  const startJdn = toBigInt(payload.startJdn, "startJdn");
+  const endJdn = toBigInt(payload.endJdn, "endJdn");
+  if (endJdn < startJdn) throw new RangeError("endJdn must not be earlier than startJdn.");
+  const length = Number(endJdn - startJdn + 1n);
+  if (!Number.isSafeInteger(length) || length < 1 || length > MAX_CUTLET_DAYS) {
+    throw new RangeError(`A comparison range must contain 1..${MAX_CUTLET_DAYS} days.`);
   }
-  const engine = await ensureEngine();
-  const targetJdn = toBigInt(payload.targetJdn, "targetJdn");
+  return { startJdn, endJdn, length };
+}
+
+function materializeRange(engine, payload) {
+  const { startJdn, endJdn, length } = normalizeRangeBounds(payload);
   const calculationJdn = toBigInt(payload.calculationJdn, "calculationJdn");
-  return normalizeCutletView(
-    engine.getCutletView(targetJdn, { calculationJdn }),
-    targetJdn,
-  );
+  const days = new Array(length);
+  let targetJdn = startJdn;
+  let outputIndex = 0;
+
+  while (targetJdn <= endJdn) {
+    const view = normalizeCutletView(
+      engine.getCutletView(targetJdn, { calculationJdn }),
+      targetJdn,
+    );
+    const firstIndex = Number(targetJdn - view.startJdn);
+    const lastJdn = view.endJdn < endJdn ? view.endJdn : endJdn;
+    const lastIndex = Number(lastJdn - view.startJdn);
+    for (let index = firstIndex; index <= lastIndex; index += 1) {
+      days[outputIndex] = serializeDay(view.days[index]);
+      outputIndex += 1;
+    }
+    targetJdn = lastJdn + 1n;
+  }
+
+  if (outputIndex !== length) throw new RangeError("The fast range returned an invalid number of days.");
+  return { startJdn, endJdn, calculationJdn, days };
+}
+
+export async function handlePastafariWorkerRequest(operation, payload = {}) {
+  const engine = await ensureEngine();
+  if (operation === "getCutletView") {
+    const targetJdn = toBigInt(payload.targetJdn, "targetJdn");
+    const calculationJdn = toBigInt(payload.calculationJdn, "calculationJdn");
+    return normalizeCutletView(
+      engine.getCutletView(targetJdn, { calculationJdn }),
+      targetJdn,
+    );
+  }
+  if (operation === "getRangeView") return materializeRange(engine, payload);
+  throw new TypeError(`Unknown fast worker operation: ${String(operation)}`);
 }
 
 const isDedicatedWorker = (
