@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
@@ -8,82 +8,168 @@
     <meta name="color-scheme" content="light">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; worker-src 'self'; manifest-src 'self'">
     <title data-i18n="app.title">Pastafari Calendar</title>
-    <link rel="manifest" href="./manifest.webmanifest?v=6-i18n-en-he">
-    <link rel="icon" href="./icons/icon.svg?v=6-i18n-en-he" type="image/svg+xml">
+    <link rel="manifest" href="./manifest.webmanifest?v=7-search-compare">
+    <link rel="icon" href="./icons/icon.svg?v=7-search-compare" type="image/svg+xml">
     <link rel="apple-touch-icon" href="./icons/icon-192.png">
-    <link rel="stylesheet" href="./styles.css?v=6-i18n-en-he">
-    <script type="module" src="./app.js?v=6-i18n-en-he"></script>
+    <link rel="stylesheet" href="./styles.css?v=7-search-compare">
+    <script type="module" src="./app.js?v=7-search-compare"></script>
   </head>
   <body>
-    <a class="skip-link" href="#calendar-workspace" data-i18n="nav.skip"></a>
+    <a class="skip-link" href="#search-panel" data-i18n="nav.skip">Skip to date search</a>
     <main class="app-shell">
       <header class="masthead">
         <div class="masthead-copy">
           <p class="eyebrow">PASTAFARI</p>
-          <h1 data-i18n="app.title"></h1>
-          <p class="intro" data-i18n="app.intro"></p>
-          <a class="guide-link" href="#guide" data-i18n="guide.open"></a>
+          <h1 data-i18n="app.title">Pastafari Calendar</h1>
+          <p class="intro" data-i18n="app.intro">Find a day in any available calendar, then see its complete Pastafari date.</p>
+          <a class="guide-link" href="#user-guide" data-guide-link data-i18n="guide.open">How do I use this site?</a>
         </div>
         <div class="language-control">
-          <label for="language-selector" data-i18n="language.label"></label>
+          <label for="language-selector" data-i18n="language.label">Language</label>
           <select id="language-selector" autocomplete="off"></select>
         </div>
       </header>
 
-      <a class="floating-guide-link" href="#guide" data-i18n="guide.openShort"></a>
+      <a class="floating-guide-link" href="#user-guide" data-guide-link data-i18n="guide.openShort">How to use this site</a>
 
-      <section class="status-panel" id="loading-panel" aria-live="polite" aria-busy="true">
+      <section class="search-panel" id="search-panel" aria-labelledby="search-heading">
+        <div class="section-heading">
+          <p class="status-kicker" data-i18n="search.kicker">Date search</p>
+          <h2 id="search-heading" data-i18n="search.heading">Which day would you like to find?</h2>
+          <p data-i18n="search.intro">Choose a calendar, enter a date, and select “Show date.”</p>
+        </div>
+        <form id="target-search-form" class="date-entry-form" novalidate>
+          <label class="calendar-picker">
+            <span data-i18n="search.calendarLabel">Calendar used for input</span>
+            <select id="target-calendar" name="calendar"></select>
+          </label>
+          <div class="date-fields" id="target-date-fields"></div>
+          <p class="field-help" id="target-date-help" hidden></p>
+          <p class="form-error" id="target-form-error" role="alert" hidden></p>
+          <button class="search-submit" type="submit" data-i18n="search.submit">Show date</button>
+        </form>
+
+        <details class="advanced-settings" id="calculation-settings">
+          <summary data-i18n="settings.summary">Calculation and comparison options</summary>
+          <div class="settings-content">
+            <div class="settings-intro">
+              <h3 data-i18n="settings.heading">Change the day of working</h3>
+              <p data-i18n="settings.intro">The day of working is the calculation's point of departure.</p>
+            </div>
+            <form id="action-date-form" class="date-entry-form compact-form" novalidate>
+              <label class="calendar-picker">
+                <span data-i18n="settings.actionCalendarLabel">Calendar used to enter the day of working</span>
+                <select id="action-calendar" name="calendar"></select>
+              </label>
+              <div class="date-fields" id="action-date-fields"></div>
+              <p class="field-help" id="action-date-help" hidden></p>
+              <p class="form-error" id="action-form-error" role="alert" hidden></p>
+              <div class="form-actions">
+                <button class="search-submit" type="submit" data-i18n="settings.apply">Apply day of working</button>
+                <button class="secondary-action" type="button" id="reset-action-day" data-i18n="settings.reset">Reset to local day</button>
+              </div>
+            </form>
+
+            <div class="desktop-comparison-settings" id="comparison-settings">
+              <label class="toggle-control">
+                <input type="checkbox" id="comparison-toggle">
+                <span><strong data-i18n="comparison.toggle">Compare two calculations side by side</strong><small data-i18n="comparison.toggleHelp">Available on desktop.</small></span>
+              </label>
+              <form id="comparison-date-form" class="date-entry-form compact-form" novalidate hidden>
+                <label class="calendar-picker">
+                  <span data-i18n="comparison.secondActionLabel">Calendar used to enter the second day of working</span>
+                  <select id="comparison-calendar" name="calendar"></select>
+                </label>
+                <div class="date-fields" id="comparison-date-fields"></div>
+                <p class="field-help" id="comparison-date-help" hidden></p>
+                <p class="form-error" id="comparison-form-error" role="alert" hidden></p>
+                <button class="search-submit" type="submit" data-i18n="comparison.apply">Update comparison</button>
+              </form>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <section class="status-panel" id="loading-panel" aria-labelledby="loading-heading" aria-live="polite" aria-busy="true">
         <span class="loader" aria-hidden="true"></span>
         <div>
-          <p class="status-kicker" data-i18n="loading.kicker"></p>
-          <h2 data-i18n="loading.title"></h2>
+          <p class="status-kicker" data-i18n="loading.kicker">Calculated locally</p>
+          <h2 id="loading-heading" data-i18n="loading.title">Finding the cutlet and date…</h2>
         </div>
       </section>
 
-      <section class="status-panel error-panel" id="error-panel" role="alert" hidden>
-        <p class="status-kicker" data-i18n="error.kicker"></p>
-        <h2 data-i18n="error.title"></h2>
+      <section class="status-panel error-panel" id="error-panel" aria-labelledby="error-heading" role="alert" hidden>
+        <p class="status-kicker" data-i18n="error.kicker">Unable to display the calendar</p>
+        <h2 id="error-heading" data-i18n="error.title">The calculation engine did not load</h2>
         <p id="error-message"></p>
-        <button type="button" id="reload-button" data-i18n="error.reload"></button>
+        <button type="button" id="reload-button" data-i18n="error.reload">Reload</button>
       </section>
 
       <section class="calendar-workspace" id="calendar-workspace" aria-labelledby="cutlet-heading" hidden>
+        <article class="target-beacon" id="target-beacon" aria-live="polite">
+          <div class="beacon-label" id="target-marker"></div>
+          <div class="beacon-date" id="target-date-lines"></div>
+          <p class="beacon-context" id="target-context"></p>
+        </article>
+
         <div class="calendar-toolbar">
           <div class="cutlet-identity">
             <p class="status-kicker" id="cutlet-meta"></p>
-            <h2 id="cutlet-heading"></h2>
+            <h2 id="cutlet-heading">Calendar</h2>
             <p id="cutlet-description"></p>
           </div>
           <div class="toolbar-actions" data-i18n-attr="aria-label:calendar.toolbarAria">
-            <button type="button" id="previous-cutlet" data-i18n="calendar.previous"></button>
-            <button type="button" class="primary-action" id="today-button" data-i18n="calendar.today"></button>
-            <button type="button" id="next-cutlet" data-i18n="calendar.next"></button>
+            <button type="button" id="previous-cutlet" data-i18n="calendar.previous">Previous cutlet</button>
+            <button type="button" class="primary-action" id="today-button" data-i18n="calendar.today">Back to today</button>
+            <button type="button" id="next-cutlet" data-i18n="calendar.next">Next cutlet</button>
           </div>
         </div>
 
-        <div class="selection-summary" id="selection-summary" aria-live="polite"></div>
+        <p class="browse-note" id="browse-note" hidden data-i18n="calendar.targetOutside">The searched date is not in the cutlet currently on screen.</p>
         <div class="calendar-grid" id="calendar-grid"></div>
       </section>
 
-      <section class="public-guide" id="guide" aria-labelledby="guide-heading">
-        <p class="eyebrow" data-i18n="guide.eyebrow"></p>
-        <h2 id="guide-heading" data-i18n="guide.heading"></h2>
-        <p class="guide-intro" data-i18n="guide.intro"></p>
-        <div class="guide-grid">
-          <article><span class="guide-number">01</span><h3 data-i18n="guide.1.heading"></h3><p data-i18n="guide.1.body"></p></article>
-          <article><span class="guide-number">02</span><h3 data-i18n="guide.2.heading"></h3><p data-i18n="guide.2.body"></p></article>
-          <article><span class="guide-number">03</span><h3 data-i18n="guide.3.heading"></h3><p data-i18n="guide.3.body"></p></article>
-          <article><span class="guide-number">04</span><h3 data-i18n="guide.4.heading"></h3><p data-i18n="guide.4.body"></p></article>
-          <article><span class="guide-number">05</span><h3 data-i18n="guide.5.heading"></h3><p data-i18n="guide.5.body"></p></article>
-          <article><span class="guide-number">06</span><h3 data-i18n="guide.6.heading"></h3><p data-i18n="guide.6.body"></p></article>
+      <section class="comparison-workspace" id="comparison-workspace" aria-labelledby="comparison-heading" hidden>
+        <div class="section-heading">
+          <p class="status-kicker" data-i18n="comparison.kicker">Comparison aligned by day</p>
+          <h2 id="comparison-heading" data-i18n="comparison.heading">The same days, two days of working</h2>
+          <p data-i18n="comparison.intro">Every row contains the same queried day.</p>
         </div>
-        <p class="guide-note" data-i18n="guide.note"></p>
-        <a class="back-to-calendar" href="#cutlet-heading" data-i18n="guide.back"></a>
+        <div class="comparison-summary" id="comparison-summary"></div>
+        <div class="comparison-scroll" tabindex="0" data-i18n-attr="aria-label:comparison.scrollAria">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th scope="col" data-i18n="comparison.sameDay">Day shared by both calculations</th>
+                <th scope="col" id="comparison-primary-heading">First calculation</th>
+                <th scope="col" id="comparison-secondary-heading">Second calculation</th>
+              </tr>
+            </thead>
+            <tbody id="comparison-body"></tbody>
+          </table>
+        </div>
+        <p class="mobile-comparison-note" data-i18n="comparison.desktopOnly">The full comparison table is available on a wide desktop screen.</p>
+      </section>
+
+      <section class="public-guide" id="user-guide" aria-labelledby="guide-heading">
+        <p class="eyebrow" data-i18n="guide.eyebrow">User guide</p>
+        <h2 id="guide-heading" tabindex="-1" data-i18n="guide.heading">What can you do here, and how?</h2>
+        <p class="guide-intro" data-i18n="guide.intro">Search, read, browse, change the day of working, and compare calculations.</p>
+        <div class="guide-grid">
+          <article><span class="guide-number">01</span><h3 data-i18n="guide.1.heading">Open the site and get today</h3><p data-i18n="guide.1.body">The site immediately calculates your local day.</p></article>
+          <article><span class="guide-number">02</span><h3 data-i18n="guide.2.heading">Search in any available calendar</h3><p data-i18n="guide.2.body">Choose a calendar, fill its fields, and show the date.</p></article>
+          <article><span class="guide-number">03</span><h3 data-i18n="guide.3.heading">Read the date</h3><p data-i18n="guide.3.body">Each tile shows the year, cutlet, and month in three lines.</p></article>
+          <article><span class="guide-number">04</span><h3 data-i18n="guide.4.heading">Browse without selecting by accident</h3><p data-i18n="guide.4.body">Use the cutlet navigation buttons.</p></article>
+          <article><span class="guide-number">05</span><h3 data-i18n="guide.5.heading">Change the day of working</h3><p data-i18n="guide.5.body">Open the calculation options to change it.</p></article>
+          <article><span class="guide-number">06</span><h3 data-i18n="guide.6.heading">Compare the same days twice</h3><p data-i18n="guide.6.body">On desktop, align each target day under two calculations.</p></article>
+        </div>
+        <p class="guide-note" data-i18n="guide.note">Grid rows are visual only; comparison-table rows deliberately align the same day.</p>
+        <a class="back-to-calendar" href="#search-panel" data-i18n="guide.back">Back to search and calendar</a>
       </section>
 
       <footer class="site-footer">
-        <p data-i18n="footer.local"></p>
-        <p data-i18n="footer.open"></p>
+        <p data-i18n="footer.local">Calculation happens on your device; there is no user account or tracking code.</p>
+        <p data-i18n="footer.open">The link is public and loads directly, including in private browsing.</p>
       </footer>
     </main>
     <noscript>
