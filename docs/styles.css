@@ -62,7 +62,10 @@ input:focus-visible {
 }
 
 .masthead {
-  display: block;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1.5rem 2rem;
+  align-items: start;
   padding: clamp(1rem, 2vw, 2rem) 0 clamp(2rem, 5vw, 4.5rem);
   border-bottom: 1px solid var(--line);
 }
@@ -94,6 +97,35 @@ h1 {
   margin-bottom: 0;
   color: var(--muted);
   font-size: clamp(1.05rem, 2vw, 1.3rem);
+}
+
+
+.language-control {
+  display: grid;
+  min-width: min(14rem, 100%);
+  gap: 0.35rem;
+  justify-items: stretch;
+}
+
+.language-control label {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.language-control select {
+  min-height: 44px;
+  width: 100%;
+  padding: 0.55rem 2.2rem 0.55rem 0.75rem;
+  border: 1px solid #8e8272;
+  border-radius: 0.7rem;
+  background: var(--panel);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+[dir="rtl"] .language-control select {
+  padding: 0.55rem 0.75rem 0.55rem 2.2rem;
 }
 
 .guide-link,
@@ -222,7 +254,7 @@ h1 {
 
 .selection-summary {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr);
   gap: 0.15rem 1rem;
   margin-block: 1.5rem 1rem;
   padding: 1rem 1.15rem;
@@ -240,7 +272,8 @@ h1 {
   letter-spacing: 0.05em;
 }
 
-.selection-summary strong { font-size: 1.15rem; }
+.selection-summary strong { min-width: 0; overflow-wrap: anywhere; font-size: 1.15rem; }
+.selection-summary > span { min-width: 0; overflow-wrap: anywhere; }
 .selection-summary small { grid-column: 2 / -1; color: var(--muted); }
 
 .calendar-grid {
@@ -261,9 +294,7 @@ h1 {
   overflow: hidden;
   border: 2px solid var(--month-edge);
   border-radius: 0.85rem;
-  background-color: var(--month-bg);
-  background-image: var(--month-pattern-image, none);
-  background-size: var(--month-pattern-size, auto);
+  background: var(--month-bg);
   color: var(--month-ink);
   text-align: start;
   box-shadow: inset 0 1px rgb(255 255 255 / 14%);
@@ -352,6 +383,8 @@ h1 {
 }
 
 @media (max-width: 760px) {
+  .masthead { grid-template-columns: 1fr; }
+  .language-control { min-width: 0; max-width: 22rem; }
   .calendar-toolbar, .site-footer { align-items: stretch; flex-direction: column; }
   .toolbar-actions { display: grid; grid-template-columns: 1fr 1fr 1fr; }
   .toolbar-actions button { padding-inline: 0.45rem; }
@@ -389,7 +422,7 @@ h1 {
   body { background: white; }
   .app-shell { width: 100%; padding: 0; }
   .masthead { grid-template-columns: 1fr; padding-block: 0 1rem; }
-  .toolbar-actions, .guide-link, .floating-guide-link, .back-to-calendar, .site-footer { display: none; }
+  .toolbar-actions, .guide-link, .floating-guide-link, .back-to-calendar, .site-footer, .language-control { display: none; }
   .public-guide { box-shadow: none; }
   h1 { font-size: 2.5rem; }
   .calendar-workspace { padding: 1rem 0 0; }
