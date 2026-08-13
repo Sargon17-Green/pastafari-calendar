@@ -1,12 +1,26 @@
 "use strict";
 
-const worker = new Worker(new URL("./engine/pastafari-fast-worker.js", import.meta.url), {
+import { calendarLabel, getLocale, translate, validateLocaleResources } from "./i18n/registry.js";
+import {
+  applyDocumentLocale,
+  persistLanguage,
+  populateLanguageSelector,
+  resolveBrowserLocale,
+  urlWithLanguage,
+} from "./i18n/runtime.js";
+
+validateLocaleResources();
+
+const worker = new Worker(new URL("./engine/pastafari-fast-worker.js?v=6-i18n-en-he", import.meta.url), {
   type: "module",
   name: "pastafari-fast",
 });
 const pending = new Map();
-const numberFormatter = new Intl.NumberFormat("he-IL", { useGrouping: true });
 let requestId = 0;
+let activeLocale = resolveBrowserLocale().locale;
+let numberFormatter = null;
+let dateFormatter = null;
+let lastVisibleErrorKey = null;
 let state = {
   targetJdn: null,
   calculationJdn: null,
@@ -20,12 +34,33 @@ const elements = Object.fromEntries(
   [...document.querySelectorAll("[id]")].map((element) => [element.id, element]),
 );
 
+function rebuildFormatters() {
+  numberFormatter = new Intl.NumberFormat(activeLocale.intlLocale, { useGrouping: true });
+  dateFormatter = new Intl.DateTimeFormat(activeLocale.intlLocale, {
+    calendar: "gregory",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+}
+
+function t(key, values = {}) {
+  return translate(activeLocale, key, values);
+}
+
+function localizedError(key, cause = null) {
+  const error = new Error(key);
+  error.translationKey = key;
+  error.cause = cause;
+  return error;
+}
+
 function workerRequest(operation, payload, timeoutMs = 120_000) {
   const id = ++requestId;
   return new Promise((resolve, reject) => {
     const timer = setTimeout(() => {
       pending.delete(id);
-      reject(new Error("החישוב נמשך זמן רב מדי."));
+      reject(localizedError("error.timeout"));
     }, timeoutMs);
     pending.set(id, { resolve, reject, timer });
     worker.postMessage({ id, operation, payload });
@@ -40,11 +75,11 @@ worker.addEventListener("message", (event) => {
   pending.delete(message.id);
   clearTimeout(entry.timer);
   if (message.ok) entry.resolve(message.result);
-  else entry.reject(new Error(message.error?.message || "מנוע החישוב נכשל."));
+  else entry.reject(localizedError("error.engineFailed", message.error));
 });
 
 worker.addEventListener("error", (event) => {
-  showError(new Error(event.message || "טעינת מנוע החישוב נכשלה."));
+  showError(localizedError("error.engineLoadFailed", event.message));
 });
 
 function floorDiv(a, b) {
@@ -77,7 +112,7 @@ function localToday() {
 }
 
 function formatLocalDate(date) {
-  return `${String(date.day).padStart(2, "0")}.${String(date.month).padStart(2, "0")}.${date.year}`;
+  return dateFormatter.format(new Date(Number(date.year), date.month - 1, date.day, 12));
 }
 
 function formatInteger(value) {
@@ -103,87 +138,128 @@ function writeHistory({ replace = false } = {}) {
   history[replace ? "replaceState" : "pushState"]({ pastafari: true }, "", historyUrl());
 }
 
-const MONTH_PALETTE = Object.freeze([
-  // Deliberately extreme, non-theme colors. The order alternates light/dark and
-  // keeps neighboring months far apart perceptually. Text color is fixed per
-  // background so every card remains highly legible.
-  Object.freeze({ background: "#FFD400", ink: "#000000", edge: "#000000", patternInk: "rgba(255, 255, 255, 0.30)" }), // vivid yellow
-  Object.freeze({ background: "#0018A8", ink: "#FFFFFF", edge: "#FFFFFF", patternInk: "rgba(0, 0, 0, 0.30)" }), // deep blue
-  Object.freeze({ background: "#FF55D8", ink: "#000000", edge: "#000000", patternInk: "rgba(255, 255, 255, 0.30)" }), // hot pink
-  Object.freeze({ background: "#005A32", ink: "#FFFFFF", edge: "#FFFFFF", patternInk: "rgba(0, 0, 0, 0.30)" }), // dark green
-  Object.freeze({ background: "#00E5FF", ink: "#000000", edge: "#000000", patternInk: "rgba(255, 255, 255, 0.30)" }), // cyan
-  Object.freeze({ background: "#7A0019", ink: "#FFFFFF", edge: "#FFFFFF", patternInk: "rgba(0, 0, 0, 0.30)" }), // burgundy
-  Object.freeze({ background: "#A8FF00", ink: "#000000", edge: "#000000", patternInk: "rgba(255, 255, 255, 0.30)" }), // lime
-  Object.freeze({ background: "#4B0082", ink: "#FFFFFF", edge: "#FFFFFF", patternInk: "rgba(0, 0, 0, 0.30)" }), // indigo
-]);
+function hslToRgb(hue, saturation, lightness) {
+  const h = ((hue % 360) + 360) % 360 / 360;
+  const s = saturation / 100;
+  const l = lightness / 100;
 
-function monthPattern(index, ink) {
-  switch (index % 7) {
-    case 0:
-      return {
-        image: `repeating-linear-gradient(45deg, transparent 0 12px, ${ink} 12px 15px, transparent 15px 27px)`,
-        size: "auto",
-      };
-    case 1:
-      return {
-        image: `repeating-linear-gradient(-45deg, transparent 0 12px, ${ink} 12px 15px, transparent 15px 27px)`,
-        size: "auto",
-      };
-    case 2:
-      return {
-        image: `repeating-linear-gradient(0deg, transparent 0 14px, ${ink} 14px 17px, transparent 17px 31px)`,
-        size: "auto",
-      };
-    case 3:
-      return {
-        image: `repeating-linear-gradient(90deg, transparent 0 14px, ${ink} 14px 17px, transparent 17px 31px)`,
-        size: "auto",
-      };
-    case 4:
-      return {
-        image: `radial-gradient(circle, ${ink} 0 2px, transparent 2.5px)`,
-        size: "16px 16px",
-      };
-    case 5:
-      return {
-        image: `repeating-linear-gradient(45deg, transparent 0 14px, ${ink} 14px 16px, transparent 16px 30px), repeating-linear-gradient(-45deg, transparent 0 14px, ${ink} 14px 16px, transparent 16px 30px)`,
-        size: "auto",
-      };
-    default:
-      return {
-        image: `repeating-linear-gradient(135deg, transparent 0 7px, ${ink} 7px 10px, transparent 10px 20px)`,
-        size: "auto",
-      };
+  if (s === 0) {
+    const gray = Math.round(l * 255);
+    return [gray, gray, gray];
   }
+
+  const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+  const p = 2 * l - q;
+  const channel = (offset) => {
+    let value = h + offset;
+    if (value < 0) value += 1;
+    if (value > 1) value -= 1;
+    if (value < 1 / 6) return p + (q - p) * 6 * value;
+    if (value < 1 / 2) return q;
+    if (value < 2 / 3) return p + (q - p) * (2 / 3 - value) * 6;
+    return p;
+  };
+
+  return [channel(1 / 3), channel(0), channel(-1 / 3)].map((value) => Math.round(value * 255));
 }
 
-function monthStyle(index) {
-  const base = MONTH_PALETTE[index % MONTH_PALETTE.length];
-  const pattern = monthPattern(index, base.patternInk);
+function relativeLuminance([red, green, blue]) {
+  const linear = [red, green, blue].map((channel) => {
+    const value = channel / 255;
+    return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2];
+}
+
+function contrastRatio(luminanceA, luminanceB) {
+  const lighter = Math.max(luminanceA, luminanceB);
+  const darker = Math.min(luminanceA, luminanceB);
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
+function monthColors(index) {
+  // Golden-angle hue spacing keeps neighboring month colors far apart in hue.
+  // Alternating very light / very dark backgrounds adds a second, much stronger
+  // luminance distinction. Lightness is pushed until normal text reaches WCAG AAA
+  // contrast (>= 7:1) against either black or white.
+  const hue = Math.round((index * 137.508 + 338) % 360);
+  const saturation = 100;
+  const wantsLightBackground = index % 2 === 0;
+
+  let lightness = wantsLightBackground ? 52 : 38;
+  let ink = wantsLightBackground ? "#000000" : "#ffffff";
+
+  while (lightness >= 0 && lightness <= 100) {
+    const luminance = relativeLuminance(hslToRgb(hue, saturation, lightness));
+    const inkLuminance = ink === "#000000" ? 0 : 1;
+    if (contrastRatio(luminance, inkLuminance) >= 7) break;
+    lightness += wantsLightBackground ? 1 : -1;
+  }
+
   return {
-    background: base.background,
-    ink: base.ink,
-    edge: base.edge,
-    patternImage: pattern.image,
-    patternSize: pattern.size,
+    background: `hsl(${hue} ${saturation}% ${lightness}%)`,
+    edge: ink,
+    ink,
   };
 }
 
+function localizedCutlet(index) {
+  return calendarLabel(activeLocale, "cutlet", index);
+}
+
+function localizedMonth(index) {
+  return calendarLabel(activeLocale, "month", index);
+}
+
+function appendRichTemplate(element, key, values, emphasizedKeys) {
+  const template = activeLocale.messages[key];
+  if (typeof template !== "string") throw new RangeError(`Missing translation key: ${key}`);
+  const emphasized = new Set(emphasizedKeys);
+  const nodes = [];
+  let cursor = 0;
+  const pattern = /\{([A-Za-z0-9_.-]+)\}/g;
+  let match;
+  while ((match = pattern.exec(template)) !== null) {
+    if (match.index > cursor) nodes.push(document.createTextNode(template.slice(cursor, match.index)));
+    const name = match[1];
+    if (!(name in values)) throw new RangeError(`Missing interpolation value ${name} for ${key}`);
+    const value = String(values[name]);
+    if (emphasized.has(name)) {
+      const strong = document.createElement("strong");
+      strong.textContent = value;
+      nodes.push(strong);
+    } else {
+      nodes.push(document.createTextNode(value));
+    }
+    cursor = pattern.lastIndex;
+  }
+  if (cursor < template.length) nodes.push(document.createTextNode(template.slice(cursor)));
+  element.replaceChildren(...nodes);
+}
+
 function renderSelection() {
-  const selected = state.view.days.find((day) => day.jdn === state.selectedJdn);
+  const selected = state.view?.days.find((day) => day.jdn === state.selectedJdn);
   if (!selected) {
     elements["selection-summary"].hidden = true;
     return;
   }
+  const cutletName = localizedCutlet(selected.cutletIndex);
+  const monthName = localizedMonth(selected.monthIndex);
   elements["selection-summary"].hidden = false;
   const label = document.createElement("span");
-  label.textContent = "היום הנבחר";
+  label.textContent = t("selection.label");
   const primary = document.createElement("strong");
-  primary.textContent = `${selected.cutletName} · שנה ${formatInteger(selected.year)}`;
+  primary.textContent = t("selection.primary", {
+    cutletName,
+    year: formatInteger(selected.year),
+  });
   const measures = document.createElement("span");
-  measures.textContent = `${formatInteger(selected.dayInCutlet)} בקציצה · ${formatInteger(selected.dayInMonth)} בחודש`;
+  measures.textContent = t("selection.measures", {
+    dayInCutlet: formatInteger(selected.dayInCutlet),
+    dayInMonth: formatInteger(selected.dayInMonth),
+  });
   const meta = document.createElement("small");
-  meta.textContent = selected.monthName;
+  meta.textContent = monthName;
   elements["selection-summary"].replaceChildren(label, primary, measures, meta);
 }
 
@@ -201,18 +277,24 @@ function selectDay(jdn, { updateHistory = true } = {}) {
   if (updateHistory) writeHistory();
 }
 
-function renderView(view) {
+function renderView(view, { scrollToSelection = true } = {}) {
   state.view = view;
-  elements["cutlet-meta"].textContent = `קציצה נוכחית · שנה ${formatInteger(view.year)}`;
-  elements["cutlet-heading"].textContent = view.cutletName;
-  elements["cutlet-description"].textContent = `${formatInteger(view.days.length)} ימים · החישוב מבוסס על התאריך המקומי: ${formatLocalDate(state.localDate)}`;
-  elements["calendar-grid"].setAttribute("aria-label", `ימי הקציצה ${view.cutletName}`);
+  const viewCutletName = localizedCutlet(view.cutletIndex);
+  elements["cutlet-meta"].textContent = t("calendar.currentCutlet", { year: formatInteger(view.year) });
+  elements["cutlet-heading"].textContent = viewCutletName;
+  elements["cutlet-description"].textContent = t("calendar.cutletDescription", {
+    count: formatInteger(view.days.length),
+    localDate: formatLocalDate(state.localDate),
+  });
+  elements["calendar-grid"].setAttribute("aria-label", t("calendar.daysAria", { cutletName: viewCutletName }));
 
-  const monthIndices = new Map();
+  const monthDisplayOrder = new Map();
   const fragment = document.createDocumentFragment();
   for (const day of view.days) {
-    if (!monthIndices.has(day.monthName)) monthIndices.set(day.monthName, monthIndices.size);
-    const colors = monthStyle(monthIndices.get(day.monthName));
+    if (!monthDisplayOrder.has(day.monthIndex)) monthDisplayOrder.set(day.monthIndex, monthDisplayOrder.size);
+    const colors = monthColors(monthDisplayOrder.get(day.monthIndex));
+    const cutletName = localizedCutlet(day.cutletIndex);
+    const monthName = localizedMonth(day.monthIndex);
     const selected = day.jdn === state.selectedJdn;
     const button = document.createElement("button");
     button.type = "button";
@@ -223,35 +305,36 @@ function renderView(view) {
     button.style.setProperty("--month-bg", colors.background);
     button.style.setProperty("--month-edge", colors.edge);
     button.style.setProperty("--month-ink", colors.ink);
-    button.style.setProperty("--month-pattern-image", colors.patternImage);
-    button.style.setProperty("--month-pattern-size", colors.patternSize);
     button.setAttribute("aria-pressed", String(selected));
-    button.setAttribute("aria-label", `שנת ${formatInteger(day.year)} לבריאת העולם, יום ${formatInteger(day.dayInCutlet)} לקציצה ${day.cutletName}, ${formatInteger(day.dayInMonth)} בחודש ${day.monthName}`);
+    button.setAttribute("aria-label", t("date.aria", {
+      year: formatInteger(day.year),
+      dayInCutlet: formatInteger(day.dayInCutlet),
+      cutletName,
+      dayInMonth: formatInteger(day.dayInMonth),
+      monthName,
+    }));
     if (selected) button.setAttribute("aria-current", "date");
 
-    const emphasize = (value) => {
-      const strong = document.createElement("strong");
-      strong.textContent = value;
-      return strong;
-    };
     const yearLine = document.createElement("span");
     yearLine.className = "day-line";
-    yearLine.append("שנת ", emphasize(formatInteger(day.year)), " לבריאת העולם");
+    appendRichTemplate(yearLine, "date.yearLine", {
+      year: formatInteger(day.year),
+    }, ["year"]);
+
     const cutletLine = document.createElement("span");
     cutletLine.className = "day-line";
-    cutletLine.append(
-      "יום ",
-      emphasize(formatInteger(day.dayInCutlet)),
-      " לקציצה ",
-      emphasize(day.cutletName),
-    );
+    appendRichTemplate(cutletLine, "date.cutletLine", {
+      dayInCutlet: formatInteger(day.dayInCutlet),
+      cutletName,
+    }, ["dayInCutlet", "cutletName"]);
+
     const monthLine = document.createElement("span");
     monthLine.className = "day-line";
-    monthLine.append(
-      emphasize(formatInteger(day.dayInMonth)),
-      " בחודש ",
-      emphasize(day.monthName),
-    );
+    appendRichTemplate(monthLine, "date.monthLine", {
+      dayInMonth: formatInteger(day.dayInMonth),
+      monthName,
+    }, ["dayInMonth", "monthName"]);
+
     button.append(yearLine, cutletLine, monthLine);
     fragment.append(button);
   }
@@ -262,13 +345,16 @@ function renderView(view) {
   elements["calendar-workspace"].hidden = false;
   elements["previous-cutlet"].disabled = false;
   elements["next-cutlet"].disabled = false;
+  lastVisibleErrorKey = null;
 
-  requestAnimationFrame(() => {
-    elements["calendar-grid"].querySelector('[aria-current="date"]')?.scrollIntoView({
-      block: "nearest",
-      inline: "center",
+  if (scrollToSelection) {
+    requestAnimationFrame(() => {
+      elements["calendar-grid"].querySelector('[aria-current="date"]')?.scrollIntoView({
+        block: "nearest",
+        inline: "center",
+      });
     });
-  });
+  }
 }
 
 async function loadCutlet({ replaceHistory = false } = {}) {
@@ -287,10 +373,13 @@ async function loadCutlet({ replaceHistory = false } = {}) {
 }
 
 function showError(error) {
+  console.error(error);
+  const key = error?.translationKey || "error.engineFailed";
+  lastVisibleErrorKey = key;
   elements["loading-panel"].hidden = true;
   elements["calendar-workspace"].hidden = true;
   elements["error-panel"].hidden = false;
-  elements["error-message"].textContent = error?.message || String(error);
+  elements["error-message"].textContent = t(key);
 }
 
 function goToday({ replaceHistory = false } = {}) {
@@ -323,6 +412,37 @@ function loadFromUrl() {
   return loadCutlet({ replaceHistory: true });
 }
 
+function applyActiveLocale({ rerender = true } = {}) {
+  rebuildFormatters();
+  applyDocumentLocale(activeLocale);
+  populateLanguageSelector(elements["language-selector"], activeLocale.code);
+  if (rerender && state.view) renderView(state.view, { scrollToSelection: false });
+  if (lastVisibleErrorKey && !elements["error-panel"].hidden) {
+    elements["error-message"].textContent = t(lastVisibleErrorKey);
+  }
+}
+
+function syncLocaleFromEnvironment({ rerender = true } = {}) {
+  const resolved = resolveBrowserLocale();
+  if (resolved.locale.code === activeLocale.code) return;
+  activeLocale = resolved.locale;
+  applyActiveLocale({ rerender });
+}
+
+function chooseLanguage(code) {
+  const locale = getLocale(code);
+  persistLanguage(locale.code);
+  const url = urlWithLanguage(location.href, locale.code);
+  history.pushState({ pastafari: true }, "", url);
+  if (locale.code !== activeLocale.code) {
+    activeLocale = locale;
+    applyActiveLocale();
+  }
+}
+
+applyActiveLocale({ rerender: false });
+
+elements["language-selector"].addEventListener("change", (event) => chooseLanguage(event.currentTarget.value));
 elements["reload-button"].addEventListener("click", () => location.reload());
 elements["today-button"].addEventListener("click", () => goToday());
 elements["previous-cutlet"].addEventListener("click", () => {
@@ -341,7 +461,10 @@ elements["calendar-grid"].addEventListener("click", (event) => {
   const card = event.target.closest(".day-card");
   if (card) selectDay(card.dataset.jdn);
 });
-window.addEventListener("popstate", () => loadFromUrl());
+window.addEventListener("popstate", () => {
+  syncLocaleFromEnvironment();
+  loadFromUrl();
+});
 
 function refreshLocalDay() {
   if (document.visibilityState === "hidden" || !state.followsToday) return;
