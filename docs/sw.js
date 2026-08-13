@@ -1,6 +1,6 @@
 "use strict";
 
-const VERSION = "pastafari-static-c5db804-fast-only-6-i18n-en-he";
+const VERSION = "pastafari-static-c5db804-fast-only-7-i18n-en-he-bold-month-patterns";
 const CACHE = VERSION;
 const ASSETS = [
   "./index.html",
