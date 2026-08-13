@@ -1,6 +1,6 @@
 "use strict";
 
-const VERSION = "pastafari-static-c5db804-fast-only-9-focus-beacon";
+const VERSION = "pastafari-static-v6-i18n-en-he-focus-beacon";
 const CACHE = VERSION;
 const ASSETS = [
   "./index.html",
