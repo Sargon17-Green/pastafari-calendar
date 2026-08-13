@@ -211,6 +211,7 @@ function monthColors(index) {
 
   return {
     background: palette.background,
+    textBackground: palette.background,
     edge: palette.ink,
     ink: palette.ink,
     patternColor: palette.ink === "#000000" ? "#FFFFFF" : "#000000",
@@ -319,6 +320,7 @@ function renderView(view, { scrollToSelection = true } = {}) {
     button.dataset.selected = String(selected);
     button.tabIndex = selected ? 0 : -1;
     button.style.setProperty("--month-bg", colors.background);
+    button.style.setProperty("--month-text-bg", colors.textBackground);
     button.style.setProperty("--month-edge", colors.edge);
     button.style.setProperty("--month-ink", colors.ink);
     button.style.setProperty("--month-pattern", colors.patternColor);
