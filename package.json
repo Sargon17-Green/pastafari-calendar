@@ -21,13 +21,21 @@
     "types",
     "61fe",
     "browser",
+    "scripts",
     "LICENSE"
   ],
   "engines": {
     "node": ">=18"
   },
   "scripts": {
-    "test": "node --test"
+    "build:standalone": "node scripts/build-standalone.mjs",
+    "test": "node --test test/*.test.js",
+    "test:file-protocol": "node scripts/run-file-protocol-tests.mjs",
+    "test:standalone": "npm run build:standalone && npm run test:file-protocol"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "playwright": "1.62.1"
   },
   "license": "SEE LICENSE IN LICENSE"
 }
