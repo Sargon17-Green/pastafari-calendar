@@ -13,9 +13,11 @@
 year, cutletName, dayInCutlet, monthName, dayInMonth
 ```
 
-## הקבצים הנדרשים
+## שתי גרסאות הפצה
 
-יש להשאיר את כל הקבצים הבאים יחד באותה תיקייה ובשמות המדויקים שלהם:
+### Standard ES-module build — עבור HTTP/HTTPS
+
+זו הגרסה הרגילה. יש להשאיר את כל הקבצים הבאים יחד באותה תיקייה ובשמות המדויקים שלהם:
 
 ```text
 browser/
@@ -25,6 +27,8 @@ browser/
 ├── example_weekly_colored.html
 ├── pastafari-date.js
 ├── pastafari-calendar-router.js
+├── pastafari-calendar-router-core.js
+├── pastafari-engine-client.js
 ├── pastafari-authoritative-worker.js
 ├── pastafari-fast-worker.js
 ├── pastafari-calendar-fast.js
@@ -33,14 +37,13 @@ browser/
 ├── pastafari-calendar-core.js
 ├── pastafari-calendar-core-chronicle.js
 ├── pastafari-calendar-core-1.js
-└── pastafari-calendar-core-2.js
+├── pastafari-calendar-core-2.js
+└── year-ceiling-detour.js
 ```
 
 `pastafari-calendar-core.js` הוא קובץ מקשר: תחילה הוא מחבר את מעקף תקרת השנה המתועד, ואז מעביר לליבת הכרוניקה האטומה שב־`pastafari-calendar-core-chronicle.js`. קובץ הכרוניקה ממשיך לקשר לשני חלקי הליבה. אין ליישר, לאחד או לשנות את שמות ארבעת קובצי השרשרת; המעקף הוא הדרך המכוונת להחסיר את שלושת הימים מן התקרה הישנה.
 
-יש להגיש את הקבצים באמצעות HTTP או HTTPS. טעינה ישירה מ־`file://` אינה נתמכת באופן אמין במודולי JavaScript וב־Workers.
-
-## הטמעה בסיסית
+יש להגיש גרסה זו באמצעות HTTP או HTTPS. היא נשארת גרסת ES-module ואינה מיועדת לפתיחה ישירה מ־`file://`.
 
 כאשר תיקיית `browser` מוגשת מן האתר עצמו:
 
@@ -48,6 +51,42 @@ browser/
 <script type="module" src="/browser/pastafari-date.js"></script>
 <pastafari-date></pastafari-date>
 ```
+
+### Standalone classic-script build — גם עבור file://
+
+התיקייה `browser/standalone` מכילה target הפצה נפרד:
+
+```text
+browser/standalone/
+├── pastafari-date.js
+├── pastafari-date.min.js
+├── README.md
+└── example-file.html
+```
+
+לשימוש במסמך מקומי די להעתיק את קובץ ה־HTML וקובץ JavaScript אחד — רגיל או ממוזער — לאותה תיקייה:
+
+```html
+<pastafari-date></pastafari-date>
+<script src="./pastafari-date.js"></script>
+```
+
+אין להוסיף `type="module"`. ה־Standalone כולל בתוך הקובץ היחיד את הרכיב, הנתב, המנוע הראשי, המנוע המהיר ושני Workers קלאסיים מבוססי Blob. הוא אינו טוען קובצי קוד נוספים, אינו מבצע `fetch()` ואינו זקוק לרשת, לשרת, ל־localhost או ל־origin של HTTP.
+
+נדרשת תמיכה בדפדפן מודרני ב־Web Workers קלאסיים, `Blob` וב־`URL.createObjectURL`. אין ב־Standalone fallback לחישוב בשרשור הראשי אם היכולות האלה חסרות או חסומות.
+
+אותו קובץ Standalone מתאים גם לאתר רגיל. ב־JavaScript שאינו מודול, ה־API האסינכרוני זמין דרך `PastafariCalendarStandalone`, לדוגמה:
+
+```js
+const value = await PastafariCalendarStandalone.getPastafariDateAsync(
+  "2026-08-06",
+  "2026-08-06",
+);
+```
+
+ה־Custom Element והחוזה שלו זהים בשתי הגרסאות: `date`, `calculation-date`, `no-editor`, `headless`, `value`, `ready`, `refresh()` והאירוע `pastafari-change`.
+
+## הטמעה בסיסית
 
 ברירת המחדל היא:
 
@@ -69,7 +108,16 @@ browser/
 
 יש להחליף את `VERSION` בתגית גרסה קבועה, לדוגמה `v1.3.0`. בפרסום אמיתי עדיף תג קבוע על פני `@main`, כדי למנוע ערבוב בין קבצים מגרסאות שונות ומטמון שאינו אחיד.
 
-הנתב מנסה להפעיל את המנועים בתוך Module Workers. כאשר הדפדפן או מדיניות האתר חוסמים Worker מן הכתובת שממנה נטען הרכיב, הנתב מנסה טעינה ישירה של אותם מודולים. במצב זה החישוב עדיין יכול לפעול, אך החישוב הכבד עלול להתבצע בשרשור הראשי. לביצועים הטובים והצפויים ביותר מומלץ להגיש את כל תיקיית `browser` מאותו origin של האתר.
+לשימוש בגרסת Standalone מתוך אתר רגיל:
+
+```html
+<script src="https://cdn.jsdelivr.net/gh/bwtbdyqtmsprytgydym-cpu/pastafari-calendar@VERSION/browser/standalone/pastafari-date.min.js"></script>
+<pastafari-date></pastafari-date>
+```
+
+טעינה מ־CDN אינה שימוש offline; עבור `file://` יש לשמור עותק מקומי של קובץ ה־Standalone.
+
+בגרסה הרגילה הנתב מנסה להפעיל את המנועים בתוך Module Workers. כאשר הדפדפן או מדיניות האתר חוסמים Worker מן הכתובת שממנה נטען הרכיב, הנתב מנסה טעינה ישירה של אותם מודולים. במצב זה החישוב עדיין יכול לפעול, אך החישוב הכבד עלול להתבצע בשרשור הראשי. לביצועים הטובים והצפויים ביותר מומלץ להגיש את כל תיקיית `browser` מאותו origin של האתר.
 
 ## בחירת תאריך
 
@@ -190,6 +238,8 @@ const value = await getPastafariDateAsync(
 האובייקט המוחזר מוקפא באמצעות `Object.freeze()`.
 
 ## API הפוך: מפסטפרי לגריגוריאני
+
+ה־API ההפוך הוא מודול נפרד של גרסת ה־ES-module הרגילה ואינו נכלל בקובץ ה־Standalone היחיד. הדבר אינו משנה את ה־API של רכיב `<pastafari-date>`; מי שזקוק לחיפוש ההפוך צריך להגיש את קובצי הגרסה הרגילה דרך HTTP/HTTPS.
 
 המודול `pastafari-reverse.js` מפעיל את החיפוש בתוך Worker נפרד, כדי שחיפוש ממושך לא יחסום את רכיב התצוגה:
 
@@ -362,24 +412,33 @@ sharedPastafariRouter.dispose();
 - עד 90 שניות לבקשה רגילה;
 - עד 240 שניות לאימות רחב או להפקת תצוגת קציצה במנוע הראשי.
 
-כאשר Worker אינו זמין או אינו נטען, הנתב מנסה להפעיל את מודול המנוע ישירות. כשל במימוש המהיר אינו אמור למנוע שימוש במנוע הראשי.
+בגרסת ה־ES-module הרגילה, כאשר Worker אינו זמין או אינו נטען, הנתב מנסה להפעיל את מודול המנוע ישירות. כשל במימוש המהיר אינו אמור למנוע שימוש במנוע הראשי. בגרסת ה־Standalone נדרשים Blob Workers ואין fallback לשרשור הראשי.
 
 ## Content Security Policy
 
-לשימוש מאותו origin יש לאפשר טעינת מודולים ו־Workers מן האתר עצמו, למשל:
+בגרסת ה־ES-module הרגילה, לשימוש מאותו origin יש לאפשר טעינת מודולים ו־Workers מן האתר עצמו, למשל:
 
 ```text
 script-src 'self';
 worker-src 'self';
 ```
 
-כאשר הקבצים נטענים מ־CDN, יש להתאים גם את `script-src` ואת `worker-src` לכתובת ה־CDN. הקוד אינו יוצר Blob Workers, ולכן אין צורך ב־`blob:` רק עבור רכיב זה.
+כאשר הקבצים הרגילים נטענים מ־CDN, יש להתאים גם את `script-src` ואת `worker-src` לכתובת ה־CDN. הגרסה הרגילה אינה יוצרת Blob Workers, ולכן אין צורך ב־`blob:` רק עבורה.
 
 מדיניות CSP מסוימת או מגבלת same-origin של הדפדפן עשויות למנוע Worker חוצה־origin; במקרה כזה הנתב ינסה את מצב ה־fallback הישיר שתואר לעיל.
 
+גרסת ה־Standalone מפעילה Workers קלאסיים מ־Blob הכלול בקובץ היחיד. באתר שמגדיר CSP יש לאפשר זאת במפורש:
+
+```text
+script-src 'self';
+worker-src 'self' blob:;
+```
+
+אם `blob:` חסום, גרסת ה־Standalone אינה יכולה להפעיל את המנועים. במסמך `file://` רגיל ללא CSP אין צורך בהגדרה כלשהי.
+
 ## דף הדוגמה
 
-יש להפעיל את `example.html` דרך שרת מקומי או שרת אינטרנט:
+דף הדוגמה של הגרסה הרגילה, `example.html`, דורש שרת מקומי או שרת אינטרנט:
 
 ```bash
 python -m http.server 8000
@@ -401,6 +460,30 @@ http://localhost:8000/browser/example.html
 - שימוש ב־`getPastafariDateAsync()`;
 - האירוע `pastafari-change`;
 - מצב הנתב והפעלת האימות מחדש.
+
+את `standalone/example-file.html` אפשר לפתוח ישירות בלחיצה כפולה. הוא מדגים תאריך ברירת מחדל, תאריך יעד ויום מעשה מפורשים והאזנה ל־`pastafari-change`, בלי שרת ובלי רשת.
+
+## בניית קובצי ה־Standalone ובדיקתם
+
+שני קובצי ה־Standalone נוצרים מאותם מקורות באמצעות esbuild. אין לערוך אותם ידנית:
+
+```bash
+npm ci
+npm run build:standalone
+```
+
+בדיקת הדפדפן מפעילה את הגרסה הרגילה ב־HTTP ואת שני קובצי ה־Standalone מתוך מסמך אמיתי ב־`file://`, מכניסה כל הקשר `file://` למצב offline ומשווה 25 זוגות תאריכים בכל חמשת השדות:
+
+```bash
+npx playwright install chromium firefox
+npm run test:file-protocol
+```
+
+אפשר להגביל את ההרצה לדפדפן מסוים, לדוגמה:
+
+```bash
+npm run test:file-protocol -- --browser=chromium
+```
 
 ## העלאה ל־GitHub
 
