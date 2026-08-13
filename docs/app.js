@@ -1,38 +1,81 @@
 "use strict";
 
-import { calendarLabel, getLocale, translate, validateLocaleResources } from "./i18n/registry.js";
+import {
+  CALENDAR_DEFINITIONS,
+  calendarDateToJdn,
+  getCalendarDefinition,
+  gregorianToJdn,
+  jdnToGregorian,
+} from "./calendar-converters.js?v=7-search-compare";
+import { calendarLabel, getLocale, translate, validateLocaleResources } from "./i18n/registry.js?v=7-search-compare";
 import {
   applyDocumentLocale,
   persistLanguage,
   populateLanguageSelector,
   resolveBrowserLocale,
   urlWithLanguage,
-} from "./i18n/runtime.js";
+} from "./i18n/runtime.js?v=7-search-compare";
 
 validateLocaleResources();
 
-const worker = new Worker(new URL("./engine/pastafari-fast-worker.js?v=6-i18n-en-he", import.meta.url), {
-  type: "module",
-  name: "pastafari-fast",
-});
+const ASSET_REVISION = "7-search-compare";
+const DESKTOP_COMPARISON_QUERY = "(min-width: 1000px)";
+const worker = new Worker(
+  new URL(`./engine/pastafari-fast-worker.js?v=${ASSET_REVISION}`, import.meta.url),
+  { type: "module", name: "pastafari-fast" },
+);
 const pending = new Map();
 let requestId = 0;
 let activeLocale = resolveBrowserLocale().locale;
 let numberFormatter = null;
 let dateFormatter = null;
 let lastVisibleErrorKey = null;
+let loadSequence = 0;
 let state = {
   targetJdn: null,
+  viewAnchorJdn: null,
   calculationJdn: null,
-  selectedJdn: null,
-  followsToday: true,
+  comparisonJdn: null,
+  comparisonFollowsNextAction: true,
+  comparisonEnabled: false,
+  targetIsLocalToday: true,
+  calculationIsLocalToday: true,
   localDate: null,
+  localTodayJdn: null,
   view: null,
+  comparisonDays: null,
 };
 
 const elements = Object.fromEntries(
   [...document.querySelectorAll("[id]")].map((element) => [element.id, element]),
 );
+
+const formConfigurations = Object.freeze({
+  target: Object.freeze({
+    form: elements["target-search-form"],
+    select: elements["target-calendar"],
+    fields: elements["target-date-fields"],
+    help: elements["target-date-help"],
+    error: elements["target-form-error"],
+    errorKey: "search.invalid",
+  }),
+  action: Object.freeze({
+    form: elements["action-date-form"],
+    select: elements["action-calendar"],
+    fields: elements["action-date-fields"],
+    help: elements["action-date-help"],
+    error: elements["action-form-error"],
+    errorKey: "settings.invalid",
+  }),
+  comparison: Object.freeze({
+    form: elements["comparison-date-form"],
+    select: elements["comparison-calendar"],
+    fields: elements["comparison-date-fields"],
+    help: elements["comparison-date-help"],
+    error: elements["comparison-form-error"],
+    errorKey: "comparison.invalid",
+  }),
+});
 
 function rebuildFormatters() {
   numberFormatter = new Intl.NumberFormat(activeLocale.intlLocale, { useGrouping: true });
@@ -82,26 +125,6 @@ worker.addEventListener("error", (event) => {
   showError(localizedError("error.engineLoadFailed", event.message));
 });
 
-function floorDiv(a, b) {
-  let quotient = a / b;
-  const remainder = a % b;
-  if (remainder !== 0n && ((remainder > 0n) !== (b > 0n))) quotient -= 1n;
-  return quotient;
-}
-
-function gregorianToJdn({ year, month, day }) {
-  const a = floorDiv(14n - BigInt(month), 12n);
-  const y = BigInt(year) + 4800n - a;
-  const m = BigInt(month) + 12n * a - 3n;
-  return BigInt(day)
-    + floorDiv(153n * m + 2n, 5n)
-    + 365n * y
-    + floorDiv(y, 4n)
-    - floorDiv(y, 100n)
-    + floorDiv(y, 400n)
-    - 32045n;
-}
-
 function localToday() {
   const now = new Date();
   return Object.freeze({
@@ -112,7 +135,18 @@ function localToday() {
 }
 
 function formatLocalDate(date) {
-  return dateFormatter.format(new Date(Number(date.year), date.month - 1, date.day, 12));
+  const year = Number(date.year);
+  if (Number.isSafeInteger(year) && year >= 1 && year <= 9999) {
+    const value = new Date(0);
+    value.setHours(12, 0, 0, 0);
+    value.setFullYear(year, date.month - 1, date.day);
+    return dateFormatter.format(value);
+  }
+  return `${formatInteger(date.year)}-${String(date.month).padStart(2, "0")}-${String(date.day).padStart(2, "0")}`;
+}
+
+function formatJdnAsGregorian(jdn) {
+  return formatLocalDate(jdnToGregorian(jdn));
 }
 
 function formatInteger(value) {
@@ -126,11 +160,18 @@ function readBigIntParameter(params, name) {
 
 function historyUrl() {
   const url = new URL(location.href);
-  for (const name of ["t", "c", "s", "today"]) url.searchParams.delete(name);
+  for (const name of ["t", "v", "c", "c2", "compare", "today", "ctoday"]) {
+    url.searchParams.delete(name);
+  }
   url.searchParams.set("t", state.targetJdn.toString());
+  url.searchParams.set("v", state.viewAnchorJdn.toString());
   url.searchParams.set("c", state.calculationJdn.toString());
-  url.searchParams.set("s", state.selectedJdn.toString());
-  if (state.followsToday) url.searchParams.set("today", "1");
+  if (state.targetIsLocalToday) url.searchParams.set("today", "1");
+  if (state.calculationIsLocalToday) url.searchParams.set("ctoday", "1");
+  if (state.comparisonEnabled) {
+    url.searchParams.set("compare", "1");
+    url.searchParams.set("c2", state.comparisonJdn.toString());
+  }
   return url;
 }
 
@@ -154,34 +195,13 @@ const MONTH_BASE_PALETTE = Object.freeze([
 ]);
 
 const MONTH_PATTERNS = Object.freeze([
-  Object.freeze({
-    image: "repeating-linear-gradient(45deg, var(--month-pattern) 0 11px, transparent 11px 24px)",
-    size: "auto",
-  }),
-  Object.freeze({
-    image: "repeating-linear-gradient(-45deg, var(--month-pattern) 0 11px, transparent 11px 24px)",
-    size: "auto",
-  }),
-  Object.freeze({
-    image: "repeating-linear-gradient(0deg, var(--month-pattern) 0 8px, transparent 8px 23px)",
-    size: "auto",
-  }),
-  Object.freeze({
-    image: "repeating-linear-gradient(90deg, var(--month-pattern) 0 8px, transparent 8px 23px)",
-    size: "auto",
-  }),
-  Object.freeze({
-    image: "radial-gradient(circle, var(--month-pattern) 0 7px, transparent 7.5px)",
-    size: "28px 28px",
-  }),
-  Object.freeze({
-    image: "conic-gradient(from 90deg, var(--month-pattern) 25%, transparent 0 50%, var(--month-pattern) 0 75%, transparent 0)",
-    size: "30px 30px",
-  }),
-  Object.freeze({
-    image: "linear-gradient(var(--month-pattern) 6px, transparent 6px), linear-gradient(90deg, var(--month-pattern) 6px, transparent 6px)",
-    size: "30px 30px",
-  }),
+  Object.freeze({ image: "repeating-linear-gradient(45deg, var(--month-pattern) 0 11px, transparent 11px 24px)", size: "auto" }),
+  Object.freeze({ image: "repeating-linear-gradient(-45deg, var(--month-pattern) 0 11px, transparent 11px 24px)", size: "auto" }),
+  Object.freeze({ image: "repeating-linear-gradient(0deg, var(--month-pattern) 0 8px, transparent 8px 23px)", size: "auto" }),
+  Object.freeze({ image: "repeating-linear-gradient(90deg, var(--month-pattern) 0 8px, transparent 8px 23px)", size: "auto" }),
+  Object.freeze({ image: "radial-gradient(circle, var(--month-pattern) 0 7px, transparent 7.5px)", size: "28px 28px" }),
+  Object.freeze({ image: "conic-gradient(from 90deg, var(--month-pattern) 25%, transparent 0 50%, var(--month-pattern) 0 75%, transparent 0)", size: "30px 30px" }),
+  Object.freeze({ image: "linear-gradient(var(--month-pattern) 6px, transparent 6px), linear-gradient(90deg, var(--month-pattern) 6px, transparent 6px)", size: "30px 30px" }),
 ]);
 
 function hexToRgb(hex) {
@@ -206,9 +226,9 @@ function monthColors(index) {
   const palette = MONTH_BASE_PALETTE[index % MONTH_BASE_PALETTE.length];
   const pattern = MONTH_PATTERNS[index % MONTH_PATTERNS.length];
   const inkLuminance = palette.ink === "#000000" ? 0 : 1;
-  const baseContrast = contrastRatio(relativeLuminance(hexToRgb(palette.background)), inkLuminance);
-  if (baseContrast < 7) throw new Error("Month palette contrast invariant failed.");
-
+  if (contrastRatio(relativeLuminance(hexToRgb(palette.background)), inkLuminance) < 7) {
+    throw new Error("Month palette contrast invariant failed.");
+  }
   return {
     background: palette.background,
     textBackground: palette.background,
@@ -254,113 +274,98 @@ function appendRichTemplate(element, key, values, emphasizedKeys) {
   element.replaceChildren(...nodes);
 }
 
-function renderSelection() {
-  const selected = state.view?.days.find((day) => day.jdn === state.selectedJdn);
-  if (!selected) {
-    elements["selection-summary"].hidden = true;
-    return;
-  }
-  const cutletName = localizedCutlet(selected.cutletIndex);
-  const monthName = localizedMonth(selected.monthIndex);
-  elements["selection-summary"].hidden = false;
-  const label = document.createElement("span");
-  label.textContent = t("selection.label");
-  const primary = document.createElement("strong");
-  primary.textContent = t("selection.primary", {
+function makeDateLines(day, className = "day-line") {
+  const cutletName = localizedCutlet(day.cutletIndex);
+  const monthName = localizedMonth(day.monthIndex);
+  const yearLine = document.createElement("span");
+  yearLine.className = className;
+  appendRichTemplate(yearLine, "date.yearLine", { year: formatInteger(day.year) }, ["year"]);
+  const cutletLine = document.createElement("span");
+  cutletLine.className = className;
+  appendRichTemplate(cutletLine, "date.cutletLine", {
+    dayInCutlet: formatInteger(day.dayInCutlet),
     cutletName,
-    year: formatInteger(selected.year),
-  });
-  const measures = document.createElement("span");
-  measures.textContent = t("selection.measures", {
-    dayInCutlet: formatInteger(selected.dayInCutlet),
-    dayInMonth: formatInteger(selected.dayInMonth),
-  });
-  const meta = document.createElement("small");
-  meta.textContent = monthName;
-  elements["selection-summary"].replaceChildren(label, primary, measures, meta);
+  }, ["dayInCutlet", "cutletName"]);
+  const monthLine = document.createElement("span");
+  monthLine.className = className;
+  appendRichTemplate(monthLine, "date.monthLine", {
+    dayInMonth: formatInteger(day.dayInMonth),
+    monthName,
+  }, ["dayInMonth", "monthName"]);
+  return [yearLine, cutletLine, monthLine];
 }
 
-function selectDay(jdn, { updateHistory = true } = {}) {
-  state.selectedJdn = BigInt(jdn);
-  for (const card of elements["calendar-grid"].querySelectorAll(".day-card")) {
-    const selected = card.dataset.jdn === state.selectedJdn.toString();
-    card.dataset.selected = String(selected);
-    card.setAttribute("aria-pressed", String(selected));
-    card.tabIndex = selected ? 0 : -1;
-    if (selected) card.setAttribute("aria-current", "date");
-    else card.removeAttribute("aria-current");
+function dateAria(day) {
+  return t("date.aria", {
+    year: formatInteger(day.year),
+    dayInCutlet: formatInteger(day.dayInCutlet),
+    cutletName: localizedCutlet(day.cutletIndex),
+    dayInMonth: formatInteger(day.dayInMonth),
+    monthName: localizedMonth(day.monthIndex),
+  });
+}
+
+function renderTargetBeacon() {
+  const target = state.view?.days.find((day) => day.jdn === state.targetJdn);
+  const markerKey = state.targetIsLocalToday ? "target.today" : "target.searched";
+  elements["target-marker"].textContent = t(markerKey);
+  elements["target-date-lines"].replaceChildren();
+  if (target) {
+    elements["target-date-lines"].append(...makeDateLines(target, "beacon-line"));
+  } else {
+    const line = document.createElement("strong");
+    line.textContent = t("target.notInView");
+    elements["target-date-lines"].append(line);
   }
-  renderSelection();
-  if (updateHistory) writeHistory();
+  elements["target-context"].textContent = t("target.context", {
+    targetDate: formatJdnAsGregorian(state.targetJdn),
+    actionDate: formatJdnAsGregorian(state.calculationJdn),
+  });
 }
 
-function renderView(view, { scrollToSelection = true } = {}) {
+function renderView(view, { scrollToTarget = true } = {}) {
   state.view = view;
   const viewCutletName = localizedCutlet(view.cutletIndex);
   elements["cutlet-meta"].textContent = t("calendar.currentCutlet", { year: formatInteger(view.year) });
   elements["cutlet-heading"].textContent = viewCutletName;
   elements["cutlet-description"].textContent = t("calendar.cutletDescription", {
     count: formatInteger(view.days.length),
-    localDate: formatLocalDate(state.localDate),
+    actionDate: formatJdnAsGregorian(state.calculationJdn),
   });
   elements["calendar-grid"].setAttribute("aria-label", t("calendar.daysAria", { cutletName: viewCutletName }));
+  const targetIsInView = state.targetJdn >= view.startJdn && state.targetJdn <= view.endJdn;
+  elements["browse-note"].hidden = targetIsInView;
 
   const monthDisplayOrder = new Map();
   const fragment = document.createDocumentFragment();
   for (const day of view.days) {
     if (!monthDisplayOrder.has(day.monthIndex)) monthDisplayOrder.set(day.monthIndex, monthDisplayOrder.size);
     const colors = monthColors(monthDisplayOrder.get(day.monthIndex));
-    const cutletName = localizedCutlet(day.cutletIndex);
-    const monthName = localizedMonth(day.monthIndex);
-    const selected = day.jdn === state.selectedJdn;
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "day-card";
-    button.dataset.jdn = day.jdn.toString();
-    button.dataset.selected = String(selected);
-    button.tabIndex = selected ? 0 : -1;
-    button.style.setProperty("--month-bg", colors.background);
-    button.style.setProperty("--month-text-bg", colors.textBackground);
-    button.style.setProperty("--month-edge", colors.edge);
-    button.style.setProperty("--month-ink", colors.ink);
-    button.style.setProperty("--month-pattern", colors.patternColor);
-    button.style.setProperty("--month-pattern-image", colors.patternImage);
-    button.style.setProperty("--month-pattern-size", colors.patternSize);
-    button.setAttribute("aria-pressed", String(selected));
-    button.setAttribute("aria-label", t("date.aria", {
-      year: formatInteger(day.year),
-      dayInCutlet: formatInteger(day.dayInCutlet),
-      cutletName,
-      dayInMonth: formatInteger(day.dayInMonth),
-      monthName,
-    }));
-    if (selected) button.setAttribute("aria-current", "date");
-
-    const yearLine = document.createElement("span");
-    yearLine.className = "day-line";
-    appendRichTemplate(yearLine, "date.yearLine", {
-      year: formatInteger(day.year),
-    }, ["year"]);
-
-    const cutletLine = document.createElement("span");
-    cutletLine.className = "day-line";
-    appendRichTemplate(cutletLine, "date.cutletLine", {
-      dayInCutlet: formatInteger(day.dayInCutlet),
-      cutletName,
-    }, ["dayInCutlet", "cutletName"]);
-
-    const monthLine = document.createElement("span");
-    monthLine.className = "day-line";
-    appendRichTemplate(monthLine, "date.monthLine", {
-      dayInMonth: formatInteger(day.dayInMonth),
-      monthName,
-    }, ["dayInMonth", "monthName"]);
-
-    button.append(yearLine, cutletLine, monthLine);
-    fragment.append(button);
+    const isTarget = day.jdn === state.targetJdn;
+    const card = document.createElement("article");
+    card.className = "day-card";
+    card.dataset.jdn = day.jdn.toString();
+    card.dataset.target = String(isTarget);
+    card.setAttribute("aria-label", dateAria(day));
+    card.style.setProperty("--month-bg", colors.background);
+    card.style.setProperty("--month-text-bg", colors.textBackground);
+    card.style.setProperty("--month-edge", colors.edge);
+    card.style.setProperty("--month-ink", colors.ink);
+    card.style.setProperty("--month-pattern", colors.patternColor);
+    card.style.setProperty("--month-pattern-image", colors.patternImage);
+    card.style.setProperty("--month-pattern-size", colors.patternSize);
+    if (isTarget) {
+      card.setAttribute("aria-current", "date");
+      const badge = document.createElement("span");
+      badge.className = "target-badge";
+      badge.textContent = t(state.targetIsLocalToday ? "target.today" : "target.searched");
+      card.append(badge);
+    }
+    card.append(...makeDateLines(day));
+    fragment.append(card);
   }
   elements["calendar-grid"].replaceChildren(fragment);
-  renderSelection();
+  renderTargetBeacon();
   elements["loading-panel"].hidden = true;
   elements["error-panel"].hidden = true;
   elements["calendar-workspace"].hidden = false;
@@ -368,7 +373,7 @@ function renderView(view, { scrollToSelection = true } = {}) {
   elements["next-cutlet"].disabled = false;
   lastVisibleErrorKey = null;
 
-  if (scrollToSelection) {
+  if (scrollToTarget && targetIsInView) {
     requestAnimationFrame(() => {
       elements["calendar-grid"].querySelector('[aria-current="date"]')?.scrollIntoView({
         block: "nearest",
@@ -378,18 +383,96 @@ function renderView(view, { scrollToSelection = true } = {}) {
   }
 }
 
-async function loadCutlet({ replaceHistory = false } = {}) {
+function comparisonIsDesktop() {
+  return matchMedia(DESKTOP_COMPARISON_QUERY).matches;
+}
+
+function appendComparisonDate(cell, day) {
+  cell.className = "comparison-date-cell";
+  cell.setAttribute("aria-label", dateAria(day));
+  cell.append(...makeDateLines(day, "comparison-date-line"));
+}
+
+function renderComparison() {
+  const shouldShow = state.comparisonEnabled && state.view;
+  elements["comparison-workspace"].hidden = !shouldShow;
+  if (!shouldShow) return;
+  elements["comparison-date-form"].hidden = false;
+  elements["comparison-primary-heading"].textContent = t("comparison.actionHeading", {
+    date: formatJdnAsGregorian(state.calculationJdn),
+  });
+  elements["comparison-secondary-heading"].textContent = t("comparison.actionHeading", {
+    date: formatJdnAsGregorian(state.comparisonJdn),
+  });
+  elements["comparison-summary"].textContent = t("comparison.summary", {
+    count: formatInteger(state.view.days.length),
+  });
+  if (!comparisonIsDesktop() || !state.comparisonDays) {
+    elements["comparison-body"].replaceChildren();
+    return;
+  }
+
+  const fragment = document.createDocumentFragment();
+  for (let index = 0; index < state.view.days.length; index += 1) {
+    const primary = state.view.days[index];
+    const secondary = state.comparisonDays[index];
+    if (!secondary || secondary.jdn !== primary.jdn) throw new RangeError("Comparison rows are not aligned by JDN.");
+    const row = document.createElement("tr");
+    row.dataset.jdn = primary.jdn.toString();
+    if (primary.jdn === state.targetJdn) {
+      row.className = "comparison-target-row";
+      row.setAttribute("aria-current", "date");
+    }
+    const shared = document.createElement("th");
+    shared.scope = "row";
+    shared.className = "comparison-shared-day";
+    const civil = document.createElement("strong");
+    civil.textContent = formatJdnAsGregorian(primary.jdn);
+    const sequence = document.createElement("small");
+    sequence.textContent = `JDN ${primary.jdn.toString()}`;
+    shared.append(civil, sequence);
+    const primaryCell = document.createElement("td");
+    appendComparisonDate(primaryCell, primary);
+    const secondaryCell = document.createElement("td");
+    appendComparisonDate(secondaryCell, secondary);
+    row.append(shared, primaryCell, secondaryCell);
+    fragment.append(row);
+  }
+  elements["comparison-body"].replaceChildren(fragment);
+}
+
+async function loadComparison(sequence) {
+  state.comparisonDays = null;
+  if (!state.comparisonEnabled || !comparisonIsDesktop() || !state.view) {
+    renderComparison();
+    return;
+  }
+  const range = await workerRequest("getRangeView", {
+    startJdn: state.view.startJdn,
+    endJdn: state.view.endJdn,
+    calculationJdn: state.comparisonJdn,
+  });
+  if (sequence !== loadSequence) return;
+  state.comparisonDays = range.days;
+  renderComparison();
+}
+
+async function loadCutlet({ replaceHistory = false, scrollToTarget = true } = {}) {
+  const sequence = ++loadSequence;
   elements["previous-cutlet"].disabled = true;
   elements["next-cutlet"].disabled = true;
   try {
     const view = await workerRequest("getCutletView", {
-      targetJdn: state.targetJdn,
+      targetJdn: state.viewAnchorJdn,
       calculationJdn: state.calculationJdn,
     });
-    renderView(view);
+    if (sequence !== loadSequence) return;
+    renderView(view, { scrollToTarget });
+    await loadComparison(sequence);
+    if (sequence !== loadSequence) return;
     writeHistory({ replace: replaceHistory });
   } catch (error) {
-    showError(error);
+    if (sequence === loadSequence) showError(error);
   }
 }
 
@@ -399,8 +482,107 @@ function showError(error) {
   lastVisibleErrorKey = key;
   elements["loading-panel"].hidden = true;
   elements["calendar-workspace"].hidden = true;
+  elements["comparison-workspace"].hidden = true;
   elements["error-panel"].hidden = false;
   elements["error-message"].textContent = t(key);
+}
+
+function fillSelectOptions(select) {
+  const selected = select.value || "gregorian";
+  const fragment = document.createDocumentFragment();
+  for (const definition of CALENDAR_DEFINITIONS) {
+    const option = document.createElement("option");
+    option.value = definition.id;
+    option.textContent = t(definition.labelKey);
+    fragment.append(option);
+  }
+  select.replaceChildren(fragment);
+  select.value = CALENDAR_DEFINITIONS.some(({ id }) => id === selected) ? selected : "gregorian";
+}
+
+function defaultValuesFor(calendarId, jdn) {
+  if (calendarId === "gregorian") {
+    const date = jdnToGregorian(jdn);
+    return { year: date.year.toString(), month: String(date.month), day: String(date.day) };
+  }
+  return {};
+}
+
+function captureFormValues(configuration) {
+  return Object.fromEntries(new FormData(configuration.form).entries());
+}
+
+function renderDateFields(kind, { values = null, jdn = null } = {}) {
+  const configuration = formConfigurations[kind];
+  const definition = getCalendarDefinition(configuration.select.value);
+  const previousValues = values || captureFormValues(configuration);
+  const defaults = jdn !== null ? defaultValuesFor(definition.id, jdn) : {};
+  const fragment = document.createDocumentFragment();
+
+  for (const field of definition.fields) {
+    const label = document.createElement("label");
+    label.className = field.kind === "checkbox" ? "checkbox-field" : "date-field";
+    const labelText = document.createElement("span");
+    labelText.textContent = t(field.labelKey);
+    let input;
+    if (field.kind === "select") {
+      input = document.createElement("select");
+      for (const choice of field.options) {
+        const option = document.createElement("option");
+        option.value = choice.value;
+        option.textContent = choice.labelKey ? t(choice.labelKey) : choice.label;
+        input.append(option);
+      }
+    } else {
+      input = document.createElement("input");
+      input.type = field.kind === "checkbox" ? "checkbox" : "number";
+      if (field.kind === "integer") {
+        input.step = "1";
+        input.inputMode = "numeric";
+        if (field.min !== undefined) input.min = String(field.min);
+        if (field.max !== undefined) input.max = String(field.max);
+        input.required = true;
+      }
+    }
+    input.name = field.name;
+    input.id = `${kind}-${field.name}`;
+    const stored = previousValues[field.name] ?? defaults[field.name] ?? field.defaultValue ?? "";
+    if (field.kind === "checkbox") input.checked = stored === true || stored === "true" || stored === "on";
+    else input.value = String(stored);
+    if (field.kind === "checkbox") label.append(input, labelText);
+    else label.append(labelText, input);
+    fragment.append(label);
+  }
+  configuration.fields.replaceChildren(fragment);
+  configuration.help.hidden = !definition.helpKey;
+  configuration.help.textContent = definition.helpKey ? t(definition.helpKey) : "";
+  configuration.error.hidden = true;
+}
+
+function initializeDateForm(kind, jdn) {
+  const configuration = formConfigurations[kind];
+  fillSelectOptions(configuration.select);
+  configuration.select.value = "gregorian";
+  renderDateFields(kind, { jdn });
+}
+
+function readDateForm(kind) {
+  const configuration = formConfigurations[kind];
+  configuration.error.hidden = true;
+  if (!configuration.form.reportValidity()) throw new RangeError("Missing or invalid input fields.");
+  const values = captureFormValues(configuration);
+  for (const checkbox of configuration.form.querySelectorAll('input[type="checkbox"]')) {
+    values[checkbox.name] = checkbox.checked;
+  }
+  return calendarDateToJdn(configuration.select.value, values);
+}
+
+function showFormError(kind, error) {
+  console.error(error);
+  const configuration = formConfigurations[kind];
+  configuration.error.textContent = t(configuration.errorKey);
+  configuration.error.hidden = false;
+  configuration.error.focus?.();
 }
 
 function goToday({ replaceHistory = false } = {}) {
@@ -409,35 +591,69 @@ function goToday({ replaceHistory = false } = {}) {
   state = {
     ...state,
     targetJdn: jdn,
+    viewAnchorJdn: jdn,
     calculationJdn: jdn,
-    selectedJdn: jdn,
-    followsToday: true,
+    comparisonJdn: jdn + 1n,
+    comparisonFollowsNextAction: true,
+    targetIsLocalToday: true,
+    calculationIsLocalToday: true,
     localDate: date,
+    localTodayJdn: jdn,
   };
+  initializeDateForm("target", jdn);
+  initializeDateForm("action", jdn);
+  initializeDateForm("comparison", jdn + 1n);
   return loadCutlet({ replaceHistory });
 }
 
 function loadFromUrl() {
   const params = new URL(location.href).searchParams;
+  const today = localToday();
+  const todayJdn = gregorianToJdn(today);
   const targetJdn = readBigIntParameter(params, "t");
   const calculationJdn = readBigIntParameter(params, "c");
   if (targetJdn === null || calculationJdn === null) return goToday({ replaceHistory: true });
+  const comparisonParameter = readBigIntParameter(params, "c2");
   state = {
     ...state,
     targetJdn,
+    viewAnchorJdn: readBigIntParameter(params, "v") ?? targetJdn,
     calculationJdn,
-    selectedJdn: readBigIntParameter(params, "s") ?? targetJdn,
-    followsToday: params.get("today") === "1",
-    localDate: localToday(),
+    comparisonJdn: comparisonParameter ?? calculationJdn + 1n,
+    comparisonFollowsNextAction: comparisonParameter === null,
+    comparisonEnabled: params.get("compare") === "1",
+    targetIsLocalToday: params.get("today") === "1" && targetJdn === todayJdn,
+    calculationIsLocalToday: params.get("ctoday") === "1" && calculationJdn === todayJdn,
+    localDate: today,
+    localTodayJdn: todayJdn,
   };
+  initializeDateForm("target", targetJdn);
+  initializeDateForm("action", calculationJdn);
+  initializeDateForm("comparison", state.comparisonJdn);
+  elements["comparison-toggle"].checked = state.comparisonEnabled;
+  elements["comparison-date-form"].hidden = !state.comparisonEnabled;
   return loadCutlet({ replaceHistory: true });
 }
 
 function applyActiveLocale({ rerender = true } = {}) {
+  const formSnapshots = Object.fromEntries(
+    Object.entries(formConfigurations).map(([kind, configuration]) => [kind, {
+      calendarId: configuration.select.value || "gregorian",
+      values: captureFormValues(configuration),
+    }]),
+  );
   rebuildFormatters();
   applyDocumentLocale(activeLocale);
   populateLanguageSelector(elements["language-selector"], activeLocale.code);
-  if (rerender && state.view) renderView(state.view, { scrollToSelection: false });
+  for (const [kind, snapshot] of Object.entries(formSnapshots)) {
+    fillSelectOptions(formConfigurations[kind].select);
+    formConfigurations[kind].select.value = snapshot.calendarId;
+    renderDateFields(kind, { values: snapshot.values });
+  }
+  if (rerender && state.view) {
+    renderView(state.view, { scrollToTarget: false });
+    renderComparison();
+  }
   if (lastVisibleErrorKey && !elements["error-panel"].hidden) {
     elements["error-message"].textContent = t(lastVisibleErrorKey);
   }
@@ -461,39 +677,130 @@ function chooseLanguage(code) {
   }
 }
 
+function installGuideNavigation() {
+  for (const link of document.querySelectorAll("[data-guide-link]")) {
+    link.addEventListener("click", () => {
+      requestAnimationFrame(() => elements["guide-heading"].focus({ preventScroll: true }));
+    });
+  }
+}
+
 applyActiveLocale({ rerender: false });
+installGuideNavigation();
 
 elements["language-selector"].addEventListener("change", (event) => chooseLanguage(event.currentTarget.value));
 elements["reload-button"].addEventListener("click", () => location.reload());
 elements["today-button"].addEventListener("click", () => goToday());
 elements["previous-cutlet"].addEventListener("click", () => {
-  state.targetJdn = state.view.previousCutletJdn;
-  state.selectedJdn = state.view.previousCutletJdn;
-  state.followsToday = false;
-  loadCutlet();
+  state.viewAnchorJdn = state.view.previousCutletJdn;
+  loadCutlet({ scrollToTarget: false });
 });
 elements["next-cutlet"].addEventListener("click", () => {
-  state.targetJdn = state.view.nextCutletJdn;
-  state.selectedJdn = state.view.nextCutletJdn;
-  state.followsToday = false;
+  state.viewAnchorJdn = state.view.nextCutletJdn;
+  loadCutlet({ scrollToTarget: false });
+});
+
+for (const [kind, configuration] of Object.entries(formConfigurations)) {
+  configuration.select.addEventListener("change", () => renderDateFields(kind, { values: {} }));
+}
+
+formConfigurations.target.form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  try {
+    const jdn = readDateForm("target");
+    state.targetJdn = jdn;
+    state.viewAnchorJdn = jdn;
+    state.targetIsLocalToday = jdn === state.localTodayJdn;
+    loadCutlet();
+  } catch (error) {
+    showFormError("target", error);
+  }
+});
+
+formConfigurations.action.form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  try {
+    const jdn = readDateForm("action");
+    state.calculationJdn = jdn;
+    state.calculationIsLocalToday = jdn === state.localTodayJdn;
+    if (state.comparisonFollowsNextAction) {
+      state.comparisonJdn = jdn + 1n;
+      initializeDateForm("comparison", state.comparisonJdn);
+    }
+    state.viewAnchorJdn = state.targetJdn;
+    loadCutlet();
+  } catch (error) {
+    showFormError("action", error);
+  }
+});
+
+elements["reset-action-day"].addEventListener("click", () => {
+  state.calculationJdn = state.localTodayJdn;
+  state.calculationIsLocalToday = true;
+  if (state.comparisonFollowsNextAction) {
+    state.comparisonJdn = state.localTodayJdn + 1n;
+    initializeDateForm("comparison", state.comparisonJdn);
+  }
+  initializeDateForm("action", state.localTodayJdn);
+  state.viewAnchorJdn = state.targetJdn;
   loadCutlet();
 });
-elements["calendar-grid"].addEventListener("click", (event) => {
-  const card = event.target.closest(".day-card");
-  if (card) selectDay(card.dataset.jdn);
+
+elements["comparison-toggle"].addEventListener("change", (event) => {
+  state.comparisonEnabled = event.currentTarget.checked;
+  elements["comparison-date-form"].hidden = !state.comparisonEnabled;
+  state.comparisonDays = null;
+  loadComparison(++loadSequence)
+    .then(() => writeHistory())
+    .catch((error) => showError(error));
 });
+
+formConfigurations.comparison.form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  try {
+    state.comparisonJdn = readDateForm("comparison");
+    state.comparisonFollowsNextAction = false;
+    state.comparisonDays = null;
+    loadComparison(++loadSequence)
+      .then(() => writeHistory())
+      .catch((error) => showError(error));
+  } catch (error) {
+    showFormError("comparison", error);
+  }
+});
+
+matchMedia(DESKTOP_COMPARISON_QUERY).addEventListener("change", () => {
+  if (!state.comparisonEnabled || !state.view) return;
+  state.comparisonDays = null;
+  loadComparison(++loadSequence).catch((error) => showError(error));
+});
+
 window.addEventListener("popstate", () => {
   syncLocaleFromEnvironment();
   loadFromUrl();
 });
 
 function refreshLocalDay() {
-  if (document.visibilityState === "hidden" || !state.followsToday) return;
+  if (document.visibilityState === "hidden") return;
   const today = localToday();
   const todayJdn = gregorianToJdn(today);
-  if (todayJdn !== state.targetJdn || todayJdn !== state.calculationJdn) {
-    goToday({ replaceHistory: true });
+  if (todayJdn === state.localTodayJdn) return;
+  state.localDate = today;
+  state.localTodayJdn = todayJdn;
+  if (state.targetIsLocalToday) {
+    state.targetJdn = todayJdn;
+    state.viewAnchorJdn = todayJdn;
+    initializeDateForm("target", todayJdn);
   }
+  if (state.calculationIsLocalToday) {
+    state.calculationJdn = todayJdn;
+    initializeDateForm("action", todayJdn);
+    if (state.comparisonFollowsNextAction) {
+      state.comparisonJdn = todayJdn + 1n;
+      initializeDateForm("comparison", state.comparisonJdn);
+    }
+  }
+  if (state.targetIsLocalToday || state.calculationIsLocalToday) loadCutlet({ replaceHistory: true });
 }
 
 document.addEventListener("visibilitychange", refreshLocalDay);
