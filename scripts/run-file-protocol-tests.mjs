@@ -136,9 +136,15 @@ async function runStandardVectors(browser, origin) {
   const context = await browser.newContext({ serviceWorkers: "block" });
   const page = await context.newPage();
   const errors = [];
+  const httpErrors = [];
   page.on("pageerror", (error) => errors.push(error.stack || error.message));
   page.on("console", (message) => {
     if (message.type() === "error") errors.push(`console.error: ${message.text()}`);
+  });
+  page.on("response", (response) => {
+    if (response.status() >= 400) {
+      httpErrors.push(`HTTP ${response.status()} ${response.url()}`);
+    }
   });
 
   try {
@@ -149,6 +155,7 @@ async function runStandardVectors(browser, origin) {
     const result = await readCompleted(page, "__PASTAFARI_STANDARD_EQUIVALENCE__");
     assert.equal(result.error, undefined, result.error);
     assert.equal(result.vectors.length, 25);
+    assert.deepEqual(httpErrors, []);
     assert.deepEqual(errors, []);
     return result.vectors;
   } finally {
