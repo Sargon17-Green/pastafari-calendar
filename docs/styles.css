@@ -245,7 +245,7 @@ h1 {
 
 .calendar-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 8.5rem), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
   gap: clamp(0.45rem, 1vw, 0.8rem);
   padding-block: 0.5rem 2rem;
 }
@@ -253,11 +253,11 @@ h1 {
 .day-card {
   position: relative;
   display: grid;
-  min-height: 8.25rem;
-  padding: 0.8rem;
-  grid-template-rows: auto 1fr auto;
-  align-content: stretch;
-  gap: 0.55rem;
+  min-height: 9.25rem;
+  padding: 0.9rem;
+  grid-template-rows: repeat(3, auto);
+  align-content: space-between;
+  gap: 0;
   overflow: hidden;
   border: 2px solid var(--month-edge);
   border-radius: 0.85rem;
@@ -281,66 +281,26 @@ h1 {
   z-index: 1;
 }
 
-.day-card[data-selected="true"]::after {
-  content: "נבחר";
-  position: absolute;
-  inset-block-start: 0.45rem;
-  inset-inline-end: 0.45rem;
-  padding: 0.15rem 0.38rem;
-  border-radius: 0.3rem;
-  background: #fff;
-  color: #111;
-  font-size: 0.67rem;
-  font-weight: 900;
-}
-
-.day-context {
-  padding-inline-end: 2.8rem;
-  overflow-wrap: anywhere;
-  font-size: 0.72rem;
-  font-weight: 800;
-  line-height: 1.2;
-}
-
-.day-values {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.55rem;
-  align-self: center;
-}
-
-.day-measure {
-  display: grid;
+.day-line {
+  display: block;
   min-width: 0;
-  justify-items: start;
-  border-inline-start: 1px solid color-mix(in srgb, var(--month-ink) 38%, transparent);
-  padding-inline-start: 0.5rem;
-}
-
-.day-measure:first-child {
-  border-inline-start: 0;
-  padding-inline-start: 0;
-}
-
-.day-measure > span:last-child {
-  font-size: 0.68rem;
-  font-weight: 750;
-  opacity: 0.82;
-}
-
-.day-number {
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(1.75rem, 3.7vw, 2.7rem);
-  font-weight: 800;
-  letter-spacing: -0.05em;
-  line-height: 0.95;
-}
-
-.month-name {
+  margin: 0;
   overflow-wrap: anywhere;
-  font-size: 0.95rem;
+  font-size: clamp(0.8rem, 1.25vw, 0.96rem);
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.day-line + .day-line {
+  margin-top: 0.6rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid color-mix(in srgb, var(--month-ink) 34%, transparent);
+}
+
+.day-line strong {
+  font-family: Georgia, "Times New Roman", serif;
   font-weight: 850;
-  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
 }
 
 .site-footer {
@@ -401,8 +361,7 @@ h1 {
 
 @media (max-width: 420px) {
   .app-shell { width: min(100% - 1rem, 94rem); }
-  .calendar-grid { grid-template-columns: repeat(auto-fit, minmax(7.2rem, 1fr)); }
-  .day-card { min-height: 7.25rem; }
+  .calendar-grid { grid-template-columns: 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -432,14 +391,14 @@ h1 {
   .public-guide { box-shadow: none; }
   h1 { font-size: 2.5rem; }
   .calendar-workspace { padding: 1rem 0 0; }
-  .calendar-grid { grid-template-columns: repeat(auto-fit, minmax(5.8rem, 1fr)); gap: 0.2rem; }
+  .calendar-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.2rem; }
   .day-card {
-    min-height: 5.8rem;
+    min-height: 0;
     break-inside: avoid;
     border: 1px solid #111;
     background: white;
     color: black;
     box-shadow: none;
   }
-  .day-number { font-size: 1.8rem; }
+  .day-line { font-size: 0.72rem; }
 }
