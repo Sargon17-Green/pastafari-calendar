@@ -322,16 +322,21 @@ h1 {
   display: block;
   min-width: 0;
   margin: 0;
+  padding: 0.42rem 0.55rem;
   overflow-wrap: anywhere;
+  border: 2px solid color-mix(in srgb, var(--month-ink) 82%, transparent);
+  border-radius: 0.52rem;
+  background-color: var(--month-text-bg, var(--month-bg));
+  background-image: none;
+  color: var(--month-ink);
+  box-shadow: 0 2px 7px rgb(0 0 0 / 22%);
   font-size: clamp(0.8rem, 1.25vw, 0.96rem);
   font-weight: 600;
   line-height: 1.35;
 }
 
 .day-line + .day-line {
-  margin-top: 0.6rem;
-  padding-top: 0.6rem;
-  border-top: 1px solid color-mix(in srgb, var(--month-ink) 34%, transparent);
+  margin-top: 0.48rem;
 }
 
 .day-line strong {
@@ -418,6 +423,12 @@ h1 {
     background: Canvas;
     color: CanvasText;
   }
+  .day-line {
+    border: 2px solid CanvasText;
+    background: Canvas;
+    color: CanvasText;
+    box-shadow: none;
+  }
   .day-card[data-selected="true"] { outline: 5px solid Highlight; }
 }
 
@@ -439,5 +450,11 @@ h1 {
     color: black;
     box-shadow: none;
   }
-  .day-line { font-size: 0.72rem; }
+  .day-line {
+    border: 1px solid #111;
+    background: white;
+    color: black;
+    box-shadow: none;
+    font-size: 0.72rem;
+  }
 }
