@@ -45,16 +45,17 @@ test("service worker precaches every runtime i18n dependency", async () => {
   const assets = [...assetBlock.matchAll(/"(\.\/[^"\n]+)"/g)].map((match) => match[1]);
   const required = [
     "./index.html",
-    "./styles.css?v=6-i18n-en-he",
-    "./app.js?v=6-i18n-en-he",
-    "./manifest.webmanifest?v=6-i18n-en-he",
+    "./styles.css?v=7-search-compare",
+    "./app.js?v=7-search-compare",
+    "./calendar-converters.js?v=7-search-compare",
+    "./manifest.webmanifest?v=7-search-compare",
     "./engine/pastafari-calendar-fast.js",
-    "./engine/pastafari-fast-worker.js?v=6-i18n-en-he",
-    "./i18n/calendar-identifiers.js",
-    "./i18n/registry.js",
-    "./i18n/runtime.js",
-    "./i18n/locales/he.js",
-    "./i18n/locales/en.js",
+    "./engine/pastafari-fast-worker.js?v=7-search-compare",
+    "./i18n/calendar-identifiers.js?v=7-search-compare",
+    "./i18n/registry.js?v=7-search-compare",
+    "./i18n/runtime.js?v=7-search-compare",
+    "./i18n/locales/he.js?v=7-search-compare",
+    "./i18n/locales/en.js?v=7-search-compare",
   ];
   for (const entry of required) assert.ok(assets.includes(entry), `${entry} is missing from the offline cache`);
   for (const entry of assets) {
@@ -65,14 +66,14 @@ test("service worker precaches every runtime i18n dependency", async () => {
   assert.match(source, /pastafari-static-[^"\n]*i18n-en-he/);
   const html = await readFile(path.join(DOCS, "index.html"), "utf8");
   for (const entry of [
-    "./styles.css?v=6-i18n-en-he",
-    "./app.js?v=6-i18n-en-he",
-    "./manifest.webmanifest?v=6-i18n-en-he",
+    "./styles.css?v=7-search-compare",
+    "./app.js?v=7-search-compare",
+    "./manifest.webmanifest?v=7-search-compare",
   ]) {
     assert.ok(html.includes(entry), `index.html must request the revisioned asset ${entry}`);
   }
   const app = await readFile(path.join(DOCS, "app.js"), "utf8");
-  assert.ok(app.includes("./engine/pastafari-fast-worker.js?v=6-i18n-en-he"));
+  assert.ok(app.includes("./engine/pastafari-fast-worker.js?v=${ASSET_REVISION}"));
 
 });
 
@@ -100,6 +101,19 @@ test("application logic contains no Hebrew UI literals or hard-coded Hebrew Intl
   const app = await readFile(path.join(DOCS, "app.js"), "utf8");
   assert.doesNotMatch(app, /[\u0590-\u05ff]/u);
   assert.doesNotMatch(app, /Intl\.(?:NumberFormat|DateTimeFormat)\(\s*["']he(?:-|["'])/u);
+});
+
+test("the public UI searches dates, keeps ordinary days non-interactive, and aligns desktop comparison rows", async () => {
+  const html = await readFile(path.join(DOCS, "index.html"), "utf8");
+  const app = await readFile(path.join(DOCS, "app.js"), "utf8");
+  assert.match(html, /<form id="target-search-form"/);
+  assert.match(html, /<details class="advanced-settings"/);
+  assert.match(html, /<table class="comparison-table"/);
+  assert.match(html, /href="#user-guide" data-guide-link/);
+  assert.doesNotMatch(app, /createElement\("button"\).*day-card/s);
+  assert.match(app, /createElement\("article"\);\n\s*card\.className = "day-card"/);
+  assert.match(app, /secondary\.jdn !== primary\.jdn/);
+  assert.match(app, /operation === "getRangeView"|workerRequest\("getRangeView"/);
 });
 
 test("manifest is valid JSON with English default and Hebrew/English localized metadata", async () => {
