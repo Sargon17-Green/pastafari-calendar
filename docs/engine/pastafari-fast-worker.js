@@ -1,5 +1,10 @@
 "use strict";
 
+import {
+  cutletIndexFromInternalName,
+  monthIndexFromInternalName,
+} from "../i18n/calendar-identifiers.js";
+
 const FAST_MODULE_URL = new URL("./pastafari-calendar-fast.js", import.meta.url);
 const MAX_CUTLET_DAYS = 6_000;
 let enginePromise = null;
@@ -25,11 +30,15 @@ function canonical(value) {
     throw new RangeError("The fast calendar returned an invalid dayInMonth value.");
   }
 
+  const cutletName = String(source.cutletName);
+  const monthName = String(source.monthName);
   return {
     year: String(source.year),
-    cutletName: String(source.cutletName),
+    cutletName,
+    cutletIndex: cutletIndexFromInternalName(cutletName),
     dayInCutlet,
-    monthName: String(source.monthName),
+    monthName,
+    monthIndex: monthIndexFromInternalName(monthName),
     dayInMonth,
   };
 }
@@ -119,6 +128,7 @@ function normalizeCutletView(rawView, requestedTargetJdn) {
     nextCutletJdn,
     year: selected.year,
     cutletName: selected.cutletName,
+    cutletIndex: selected.cutletIndex,
     days,
   };
 }
