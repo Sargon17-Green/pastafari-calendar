@@ -138,29 +138,54 @@ function writeHistory({ replace = false } = {}) {
   history[replace ? "replaceState" : "pushState"]({ pastafari: true }, "", historyUrl());
 }
 
-function hslToRgb(hue, saturation, lightness) {
-  const h = ((hue % 360) + 360) % 360 / 360;
-  const s = saturation / 100;
-  const l = lightness / 100;
+const MONTH_BASE_PALETTE = Object.freeze([
+  Object.freeze({ background: "#FFD400", ink: "#000000" }),
+  Object.freeze({ background: "#001B7A", ink: "#FFFFFF" }),
+  Object.freeze({ background: "#00E5FF", ink: "#000000" }),
+  Object.freeze({ background: "#650000", ink: "#FFFFFF" }),
+  Object.freeze({ background: "#7CFF00", ink: "#000000" }),
+  Object.freeze({ background: "#4B007D", ink: "#FFFFFF" }),
+  Object.freeze({ background: "#FF8A00", ink: "#000000" }),
+  Object.freeze({ background: "#004F3A", ink: "#FFFFFF" }),
+  Object.freeze({ background: "#FF72D2", ink: "#000000" }),
+  Object.freeze({ background: "#5A2600", ink: "#FFFFFF" }),
+  Object.freeze({ background: "#7AD7FF", ink: "#000000" }),
+  Object.freeze({ background: "#003F5C", ink: "#FFFFFF" }),
+]);
 
-  if (s === 0) {
-    const gray = Math.round(l * 255);
-    return [gray, gray, gray];
-  }
+const MONTH_PATTERNS = Object.freeze([
+  Object.freeze({
+    image: "repeating-linear-gradient(45deg, var(--month-pattern) 0 11px, transparent 11px 24px)",
+    size: "auto",
+  }),
+  Object.freeze({
+    image: "repeating-linear-gradient(-45deg, var(--month-pattern) 0 11px, transparent 11px 24px)",
+    size: "auto",
+  }),
+  Object.freeze({
+    image: "repeating-linear-gradient(0deg, var(--month-pattern) 0 8px, transparent 8px 23px)",
+    size: "auto",
+  }),
+  Object.freeze({
+    image: "repeating-linear-gradient(90deg, var(--month-pattern) 0 8px, transparent 8px 23px)",
+    size: "auto",
+  }),
+  Object.freeze({
+    image: "radial-gradient(circle, var(--month-pattern) 0 7px, transparent 7.5px)",
+    size: "28px 28px",
+  }),
+  Object.freeze({
+    image: "conic-gradient(from 90deg, var(--month-pattern) 25%, transparent 0 50%, var(--month-pattern) 0 75%, transparent 0)",
+    size: "30px 30px",
+  }),
+  Object.freeze({
+    image: "linear-gradient(var(--month-pattern) 6px, transparent 6px), linear-gradient(90deg, var(--month-pattern) 6px, transparent 6px)",
+    size: "30px 30px",
+  }),
+]);
 
-  const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-  const p = 2 * l - q;
-  const channel = (offset) => {
-    let value = h + offset;
-    if (value < 0) value += 1;
-    if (value > 1) value -= 1;
-    if (value < 1 / 6) return p + (q - p) * 6 * value;
-    if (value < 1 / 2) return q;
-    if (value < 2 / 3) return p + (q - p) * (2 / 3 - value) * 6;
-    return p;
-  };
-
-  return [channel(1 / 3), channel(0), channel(-1 / 3)].map((value) => Math.round(value * 255));
+function hexToRgb(hex) {
+  return [1, 3, 5].map((offset) => Number.parseInt(hex.slice(offset, offset + 2), 16));
 }
 
 function relativeLuminance([red, green, blue]) {
@@ -178,28 +203,19 @@ function contrastRatio(luminanceA, luminanceB) {
 }
 
 function monthColors(index) {
-  // Golden-angle hue spacing keeps neighboring month colors far apart in hue.
-  // Alternating very light / very dark backgrounds adds a second, much stronger
-  // luminance distinction. Lightness is pushed until normal text reaches WCAG AAA
-  // contrast (>= 7:1) against either black or white.
-  const hue = Math.round((index * 137.508 + 338) % 360);
-  const saturation = 100;
-  const wantsLightBackground = index % 2 === 0;
-
-  let lightness = wantsLightBackground ? 52 : 38;
-  let ink = wantsLightBackground ? "#000000" : "#ffffff";
-
-  while (lightness >= 0 && lightness <= 100) {
-    const luminance = relativeLuminance(hslToRgb(hue, saturation, lightness));
-    const inkLuminance = ink === "#000000" ? 0 : 1;
-    if (contrastRatio(luminance, inkLuminance) >= 7) break;
-    lightness += wantsLightBackground ? 1 : -1;
-  }
+  const palette = MONTH_BASE_PALETTE[index % MONTH_BASE_PALETTE.length];
+  const pattern = MONTH_PATTERNS[index % MONTH_PATTERNS.length];
+  const inkLuminance = palette.ink === "#000000" ? 0 : 1;
+  const baseContrast = contrastRatio(relativeLuminance(hexToRgb(palette.background)), inkLuminance);
+  if (baseContrast < 7) throw new Error("Month palette contrast invariant failed.");
 
   return {
-    background: `hsl(${hue} ${saturation}% ${lightness}%)`,
-    edge: ink,
-    ink,
+    background: palette.background,
+    edge: palette.ink,
+    ink: palette.ink,
+    patternColor: palette.ink === "#000000" ? "#FFFFFF" : "#000000",
+    patternImage: pattern.image,
+    patternSize: pattern.size,
   };
 }
 
@@ -305,6 +321,9 @@ function renderView(view, { scrollToSelection = true } = {}) {
     button.style.setProperty("--month-bg", colors.background);
     button.style.setProperty("--month-edge", colors.edge);
     button.style.setProperty("--month-ink", colors.ink);
+    button.style.setProperty("--month-pattern", colors.patternColor);
+    button.style.setProperty("--month-pattern-image", colors.patternImage);
+    button.style.setProperty("--month-pattern-size", colors.patternSize);
     button.setAttribute("aria-pressed", String(selected));
     button.setAttribute("aria-label", t("date.aria", {
       year: formatInteger(day.year),
