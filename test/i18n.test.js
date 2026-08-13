@@ -144,12 +144,12 @@ test("document locale application updates lang, dir, text and translated attribu
   applyDocumentLocale(getLocale("he"), root);
   assert.equal(root.documentElement.lang, "he");
   assert.equal(root.documentElement.dir, "rtl");
-  assert.equal(textNode.textContent, "היום");
+  assert.equal(textNode.textContent, "חזרה להיום");
   assert.equal(attrNode.attributes["aria-label"], "ניווט בין קציצות");
   applyDocumentLocale(getLocale("en"), root);
   assert.equal(root.documentElement.lang, "en");
   assert.equal(root.documentElement.dir, "ltr");
-  assert.equal(textNode.textContent, "Today");
+  assert.equal(textNode.textContent, "Back to today");
   assert.equal(attrNode.attributes["aria-label"], "Cutlet navigation");
 });
 
@@ -206,4 +206,26 @@ test("engine results are locale-invariant across a large real cutlet view", asyn
       },
     );
   }
+});
+
+test("comparison ranges keep each row on exactly the same queried JDN", async () => {
+  const startJdn = 2_461_260n;
+  const endJdn = startJdn + 30n;
+  const primary = await handlePastafariWorkerRequest("getRangeView", {
+    startJdn,
+    endJdn,
+    calculationJdn: 2_461_266n,
+  });
+  const secondary = await handlePastafariWorkerRequest("getRangeView", {
+    startJdn,
+    endJdn,
+    calculationJdn: 2_461_267n,
+  });
+  assert.equal(primary.days.length, 31);
+  assert.equal(secondary.days.length, 31);
+  assert.deepEqual(
+    primary.days.map(({ jdn }) => jdn),
+    secondary.days.map(({ jdn }) => jdn),
+  );
+  assert.deepEqual(primary.days.map(({ jdn }) => jdn), Array.from({ length: 31 }, (_, index) => startJdn + BigInt(index)));
 });
