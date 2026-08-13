@@ -1,17 +1,22 @@
 "use strict";
 
-const VERSION = "pastafari-static-high-contrast-v2-20260813-1240";
+const VERSION = "pastafari-static-c5db804-fast-only-6-i18n-en-he";
 const CACHE = VERSION;
 const ASSETS = [
   "./index.html",
-  "./styles.css",
-  "./app.js",
-  "./manifest.webmanifest",
-  "./icons/icon.svg",
+  "./styles.css?v=6-i18n-en-he",
+  "./app.js?v=6-i18n-en-he",
+  "./manifest.webmanifest?v=6-i18n-en-he",
+  "./icons/icon.svg?v=6-i18n-en-he",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
   "./engine/pastafari-calendar-fast.js",
-  "./engine/pastafari-fast-worker.js"
+  "./engine/pastafari-fast-worker.js?v=6-i18n-en-he",
+  "./i18n/calendar-identifiers.js",
+  "./i18n/registry.js",
+  "./i18n/runtime.js",
+  "./i18n/locales/he.js",
+  "./i18n/locales/en.js"
 ];
 
 const scoped = (path) => new URL(path, self.registration.scope).href;
@@ -39,7 +44,7 @@ self.addEventListener("fetch", (event) => {
   if (event.request.mode === "navigate") {
     event.respondWith(fetch(event.request).catch(async () => (
       (await caches.match(scoped("./index.html")))
-      ?? new Response("Offline", { status: 503 })
+      ?? new Response("", { status: 503 })
     )));
     return;
   }
