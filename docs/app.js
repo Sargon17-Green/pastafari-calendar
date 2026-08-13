@@ -103,13 +103,68 @@ function writeHistory({ replace = false } = {}) {
   history[replace ? "replaceState" : "pushState"]({ pastafari: true }, "", historyUrl());
 }
 
+function hslToRgb(hue, saturation, lightness) {
+  const h = ((hue % 360) + 360) % 360 / 360;
+  const s = saturation / 100;
+  const l = lightness / 100;
+
+  if (s === 0) {
+    const gray = Math.round(l * 255);
+    return [gray, gray, gray];
+  }
+
+  const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+  const p = 2 * l - q;
+  const channel = (offset) => {
+    let t = h + offset;
+    if (t < 0) t += 1;
+    if (t > 1) t -= 1;
+    if (t < 1 / 6) return p + (q - p) * 6 * t;
+    if (t < 1 / 2) return q;
+    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+    return p;
+  };
+
+  return [channel(1 / 3), channel(0), channel(-1 / 3)].map((value) => Math.round(value * 255));
+}
+
+function relativeLuminance([red, green, blue]) {
+  const linear = [red, green, blue].map((channel) => {
+    const value = channel / 255;
+    return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2];
+}
+
+function contrastRatio(luminanceA, luminanceB) {
+  const lighter = Math.max(luminanceA, luminanceB);
+  const darker = Math.min(luminanceA, luminanceB);
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
 function monthColors(index) {
+  // Golden-angle hue spacing keeps neighboring month colors far apart in hue.
+  // Alternating very light / very dark backgrounds adds a second, much stronger
+  // luminance distinction. Lightness is pushed until normal text reaches WCAG AAA
+  // contrast (>= 7:1) against either black or white.
   const hue = Math.round((index * 137.508 + 338) % 360);
-  const saturation = 54 + (index % 4) * 4;
-  const lightness = 22 + (index % 3) * 3;
+  const saturation = 100;
+  const wantsLightBackground = index % 2 === 0;
+
+  let lightness = wantsLightBackground ? 52 : 38;
+  let ink = wantsLightBackground ? "#000000" : "#ffffff";
+
+  while (lightness >= 0 && lightness <= 100) {
+    const luminance = relativeLuminance(hslToRgb(hue, saturation, lightness));
+    const inkLuminance = ink === "#000000" ? 0 : 1;
+    if (contrastRatio(luminance, inkLuminance) >= 7) break;
+    lightness += wantsLightBackground ? 1 : -1;
+  }
+
   return {
     background: `hsl(${hue} ${saturation}% ${lightness}%)`,
-    edge: `hsl(${hue} ${Math.max(30, saturation - 10)}% 69%)`,
+    edge: ink,
+    ink,
   };
 }
 
@@ -166,7 +221,7 @@ function renderView(view) {
     button.tabIndex = selected ? 0 : -1;
     button.style.setProperty("--month-bg", colors.background);
     button.style.setProperty("--month-edge", colors.edge);
-    button.style.setProperty("--month-ink", "#fffdf8");
+    button.style.setProperty("--month-ink", colors.ink);
     button.setAttribute("aria-pressed", String(selected));
     button.setAttribute("aria-label", `שנת ${formatInteger(day.year)} לבריאת העולם, יום ${formatInteger(day.dayInCutlet)} לקציצה ${day.cutletName}, ${formatInteger(day.dayInMonth)} בחודש ${day.monthName}`);
     if (selected) button.setAttribute("aria-current", "date");
