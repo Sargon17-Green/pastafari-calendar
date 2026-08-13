@@ -402,11 +402,14 @@ async function createInlineProject({ includeFast = true } = {}) {
   await mkdir(browser, { recursive: true });
   await writeFile(join(root, "package.json"), '{"type":"module"}\n', "utf8");
 
-  const sourceRouter = fileURLToPath(new URL(
-    "../browser/pastafari-calendar-router.js",
-    import.meta.url,
-  ));
-  await copyFile(sourceRouter, join(browser, "pastafari-calendar-router.js"));
+  for (const filename of [
+    "pastafari-calendar-router.js",
+    "pastafari-calendar-router-core.js",
+    "pastafari-engine-client.js",
+  ]) {
+    const source = fileURLToPath(new URL(`../browser/${filename}`, import.meta.url));
+    await copyFile(source, join(browser, filename));
+  }
   await writeFile(
     join(browser, "pastafari-authoritative-worker.js"),
     INLINE_ENGINE_MODULE,

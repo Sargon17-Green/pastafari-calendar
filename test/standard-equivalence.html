@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Standard build equivalence vectors</title>
+</head>
+<body>
+<pre id="status">Running the standard ES-module build…</pre>
+<script type="module">
+  import { getPastafariDateAsync } from "../browser/pastafari-date.js";
+  import { sharedPastafariRouter } from "../browser/pastafari-calendar-router.js";
+
+  const CALCULATION_DATE = "2026-08-06";
+  const OFFSETS = Object.freeze([
+    0, -10000, 10000, -7500, 7500, -5000, 5000, -2500, 2500,
+    -1000, 1000, -366, 366, -123, 123, -42, 42, -7, 7, -2, 2,
+    -1, 1, 365, -365,
+  ]);
+  const FIELDS = Object.freeze([
+    "year",
+    "cutletName",
+    "dayInCutlet",
+    "monthName",
+    "dayInMonth",
+  ]);
+
+  function addDays(isoDate, offset) {
+    const [year, month, day] = isoDate.split("-").map(Number);
+    const date = new Date(Date.UTC(year, month - 1, day + offset));
+    return [
+      String(date.getUTCFullYear()).padStart(4, "0"),
+      String(date.getUTCMonth() + 1).padStart(2, "0"),
+      String(date.getUTCDate()).padStart(2, "0"),
+    ].join("-");
+  }
+
+  function canonical(value) {
+    return Object.fromEntries(FIELDS.map((field) => [field, value[field]]));
+  }
+
+  globalThis.__PASTAFARI_STANDARD_EQUIVALENCE__ = Object.freeze({ complete: false });
+
+  try {
+    const vectors = [];
+    for (const offset of OFFSETS) {
+      const targetDate = addDays(CALCULATION_DATE, offset);
+      const value = await getPastafariDateAsync(targetDate, CALCULATION_DATE);
+      vectors.push(Object.freeze({
+        offset,
+        targetDate,
+        calculationDate: CALCULATION_DATE,
+        value: Object.freeze(canonical(value)),
+      }));
+    }
+
+    const status = sharedPastafariRouter.getStatus();
+    globalThis.__PASTAFARI_STANDARD_EQUIVALENCE__ = Object.freeze({
+      complete: true,
+      vectors: Object.freeze(vectors),
+      status,
+    });
+    document.querySelector("#status").textContent = JSON.stringify(vectors, null, 2);
+  } catch (error) {
+    globalThis.__PASTAFARI_STANDARD_EQUIVALENCE__ = Object.freeze({
+      complete: true,
+      error: error.stack || error.message,
+    });
+    document.querySelector("#status").textContent = error.stack || error.message;
+  }
+</script>
+</body>
+</html>

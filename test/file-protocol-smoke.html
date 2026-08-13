@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>בדיקת file:// — הלוח הפסטפרי</title>
+  <style>
+    :root { font-family: Arial, "Noto Sans Hebrew", sans-serif; color-scheme: light; }
+    body { margin: 0; background: #f5f2e8; color: #27291f; }
+    main { width: min(72rem, calc(100% - 2rem)); margin: 1.25rem auto 4rem; }
+    header, .results { margin-block-end: 1rem; padding: 1rem; border: 1px solid #c9c1a8; border-radius: 14px; background: #fffdf5; }
+    h1 { margin: 0 0 .5rem; }
+    p { margin: .35rem 0; }
+    ol { margin: 0; padding-inline-start: 1.5rem; }
+    li { margin-block: .35rem; }
+    .pass { color: #17612b; }
+    .fail { color: #9a1d1d; }
+    pre { direction: ltr; overflow: auto; white-space: pre-wrap; }
+  </style>
+  <script>
+    (() => {
+      const errors = [];
+      const networkAttempts = [];
+      globalThis.__PASTAFARI_FILE_EARLY_ERRORS__ = errors;
+      globalThis.__PASTAFARI_FILE_NETWORK_ATTEMPTS__ = networkAttempts;
+      globalThis.__PASTAFARI_FILE_SMOKE_RESULT__ = Object.freeze({ complete: false });
+
+      addEventListener("error", (event) => {
+        errors.push(event.error?.stack || event.message || "Unknown window error");
+      });
+      addEventListener("unhandledrejection", (event) => {
+        errors.push(event.reason?.stack || event.reason?.message || String(event.reason));
+      });
+
+      if (typeof globalThis.fetch === "function") {
+        const originalFetch = globalThis.fetch.bind(globalThis);
+        globalThis.fetch = (...args) => {
+          networkAttempts.push({ kind: "fetch", url: String(args[0]) });
+          return originalFetch(...args);
+        };
+      }
+      if (globalThis.XMLHttpRequest?.prototype) {
+        const originalOpen = XMLHttpRequest.prototype.open;
+        XMLHttpRequest.prototype.open = function monitoredOpen(method, url, ...rest) {
+          networkAttempts.push({ kind: "XMLHttpRequest", url: String(url) });
+          return originalOpen.call(this, method, url, ...rest);
+        };
+      }
+    })();
+  </script>
+</head>
+<body>
+<main>
+  <header>
+    <h1>בדיקת Standalone אמיתית מ־file://</h1>
+    <p id="state">הבדיקה מתחילה…</p>
+    <p><code id="location"></code></p>
+  </header>
+
+  <section class="results" aria-labelledby="results-title">
+    <h2 id="results-title">תוצאות</h2>
+    <ol id="results"></ol>
+    <pre id="details"></pre>
+  </section>
+
+  <pastafari-date
+    id="calendar"
+    date="2026-08-06"
+    calculation-date="2026-08-06">
+  </pastafari-date>
+</main>
+
+<script>
+  const initialCalendar = document.querySelector("#calendar");
+  globalThis.__PASTAFARI_INITIAL_CHANGE__ = new Promise((resolve) => {
+    initialCalendar.addEventListener("pastafari-change", (event) => resolve(event.detail), {
+      once: true,
+    });
+  });
+</script>
+<script>
+  const standaloneBundle = new URL(location.href).searchParams.get("bundle") === "min"
+    ? "pastafari-date.min.js"
+    : "pastafari-date.js";
+  document.write(`<script src="../browser/standalone/${standaloneBundle}"><\/script>`);
+</script>
+<script>
+  (() => {
+    "use strict";
+
+    const EXPECTED = Object.freeze({
+      year: "5000",
+      cutletName: "כליה",
+      dayInCutlet: 306,
+      monthName: "לשון",
+      dayInMonth: 23,
+    });
+    const FIELDS = Object.freeze([
+      "year",
+      "cutletName",
+      "dayInCutlet",
+      "monthName",
+      "dayInMonth",
+    ]);
+    const TEST_TIMEOUT_MS = 360_000;
+    const state = document.querySelector("#state");
+    const results = document.querySelector("#results");
+    const details = document.querySelector("#details");
+    const calendar = document.querySelector("#calendar");
+    const outcomes = [];
+
+    document.querySelector("#location").textContent = location.href;
+
+    function assert(condition, message) {
+      if (!condition) throw new Error(message);
+    }
+
+    function canonical(value) {
+      return Object.fromEntries(FIELDS.map((field) => [field, value?.[field]]));
+    }
+
+    function sameResult(left, right) {
+      return FIELDS.every((field) => left?.[field] === right?.[field]);
+    }
+
+    function format(value) {
+      return JSON.stringify(
+        value,
+        (_key, item) => typeof item === "bigint" ? `${item}n` : item,
+      );
+    }
+
+    function delay(milliseconds) {
+      return new Promise((resolve) => setTimeout(resolve, milliseconds));
+    }
+
+    async function waitFor(predicate, description, timeoutMs = TEST_TIMEOUT_MS) {
+      const deadline = performance.now() + timeoutMs;
+      let lastError = null;
+      while (performance.now() < deadline) {
+        try {
+          const value = await predicate();
+          if (value) return value;
+        } catch (error) {
+          lastError = error;
+        }
+        await delay(50);
+      }
+      throw new Error(
+        `Timed out while waiting for ${description}.${lastError ? ` ${lastError.message}` : ""}`,
+      );
+    }
+
+    function nextChange(element, action) {
+      return new Promise((resolve, reject) => {
+        const timer = setTimeout(() => {
+          element.removeEventListener("pastafari-change", onChange);
+          reject(new Error("Timed out while waiting for pastafari-change."));
+        }, TEST_TIMEOUT_MS);
+        function onChange(event) {
+          clearTimeout(timer);
+          resolve(event.detail);
+        }
+        element.addEventListener("pastafari-change", onChange, { once: true });
+        action();
+      });
+    }
+
+    async function test(name, operation) {
+      const row = document.createElement("li");
+      row.textContent = `${name}: מריץ…`;
+      results.append(row);
+      const startedAt = performance.now();
+      try {
+        await operation();
+        const durationMs = Math.round(performance.now() - startedAt);
+        row.className = "pass";
+        row.textContent = `✓ ${name} (${durationMs} ms)`;
+        outcomes.push({ name, passed: true, durationMs });
+      } catch (error) {
+        const durationMs = Math.round(performance.now() - startedAt);
+        row.className = "fail";
+        row.textContent = `✗ ${name}: ${error.message}`;
+        outcomes.push({
+          name,
+          passed: false,
+          durationMs,
+          error: error.stack || error.message,
+        });
+      }
+    }
+
+    async function run() {
+      state.textContent = "מריץ בדיקות…";
+      let initialValue = null;
+      let changedDateValue = null;
+      let changedCalculationValue = null;
+
+      await test("המסמך נפתח בפרוטוקול file", async () => {
+        assert(location.protocol === "file:", `Expected file:, got ${location.protocol}`);
+      });
+
+      await test("ה־classic script נטען והרכיב נרשם", async () => {
+        assert(globalThis.PastafariCalendarStandalone, "The standalone namespace is missing.");
+        assert(
+          typeof PastafariCalendarStandalone.getPastafariDateAsync === "function",
+          "getPastafariDateAsync() is missing.",
+        );
+        assert(
+          typeof PastafariCalendarStandalone.PastafariCalendarRouter === "function",
+          "PastafariCalendarRouter is missing.",
+        );
+        assert(customElements.get("pastafari-date"), "pastafari-date is not registered.");
+      });
+
+      await test("ready מחזיר את חמשת השדות הסמכותיים", async () => {
+        initialValue = await calendar.ready;
+        assert(sameResult(initialValue, EXPECTED), JSON.stringify(canonical(initialValue)));
+        assert(sameResult(calendar.value, EXPECTED), "element.value differs from ready.");
+      });
+
+      await test("pastafari-change נשלח עם התוצאה הראשונה", async () => {
+        const eventValue = await globalThis.__PASTAFARI_INITIAL_CHANGE__;
+        assert(sameResult(eventValue, EXPECTED), JSON.stringify(canonical(eventValue)));
+      });
+
+      await test("הלוח החזותי נבנה והיום הנבחר מסומן", async () => {
+        const root = calendar.shadowRoot;
+        assert(root, "The shadow root is missing.");
+        assert(root.querySelector(".calendar")?.getAttribute("aria-busy") === "false", "aria-busy remained true.");
+        assert(root.querySelectorAll(".cutlet").length >= 1, "No cutlet was rendered.");
+        assert(root.querySelectorAll(".days").length >= 1, "No month grid was rendered.");
+        assert(root.querySelector('button.day[aria-current="date"]'), "No selected day was rendered.");
+      });
+
+      await test("נטענות קציצות סמוכות וכפתור הניווט פעיל", async () => {
+        const root = calendar.shadowRoot;
+        await waitFor(() => root.querySelectorAll(".cutlet").length >= 3, "three cutlets");
+        const previousActive = calendar._activeStartJdn;
+        root.querySelector(".nav-button.previous").click();
+        await waitFor(
+          () => calendar._activeStartJdn != null && calendar._activeStartJdn !== previousActive,
+          "previous-cutlet navigation",
+        );
+      });
+
+      await test("no-editor מסתיר את העורך בלי חישוב נוסף", async () => {
+        const generation = calendar._generation;
+        calendar.setAttribute("no-editor", "");
+        await delay(0);
+        assert(
+          getComputedStyle(calendar.shadowRoot.querySelector(".editor-link")).display === "none",
+          "The editor link remained visible.",
+        );
+        assert(calendar._generation === generation, "no-editor caused a recalculation.");
+        calendar.removeAttribute("no-editor");
+      });
+
+      await test("שינוי date מעדכן את התוצאה", async () => {
+        const expected = await PastafariCalendarStandalone.getPastafariDateAsync(
+          "2026-08-07",
+          "2026-08-06",
+        );
+        changedDateValue = await nextChange(calendar, () => {
+          calendar.setAttribute("date", "2026-08-07");
+        });
+        assert(sameResult(changedDateValue, expected), "date attribute result mismatch.");
+        assert(calendar.getAttribute("date") === "2026-08-07", "date attribute did not change.");
+      });
+
+      await test("בחירת יום מתוך הלוח מעדכנת את date", async () => {
+        const button = [...calendar.shadowRoot.querySelectorAll("button.day[data-jdn]")]
+          .find((item) => !item.hasAttribute("aria-current"));
+        assert(button, "No alternate calendar day was available.");
+        const before = calendar.getAttribute("date");
+        const selectedValue = await nextChange(calendar, () => button.click());
+        assert(calendar.getAttribute("date") !== before, "Clicking a day did not update date.");
+        assert(FIELDS.every((field) => selectedValue?.[field] !== undefined), "Selected value is incomplete.");
+      });
+
+      await test("שינוי calculation-date מעדכן את התוצאה", async () => {
+        changedCalculationValue = await nextChange(calendar, () => {
+          calendar.setAttribute("calculation-date", "2026-08-07");
+        });
+        assert(
+          FIELDS.every((field) => changedCalculationValue?.[field] !== undefined),
+          "calculation-date result is incomplete.",
+        );
+        assert(
+          calendar.getAttribute("calculation-date") === "2026-08-07",
+          "calculation-date attribute did not change.",
+        );
+      });
+
+      await test("refresh מחזיר תוצאה ומשגר אירוע", async () => {
+        const eventPromise = nextChange(calendar, () => {});
+        const refreshed = await calendar.refresh();
+        const eventValue = await eventPromise;
+        assert(sameResult(refreshed, eventValue), "refresh() and event results differ.");
+        assert(sameResult(refreshed, calendar.value), "refresh() and element.value differ.");
+      });
+
+      await test("headless מחזיר נתונים בלי לבנות לוח", async () => {
+        const headless = document.createElement("pastafari-date");
+        headless.setAttribute("headless", "");
+        headless.setAttribute("date", calendar.getAttribute("date"));
+        headless.setAttribute("calculation-date", calendar.getAttribute("calculation-date"));
+        document.body.append(headless);
+        try {
+          const value = await headless.ready;
+          assert(FIELDS.every((field) => value?.[field] !== undefined), "Headless value is incomplete.");
+          assert(headless.shadowRoot.querySelectorAll(".cutlet").length === 0, "Headless rendered cutlets.");
+          assert(headless.shadowRoot.querySelectorAll(".day").length === 0, "Headless rendered days.");
+        } finally {
+          headless.remove();
+        }
+      });
+
+      await test("הנתב סיים באימות תקין", async () => {
+        await waitFor(() => {
+          const status = PastafariCalendarStandalone.sharedPastafariRouter.getStatus();
+          return status.calculations.length >= 2
+            && status.calculations.every((item) => (
+              item.status === "verified" || item.status === "authoritative-only"
+            ));
+        }, "router verification");
+        const status = PastafariCalendarStandalone.sharedPastafariRouter.getStatus();
+        assert(!status.fastDisabled, format(status));
+        assert(status.calculations.every((item) => item.status === "verified"), format(status));
+      });
+
+      await test("לא בוצעו בקשות רשת", async () => {
+        assert(
+          globalThis.__PASTAFARI_FILE_NETWORK_ATTEMPTS__.length === 0,
+          JSON.stringify(globalThis.__PASTAFARI_FILE_NETWORK_ATTEMPTS__),
+        );
+        const remoteResources = performance.getEntriesByType("resource")
+          .map((entry) => entry.name)
+          .filter((url) => /^https?:/u.test(url));
+        assert(remoteResources.length === 0, JSON.stringify(remoteResources));
+      });
+
+      await test("לא נרשמו שגיאות CORS, SecurityError, import או Worker", async () => {
+        const errors = globalThis.__PASTAFARI_FILE_EARLY_ERRORS__;
+        const relevant = errors.filter((message) => (
+          /CORS|SecurityError|dynamic import|Failed to fetch dynamically imported module|Worker/u
+            .test(String(message))
+        ));
+        assert(relevant.length === 0, relevant.join("\n"));
+        assert(errors.length === 0, errors.join("\n"));
+      });
+
+      const failed = outcomes.filter((item) => !item.passed);
+      state.textContent = failed.length === 0
+        ? `כל ${outcomes.length} הבדיקות עברו.`
+        : `${failed.length} מתוך ${outcomes.length} בדיקות נכשלו.`;
+      state.className = failed.length === 0 ? "pass" : "fail";
+      details.textContent = failed.map((item) => item.error).join("\n\n");
+      document.title = failed.length === 0
+        ? `✓ file:// עבר (${outcomes.length})`
+        : `✗ file:// נכשל (${failed.length})`;
+      globalThis.__PASTAFARI_FILE_SMOKE_RESULT__ = Object.freeze({
+        complete: true,
+        passed: outcomes.length - failed.length,
+        failed: failed.length,
+        outcomes: Object.freeze(outcomes.slice()),
+        protocol: location.protocol,
+        initialValue: canonical(initialValue),
+        changedDateValue: canonical(changedDateValue),
+        changedCalculationValue: canonical(changedCalculationValue),
+        routerStatus: PastafariCalendarStandalone.sharedPastafariRouter.getStatus(),
+        networkAttempts: globalThis.__PASTAFARI_FILE_NETWORK_ATTEMPTS__.slice(),
+        errors: globalThis.__PASTAFARI_FILE_EARLY_ERRORS__.slice(),
+      });
+    }
+
+    run().catch((error) => {
+      state.textContent = `הבדיקה נעצרה: ${error.message}`;
+      state.className = "fail";
+      details.textContent = error.stack || error.message;
+      globalThis.__PASTAFARI_FILE_SMOKE_RESULT__ = Object.freeze({
+        complete: true,
+        passed: outcomes.filter((item) => item.passed).length,
+        failed: outcomes.filter((item) => !item.passed).length + 1,
+        fatalError: error.stack || error.message,
+        outcomes: Object.freeze(outcomes.slice()),
+      });
+    });
+  })();
+</script>
+</body>
+</html>
