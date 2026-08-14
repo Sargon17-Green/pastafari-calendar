@@ -727,13 +727,16 @@ h1 {
   .mobile-comparison-note { display: none; }
 }
 
+@media (max-width: 999px) {
+  .compact-form { grid-template-columns: 1fr; }
+  .form-actions { flex-wrap: wrap; }
+}
+
 @media (max-width: 900px) {
   .year-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .year-structure-columns { grid-template-columns: 1fr; }
-  .date-entry-form,
-  .compact-form { grid-template-columns: 1fr; }
+  .date-entry-form { grid-template-columns: 1fr; }
   .search-submit { width: 100%; }
-  .form-actions { flex-wrap: wrap; }
 }
 
 @media (max-width: 760px) {
