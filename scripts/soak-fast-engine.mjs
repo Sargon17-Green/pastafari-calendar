@@ -22,7 +22,7 @@ import process from "node:process";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { Worker, isMainThread, parentPort, threadId, workerData } from "node:worker_threads";
 
-const HARNESS_VERSION = "PASTAFARI-FAST-SOAK-1.2.0";
+const HARNESS_VERSION = "PASTAFARI-FAST-SOAK-1.2.1";
 const STATE_SCHEMA = 1;
 const MASK64 = (1n << 64n) - 1n;
 const DEFAULT_BATCH_SIZE = 12;
@@ -197,6 +197,39 @@ function seedHex(seed) {
   return `0x${seed.toString(16).padStart(16, "0")}`;
 }
 
+function parseKnownTimeouts(value) {
+  const known = new Map();
+  if (value === undefined || value === null || String(value).trim() === "") return known;
+  for (const rawSpec of String(value).split(",")) {
+    const spec = rawSpec.trim();
+    if (!spec) continue;
+    const parts = spec.split(":");
+    if (parts.length < 4 || parts.length > 6) {
+      throw new HarnessError(
+        "--ack-known-timeout must be batch:case:c:t[:attempts[:timeout-ms]] (comma-separated for multiple cases).",
+        "ERR_CLI",
+      );
+    }
+    const batch = parseInteger(parts[0], "--ack-known-timeout batch", { min: 0 });
+    const caseIndex = parseInteger(parts[1], "--ack-known-timeout case", { min: 0 });
+    const c = parts[2];
+    const t = parts[3];
+    if (!/^-?\d+$/.test(c) || !/^-?\d+$/.test(t)) {
+      throw new HarnessError("--ack-known-timeout c and t must be integers.", "ERR_CLI");
+    }
+    const attempts = parts[4] === undefined
+      ? 2
+      : parseInteger(parts[4], "--ack-known-timeout attempts", { min: 2, max: 100 });
+    const timeoutMs = parts[5] === undefined
+      ? null
+      : parseInteger(parts[5], "--ack-known-timeout timeout-ms", { min: 1 });
+    const key = `${batch}:${caseIndex}`;
+    if (known.has(key)) throw new HarnessError(`Duplicate --ack-known-timeout entry for ${key}.`, "ERR_CLI");
+    known.set(key, { batch, case: caseIndex, c, t, attempts, timeoutMs, spec });
+  }
+  return known;
+}
+
 function mix64(value) {
   let z = (value + 0x9e3779b97f4a7c15n) & MASK64;
   z = ((z ^ (z >> 30n)) * 0xbf58476d1ce4e5b9n) & MASK64;
@@ -284,6 +317,9 @@ Important options:
   --memory-warn-mb N          RSS warning threshold (default ${DEFAULT_MEMORY_WARN_MB})
   --state-dir PATH            state/log directory
   --continue-after-failure    continue after reproducible calculation failures
+  --ack-known-timeout SPEC    do not rerun an already reproduced fast timeout; requires
+                              --continue-after-failure. SPEC is
+                              batch:case:c:t[:attempts[:timeout-ms]], comma-separated.
   --commit SHA                override git commit discovery (useful for exported ZIPs)
   --anchor-jdn JDN            fixed normal-period anchor; stored for replay
   --reset                     remove the selected state directory before a new smoke/soak run
@@ -421,6 +457,7 @@ function configFromOptions(parsed, mode) {
     heartbeatMs,
     maxCases,
     continueAfterFailure: Boolean(parsed.continue_after_failure),
+    knownPerformanceTimeouts: parseKnownTimeouts(parsed.ack_known_timeout),
   };
 }
 
@@ -1271,15 +1308,26 @@ async function persistFailureAndReplay({
   const command = replayCommand(scriptPath, state, descriptor, config);
   let replayResult;
   if (kind === "performance-timeout") {
-    // The bounded retries already reran the same deterministic case in fresh
-    // worker instances. Do not spend another full timeout window merely to
-    // prove the same timeout a fourth time.
-    replayResult = {
-      status: "reproduced-by-bounded-timeout-retries",
-      reproduced: Number(fastResult?.attempts ?? 0) >= 2,
-      attempts: Number(fastResult?.attempts ?? 0),
-      timeoutMs: Number(fastResult?.timeoutMs ?? config.fastCaseTimeoutMs),
-    };
+    // A timeout acknowledged from a prior run is deliberately not executed
+    // again. Otherwise the bounded retries in this run already reproduced it
+    // in fresh workers, so another full timeout window would add no evidence.
+    if (fastResult?.acknowledgedFromPriorRun) {
+      replayResult = {
+        status: "acknowledged-from-prior-reproduced-timeout",
+        reproduced: true,
+        notReexecuted: true,
+        priorAttempts: Number(fastResult?.priorAttempts ?? fastResult?.attempts ?? 0),
+        priorTimeoutMs: fastResult?.priorTimeoutMs ?? null,
+        acknowledgementSpec: fastResult?.acknowledgementSpec ?? null,
+      };
+    } else {
+      replayResult = {
+        status: "reproduced-by-bounded-timeout-retries",
+        reproduced: Number(fastResult?.attempts ?? 0) >= 2,
+        attempts: Number(fastResult?.attempts ?? 0),
+        timeoutMs: Number(fastResult?.timeoutMs ?? config.fastCaseTimeoutMs),
+      };
+    }
   } else {
     try {
       const replayFast = await runFreshReplay(pathToFileURL(scriptPath), instrumentedFastPath, descriptor, config.fastCaseTimeoutMs);
@@ -1343,6 +1391,50 @@ async function recordPerformanceRetry(stateDir, details) {
   } catch {
     process.stderr.write(`[PERF-RETRY-UNLOGGED] ${JSON.stringify(record)}\n`);
   }
+}
+
+function acknowledgedTimeoutForDescriptor(descriptor, config) {
+  const key = `${descriptor.batch}:${descriptor.case}`;
+  const acknowledgement = config.knownPerformanceTimeouts.get(key);
+  if (!acknowledgement) return null;
+  if (acknowledgement.c !== descriptor.c || acknowledgement.t !== descriptor.t) {
+    throw new HarnessError(
+      `Refusing --ack-known-timeout ${key}: generated c/t are ${descriptor.c}/${descriptor.t}, not ${acknowledgement.c}/${acknowledgement.t}.`,
+      "ERR_ACK_TIMEOUT_MISMATCH",
+    );
+  }
+  return acknowledgement;
+}
+
+function acknowledgedTimeoutResult(acknowledgement) {
+  return {
+    status: "performance-timeout",
+    checkedDays: 0,
+    fullYearDays: 0,
+    yearRecords: [],
+    cutletLength: null,
+    sweepDetails: null,
+    oracleTargets: [],
+    oracleValues: {},
+    cacheStats: null,
+    timeoutMs: acknowledgement.timeoutMs,
+    attempts: acknowledgement.attempts,
+    acknowledgedFromPriorRun: true,
+    priorAttempts: acknowledgement.attempts,
+    priorTimeoutMs: acknowledgement.timeoutMs,
+    acknowledgementSpec: acknowledgement.spec,
+    error: {
+      name: "AcknowledgedPerformanceTimeout",
+      code: "ERR_ACKNOWLEDGED_PERFORMANCE_TIMEOUT",
+      message: "Previously reproduced fast-engine timeout acknowledged by explicit CLI specification; this case was not re-executed in this session.",
+    },
+  };
+}
+
+async function recordAcknowledgedTimeout(stateDir, descriptor, acknowledgement) {
+  const line = `[ACK-KNOWN-TIMEOUT] ${new Date().toISOString()} batch=${descriptor.batch} case=${descriptor.case} c=${descriptor.c} t=${descriptor.t} priorAttempts=${acknowledgement.attempts} priorTimeoutMs=${acknowledgement.timeoutMs ?? "unknown"} action=not-reexecuted`;
+  process.stderr.write(`${line}\n`);
+  await appendSynced(path.join(stateDir, "run.log"), `${line}\n`);
 }
 
 async function runFastCaseWithRetry(worker, descriptor, stateDir, config, onAttempt = undefined) {
@@ -1471,6 +1563,15 @@ async function main() {
   const repoRoot = path.resolve(path.dirname(scriptPath), "..");
   const mode = parsed.command === "smoke" ? "smoke" : "soak";
   const config = configFromOptions(parsed, mode);
+  if (config.knownPerformanceTimeouts.size > 0 && !config.continueAfterFailure) {
+    throw new HarnessError(
+      "--ack-known-timeout requires --continue-after-failure so the acknowledged timeout is durably recorded and the batch can continue.",
+      "ERR_CLI",
+    );
+  }
+  if (config.knownPerformanceTimeouts.size > 0 && parsed.command === "replay") {
+    throw new HarnessError("--ack-known-timeout is only valid for smoke/soak/resume, not replay.", "ERR_CLI");
+  }
   const defaultStateName = mode === "smoke" ? ".pastafari-soak-smoke" : ".pastafari-soak";
   const stateDir = path.resolve(repoRoot, parsed.state_dir ?? defaultStateName);
   // Acquire before --reset so a second invocation can never delete a live
@@ -1567,6 +1668,10 @@ async function main() {
       );
     }
     state = existingState;
+    // The checkpoint schema remains compatible, but record the harness version
+    // that most recently resumed/committed it so diagnostics do not misleadingly
+    // keep reporting the version that originally created the state directory.
+    state.harnessVersion = HARNESS_VERSION;
   } else {
     state = {
       schema: STATE_SCHEMA,
@@ -1728,6 +1833,18 @@ async function main() {
         }));
       }
 
+      for (const acknowledgement of config.knownPerformanceTimeouts.values()) {
+        if (acknowledgement.batch !== batch) continue;
+        const descriptor = descriptors.find((item) => item.case === acknowledgement.case);
+        if (!descriptor) {
+          throw new HarnessError(
+            `--ack-known-timeout targets batch ${batch} case ${acknowledgement.case}, but that case is not part of this batch invocation.`,
+            "ERR_ACK_TIMEOUT_CASE_MISSING",
+          );
+        }
+        acknowledgedTimeoutForDescriptor(descriptor, config);
+      }
+
       currentBatchProgress = { batch, sampleClass, cases: casesInBatch };
       activeProgress.clear();
       const batchStartLine = `[batch ${batch}] start class=${sampleClass} cases=${casesInBatch} utc=${new Date().toISOString()}`;
@@ -1772,15 +1889,25 @@ async function main() {
 
       for (let offset = 0; offset < descriptors.length && batchFailure === null; offset += config.workers) {
         const chunk = descriptors.slice(offset, offset + config.workers);
-        chunk.forEach((descriptor, index) => setCaseProgress(descriptor, "fast", index, 1));
-        const chunkResults = await Promise.all(chunk.map((descriptor, index) =>
-          runFastCaseWithRetry(
+        chunk.forEach((descriptor, index) => {
+          const acknowledgement = acknowledgedTimeoutForDescriptor(descriptor, config);
+          setCaseProgress(descriptor, acknowledgement ? "acknowledged-timeout" : "fast", index, 1);
+        });
+        const chunkResults = await Promise.all(chunk.map(async (descriptor, index) => {
+          const acknowledgement = acknowledgedTimeoutForDescriptor(descriptor, config);
+          if (acknowledgement) {
+            await recordAcknowledgedTimeout(stateDir, descriptor, acknowledgement);
+            return { descriptor, result: acknowledgedTimeoutResult(acknowledgement), workerIndex: index };
+          }
+          const result = await runFastCaseWithRetry(
             workers[index],
             descriptor,
             stateDir,
             config,
             (attempt) => setCaseProgress(descriptor, "fast", index, attempt),
-          ).then((result) => ({ descriptor, result, workerIndex: index }))));
+          );
+          return { descriptor, result, workerIndex: index };
+        }));
         chunkResults.sort((a, b) => a.descriptor.case - b.descriptor.case);
         chunkResults.forEach((item) => setCaseProgress(item.descriptor, "post-fast", item.workerIndex));
 
