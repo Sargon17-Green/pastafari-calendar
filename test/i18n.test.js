@@ -29,6 +29,12 @@ function fakeStorage(initial = {}) {
   };
 }
 
+test("registry contains 89 locales and no Biblical Hebrew locale", () => {
+  assert.equal(LOCALES.length, 89);
+  assert.equal(LOCALES.some(({ code }) => code === "hbo"), false);
+  assert.equal(matchSupportedLocale("hbo"), null);
+});
+
 test("locale resources have complete, matching coverage", () => {
   assert.equal(validateLocaleResources(), true);
   assert.equal(CUTLETS.length, 17);
