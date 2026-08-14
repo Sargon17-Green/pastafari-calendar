@@ -22,7 +22,7 @@ import process from "node:process";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { Worker, isMainThread, parentPort, threadId, workerData } from "node:worker_threads";
 
-const HARNESS_VERSION = "PASTAFARI-FAST-SOAK-1.0.0";
+const HARNESS_VERSION = "PASTAFARI-FAST-SOAK-1.1.0";
 const STATE_SCHEMA = 1;
 const MASK64 = (1n << 64n) - 1n;
 const DEFAULT_BATCH_SIZE = 12;
@@ -30,6 +30,9 @@ const DEFAULT_CHECKPOINT_K = 4;
 const DEFAULT_INFRA_RETRIES = 2;
 const DEFAULT_MAX_CPU = 50;
 const DEFAULT_MEMORY_WARN_MB = 1800;
+const DEFAULT_FAST_TIMEOUT = "10m";
+const DEFAULT_ORACLE_TIMEOUT = "10m";
+const DEFAULT_HEARTBEAT = "30s";
 const SOAK_CLASS_CYCLE = Object.freeze([
   "regular",
   "regular",
@@ -158,10 +161,10 @@ function parseInteger(value, name, { min = undefined, max = undefined } = {}) {
   return n;
 }
 
-function parseDuration(value) {
+function parseDuration(value, name = "--duration") {
   if (value === undefined || value === null || value === "") return null;
   const match = /^(\d+(?:\.\d+)?)(ms|s|m|h|d)?$/i.exec(String(value).trim());
-  if (!match) throw new HarnessError("--duration must look like 90s, 30m, 6h, or 1d.", "ERR_CLI");
+  if (!match) throw new HarnessError(`${name} must look like 500ms, 90s, 30m, 6h, or 1d.`, "ERR_CLI");
   const amount = Number(match[1]);
   const unit = (match[2] ?? "s").toLowerCase();
   const factor = { ms: 1, s: 1000, m: 60_000, h: 3_600_000, d: 86_400_000 }[unit];
@@ -259,7 +262,10 @@ Important options:
   --batch-size N              logical cases per normal batch (default ${DEFAULT_BATCH_SIZE})
   --workers N | --jobs N      worker threads (default 1)
   --max-cpu PERCENT           caps effective workers (default ${DEFAULT_MAX_CPU})
-  --duration 6h               stop before the next batch after the duration
+  --duration 6h               request a stop when the duration elapses; current batch is committed first
+  --fast-timeout 10m          maximum time for one fast-engine case before infra retry
+  --oracle-timeout 10m        maximum time for one oracle invocation before infra retry
+  --heartbeat 30s             print/log in-batch progress; use 0 to disable
   --max-cases N               stop before exceeding this logical-case count
   --oracle-every N            deterministic base oracle sampling interval
   --oracle-far                also oracle-sample far/checkpoint classes (RAM-heavy)
@@ -380,6 +386,11 @@ function configFromOptions(parsed, mode) {
   const memoryWarnMb = parseInteger(parsed.memory_warn_mb ?? String(DEFAULT_MEMORY_WARN_MB), "--memory-warn-mb", { min: 128 });
   const oracleEveryDefault = mode === "smoke" ? 3 : 12;
   const oracleEvery = parseInteger(parsed.oracle_every ?? String(oracleEveryDefault), "--oracle-every", { min: 1 });
+  const fastCaseTimeoutMs = parseDuration(parsed.fast_timeout ?? parsed.case_timeout ?? DEFAULT_FAST_TIMEOUT, "--fast-timeout");
+  const oracleTimeoutMs = parseDuration(parsed.oracle_timeout ?? DEFAULT_ORACLE_TIMEOUT, "--oracle-timeout");
+  const heartbeatMs = parseDuration(parsed.heartbeat ?? DEFAULT_HEARTBEAT, "--heartbeat");
+  if (fastCaseTimeoutMs === null || fastCaseTimeoutMs <= 0) throw new HarnessError("--fast-timeout must be greater than zero.", "ERR_CLI");
+  if (oracleTimeoutMs === null || oracleTimeoutMs <= 0) throw new HarnessError("--oracle-timeout must be greater than zero.", "ERR_CLI");
   const maxCases = parsed.max_cases === undefined
     ? (mode === "smoke" ? SMOKE_CLASS_CYCLE.length : null)
     : parseInteger(parsed.max_cases, "--max-cases", { min: 1 });
@@ -396,6 +407,9 @@ function configFromOptions(parsed, mode) {
     oracleEnabled: !parsed.no_oracle,
     oracleFar: Boolean(parsed.oracle_far),
     durationMs: parseDuration(parsed.duration),
+    fastCaseTimeoutMs,
+    oracleTimeoutMs,
+    heartbeatMs,
     maxCases,
     continueAfterFailure: Boolean(parsed.continue_after_failure),
   };
@@ -860,6 +874,7 @@ class WorkerClient {
       if (!this.pending || message.id !== this.pending.id) return;
       const pending = this.pending;
       this.pending = null;
+      if (pending.timer) clearTimeout(pending.timer);
       pending.resolve(message.result);
     });
     worker.on("error", (error) => this.#failPending(error));
@@ -875,19 +890,31 @@ class WorkerClient {
     if (!this.pending) return;
     const pending = this.pending;
     this.pending = null;
+    if (pending.timer) clearTimeout(pending.timer);
     pending.reject(new InfrastructureError(`worker ${this.index} failed`, error));
   }
 
-  async run(descriptor) {
+  async run(descriptor, timeoutMs = null) {
     this.start();
     if (this.pending) throw new InfrastructureError(`worker ${this.index} received overlapping work`);
     const id = `${this.index}:${++this.sequence}`;
     return new Promise((resolve, reject) => {
-      this.pending = { id, resolve, reject };
+      let timer = null;
+      if (timeoutMs !== null) {
+        timer = setTimeout(() => {
+          if (!this.pending || this.pending.id !== id) return;
+          this.pending = null;
+          reject(new InfrastructureError(
+            `worker ${this.index} timed out after ${timeoutMs}ms on batch ${descriptor.batch} case ${descriptor.case}`,
+          ));
+        }, timeoutMs);
+      }
+      this.pending = { id, resolve, reject, timer };
       try {
         this.worker.postMessage({ type: "case", id, descriptor });
       } catch (error) {
         this.pending = null;
+        if (timer) clearTimeout(timer);
         reject(new InfrastructureError(`could not post work to worker ${this.index}`, error));
       }
     });
@@ -942,26 +969,39 @@ async function oracleOneShotWorkerEntry() {
   }
 }
 
-async function runOracleOneShot(scriptUrl, repoRoot, descriptor, targets) {
+async function runOracleOneShot(scriptUrl, repoRoot, descriptor, targets, timeoutMs) {
   const corePath = path.join(repoRoot, "browser", "pastafari-calendar-core.js");
   const worker = new Worker(scriptUrl, {
     workerData: { role: "oracle-one-shot", corePath, c: descriptor.c, targets },
   });
   return new Promise((resolve, reject) => {
     let settled = false;
-    worker.once("message", async (message) => {
+    const timer = setTimeout(() => {
+      if (settled) return;
       settled = true;
+      void worker.terminate().catch(() => {});
+      reject(new InfrastructureError(
+        `oracle timed out after ${timeoutMs}ms on batch ${descriptor.batch} case ${descriptor.case}`,
+      ));
+    }, timeoutMs);
+    const finish = () => clearTimeout(timer);
+    worker.once("message", (message) => {
+      if (settled) return;
+      settled = true;
+      finish();
       resolve(message);
-      await worker.terminate().catch(() => {});
+      void worker.terminate().catch(() => {});
     });
     worker.once("error", (error) => {
       if (settled) return;
       settled = true;
+      finish();
       reject(new InfrastructureError("oracle worker failed", error));
     });
     worker.once("exit", (code) => {
       if (settled) return;
       settled = true;
+      finish();
       reject(new InfrastructureError(`oracle worker exited before replying (code ${code})`));
     });
   });
@@ -992,7 +1032,7 @@ async function compareOracle(scriptUrl, repoRoot, descriptor, fastResult, config
   let lastError;
   for (let attempt = 0; attempt <= config.infraRetries; attempt += 1) {
     try {
-      response = await runOracleOneShot(scriptUrl, repoRoot, descriptor, targets);
+      response = await runOracleOneShot(scriptUrl, repoRoot, descriptor, targets, config.oracleTimeoutMs);
       break;
     } catch (error) {
       lastError = error;
@@ -1204,7 +1244,7 @@ async function persistFailureAndReplay({
   const command = replayCommand(scriptPath, state, descriptor);
   let replayResult;
   try {
-    const replayFast = await runFreshReplay(pathToFileURL(scriptPath), instrumentedFastPath, descriptor);
+    const replayFast = await runFreshReplay(pathToFileURL(scriptPath), instrumentedFastPath, descriptor, config.fastCaseTimeoutMs);
     let replayOracle = null;
     if (kind === "oracle-mismatch" && replayFast.status === "ok") {
       replayOracle = await compareOracle(pathToFileURL(scriptPath), repoRoot, descriptor, replayFast, config, stateDir);
@@ -1242,10 +1282,11 @@ async function persistFailureAndReplay({
 
 async function recordInfrastructureRetry(stateDir, details) {
   const record = { utc: new Date().toISOString(), ...details };
+  const line = `[INFRA-RETRY] ${record.utc} operation=${record.operation} attempt=${record.attempt} message=${record.message}`;
+  process.stderr.write(`${line}\n`);
   try {
     await appendSynced(path.join(stateDir, "infrastructure-retries.ndjson"), `${JSON.stringify(record)}\n`);
-    await appendSynced(path.join(stateDir, "run.log"),
-      `[INFRA-RETRY] ${record.utc} operation=${record.operation} attempt=${record.attempt} message=${record.message}\n`);
+    await appendSynced(path.join(stateDir, "run.log"), `${line}\n`);
   } catch {
     process.stderr.write(`[INFRA-RETRY-UNLOGGED] ${JSON.stringify(record)}\n`);
   }
@@ -1255,7 +1296,7 @@ async function runFastCaseWithRetry(worker, descriptor, stateDir, config) {
   let lastError;
   for (let attempt = 0; attempt <= config.infraRetries; attempt += 1) {
     try {
-      return await worker.run(descriptor);
+      return await worker.run(descriptor, config.fastCaseTimeoutMs);
     } catch (error) {
       lastError = error;
       if (attempt >= config.infraRetries) break;
@@ -1275,10 +1316,10 @@ async function runFastCaseWithRetry(worker, descriptor, stateDir, config) {
   );
 }
 
-async function runFreshReplay(scriptUrl, instrumentedFastPath, descriptor) {
+async function runFreshReplay(scriptUrl, instrumentedFastPath, descriptor, timeoutMs) {
   const worker = new WorkerClient(10_000, scriptUrl, instrumentedFastPath);
   try {
-    return await worker.run({ ...descriptor, checkDeterminism: true });
+    return await worker.run({ ...descriptor, checkDeterminism: true }, timeoutMs);
   } finally {
     await worker.close();
   }
@@ -1304,11 +1345,11 @@ async function runReplay({ parsed, repoRoot, scriptPath, instrumentedFastPath, i
     checkpointK: Number(generation.checkpointK),
   });
   const scriptUrl = pathToFileURL(scriptPath);
-  const fast = await runFreshReplay(scriptUrl, instrumentedFastPath, descriptor);
+  const fast = await runFreshReplay(scriptUrl, instrumentedFastPath, descriptor, config.fastCaseTimeoutMs);
   let expected = null;
   let oracleError = null;
   try {
-    const oracleResponse = await runOracleOneShot(pathToFileURL(scriptPath), repoRoot, descriptor, [descriptor.t]);
+    const oracleResponse = await runOracleOneShot(pathToFileURL(scriptPath), repoRoot, descriptor, [descriptor.t], config.oracleTimeoutMs);
     if (oracleResponse.status === "ok") expected = oracleResponse.results[descriptor.t];
     else oracleError = oracleResponse.error;
   } catch (error) {
@@ -1490,7 +1531,8 @@ async function main() {
     + `fast-sha256=${fastHash}\n`
     + `year-days=${instrumented.__soakMinYearDays}..${instrumented.__soakMaxYearDays} checkpoints=${checkpoints.length}\n`
     + `state=${stateDir}\n`
-    + `workers=${config.workers} (requested ${config.workersRequested}, CPU cap ${config.maxCpu}%) oracle=${config.oracleEnabled ? `1/${config.oracleEvery} + structural` : "disabled"}\n`,
+    + `workers=${config.workers} (requested ${config.workersRequested}, CPU cap ${config.maxCpu}%) oracle=${config.oracleEnabled ? `1/${config.oracleEvery} + structural` : "disabled"}\n`
+    + `timeouts=fast:${config.fastCaseTimeoutMs}ms oracle:${config.oracleTimeoutMs}ms heartbeat:${config.heartbeatMs}ms\n`,
   );
   if (config.workers < config.workersRequested) {
     process.stdout.write(`worker count clamped from ${config.workersRequested} to ${config.workers} by --max-cpu\n`);
@@ -1504,21 +1546,66 @@ async function main() {
   ));
   workers.forEach((worker) => worker.start());
   let stopRequested = false;
+  let stopReason = null;
+  let signalCount = 0;
   let secondSignal = false;
+  let currentBatchProgress = null;
+  const activeProgress = new Map();
+  const setCaseProgress = (descriptor, phase, workerIndex = null) => {
+    activeProgress.set(descriptor.case, {
+      case: descriptor.case,
+      phase,
+      workerIndex,
+      startedMs: performance.now(),
+    });
+  };
+  const clearCaseProgress = (descriptor) => activeProgress.delete(descriptor.case);
   const signalHandler = (signal) => {
-    if (stopRequested) {
+    signalCount += 1;
+    if (signalCount >= 2) {
       secondSignal = true;
       process.stderr.write(`\nSecond ${signal}: terminating immediately; last committed batch remains resumable.\n`);
       workers.forEach((worker) => worker.close().catch(() => {}));
       process.exit(130);
     }
     stopRequested = true;
+    stopReason = "signal";
     process.stderr.write(`\n${signal}: will stop after the current batch is durably committed.\n`);
   };
   process.on("SIGINT", signalHandler);
   process.on("SIGTERM", signalHandler);
 
   const sessionStart = performance.now();
+  const durationTimer = config.durationMs === null ? null : setTimeout(() => {
+    if (stopRequested) return;
+    stopRequested = true;
+    stopReason = "duration";
+    const line = `[DURATION] requested duration elapsed; will stop after the current batch is durably committed.`;
+    process.stderr.write(`\n${line}\n`);
+    void appendSynced(logPath, `${line} utc=${new Date().toISOString()}\n`).catch(() => {});
+  }, config.durationMs);
+  const heartbeatTimer = config.heartbeatMs > 0 ? setInterval(() => {
+    if (!currentBatchProgress || activeProgress.size === 0) return;
+    const now = performance.now();
+    const active = [...activeProgress.values()]
+      .sort((a, b) => a.case - b.case)
+      .slice(0, 6)
+      .map((item) => {
+        const age = Math.max(0, (now - item.startedMs) / 1000).toFixed(1);
+        const workerText = item.workerIndex === null ? "" : ` worker=${item.workerIndex}`;
+        return `case=${item.case + 1}/${currentBatchProgress.cases} phase=${item.phase}${workerText} age=${age}s`;
+      })
+      .join(" | ");
+    const rssMb = (process.memoryUsage().rss / 1024 / 1024).toFixed(1);
+    const sessionAgeMs = now - sessionStart;
+    const remainingText = config.durationMs === null
+      ? ""
+      : ` remaining=${Math.max(0, (config.durationMs - sessionAgeMs) / 1000).toFixed(0)}s`;
+    const line = `[HEARTBEAT] batch=${currentBatchProgress.batch} class=${currentBatchProgress.sampleClass} ${active} session=${(sessionAgeMs / 1000).toFixed(0)}s${remainingText} rss=${rssMb}MB utc=${new Date().toISOString()}`;
+    process.stdout.write(`${line}\n`);
+    void appendSynced(logPath, `${line}\n`).catch(() => {});
+  }, config.heartbeatMs) : null;
+
   const initialTotalCases = state.totals.totalCases;
   let exitCode = 0;
 
@@ -1549,6 +1636,12 @@ async function main() {
         }));
       }
 
+      currentBatchProgress = { batch, sampleClass, cases: casesInBatch };
+      activeProgress.clear();
+      const batchStartLine = `[batch ${batch}] start class=${sampleClass} cases=${casesInBatch} utc=${new Date().toISOString()}`;
+      process.stdout.write(`${batchStartLine}\n`);
+      await appendSynced(logPath, `[BATCH-START] ${batchStartLine}\n`);
+
       const batchStart = performance.now();
       const batchTotalsBefore = structuredClone(state.totals);
       const completed = [];
@@ -1556,6 +1649,7 @@ async function main() {
       let batchFailure = null;
 
       const continueOrStopFailure = async (failure) => {
+        clearCaseProgress(failure.descriptor);
         if (!config.continueAfterFailure) {
           batchFailure = failure;
           return false;
@@ -1586,10 +1680,12 @@ async function main() {
 
       for (let offset = 0; offset < descriptors.length && batchFailure === null; offset += config.workers) {
         const chunk = descriptors.slice(offset, offset + config.workers);
+        chunk.forEach((descriptor, index) => setCaseProgress(descriptor, "fast", index));
         const chunkResults = await Promise.all(chunk.map((descriptor, index) =>
           runFastCaseWithRetry(workers[index], descriptor, stateDir, config)
             .then((result) => ({ descriptor, result, workerIndex: index }))));
         chunkResults.sort((a, b) => a.descriptor.case - b.descriptor.case);
+        chunkResults.forEach((item) => setCaseProgress(item.descriptor, "post-fast", item.workerIndex));
 
         for (const item of chunkResults) {
           const { descriptor, result } = item;
@@ -1603,6 +1699,7 @@ async function main() {
 
           let oracleResult = null;
           if (shouldUseOracle(descriptor, config)) {
+            setCaseProgress(descriptor, "oracle", item.workerIndex);
             try {
               // Release the fast worker's calculation caches before loading the
               // very large oracle isolate. This keeps the default usable on a
@@ -1610,6 +1707,7 @@ async function main() {
               await workers[item.workerIndex].restart();
               oracleResult = await compareOracle(pathToFileURL(scriptPath), repoRoot, descriptor, result, config, stateDir);
             } catch (error) {
+              if (error instanceof InfrastructureError) throw error;
               const shouldContinue = await continueOrStopFailure({
                 descriptor,
                 fastResult: result,
@@ -1637,10 +1735,13 @@ async function main() {
 
           applySuccessfulCase(state.totals, descriptor, result);
           completed.push({ descriptor, result, oracle: oracleResult });
+          clearCaseProgress(descriptor);
         }
       }
 
       if (batchFailure !== null) {
+        activeProgress.clear();
+        currentBatchProgress = null;
         const persisted = await persistFailureAndReplay({
           stateDir,
           state,
@@ -1667,6 +1768,8 @@ async function main() {
         break;
       }
 
+      activeProgress.clear();
+      currentBatchProgress = null;
       const seconds = (performance.now() - batchStart) / 1000;
       const rssMb = process.memoryUsage().rss / 1024 / 1024;
       state.totals.runtimeSeconds += seconds;
@@ -1750,6 +1853,10 @@ async function main() {
       void summary;
     }
   } finally {
+    if (durationTimer) clearTimeout(durationTimer);
+    if (heartbeatTimer) clearInterval(heartbeatTimer);
+    activeProgress.clear();
+    currentBatchProgress = null;
     process.removeListener("SIGINT", signalHandler);
     process.removeListener("SIGTERM", signalHandler);
     await Promise.all(workers.map((worker) => worker.close()));
@@ -1757,7 +1864,7 @@ async function main() {
     if (releaseStateLock) await releaseStateLock();
   }
 
-  const reason = secondSignal ? "second-signal" : stopRequested ? "signal" : exitCode ? "failure" : "limit-or-complete";
+  const reason = secondSignal ? "second-signal" : stopReason ?? (exitCode ? "failure" : "limit-or-complete");
   process.stdout.write(`Stopped: ${reason}. Resume checkpoint: ${statePath}\n`);
   return exitCode;
 }
