@@ -1,23 +1,23 @@
 "use strict";
 
-const VERSION = "pastafari-static-c5db804-fast-only-10-search-compare-i18n-en-he";
+const VERSION = "pastafari-static-c5db804-fast-only-11-year-structure-i18n-en-he";
 const CACHE = VERSION;
 const ASSETS = [
   "./index.html",
-  "./styles.css?v=7-search-compare",
-  "./app.js?v=7-search-compare",
-  "./calendar-converters.js?v=7-search-compare",
-  "./manifest.webmanifest?v=7-search-compare",
-  "./icons/icon.svg?v=7-search-compare",
+  "./styles.css?v=8-year-structure",
+  "./app.js?v=8-year-structure",
+  "./calendar-converters.js?v=8-year-structure",
+  "./manifest.webmanifest?v=8-year-structure",
+  "./icons/icon.svg?v=8-year-structure",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
   "./engine/pastafari-calendar-fast.js",
-  "./engine/pastafari-fast-worker.js?v=7-search-compare",
-  "./i18n/calendar-identifiers.js?v=7-search-compare",
-  "./i18n/registry.js?v=7-search-compare",
-  "./i18n/runtime.js?v=7-search-compare",
-  "./i18n/locales/he.js?v=7-search-compare",
-  "./i18n/locales/en.js?v=7-search-compare"
+  "./engine/pastafari-fast-worker.js?v=8-year-structure",
+  "./i18n/calendar-identifiers.js?v=8-year-structure",
+  "./i18n/registry.js?v=8-year-structure",
+  "./i18n/runtime.js?v=8-year-structure",
+  "./i18n/locales/he.js?v=8-year-structure",
+  "./i18n/locales/en.js?v=8-year-structure"
 ];
 
 const scoped = (path) => new URL(path, self.registration.scope).href;
