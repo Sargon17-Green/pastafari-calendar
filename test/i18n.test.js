@@ -96,7 +96,7 @@ test("locale resolution follows URL > saved > navigator.languages > English fall
   assert.deepEqual(resolveLocale({ savedLanguage: "he", browserLanguages: ["en-US"] }), { locale: getLocale("he"), source: "saved" });
   assert.deepEqual(resolveLocale({ browserLanguages: ["he-IL", "en-US"] }), { locale: getLocale("he"), source: "browser" });
   assert.deepEqual(resolveLocale({ browserLanguages: ["en-US", "he-IL"] }), { locale: getLocale("en"), source: "browser" });
-  assert.deepEqual(resolveLocale({ browserLanguages: ["de-DE", "fr-FR"] }), { locale: getLocale("en"), source: "fallback" });
+  assert.deepEqual(resolveLocale({ browserLanguages: ["qaa", "qab"] }), { locale: getLocale("en"), source: "fallback" });
   assert.deepEqual(resolveLocale({ urlLanguage: "%%%", savedLanguage: "he", browserLanguages: ["en-US"] }), { locale: getLocale("he"), source: "saved" });
 });
 
