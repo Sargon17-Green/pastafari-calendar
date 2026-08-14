@@ -12,8 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -43,8 +43,8 @@ jobs:
             env_var: PASTAFARI_REBUILD_CHECKPOINTS
             test_name: optionally reconstruct every checkpoint interval from gate distances
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -104,7 +104,7 @@ jobs:
             if [[ -n "${node_test_count}" ]]; then
               echo "- Node test count: ${node_test_count}"
             fi
-            echo "- Relevant TAP line: \`${result_line:-<missing>}\`"
+            echo "- Relevant TAP line: `${result_line:-<missing>}`"
           } >> "${GITHUB_STEP_SUMMARY}"
 
           if (( test_status != 0 )); then
@@ -119,8 +119,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -133,8 +133,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 18.0.0
       - name: Verify exact Node version
