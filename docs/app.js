@@ -7,6 +7,11 @@ import {
   gregorianToJdn,
   jdnToGregorian,
 } from "./calendar-converters.js?v=8-year-structure";
+import {
+  calendarMonthChoices,
+  normalizeCalendarInputValues,
+  usesTextualCalendarNumeral,
+} from "./calendar-input-conventions.js?v=9-calendar-input-conventions";
 import { calendarLabel, getLocale, translate, validateLocaleResources } from "./i18n/registry.js?v=8-year-structure";
 import {
   applyDocumentLocale,
@@ -217,7 +222,6 @@ function relativeLuminance([red, green, blue]) {
   });
   return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2];
 }
-
 function contrastRatio(luminanceA, luminanceB) {
   const lighter = Math.max(luminanceA, luminanceB);
   const darker = Math.min(luminanceA, luminanceB);
@@ -656,9 +660,14 @@ function renderDateFields(kind, { values = null, jdn = null } = {}) {
     const labelText = document.createElement("span");
     labelText.textContent = t(field.labelKey);
     let input;
-    if (field.kind === "select") {
+    const conventionalMonthChoices = calendarMonthChoices(
+      definition.id,
+      field,
+      activeLocale.intlLocale,
+    );
+    if (field.kind === "select" || conventionalMonthChoices) {
       input = document.createElement("select");
-      for (const choice of field.options) {
+      for (const choice of conventionalMonthChoices || field.options) {
         const option = document.createElement("option");
         option.value = choice.value;
         option.textContent = choice.labelKey ? t(choice.labelKey) : choice.label;
@@ -666,10 +675,13 @@ function renderDateFields(kind, { values = null, jdn = null } = {}) {
       }
     } else {
       input = document.createElement("input");
-      input.type = field.kind === "checkbox" ? "checkbox" : "number";
+      const textualNumeral = field.kind === "integer"
+        && usesTextualCalendarNumeral(definition.id, field.name);
+      input.type = field.kind === "checkbox" ? "checkbox" : (textualNumeral ? "text" : "number");
       if (field.kind === "integer") {
         input.step = "1";
-        input.inputMode = "numeric";
+        input.inputMode = textualNumeral ? "text" : "numeric";
+        if (textualNumeral) input.dir = "auto";
         if (field.min !== undefined) input.min = String(field.min);
         if (field.max !== undefined) input.max = String(field.max);
         input.required = true;
@@ -705,7 +717,8 @@ function readDateForm(kind) {
   for (const checkbox of configuration.form.querySelectorAll('input[type="checkbox"]')) {
     values[checkbox.name] = checkbox.checked;
   }
-  return calendarDateToJdn(configuration.select.value, values);
+  const normalizedValues = normalizeCalendarInputValues(configuration.select.value, values);
+  return calendarDateToJdn(configuration.select.value, normalizedValues);
 }
 
 function showFormError(kind, error) {
