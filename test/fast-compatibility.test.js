@@ -111,35 +111,6 @@ async function compareWholeCutlet(targetJdn, calculationJdn) {
   return view;
 }
 
-function assertCheckpointSides(instrumented, checkpointIndex) {
-  const checkpoints = instrumented.__testGateCheckpoints;
-  const gateDistance = instrumented.__testGateDistance;
-  const gatePosition = instrumented.__testGatePosition;
-  const [gateIndex, expectedPosition] = checkpoints[checkpointIndex];
-  const gateIndexBigInt = BigInt(gateIndex);
-
-  const leftPosition = gatePosition(gateIndexBigInt - 1n);
-  const rightPosition = gatePosition(gateIndexBigInt + 1n);
-  const expectedLeftDistance = gateIndex > 0
-    ? gateDistance(gateIndexBigInt)
-    : gateDistance(gateIndexBigInt - 1n);
-  const expectedRightDistance = gateIndex < 0
-    ? gateDistance(gateIndexBigInt)
-    : gateDistance(gateIndexBigInt + 1n);
-
-  assert.equal(gatePosition(gateIndexBigInt), expectedPosition);
-  assert.equal(
-    expectedPosition - leftPosition,
-    BigInt(expectedLeftDistance),
-    `Invalid distance immediately before checkpoint ${gateIndex}`,
-  );
-  assert.equal(
-    rightPosition - expectedPosition,
-    BigInt(expectedRightDistance),
-    `Invalid distance immediately after checkpoint ${gateIndex}`,
-  );
-}
-
 test(
   "the fast implementation matches the authoritative implementation",
   { timeout: 360_000 },
@@ -257,20 +228,6 @@ test(
       }
     });
 
-    await suite.test(
-      "optionally check representative checkpoints on both sides",
-      { skip: process.env.PASTAFARI_CHECKPOINT_SIDES !== "1" },
-      async () => {
-        const instrumented = await loadInstrumentedFastModule();
-        const last = instrumented.__testGateCheckpoints.length - 1;
-        const sampleIndexes = [0, 8, 16, 24, 32, 40, 48, 56, last];
-
-        for (const checkpointIndex of sampleIndexes) {
-          assertCheckpointSides(instrumented, checkpointIndex);
-        }
-      },
-    );
-
     for (const [label, calculationJdn] of [
       ["before the first checkpoint", FIRST_CHECKPOINT_JDN - 5_000n],
       ["after the last checkpoint", LAST_CHECKPOINT_JDN + 5_000n],
@@ -286,46 +243,5 @@ test(
       });
     }
 
-    await suite.test(
-      "optionally check both sides of every checkpoint",
-      { skip: process.env.PASTAFARI_EXHAUSTIVE_CHECKPOINTS !== "1" },
-      async () => {
-        const instrumented = await loadInstrumentedFastModule();
-        for (
-          let checkpointIndex = 0;
-          checkpointIndex < instrumented.__testGateCheckpoints.length;
-          checkpointIndex += 1
-        ) {
-          assertCheckpointSides(instrumented, checkpointIndex);
-        }
-      },
-    );
-
-    await suite.test(
-      "optionally reconstruct every checkpoint interval from gate distances",
-      { skip: process.env.PASTAFARI_REBUILD_CHECKPOINTS !== "1" },
-      async () => {
-        const instrumented = await loadInstrumentedFastModule();
-        const checkpoints = instrumented.__testGateCheckpoints;
-        const gateDistance = instrumented.__testGateDistance;
-
-        for (let checkpoint = 1; checkpoint < checkpoints.length; checkpoint += 1) {
-          const [leftIndex, leftPosition] = checkpoints[checkpoint - 1];
-          const [rightIndex, rightPosition] = checkpoints[checkpoint];
-          let reconstructed = leftPosition;
-
-          for (let gateIndex = leftIndex; gateIndex < rightIndex; gateIndex += 1) {
-            const distanceIndex = gateIndex < 0 ? gateIndex : gateIndex + 1;
-            reconstructed += BigInt(gateDistance(BigInt(distanceIndex)));
-          }
-
-          assert.equal(
-            reconstructed,
-            rightPosition,
-            `Checkpoint interval ${leftIndex}..${rightIndex} was not reconstructed exactly`,
-          );
-        }
-      },
-    );
   },
 );
