@@ -8,11 +8,11 @@
     <meta name="color-scheme" content="light">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; worker-src 'self'; manifest-src 'self'">
     <title data-i18n="app.title">Pastafari Calendar</title>
-    <link rel="manifest" href="./manifest.webmanifest?v=7-search-compare">
-    <link rel="icon" href="./icons/icon.svg?v=7-search-compare" type="image/svg+xml">
+    <link rel="manifest" href="./manifest.webmanifest?v=8-year-structure">
+    <link rel="icon" href="./icons/icon.svg?v=8-year-structure" type="image/svg+xml">
     <link rel="apple-touch-icon" href="./icons/icon-192.png">
-    <link rel="stylesheet" href="./styles.css?v=7-search-compare">
-    <script type="module" src="./app.js?v=7-search-compare"></script>
+    <link rel="stylesheet" href="./styles.css?v=8-year-structure">
+    <script type="module" src="./app.js?v=8-year-structure"></script>
   </head>
   <body>
     <a class="skip-link" href="#search-panel" data-i18n="nav.skip">Skip to date search</a>
@@ -127,6 +127,37 @@
 
         <p class="browse-note" id="browse-note" hidden data-i18n="calendar.targetOutside">The searched date is not in the cutlet currently on screen.</p>
         <div class="calendar-grid" id="calendar-grid"></div>
+
+        <section class="year-overview" id="year-overview" aria-labelledby="year-overview-heading">
+          <div class="year-overview-heading">
+            <p class="status-kicker" data-i18n="year.kicker">Year at a glance</p>
+            <h2 id="year-overview-heading">Year structure</h2>
+            <p id="year-overview-context"></p>
+          </div>
+          <p class="year-overview-loading" id="year-overview-loading" data-i18n="year.loading">Building the full year structure…</p>
+          <p class="year-overview-error" id="year-overview-error" hidden></p>
+          <div id="year-overview-content" hidden>
+            <dl class="year-facts">
+              <div><dt data-i18n="year.lengthLabel">Year length</dt><dd id="year-length"></dd></div>
+              <div><dt data-i18n="year.cutletCountLabel">Cutlets</dt><dd id="year-cutlet-count"></dd></div>
+              <div><dt data-i18n="year.monthCountLabel">Months</dt><dd id="year-month-count"></dd></div>
+              <div><dt data-i18n="year.rangeLabel">Gregorian span</dt><dd id="year-range"></dd></div>
+            </dl>
+            <p class="year-position" id="year-cutlet-position"></p>
+            <p class="year-position" id="year-target-position" hidden></p>
+            <p class="year-explainer" data-i18n="year.monthExplainer">Months are woven independently of cutlets, so a month can appear in many separate runs during the year.</p>
+            <div class="year-structure-columns">
+              <details class="structure-details" open>
+                <summary id="year-cutlets-summary">Cutlets</summary>
+                <ol class="structure-list" id="year-cutlet-list"></ol>
+              </details>
+              <details class="structure-details" open>
+                <summary id="year-months-summary">Months</summary>
+                <ol class="structure-list month-structure-list" id="year-month-list"></ol>
+              </details>
+            </div>
+          </div>
+        </section>
       </section>
 
       <section class="comparison-workspace" id="comparison-workspace" aria-labelledby="comparison-heading" hidden>
@@ -162,6 +193,7 @@
           <article><span class="guide-number">04</span><h3 data-i18n="guide.4.heading">Browse without selecting by accident</h3><p data-i18n="guide.4.body">Use the cutlet navigation buttons.</p></article>
           <article><span class="guide-number">05</span><h3 data-i18n="guide.5.heading">Change the day of working</h3><p data-i18n="guide.5.body">Open the calculation options to change it.</p></article>
           <article><span class="guide-number">06</span><h3 data-i18n="guide.6.heading">Compare the same days twice</h3><p data-i18n="guide.6.body">On desktop, align each target day under two calculations.</p></article>
+          <article><span class="guide-number">07</span><h3 data-i18n="guide.7.heading">Explore the whole year</h3><p data-i18n="guide.7.body">Below the cutlet, inspect the year's length, cutlets, and woven months.</p></article>
         </div>
         <p class="guide-note" data-i18n="guide.note">Grid rows are visual only; comparison-table rows deliberately align the same day.</p>
         <a class="back-to-calendar" href="#search-panel" data-i18n="guide.back">Back to search and calendar</a>
