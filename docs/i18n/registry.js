@@ -1,8 +1,8 @@
 "use strict";
 
-import he from "./locales/he.js?v=7-search-compare";
-import en from "./locales/en.js?v=7-search-compare";
-import { CUTLETS, MONTHS } from "./calendar-identifiers.js?v=7-search-compare";
+import he from "./locales/he.js?v=8-year-structure";
+import en from "./locales/en.js?v=8-year-structure";
+import { CUTLETS, MONTHS } from "./calendar-identifiers.js?v=8-year-structure";
 
 export const DEFAULT_LOCALE = "en";
 export const LOCALES = Object.freeze([he, en]);
