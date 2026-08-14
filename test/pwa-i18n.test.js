@@ -63,7 +63,10 @@ test("service worker precaches every runtime i18n dependency", async () => {
     const file = path.join(DOCS, pathname.replace(/^\.\//, ""));
     assert.equal((await stat(file)).isFile(), true, `cached asset does not exist: ${entry}`);
   }
-  assert.match(source, /pastafari-static-[^"\n]*i18n-en-he/);
+  const localeAssets = assets.filter((entry) => entry.startsWith("./i18n/locales/"));
+  assert.equal(localeAssets.length, 89);
+  assert.ok(!localeAssets.some((entry) => entry.includes("/hbo.js")));
+  assert.match(source, /pastafari-static-[^"\n]*i18n-all-89/);
   const html = await readFile(path.join(DOCS, "index.html"), "utf8");
   for (const entry of [
     "./styles.css?v=8-year-structure",
