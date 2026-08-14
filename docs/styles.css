@@ -535,6 +535,127 @@ h1 {
   font-variant-numeric: tabular-nums;
 }
 
+
+.year-overview {
+  margin-block: 0 2rem;
+  padding: clamp(1rem, 2.5vw, 2rem);
+  border-top: 4px solid var(--ink);
+  background: #f7f0e5;
+}
+
+.year-overview-heading h2 {
+  margin: 0.2rem 0 0.45rem;
+  font-family: Georgia, "Times New Roman", "Noto Serif Hebrew", serif;
+  font-size: clamp(1.7rem, 3vw, 2.5rem);
+  line-height: 1.05;
+}
+
+.year-overview-heading > p:last-child {
+  max-width: 76rem;
+  margin: 0;
+  color: var(--muted);
+  font-weight: 650;
+}
+
+.year-overview-loading,
+.year-overview-error {
+  margin: 1.1rem 0 0;
+  padding: 0.85rem 1rem;
+  border-inline-start: 4px solid var(--accent);
+  background: white;
+  font-weight: 750;
+}
+
+.year-overview-error { border-inline-start-color: #8b1e12; }
+
+.year-facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 1.25rem 0 0;
+}
+
+.year-facts > div {
+  min-width: 0;
+  padding: 0.9rem 1rem;
+  border: 1px solid #c9baa2;
+  background: #fffdf8;
+}
+
+.year-facts dt {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.year-facts dd {
+  margin: 0.35rem 0 0;
+  overflow-wrap: anywhere;
+  font-family: Georgia, "Times New Roman", "Noto Serif Hebrew", serif;
+  font-size: clamp(1.05rem, 1.7vw, 1.35rem);
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.year-position,
+.year-explainer {
+  margin: 0.8rem 0 0;
+}
+
+.year-position { font-weight: 750; }
+
+.year-explainer {
+  padding: 0.85rem 1rem;
+  border: 1px solid #ad8e4d;
+  background: #fff4d4;
+  color: #46381e;
+}
+
+.year-structure-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 1rem;
+  margin-top: 1rem;
+  align-items: start;
+}
+
+.structure-details {
+  min-width: 0;
+  border: 1px solid #b9ad9b;
+  border-radius: 0.7rem;
+  background: #fffdf8;
+  overflow: hidden;
+}
+
+.structure-details > summary {
+  padding: 0.85rem 1rem;
+  cursor: pointer;
+  background: var(--ink);
+  color: white;
+  font-weight: 850;
+}
+
+.structure-list {
+  max-height: 34rem;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+  list-style: none;
+}
+
+.structure-item {
+  display: grid;
+  gap: 0.22rem;
+  padding: 0.72rem 0.9rem;
+  border-bottom: 1px solid #ded3c2;
+}
+
+.structure-item:last-child { border-bottom: 0; }
+.structure-item[data-current="true"] { border-inline-start: 6px solid var(--accent); background: #fff0c2; }
+.structure-item strong { overflow-wrap: anywhere; font-family: Georgia, "Times New Roman", "Noto Serif Hebrew", serif; }
+.structure-item span { color: var(--muted); font-size: 0.88rem; line-height: 1.4; }
+
 .comparison-workspace { padding-inline: clamp(1rem, 2.5vw, 2rem); }
 .comparison-summary { margin-top: 1.2rem; padding: 0.8rem 1rem; background: #f3eee4; color: var(--muted); font-weight: 700; }
 .comparison-scroll { display: none; max-height: 75vh; margin-top: 1rem; overflow: auto; border: 2px solid var(--ink); border-radius: 0.75rem; background: white; }
@@ -607,6 +728,8 @@ h1 {
 }
 
 @media (max-width: 900px) {
+  .year-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .year-structure-columns { grid-template-columns: 1fr; }
   .date-entry-form,
   .compact-form { grid-template-columns: 1fr; }
   .search-submit { width: 100%; }
@@ -625,6 +748,8 @@ h1 {
 }
 
 @media (max-width: 520px) {
+  .year-facts { grid-template-columns: 1fr; }
+  .structure-list { max-height: 28rem; }
   .date-fields { grid-template-columns: 1fr; }
 }
 
@@ -664,7 +789,8 @@ h1 {
   .app-shell { width: 100%; padding: 0; }
   .masthead { grid-template-columns: 1fr; padding-block: 0 1rem; }
   .toolbar-actions, .guide-link, .floating-guide-link, .back-to-calendar, .site-footer, .language-control, .advanced-settings, .search-panel { display: none; }
-  .public-guide, .comparison-workspace { box-shadow: none; }
+  .public-guide, .comparison-workspace, .year-overview { box-shadow: none; }
+  .structure-list { max-height: none; overflow: visible; }
   h1 { font-size: 2.5rem; }
   .calendar-workspace { padding: 1rem 0 0; }
   .calendar-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.2rem; }
