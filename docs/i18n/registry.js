@@ -32,7 +32,6 @@ import got from "./locales/got.js?v=8-year-structure";
 import grc from "./locales/grc.js?v=8-year-structure";
 import gu from "./locales/gu.js?v=8-year-structure";
 import ha from "./locales/ha.js?v=8-year-structure";
-import hbo from "./locales/hbo.js?v=8-year-structure";
 import hi from "./locales/hi.js?v=8-year-structure";
 import hr from "./locales/hr.js?v=8-year-structure";
 import ht from "./locales/ht.js?v=8-year-structure";
@@ -93,7 +92,7 @@ import zu from "./locales/zu.js?v=8-year-structure";
 import { CUTLETS, MONTHS } from "./calendar-identifiers.js?v=8-year-structure";
 
 export const DEFAULT_LOCALE = "en";
-export const LOCALES = Object.freeze([he, en, af, akk, ang, ar, az, be, bg, bn, bs, ca, cop, cs, cu, da, de, el, eo, es, et, fa, fi, fil, fo, fr, fy, gl, got, grc, gu, ha, hbo, hi, hr, ht, hu, hy, ia, id, io, is, it, ja, jbo, jv, ka, kk, ko, la, lb, lt, lv, lzh, mk, mr, ms, nb, ne, nl, nn, non, pa, pl, pt, ro, ru, sa, sk, sl, so, sq, sr, sux, sv, sw, ta, te, th, tlh, tok, tr, uk, ur, uz, vi, vo, yo, zh, zu]);
+export const LOCALES = Object.freeze([he, en, af, akk, ang, ar, az, be, bg, bn, bs, ca, cop, cs, cu, da, de, el, eo, es, et, fa, fi, fil, fo, fr, fy, gl, got, grc, gu, ha, hi, hr, ht, hu, hy, ia, id, io, is, it, ja, jbo, jv, ka, kk, ko, la, lb, lt, lv, lzh, mk, mr, ms, nb, ne, nl, nn, non, pa, pl, pt, ro, ru, sa, sk, sl, so, sq, sr, sux, sv, sw, ta, te, th, tlh, tok, tr, uk, ur, uz, vi, vo, yo, zh, zu]);
 const byCode = new Map(LOCALES.map((locale) => [canonicalTag(locale.code), locale]));
 
 function canonicalTag(tag) {
