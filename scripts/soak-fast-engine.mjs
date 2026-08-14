@@ -22,7 +22,7 @@ import process from "node:process";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { Worker, isMainThread, parentPort, threadId, workerData } from "node:worker_threads";
 
-const HARNESS_VERSION = "PASTAFARI-FAST-SOAK-1.1.0";
+const HARNESS_VERSION = "PASTAFARI-FAST-SOAK-1.2.0";
 const STATE_SCHEMA = 1;
 const MASK64 = (1n << 64n) - 1n;
 const DEFAULT_BATCH_SIZE = 12;
@@ -74,6 +74,15 @@ class InfrastructureError extends Error {
     super(message, { cause });
     this.name = "InfrastructureError";
     this.code = "ERR_INFRASTRUCTURE";
+  }
+}
+
+class PerformanceTimeoutError extends Error {
+  constructor(message, details = {}) {
+    super(message);
+    this.name = "PerformanceTimeoutError";
+    this.code = "ERR_PERFORMANCE_TIMEOUT";
+    Object.assign(this, details);
   }
 }
 
@@ -263,7 +272,7 @@ Important options:
   --workers N | --jobs N      worker threads (default 1)
   --max-cpu PERCENT           caps effective workers (default ${DEFAULT_MAX_CPU})
   --duration 6h               request a stop when the duration elapses; current batch is committed first
-  --fast-timeout 10m          maximum time for one fast-engine case before infra retry
+  --fast-timeout 10m          maximum time for one fast-engine case attempt; repeated timeout is a test failure
   --oracle-timeout 10m        maximum time for one oracle invocation before infra retry
   --heartbeat 30s             print/log in-batch progress; use 0 to disable
   --max-cases N               stop before exceeding this logical-case count
@@ -904,8 +913,14 @@ class WorkerClient {
         timer = setTimeout(() => {
           if (!this.pending || this.pending.id !== id) return;
           this.pending = null;
-          reject(new InfrastructureError(
+          reject(new PerformanceTimeoutError(
             `worker ${this.index} timed out after ${timeoutMs}ms on batch ${descriptor.batch} case ${descriptor.case}`,
+            {
+              timeoutMs,
+              workerIndex: this.index,
+              batch: descriptor.batch,
+              case: descriptor.case,
+            },
           ));
         }, timeoutMs);
       }
@@ -1155,6 +1170,7 @@ function summaryProjection(state, extra) {
     fullYearDaysChecked: totals.fullYearDaysChecked,
     failures: extra.failures,
     infrastructureRetries: extra.infrastructureRetries,
+    performanceRetries: extra.performanceRetries,
     jdnRange: { min: totals.minJdn, max: totals.maxJdn },
     relationCounts: totals.relations,
     checkpointNeighbourCases: totals.checkpointNeighbourCases,
@@ -1181,10 +1197,21 @@ async function readRetryCount(stateDir) {
   }
 }
 
+async function readPerformanceRetryCount(stateDir) {
+  const filePath = path.join(stateDir, "performance-retries.ndjson");
+  try {
+    const text = await readFile(filePath, "utf8");
+    return text.split(/\r?\n/).filter(Boolean).length;
+  } catch {
+    return 0;
+  }
+}
+
 async function writeSummary(state, stateDir, config, recordRetry) {
   const failures = await countJsonFiles(path.join(stateDir, "failures"));
   const infrastructureRetries = await readRetryCount(stateDir);
-  const summary = summaryProjection(state, { failures, infrastructureRetries });
+  const performanceRetries = await readPerformanceRetryCount(stateDir);
+  const summary = summaryProjection(state, { failures, infrastructureRetries, performanceRetries });
   await atomicWriteJson(path.join(stateDir, "summary.json"), summary, config.infraRetries, recordRetry);
   return summary;
 }
@@ -1212,9 +1239,9 @@ async function createFailureRecord({ state, descriptor, fastResult, oracleResult
   };
 }
 
-function replayCommand(scriptPath, state, descriptor) {
+function replayCommand(scriptPath, state, descriptor, config) {
   const rel = path.relative(path.dirname(path.dirname(scriptPath)), scriptPath).replaceAll(path.sep, "/");
-  return `node ${rel} replay --seed ${state.seed} --anchor-jdn ${state.anchorJdn} --batch-size ${state.generation.batchSize} --checkpoint-k ${state.generation.checkpointK} --replay-batch ${descriptor.batch} --replay-case ${descriptor.case} --sample-class ${descriptor.sampleClass} --commit ${state.commit}`;
+  return `node ${rel} replay --seed ${state.seed} --anchor-jdn ${state.anchorJdn} --batch-size ${state.generation.batchSize} --checkpoint-k ${state.generation.checkpointK} --replay-batch ${descriptor.batch} --replay-case ${descriptor.case} --sample-class ${descriptor.sampleClass} --fast-timeout ${config.fastCaseTimeoutMs}ms --oracle-timeout ${config.oracleTimeoutMs}ms --commit ${state.commit}`;
 }
 
 async function saveFailure(stateDir, record, config, recordRetry) {
@@ -1241,27 +1268,41 @@ async function persistFailureAndReplay({
   instrumentedFastPath,
   fastHash,
 }) {
-  const command = replayCommand(scriptPath, state, descriptor);
+  const command = replayCommand(scriptPath, state, descriptor, config);
   let replayResult;
-  try {
-    const replayFast = await runFreshReplay(pathToFileURL(scriptPath), instrumentedFastPath, descriptor, config.fastCaseTimeoutMs);
-    let replayOracle = null;
-    if (kind === "oracle-mismatch" && replayFast.status === "ok") {
-      replayOracle = await compareOracle(pathToFileURL(scriptPath), repoRoot, descriptor, replayFast, config, stateDir);
+  if (kind === "performance-timeout") {
+    // The bounded retries already reran the same deterministic case in fresh
+    // worker instances. Do not spend another full timeout window merely to
+    // prove the same timeout a fourth time.
+    replayResult = {
+      status: "reproduced-by-bounded-timeout-retries",
+      reproduced: Number(fastResult?.attempts ?? 0) >= 2,
+      attempts: Number(fastResult?.attempts ?? 0),
+      timeoutMs: Number(fastResult?.timeoutMs ?? config.fastCaseTimeoutMs),
+    };
+  } else {
+    try {
+      const replayFast = await runFreshReplay(pathToFileURL(scriptPath), instrumentedFastPath, descriptor, config.fastCaseTimeoutMs);
+      let replayOracle = null;
+      if (kind === "oracle-mismatch" && replayFast.status === "ok") {
+        replayOracle = await compareOracle(pathToFileURL(scriptPath), repoRoot, descriptor, replayFast, config, stateDir);
+      }
+      replayResult = {
+        fast: replayFast,
+        oracle: replayOracle,
+        reproduced: kind === "oracle-mismatch"
+          ? Boolean(replayOracle?.mismatches?.length)
+          : replayFast.status !== "ok",
+      };
+    } catch (error) {
+      replayResult = {
+        status: error instanceof PerformanceTimeoutError
+          ? "replay-performance-timeout"
+          : "replay-infrastructure-failure",
+        error: String(error?.stack ?? error),
+        reproduced: error instanceof PerformanceTimeoutError ? true : null,
+      };
     }
-    replayResult = {
-      fast: replayFast,
-      oracle: replayOracle,
-      reproduced: kind === "oracle-mismatch"
-        ? Boolean(replayOracle?.mismatches?.length)
-        : replayFast.status !== "ok",
-    };
-  } catch (error) {
-    replayResult = {
-      status: "replay-infrastructure-failure",
-      error: String(error?.stack ?? error),
-      reproduced: null,
-    };
   }
 
   const record = await createFailureRecord({
@@ -1292,13 +1333,62 @@ async function recordInfrastructureRetry(stateDir, details) {
   }
 }
 
-async function runFastCaseWithRetry(worker, descriptor, stateDir, config) {
+async function recordPerformanceRetry(stateDir, details) {
+  const record = { utc: new Date().toISOString(), ...details };
+  const line = `[PERF-RETRY] ${record.utc} operation=${record.operation} attempt=${record.attempt} message=${record.message}`;
+  process.stderr.write(`${line}\n`);
+  try {
+    await appendSynced(path.join(stateDir, "performance-retries.ndjson"), `${JSON.stringify(record)}\n`);
+    await appendSynced(path.join(stateDir, "run.log"), `${line}\n`);
+  } catch {
+    process.stderr.write(`[PERF-RETRY-UNLOGGED] ${JSON.stringify(record)}\n`);
+  }
+}
+
+async function runFastCaseWithRetry(worker, descriptor, stateDir, config, onAttempt = undefined) {
   let lastError;
+  let timeoutAttempts = 0;
   for (let attempt = 0; attempt <= config.infraRetries; attempt += 1) {
+    if (onAttempt) onAttempt(attempt + 1);
     try {
       return await worker.run(descriptor, config.fastCaseTimeoutMs);
     } catch (error) {
       lastError = error;
+      if (error instanceof PerformanceTimeoutError) {
+        timeoutAttempts += 1;
+        if (attempt >= config.infraRetries) {
+          return {
+            status: "performance-timeout",
+            checkedDays: 0,
+            fullYearDays: 0,
+            yearRecords: [],
+            cutletLength: null,
+            sweepDetails: null,
+            oracleTargets: [],
+            oracleValues: {},
+            cacheStats: null,
+            timeoutMs: config.fastCaseTimeoutMs,
+            attempts: timeoutAttempts,
+            error: {
+              name: error.name,
+              code: error.code,
+              message: error.message,
+            },
+          };
+        }
+        await recordPerformanceRetry(stateDir, {
+          operation: `worker-${worker.index}-case`,
+          attempt: attempt + 1,
+          batch: descriptor.batch,
+          case: descriptor.case,
+          c: descriptor.c,
+          t: descriptor.t,
+          timeoutMs: config.fastCaseTimeoutMs,
+          message: String(error?.message ?? error),
+        });
+        await worker.restart();
+        continue;
+      }
       if (attempt >= config.infraRetries) break;
       await recordInfrastructureRetry(stateDir, {
         operation: `worker-${worker.index}-case`,
@@ -1551,11 +1641,12 @@ async function main() {
   let secondSignal = false;
   let currentBatchProgress = null;
   const activeProgress = new Map();
-  const setCaseProgress = (descriptor, phase, workerIndex = null) => {
+  const setCaseProgress = (descriptor, phase, workerIndex = null, attempt = null) => {
     activeProgress.set(descriptor.case, {
       case: descriptor.case,
       phase,
       workerIndex,
+      attempt,
       startedMs: performance.now(),
     });
   };
@@ -1593,7 +1684,8 @@ async function main() {
       .map((item) => {
         const age = Math.max(0, (now - item.startedMs) / 1000).toFixed(1);
         const workerText = item.workerIndex === null ? "" : ` worker=${item.workerIndex}`;
-        return `case=${item.case + 1}/${currentBatchProgress.cases} phase=${item.phase}${workerText} age=${age}s`;
+        const attemptText = item.attempt === null ? "" : ` attempt=${item.attempt}/${config.infraRetries + 1}`;
+        return `case=${item.case + 1}/${currentBatchProgress.cases} phase=${item.phase}${workerText}${attemptText} age=${age}s`;
       })
       .join(" | ");
     const rssMb = (process.memoryUsage().rss / 1024 / 1024).toFixed(1);
@@ -1680,10 +1772,15 @@ async function main() {
 
       for (let offset = 0; offset < descriptors.length && batchFailure === null; offset += config.workers) {
         const chunk = descriptors.slice(offset, offset + config.workers);
-        chunk.forEach((descriptor, index) => setCaseProgress(descriptor, "fast", index));
+        chunk.forEach((descriptor, index) => setCaseProgress(descriptor, "fast", index, 1));
         const chunkResults = await Promise.all(chunk.map((descriptor, index) =>
-          runFastCaseWithRetry(workers[index], descriptor, stateDir, config)
-            .then((result) => ({ descriptor, result, workerIndex: index }))));
+          runFastCaseWithRetry(
+            workers[index],
+            descriptor,
+            stateDir,
+            config,
+            (attempt) => setCaseProgress(descriptor, "fast", index, attempt),
+          ).then((result) => ({ descriptor, result, workerIndex: index }))));
         chunkResults.sort((a, b) => a.descriptor.case - b.descriptor.case);
         chunkResults.forEach((item) => setCaseProgress(item.descriptor, "post-fast", item.workerIndex));
 
@@ -1691,7 +1788,10 @@ async function main() {
           const { descriptor, result } = item;
           if (result.status !== "ok") {
             const shouldContinue = await continueOrStopFailure({
-              descriptor, fastResult: result, kind: "engine-or-invariant-failure", oracleResult: null,
+              descriptor,
+              fastResult: result,
+              kind: result.status === "performance-timeout" ? "performance-timeout" : "engine-or-invariant-failure",
+              oracleResult: null,
             });
             if (!shouldContinue) break;
             continue;
@@ -1793,6 +1893,7 @@ async function main() {
         fullYearDaysCheckedInBatch: completed.reduce((sum, item) => sum + (item.result.fullYearDays ?? 0), 0),
         failures: await countJsonFiles(path.join(stateDir, "failures")),
         infrastructureRetries: await readRetryCount(stateDir),
+        performanceRetries: await readPerformanceRetryCount(stateDir),
         seconds: Number(seconds.toFixed(3)),
         casesPerSecond: Number(((completed.length + continuedFailures.length) / seconds).toFixed(6)),
         rssMb: Number(rssMb.toFixed(1)),
