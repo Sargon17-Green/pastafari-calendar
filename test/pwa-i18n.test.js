@@ -66,6 +66,20 @@ test("service worker precaches every runtime i18n dependency", async () => {
   const localeAssets = assets.filter((entry) => entry.startsWith("./i18n/locales/"));
   assert.equal(localeAssets.length, 89);
   assert.ok(!localeAssets.some((entry) => entry.includes("/hbo.js")));
+  const cachedEnglishAsset = localeAssets.find((entry) => entry.startsWith("./i18n/locales/en.js?"));
+  assert.ok(cachedEnglishAsset, "English locale must be precached with an explicit revision");
+  const expectedEnglishBaseImport = cachedEnglishAsset.replace("./i18n/locales/", "./");
+  for (const entry of localeAssets) {
+    const pathname = entry.split("?", 1)[0];
+    const localeSource = await readFile(path.join(DOCS, pathname.replace(/^\.\//, "")), "utf8");
+    for (const match of localeSource.matchAll(/import base from "(\.\/en\.js\?[^"]+)";/g)) {
+      assert.equal(
+        match[1],
+        expectedEnglishBaseImport,
+        `${entry} must import the same English locale revision that the Service Worker precaches`,
+      );
+    }
+  }
   assert.match(source, /pastafari-static-[^"\n]*i18n-all-89/);
   const html = await readFile(path.join(DOCS, "index.html"), "utf8");
   for (const entry of [
