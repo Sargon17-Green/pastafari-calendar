@@ -85,24 +85,47 @@ make -C cobol
 
 The reusable module is written to `cobol/build/pastafari-engine.so`.
 
-## Test
+## Test and qualification
 
-From the repository root:
+From the repository root, first run the small compile/linkage smoke:
 
 ```sh
 make -C cobol test
 ```
 
-The test target does three things:
+That target retains the original fixed vector suite. It is deliberately small;
+it is not sufficient evidence that the port is correct.
 
-1. tests the generic big-integer/combinatorial runtime;
-2. compiles a COBOL vector runner that checks forward → reverse round trips;
-3. compares 27 COBOL forward results (three calculation days × nine offsets)
-   against the current public fast JavaScript engine, plus a bounded `c=t`
-   reverse case.
+Before publishing or merging the port, run the cross-engine validation:
 
-The GitHub Actions workflow in `.github/workflows/cobol.yml` runs the same test
-on every push and pull request.
+```sh
+make -C cobol validation
+```
+
+The standard profile compares thousands of deterministic cases against
+`browser/pastafari-calendar-fast.js`, including checkpoint neighborhoods,
+wide-epoch random forward conversions, known-calculation reverse lookup,
+negative reverse cases and bounded `c=t` candidate-list comparisons. It writes
+a machine-readable evidence report to:
+
+```text
+cobol/build/cobol-validation-report.json
+```
+
+A heavier local qualification profile is available as:
+
+```sh
+make -C cobol soak
+```
+
+Its defaults are 100,000 random forward cases and 10,000 known-reverse cases,
+and all counts and the deterministic seed are configurable. See
+[`VALIDATION.md`](VALIDATION.md) for the exact test distribution, Windows/MSYS2
+installation instructions, reproducibility controls and evidence workflow.
+
+The GitHub Actions workflow keeps a smaller deterministic smoke test; the heavy
+soak is intentionally a local pre-release qualification step rather than a
+mandatory test on every push.
 
 ## Porting notes
 
