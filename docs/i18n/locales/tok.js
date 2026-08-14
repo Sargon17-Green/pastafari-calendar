@@ -1,6 +1,6 @@
 "use strict";
 
-import base from "./en.js?v=10-i18n-90";
+import base from "./en.js?v=8-year-structure";
 
 export default Object.freeze({
   code: "tok",
