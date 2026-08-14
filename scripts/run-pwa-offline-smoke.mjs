@@ -38,6 +38,8 @@ function selectRequiredPrecacheAssets(assets) {
     ["styles.css", (pathname) => pathname.endsWith("/styles.css")],
     ["fast engine", (pathname) => pathname.endsWith("/engine/pastafari-calendar-fast.js")],
     ["fast worker", (pathname) => pathname.endsWith("/engine/pastafari-fast-worker.js")],
+    ["i18n registry", (pathname) => pathname.endsWith("/i18n/registry.js")],
+    ["i18n runtime", (pathname) => pathname.endsWith("/i18n/runtime.js")],
   ];
 
   return rules.map(([label, predicate]) => {
@@ -121,7 +123,6 @@ async function startStaticServer() {
 
   return {
     origin,
-    server,
     getRequestCount: () => requestCount,
     getRequests: () => [...requests],
     isListening: () => server.listening,
@@ -129,36 +130,139 @@ async function startStaticServer() {
   };
 }
 
-async function calendarSnapshot(page, label) {
-  await page.waitForFunction(() => {
-    const workspace = document.querySelector("#calendar-workspace");
-    const grid = document.querySelector("#calendar-grid");
-    const errorPanel = document.querySelector("#error-panel");
-    return Boolean(
-      workspace
-      && grid
-      && errorPanel
-      && !workspace.hidden
-      && grid.children.length > 0
-      && errorPanel.hidden,
-    );
-  }, null, { timeout: UI_TIMEOUT_MS });
+function createDiagnostics(origin) {
+  return {
+    phase: "startup",
+    pageErrors: [],
+    consoleErrors: [],
+    requestFailures: [],
+    badResponses: [],
+    offlineResponses: [],
+    successfulOfflineNavigationPhases: new Set(),
+    origin,
+  };
+}
 
-  const snapshot = await page.evaluate(() => {
+function attachDiagnostics(page, diagnostics) {
+  page.on("pageerror", (error) => {
+    diagnostics.pageErrors.push({
+      phase: diagnostics.phase,
+      message: error.message,
+      stack: error.stack ?? null,
+    });
+  });
+
+  page.on("console", (message) => {
+    if (message.type() === "error") {
+      diagnostics.consoleErrors.push({
+        phase: diagnostics.phase,
+        text: message.text(),
+      });
+    }
+  });
+
+  page.on("requestfailed", (request) => {
+    diagnostics.requestFailures.push({
+      phase: diagnostics.phase,
+      url: request.url(),
+      method: request.method(),
+      resourceType: request.resourceType(),
+      isNavigationRequest: request.isNavigationRequest(),
+      errorText: request.failure()?.errorText ?? "unknown",
+    });
+  });
+
+  page.on("response", (response) => {
+    const entry = {
+      phase: diagnostics.phase,
+      url: response.url(),
+      status: response.status(),
+      fromServiceWorker: response.fromServiceWorker(),
+      resourceType: response.request().resourceType(),
+    };
+
+    if (response.status() >= 400) diagnostics.badResponses.push(entry);
+    if (
+      diagnostics.phase.startsWith("offline")
+      && entry.url.startsWith(diagnostics.origin)
+    ) {
+      diagnostics.offlineResponses.push(entry);
+    }
+  });
+}
+
+async function liveDomSnapshot(page) {
+  return page.evaluate(() => {
     const workspace = document.querySelector("#calendar-workspace");
     const grid = document.querySelector("#calendar-grid");
+    const loadingPanel = document.querySelector("#loading-panel");
     const errorPanel = document.querySelector("#error-panel");
+    const errorMessage = document.querySelector("#error-message");
     return {
+      readyState: document.readyState,
       workspaceHidden: workspace?.hidden ?? null,
       gridChildren: grid?.children.length ?? 0,
       gridTextLength: grid?.textContent?.trim().length ?? 0,
+      loadingPanelHidden: loadingPanel?.hidden ?? null,
       errorPanelHidden: errorPanel?.hidden ?? null,
+      errorText: errorMessage?.textContent?.trim() ?? "",
       controlled: Boolean(navigator.serviceWorker?.controller),
       controllerState: navigator.serviceWorker?.controller?.state ?? null,
       controllerScriptURL: navigator.serviceWorker?.controller?.scriptURL ?? null,
       url: location.href,
     };
   });
+}
+
+function compactDiagnostics(diagnostics, dom = null) {
+  return {
+    phase: diagnostics.phase,
+    dom,
+    pageErrors: diagnostics.pageErrors.slice(-20),
+    consoleErrors: diagnostics.consoleErrors.slice(-20),
+    requestFailures: diagnostics.requestFailures.slice(-30),
+    badResponses: diagnostics.badResponses.slice(-30),
+    offlineResponses: diagnostics.offlineResponses.slice(-50),
+  };
+}
+
+async function calendarSnapshot(page, label, diagnostics) {
+  try {
+    await page.waitForFunction(() => {
+      const workspace = document.querySelector("#calendar-workspace");
+      const grid = document.querySelector("#calendar-grid");
+      const errorPanel = document.querySelector("#error-panel");
+
+      const ready = Boolean(
+        workspace
+        && grid
+        && errorPanel
+        && !workspace.hidden
+        && grid.children.length > 0
+        && errorPanel.hidden,
+      );
+      const failed = Boolean(errorPanel && !errorPanel.hidden);
+      return ready || failed;
+    }, null, { timeout: UI_TIMEOUT_MS });
+  } catch (error) {
+    const dom = await liveDomSnapshot(page).catch(() => null);
+    throw new Error(
+      `${label}: timed out waiting for the calendar UI. Diagnostics: ${JSON.stringify(
+        compactDiagnostics(diagnostics, dom),
+      )}`,
+      { cause: error },
+    );
+  }
+
+  const snapshot = await liveDomSnapshot(page);
+
+  if (snapshot.errorPanelHidden === false) {
+    throw new Error(
+      `${label}: application error panel became visible. Diagnostics: ${JSON.stringify(
+        compactDiagnostics(diagnostics, snapshot),
+      )}`,
+    );
+  }
 
   assert.equal(snapshot.workspaceHidden, false, `${label}: #calendar-workspace is hidden`);
   assert(snapshot.gridChildren > 0, `${label}: #calendar-grid has no rendered day elements`);
@@ -182,27 +286,39 @@ async function serviceWorkerSnapshot(page) {
   });
 }
 
-async function inspectPrecache(page, requiredAssets) {
-  return page.evaluate(async ({ cachePrefix, requiredAssets }) => {
+async function inspectPrecache(page, allAssets, requiredAssets) {
+  return page.evaluate(async ({ cachePrefix, allAssets, requiredAssets }) => {
     const registration = await navigator.serviceWorker.ready;
     const cacheNames = (await caches.keys()).filter((name) => name.startsWith(cachePrefix));
     const cachesInspected = [];
 
     for (const cacheName of cacheNames) {
       const cache = await caches.open(cacheName);
-      const matches = {};
+      const requiredMatches = {};
       for (const entry of requiredAssets) {
         const exactUrl = new URL(entry.asset, registration.scope).href;
         const response = await cache.match(exactUrl);
-        matches[entry.label] = response
+        requiredMatches[entry.label] = response
           ? { present: true, status: response.status, url: exactUrl }
           : { present: false, status: null, url: exactUrl };
       }
-      cachesInspected.push({ cacheName, matches });
+
+      const missingAssets = [];
+      for (const asset of allAssets) {
+        const exactUrl = new URL(asset, registration.scope).href;
+        if (!(await cache.match(exactUrl))) missingAssets.push(exactUrl);
+      }
+
+      cachesInspected.push({
+        cacheName,
+        requiredMatches,
+        totalDeclaredAssets: allAssets.length,
+        missingAssets,
+      });
     }
 
     return { cacheNames, cachesInspected };
-  }, { cachePrefix: CACHE_PREFIX, requiredAssets });
+  }, { cachePrefix: CACHE_PREFIX, allAssets, requiredAssets });
 }
 
 function assertSuccessfulNavigation(response, label) {
@@ -215,6 +331,56 @@ function assertSuccessfulNavigation(response, label) {
   };
 }
 
+function assertOfflineResponsesCameFromServiceWorker(diagnostics, phase, label) {
+  const responses = diagnostics.offlineResponses.filter((entry) => entry.phase === phase);
+  assert(responses.length > 0, `${label}: no same-origin responses were observed`);
+
+  const bypasses = responses.filter((entry) => !entry.fromServiceWorker);
+  assert.deepEqual(
+    bypasses,
+    [],
+    `${label}: same-origin responses bypassed the Service Worker: ${JSON.stringify(bypasses)}`,
+  );
+
+  console.log(
+    `[PASS] ${label}: ${responses.length} same-origin responses, all from Service Worker`,
+  );
+}
+
+function expectedOfflineNavigationFailure(entry, diagnostics) {
+  if (!entry.isNavigationRequest) return false;
+  if (!diagnostics.successfulOfflineNavigationPhases.has(entry.phase)) return false;
+  if (!entry.url.startsWith(diagnostics.origin)) return false;
+  return /ERR_(?:INTERNET_DISCONNECTED|NETWORK_CHANGED|FAILED|CONNECTION_REFUSED|CONNECTION_RESET|CONNECTION_CLOSED|ADDRESS_UNREACHABLE)/.test(entry.errorText);
+}
+
+function assertDiagnosticsClean(diagnostics) {
+  const unexpectedRequestFailures = diagnostics.requestFailures.filter(
+    (entry) => !expectedOfflineNavigationFailure(entry, diagnostics),
+  );
+
+  assert.deepEqual(
+    diagnostics.pageErrors,
+    [],
+    `pageerror events: ${JSON.stringify(diagnostics.pageErrors)}`,
+  );
+  assert.deepEqual(
+    diagnostics.consoleErrors,
+    [],
+    `console.error messages: ${JSON.stringify(diagnostics.consoleErrors)}`,
+  );
+  assert.deepEqual(
+    unexpectedRequestFailures,
+    [],
+    `Unexpected request failures: ${JSON.stringify(unexpectedRequestFailures)}`,
+  );
+  assert.deepEqual(
+    diagnostics.badResponses,
+    [],
+    `HTTP responses with status >=400: ${JSON.stringify(diagnostics.badResponses)}`,
+  );
+}
+
 const startedAt = Date.now();
 const swSource = await readFile(SW_PATH, "utf8");
 const precacheAssets = parsePrecacheAssets(swSource);
@@ -223,127 +389,194 @@ const requiredPrecacheAssets = selectRequiredPrecacheAssets(precacheAssets);
 const serverState = await startStaticServer();
 const { origin } = serverState;
 let browser;
-let phase = "startup";
-const pageErrors = [];
-const consoleErrors = [];
-const requestFailures = [];
-const badResponses = [];
-const successfulOfflineNavigations = new Set();
+let context;
+let page;
+const diagnostics = createDiagnostics(origin);
 
 try {
   browser = await chromium.launch({ headless: true });
-  const context = await browser.newContext({ serviceWorkers: "allow" });
-  const page = await context.newPage();
+  context = await browser.newContext({ serviceWorkers: "allow" });
+  page = await context.newPage();
+  attachDiagnostics(page, diagnostics);
 
-  page.on("pageerror", (error) => {
-    pageErrors.push({ phase, message: error.message, stack: error.stack ?? null });
+  diagnostics.phase = "online-load";
+  const onlineResponse = await page.goto(`${origin}/`, {
+    waitUntil: "load",
+    timeout: UI_TIMEOUT_MS,
   });
-  page.on("console", (message) => {
-    if (message.type() === "error") {
-      consoleErrors.push({ phase, text: message.text() });
-    }
-  });
-  page.on("requestfailed", (request) => {
-    requestFailures.push({
-      phase,
-      url: request.url(),
-      method: request.method(),
-      resourceType: request.resourceType(),
-      isNavigationRequest: request.isNavigationRequest(),
-      errorText: request.failure()?.errorText ?? "unknown",
-    });
-  });
-  page.on("response", (response) => {
-    if (response.status() >= 400) {
-      badResponses.push({ phase, url: response.url(), status: response.status() });
-    }
-  });
+  console.log(
+    `[PASS] online navigation: ${JSON.stringify(
+      assertSuccessfulNavigation(onlineResponse, "online load"),
+    )}`,
+  );
+  await calendarSnapshot(page, "online calendar render", diagnostics);
 
-  phase = "online-load";
-  const onlineResponse = await page.goto(`${origin}/`, { waitUntil: "load", timeout: UI_TIMEOUT_MS });
-  console.log(`[PASS] online navigation: ${JSON.stringify(assertSuccessfulNavigation(onlineResponse, "online load"))}`);
-  await calendarSnapshot(page, "online calendar render");
-
-  phase = "service-worker-ready";
+  diagnostics.phase = "service-worker-ready";
   let sw = await serviceWorkerSnapshot(page);
   assert.equal(sw.activeState, "activated", `Service Worker active state is ${sw.activeState}`);
   console.log(`[PASS] navigator.serviceWorker.ready: ${JSON.stringify(sw)}`);
 
   if (!sw.controlled) {
-    phase = "online-controller-reload";
-    const controllerReload = await page.reload({ waitUntil: "load", timeout: UI_TIMEOUT_MS });
-    console.log(`[PASS] online controller reload: ${JSON.stringify(assertSuccessfulNavigation(controllerReload, "online controller reload"))}`);
-    await calendarSnapshot(page, "online calendar render after controller reload");
+    diagnostics.phase = "online-controller-reload";
+    const controllerReload = await page.reload({
+      waitUntil: "load",
+      timeout: UI_TIMEOUT_MS,
+    });
+    console.log(
+      `[PASS] online controller reload: ${JSON.stringify(
+        assertSuccessfulNavigation(controllerReload, "online controller reload"),
+      )}`,
+    );
+    await calendarSnapshot(
+      page,
+      "online calendar render after controller reload",
+      diagnostics,
+    );
     sw = await serviceWorkerSnapshot(page);
   }
 
   assert(sw.controlled, "Page is not controlled by a Service Worker after ready/reload");
-  assert.equal(sw.controllerState, "activated", `Service Worker controller state is ${sw.controllerState}`);
+  assert.equal(
+    sw.controllerState,
+    "activated",
+    `Service Worker controller state is ${sw.controllerState}`,
+  );
   console.log(`[PASS] Service Worker controller active: ${JSON.stringify(sw)}`);
 
-  phase = "precache-check";
-  const precache = await inspectPrecache(page, requiredPrecacheAssets);
+  diagnostics.phase = "precache-check";
+  const precache = await inspectPrecache(
+    page,
+    precacheAssets,
+    requiredPrecacheAssets,
+  );
   assert(precache.cacheNames.length > 0, `No Cache Storage entry starts with ${CACHE_PREFIX}`);
-  const completeCache = precache.cachesInspected.find((entry) => (
-    requiredPrecacheAssets.every(({ label }) => entry.matches[label]?.present)
-  ));
-  assert(completeCache, `No ${CACHE_PREFIX} cache contains all required precache assets`);
-  for (const { label } of requiredPrecacheAssets) {
-    assert.equal(completeCache.matches[label].status, 200, `Precached ${label} response is not HTTP 200`);
-  }
-  console.log(`[PASS] precache verified from docs/sw.js exact asset URLs: ${JSON.stringify(completeCache)}`);
 
-  phase = "disable-http-cache";
+  const completeCache = precache.cachesInspected.find((entry) => (
+    entry.missingAssets.length === 0
+    && requiredPrecacheAssets.every(({ label }) => (
+      entry.requiredMatches[label]?.present
+      && entry.requiredMatches[label]?.status === 200
+    ))
+  ));
+  assert(
+    completeCache,
+    `No ${CACHE_PREFIX} cache contains every declared precache asset`,
+  );
+  console.log(
+    `[PASS] exact precache complete: ${completeCache.totalDeclaredAssets} declared assets in ${completeCache.cacheName}`,
+  );
+
+  /*
+   * Clear Chromium's ordinary HTTP cache, but do not leave the CDP
+   * Network.setCacheDisabled switch enabled. With a large ES-module graph,
+   * a permanently disabled HTTP cache can affect Chromium's loader in ways
+   * that are unrelated to whether the Service Worker / Cache Storage can
+   * satisfy the page. We prove non-use of the HTTP cache below by requiring
+   * every observed same-origin offline response to come from the SW.
+   */
+  diagnostics.phase = "clear-http-cache";
   const cdp = await context.newCDPSession(page);
   await cdp.send("Network.enable");
-  await cdp.send("Network.setCacheDisabled", { cacheDisabled: true });
-  console.log("[PASS] Chromium HTTP cache disabled via CDP Network.setCacheDisabled({ cacheDisabled: true })");
+  await cdp.send("Network.clearBrowserCache");
+  console.log("[PASS] Chromium ordinary HTTP cache cleared via CDP Network.clearBrowserCache");
 
   await page.waitForTimeout(250);
   const onlineServerRequestCount = serverState.getRequestCount();
-  phase = "stop-local-server";
+
+  diagnostics.phase = "stop-local-server";
   await serverState.close();
-  assert.equal(serverState.isListening(), false, "Local HTTP server is still listening before offline navigation");
-  console.log(`[PASS] local HTTP server stopped before offline navigation; it can no longer satisfy requests (online request count=${onlineServerRequestCount})`);
+  assert.equal(
+    serverState.isListening(),
+    false,
+    "Local HTTP server is still listening before offline navigation",
+  );
+  console.log(
+    `[PASS] local HTTP server stopped before offline navigation; it can no longer satisfy requests (online request count=${onlineServerRequestCount})`,
+  );
 
-  phase = "set-offline";
+  diagnostics.phase = "set-offline";
   await context.setOffline(true);
-  console.log("[PASS] Playwright browser context set offline after the local HTTP server was stopped");
+  console.log("[PASS] Playwright browser context set offline after local HTTP server was stopped");
 
-  phase = "offline-reload";
-  const offlineReloadResponse = await page.reload({ waitUntil: "load", timeout: UI_TIMEOUT_MS });
-  const offlineReloadNavigation = assertSuccessfulNavigation(offlineReloadResponse, "offline reload");
-  successfulOfflineNavigations.add("offline-reload");
-  assert.equal(offlineReloadNavigation.fromServiceWorker, true, "Offline reload response was not served by the Service Worker");
-  console.log(`[PASS] offline reload navigation: ${JSON.stringify(offlineReloadNavigation)}`);
-  const offlineReloadSnapshot = await calendarSnapshot(page, "offline reload calendar render");
+  diagnostics.phase = "offline-reload";
+  const offlineReloadResponse = await page.reload({
+    waitUntil: "load",
+    timeout: UI_TIMEOUT_MS,
+  });
+  const offlineReloadNavigation = assertSuccessfulNavigation(
+    offlineReloadResponse,
+    "offline reload",
+  );
+  diagnostics.successfulOfflineNavigationPhases.add("offline-reload");
+  assert.equal(
+    offlineReloadNavigation.fromServiceWorker,
+    true,
+    "Offline reload response was not served by the Service Worker",
+  );
+  console.log(
+    `[PASS] offline reload navigation: ${JSON.stringify(offlineReloadNavigation)}`,
+  );
+
+  const offlineReloadSnapshot = await calendarSnapshot(
+    page,
+    "offline reload calendar render",
+    diagnostics,
+  );
   assert(offlineReloadSnapshot.controlled, "Service Worker lost control after offline reload");
+  assertOfflineResponsesCameFromServiceWorker(
+    diagnostics,
+    "offline-reload",
+    "offline reload subresources",
+  );
 
-  phase = "offline-probe";
-  const offlineProbeResponse = await page.goto(`${origin}/offline-probe`, { waitUntil: "load", timeout: UI_TIMEOUT_MS });
-  const offlineProbeNavigation = assertSuccessfulNavigation(offlineProbeResponse, "offline /offline-probe navigation");
-  successfulOfflineNavigations.add("offline-probe");
-  assert.equal(offlineProbeNavigation.fromServiceWorker, true, "/offline-probe response was not served by the Service Worker");
-  console.log(`[PASS] offline /offline-probe navigation fallback: ${JSON.stringify(offlineProbeNavigation)}`);
-  const offlineProbeSnapshot = await calendarSnapshot(page, "offline /offline-probe calendar render");
-  assert(offlineProbeSnapshot.controlled, "Service Worker does not control /offline-probe");
+  diagnostics.phase = "offline-probe";
+  const offlineProbeResponse = await page.goto(`${origin}/offline-probe`, {
+    waitUntil: "load",
+    timeout: UI_TIMEOUT_MS,
+  });
+  const offlineProbeNavigation = assertSuccessfulNavigation(
+    offlineProbeResponse,
+    "offline /offline-probe navigation",
+  );
+  diagnostics.successfulOfflineNavigationPhases.add("offline-probe");
+  assert.equal(
+    offlineProbeNavigation.fromServiceWorker,
+    true,
+    "/offline-probe response was not served by the Service Worker",
+  );
+  console.log(
+    `[PASS] offline /offline-probe navigation fallback: ${JSON.stringify(offlineProbeNavigation)}`,
+  );
 
-  const expectedOfflineNavigationFailure = (entry) => {
-    if (!entry.isNavigationRequest) return false;
-    if (!successfulOfflineNavigations.has(entry.phase)) return false;
-    if (!entry.url.startsWith(origin)) return false;
-    return /ERR_(?:INTERNET_DISCONNECTED|NETWORK_CHANGED|FAILED|CONNECTION_REFUSED|CONNECTION_RESET|CONNECTION_CLOSED|ADDRESS_UNREACHABLE)/.test(entry.errorText);
-  };
-  const unexpectedRequestFailures = requestFailures.filter((entry) => !expectedOfflineNavigationFailure(entry));
+  const offlineProbeSnapshot = await calendarSnapshot(
+    page,
+    "offline /offline-probe calendar render",
+    diagnostics,
+  );
+  assert(
+    offlineProbeSnapshot.controlled,
+    "Service Worker does not control /offline-probe",
+  );
+  assertOfflineResponsesCameFromServiceWorker(
+    diagnostics,
+    "offline-probe",
+    "offline /offline-probe subresources",
+  );
 
-  assert.deepEqual(pageErrors, [], `pageerror events: ${JSON.stringify(pageErrors)}`);
-  assert.deepEqual(consoleErrors, [], `console.error messages: ${JSON.stringify(consoleErrors)}`);
-  assert.deepEqual(unexpectedRequestFailures, [], `Unexpected request failures: ${JSON.stringify(unexpectedRequestFailures)}`);
-  assert.deepEqual(badResponses, [], `HTTP responses with status >=400: ${JSON.stringify(badResponses)}`);
+  assertDiagnosticsClean(diagnostics);
 
-  console.log(`[PASS] error monitoring clean: pageerror=0 console.error=0 unexpected request failures=0 bad responses=0`);
+  console.log(
+    "[PASS] error monitoring clean: pageerror=0 console.error=0 unexpected request failures=0 bad responses=0",
+  );
   console.log(`[PASS] PWA offline smoke complete in ${Date.now() - startedAt} ms`);
+} catch (error) {
+  const dom = page ? await liveDomSnapshot(page).catch(() => null) : null;
+  console.error(
+    `[DIAGNOSTICS] ${JSON.stringify(compactDiagnostics(diagnostics, dom), null, 2)}`,
+  );
+  throw error;
 } finally {
+  if (context) await context.close().catch(() => {});
   if (browser) await browser.close().catch(() => {});
   await serverState.close().catch(() => {});
 }
