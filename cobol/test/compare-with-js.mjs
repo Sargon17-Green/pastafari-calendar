@@ -2,12 +2,13 @@ import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
+import process from "node:process";
 import {
   PastafariCalendar,
 } from "../../browser/pastafari-calendar-fast.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
-const exe = resolve(here, "../build/pastafari-vectors");
+const exe = resolve(here, `../build/pastafari-vectors${process.platform === "win32" ? ".exe" : ""}`);
 const run = spawnSync(exe, [], { encoding: "utf8", env: process.env });
 if (run.error) throw run.error;
 if (run.status !== 0) {
