@@ -1,6 +1,6 @@
 "use strict";
 
-const VERSION = "pastafari-static-c5db804-fast-only-14-i18n-all-90-layout";
+const VERSION = "pastafari-static-c5db804-fast-only-14-i18n-all-89-layout";
 const CACHE = VERSION;
 const ASSETS = [
   "./index.html",
@@ -49,7 +49,6 @@ const ASSETS = [
   "./i18n/locales/grc.js?v=8-year-structure",
   "./i18n/locales/gu.js?v=8-year-structure",
   "./i18n/locales/ha.js?v=8-year-structure",
-  "./i18n/locales/hbo.js?v=8-year-structure",
   "./i18n/locales/hi.js?v=8-year-structure",
   "./i18n/locales/hr.js?v=8-year-structure",
   "./i18n/locales/ht.js?v=8-year-structure",
