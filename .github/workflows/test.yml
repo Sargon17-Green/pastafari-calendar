@@ -128,3 +128,16 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - name: Run PWA offline smoke
         run: node scripts/run-pwa-offline-smoke.mjs
+
+  node-minimum:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18.0.0
+      - name: Verify exact Node version
+        run: node -e "if (process.versions.node !== '18.0.0') throw new Error('Expected Node 18.0.0, got ' + process.versions.node); console.log('Node runtime:', process.versions.node)"
+      - name: Run minimum Node runtime smoke
+        run: node scripts/test-minimum-node.mjs
