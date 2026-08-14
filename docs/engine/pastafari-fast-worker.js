@@ -3,11 +3,14 @@
 import {
   cutletIndexFromInternalName,
   monthIndexFromInternalName,
-} from "../i18n/calendar-identifiers.js?v=7-search-compare";
+} from "../i18n/calendar-identifiers.js?v=8-year-structure";
 
 const FAST_MODULE_URL = new URL("./pastafari-calendar-fast.js", import.meta.url);
 const MAX_CUTLET_DAYS = 6_000;
+const MAX_YEAR_DAYS = 5_778;
+const MAX_YEAR_CUTLETS = 17;
 let enginePromise = null;
+const yearStructureCache = new Map();
 
 function toBigInt(value, name) {
   if (typeof value === "bigint") return value;
@@ -133,6 +136,132 @@ function normalizeCutletView(rawView, requestedTargetJdn) {
   };
 }
 
+function rememberYearStructure(key, structure) {
+  if (yearStructureCache.has(key)) yearStructureCache.delete(key);
+  yearStructureCache.set(key, structure);
+  if (yearStructureCache.size > 8) yearStructureCache.delete(yearStructureCache.keys().next().value);
+  return structure;
+}
+
+function collectYearStructure(engine, payload) {
+  const targetJdn = toBigInt(payload.targetJdn, "targetJdn");
+  const calculationJdn = toBigInt(payload.calculationJdn, "calculationJdn");
+  const options = { calculationJdn };
+  const selectedView = normalizeCutletView(engine.getCutletView(targetJdn, options), targetJdn);
+  const year = selectedView.year;
+  const cacheKey = `${calculationJdn.toString()}:${year}`;
+  const cached = yearStructureCache.get(cacheKey);
+  if (cached !== undefined) {
+    yearStructureCache.delete(cacheKey);
+    yearStructureCache.set(cacheKey, cached);
+    return cached;
+  }
+
+  const views = [selectedView];
+  let cursor = selectedView.previousCutletJdn;
+  let foundStart = false;
+  for (let attempt = 0; attempt < MAX_YEAR_CUTLETS; attempt += 1) {
+    const view = normalizeCutletView(engine.getCutletView(cursor, options), cursor);
+    if (view.year !== year) {
+      foundStart = true;
+      break;
+    }
+    if (view.nextCutletJdn !== views[0].startJdn) {
+      throw new RangeError("Adjacent cutlets are not contiguous while building the year structure.");
+    }
+    views.unshift(view);
+    cursor = view.previousCutletJdn;
+  }
+  if (!foundStart) throw new RangeError("The year contains more cutlets than the supported maximum.");
+
+  cursor = selectedView.nextCutletJdn;
+  let foundEnd = false;
+  for (let attempt = 0; attempt < MAX_YEAR_CUTLETS; attempt += 1) {
+    const view = normalizeCutletView(engine.getCutletView(cursor, options), cursor);
+    if (view.year !== year) {
+      foundEnd = true;
+      break;
+    }
+    if (views.at(-1).nextCutletJdn !== view.startJdn) {
+      throw new RangeError("Adjacent cutlets are not contiguous while building the year structure.");
+    }
+    views.push(view);
+    cursor = view.nextCutletJdn;
+  }
+  if (!foundEnd) throw new RangeError("The year contains more cutlets than the supported maximum.");
+  if (views.length < 6 || views.length > MAX_YEAR_CUTLETS) {
+    throw new RangeError("The year returned an invalid cutlet count.");
+  }
+
+  const startJdn = views[0].startJdn;
+  const endJdn = views.at(-1).endJdn;
+  const length = Number(endJdn - startJdn + 1n);
+  if (!Number.isSafeInteger(length) || length < 252 || length > MAX_YEAR_DAYS) {
+    throw new RangeError("The year returned an invalid length.");
+  }
+
+  const cutlets = [];
+  const monthsByIndex = new Map();
+  let dayOfYear = 0;
+  let previousMonthIndex = null;
+
+  for (const view of views) {
+    const cutletStart = dayOfYear + 1;
+    for (const day of view.days) {
+      dayOfYear += 1;
+      if (day.year !== year) throw new RangeError("A cutlet crossed a year boundary unexpectedly.");
+      const expectedJdn = startJdn + BigInt(dayOfYear - 1);
+      if (day.jdn !== expectedJdn) throw new RangeError("Year days are not contiguous.");
+
+      let month = monthsByIndex.get(day.monthIndex);
+      if (!month) {
+        month = {
+          monthIndex: day.monthIndex,
+          length: 0,
+          firstDayOfYear: dayOfYear,
+          lastDayOfYear: dayOfYear,
+          runCount: 0,
+        };
+        monthsByIndex.set(day.monthIndex, month);
+      }
+      month.length += 1;
+      month.lastDayOfYear = dayOfYear;
+      if (day.dayInMonth !== month.length) {
+        throw new RangeError("Month occurrence numbering is inconsistent within the year.");
+      }
+      if (day.monthIndex !== previousMonthIndex) month.runCount += 1;
+      previousMonthIndex = day.monthIndex;
+    }
+    cutlets.push({
+      cutletIndex: view.cutletIndex,
+      startJdn: view.startJdn,
+      endJdn: view.endJdn,
+      length: view.days.length,
+      startDayOfYear: cutletStart,
+      endDayOfYear: dayOfYear,
+    });
+  }
+
+  if (dayOfYear !== length) throw new RangeError("The materialized year length does not match its bounds.");
+  const months = [...monthsByIndex.values()].map((month) => Object.freeze({ ...month }));
+  if (months.length < 3 || months.length > 47) throw new RangeError("The year returned an invalid month count.");
+  if (months.reduce((sum, month) => sum + month.length, 0) !== length) {
+    throw new RangeError("Month lengths do not sum to the year length.");
+  }
+
+  return rememberYearStructure(cacheKey, Object.freeze({
+    year,
+    calculationJdn,
+    startJdn,
+    endJdn,
+    length,
+    cutletCount: cutlets.length,
+    monthCount: months.length,
+    cutlets: Object.freeze(cutlets.map((cutlet) => Object.freeze(cutlet))),
+    months: Object.freeze(months),
+  }));
+}
+
 function serializeDay(day) {
   return {
     jdn: day.jdn,
@@ -194,6 +323,7 @@ export async function handlePastafariWorkerRequest(operation, payload = {}) {
     );
   }
   if (operation === "getRangeView") return materializeRange(engine, payload);
+  if (operation === "getYearStructure") return collectYearStructure(engine, payload);
   throw new TypeError(`Unknown fast worker operation: ${String(operation)}`);
 }
 
