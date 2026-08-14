@@ -110,12 +110,22 @@ async function startStaticServer() {
   assert(address && typeof address === "object", "Local HTTP server did not expose an address");
   const origin = `http://127.0.0.1:${address.port}`;
 
+  let closed = false;
+  const close = async () => {
+    if (closed) return;
+    closed = true;
+    await new Promise((resolve, reject) => {
+      server.close((error) => error ? reject(error) : resolve());
+    });
+  };
+
   return {
     origin,
     server,
     getRequestCount: () => requestCount,
     getRequests: () => [...requests],
-    close: () => new Promise((resolve, reject) => server.close((error) => error ? reject(error) : resolve())),
+    isListening: () => server.listening,
+    close,
   };
 }
 
@@ -290,10 +300,15 @@ try {
   console.log("[PASS] Chromium HTTP cache disabled via CDP Network.setCacheDisabled({ cacheDisabled: true })");
 
   await page.waitForTimeout(250);
-  const serverRequestsBeforeOffline = serverState.getRequestCount();
+  const onlineServerRequestCount = serverState.getRequestCount();
+  phase = "stop-local-server";
+  await serverState.close();
+  assert.equal(serverState.isListening(), false, "Local HTTP server is still listening before offline navigation");
+  console.log(`[PASS] local HTTP server stopped before offline navigation; it can no longer satisfy requests (online request count=${onlineServerRequestCount})`);
+
   phase = "set-offline";
   await context.setOffline(true);
-  console.log(`[PASS] Playwright browser context set offline; server request count snapshot=${serverRequestsBeforeOffline}`);
+  console.log("[PASS] Playwright browser context set offline after the local HTTP server was stopped");
 
   phase = "offline-reload";
   const offlineReloadResponse = await page.reload({ waitUntil: "load", timeout: UI_TIMEOUT_MS });
@@ -313,20 +328,11 @@ try {
   const offlineProbeSnapshot = await calendarSnapshot(page, "offline /offline-probe calendar render");
   assert(offlineProbeSnapshot.controlled, "Service Worker does not control /offline-probe");
 
-  await page.waitForTimeout(250);
-  const serverRequestsAfterOffline = serverState.getRequestCount();
-  assert.equal(
-    serverRequestsAfterOffline,
-    serverRequestsBeforeOffline,
-    `Local HTTP server received ${serverRequestsAfterOffline - serverRequestsBeforeOffline} request(s) after offline mode was enabled`,
-  );
-  console.log(`[PASS] local server received zero requests after offline mode was enabled (count stayed ${serverRequestsAfterOffline})`);
-
   const expectedOfflineNavigationFailure = (entry) => {
     if (!entry.isNavigationRequest) return false;
     if (!successfulOfflineNavigations.has(entry.phase)) return false;
     if (!entry.url.startsWith(origin)) return false;
-    return /ERR_(?:INTERNET_DISCONNECTED|NETWORK_CHANGED|FAILED)/.test(entry.errorText);
+    return /ERR_(?:INTERNET_DISCONNECTED|NETWORK_CHANGED|FAILED|CONNECTION_REFUSED|CONNECTION_RESET|CONNECTION_CLOSED|ADDRESS_UNREACHABLE)/.test(entry.errorText);
   };
   const unexpectedRequestFailures = requestFailures.filter((entry) => !expectedOfflineNavigationFailure(entry));
 
