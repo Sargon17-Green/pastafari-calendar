@@ -6,19 +6,19 @@ import {
   getCalendarDefinition,
   gregorianToJdn,
   jdnToGregorian,
-} from "./calendar-converters.js?v=7-search-compare";
-import { calendarLabel, getLocale, translate, validateLocaleResources } from "./i18n/registry.js?v=7-search-compare";
+} from "./calendar-converters.js?v=8-year-structure";
+import { calendarLabel, getLocale, translate, validateLocaleResources } from "./i18n/registry.js?v=8-year-structure";
 import {
   applyDocumentLocale,
   persistLanguage,
   populateLanguageSelector,
   resolveBrowserLocale,
   urlWithLanguage,
-} from "./i18n/runtime.js?v=7-search-compare";
+} from "./i18n/runtime.js?v=8-year-structure";
 
 validateLocaleResources();
 
-const ASSET_REVISION = "7-search-compare";
+const ASSET_REVISION = "8-year-structure";
 const DESKTOP_COMPARISON_QUERY = "(min-width: 1000px)";
 const worker = new Worker(
   new URL(`./engine/pastafari-fast-worker.js?v=${ASSET_REVISION}`, import.meta.url),
@@ -44,6 +44,8 @@ let state = {
   localTodayJdn: null,
   view: null,
   comparisonDays: null,
+  yearStructure: null,
+  yearStructureFailed: false,
 };
 
 const elements = Object.fromEntries(
@@ -383,6 +385,134 @@ function renderView(view, { scrollToTarget = true } = {}) {
   }
 }
 
+function renderYearStructureLoading(view) {
+  elements["year-overview-heading"].textContent = t("year.heading", { year: formatInteger(view.year) });
+  elements["year-overview-context"].textContent = t("year.context", {
+    actionDate: formatJdnAsGregorian(state.calculationJdn),
+  });
+  elements["year-overview-loading"].hidden = false;
+  elements["year-overview-error"].hidden = true;
+  elements["year-overview-content"].hidden = true;
+}
+
+function appendStructureItem(list, title, meta, { current = false } = {}) {
+  const item = document.createElement("li");
+  item.className = "structure-item";
+  if (current) item.dataset.current = "true";
+  const heading = document.createElement("strong");
+  heading.textContent = title;
+  const details = document.createElement("span");
+  details.textContent = meta;
+  item.append(heading, details);
+  list.append(item);
+}
+
+function renderYearStructure(structure) {
+  state.yearStructure = structure;
+  state.yearStructureFailed = false;
+  elements["year-overview-heading"].textContent = t("year.heading", { year: formatInteger(structure.year) });
+  elements["year-overview-context"].textContent = t("year.context", {
+    actionDate: formatJdnAsGregorian(structure.calculationJdn),
+  });
+  elements["year-length"].textContent = t("year.daysValue", { count: formatInteger(structure.length) });
+  elements["year-cutlet-count"].textContent = formatInteger(structure.cutletCount);
+  elements["year-month-count"].textContent = formatInteger(structure.monthCount);
+  elements["year-range"].textContent = t("year.rangeValue", {
+    startDate: formatJdnAsGregorian(structure.startJdn),
+    endDate: formatJdnAsGregorian(structure.endJdn),
+  });
+
+  const displayedCutlet = structure.cutlets.find((cutlet) => cutlet.startJdn === state.view?.startJdn);
+  elements["year-cutlet-position"].textContent = displayedCutlet
+    ? t("year.displayedCutletPosition", {
+      start: formatInteger(displayedCutlet.startDayOfYear),
+      end: formatInteger(displayedCutlet.endDayOfYear),
+    })
+    : "";
+
+  const targetIsInYear = state.targetJdn >= structure.startJdn && state.targetJdn <= structure.endJdn;
+  elements["year-target-position"].hidden = !targetIsInYear;
+  if (targetIsInYear) {
+    elements["year-target-position"].textContent = t("year.targetPosition", {
+      day: formatInteger(state.targetJdn - structure.startJdn + 1n),
+      length: formatInteger(structure.length),
+    });
+  }
+
+  elements["year-cutlets-summary"].textContent = t("year.cutletsSummary", {
+    count: formatInteger(structure.cutletCount),
+  });
+  const cutletList = elements["year-cutlet-list"];
+  cutletList.replaceChildren();
+  structure.cutlets.forEach((cutlet, index) => {
+    appendStructureItem(
+      cutletList,
+      t("year.numberedName", { number: formatInteger(index + 1), name: localizedCutlet(cutlet.cutletIndex) }),
+      t("year.cutletMeta", {
+        length: formatInteger(cutlet.length),
+        start: formatInteger(cutlet.startDayOfYear),
+        end: formatInteger(cutlet.endDayOfYear),
+      }),
+      { current: cutlet.startJdn === state.view?.startJdn },
+    );
+  });
+
+  elements["year-months-summary"].textContent = t("year.monthsSummary", {
+    count: formatInteger(structure.monthCount),
+  });
+  const monthList = elements["year-month-list"];
+  monthList.replaceChildren();
+  structure.months.forEach((month, index) => {
+    appendStructureItem(
+      monthList,
+      t("year.numberedName", { number: formatInteger(index + 1), name: localizedMonth(month.monthIndex) }),
+      t("year.monthMeta", {
+        length: formatInteger(month.length),
+        runs: formatInteger(month.runCount),
+        first: formatInteger(month.firstDayOfYear),
+        last: formatInteger(month.lastDayOfYear),
+      }),
+    );
+  });
+
+  elements["year-overview-loading"].hidden = true;
+  elements["year-overview-error"].hidden = true;
+  elements["year-overview-content"].hidden = false;
+}
+
+function renderYearStructureError(view) {
+  elements["year-overview-heading"].textContent = t("year.heading", { year: formatInteger(view.year) });
+  elements["year-overview-context"].textContent = t("year.context", {
+    actionDate: formatJdnAsGregorian(state.calculationJdn),
+  });
+  elements["year-overview-loading"].hidden = true;
+  elements["year-overview-content"].hidden = true;
+  elements["year-overview-error"].hidden = false;
+  elements["year-overview-error"].textContent = t("year.error");
+}
+
+function showYearStructureError(error) {
+  console.error(error);
+  state.yearStructureFailed = true;
+  renderYearStructureError(state.view);
+}
+
+async function loadYearStructure(sequence, view) {
+  state.yearStructure = null;
+  state.yearStructureFailed = false;
+  renderYearStructureLoading(view);
+  try {
+    const structure = await workerRequest("getYearStructure", {
+      targetJdn: view.selectedJdn,
+      calculationJdn: state.calculationJdn,
+    });
+    if (sequence !== loadSequence || state.view !== view) return;
+    renderYearStructure(structure);
+  } catch (error) {
+    if (sequence === loadSequence && state.view === view) showYearStructureError(error);
+  }
+}
+
 function comparisonIsDesktop() {
   return matchMedia(DESKTOP_COMPARISON_QUERY).matches;
 }
@@ -468,6 +598,7 @@ async function loadCutlet({ replaceHistory = false, scrollToTarget = true } = {}
     });
     if (sequence !== loadSequence) return;
     renderView(view, { scrollToTarget });
+    void loadYearStructure(sequence, view);
     await loadComparison(sequence);
     if (sequence !== loadSequence) return;
     writeHistory({ replace: replaceHistory });
@@ -652,6 +783,9 @@ function applyActiveLocale({ rerender = true } = {}) {
   }
   if (rerender && state.view) {
     renderView(state.view, { scrollToTarget: false });
+    if (state.yearStructure) renderYearStructure(state.yearStructure);
+    else if (state.yearStructureFailed) renderYearStructureError(state.view);
+    else renderYearStructureLoading(state.view);
     renderComparison();
   }
   if (lastVisibleErrorKey && !elements["error-panel"].hidden) {
