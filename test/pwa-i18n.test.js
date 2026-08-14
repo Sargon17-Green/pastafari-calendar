@@ -45,17 +45,17 @@ test("service worker precaches every runtime i18n dependency", async () => {
   const assets = [...assetBlock.matchAll(/"(\.\/[^"\n]+)"/g)].map((match) => match[1]);
   const required = [
     "./index.html",
-    "./styles.css?v=7-search-compare",
-    "./app.js?v=7-search-compare",
-    "./calendar-converters.js?v=7-search-compare",
-    "./manifest.webmanifest?v=7-search-compare",
+    "./styles.css?v=8-year-structure",
+    "./app.js?v=8-year-structure",
+    "./calendar-converters.js?v=8-year-structure",
+    "./manifest.webmanifest?v=8-year-structure",
     "./engine/pastafari-calendar-fast.js",
-    "./engine/pastafari-fast-worker.js?v=7-search-compare",
-    "./i18n/calendar-identifiers.js?v=7-search-compare",
-    "./i18n/registry.js?v=7-search-compare",
-    "./i18n/runtime.js?v=7-search-compare",
-    "./i18n/locales/he.js?v=7-search-compare",
-    "./i18n/locales/en.js?v=7-search-compare",
+    "./engine/pastafari-fast-worker.js?v=8-year-structure",
+    "./i18n/calendar-identifiers.js?v=8-year-structure",
+    "./i18n/registry.js?v=8-year-structure",
+    "./i18n/runtime.js?v=8-year-structure",
+    "./i18n/locales/he.js?v=8-year-structure",
+    "./i18n/locales/en.js?v=8-year-structure",
   ];
   for (const entry of required) assert.ok(assets.includes(entry), `${entry} is missing from the offline cache`);
   for (const entry of assets) {
@@ -66,9 +66,9 @@ test("service worker precaches every runtime i18n dependency", async () => {
   assert.match(source, /pastafari-static-[^"\n]*i18n-en-he/);
   const html = await readFile(path.join(DOCS, "index.html"), "utf8");
   for (const entry of [
-    "./styles.css?v=7-search-compare",
-    "./app.js?v=7-search-compare",
-    "./manifest.webmanifest?v=7-search-compare",
+    "./styles.css?v=8-year-structure",
+    "./app.js?v=8-year-structure",
+    "./manifest.webmanifest?v=8-year-structure",
   ]) {
     assert.ok(html.includes(entry), `index.html must request the revisioned asset ${entry}`);
   }
@@ -114,6 +114,8 @@ test("the public UI searches dates, keeps ordinary days non-interactive, and ali
   assert.match(app, /createElement\("article"\);\n\s*card\.className = "day-card"/);
   assert.match(app, /secondary\.jdn !== primary\.jdn/);
   assert.match(app, /operation === "getRangeView"|workerRequest\("getRangeView"/);
+  assert.match(html, /id="year-overview"/);
+  assert.match(app, /workerRequest\("getYearStructure"/);
 });
 
 test("manifest is valid JSON with English default and Hebrew/English localized metadata", async () => {
