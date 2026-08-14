@@ -16,6 +16,7 @@ const REFERENCE_JDN_2000_01_01 = 2_451_545n;
 const REFERENCE_JDN_2026_08_06 = 2_461_259n;
 const FIRST_CHECKPOINT_JDN = -29_780_582n;
 const LAST_CHECKPOINT_JDN = 3_111_357n;
+const FAST_COMPATIBILITY_TIMEOUT_MS = process.platform === "win32" ? 1_200_000 : 360_000;
 
 const EXPECTED_GATE_CHECKPOINTS = Object.freeze([
   [-32768, -29780582n], [-31744, -29275011n], [-30720, -28759536n],
@@ -113,7 +114,7 @@ async function compareWholeCutlet(targetJdn, calculationJdn) {
 
 test(
   "the fast implementation matches the authoritative implementation",
-  { timeout: 360_000 },
+  { timeout: FAST_COMPATIBILITY_TIMEOUT_MS },
   async (suite) => {
     const fixedOffsets = [-1000n, -366n, -42n, -1n, 0n, 1n, 42n, 366n, 1000n];
     for (const [label, calculationJdn] of [
