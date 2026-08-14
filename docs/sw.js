@@ -1,11 +1,12 @@
 "use strict";
 
-const VERSION = "pastafari-static-c5db804-fast-only-11-year-structure-i18n-en-he";
+const VERSION = "pastafari-static-c5db804-fast-only-12-calendar-input-conventions-i18n-en-he";
 const CACHE = VERSION;
 const ASSETS = [
   "./index.html",
   "./styles.css?v=8-year-structure",
   "./app.js?v=8-year-structure",
+  "./calendar-input-conventions.js?v=9-calendar-input-conventions",
   "./calendar-converters.js?v=8-year-structure",
   "./manifest.webmanifest?v=8-year-structure",
   "./icons/icon.svg?v=8-year-structure",
