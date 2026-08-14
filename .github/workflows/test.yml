@@ -24,3 +24,93 @@ jobs:
       - run: npx playwright install --with-deps chromium firefox
       - run: npm run test:file-protocol
       - run: sha256sum -c SHA256SUMS.txt
+
+  checkpoint-test:
+    name: checkpoint-test (${{ matrix.checkpoint }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - checkpoint: sides
+            env_var: PASTAFARI_CHECKPOINT_SIDES
+            test_name: optionally check representative checkpoints on both sides
+          - checkpoint: exhaustive
+            env_var: PASTAFARI_EXHAUSTIVE_CHECKPOINTS
+            test_name: optionally check both sides of every checkpoint
+          - checkpoint: rebuild
+            env_var: PASTAFARI_REBUILD_CHECKPOINTS
+            test_name: optionally reconstruct every checkpoint interval from gate distances
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Run checkpoint test (${{ matrix.checkpoint }})
+        shell: bash
+        env:
+          CHECKPOINT_LABEL: ${{ matrix.checkpoint }}
+          CHECKPOINT_ENV_VAR: ${{ matrix.env_var }}
+          CHECKPOINT_TEST_NAME: ${{ matrix.test_name }}
+        run: |
+          set -u
+
+          log_file="checkpoint-${CHECKPOINT_LABEL}.log"
+          start_iso="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          start_epoch_ms="$(date +%s%3N)"
+          echo "Checkpoint ${CHECKPOINT_LABEL} start: ${start_iso}"
+          echo "Enabling only ${CHECKPOINT_ENV_VAR}=1"
+
+          set +e
+          env \
+            -u PASTAFARI_CHECKPOINT_SIDES \
+            -u PASTAFARI_EXHAUSTIVE_CHECKPOINTS \
+            -u PASTAFARI_REBUILD_CHECKPOINTS \
+            "${CHECKPOINT_ENV_VAR}=1" \
+            node --test test/checkpoint-compatibility.test.js 2>&1 | tee "${log_file}"
+          test_status=${PIPESTATUS[0]}
+          set -e
+
+          end_iso="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          end_epoch_ms="$(date +%s%3N)"
+          duration_ms=$((end_epoch_ms - start_epoch_ms))
+          result_line="$(grep -F " - ${CHECKPOINT_TEST_NAME}" "${log_file}" | tail -n 1 || true)"
+          node_test_count="$(awk '$1 == "#" && $2 == "tests" { value = $3 } END { print value }' "${log_file}")"
+
+          checkpoint_status="PASS"
+          if (( test_status != 0 )); then
+            checkpoint_status="FAIL"
+          elif [[ -z "${result_line}" || "${result_line}" == *"not ok "* || "${result_line}" == *"# SKIP"* || "${result_line}" != *"ok "* ]]; then
+            checkpoint_status="FAIL"
+          fi
+
+          echo "Checkpoint ${CHECKPOINT_LABEL} end: ${end_iso}"
+          echo "Checkpoint ${CHECKPOINT_LABEL} duration: ${duration_ms}ms"
+          echo "Checkpoint ${CHECKPOINT_LABEL} result: ${checkpoint_status}"
+          if [[ -n "${node_test_count}" ]]; then
+            echo "Node test count: ${node_test_count}"
+          fi
+          echo "Relevant TAP line: ${result_line:-<missing>}"
+
+          {
+            echo "### Checkpoint ${CHECKPOINT_LABEL}"
+            echo "- Start: ${start_iso}"
+            echo "- End: ${end_iso}"
+            echo "- Duration: ${duration_ms} ms"
+            echo "- Result: ${checkpoint_status}"
+            if [[ -n "${node_test_count}" ]]; then
+              echo "- Node test count: ${node_test_count}"
+            fi
+            echo "- Relevant TAP line: \`${result_line:-<missing>}\`"
+          } >> "${GITHUB_STEP_SUMMARY}"
+
+          if (( test_status != 0 )); then
+            exit "${test_status}"
+          fi
+          if [[ "${checkpoint_status}" != "PASS" ]]; then
+            echo "The requested checkpoint subtest did not complete as a non-skipped pass." >&2
+            exit 1
+          fi
