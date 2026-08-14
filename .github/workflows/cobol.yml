@@ -20,5 +20,23 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y gnucobol libgmp-dev
-      - name: Build and cross-check COBOL engine
+      - name: Compile and run fixed COBOL vectors
         run: make -C cobol test
+      - name: Compile batch runner and run cross-engine CI sample
+        env:
+          PASTAFARI_COBOL_CASES: 200
+          PASTAFARI_COBOL_REVERSE_CASES: 50
+          PASTAFARI_COBOL_INVALID_REVERSE_CASES: 10
+          PASTAFARI_COBOL_JS_REVERSE_CASES: 20
+          PASTAFARI_COBOL_SELF_CASES: 5
+          PASTAFARI_COBOL_SELF_RANGE_CASES: 2
+          PASTAFARI_COBOL_SELF_RANGE_RADIUS: 3
+          PASTAFARI_COBOL_SEED: 0x50A7FA81
+        run: make -C cobol validation
+      - name: Upload validation report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: cobol-validation-report
+          path: cobol/build/cobol-validation-report.json
+          if-no-files-found: ignore
