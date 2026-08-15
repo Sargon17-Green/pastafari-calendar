@@ -1,0 +1,64 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Calendar round-trip browser smoke</title>
+<pre id="result">running</pre>
+<script type="module">
+import {
+  CALENDAR_DEFINITIONS,
+  calendarDateToJdn,
+} from "../docs/calendar-converters.js";
+import {
+  calendarMonthChoices,
+  normalizeCalendarInputValues,
+} from "../docs/calendar-input-conventions.js";
+
+const out = { status: "PASS", userAgent: navigator.userAgent, checks: [], failures: [] };
+function check(name, fn) {
+  try { fn(); out.checks.push({ name, status: "PASS" }); }
+  catch (error) { out.status = "FAIL"; out.failures.push({ name, error: String(error?.stack || error) }); }
+}
+function eq(a, b, message = "not equal") { if (a !== b) throw new Error(`${message}: ${String(a)} !== ${String(b)}`); }
+function ok(value, message = "assertion failed") { if (!value) throw new Error(message); }
+function monthField(id) { return CALENDAR_DEFINITIONS.find(x => x.id === id)?.fields.find(x => x.name === "month"); }
+
+check("inventory-19", () => eq(CALENDAR_DEFINITIONS.length, 19));
+check("intl-runtime-calendars", () => {
+  for (const cal of ["islamic-umalqura", "persian", "chinese", "hebrew", "indian", "ethiopic", "coptic", "japanese", "roc"]) {
+    eq(new Intl.DateTimeFormat(`en-u-ca-${cal}`).resolvedOptions().calendar, cal, cal);
+  }
+});
+check("umm-al-qura-vector", () => eq(calendarDateToJdn("islamic-umalqura", { year:"1448", month:"3", day:"1" }), 2461267n));
+check("persian-official-vector", () => eq(calendarDateToJdn("solar-hijri-official", { year:"1405", month:"6", day:"1" }), 2461276n));
+check("chinese-vector", () => eq(calendarDateToJdn("chinese", { relatedYear:"2026", month:"7", day:"1", leapMonth:false }), 2461266n));
+check("hebrew-textual-equivalence", () => {
+  const a = calendarDateToJdn("hebrew", { year:"5786", month:"5", day:"30" });
+  const b = calendarDateToJdn("hebrew", normalizeCalendarInputValues("hebrew", { year:"תשפ״ו", month:"5", day:"ל׳" }));
+  eq(a, b);
+});
+check("japanese-gannen", () => {
+  for (const [era, month, day] of [["meiji",10,23],["taisho",7,30],["showa",12,25],["heisei",1,8],["reiwa",5,1]]) {
+    const one = calendarDateToJdn("japanese-imperial", { era, year:"1", month:String(month), day:String(day) });
+    for (const raw of ["元", "元年", " 元年 "]) {
+      const got = calendarDateToJdn("japanese-imperial", normalizeCalendarInputValues("japanese-imperial", { era, year:raw, month:String(month), day:String(day) }));
+      eq(one, got, `${era} ${raw}`);
+    }
+  }
+});
+check("month-choice-integrity", () => {
+  for (const definition of CALENDAR_DEFINITIONS) {
+    const field = monthField(definition.id);
+    if (!field) continue;
+    const choices = calendarMonthChoices(definition.id, field, "en-US");
+    if (!choices) continue;
+    const values = new Set();
+    for (const choice of choices) {
+      ok(choice.value && choice.label, `${definition.id}: empty choice`);
+      ok(!values.has(choice.value), `${definition.id}: duplicate ${choice.value}`);
+      values.add(choice.value);
+    }
+  }
+});
+
+document.documentElement.dataset.status = out.status.toLowerCase();
+document.querySelector("#result").textContent = JSON.stringify(out);
+</script>
