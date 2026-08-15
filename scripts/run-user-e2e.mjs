@@ -546,10 +546,9 @@ const desktopScenarios = [
       await setField(page, "target", "year", "תשפ״ו");
       await setField(page, "target", "month", "1");
       await setField(page, "target", "day", "י״ד");
-      const beforeHebrew = urlState(page).t;
+      const expectedHebrew = calendarDateToJdn("hebrew", { year: "5786", month: "1", day: "14" });
       await submitForm(page, "target");
-      await page.waitForFunction((old) => new URL(location.href).searchParams.get("t") !== old, beforeHebrew, { timeout: DEFAULT_TIMEOUT });
-      await waitForWorkspace(page);
+      await waitForParam(page, "t", expectedHebrew);
       assert.equal(await page.locator("#target-form-error").isHidden(), true, "Hebrew-letter date should be accepted");
       // Japanese: 元 is accepted as year 1.
       await chooseCalendar(page, "target", "japanese-imperial");
@@ -557,10 +556,9 @@ const desktopScenarios = [
       await setField(page, "target", "year", "元");
       await setField(page, "target", "month", "5");
       await setField(page, "target", "day", "1");
-      const beforeJapanese = urlState(page).t;
+      const expectedJapanese = calendarDateToJdn("japanese-imperial", { era: "reiwa", year: "1", month: "5", day: "1" });
       await submitForm(page, "target");
-      await page.waitForFunction((old) => new URL(location.href).searchParams.get("t") !== old, beforeJapanese, { timeout: DEFAULT_TIMEOUT });
-      await waitForWorkspace(page);
+      await waitForParam(page, "t", expectedJapanese);
       assert.equal(await page.locator("#target-form-error").isHidden(), true, "Japanese 元 should be accepted");
       // Old Hindu calendars expose month names through selects and submit real dates.
       for (const [calendar, values] of [
@@ -571,9 +569,9 @@ const desktopScenarios = [
         assert.equal(await page.locator("#target-month").evaluate((element) => element.tagName), "SELECT");
         assert.ok((await page.locator("#target-month option").allTextContents()).some((text) => text.trim().length > 0));
         for (const [name, value] of Object.entries(values)) await setField(page, "target", name, value);
-        const before = urlState(page).t;
+        const expected = calendarDateToJdn(calendar, values);
         await submitForm(page, "target");
-        await page.waitForFunction((old) => new URL(location.href).searchParams.get("t") !== old, before, { timeout: DEFAULT_TIMEOUT });
+        await waitForParam(page, "t", expected);
         assert.equal(await page.locator("#target-form-error").isHidden(), true, `${calendar} named-month input should be accepted`);
       }
       // Bahá’í named-month choices are submitted in both variants.
@@ -584,9 +582,9 @@ const desktopScenarios = [
         await setField(page, "target", "year", "183");
         await setField(page, "target", "month", "1");
         await setField(page, "target", "day", "1");
-        const before = urlState(page).t;
+        const expected = calendarDateToJdn(calendar, { year: "183", month: "1", day: "1" });
         await submitForm(page, "target");
-        await page.waitForFunction((old) => new URL(location.href).searchParams.get("t") !== old, before, { timeout: DEFAULT_TIMEOUT });
+        await waitForParam(page, "t", expected);
         assert.equal(await page.locator("#target-form-error").isHidden(), true, `${calendar} named-month input should be accepted`);
       }
       assertions.push("Hebrew named-month select present", "Hebrew year/day letters accepted", "Japanese 元 accepted for era year 1", "Old Hindu named-month dates submitted successfully", "Bahá’í named-month dates submitted successfully");
@@ -623,18 +621,33 @@ const fileScenario = {
     assert.ok((await page.locator("#change-output").innerText()).includes("שנה"));
     const fixed = page.locator("#fixed-calendar");
     const beforeDate = await fixed.getAttribute("date");
-    const viewport = fixed.locator(".viewport");
-    const beforeScroll = await viewport.evaluate((element) => element.scrollTop);
+    const navigation = await fixed.evaluate((host) => {
+      const active = host._activeStartJdn;
+      const current = active == null ? null : host._cutlets.get(active);
+      return {
+        beforeStart: active == null ? null : String(active),
+        expectedStart: current == null ? null : String(current.nextCutletJdn),
+      };
+    });
+    assert.ok(navigation.beforeStart, "Standalone must expose an active cutlet before navigation");
+    assert.ok(navigation.expectedStart, "Standalone active cutlet must identify its next cutlet");
     await fixed.locator(".nav-button.next").click();
-    await page.waitForFunction((scrollTop) => {
+    await page.waitForFunction((expectedStart) => {
       const host = document.querySelector("#fixed-calendar");
-      const viewportElement = host?.shadowRoot?.querySelector(".viewport");
-      return Boolean(viewportElement && viewportElement.scrollTop !== scrollTop);
-    }, beforeScroll, { timeout: 360_000 });
+      if (!host?.shadowRoot || String(host._activeStartJdn) !== expectedStart) return false;
+      const section = host.shadowRoot.querySelector(`[data-start-jdn="${CSS.escape(expectedStart)}"]`);
+      if (!section) return false;
+      const viewport = host.shadowRoot.querySelector(".viewport");
+      if (!viewport) return false;
+      const sectionRect = section.getBoundingClientRect();
+      const viewportRect = viewport.getBoundingClientRect();
+      return sectionRect.bottom > viewportRect.top && sectionRect.top < viewportRect.bottom;
+    }, navigation.expectedStart, { timeout: 360_000 });
+    assert.notEqual(navigation.expectedStart, navigation.beforeStart, "Next navigation must select a different cutlet");
     const afterDate = await fixed.getAttribute("date");
     assert.equal(afterDate, beforeDate, "Browsing standalone cutlets must not change target date attribute");
     assert.equal(await page.evaluate(() => "serviceWorker" in navigator && navigator.serviceWorker.controller !== null), false, "file:// must not depend on Service Worker control");
-    assertions.push("real HTML opened from file://", "standalone component calculated/rendered with all HTTP(S) routes blocked", "shadow-DOM next navigation works", "target date attribute preserved", "no Service Worker dependency");
+    assertions.push("real HTML opened from file://", "standalone component calculated/rendered with all HTTP(S) routes blocked", "shadow-DOM next navigation reaches the adjacent cutlet", "target date attribute preserved", "no Service Worker dependency");
   },
 };
 

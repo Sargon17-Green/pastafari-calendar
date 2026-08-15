@@ -203,7 +203,7 @@ async function runFileSmoke(browser, standardVectors, bundle) {
     const smoke = await readCompleted(page, "__PASTAFARI_FILE_SMOKE_RESULT__");
     assert.equal(smoke.protocol, "file:");
     assert.equal(smoke.failed, 0, smoke.fatalError || JSON.stringify(smoke.outcomes));
-    assert.equal(smoke.passed, 15);
+    assert.equal(smoke.passed, 18);
     assert.deepEqual(smoke.networkAttempts, []);
     assert.deepEqual(smoke.errors, []);
     assert.deepEqual(remoteRequests, []);

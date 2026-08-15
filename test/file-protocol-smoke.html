@@ -233,15 +233,96 @@
         assert(root.querySelector('button.day[aria-current="date"]'), "No selected day was rendered.");
       });
 
-      await test("נטענות קציצות סמוכות וכפתור הניווט פעיל", async () => {
+      await test("next ו-previous אחרי preload מגיעים לקציצה הסמוכה בלי לשנות date", async () => {
         const root = calendar.shadowRoot;
         await waitFor(() => root.querySelectorAll(".cutlet").length >= 3, "three cutlets");
-        const previousActive = calendar._activeStartJdn;
+        const initialDate = calendar.getAttribute("date");
+        const initialStart = calendar._activeStartJdn;
+        const initialView = calendar._cutlets.get(initialStart);
+        const nextStart = BigInt(initialView.nextCutletJdn);
+        root.querySelector(".nav-button.next").click();
+        await waitFor(() => calendar._activeStartJdn === nextStart, "next-cutlet navigation after preload");
+        assert(calendar.getAttribute("date") === initialDate, "next changed the target date attribute.");
         root.querySelector(".nav-button.previous").click();
-        await waitFor(
-          () => calendar._activeStartJdn != null && calendar._activeStartJdn !== previousActive,
-          "previous-cutlet navigation",
+        await waitFor(() => calendar._activeStartJdn === initialStart, "previous-cutlet navigation after preload");
+        assert(calendar.getAttribute("date") === initialDate, "previous changed the target date attribute.");
+      });
+
+      async function immediateNavigation(direction) {
+        const element = document.createElement("pastafari-date");
+        element.setAttribute("date", "2026-08-06");
+        element.setAttribute("calculation-date", "2026-08-06");
+        const initialDate = element.getAttribute("date");
+        let requestedJdn = null;
+        let initialStart = null;
+        let observedSingleCutlet = false;
+        const firstChange = new Promise((resolve) => {
+          element.addEventListener("pastafari-change", () => {
+            const active = element._activeStartJdn;
+            const view = element._cutlets.get(active);
+            initialStart = active;
+            requestedJdn = BigInt(direction < 0 ? view.previousCutletJdn : view.nextCutletJdn);
+            observedSingleCutlet = element._orderedStarts.length === 1;
+            element.shadowRoot.querySelector(direction < 0 ? ".nav-button.previous" : ".nav-button.next").click();
+            resolve();
+          }, { once: true });
+        });
+        document.body.append(element);
+        try {
+          await firstChange;
+          assert(observedSingleCutlet, "Immediate navigation did not run before adjacent preload.");
+          await waitFor(() => {
+            const active = element._activeStartJdn;
+            if (active == null) return false;
+            const activeView = element._cutlets.get(active);
+            if (!activeView) return false;
+            return requestedJdn >= BigInt(activeView.startJdn)
+              && requestedJdn <= BigInt(activeView.endJdn);
+          }, `${direction < 0 ? "previous" : "next"} navigation before preload`);
+          const navigatedStart = element._activeStartJdn;
+          assert(
+            direction < 0 ? navigatedStart < initialStart : navigatedStart > initialStart,
+            "Immediate navigation moved in the wrong direction.",
+          );
+          assert(element._cutlets.has(navigatedStart), "Requested adjacent cutlet was not loaded.");
+          assert(
+            element.shadowRoot.querySelector(`[data-start-jdn="${CSS.escape(String(navigatedStart))}"]`),
+            "Requested adjacent cutlet was not rendered.",
+          );
+          assert(element.getAttribute("date") === initialDate, "Immediate navigation changed date.");
+        } finally {
+          element.remove();
+        }
+      }
+
+      await test("next לפני preload טוען את הקציצה ומשלים את הניווט", async () => {
+        await immediateNavigation(1);
+      });
+
+      await test("previous לפני preload טוען את הקציצה ומשלים את הניווט", async () => {
+        await immediateNavigation(-1);
+      });
+
+      await test("next-next-previous מהירים משאירים state קוהרנטי ו-date קבוע", async () => {
+        const initialDate = calendar.getAttribute("date");
+        const root = calendar.shadowRoot;
+        root.querySelector(".nav-button.next").click();
+        root.querySelector(".nav-button.next").click();
+        root.querySelector(".nav-button.previous").click();
+        await waitFor(() => {
+          const active = calendar._activeStartJdn;
+          return active != null
+            && calendar._cutlets.has(active)
+            && root.querySelector(`[data-start-jdn="${CSS.escape(String(active))}"]`);
+        }, "coherent state after rapid navigation");
+        await delay(250);
+        const active = calendar._activeStartJdn;
+        assert(calendar._cutlets.has(active), "Active cutlet disappeared after rapid navigation.");
+        assert(
+          root.querySelector(`[data-start-jdn="${CSS.escape(String(active))}"]`),
+          "Active cutlet is not represented in the DOM after rapid navigation.",
         );
+        assert(calendar.getAttribute("date") === initialDate, "Rapid navigation changed date.");
       });
 
       await test("no-editor מסתיר את העורך בלי חישוב נוסף", async () => {
