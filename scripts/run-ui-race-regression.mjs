@@ -134,7 +134,7 @@ async function openCalculationSettings(page) {
 async function fillTarget(page) {
   await page.locator("#target-calendar").selectOption("gregorian");
   await page.locator("#target-year").fill(String(FIXTURE.year));
-  await page.locator("#target-month").fill(String(FIXTURE.month));
+  await page.locator("#target-month").selectOption(String(FIXTURE.month));
   await page.locator("#target-day").fill(String(FIXTURE.day));
 }
 
