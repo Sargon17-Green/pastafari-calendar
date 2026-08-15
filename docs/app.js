@@ -12,7 +12,7 @@ import {
   normalizeCalendarInputValues,
   usesTextualCalendarNumeral,
 } from "./calendar-input-conventions.js?v=9-calendar-input-conventions";
-import { calendarLabel, getLocale, translate, validateLocaleResources } from "./i18n/registry.js?v=8-year-structure";
+import { calendarLabel, getLocale, staleDayWarning, translate, validateLocaleResources } from "./i18n/registry.js?v=8-year-structure";
 import {
   applyDocumentLocale,
   persistLanguage,
@@ -932,6 +932,15 @@ function refreshLocalDay() {
   const today = localToday();
   const todayJdn = gregorianToJdn(today);
   if (todayJdn === state.localTodayJdn) return;
+
+  const calculationWasLocalToday = state.calculationIsLocalToday;
+  if (calculationWasLocalToday) {
+    alert(staleDayWarning(activeLocale, {
+      previousDate: formatJdnAsGregorian(state.localTodayJdn),
+      currentDate: formatJdnAsGregorian(todayJdn),
+    }));
+  }
+
   state.localDate = today;
   state.localTodayJdn = todayJdn;
   if (state.targetIsLocalToday) {
@@ -939,7 +948,7 @@ function refreshLocalDay() {
     state.viewAnchorJdn = todayJdn;
     initializeDateForm("target", todayJdn);
   }
-  if (state.calculationIsLocalToday) {
+  if (calculationWasLocalToday) {
     state.calculationJdn = todayJdn;
     initializeDateForm("action", todayJdn);
     if (state.comparisonFollowsNextAction) {
@@ -947,17 +956,28 @@ function refreshLocalDay() {
       initializeDateForm("comparison", state.comparisonJdn);
     }
   }
-  if (state.targetIsLocalToday || state.calculationIsLocalToday) loadCutlet({ replaceHistory: true });
+  if (state.targetIsLocalToday || calculationWasLocalToday) loadCutlet({ replaceHistory: true });
+}
+
+let localDayRefreshTimer = null;
+
+function scheduleLocalDayRefresh() {
+  if (localDayRefreshTimer !== null) clearTimeout(localDayRefreshTimer);
+  const nextMidnight = new Date();
+  nextMidnight.setHours(24, 0, 0, 50);
+  localDayRefreshTimer = setTimeout(() => {
+    localDayRefreshTimer = null;
+    refreshLocalDay();
+    scheduleLocalDayRefresh();
+  }, Math.max(0, nextMidnight.getTime() - Date.now()));
 }
 
 document.addEventListener("visibilitychange", refreshLocalDay);
-window.addEventListener("pageshow", refreshLocalDay);
-const midnight = new Date();
-midnight.setHours(24, 0, 0, 30);
-setTimeout(() => {
+window.addEventListener("pageshow", () => {
   refreshLocalDay();
-  location.reload();
-}, midnight.getTime() - Date.now());
+  scheduleLocalDayRefresh();
+});
+scheduleLocalDayRefresh();
 
 if ("serviceWorker" in navigator) {
   addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}), { once: true });
