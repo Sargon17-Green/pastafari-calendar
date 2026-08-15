@@ -184,6 +184,8 @@ export class PastafariDateElement extends HTMLElementBase {
     this._orderedStarts = [];
     this._loadingBefore = null;
     this._loadingAfter = null;
+    this._cutletLoads = new Map();
+    this._navigationGeneration = 0;
     this._activeStartJdn = null;
     this._readySettled = false;
     this.ready = new Promise((resolve, reject) => {
@@ -532,6 +534,8 @@ export class PastafariDateElement extends HTMLElementBase {
   disconnectedCallback() {
     this._connected = false;
     this._generation += 1;
+    this._navigationGeneration += 1;
+    this._cutletLoads.clear();
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -559,6 +563,8 @@ export class PastafariDateElement extends HTMLElementBase {
     this._activeStartJdn = null;
     this._loadingBefore = null;
     this._loadingAfter = null;
+    this._cutletLoads.clear();
+    this._navigationGeneration += 1;
 
     if (headless) {
       // A headless component is a data source only. It must not request a
@@ -648,14 +654,28 @@ export class PastafariDateElement extends HTMLElementBase {
     await Promise.allSettled(tasks);
   }
 
-  async _loadCutletAt(targetJdn, direction, generation = this._generation) {
+  _loadCutletAt(targetJdn, direction, generation = this._generation) {
+    const normalizedTarget = BigInt(targetJdn);
+    const loadKey = `${generation}:${normalizedTarget}`;
+    const existing = this._cutletLoads.get(loadKey);
+    if (existing) return existing;
+
+    const task = this._loadCutletAtOnce(normalizedTarget, direction, generation);
+    this._cutletLoads.set(loadKey, task);
+    void task.finally(() => {
+      if (this._cutletLoads.get(loadKey) === task) this._cutletLoads.delete(loadKey);
+    }).catch(() => {});
+    return task;
+  }
+
+  async _loadCutletAtOnce(targetJdn, direction, generation) {
     const flag = direction === "before" ? "_loadingBefore" : "_loadingAfter";
     if (this[flag] === generation) return null;
     this[flag] = generation;
     this._updateEdgeLoaders();
 
     try {
-      const view = await sharedPastafariRouter.getCutletView(BigInt(targetJdn), this._calculationJdn);
+      const view = await sharedPastafariRouter.getCutletView(targetJdn, this._calculationJdn);
       if (generation !== this._generation) return null;
       if (!this._storeCutlet(view)) return view;
       const anchor = this._captureScrollAnchor();
@@ -820,24 +840,63 @@ export class PastafariDateElement extends HTMLElementBase {
     if (section) this._activeStartJdn = BigInt(section.dataset.startJdn);
   }
 
-  _scrollAdjacent(direction) {
-    if (this._orderedStarts.length === 0) return;
+  async _scrollAdjacent(direction) {
+    if (this._orderedStarts.length === 0) return false;
+    const generation = this._generation;
+    const navigationGeneration = ++this._navigationGeneration;
     const currentIndex = this._activeStartJdn == null
       ? this._orderedStarts.findIndex((start) => this._targetJdn >= start && this._targetJdn <= BigInt(this._cutlets.get(start).endJdn))
       : this._orderedStarts.findIndex((start) => start === this._activeStartJdn);
-    const nextIndex = Math.max(0, Math.min(this._orderedStarts.length - 1, currentIndex + direction));
-    const start = this._orderedStarts[nextIndex];
+    if (currentIndex < 0) return false;
+
+    const adjacentIndex = currentIndex + direction;
+    let start = this._orderedStarts[adjacentIndex];
+    if (start === undefined) {
+      const current = this._cutlets.get(this._orderedStarts[currentIndex]);
+      if (!current) return false;
+      const requestedJdn = direction < 0 ? current.previousCutletJdn : current.nextCutletJdn;
+      let loaded;
+      try {
+        loaded = await this._loadCutletAt(
+          requestedJdn,
+          direction < 0 ? "before" : "after",
+          generation,
+        );
+      } catch {
+        return false;
+      }
+      if (
+        !loaded
+        || !this._connected
+        || generation !== this._generation
+        || navigationGeneration !== this._navigationGeneration
+      ) return false;
+      start = BigInt(loaded.startJdn);
+    }
+
+    if (
+      !this._connected
+      || generation !== this._generation
+      || navigationGeneration !== this._navigationGeneration
+    ) return false;
     const section = this._els.list.querySelector(`[data-start-jdn="${CSS.escape(String(start))}"]`);
-    section?.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (!section) return false;
+
+    // Use an immediate scroll so a following edge preload can capture and
+    // restore the requested cutlet as its scroll anchor instead of cancelling
+    // an in-flight smooth scroll when the list is re-rendered.
+    section.scrollIntoView({ behavior: "auto", block: "start" });
     this._activeStartJdn = start;
 
-    if (direction < 0 && nextIndex === 0) {
+    const resolvedIndex = this._orderedStarts.findIndex((candidate) => candidate === start);
+    if (direction < 0 && resolvedIndex === 0) {
       const first = this._cutlets.get(start);
-      void this._loadCutletAt(first.previousCutletJdn, "before");
-    } else if (direction > 0 && nextIndex === this._orderedStarts.length - 1) {
+      if (first) void this._loadCutletAt(first.previousCutletJdn, "before", generation).catch(() => {});
+    } else if (direction > 0 && resolvedIndex === this._orderedStarts.length - 1) {
       const last = this._cutlets.get(start);
-      void this._loadCutletAt(last.nextCutletJdn, "after");
+      if (last) void this._loadCutletAt(last.nextCutletJdn, "after", generation).catch(() => {});
     }
+    return true;
   }
 
   _onScroll() {
