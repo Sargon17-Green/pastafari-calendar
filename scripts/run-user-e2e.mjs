@@ -408,22 +408,43 @@ const desktopScenarios = [
   },
   {
     id: "language", name: "Switch LTR/RTL language without changing calculation state", screenshot: "06-language-switch.png",
-    async run({ page, baseURL, assertions }) {
+    async run({ page, baseURL, assertions, profile }) {
       await openClean(page, baseURL);
       await searchGregorian(page, FIXTURE.target);
       await setActionGregorian(page, FIXTURE.action);
-      await enableComparison(page, FIXTURE.comparison);
+      if (profile === "desktop") await enableComparison(page, FIXTURE.comparison);
       await page.locator("#language-selector").selectOption("en");
       const logicalBefore = urlState(page);
+      if (profile === "mobile") {
+        assert.equal(logicalBefore.compare, null, "Mobile language scenario must not enable desktop-only comparison");
+        assert.equal(logicalBefore.c2, null, "Mobile language scenario must not create a secondary calculation JDN");
+      }
+      const invariantKeys = profile === "desktop"
+        ? ["t", "v", "c", "c2", "compare", "today", "ctoday"]
+        : ["t", "v", "c", "today", "ctoday"];
       const beforeText = await renderedIdentity(page);
       await page.locator("#language-selector").selectOption("he");
       await page.waitForFunction(() => document.documentElement.lang === "he" && document.documentElement.dir === "rtl");
-      const logicalAfter = urlState(page);
-      for (const key of ["t", "v", "c", "c2", "compare"]) assert.equal(logicalAfter[key], logicalBefore[key], `locale must not change ${key}`);
+      const logicalHebrew = urlState(page);
+      assert.equal(logicalHebrew.lang, "he", "Hebrew selection must set lang=he in URL state");
+      for (const key of invariantKeys) assert.equal(logicalHebrew[key], logicalBefore[key], `locale must not change ${key}`);
       assert.notEqual(await renderedIdentity(page), beforeText, "Labels/rendering should switch language");
       await page.locator("#language-selector").selectOption("en");
       await page.waitForFunction(() => document.documentElement.lang === "en" && document.documentElement.dir === "ltr");
-      assertions.push("he -> lang=he dir=rtl", "en -> lang=en dir=ltr", "target/calculation/comparison JDNs unchanged across locale switch");
+      const logicalEnglish = urlState(page);
+      assert.equal(logicalEnglish.lang, "en", "English selection must set lang=en in URL state");
+      for (const key of invariantKeys) assert.equal(logicalEnglish[key], logicalBefore[key], `locale round trip must not change ${key}`);
+      if (profile === "mobile") {
+        assert.equal(logicalEnglish.compare, null, "Mobile locale switch must leave comparison disabled");
+        assert.equal(logicalEnglish.c2, null, "Mobile locale switch must leave secondary calculation absent");
+      }
+      assertions.push(
+        "he -> lang=he dir=rtl",
+        "en -> lang=en dir=ltr",
+        profile === "desktop"
+          ? "target/view/calculation/comparison state unchanged across locale switch"
+          : "target/view/calculation state unchanged without enabling desktop-only comparison",
+      );
     },
   },
   {
@@ -646,7 +667,7 @@ async function runOneScenario({ browser, config, baseURL, scenario, profile }) {
       result.screenshot = await screenshot(page, profile === "mobile" ? `mobile-${filename}` : filename);
       return result.screenshot;
     };
-    await scenario.run({ page, context, baseURL, assertions: result.assertions, phaseRef, capture });
+    await scenario.run({ page, context, baseURL, assertions: result.assertions, phaseRef, capture, profile });
     if (scenario.screenshot && !result.screenshot) await capture(scenario.screenshot);
     assertNoUnexpectedRuntimeErrors(monitor, { allowConsole: scenario.allowConsole || [] });
     await context.tracing.stop();
