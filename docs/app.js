@@ -572,7 +572,10 @@ function appendComparisonDate(cell, day) {
 function renderComparison() {
   const shouldShow = state.comparisonEnabled && state.view;
   elements["comparison-workspace"].hidden = !shouldShow;
-  if (!shouldShow) return;
+  if (!shouldShow) {
+    elements["comparison-body"].replaceChildren();
+    return;
+  }
   elements["comparison-date-form"].hidden = false;
   elements["comparison-primary-heading"].textContent = t("comparison.actionHeading", {
     date: formatJdnAsGregorian(state.calculationJdn),

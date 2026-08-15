@@ -187,6 +187,23 @@ async function runRaceRegression(page, baseURL) {
   assert.equal(await page.locator("#next-cutlet").isDisabled(), false, "Next cutlet must be re-enabled");
   assert.equal(await page.locator("#error-panel").isHidden(), true, "No global error should be shown");
 
+  // Comparison rows can be very large. Once comparison is disabled they must be
+  // removed from the live DOM rather than merely hidden, otherwise repeated use
+  // retains tens of thousands of unnecessary nodes.
+  await page.waitForFunction(
+    () => document.querySelectorAll("#comparison-body > tr").length > 0,
+    null,
+    { timeout: TIMEOUT },
+  );
+  await page.locator("#comparison-toggle").uncheck({ force: true });
+  await page.waitForFunction(
+    () => document.querySelector("#comparison-workspace")?.hidden === true
+      && document.querySelectorAll("#comparison-body > tr").length === 0,
+    null,
+    { timeout: TIMEOUT },
+  );
+  assert.equal(await page.locator("#comparison-body > tr").count(), 0, "Disabled comparison must release its table rows");
+
   return { target, oldGridTarget };
 }
 

@@ -1,11 +1,11 @@
 "use strict";
 
-const VERSION = "pastafari-static-c5db804-fast-only-17-ui-race-fix-venus-day-boundary-i18n-all-89-layout";
+const VERSION = "pastafari-static-c5db804-fast-only-18-comparison-dom-cleanup-venus-day-boundary-i18n-all-89-layout";
 const CACHE = VERSION;
 const ASSETS = [
   "./index.html",
   "./styles.css?v=8-year-structure",
-  "./app.js?v=10-venus-day-boundary",
+  "./app.js?v=11-comparison-dom-cleanup",
   "./calendar-input-conventions.js?v=9-calendar-input-conventions",
   "./calendar-converters.js?v=8-year-structure",
   "./observer-location.js?v=10-venus-day-boundary",
