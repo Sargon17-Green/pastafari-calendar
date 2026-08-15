@@ -18,6 +18,17 @@ function isForbiddenLength(length, ceiling, rejectionLength) {
   return length > ceiling && length < rejectionLength;
 }
 
+function explicitCalculationJdn(argumentsForTheChronicle) {
+  const options = argumentsForTheChronicle[1];
+  if (!options || options.calculationJdn === undefined || options.calculationJdn === null) return null;
+  return BigInt(options.calculationJdn);
+}
+
+function belongsToCalculationDay(cacheKey, calculationJdn) {
+  if (calculationJdn === null) return true;
+  return String(cacheKey).startsWith(`${calculationJdn}|`);
+}
+
 export function installYearCeilingDetour(CalendarConstructor, GateIndex) {
   if (DETOURED_CONSTRUCTORS.has(CalendarConstructor)) return CalendarConstructor;
 
@@ -30,18 +41,20 @@ export function installYearCeilingDetour(CalendarConstructor, GateIndex) {
     let lastGateIndex = null;
     const ceiling = obtainCeilingByRemovingTheThreeErrantDays();
     const rejectionLength = oneDayBeyondTheOldCeiling();
+    const calculationJdn = explicitCalculationJdn(argumentsForTheChronicle);
 
     GateIndex.prototype.gate = function gateWithRejectedHistoricalCeilingCandidates(gateIndex) {
       const gateDay = originalGate.call(this, gateIndex);
 
-      // Once a year is cached, the sealed engine's next/previous-year searches
-      // do not reread their fixed boundary gate.  Recover that boundary from
-      // the cached YearBounds and reject 5,779..5,781-day candidates in either
-      // direction.  Prefer the nearest matching boundary so adjacent cached
-      // years cannot steal one another's candidate scan.
+      // Once a year is cached, next/previous-year searches do not reread their
+      // fixed boundary gate.  Only cached years for THIS calculation day may
+      // anchor the active candidate scan: PastafariCalendar retains years for
+      // many calculation days in one shared cache, and cross-day anchoring
+      // would corrupt otherwise unrelated conversions.
       let best = null;
-      if (calendar.yearCache && typeof calendar.yearCache.values === "function") {
-        for (const year of calendar.yearCache.values()) {
+      if (calendar.yearCache && typeof calendar.yearCache.entries === "function") {
+        for (const [cacheKey, year] of calendar.yearCache.entries()) {
+          if (!belongsToCalculationDay(cacheKey, calculationJdn)) continue;
           const indices = year?.gateIndices;
           if (!Array.isArray(indices) || indices.length < 2) continue;
           const first = indices[0];
@@ -73,9 +86,18 @@ export function installYearCeilingDetour(CalendarConstructor, GateIndex) {
         return best.adjusted;
       }
 
-      // Before Year 5000 has been cached, preserve the original ascending-scan
-      // detour used by the anchor candidate search.
-      if (!calendar.yearCache || calendar.yearCache.size === 0) {
+      // Before the active calculation day's anchor year has been cached,
+      // preserve the original ascending-scan detour used by that anchor search.
+      let hasActiveCachedYear = false;
+      if (calendar.yearCache && typeof calendar.yearCache.keys === "function") {
+        for (const cacheKey of calendar.yearCache.keys()) {
+          if (belongsToCalculationDay(cacheKey, calculationJdn)) {
+            hasActiveCachedYear = true;
+            break;
+          }
+        }
+      }
+      if (!hasActiveCachedYear) {
         if (opening === null || gateIndex <= lastGateIndex) {
           opening = { gateIndex, gateDay };
         } else {
