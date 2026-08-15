@@ -1,6 +1,6 @@
 "use strict";
 
-const VERSION = "pastafari-static-c5db804-fast-only-18-comparison-dom-cleanup-venus-day-boundary-i18n-all-89-layout";
+const VERSION = "pastafari-static-c5db804-fast-only-19-ui-worker-race-venus-day-boundary-i18n-all-89-layout";
 const CACHE = VERSION;
 const ASSETS = [
   "./index.html",

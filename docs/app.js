@@ -49,8 +49,9 @@ let activeLocale = resolveBrowserLocale().locale;
 let numberFormatter = null;
 let dateFormatter = null;
 let lastVisibleErrorKey = null;
-let loadSequence = 0;
-let comparisonSequence = 0;
+let viewLoadSequence = 0;
+let committedViewLoadSequence = 0;
+let comparisonLoadSequence = 0;
 let observerLocation = KISURRA_OBSERVER;
 let state = {
   targetJdn: null,
@@ -552,10 +553,10 @@ async function loadYearStructure(sequence, view) {
       targetJdn: view.selectedJdn,
       calculationJdn: state.calculationJdn,
     });
-    if (sequence !== loadSequence || state.view !== view) return;
+    if (sequence !== viewLoadSequence || state.view !== view) return;
     renderYearStructure(structure);
   } catch (error) {
-    if (sequence === loadSequence && state.view === view) showYearStructureError(error);
+    if (sequence === viewLoadSequence && state.view === view) showYearStructureError(error);
   }
 }
 
@@ -620,15 +621,14 @@ function renderComparison() {
   elements["comparison-body"].replaceChildren(fragment);
 }
 
-async function loadComparison(sequence) {
-  const comparisonRequest = ++comparisonSequence;
+async function loadComparison(sequence, viewSequence = viewLoadSequence) {
   state.comparisonDays = null;
-  if (!state.comparisonEnabled || !comparisonIsDesktop() || !state.view) {
+  const view = state.view;
+  const comparisonJdn = state.comparisonJdn;
+  if (!state.comparisonEnabled || !comparisonIsDesktop() || !view) {
     renderComparison();
     return true;
   }
-  const view = state.view;
-  const comparisonJdn = state.comparisonJdn;
   let range;
   try {
     range = await workerRequest("getRangeView", {
@@ -637,12 +637,18 @@ async function loadComparison(sequence) {
       calculationJdn: comparisonJdn,
     });
   } catch (error) {
-    if (sequence !== loadSequence || comparisonRequest !== comparisonSequence) return false;
+    if (
+      sequence !== comparisonLoadSequence
+      || viewSequence !== viewLoadSequence
+      || state.view !== view
+      || state.comparisonJdn !== comparisonJdn
+      || !state.comparisonEnabled
+    ) return false;
     throw error;
   }
   if (
-    sequence !== loadSequence
-    || comparisonRequest !== comparisonSequence
+    sequence !== comparisonLoadSequence
+    || viewSequence !== viewLoadSequence
     || state.view !== view
     || state.comparisonJdn !== comparisonJdn
     || !state.comparisonEnabled
@@ -653,8 +659,8 @@ async function loadComparison(sequence) {
 }
 
 async function loadCutlet({ replaceHistory = false, scrollToTarget = true } = {}) {
-  const sequence = ++loadSequence;
-  ++comparisonSequence;
+  const sequence = ++viewLoadSequence;
+  ++comparisonLoadSequence;
   elements["previous-cutlet"].disabled = true;
   elements["next-cutlet"].disabled = true;
   try {
@@ -662,14 +668,15 @@ async function loadCutlet({ replaceHistory = false, scrollToTarget = true } = {}
       targetJdn: state.viewAnchorJdn,
       calculationJdn: state.calculationJdn,
     });
-    if (sequence !== loadSequence) return;
+    if (sequence !== viewLoadSequence) return;
     renderView(view, { scrollToTarget });
+    committedViewLoadSequence = sequence;
     void loadYearStructure(sequence, view);
-    const comparisonCurrent = await loadComparison(sequence);
-    if (sequence !== loadSequence || !comparisonCurrent) return;
+    const comparisonCurrent = await loadComparison(++comparisonLoadSequence, sequence);
+    if (sequence !== viewLoadSequence || !comparisonCurrent) return;
     writeHistory({ replace: replaceHistory });
   } catch (error) {
-    if (sequence === loadSequence) showError(error);
+    if (sequence === viewLoadSequence) showError(error);
   }
 }
 
@@ -972,9 +979,11 @@ elements["comparison-toggle"].addEventListener("change", (event) => {
   state.comparisonEnabled = event.currentTarget.checked;
   elements["comparison-date-form"].hidden = !state.comparisonEnabled;
   state.comparisonDays = null;
-  const sequence = loadSequence;
-  loadComparison(sequence)
-    .then((current) => { if (current && sequence === loadSequence) writeHistory(); })
+  const viewSequence = viewLoadSequence;
+  loadComparison(++comparisonLoadSequence, viewSequence)
+    .then((applied) => {
+      if (applied && viewSequence === committedViewLoadSequence) writeHistory();
+    })
     .catch((error) => showError(error));
 });
 
@@ -984,9 +993,11 @@ formConfigurations.comparison.form.addEventListener("submit", (event) => {
     state.comparisonJdn = readDateForm("comparison");
     state.comparisonFollowsNextAction = false;
     state.comparisonDays = null;
-    const sequence = loadSequence;
-    loadComparison(sequence)
-      .then((current) => { if (current && sequence === loadSequence) writeHistory(); })
+    const viewSequence = viewLoadSequence;
+    loadComparison(++comparisonLoadSequence, viewSequence)
+      .then((applied) => {
+        if (applied && viewSequence === committedViewLoadSequence) writeHistory();
+      })
       .catch((error) => showError(error));
   } catch (error) {
     showFormError("comparison", error);
@@ -996,7 +1007,7 @@ formConfigurations.comparison.form.addEventListener("submit", (event) => {
 matchMedia(DESKTOP_COMPARISON_QUERY).addEventListener("change", () => {
   if (!state.comparisonEnabled || !state.view) return;
   state.comparisonDays = null;
-  loadComparison(loadSequence).catch((error) => showError(error));
+  loadComparison(++comparisonLoadSequence, viewLoadSequence).catch((error) => showError(error));
 });
 
 window.addEventListener("popstate", () => {
