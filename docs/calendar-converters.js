@@ -427,6 +427,9 @@ function oldHinduLunarToJdn({ year, month, day, leapMonth }) {
   const leapPosition = Math.ceil(
     (lunarNewYear - mina) / (ARYA_SOLAR_MONTH - ARYA_LUNAR_MONTH),
   );
+  if (leapMonth && leapPosition !== month) {
+    throw new RangeError("The selected Old Hindu lunar month is not intercalary.");
+  }
   const adjustedMonth = leapMonth || leapPosition > month ? month - 1 : month;
   const value = HINDU_EPOCH_JDN
     + lunarNewYear

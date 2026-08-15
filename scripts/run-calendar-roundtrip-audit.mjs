@@ -23,7 +23,7 @@ import {
   parseHebrewNumeral,
 } from "../docs/calendar-input-conventions.js";
 
-const SCRIPT_VERSION = "PASTAFARI-CALENDAR-ROUNDTRIP-AUDIT-1.0.1";
+const SCRIPT_VERSION = "PASTAFARI-CALENDAR-ROUNDTRIP-AUDIT-1.0.2";
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, "..");
 
@@ -414,7 +414,7 @@ function randomIntlInput(id,rng) {
   }
   throw new Error(`randomIntlInput missing ${id}`);
 }
-function randomHindu(id,rng){const x={year:String(rng.int(4800,5400)),month:String(rng.int(1,12)),day:String(rng.int(1,30))};if(id==="hindu-old-lunar")x.leapMonth=rng.bool();return x;}
+function randomHindu(id,rng){const x={year:String(rng.int(4800,5400)),month:String(rng.int(1,12)),day:String(rng.int(1,30))};if(id==="hindu-old-lunar")x.leapMonth=oldHinduLeapPosition(Number(x.year))===Number(x.month)&&rng.bool();return x;}
 function randomSaka(rng){const y=rng.int(1800,2100),m=rng.int(1,12);for(let d=31;d>=1;d--){const x={year:String(y),month:String(m),day:String(rng.int(1,d))};try{calendarDateToJdn("saka",x);return x;}catch{}}throw new Error("saka gen");}
 function randomFixed13(id,rng){const y=rng.int(1500,2200),m=rng.int(1,13);let max=m<=12?30:(mod(BigInt(y),4n)===3n?6:5);return{year:String(y),month:String(m),day:String(rng.int(1,max))};}
 function randomJapanese(rng){const [era,s,e]=rng.pick(JAPANESE_ERAS);const minY=1,maxY=e?Number(e[0]-s[0]+1n):20;for(let k=0;k<100;k++){const x={era,year:String(rng.int(minY,maxY)),month:String(rng.int(1,12)),day:String(rng.int(1,28))};try{calendarDateToJdn("japanese-imperial",x);return x;}catch{}}throw new Error("japanese gen");}
@@ -562,7 +562,7 @@ function genericEdges(id) {
     case"solar-hijri-arithmetic":return[{year:"-1",month:"1",day:"1"},{year:"1",month:"1",day:"1"},{year:"1403",month:"12",day:"29"},{year:"1404",month:"1",day:"1"},{year:"2820",month:"12",day:"29"}];
     case"chinese":return[{relatedYear:"2023",month:"1",day:"1",leapMonth:false},{relatedYear:"2026",month:"7",day:"1",leapMonth:false}];
     case"hindu-old-solar":return[{year:"0",month:"1",day:"1"},{year:"5127",month:"4",day:"30"},{year:"-1000",month:"12",day:"30"}];
-    case"hindu-old-lunar":return[{year:"5127",month:"5",day:"1",leapMonth:false},{year:"5127",month:"5",day:"1",leapMonth:true},{year:"0",month:"1",day:"1",leapMonth:false}];
+    case"hindu-old-lunar":return[{year:"5127",month:"5",day:"1",leapMonth:false},{year:"5127",month:"2",day:"1",leapMonth:true},{year:"0",month:"1",day:"1",leapMonth:false}];
     case"saka":return[{year:"1822",month:"1",day:"1"},{year:"1922",month:"1",day:"1"},{year:"2022",month:"1",day:"1"},{year:"1948",month:"12",day:"30"}];
     case"thai-buddhist":return[{year:"2443",month:"2",day:"28"},{year:"2543",month:"2",day:"29"},{year:"2643",month:"3",day:"1"}];
     case"ethiopic":return[{year:"2018",month:"1",day:"1"},{year:"2019",month:"13",day:"6"},{year:"2020",month:"1",day:"1"}];

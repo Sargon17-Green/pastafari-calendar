@@ -1,12 +1,14 @@
 # Calendar round-trip audit
 
-- Script: `PASTAFARI-CALENDAR-ROUNDTRIP-AUDIT-1.0.1`
-- Commit: `599a41c395193e8a2a3f3f2ddcaf86ddad81afb1`
+- Script: `PASTAFARI-CALENDAR-ROUNDTRIP-AUDIT-1.0.2`
+- Commit: `unknown`
+- GitHub `main` HEAD observed while packaging: `8ba4743bcb5d2e6a68ab9c55179e0a5ea4f0213f`
+- Provenance: `zip-source-hash` (the supplied ZIP has no `.git`; the patched working tree is uncommitted, so no commit SHA is invented)
 - Seed: `12345`
-- Node: `v26.7.0`; ICU: `78.3`
-- OS: `Windows_NT 10.0.26200`
-- Time zone: `Asia/Jerusalem`
-- Chromium: `151.0.7922.34` (browser smoke PASS)
+- Node: `v22.16.0`; ICU: `77.1`
+- OS: `Linux 6.18.35`
+- Time zone: `UTC`
+- Chromium: `Chromium 144.0.7559.96 built on Debian GNU/Linux 13 (trixie)`
 
 ## Summary
 
@@ -19,7 +21,7 @@
 | Random valid cases | 131200 |
 | Invalid-input cases | 134 |
 | Mismatches | 0 |
-| Validation failures | 1 |
+| Validation failures | 0 |
 | Unsupported-runtime cases | 0 |
 | Absolute/project anchors checked | 27 |
 
@@ -36,7 +38,7 @@
 | solar-hijri-arithmetic | exact-bijective arithmetic | test-only forward-guided search | not independent | 10053 | 10000 | 7 | 1 | PASS |
 | chinese | Intl-backed special-structure | Intl.DateTimeFormat chinese relatedYear/month/day | independent Intl representation | 1055 | 150 | 8 | 1 | PASS |
 | hindu-old-solar | potentially non-bijective floating-point | test-only local enumeration | not independent; canonical candidate search | 303 | 300 | 6 | 1 | PASS |
-| hindu-old-lunar | potentially non-bijective floating-point special-structure | test-only local enumeration | not independent; canonical candidate search | 303 | 300 | 7 | 1 | FAIL |
+| hindu-old-lunar | potentially non-bijective floating-point special-structure | test-only local enumeration | not independent; canonical candidate search | 303 | 300 | 7 | 1 | PASS |
 | saka | exact-bijective arithmetic | test-only inverse via Gregorian year boundary | independent structure; shares Gregorian inverse | 10076 | 10000 | 6 | 1 | PASS |
 | thai-buddhist | exact-bijective offset | Gregorian inverse + 543 | independent of Thai forward except shared Gregorian base | 10051 | 10000 | 6 | 1 | PASS |
 | ethiopic | exact-bijective arithmetic | test-only fixed-13-month inverse | independent inverse arithmetic | 10055 | 10000 | 7 | 1 | PASS |
@@ -534,60 +536,60 @@
     },
     "lunar": {
       "year": 5127,
-      "acceptedInputs": 744,
+      "acceptedInputs": 403,
       "uniqueJdns": 384,
-      "duplicateJdns": 327,
-      "maxMultiplicity": 4,
+      "duplicateJdns": 19,
+      "maxMultiplicity": 2,
       "skippedJdnsBetweenMinMax": 0,
       "maxGap": 0,
       "duplicateExamples": [
         [
-          "2461119",
+          "2461123",
           [
             {
               "year": "5127",
               "month": "1",
-              "day": "1",
+              "day": "5",
               "leapMonth": false
             },
             {
               "year": "5127",
               "month": "1",
+              "day": "6",
+              "leapMonth": false
+            }
+          ]
+        ],
+        [
+          "2461148",
+          [
+            {
+              "year": "5127",
+              "month": "1",
+              "day": "31",
+              "leapMonth": false
+            },
+            {
+              "year": "5127",
+              "month": "2",
               "day": "1",
               "leapMonth": true
             }
           ]
         ],
         [
-          "2461120",
+          "2461178",
           [
             {
               "year": "5127",
-              "month": "1",
-              "day": "2",
+              "month": "2",
+              "day": "1",
               "leapMonth": false
             },
             {
               "year": "5127",
-              "month": "1",
-              "day": "2",
-              "leapMonth": true
-            }
-          ]
-        ],
-        [
-          "2461121",
-          [
-            {
-              "year": "5127",
-              "month": "1",
-              "day": "3",
-              "leapMonth": false
-            },
-            {
-              "year": "5127",
-              "month": "1",
-              "day": "3",
+              "month": "2",
+              "day": "31",
               "leapMonth": true
             }
           ]
@@ -671,51 +673,7 @@
 
 ## FAIL
 
-### Failure 1: hindu-old-lunar / invalid-accepted:leap-flag-at-nonleap-position
-
-```json
-{
-  "id": 1,
-  "calendar": "hindu-old-lunar",
-  "kind": "invalid-accepted:leap-flag-at-nonleap-position",
-  "seed": 12345,
-  "input": {
-    "year": "5127",
-    "month": "1",
-    "day": "1",
-    "leapMonth": true
-  },
-  "normalizedInput": null,
-  "jdn1": null,
-  "reconstructed": null,
-  "jdn2": null,
-  "expected": null,
-  "actual": "accepted",
-  "error": "Error: Invalid input was accepted\n    at expectInvalid (file:///C:/Users/eliez/Downloads/pastafari-calendar-main%20(90)/scripts/run-calendar-roundtrip-audit.mjs:545:127)\n    at runInvalidMatrix (file:///C:/Users/eliez/Downloads/pastafari-calendar-main%20(90)/scripts/run-calendar-roundtrip-audit.mjs:761:74)\n    at main (file:///C:/Users/eliez/Downloads/pastafari-calendar-main%20(90)/scripts/run-calendar-roundtrip-audit.mjs:864:5)\n    at file:///C:/Users/eliez/Downloads/pastafari-calendar-main%20(90)/scripts/run-calendar-roundtrip-audit.mjs:889:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)\n    at async node:internal/modules/esm/loader:650:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)",
-  "runtime": {
-    "node": "v26.7.0",
-    "icu": "78.3",
-    "v8": "14.6.202.34-node.28",
-    "platform": "win32",
-    "arch": "x64",
-    "os": "Windows_NT 10.0.26200",
-    "timezone": "Asia/Jerusalem",
-    "chromium": "151.0.7922.34",
-    "intlCalendars": {
-      "islamic-umalqura": true,
-      "persian": true,
-      "chinese": true,
-      "hebrew": true,
-      "indian": true,
-      "ethiopic": true,
-      "coptic": true,
-      "japanese": true,
-      "roc": true
-    }
-  },
-  "commitSha": "599a41c395193e8a2a3f3f2ddcaf86ddad81afb1"
-}
-```
+None.
 
 ## WARN
 
@@ -724,29 +682,4 @@ None.
 ## Interpretation
 
 A PASS proves the properties exercised by this harness. For strategies marked non-independent, round-trip is evidence of internal consistency and boundary/canonicalization behavior, not an independent proof of absolute calendar correctness. Existing project JDN vectors are checked separately as anchors.
-## Browser smoke verification
 
-Browser smoke was executed on Windows with Chromium `151.0.7922.34` and returned **PASS** for all 8 checks:
-
-- inventory-19
-- intl-runtime-calendars
-- umm-al-qura-vector
-- persian-official-vector
-- chinese-vector
-- hebrew-textual-equivalence
-- japanese-gannen
-- month-choice-integrity
-
-No browser-smoke failures were reported.
-
-## Source provenance
-
-The audit was run from an extracted repository copy without `.git`, so the script originally reported `Commit: unknown`.
-After the run, the relevant source files were SHA-256 checked against current `main`, commit
-`599a41c395193e8a2a3f3f2ddcaf86ddad81afb1`, and matched exactly:
-
-- `docs/calendar-converters.js` — `a4fc3da69033670fdecd4bc9889d093f5b8bdbfc5a5e618c30a4c221a33b711a`
-- `docs/calendar-input-conventions.js` — `91f1344b70a734d856b34f947957a495b12fb3827d241b2a7bc0a469643388f8`
-- `docs/app.js` — `38f68bb8b1e8ba518b693150618e8753c1c38c7fc04261e3d4c43241a94da05c`
-
-Therefore the audit results are attributed to the relevant source state in that `main` commit.

@@ -95,3 +95,47 @@ test("invalid civil and era dates are rejected rather than normalized silently",
   assert.throws(() => calendarDateToJdn("japanese-imperial", { era: "heisei", year: "1", month: "1", day: "7" }), RangeError);
   assert.throws(() => calendarDateToJdn("bahai-tehran", { year: "1157", month: "1", day: "1" }), RangeError);
 });
+
+test("Old Hindu Lunar leap flags are accepted only at the model's intercalary month", () => {
+  assert.equal(
+    calendarDateToJdn("hindu-old-lunar", { year: "5127", month: "1", day: "1", leapMonth: false }),
+    2_461_119n,
+  );
+  assert.throws(
+    () => calendarDateToJdn("hindu-old-lunar", { year: "5127", month: "1", day: "1", leapMonth: true }),
+    RangeError,
+  );
+
+  assert.equal(
+    calendarDateToJdn("hindu-old-lunar", { year: "5127", month: "2", day: "1", leapMonth: true }),
+    2_461_148n,
+  );
+  assert.equal(
+    calendarDateToJdn("hindu-old-lunar", { year: "5127", month: "2", day: "30", leapMonth: true }),
+    2_461_177n,
+  );
+  assert.equal(
+    calendarDateToJdn("hindu-old-lunar", { year: "5127", month: "2", day: "1", leapMonth: false }),
+    2_461_178n,
+  );
+
+  assert.doesNotThrow(
+    () => calendarDateToJdn("hindu-old-lunar", { year: "5127", month: "1", day: "30", leapMonth: false }),
+  );
+  assert.throws(
+    () => calendarDateToJdn("hindu-old-lunar", { year: "5127", month: "3", day: "1", leapMonth: true }),
+    RangeError,
+  );
+  assert.doesNotThrow(
+    () => calendarDateToJdn("hindu-old-lunar", { year: "5127", month: "3", day: "1", leapMonth: false }),
+  );
+
+  for (let month = 1; month <= 12; month += 1) {
+    assert.throws(
+      () => calendarDateToJdn("hindu-old-lunar", { year: "5126", month: String(month), day: "1", leapMonth: true }),
+      RangeError,
+      `year 5126 month ${month}`,
+    );
+  }
+});
+
