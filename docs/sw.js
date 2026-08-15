@@ -1,13 +1,15 @@
 "use strict";
 
-const VERSION = "pastafari-static-c5db804-fast-only-16-ui-comparison-race-fix-i18n-all-89-layout";
+const VERSION = "pastafari-static-c5db804-fast-only-17-ui-race-fix-venus-day-boundary-i18n-all-89-layout";
 const CACHE = VERSION;
 const ASSETS = [
   "./index.html",
   "./styles.css?v=8-year-structure",
-  "./app.js?v=9-ui-race-fix",
+  "./app.js?v=10-venus-day-boundary",
   "./calendar-input-conventions.js?v=9-calendar-input-conventions",
   "./calendar-converters.js?v=8-year-structure",
+  "./observer-location.js?v=10-venus-day-boundary",
+  "./venus-day-boundary.js?v=10-venus-day-boundary",
   "./manifest.webmanifest?v=8-year-structure",
   "./icons/icon.svg?v=8-year-structure",
   "./icons/icon-192.png",
@@ -113,7 +115,14 @@ const scoped = (path) => new URL(path, self.registration.scope).href;
 self.addEventListener("install", (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE);
-    await cache.addAll(ASSETS.map(scoped));
+    // Reload avoids reusing an older HTTP-cache entry if a future deployment
+    // keeps a backwards-compatible asset URL.
+    await Promise.all(ASSETS.map(async (path) => {
+      const request = new Request(scoped(path), { cache: "reload" });
+      const response = await fetch(request);
+      if (!response.ok) throw new Error(`Failed to precache ${path}: HTTP ${response.status}`);
+      await cache.put(request, response);
+    }));
     await self.skipWaiting();
   })());
 });

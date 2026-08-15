@@ -46,8 +46,10 @@ test("service worker precaches every runtime i18n dependency", async () => {
   const required = [
     "./index.html",
     "./styles.css?v=8-year-structure",
-    "./app.js?v=9-ui-race-fix",
+    "./app.js?v=10-venus-day-boundary",
     "./calendar-converters.js?v=8-year-structure",
+    "./observer-location.js?v=10-venus-day-boundary",
+    "./venus-day-boundary.js?v=10-venus-day-boundary",
     "./manifest.webmanifest?v=8-year-structure",
     "./engine/pastafari-calendar-fast.js",
     "./engine/pastafari-fast-worker.js?v=8-year-structure",
@@ -84,7 +86,7 @@ test("service worker precaches every runtime i18n dependency", async () => {
   const html = await readFile(path.join(DOCS, "index.html"), "utf8");
   for (const entry of [
     "./styles.css?v=8-year-structure",
-    "./app.js?v=9-ui-race-fix",
+    "./app.js?v=10-venus-day-boundary",
     "./manifest.webmanifest?v=8-year-structure",
   ]) {
     assert.ok(html.includes(entry), `index.html must request the revisioned asset ${entry}`);

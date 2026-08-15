@@ -157,8 +157,18 @@ export function translate(locale, key, values = {}) {
 }
 
 const STALE_DAY_WARNING_TEMPLATES = Object.freeze({
-  en: "The local date changed from {previousDate} to {currentDate}. Because the day of working was the current date, the displayed dates are no longer up to date. They will be recalculated after you dismiss this message.",
-  he: "התאריך המקומי השתנה מ־{previousDate} ל־{currentDate}. מאחר שיום המעשה היה התאריך הנוכחי, התאריכים המוצגים כבר אינם מעודכנים. הם יחושבו מחדש לאחר סגירת ההודעה.",
+  en: "The current day changed from {previousDate} to {currentDate}. Because the day of working was the current day, the displayed dates are no longer up to date. They will be recalculated after you dismiss this message.",
+  he: "היום הנוכחי השתנה מ־{previousDate} ל־{currentDate}. מאחר שיום המעשה היה היום הנוכחי, התאריכים המוצגים כבר אינם מעודכנים. הם יחושבו מחדש לאחר סגירת ההודעה.",
+});
+
+const LOCATION_ASSUMPTION_TEMPLATES = Object.freeze({
+  en: "(In the absence of contrary information, the device is assumed to be in Kisurra.)",
+  he: "(בהיעדר מידע סותר, הונח שהמכשיר נמצא בקיסורה.)",
+});
+
+const LOCATION_USE_DEVICE_TEMPLATES = Object.freeze({
+  en: "Use device location",
+  he: "השתמש במיקום המכשיר",
 });
 
 export function staleDayWarning(locale, values = {}) {
@@ -167,6 +177,14 @@ export function staleDayWarning(locale, values = {}) {
     if (!(name in values)) throw new RangeError(`Missing interpolation value ${name} for stale-day warning`);
     return String(values[name]);
   });
+}
+
+export function locationAssumptionNotice(locale) {
+  return LOCATION_ASSUMPTION_TEMPLATES[canonicalTag(locale?.code)] ?? LOCATION_ASSUMPTION_TEMPLATES.en;
+}
+
+export function locationUseDeviceLabel(locale) {
+  return LOCATION_USE_DEVICE_TEMPLATES[canonicalTag(locale?.code)] ?? LOCATION_USE_DEVICE_TEMPLATES.en;
 }
 
 export function calendarLabel(locale, type, index) {

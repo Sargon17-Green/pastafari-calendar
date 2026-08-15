@@ -4,7 +4,6 @@ import {
   CALENDAR_DEFINITIONS,
   calendarDateToJdn,
   getCalendarDefinition,
-  gregorianToJdn,
   jdnToGregorian,
 } from "./calendar-converters.js?v=8-year-structure";
 import {
@@ -12,7 +11,22 @@ import {
   normalizeCalendarInputValues,
   usesTextualCalendarNumeral,
 } from "./calendar-input-conventions.js?v=9-calendar-input-conventions";
-import { calendarLabel, getLocale, staleDayWarning, translate, validateLocaleResources } from "./i18n/registry.js?v=8-year-structure";
+import {
+  calendarLabel,
+  getLocale,
+  locationAssumptionNotice,
+  locationUseDeviceLabel,
+  staleDayWarning,
+  translate,
+  validateLocaleResources,
+} from "./i18n/registry.js?v=8-year-structure";
+import {
+  KISURRA_OBSERVER,
+  requestObserverLocation,
+  resolveObserverLocation,
+  watchObserverPermission,
+} from "./observer-location.js?v=10-venus-day-boundary";
+import { currentDayAt } from "./venus-day-boundary.js?v=10-venus-day-boundary";
 import {
   applyDocumentLocale,
   persistLanguage,
@@ -37,6 +51,7 @@ let dateFormatter = null;
 let lastVisibleErrorKey = null;
 let loadSequence = 0;
 let comparisonSequence = 0;
+let observerLocation = KISURRA_OBSERVER;
 let state = {
   targetJdn: null,
   viewAnchorJdn: null,
@@ -44,10 +59,10 @@ let state = {
   comparisonJdn: null,
   comparisonFollowsNextAction: true,
   comparisonEnabled: false,
-  targetIsLocalToday: true,
-  calculationIsLocalToday: true,
-  localDate: null,
-  localTodayJdn: null,
+  targetFollowsCurrentDay: true,
+  calculationFollowsCurrentDay: true,
+  currentDayDate: null,
+  currentDayJdn: null,
   view: null,
   comparisonDays: null,
   yearStructure: null,
@@ -133,12 +148,11 @@ worker.addEventListener("error", (event) => {
   showError(localizedError("error.engineLoadFailed", event.message));
 });
 
-function localToday() {
-  const now = new Date();
+function currentDaySnapshot(now = new Date()) {
+  const snapshot = currentDayAt(now, observerLocation);
   return Object.freeze({
-    year: BigInt(now.getFullYear()),
-    month: now.getMonth() + 1,
-    day: now.getDate(),
+    ...snapshot,
+    date: jdnToGregorian(snapshot.jdn),
   });
 }
 
@@ -174,8 +188,8 @@ function historyUrl() {
   url.searchParams.set("t", state.targetJdn.toString());
   url.searchParams.set("v", state.viewAnchorJdn.toString());
   url.searchParams.set("c", state.calculationJdn.toString());
-  if (state.targetIsLocalToday) url.searchParams.set("today", "1");
-  if (state.calculationIsLocalToday) url.searchParams.set("ctoday", "1");
+  if (state.targetFollowsCurrentDay) url.searchParams.set("today", "1");
+  if (state.calculationFollowsCurrentDay) url.searchParams.set("ctoday", "1");
   if (state.comparisonEnabled) {
     url.searchParams.set("compare", "1");
     url.searchParams.set("c2", state.comparisonJdn.toString());
@@ -314,7 +328,7 @@ function dateAria(day) {
 
 function renderTargetBeacon() {
   const target = state.view?.days.find((day) => day.jdn === state.targetJdn);
-  const markerKey = state.targetIsLocalToday ? "target.today" : "target.searched";
+  const markerKey = state.targetFollowsCurrentDay ? "target.today" : "target.searched";
   elements["target-marker"].textContent = t(markerKey);
   elements["target-date-lines"].replaceChildren();
   if (target) {
@@ -324,10 +338,18 @@ function renderTargetBeacon() {
     line.textContent = t("target.notInView");
     elements["target-date-lines"].append(line);
   }
-  elements["target-context"].textContent = t("target.context", {
+  const context = t("target.context", {
     targetDate: formatJdnAsGregorian(state.targetJdn),
     actionDate: formatJdnAsGregorian(state.calculationJdn),
   });
+  const contextElement = elements["target-context"];
+  contextElement.replaceChildren(document.createTextNode(context));
+  if (observerLocation.assumed) {
+    contextElement.append(
+      document.createTextNode(` ${locationAssumptionNotice(activeLocale)} `),
+      createLocationActionButton(),
+    );
+  }
 }
 
 function renderView(view, { scrollToTarget = true } = {}) {
@@ -365,7 +387,7 @@ function renderView(view, { scrollToTarget = true } = {}) {
       card.setAttribute("aria-current", "date");
       const badge = document.createElement("span");
       badge.className = "target-badge";
-      badge.textContent = t(state.targetIsLocalToday ? "target.today" : "target.searched");
+      badge.textContent = t(state.targetFollowsCurrentDay ? "target.today" : "target.searched");
       card.append(badge);
     }
     card.append(...makeDateLines(day));
@@ -388,6 +410,25 @@ function renderView(view, { scrollToTarget = true } = {}) {
       });
     });
   }
+}
+
+function createLocationActionButton() {
+  const locationButton = document.createElement("button");
+  locationButton.type = "button";
+  locationButton.className = "secondary-action";
+  locationButton.textContent = locationUseDeviceLabel(activeLocale);
+  locationButton.addEventListener("click", async () => {
+    locationButton.disabled = true;
+    try {
+      const nextObserver = await requestObserverLocation({ timeoutMs: 10_000 });
+      await updateObserverLocation(nextObserver);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      if (locationButton.isConnected) locationButton.disabled = false;
+    }
+  });
+  return locationButton;
 }
 
 function renderYearStructureLoading(view) {
@@ -747,9 +788,9 @@ function showFormError(kind, error) {
   configuration.error.focus?.();
 }
 
-function goToday({ replaceHistory = false } = {}) {
-  const date = localToday();
-  const jdn = gregorianToJdn(date);
+function initializeToday({ replaceHistory = false } = {}) {
+  const snapshot = currentDaySnapshot();
+  const jdn = snapshot.jdn;
   state = {
     ...state,
     targetJdn: jdn,
@@ -757,10 +798,10 @@ function goToday({ replaceHistory = false } = {}) {
     calculationJdn: jdn,
     comparisonJdn: jdn + 1n,
     comparisonFollowsNextAction: true,
-    targetIsLocalToday: true,
-    calculationIsLocalToday: true,
-    localDate: date,
-    localTodayJdn: jdn,
+    targetFollowsCurrentDay: true,
+    calculationFollowsCurrentDay: true,
+    currentDayDate: snapshot.date,
+    currentDayJdn: jdn,
   };
   initializeDateForm("target", jdn);
   initializeDateForm("action", jdn);
@@ -768,13 +809,26 @@ function goToday({ replaceHistory = false } = {}) {
   return loadCutlet({ replaceHistory });
 }
 
+function goToday({ replaceHistory = false } = {}) {
+  const snapshot = currentDaySnapshot();
+  const jdn = snapshot.jdn;
+  state.targetJdn = jdn;
+  state.viewAnchorJdn = jdn;
+  state.targetFollowsCurrentDay = true;
+  state.currentDayDate = snapshot.date;
+  state.currentDayJdn = jdn;
+  initializeDateForm("target", jdn);
+  // Deliberately preserve an explicitly selected day of working.
+  return loadCutlet({ replaceHistory });
+}
+
 function loadFromUrl() {
   const params = new URL(location.href).searchParams;
-  const today = localToday();
-  const todayJdn = gregorianToJdn(today);
+  const snapshot = currentDaySnapshot();
+  const todayJdn = snapshot.jdn;
   const targetJdn = readBigIntParameter(params, "t");
   const calculationJdn = readBigIntParameter(params, "c");
-  if (targetJdn === null || calculationJdn === null) return goToday({ replaceHistory: true });
+  if (targetJdn === null || calculationJdn === null) return initializeToday({ replaceHistory: true });
   const comparisonParameter = readBigIntParameter(params, "c2");
   state = {
     ...state,
@@ -784,10 +838,10 @@ function loadFromUrl() {
     comparisonJdn: comparisonParameter ?? calculationJdn + 1n,
     comparisonFollowsNextAction: comparisonParameter === null,
     comparisonEnabled: params.get("compare") === "1",
-    targetIsLocalToday: params.get("today") === "1" && targetJdn === todayJdn,
-    calculationIsLocalToday: params.get("ctoday") === "1" && calculationJdn === todayJdn,
-    localDate: today,
-    localTodayJdn: todayJdn,
+    targetFollowsCurrentDay: params.get("today") === "1" && targetJdn === todayJdn,
+    calculationFollowsCurrentDay: params.get("ctoday") === "1" && calculationJdn === todayJdn,
+    currentDayDate: snapshot.date,
+    currentDayJdn: todayJdn,
   };
   initializeDateForm("target", targetJdn);
   initializeDateForm("action", calculationJdn);
@@ -875,7 +929,7 @@ formConfigurations.target.form.addEventListener("submit", (event) => {
     const jdn = readDateForm("target");
     state.targetJdn = jdn;
     state.viewAnchorJdn = jdn;
-    state.targetIsLocalToday = jdn === state.localTodayJdn;
+    state.targetFollowsCurrentDay = jdn === state.currentDayJdn;
     loadCutlet();
   } catch (error) {
     showFormError("target", error);
@@ -887,7 +941,7 @@ formConfigurations.action.form.addEventListener("submit", (event) => {
   try {
     const jdn = readDateForm("action");
     state.calculationJdn = jdn;
-    state.calculationIsLocalToday = jdn === state.localTodayJdn;
+    state.calculationFollowsCurrentDay = jdn === state.currentDayJdn;
     if (state.comparisonFollowsNextAction) {
       state.comparisonJdn = jdn + 1n;
       initializeDateForm("comparison", state.comparisonJdn);
@@ -900,13 +954,13 @@ formConfigurations.action.form.addEventListener("submit", (event) => {
 });
 
 elements["reset-action-day"].addEventListener("click", () => {
-  state.calculationJdn = state.localTodayJdn;
-  state.calculationIsLocalToday = true;
+  state.calculationJdn = state.currentDayJdn;
+  state.calculationFollowsCurrentDay = true;
   if (state.comparisonFollowsNextAction) {
-    state.comparisonJdn = state.localTodayJdn + 1n;
+    state.comparisonJdn = state.currentDayJdn + 1n;
     initializeDateForm("comparison", state.comparisonJdn);
   }
-  initializeDateForm("action", state.localTodayJdn);
+  initializeDateForm("action", state.currentDayJdn);
   state.viewAnchorJdn = state.targetJdn;
   loadCutlet();
 });
@@ -947,28 +1001,40 @@ window.addEventListener("popstate", () => {
   loadFromUrl();
 });
 
-function refreshLocalDay() {
-  if (document.visibilityState === "hidden") return;
-  const today = localToday();
-  const todayJdn = gregorianToJdn(today);
-  if (todayJdn === state.localTodayJdn) return;
+function sameObserver(left, right) {
+  return Boolean(left && right
+    && left.assumed === right.assumed
+    && left.latitude === right.latitude
+    && left.longitude === right.longitude
+    && left.elevationM === right.elevationM);
+}
 
-  const calculationWasLocalToday = state.calculationIsLocalToday;
-  if (calculationWasLocalToday) {
+function refreshCurrentDay() {
+  if (document.visibilityState === "hidden") return;
+  const snapshot = currentDaySnapshot();
+  const todayJdn = snapshot.jdn;
+  if (todayJdn === state.currentDayJdn) {
+    state.currentDayDate = snapshot.date;
+    if (state.view) renderTargetBeacon();
+    return;
+  }
+
+  const calculationWasCurrentDay = state.calculationFollowsCurrentDay;
+  if (calculationWasCurrentDay && state.currentDayJdn !== null) {
     alert(staleDayWarning(activeLocale, {
-      previousDate: formatJdnAsGregorian(state.localTodayJdn),
+      previousDate: formatJdnAsGregorian(state.currentDayJdn),
       currentDate: formatJdnAsGregorian(todayJdn),
     }));
   }
 
-  state.localDate = today;
-  state.localTodayJdn = todayJdn;
-  if (state.targetIsLocalToday) {
+  state.currentDayDate = snapshot.date;
+  state.currentDayJdn = todayJdn;
+  if (state.targetFollowsCurrentDay) {
     state.targetJdn = todayJdn;
     state.viewAnchorJdn = todayJdn;
     initializeDateForm("target", todayJdn);
   }
-  if (calculationWasLocalToday) {
+  if (calculationWasCurrentDay) {
     state.calculationJdn = todayJdn;
     initializeDateForm("action", todayJdn);
     if (state.comparisonFollowsNextAction) {
@@ -976,31 +1042,67 @@ function refreshLocalDay() {
       initializeDateForm("comparison", state.comparisonJdn);
     }
   }
-  if (state.targetIsLocalToday || calculationWasLocalToday) loadCutlet({ replaceHistory: true });
+  if (state.targetFollowsCurrentDay || calculationWasCurrentDay) loadCutlet({ replaceHistory: true });
+  else if (state.view) renderTargetBeacon();
 }
 
-let localDayRefreshTimer = null;
+let currentDayRefreshTimer = null;
 
-function scheduleLocalDayRefresh() {
-  if (localDayRefreshTimer !== null) clearTimeout(localDayRefreshTimer);
-  const nextMidnight = new Date();
-  nextMidnight.setHours(24, 0, 0, 50);
-  localDayRefreshTimer = setTimeout(() => {
-    localDayRefreshTimer = null;
-    refreshLocalDay();
-    scheduleLocalDayRefresh();
-  }, Math.max(0, nextMidnight.getTime() - Date.now()));
+function clearCurrentDayRefreshTimer() {
+  if (currentDayRefreshTimer !== null) {
+    clearTimeout(currentDayRefreshTimer);
+    currentDayRefreshTimer = null;
+  }
 }
 
-document.addEventListener("visibilitychange", refreshLocalDay);
-window.addEventListener("pageshow", () => {
-  refreshLocalDay();
-  scheduleLocalDayRefresh();
+function scheduleCurrentDayRefresh() {
+  clearCurrentDayRefreshTimer();
+  if (document.visibilityState === "hidden") return;
+  const snapshot = currentDaySnapshot();
+  const delay = Math.max(0, snapshot.nextBoundary.instant.getTime() - Date.now() + 250);
+  currentDayRefreshTimer = setTimeout(() => {
+    currentDayRefreshTimer = null;
+    refreshCurrentDay();
+    scheduleCurrentDayRefresh();
+  }, delay);
+}
+
+async function updateObserverLocation(nextObserver) {
+  if (sameObserver(observerLocation, nextObserver)) return;
+  observerLocation = nextObserver;
+  refreshCurrentDay();
+  scheduleCurrentDayRefresh();
+}
+
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") {
+    clearCurrentDayRefreshTimer();
+    return;
+  }
+  refreshCurrentDay();
+  scheduleCurrentDayRefresh();
 });
-scheduleLocalDayRefresh();
+window.addEventListener("pageshow", () => {
+  refreshCurrentDay();
+  scheduleCurrentDayRefresh();
+});
 
 if ("serviceWorker" in navigator) {
   addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}), { once: true });
 }
 
-loadFromUrl();
+async function startApplication() {
+  observerLocation = await resolveObserverLocation({ timeoutMs: 2_000 });
+  await loadFromUrl();
+  scheduleCurrentDayRefresh();
+  watchObserverPermission((nextObserver) => {
+    updateObserverLocation(nextObserver).catch((error) => console.error(error));
+  }).catch((error) => console.error(error));
+}
+
+startApplication().catch((error) => {
+  console.error(error);
+  observerLocation = KISURRA_OBSERVER;
+  loadFromUrl();
+  scheduleCurrentDayRefresh();
+});
