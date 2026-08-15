@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { spawn, spawnSync } from "node:child_process";
+import { appendFileSync, mkdirSync, writeFileSync } from "node:fs";
 import { readFile, writeFile } from "node:fs/promises";
 import { createInterface } from "node:readline";
 import { dirname, resolve } from "node:path";
@@ -22,6 +23,7 @@ const buildDir = resolve(cobolDir, "build");
 const batchExe = resolve(buildDir, `pastafari-batch${process.platform === "win32" ? ".exe" : ""}`);
 const requestPath = resolve(buildDir, "cobol-validation-requests.txt");
 const reportPath = resolve(buildDir, "cobol-validation-report.json");
+const progressPath = resolve(buildDir, "cobol-validation-progress.log");
 const fastPath = resolve(repoRoot, "browser/pastafari-calendar-fast.js");
 const enginePath = resolve(cobolDir, "src/pastafari-engine.cob");
 const runtimePath = resolve(cobolDir, "runtime/pastafari_bigint.c");
@@ -62,6 +64,47 @@ let rngState = Number(BigInt.asUintN(32, BigInt(seedText)));
 if (rngState === 0) rngState = 0x50a7fa81;
 const initialSeed = rngState >>> 0;
 const startedAt = new Date();
+const progressEvery = envInt("PASTAFARI_COBOL_PROGRESS_EVERY", 250, 1);
+const reverseProgressEvery = envInt("PASTAFARI_COBOL_REVERSE_PROGRESS_EVERY", 25, 1);
+const heartbeatSeconds = envInt("PASTAFARI_COBOL_HEARTBEAT_SECONDS", 15, 1);
+
+mkdirSync(buildDir, { recursive: true });
+writeFileSync(progressPath, "", "utf8");
+
+function durationText(ms) {
+  const totalSeconds = Math.max(0, Math.floor(ms / 1000));
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  if (hours > 0) return `${hours}h${String(minutes).padStart(2, "0")}m${String(seconds).padStart(2, "0")}s`;
+  if (minutes > 0) return `${minutes}m${String(seconds).padStart(2, "0")}s`;
+  return `${seconds}s`;
+}
+
+function progress(message) {
+  const now = new Date();
+  const line = `[${now.toISOString()} +${durationText(now.getTime() - startedAt.getTime())}] ${message}`;
+  console.log(line);
+  appendFileSync(progressPath, `${line}\n`, "utf8");
+}
+
+function progressPoint(done, total, every) {
+  return done <= 5 || done === total || done % every === 0;
+}
+
+function progressCounter(phase, done, total, phaseStartedAt, extra = "") {
+  const elapsedMs = Date.now() - phaseStartedAt;
+  const rate = elapsedMs > 0 && done > 0 ? done / (elapsedMs / 1000) : 0;
+  const remaining = total - done;
+  const etaMs = rate > 0 ? (remaining / rate) * 1000 : null;
+  progress(
+    `[${phase}] ${done}/${total}`
+    + ` (${total > 0 ? ((done / total) * 100).toFixed(1) : "100.0"}%)`
+    + ` rate=${rate.toFixed(2)}/s`
+    + `${etaMs === null ? "" : ` eta=${durationText(etaMs)}`}`
+    + `${extra ? ` ${extra}` : ""}`,
+  );
+}
 
 function nextU32() {
   let x = rngState >>> 0;
@@ -229,34 +272,65 @@ for (const checkpointJdn of parsedCheckpointPositions) {
   }
 }
 
-console.log("Preparing dense cutlet-boundary coverage...");
+progress("[prepare-dense] start referenceCalculationDays=3");
+const denseStartedAt = Date.now();
+let denseProbe = 0;
 for (const calculationJdn of [FOUNDATION_JDN, 2_451_545n, REFERENCE_JDN]) {
+  progress(`[prepare-dense] calculationJdn=${calculationJdn} locating current cutlet`);
   const current = getCutletView(calculationJdn, { calculationJdn });
   for (const probeJdn of [current.previousCutletJdn, calculationJdn, current.nextCutletJdn]) {
+    denseProbe += 1;
+    progress(`[prepare-dense] probe=${denseProbe}/9 calculationJdn=${calculationJdn} probeJdn=${probeJdn} start`);
     const view = getCutletView(probeJdn, { calculationJdn });
     for (const day of view.days) addForward(calculationJdn, day.jdn, false, "dense-cutlet");
+    progress(`[prepare-dense] probe=${denseProbe}/9 completed days=${view.days.length}`);
   }
 }
+progress(`[prepare-dense] done probes=${denseProbe} elapsed=${durationText(Date.now() - denseStartedAt)}`);
 
-console.log("Preparing calculation-day sensitivity sweep...");
+const sweepTotal = 733;
+const sweepStartedAt = Date.now();
+progress(`[prepare-sweep] start total=${sweepTotal} fixedTargetJdn=${REFERENCE_JDN}`);
+let sweepDone = 0;
 for (let offset = -366n; offset <= 366n; offset += 1n) {
-  addForward(REFERENCE_JDN + offset, REFERENCE_JDN, false, "calculation-day-sweep");
+  const calculationJdn = REFERENCE_JDN + offset;
+  const sequence = sweepDone + 1;
+  if (progressPoint(sequence, sweepTotal, 25)) {
+    progress(`[prepare-sweep] starting ${sequence}/${sweepTotal} calculationJdn=${calculationJdn} offset=${offset}`);
+  }
+  const caseStartedAt = Date.now();
+  addForward(calculationJdn, REFERENCE_JDN, false, "calculation-day-sweep");
+  sweepDone = sequence;
+  if (progressPoint(sweepDone, sweepTotal, 25)) {
+    progressCounter(
+      "prepare-sweep", sweepDone, sweepTotal, sweepStartedAt,
+      `calculationJdn=${calculationJdn} caseMs=${Date.now() - caseStartedAt}`,
+    );
+  }
 }
+progress(`[prepare-sweep] done elapsed=${durationText(Date.now() - sweepStartedAt)}`);
 
-console.log(`Preparing ${randomCases} deterministic random forward cases...`);
+const randomForwardStartedAt = Date.now();
+progress(`[prepare-forward] start total=${randomCases} seed=0x${initialSeed.toString(16).padStart(8, "0")}`);
 for (let i = 0; i < randomCases; i += 1) {
   const calculationJdn = randomCalculationJdn();
   const targetJdn = calculationJdn + randomTargetOffset();
   const id = addForward(calculationJdn, targetJdn, i < knownReverseCases, "random");
   randomForwardIds.push(id);
-  if ((i + 1) % 1000 === 0 || i + 1 === randomCases) {
-    console.log(`[prepare-forward] ${i + 1}/${randomCases}`);
+  const done = i + 1;
+  if (progressPoint(done, randomCases, progressEvery)) {
+    progressCounter("prepare-forward", done, randomCases, randomForwardStartedAt, `calculationJdn=${calculationJdn} targetJdn=${targetJdn}`);
   }
 }
 
-console.log(`Preparing ${knownReverseCases} direct known-calculation reverse cases...`);
+const knownReverseStartedAt = Date.now();
+progress(`[prepare-known-reverse] start total=${knownReverseCases} directJsReverse=${jsReverseCases}`);
 for (let i = 0; i < knownReverseCases; i += 1) {
   const source = forwardExpected.get(randomForwardIds[i]);
+  const sequence = i + 1;
+  if (progressPoint(sequence, knownReverseCases, reverseProgressEvery)) {
+    progress(`[prepare-known-reverse] starting ${sequence}/${knownReverseCases} calculationJdn=${source.calculationJdn} targetJdn=${source.targetJdn}`);
+  }
   let expectedTargetJdn = source.targetJdn;
   if (i < jsReverseCases) {
     const jsFound = await findPastafariDate(source.expected, { calculationJdn: source.calculationJdn });
@@ -269,6 +343,9 @@ for (let i = 0; i < knownReverseCases; i += 1) {
     source.calculationJdn, source.expected, expectedTargetJdn, true,
     i < jsReverseCases ? "direct-js-reverse" : "js-forward-derived",
   );
+  if (progressPoint(sequence, knownReverseCases, reverseProgressEvery)) {
+    progressCounter("prepare-known-reverse", sequence, knownReverseCases, knownReverseStartedAt);
+  }
 }
 
 for (let i = 0; i < invalidReverseCases; i += 1) {
@@ -282,18 +359,26 @@ for (let i = 0; i < invalidReverseCases; i += 1) {
   );
 }
 
-console.log(`Preparing ${selfExactCases} exact c=t cases...`);
+const selfExactStartedAt = Date.now();
+progress(`[prepare-self-exact] start total=${selfExactCases}`);
 for (let i = 0; i < selfExactCases; i += 1) {
   const jdn = randomCalculationJdn();
   const wanted = canonical(calendar.convertJdn(jdn, { calculationJdn: jdn }));
   addSelf(wanted, jdn, jdn, [jdn], "self-exact");
+  const done = i + 1;
+  if (progressPoint(done, selfExactCases, Math.max(1, Math.min(10, reverseProgressEvery)))) {
+    progressCounter("prepare-self-exact", done, selfExactCases, selfExactStartedAt, `jdn=${jdn}`);
+  }
 }
 
-console.log(`Preparing ${selfRangeCases} bounded c=t candidate-list comparisons...`);
+const selfRangeStartedAt = Date.now();
+progress(`[prepare-self-range] start total=${selfRangeCases} radius=${selfRangeRadius}`);
 for (let i = 0; i < selfRangeCases; i += 1) {
   const center = randomCalculationJdn();
   const startJdn = center - BigInt(selfRangeRadius);
   const endJdn = center + BigInt(selfRangeRadius);
+  const sequence = i + 1;
+  progress(`[prepare-self-range] starting ${sequence}/${selfRangeCases} center=${center} range=${startJdn}..${endJdn}`);
   const wanted = canonical(calendar.convertJdn(center, { calculationJdn: center }));
   const jsFound = await findPastafariDate(wanted, {
     calculationDate: SAME_AS_TARGET,
@@ -301,9 +386,12 @@ for (let i = 0; i < selfRangeCases; i += 1) {
     yieldEvery: 64,
   });
   addSelf(wanted, startJdn, endJdn, jsFound.map((item) => item.targetJdn), "self-bounded-range");
+  progressCounter("prepare-self-range", sequence, selfRangeCases, selfRangeStartedAt, `matches=${jsFound.length}`);
 }
 
+progress(`[prepare] writing request corpus requests=${requestLines.length} path=${requestPath}`);
 await writeFile(requestPath, `${requestLines.join("\n")}\n`, "utf8");
+progress(`[prepare] request corpus ready requests=${requestLines.length}`);
 
 const mismatchLimit = 50;
 const mismatches = [];
@@ -321,6 +409,9 @@ const counts = {
 function mismatch(kind, id, details) {
   mismatchTotal += 1;
   if (mismatches.length < mismatchLimit) mismatches.push({ kind, id, ...details });
+  if (mismatchTotal <= 5 || mismatchTotal % 10 === 0) {
+    progress(`[mismatch] total=${mismatchTotal} kind=${kind} id=${id || "-"}`);
+  }
 }
 
 function parseBig(text) {
@@ -379,8 +470,8 @@ function processOutputLine(raw) {
         });
       }
     }
-    if (counts.forwardSeen % 1000 === 0 || counts.forwardSeen === counts.forwardExpected) {
-      console.log(`[forward] ${counts.forwardSeen}/${counts.forwardExpected}; mismatches=${mismatchTotal}`);
+    if (counts.forwardSeen <= 5 || counts.forwardSeen % progressEvery === 0 || counts.forwardSeen === counts.forwardExpected) {
+      progress(`[batch-forward] ${counts.forwardSeen}/${counts.forwardExpected} mismatches=${mismatchTotal}`);
     }
     return;
   }
@@ -392,6 +483,9 @@ function processOutputLine(raw) {
       return;
     }
     counts.knownReverseSeen += 1;
+    if (counts.knownReverseSeen <= 5 || counts.knownReverseSeen % reverseProgressEvery === 0 || counts.knownReverseSeen === counts.knownReverseExpected) {
+      progress(`[batch-known-reverse] ${counts.knownReverseSeen}/${counts.knownReverseExpected} mismatches=${mismatchTotal}`);
+    }
     const status = parseNum(fields[2]);
     const found = fields[4] === "Y";
     const target = parseBig(fields[5]);
@@ -416,6 +510,7 @@ function processOutputLine(raw) {
       return;
     }
     counts.selfSeen += 1;
+    progress(`[batch-self] ${counts.selfSeen}/${counts.selfExpected} id=${id}`);
     expected.header = {
       status: parseNum(fields[2]),
       statusCode: fields[3]?.trim(),
@@ -444,12 +539,13 @@ function processOutputLine(raw) {
   mismatch("unexpected-output", id ?? "", { raw });
 }
 
-console.log(`Running ${requestLines.length} COBOL requests from seed 0x${initialSeed.toString(16).padStart(8, "0")}...`);
+progress(`[batch] starting requests=${requestLines.length} seed=0x${initialSeed.toString(16).padStart(8, "0")} executable=${batchExe}`);
 const child = spawn(batchExe, [requestPath], {
   cwd: cobolDir,
   env: process.env,
   stdio: ["ignore", "pipe", "pipe"],
 });
+progress(`[batch] child started pid=${child.pid ?? "unknown"}`);
 let stderr = "";
 child.stderr.setEncoding("utf8");
 child.stderr.on("data", (chunk) => {
@@ -457,10 +553,22 @@ child.stderr.on("data", (chunk) => {
 });
 const rl = createInterface({ input: child.stdout, crlfDelay: Infinity });
 rl.on("line", processOutputLine);
+const heartbeat = setInterval(() => {
+  progress(
+    `[heartbeat] phase=batch pid=${child.pid ?? "unknown"}`
+    + ` forward=${counts.forwardSeen}/${counts.forwardExpected}`
+    + ` knownReverse=${counts.knownReverseSeen}/${counts.knownReverseExpected}`
+    + ` self=${counts.selfSeen}/${counts.selfExpected}`
+    + ` mismatches=${mismatchTotal}`,
+  );
+}, heartbeatSeconds * 1000);
+heartbeat.unref();
 const exitCode = await new Promise((resolveExit, rejectExit) => {
   child.on("error", rejectExit);
   child.on("close", resolveExit);
 });
+clearInterval(heartbeat);
+progress(`[batch] child exited code=${exitCode}`);
 
 if (exitCode !== 0) mismatch("batch-process-exit", "", { exitCode, stderr: stderr.slice(-20_000) });
 if (counts.forwardSeen !== counts.forwardExpected) mismatch("missing-forward-results", "", { expected: counts.forwardExpected, seen: counts.forwardSeen });
@@ -526,6 +634,9 @@ const report = {
     selfExactCases,
     selfRangeCases,
     selfRangeRadius,
+    progressEvery,
+    reverseProgressEvery,
+    heartbeatSeconds,
   },
   counts,
   coverage: {
@@ -539,6 +650,11 @@ const report = {
     dayInMonthMin: Number.isFinite(coverage.dayInMonthMin) ? coverage.dayInMonthMin : null,
     dayInMonthMax: coverage.dayInMonthMax,
   },
+  artifacts: {
+    requestCorpus: requestPath,
+    report: reportPath,
+    rollingProgressLog: progressPath,
+  },
   mismatchTotal,
   mismatchCountRecorded: mismatches.length,
   mismatchRecordingLimit: mismatchLimit,
@@ -546,14 +662,15 @@ const report = {
 };
 await writeFile(reportPath, `${JSON.stringify(report, null, 2)}\n`, "utf8");
 
-console.log(`Validation result: ${report.result}`);
-console.log(`Report: ${reportPath}`);
+progress(`[result] validation=${report.result}`);
+progress(`[result] report=${reportPath}`);
+progress(`[result] rollingLog=${progressPath}`);
 if (mismatchTotal !== 0) {
   console.error(JSON.stringify(mismatches.slice(0, 5), null, 2));
   process.exitCode = 1;
 } else {
   assert.equal(exitCode, 0);
-  console.log(
+  progress(
     `PASS: ${counts.forwardSeen} forward comparisons, ${counts.forwardReverseChecked} COBOL forward→reverse checks, `
     + `${counts.knownReverseSeen} JS→COBOL known-reverse checks, and ${counts.selfSeen} c=t reverse comparisons.`,
   );
