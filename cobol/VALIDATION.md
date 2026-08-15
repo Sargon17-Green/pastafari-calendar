@@ -120,6 +120,37 @@ PASTAFARI_COBOL_SEED=0x12345678 make -C cobol soak
 - `PASTAFARI_COBOL_SELF_RANGE_RADIUS`
 - `PASTAFARI_COBOL_SEED`
 
+
+## Rolling progress log
+
+The validation script now mirrors progress continuously to:
+
+```text
+cobol/build/cobol-validation-progress.log
+```
+
+Each progress entry has an ISO timestamp and elapsed run time. Preparation phases
+report the current/total case count and the JDN being processed. The calculation-day
+sensitivity sweep logs the first five cases and then every 25 cases, including a
+`starting` line before the expensive conversion. The COBOL batch phase emits periodic
+result counters plus a heartbeat even when the child process has produced no new
+output. This makes a stalled case distinguishable from a merely slow phase.
+
+The full shell transcript can still be captured separately:
+
+```sh
+make -C cobol validation 2>&1 | tee cobol-validation-console.log
+```
+
+The `tee` log includes compiler/Make output; the rolling progress log covers the Node
+validation phase and is updated during the run.
+
+Progress frequency can be tuned without changing the test corpus:
+
+- `PASTAFARI_COBOL_PROGRESS_EVERY` (default `250`) - forward preparation/batch interval.
+- `PASTAFARI_COBOL_REVERSE_PROGRESS_EVERY` (default `25`) - reverse preparation/batch interval.
+- `PASTAFARI_COBOL_HEARTBEAT_SECONDS` (default `15`) - batch heartbeat interval.
+
 ## Evidence produced
 
 A run writes:
@@ -149,3 +180,15 @@ can be reproduced. `cobol/build/` is ignored by Git.
 For a release/merge verification record, copy the PASS report into
 `verification/evidence/` with a name that includes the commit and date. Do not
 publish a FAIL report as evidence of compatibility; keep it only for debugging.
+
+## Recorded full validation pass
+
+A full standard-profile run completed with `PASS` on 2026-08-15 under Windows/MSYS2 UCRT64 with GnuCOBOL 3.2.0, Node.js v24.18.1 and `cc` 16.2.0. It recorded 18,195 forward comparisons, 1,348 COBOL forward-to-reverse checks, 1,200 JS-to-COBOL known-reverse checks and 62 `c=t` reverse comparisons, with zero mismatches.
+
+The retained evidence is:
+
+- `../verification/evidence/cobol-validation-2026-08-15.json`
+- `../verification/evidence/cobol-validation-2026-08-15.log`
+- `../verification/evidence/cobol-validation-2026-08-15-SHA256SUMS.txt`
+
+The local run did not expose Git commit metadata to the validation script, so the report records `gitCommit: null`; exact hashes of the tested JavaScript engine, COBOL engine, runtime, copybook, harness and generated corpus are embedded in the report. A passing GitHub Actions run remains the cross-platform confirmation step.
