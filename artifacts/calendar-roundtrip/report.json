@@ -1,0 +1,1083 @@
+{
+  "scriptVersion": "PASTAFARI-CALENDAR-ROUNDTRIP-AUDIT-1.0.1",
+  "commitSha": "599a41c395193e8a2a3f3f2ddcaf86ddad81afb1",
+  "seed": 12345,
+  "requestedRandom": 10000,
+  "edgesOnly": false,
+  "startedUtc": "2026-08-15T10:57:56.537Z",
+  "runtime": {
+    "node": "v26.7.0",
+    "icu": "78.3",
+    "v8": "14.6.202.34-node.28",
+    "platform": "win32",
+    "arch": "x64",
+    "os": "Windows_NT 10.0.26200",
+    "timezone": "Asia/Jerusalem",
+    "chromium": "151.0.7922.34",
+    "intlCalendars": {
+      "islamic-umalqura": true,
+      "persian": true,
+      "chinese": true,
+      "hebrew": true,
+      "indian": true,
+      "ethiopic": true,
+      "coptic": true,
+      "japanese": true,
+      "roc": true
+    }
+  },
+  "calendarsDiscovered": [
+    "gregorian",
+    "julian",
+    "hebrew",
+    "islamic-civil",
+    "islamic-umalqura",
+    "solar-hijri-official",
+    "solar-hijri-arithmetic",
+    "chinese",
+    "hindu-old-solar",
+    "hindu-old-lunar",
+    "saka",
+    "thai-buddhist",
+    "ethiopic",
+    "coptic",
+    "japanese-imperial",
+    "minguo",
+    "bahai-tehran",
+    "bahai-western",
+    "maya-long-count"
+  ],
+  "calendarsSelected": [
+    "gregorian",
+    "julian",
+    "hebrew",
+    "islamic-civil",
+    "islamic-umalqura",
+    "solar-hijri-official",
+    "solar-hijri-arithmetic",
+    "chinese",
+    "hindu-old-solar",
+    "hindu-old-lunar",
+    "saka",
+    "thai-buddhist",
+    "ethiopic",
+    "coptic",
+    "japanese-imperial",
+    "minguo",
+    "bahai-tehran",
+    "bahai-western",
+    "maya-long-count"
+  ],
+  "summary": {
+    "calendarsDiscovered": 19,
+    "calendarsTested": 19,
+    "totalRoundTrips": 134873,
+    "edgeCases": 3673,
+    "randomValidCases": 131200,
+    "invalidInputCases": 134,
+    "mismatches": 0,
+    "validationFailures": 1,
+    "unsupportedRuntimeCases": 0,
+    "absoluteAnchorsChecked": 27
+  },
+  "calendars": {
+    "gregorian": {
+      "id": "gregorian",
+      "strategy": "exact-bijective arithmetic",
+      "forwardSource": "docs/calendar-converters.js:calendarDateToJdn",
+      "inverseSource": "production jdnToGregorian",
+      "independence": "partly independent path within production module",
+      "confidence": "high",
+      "roundTrips": 10078,
+      "edgeCases": 78,
+      "randomValid": 10000,
+      "invalidCases": 7,
+      "anchors": 1,
+      "failures": [],
+      "warnings": [],
+      "notes": []
+    },
+    "julian": {
+      "id": "julian",
+      "strategy": "exact-bijective arithmetic",
+      "forwardSource": "docs/calendar-converters.js:calendarDateToJdn",
+      "inverseSource": "test-only independent Julian inverse",
+      "independence": "independent inverse formula",
+      "confidence": "high",
+      "roundTrips": 10053,
+      "edgeCases": 53,
+      "randomValid": 10000,
+      "invalidCases": 7,
+      "anchors": 1,
+      "failures": [],
+      "warnings": [],
+      "notes": []
+    },
+    "hebrew": {
+      "id": "hebrew",
+      "strategy": "exact-bijective arithmetic",
+      "forwardSource": "docs/calendar-converters.js:calendarDateToJdn",
+      "inverseSource": "test-only year/month search through production forward",
+      "independence": "not independent; useful for boundaries and canonicalization",
+      "confidence": "medium",
+      "roundTrips": 10177,
+      "edgeCases": 177,
+      "randomValid": 10000,
+      "invalidCases": 8,
+      "anchors": 1,
+      "failures": [],
+      "warnings": [],
+      "notes": []
+    },
+    "islamic-civil": {
+      "id": "islamic-civil",
+      "strategy": "exact-bijective arithmetic",
+      "forwardSource": "docs/calendar-converters.js:calendarDateToJdn",
+      "inverseSource": "test-only independent tabular inverse",
+      "independence": "independent implementation",
+      "confidence": "high",
+      "roundTrips": 10051,
+      "edgeCases": 51,
+      "randomValid": 10000,
+      "invalidCases": 7,
+      "anchors": 1,
+      "failures": [],
+      "warnings": [],
+      "notes": []
+    },
+    "islamic-umalqura": {
+      "id": "islamic-umalqura",
+      "strategy": "Intl-backed",
+      "forwardSource": "docs/calendar-converters.js:calendarDateToJdn",
+      "inverseSource": "Intl.DateTimeFormat islamic-umalqura",
+      "independence": "independent Intl representation",
+      "confidence": "high within runtime ICU",
+      "roundTrips": 1052,
+      "edgeCases": 902,
+      "randomValid": 150,
+      "invalidCases": 7,
+      "anchors": 1,
+      "failures": [],
+      "warnings": [],
+      "notes": []
+    },
+    "solar-hijri-official": {
+      "id": "solar-hijri-official",
+      "strategy": "Intl-backed",
+      "forwardSource": "docs/calendar-converters.js:calendarDateToJdn",
+      "inverseSource": "Intl.DateTimeFormat persian",
+      "independence": "independent Intl representation",
+      "confidence": "high within runtime ICU",
+      "roundTrips": 1052,
+      "edgeCases": 902,
+      "randomValid": 150,
+      "invalidCases": 7,
+      "anchors": 1,
+      "failures": [],
+      "warnings": [],
+      "notes": []
+    },
+    "solar-hijri-arithmetic": {
+      "id": "solar-hijri-arithmetic",
+      "strategy": "exact-bijective arithmetic",
+      "forwardSource": "docs/calendar-converters.js:calendarDateToJdn",
+      "inverseSource": "test-only forward-guided search",
+      "independence": "not independent",
+      "confidence": "medium",
+      "roundTrips": 10053,
+      "edgeCases": 53,
+      "randomValid": 10000,
+      "invalidCases": 7,
+      "anchors": 1,
+      "failures": [],
+      "warnings": [],
+      "notes": []
+    },
+    "chinese": {
+      "id": "chinese",
+      "strategy": "Intl-backed special-structure",
+      "forwardSource": "docs/calendar-converters.js:calendarDateToJdn",
+      "inverseSource": "Intl.DateTimeFormat chinese relatedYear/month/day",
+      "independence": "independent Intl representation",
+      "confidence": "high within runtime ICU",
+      "roundTrips": 1055,
+      "edgeCases": 905,
+      "randomValid": 150,
+      "invalidCases": 8,
+      "anchors": 1,
+      "failures": [],
+      "warnings": [],
+      "notes": []
+    },
+    "hindu-old-solar": {
+      "id": "hindu-old-solar",
+      "strategy": "potentially non-bijective floating-point",
+      "forwardSource": "docs/calendar-converters.js:calendarDateToJdn",
+      "inverseSource": "test-only local enumeration",
+      "independence": "not independent; canonical candidate search",
+      "confidence": "medium for consistency only",
+      "roundTrips": 303,
+      "edgeCases": 3,
+      "randomValid": 300,
+      "invalidCases": 6,
+      "anchors": 1,
+      "failures": [],
+      "warnings": [],
+      "notes": [
+        "non-bijective candidate count observed: 2"
+      ]
+    },
+    "hindu-old-lunar": {
+      "id": "hindu-old-lunar",
+      "strategy": "potentially non-bijective floating-point special-structure",
+      "forwardSource": "docs/calendar-converters.js:calendarDateToJdn",
+      "inverseSource": "test-only local enumeration",
+      "independence": "not independent; canonical candidate search",
+      "confidence": "medium for consistency only",
+      "roundTrips": 303,
+      "edgeCases": 3,
+      "randomValid": 300,
+      "invalidCases": 7,
+      "anchors": 1,
+      "failures": [
+        1
+      ],
+      "warnings": [],
+      "notes": [
+        "non-bijective candidate count observed: 4"
+      ]
+    },
+    "saka": {
+      "id": "saka",
+      "strategy": "exact-bijective arithmetic",
+      "forwardSource": "docs/calendar-converters.js:calendarDateToJdn",
+      "inverseSource": "test-only inverse via Gregorian year boundary",
+      "independence": "independent structure; shares Gregorian inverse",
+      "confidence": "high",
+      "roundTrips": 10076,
+      "edgeCases": 76,
+      "randomValid": 10000,
+      "invalidCases": 6,
+      "anchors": 1,
+      "failures": [],
+      "warnings": [],
+      "notes": []
+    },
+    "thai-buddhist": {
+      "id": "thai-buddhist",
+      "strategy": "exact-bijective offset",
+      "forwardSource": "docs/calendar-converters.js:calendarDateToJdn",
+      "inverseSource": "Gregorian inverse + 543",
+      "independence": "independent of Thai forward except shared Gregorian base",
+      "confidence": "high",
+      "roundTrips": 10051,
+      "edgeCases": 51,
+      "randomValid": 10000,
+      "invalidCases": 6,
+      "anchors": 1,
+      "failures": [],
+      "warnings": [],
+      "notes": []
+    },
+    "ethiopic": {
+      "id": "ethiopic",
+      "strategy": "exact-bijective arithmetic",
+      "forwardSource": "docs/calendar-converters.js:calendarDateToJdn",
+      "inverseSource": "test-only fixed-13-month inverse",
+      "independence": "independent inverse arithmetic",
+      "confidence": "high",
+      "roundTrips": 10055,
+      "edgeCases": 55,
+      "randomValid": 10000,
+      "invalidCases": 7,
+      "anchors": 1,
+      "failures": [],
+      "warnings": [],
+      "notes": []
+    },
+    "coptic": {
+      "id": "coptic",
+      "strategy": "exact-bijective arithmetic",
+      "forwardSource": "docs/calendar-converters.js:calendarDateToJdn",
+      "inverseSource": "test-only fixed-13-month inverse",
+      "independence": "independent inverse arithmetic",
+      "confidence": "high",
+      "roundTrips": 10055,
+      "edgeCases": 55,
+      "randomValid": 10000,
+      "invalidCases": 7,
+      "anchors": 1,
+      "failures": [],
+      "warnings": [],
+      "notes": []
+    },
+    "japanese-imperial": {
+      "id": "japanese-imperial",
+      "strategy": "canonicalized era",
+      "forwardSource": "docs/calendar-converters.js:calendarDateToJdn",
+      "inverseSource": "test-only explicit era-boundary inverse",
+      "independence": "independent era selection; shared Gregorian inverse",
+      "confidence": "high",
+      "roundTrips": 10009,
+      "edgeCases": 9,
+      "randomValid": 10000,
+      "invalidCases": 17,
+      "anchors": 1,
+      "failures": [],
+      "warnings": [],
+      "notes": []
+    },
+    "minguo": {
+      "id": "minguo",
+      "strategy": "exact-bijective offset",
+      "forwardSource": "docs/calendar-converters.js:calendarDateToJdn",
+      "inverseSource": "Gregorian inverse - 1911",
+      "independence": "independent of Minguo forward except shared Gregorian base",
+      "confidence": "high",
+      "roundTrips": 10051,
+      "edgeCases": 51,
+      "randomValid": 10000,
+      "invalidCases": 6,
+      "anchors": 1,
+      "failures": [],
+      "warnings": [],
+      "notes": []
+    },
+    "bahai-tehran": {
+      "id": "bahai-tehran",
+      "strategy": "arithmetic/astronomical special-structure",
+      "forwardSource": "docs/calendar-converters.js:calendarDateToJdn",
+      "inverseSource": "test-only year-boundary search through production forward",
+      "independence": "not independent",
+      "confidence": "medium for internal consistency; anchors add absolute checks",
+      "roundTrips": 273,
+      "edgeCases": 123,
+      "randomValid": 150,
+      "invalidCases": 6,
+      "anchors": 9,
+      "failures": [],
+      "warnings": [],
+      "notes": []
+    },
+    "bahai-western": {
+      "id": "bahai-western",
+      "strategy": "exact-bijective arithmetic special-structure",
+      "forwardSource": "docs/calendar-converters.js:calendarDateToJdn",
+      "inverseSource": "test-only March-21 structure inverse",
+      "independence": "independent structure; shared Gregorian inverse",
+      "confidence": "high",
+      "roundTrips": 10123,
+      "edgeCases": 123,
+      "randomValid": 10000,
+      "invalidCases": 5,
+      "anchors": 1,
+      "failures": [],
+      "warnings": [],
+      "notes": []
+    },
+    "maya-long-count": {
+      "id": "maya-long-count",
+      "strategy": "exact special-structure with correlation parameter",
+      "forwardSource": "docs/calendar-converters.js:calendarDateToJdn",
+      "inverseSource": "test-only exact mixed-radix algebra",
+      "independence": "independent algebra",
+      "confidence": "high",
+      "roundTrips": 10003,
+      "edgeCases": 3,
+      "randomValid": 10000,
+      "invalidCases": 3,
+      "anchors": 1,
+      "failures": [],
+      "warnings": [],
+      "notes": []
+    }
+  },
+  "failures": [
+    {
+      "id": 1,
+      "calendar": "hindu-old-lunar",
+      "kind": "invalid-accepted:leap-flag-at-nonleap-position",
+      "seed": 12345,
+      "input": {
+        "year": "5127",
+        "month": "1",
+        "day": "1",
+        "leapMonth": true
+      },
+      "normalizedInput": null,
+      "jdn1": null,
+      "reconstructed": null,
+      "jdn2": null,
+      "expected": null,
+      "actual": "accepted",
+      "error": "Error: Invalid input was accepted\n    at expectInvalid (file:///C:/Users/eliez/Downloads/pastafari-calendar-main%20(90)/scripts/run-calendar-roundtrip-audit.mjs:545:127)\n    at runInvalidMatrix (file:///C:/Users/eliez/Downloads/pastafari-calendar-main%20(90)/scripts/run-calendar-roundtrip-audit.mjs:761:74)\n    at main (file:///C:/Users/eliez/Downloads/pastafari-calendar-main%20(90)/scripts/run-calendar-roundtrip-audit.mjs:864:5)\n    at file:///C:/Users/eliez/Downloads/pastafari-calendar-main%20(90)/scripts/run-calendar-roundtrip-audit.mjs:889:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)\n    at async node:internal/modules/esm/loader:650:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)",
+      "runtime": {
+        "node": "v26.7.0",
+        "icu": "78.3",
+        "v8": "14.6.202.34-node.28",
+        "platform": "win32",
+        "arch": "x64",
+        "os": "Windows_NT 10.0.26200",
+        "timezone": "Asia/Jerusalem",
+        "chromium": "151.0.7922.34",
+        "intlCalendars": {
+          "islamic-umalqura": true,
+          "persian": true,
+          "chinese": true,
+          "hebrew": true,
+          "indian": true,
+          "ethiopic": true,
+          "coptic": true,
+          "japanese": true,
+          "roc": true
+        }
+      },
+      "commitSha": "599a41c395193e8a2a3f3f2ddcaf86ddad81afb1"
+    }
+  ],
+  "warnings": [],
+  "focused": {
+    "hebrewNumerals": {
+      "status": "PASS",
+      "equivalentJdn": "2461266"
+    },
+    "japaneseGannen": {
+      "status": "PASS",
+      "eras": [
+        {
+          "era": "meiji",
+          "jdn": "2403629"
+        },
+        {
+          "era": "taisho",
+          "jdn": "2419614"
+        },
+        {
+          "era": "showa",
+          "jdn": "2424875"
+        },
+        {
+          "era": "heisei",
+          "jdn": "2447535"
+        },
+        {
+          "era": "reiwa",
+          "jdn": "2458605"
+        }
+      ]
+    },
+    "chineseLeapMonths": {
+      "status": "PASS",
+      "example": {
+        "relatedYear": "2001",
+        "month": "4",
+        "day": "1",
+        "leapMonth": true
+      },
+      "leapJdn": "2452053",
+      "normalJdn": "2452023",
+      "lastLeapDay": {
+        "relatedYear": "2001",
+        "month": "4",
+        "day": "29",
+        "leapMonth": true
+      },
+      "afterLeap": {
+        "relatedYear": "2001",
+        "month": "5",
+        "day": "1",
+        "leapMonth": false
+      }
+    },
+    "monthChoices": {
+      "gregorian": {
+        "status": "PASS",
+        "count": 12,
+        "semanticChecks": 12,
+        "values": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12"
+        ]
+      },
+      "julian": {
+        "status": "PASS",
+        "count": 12,
+        "semanticChecks": 12,
+        "values": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12"
+        ]
+      },
+      "hebrew": {
+        "status": "PASS",
+        "count": 13,
+        "semanticChecks": 13,
+        "values": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13"
+        ]
+      },
+      "islamic-civil": {
+        "status": "PASS",
+        "count": 12,
+        "semanticChecks": 12,
+        "values": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12"
+        ]
+      },
+      "islamic-umalqura": {
+        "status": "PASS",
+        "count": 12,
+        "semanticChecks": 12,
+        "values": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12"
+        ]
+      },
+      "solar-hijri-official": {
+        "status": "PASS",
+        "count": 12,
+        "semanticChecks": 12,
+        "values": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12"
+        ]
+      },
+      "solar-hijri-arithmetic": {
+        "status": "PASS",
+        "count": 12,
+        "semanticChecks": 12,
+        "values": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12"
+        ]
+      },
+      "chinese": {
+        "status": "PASS",
+        "count": 12,
+        "semanticChecks": 12,
+        "values": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12"
+        ]
+      },
+      "hindu-old-solar": {
+        "status": "PASS",
+        "count": 12,
+        "semanticChecks": 12,
+        "values": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12"
+        ]
+      },
+      "hindu-old-lunar": {
+        "status": "PASS",
+        "count": 12,
+        "semanticChecks": 12,
+        "values": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12"
+        ]
+      },
+      "saka": {
+        "status": "PASS",
+        "count": 12,
+        "semanticChecks": 12,
+        "values": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12"
+        ]
+      },
+      "thai-buddhist": {
+        "status": "PASS",
+        "count": 12,
+        "semanticChecks": 12,
+        "values": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12"
+        ]
+      },
+      "ethiopic": {
+        "status": "PASS",
+        "count": 13,
+        "semanticChecks": 13,
+        "values": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13"
+        ]
+      },
+      "coptic": {
+        "status": "PASS",
+        "count": 13,
+        "semanticChecks": 13,
+        "values": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13"
+        ]
+      },
+      "japanese-imperial": {
+        "status": "PASS",
+        "count": 12,
+        "semanticChecks": 12,
+        "values": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12"
+        ]
+      },
+      "minguo": {
+        "status": "PASS",
+        "count": 12,
+        "semanticChecks": 12,
+        "values": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12"
+        ]
+      },
+      "bahai-tehran": {
+        "status": "PASS",
+        "count": 20,
+        "semanticChecks": 20,
+        "values": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "ayyami-ha",
+          "19"
+        ]
+      },
+      "bahai-western": {
+        "status": "PASS",
+        "count": 20,
+        "semanticChecks": 20,
+        "values": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "ayyami-ha",
+          "19"
+        ]
+      }
+    },
+    "hebrewYearTypes": {
+      "leap-385": 5700,
+      "common-354": 5701,
+      "common-355": 5702,
+      "leap-383": 5703,
+      "common-353": 5710,
+      "leap-384": 5711
+    },
+    "hindu": {
+      "status": "checked",
+      "solar": {
+        "year": 5127,
+        "acceptedInputs": 372,
+        "uniqueJdns": 365,
+        "duplicateJdns": 7,
+        "maxMultiplicity": 2,
+        "skippedJdnsBetweenMinMax": 0,
+        "maxGap": 0,
+        "duplicateExamples": [
+          [
+            "2461178",
+            [
+              {
+                "year": "5127",
+                "month": "1",
+                "day": "31"
+              },
+              {
+                "year": "5127",
+                "month": "2",
+                "day": "1"
+              }
+            ]
+          ],
+          [
+            "2461208",
+            [
+              {
+                "year": "5127",
+                "month": "2",
+                "day": "31"
+              },
+              {
+                "year": "5127",
+                "month": "3",
+                "day": "1"
+              }
+            ]
+          ],
+          [
+            "2461269",
+            [
+              {
+                "year": "5127",
+                "month": "4",
+                "day": "31"
+              },
+              {
+                "year": "5127",
+                "month": "5",
+                "day": "1"
+              }
+            ]
+          ]
+        ]
+      },
+      "lunar": {
+        "year": 5127,
+        "acceptedInputs": 744,
+        "uniqueJdns": 384,
+        "duplicateJdns": 327,
+        "maxMultiplicity": 4,
+        "skippedJdnsBetweenMinMax": 0,
+        "maxGap": 0,
+        "duplicateExamples": [
+          [
+            "2461119",
+            [
+              {
+                "year": "5127",
+                "month": "1",
+                "day": "1",
+                "leapMonth": false
+              },
+              {
+                "year": "5127",
+                "month": "1",
+                "day": "1",
+                "leapMonth": true
+              }
+            ]
+          ],
+          [
+            "2461120",
+            [
+              {
+                "year": "5127",
+                "month": "1",
+                "day": "2",
+                "leapMonth": false
+              },
+              {
+                "year": "5127",
+                "month": "1",
+                "day": "2",
+                "leapMonth": true
+              }
+            ]
+          ],
+          [
+            "2461121",
+            [
+              {
+                "year": "5127",
+                "month": "1",
+                "day": "3",
+                "leapMonth": false
+              },
+              {
+                "year": "5127",
+                "month": "1",
+                "day": "3",
+                "leapMonth": true
+              }
+            ]
+          ]
+        ]
+      },
+      "note": "These models are demonstrably non-bijective; JDN preservation is the primary round-trip invariant."
+    },
+    "bahai": {
+      "status": "checked",
+      "lengths": {
+        "bahai-tehran": [
+          {
+            "year": 181,
+            "yearLength": 365,
+            "ayyamiHaLength": 4
+          },
+          {
+            "year": 182,
+            "yearLength": 366,
+            "ayyamiHaLength": 5
+          },
+          {
+            "year": 183,
+            "yearLength": 365,
+            "ayyamiHaLength": 4
+          },
+          {
+            "year": 184,
+            "yearLength": 365,
+            "ayyamiHaLength": 4
+          },
+          {
+            "year": 185,
+            "yearLength": 365,
+            "ayyamiHaLength": 4
+          }
+        ],
+        "bahai-western": [
+          {
+            "year": 181,
+            "yearLength": 365,
+            "ayyamiHaLength": 4
+          },
+          {
+            "year": 182,
+            "yearLength": 365,
+            "ayyamiHaLength": 4
+          },
+          {
+            "year": 183,
+            "yearLength": 365,
+            "ayyamiHaLength": 4
+          },
+          {
+            "year": 184,
+            "yearLength": 366,
+            "ayyamiHaLength": 5
+          },
+          {
+            "year": 185,
+            "yearLength": 365,
+            "ayyamiHaLength": 4
+          }
+        ]
+      },
+      "note": "variants tested separately; Ayyam-i-Ha length derived from consecutive year starts"
+    },
+    "maya": {
+      "status": "PASS",
+      "rollovers": [
+        "kin 19->uinal+1",
+        "uinal 17->tun+1",
+        "tun 19->katun+1",
+        "katun 19->baktun+1"
+      ],
+      "correlation": "584283"
+    }
+  },
+  "finishedUtc": "2026-08-15T10:58:13.486Z",
+  "durationMs": 16949,
+  "browserSmoke": {
+    "status": "PASS",
+    "chromium": "151.0.7922.34",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.7922.34 Safari/537.36",
+    "checks": [
+      "inventory-19",
+      "intl-runtime-calendars",
+      "umm-al-qura-vector",
+      "persian-official-vector",
+      "chinese-vector",
+      "hebrew-textual-equivalence",
+      "japanese-gannen",
+      "month-choice-integrity"
+    ],
+    "failures": []
+  },
+  "sourceProvenance": {
+    "verifiedAgainstMainCommit": "599a41c395193e8a2a3f3f2ddcaf86ddad81afb1",
+    "method": "SHA-256 comparison of relevant extracted files against current main",
+    "files": {
+      "docs/calendar-converters.js": "a4fc3da69033670fdecd4bc9889d093f5b8bdbfc5a5e618c30a4c221a33b711a",
+      "docs/calendar-input-conventions.js": "91f1344b70a734d856b34f947957a495b12fb3827d241b2a7bc0a469643388f8",
+      "docs/app.js": "38f68bb8b1e8ba518b693150618e8753c1c38c7fc04261e3d4c43241a94da05c"
+    }
+  }
+}
