@@ -33,6 +33,29 @@ The raw JSONL log SHA-256 is:
 
 The logical soak run continued across three infrastructure revisions of the standalone verifier. The detailed report records the exact batch ranges and verifier hashes. Those revisions changed runtime persistence/recovery and evidence reporting; the Oracle, sampling algorithm, and comparison semantics were kept unchanged.
 
+## COBOL cross-engine validation — 2026-08-15
+
+A full local cross-engine validation of the GnuCOBOL reference port completed with **PASS** on Windows/MSYS2 UCRT64. The reference side was `browser/pastafari-calendar-fast.js`; the heavy/core engine was not used as the oracle.
+
+The recorded run used:
+
+- GnuCOBOL 3.2.0;
+- Node.js v24.18.1;
+- GCC/`cc` 16.2.0;
+- deterministic seed `0x50a7fa81`;
+- fast-engine SHA-256 `61318bc0813579f8d703737716704c467b87f2492213c2a1bd0970d9bc9f421b`;
+- COBOL-engine SHA-256 `1f3879a6a963a3b94f702415b38f8ba2e90c84c8653e1f3af61e6a6c1af20176`.
+
+The completed validation covered **18,195 forward comparisons**, **1,348 COBOL forward-to-reverse checks**, **1,200 JS-to-COBOL known-reverse checks**, and **62 bounded/exact `c=t` reverse comparisons**, with **0 mismatches**. Coverage observed all 17 cutlet names and all 47 month names. Total recorded duration was about 18 hours 18 minutes.
+
+### COBOL validation evidence
+
+- [Machine-readable PASS report](evidence/cobol-validation-2026-08-15.json)
+- [Rolling progress log](evidence/cobol-validation-2026-08-15.log)
+- [Evidence SHA-256 manifest](evidence/cobol-validation-2026-08-15-SHA256SUMS.txt)
+
+This run was performed from a working directory for which Git metadata was unavailable to the validation script (`gitCommit` is `null`). The report therefore binds the evidence to the exact tested file hashes rather than to a repository commit. It should be supplemented by a successful GitHub Actions run after these files are uploaded.
+
 ## Interpretation
 
 This is strong empirical evidence that the tested production snapshot agrees with the independent Oracle throughout the sampled input space. It is **not** a formal proof over the full, unbounded input domain.
