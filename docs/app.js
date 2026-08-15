@@ -36,6 +36,7 @@ let numberFormatter = null;
 let dateFormatter = null;
 let lastVisibleErrorKey = null;
 let loadSequence = 0;
+let comparisonSequence = 0;
 let state = {
   targetJdn: null,
   viewAnchorJdn: null,
@@ -576,23 +577,40 @@ function renderComparison() {
 }
 
 async function loadComparison(sequence) {
+  const comparisonRequest = ++comparisonSequence;
   state.comparisonDays = null;
   if (!state.comparisonEnabled || !comparisonIsDesktop() || !state.view) {
     renderComparison();
-    return;
+    return true;
   }
-  const range = await workerRequest("getRangeView", {
-    startJdn: state.view.startJdn,
-    endJdn: state.view.endJdn,
-    calculationJdn: state.comparisonJdn,
-  });
-  if (sequence !== loadSequence) return;
+  const view = state.view;
+  const comparisonJdn = state.comparisonJdn;
+  let range;
+  try {
+    range = await workerRequest("getRangeView", {
+      startJdn: view.startJdn,
+      endJdn: view.endJdn,
+      calculationJdn: comparisonJdn,
+    });
+  } catch (error) {
+    if (sequence !== loadSequence || comparisonRequest !== comparisonSequence) return false;
+    throw error;
+  }
+  if (
+    sequence !== loadSequence
+    || comparisonRequest !== comparisonSequence
+    || state.view !== view
+    || state.comparisonJdn !== comparisonJdn
+    || !state.comparisonEnabled
+  ) return false;
   state.comparisonDays = range.days;
   renderComparison();
+  return true;
 }
 
 async function loadCutlet({ replaceHistory = false, scrollToTarget = true } = {}) {
   const sequence = ++loadSequence;
+  ++comparisonSequence;
   elements["previous-cutlet"].disabled = true;
   elements["next-cutlet"].disabled = true;
   try {
@@ -603,8 +621,8 @@ async function loadCutlet({ replaceHistory = false, scrollToTarget = true } = {}
     if (sequence !== loadSequence) return;
     renderView(view, { scrollToTarget });
     void loadYearStructure(sequence, view);
-    await loadComparison(sequence);
-    if (sequence !== loadSequence) return;
+    const comparisonCurrent = await loadComparison(sequence);
+    if (sequence !== loadSequence || !comparisonCurrent) return;
     writeHistory({ replace: replaceHistory });
   } catch (error) {
     if (sequence === loadSequence) showError(error);
@@ -897,8 +915,9 @@ elements["comparison-toggle"].addEventListener("change", (event) => {
   state.comparisonEnabled = event.currentTarget.checked;
   elements["comparison-date-form"].hidden = !state.comparisonEnabled;
   state.comparisonDays = null;
-  loadComparison(++loadSequence)
-    .then(() => writeHistory())
+  const sequence = loadSequence;
+  loadComparison(sequence)
+    .then((current) => { if (current && sequence === loadSequence) writeHistory(); })
     .catch((error) => showError(error));
 });
 
@@ -908,8 +927,9 @@ formConfigurations.comparison.form.addEventListener("submit", (event) => {
     state.comparisonJdn = readDateForm("comparison");
     state.comparisonFollowsNextAction = false;
     state.comparisonDays = null;
-    loadComparison(++loadSequence)
-      .then(() => writeHistory())
+    const sequence = loadSequence;
+    loadComparison(sequence)
+      .then((current) => { if (current && sequence === loadSequence) writeHistory(); })
       .catch((error) => showError(error));
   } catch (error) {
     showFormError("comparison", error);
@@ -919,7 +939,7 @@ formConfigurations.comparison.form.addEventListener("submit", (event) => {
 matchMedia(DESKTOP_COMPARISON_QUERY).addEventListener("change", () => {
   if (!state.comparisonEnabled || !state.view) return;
   state.comparisonDays = null;
-  loadComparison(++loadSequence).catch((error) => showError(error));
+  loadComparison(loadSequence).catch((error) => showError(error));
 });
 
 window.addEventListener("popstate", () => {
