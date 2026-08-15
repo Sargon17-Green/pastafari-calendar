@@ -156,6 +156,19 @@ export function translate(locale, key, values = {}) {
   });
 }
 
+const STALE_DAY_WARNING_TEMPLATES = Object.freeze({
+  en: "The local date changed from {previousDate} to {currentDate}. Because the day of working was the current date, the displayed dates are no longer up to date. They will be recalculated after you dismiss this message.",
+  he: "התאריך המקומי השתנה מ־{previousDate} ל־{currentDate}. מאחר שיום המעשה היה התאריך הנוכחי, התאריכים המוצגים כבר אינם מעודכנים. הם יחושבו מחדש לאחר סגירת ההודעה.",
+});
+
+export function staleDayWarning(locale, values = {}) {
+  const template = STALE_DAY_WARNING_TEMPLATES[canonicalTag(locale?.code)] ?? STALE_DAY_WARNING_TEMPLATES.en;
+  return template.replace(/\{([A-Za-z0-9_.-]+)\}/g, (match, name) => {
+    if (!(name in values)) throw new RangeError(`Missing interpolation value ${name} for stale-day warning`);
+    return String(values[name]);
+  });
+}
+
 export function calendarLabel(locale, type, index) {
   const identifiers = type === "cutlet" ? CUTLETS : type === "month" ? MONTHS : null;
   if (!identifiers || !Number.isInteger(index) || index < 0 || index >= identifiers.length) {
