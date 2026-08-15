@@ -75,7 +75,7 @@ async function automaticKisurraScenario(browser, baseURL) {
   const boundary = boundaryForDayJdn(DAY, KISURRA_OBSERVER).instant;
   const context = await browser.newContext();
   const page = await context.newPage();
-  await page.clock.install({ time: new Date(boundary.getTime() - 5_000) });
+  await page.clock.install({ time: new Date(boundary.getTime() - 60 * 60_000) });
 
   let dialogCount = 0;
   let dialogText = "";
@@ -87,6 +87,7 @@ async function automaticKisurraScenario(browser, baseURL) {
 
   await page.goto(`${baseURL}?lang=he`, { waitUntil: "domcontentloaded" });
   await waitForWorkspace(page);
+  await page.clock.pauseAt(new Date(boundary.getTime() - 5_000));
   const before = params(page);
   assert.equal(before.t, String(DAY - 1n));
   assert.equal(before.c, String(DAY - 1n));
@@ -99,7 +100,7 @@ async function automaticKisurraScenario(browser, baseURL) {
 
   // The day change itself must not need the network.
   await context.setOffline(true);
-  await page.clock.fastForward(10_000);
+  await page.clock.runFor(10_000);
   await page.waitForFunction((expected) => new URL(location.href).searchParams.get("c") === expected, String(DAY), { timeout: TIMEOUT });
   await waitForWorkspace(page);
   const after = params(page);
@@ -114,7 +115,7 @@ async function manualCalculationScenario(browser, baseURL) {
   const boundary = boundaryForDayJdn(DAY, KISURRA_OBSERVER).instant;
   const context = await browser.newContext();
   const page = await context.newPage();
-  await page.clock.install({ time: new Date(boundary.getTime() - 5_000) });
+  await page.clock.install({ time: new Date(boundary.getTime() - 60 * 60_000) });
 
   let dialogCount = 0;
   page.on("dialog", async (dialog) => {
@@ -132,8 +133,9 @@ async function manualCalculationScenario(browser, baseURL) {
   url.searchParams.set("today", "1");
   await page.goto(url.href, { waitUntil: "domcontentloaded" });
   await waitForWorkspace(page);
+  await page.clock.pauseAt(new Date(boundary.getTime() - 5_000));
 
-  await page.clock.fastForward(10_000);
+  await page.clock.runFor(10_000);
   await page.waitForFunction((expected) => new URL(location.href).searchParams.get("t") === expected, String(DAY), { timeout: TIMEOUT });
   const after = params(page);
   assert.equal(after.t, String(DAY), "target that follows today must advance");
@@ -153,7 +155,7 @@ async function grantedLocationScenario(browser, baseURL) {
   });
   await context.grantPermissions(["geolocation"], { origin });
   const page = await context.newPage();
-  await page.clock.install({ time: new Date(boundary.getTime() - 5_000) });
+  await page.clock.install({ time: new Date(boundary.getTime() - 60 * 60_000) });
 
   let dialogCount = 0;
   page.on("dialog", async (dialog) => {
@@ -163,10 +165,11 @@ async function grantedLocationScenario(browser, baseURL) {
 
   await page.goto(`${baseURL}?lang=he`, { waitUntil: "domcontentloaded" });
   await waitForWorkspace(page);
+  await page.clock.pauseAt(new Date(boundary.getTime() - 5_000));
   assert.doesNotMatch(await page.locator("#target-context").innerText(), /קיסורה/);
   assert.equal(params(page).c, String(DAY - 1n));
 
-  await page.clock.fastForward(10_000);
+  await page.clock.runFor(10_000);
   await page.waitForFunction((expected) => new URL(location.href).searchParams.get("c") === expected, String(DAY), { timeout: TIMEOUT });
   assert.equal(dialogCount, 1, "granted device location should drive its own boundary");
   await context.close();
