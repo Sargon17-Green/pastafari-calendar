@@ -17,6 +17,11 @@ export {
   SAME_AS_TARGET,
   sharedPastafariReverseClient,
 } from "../browser/pastafari-reverse.js";
+export {
+  PastafariConstraintClient,
+  sharedPastafariConstraintClient,
+  solvePastafariConstraints,
+} from "../browser/pastafari-constraints-client.js";
 
 // Keep the deliberately tangled implementation untouched.  The published
 // entry point only supplies the missing default binding from outside it.

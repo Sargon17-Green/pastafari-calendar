@@ -1,6 +1,7 @@
 "use strict";
 
 import { findPastafariDate as findPastafariDateDirect } from "./pastafari-calendar-fast.js";
+import { solvePastafariConstraintsDirect } from "./pastafari-constraints.js";
 
 const activeRequests = new Map();
 
@@ -35,6 +36,23 @@ export async function handlePastafariReverseRequest(payload = {}, hooks = {}) {
   return findPastafariDateDirect(payload.pastafariDate, options);
 }
 
+export async function handlePastafariConstraintRequest(payload = {}, hooks = {}) {
+  if (payload === null || typeof payload !== "object") {
+    throw new TypeError("The constraint worker payload must be an object.");
+  }
+
+  const sourceOptions = payload.options ?? {};
+  if (sourceOptions === null || typeof sourceOptions !== "object") {
+    throw new TypeError("The constraint worker options must be an object.");
+  }
+
+  const options = { ...sourceOptions };
+  if (hooks.signal !== undefined) options.signal = hooks.signal;
+  if (hooks.onProgress !== undefined) options.onProgress = hooks.onProgress;
+
+  return solvePastafariConstraintsDirect(payload.problem, options);
+}
+
 const isDedicatedWorker = (
   typeof DedicatedWorkerGlobalScope !== "undefined"
   && globalThis instanceof DedicatedWorkerGlobalScope
@@ -49,17 +67,20 @@ if (isDedicatedWorker) {
       activeRequests.get(message.id)?.abort();
       return;
     }
-    if (message.kind !== "find") return;
+    if (message.kind !== "find" && message.kind !== "solve") return;
 
     const controller = new AbortController();
     activeRequests.set(message.id, controller);
     try {
-      const result = await handlePastafariReverseRequest(message.payload, {
+      const hooks = {
         signal: controller.signal,
         onProgress: (progress) => {
           globalThis.postMessage({ id: message.id, kind: "progress", progress });
         },
-      });
+      };
+      const result = message.kind === "find"
+        ? await handlePastafariReverseRequest(message.payload, hooks)
+        : await handlePastafariConstraintRequest(message.payload, hooks);
       globalThis.postMessage({ id: message.id, kind: "result", ok: true, result });
     } catch (error) {
       globalThis.postMessage({

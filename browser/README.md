@@ -32,6 +32,8 @@ browser/
 ├── pastafari-authoritative-worker.js
 ├── pastafari-fast-worker.js
 ├── pastafari-calendar-fast.js
+├── pastafari-constraints.js
+├── pastafari-constraints-client.js
 ├── pastafari-reverse.js
 ├── pastafari-reverse-worker.js
 ├── pastafari-calendar-core.js
@@ -290,6 +292,35 @@ const candidates = await findPastafariDate(value, {
 ```
 
 אפשר ליצור לקוח עצמאי באמצעות `new PastafariReverseClient()` ולסגור אותו באמצעות `dispose()`. ברוב המקרים די בפונקציה המשותפת `findPastafariDate()`.
+
+## API לפתרון מערכת אילוצים פסטפרית
+
+`findPastafariDate()` נשאר API של reverse לעובדה יחידה: כאשר יום המעשה ידוע, או כאשר אפשר לפתור אותו בשרשרת רקורסיבית אציקלית. `ERR_UNSUPPORTED_CALCULATION_CYCLE` במסלול הזה אינו קביעה שלמערכת מחזורית אין פתרון; הוא מציין שה־API הרקורסיבי הישן אינו solver למערכת אילוצים.
+
+לכמה עובדות התלויות זו בזו, לרבות מחזורים כגון `F(B,A)=P_A` ו־`F(A,B)=P_B`, יש להשתמש ב־API הנפרד:
+
+```js
+import {
+  solvePastafariConstraints,
+} from "pastafari-calendar/constraints";
+
+const result = await solvePastafariConstraints({
+  variables: {
+    A: { range: [2461200n, 2461300n] },
+    B: { range: [2461200n, 2461300n] },
+  },
+  constraints: [
+    { type: "pastafari", target: "A", calculation: "B", date: pastafariA },
+    { type: "pastafari", target: "B", calculation: "A", date: pastafariB },
+  ],
+});
+```
+
+ה־solver מזהה strongly connected components, מפעיל propagation על טווחים, שוויון, סדר והפרשים, ומשתמש ב־reverse החד־ממדי הקיים כדי לבנות יחסי תמיכה במקום לבצע כברירת מחדל מכפלה קרטזית של תחומי `c` ו־`t`. `SAME_AS_TARGET` ממשיך להשתמש בחיפוש האלכסוני הקיים.
+
+כל פתרון שמוחזר עובר בסוף חישוב forward מלא והשוואה של כל חמשת שדות התאריך. `complete: true` נמסר רק כאשר התחום הסופי נסרק במלואו; עצירה באמצעות `maxSolutions`, `maxScanned`, timeout או cancellation אינה מוצגת כהוכחת שלמות. מחזור שאין לו תחום סופי או עוגן שמייצר תחום כזה נדחה ב־`ERR_CONSTRAINT_RANGE_REQUIRED`.
+
+החוזה המלא, סוגי האילוצים ומשמעות שדות התוצאה מתועדים ב־`docs/REVERSE-CONSTRAINTS.md`.
 
 ## הממשק התכנותי של הרכיב
 

@@ -283,6 +283,122 @@ export class PastafariReverseClient {
 
 export const sharedPastafariReverseClient: PastafariReverseClient;
 
+export type PastafariConstraintAbsoluteDate =
+  | IntegerLike
+  | string
+  | Date
+  | GregorianDate
+  | { jdn: IntegerLike | string }
+  | { year: IntegerLike | string; month: number; day: number };
+
+export type PastafariConstraintRange =
+  | readonly [PastafariConstraintAbsoluteDate, PastafariConstraintAbsoluteDate]
+  | { start: PastafariConstraintAbsoluteDate; end: PastafariConstraintAbsoluteDate };
+
+export interface PastafariConstraintVariable {
+  jdn?: IntegerLike | string;
+  range?: PastafariConstraintRange;
+}
+
+export interface PastafariDateConstraint {
+  type: "pastafari";
+  target: string;
+  date: PastafariDateInput;
+  calculation?: string | PastafariConstraintAbsoluteDate | typeof SAME_AS_TARGET;
+  calculationJdn?: PastafariConstraintAbsoluteDate;
+}
+
+export interface PastafariEqualityConstraint {
+  type: "equal";
+  left: string;
+  right: string;
+}
+
+export interface PastafariOrderConstraint {
+  type: "order";
+  left: string;
+  right: string;
+  op: "<" | "<=" | ">" | ">=";
+}
+
+export interface PastafariDifferenceConstraint {
+  type: "difference";
+  left: string;
+  right: string;
+  equals?: IntegerLike | string;
+  min?: IntegerLike | string;
+  max?: IntegerLike | string;
+}
+
+export type PastafariConstraint =
+  | PastafariDateConstraint
+  | PastafariEqualityConstraint
+  | PastafariOrderConstraint
+  | PastafariDifferenceConstraint;
+
+export interface PastafariConstraintProblem {
+  variables: Readonly<Record<string, PastafariConstraintVariable>>;
+  constraints: readonly PastafariConstraint[];
+}
+
+export interface PastafariConstraintProgress {
+  readonly scanned: bigint;
+  readonly total: null;
+  readonly matches: number;
+  readonly phase: "reverse" | "verify" | "done";
+  readonly complete: boolean;
+}
+
+export interface PastafariConstraintOptions {
+  signal?: AbortSignal;
+  onProgress?: (progress: PastafariConstraintProgress) => void;
+  yieldEvery?: number;
+  timeoutMs?: number;
+  maxSolutions?: number;
+  maxScanned?: IntegerLike | string;
+}
+
+export interface PastafariConstraintDay {
+  readonly jdn: bigint;
+  readonly gregorian: GregorianDate;
+}
+
+export type PastafariConstraintSolution = Readonly<Record<string, PastafariConstraintDay>>;
+
+export interface PastafariConstraintStats {
+  readonly reverseCalls: bigint;
+  readonly forwardVerifications: bigint;
+  readonly pruned: bigint;
+  readonly cyclicComponents: number;
+  readonly relationPairs: bigint;
+}
+
+export interface PastafariConstraintResult {
+  readonly solutions: readonly PastafariConstraintSolution[];
+  readonly complete: boolean;
+  readonly termination: "complete" | "max-solutions" | "max-scanned";
+  readonly scanned: bigint;
+  readonly candidates: bigint;
+  readonly verified: bigint;
+  readonly stats: PastafariConstraintStats;
+}
+
+export function solvePastafariConstraints(
+  problem: PastafariConstraintProblem,
+  options?: PastafariConstraintOptions,
+): Promise<PastafariConstraintResult>;
+
+export class PastafariConstraintClient {
+  constructor(options?: { startupTimeoutMs?: number });
+  solve(
+    problem: PastafariConstraintProblem,
+    options?: PastafariConstraintOptions,
+  ): Promise<PastafariConstraintResult>;
+  dispose(): void;
+}
+
+export const sharedPastafariConstraintClient: PastafariConstraintClient;
+
 export class YearBounds {
   readonly number: bigint;
   readonly openingGate: bigint;
