@@ -5,7 +5,7 @@ import { dirname, resolve } from "node:path";
 import process from "node:process";
 import {
   PastafariCalendar,
-} from "../../browser/pastafari-calendar-fast.js";
+} from "../../../browser/pastafari-calendar-fast.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const exe = resolve(here, `../build/pastafari-vectors${process.platform === "win32" ? ".exe" : ""}`);

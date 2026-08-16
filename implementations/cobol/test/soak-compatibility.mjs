@@ -13,12 +13,12 @@ import {
   SAME_AS_TARGET,
   findPastafariDate,
   getCutletView,
-} from "../../browser/pastafari-calendar-fast.js";
+} from "../../../browser/pastafari-calendar-fast.js";
 
 const SCRIPT_VERSION = "PASTAFARI-COBOL-COMPAT-1.0.0";
 const here = dirname(fileURLToPath(import.meta.url));
 const cobolDir = resolve(here, "..");
-const repoRoot = resolve(cobolDir, "..");
+const repoRoot = resolve(cobolDir, "../..");
 const buildDir = resolve(cobolDir, "build");
 const batchExe = resolve(buildDir, `pastafari-batch${process.platform === "win32" ? ".exe" : ""}`);
 const requestPath = resolve(buildDir, "cobol-validation-requests.txt");

@@ -2,9 +2,10 @@
 
 This directory is an incremental, merge-ready slice of the larger 45-language
 implementation project. It contains **five independently implemented and tested
-language engines**. JavaScript is intentionally not counted.
+language engines** in the shared conformance bundle. JavaScript is intentionally
+not counted.
 
-The five engines in this upload are:
+The five engines in that shared bundle are:
 
 1. C++20
 2. Python 3
@@ -12,9 +13,13 @@ The five engines in this upload are:
 4. Java 17+
 5. Ruby
 
-Each engine executes the calendar algorithm in its own language. None of these
-five delegates the algorithm to another language through FFI, JNI/JNA, native
-bindings, subprocesses, RPC, WebAssembly, or an external executable.
+The COBOL reference engine lives in `cobol/`. It is validated separately and is
+not included in the five-engine count or in `implementations.json`.
+
+Each engine in the shared five-engine bundle executes the calendar algorithm in
+its own language. None of these five delegates the algorithm to another language
+through FFI, JNI/JNA, native bindings, subprocesses, RPC, WebAssembly, or an
+external executable.
 
 ## Shared conformance contract
 

@@ -80,17 +80,17 @@ On Debian/Ubuntu:
 
 ```sh
 sudo apt-get install gnucobol libgmp-dev
-make -C cobol
+make -C implementations/cobol
 ```
 
-The reusable module is written to `cobol/build/pastafari-engine.so`.
+The reusable module is written to `implementations/cobol/build/pastafari-engine.so`.
 
 ## Test and qualification
 
 From the repository root, first run the small compile/linkage smoke:
 
 ```sh
-make -C cobol test
+make -C implementations/cobol test
 ```
 
 That target retains the original fixed vector suite. It is deliberately small;
@@ -99,7 +99,7 @@ it is not sufficient evidence that the port is correct.
 Before publishing or merging the port, run the cross-engine validation:
 
 ```sh
-make -C cobol validation
+make -C implementations/cobol validation
 ```
 
 The standard profile compares thousands of deterministic cases against
@@ -109,13 +109,13 @@ negative reverse cases and bounded `c=t` candidate-list comparisons. It writes
 a machine-readable evidence report to:
 
 ```text
-cobol/build/cobol-validation-report.json
+implementations/cobol/build/cobol-validation-report.json
 ```
 
 A heavier local qualification profile is available as:
 
 ```sh
-make -C cobol soak
+make -C implementations/cobol soak
 ```
 
 Its defaults are 100,000 random forward cases and 10,000 known-reverse cases,

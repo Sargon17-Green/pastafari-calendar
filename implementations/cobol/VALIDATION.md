@@ -41,8 +41,8 @@ Run all commands below from the repository root.
 ## 1. Compile and run the small deterministic smoke suite
 
 ```sh
-make -C cobol clean
-make -C cobol test
+make -C implementations/cobol clean
+make -C implementations/cobol test
 ```
 
 This catches compiler/linkage/UTF-8 failures quickly and runs the original fixed
@@ -51,7 +51,7 @@ forward/reverse vector set.
 ## 2. Standard cross-engine validation
 
 ```sh
-make -C cobol validation
+make -C implementations/cobol validation
 ```
 
 The standard profile performs:
@@ -84,7 +84,7 @@ The default deterministic seed is:
 ## 3. Heavy local soak before publishing
 
 ```sh
-make -C cobol soak
+make -C implementations/cobol soak
 ```
 
 The default soak profile raises the random forward corpus to 100,000 and the
@@ -100,13 +100,13 @@ PASTAFARI_COBOL_INVALID_REVERSE_CASES=5000 \
 PASTAFARI_COBOL_JS_REVERSE_CASES=5000 \
 PASTAFARI_COBOL_SELF_CASES=1000 \
 PASTAFARI_COBOL_SELF_RANGE_CASES=100 \
-make -C cobol validation
+make -C implementations/cobol validation
 ```
 
 For a second independent deterministic run, change only the seed:
 
 ```sh
-PASTAFARI_COBOL_SEED=0x12345678 make -C cobol soak
+PASTAFARI_COBOL_SEED=0x12345678 make -C implementations/cobol soak
 ```
 
 ## Configuration variables
@@ -126,7 +126,7 @@ PASTAFARI_COBOL_SEED=0x12345678 make -C cobol soak
 The validation script now mirrors progress continuously to:
 
 ```text
-cobol/build/cobol-validation-progress.log
+implementations/cobol/build/cobol-validation-progress.log
 ```
 
 Each progress entry has an ISO timestamp and elapsed run time. Preparation phases
@@ -139,7 +139,7 @@ output. This makes a stalled case distinguishable from a merely slow phase.
 The full shell transcript can still be captured separately:
 
 ```sh
-make -C cobol validation 2>&1 | tee cobol-validation-console.log
+make -C implementations/cobol validation 2>&1 | tee cobol-validation-console.log
 ```
 
 The `tee` log includes compiler/Make output; the rolling progress log covers the Node
@@ -156,7 +156,7 @@ Progress frequency can be tuned without changing the test corpus:
 A run writes:
 
 ```text
-cobol/build/cobol-validation-report.json
+implementations/cobol/build/cobol-validation-report.json
 ```
 
 The report records at least:
@@ -174,8 +174,8 @@ The report records at least:
 - executed comparison counts;
 - up to the first 50 mismatches with their calculation and target JDNs.
 
-The generated request corpus is also left under `cobol/build/` so a failing run
-can be reproduced. `cobol/build/` is ignored by Git.
+The generated request corpus is also left under `implementations/cobol/build/` so a failing run
+can be reproduced. `implementations/cobol/build/` is ignored by Git.
 
 For a release/merge verification record, copy the PASS report into
 `verification/evidence/` with a name that includes the commit and date. Do not
@@ -187,8 +187,8 @@ A full standard-profile run completed with `PASS` on 2026-08-15 under Windows/MS
 
 The retained evidence is:
 
-- `../verification/evidence/cobol-validation-2026-08-15.json`
-- `../verification/evidence/cobol-validation-2026-08-15.log`
-- `../verification/evidence/cobol-validation-2026-08-15-SHA256SUMS.txt`
+- `../../verification/evidence/cobol-validation-2026-08-15.json`
+- `../../verification/evidence/cobol-validation-2026-08-15.log`
+- `../../verification/evidence/cobol-validation-2026-08-15-SHA256SUMS.txt`
 
 The local run did not expose Git commit metadata to the validation script, so the report records `gitCommit: null`; exact hashes of the tested JavaScript engine, COBOL engine, runtime, copybook, harness and generated corpus are embedded in the report. A passing GitHub Actions run remains the cross-platform confirmation step.
