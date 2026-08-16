@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pastafari-calendar"
+version = "2.0.0"
+description = "Readable Python implementation of The Scroll of the Appointed Times"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Pastafari Calendar contributors" }]
+
+[project.scripts]
+pastafari-calendar = "pastafari_calendar.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pastafari_calendar*"]
