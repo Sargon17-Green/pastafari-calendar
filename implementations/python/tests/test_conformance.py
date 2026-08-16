@@ -21,14 +21,14 @@ VECTORS = (
 
 
 class ConformanceTests(unittest.TestCase):
-    def test_published_vectors(self) -> None:
+    def test_specification_derived_canonical_vectors(self) -> None:
         document = json.loads(VECTORS.read_text(encoding="utf-8"))
-        self.assertEqual(document["algorithmId"], ALGORITHM_ID)
+        self.assertEqual(document["canonicalId"], ALGORITHM_ID)
         calendar = PastafariCalendar()
         for vector in document["vectors"]:
             with self.subTest(vector=vector["id"]):
-                actual = calendar.convert_iso(
-                    vector["target"], vector["calculation"]
+                actual = calendar.convert_jdn(
+                    int(vector["calculationJdn"]), int(vector["targetJdn"])
                 ).to_dict()
                 self.assertEqual(actual, vector["expected"])
 

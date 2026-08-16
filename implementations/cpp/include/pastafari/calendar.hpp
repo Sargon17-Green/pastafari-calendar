@@ -9,7 +9,7 @@
 namespace pastafari {
 
 inline constexpr std::string_view algorithm_id =
-    "PASTAFARI-TABLETS-2026-08-11-V2-5778";
+    "PASTAFARI-SCROLL-2026-08-16-D36B0C94";
 inline constexpr int max_year_days = 5'778;
 
 struct GregorianDate {
@@ -20,7 +20,6 @@ struct GregorianDate {
     GregorianDate(BigInt year_value, int month_value, int day_value);
 
     [[nodiscard]] static GregorianDate parse(std::string_view iso_date);
-    [[nodiscard]] static GregorianDate today();
     [[nodiscard]] std::string isoformat() const;
 };
 
@@ -49,16 +48,14 @@ public:
     PastafariCalendar& operator=(const PastafariCalendar&) = delete;
 
     [[nodiscard]] PastafariDate convert_jdn(
-        const BigInt& target_jdn,
-        const BigInt& calculation_jdn
+        const BigInt& calculation_jdn,
+        const BigInt& target_jdn
     );
 
     [[nodiscard]] PastafariDate convert(
-        const GregorianDate& target_date,
-        const GregorianDate& calculation_date
+        const GregorianDate& calculation_date,
+        const GregorianDate& target_date
     );
-
-    [[nodiscard]] PastafariDate convert(const GregorianDate& target_date);
 
     void clear();
 

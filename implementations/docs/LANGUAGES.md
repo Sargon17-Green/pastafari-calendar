@@ -1,19 +1,25 @@
-# Ready independent languages — incremental upload
+# Ready-five status inside the 84-target expanded project
 
-This document describes only the implementations included in this upload. It is
-not a claim that the overall 45-language remediation is complete.
+The historical remediation checkpoint counted five accepted engines out of a
+45-language target that excluded JavaScript. The expanded task is different: it
+contains **84 required targets and includes a fresh JavaScript implementation**.
+Do not confuse the old `5/45` milestone with overall completion.
 
-| Language | Independent engine | Full acceptance corpus | Status |
-|---|---:|---:|---|
-| C++20 | Yes | 16 known + 10,000 differential; bigint unit | **implemented and tested** |
-| Python 3 | Yes | 16 known + 10,000 differential; unit tests | **implemented and tested** |
-| C17 | Yes | 16 known + 10,000 differential | **implemented and tested** |
-| Java 17+ | Yes | 17 semantic + 16 known + 10,000 differential | **implemented and tested** |
-| Ruby | Yes | 16 known + 10,000 differential | **implemented and tested** |
+After the 16 August 2026 normative remediation, these five existing engines have
+all passed a source-derived canonical check and checkpoint provenance audit:
 
-JavaScript is not counted as one of the target languages.
+| Language | Independent runtime engine | Fresh canonical status | Historical regression |
+|---|---:|---:|---:|
+| C++20 | Yes | **PASS** | retained |
+| Python 3 | Yes | **PASS** | retained |
+| C17 | Yes | **PASS** | retained |
+| Java 17+ | Yes | **PASS** | retained |
+| Ruby | Yes | **PASS** | retained |
 
-The wider project still contains additional work outside this upload. In
-particular, this bundle intentionally does not include non-independent FFI/C ABI
-wrappers, compiler-generated Assembly, or ports that have not yet passed their
-required verification.
+Accordingly this ready-five slice contributes **5/84 final-spec-certified
+expanded targets**. The remaining targets must still be implemented/audited and
+tested independently; this document makes no claim about their current status.
+
+The canonical source is the supplied Scroll, not JavaScript or any other engine.
+All five public interfaces use calculation/action day first and queried/target
+day second, and none silently substitutes a civil-date “today”.

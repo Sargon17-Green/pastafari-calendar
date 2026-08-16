@@ -2,7 +2,6 @@
 
 #include <exception>
 #include <iostream>
-#include <optional>
 #include <string>
 #include <string_view>
 
@@ -10,54 +9,41 @@ namespace {
 
 void print_usage(std::ostream& output, std::string_view executable) {
     output
-        << "Usage: " << executable
-        << " TARGET [--calculation-date DATE]\n\n"
-        << "TARGET and DATE use the proleptic Gregorian [+-]YYYY-MM-DD form.\n"
-        << "If DATE is omitted, the local civil day at invocation time is used.\n";
+        << "Usage:\n"
+        << "  " << executable << " CALCULATION TARGET\n"
+        << "  " << executable << " --jdn CALCULATION_JDN TARGET_JDN\n\n"
+        << "The positional order is normative: calculation/action day first, "
+           "queried/target day second.\n"
+        << "Gregorian dates use signed proleptic [+-]YYYY-MM-DD notation.\n"
+        << "There is no implicit civil-today fallback; the Venus-day adapter is separate.\n";
 }
 
 }  // namespace
 
 int main(int argc, char** argv) {
     try {
-        if (argc < 2) {
-            print_usage(std::cerr, argv[0]);
-            return 2;
+        if (argc == 2 && (std::string_view(argv[1]) == "--help" || std::string_view(argv[1]) == "-h")) {
+            print_usage(std::cout, argv[0]);
+            return 0;
         }
-        std::optional<std::string> target;
-        std::optional<std::string> calculation;
-        for (int index = 1; index < argc; ++index) {
-            const std::string argument(argv[index]);
-            if (argument == "--help" || argument == "-h") {
-                print_usage(std::cout, argv[0]);
-                return 0;
-            }
-            if (argument == "--calculation-date" || argument == "-c") {
-                if (index + 1 >= argc) {
-                    throw std::invalid_argument(argument + " requires a date");
-                }
-                calculation = argv[++index];
-                continue;
-            }
-            if (target.has_value()) {
-                throw std::invalid_argument("unexpected argument: " + argument);
-            }
-            target = argument;
-        }
-        if (!target.has_value()) {
-            throw std::invalid_argument("the queried target day is required");
-        }
-
-        const pastafari::GregorianDate target_date =
-            pastafari::GregorianDate::parse(*target);
         pastafari::PastafariCalendar calendar;
-        const pastafari::PastafariDate value = calculation.has_value()
-            ? calendar.convert(
-                target_date, pastafari::GregorianDate::parse(*calculation)
-            )
-            : calendar.convert(target_date);
-        std::cout << value.json() << '\n';
-        return 0;
+        if (argc == 4 && std::string_view(argv[1]) == "--jdn") {
+            const auto value = calendar.convert_jdn(
+                pastafari::BigInt(argv[2]), pastafari::BigInt(argv[3])
+            );
+            std::cout << value.json() << '\n';
+            return 0;
+        }
+        if (argc == 3) {
+            const auto value = calendar.convert(
+                pastafari::GregorianDate::parse(argv[1]),
+                pastafari::GregorianDate::parse(argv[2])
+            );
+            std::cout << value.json() << '\n';
+            return 0;
+        }
+        print_usage(std::cerr, argv[0]);
+        return 2;
     } catch (const std::exception& error) {
         std::cerr << "pastafari-calendar: " << error.what() << '\n';
         return 1;

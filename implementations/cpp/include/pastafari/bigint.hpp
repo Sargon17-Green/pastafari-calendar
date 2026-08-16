@@ -54,15 +54,21 @@ public:
     BigInt(int value) : BigInt(static_cast<std::int64_t>(value)) {}
 
     explicit BigInt(std::string_view decimal) : BigInt() {
-        const std::string owned(decimal);
-        if (owned.empty()) {
-            throw std::invalid_argument("invalid decimal integer: " + owned);
+        const std::string original(decimal);
+        if (original.empty()) {
+            throw std::invalid_argument("invalid decimal integer: " + original);
+        }
+        const std::string normalized = original.front() == '+'
+            ? original.substr(1)
+            : original;
+        if (normalized.empty()) {
+            throw std::invalid_argument("invalid decimal integer: " + original);
         }
         BIGNUM* parsed = nullptr;
-        const int consumed = BN_dec2bn(&parsed, owned.c_str());
+        const int consumed = BN_dec2bn(&parsed, normalized.c_str());
         std::unique_ptr<BIGNUM, detail::BigNumberDeleter> candidate(parsed);
-        if (!candidate || consumed != static_cast<int>(owned.size())) {
-            throw std::invalid_argument("invalid decimal integer: " + owned);
+        if (!candidate || consumed != static_cast<int>(normalized.size())) {
+            throw std::invalid_argument("invalid decimal integer: " + original);
         }
         value_.swap(candidate);
     }

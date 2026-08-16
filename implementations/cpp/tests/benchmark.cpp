@@ -40,7 +40,7 @@ int main() {
     constexpr int range_days = 365;
     const double sequential = seconds([&] {
         for (int offset = 0; offset < range_days; ++offset) {
-            (void)calendar.convert_jdn(jdn + offset, jdn);
+            (void)calendar.convert_jdn(jdn, jdn + offset);
         }
     });
 

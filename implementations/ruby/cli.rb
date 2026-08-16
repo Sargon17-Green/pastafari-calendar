@@ -6,21 +6,18 @@ require 'json'
 require_relative 'pastafari_calendar'
 
 begin
-  if ARGV.length == 3 && %w[-c --calculation-date].include?(ARGV[1])
-    target = ARGV[0]
-    calculation = ARGV[2]
-  elsif ARGV.length == 3 && ARGV[0] == '--jdn'
+  calendar = Pastafari::Calendar.new
+  if ARGV.length == 3 && ARGV[0] == '--jdn'
     calculation_jdn = Integer(ARGV[1], 10)
     target_jdn = Integer(ARGV[2], 10)
-    puts JSON.generate(Pastafari::Calendar.new.convert_jdn(target_jdn, calculation_jdn).to_h)
-    exit 0
+    puts JSON.generate(calendar.convert_jdn(calculation_jdn, target_jdn).to_h)
+  elsif ARGV.length == 2
+    puts JSON.generate(calendar.convert_iso(ARGV[0], ARGV[1]).to_h)
   else
-    warn 'usage: ruby cli.rb TARGET -c CALCULATION'
+    warn 'usage: ruby cli.rb CALCULATION TARGET'
     warn '   or: ruby cli.rb --jdn CALCULATION_JDN TARGET_JDN'
     exit 2
   end
-
-  puts JSON.generate(Pastafari::Calendar.new.convert_iso(target, calculation).to_h)
 rescue StandardError => e
   warn "#{e.class}: #{e.message}"
   exit 1

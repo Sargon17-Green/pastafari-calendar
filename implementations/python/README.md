@@ -1,28 +1,21 @@
 # Pastafari Calendar — Python
 
-This directory contains the deliberately readable implementation.  It uses only
-the Python standard library and Python's native arbitrary-precision integers.
+This directory contains the deliberately readable independent Python implementation. It uses only the Python standard library and Python's arbitrary-precision integers.
+
+The sole normative source for this implementation is **“מגילת העיתים — לוח סוד הרוטב ושמות הימים”**, 2026-08-16, SHA-256 `d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96`.
 
 ## Run
 
-```bash
-python -m pastafari_calendar 2026-08-06 --calculation-date 2026-08-06
-```
-
-The output is UTF-8 JSON:
-
-```json
-{"year":"5000","cutletName":"כליה","dayInCutlet":306,"monthName":"לשון","dayInMonth":23}
-```
-
-Signed proleptic Gregorian years are supported.  For example:
+The normative positional order is **calculation/action day first, queried/target day second**:
 
 ```bash
-python -m pastafari_calendar -41221-12-22 -c -41221-12-22
+python -m pastafari_calendar 2026-08-06 2026-08-06
+python -m pastafari_calendar --jdn 2461259 2461259
 ```
 
-If `--calculation-date` is omitted, the local civil day is sampled once for the
-conversion.
+The output is UTF-8 JSON containing exactly the five normative result fields. Signed proleptic-Gregorian years, including year zero and negative years, are supported.
+
+There is intentionally **no implicit civil-today fallback**. Converting a real instant/location into the calculation day requires the separate location-dependent Venus-day adapter defined by the source; the pure core always receives an explicit calculation day.
 
 ## Library API
 
@@ -31,39 +24,16 @@ from pastafari_calendar import GregorianDate, PastafariCalendar
 
 calendar = PastafariCalendar()
 value = calendar.convert(
-    GregorianDate.parse("2026-08-06"),
-    GregorianDate.parse("2026-08-06"),
+    GregorianDate.parse("2026-08-06"),  # calculation/action day
+    GregorianDate.parse("2026-08-12"),  # queried/target day
 )
 print(value.to_dict())
 ```
 
-For integrations that already use integer Julian day numbers, call
-`convert_jdn(target_jdn, calculation_jdn)` directly.
+For integer Julian day numbers use `convert_jdn(calculation_jdn, target_jdn)`.
 
-`PastafariCalendar` retains bounded LRU caches.  Reuse one instance when several
-dates share a calculation day; that is substantially faster than creating a new
-instance per call.
+## Tests
 
-## Test
+`implementations/tests/conformance-vectors.json` is a compact **specification-derived canonical** fixture. The larger `spec-derived-canonical-vectors.json` contains source-level sauce, answer-ring, gate, year, combinatoric and period-boundary evidence. The historical 16-vector file and 10,000-pair corpus are retained only as non-normative regression fixtures.
 
-From the repository root:
-
-```bash
-PYTHONPATH=python python -m unittest discover -s python/tests -v
-```
-
-The suite includes the shared conformance vectors, the foundation anchor,
-astronomical year zero, negative years and a vector that changes if the erroneous
-5,781-day value is used instead of the binding 5,778-day limit.
-
-## Benchmark
-
-From the repository root:
-
-```bash
-PYTHONPATH=python python3 python/benchmark.py
-```
-
-The benchmark separates a cold conversion, an identical cache hit and a
-365-consecutive-day workload.  See `docs/BENCHMARKS.md` for one recorded run and
-the exact interpretation of those figures.
+`PastafariCalendar` retains bounded LRU caches. Reuse one instance when several target dates share the same calculation day.

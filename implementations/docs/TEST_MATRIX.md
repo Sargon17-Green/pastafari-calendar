@@ -1,83 +1,84 @@
-# Verification matrix — five ready independent engines
+# Verification matrix — ready-five after normative remediation
 
-This matrix records evidence that exists for the five engines in this incremental
-upload. “PASS” means an executable correctness test was actually run; source
-review alone is not promoted to a test pass.
+“Canonical PASS” below means executable tests against data derived from the sole
+normative Scroll were actually run. Historical regression evidence is shown
+separately and is not treated as specification authority.
 
-| Implementation | Verification evidence | Result |
-|---|---|---|
-| C++20 | bigint unit tests; 16 known/boundary vectors; deterministic 10,000-pair differential corpus | **PASS** |
-| Python 3 | unit tests; 16 known/boundary vectors; deterministic 10,000-pair differential corpus | **PASS** |
-| C17 | 16 known/boundary vectors; deterministic 10,000-pair differential corpus | **PASS** |
-| Java 17+ | 17 semantic checks; 16 known/boundary vectors; deterministic 10,000-pair differential corpus | **PASS** |
-| Ruby | 16 known/boundary vectors; deterministic 10,000-pair differential corpus | **PASS** |
+| Implementation | Fresh specification-derived evidence (16 Aug 2026) | Historical regression evidence | Status |
+|---|---|---|---|
+| Python 3 | 4 canonical/semantic unit tests; compact canonical forward vectors | prior 16-vector + 10,000-pair pass retained | **final-spec-certified ready-five** |
+| C++20 | bigint semantics; 6/6 canonical forward vectors; signed `+YYYY` parser regression test | prior 16-vector + 10,000-pair pass retained | **final-spec-certified ready-five** |
+| C17 | fresh build; 6/6 canonical forward vectors using reusable native calculation state | prior 16-vector + 10,000-pair pass retained | **final-spec-certified ready-five** |
+| Java 17+ | 17/17 semantic checks; 6/6 canonical forward vectors | prior 16-vector + 10,000-pair pass retained | **final-spec-certified ready-five** |
+| Ruby | 6/6 canonical forward vectors | prior 16-vector + preserved 10,000-pair pass retained | **final-spec-certified ready-five** |
 
-## Recorded environments
+All five calc-first `--jdn` CLIs were also executed on the canonical
+`present_forward` case (`2461259 -> 2461265`) and emitted the identical expected
+five-field UTF-8 JSON result.
 
-The C++20, Python 3, C17 and Java evidence comes from the remediation audit run
-on 12 August 2026 in Linux x86-64: GCC 13.3.0 for C/C++, CPython 3.12.13, and
-OpenJDK 17.0.19. The Java source-launcher path was tested; Maven packaging was
-not claimed as executed in that environment.
+The shared gate provenance verifier independently recomputed **75/75** stored
+gate checkpoints and confirmed all five production tables.
 
-Ruby was independently re-run by the user on Windows with Ruby 4.0.6
-(`x64-mingw-ucrt`). The preserved log records `known vectors: 16/16 passed`, all
-40 groups of 250 differential rows, and final
-`PASS: known 16/16; differential 10000/10000`.
+## Fresh environment
 
-The Ruby log is stored at:
+The remediation/canonical run used:
 
-`verification/evidence/multilang/ruby-differential-20260814-125717.log`
+- CPython 3.13.5;
+- GCC 14.2.0 for C17;
+- G++ 14.2.0 for C++20;
+- OpenJDK/Javac 21.0.11, with Java source required to remain Java 17 compatible;
+- Ruby 3.3.8 on Linux x86-64.
 
-## Shared corpus
+C++ was compiled with `-std=c++20`; C with `-std=gnu17`. Java had previously
+also been explicitly compiled with `javac --release 17` during the normative
+audit.
 
-- algorithm ID: `PASTAFARI-TABLETS-2026-08-11-V2-5778`
-- rows: 10,000
-- groups: 40
-- seed: `0x5a17c9e3d4b26f81`
-- corpus SHA-256: `9e29a8f65fe349b2b250d9059ffc3f35bb099c41eea49a511b164b4c92771bdf`
-- includes negative/ancient dates, astronomical year zero, Unicode outputs and
-  5,778-boundary discriminators.
+## Canonical fixture identities
+
+- canonical ID: `PASTAFARI-SCROLL-2026-08-16-D36B0C94`
+- normative source SHA-256:
+  `d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96`
+- compact six-vector fixture SHA-256:
+  `7a427aa5dd49404a3ebf6e0d5a326cb0c658c553e4ae8c55c44e86882022f04d`
+- comprehensive source-derived fixture SHA-256:
+  `35a7c86a8fbb25b265a1021af832575d6bc8b8e66fb7d0d22ef3b102422ed2b1`
+- deep signed-year fixture SHA-256:
+  `d7d340b0faf45dfef8b9f12269c3603c9c2cfdfc96896e8b47d907cdf12ded3a`
+- 5,778 discriminator fixture SHA-256:
+  `8593f526ed93c6198b6ca467bc5e87ce7a100715dd78bd24d6b957851577aa0f`
+- 75-checkpoint fixture SHA-256:
+  `02f6e5b232dce85a2ab2a2963bcdae16592d0a4c10974d86b21266802fb0040d`
+
+The comprehensive fixture contains **202 forward vectors** and boundary witnesses
+covering **17/17 cutlet names** and **47/47 month names**, in addition to the
+source-level sauce/choice/combinatoric evidence described in `CONFORMANCE.md`.
+
+## Historical corpus
+
+The retained 10,000-pair regression corpus has not been regenerated or relabeled
+as canonical:
+
+- historical algorithm ID: `PASTAFARI-TABLETS-2026-08-11-V2-5778`;
+- rows: 10,000;
+- groups: 40;
+- seed: `0x5a17c9e3d4b26f81`;
+- SHA-256: `9e29a8f65fe349b2b250d9059ffc3f35bb099c41eea49a511b164b4c92771bdf`.
+
+Its older full-pass logs remain valid **regression** evidence. This 1F run did
+not claim a fresh 10,000-row pass for every engine.
 
 ## Reproduction
 
-Run from `implementations/` unless noted otherwise:
+From `implementations/`:
 
 ```bash
-# Python
-PYTHONPATH=python python3 -m unittest discover -s python/tests -v
-
-# C++
-make -C cpp test
-
-# C
-make -C c test
-
-# Java
-make -C java test
-
-# Ruby
-make -C ruby test
+PYTHONPATH=python python3 -m unittest python.tests.test_conformance -v
+make -C cpp test-canonical
+make -C c test-canonical
+make -C java test-canonical
+make -C ruby test-canonical
+python3 tests/verify_gate_checkpoints.py
 ```
 
-The full differential suite can be computationally expensive for distant cases;
-the checked-in corpus must not be reduced to obtain a pass.
-
-## Bundle validation on 16 August 2026
-
-The exact source tree prepared for this incremental upload was smoke-tested
-through all five CLIs on the same representative conversion. C17, C++20,
-Python 3, Java 17+ and Ruby all emitted the identical complete UTF-8 five-field
-result.
-
-Python's conformance unit suite was also re-run successfully. Java's 17 semantic
-checks and 16 known vectors were re-run successfully after an output-only
-UTF-8 stdout initialization was added so the CLI does not depend on the host's
-default charset. The calendar algorithm was not changed by that adjustment.
-
-C and C++ were rebuilt successfully. A fresh full known-vector pass for those
-two, when run together in the constrained packaging environment, exceeded the
-available command window; therefore this packaging run is **not** presented as
-a new full-suite pass for C or C++. Their accepted status continues to rely on
-the previously recorded 16-vector and 10,000-pair executable evidence.
-
-See `../../verification/evidence/multilang/bundle-validation-2026-08-16.md`.
+`make test` in the language directories may additionally run the historical,
+computationally heavier regression corpus.

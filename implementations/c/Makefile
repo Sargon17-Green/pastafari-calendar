@@ -11,7 +11,7 @@ CORE_DEPENDENCIES := src/wideint.c src/calendar_core.c src/gate_checkpoints.h \
 LIBRARY := $(BUILD_DIR)/libpastafari_core.so
 PROGRAM := $(BUILD_DIR)/pastafari-calendar
 
-.PHONY: all test clean
+.PHONY: all test test-canonical test-regression clean
 
 all: $(LIBRARY) $(PROGRAM)
 
@@ -24,12 +24,19 @@ $(LIBRARY): $(CORE_SOURCES) $(CORE_DEPENDENCIES) | $(BUILD_DIR)
 $(PROGRAM): $(CORE_SOURCES) $(CORE_DEPENDENCIES) src/main.c | $(BUILD_DIR)
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(CORE_SOURCES) src/main.c $(LDFLAGS) -o $@
 
+$(BUILD_DIR)/pastafari-canonical: tests/canonical.c | $(BUILD_DIR)
+	$(CC) $(CPPFLAGS) $(CFLAGS) $< $(LDFLAGS) -o $@
+
 $(BUILD_DIR)/pastafari-differential: tests/differential.c | $(BUILD_DIR)
 	$(CC) $(CPPFLAGS) $(CFLAGS) $< $(LDFLAGS) -o $@
 
-test: all $(BUILD_DIR)/pastafari-differential
-	python3 ../tests/run_cli_conformance.py $(PROGRAM)
+test-canonical: all $(BUILD_DIR)/pastafari-canonical
+	$(BUILD_DIR)/pastafari-canonical
+
+test-regression: $(BUILD_DIR)/pastafari-differential
 	$(BUILD_DIR)/pastafari-differential $(CORPUS)
+
+test: test-canonical test-regression
 
 clean:
 	rm -rf $(BUILD_DIR)

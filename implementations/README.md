@@ -1,54 +1,72 @@
-# Pastafari Calendar — independent implementations
+# Pastafari Calendar — independently implemented engines
 
-This directory is an incremental, merge-ready slice of the larger 45-language
-implementation project. It contains **five independently implemented and tested
-language engines** in the shared conformance bundle. JavaScript is intentionally
-not counted.
+This directory contains the five previously accepted independent engines that
+have now been re-audited against the expanded task's **sole normative source**:
 
-The five engines in that shared bundle are:
+**“מגילת העיתים — לוח סוד הרוטב ושמות הימים”**  
+SHA-256: `d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96`
 
-1. C++20
-2. Python 3
-3. C17
-4. Java 17+
-5. Ruby
+The five engines in this ready-five slice are C++20, Python 3, C17, Java 17+
+and Ruby. Each executes the calendar algorithm in its own language; none
+delegates calendar semantics to another implementation through FFI, JNI/JNA,
+subprocesses, RPC, WebAssembly, or an external calendar executable.
 
-The COBOL reference engine lives in `cobol/`. It is validated separately and is
-not included in the five-engine count or in `implementations.json`.
+The repository also contains the separately validated COBOL engine at
+`implementations/cobol/`. Its relocation into `implementations/` is preserved
+here; COBOL is not part of the ready-five count and this remediation does not
+replace or roll back its files.
 
-Each engine in the shared five-engine bundle executes the calendar algorithm in
-its own language. None of these five delegates the algorithm to another language
-through FFI, JNI/JNA, native bindings, subprocesses, RPC, WebAssembly, or an
-external executable.
+This slice is part of the **84-target expanded project**. It is not a claim that
+all 84 targets are complete.
 
-## Shared conformance contract
+## Normative conversion contract
 
-Every conversion depends on two ordered inputs: the calculation day and the
-queried/target day. The output is the full ordered five-field result:
+Every forward conversion receives the ordered pair:
 
-1. year number;
-2. cutlet name;
-3. day in cutlet;
-4. month name;
-5. day in month.
+1. calculation/action day;
+2. queried/target day.
 
-The implementations preserve signed proleptic Gregorian dates, Unicode names,
-exact integer arithmetic, the required floor-division/modulo behavior for
-negative values, and the binding maximum year length of **5,778 days**.
+Public APIs and CLIs in these five engines now use that same positional order.
+There is no implicit civil-midnight “today” fallback. Resolving a real instant
+to the current Pastafari calculation day is a separate location-dependent Venus
+boundary adapter and is intentionally outside these pure integer-day cores.
 
-Shared development data lives under `tests/`:
+The output is exactly the ordered five-field result: year number, cutlet name,
+day in cutlet, month name, and day in month. The binding maximum year length is
+**5,778 days**, including the source's explicit correction of the isolated
+5,781 typo.
 
-- `conformance-vectors.json` — 16 known/boundary vectors;
-- `oracle-differential-10000.tsv` — deterministic 10,000-pair differential corpus;
-- `generate_oracle_corpus.mjs` — provenance/reproduction utility for the static corpus;
-- `run_cli_conformance.py` — language-neutral CLI vector runner.
+## Specification-derived canonical suite
 
-See `docs/TEST_MATRIX.md` for the exact evidence status and
-`docs/CONFORMANCE.md` for the binding decisions.
+Shared test material is under `tests/`:
 
-## Scope warning
+- `conformance-vectors.json` — compact six-vector canonical forward fixture used
+  for routine native conformance runs;
+- `spec-derived-canonical-vectors.json` — comprehensive source-derived audit
+  fixture with 202 forward vectors plus sauce, answer-ring, gate, year,
+  combinatoric, Gregorian, invalid-input and period-boundary evidence;
+- `spec-derived-deep-year-chain.json` — explicit year `2 -> 1 -> 0 -> -1`
+  source-derived chain;
+- `spec-derived-binding-5778.json` — discriminator proving the binding 5,778
+  maximum rather than 5,781;
+- `spec-derived-gate-checkpoints.json` — all 75 acceleration checkpoints derived
+  from the gate rule;
+- `generate_spec_canonical.py`, `generate_spec_deep_year_chain.py`,
+  `generate_spec_binding_5778.py` — test-only reference generators derived from
+  the Scroll, not from a production engine;
+- `verify_gate_checkpoints.py` — recomputes all checkpoint positions and verifies
+  the Python/C++/C/Java/Ruby production tables;
+- `run_cli_conformance.py` — language-neutral compact CLI runner.
 
-This upload does **not** claim completion of the 45-language goal. It deliberately
-omits incomplete wrappers/bindings, compiler-generated Assembly, Dart pending
-execution, and partially tested ports. The machine-readable status of this
-slice is in `implementations.json`.
+The canonical ID is `PASTAFARI-SCROLL-2026-08-16-D36B0C94`.
+
+## Historical regression evidence
+
+`historical-regression-vectors-16.json` and
+`oracle-differential-10000.tsv` are retained because they are useful regression
+artifacts from the earlier remediation work. They are **non-normative**. Their
+legacy filenames/header wording do not give JavaScript or any implementation
+specification authority.
+
+See `docs/CONFORMANCE.md` for the binding decisions and `docs/TEST_MATRIX.md`
+for the exact fresh and historical evidence status.

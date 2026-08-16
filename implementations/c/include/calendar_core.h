@@ -14,23 +14,24 @@ typedef struct PastafariOutput {
 } PastafariOutput;
 
 /*
- * The Assembly port accepts signed proleptic-Gregorian years whose resulting
- * JDN fits int64_t.  This spans roughly +/-25 quadrillion civil years and keeps
- * gate indices native while all binding ranks remain exact WideInt values.
+ * The C17 engine uses int64_t for JDNs/gate indexes and arbitrary-precision
+ * WideInt for sauce values, ranks and combinatorial counts. Conversion rejects
+ * any JDN whose distance from the Foundation Day cannot be doubled exactly
+ * inside uint64_t; it never silently wraps.
  */
 bool pc_iso_to_jdn(const char *text, int64_t *result);
 bool pc_convert_jdn(
-    int64_t target_jdn,
     int64_t calculation_jdn,
+    int64_t target_jdn,
     PastafariOutput *result,
     const char **error_message
 );
 
-/* Stable UTF-8 C ABI used by the additional in-process language bindings. */
+/* Stable UTF-8 C ABI. The normative positional order is calculation, target. */
 const char *pc_algorithm_id(void);
 bool pc_convert_iso_json(
-    const char *target_iso,
     const char *calculation_iso,
+    const char *target_iso,
     char *output,
     size_t output_capacity,
     const char **error_message

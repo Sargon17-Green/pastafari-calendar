@@ -1,4 +1,4 @@
-"""Run an implementation CLI against every checked-in conformance vector."""
+"""Run one native CLI against the compact specification-derived canonical corpus."""
 
 from __future__ import annotations
 
@@ -14,13 +14,17 @@ def main() -> int:
     executable = Path(sys.argv[1]).resolve()
     vectors_path = Path(__file__).resolve().parent / "conformance-vectors.json"
     document = json.loads(vectors_path.read_text(encoding="utf-8"))
+    if document.get("fixtureType") != "specification-derived-canonical":
+        raise AssertionError("refusing to treat a non-canonical fixture as canonical")
+    if document.get("inputOrder") != ["calculationJdn", "targetJdn"]:
+        raise AssertionError("canonical fixture input order changed")
     for vector in document["vectors"]:
         completed = subprocess.run(
             [
                 str(executable),
-                vector["target"],
-                "--calculation-date",
-                vector["calculation"],
+                "--jdn",
+                vector["calculationJdn"],
+                vector["targetJdn"],
             ],
             check=True,
             capture_output=True,
@@ -33,7 +37,7 @@ def main() -> int:
                 f"{vector['id']}: expected {vector['expected']!r}, got {actual!r}"
             )
         print(f"ok: {vector['id']}")
-    print(f"{len(document['vectors'])} native CLI conformance vectors passed")
+    print(f"{len(document['vectors'])} specification-derived CLI vectors passed")
     return 0
 
 

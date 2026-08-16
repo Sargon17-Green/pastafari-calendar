@@ -7,7 +7,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.Normalizer;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -34,12 +33,14 @@ import java.util.concurrent.Future;
  * a year (at most 5,778 days), a fixed table, or an array index.</p>
  *
  * <p>This source has no native bridge, subprocess, shared library or other
- * language implementation at runtime. The authoritative JavaScript
- * implementation is used only to generate the checked-in differential corpus.</p>
+ * language implementation at runtime. Historical differential data is retained
+ * only as non-normative regression evidence.</p>
  */
 public final class PastafariCalendar {
     public static final String ALGORITHM_ID =
-        "PASTAFARI-TABLETS-2026-08-11-V2-5778";
+        "PASTAFARI-SCROLL-2026-08-16-D36B0C94";
+    public static final String NORMATIVE_SOURCE_SHA256 =
+        "d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96";
 
     private static final BigInteger ZERO = BigInteger.ZERO;
     private static final BigInteger ONE = BigInteger.ONE;
@@ -145,25 +146,23 @@ public final class PastafariCalendar {
     private final LruCache<ConversionKey, PastafariDate> results =
         new LruCache<>(1024);
 
-    /** Parse and convert two signed proleptic-Gregorian dates. */
+    /** Parse and convert the normative ordered pair: calculation day, queried day. */
     public synchronized PastafariDate convertIso(
-        String targetDate,
-        String calculationDate
+        String calculationDate,
+        String targetDate
     ) {
+        GregorianDate calculation = GregorianDate.parse(calculationDate);
         GregorianDate target = GregorianDate.parse(targetDate);
-        GregorianDate calculation = calculationDate == null
-            ? GregorianDate.today()
-            : GregorianDate.parse(calculationDate);
-        return convertJdn(target.toJdn(), calculation.toJdn());
+        return convertJdn(calculation.toJdn(), target.toJdn());
     }
 
-    /** Convert an ordered pair of arbitrary-precision integer JDNs. */
+    /** Convert the normative ordered pair of arbitrary-precision JDNs. */
     public synchronized PastafariDate convertJdn(
-        BigInteger targetJdn,
-        BigInteger calculationJdn
+        BigInteger calculationJdn,
+        BigInteger targetJdn
     ) {
-        Objects.requireNonNull(targetJdn, "targetJdn");
         Objects.requireNonNull(calculationJdn, "calculationJdn");
+        Objects.requireNonNull(targetJdn, "targetJdn");
         ConversionKey key = new ConversionKey(calculationJdn, targetJdn);
         PastafariDate cached = results.get(key);
         if (cached != null) {
@@ -223,12 +222,6 @@ public final class PastafariCalendar {
             );
         }
 
-        public static GregorianDate today() {
-            LocalDate current = LocalDate.now();
-            return new GregorianDate(
-                bi(current.getYear()), current.getMonthValue(), current.getDayOfMonth()
-            );
-        }
 
         public BigInteger toJdn() {
             BigInteger a = floorDiv(bi(14L - month), bi(12));
@@ -280,10 +273,10 @@ public final class PastafariCalendar {
     ) {}
     private record ConversionKey(BigInteger calculationJdn, BigInteger targetJdn) {}
     private record YearKey(BigInteger openIndex, BigInteger closeIndex) {}
-    private record KnownVector(
+    private record CanonicalVector(
         String id,
-        String target,
-        String calculation,
+        String calculationJdn,
+        String targetJdn,
         String expected
     ) {}
     private record CorpusRow(
@@ -1541,40 +1534,33 @@ public final class PastafariCalendar {
         return result.toString();
     }
 
-    private static final KnownVector[] KNOWN_VECTORS = {
-        new KnownVector("present_same", "2026-08-06", "2026-08-06", "{\"year\":\"5000\",\"cutletName\":\"כליה\",\"dayInCutlet\":306,\"monthName\":\"לשון\",\"dayInMonth\":23}"),
-        new KnownVector("present_next", "2026-08-07", "2026-08-06", "{\"year\":\"5000\",\"cutletName\":\"כליה\",\"dayInCutlet\":307,\"monthName\":\"שלושה חלקים מחמישה\",\"dayInMonth\":36}"),
-        new KnownVector("present_previous", "2026-08-05", "2026-08-06", "{\"year\":\"5000\",\"cutletName\":\"כליה\",\"dayInCutlet\":305,\"monthName\":\"שושן\",\"dayInMonth\":27}"),
-        new KnownVector("present_to_2000", "2000-01-01", "2026-08-06", "{\"year\":\"4998\",\"cutletName\":\"צחוק\",\"dayInCutlet\":428,\"monthName\":\"משחת־שיניים\",\"dayInMonth\":9}"),
-        new KnownVector("present_to_2050", "2050-02-28", "2026-08-06", "{\"year\":\"5002\",\"cutletName\":\"צחוק\",\"dayInCutlet\":707,\"monthName\":\"נחושת\",\"dayInMonth\":36}"),
-        new KnownVector("millennium_same", "2000-01-01", "2000-01-01", "{\"year\":\"5000\",\"cutletName\":\"עקרב\",\"dayInCutlet\":428,\"monthName\":\"מלח\",\"dayInMonth\":48}"),
-        new KnownVector("millennium_previous", "1999-12-31", "2000-01-01", "{\"year\":\"5000\",\"cutletName\":\"עקרב\",\"dayInCutlet\":427,\"monthName\":\"שלושה חלקים מחמישה\",\"dayInMonth\":51}"),
-        new KnownVector("millennium_leap", "2000-02-29", "2000-01-01", "{\"year\":\"5000\",\"cutletName\":\"עקרב\",\"dayInCutlet\":487,\"monthName\":\"זפת\",\"dayInMonth\":51}"),
-        new KnownVector("millennium_to_present", "2026-08-12", "2000-01-01", "{\"year\":\"5002\",\"cutletName\":\"קרן\",\"dayInCutlet\":312,\"monthName\":\"טחול\",\"dayInMonth\":54}"),
-        new KnownVector("foundation_same", "-41221-12-22", "-41221-12-22", "{\"year\":\"5000\",\"cutletName\":\"עקרב\",\"dayInCutlet\":503,\"monthName\":\"באר\",\"dayInMonth\":56}"),
-        new KnownVector("foundation_next", "-41221-12-23", "-41221-12-22", "{\"year\":\"5000\",\"cutletName\":\"צחוק\",\"dayInCutlet\":1,\"monthName\":\"צפרדע\",\"dayInMonth\":38}"),
-        new KnownVector("foundation_previous", "-41221-12-21", "-41221-12-22", "{\"year\":\"5000\",\"cutletName\":\"עקרב\",\"dayInCutlet\":502,\"monthName\":\"הדלת הסגורה\",\"dayInMonth\":21}"),
-        new KnownVector("5778_boundary_same", "-43782-02-21", "-43782-02-21", "{\"year\":\"5000\",\"cutletName\":\"מחשבה\",\"dayInCutlet\":1,\"monthName\":\"ארידו\",\"dayInMonth\":93}"),
-        new KnownVector("5778_boundary_next", "-43782-02-22", "-43782-02-21", "{\"year\":\"5000\",\"cutletName\":\"מחשבה\",\"dayInCutlet\":2,\"monthName\":\"טחול\",\"dayInMonth\":89}"),
-        new KnownVector("5778_boundary_previous", "-43782-02-20", "-43782-02-21", "{\"year\":\"5000\",\"cutletName\":\"כליה\",\"dayInCutlet\":507,\"monthName\":\"בבל\",\"dayInMonth\":44}"),
-        new KnownVector("year_zero_leap", "0000-02-29", "0000-02-29", "{\"year\":\"5000\",\"cutletName\":\"צחוק\",\"dayInCutlet\":281,\"monthName\":\"נינוה\",\"dayInMonth\":7}")
+    private static final CanonicalVector[] CANONICAL_VECTORS = {
+        new CanonicalVector("foundation_same", "-13334246", "-13334246", "{\"year\":\"5000\",\"cutletName\":\"עקרב\",\"dayInCutlet\":503,\"monthName\":\"באר\",\"dayInMonth\":56}"),
+        new CanonicalVector("foundation_next", "-13334246", "-13334245", "{\"year\":\"5000\",\"cutletName\":\"צחוק\",\"dayInCutlet\":1,\"monthName\":\"צפרדע\",\"dayInMonth\":38}"),
+        new CanonicalVector("foundation_previous", "-13334246", "-13334247", "{\"year\":\"5000\",\"cutletName\":\"עקרב\",\"dayInCutlet\":502,\"monthName\":\"הדלת הסגורה\",\"dayInMonth\":21}"),
+        new CanonicalVector("present_same", "2461259", "2461259", "{\"year\":\"5000\",\"cutletName\":\"כליה\",\"dayInCutlet\":306,\"monthName\":\"לשון\",\"dayInMonth\":23}"),
+        new CanonicalVector("present_forward", "2461259", "2461265", "{\"year\":\"5000\",\"cutletName\":\"כליה\",\"dayInCutlet\":312,\"monthName\":\"סערה\",\"dayInMonth\":33}"),
+        new CanonicalVector("binding_5778_same", "-14269936", "-14269936", "{\"year\":\"5000\",\"cutletName\":\"מחשבה\",\"dayInCutlet\":1,\"monthName\":\"ארידו\",\"dayInMonth\":93}")
     };
 
-    private static void runKnownVectors() {
+    private static void runCanonicalVectors() {
         PastafariCalendar calendar = new PastafariCalendar();
         int checked = 0;
-        for (KnownVector vector : KNOWN_VECTORS) {
-            String actual = calendar.convertIso(vector.target(), vector.calculation()).json();
+        for (CanonicalVector vector : CANONICAL_VECTORS) {
+            String actual = calendar.convertJdn(
+                new BigInteger(vector.calculationJdn()),
+                new BigInteger(vector.targetJdn())
+            ).json();
             if (!actual.equals(vector.expected())) {
                 throw new AssertionError(
-                    "Java conformance mismatch for " + vector.id()
+                    "Java canonical mismatch for " + vector.id()
                     + "\nexpected: " + vector.expected()
                     + "\nactual:   " + actual
                 );
             }
             ++checked;
         }
-        System.out.println("Java conformance: " + checked + "/" + checked + " vectors passed");
+        System.out.println("Java canonical: " + checked + "/" + checked + " vectors passed");
     }
 
     private static void require(boolean condition, String message) {
@@ -1634,7 +1620,7 @@ public final class PastafariCalendar {
         PastafariCalendar calendar = new PastafariCalendar();
         int checked = 0;
         for (CorpusRow row : rows) {
-            String actual = calendar.convertJdn(row.target(), row.calculation()).json();
+            String actual = calendar.convertJdn(row.calculation(), row.target()).json();
             if (!actual.equals(row.expected())) {
                 throw new AssertionError(
                     "Java differential mismatch for target " + row.target()
@@ -1719,8 +1705,8 @@ public final class PastafariCalendar {
     private static void usage() {
         System.err.println(
             "usage:\n"
-            + "  java PastafariCalendar.java TARGET [-c CALCULATION]\n"
-            + "  java PastafariCalendar.java --jdn TARGET_JDN CALCULATION_JDN\n"
+            + "  java PastafariCalendar.java CALCULATION TARGET\n"
+            + "  java PastafariCalendar.java --jdn CALCULATION_JDN TARGET_JDN\n"
             + "  java PastafariCalendar.java --self-test\n"
             + "  java PastafariCalendar.java --differential CORPUS.tsv"
         );
@@ -1732,7 +1718,7 @@ public final class PastafariCalendar {
         try {
             if (arguments.length == 1 && arguments[0].equals("--self-test")) {
                 runSemanticsTests();
-                runKnownVectors();
+                runCanonicalVectors();
                 return;
             }
             if (arguments.length == 2 && arguments[0].equals("--differential")) {
@@ -1746,16 +1732,8 @@ public final class PastafariCalendar {
                 ).json());
                 return;
             }
-            if (arguments.length == 1) {
-                System.out.println(calendar.convertIso(arguments[0], null).json());
-                return;
-            }
-            if (
-                arguments.length == 3
-                && (arguments[1].equals("-c")
-                    || arguments[1].equals("--calculation-date"))
-            ) {
-                System.out.println(calendar.convertIso(arguments[0], arguments[2]).json());
+            if (arguments.length == 2) {
+                System.out.println(calendar.convertIso(arguments[0], arguments[1]).json());
                 return;
             }
             usage();

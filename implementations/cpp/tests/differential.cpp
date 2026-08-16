@@ -92,8 +92,8 @@ int main(int argc, char** argv) {
                 ) {
                     for (const CorpusRow& value : groups[group_index]) {
                         const std::string actual = calendar.convert_jdn(
-                            pastafari::BigInt(value.target),
-                            pastafari::BigInt(value.calculation)
+                            pastafari::BigInt(value.calculation),
+                            pastafari::BigInt(value.target)
                         ).json();
                         if (actual != value.expected) {
                             throw std::runtime_error(

@@ -14,3 +14,9 @@ are included in the same upload.
 `bundle-validation-2026-08-16.md` records the package-level smoke validation and
 states explicitly which suites were re-run during packaging and which accepted
 results are retained from the earlier remediation audit.
+
+`ready-five-canonical-remediation-2026-08-16.md` records the later expanded-task
+normative remediation. It distinguishes the new specification-derived canonical
+suite from the older regression corpus, records the calc-first API/CLI change,
+closes gate-checkpoint provenance, and records the fresh canonical passes for all
+five ready engines.

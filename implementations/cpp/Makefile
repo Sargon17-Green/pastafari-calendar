@@ -9,7 +9,7 @@ BUILD_DIR := build
 INCLUDES := -Iinclude $(OPENSSL_CFLAGS)
 CORE := src/calendar.cpp
 
-.PHONY: all test benchmark clean
+.PHONY: all test test-canonical test-regression benchmark clean
 
 CORPUS ?= ../tests/oracle-differential-10000.tsv
 
@@ -33,10 +33,14 @@ $(BUILD_DIR)/pastafari-differential: $(CORE) tests/differential.cpp | $(BUILD_DI
 $(BUILD_DIR)/pastafari-benchmark: $(CORE) tests/benchmark.cpp | $(BUILD_DIR)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(INCLUDES) $^ $(LDFLAGS) $(OPENSSL_LIBS) -o $@
 
-test: $(BUILD_DIR)/pastafari-bigint-test $(BUILD_DIR)/pastafari-conformance $(BUILD_DIR)/pastafari-differential
+test-canonical: $(BUILD_DIR)/pastafari-bigint-test $(BUILD_DIR)/pastafari-conformance
 	$(BUILD_DIR)/pastafari-bigint-test
 	$(BUILD_DIR)/pastafari-conformance
+
+test-regression: $(BUILD_DIR)/pastafari-differential
 	$(BUILD_DIR)/pastafari-differential $(CORPUS)
+
+test: test-canonical test-regression
 
 benchmark: $(BUILD_DIR)/pastafari-benchmark
 	$(BUILD_DIR)/pastafari-benchmark

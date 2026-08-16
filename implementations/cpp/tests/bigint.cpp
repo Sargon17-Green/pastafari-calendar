@@ -18,6 +18,9 @@ struct DivisionCase {
 }  // namespace
 
 int main() {
+    if (BigInt("+100000") != BigInt(100000)) {
+        throw std::runtime_error("leading plus decimal parse regression");
+    }
     constexpr std::array cases{
         DivisionCase{7, 3, 2, 1},
         DivisionCase{-7, 3, -3, 2},

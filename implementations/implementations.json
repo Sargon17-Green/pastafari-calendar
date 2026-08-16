@@ -1,15 +1,59 @@
 {
-  "algorithmId": "PASTAFARI-TABLETS-2026-08-11-V2-5778",
-  "targetLanguageCount": 45,
-  "javascriptIncluded": false,
-  "includedIndependentTestedCount": 5,
-  "bundleStatus": "incremental-merge-ready-ready-engines-only",
-  "baseRepositoryCommit": "e02526ee4c05fd0478c264764030487f4ad04c3f",
+  "canonicalId": "PASTAFARI-SCROLL-2026-08-16-D36B0C94",
+  "normativeSourceSha256": "d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96",
+  "expandedTargetCount": 84,
+  "historicalRemediationTargetCount": 45,
+  "readyFiveCount": 5,
+  "readyFiveFinalSpecCertifiedCount": 5,
+  "inputOrder": ["calculation/action day", "queried/target day"],
+  "implicitCivilToday": false,
+  "canonicalFixtures": {
+    "compact": "tests/conformance-vectors.json",
+    "comprehensive": "tests/spec-derived-canonical-vectors.json",
+    "deepYearChain": "tests/spec-derived-deep-year-chain.json",
+    "binding5778": "tests/spec-derived-binding-5778.json",
+    "gateCheckpoints": "tests/spec-derived-gate-checkpoints.json"
+  },
+  "historicalRegression": {
+    "vectors16": "tests/historical-regression-vectors-16.json",
+    "corpus10000": "tests/oracle-differential-10000.tsv",
+    "normative": false
+  },
   "implementations": [
-    {"language": "C++20", "path": "cpp", "mode": "native-independent", "evidence": "16 known + 10000 differential + bigint unit"},
-    {"language": "Python 3", "path": "python", "mode": "native-independent", "evidence": "16 known + 10000 differential + unit tests"},
-    {"language": "C17", "path": "c", "mode": "native-independent", "evidence": "16 known + 10000 differential"},
-    {"language": "Java", "path": "java", "mode": "native-independent", "evidence": "17 semantic + 16 known + 10000 differential"},
-    {"language": "Ruby", "path": "ruby", "mode": "native-independent", "evidence": "16 known + 10000 differential"}
+    {
+      "language": "C++20",
+      "path": "cpp",
+      "mode": "native-independent",
+      "canonicalStatus": "pass",
+      "freshEvidence": "bigint semantics + 6 canonical forward vectors + calc-first CLI + checkpoint verifier"
+    },
+    {
+      "language": "Python 3",
+      "path": "python",
+      "mode": "native-independent",
+      "canonicalStatus": "pass",
+      "freshEvidence": "4 canonical/semantic unit tests + calc-first CLI + checkpoint verifier"
+    },
+    {
+      "language": "C17",
+      "path": "c",
+      "mode": "native-independent-finite-jdn-range",
+      "canonicalStatus": "pass",
+      "freshEvidence": "fresh build + 6 canonical forward vectors + calc-first CLI + checkpoint verifier"
+    },
+    {
+      "language": "Java 17+",
+      "path": "java",
+      "mode": "native-independent",
+      "canonicalStatus": "pass",
+      "freshEvidence": "17 semantic checks + 6 canonical forward vectors + calc-first CLI + checkpoint verifier"
+    },
+    {
+      "language": "Ruby",
+      "path": "ruby",
+      "mode": "native-independent",
+      "canonicalStatus": "pass",
+      "freshEvidence": "6 canonical forward vectors + calc-first CLI + checkpoint verifier"
+    }
   ]
 }

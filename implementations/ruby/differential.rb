@@ -18,7 +18,7 @@ selected.each_with_index do |line, local_index|
   target_jdn = Integer(target_text, 10)
   calculation_jdn = Integer(calculation_text, 10)
   expected = JSON.parse(expected_json)
-  actual = calendar.convert_jdn(target_jdn, calculation_jdn).to_h
+  actual = calendar.convert_jdn(calculation_jdn, target_jdn).to_h
   unless actual == expected
     warn "mismatch corpus index #{start_index + local_index}: calculation_jdn=#{calculation_jdn} target_jdn=#{target_jdn}"
     warn "expected=#{JSON.generate(expected)}"

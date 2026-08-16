@@ -1468,21 +1468,6 @@ GregorianDate GregorianDate::parse(std::string_view iso_date) {
     );
 }
 
-GregorianDate GregorianDate::today() {
-    const std::time_t now = std::time(nullptr);
-    std::tm local{};
-#if defined(_WIN32)
-    if (localtime_s(&local, &now) != 0) {
-        throw std::runtime_error("localtime_s failed");
-    }
-#else
-    if (localtime_r(&now, &local) == nullptr) {
-        throw std::runtime_error("localtime_r failed");
-    }
-#endif
-    return GregorianDate(BigInt(local.tm_year + 1900), local.tm_mon + 1, local.tm_mday);
-}
-
 std::string GregorianDate::isoformat() const {
     std::string digits = year.str();
     const bool negative = !digits.empty() && digits.front() == '-';
@@ -1539,7 +1524,7 @@ class PastafariCalendar::Impl {
 public:
     Impl() : states_(4), results_(1024) {}
 
-    PastafariDate convert(const BigInt& target_jdn, const BigInt& calculation_jdn) {
+    PastafariDate convert(const BigInt& calculation_jdn, const BigInt& target_jdn) {
         std::lock_guard<std::mutex> lock(mutex_);
         const std::string result_key = calculation_jdn.str() + "|" + target_jdn.str();
         if (PastafariDate* cached = results_.get(result_key)) {
@@ -1579,23 +1564,19 @@ PastafariCalendar::PastafariCalendar(PastafariCalendar&&) noexcept = default;
 PastafariCalendar& PastafariCalendar::operator=(PastafariCalendar&&) noexcept = default;
 
 PastafariDate PastafariCalendar::convert_jdn(
-    const BigInt& target_jdn,
-    const BigInt& calculation_jdn
+    const BigInt& calculation_jdn,
+    const BigInt& target_jdn
 ) {
-    return impl_->convert(target_jdn, calculation_jdn);
+    return impl_->convert(calculation_jdn, target_jdn);
 }
 
 PastafariDate PastafariCalendar::convert(
-    const GregorianDate& target_date,
-    const GregorianDate& calculation_date
+    const GregorianDate& calculation_date,
+    const GregorianDate& target_date
 ) {
     return convert_jdn(
-        gregorian_to_jdn(target_date), gregorian_to_jdn(calculation_date)
+        gregorian_to_jdn(calculation_date), gregorian_to_jdn(target_date)
     );
-}
-
-PastafariDate PastafariCalendar::convert(const GregorianDate& target_date) {
-    return convert(target_date, GregorianDate::today());
 }
 
 void PastafariCalendar::clear() { impl_->clear(); }

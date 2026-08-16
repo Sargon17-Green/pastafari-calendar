@@ -8,7 +8,8 @@
 module Pastafari
   GREAT = (1 << 127) - 1
   FOUNDATION_JDN = -13_334_246
-  ALGORITHM_ID = 'PASTAFARI-TABLETS-2026-08-11-V2-5778'
+  ALGORITHM_ID = 'PASTAFARI-SCROLL-2026-08-16-D36B0C94'
+  NORMATIVE_SOURCE_SHA256 = 'd36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96'
 
   MIN_GATE_DISTANCE = 42
   MAX_GATE_DISTANCE = 963
@@ -180,10 +181,6 @@ module Pastafari
       new(year: Integer(match[1], 10), month: Integer(match[2], 10), day: Integer(match[3], 10))
     end
 
-    def self.today
-      current = Date.today
-      new(year: current.year, month: current.month, day: current.day)
-    end
 
     def isoformat
       sign = year.negative? ? '-' : ''
@@ -993,11 +990,9 @@ module Pastafari
       @results = LruCache.new(1024)
     end
 
-    def convert_jdn(target_jdn, calculation_jdn = nil)
-      if calculation_jdn.nil?
-        require 'date'
-        calculation_jdn = Pastafari.gregorian_to_jdn(GregorianDate.today)
-      end
+    def convert_jdn(calculation_jdn, target_jdn)
+      raise InvalidInputError, 'calculation JDN is required' if calculation_jdn.nil?
+      raise InvalidInputError, 'target JDN is required' if target_jdn.nil?
       key = [calculation_jdn, target_jdn]
       cached = @results.get(key)
       return cached unless cached.nil?
@@ -1011,17 +1006,17 @@ module Pastafari
       result
     end
 
-    def convert(target_date, calculation_date = nil)
+    def convert(calculation_date, target_date)
       convert_jdn(
-        Pastafari.gregorian_to_jdn(target_date),
-        calculation_date.nil? ? nil : Pastafari.gregorian_to_jdn(calculation_date)
+        Pastafari.gregorian_to_jdn(calculation_date),
+        Pastafari.gregorian_to_jdn(target_date)
       )
     end
 
-    def convert_iso(target_date, calculation_date = nil)
+    def convert_iso(calculation_date, target_date)
       convert(
-        GregorianDate.parse(target_date),
-        calculation_date.nil? ? nil : GregorianDate.parse(calculation_date)
+        GregorianDate.parse(calculation_date),
+        GregorianDate.parse(target_date)
       )
     end
 

@@ -22,7 +22,7 @@ def _verify_group(
     """Verify one calculation-day group in an isolated native Python process."""
     calendar = PastafariCalendar()
     for row_number, (target, calculation, expected) in enumerate(rows, 1):
-        actual = calendar.convert_jdn(target, calculation).to_dict()
+        actual = calendar.convert_jdn(calculation, target).to_dict()
         if actual != expected:
             raise AssertionError(
                 f"Mismatch in calculation group {calculation}, row "
@@ -32,7 +32,7 @@ def _verify_group(
 
 
 class DifferentialTests(unittest.TestCase):
-    def test_authoritative_corpus(self) -> None:
+    def test_historical_regression_corpus(self) -> None:
         groups: list[list[tuple[int, int, dict[str, object]]]] = []
         current: list[tuple[int, int, dict[str, object]]] = []
         current_calculation: int | None = None

@@ -1,61 +1,88 @@
-# Conformance decisions
+# Normative conformance decisions
 
-Binding source: [The Scroll of the Appointed Times](https://the-scroll-of-the-appointed-times.blogspot.com/2026/08/blog-post.html), published 11 August 2026.
+## Sole source
+
+The sole normative source for the expanded clean-room task is the user-supplied
+Hebrew text **“מגילת העיתים — לוח סוד הרוטב ושמות הימים”**, SHA-256:
+
+`d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96`
+
+Older specifications, implementation comments, JavaScript output, and retained
+differential corpora are historical material only. If they disagree with the
+Scroll, the Scroll wins.
 
 ## Ordered inputs
 
-Every result is a function of `(calculation day, queried day)`.  The public APIs
-usually place the queried day first for conventional converter ergonomics, but
-the implementation always feeds the pair to the algorithm in the binding order.
+The normative ordered pair is `(calculation/action day, queried/target day)`.
+The five ready engines expose their public pair in that order. No core silently
+substitutes the host's civil date when the calculation day is omitted.
+
+The separate real-instant adapter may determine the current calculation day
+using the location-dependent Venus boundary rule; that astronomy is not part of
+the pure integer-day forward engine.
 
 ## Year maximum: 5,778
 
-The prose contains `5,781` once.  Footnote 13 explicitly identifies that value
-as an error and establishes 5,778 as binding.  The existence proof independently
-forces the same number:
+The Scroll contains an isolated `5,781`, but footnote 13 expressly identifies it
+as erroneous. The binding maximum is **5,778** days, independently forced by:
 
 ```text
-six gate gaps × maximum 963 days per gap = 5,778 days
+6 minimum gate gaps × 963 maximum days per gap = 5,778 days
 ```
 
-The `5778_boundary_*` conformance vectors are not cosmetic.  For calculation JDN
-`-14,269,936` (Gregorian `-43782-02-21`), a 5,779-day candidate exists.  Admitting
-it changes the result from:
+The specification-derived discriminator at calculation/target JDN `-14269936`
+produces:
 
 ```text
 5000, מחשבה, 1, ארידו, 93
 ```
 
-to the non-conforming:
-
-```text
-5000, חיטה, 508, ערפל, 72
-```
+when the correct 5,778 limit is used.
 
 ## Exact integer semantics
 
-- `keep(x) = ((x - 1) mod (2^127 - 1)) + 1`, with a non-negative remainder.
-- Proleptic Gregorian division is floor division, including negative years.
-- All ranks and combinatorial counts are arbitrary-precision integers.
-- The five output fields retain the binding order: year, cutlet name,
-  day-in-cutlet, month name, day-in-month.
+- `M = 2^127 - 1`.
+- Saved remainder is `((x - 1) mod M) + 1`, in `1..M`.
+- Ordinary remainder is kept distinct and non-negative where the Scroll uses it.
+- Gregorian arithmetic uses mathematical floor division for negative years.
+- Year zero exists, and the source-derived deep fixture explicitly walks
+  `2 -> 1 -> 0 -> -1`.
+- C17 documents and detects its finite `int64_t` JDN/year range; the other four
+  ready engines use arbitrary-precision public day/year integers.
 
-## Optimizations that preserve the selected object
+## Choices and structure
 
-Gate checkpoints store exact `(gate index, JDN)` pairs generated from the gate
-rule.  Traversal from a checkpoint applies every intervening gate distance; a
-checkpoint therefore changes cost, not semantics.
+The audited engines use direct one-based 720-way bowl permutations, the circular
+order fixed by visible drop 46 for the answer's “next bowl”, one fixed answer
+start and direction, ±1 traversal of the complete `1..M` ring, and the binding
+wide-choice construction whose first digit is the units place.
 
-Month lengths are unranked lexicographically by counting bounded-composition
-suffixes.  Month weaves are unranked from left to right.  At each prefix the
-dynamic program counts the complete, contiguous lexicographic block beneath
-each legal next month.  Subtracting whole blocks is therefore exactly equivalent
-to constructing and indexing the impossible explicit list described by the
-Scroll.
+Year structure is computed with the original calculation day and the **first day
+of that year** as the sauce target. Cutlet partitions, month lengths, name
+permutations and complete month interleavings use the Scroll's lexicographic
+orders. Month interleavings are unranked by prefix counting/DP, exactly as
+permitted by footnote 14.
 
-## Practical distance cost
+## Gate checkpoint provenance
 
-The specification requires walking year by year from year 5000.  The
-implementations cache that walk and reuse year structures, but do not invent a
-non-equivalent jump function.  A queried day thousands of calendar years from
-the calculation day can consequently take much longer than a nearby day.
+The 75 hard-coded `(gate index, JDN)` pairs are accelerators, not normative
+constants. `tests/verify_gate_checkpoints.py` recomputes every required gate
+distance from the source-derived test model, starts at the Foundation gate, and
+prefix-sums forward/backward to every stored checkpoint. It then parses and
+compares the production tables in Python, C++20, C17, Java and Ruby.
+
+On 16 August 2026 the verifier passed **75/75** source-derived positions for all
+five tables. Thus checkpoints alter cold-start cost only; they do not inject an
+unverified calendar rule.
+
+## Canonical versus regression data
+
+The canonical fixtures are generated by the test-only source model and embed the
+normative source SHA. They do not import a production calendar implementation,
+query JavaScript, or consume the historical 10,000-row corpus.
+
+The old 16-vector fixture is preserved as
+`historical-regression-vectors-16.json`. The unchanged 10,000-row TSV remains at
+`oracle-differential-10000.tsv` for historical reproducibility. Both are
+regression evidence only, even where their expected values happen to agree with
+the source-derived suite.

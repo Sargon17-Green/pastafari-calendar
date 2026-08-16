@@ -26,7 +26,7 @@ from typing import Generic, Sequence, TypeVar
 
 GREAT = (1 << 127) - 1
 FOUNDATION_JDN = -13_334_246
-ALGORITHM_ID = "PASTAFARI-TABLETS-2026-08-11-V2-5778"
+ALGORITHM_ID = "PASTAFARI-SCROLL-2026-08-16-D36B0C94"
 
 MIN_GATE_DISTANCE = 42
 MAX_GATE_DISTANCE = 963
@@ -1182,11 +1182,10 @@ class PastafariCalendar:
 
     def convert_jdn(
         self,
+        calculation_jdn: int,
         target_jdn: int,
-        calculation_jdn: int | None = None,
     ) -> PastafariDate:
-        if calculation_jdn is None:
-            calculation_jdn = gregorian_to_jdn(GregorianDate.today())
+        """Convert the normative ordered pair (calculation day, target day)."""
         key = (calculation_jdn, target_jdn)
         cached = self._results.get(key)
         if cached is not None:
@@ -1201,22 +1200,22 @@ class PastafariCalendar:
 
     def convert(
         self,
+        calculation_date: GregorianDate,
         target_date: GregorianDate,
-        calculation_date: GregorianDate | None = None,
     ) -> PastafariDate:
         return self.convert_jdn(
+            gregorian_to_jdn(calculation_date),
             gregorian_to_jdn(target_date),
-            None if calculation_date is None else gregorian_to_jdn(calculation_date),
         )
 
     def convert_iso(
         self,
+        calculation_date: str,
         target_date: str,
-        calculation_date: str | None = None,
     ) -> PastafariDate:
         return self.convert(
+            GregorianDate.parse(calculation_date),
             GregorianDate.parse(target_date),
-            None if calculation_date is None else GregorianDate.parse(calculation_date),
         )
 
     def clear(self) -> None:

@@ -2136,8 +2136,8 @@ bool pc_iso_to_jdn(const char *text, int64_t *result) {
 }
 
 bool pc_convert_jdn(
-    int64_t target_jdn,
     int64_t calculation_jdn,
+    int64_t target_jdn,
     PastafariOutput *result,
     const char **error_message
 ) {
@@ -2157,7 +2157,7 @@ bool pc_convert_jdn(
         || calculation_magnitude > UINT64_MAX / 2
     ) {
         if (error_message != NULL) {
-            *error_message = "JDN is outside the exact Assembly engine range";
+            *error_message = "JDN is outside the exact C17 engine range";
         }
         return false;
     }
@@ -2176,36 +2176,36 @@ bool pc_convert_jdn(
 }
 
 const char *pc_algorithm_id(void) {
-    return "PASTAFARI-TABLETS-2026-08-11-V2-5778";
+    return "PASTAFARI-SCROLL-2026-08-16-D36B0C94";
 }
 
 bool pc_convert_iso_json(
-    const char *target_iso,
     const char *calculation_iso,
+    const char *target_iso,
     char *output,
     size_t output_capacity,
     const char **error_message
 ) {
     if (error_message != NULL) *error_message = NULL;
     if (
-        target_iso == NULL || calculation_iso == NULL
+        calculation_iso == NULL || target_iso == NULL
         || output == NULL || output_capacity == 0
     ) {
         if (error_message != NULL) *error_message = "null or empty ABI argument";
         return false;
     }
-    int64_t target_jdn;
     int64_t calculation_jdn;
-    if (!pc_iso_to_jdn(target_iso, &target_jdn)) {
-        if (error_message != NULL) *error_message = "invalid target date";
-        return false;
-    }
+    int64_t target_jdn;
     if (!pc_iso_to_jdn(calculation_iso, &calculation_jdn)) {
         if (error_message != NULL) *error_message = "invalid calculation date";
         return false;
     }
+    if (!pc_iso_to_jdn(target_iso, &target_jdn)) {
+        if (error_message != NULL) *error_message = "invalid target date";
+        return false;
+    }
     PastafariOutput value;
-    if (!pc_convert_jdn(target_jdn, calculation_jdn, &value, error_message)) {
+    if (!pc_convert_jdn(calculation_jdn, target_jdn, &value, error_message)) {
         return false;
     }
     const int written = snprintf(

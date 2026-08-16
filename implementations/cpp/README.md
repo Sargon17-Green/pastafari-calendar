@@ -1,19 +1,14 @@
 # Pastafari Calendar — C++20
 
-This is the performance-oriented implementation.  It uses OpenSSL BIGNUM for exact integer
-arithmetic, precomputed gate checkpoints, bounded LRU caches and dynamic
-programming for month-weave unranking.  It does not enumerate the astronomically
-large weave space.
+This is the independent performance-oriented C++20 implementation. It uses OpenSSL BIGNUM for exact integer arithmetic, bounded caches and dynamic programming for month-weave unranking. It does not enumerate the astronomical weave space or call another language implementation.
+
+The sole normative source is **“מגילת העיתים — לוח סוד הרוטב ושמות הימים”**, 2026-08-16, SHA-256 `d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96`.
 
 ## Dependencies
 
-- a C++20 compiler;
-- CMake 3.20 or newer;
-- OpenSSL 3 development headers and crypto library.
-
-On common systems the development package is named `libssl-dev`,
-`openssl-devel` or `openssl`. Windows builds can supply OpenSSL through
-vcpkg or MSYS2; CMake resolves the standard `OpenSSL::Crypto` target.
+- C++20 compiler
+- CMake 3.20+
+- OpenSSL 3 development headers and crypto library
 
 ## Build and test
 
@@ -25,37 +20,25 @@ ctest --test-dir build --output-on-failure
 
 ## Command line
 
+The positional order is the normative pair **calculation/action day, then queried/target day**:
+
 ```bash
-./build/pastafari-calendar 2026-08-06 --calculation-date 2026-08-06
+./build/pastafari-calendar 2026-08-06 2026-08-12
+./build/pastafari-calendar --jdn 2461259 2461265
 ```
 
-Both inputs use signed proleptic Gregorian `[+-]YYYY-MM-DD` notation.  Omitting
-the calculation day selects the local civil day.
+There is no implicit civil-today fallback. Real-time/location resolution belongs to the separate Venus-day adapter.
 
 ## Library API
 
 ```cpp
-#include <pastafari/calendar.hpp>
-
 pastafari::PastafariCalendar calendar;
 const auto value = calendar.convert(
-    pastafari::GregorianDate::parse("2026-08-06"),
-    pastafari::GregorianDate::parse("2026-08-06")
+    pastafari::GregorianDate::parse("2026-08-06"),  // calculation
+    pastafari::GregorianDate::parse("2026-08-12")   // target
 );
-std::cout << value.json() << '\n';
 ```
 
-The converter serializes calls on one instance so its caches are safe to reuse
-from several threads.  Independent instances can run concurrently without
-shared mutable calendar state.
+The public year and JDN types are arbitrary-precision. The implementation contains precomputed gate checkpoints only as an acceleration aid; canonical verification data is specification-derived and is kept under `implementations/tests/`.
 
-The public year and JDN types are arbitrary-precision.  Internal day offsets are
-machine integers only after the algorithm has proved they are within one year's
-binding maximum of 5,778.
-
-## Benchmark
-
-Set `-DPASTAFARI_BUILD_BENCHMARK=ON` in a CMake build, or run `make benchmark`.
-The benchmark reports a cold conversion, an identical cache hit and a
-365-consecutive-day workload.  See `docs/BENCHMARKS.md` for a recorded run and
-the exact interpretation of those figures.
+The retained 10,000-pair JavaScript-era corpus is historical regression evidence only, not a normative oracle.

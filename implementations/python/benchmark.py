@@ -25,21 +25,21 @@ def main() -> None:
     for _ in range(3):
         calendar = PastafariCalendar()
         cold_samples.append(
-            timed(lambda: calendar.convert_jdn(target_jdn, calculation_jdn))
+            timed(lambda: calendar.convert_jdn(calculation_jdn, target_jdn))
         )
 
     calendar = PastafariCalendar()
-    calendar.convert_jdn(target_jdn, calculation_jdn)
+    calendar.convert_jdn(calculation_jdn, target_jdn)
     warm_repetitions = 10_000
     warm = timed(
-        lambda: calendar.convert_jdn(target_jdn, calculation_jdn),
+        lambda: calendar.convert_jdn(calculation_jdn, target_jdn),
         warm_repetitions,
     )
 
     range_days = 365
     sequential = timed(
         lambda: [
-            calendar.convert_jdn(target_jdn + offset, calculation_jdn)
+            calendar.convert_jdn(calculation_jdn, target_jdn + offset)
             for offset in range(range_days)
         ]
     )
