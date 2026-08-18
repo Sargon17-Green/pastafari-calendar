@@ -100,8 +100,8 @@ async function startStaticServer(state) {
     let body = await readFile(resolved);
     if (relativePath === "sw.js") {
       const text = body.toString("utf8").replace(
-        /pastafari-static-pwa-hardening-11-unified-i18n/g,
-        `pastafari-static-pwa-hardening-11-unified-i18n-test-${state.swVariant}`,
+        /pastafari-static-pwa-hardening-12-skip-link-focus/g,
+        `pastafari-static-pwa-hardening-12-skip-link-focus-test-${state.swVariant}`,
       );
       body = Buffer.from(text, "utf8");
     }

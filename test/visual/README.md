@@ -91,6 +91,8 @@ The site uses system font stacks (`Arial`/`Segoe UI`/`Noto Sans Hebrew` and `Geo
 
 When Playwright or its browser revision is upgraded intentionally, rebuild the snapshots in the canonical environment, inspect all diffs, and commit the changed PNGs and metadata together with the version upgrade.
 
+`test/visual/SHA256SUMS.txt` intentionally does **not** hash all of `package.json`: unrelated development-dependency updates (for example an `axe-core` update) must not prevent the visual suite from reaching its own checks. The runner instead verifies the exact Playwright pin against both `package.json` and `package-lock.json` before launching a browser. A Playwright upgrade therefore still fails closed until the visual runner, canonical baselines/metadata, and documented environment are deliberately updated together.
+
 ### Baseline provenance
 
 The current committed snapshots were captured on 2026-08-18 by the dedicated `capture-baselines` GitHub Actions job on the canonical Ubuntu 24.04 environment, using Node 22, Playwright 1.62.1 and Chromium 151.0.7922.34. All 23 snapshots were captured three times and produced zero changed pixels above the comparator's 16/255 channel threshold before review. The resulting candidate set was reviewed before being committed.

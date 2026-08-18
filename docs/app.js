@@ -659,6 +659,8 @@ async function loadComparison(sequence, viewSequence = viewLoadSequence) {
 async function loadCutlet({ replaceHistory = false, scrollToTarget = true } = {}) {
   const sequence = ++viewLoadSequence;
   ++comparisonLoadSequence;
+  const focusedNavigation = [elements["previous-cutlet"], elements["next-cutlet"]]
+    .find((element) => element === document.activeElement) ?? null;
   elements["previous-cutlet"].disabled = true;
   elements["next-cutlet"].disabled = true;
   try {
@@ -668,6 +670,9 @@ async function loadCutlet({ replaceHistory = false, scrollToTarget = true } = {}
     });
     if (sequence !== viewLoadSequence) return;
     renderView(view, { scrollToTarget });
+    if (focusedNavigation && (document.activeElement === document.body || document.activeElement === document.documentElement)) {
+      focusedNavigation.focus({ preventScroll: true });
+    }
     committedViewLoadSequence = sequence;
     void loadYearStructure(sequence, view);
     const comparisonCurrent = await loadComparison(++comparisonLoadSequence, sequence);

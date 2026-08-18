@@ -26,6 +26,7 @@ const CHANNEL_THRESHOLD = 16;
 const MAX_ALLOWED_DIFF_RATIO = 0.002; // Hard ceiling: 0.2% of pixels.
 const STABILITY_MULTIPLIER = 3;
 const DEFAULT_STABILITY_RUNS = 3;
+const EXPECTED_PLAYWRIGHT_VERSION = "1.62.1";
 const FIXED = Object.freeze({
   target: 2465429n,       // 2038-01-05 Gregorian; start of a 51-day cutlet
   middle: 2465454n,       // same short cutlet, away from either edge
@@ -47,6 +48,27 @@ const BREAKPOINTS = Object.freeze([
   Object.freeze({ name: "small-shell", above: 421, below: 419 }),
   Object.freeze({ name: "reverse", above: 621, below: 619 }),
 ]);
+
+async function verifyPinnedPlaywrightVersion() {
+  const packageJson = JSON.parse(await readFile(path.join(ROOT, "package.json"), "utf8"));
+  const packageLock = JSON.parse(await readFile(path.join(ROOT, "package-lock.json"), "utf8"));
+
+  assert.equal(
+    packageJson.devDependencies?.playwright,
+    EXPECTED_PLAYWRIGHT_VERSION,
+    `Visual suite requires package.json devDependencies.playwright=${EXPECTED_PLAYWRIGHT_VERSION}`,
+  );
+  assert.equal(
+    packageLock.packages?.[""]?.devDependencies?.playwright,
+    EXPECTED_PLAYWRIGHT_VERSION,
+    `Visual suite requires package-lock root Playwright pin ${EXPECTED_PLAYWRIGHT_VERSION}`,
+  );
+  assert.equal(
+    packageLock.packages?.["node_modules/playwright"]?.version,
+    EXPECTED_PLAYWRIGHT_VERSION,
+    `Visual suite requires locked Playwright package ${EXPECTED_PLAYWRIGHT_VERSION}`,
+  );
+}
 
 function parseArgs(argv) {
   const options = { update: false, layoutOnly: false, regressionSelfTest: false, stabilityRuns: DEFAULT_STABILITY_RUNS };
@@ -913,8 +935,8 @@ async function writeFinalReport(state, browserVersion) {
   const report = {
     generatedAt: new Date().toISOString(),
     mode: state.options.update ? "update" : state.options.layoutOnly ? "layout-only" : "compare",
-    browser: { name: "Chromium", version: browserVersion, playwrightPackage: "1.62.1" },
-    canonicalEnvironment: "Ubuntu 24.04 GitHub-hosted runner, Node 22, Playwright 1.62.1 browsers",
+    browser: { name: "Chromium", version: browserVersion, playwrightPackage: EXPECTED_PLAYWRIGHT_VERSION },
+    canonicalEnvironment: `Ubuntu 24.04 GitHub-hosted runner, Node 22, Playwright ${EXPECTED_PLAYWRIGHT_VERSION} browsers`,
     fixedData: Object.fromEntries(Object.entries(FIXED).map(([key, value]) => [key, String(value)])),
     viewports: VIEWPORTS,
     breakpoints: BREAKPOINTS,
@@ -932,6 +954,7 @@ async function writeFinalReport(state, browserVersion) {
 async function main() {
   const options = parseArgs(process.argv.slice(2));
   if (options.help) { console.log(usage()); return; }
+  await verifyPinnedPlaywrightVersion();
   await rm(ARTIFACTS, { recursive: true, force: true });
   await Promise.all([ACTUAL, EXPECTED, DIFF, TRACES, BASELINES].map((dir) => mkdir(dir, { recursive: true })));
   const metadata = await readMetadata();
@@ -975,7 +998,7 @@ async function main() {
           platform: `${process.platform}-${process.arch}`,
           browser: "Chromium",
           browserVersion: browser.version(),
-          playwright: "1.62.1",
+          playwright: EXPECTED_PLAYWRIGHT_VERSION,
         },
         policy: {
           stabilityRuns: options.stabilityRuns,
@@ -991,7 +1014,7 @@ async function main() {
             : `${process.platform}-${process.arch} (non-canonical capture)`,
           browser: `Chromium ${browser.version()}`,
           node: process.version,
-          playwright: "1.62.1",
+          playwright: EXPECTED_PLAYWRIGHT_VERSION,
           workflowRunId: process.env.GITHUB_RUN_ID || null,
           workflowRunAttempt: process.env.GITHUB_RUN_ATTEMPT || null,
           stabilityRuns: options.stabilityRuns,

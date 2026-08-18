@@ -65,7 +65,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   const requiredCore = [
     "./index.html",
     "./styles.css?v=13-reverse-i18n",
-    "./app.js?v=19-unified-i18n",
+    "./app.js?v=20-cutlet-focus",
     "./reverse-ui.js?v=18-unified-i18n",
     "./reverse-search-controller.js",
     "./calendar-input-conventions.js?v=9-calendar-input-conventions",
@@ -103,7 +103,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   assert.equal(LOCALES.length, 72, "PWA accounting expects the current 72 registered locales");
   assert.equal(LOCALES.filter(({ code }) => code !== "en").length, 71, "Every non-English locale is optional/on-demand");
 
-  assert.match(source, /const VERSION = "pastafari-static-pwa-hardening-11-unified-i18n";/);
+  assert.match(source, /const VERSION = "pastafari-static-pwa-hardening-12-skip-link-focus";/);
   assert.match(source, /const RUNTIME_CACHE = "pastafari-runtime-assets";/);
   assert.match(source, /const OPTIONAL_LOCALE_PATH = \/\^\\\/i18n\\\/locales/);
   assert.match(source, /url\.search === LOCALE_REVISION_SEARCH/);
@@ -127,7 +127,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   const html = await readFile(path.join(DOCS, "index.html"), "utf8");
   for (const entry of [
     "./styles.css?v=13-reverse-i18n",
-    "./app.js?v=19-unified-i18n",
+    "./app.js?v=20-cutlet-focus",
     "./manifest.webmanifest?v=8-year-structure",
     "./icons/icon.svg?v=8-year-structure",
   ]) {
