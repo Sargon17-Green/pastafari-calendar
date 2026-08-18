@@ -6,7 +6,7 @@ import test from "node:test";
 import { fileURLToPath } from "node:url";
 
 import { CUTLETS, MONTHS } from "../docs/i18n/calendar-identifiers.js";
-import { LOCALES } from "../docs/i18n/registry.js";
+import { LOCALES, loadAllLocales } from "../docs/i18n/registry.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DOCS = path.join(ROOT, "docs");
@@ -42,16 +42,16 @@ test("stable calendar identifiers preserve the engine's canonical name order", a
   assert.deepEqual(MONTHS.map(({ internalName }) => internalName), parseStrings(monthBlock));
 });
 
-test("service worker precaches every runtime i18n dependency", async () => {
+test("service worker precaches the core shell but not optional locale resources", async () => {
   const source = await readFile(path.join(DOCS, "sw.js"), "utf8");
-  const assetBlock = source.match(/const ASSETS = \[(.*?)\];/s)?.[1];
-  assert.ok(assetBlock, "ASSETS list must be present");
+  const assetBlock = source.match(/const CORE_ASSETS = \[(.*?)\];/s)?.[1];
+  assert.ok(assetBlock, "CORE_ASSETS list must be present");
   const assets = [...assetBlock.matchAll(/"(\.\/[^"\n]+)"/g)].map((match) => match[1]);
   const required = [
     "./index.html",
     "./styles.css?v=13-reverse-i18n",
-    "./app.js?v=13-reverse-i18n",
-    "./reverse-ui.js?v=13-reverse-i18n",
+    "./app.js?v=14-lazy-i18n",
+    "./reverse-ui.js?v=14-lazy-i18n",
     "./reverse-search-controller.js",
     "./calendar-converters.js?v=8-year-structure",
     "./observer-location.js?v=10-venus-day-boundary",
@@ -63,10 +63,9 @@ test("service worker precaches every runtime i18n dependency", async () => {
     "./engine/pastafari-constraints.js",
     "./engine/pastafari-reverse-worker.js",
     "./i18n/calendar-identifiers.js?v=8-year-structure",
-    "./i18n/registry.js?v=13-reverse-i18n",
-    "./i18n/runtime.js?v=13-reverse-i18n",
-    "./i18n/locales/he.js?v=13-reverse-i18n",
-    "./i18n/locales/en.js?v=13-reverse-i18n",
+    "./i18n/registry.js?v=14-lazy-i18n",
+    "./i18n/runtime.js?v=14-lazy-i18n",
+    "./i18n/locales/en.js?v=14-lazy-i18n",
   ];
   for (const entry of required) assert.ok(assets.includes(entry), `${entry} is missing from the offline cache`);
   for (const entry of assets) {
@@ -75,30 +74,15 @@ test("service worker precaches every runtime i18n dependency", async () => {
     assert.equal((await stat(file)).isFile(), true, `cached asset does not exist: ${entry}`);
   }
   const localeAssets = assets.filter((entry) => entry.startsWith("./i18n/locales/"));
-  assert.equal(localeAssets.length, 72);
+  assert.deepEqual(localeAssets, ["./i18n/locales/en.js?v=14-lazy-i18n"]);
   assert.ok(!localeAssets.some((entry) => entry.includes("/hbo.js")));
-  for (const code of ["akk", "ang", "cop", "cu", "got", "grc", "ia", "io", "jbo", "la", "lzh", "non", "sa", "sux", "tlh", "tok", "vo"]) {
-    assert.ok(!localeAssets.some((entry) => entry.includes(`/locales/${code}.js`)), `${code} must not be precached`);
-  }
-  const cachedEnglishAsset = localeAssets.find((entry) => entry.startsWith("./i18n/locales/en.js?"));
-  assert.ok(cachedEnglishAsset, "English locale must be precached with an explicit revision");
-  const expectedEnglishBaseImport = cachedEnglishAsset.replace("./i18n/locales/", "./");
-  for (const entry of localeAssets) {
-    const pathname = entry.split("?", 1)[0];
-    const localeSource = await readFile(path.join(DOCS, pathname.replace(/^\.\//, "")), "utf8");
-    for (const match of localeSource.matchAll(/import base from "(\.\/en\.js\?[^"]+)";/g)) {
-      assert.equal(
-        match[1],
-        expectedEnglishBaseImport,
-        `${entry} must import the same English locale revision that the Service Worker precaches`,
-      );
-    }
-  }
+  assert.match(source, /const OPTIONAL_LOCALE_PATH = \/\\\/i18n\\\/locales/);
+  assert.match(source, /await cache\.put\(event\.request, response\.clone\(\)\)/);
   assert.match(source, /const VERSION = "pastafari-static-reverse-search-[^"]+";/);
   const html = await readFile(path.join(DOCS, "index.html"), "utf8");
   for (const entry of [
     "./styles.css?v=13-reverse-i18n",
-    "./app.js?v=13-reverse-i18n",
+    "./app.js?v=14-lazy-i18n",
     "./manifest.webmanifest?v=8-year-structure",
   ]) {
     assert.ok(html.includes(entry), `index.html must request the revisioned asset ${entry}`);
@@ -108,6 +92,13 @@ test("service worker precaches every runtime i18n dependency", async () => {
 
 });
 
+
+test("registry contains only dynamic locale imports", async () => {
+  const source = await readFile(path.join(DOCS, "i18n", "registry.js"), "utf8");
+  assert.doesNotMatch(source, /^import\s+\w+\s+from\s+["']\.\/locales\//m);
+  const dynamicImports = [...source.matchAll(/import\(["']\.\/locales\/([^"'?]+)\.js\?v=14-lazy-i18n["']\)/g)].map((match) => match[1]);
+  assert.deepEqual(dynamicImports, LOCALES.map(({ code }) => code));
+});
 
 test("every static HTML translation binding exists in every locale", async () => {
   const html = await readFile(path.join(DOCS, "index.html"), "utf8");
@@ -120,7 +111,8 @@ test("every static HTML translation binding exists in every locale", async () =>
     }
   }
   assert.ok(keys.size > 20, "the audit should cover the public UI, not a token sample");
-  for (const locale of LOCALES) {
+  const locales = await loadAllLocales();
+  for (const locale of locales) {
     for (const key of keys) {
       assert.equal(typeof locale.messages[key], "string", `${locale.code} is missing HTML translation key ${key}`);
       assert.notEqual(locale.messages[key].trim(), "", `${locale.code} has an empty HTML translation key ${key}`);
@@ -156,6 +148,7 @@ test("manifest is valid JSON with localized metadata for every registered locale
   assert.equal(manifest.name, "Pastafari Calendar");
 
   const expectedCodes = LOCALES.map(({ code }) => code).sort();
+  const resources = new Map((await loadAllLocales()).map((locale) => [locale.code, locale]));
   for (const field of ["name_localized", "short_name_localized", "description_localized"]) {
     assert.deepEqual(Object.keys(manifest[field]).sort(), expectedCodes);
   }
@@ -170,8 +163,9 @@ test("manifest is valid JSON with localized metadata for every registered locale
       assert.equal(typeof entry.value, "string");
       assert.notEqual(entry.value.trim(), "");
     }
-    assert.equal(name.value, locale.messages["app.title"]);
-    assert.equal(description.value, locale.messages["meta.description"]);
+    const resource = resources.get(locale.code);
+    assert.equal(name.value, resource.messages["app.title"]);
+    assert.equal(description.value, resource.messages["meta.description"]);
   }
 
   assert.equal(manifest.short_name_localized.en.value, "Pastafari");

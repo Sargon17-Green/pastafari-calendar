@@ -1,14 +1,15 @@
 "use strict";
 
 import { readFile } from "node:fs/promises";
-import { LOCALES, validateLocaleResources } from "../docs/i18n/registry.js?v=13-reverse-i18n";
+import { LOCALES, loadAllLocales, validateLocaleResources } from "../docs/i18n/registry.js?v=14-lazy-i18n";
 
-const english = LOCALES.find(({ code }) => code === "en");
+const locales = await loadAllLocales();
+const english = locales.find(({ code }) => code === "en");
 const reverseKeys = Object.keys(english?.messages ?? {}).filter((key) => key.startsWith("reverse.")).sort();
 const complete = [];
 const incomplete = [];
 
-for (const locale of LOCALES) {
+for (const locale of locales) {
   const source = await readFile(new URL(`../docs/i18n/locales/${locale.code}.js`, import.meta.url), "utf8");
   const explicitKeys = [...source.matchAll(/^\s*["'](reverse\.[^"']+)["']\s*:/gm)].map((match) => match[1]).sort();
   const valuesComplete = reverseKeys.every((key) => typeof locale.messages[key] === "string" && locale.messages[key].trim() !== "");
@@ -16,7 +17,7 @@ for (const locale of LOCALES) {
   (valuesComplete && explicitComplete ? complete : incomplete).push(locale.code);
 }
 
-validateLocaleResources();
+validateLocaleResources(locales);
 console.log(`Reverse i18n: ${complete.length}/${LOCALES.length} locales, ${reverseKeys.length} explicit keys per complete locale.`);
 if (incomplete.length) console.log(`Incomplete locales: ${incomplete.join(", ")}`);
 if (process.argv.includes("--require-all") && incomplete.length) {

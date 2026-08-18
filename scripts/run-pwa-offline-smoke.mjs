@@ -23,11 +23,11 @@ const MIME_TYPES = new Map([
 ]);
 
 function parsePrecacheAssets(swSource) {
-  const match = swSource.match(/\bconst\s+ASSETS\s*=\s*\[([\s\S]*?)\]\s*;/);
-  assert(match, "Could not locate the ASSETS array in docs/sw.js");
+  const match = swSource.match(/\bconst\s+CORE_ASSETS\s*=\s*\[([\s\S]*?)\]\s*;/);
+  assert(match, "Could not locate the CORE_ASSETS array in docs/sw.js");
   const literals = [...match[1].matchAll(/"((?:\\.|[^"\\])*)"/g)];
   const assets = literals.map((entry) => JSON.parse(`"${entry[1]}"`));
-  assert(assets.length > 0, "docs/sw.js ASSETS array is empty");
+  assert(assets.length > 0, "docs/sw.js CORE_ASSETS array is empty");
   return assets;
 }
 
@@ -45,6 +45,7 @@ function selectRequiredPrecacheAssets(assets) {
     ["reverse worker", (pathname) => pathname.endsWith("/engine/pastafari-reverse-worker.js")],
     ["i18n registry", (pathname) => pathname.endsWith("/i18n/registry.js")],
     ["i18n runtime", (pathname) => pathname.endsWith("/i18n/runtime.js")],
+    ["English locale", (pathname) => pathname.endsWith("/i18n/locales/en.js")],
   ];
 
   return rules.map(([label, predicate]) => {
@@ -365,6 +366,15 @@ async function inspectPrecache(page, allAssets, requiredAssets) {
   }, { cachePrefix: CACHE_PREFIX, allAssets, requiredAssets });
 }
 
+async function inspectOptionalLocaleCache(page, relativeAsset) {
+  return page.evaluate(async (asset) => {
+    const registration = await navigator.serviceWorker.ready;
+    const exactUrl = new URL(asset, registration.scope).href;
+    const response = await caches.match(exactUrl);
+    return { exactUrl, present: Boolean(response), status: response?.status ?? null };
+  }, relativeAsset);
+}
+
 function assertSuccessfulNavigation(response, label) {
   assert(response, `${label}: navigation returned no response`);
   assert(response.ok(), `${label}: navigation status ${response.status()}`);
@@ -509,6 +519,18 @@ try {
   console.log(
     `[PASS] exact precache complete: ${completeCache.totalDeclaredAssets} declared assets in ${completeCache.cacheName}`,
   );
+
+  diagnostics.phase = "optional-locale-cache";
+  const localeRequestsBefore = serverState.getRequests().filter((entry) => entry.url?.includes("/i18n/locales/he.js")).length;
+  await page.selectOption("#language-selector", "he");
+  await page.waitForFunction(() => document.documentElement.lang === "he", null, { timeout: 30_000 });
+  await calendarSnapshot(page, "online Hebrew render after lazy language switch", diagnostics);
+  const localeRequestsAfter = serverState.getRequests().filter((entry) => entry.url?.includes("/i18n/locales/he.js")).length;
+  assert.equal(localeRequestsAfter - localeRequestsBefore, 1, "Hebrew locale should be fetched exactly once when first requested");
+  const cachedHebrew = await inspectOptionalLocaleCache(page, "./i18n/locales/he.js?v=14-lazy-i18n");
+  assert.equal(cachedHebrew.present, true, `Hebrew locale was not cached after first use: ${JSON.stringify(cachedHebrew)}`);
+  assert.equal(cachedHebrew.status, 200, "Cached Hebrew locale response is not successful");
+  console.log(`[PASS] optional Hebrew locale cached on first use: ${JSON.stringify(cachedHebrew)}`);
 
   /*
    * Clear Chromium's ordinary HTTP cache, but do not leave the CDP

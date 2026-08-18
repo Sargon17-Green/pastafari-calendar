@@ -6,6 +6,9 @@ import {
   LOCALES,
   calendarLabel,
   getLocale,
+  isLocaleLoaded,
+  loadAllLocales,
+  loadLocale,
   matchSupportedLocale,
   resolveLocale,
   translate,
@@ -29,6 +32,19 @@ function fakeStorage(initial = {}) {
   };
 }
 
+test("registry import is metadata-only and does not eagerly load locale resources", () => {
+  assert.equal(LOCALES.length, 72);
+  for (const locale of LOCALES) {
+    assert.equal("messages" in locale, false);
+    assert.equal("calendar" in locale, false);
+    assert.equal("terminology" in locale, false);
+    assert.equal(typeof locale.loader, "function");
+    assert.equal(typeof locale.asset, "string");
+  }
+  assert.equal(isLocaleLoaded("en"), false);
+  assert.equal(isLocaleLoaded("he"), false);
+});
+
 test("registry contains 72 supported locales and no removed experimental or Biblical Hebrew locales", () => {
   const removedExperimentalLocales = ["akk", "ang", "cop", "cu", "got", "grc", "ia", "io", "jbo", "la", "lzh", "non", "sa", "sux", "tlh", "tok", "vo"];
   assert.equal(LOCALES.length, 72);
@@ -40,11 +56,12 @@ test("registry contains 72 supported locales and no removed experimental or Bibl
   }
 });
 
-test("locale resources have complete, matching coverage", () => {
-  assert.equal(validateLocaleResources(), true);
+test("locale resources have complete, matching coverage", async () => {
+  const locales = await loadAllLocales();
+  assert.equal(validateLocaleResources(locales), true);
   assert.equal(CUTLETS.length, 17);
   assert.equal(MONTHS.length, 47);
-  for (const locale of LOCALES) {
+  for (const locale of locales) {
     for (let index = 0; index < CUTLETS.length; index += 1) {
       assert.notEqual(calendarLabel(locale, "cutlet", index), "");
     }
@@ -54,8 +71,8 @@ test("locale resources have complete, matching coverage", () => {
   }
 });
 
-test("canonical English cutlet and month labels match the supplied Scroll terminology", () => {
-  const en = getLocale("en");
+test("canonical English cutlet and month labels match the supplied Scroll terminology", async () => {
+  const en = await loadLocale("en");
   assert.deepEqual(CUTLETS.map((_, index) => calendarLabel(en, "cutlet", index)), [
     "Bronze", "Fox", "Kidney", "Lagash", "Thought", "Four Parts of Nine", "Palgurash",
     "Papyrus Sedge", "Cluster", "Scorpion", "Ash", "Wheat", "River", "Laughter", "Akkad",
@@ -72,8 +89,8 @@ test("canonical English cutlet and month labels match the supplied Scroll termin
 });
 
 
-test("canonical English named quantities use the supplied Scroll wording", () => {
-  assert.deepEqual(getLocale("en").terminology, {
+test("canonical English named quantities use the supplied Scroll wording", async () => {
+  assert.deepEqual((await loadLocale("en")).terminology, {
     foundationDay: "Foundation Day",
     workingNumber: "Working Number",
     queryNumber: "Query Number",
@@ -103,6 +120,13 @@ test("locale resolution follows URL > saved > navigator.languages > English fall
   assert.deepEqual(resolveLocale({ browserLanguages: ["en-US", "he-IL"] }), { locale: getLocale("en"), source: "browser" });
   assert.deepEqual(resolveLocale({ browserLanguages: ["qaa", "qab"] }), { locale: getLocale("en"), source: "fallback" });
   assert.deepEqual(resolveLocale({ urlLanguage: "%%%", savedLanguage: "he", browserLanguages: ["en-US"] }), { locale: getLocale("he"), source: "saved" });
+});
+
+test("loaded locale resources are reused within the page/module lifetime", async () => {
+  const first = await loadLocale("he");
+  const second = await loadLocale("he-IL");
+  assert.equal(first, second);
+  assert.equal(isLocaleLoaded("he"), true);
 });
 
 test("browser resolution and persistence preserve the explicit-selection rule", () => {
@@ -137,7 +161,7 @@ test("language URL updates preserve unrelated state parameters", () => {
   assert.equal(next.hash, "#guide");
 });
 
-test("document locale application updates lang, dir, text and translated attributes", () => {
+test("document locale application updates lang, dir, text and translated attributes", async () => {
   const textNode = { dataset: { i18n: "calendar.today" }, textContent: "" };
   const attrNode = {
     dataset: { i18nAttr: "aria-label:calendar.toolbarAria" },
@@ -152,12 +176,12 @@ test("document locale application updates lang, dir, text and translated attribu
       return [];
     },
   };
-  applyDocumentLocale(getLocale("he"), root);
+  applyDocumentLocale(await loadLocale("he"), root);
   assert.equal(root.documentElement.lang, "he");
   assert.equal(root.documentElement.dir, "rtl");
   assert.equal(textNode.textContent, "חזרה להיום");
   assert.equal(attrNode.attributes["aria-label"], "ניווט בין קציצות");
-  applyDocumentLocale(getLocale("en"), root);
+  applyDocumentLocale(await loadLocale("en"), root);
   assert.equal(root.documentElement.lang, "en");
   assert.equal(root.documentElement.dir, "ltr");
   assert.equal(textNode.textContent, "Back to today");
@@ -169,13 +193,13 @@ test("locale direction metadata is independent of language-specific application 
   assert.equal(getLocale("en").dir, "ltr");
 });
 
-test("message templates support locale-specific word order", () => {
+test("message templates support locale-specific word order", async () => {
   assert.equal(
-    translate(getLocale("he"), "date.monthLine", { dayInMonth: "76", monthName: "סערה" }),
+    translate(await loadLocale("he"), "date.monthLine", { dayInMonth: "76", monthName: "סערה" }),
     "76 בחודש סערה",
   );
   assert.equal(
-    translate(getLocale("en"), "date.monthLine", { dayInMonth: "76", monthName: "Storm" }),
+    translate(await loadLocale("en"), "date.monthLine", { dayInMonth: "76", monthName: "Storm" }),
     "Day 76 in the month Storm",
   );
 });
@@ -188,8 +212,8 @@ test("engine results are locale-invariant across a large real cutlet view", asyn
   });
   assert.ok(view.days.length > 100, "test should cover a substantial number of dates");
 
-  const he = getLocale("he");
-  const en = getLocale("en");
+  const he = await loadLocale("he");
+  const en = await loadLocale("en");
   for (const day of view.days) {
     const internal = {
       year: day.year,

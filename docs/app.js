@@ -14,12 +14,12 @@ import {
 import {
   calendarLabel,
   getLocale,
+  loadLocale,
   locationAssumptionNotice,
   locationUseDeviceLabel,
   staleDayWarning,
   translate,
-  validateLocaleResources,
-} from "./i18n/registry.js?v=13-reverse-i18n";
+} from "./i18n/registry.js?v=14-lazy-i18n";
 import {
   KISURRA_OBSERVER,
   requestObserverLocation,
@@ -27,16 +27,15 @@ import {
   watchObserverPermission,
 } from "./observer-location.js?v=10-venus-day-boundary";
 import { currentDayAt } from "./venus-day-boundary.js?v=10-venus-day-boundary";
-import { createReverseSearchUi } from "./reverse-ui.js?v=13-reverse-i18n";
+import { createReverseSearchUi } from "./reverse-ui.js?v=14-lazy-i18n";
 import {
   applyDocumentLocale,
   persistLanguage,
   populateLanguageSelector,
   resolveBrowserLocale,
   urlWithLanguage,
-} from "./i18n/runtime.js?v=13-reverse-i18n";
+} from "./i18n/runtime.js?v=14-lazy-i18n";
 
-validateLocaleResources();
 
 const ASSET_REVISION = "8-year-structure";
 const DESKTOP_COMPARISON_QUERY = "(min-width: 1000px)";
@@ -46,7 +45,7 @@ const worker = new Worker(
 );
 const pending = new Map();
 let requestId = 0;
-let activeLocale = resolveBrowserLocale().locale;
+let activeLocale = await loadLocale(resolveBrowserLocale().locale.code);
 let numberFormatter = null;
 let dateFormatter = null;
 let lastVisibleErrorKey = null;
@@ -893,21 +892,24 @@ function applyActiveLocale({ rerender = true } = {}) {
   reverseUi?.refreshLocale();
 }
 
-function syncLocaleFromEnvironment({ rerender = true } = {}) {
+async function syncLocaleFromEnvironment({ rerender = true } = {}) {
   const resolved = resolveBrowserLocale();
   if (resolved.locale.code === activeLocale.code) return;
-  activeLocale = resolved.locale;
+  activeLocale = await loadLocale(resolved.locale.code);
   applyActiveLocale({ rerender });
 }
 
-function chooseLanguage(code) {
-  const locale = getLocale(code);
-  persistLanguage(locale.code);
-  const url = urlWithLanguage(location.href, locale.code);
+async function chooseLanguage(code) {
+  const metadata = getLocale(code);
+  const locale = metadata.code === activeLocale.code ? activeLocale : await loadLocale(metadata.code);
+  persistLanguage(metadata.code);
+  const url = urlWithLanguage(location.href, metadata.code);
   history.pushState({ pastafari: true }, "", url);
   if (locale.code !== activeLocale.code) {
     activeLocale = locale;
     applyActiveLocale();
+  } else {
+    populateLanguageSelector(elements["language-selector"], activeLocale.code);
   }
 }
 
@@ -954,7 +956,17 @@ function installGuideNavigation() {
 applyActiveLocale({ rerender: false });
 installGuideNavigation();
 
-elements["language-selector"].addEventListener("change", (event) => chooseLanguage(event.currentTarget.value));
+elements["language-selector"].addEventListener("change", (event) => {
+  const select = event.currentTarget;
+  const requested = select.value;
+  select.disabled = true;
+  chooseLanguage(requested)
+    .catch((error) => {
+      console.error(error);
+      populateLanguageSelector(select, activeLocale.code);
+    })
+    .finally(() => { select.disabled = false; });
+});
 elements["reload-button"].addEventListener("click", () => location.reload());
 elements["today-button"].addEventListener("click", () => goToday());
 elements["previous-cutlet"].addEventListener("click", () => {
@@ -1052,8 +1064,9 @@ matchMedia(DESKTOP_COMPARISON_QUERY).addEventListener("change", () => {
 });
 
 window.addEventListener("popstate", () => {
-  syncLocaleFromEnvironment();
-  loadFromUrl();
+  syncLocaleFromEnvironment()
+    .then(() => loadFromUrl())
+    .catch((error) => showError(error));
 });
 
 function sameObserver(left, right) {

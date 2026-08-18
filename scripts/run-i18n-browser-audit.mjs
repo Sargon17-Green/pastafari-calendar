@@ -1167,12 +1167,11 @@ async function importModuleFresh(path) {
   return import(`${pathToFileURL(path).href}?i18nAudit=${Date.now()}-${Math.random().toString(16).slice(2)}`);
 }
 
-async function discoverResources(registry) {
+async function discoverResources(registry, baseline) {
   const files = (await readdir(LOCALES_DIR, { withFileTypes: true }))
     .filter((entry) => entry.isFile() && entry.name.endsWith(".js"))
     .map((entry) => entry.name)
     .sort((a, b) => a.localeCompare(b, "en"));
-  const baseline = registry.LOCALES[0] || null;
   const registeredCodes = new Set(registry.LOCALES.map((locale) => locale.code));
   const resources = {};
   const resourcesByCode = new Map();
@@ -1564,20 +1563,24 @@ async function main() {
     DEFAULT_LOCALE: registryNamespace.DEFAULT_LOCALE,
     matchSupportedLocale: registryNamespace.matchSupportedLocale,
     resolveLocale: registryNamespace.resolveLocale,
+    loadAllLocales: registryNamespace.loadAllLocales,
     validateLocaleResources: registryNamespace.validateLocaleResources,
   };
   if (!Array.isArray(registry.LOCALES) || registry.LOCALES.length === 0) throw new Error("Registry exports no LOCALES.");
 
   let registeredResourceValidation = { ok: false, error: null };
+  let loadedRegisteredLocales = [];
   try {
+    if (typeof registry.loadAllLocales !== "function") throw new TypeError("registry.js does not export loadAllLocales().");
     if (typeof registry.validateLocaleResources !== "function") throw new TypeError("registry.js does not export validateLocaleResources().");
-    registry.validateLocaleResources();
+    loadedRegisteredLocales = await registry.loadAllLocales();
+    registry.validateLocaleResources(loadedRegisteredLocales);
     registeredResourceValidation = { ok: true, error: null };
   } catch (error) {
     registeredResourceValidation = { ok: false, error: error?.message || String(error) };
   }
 
-  const discoveryResources = await discoverResources(registry);
+  const discoveryResources = await discoverResources(registry, loadedRegisteredLocales[0] || null);
   const registeredResources = new Map();
   for (const locale of registry.LOCALES) {
     const matches = discoveryResources.resourcesByCode.get(locale.code) || [];

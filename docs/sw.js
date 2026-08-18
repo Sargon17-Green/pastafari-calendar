@@ -1,12 +1,15 @@
 "use strict";
 
-const VERSION = "pastafari-static-reverse-search-i18n-04-current72";
+const VERSION = "pastafari-static-reverse-search-lazy-i18n-05-current72";
 const CACHE = VERSION;
-const ASSETS = [
+
+// Core application shell. English is the only locale resource installed eagerly,
+// because it is the runtime fallback when no supported preference is selected.
+const CORE_ASSETS = [
   "./index.html",
   "./styles.css?v=13-reverse-i18n",
-  "./app.js?v=13-reverse-i18n",
-  "./reverse-ui.js?v=13-reverse-i18n",
+  "./app.js?v=14-lazy-i18n",
+  "./reverse-ui.js?v=14-lazy-i18n",
   "./reverse-search-controller.js",
   "./calendar-input-conventions.js?v=9-calendar-input-conventions",
   "./calendar-converters.js?v=8-year-structure",
@@ -22,82 +25,12 @@ const ASSETS = [
   "./engine/pastafari-constraints.js",
   "./engine/pastafari-reverse-worker.js",
   "./i18n/calendar-identifiers.js?v=8-year-structure",
-  "./i18n/registry.js?v=13-reverse-i18n",
-  "./i18n/runtime.js?v=13-reverse-i18n",
-  "./i18n/locales/he.js?v=13-reverse-i18n",
-  "./i18n/locales/en.js?v=13-reverse-i18n",
-  "./i18n/locales/af.js?v=13-reverse-i18n",
-  "./i18n/locales/ar.js?v=13-reverse-i18n",
-  "./i18n/locales/az.js?v=13-reverse-i18n",
-  "./i18n/locales/be.js?v=13-reverse-i18n",
-  "./i18n/locales/bg.js?v=13-reverse-i18n",
-  "./i18n/locales/bn.js?v=13-reverse-i18n",
-  "./i18n/locales/bs.js?v=13-reverse-i18n",
-  "./i18n/locales/ca.js?v=13-reverse-i18n",
-  "./i18n/locales/cs.js?v=13-reverse-i18n",
-  "./i18n/locales/da.js?v=13-reverse-i18n",
-  "./i18n/locales/de.js?v=13-reverse-i18n",
-  "./i18n/locales/el.js?v=13-reverse-i18n",
-  "./i18n/locales/eo.js?v=13-reverse-i18n",
-  "./i18n/locales/es.js?v=13-reverse-i18n",
-  "./i18n/locales/et.js?v=13-reverse-i18n",
-  "./i18n/locales/fa.js?v=13-reverse-i18n",
-  "./i18n/locales/fi.js?v=13-reverse-i18n",
-  "./i18n/locales/fil.js?v=13-reverse-i18n",
-  "./i18n/locales/fo.js?v=13-reverse-i18n",
-  "./i18n/locales/fr.js?v=13-reverse-i18n",
-  "./i18n/locales/fy.js?v=13-reverse-i18n",
-  "./i18n/locales/gl.js?v=13-reverse-i18n",
-  "./i18n/locales/gu.js?v=13-reverse-i18n",
-  "./i18n/locales/ha.js?v=13-reverse-i18n",
-  "./i18n/locales/hi.js?v=13-reverse-i18n",
-  "./i18n/locales/hr.js?v=13-reverse-i18n",
-  "./i18n/locales/ht.js?v=13-reverse-i18n",
-  "./i18n/locales/hu.js?v=13-reverse-i18n",
-  "./i18n/locales/hy.js?v=13-reverse-i18n",
-  "./i18n/locales/id.js?v=13-reverse-i18n",
-  "./i18n/locales/is.js?v=13-reverse-i18n",
-  "./i18n/locales/it.js?v=13-reverse-i18n",
-  "./i18n/locales/ja.js?v=13-reverse-i18n",
-  "./i18n/locales/jv.js?v=13-reverse-i18n",
-  "./i18n/locales/ka.js?v=13-reverse-i18n",
-  "./i18n/locales/kk.js?v=13-reverse-i18n",
-  "./i18n/locales/ko.js?v=13-reverse-i18n",
-  "./i18n/locales/lb.js?v=13-reverse-i18n",
-  "./i18n/locales/lt.js?v=13-reverse-i18n",
-  "./i18n/locales/lv.js?v=13-reverse-i18n",
-  "./i18n/locales/mk.js?v=13-reverse-i18n",
-  "./i18n/locales/mr.js?v=13-reverse-i18n",
-  "./i18n/locales/ms.js?v=13-reverse-i18n",
-  "./i18n/locales/nb.js?v=13-reverse-i18n",
-  "./i18n/locales/ne.js?v=13-reverse-i18n",
-  "./i18n/locales/nl.js?v=13-reverse-i18n",
-  "./i18n/locales/nn.js?v=13-reverse-i18n",
-  "./i18n/locales/pa.js?v=13-reverse-i18n",
-  "./i18n/locales/pl.js?v=13-reverse-i18n",
-  "./i18n/locales/pt.js?v=13-reverse-i18n",
-  "./i18n/locales/ro.js?v=13-reverse-i18n",
-  "./i18n/locales/ru.js?v=13-reverse-i18n",
-  "./i18n/locales/sk.js?v=13-reverse-i18n",
-  "./i18n/locales/sl.js?v=13-reverse-i18n",
-  "./i18n/locales/so.js?v=13-reverse-i18n",
-  "./i18n/locales/sq.js?v=13-reverse-i18n",
-  "./i18n/locales/sr.js?v=13-reverse-i18n",
-  "./i18n/locales/sv.js?v=13-reverse-i18n",
-  "./i18n/locales/sw.js?v=13-reverse-i18n",
-  "./i18n/locales/ta.js?v=13-reverse-i18n",
-  "./i18n/locales/te.js?v=13-reverse-i18n",
-  "./i18n/locales/th.js?v=13-reverse-i18n",
-  "./i18n/locales/tr.js?v=13-reverse-i18n",
-  "./i18n/locales/uk.js?v=13-reverse-i18n",
-  "./i18n/locales/ur.js?v=13-reverse-i18n",
-  "./i18n/locales/uz.js?v=13-reverse-i18n",
-  "./i18n/locales/vi.js?v=13-reverse-i18n",
-  "./i18n/locales/yo.js?v=13-reverse-i18n",
-  "./i18n/locales/zh.js?v=13-reverse-i18n",
-  "./i18n/locales/zu.js?v=13-reverse-i18n"
+  "./i18n/registry.js?v=14-lazy-i18n",
+  "./i18n/runtime.js?v=14-lazy-i18n",
+  "./i18n/locales/en.js?v=14-lazy-i18n"
 ];
 
+const OPTIONAL_LOCALE_PATH = /\/i18n\/locales\/[A-Za-z0-9-]+\.js$/;
 const scoped = (path) => new URL(path, self.registration.scope).href;
 
 self.addEventListener("install", (event) => {
@@ -105,7 +38,7 @@ self.addEventListener("install", (event) => {
     const cache = await caches.open(CACHE);
     // Reload avoids reusing an older HTTP-cache entry if a future deployment
     // keeps a backwards-compatible asset URL.
-    await Promise.all(ASSETS.map(async (path) => {
+    await Promise.all(CORE_ASSETS.map(async (path) => {
       const request = new Request(scoped(path), { cache: "reload" });
       const response = await fetch(request);
       if (!response.ok) throw new Error(`Failed to precache ${path}: HTTP ${response.status}`);
@@ -134,11 +67,18 @@ self.addEventListener("fetch", (event) => {
     )));
     return;
   }
+
   event.respondWith((async () => {
     const cached = await caches.match(event.request);
     if (cached) return cached;
     const response = await fetch(event.request);
-    if (response.ok) (await caches.open(CACHE)).put(event.request, response.clone());
+    if (response.ok) {
+      // Optional locale modules arrive here only when requested by the runtime.
+      // Cache them on first successful use so subsequent controlled/offline loads
+      // can reuse the exact revisioned module URL.
+      const cache = await caches.open(CACHE);
+      await cache.put(event.request, response.clone());
+    }
     return response;
   })());
 });

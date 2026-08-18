@@ -1,82 +1,87 @@
 "use strict";
 
-import he from "./locales/he.js?v=13-reverse-i18n";
-import en from "./locales/en.js?v=13-reverse-i18n";
-import af from "./locales/af.js?v=13-reverse-i18n";
-import ar from "./locales/ar.js?v=13-reverse-i18n";
-import az from "./locales/az.js?v=13-reverse-i18n";
-import be from "./locales/be.js?v=13-reverse-i18n";
-import bg from "./locales/bg.js?v=13-reverse-i18n";
-import bn from "./locales/bn.js?v=13-reverse-i18n";
-import bs from "./locales/bs.js?v=13-reverse-i18n";
-import ca from "./locales/ca.js?v=13-reverse-i18n";
-import cs from "./locales/cs.js?v=13-reverse-i18n";
-import da from "./locales/da.js?v=13-reverse-i18n";
-import de from "./locales/de.js?v=13-reverse-i18n";
-import el from "./locales/el.js?v=13-reverse-i18n";
-import eo from "./locales/eo.js?v=13-reverse-i18n";
-import es from "./locales/es.js?v=13-reverse-i18n";
-import et from "./locales/et.js?v=13-reverse-i18n";
-import fa from "./locales/fa.js?v=13-reverse-i18n";
-import fi from "./locales/fi.js?v=13-reverse-i18n";
-import fil from "./locales/fil.js?v=13-reverse-i18n";
-import fo from "./locales/fo.js?v=13-reverse-i18n";
-import fr from "./locales/fr.js?v=13-reverse-i18n";
-import fy from "./locales/fy.js?v=13-reverse-i18n";
-import gl from "./locales/gl.js?v=13-reverse-i18n";
-import gu from "./locales/gu.js?v=13-reverse-i18n";
-import ha from "./locales/ha.js?v=13-reverse-i18n";
-import hi from "./locales/hi.js?v=13-reverse-i18n";
-import hr from "./locales/hr.js?v=13-reverse-i18n";
-import ht from "./locales/ht.js?v=13-reverse-i18n";
-import hu from "./locales/hu.js?v=13-reverse-i18n";
-import hy from "./locales/hy.js?v=13-reverse-i18n";
-import id from "./locales/id.js?v=13-reverse-i18n";
-import is from "./locales/is.js?v=13-reverse-i18n";
-import it from "./locales/it.js?v=13-reverse-i18n";
-import ja from "./locales/ja.js?v=13-reverse-i18n";
-import jv from "./locales/jv.js?v=13-reverse-i18n";
-import ka from "./locales/ka.js?v=13-reverse-i18n";
-import kk from "./locales/kk.js?v=13-reverse-i18n";
-import ko from "./locales/ko.js?v=13-reverse-i18n";
-import lb from "./locales/lb.js?v=13-reverse-i18n";
-import lt from "./locales/lt.js?v=13-reverse-i18n";
-import lv from "./locales/lv.js?v=13-reverse-i18n";
-import mk from "./locales/mk.js?v=13-reverse-i18n";
-import mr from "./locales/mr.js?v=13-reverse-i18n";
-import ms from "./locales/ms.js?v=13-reverse-i18n";
-import nb from "./locales/nb.js?v=13-reverse-i18n";
-import ne from "./locales/ne.js?v=13-reverse-i18n";
-import nl from "./locales/nl.js?v=13-reverse-i18n";
-import nn from "./locales/nn.js?v=13-reverse-i18n";
-import pa from "./locales/pa.js?v=13-reverse-i18n";
-import pl from "./locales/pl.js?v=13-reverse-i18n";
-import pt from "./locales/pt.js?v=13-reverse-i18n";
-import ro from "./locales/ro.js?v=13-reverse-i18n";
-import ru from "./locales/ru.js?v=13-reverse-i18n";
-import sk from "./locales/sk.js?v=13-reverse-i18n";
-import sl from "./locales/sl.js?v=13-reverse-i18n";
-import so from "./locales/so.js?v=13-reverse-i18n";
-import sq from "./locales/sq.js?v=13-reverse-i18n";
-import sr from "./locales/sr.js?v=13-reverse-i18n";
-import sv from "./locales/sv.js?v=13-reverse-i18n";
-import sw from "./locales/sw.js?v=13-reverse-i18n";
-import ta from "./locales/ta.js?v=13-reverse-i18n";
-import te from "./locales/te.js?v=13-reverse-i18n";
-import th from "./locales/th.js?v=13-reverse-i18n";
-import tr from "./locales/tr.js?v=13-reverse-i18n";
-import uk from "./locales/uk.js?v=13-reverse-i18n";
-import ur from "./locales/ur.js?v=13-reverse-i18n";
-import uz from "./locales/uz.js?v=13-reverse-i18n";
-import vi from "./locales/vi.js?v=13-reverse-i18n";
-import yo from "./locales/yo.js?v=13-reverse-i18n";
-import zh from "./locales/zh.js?v=13-reverse-i18n";
-import zu from "./locales/zu.js?v=13-reverse-i18n";
 import { CUTLETS, MONTHS } from "./calendar-identifiers.js?v=8-year-structure";
 
 export const DEFAULT_LOCALE = "en";
-export const LOCALES = Object.freeze([he, en, af, ar, az, be, bg, bn, bs, ca, cs, da, de, el, eo, es, et, fa, fi, fil, fo, fr, fy, gl, gu, ha, hi, hr, ht, hu, hy, id, is, it, ja, jv, ka, kk, ko, lb, lt, lv, mk, mr, ms, nb, ne, nl, nn, pa, pl, pt, ro, ru, sk, sl, so, sq, sr, sv, sw, ta, te, th, tr, uk, ur, uz, vi, yo, zh, zu]);
+
+// Lightweight metadata only. Locale resources are loaded on demand by loadLocale().
+export const LOCALES = Object.freeze([
+  Object.freeze({ code: "he", displayName: "עברית", dir: "rtl", intlLocale: "he-IL", asset: "./locales/he.js?v=14-lazy-i18n", loader: () => import("./locales/he.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "en", displayName: "English", dir: "ltr", intlLocale: "en-US", asset: "./locales/en.js?v=14-lazy-i18n", loader: () => import("./locales/en.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "af", displayName: "Afrikaans", dir: "ltr", intlLocale: "af-ZA", asset: "./locales/af.js?v=14-lazy-i18n", loader: () => import("./locales/af.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "ar", displayName: "العربية", dir: "rtl", intlLocale: "ar", asset: "./locales/ar.js?v=14-lazy-i18n", loader: () => import("./locales/ar.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "az", displayName: "Azərbaycanca", dir: "ltr", intlLocale: "az-AZ", asset: "./locales/az.js?v=14-lazy-i18n", loader: () => import("./locales/az.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "be", displayName: "Беларуская", dir: "ltr", intlLocale: "be-BY", asset: "./locales/be.js?v=14-lazy-i18n", loader: () => import("./locales/be.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "bg", displayName: "Български", dir: "ltr", intlLocale: "bg-BG", asset: "./locales/bg.js?v=14-lazy-i18n", loader: () => import("./locales/bg.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "bn", displayName: "বাংলা", dir: "ltr", intlLocale: "bn-BD", asset: "./locales/bn.js?v=14-lazy-i18n", loader: () => import("./locales/bn.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "bs", displayName: "Bosanski", dir: "ltr", intlLocale: "bs-BA", asset: "./locales/bs.js?v=14-lazy-i18n", loader: () => import("./locales/bs.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "ca", displayName: "Català", dir: "ltr", intlLocale: "ca-ES", asset: "./locales/ca.js?v=14-lazy-i18n", loader: () => import("./locales/ca.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "cs", displayName: "Čeština", dir: "ltr", intlLocale: "cs-CZ", asset: "./locales/cs.js?v=14-lazy-i18n", loader: () => import("./locales/cs.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "da", displayName: "Dansk", dir: "ltr", intlLocale: "da-DK", asset: "./locales/da.js?v=14-lazy-i18n", loader: () => import("./locales/da.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "de", displayName: "Deutsch", dir: "ltr", intlLocale: "de-DE", asset: "./locales/de.js?v=14-lazy-i18n", loader: () => import("./locales/de.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "el", displayName: "Ελληνικά", dir: "ltr", intlLocale: "el-GR", asset: "./locales/el.js?v=14-lazy-i18n", loader: () => import("./locales/el.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "eo", displayName: "Esperanto", dir: "ltr", intlLocale: "eo", asset: "./locales/eo.js?v=14-lazy-i18n", loader: () => import("./locales/eo.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "es", displayName: "Español", dir: "ltr", intlLocale: "es-ES", asset: "./locales/es.js?v=14-lazy-i18n", loader: () => import("./locales/es.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "et", displayName: "Eesti", dir: "ltr", intlLocale: "et-EE", asset: "./locales/et.js?v=14-lazy-i18n", loader: () => import("./locales/et.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "fa", displayName: "فارسی", dir: "rtl", intlLocale: "fa-IR", asset: "./locales/fa.js?v=14-lazy-i18n", loader: () => import("./locales/fa.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "fi", displayName: "Suomi", dir: "ltr", intlLocale: "fi-FI", asset: "./locales/fi.js?v=14-lazy-i18n", loader: () => import("./locales/fi.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "fil", displayName: "Filipino", dir: "ltr", intlLocale: "fil-PH", asset: "./locales/fil.js?v=14-lazy-i18n", loader: () => import("./locales/fil.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "fo", displayName: "Føroyskt", dir: "ltr", intlLocale: "fo-FO", asset: "./locales/fo.js?v=14-lazy-i18n", loader: () => import("./locales/fo.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "fr", displayName: "Français", dir: "ltr", intlLocale: "fr-FR", asset: "./locales/fr.js?v=14-lazy-i18n", loader: () => import("./locales/fr.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "fy", displayName: "Frysk", dir: "ltr", intlLocale: "fy-NL", asset: "./locales/fy.js?v=14-lazy-i18n", loader: () => import("./locales/fy.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "gl", displayName: "Galego", dir: "ltr", intlLocale: "gl-ES", asset: "./locales/gl.js?v=14-lazy-i18n", loader: () => import("./locales/gl.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "gu", displayName: "ગુજરાતી", dir: "ltr", intlLocale: "gu-IN", asset: "./locales/gu.js?v=14-lazy-i18n", loader: () => import("./locales/gu.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "ha", displayName: "Hausa", dir: "ltr", intlLocale: "ha-NG", asset: "./locales/ha.js?v=14-lazy-i18n", loader: () => import("./locales/ha.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "hi", displayName: "हिन्दी", dir: "ltr", intlLocale: "hi-IN", asset: "./locales/hi.js?v=14-lazy-i18n", loader: () => import("./locales/hi.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "hr", displayName: "Hrvatski", dir: "ltr", intlLocale: "hr-HR", asset: "./locales/hr.js?v=14-lazy-i18n", loader: () => import("./locales/hr.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "ht", displayName: "Kreyòl ayisyen", dir: "ltr", intlLocale: "ht-HT", asset: "./locales/ht.js?v=14-lazy-i18n", loader: () => import("./locales/ht.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "hu", displayName: "Magyar", dir: "ltr", intlLocale: "hu-HU", asset: "./locales/hu.js?v=14-lazy-i18n", loader: () => import("./locales/hu.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "hy", displayName: "Հայերեն", dir: "ltr", intlLocale: "hy-AM", asset: "./locales/hy.js?v=14-lazy-i18n", loader: () => import("./locales/hy.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "id", displayName: "Bahasa Indonesia", dir: "ltr", intlLocale: "id-ID", asset: "./locales/id.js?v=14-lazy-i18n", loader: () => import("./locales/id.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "is", displayName: "Íslenska", dir: "ltr", intlLocale: "is-IS", asset: "./locales/is.js?v=14-lazy-i18n", loader: () => import("./locales/is.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "it", displayName: "Italiano", dir: "ltr", intlLocale: "it-IT", asset: "./locales/it.js?v=14-lazy-i18n", loader: () => import("./locales/it.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "ja", displayName: "日本語", dir: "ltr", intlLocale: "ja-JP", asset: "./locales/ja.js?v=14-lazy-i18n", loader: () => import("./locales/ja.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "jv", displayName: "Basa Jawa", dir: "ltr", intlLocale: "jv-ID", asset: "./locales/jv.js?v=14-lazy-i18n", loader: () => import("./locales/jv.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "ka", displayName: "ქართული", dir: "ltr", intlLocale: "ka-GE", asset: "./locales/ka.js?v=14-lazy-i18n", loader: () => import("./locales/ka.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "kk", displayName: "Қазақша", dir: "ltr", intlLocale: "kk-KZ", asset: "./locales/kk.js?v=14-lazy-i18n", loader: () => import("./locales/kk.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "ko", displayName: "한국어", dir: "ltr", intlLocale: "ko-KR", asset: "./locales/ko.js?v=14-lazy-i18n", loader: () => import("./locales/ko.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "lb", displayName: "Lëtzebuergesch", dir: "ltr", intlLocale: "lb-LU", asset: "./locales/lb.js?v=14-lazy-i18n", loader: () => import("./locales/lb.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "lt", displayName: "Lietuvių", dir: "ltr", intlLocale: "lt-LT", asset: "./locales/lt.js?v=14-lazy-i18n", loader: () => import("./locales/lt.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "lv", displayName: "Latviešu", dir: "ltr", intlLocale: "lv-LV", asset: "./locales/lv.js?v=14-lazy-i18n", loader: () => import("./locales/lv.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "mk", displayName: "Македонски", dir: "ltr", intlLocale: "mk-MK", asset: "./locales/mk.js?v=14-lazy-i18n", loader: () => import("./locales/mk.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "mr", displayName: "मराठी", dir: "ltr", intlLocale: "mr-IN", asset: "./locales/mr.js?v=14-lazy-i18n", loader: () => import("./locales/mr.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "ms", displayName: "Bahasa Melayu", dir: "ltr", intlLocale: "ms-MY", asset: "./locales/ms.js?v=14-lazy-i18n", loader: () => import("./locales/ms.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "nb", displayName: "Norsk bokmål", dir: "ltr", intlLocale: "nb-NO", asset: "./locales/nb.js?v=14-lazy-i18n", loader: () => import("./locales/nb.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "ne", displayName: "नेपाली", dir: "ltr", intlLocale: "ne-NP", asset: "./locales/ne.js?v=14-lazy-i18n", loader: () => import("./locales/ne.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "nl", displayName: "Nederlands", dir: "ltr", intlLocale: "nl-NL", asset: "./locales/nl.js?v=14-lazy-i18n", loader: () => import("./locales/nl.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "nn", displayName: "Norsk nynorsk", dir: "ltr", intlLocale: "nn-NO", asset: "./locales/nn.js?v=14-lazy-i18n", loader: () => import("./locales/nn.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "pa", displayName: "ਪੰਜਾਬੀ", dir: "ltr", intlLocale: "pa-IN", asset: "./locales/pa.js?v=14-lazy-i18n", loader: () => import("./locales/pa.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "pl", displayName: "Polski", dir: "ltr", intlLocale: "pl-PL", asset: "./locales/pl.js?v=14-lazy-i18n", loader: () => import("./locales/pl.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "pt", displayName: "Português", dir: "ltr", intlLocale: "pt-BR", asset: "./locales/pt.js?v=14-lazy-i18n", loader: () => import("./locales/pt.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "ro", displayName: "Română", dir: "ltr", intlLocale: "ro-RO", asset: "./locales/ro.js?v=14-lazy-i18n", loader: () => import("./locales/ro.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "ru", displayName: "Русский", dir: "ltr", intlLocale: "ru-RU", asset: "./locales/ru.js?v=14-lazy-i18n", loader: () => import("./locales/ru.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "sk", displayName: "Slovenčina", dir: "ltr", intlLocale: "sk-SK", asset: "./locales/sk.js?v=14-lazy-i18n", loader: () => import("./locales/sk.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "sl", displayName: "Slovenščina", dir: "ltr", intlLocale: "sl-SI", asset: "./locales/sl.js?v=14-lazy-i18n", loader: () => import("./locales/sl.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "so", displayName: "Soomaali", dir: "ltr", intlLocale: "so-SO", asset: "./locales/so.js?v=14-lazy-i18n", loader: () => import("./locales/so.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "sq", displayName: "Shqip", dir: "ltr", intlLocale: "sq-AL", asset: "./locales/sq.js?v=14-lazy-i18n", loader: () => import("./locales/sq.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "sr", displayName: "Srpski", dir: "ltr", intlLocale: "sr-Latn-RS", asset: "./locales/sr.js?v=14-lazy-i18n", loader: () => import("./locales/sr.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "sv", displayName: "Svenska", dir: "ltr", intlLocale: "sv-SE", asset: "./locales/sv.js?v=14-lazy-i18n", loader: () => import("./locales/sv.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "sw", displayName: "Kiswahili", dir: "ltr", intlLocale: "sw-TZ", asset: "./locales/sw.js?v=14-lazy-i18n", loader: () => import("./locales/sw.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "ta", displayName: "தமிழ்", dir: "ltr", intlLocale: "ta-IN", asset: "./locales/ta.js?v=14-lazy-i18n", loader: () => import("./locales/ta.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "te", displayName: "తెలుగు", dir: "ltr", intlLocale: "te-IN", asset: "./locales/te.js?v=14-lazy-i18n", loader: () => import("./locales/te.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "th", displayName: "ไทย", dir: "ltr", intlLocale: "th-TH", asset: "./locales/th.js?v=14-lazy-i18n", loader: () => import("./locales/th.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "tr", displayName: "Türkçe", dir: "ltr", intlLocale: "tr-TR", asset: "./locales/tr.js?v=14-lazy-i18n", loader: () => import("./locales/tr.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "uk", displayName: "Українська", dir: "ltr", intlLocale: "uk-UA", asset: "./locales/uk.js?v=14-lazy-i18n", loader: () => import("./locales/uk.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "ur", displayName: "اردو", dir: "rtl", intlLocale: "ur-PK", asset: "./locales/ur.js?v=14-lazy-i18n", loader: () => import("./locales/ur.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "uz", displayName: "O‘zbekcha", dir: "ltr", intlLocale: "uz-UZ", asset: "./locales/uz.js?v=14-lazy-i18n", loader: () => import("./locales/uz.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "vi", displayName: "Tiếng Việt", dir: "ltr", intlLocale: "vi-VN", asset: "./locales/vi.js?v=14-lazy-i18n", loader: () => import("./locales/vi.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "yo", displayName: "Yorùbá", dir: "ltr", intlLocale: "yo-NG", asset: "./locales/yo.js?v=14-lazy-i18n", loader: () => import("./locales/yo.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "zh", displayName: "简体中文", dir: "ltr", intlLocale: "zh-CN", asset: "./locales/zh.js?v=14-lazy-i18n", loader: () => import("./locales/zh.js?v=14-lazy-i18n") }),
+  Object.freeze({ code: "zu", displayName: "isiZulu", dir: "ltr", intlLocale: "zu-ZA", asset: "./locales/zu.js?v=14-lazy-i18n", loader: () => import("./locales/zu.js?v=14-lazy-i18n") }),
+]);
+
 const byCode = new Map(LOCALES.map((locale) => [canonicalTag(locale.code), locale]));
+const loadedLocales = new Map();
 
 function canonicalTag(tag) {
   if (typeof tag !== "string" || tag.trim() === "") return null;
@@ -124,6 +129,40 @@ export function resolveLocale({ urlLanguage = null, savedLanguage = null, browse
 
 export function getLocale(code) {
   return matchSupportedLocale(code) ?? byCode.get(canonicalTag(DEFAULT_LOCALE));
+}
+
+function assertLoadedLocaleMatchesMetadata(resource, metadata) {
+  if (!resource || typeof resource !== "object") throw new TypeError(`Locale ${metadata.code} default export must be an object.`);
+  if (resource.code !== metadata.code) throw new RangeError(`Locale module ${metadata.code} exports code ${String(resource.code)}.`);
+  for (const key of ["displayName", "dir", "intlLocale"]) {
+    if (resource[key] !== metadata[key]) throw new RangeError(`Locale ${metadata.code} metadata mismatch for ${key}.`);
+  }
+  if ((resource.experimental === true) !== (metadata.experimental === true)) throw new RangeError(`Locale ${metadata.code} metadata mismatch for experimental.`);
+  if ((resource.fallbackLocale ?? null) !== (metadata.fallbackLocale ?? null)) throw new RangeError(`Locale ${metadata.code} metadata mismatch for fallbackLocale.`);
+  return resource;
+}
+
+export function isLocaleLoaded(code) {
+  return loadedLocales.has(getLocale(code).code);
+}
+
+export async function loadLocale(code) {
+  const metadata = getLocale(code);
+  const existing = loadedLocales.get(metadata.code);
+  if (existing) return existing;
+
+  const loading = metadata.loader().then((module) => assertLoadedLocaleMatchesMetadata(module.default, metadata));
+  loadedLocales.set(metadata.code, loading);
+  try {
+    return await loading;
+  } catch (error) {
+    if (loadedLocales.get(metadata.code) === loading) loadedLocales.delete(metadata.code);
+    throw error;
+  }
+}
+
+export async function loadAllLocales() {
+  return Promise.all(LOCALES.map((locale) => loadLocale(locale.code)));
 }
 
 function getPath(object, path) {
@@ -187,8 +226,10 @@ function sameKeySet(left, right) {
   return a.length === b.length && a.every((key, index) => key === b[index]);
 }
 
-export function validateLocaleResources(locales = LOCALES) {
-  if (!Array.isArray(locales) || locales.length === 0) throw new TypeError("At least one locale is required.");
+export function validateLocaleResources(locales) {
+  if (!Array.isArray(locales) || locales.length === 0) {
+    throw new TypeError("Explicitly loaded locale resources are required for validation.");
+  }
   const baseline = locales[0];
   const expectedMessageKeys = Object.keys(baseline.messages).sort();
   const expectedTermKeys = Object.keys(baseline.terminology).sort();
@@ -197,7 +238,9 @@ export function validateLocaleResources(locales = LOCALES) {
 
   for (const locale of locales) {
     if (!locale || typeof locale !== "object") throw new TypeError("Locale must be an object.");
-    if (!matchSupportedLocale(locale.code)) throw new RangeError(`Locale ${locale.code} is not registered.`);
+    const metadata = matchSupportedLocale(locale.code);
+    if (!metadata) throw new RangeError(`Locale ${locale.code} is not registered.`);
+    assertLoadedLocaleMatchesMetadata(locale, metadata);
     if (!["ltr", "rtl"].includes(locale.dir)) throw new RangeError(`Locale ${locale.code} has invalid direction.`);
     if (!canonicalTag(locale.intlLocale)) throw new RangeError(`Locale ${locale.code} has invalid Intl locale.`);
     if (!sameKeySet(locale.messages, Object.fromEntries(expectedMessageKeys.map((key) => [key, true])))) {
