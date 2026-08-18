@@ -318,8 +318,14 @@ async function offlineReverseSmoke(page, label) {
 }
 
 async function serviceWorkerSnapshot(page) {
-  return page.evaluate(async () => {
-    const registration = await navigator.serviceWorker.ready;
+  return page.evaluate(async (timeoutMs) => {
+    const registration = await Promise.race([
+      navigator.serviceWorker.ready,
+      new Promise((_, reject) => setTimeout(
+        () => reject(new Error(`navigator.serviceWorker.ready did not resolve within ${timeoutMs} ms`)),
+        timeoutMs,
+      )),
+    ]);
     return {
       scope: registration.scope,
       activeState: registration.active?.state ?? null,
@@ -328,7 +334,7 @@ async function serviceWorkerSnapshot(page) {
       controllerState: navigator.serviceWorker.controller?.state ?? null,
       controllerScriptURL: navigator.serviceWorker.controller?.scriptURL ?? null,
     };
-  });
+  }, 30_000);
 }
 
 async function inspectPrecache(page, allAssets, requiredAssets) {
