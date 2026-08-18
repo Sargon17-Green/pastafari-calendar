@@ -12,11 +12,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 22
           cache: npm
+      - run: npm run security:supply-chain
       - run: npm ci
       - run: npm run docs:check
       - run: npm run check:reverse-i18n
@@ -24,7 +25,7 @@ jobs:
       - run: npm run build:standalone
       - run: git diff --exit-code -- browser/standalone/pastafari-date.js browser/standalone/pastafari-date.min.js
       - run: npm test
-      - run: npx playwright install --with-deps chromium firefox
+      - run: ./node_modules/.bin/playwright install --with-deps chromium firefox
       - run: npm run test:i18n-support
       - run: npm run test:file-protocol
       - run: sha256sum -c SHA256SUMS.txt
@@ -34,11 +35,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 35
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 22
           cache: npm
+      - run: npm run security:supply-chain
       - run: npm ci
       - name: Install Playwright Chromium with retry
         shell: bash
@@ -47,7 +49,7 @@ jobs:
           for attempt in 1 2 3; do
             echo "Playwright install attempt ${attempt}/3"
             set +e
-            timeout --signal=TERM --kill-after=30s 8m npx playwright install --with-deps chromium
+            timeout --signal=TERM --kill-after=30s 8m ./node_modules/.bin/playwright install --with-deps chromium
             status=$?
             set -e
 
@@ -68,7 +70,7 @@ jobs:
         run: npm run test:accessibility
       - name: Upload accessibility failure artifacts
         if: failure()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: accessibility-failure-artifacts
           path: artifacts/accessibility
@@ -92,11 +94,12 @@ jobs:
             env_var: PASTAFARI_REBUILD_CHECKPOINTS
             test_name: optionally reconstruct every checkpoint interval from gate distances
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 22
           cache: npm
+      - run: npm run security:supply-chain
       - run: npm ci
       - name: Run checkpoint test (${{ matrix.checkpoint }})
         shell: bash
@@ -168,13 +171,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 22
           cache: npm
+      - run: npm run security:supply-chain
       - run: npm ci
-      - run: npx playwright install --with-deps chromium
+      - run: ./node_modules/.bin/playwright install --with-deps chromium
       - name: Run PWA offline smoke
         run: node scripts/run-pwa-offline-smoke.mjs
       - name: Run reverse UI smoke
@@ -184,13 +188,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 22
           cache: npm
+      - run: npm run security:supply-chain
       - run: npm ci
-      - run: npx playwright install --with-deps chromium
+      - run: ./node_modules/.bin/playwright install --with-deps chromium
       - name: Run astronomical day-boundary smoke
         run: npm run test:day-boundary
 
@@ -198,8 +203,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 18.0.0
       - name: Verify exact Node version
@@ -211,10 +216,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 22
       - name: Resolve performance baseline commit
