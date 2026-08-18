@@ -11,14 +11,15 @@ const read = (path) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
 test("Pages markup exposes one reverse-search mount point", async () => {
   const html = await read("docs/index.html");
   assert.equal((html.match(/id="reverse-app"/g) || []).length, 1);
-  assert.match(html, /id="reverse-panel"/);
+  assert.match(html, /id="reverse-panel"[^>]*aria-labelledby="reverse-heading"/);
   assert.match(html, /styles\.css\?v=13-reverse-i18n/);
-  assert.match(html, /app\.js\?v=16-accessibility-focus/);
+  assert.match(html, /app\.js\?v=17-accessibility-pwa/);
 });
 
 test("app wires reverse results back into the canonical calendar state", async () => {
   const source = await read("docs/app.js");
   assert.match(source, /createReverseSearchUi/);
+  assert.match(source, /reverse-ui\.js\?v=16-accessibility-semantics/);
   assert.match(source, /function openReversePair\(targetJdn, calculationJdn\)/);
   assert.match(source, /state\.targetJdn = target/);
   assert.match(source, /state\.calculationJdn = calculation/);
@@ -28,7 +29,7 @@ test("app wires reverse results back into the canonical calendar state", async (
 test("service worker precaches every module required by offline reverse search", async () => {
   const source = await read("docs/sw.js");
   for (const asset of [
-    "./reverse-ui.js?v=15-runtime-notices",
+    "./reverse-ui.js?v=16-accessibility-semantics",
     "./reverse-search-controller.js",
     "./engine/pastafari-calendar-fast.js",
     "./engine/pastafari-constraints-client.js",
@@ -65,6 +66,7 @@ test("reverse UI uses the canonical site translator without a side fallback tabl
   assert.match(source, /calendarLabel, translate/);
   assert.doesNotMatch(source, /reverseTranslate/);
   assert.doesNotMatch(source, /from\s+["'][^"']*reverse-i18n\.js/);
+  assert.match(source, /headingTitle\.id = "reverse-heading"/);
   const sw = await read("docs/sw.js");
   assert.doesNotMatch(sw, /reverse-i18n\.js/);
 });

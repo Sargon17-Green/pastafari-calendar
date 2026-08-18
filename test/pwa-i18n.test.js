@@ -50,8 +50,8 @@ test("service worker precaches the core shell but not optional locale resources"
   const required = [
     "./index.html",
     "./styles.css?v=13-reverse-i18n",
-    "./app.js?v=16-accessibility-focus",
-    "./reverse-ui.js?v=15-runtime-notices",
+    "./app.js?v=17-accessibility-pwa",
+    "./reverse-ui.js?v=16-accessibility-semantics",
     "./reverse-search-controller.js",
     "./calendar-converters.js?v=8-year-structure",
     "./observer-location.js?v=10-venus-day-boundary",
@@ -82,13 +82,15 @@ test("service worker precaches the core shell but not optional locale resources"
   const html = await readFile(path.join(DOCS, "index.html"), "utf8");
   for (const entry of [
     "./styles.css?v=13-reverse-i18n",
-    "./app.js?v=16-accessibility-focus",
+    "./app.js?v=17-accessibility-pwa",
     "./manifest.webmanifest?v=8-year-structure",
   ]) {
     assert.ok(html.includes(entry), `index.html must request the revisioned asset ${entry}`);
   }
   const app = await readFile(path.join(DOCS, "app.js"), "utf8");
   assert.ok(app.includes("./engine/pastafari-fast-worker.js?v=${ASSET_REVISION}"));
+  assert.match(app, /document\.readyState === "complete"\) registerServiceWorker\(\)/);
+  assert.match(app, /addEventListener\("load", registerServiceWorker, \{ once: true \}\)/);
 
 });
 
