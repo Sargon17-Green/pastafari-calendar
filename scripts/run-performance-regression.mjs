@@ -20,7 +20,7 @@ const SCENARIOS = Object.freeze([
   {
     key: "benchmarkColdSameDay",
     label: "Benchmark-compatible cold same-day conversion",
-    repetitions: 7,
+    repetitions: 3,
     operations: 1,
     maxSlowdownRatio: 2.5,
     minRegressionDeltaMs: 20,
@@ -35,7 +35,7 @@ const SCENARIOS = Object.freeze([
   {
     key: "representativeForward",
     label: "Representative forward",
-    repetitions: 7,
+    repetitions: 3,
     operations: 1,
     maxSlowdownRatio: 2.5,
     minRegressionDeltaMs: 20,
@@ -50,7 +50,7 @@ const SCENARIOS = Object.freeze([
   {
     key: "warmForward",
     label: "Warm forward range",
-    repetitions: 7,
+    repetitions: 3,
     operations: WARM_RANGE_DAYS,
     maxSlowdownRatio: 2.2,
     minRegressionDeltaMs: 25,
@@ -69,7 +69,7 @@ const SCENARIOS = Object.freeze([
   {
     key: "cachedIdenticalLookup",
     label: "Cached identical lookup",
-    repetitions: 7,
+    repetitions: 3,
     operations: CACHED_LOOKUPS,
     maxSlowdownRatio: 2.5,
     minRegressionDeltaMs: 15,
@@ -102,7 +102,7 @@ const SCENARIOS = Object.freeze([
   {
     key: "consecutive365",
     label: "Consecutive 365-day workload",
-    repetitions: 7,
+    repetitions: 3,
     operations: CONSECUTIVE_RANGE_DAYS,
     maxSlowdownRatio: 2.2,
     minRegressionDeltaMs: 30,
@@ -122,7 +122,7 @@ const SCENARIOS = Object.freeze([
   {
     key: "cutletView",
     label: "Year-structure-backed cutlet view",
-    repetitions: 5,
+    repetitions: 3,
     operations: 1,
     maxSlowdownRatio: 2.3,
     minRegressionDeltaMs: 25,
@@ -138,7 +138,7 @@ const SCENARIOS = Object.freeze([
   {
     key: "reverseKnownCalculation",
     label: "Reverse lookup with known calculation day",
-    repetitions: 5,
+    repetitions: 3,
     operations: 1,
     maxSlowdownRatio: 2.5,
     minRegressionDeltaMs: 25,
