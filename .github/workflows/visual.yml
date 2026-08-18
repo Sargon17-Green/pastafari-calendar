@@ -1,0 +1,76 @@
+name: visual
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      capture_baselines:
+        description: Generate reviewed baseline candidates as an artifact; never commit automatically
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  visual-regression:
+    if: github.event_name != 'workflow_dispatch' || inputs.capture_baselines != true
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Install pinned Playwright browsers
+        run: npx playwright install --with-deps chromium firefox
+      - name: Verify visual-suite files
+        run: sha256sum -c test/visual/SHA256SUMS.txt
+      - name: Prove artificial visual regression is detected
+        run: npm run test:visual:self-test
+      - name: Run visual and responsive regression suite
+        run: npm run test:visual
+      - name: Upload visual failure artifacts
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: visual-regression-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifacts/visual/
+          if-no-files-found: warn
+          retention-days: 14
+
+  capture-baselines:
+    if: github.event_name == 'workflow_dispatch' && inputs.capture_baselines == true
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Install pinned Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Verify visual-suite files
+        run: sha256sum -c test/visual/SHA256SUMS.txt
+      - name: Capture stability-measured baseline candidates
+        env:
+          PASTAFARI_ALLOW_VISUAL_UPDATE: '1'
+        run: npm run test:visual:update
+      - name: Prove artificial visual regression is detected
+        run: npm run test:visual:self-test
+      - name: Upload baseline candidates for human review
+        uses: actions/upload-artifact@v7
+        with:
+          name: visual-baseline-candidates-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            test/visual/baselines/
+            test/visual/baseline-metadata.json
+            artifacts/visual/report.json
+          if-no-files-found: error
+          retention-days: 14
