@@ -25,6 +25,7 @@ jobs:
       - run: npx playwright install --with-deps chromium firefox
       - run: npm run test:file-protocol
       - run: sha256sum -c SHA256SUMS.txt
+      - run: node scripts/check-sha-manifest-completeness.mjs
 
   accessibility:
     runs-on: ubuntu-latest
