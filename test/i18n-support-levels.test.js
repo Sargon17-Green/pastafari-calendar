@@ -129,6 +129,34 @@ test("empty, null and non-string overrides are rejected at every support level",
   }
 });
 
+test("message placeholder names must match the English source while order may differ", () => {
+  const metadata = getLocale("af");
+  const englishWithPlaceholders = sourceFor(enMetadata, {
+    messages: { a: "From {start} to {end}", b: "English B" },
+  });
+  assert.equal(validateLocaleSourceContract(
+    sourceFor(metadata, { messages: { a: "{end} tot {start}" } }),
+    metadata,
+    englishWithPlaceholders,
+  ), true);
+  assert.throws(
+    () => validateLocaleSourceContract(
+      sourceFor(metadata, { messages: { a: "Van {start}" } }),
+      metadata,
+      englishWithPlaceholders,
+    ),
+    /placeholder mismatch for a/,
+  );
+  assert.throws(
+    () => validateLocaleSourceContract(
+      sourceFor(metadata, { messages: { a: "Van {start} tot {finish}" } }),
+      metadata,
+      englishWithPlaceholders,
+    ),
+    /placeholder mismatch for a/,
+  );
+});
+
 test("malformed resource-group types fail even when fallback is permitted", () => {
   const metadata = getLocale("af");
   assert.throws(
@@ -176,10 +204,24 @@ test("runtime notices are ordinary message resources in every current locale", a
   }
 });
 
-test("current partial locales remain policy-partial despite full structural coverage", async () => {
+test("current partial locales use the normal English fallback only for newly untranslated UI errors and brand text", async () => {
   const report = auditLocaleResources(await loadAllLocaleSources());
   assert.equal(report.length, LOCALES.length);
-  assert.equal(report.filter(({ fallbackKeys }) => fallbackKeys !== 0).length, 0);
-  assert.equal(report.filter(({ proposedStructuralStatus }) => proposedStructuralStatus !== "complete-candidate").length, 0);
-  assert.equal(report.filter(({ status }) => status === "partial").length, 70);
+  const expectedMissingMessages = [
+    "app.brand",
+    "reverse.error.absoluteDateField",
+    "reverse.error.limitPositive",
+    "reverse.error.limitSafeInteger",
+  ].sort();
+  const partial = report.filter(({ status }) => status === "partial");
+  assert.equal(partial.length, 70);
+  for (const locale of partial) {
+    assert.deepEqual(locale.resourceGroups.messages.missingKeys, expectedMissingMessages, `${locale.code} fallback set changed`);
+    assert.equal(locale.fallbackKeys, expectedMissingMessages.length);
+    assert.equal(locale.proposedStructuralStatus, "partial");
+  }
+  for (const locale of report.filter(({ status }) => status === "complete")) {
+    assert.equal(locale.fallbackKeys, 0, `${locale.code} complete locale must not use fallback`);
+    assert.equal(locale.proposedStructuralStatus, "complete-candidate");
+  }
 });

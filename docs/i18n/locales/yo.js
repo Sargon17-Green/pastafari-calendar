@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "yo-NG",
   "messages": {
     "meta.description": "Kalẹ́ńdà Pastafari pẹ̀lú ìwádìí àti ìfiwé ọjọ́.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "Kalẹ́ńdà Pastafari",
     "nav.skip": "Lọ sí ìwádìí ọjọ́",
     "app.intro": "Wa ọjọ́ kan nínú kalẹ́ńdà èyíkéyìí tó wà, lẹ́yìn náà wo ọjọ́ Pastafari rẹ̀ ní kíkún àti kotleti tó ní i nínú.",

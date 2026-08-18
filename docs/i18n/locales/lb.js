@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "lb-LU",
   "messages": {
     "meta.description": "Ein pastafarischer Kalenner mit Datumssich und Verglach.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "Pastafarischer Kalenner",
     "nav.skip": "Zur Datumssich springen",
     "app.intro": "Finde einen Dag in einem der verfügbaren Kalenner und sieh anschließend sein vollständiges pastafarisches Datum und das Schnitzel, das ihn enthält.",

@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "fo-FO",
   "messages": {
     "meta.description": "En pastafarisk daguratal med dagursetningsøgning og samanbering.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "Pastafarískt daguratal",
     "nav.skip": "Gå til dagursetningsøgning",
     "app.intro": "Find en dagur i en vilkárlig tilgængelig daguratal, og se derefter dens fulde pastafaríska dagursetning og koteletten, der indeholder den.",

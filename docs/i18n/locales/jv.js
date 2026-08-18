@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "jv-ID",
   "messages": {
     "meta.description": "Tanggalan Pastafari dengan panelusuran dan bandhingan tanggal.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "Tanggalan Pastafari",
     "nav.skip": "Lewati ke panelusuran tanggal",
     "app.intro": "Cari suatu dina dalam tanggalan yang tersedia, lalu lihat tanggal Pastafari lengkapnya dan kotlet yang memuatnya.",

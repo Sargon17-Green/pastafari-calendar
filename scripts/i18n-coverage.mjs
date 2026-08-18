@@ -30,9 +30,29 @@ function pad(value, length) {
   return text.length >= length ? text : text + " ".repeat(length - text.length);
 }
 
-function validateManifestLocalization(manifest) {
+function validateManifestLocalization(manifest, sources) {
   const fields = ["name_localized", "short_name_localized", "description_localized"];
   const expectedCodes = LOCALES.map(({ code }) => code).sort();
+  const sourceByCode = new Map(sources.map((source) => [source.code, source]));
+  const english = sourceByCode.get("en");
+  if (!english) throw new RangeError("English source locale is required for manifest validation.");
+  const expectedDefaults = {
+    name: english.messages?.["app.title"],
+    short_name: english.messages?.["manifest.shortName"],
+    description: english.messages?.["manifest.defaultDescription"],
+  };
+  for (const [field, value] of Object.entries(expectedDefaults)) {
+    if (manifest?.[field] !== value) throw new RangeError(`Manifest ${field} is out of sync with the English locale resource.`);
+  }
+  if (manifest?.lang !== english.code || manifest?.dir !== english.dir) {
+    throw new RangeError("Manifest default lang/dir are out of sync with the English locale resource.");
+  }
+
+  const messageKeyByField = {
+    name_localized: "app.title",
+    short_name_localized: "manifest.shortName",
+    description_localized: "meta.description",
+  };
   for (const field of fields) {
     const table = manifest?.[field];
     if (!table || typeof table !== "object" || Array.isArray(table)) throw new RangeError(`Manifest ${field} must be an object.`);
@@ -42,10 +62,13 @@ function validateManifestLocalization(manifest) {
     }
     for (const metadata of LOCALES) {
       const entry = table[metadata.code];
+      const source = sourceByCode.get(metadata.code);
       if (!entry || typeof entry !== "object") throw new RangeError(`Manifest ${field}.${metadata.code} is missing.`);
       if (entry.lang !== metadata.code) throw new RangeError(`Manifest ${field}.${metadata.code} has mismatching lang metadata.`);
       if (entry.dir !== metadata.dir) throw new RangeError(`Manifest ${field}.${metadata.code} has mismatching direction metadata.`);
       if (typeof entry.value !== "string" || entry.value.trim() === "") throw new RangeError(`Manifest ${field}.${metadata.code} has an empty or invalid value.`);
+      const expectedValue = source?.messages?.[messageKeyByField[field]];
+      if (entry.value !== expectedValue) throw new RangeError(`Manifest ${field}.${metadata.code} is out of sync with locale resources.`);
     }
   }
   return fields;
@@ -104,7 +127,7 @@ const sources = await loadAllLocaleSources();
 validateLocaleResources(sources);
 const locales = auditLocaleResources(sources);
 const manifest = JSON.parse(await readFile(MANIFEST, "utf8"));
-const manifestFields = validateManifestLocalization(manifest);
+const manifestFields = validateManifestLocalization(manifest, sources);
 addManifestCoverage(locales, manifestFields);
 
 const statusCounts = Object.fromEntries(SUPPORT_LEVELS.map((status) => [status, LOCALES.filter(({ support }) => support === status).length]));

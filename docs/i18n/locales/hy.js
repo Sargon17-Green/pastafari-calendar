@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "hy-AM",
   "messages": {
     "meta.description": "Պաստաֆարիական օրացույց՝ ամսաթվի որոնմամբ և համեմատությամբ։",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "Պաստաֆարիական օրացույց",
     "nav.skip": "Անցնել ամսաթվի որոնմանը",
     "app.intro": "Գտեք օրը հասանելի ցանկացած օրացույցում, ապա տեսեք դրա ամբողջական պաստաֆարիական ամսաթիվը և այն պարունակող կոտլետը։",

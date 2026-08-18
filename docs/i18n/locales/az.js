@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "az-AZ",
   "messages": {
     "meta.description": "Tarix arama ve müqayisə özellikli bir Pastafari təqvimi.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "Pastafari Təqvimi",
     "nav.skip": "Tarix aramaya geç",
     "app.intro": "Kullanılabilir herhangi bir təqvimde bir gün bulun; ardından tam Pastafari tarixini ve onu içeren köfteyi görün.",

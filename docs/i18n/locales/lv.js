@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "lv-LV",
   "messages": {
     "meta.description": "Pastafari kalendārs ar datumu meklēšanu un salīdzināšanu.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "Pastafari kalendārs",
     "nav.skip": "Pāriet uz datuma meklēšanu",
     "app.intro": "Atrodiet dienu jebkurā pieejamajā kalendārā un apskatiet tās pilno Pastafari datumu un kotleti, kurā tā atrodas.",

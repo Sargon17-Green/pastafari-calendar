@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "te-IN",
   "messages": {
     "meta.description": "తేదీ శోధన, పోలికతో కూడిన పాస్తాఫారి క్యాలెండర్.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "పాస్తాఫారి క్యాలెండర్",
     "nav.skip": "తేదీ శోధనకు వెళ్లండి",
     "app.intro": "అందుబాటులో ఉన్న ఏ క్యాలెండర్‌లోనైనా ఒక రోజును కనుగొని, దాని పూర్తి పాస్తాఫారి తేదీని మరియు దాన్ని కలిగిన కట్లెట్‌ను చూడండి.",

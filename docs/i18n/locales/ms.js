@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "ms-MY",
   "messages": {
     "meta.description": "Kalender Pastafari dengan carian dan perbandingan tarikh.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "Kalender Pastafari",
     "nav.skip": "Lewati ke carian tarikh",
     "app.intro": "Cari suatu hari dalam kalender yang tersedia, lalu lihat tarikh Pastafari lengkapnya dan kotlet yang mengandunginya.",

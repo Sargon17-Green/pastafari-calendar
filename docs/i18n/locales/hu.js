@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "hu-HU",
   "messages": {
     "meta.description": "Pastafari naptár dátumkereséssel és összehasonlítással.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "Pastafari naptár",
     "nav.skip": "Ugrás a dátumkereséshez",
     "app.intro": "Keress meg egy napot bármely elérhető naptárban, majd nézd meg a teljes pastafari dátumát és az azt tartalmazó szeletet.",

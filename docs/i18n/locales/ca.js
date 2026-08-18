@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "ca-ES",
   "messages": {
     "meta.description": "Un calendari pastafari con cerca y comparació de datas.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "Calendari pastafari",
     "nav.skip": "Ir a la cerca de data",
     "app.intro": "Busca un dia en cualquiera de los calendaris disponibles y consulta su data pastafari completa y la croqueta que lo contiene.",

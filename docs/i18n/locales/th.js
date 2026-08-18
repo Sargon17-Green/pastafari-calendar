@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "th-TH",
   "messages": {
     "meta.description": "ปฏิทินพาสตาฟารีพร้อมการค้นหาและเปรียบเทียบวันที่",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "ปฏิทินพาสตาฟารี",
     "nav.skip": "ข้ามไปยังการค้นหาวันที่",
     "app.intro": "ค้นหาวันหนึ่งในปฏิทินที่มีให้ แล้วดูวันที่พาสตาฟารีแบบเต็มและคัตเล็ตที่มีวันนั้นอยู่",

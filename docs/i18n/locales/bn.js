@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "bn-BD",
   "messages": {
     "meta.description": "তারিখ খোঁজা ও তুলনাসহ একটি পাস্তাফারি ক্যালেন্ডার।",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "পাস্তাফারি ক্যালেন্ডার",
     "nav.skip": "তারিখ খোঁজায় যান",
     "app.intro": "যেকোনো উপলভ্য ক্যালেন্ডারে একটি দিন খুঁজুন, তারপর তার পূর্ণ পাস্তাফারি তারিখ এবং তাকে ধারণ করা কাটলেট দেখুন।",

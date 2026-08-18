@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "ht-HT",
   "messages": {
     "meta.description": "Un kalandriye pastafari avec rechèch et konparezon de dats.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "Kalandriye pastafari",
     "nav.skip": "Aller à la rechèch de dat",
     "app.intro": "Trouvez un jou dans n’importe quel kalandriye disponible, puis consultez sa dat pastafari complète et la boulette qui le contient.",

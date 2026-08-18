@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "ro-RO",
   "messages": {
     "meta.description": "Un calendar pastafarian cu căutare și comparare de date.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "Calendar pastafarian",
     "nav.skip": "Sari la căutarea datei",
     "app.intro": "Găsește o zi în orice calendar disponibil, apoi vezi data sa pastafariană completă și șnițelul care o conține.",

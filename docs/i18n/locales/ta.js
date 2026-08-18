@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "ta-IN",
   "messages": {
     "meta.description": "தேதி தேடலும் ஒப்பீடும் கொண்ட பாஸ்தாபாரி நாட்காட்டி.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "பாஸ்தாபாரி நாட்காட்டி",
     "nav.skip": "தேதி தேடலுக்கு செல்லவும்",
     "app.intro": "கிடைக்கும் எந்த நாட்காட்டியிலும் ஒரு நாளைக் கண்டுபிடித்து, அதன் முழு பாஸ்தாபாரி தேதியையும் அதை உள்ளடக்கிய கட்லெட்டையும் பார்க்கவும்.",

@@ -5,7 +5,7 @@ import { CUTLETS, MONTHS } from "./calendar-identifiers.js?v=8-year-structure";
 export const DEFAULT_LOCALE = "en";
 export const SUPPORT_LEVELS = Object.freeze(["complete", "partial", "experimental"]);
 
-const LOCALE_ASSET_REVISION = "15-runtime-notices";
+const LOCALE_ASSET_REVISION = "16-unified-i18n";
 
 function defineLocale(code, displayName, dir, intlLocale, support, loader, aliases = []) {
   const asset = `./locales/${code}.js?v=${LOCALE_ASSET_REVISION}`;
@@ -25,78 +25,78 @@ function defineLocale(code, displayName, dir, intlLocale, support, loader, alias
 // Lightweight metadata only. Locale resources are loaded on demand by loadLocale().
 // support is declared only here; locale source modules must not declare it.
 export const LOCALES = Object.freeze([
-  defineLocale("he", "עברית", "rtl", "he-IL", "complete", () => import("./locales/he.js?v=15-runtime-notices")),
-  defineLocale("en", "English", "ltr", "en-US", "complete", () => import("./locales/en.js?v=15-runtime-notices")),
-  defineLocale("af", "Afrikaans", "ltr", "af-ZA", "partial", () => import("./locales/af.js?v=15-runtime-notices")),
-  defineLocale("ar", "العربية", "rtl", "ar", "partial", () => import("./locales/ar.js?v=15-runtime-notices")),
-  defineLocale("az", "Azərbaycanca", "ltr", "az-AZ", "partial", () => import("./locales/az.js?v=15-runtime-notices")),
-  defineLocale("be", "Беларуская", "ltr", "be-BY", "partial", () => import("./locales/be.js?v=15-runtime-notices")),
-  defineLocale("bg", "Български", "ltr", "bg-BG", "partial", () => import("./locales/bg.js?v=15-runtime-notices")),
-  defineLocale("bn", "বাংলা", "ltr", "bn-BD", "partial", () => import("./locales/bn.js?v=15-runtime-notices")),
-  defineLocale("bs", "Bosanski", "ltr", "bs-BA", "partial", () => import("./locales/bs.js?v=15-runtime-notices")),
-  defineLocale("ca", "Català", "ltr", "ca-ES", "partial", () => import("./locales/ca.js?v=15-runtime-notices")),
-  defineLocale("cs", "Čeština", "ltr", "cs-CZ", "partial", () => import("./locales/cs.js?v=15-runtime-notices")),
-  defineLocale("da", "Dansk", "ltr", "da-DK", "partial", () => import("./locales/da.js?v=15-runtime-notices")),
-  defineLocale("de", "Deutsch", "ltr", "de-DE", "partial", () => import("./locales/de.js?v=15-runtime-notices")),
-  defineLocale("el", "Ελληνικά", "ltr", "el-GR", "partial", () => import("./locales/el.js?v=15-runtime-notices")),
-  defineLocale("eo", "Esperanto", "ltr", "eo", "partial", () => import("./locales/eo.js?v=15-runtime-notices")),
-  defineLocale("es", "Español", "ltr", "es-ES", "partial", () => import("./locales/es.js?v=15-runtime-notices")),
-  defineLocale("et", "Eesti", "ltr", "et-EE", "partial", () => import("./locales/et.js?v=15-runtime-notices")),
-  defineLocale("fa", "فارسی", "rtl", "fa-IR", "partial", () => import("./locales/fa.js?v=15-runtime-notices")),
-  defineLocale("fi", "Suomi", "ltr", "fi-FI", "partial", () => import("./locales/fi.js?v=15-runtime-notices")),
-  defineLocale("fil", "Filipino", "ltr", "fil-PH", "partial", () => import("./locales/fil.js?v=15-runtime-notices")),
-  defineLocale("fo", "Føroyskt", "ltr", "fo-FO", "partial", () => import("./locales/fo.js?v=15-runtime-notices")),
-  defineLocale("fr", "Français", "ltr", "fr-FR", "partial", () => import("./locales/fr.js?v=15-runtime-notices")),
-  defineLocale("fy", "Frysk", "ltr", "fy-NL", "partial", () => import("./locales/fy.js?v=15-runtime-notices")),
-  defineLocale("gl", "Galego", "ltr", "gl-ES", "partial", () => import("./locales/gl.js?v=15-runtime-notices")),
-  defineLocale("gu", "ગુજરાતી", "ltr", "gu-IN", "partial", () => import("./locales/gu.js?v=15-runtime-notices")),
-  defineLocale("ha", "Hausa", "ltr", "ha-NG", "partial", () => import("./locales/ha.js?v=15-runtime-notices")),
-  defineLocale("hi", "हिन्दी", "ltr", "hi-IN", "partial", () => import("./locales/hi.js?v=15-runtime-notices")),
-  defineLocale("hr", "Hrvatski", "ltr", "hr-HR", "partial", () => import("./locales/hr.js?v=15-runtime-notices")),
-  defineLocale("ht", "Kreyòl ayisyen", "ltr", "ht-HT", "partial", () => import("./locales/ht.js?v=15-runtime-notices")),
-  defineLocale("hu", "Magyar", "ltr", "hu-HU", "partial", () => import("./locales/hu.js?v=15-runtime-notices")),
-  defineLocale("hy", "Հայերեն", "ltr", "hy-AM", "partial", () => import("./locales/hy.js?v=15-runtime-notices")),
-  defineLocale("id", "Bahasa Indonesia", "ltr", "id-ID", "partial", () => import("./locales/id.js?v=15-runtime-notices")),
-  defineLocale("is", "Íslenska", "ltr", "is-IS", "partial", () => import("./locales/is.js?v=15-runtime-notices")),
-  defineLocale("it", "Italiano", "ltr", "it-IT", "partial", () => import("./locales/it.js?v=15-runtime-notices")),
-  defineLocale("ja", "日本語", "ltr", "ja-JP", "partial", () => import("./locales/ja.js?v=15-runtime-notices")),
-  defineLocale("jv", "Basa Jawa", "ltr", "jv-ID", "partial", () => import("./locales/jv.js?v=15-runtime-notices")),
-  defineLocale("ka", "ქართული", "ltr", "ka-GE", "partial", () => import("./locales/ka.js?v=15-runtime-notices")),
-  defineLocale("kk", "Қазақша", "ltr", "kk-KZ", "partial", () => import("./locales/kk.js?v=15-runtime-notices")),
-  defineLocale("ko", "한국어", "ltr", "ko-KR", "partial", () => import("./locales/ko.js?v=15-runtime-notices")),
-  defineLocale("lb", "Lëtzebuergesch", "ltr", "lb-LU", "partial", () => import("./locales/lb.js?v=15-runtime-notices")),
-  defineLocale("lt", "Lietuvių", "ltr", "lt-LT", "partial", () => import("./locales/lt.js?v=15-runtime-notices")),
-  defineLocale("lv", "Latviešu", "ltr", "lv-LV", "partial", () => import("./locales/lv.js?v=15-runtime-notices")),
-  defineLocale("mk", "Македонски", "ltr", "mk-MK", "partial", () => import("./locales/mk.js?v=15-runtime-notices")),
-  defineLocale("mr", "मराठी", "ltr", "mr-IN", "partial", () => import("./locales/mr.js?v=15-runtime-notices")),
-  defineLocale("ms", "Bahasa Melayu", "ltr", "ms-MY", "partial", () => import("./locales/ms.js?v=15-runtime-notices")),
-  defineLocale("nb", "Norsk bokmål", "ltr", "nb-NO", "partial", () => import("./locales/nb.js?v=15-runtime-notices")),
-  defineLocale("ne", "नेपाली", "ltr", "ne-NP", "partial", () => import("./locales/ne.js?v=15-runtime-notices")),
-  defineLocale("nl", "Nederlands", "ltr", "nl-NL", "partial", () => import("./locales/nl.js?v=15-runtime-notices")),
-  defineLocale("nn", "Norsk nynorsk", "ltr", "nn-NO", "partial", () => import("./locales/nn.js?v=15-runtime-notices")),
-  defineLocale("pa", "ਪੰਜਾਬੀ", "ltr", "pa-IN", "partial", () => import("./locales/pa.js?v=15-runtime-notices")),
-  defineLocale("pl", "Polski", "ltr", "pl-PL", "partial", () => import("./locales/pl.js?v=15-runtime-notices")),
-  defineLocale("pt", "Português", "ltr", "pt-BR", "partial", () => import("./locales/pt.js?v=15-runtime-notices")),
-  defineLocale("ro", "Română", "ltr", "ro-RO", "partial", () => import("./locales/ro.js?v=15-runtime-notices")),
-  defineLocale("ru", "Русский", "ltr", "ru-RU", "partial", () => import("./locales/ru.js?v=15-runtime-notices")),
-  defineLocale("sk", "Slovenčina", "ltr", "sk-SK", "partial", () => import("./locales/sk.js?v=15-runtime-notices")),
-  defineLocale("sl", "Slovenščina", "ltr", "sl-SI", "partial", () => import("./locales/sl.js?v=15-runtime-notices")),
-  defineLocale("so", "Soomaali", "ltr", "so-SO", "partial", () => import("./locales/so.js?v=15-runtime-notices")),
-  defineLocale("sq", "Shqip", "ltr", "sq-AL", "partial", () => import("./locales/sq.js?v=15-runtime-notices")),
-  defineLocale("sr", "Srpski", "ltr", "sr-Latn-RS", "partial", () => import("./locales/sr.js?v=15-runtime-notices")),
-  defineLocale("sv", "Svenska", "ltr", "sv-SE", "partial", () => import("./locales/sv.js?v=15-runtime-notices")),
-  defineLocale("sw", "Kiswahili", "ltr", "sw-TZ", "partial", () => import("./locales/sw.js?v=15-runtime-notices")),
-  defineLocale("ta", "தமிழ்", "ltr", "ta-IN", "partial", () => import("./locales/ta.js?v=15-runtime-notices")),
-  defineLocale("te", "తెలుగు", "ltr", "te-IN", "partial", () => import("./locales/te.js?v=15-runtime-notices")),
-  defineLocale("th", "ไทย", "ltr", "th-TH", "partial", () => import("./locales/th.js?v=15-runtime-notices")),
-  defineLocale("tr", "Türkçe", "ltr", "tr-TR", "partial", () => import("./locales/tr.js?v=15-runtime-notices")),
-  defineLocale("uk", "Українська", "ltr", "uk-UA", "partial", () => import("./locales/uk.js?v=15-runtime-notices")),
-  defineLocale("ur", "اردو", "rtl", "ur-PK", "partial", () => import("./locales/ur.js?v=15-runtime-notices")),
-  defineLocale("uz", "O‘zbekcha", "ltr", "uz-UZ", "partial", () => import("./locales/uz.js?v=15-runtime-notices")),
-  defineLocale("vi", "Tiếng Việt", "ltr", "vi-VN", "partial", () => import("./locales/vi.js?v=15-runtime-notices")),
-  defineLocale("yo", "Yorùbá", "ltr", "yo-NG", "partial", () => import("./locales/yo.js?v=15-runtime-notices")),
-  defineLocale("zh", "简体中文", "ltr", "zh-CN", "partial", () => import("./locales/zh.js?v=15-runtime-notices")),
-  defineLocale("zu", "isiZulu", "ltr", "zu-ZA", "partial", () => import("./locales/zu.js?v=15-runtime-notices")),
+  defineLocale("he", "עברית", "rtl", "he-IL", "complete", () => import("./locales/he.js?v=16-unified-i18n")),
+  defineLocale("en", "English", "ltr", "en-US", "complete", () => import("./locales/en.js?v=16-unified-i18n")),
+  defineLocale("af", "Afrikaans", "ltr", "af-ZA", "partial", () => import("./locales/af.js?v=16-unified-i18n")),
+  defineLocale("ar", "العربية", "rtl", "ar", "partial", () => import("./locales/ar.js?v=16-unified-i18n")),
+  defineLocale("az", "Azərbaycanca", "ltr", "az-AZ", "partial", () => import("./locales/az.js?v=16-unified-i18n")),
+  defineLocale("be", "Беларуская", "ltr", "be-BY", "partial", () => import("./locales/be.js?v=16-unified-i18n")),
+  defineLocale("bg", "Български", "ltr", "bg-BG", "partial", () => import("./locales/bg.js?v=16-unified-i18n")),
+  defineLocale("bn", "বাংলা", "ltr", "bn-BD", "partial", () => import("./locales/bn.js?v=16-unified-i18n")),
+  defineLocale("bs", "Bosanski", "ltr", "bs-BA", "partial", () => import("./locales/bs.js?v=16-unified-i18n")),
+  defineLocale("ca", "Català", "ltr", "ca-ES", "partial", () => import("./locales/ca.js?v=16-unified-i18n")),
+  defineLocale("cs", "Čeština", "ltr", "cs-CZ", "partial", () => import("./locales/cs.js?v=16-unified-i18n")),
+  defineLocale("da", "Dansk", "ltr", "da-DK", "partial", () => import("./locales/da.js?v=16-unified-i18n")),
+  defineLocale("de", "Deutsch", "ltr", "de-DE", "partial", () => import("./locales/de.js?v=16-unified-i18n")),
+  defineLocale("el", "Ελληνικά", "ltr", "el-GR", "partial", () => import("./locales/el.js?v=16-unified-i18n")),
+  defineLocale("eo", "Esperanto", "ltr", "eo", "partial", () => import("./locales/eo.js?v=16-unified-i18n")),
+  defineLocale("es", "Español", "ltr", "es-ES", "partial", () => import("./locales/es.js?v=16-unified-i18n")),
+  defineLocale("et", "Eesti", "ltr", "et-EE", "partial", () => import("./locales/et.js?v=16-unified-i18n")),
+  defineLocale("fa", "فارسی", "rtl", "fa-IR", "partial", () => import("./locales/fa.js?v=16-unified-i18n")),
+  defineLocale("fi", "Suomi", "ltr", "fi-FI", "partial", () => import("./locales/fi.js?v=16-unified-i18n")),
+  defineLocale("fil", "Filipino", "ltr", "fil-PH", "partial", () => import("./locales/fil.js?v=16-unified-i18n")),
+  defineLocale("fo", "Føroyskt", "ltr", "fo-FO", "partial", () => import("./locales/fo.js?v=16-unified-i18n")),
+  defineLocale("fr", "Français", "ltr", "fr-FR", "partial", () => import("./locales/fr.js?v=16-unified-i18n")),
+  defineLocale("fy", "Frysk", "ltr", "fy-NL", "partial", () => import("./locales/fy.js?v=16-unified-i18n")),
+  defineLocale("gl", "Galego", "ltr", "gl-ES", "partial", () => import("./locales/gl.js?v=16-unified-i18n")),
+  defineLocale("gu", "ગુજરાતી", "ltr", "gu-IN", "partial", () => import("./locales/gu.js?v=16-unified-i18n")),
+  defineLocale("ha", "Hausa", "ltr", "ha-NG", "partial", () => import("./locales/ha.js?v=16-unified-i18n")),
+  defineLocale("hi", "हिन्दी", "ltr", "hi-IN", "partial", () => import("./locales/hi.js?v=16-unified-i18n")),
+  defineLocale("hr", "Hrvatski", "ltr", "hr-HR", "partial", () => import("./locales/hr.js?v=16-unified-i18n")),
+  defineLocale("ht", "Kreyòl ayisyen", "ltr", "ht-HT", "partial", () => import("./locales/ht.js?v=16-unified-i18n")),
+  defineLocale("hu", "Magyar", "ltr", "hu-HU", "partial", () => import("./locales/hu.js?v=16-unified-i18n")),
+  defineLocale("hy", "Հայերեն", "ltr", "hy-AM", "partial", () => import("./locales/hy.js?v=16-unified-i18n")),
+  defineLocale("id", "Bahasa Indonesia", "ltr", "id-ID", "partial", () => import("./locales/id.js?v=16-unified-i18n")),
+  defineLocale("is", "Íslenska", "ltr", "is-IS", "partial", () => import("./locales/is.js?v=16-unified-i18n")),
+  defineLocale("it", "Italiano", "ltr", "it-IT", "partial", () => import("./locales/it.js?v=16-unified-i18n")),
+  defineLocale("ja", "日本語", "ltr", "ja-JP", "partial", () => import("./locales/ja.js?v=16-unified-i18n")),
+  defineLocale("jv", "Basa Jawa", "ltr", "jv-ID", "partial", () => import("./locales/jv.js?v=16-unified-i18n")),
+  defineLocale("ka", "ქართული", "ltr", "ka-GE", "partial", () => import("./locales/ka.js?v=16-unified-i18n")),
+  defineLocale("kk", "Қазақша", "ltr", "kk-KZ", "partial", () => import("./locales/kk.js?v=16-unified-i18n")),
+  defineLocale("ko", "한국어", "ltr", "ko-KR", "partial", () => import("./locales/ko.js?v=16-unified-i18n")),
+  defineLocale("lb", "Lëtzebuergesch", "ltr", "lb-LU", "partial", () => import("./locales/lb.js?v=16-unified-i18n")),
+  defineLocale("lt", "Lietuvių", "ltr", "lt-LT", "partial", () => import("./locales/lt.js?v=16-unified-i18n")),
+  defineLocale("lv", "Latviešu", "ltr", "lv-LV", "partial", () => import("./locales/lv.js?v=16-unified-i18n")),
+  defineLocale("mk", "Македонски", "ltr", "mk-MK", "partial", () => import("./locales/mk.js?v=16-unified-i18n")),
+  defineLocale("mr", "मराठी", "ltr", "mr-IN", "partial", () => import("./locales/mr.js?v=16-unified-i18n")),
+  defineLocale("ms", "Bahasa Melayu", "ltr", "ms-MY", "partial", () => import("./locales/ms.js?v=16-unified-i18n")),
+  defineLocale("nb", "Norsk bokmål", "ltr", "nb-NO", "partial", () => import("./locales/nb.js?v=16-unified-i18n")),
+  defineLocale("ne", "नेपाली", "ltr", "ne-NP", "partial", () => import("./locales/ne.js?v=16-unified-i18n")),
+  defineLocale("nl", "Nederlands", "ltr", "nl-NL", "partial", () => import("./locales/nl.js?v=16-unified-i18n")),
+  defineLocale("nn", "Norsk nynorsk", "ltr", "nn-NO", "partial", () => import("./locales/nn.js?v=16-unified-i18n")),
+  defineLocale("pa", "ਪੰਜਾਬੀ", "ltr", "pa-IN", "partial", () => import("./locales/pa.js?v=16-unified-i18n")),
+  defineLocale("pl", "Polski", "ltr", "pl-PL", "partial", () => import("./locales/pl.js?v=16-unified-i18n")),
+  defineLocale("pt", "Português", "ltr", "pt-BR", "partial", () => import("./locales/pt.js?v=16-unified-i18n")),
+  defineLocale("ro", "Română", "ltr", "ro-RO", "partial", () => import("./locales/ro.js?v=16-unified-i18n")),
+  defineLocale("ru", "Русский", "ltr", "ru-RU", "partial", () => import("./locales/ru.js?v=16-unified-i18n")),
+  defineLocale("sk", "Slovenčina", "ltr", "sk-SK", "partial", () => import("./locales/sk.js?v=16-unified-i18n")),
+  defineLocale("sl", "Slovenščina", "ltr", "sl-SI", "partial", () => import("./locales/sl.js?v=16-unified-i18n")),
+  defineLocale("so", "Soomaali", "ltr", "so-SO", "partial", () => import("./locales/so.js?v=16-unified-i18n")),
+  defineLocale("sq", "Shqip", "ltr", "sq-AL", "partial", () => import("./locales/sq.js?v=16-unified-i18n")),
+  defineLocale("sr", "Srpski", "ltr", "sr-Latn-RS", "partial", () => import("./locales/sr.js?v=16-unified-i18n")),
+  defineLocale("sv", "Svenska", "ltr", "sv-SE", "partial", () => import("./locales/sv.js?v=16-unified-i18n")),
+  defineLocale("sw", "Kiswahili", "ltr", "sw-TZ", "partial", () => import("./locales/sw.js?v=16-unified-i18n")),
+  defineLocale("ta", "தமிழ்", "ltr", "ta-IN", "partial", () => import("./locales/ta.js?v=16-unified-i18n")),
+  defineLocale("te", "తెలుగు", "ltr", "te-IN", "partial", () => import("./locales/te.js?v=16-unified-i18n")),
+  defineLocale("th", "ไทย", "ltr", "th-TH", "partial", () => import("./locales/th.js?v=16-unified-i18n")),
+  defineLocale("tr", "Türkçe", "ltr", "tr-TR", "partial", () => import("./locales/tr.js?v=16-unified-i18n")),
+  defineLocale("uk", "Українська", "ltr", "uk-UA", "partial", () => import("./locales/uk.js?v=16-unified-i18n")),
+  defineLocale("ur", "اردو", "rtl", "ur-PK", "partial", () => import("./locales/ur.js?v=16-unified-i18n")),
+  defineLocale("uz", "O‘zbekcha", "ltr", "uz-UZ", "partial", () => import("./locales/uz.js?v=16-unified-i18n")),
+  defineLocale("vi", "Tiếng Việt", "ltr", "vi-VN", "partial", () => import("./locales/vi.js?v=16-unified-i18n")),
+  defineLocale("yo", "Yorùbá", "ltr", "yo-NG", "partial", () => import("./locales/yo.js?v=16-unified-i18n")),
+  defineLocale("zh", "简体中文", "ltr", "zh-CN", "partial", () => import("./locales/zh.js?v=16-unified-i18n")),
+  defineLocale("zu", "isiZulu", "ltr", "zu-ZA", "partial", () => import("./locales/zu.js?v=16-unified-i18n")),
 ]);
 
 function canonicalTag(tag) {
@@ -293,7 +293,36 @@ function missingKeys(values, expectedKeys) {
   return expectedKeys.filter((key) => !Object.prototype.hasOwnProperty.call(values, key));
 }
 
-const ALWAYS_LOCAL_MESSAGE_KEYS = Object.freeze(["app.title", "meta.description"]);
+const MESSAGE_PLACEHOLDER_PATTERN = /\{([A-Za-z0-9_.-]+)\}/g;
+
+function messagePlaceholders(template) {
+  return [...new Set([...String(template).matchAll(MESSAGE_PLACEHOLDER_PATTERN)].map((match) => match[1]))].sort();
+}
+
+function sameStringSet(left, right) {
+  return left.length === right.length && left.every((value, index) => value === right[index]);
+}
+
+function validateMessagePlaceholders(localeCode, messages, englishMessages) {
+  for (const [key, value] of Object.entries(messages)) {
+    const baseline = englishMessages[key];
+    if (typeof baseline !== "string") continue;
+    const expected = messagePlaceholders(baseline);
+    const actual = messagePlaceholders(value);
+    if (!sameStringSet(actual, expected)) {
+      throw new RangeError(
+        `Locale ${localeCode} has placeholder mismatch for ${key}: expected {${expected.join(", ")}}, received {${actual.join(", ")}}.`,
+      );
+    }
+  }
+}
+
+const ALWAYS_LOCAL_MESSAGE_KEYS = Object.freeze([
+  "app.title",
+  "meta.description",
+  "manifest.shortName",
+  "manifest.defaultDescription",
+]);
 
 export function validateLocaleSourceContract(resource, metadata, englishBaseline) {
   assertLoadedLocaleMatchesMetadata(resource, metadata);
@@ -308,6 +337,8 @@ export function validateLocaleSourceContract(resource, metadata, englishBaseline
   for (const groupName of Object.keys(groups)) {
     assertKnownNonEmptyStringValues(metadata.code, groupName, groups[groupName], expected[groupName]);
   }
+
+  validateMessagePlaceholders(metadata.code, groups.messages, localGroups(englishBaseline).messages);
 
   const requiredManifestMessages = ALWAYS_LOCAL_MESSAGE_KEYS.filter((key) => expected.messages.includes(key));
   const missingManifestMessages = missingKeys(groups.messages, requiredManifestMessages);
@@ -377,25 +408,17 @@ export async function loadAllLocales() {
   return Promise.all(LOCALES.map((locale) => loadLocale(locale.code)));
 }
 
-export function translate(locale, key, values = {}) {
+export function messageTemplate(locale, key) {
   const template = locale?.messages?.[key];
   if (typeof template !== "string") throw new RangeError(`Missing translation key: ${key}`);
-  return template.replace(/\{([A-Za-z0-9_.-]+)\}/g, (match, name) => {
+  return template;
+}
+
+export function translate(locale, key, values = {}) {
+  return messageTemplate(locale, key).replace(MESSAGE_PLACEHOLDER_PATTERN, (match, name) => {
     if (!(name in values)) throw new RangeError(`Missing interpolation value ${name} for ${key}`);
     return String(values[name]);
   });
-}
-
-export function staleDayWarning(locale, values = {}) {
-  return translate(locale, "day.staleWarning", values);
-}
-
-export function locationAssumptionNotice(locale) {
-  return translate(locale, "location.assumption");
-}
-
-export function locationUseDeviceLabel(locale) {
-  return translate(locale, "location.useDevice");
 }
 
 export function calendarLabel(locale, type, index) {
@@ -410,6 +433,12 @@ export function calendarLabel(locale, type, index) {
 }
 
 const ENGLISH_EQUALITY_ALLOWLIST = Object.freeze(new Set([
+  "messages.app.brand",
+  "messages.manifest.shortName",
+  "messages.manifest.defaultDescription",
+  "messages.reverse.error.limitPositive",
+  "messages.reverse.error.limitSafeInteger",
+  "messages.reverse.error.absoluteDateField",
   "cutlets.lagash",
   "cutlets.palgurash",
   "cutlets.akkad",

@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "el-GR",
   "messages": {
     "meta.description": "Πασταφαριανό ημερολόγιο με αναζήτηση και σύγκριση ημερομηνιών.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "Πασταφαριανό ημερολόγιο",
     "nav.skip": "Μετάβαση στην αναζήτηση ημερομηνίας",
     "app.intro": "Βρείτε μια ημέρα σε οποιοδήποτε διαθέσιμο ημερολόγιο και δείτε την πλήρη πασταφαριανή ημερομηνία της και την κοτολέτα που την περιέχει.",

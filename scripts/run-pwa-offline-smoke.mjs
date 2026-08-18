@@ -533,7 +533,7 @@ try {
   await calendarSnapshot(page, "online Hebrew render after lazy language switch", diagnostics);
   const localeRequestsAfter = serverState.getRequests().filter((entry) => entry.url?.includes("/i18n/locales/he.js")).length;
   assert.equal(localeRequestsAfter - localeRequestsBefore, 1, "Hebrew locale should be fetched exactly once when first requested");
-  const cachedHebrew = await inspectOptionalLocaleCache(page, "./i18n/locales/he.js?v=15-runtime-notices");
+  const cachedHebrew = await inspectOptionalLocaleCache(page, "./i18n/locales/he.js?v=16-unified-i18n");
   assert.equal(cachedHebrew.present, true, `Hebrew locale was not cached after first use: ${JSON.stringify(cachedHebrew)}`);
   assert.equal(cachedHebrew.status, 200, "Cached Hebrew locale response is not successful");
   console.log(`[PASS] optional Hebrew locale cached on first use: ${JSON.stringify(cachedHebrew)}`);

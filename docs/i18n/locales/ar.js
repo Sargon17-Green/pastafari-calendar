@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "ar",
   "messages": {
     "meta.description": "تقويم باستافاري مع البحث عن التواريخ ومقارنتها.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "التقويم الباستافاري",
     "nav.skip": "الانتقال إلى البحث عن تاريخ",
     "app.intro": "ابحث عن يوم في أي تقويم متاح، ثم اعرض تاريخه الباستافاري الكامل والقطعة التي تحتويه.",

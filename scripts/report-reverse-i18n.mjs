@@ -1,7 +1,7 @@
 "use strict";
 
 import { readFile } from "node:fs/promises";
-import { LOCALES, loadAllLocaleSources, validateLocaleResources } from "../docs/i18n/registry.js?v=16-support-levels";
+import { LOCALES, loadAllLocaleSources, validateLocaleResources } from "../docs/i18n/registry.js?v=17-unified-i18n";
 
 const sources = await loadAllLocaleSources();
 const english = sources.find(({ code }) => code === "en");

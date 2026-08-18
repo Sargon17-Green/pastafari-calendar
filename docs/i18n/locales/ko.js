@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "ko-KR",
   "messages": {
     "meta.description": "날짜 검색과 비교 기능이 있는 파스타파리 달력입니다.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "파스타파리 달력",
     "nav.skip": "날짜 검색으로 이동",
     "app.intro": "사용 가능한 달력에서 날짜를 찾은 뒤, 그 날짜의 전체 파스타파리 날짜와 해당 날짜가 속한 커틀릿을 확인하세요.",

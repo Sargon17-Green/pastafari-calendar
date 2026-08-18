@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "fil-PH",
   "messages": {
     "meta.description": "Kalendaryong Pastafari na may paghahanap at paghahambing ng petsa.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "Kalendaryong Pastafari",
     "nav.skip": "Lumaktaw sa paghahanap ng petsa",
     "app.intro": "Maghanap ng araw sa alinmang magagamit na kalendaryo, pagkatapos ay tingnan ang buong petsang Pastafari nito at ang cutlet na kinalalagyan nito.",

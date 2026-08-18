@@ -1,6 +1,6 @@
 "use strict";
 
-const VERSION = "pastafari-static-reverse-search-lazy-i18n-09-support-levels";
+const VERSION = "pastafari-static-reverse-search-lazy-i18n-10-unified-i18n";
 const CACHE = VERSION;
 
 // Core application shell. English is the only locale resource installed eagerly,
@@ -8,8 +8,8 @@ const CACHE = VERSION;
 const CORE_ASSETS = [
   "./index.html",
   "./styles.css?v=13-reverse-i18n",
-  "./app.js?v=18-i18n-support",
-  "./reverse-ui.js?v=17-i18n-support",
+  "./app.js?v=19-unified-i18n",
+  "./reverse-ui.js?v=18-unified-i18n",
   "./reverse-search-controller.js",
   "./calendar-input-conventions.js?v=9-calendar-input-conventions",
   "./calendar-converters.js?v=8-year-structure",
@@ -25,9 +25,9 @@ const CORE_ASSETS = [
   "./engine/pastafari-constraints.js",
   "./engine/pastafari-reverse-worker.js",
   "./i18n/calendar-identifiers.js?v=8-year-structure",
-  "./i18n/registry.js?v=16-support-levels",
-  "./i18n/runtime.js?v=16-support-levels",
-  "./i18n/locales/en.js?v=15-runtime-notices"
+  "./i18n/registry.js?v=17-unified-i18n",
+  "./i18n/runtime.js?v=17-unified-i18n",
+  "./i18n/locales/en.js?v=16-unified-i18n"
 ];
 
 const OPTIONAL_LOCALE_PATH = /\/i18n\/locales\/[A-Za-z0-9-]+\.js$/;

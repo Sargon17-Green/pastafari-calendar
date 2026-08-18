@@ -40,7 +40,7 @@ async function startServer() {
       const url = new URL(request.url ?? "/", "http://127.0.0.1");
       if (url.pathname === "/__registry_probe.html") {
         const body = `<!doctype html><meta charset="utf-8"><script type="module">
-          import { LOCALES } from "./i18n/registry.js?v=16-support-levels";
+          import { LOCALES } from "./i18n/registry.js?v=17-unified-i18n";
           window.__registryProbe = { count: LOCALES.length, ready: true };
         </script>`;
         response.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" });

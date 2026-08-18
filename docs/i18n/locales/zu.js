@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "zu-ZA",
   "messages": {
     "meta.description": "Ikhalenda le-Pastafari elinokusesha nokuqhathanisa izinsuku.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "Ikhalenda le-Pastafari",
     "nav.skip": "Yeqela ekusesheni usuku",
     "app.intro": "Thola usuku kunoma yiliphi ikhalenda elikhona, bese ubona usuku lwayo oluphelele lwe-Pastafari kanye nekhothethi eliluqukethe.",

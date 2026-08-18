@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "mr-IN",
   "messages": {
     "meta.description": "तारीख शोध आणि तुलना असलेले पास्ताफारी दिनदर्शक.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "पास्ताफारी दिनदर्शक",
     "nav.skip": "तारीख शोधाकडे जा",
     "app.intro": "उपलब्ध कोणत्याही दिनदर्शिकेत एखादा दिवस शोधा, नंतर त्याची पूर्ण पास्ताफारी तारीख आणि तो असलेली कटलेट पाहा.",

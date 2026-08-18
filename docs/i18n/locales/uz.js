@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "uz-UZ",
   "messages": {
     "meta.description": "Sana qidirish va taqqoslash imkoniyatiga ega Pastafari taqvimi.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "Pastafari taqvimi",
     "nav.skip": "Sana qidirishga o‘tish",
     "app.intro": "Mavjud taqvimlardan birida kunni toping, so‘ng uning to‘liq Pastafari sanasi va uni o‘z ichiga olgan kotletni ko‘ring.",

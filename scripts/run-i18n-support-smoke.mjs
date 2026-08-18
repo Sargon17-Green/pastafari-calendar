@@ -100,13 +100,13 @@ try {
     await openLocale(page, server.baseUrl, metadata);
 
     const probe = await page.evaluate(async (code) => {
-      const i18n = await import("./i18n/registry.js?v=16-support-levels");
+      const i18n = await import("./i18n/registry.js?v=17-unified-i18n");
       const locale = await i18n.loadLocale(code);
       return {
         support: i18n.getLocale(code).support,
         message: i18n.translate(locale, "calendar.today"),
         cutlet: i18n.calendarLabel(locale, "cutlet", 0),
-        runtimeNotice: i18n.locationUseDeviceLabel(locale),
+        runtimeNotice: i18n.translate(locale, "location.useDevice"),
         bodyHasUndefined: document.body.innerText.includes("undefined"),
       };
     }, metadata.code);

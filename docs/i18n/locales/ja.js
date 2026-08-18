@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "ja-JP",
   "messages": {
     "meta.description": "日付検索と比較ができるパスタファリ暦です。",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "パスタファリ暦",
     "nav.skip": "日付検索へ移動",
     "app.intro": "利用できる暦のいずれかで日を探し、その完全なパスタファリ日付と、その日を含むカツレツを表示します。",

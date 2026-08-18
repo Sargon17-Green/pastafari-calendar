@@ -15,11 +15,9 @@ import {
   calendarLabel,
   getLocale,
   loadLocale,
-  locationAssumptionNotice,
-  locationUseDeviceLabel,
-  staleDayWarning,
+  messageTemplate,
   translate,
-} from "./i18n/registry.js?v=16-support-levels";
+} from "./i18n/registry.js?v=17-unified-i18n";
 import {
   KISURRA_OBSERVER,
   requestObserverLocation,
@@ -27,14 +25,14 @@ import {
   watchObserverPermission,
 } from "./observer-location.js?v=10-venus-day-boundary";
 import { currentDayAt } from "./venus-day-boundary.js?v=10-venus-day-boundary";
-import { createReverseSearchUi } from "./reverse-ui.js?v=17-i18n-support";
+import { createReverseSearchUi } from "./reverse-ui.js?v=18-unified-i18n";
 import {
   applyDocumentLocale,
   persistLanguage,
   populateLanguageSelector,
   resolveBrowserLocale,
   urlWithLanguage,
-} from "./i18n/runtime.js?v=16-support-levels";
+} from "./i18n/runtime.js?v=17-unified-i18n";
 
 
 const ASSET_REVISION = "8-year-structure";
@@ -272,8 +270,7 @@ function localizedMonth(index) {
 }
 
 function appendRichTemplate(element, key, values, emphasizedKeys) {
-  const template = activeLocale.messages[key];
-  if (typeof template !== "string") throw new RangeError(`Missing translation key: ${key}`);
+  const template = messageTemplate(activeLocale, key);
   const emphasized = new Set(emphasizedKeys);
   const nodes = [];
   let cursor = 0;
@@ -348,7 +345,7 @@ function renderTargetBeacon() {
   contextElement.replaceChildren(document.createTextNode(context));
   if (observerLocation.assumed) {
     contextElement.append(
-      document.createTextNode(` ${locationAssumptionNotice(activeLocale)} `),
+      document.createTextNode(` ${t("location.assumption")} `),
       createLocationActionButton(),
     );
   }
@@ -418,7 +415,7 @@ function createLocationActionButton() {
   const locationButton = document.createElement("button");
   locationButton.type = "button";
   locationButton.className = "secondary-action";
-  locationButton.textContent = locationUseDeviceLabel(activeLocale);
+  locationButton.textContent = t("location.useDevice");
   locationButton.addEventListener("click", async () => {
     locationButton.disabled = true;
     try {
@@ -610,7 +607,7 @@ function renderComparison() {
     const civil = document.createElement("strong");
     civil.textContent = formatJdnAsGregorian(primary.jdn);
     const sequence = document.createElement("small");
-    sequence.textContent = `JDN ${primary.jdn.toString()}`;
+    sequence.textContent = t("reverse.result.jdn", { jdn: primary.jdn.toString() });
     shared.append(civil, sequence);
     const primaryCell = document.createElement("td");
     appendComparisonDate(primaryCell, primary);
@@ -1093,7 +1090,7 @@ function refreshCurrentDay() {
 
   const calculationWasCurrentDay = state.calculationFollowsCurrentDay;
   if (calculationWasCurrentDay && state.currentDayJdn !== null) {
-    alert(staleDayWarning(activeLocale, {
+    alert(t("day.staleWarning", {
       previousDate: formatJdnAsGregorian(state.currentDayJdn),
       currentDate: formatJdnAsGregorian(todayJdn),
     }));

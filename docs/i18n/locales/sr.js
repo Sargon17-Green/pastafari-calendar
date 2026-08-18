@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "sr-Latn-RS",
   "messages": {
     "meta.description": "Pastafarijanski kalendar s pretraživanjem datuma i usporedbom.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "Pastafarijanski kalendar",
     "nav.skip": "Preskoči na pretraživanje datuma",
     "app.intro": "Pronađite dan u bilo kojem dostupnom kalendaru, zatim pogledajte njegov potpuni pastafarijanski datum i kotlet koji ga sadrži.",

@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "fa-IR",
   "messages": {
     "meta.description": "تقویم پاستافاری با جست‌وجو و مقایسهٔ تاریخ.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "تقویم پاستافاری",
     "nav.skip": "رفتن به جست‌وجوی تاریخ",
     "app.intro": "یک روز را در هر تقویم موجود پیدا کنید و سپس تاریخ کامل پاستافاری و کتلتِ شامل آن را ببینید.",

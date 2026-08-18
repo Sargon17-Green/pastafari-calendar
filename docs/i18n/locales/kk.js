@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "kk-KZ",
   "messages": {
     "meta.description": "Күнді іздеу және салыстыру мүмкіндігі бар Пастафари күнтізбесі.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "Пастафари күнтізбесі",
     "nav.skip": "Күнді іздеуге өту",
     "app.intro": "Қолжетімді кез келген күнтізбеден бір күнді тауып, оның толық Пастафари күнін және оны қамтитын котлетті көріңіз.",

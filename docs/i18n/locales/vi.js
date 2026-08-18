@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "vi-VN",
   "messages": {
     "meta.description": "Lịch Pastafari có chức năng tìm kiếm và so sánh ngày.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "Lịch Pastafari",
     "nav.skip": "Chuyển đến tìm kiếm ngày",
     "app.intro": "Tìm một ngày trong bất kỳ lịch nào có sẵn, rồi xem đầy đủ ngày Pastafari và miếng cốt-lết chứa ngày đó.",

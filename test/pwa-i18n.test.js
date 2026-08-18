@@ -50,8 +50,8 @@ test("service worker precaches the core shell but not optional locale resources"
   const required = [
     "./index.html",
     "./styles.css?v=13-reverse-i18n",
-    "./app.js?v=18-i18n-support",
-    "./reverse-ui.js?v=17-i18n-support",
+    "./app.js?v=19-unified-i18n",
+    "./reverse-ui.js?v=18-unified-i18n",
     "./reverse-search-controller.js",
     "./calendar-converters.js?v=8-year-structure",
     "./observer-location.js?v=10-venus-day-boundary",
@@ -63,9 +63,9 @@ test("service worker precaches the core shell but not optional locale resources"
     "./engine/pastafari-constraints.js",
     "./engine/pastafari-reverse-worker.js",
     "./i18n/calendar-identifiers.js?v=8-year-structure",
-    "./i18n/registry.js?v=16-support-levels",
-    "./i18n/runtime.js?v=16-support-levels",
-    "./i18n/locales/en.js?v=15-runtime-notices",
+    "./i18n/registry.js?v=17-unified-i18n",
+    "./i18n/runtime.js?v=17-unified-i18n",
+    "./i18n/locales/en.js?v=16-unified-i18n",
   ];
   for (const entry of required) assert.ok(assets.includes(entry), `${entry} is missing from the offline cache`);
   for (const entry of assets) {
@@ -74,7 +74,7 @@ test("service worker precaches the core shell but not optional locale resources"
     assert.equal((await stat(file)).isFile(), true, `cached asset does not exist: ${entry}`);
   }
   const localeAssets = assets.filter((entry) => entry.startsWith("./i18n/locales/"));
-  assert.deepEqual(localeAssets, ["./i18n/locales/en.js?v=15-runtime-notices"]);
+  assert.deepEqual(localeAssets, ["./i18n/locales/en.js?v=16-unified-i18n"]);
   assert.ok(!localeAssets.some((entry) => entry.includes("/hbo.js")));
   assert.match(source, /const OPTIONAL_LOCALE_PATH = \/\\\/i18n\\\/locales/);
   assert.match(source, /await cache\.put\(event\.request, response\.clone\(\)\)/);
@@ -82,7 +82,7 @@ test("service worker precaches the core shell but not optional locale resources"
   const html = await readFile(path.join(DOCS, "index.html"), "utf8");
   for (const entry of [
     "./styles.css?v=13-reverse-i18n",
-    "./app.js?v=18-i18n-support",
+    "./app.js?v=19-unified-i18n",
     "./manifest.webmanifest?v=8-year-structure",
   ]) {
     assert.ok(html.includes(entry), `index.html must request the revisioned asset ${entry}`);
@@ -98,7 +98,7 @@ test("service worker precaches the core shell but not optional locale resources"
 test("registry contains only dynamic locale imports", async () => {
   const source = await readFile(path.join(DOCS, "i18n", "registry.js"), "utf8");
   assert.doesNotMatch(source, /^import\s+\w+\s+from\s+["']\.\/locales\//m);
-  const dynamicImports = [...source.matchAll(/import\(["']\.\/locales\/([^"'?]+)\.js\?v=15-runtime-notices["']\)/g)].map((match) => match[1]);
+  const dynamicImports = [...source.matchAll(/import\(["']\.\/locales\/([^"'?]+)\.js\?v=16-unified-i18n["']\)/g)].map((match) => match[1]);
   assert.deepEqual(dynamicImports, LOCALES.map(({ code }) => code));
 });
 
@@ -126,6 +126,26 @@ test("application logic contains no Hebrew UI literals or hard-coded Hebrew Intl
   const app = await readFile(path.join(DOCS, "app.js"), "utf8");
   assert.doesNotMatch(app, /[\u0590-\u05ff]/u);
   assert.doesNotMatch(app, /Intl\.(?:NumberFormat|DateTimeFormat)\(\s*["']he(?:-|["'])/u);
+});
+
+test("known user-facing runtime text has no side dictionaries or direct locale-table lookup", async () => {
+  const registry = await readFile(path.join(DOCS, "i18n", "registry.js"), "utf8");
+  const app = await readFile(path.join(DOCS, "app.js"), "utf8");
+  const html = await readFile(path.join(DOCS, "index.html"), "utf8");
+  for (const identifier of [
+    "STALE_DAY_WARNING_TEMPLATES",
+    "LOCATION_ASSUMPTION_TEMPLATES",
+    "LOCATION_USE_DEVICE_TEMPLATES",
+    "staleDayWarning",
+    "locationAssumptionNotice",
+    "locationUseDeviceLabel",
+  ]) {
+    assert.equal(registry.includes(identifier), false, `${identifier} must not remain in registry.js`);
+    assert.equal(app.includes(identifier), false, `${identifier} must not remain in app.js`);
+  }
+  assert.doesNotMatch(app, /activeLocale\.messages\s*\[/);
+  assert.match(app, /messageTemplate\(activeLocale, key\)/);
+  assert.match(html, /class="eyebrow" data-i18n="app\.brand">PASTAFARI<\/p>/);
 });
 
 test("the public UI searches dates, keeps ordinary days non-interactive, and aligns desktop comparison rows", async () => {
@@ -167,9 +187,14 @@ test("manifest is valid JSON with localized metadata for every registered locale
     }
     const resource = resources.get(locale.code);
     assert.equal(name.value, resource.messages["app.title"]);
+    assert.equal(shortName.value, resource.messages["manifest.shortName"]);
     assert.equal(description.value, resource.messages["meta.description"]);
   }
 
+  const english = resources.get("en");
+  assert.equal(manifest.name, english.messages["app.title"]);
+  assert.equal(manifest.short_name, english.messages["manifest.shortName"]);
+  assert.equal(manifest.description, english.messages["manifest.defaultDescription"]);
   assert.equal(manifest.short_name_localized.en.value, "Pastafari");
   assert.equal(manifest.short_name_localized.he.value, "פסטפרי");
   assert.ok(Array.isArray(manifest.icons) && manifest.icons.length >= 2);

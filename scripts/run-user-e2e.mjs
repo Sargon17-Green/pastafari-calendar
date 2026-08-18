@@ -423,15 +423,18 @@ const desktopScenarios = [
         ? ["t", "v", "c", "c2", "compare", "today", "ctoday"]
         : ["t", "v", "c", "today", "ctoday"];
       const beforeText = await renderedIdentity(page);
+      assert.match(await page.locator("#target-context").innerText(), /In the absence of contrary information/);
       await page.locator("#language-selector").selectOption("he");
       await page.waitForFunction(() => document.documentElement.lang === "he" && document.documentElement.dir === "rtl");
       const logicalHebrew = urlState(page);
       assert.equal(logicalHebrew.lang, "he", "Hebrew selection must set lang=he in URL state");
       for (const key of invariantKeys) assert.equal(logicalHebrew[key], logicalBefore[key], `locale must not change ${key}`);
       assert.notEqual(await renderedIdentity(page), beforeText, "Labels/rendering should switch language");
+      assert.match(await page.locator("#target-context").innerText(), /בהיעדר מידע סותר/);
       await page.locator("#language-selector").selectOption("en");
       await page.waitForFunction(() => document.documentElement.lang === "en" && document.documentElement.dir === "ltr");
       const logicalEnglish = urlState(page);
+      assert.match(await page.locator("#target-context").innerText(), /In the absence of contrary information/);
       assert.equal(logicalEnglish.lang, "en", "English selection must set lang=en in URL state");
       for (const key of invariantKeys) assert.equal(logicalEnglish[key], logicalBefore[key], `locale round trip must not change ${key}`);
       if (profile === "mobile") {
@@ -441,10 +444,33 @@ const desktopScenarios = [
       assertions.push(
         "he -> lang=he dir=rtl",
         "en -> lang=en dir=ltr",
+        "dynamic location notice rerendered with the active locale",
         profile === "desktop"
           ? "target/view/calculation/comparison state unchanged across locale switch"
           : "target/view/calculation state unchanged without enabling desktop-only comparison",
       );
+    },
+  },
+  {
+    id: "i18n-fallback", name: "Partial locale uses normal fallback for a dynamic UI error",
+    async run({ page, baseURL, assertions }) {
+      await openClean(page, baseURL);
+      await page.locator("#language-selector").selectOption("af");
+      await page.waitForFunction(() => document.documentElement.lang === "af");
+      const editor = page.locator('[data-reverse-editor="basic-pastafari"]');
+      await editor.locator('input[name="year"]').fill("1");
+      await editor.locator('input[name="dayInCutlet"]').fill("1");
+      await editor.locator('input[name="dayInMonth"]').fill("1");
+      const limitsDetails = page.locator("#reverse-app .reverse-mode-panel:not([hidden]) .reverse-limits");
+      await limitsDetails.locator("summary").click();
+      const limits = limitsDetails.locator("input");
+      await limits.nth(0).fill("0");
+      await page.locator("#reverse-basic-solve").click();
+      const error = page.locator("#reverse-app .reverse-output .form-error");
+      await error.waitFor({ state: "visible", timeout: 10_000 });
+      assert.equal(await error.innerText(), "maxSolutions must be positive.");
+      assert.equal(await page.locator("#language-selector").inputValue(), "af");
+      assertions.push("Afrikaans partial locale selected", "dynamic reverse validation error resolved through normal English fallback", "UI rendered a string rather than undefined");
     },
   },
   {

@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "zh-CN",
   "messages": {
     "meta.description": "带日期搜索和比较功能的意面教日历。",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "意面教日历",
     "nav.skip": "跳到日期搜索",
     "app.intro": "在任一可用历法中查找某一天，然后查看其完整的意面教日期以及包含它的肉排。",

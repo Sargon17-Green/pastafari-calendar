@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "sk-SK",
   "messages": {
     "meta.description": "Pastafariánsky kalendár s vyhľadávaním a porovnávaním dátumov.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "Pastafariánsky kalendár",
     "nav.skip": "Prejsť na vyhľadávanie dátumu",
     "app.intro": "Nájdite deň v ľubovoľnom dostupnom kalendári a potom si pozrite jeho úplný pastafariánsky dátum a rezeň, ktorý ho obsahuje.",

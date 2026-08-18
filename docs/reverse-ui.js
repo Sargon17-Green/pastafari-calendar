@@ -12,7 +12,7 @@ import {
   usesTextualCalendarNumeral,
 } from "./calendar-input-conventions.js?v=9-calendar-input-conventions";
 import { CUTLETS, MONTHS } from "./i18n/calendar-identifiers.js?v=8-year-structure";
-import { calendarLabel, translate } from "./i18n/registry.js?v=16-support-levels";
+import { calendarLabel, translate } from "./i18n/registry.js?v=17-unified-i18n";
 import {
   ReverseSearchController,
   advancedReverseProblem,
@@ -57,13 +57,20 @@ function integerTextInput({ required = true } = {}) {
   return input;
 }
 
+function localizedUiError(key, values = {}) {
+  const error = new RangeError(key);
+  error.translationKey = key;
+  error.translationValues = Object.freeze({ ...values });
+  return error;
+}
+
 function positiveLimit(value, fieldName, { number = false } = {}) {
   const text = String(value ?? "").trim();
   if (!text) return null;
-  if (!/^\d+$/.test(text) || BigInt(text) < 1n) throw new RangeError(`${fieldName} must be positive.`);
+  if (!/^\d+$/.test(text) || BigInt(text) < 1n) throw localizedUiError("reverse.error.limitPositive", { field: fieldName });
   if (!number) return BigInt(text);
   const parsed = Number(text);
-  if (!Number.isSafeInteger(parsed)) throw new RangeError(`${fieldName} is outside the safe integer range.`);
+  if (!Number.isSafeInteger(parsed)) throw localizedUiError("reverse.error.limitSafeInteger", { field: fieldName });
   return parsed;
 }
 
@@ -158,7 +165,7 @@ class AbsoluteDateEditor {
     const values = this.capture();
     try {
       for (const required of this.fields.querySelectorAll("[required]")) {
-        if (!required.checkValidity()) throw new RangeError("Invalid absolute date field.");
+        if (!required.checkValidity()) throw localizedUiError("reverse.error.absoluteDateField");
       }
       const normalized = normalizeCalendarInputValues(this.calendar.value, values);
       return calendarDateToJdn(this.calendar.value, normalized);
@@ -591,6 +598,7 @@ class ReverseSearchUi {
     this.variables = [];
     this.constraints = [];
     this.lastRun = null;
+    this.visibleErrorMessage = null;
     this.build();
   }
 
@@ -924,6 +932,7 @@ class ReverseSearchUi {
   async run(problem, options, context) {
     this.output.hidden = false;
     this.error.hidden = true;
+    this.visibleErrorMessage = null;
     this.solutions.replaceChildren();
     this.status.textContent = this.rt("reverse.status.running");
     this.progress.textContent = "";
@@ -1022,11 +1031,20 @@ class ReverseSearchUi {
     return card;
   }
 
+  renderVisibleErrorMessage() {
+    if (!this.visibleErrorMessage || this.error.hidden) return;
+    this.error.textContent = this.rt(this.visibleErrorMessage.key, this.visibleErrorMessage.values);
+  }
+
   showInputError(error) {
     console.error(error);
     this.output.hidden = false;
     this.error.hidden = false;
-    this.error.textContent = error?.message || this.rt("reverse.error.input");
+    this.visibleErrorMessage = {
+      key: error?.translationKey || "reverse.error.input",
+      values: error?.translationValues || {},
+    };
+    this.renderVisibleErrorMessage();
     this.status.textContent = "";
   }
 
@@ -1034,17 +1052,17 @@ class ReverseSearchUi {
     console.error(error);
     this.output.hidden = false;
     this.error.hidden = false;
-    if (error?.code === "ERR_CONSTRAINT_RANGE_REQUIRED" || error?.code === "ERR_SELF_RANGE_REQUIRED") {
-      this.error.textContent = this.rt("reverse.status.rangeRequired");
-    } else if (error?.code === "ERR_REVERSE_TIMEOUT") {
-      this.error.textContent = this.rt("reverse.status.timeout");
-    } else if (error?.code === "ERR_REVERSE_SUPERSEDED") {
-      this.error.textContent = this.rt("reverse.status.superseded");
-    } else if (error?.name === "AbortError" || error?.code === "ERR_REVERSE_ABORTED") {
-      this.error.textContent = this.rt("reverse.status.cancelled");
-    } else {
-      this.error.textContent = this.rt("reverse.status.failed");
-    }
+    const key = error?.code === "ERR_CONSTRAINT_RANGE_REQUIRED" || error?.code === "ERR_SELF_RANGE_REQUIRED"
+      ? "reverse.status.rangeRequired"
+      : error?.code === "ERR_REVERSE_TIMEOUT"
+        ? "reverse.status.timeout"
+        : error?.code === "ERR_REVERSE_SUPERSEDED"
+          ? "reverse.status.superseded"
+          : error?.name === "AbortError" || error?.code === "ERR_REVERSE_ABORTED"
+            ? "reverse.status.cancelled"
+            : "reverse.status.failed";
+    this.visibleErrorMessage = { key, values: {} };
+    this.renderVisibleErrorMessage();
   }
 
   cancel() {
@@ -1060,6 +1078,7 @@ class ReverseSearchUi {
     this.status.textContent = "";
     this.progress.textContent = "";
     this.error.hidden = true;
+    this.visibleErrorMessage = null;
     this.solutions.replaceChildren();
   }
 
@@ -1113,6 +1132,7 @@ class ReverseSearchUi {
     this.refreshConstraintVariableChoices();
     if (this.lastRun) this.renderResult(this.lastRun.result, this.lastRun.context);
     this.notifyActiveCalculationChanged({ markStale: false });
+    this.renderVisibleErrorMessage();
   }
 
   dispose() { this.controller.dispose(); }

@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "sw-TZ",
   "messages": {
     "meta.description": "Kalenda ya Pastafari yenye utafutaji na ulinganishaji wa tarehe.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "Kalenda ya Pastafari",
     "nav.skip": "Ruka hadi utafutaji wa tarehe",
     "app.intro": "Tafuta siku katika kalenda yoyote inayopatikana, kisha uone tarehe yake kamili ya Pastafari na kotleti inayoiweka.",

@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "ka-GE",
   "messages": {
     "meta.description": "პასტაფარიანული კალენდარი თარიღის ძებნითა და შედარებით.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "პასტაფარიანული კალენდარი",
     "nav.skip": "თარიღის ძებნაზე გადასვლა",
     "app.intro": "იპოვეთ დღე ნებისმიერ ხელმისაწვდომ კალენდარში, შემდეგ ნახეთ მისი სრული პასტაფარიანული თარიღი და კატლეტი, რომელშიც ის მდებარეობს.",

@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "nl-NL",
   "messages": {
     "meta.description": "Een pastafarische kalender met datumzoeken en vergelijken.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "Pastafarische kalender",
     "nav.skip": "Ga naar datum zoeken",
     "app.intro": "Zoek een dag in een beschikbare kalender en bekijk daarna de volledige pastafarische datum en de kotelet waarin die dag ligt.",

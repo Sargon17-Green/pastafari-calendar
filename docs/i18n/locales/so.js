@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "so-SO",
   "messages": {
     "meta.description": "Kalandarka Pastafari oo leh raadinta iyo isbarbardhigga taariikhaha.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "Kalandarka Pastafari",
     "nav.skip": "U gudub raadinta taariikhda",
     "app.intro": "Ka hel maalin kalandar kasta oo la heli karo, dabadeed eeg taariikhdeeda Pastafari oo dhammaystiran iyo kotlet-ka ay ku jirto.",

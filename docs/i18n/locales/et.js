@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "et-EE",
   "messages": {
     "meta.description": "Pastafarinen kalender kuupäevotsinga ja võrdlusa varten.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "Pastafarinen kalender",
     "nav.skip": "Siirry kuupäevotsingun",
     "app.intro": "Etsi päev mistä tahansa käytettävissä olevasta kalendersta ja katso sen täydellinen pastafarinen kuupäev sekä sitä sisältävä leike.",

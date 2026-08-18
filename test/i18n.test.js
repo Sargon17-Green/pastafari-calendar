@@ -10,6 +10,7 @@ import {
   loadAllLocales,
   loadLocale,
   matchSupportedLocale,
+  messageTemplate,
   resolveLocale,
   translate,
   validateLocaleResources,
@@ -202,6 +203,19 @@ test("message templates support locale-specific word order", async () => {
     translate(await loadLocale("en"), "date.monthLine", { dayInMonth: "76", monthName: "Storm" }),
     "Day 76 in the month Storm",
   );
+});
+
+test("runtime notices and fallback-only UI errors use the canonical message path", async () => {
+  const en = await loadLocale("en");
+  const he = await loadLocale("he");
+  const af = await loadLocale("af");
+  assert.equal(messageTemplate(en, "location.useDevice"), "Use device location");
+  assert.equal(translate(he, "location.useDevice"), "השתמש במיקום המכשיר");
+  assert.equal(
+    translate(en, "day.staleWarning", { previousDate: "A", currentDate: "B" }),
+    "The current day changed from A to B. Because the day of working was the current day, the displayed dates are no longer up to date. They will be recalculated after you dismiss this message.",
+  );
+  assert.equal(translate(af, "reverse.error.limitPositive", { field: "maxSolutions" }), "maxSolutions must be positive.");
 });
 
 test("engine results are locale-invariant across a large real cutlet view", async () => {

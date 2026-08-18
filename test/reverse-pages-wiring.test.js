@@ -19,13 +19,13 @@ test("Pages markup exposes one reverse-search mount point", async () => {
   assert.equal((html.match(/id="reverse-app"/g) || []).length, 1);
   assert.match(html, /id="reverse-panel"[^>]*aria-labelledby="reverse-heading"/);
   assert.match(html, /styles\.css\?v=13-reverse-i18n/);
-  assert.match(html, /app\.js\?v=18-i18n-support/);
+  assert.match(html, /app\.js\?v=19-unified-i18n/);
 });
 
 test("app wires reverse results back into the canonical calendar state", async () => {
   const source = await read("docs/app.js");
   assert.match(source, /createReverseSearchUi/);
-  assert.match(source, /reverse-ui\.js\?v=17-i18n-support/);
+  assert.match(source, /reverse-ui\.js\?v=18-unified-i18n/);
   assert.match(source, /function openReversePair\(targetJdn, calculationJdn\)/);
   assert.match(source, /state\.targetJdn = target/);
   assert.match(source, /state\.calculationJdn = calculation/);
@@ -35,7 +35,7 @@ test("app wires reverse results back into the canonical calendar state", async (
 test("service worker precaches every module required by offline reverse search", async () => {
   const source = await read("docs/sw.js");
   for (const asset of [
-    "./reverse-ui.js?v=17-i18n-support",
+    "./reverse-ui.js?v=18-unified-i18n",
     "./reverse-search-controller.js",
     "./engine/pastafari-calendar-fast.js",
     "./engine/pastafari-constraints-client.js",
@@ -51,7 +51,7 @@ test("reverse-search resources obey the declared support-level contract", async 
   validateLocaleResources(sources);
   const english = sources.find(({ code }) => code === "en");
   const keys = Object.keys(english.messages).filter((key) => key.startsWith("reverse.")).sort();
-  assert.equal(keys.length, 96);
+  assert.equal(keys.length, 99);
   assert.equal(LOCALES.length, 72);
 
   for (const metadata of LOCALES) {
@@ -66,7 +66,7 @@ test("reverse-search resources obey the declared support-level contract", async 
     for (const key of keys) {
       assert.equal(typeof locale.messages[key], "string");
       assert.notEqual(locale.messages[key].trim(), "");
-      const rendered = translate(locale, key, { date: "x", count: 1, index: 1, jdn: 1 });
+      const rendered = translate(locale, key, { date: "x", count: 1, index: 1, jdn: 1, field: "maxSolutions" });
       assert.equal(typeof rendered, "string");
       assert.notEqual(rendered.trim(), "");
     }
@@ -78,7 +78,19 @@ test("reverse UI uses the canonical site translator without a side fallback tabl
   assert.match(source, /calendarLabel, translate/);
   assert.doesNotMatch(source, /reverseTranslate/);
   assert.doesNotMatch(source, /from\s+["'][^"']*reverse-i18n\.js/);
+  assert.doesNotMatch(source, /error\?\.message/);
   assert.match(source, /headingTitle\.id = "reverse-heading"/);
   const sw = await read("docs/sw.js");
   assert.doesNotMatch(sw, /reverse-i18n\.js/);
+});
+
+test("known runtime-notice wrappers and direct message-table UI lookups are absent", async () => {
+  const registry = await read("docs/i18n/registry.js");
+  const app = await read("docs/app.js");
+  for (const identifier of ["staleDayWarning", "locationAssumptionNotice", "locationUseDeviceLabel"]) {
+    assert.doesNotMatch(registry, new RegExp(`\\b${identifier}\\b`));
+    assert.doesNotMatch(app, new RegExp(`\\b${identifier}\\b`));
+  }
+  assert.doesNotMatch(app, /activeLocale\.messages\s*\[/);
+  assert.match(app, /messageTemplate\(activeLocale, key\)/);
 });

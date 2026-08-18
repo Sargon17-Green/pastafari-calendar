@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "ha-NG",
   "messages": {
     "meta.description": "Kalandar Pastafari mai neman kwanan wata da kwatantawa.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "Kalandar Pastafari",
     "nav.skip": "Tsallaka zuwa neman kwanan wata",
     "app.intro": "Nemo rana a kowace kalandar da ake da ita, sannan ka ga cikakken kwanan Pastafari da kotlet ɗin da ke ɗauke da ita.",

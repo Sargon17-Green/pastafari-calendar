@@ -7,6 +7,8 @@ export default Object.freeze({
   "intlLocale": "ru-RU",
   "messages": {
     "meta.description": "Пастафарианский календарь с поиском и сравнением дат.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
     "app.title": "Пастафарианский календарь",
     "nav.skip": "Перейти к поиску даты",
     "app.intro": "Найдите день в любом доступном календаре, а затем посмотрите его полную пастафарианскую дату и котлету, в которой он находится.",
