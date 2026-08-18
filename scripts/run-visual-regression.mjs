@@ -984,6 +984,22 @@ async function main() {
           toleranceRule: `min(0.002, ${STABILITY_MULTIPLIER} × measured identical-run pixel ratio)`,
           masks: [],
         },
+        baselineOrigin: {
+          canonical: process.env.PASTAFARI_VISUAL_CANONICAL === "1",
+          os: process.env.PASTAFARI_VISUAL_CANONICAL === "1"
+            ? "Ubuntu 24.04 (GitHub-hosted runner)"
+            : `${process.platform}-${process.arch} (non-canonical capture)`,
+          browser: `Chromium ${browser.version()}`,
+          node: process.version,
+          playwright: "1.62.1",
+          workflowRunId: process.env.GITHUB_RUN_ID || null,
+          workflowRunAttempt: process.env.GITHUB_RUN_ATTEMPT || null,
+          stabilityRuns: options.stabilityRuns,
+          observedMaxDiffPixelRatioAcrossSnapshots: Math.max(0, ...Object.values(state.metadata.snapshots || {}).map((snapshot) => Number(snapshot.observedMaxDiffPixelRatio) || 0)),
+          note: process.env.PASTAFARI_VISUAL_CANONICAL === "1"
+            ? "Captured by the explicit GitHub Actions baseline-candidate job on the canonical rendering environment; commit only after human review."
+            : "Non-canonical capture. Do not replace committed pixel baselines without recapturing on the canonical GitHub Actions environment.",
+        },
       };
       await writeFile(METADATA_FILE, `${JSON.stringify(state.metadata, null, 2)}\n`);
     }
