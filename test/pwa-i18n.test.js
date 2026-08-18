@@ -16,6 +16,21 @@ async function sha256(relativePath) {
   return createHash("sha256").update(data).digest("hex");
 }
 
+function parseStringArray(source, constantName) {
+  const match = source.match(new RegExp(`\\bconst\\s+${constantName}\\s*=\\s*(?:Object\\.freeze\\()?\\[([\\s\\S]*?)\\]\\)?\\s*;`));
+  assert.ok(match, `${constantName} list must be present`);
+  return [...match[1].matchAll(/"((?:\\.|[^"\\])*)"/g)]
+    .map((entry) => JSON.parse(`"${entry[1]}"`));
+}
+
+async function assertDeclaredAssetsExist(assets) {
+  for (const entry of assets) {
+    const pathname = entry.split("?", 1)[0];
+    const file = path.join(DOCS, pathname.replace(/^\.\//, ""));
+    assert.equal((await stat(file)).isFile(), true, `declared PWA asset does not exist: ${entry}`);
+  }
+}
+
 test("Pages uses the audited canonical fast engine bytes without a divergent build", async () => {
   assert.equal(
     await sha256("browser/pastafari-calendar-fast.js"),
@@ -42,21 +57,21 @@ test("stable calendar identifiers preserve the engine's canonical name order", a
   assert.deepEqual(MONTHS.map(({ internalName }) => internalName), parseStrings(monthBlock));
 });
 
-test("service worker precaches the core shell but not optional locale resources", async () => {
+test("service worker keeps an atomic core shell and a bounded optional/on-demand cache", async () => {
   const source = await readFile(path.join(DOCS, "sw.js"), "utf8");
-  const assetBlock = source.match(/const CORE_ASSETS = \[(.*?)\];/s)?.[1];
-  assert.ok(assetBlock, "CORE_ASSETS list must be present");
-  const assets = [...assetBlock.matchAll(/"(\.\/[^"\n]+)"/g)].map((match) => match[1]);
-  const required = [
+  const coreAssets = parseStringArray(source, "CORE_ASSETS");
+  const optionalAssets = parseStringArray(source, "OPTIONAL_ASSETS");
+
+  const requiredCore = [
     "./index.html",
     "./styles.css?v=13-reverse-i18n",
     "./app.js?v=19-unified-i18n",
     "./reverse-ui.js?v=18-unified-i18n",
     "./reverse-search-controller.js",
+    "./calendar-input-conventions.js?v=9-calendar-input-conventions",
     "./calendar-converters.js?v=8-year-structure",
     "./observer-location.js?v=10-venus-day-boundary",
     "./venus-day-boundary.js?v=10-venus-day-boundary",
-    "./manifest.webmanifest?v=8-year-structure",
     "./engine/pastafari-calendar-fast.js",
     "./engine/pastafari-fast-worker.js?v=8-year-structure",
     "./engine/pastafari-constraints-client.js",
@@ -67,23 +82,54 @@ test("service worker precaches the core shell but not optional locale resources"
     "./i18n/runtime.js?v=17-unified-i18n",
     "./i18n/locales/en.js?v=16-unified-i18n",
   ];
-  for (const entry of required) assert.ok(assets.includes(entry), `${entry} is missing from the offline cache`);
-  for (const entry of assets) {
-    const pathname = entry.split("?", 1)[0];
-    const file = path.join(DOCS, pathname.replace(/^\.\//, ""));
-    assert.equal((await stat(file)).isFile(), true, `cached asset does not exist: ${entry}`);
-  }
-  const localeAssets = assets.filter((entry) => entry.startsWith("./i18n/locales/"));
+  assert.deepEqual(coreAssets, requiredCore, "CORE_ASSETS must describe the complete deterministic offline application shell");
+  assert.equal(coreAssets.length, 18);
+
+  const requiredOptional = [
+    "./manifest.webmanifest?v=8-year-structure",
+    "./icons/icon.svg?v=8-year-structure",
+    "./icons/icon-192.png",
+    "./icons/icon-512.png",
+  ];
+  assert.deepEqual(optionalAssets, requiredOptional, "OPTIONAL_ASSETS should contain non-bootstrap PWA metadata/icons only");
+  assert.equal(optionalAssets.length, 4);
+  assert.deepEqual(coreAssets.filter((entry) => optionalAssets.includes(entry)), [], "Core and optional lists must not overlap");
+
+  await assertDeclaredAssetsExist(coreAssets);
+  await assertDeclaredAssetsExist(optionalAssets);
+
+  const localeAssets = coreAssets.filter((entry) => entry.startsWith("./i18n/locales/"));
   assert.deepEqual(localeAssets, ["./i18n/locales/en.js?v=16-unified-i18n"]);
-  assert.ok(!localeAssets.some((entry) => entry.includes("/hbo.js")));
-  assert.match(source, /const OPTIONAL_LOCALE_PATH = \/\\\/i18n\\\/locales/);
-  assert.match(source, /await cache\.put\(event\.request, response\.clone\(\)\)/);
-  assert.match(source, /const VERSION = "pastafari-static-reverse-search-[^"]+";/);
+  assert.equal(LOCALES.length, 72, "PWA accounting expects the current 72 registered locales");
+  assert.equal(LOCALES.filter(({ code }) => code !== "en").length, 71, "Every non-English locale is optional/on-demand");
+
+  assert.match(source, /const VERSION = "pastafari-static-pwa-hardening-11-unified-i18n";/);
+  assert.match(source, /const RUNTIME_CACHE = "pastafari-runtime-assets";/);
+  assert.match(source, /const OPTIONAL_LOCALE_PATH = \/\^\\\/i18n\\\/locales/);
+  assert.match(source, /url\.search === LOCALE_REVISION_SEARCH/);
+  assert.match(source, /cacheKey: scoped\(`\.\/__pwa_core__\/\$\{index\}`\)/);
+  assert.match(source, /const CORE_COMPLETE_KEY = scoped\("\.\/__pwa_core__\/complete"\);/);
+  assert.match(source, /already exists; bump VERSION before changing sw\.js/);
+  assert.match(source, /const responses = await Promise\.all\(CORE_ENTRIES\.map/);
+  assert.match(source, /validateAssetResponse\(await fetch\(request\), entry\.url, entry\.path\)/);
+  assert.match(source, /if \(response\.redirected\) throw new Error/);
+  assert.match(source, /finalUrl\.origin !== SCOPE_URL\.origin \|\| finalUrl\.href !== expectedUrl/);
+  assert.match(source, /Unexpected Content-Type/);
+  assert.match(source, /await self\.skipWaiting\(\);/);
+  assert.match(source, /await migrateCompatibleRuntimeEntries\(oldStaticCaches\);/);
+  assert.match(source, /await pruneRuntimeCache\(\);/);
+  assert.match(source, /await Promise\.all\(oldStaticCaches\.map\(\(name\) => caches\.delete\(name\)\)\);/);
+  assert.match(source, /if \(url\.origin !== SCOPE_URL\.origin\) return;/);
+  assert.match(source, /if \(isOptionalLocaleRequest\(url\)\)/);
+  assert.match(source, /event\.respondWith\(fetch\(event\.request\)\);/);
+  assert.doesNotMatch(source, /if \(response\.ok\)\s*\{[\s\S]{0,250}cache\.put\(event\.request/s, "generic same-origin GET caching must not return");
+
   const html = await readFile(path.join(DOCS, "index.html"), "utf8");
   for (const entry of [
     "./styles.css?v=13-reverse-i18n",
     "./app.js?v=19-unified-i18n",
     "./manifest.webmanifest?v=8-year-structure",
+    "./icons/icon.svg?v=8-year-structure",
   ]) {
     assert.ok(html.includes(entry), `index.html must request the revisioned asset ${entry}`);
   }
@@ -91,9 +137,7 @@ test("service worker precaches the core shell but not optional locale resources"
   assert.ok(app.includes("./engine/pastafari-fast-worker.js?v=${ASSET_REVISION}"));
   assert.match(app, /document\.readyState === "complete"\) registerServiceWorker\(\)/);
   assert.match(app, /addEventListener\("load", registerServiceWorker, \{ once: true \}\)/);
-
 });
-
 
 test("registry contains only dynamic locale imports", async () => {
   const source = await readFile(path.join(DOCS, "i18n", "registry.js"), "utf8");
