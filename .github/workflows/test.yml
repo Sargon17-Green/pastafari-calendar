@@ -19,10 +19,12 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check:reverse-i18n
+      - run: npm run check:i18n
       - run: npm run build:standalone
       - run: git diff --exit-code -- browser/standalone/pastafari-date.js browser/standalone/pastafari-date.min.js
       - run: npm test
       - run: npx playwright install --with-deps chromium firefox
+      - run: npm run test:i18n-support
       - run: npm run test:file-protocol
       - run: sha256sum -c SHA256SUMS.txt
       - run: node scripts/check-sha-manifest-completeness.mjs
