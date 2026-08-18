@@ -169,11 +169,18 @@ async function chooseLocale(page, code) {
   }, code, { timeout: DEFAULT_TIMEOUT });
 }
 
+async function setDateFieldValue(page, selector, value) {
+  const locator = page.locator(selector);
+  const tagName = await locator.evaluate((element) => element.tagName);
+  if (tagName === "SELECT") await locator.selectOption(String(value));
+  else await locator.fill(String(value));
+}
+
 async function fillGregorian(page, date) {
   await page.locator("#target-calendar").selectOption("gregorian");
-  await page.locator("#target-year").fill(String(date.year));
-  await page.locator("#target-month").fill(String(date.month));
-  await page.locator("#target-day").fill(String(date.day));
+  await setDateFieldValue(page, "#target-year", date.year);
+  await setDateFieldValue(page, "#target-month", date.month);
+  await setDateFieldValue(page, "#target-day", date.day);
 }
 
 async function searchGregorian(page, date) {
