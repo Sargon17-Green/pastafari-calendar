@@ -1,130 +1,114 @@
-# Performance benchmarks
+# Visual and responsive regression testing
 
-This directory contains the reproducible performance baseline for the JavaScript package and the real `docs/` Web application.
+This suite protects the public Web UI against meaningful visual and layout regressions without treating every changed pixel as a defect. It uses the repository's existing Playwright dependency directly; it does not introduce a second browser-test framework.
 
-The benchmark suite is observational. It does not change the Pastafari algorithm, cache policy, production timeouts, routing policy, translations, or astronomical-day code.
+## Scope
 
-## Commands
+Pixel baselines are Chromium-only. Firefox is used for layout/functional smoke checks rather than a duplicate snapshot matrix.
 
-- `npm run benchmark` — run engine, reverse/constraints, and Chromium Web benchmarks; write the combined report.
-- `npm run benchmark:engine` — direct fast/authoritative engine, cache, year-structure, and package-router measurements.
-- `npm run benchmark:reverse` — reverse lookup and constraint-solver measurements.
-- `npm run benchmark:web` — real `docs/` application in Chromium plus direct browser Worker probes.
-- `npm run benchmark:smoke` — short correctness/API smoke for CI; this is not a performance baseline.
+The core visual matrix covers:
 
-Reports are written to `artifacts/benchmarks/` as both Markdown and JSON. Raw sample arrays are kept in JSON.
+| Scenario | Locale | Direction | Viewport | State | Snapshot |
+|---|---|---|---|---|---|
+| Home/search | English | LTR | 1440×1000 | fixed result loaded | `home-en-desktop` |
+| Result/calendar | English | LTR | 1440×1000 | fixed result | `result-en-desktop` |
+| Year structure A | English | LTR | 1440×1000 | fixed result | `year-structure-a` |
+| Advanced settings | English | LTR | 1440×1000 | details open | `advanced-en-desktop` |
+| Comparison | English | LTR | 1440×1000 | comparison enabled | `comparison-en-desktop` |
+| Calendar edge | English | LTR | 1440×1000 | target at cutlet edge | `calendar-edge-en-desktop` |
+| Calendar middle | English | LTR | 1440×1000 | target in cutlet middle | `calendar-mid-en-desktop` |
+| Adjacent cutlet | English | LTR | 1440×1000 | target outside viewed cutlet | `calendar-next-cutlet-en-desktop` |
+| Year structure B | English | LTR | 1440×1000 | structurally different year found deterministically | `year-structure-complex` |
+| Print result | English | LTR | 1440×1000 | print media | `print-result-en` |
+| Home/search | Hebrew | RTL | 1440×1000 | fixed result loaded | `home-he-desktop` |
+| Result/calendar/year | Hebrew | RTL | 1440×1000 | fixed result | `result-he-desktop` |
+| Home/search | English | LTR | 390×844 | fixed result loaded | `home-en-mobile` |
+| Result/calendar/year | English | LTR | 390×844 | fixed result | `result-en-mobile` |
+| Home/search | Hebrew | RTL | 390×844 | fixed result loaded | `home-he-mobile` |
+| Result/calendar/year | Hebrew | RTL | 390×844 | fixed result | `result-he-mobile` |
+| Mobile comparison | English | LTR | 390×844 | comparison enabled | `comparison-en-mobile` |
+| Long-text locale | German | LTR | 1440×1000 | advanced settings open | `long-de-desktop` |
+| Long-text locale | German | LTR | 390×844 | advanced settings open | `long-de-mobile` |
+| Recoverable input error | English | LTR | 1440×1000 | invalid Gregorian date | `error-invalid-en-desktop` |
+| Loading | English | LTR | 1440×1000 | worker request deliberately gated | `loading-en-desktop` |
+| Engine error | English | LTR | 1440×1000 | worker request deliberately failed | `engine-error-en-desktop` |
+| Script diversity | Bengali | LTR | 390×844 | fixed result loaded | `script-bn-mobile` |
 
-## Fixed inputs
+All application data used by the suite is deterministic. The primary target/calculation/comparison JDN values are fixed (`2465429`, `2461141`, `2461143`), language is explicit, the browser timezone is `Asia/Jerusalem`, and service workers are blocked for the visual HTTP suite. The astronomical current-day mechanism is not modified or mocked; fixed URL state simply prevents it from influencing the baselines.
 
-The suite deliberately does not use “today” as a performance input. The principal calculation day is Gregorian 2026-08-06 / JDN `2461259`, matching existing repository compatibility tests. Additional fixed distances cover adjacent days, roughly one year, 100 years, 1,000 years, the Foundation JDN, a point beyond the last generated fast-engine gate checkpoint used by the compatibility suite, and both the documented soak-regression case and its localized boundary around calculation JDN `3663448`.
+The calendar fixtures are fixed rather than rediscovered at runtime. JDN `2465429` is the first day of a 51-day cutlet in year 5,001 for calculation JDN `2461141`; JDN `2465454` is a middle day of that same cutlet. JDN `2469021` exercises year 5,002, whose year structure differs from year 5,001 (3,928 vs. 3,851 days, 6 vs. 7 cutlets, and 41 vs. 40 months). No synthetic calendar data is used, and the runner asserts the edge/middle and distinct-year invariants before accepting the corresponding snapshots.
 
-Reverse and constraint cases are also deterministic. No unseeded random inputs are used.
+## Responsive/layout checks
 
-## What `cold` means
+In addition to screenshots, the runner verifies geometry and semantics. It checks page-level horizontal overflow, visibility and non-zero sizes, selected controls for clipping, selected high-risk overlap pairs, comparison's intentional internal scrolling, RTL/LTR inline-start geometry, mobile toolbar separation, and target-marker presence.
 
-There are several different cold states and they are named rather than merged:
+Boundary checks run immediately above and below the CSS transitions used by the current UI:
 
-- **`cold-process`**: a fresh Node process. Module state and JavaScript caches are fresh. Import time and first-conversion time are reported separately. Parent process-spawn time is reported only in a separately labelled envelope row.
-- **`cache-miss`**: the fast module is already loaded, but `clearFastCache()` is called immediately before the measured conversion. This is not a module cold start.
-- **cold browser visit**: a fresh Playwright browser context with empty HTTP/storage state. The application receives fixed `t`, `v`, and `c` URL parameters.
-- **warm browser visit**: the same context is reused after the assets/application have already loaded. Service Worker controller state is written into the row notes.
+- `1001/999`: desktop comparison table/settings versus the compact message;
+- `901/899`: main form, year-structure, and reverse-search constraint-column changes around the shared `900px` rule;
+- `761/759`: masthead and calendar-toolbar transition around `760px`;
+- `521/519`: date fields and year facts around `520px`;
+- `421/419`: the small-screen application-shell gutter around `420px`;
+- `621/619`: reverse-search tab layout around its `620px` rule.
 
-A cached identical lookup is always named `cache-hit`; it must never be interpreted as the cost of a full Pastafari conversion.
+The suite also runs 320px narrow-screen and 1680px wide-screen layout smoke tests, a 200% root-text-size smoke test, a forced-colors layout smoke, a Bengali non-Latin script/font-fallback smoke, a standalone `file://` layout smoke, and Firefox desktop/mobile layout smoke checks. Reduced motion is enabled for browser contexts.
 
-## What is measured
+## Running the suite
 
-### Engine
+The repository's browser-test convention is a direct Node runner:
 
-`engine.mjs` measures:
+```sh
+npm run test:visual
+```
 
-- fast direct conversion in fresh processes;
-- authoritative direct conversion in fresh processes (small samples because it is expensive);
-- module import cost separately from calculation cost;
-- fast cache misses and identical cache hits;
-- nearby targets with fixed calculation day;
-- fixed target with changing calculation day;
-- a 366-day sequential range with total time, time/day, and days/second throughput;
-- the Pages year-structure computation before DOM rendering;
-- the Pages year-structure cache hit;
-- a 1,200-unique-conversion cache-growth workload with the documented result-cache capacity checked;
-- warm authoritative conversion;
-- the package router's authoritative-first result and the verification transition, using the router's legitimate inline fallback transport.
+For geometry-only checks without pixel comparison:
 
-The package router and the Pages website are deliberately not treated as one path. The package router is authoritative-first and verifies the fast engine. The current Pages application directly uses its own fast Worker. The Web benchmark measures that real website path.
+```sh
+npm run test:visual:layout
+```
 
-### Reverse and constraints
+Artifacts are written under `artifacts/visual/`. On a pixel failure the runner writes the actual image, a copy of the expected image, a generated diff image, a JSON report, and a Playwright trace for the failing scenario.
 
-`reverse-constraints.mjs` measures:
+## Updating baselines intentionally
 
-- known-calculation reverse lookups at increasing distances;
-- a bounded `SAME_AS_TARGET` diagonal search with progress counters;
-- an intentional reverse timeout (reported as `TIMEOUT`, not a correctness failure);
-- an acyclic constraint chain;
-- cyclic joint solving at two domain sizes;
-- an intentional constraint timeout;
-- coarse heap change across the reverse/constraint workload.
+Baselines are never updated by the normal test command or by the CI comparison job. After an intentional visual change, use the canonical environment and run:
 
-The JSON report retains the solver/checksum data used to consume and validate the results.
+```sh
+npm run test:visual:update
+```
 
-### Web / browser
+The update command captures every snapshot at least three times before accepting it. Per snapshot it measures the largest identical-run changed-pixel ratio after a small per-channel threshold of 16/255, then records an allowed `maxDiffPixelRatio` equal to three times the observed noise. A hard `0.002` (0.2%) ceiling prevents an unstable screenshot from being “fixed” by a broad tolerance; if measurement would exceed that ceiling, baseline generation fails and the source of nondeterminism must be addressed first.
 
-`web.mjs` launches Chromium and serves the repository through a tiny local HTTP server. It measures the actual `docs/index.html` application with deterministic URL inputs:
+The generated PNGs and `baseline-metadata.json` are normal reviewed repository changes. Review every changed baseline image before committing it. The update path uses no automatic masks.
 
-- cold startup in English LTR and Hebrew RTL;
-- HTML `responseEnd`, `DOMContentLoaded`, and enabled target-form controls as distinct readiness milestones;
-- Navigation Timing `DOMContentLoaded`;
-- latest window-visible JavaScript resource `responseEnd` (named exactly that; it is **not** called TTI or module-evaluation time);
-- time to the first visible calendar result;
-- time until the full year structure is visible;
-- a warm online revisit;
-- a subsequent user calculation to the updated DOM;
-- English-to-Hebrew UI/language switching without changing calculation state;
-- an offline revisit when the Service Worker is available;
-- the actual Pages fast Worker first and second `getCutletView` round-trips;
-- package fast/authoritative browser Worker startup, first round-trip, and second round-trip.
+For a deliberately requested CI baseline-capture run only, `PASTAFARI_ALLOW_VISUAL_UPDATE=1` may be supplied together with `--update`; the standard workflow never sets that variable and never updates baselines.
 
-The Pages Worker does not publish a separate readiness message. Its first-round-trip metric therefore includes Worker creation, module loading, and the first computation. The harness does **not** invent a separate `engine-ready` or module-evaluation timestamp. Package Workers do expose a `ready` protocol, so their startup can be separated from request round-trip time.
+## Canonical rendering environment
 
-Network counts and JavaScript bytes are collected from the local server's `Content-Length` responses. Those values are useful for regression comparison inside this harness; they are not a claim about GitHub Pages CDN compression or transfer sizes.
+The pixel baselines are intended for the dedicated GitHub Actions visual job: Ubuntu 24.04, Node 22, and the Chromium revision installed by the repository-pinned Playwright `1.62.1`. The runner records the actual browser version in `artifacts/visual/report.json` and in baseline metadata when baselines are rebuilt.
 
-## Correctness guards
+The site uses system font stacks (`Arial`/`Segoe UI`/`Noto Sans Hebrew` and `Georgia`/`Times New Roman`/`Noto Serif Hebrew`). Cross-OS pixel rendering can therefore differ. A local Windows or macOS run is useful for `--layout-only`; baseline replacement should be produced on the canonical Ubuntu environment unless the canonical environment is intentionally changed.
 
-A benchmark is not allowed to “win” by returning or consuming nothing.
+When Playwright or its browser revision is upgraded intentionally, rebuild the snapshots in the canonical environment, inspect all diffs, and commit the changed PNGs and metadata together with the version upgrade.
 
-- Direct fast benchmark cases are compared to the authoritative implementation, following the same oracle relationship used by the repository's compatibility tests.
-- Repeated operations are compared against canonical results or stable SHA-256 checksums.
-- Reverse results must contain the intended target/calculation pair.
-- Constraint results must contain the intended verified solution and completion state where completion is expected.
-- Web runs verify the selected JDN, language direction, visible result, and identical first/second Worker output.
+### Initial baseline provenance
 
-The benchmark suite complements correctness tests; it does not replace them.
+The initial snapshots shipped with this suite were stability-measured in the available Linux validation environment (Debian 13, Chromium 144.0.7559.96). Each snapshot was captured three times and produced zero changed pixels above the comparator's 16/255 channel threshold. The repository's canonical CI renderer is the Chromium revision installed by Playwright 1.62.1 on Ubuntu 24.04; therefore a deliberate browser/environment transition must be reviewed rather than silently treated as a product regression. The `capture-baselines` workflow-dispatch path exists specifically to produce canonical candidate PNGs without modifying the repository automatically. After reviewing those candidates, commit the accepted PNGs and regenerated metadata/checksums explicitly.
 
-## Statistics
+## Mask policy
 
-Short operations use repeated samples; heavy authoritative/reverse/constraint cases use smaller samples by design. Every timing row reports `n`, minimum, median, p95, and maximum. When `n < 20`, `p95LowConfidence` is `true` in JSON and the Markdown report warns that the p95 is descriptive rather than a stable tail estimate.
+There are currently **no masked regions**. The suite instead removes non-semantic animation/transition timing and hides a blinking caret for ordinary snapshots. Focus-specific screenshots are not part of this suite. Dynamic current time, geolocation and random data are excluded from baseline state rather than masked.
 
-For a 366-day range the report also states days/second. Avoid comparing more significant digits than the timer noise and sample count justify.
+## Regression sensitivity check
 
-## Environment and comparison
+The runner contains an isolated self-test that temporarily hides the main search submit control inside the browser page, verifies that the image comparator detects a ratio above the hard failure ceiling, removes the injected style, and verifies that the image returns to the pre-injection state. Run it with:
 
-Every report records commit SHA, timestamp, OS, architecture, CPU model, logical CPU count, RAM, Node version, package version, benchmark-suite version, debug state, Chromium version where applicable, and SHA-256 identities for the relevant engine/worker entry files.
+```sh
+npm run test:visual:self-test
+```
 
-Do not compare absolute timings from different machines as if they were equivalent. Prefer before/after runs on the same machine, same Node/browser versions, and comparable thermal/background-load conditions. GitHub-hosted runners are useful for coarse longitudinal evidence but are not stable laboratory benchmark machines.
+The CI job runs this self-test before the committed-baseline comparison. The artificial regression exists only in the browser page for that test and is never written to production CSS or repository files.
 
-## Memory
+## Known limitations
 
-The engine report records coarse Node heap usage before and after the mixed workload. This is a baseline signal only. It is not a leak detector and deliberately does not force GC or rely on non-portable browser memory APIs.
-
-## CI
-
-`benchmark:smoke` is suitable for ordinary CI and checks that the benchmark-facing APIs still exist and return coherent results. `.github/workflows/benchmark.yml` runs only that smoke job on ordinary `push`/`pull_request` events; its full benchmark job runs only through `workflow_dispatch` and uploads the generated Markdown/JSON reports as an artifact. The full benchmark is intentionally not an absolute-latency gate.
-
-The repository also has the separate `performance-regression` job in `.github/workflows/test.yml`, backed by `scripts/run-performance-regression.mjs`. That relative candidate-vs-baseline guard is preserved unchanged by this benchmark suite; the two mechanisms serve different purposes.
-
-No hard absolute latency threshold is enforced by `benchmark.yml`. Any future threshold changes should be based on enough stable baselines to define statistically defensible limits.
-
-The full `workflow_dispatch` run is the intended way to produce a clean GitHub-runner baseline artifact after these files are installed in a repository checkout. A baseline must be generated from an actual checkout; this directory intentionally contains no fabricated reference numbers.
-
-## Known-source limitation for soak timeout inputs
-
-`docs/FAST-ENGINE-SOAK-VALIDATION-2026-08-15.md` records 11 performance timeouts at very large positive JDN values, but the committed document does not enumerate those exact inputs. This benchmark therefore does not invent replacements. It includes the documented batch-37 soak case/boundary and a deterministic out-of-checkpoint-range case; any future commit that adds the exact timeout inputs should add them as a separately named pathological-case group.
+Visual regression does not verify the mathematical correctness of the Pastafarian calculation engine or the astronomical day algorithm. It is not a screen-reader test, does not cover every supported locale, does not keep a separate pixel-baseline set for every browser engine, and cannot replace human judgement about aesthetic quality. Structural checks are intentionally targeted rather than a generic all-DOM overlap detector, because generic overlap detection produces many false positives for intentionally layered UI.

@@ -47,7 +47,11 @@
     "benchmark:engine": "node benchmarks/engine.mjs",
     "benchmark:web": "node benchmarks/web.mjs",
     "benchmark:reverse": "node benchmarks/reverse-constraints.mjs",
-    "benchmark:smoke": "node benchmarks/smoke.mjs"
+    "benchmark:smoke": "node benchmarks/smoke.mjs",
+    "test:visual": "node scripts/run-visual-regression.mjs",
+    "test:visual:update": "node scripts/run-visual-regression.mjs --update",
+    "test:visual:layout": "node scripts/run-visual-regression.mjs --layout-only",
+    "test:visual:self-test": "node scripts/run-visual-regression.mjs --regression-self-test"
   },
   "devDependencies": {
     "axe-core": "4.12.1",
