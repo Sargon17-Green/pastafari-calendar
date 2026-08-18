@@ -34,6 +34,12 @@
   "scripts": {
     "build:standalone": "node scripts/build-standalone.mjs",
     "sync:pages-reverse": "node scripts/sync-pages-reverse-engine.mjs",
+    "checksums:generate": "node scripts/checksums.mjs generate",
+    "checksums:verify": "node scripts/checksums.mjs verify",
+    "package:verify": "node scripts/check-package.mjs",
+    "release:prepare": "node scripts/release.mjs prepare",
+    "release:verify": "node scripts/release.mjs verify",
+    "test:release-infra": "node --test test/release-infrastructure.test.js",
     "test": "node --test test/*.test.js",
     "test:file-protocol": "node scripts/run-file-protocol-tests.mjs",
     "test:i18n-lazy": "node scripts/run-i18n-lazy-loading-smoke.mjs",
