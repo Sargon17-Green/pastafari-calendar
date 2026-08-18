@@ -26,6 +26,78 @@ jobs:
       - run: npm run test:file-protocol
       - run: sha256sum -c SHA256SUMS.txt
 
+  implementation-python:
+    name: implementation (Python 3)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - name: Run Python canonical conformance
+        working-directory: implementations
+        run: PYTHONPATH=python python3 -m unittest python.tests.test_conformance -v
+
+  implementation-c:
+    name: implementation (C17)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - name: Run C canonical conformance
+        run: make -C implementations/c test-canonical
+
+  implementation-cpp:
+    name: implementation (C++20)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - name: Install C++ dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libssl-dev pkg-config
+      - name: Run C++ canonical conformance
+        run: make -C implementations/cpp test-canonical
+
+  implementation-java:
+    name: implementation (Java 17)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+      - name: Run Java canonical conformance
+        run: make -C implementations/java test-canonical
+
+  implementation-ruby:
+    name: implementation (Ruby 3.3)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+      - name: Run Ruby canonical conformance
+        run: make -C implementations/ruby test-canonical
+
+  gate-checkpoints:
+    name: gate-checkpoints (all ready-five implementations)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - name: Verify shared gate checkpoints
+        run: python3 implementations/tests/verify_gate_checkpoints.py
+
   checkpoint-test:
     name: checkpoint-test (${{ matrix.checkpoint }})
     runs-on: ubuntu-latest
