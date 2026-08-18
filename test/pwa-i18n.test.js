@@ -50,7 +50,7 @@ test("service worker precaches the core shell but not optional locale resources"
   const required = [
     "./index.html",
     "./styles.css?v=13-reverse-i18n",
-    "./app.js?v=15-runtime-notices",
+    "./app.js?v=16-accessibility-focus",
     "./reverse-ui.js?v=15-runtime-notices",
     "./reverse-search-controller.js",
     "./calendar-converters.js?v=8-year-structure",
@@ -82,7 +82,7 @@ test("service worker precaches the core shell but not optional locale resources"
   const html = await readFile(path.join(DOCS, "index.html"), "utf8");
   for (const entry of [
     "./styles.css?v=13-reverse-i18n",
-    "./app.js?v=15-runtime-notices",
+    "./app.js?v=16-accessibility-focus",
     "./manifest.webmanifest?v=8-year-structure",
   ]) {
     assert.ok(html.includes(entry), `index.html must request the revisioned asset ${entry}`);
