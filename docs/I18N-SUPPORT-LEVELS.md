@@ -68,7 +68,7 @@ English is the fallback baseline. Complete locales do not need English at runtim
 
 The loader retains the original local source internally. `auditLocaleResources()` and `npm run i18n:coverage` inspect that source, so a fallback value is not misreported as a local translation merely because the final runtime object contains a string.
 
-In the current 72-locale set, all locale modules are structurally complete for the four runtime resource groups, so the coverage report records zero actual fallback values. The 70 non-English/non-Hebrew locales remain `partial` as a policy status pending explicit linguistic review rather than being auto-promoted from key presence alone.
+In the current 72-locale set, Hebrew and English are `complete` and the 70 non-English/non-Hebrew locales remain `partial`. The coverage audit is authoritative for the exact local/fallback key counts: partial locales currently use the normal English fallback for some newly introduced messages, and those counts may change as UI resources are added or translated. Structural completeness of the resolved runtime object is therefore not evidence that every value was supplied locally.
 
 The existing locale-selection priority is unchanged:
 

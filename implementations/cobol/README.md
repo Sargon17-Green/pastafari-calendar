@@ -9,7 +9,7 @@ Its historical compatibility reference uses algorithm ID:
 ## Normative status
 
 The project's sole normative source is **“מגילת העיתים — לוח סוד הרוטב ושמות הימים”**,
-archived at [`../../sources/Megilat-HaItim.md`](../../sources/Megilat-HaItim.md),
+archived at [`../../sources/מגילת העיתים.md`](../../sources/מגילת העיתים.md),
 SHA-256 `d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96`; the published source is
 <https://the-scroll-of-the-appointed-times.blogspot.com/2026/08/Megilat-HaItim.html>. References in this document to comparison with the JavaScript fast
 engine describe validation and compatibility provenance only; they do not make
