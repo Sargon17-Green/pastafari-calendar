@@ -41,7 +41,12 @@
     "test:reverse-ui": "node scripts/run-reverse-ui-smoke.mjs",
     "test:standalone": "npm run build:standalone && npm run test:file-protocol",
     "report:reverse-i18n": "node scripts/report-reverse-i18n.mjs",
-    "check:reverse-i18n": "node scripts/report-reverse-i18n.mjs --require-all"
+    "check:reverse-i18n": "node scripts/report-reverse-i18n.mjs --require-all",
+    "benchmark": "node benchmarks/run.mjs",
+    "benchmark:engine": "node benchmarks/engine.mjs",
+    "benchmark:web": "node benchmarks/web.mjs",
+    "benchmark:reverse": "node benchmarks/reverse-constraints.mjs",
+    "benchmark:smoke": "node benchmarks/smoke.mjs"
   },
   "devDependencies": {
     "esbuild": "0.28.2",
