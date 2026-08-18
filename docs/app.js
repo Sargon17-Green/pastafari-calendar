@@ -959,13 +959,17 @@ installGuideNavigation();
 elements["language-selector"].addEventListener("change", (event) => {
   const select = event.currentTarget;
   const requested = select.value;
+  const restoreFocus = document.activeElement === select;
   select.disabled = true;
   chooseLanguage(requested)
     .catch((error) => {
       console.error(error);
       populateLanguageSelector(select, activeLocale.code);
     })
-    .finally(() => { select.disabled = false; });
+    .finally(() => {
+      select.disabled = false;
+      if (restoreFocus) select.focus({ preventScroll: true });
+    });
 });
 elements["reload-button"].addEventListener("click", () => location.reload());
 elements["today-button"].addEventListener("click", () => goToday());

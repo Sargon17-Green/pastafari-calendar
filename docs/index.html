@@ -12,11 +12,11 @@
     <link rel="icon" href="./icons/icon.svg?v=8-year-structure" type="image/svg+xml">
     <link rel="apple-touch-icon" href="./icons/icon-192.png">
     <link rel="stylesheet" href="./styles.css?v=13-reverse-i18n">
-    <script type="module" src="./app.js?v=15-runtime-notices"></script>
+    <script type="module" src="./app.js?v=16-accessibility-focus"></script>
   </head>
   <body>
     <a class="skip-link" href="#search-panel" data-i18n="nav.skip">Skip to date search</a>
-    <main class="app-shell">
+    <div class="app-shell">
       <header class="masthead">
         <div class="masthead-copy">
           <p class="eyebrow">PASTAFARI</p>
@@ -32,6 +32,7 @@
 
       <a class="floating-guide-link" href="#user-guide" data-guide-link data-i18n="guide.openShort">How to use this site</a>
 
+      <main>
       <section class="search-panel" id="search-panel" aria-labelledby="search-heading">
         <div class="section-heading">
           <p class="status-kicker" data-i18n="search.kicker">Date search</p>
@@ -203,11 +204,13 @@
         <a class="back-to-calendar" href="#search-panel" data-i18n="guide.back">Back to search and calendar</a>
       </section>
 
+      </main>
+
       <footer class="site-footer">
         <p data-i18n="footer.local">Calculation happens on your device; there is no user account or tracking code.</p>
         <p data-i18n="footer.open">The link is public and loads directly, including in private browsing.</p>
       </footer>
-    </main>
+    </div>
     <noscript>
       <div class="noscript">
         <p lang="en" dir="ltr">JavaScript is required to calculate the calendar locally.</p>

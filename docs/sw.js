@@ -1,6 +1,6 @@
 "use strict";
 
-const VERSION = "pastafari-static-reverse-search-lazy-i18n-06-runtime-notices";
+const VERSION = "pastafari-static-reverse-search-lazy-i18n-07-accessibility-focus";
 const CACHE = VERSION;
 
 // Core application shell. English is the only locale resource installed eagerly,
@@ -8,7 +8,7 @@ const CACHE = VERSION;
 const CORE_ASSETS = [
   "./index.html",
   "./styles.css?v=13-reverse-i18n",
-  "./app.js?v=15-runtime-notices",
+  "./app.js?v=16-accessibility-focus",
   "./reverse-ui.js?v=15-runtime-notices",
   "./reverse-search-controller.js",
   "./calendar-input-conventions.js?v=9-calendar-input-conventions",
