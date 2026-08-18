@@ -38,6 +38,11 @@ function selectRequiredPrecacheAssets(assets) {
     ["styles.css", (pathname) => pathname.endsWith("/styles.css")],
     ["fast engine", (pathname) => pathname.endsWith("/engine/pastafari-calendar-fast.js")],
     ["fast worker", (pathname) => pathname.endsWith("/engine/pastafari-fast-worker.js")],
+    ["reverse UI", (pathname) => pathname.endsWith("/reverse-ui.js")],
+    ["reverse controller", (pathname) => pathname.endsWith("/reverse-search-controller.js")],
+    ["constraint client", (pathname) => pathname.endsWith("/engine/pastafari-constraints-client.js")],
+    ["constraint solver", (pathname) => pathname.endsWith("/engine/pastafari-constraints.js")],
+    ["reverse worker", (pathname) => pathname.endsWith("/engine/pastafari-reverse-worker.js")],
     ["i18n registry", (pathname) => pathname.endsWith("/i18n/registry.js")],
     ["i18n runtime", (pathname) => pathname.endsWith("/i18n/runtime.js")],
   ];
@@ -270,6 +275,45 @@ async function calendarSnapshot(page, label, diagnostics) {
   assert.equal(snapshot.errorPanelHidden, true, `${label}: #error-panel is visible`);
   console.log(`[PASS] ${label}: ${JSON.stringify(snapshot)}`);
   return snapshot;
+}
+
+async function offlineReverseSmoke(page, label) {
+  const result = await page.evaluate(async () => {
+    const engine = await import("./engine/pastafari-calendar-fast.js");
+    const ids = await import("./i18n/calendar-identifiers.js?v=8-year-structure");
+    const reverse = await import("./reverse-search-controller.js");
+
+    const calculationJdn = engine.gregorianToJdn(new engine.GregorianDate(2026n, 8, 6));
+    const targetJdn = calculationJdn + 3n;
+    const raw = new engine.PastafariCalendar().convertJdn(targetJdn, { calculationJdn }).toJSON();
+    const cutlet = ids.CUTLETS.find((entry) => entry.internalName === raw.cutletName);
+    const month = ids.MONTHS.find((entry) => entry.internalName === raw.monthName);
+    if (!cutlet || !month) throw new Error("Could not map reverse smoke date identifiers.");
+
+    const problem = reverse.simpleReverseProblem({
+      year: raw.year,
+      cutletId: cutlet.id,
+      dayInCutlet: raw.dayInCutlet,
+      monthId: month.id,
+      dayInMonth: raw.dayInMonth,
+    }, calculationJdn);
+    const controller = new reverse.ReverseSearchController();
+    try {
+      const solved = await controller.solve(problem, { timeoutMs: 30_000 });
+      return {
+        complete: solved.result.complete,
+        targets: solved.result.solutions.map((solution) => solution.target.jdn.toString()),
+        expected: targetJdn.toString(),
+      };
+    } finally {
+      controller.dispose();
+    }
+  });
+
+  assert.equal(result.complete, true, `${label}: reverse search did not complete`);
+  assert(result.targets.includes(result.expected), `${label}: expected reverse target was not returned`);
+  console.log(`[PASS] ${label}: ${JSON.stringify(result)}`);
+  return result;
 }
 
 async function serviceWorkerSnapshot(page) {
@@ -522,6 +566,7 @@ try {
     "offline reload calendar render",
     diagnostics,
   );
+  await offlineReverseSmoke(page, "offline reverse search");
   assert(offlineReloadSnapshot.controlled, "Service Worker lost control after offline reload");
   assertOfflineResponsesCameFromServiceWorker(
     diagnostics,

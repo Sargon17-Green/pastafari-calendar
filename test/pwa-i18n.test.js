@@ -16,14 +16,18 @@ async function sha256(relativePath) {
   return createHash("sha256").update(data).digest("hex");
 }
 
-test("audited calculation engine bytes remain unchanged", async () => {
+test("Pages uses the audited canonical fast engine bytes without a divergent build", async () => {
   assert.equal(
     await sha256("browser/pastafari-calendar-fast.js"),
     "61318bc0813579f8d703737716704c467b87f2492213c2a1bd0970d9bc9f421b",
   );
   assert.equal(
     await sha256("docs/engine/pastafari-calendar-fast.js"),
-    "412e93b1d9148a20d7d808b851e986d8702091ebb4b25faa118ce2888a286871",
+    "61318bc0813579f8d703737716704c467b87f2492213c2a1bd0970d9bc9f421b",
+  );
+  assert.equal(
+    await sha256("docs/engine/pastafari-calendar-fast.js"),
+    await sha256("browser/pastafari-calendar-fast.js"),
   );
 });
 
@@ -45,19 +49,24 @@ test("service worker precaches every runtime i18n dependency", async () => {
   const assets = [...assetBlock.matchAll(/"(\.\/[^"\n]+)"/g)].map((match) => match[1]);
   const required = [
     "./index.html",
-    "./styles.css?v=8-year-structure",
-    "./app.js?v=11-comparison-dom-cleanup",
+    "./styles.css?v=13-reverse-i18n",
+    "./app.js?v=13-reverse-i18n",
+    "./reverse-ui.js?v=13-reverse-i18n",
+    "./reverse-search-controller.js",
     "./calendar-converters.js?v=8-year-structure",
     "./observer-location.js?v=10-venus-day-boundary",
     "./venus-day-boundary.js?v=10-venus-day-boundary",
     "./manifest.webmanifest?v=8-year-structure",
     "./engine/pastafari-calendar-fast.js",
     "./engine/pastafari-fast-worker.js?v=8-year-structure",
+    "./engine/pastafari-constraints-client.js",
+    "./engine/pastafari-constraints.js",
+    "./engine/pastafari-reverse-worker.js",
     "./i18n/calendar-identifiers.js?v=8-year-structure",
-    "./i18n/registry.js?v=8-year-structure",
-    "./i18n/runtime.js?v=8-year-structure",
-    "./i18n/locales/he.js?v=8-year-structure",
-    "./i18n/locales/en.js?v=8-year-structure",
+    "./i18n/registry.js?v=13-reverse-i18n",
+    "./i18n/runtime.js?v=13-reverse-i18n",
+    "./i18n/locales/he.js?v=13-reverse-i18n",
+    "./i18n/locales/en.js?v=13-reverse-i18n",
   ];
   for (const entry of required) assert.ok(assets.includes(entry), `${entry} is missing from the offline cache`);
   for (const entry of assets) {
@@ -82,11 +91,11 @@ test("service worker precaches every runtime i18n dependency", async () => {
       );
     }
   }
-  assert.match(source, /pastafari-static-[^"\n]*i18n-all-89/);
+  assert.match(source, /const VERSION = "pastafari-static-reverse-search-[^"]+";/);
   const html = await readFile(path.join(DOCS, "index.html"), "utf8");
   for (const entry of [
-    "./styles.css?v=8-year-structure",
-    "./app.js?v=11-comparison-dom-cleanup",
+    "./styles.css?v=13-reverse-i18n",
+    "./app.js?v=13-reverse-i18n",
     "./manifest.webmanifest?v=8-year-structure",
   ]) {
     assert.ok(html.includes(entry), `index.html must request the revisioned asset ${entry}`);
