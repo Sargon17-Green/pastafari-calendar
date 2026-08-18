@@ -75,8 +75,11 @@ test("service worker precaches every runtime i18n dependency", async () => {
     assert.equal((await stat(file)).isFile(), true, `cached asset does not exist: ${entry}`);
   }
   const localeAssets = assets.filter((entry) => entry.startsWith("./i18n/locales/"));
-  assert.equal(localeAssets.length, 89);
+  assert.equal(localeAssets.length, 72);
   assert.ok(!localeAssets.some((entry) => entry.includes("/hbo.js")));
+  for (const code of ["akk", "ang", "cop", "cu", "got", "grc", "ia", "io", "jbo", "la", "lzh", "non", "sa", "sux", "tlh", "tok", "vo"]) {
+    assert.ok(!localeAssets.some((entry) => entry.includes(`/locales/${code}.js`)), `${code} must not be precached`);
+  }
   const cachedEnglishAsset = localeAssets.find((entry) => entry.startsWith("./i18n/locales/en.js?"));
   assert.ok(cachedEnglishAsset, "English locale must be precached with an explicit revision");
   const expectedEnglishBaseImport = cachedEnglishAsset.replace("./i18n/locales/", "./");

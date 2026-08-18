@@ -39,12 +39,12 @@ test("service worker precaches every module required by offline reverse search",
   }
 });
 
-test("all 89 site locales contain complete explicit reverse-search translations", async () => {
+test("all 72 site locales contain complete explicit reverse-search translations", async () => {
   validateLocaleResources();
   const english = LOCALES.find(({ code }) => code === "en");
   const keys = Object.keys(english.messages).filter((key) => key.startsWith("reverse.")).sort();
   assert.equal(keys.length, 96);
-  assert.equal(LOCALES.length, 89);
+  assert.equal(LOCALES.length, 72);
   for (const locale of LOCALES) {
     const source = await read(`docs/i18n/locales/${locale.code}.js`);
     const explicit = [...source.matchAll(/^\s*["'](reverse\.[^"']+)["']\s*:/gm)].map((match) => match[1]).sort();

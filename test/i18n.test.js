@@ -29,10 +29,15 @@ function fakeStorage(initial = {}) {
   };
 }
 
-test("registry contains 89 locales and no Biblical Hebrew locale", () => {
-  assert.equal(LOCALES.length, 89);
+test("registry contains 72 supported locales and no removed experimental or Biblical Hebrew locales", () => {
+  const removedExperimentalLocales = ["akk", "ang", "cop", "cu", "got", "grc", "ia", "io", "jbo", "la", "lzh", "non", "sa", "sux", "tlh", "tok", "vo"];
+  assert.equal(LOCALES.length, 72);
   assert.equal(LOCALES.some(({ code }) => code === "hbo"), false);
   assert.equal(matchSupportedLocale("hbo"), null);
+  for (const code of removedExperimentalLocales) {
+    assert.equal(LOCALES.some((locale) => locale.code === code), false, `${code} must not be registered`);
+    assert.equal(matchSupportedLocale(code), null, `${code} must not resolve as a supported locale`);
+  }
 });
 
 test("locale resources have complete, matching coverage", () => {
