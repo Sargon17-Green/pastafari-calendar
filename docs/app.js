@@ -19,7 +19,7 @@ import {
   staleDayWarning,
   translate,
   validateLocaleResources,
-} from "./i18n/registry.js?v=8-year-structure";
+} from "./i18n/registry.js?v=13-reverse-i18n";
 import {
   KISURRA_OBSERVER,
   requestObserverLocation,
@@ -27,13 +27,14 @@ import {
   watchObserverPermission,
 } from "./observer-location.js?v=10-venus-day-boundary";
 import { currentDayAt } from "./venus-day-boundary.js?v=10-venus-day-boundary";
+import { createReverseSearchUi } from "./reverse-ui.js?v=13-reverse-i18n";
 import {
   applyDocumentLocale,
   persistLanguage,
   populateLanguageSelector,
   resolveBrowserLocale,
   urlWithLanguage,
-} from "./i18n/runtime.js?v=8-year-structure";
+} from "./i18n/runtime.js?v=13-reverse-i18n";
 
 validateLocaleResources();
 
@@ -53,6 +54,7 @@ let viewLoadSequence = 0;
 let committedViewLoadSequence = 0;
 let comparisonLoadSequence = 0;
 let observerLocation = KISURRA_OBSERVER;
+let reverseUi = null;
 let state = {
   targetJdn: null,
   viewAnchorJdn: null,
@@ -816,6 +818,7 @@ function initializeToday({ replaceHistory = false } = {}) {
   initializeDateForm("target", jdn);
   initializeDateForm("action", jdn);
   initializeDateForm("comparison", jdn + 1n);
+  reverseUi?.notifyActiveCalculationChanged();
   return loadCutlet({ replaceHistory });
 }
 
@@ -858,6 +861,7 @@ function loadFromUrl() {
   initializeDateForm("comparison", state.comparisonJdn);
   elements["comparison-toggle"].checked = state.comparisonEnabled;
   elements["comparison-date-form"].hidden = !state.comparisonEnabled;
+  reverseUi?.notifyActiveCalculationChanged();
   return loadCutlet({ replaceHistory: true });
 }
 
@@ -886,6 +890,7 @@ function applyActiveLocale({ rerender = true } = {}) {
   if (lastVisibleErrorKey && !elements["error-panel"].hidden) {
     elements["error-message"].textContent = t(lastVisibleErrorKey);
   }
+  reverseUi?.refreshLocale();
 }
 
 function syncLocaleFromEnvironment({ rerender = true } = {}) {
@@ -904,6 +909,38 @@ function chooseLanguage(code) {
     activeLocale = locale;
     applyActiveLocale();
   }
+}
+
+function openReversePair(targetJdn, calculationJdn) {
+  const target = BigInt(targetJdn);
+  const calculation = BigInt(calculationJdn);
+  state.targetJdn = target;
+  state.viewAnchorJdn = target;
+  state.calculationJdn = calculation;
+  state.targetFollowsCurrentDay = target === state.currentDayJdn;
+  state.calculationFollowsCurrentDay = calculation === state.currentDayJdn;
+  if (state.comparisonFollowsNextAction) {
+    state.comparisonJdn = calculation + 1n;
+    initializeDateForm("comparison", state.comparisonJdn);
+  }
+  initializeDateForm("target", target);
+  initializeDateForm("action", calculation);
+  reverseUi?.notifyActiveCalculationChanged({ markStale: false });
+  loadCutlet().then(() => {
+    elements["calendar-workspace"].scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+}
+
+function initializeReverseSearch() {
+  if (reverseUi || state.calculationJdn === null) return;
+  reverseUi = createReverseSearchUi(elements["reverse-app"], {
+    getLocale: () => activeLocale,
+    siteT: t,
+    getActiveCalculationJdn: () => state.calculationJdn,
+    formatJdn: formatJdnAsGregorian,
+    formatInteger,
+    openPair: openReversePair,
+  });
 }
 
 function installGuideNavigation() {
@@ -950,8 +987,10 @@ formConfigurations.action.form.addEventListener("submit", (event) => {
   event.preventDefault();
   try {
     const jdn = readDateForm("action");
+    const calculationChanged = state.calculationJdn !== jdn;
     state.calculationJdn = jdn;
     state.calculationFollowsCurrentDay = jdn === state.currentDayJdn;
+    if (calculationChanged) reverseUi?.notifyActiveCalculationChanged();
     if (state.comparisonFollowsNextAction) {
       state.comparisonJdn = jdn + 1n;
       initializeDateForm("comparison", state.comparisonJdn);
@@ -964,8 +1003,10 @@ formConfigurations.action.form.addEventListener("submit", (event) => {
 });
 
 elements["reset-action-day"].addEventListener("click", () => {
+  const calculationChanged = state.calculationJdn !== state.currentDayJdn;
   state.calculationJdn = state.currentDayJdn;
   state.calculationFollowsCurrentDay = true;
+  if (calculationChanged) reverseUi?.notifyActiveCalculationChanged();
   if (state.comparisonFollowsNextAction) {
     state.comparisonJdn = state.currentDayJdn + 1n;
     initializeDateForm("comparison", state.comparisonJdn);
@@ -1050,6 +1091,7 @@ function refreshCurrentDay() {
   }
   if (calculationWasCurrentDay) {
     state.calculationJdn = todayJdn;
+    reverseUi?.notifyActiveCalculationChanged();
     initializeDateForm("action", todayJdn);
     if (state.comparisonFollowsNextAction) {
       state.comparisonJdn = todayJdn + 1n;
@@ -1108,15 +1150,17 @@ if ("serviceWorker" in navigator) {
 async function startApplication() {
   observerLocation = await resolveObserverLocation({ timeoutMs: 2_000 });
   await loadFromUrl();
+  initializeReverseSearch();
   scheduleCurrentDayRefresh();
   watchObserverPermission((nextObserver) => {
     updateObserverLocation(nextObserver).catch((error) => console.error(error));
   }).catch((error) => console.error(error));
 }
 
-startApplication().catch((error) => {
+startApplication().catch(async (error) => {
   console.error(error);
   observerLocation = KISURRA_OBSERVER;
-  loadFromUrl();
+  await loadFromUrl();
+  initializeReverseSearch();
   scheduleCurrentDayRefresh();
 });
