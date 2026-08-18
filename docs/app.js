@@ -27,7 +27,7 @@ import {
   watchObserverPermission,
 } from "./observer-location.js?v=10-venus-day-boundary";
 import { currentDayAt } from "./venus-day-boundary.js?v=10-venus-day-boundary";
-import { createReverseSearchUi } from "./reverse-ui.js?v=15-runtime-notices";
+import { createReverseSearchUi } from "./reverse-ui.js?v=16-accessibility-semantics";
 import {
   applyDocumentLocale,
   persistLanguage,
@@ -1161,7 +1161,9 @@ window.addEventListener("pageshow", () => {
 });
 
 if ("serviceWorker" in navigator) {
-  addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}), { once: true });
+  const registerServiceWorker = () => navigator.serviceWorker.register("./sw.js").catch(() => {});
+  if (document.readyState === "complete") registerServiceWorker();
+  else addEventListener("load", registerServiceWorker, { once: true });
 }
 
 async function startApplication() {

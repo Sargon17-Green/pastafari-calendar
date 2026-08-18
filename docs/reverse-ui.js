@@ -605,9 +605,11 @@ class ReverseSearchUi {
   build() {
     this.root.replaceChildren();
     const heading = node("div", "section-heading");
+    const headingTitle = this.keyed("h2", "", "reverse.heading");
+    headingTitle.id = "reverse-heading";
     heading.append(
       this.keyed("p", "status-kicker", "reverse.kicker"),
-      this.keyed("h2", "", "reverse.heading"),
+      headingTitle,
       this.keyed("p", "", "reverse.intro"),
     );
     this.tabs = node("div", "reverse-mode-tabs");

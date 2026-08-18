@@ -12,7 +12,7 @@
     <link rel="icon" href="./icons/icon.svg?v=8-year-structure" type="image/svg+xml">
     <link rel="apple-touch-icon" href="./icons/icon-192.png">
     <link rel="stylesheet" href="./styles.css?v=13-reverse-i18n">
-    <script type="module" src="./app.js?v=16-accessibility-focus"></script>
+    <script type="module" src="./app.js?v=17-accessibility-pwa"></script>
   </head>
   <body>
     <a class="skip-link" href="#search-panel" data-i18n="nav.skip">Skip to date search</a>
@@ -91,7 +91,7 @@
         </details>
       </section>
 
-      <section class="reverse-panel" id="reverse-panel" aria-label="Pastafari reverse search">
+      <section class="reverse-panel" id="reverse-panel" aria-labelledby="reverse-heading">
         <div id="reverse-app"></div>
       </section>
 
@@ -123,7 +123,7 @@
             <h2 id="cutlet-heading">Calendar</h2>
             <p id="cutlet-description"></p>
           </div>
-          <div class="toolbar-actions" data-i18n-attr="aria-label:calendar.toolbarAria">
+          <div class="toolbar-actions" role="group" data-i18n-attr="aria-label:calendar.toolbarAria">
             <button type="button" id="previous-cutlet" data-i18n="calendar.previous">Previous cutlet</button>
             <button type="button" class="primary-action" id="today-button" data-i18n="calendar.today">Back to today</button>
             <button type="button" id="next-cutlet" data-i18n="calendar.next">Next cutlet</button>
@@ -131,7 +131,7 @@
         </div>
 
         <p class="browse-note" id="browse-note" hidden data-i18n="calendar.targetOutside">The searched date is not in the cutlet currently on screen.</p>
-        <div class="calendar-grid" id="calendar-grid"></div>
+        <div class="calendar-grid" id="calendar-grid" role="group"></div>
 
         <section class="year-overview" id="year-overview" aria-labelledby="year-overview-heading">
           <div class="year-overview-heading">
@@ -154,11 +154,11 @@
             <div class="year-structure-columns">
               <details class="structure-details" open>
                 <summary id="year-cutlets-summary">Cutlets</summary>
-                <ol class="structure-list" id="year-cutlet-list"></ol>
+                <ol class="structure-list" id="year-cutlet-list" tabindex="0" aria-labelledby="year-cutlets-summary"></ol>
               </details>
               <details class="structure-details" open>
                 <summary id="year-months-summary">Months</summary>
-                <ol class="structure-list month-structure-list" id="year-month-list"></ol>
+                <ol class="structure-list month-structure-list" id="year-month-list" tabindex="0" aria-labelledby="year-months-summary"></ol>
               </details>
             </div>
           </div>
@@ -172,7 +172,7 @@
           <p data-i18n="comparison.intro">Every row contains the same queried day.</p>
         </div>
         <div class="comparison-summary" id="comparison-summary"></div>
-        <div class="comparison-scroll" tabindex="0" data-i18n-attr="aria-label:comparison.scrollAria">
+        <div class="comparison-scroll" role="region" tabindex="0" data-i18n-attr="aria-label:comparison.scrollAria">
           <table class="comparison-table">
             <thead>
               <tr>
