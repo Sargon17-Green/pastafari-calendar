@@ -81,7 +81,7 @@ The update command captures every snapshot at least three times before accepting
 
 The generated PNGs and `baseline-metadata.json` are normal reviewed repository changes. Review every changed baseline image before committing it. The update path uses no automatic masks.
 
-For a deliberately requested CI baseline-capture run only, `PASTAFARI_ALLOW_VISUAL_UPDATE=1` may be supplied together with `--update`; the standard workflow never sets that variable and never updates baselines.
+For a deliberately requested CI baseline-capture run only, `PASTAFARI_ALLOW_VISUAL_UPDATE=1` may be supplied together with `--update`; the standard comparison workflow never sets that variable and never updates baselines. The dedicated `capture-baselines` job also sets `PASTAFARI_VISUAL_CANONICAL=1`, allowing the regenerated metadata to record canonical provenance explicitly. Do not set that provenance flag for local captures.
 
 ## Canonical rendering environment
 
@@ -91,9 +91,11 @@ The site uses system font stacks (`Arial`/`Segoe UI`/`Noto Sans Hebrew` and `Geo
 
 When Playwright or its browser revision is upgraded intentionally, rebuild the snapshots in the canonical environment, inspect all diffs, and commit the changed PNGs and metadata together with the version upgrade.
 
-### Initial baseline provenance
+### Baseline provenance
 
-The initial snapshots shipped with this suite were stability-measured in the available Linux validation environment (Debian 13, Chromium 144.0.7559.96). Each snapshot was captured three times and produced zero changed pixels above the comparator's 16/255 channel threshold. The repository's canonical CI renderer is the Chromium revision installed by Playwright 1.62.1 on Ubuntu 24.04; therefore a deliberate browser/environment transition must be reviewed rather than silently treated as a product regression. The `capture-baselines` workflow-dispatch path exists specifically to produce canonical candidate PNGs without modifying the repository automatically. After reviewing those candidates, commit the accepted PNGs and regenerated metadata/checksums explicitly.
+The current committed snapshots were captured on 2026-08-18 by the dedicated `capture-baselines` GitHub Actions job on the canonical Ubuntu 24.04 environment, using Node 22, Playwright 1.62.1 and Chromium 151.0.7922.34. All 23 snapshots were captured three times and produced zero changed pixels above the comparator's 16/255 channel threshold before review. The resulting candidate set was reviewed before being committed.
+
+These canonical snapshots replace the initial Debian 13 / Chromium 144 validation baselines. The environment transition preserved the dimensions of 22 snapshots; the Bengali mobile script-diversity snapshot changed height from 1068px to 1001px because of canonical font/rendering metrics, with its content and controls remaining visible and unclipped. Future browser or runner upgrades must be handled the same way: generate candidates with the explicit workflow-dispatch path, review the images, and commit the accepted PNGs, metadata and checksums together.
 
 ## Mask policy
 
