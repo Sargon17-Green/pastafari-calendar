@@ -98,6 +98,27 @@ jobs:
       - name: Verify shared gate checkpoints
         run: python3 implementations/tests/verify_gate_checkpoints.py
 
+  accessibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Run automated accessibility checks
+        run: npm run test:accessibility
+      - name: Upload accessibility failure artifacts
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: accessibility-failure-artifacts
+          path: artifacts/accessibility
+          if-no-files-found: ignore
+
   checkpoint-test:
     name: checkpoint-test (${{ matrix.checkpoint }})
     runs-on: ubuntu-latest
