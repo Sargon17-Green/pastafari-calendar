@@ -58,12 +58,13 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Verify visual-suite files
         run: sha256sum -c test/visual/SHA256SUMS.txt
+      - name: Prove artificial visual regression is detected
+        run: npm run test:visual:self-test
       - name: Capture stability-measured baseline candidates
         env:
           PASTAFARI_ALLOW_VISUAL_UPDATE: '1'
+          PASTAFARI_VISUAL_CANONICAL: '1'
         run: npm run test:visual:update
-      - name: Prove artificial visual regression is detected
-        run: npm run test:visual:self-test
       - name: Upload baseline candidates for human review
         uses: actions/upload-artifact@v7
         with:
