@@ -13,6 +13,9 @@ export default Object.freeze({
     "guide.open": "Kiel uzi ĉi tiun retejon?",
     "guide.openShort": "Kiel uzi la retejon",
     "language.label": "Lingvo",
+    "day.staleWarning": "La nuna tago ŝanĝiĝis de {previousDate} al {currentDate}. Ĉar la tago de laboro estis la nuna tago, la montrataj datoj ne plu estas aktualaj. Ili estos rekalkulitaj post kiam vi fermos ĉi tiun mesaĝon.",
+    "location.assumption": "(Se mankas kontraŭaj informoj, oni supozas, ke la aparato troviĝas en Kisurra.)",
+    "location.useDevice": "Uzi la lokon de la aparato",
 
     "search.kicker": "Dato-serĉo",
     "search.heading": "Kiun tagon vi volas trovi?",

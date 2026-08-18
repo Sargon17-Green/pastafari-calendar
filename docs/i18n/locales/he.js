@@ -13,6 +13,9 @@ export default Object.freeze({
     "guide.open": "איך משתמשים באתר?",
     "guide.openShort": "איך משתמשים?",
     "language.label": "שפה",
+    "day.staleWarning": "היום הנוכחי השתנה מ־{previousDate} ל־{currentDate}. מאחר שיום המעשה היה היום הנוכחי, התאריכים המוצגים כבר אינם מעודכנים. הם יחושבו מחדש לאחר סגירת ההודעה.",
+    "location.assumption": "(בהיעדר מידע סותר, הונח שהמכשיר נמצא בקיסורה.)",
+    "location.useDevice": "השתמש במיקום המכשיר",
 
     "search.kicker": "חיפוש תאריך",
     "search.heading": "איזה יום תרצו למצוא?",

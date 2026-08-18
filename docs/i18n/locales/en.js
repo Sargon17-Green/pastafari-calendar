@@ -13,6 +13,9 @@ export default Object.freeze({
     "guide.open": "How do I use this site?",
     "guide.openShort": "How to use this site",
     "language.label": "Language",
+    "day.staleWarning": "The current day changed from {previousDate} to {currentDate}. Because the day of working was the current day, the displayed dates are no longer up to date. They will be recalculated after you dismiss this message.",
+    "location.assumption": "(In the absence of contrary information, the device is assumed to be in Kisurra.)",
+    "location.useDevice": "Use device location",
 
     "search.kicker": "Date search",
     "search.heading": "Which day would you like to find?",
