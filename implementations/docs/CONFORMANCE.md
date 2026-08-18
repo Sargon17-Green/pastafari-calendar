@@ -7,6 +7,11 @@ Hebrew text **“מגילת העיתים — לוח סוד הרוטב ושמות
 
 `d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96`
 
+The exact repository copy used by this conformance record is
+[`../../sources/Megilat-HaItim.md`](../../sources/Megilat-HaItim.md); its digest is
+also recorded in `../../sources/SHA256SUMS.txt`. The published source is
+<https://the-scroll-of-the-appointed-times.blogspot.com/2026/08/Megilat-HaItim.html>.
+
 Older specifications, implementation comments, JavaScript output, and retained
 differential corpora are historical material only. If they disagree with the
 Scroll, the Scroll wins.

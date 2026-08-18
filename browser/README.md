@@ -62,7 +62,6 @@ browser/
 browser/standalone/
 ├── pastafari-date.js
 ├── pastafari-date.min.js
-├── README.md
 └── example-file.html
 ```
 

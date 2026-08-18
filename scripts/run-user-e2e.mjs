@@ -289,7 +289,7 @@ const desktopScenarios = [
       await searchGregorian(page, FIXTURE.target);
       const after = urlState(page);
       assert.equal(after.t, fixtureJdn("target").toString());
-      assert.notEqual(after.t, before, "Fixture target should differ from initial local day");
+      assert.notEqual(after.t, before, "Fixture target should differ from initial current Pastafari day");
       assert.notEqual(await renderedIdentity(page), beforeText, "Rendered target should update");
       assert.equal(await page.locator(`#calendar-grid .day-card[data-jdn="${after.t}"][data-target="true"]`).count(), 1);
       assertions.push("target URL state changed to fixture JDN", "rendered Pastafari date changed", "target marker moved to requested JDN");
@@ -311,7 +311,7 @@ const desktopScenarios = [
     },
   },
   {
-    id: "reset", name: "Reset calculation day to local day",
+    id: "reset", name: "Reset calculation day to current Pastafari day",
     async run({ page, baseURL, assertions }) {
       await openClean(page, baseURL);
       const initial = urlState(page);
@@ -321,7 +321,7 @@ const desktopScenarios = [
       await page.locator("#reset-action-day").click();
       await waitForParam(page, "c", initial.c);
       assert.equal(urlState(page).t, target);
-      assertions.push("calculation JDN returned to session local-day baseline", "target JDN preserved");
+      assertions.push("calculation JDN returned to session current-day baseline", "target JDN preserved");
     },
   },
   {

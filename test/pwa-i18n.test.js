@@ -137,15 +137,31 @@ test("the public UI searches dates, keeps ordinary days non-interactive, and ali
   assert.match(app, /workerRequest\("getYearStructure"/);
 });
 
-test("manifest is valid JSON with English default and Hebrew/English localized metadata", async () => {
+test("manifest is valid JSON with localized metadata for every registered locale", async () => {
   const manifest = JSON.parse(await readFile(path.join(DOCS, "manifest.webmanifest"), "utf8"));
   assert.equal(manifest.lang, "en");
   assert.equal(manifest.dir, "ltr");
   assert.equal(manifest.name, "Pastafari Calendar");
-  assert.equal(manifest.name_localized.en.value, "Pastafari Calendar");
-  assert.equal(manifest.name_localized.en.dir, "ltr");
-  assert.equal(manifest.name_localized.he.value, "לוח השנה הפסטפרי");
-  assert.equal(manifest.name_localized.he.dir, "rtl");
+
+  const expectedCodes = LOCALES.map(({ code }) => code).sort();
+  for (const field of ["name_localized", "short_name_localized", "description_localized"]) {
+    assert.deepEqual(Object.keys(manifest[field]).sort(), expectedCodes);
+  }
+
+  for (const locale of LOCALES) {
+    const name = manifest.name_localized[locale.code];
+    const shortName = manifest.short_name_localized[locale.code];
+    const description = manifest.description_localized[locale.code];
+    for (const entry of [name, shortName, description]) {
+      assert.equal(entry.lang, locale.code);
+      assert.equal(entry.dir, locale.dir);
+      assert.equal(typeof entry.value, "string");
+      assert.notEqual(entry.value.trim(), "");
+    }
+    assert.equal(name.value, locale.messages["app.title"]);
+    assert.equal(description.value, locale.messages["meta.description"]);
+  }
+
   assert.equal(manifest.short_name_localized.en.value, "Pastafari");
   assert.equal(manifest.short_name_localized.he.value, "פסטפרי");
   assert.ok(Array.isArray(manifest.icons) && manifest.icons.length >= 2);

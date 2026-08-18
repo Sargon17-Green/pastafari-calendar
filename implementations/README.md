@@ -6,6 +6,10 @@ have now been re-audited against the expanded task's **sole normative source**:
 **“מגילת העיתים — לוח סוד הרוטב ושמות הימים”**  
 SHA-256: `d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96`
 
+Repository copy: [`../sources/Megilat-HaItim.md`](../sources/Megilat-HaItim.md)  
+Published source: <https://the-scroll-of-the-appointed-times.blogspot.com/2026/08/Megilat-HaItim.html>  
+The repository copy is preserved byte-for-byte under the SHA-256 above; its digest is also recorded in `../sources/SHA256SUMS.txt`.
+
 The five engines in this ready-five slice are C++20, Python 3, C17, Java 17+
 and Ruby. Each executes the calendar algorithm in its own language; none
 delegates calendar semantics to another implementation through FFI, JNI/JNA,

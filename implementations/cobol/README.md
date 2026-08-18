@@ -2,9 +2,19 @@
 
 This directory is a COBOL port of the public fast engine in
 `browser/pastafari-calendar-fast.js`, including its core reverse operation.
-The behavioral reference is algorithm ID:
+Its historical compatibility reference uses algorithm ID:
 
 `PASTAFARI-TABLETS-2026-08-06-V1`
+
+## Normative status
+
+The project's sole normative source is **“מגילת העיתים — לוח סוד הרוטב ושמות הימים”**,
+archived at [`../../sources/Megilat-HaItim.md`](../../sources/Megilat-HaItim.md),
+SHA-256 `d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96`; the published source is
+<https://the-scroll-of-the-appointed-times.blogspot.com/2026/08/Megilat-HaItim.html>. References in this document to comparison with the JavaScript fast
+engine describe validation and compatibility provenance only; they do not make
+JavaScript normative. This COBOL engine remains separately validated and is not
+part of the ready-five final-spec-certified count documented in `../README.md`.
 
 It does **not** call Node.js, JavaScript, the authoritative/core engine, a
 network service, or an oracle at run time.
