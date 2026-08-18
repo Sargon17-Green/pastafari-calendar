@@ -97,6 +97,12 @@ The current committed snapshots were captured on 2026-08-18 by the dedicated `ca
 
 These canonical snapshots replace the initial Debian 13 / Chromium 144 validation baselines. The environment transition preserved the dimensions of 22 snapshots; the Bengali mobile script-diversity snapshot changed height from 1068px to 1001px because of canonical font/rendering metrics, with its content and controls remaining visible and unclipped. Future browser or runner upgrades must be handled the same way: generate candidates with the explicit workflow-dispatch path, review the images, and commit the accepted PNGs, metadata and checksums together.
 
+### Post-capture source alignment
+
+The canonical PNGs were captured before a later accessibility/PWA repair changed `docs/index.html`, `docs/app.js`, `docs/reverse-ui.js`, and `docs/sw.js`. That later change set was reviewed before retaining the baselines. Its browser-visible changes are semantic rather than visual: ARIA roles and relationships, keyboard-focusability of existing scroll regions, an `id` on the existing reverse-search heading, focus restoration after asynchronous locale switching, service-worker registration timing, and cache-busting revisions. The outer application shell changed from a `main` element to a `div` containing a `main`; both relevant boxes retain block layout and the existing `.app-shell` styling.
+
+For the source state checked on 2026-08-18, `docs/styles.css` and the English, Hebrew, German, and Bengali locale resources used by the pixel matrix are byte-identical to the canonical capture state. None of the 23 snapshot selectors, visible strings captured by those scenarios, or layout-affecting style rules changed in the later repair. The canonical PNGs were therefore deliberately retained rather than regenerated. If a future rebase changes visible strings, stylesheet rules, snapshot selectors, or DOM structure with a layout effect, generate new candidates in the canonical environment and review them instead of relying on this compatibility review.
+
 ## Mask policy
 
 There are currently **no masked regions**. The suite instead removes non-semantic animation/transition timing and hides a blinking caret for ordinary snapshots. Focus-specific screenshots are not part of this suite. Dynamic current time, geolocation and random data are excluded from baseline state rather than masked.
