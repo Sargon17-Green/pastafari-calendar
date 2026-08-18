@@ -50,8 +50,8 @@ test("service worker precaches the core shell but not optional locale resources"
   const required = [
     "./index.html",
     "./styles.css?v=13-reverse-i18n",
-    "./app.js?v=14-lazy-i18n",
-    "./reverse-ui.js?v=14-lazy-i18n",
+    "./app.js?v=15-runtime-notices",
+    "./reverse-ui.js?v=15-runtime-notices",
     "./reverse-search-controller.js",
     "./calendar-converters.js?v=8-year-structure",
     "./observer-location.js?v=10-venus-day-boundary",
@@ -63,9 +63,9 @@ test("service worker precaches the core shell but not optional locale resources"
     "./engine/pastafari-constraints.js",
     "./engine/pastafari-reverse-worker.js",
     "./i18n/calendar-identifiers.js?v=8-year-structure",
-    "./i18n/registry.js?v=14-lazy-i18n",
-    "./i18n/runtime.js?v=14-lazy-i18n",
-    "./i18n/locales/en.js?v=14-lazy-i18n",
+    "./i18n/registry.js?v=15-runtime-notices",
+    "./i18n/runtime.js?v=15-runtime-notices",
+    "./i18n/locales/en.js?v=15-runtime-notices",
   ];
   for (const entry of required) assert.ok(assets.includes(entry), `${entry} is missing from the offline cache`);
   for (const entry of assets) {
@@ -74,7 +74,7 @@ test("service worker precaches the core shell but not optional locale resources"
     assert.equal((await stat(file)).isFile(), true, `cached asset does not exist: ${entry}`);
   }
   const localeAssets = assets.filter((entry) => entry.startsWith("./i18n/locales/"));
-  assert.deepEqual(localeAssets, ["./i18n/locales/en.js?v=14-lazy-i18n"]);
+  assert.deepEqual(localeAssets, ["./i18n/locales/en.js?v=15-runtime-notices"]);
   assert.ok(!localeAssets.some((entry) => entry.includes("/hbo.js")));
   assert.match(source, /const OPTIONAL_LOCALE_PATH = \/\\\/i18n\\\/locales/);
   assert.match(source, /await cache\.put\(event\.request, response\.clone\(\)\)/);
@@ -82,7 +82,7 @@ test("service worker precaches the core shell but not optional locale resources"
   const html = await readFile(path.join(DOCS, "index.html"), "utf8");
   for (const entry of [
     "./styles.css?v=13-reverse-i18n",
-    "./app.js?v=14-lazy-i18n",
+    "./app.js?v=15-runtime-notices",
     "./manifest.webmanifest?v=8-year-structure",
   ]) {
     assert.ok(html.includes(entry), `index.html must request the revisioned asset ${entry}`);
@@ -96,7 +96,7 @@ test("service worker precaches the core shell but not optional locale resources"
 test("registry contains only dynamic locale imports", async () => {
   const source = await readFile(path.join(DOCS, "i18n", "registry.js"), "utf8");
   assert.doesNotMatch(source, /^import\s+\w+\s+from\s+["']\.\/locales\//m);
-  const dynamicImports = [...source.matchAll(/import\(["']\.\/locales\/([^"'?]+)\.js\?v=14-lazy-i18n["']\)/g)].map((match) => match[1]);
+  const dynamicImports = [...source.matchAll(/import\(["']\.\/locales\/([^"'?]+)\.js\?v=15-runtime-notices["']\)/g)].map((match) => match[1]);
   assert.deepEqual(dynamicImports, LOCALES.map(({ code }) => code));
 });
 

@@ -13,7 +13,7 @@ test("Pages markup exposes one reverse-search mount point", async () => {
   assert.equal((html.match(/id="reverse-app"/g) || []).length, 1);
   assert.match(html, /id="reverse-panel"/);
   assert.match(html, /styles\.css\?v=13-reverse-i18n/);
-  assert.match(html, /app\.js\?v=14-lazy-i18n/);
+  assert.match(html, /app\.js\?v=15-runtime-notices/);
 });
 
 test("app wires reverse results back into the canonical calendar state", async () => {
@@ -28,7 +28,7 @@ test("app wires reverse results back into the canonical calendar state", async (
 test("service worker precaches every module required by offline reverse search", async () => {
   const source = await read("docs/sw.js");
   for (const asset of [
-    "./reverse-ui.js?v=14-lazy-i18n",
+    "./reverse-ui.js?v=15-runtime-notices",
     "./reverse-search-controller.js",
     "./engine/pastafari-calendar-fast.js",
     "./engine/pastafari-constraints-client.js",
