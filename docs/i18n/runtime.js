@@ -1,6 +1,6 @@
 "use strict";
 
-import { LOCALES, getLocale, resolveLocale, translate } from "./registry.js?v=15-runtime-notices";
+import { LOCALES, getLocale, resolveLocale, translate } from "./registry.js?v=16-support-levels";
 
 export const LANGUAGE_STORAGE_KEY = "pastafari.language";
 

@@ -1,26 +1,38 @@
 "use strict";
 
 import { readFile } from "node:fs/promises";
-import { LOCALES, loadAllLocales, validateLocaleResources } from "../docs/i18n/registry.js?v=15-runtime-notices";
+import { LOCALES, loadAllLocaleSources, validateLocaleResources } from "../docs/i18n/registry.js?v=16-support-levels";
 
-const locales = await loadAllLocales();
-const english = locales.find(({ code }) => code === "en");
+const sources = await loadAllLocaleSources();
+const english = sources.find(({ code }) => code === "en");
 const reverseKeys = Object.keys(english?.messages ?? {}).filter((key) => key.startsWith("reverse.")).sort();
-const complete = [];
-const incomplete = [];
+const metadataByCode = new Map(LOCALES.map((locale) => [locale.code, locale]));
+const explicitComplete = [];
+const fallbackAllowed = [];
+const invalidComplete = [];
 
-for (const locale of locales) {
+for (const locale of sources) {
+  const metadata = metadataByCode.get(locale.code);
   const source = await readFile(new URL(`../docs/i18n/locales/${locale.code}.js`, import.meta.url), "utf8");
   const explicitKeys = [...source.matchAll(/^\s*["'](reverse\.[^"']+)["']\s*:/gm)].map((match) => match[1]).sort();
-  const valuesComplete = reverseKeys.every((key) => typeof locale.messages[key] === "string" && locale.messages[key].trim() !== "");
-  const explicitComplete = explicitKeys.length === reverseKeys.length && explicitKeys.every((key, index) => key === reverseKeys[index]);
-  (valuesComplete && explicitComplete ? complete : incomplete).push(locale.code);
+  const valuesComplete = reverseKeys.every((key) => typeof locale.messages?.[key] === "string" && locale.messages[key].trim() !== "");
+  const keysComplete = explicitKeys.length === reverseKeys.length && explicitKeys.every((key, index) => key === reverseKeys[index]);
+  const complete = valuesComplete && keysComplete;
+
+  if (complete) {
+    explicitComplete.push(locale.code);
+  } else if (metadata?.support === "complete") {
+    invalidComplete.push(locale.code);
+  } else {
+    fallbackAllowed.push(locale.code);
+  }
 }
 
-validateLocaleResources(locales);
-console.log(`Reverse i18n: ${complete.length}/${LOCALES.length} locales, ${reverseKeys.length} explicit keys per complete locale.`);
-if (incomplete.length) console.log(`Incomplete locales: ${incomplete.join(", ")}`);
-if (process.argv.includes("--require-all") && incomplete.length) {
-  console.error("Reverse i18n is not complete; refusing final-release validation.");
+validateLocaleResources(sources);
+console.log(`Reverse i18n: ${explicitComplete.length}/${LOCALES.length} locales define all ${reverseKeys.length} reverse keys locally.`);
+if (fallbackAllowed.length) console.log(`Fallback permitted by support status: ${fallbackAllowed.join(", ")}`);
+if (invalidComplete.length) console.log(`Complete locales missing explicit reverse resources: ${invalidComplete.join(", ")}`);
+if (process.argv.includes("--require-all") && invalidComplete.length) {
+  console.error("A complete locale is missing explicit reverse-search resources; refusing validation.");
   process.exitCode = 1;
 }

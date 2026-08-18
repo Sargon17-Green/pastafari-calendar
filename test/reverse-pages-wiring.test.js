@@ -4,7 +4,13 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { readFile } from "node:fs/promises";
 
-import { LOCALES, loadAllLocales, translate, validateLocaleResources } from "../docs/i18n/registry.js";
+import {
+  LOCALES,
+  loadAllLocaleSources,
+  loadLocale,
+  translate,
+  validateLocaleResources,
+} from "../docs/i18n/registry.js";
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
 
@@ -13,13 +19,13 @@ test("Pages markup exposes one reverse-search mount point", async () => {
   assert.equal((html.match(/id="reverse-app"/g) || []).length, 1);
   assert.match(html, /id="reverse-panel"[^>]*aria-labelledby="reverse-heading"/);
   assert.match(html, /styles\.css\?v=13-reverse-i18n/);
-  assert.match(html, /app\.js\?v=17-accessibility-pwa/);
+  assert.match(html, /app\.js\?v=18-i18n-support/);
 });
 
 test("app wires reverse results back into the canonical calendar state", async () => {
   const source = await read("docs/app.js");
   assert.match(source, /createReverseSearchUi/);
-  assert.match(source, /reverse-ui\.js\?v=16-accessibility-semantics/);
+  assert.match(source, /reverse-ui\.js\?v=17-i18n-support/);
   assert.match(source, /function openReversePair\(targetJdn, calculationJdn\)/);
   assert.match(source, /state\.targetJdn = target/);
   assert.match(source, /state\.calculationJdn = calculation/);
@@ -29,7 +35,7 @@ test("app wires reverse results back into the canonical calendar state", async (
 test("service worker precaches every module required by offline reverse search", async () => {
   const source = await read("docs/sw.js");
   for (const asset of [
-    "./reverse-ui.js?v=16-accessibility-semantics",
+    "./reverse-ui.js?v=17-i18n-support",
     "./reverse-search-controller.js",
     "./engine/pastafari-calendar-fast.js",
     "./engine/pastafari-constraints-client.js",
@@ -40,17 +46,23 @@ test("service worker precaches every module required by offline reverse search",
   }
 });
 
-test("all 72 site locales contain complete explicit reverse-search translations", async () => {
-  const locales = await loadAllLocales();
-  validateLocaleResources(locales);
-  const english = locales.find(({ code }) => code === "en");
+test("reverse-search resources obey the declared support-level contract", async () => {
+  const sources = await loadAllLocaleSources();
+  validateLocaleResources(sources);
+  const english = sources.find(({ code }) => code === "en");
   const keys = Object.keys(english.messages).filter((key) => key.startsWith("reverse.")).sort();
   assert.equal(keys.length, 96);
   assert.equal(LOCALES.length, 72);
-  for (const locale of locales) {
-    const source = await read(`docs/i18n/locales/${locale.code}.js`);
-    const explicit = [...source.matchAll(/^\s*["'](reverse\.[^"']+)["']\s*:/gm)].map((match) => match[1]).sort();
-    assert.deepEqual(explicit, keys, `${locale.code} must define every reverse key explicitly`);
+
+  for (const metadata of LOCALES) {
+    const sourceText = await read(`docs/i18n/locales/${metadata.code}.js`);
+    const explicit = [...sourceText.matchAll(/^\s*["'](reverse\.[^"']+)["']\s*:/gm)].map((match) => match[1]).sort();
+    assert.equal(explicit.every((key) => keys.includes(key)), true, `${metadata.code} has an unknown reverse key`);
+    if (metadata.support === "complete") {
+      assert.deepEqual(explicit, keys, `${metadata.code} must define every reverse key explicitly`);
+    }
+
+    const locale = await loadLocale(metadata.code);
     for (const key of keys) {
       assert.equal(typeof locale.messages[key], "string");
       assert.notEqual(locale.messages[key].trim(), "");

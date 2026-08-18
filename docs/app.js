@@ -19,7 +19,7 @@ import {
   locationUseDeviceLabel,
   staleDayWarning,
   translate,
-} from "./i18n/registry.js?v=15-runtime-notices";
+} from "./i18n/registry.js?v=16-support-levels";
 import {
   KISURRA_OBSERVER,
   requestObserverLocation,
@@ -27,14 +27,14 @@ import {
   watchObserverPermission,
 } from "./observer-location.js?v=10-venus-day-boundary";
 import { currentDayAt } from "./venus-day-boundary.js?v=10-venus-day-boundary";
-import { createReverseSearchUi } from "./reverse-ui.js?v=16-accessibility-semantics";
+import { createReverseSearchUi } from "./reverse-ui.js?v=17-i18n-support";
 import {
   applyDocumentLocale,
   persistLanguage,
   populateLanguageSelector,
   resolveBrowserLocale,
   urlWithLanguage,
-} from "./i18n/runtime.js?v=15-runtime-notices";
+} from "./i18n/runtime.js?v=16-support-levels";
 
 
 const ASSET_REVISION = "8-year-structure";

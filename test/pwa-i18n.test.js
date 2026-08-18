@@ -50,8 +50,8 @@ test("service worker precaches the core shell but not optional locale resources"
   const required = [
     "./index.html",
     "./styles.css?v=13-reverse-i18n",
-    "./app.js?v=17-accessibility-pwa",
-    "./reverse-ui.js?v=16-accessibility-semantics",
+    "./app.js?v=18-i18n-support",
+    "./reverse-ui.js?v=17-i18n-support",
     "./reverse-search-controller.js",
     "./calendar-converters.js?v=8-year-structure",
     "./observer-location.js?v=10-venus-day-boundary",
@@ -63,8 +63,8 @@ test("service worker precaches the core shell but not optional locale resources"
     "./engine/pastafari-constraints.js",
     "./engine/pastafari-reverse-worker.js",
     "./i18n/calendar-identifiers.js?v=8-year-structure",
-    "./i18n/registry.js?v=15-runtime-notices",
-    "./i18n/runtime.js?v=15-runtime-notices",
+    "./i18n/registry.js?v=16-support-levels",
+    "./i18n/runtime.js?v=16-support-levels",
     "./i18n/locales/en.js?v=15-runtime-notices",
   ];
   for (const entry of required) assert.ok(assets.includes(entry), `${entry} is missing from the offline cache`);
@@ -82,7 +82,7 @@ test("service worker precaches the core shell but not optional locale resources"
   const html = await readFile(path.join(DOCS, "index.html"), "utf8");
   for (const entry of [
     "./styles.css?v=13-reverse-i18n",
-    "./app.js?v=17-accessibility-pwa",
+    "./app.js?v=18-i18n-support",
     "./manifest.webmanifest?v=8-year-structure",
   ]) {
     assert.ok(html.includes(entry), `index.html must request the revisioned asset ${entry}`);
