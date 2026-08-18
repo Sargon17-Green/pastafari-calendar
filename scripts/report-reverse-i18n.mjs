@@ -1,7 +1,7 @@
 "use strict";
 
 import { readFile } from "node:fs/promises";
-import { LOCALES, loadAllLocales, validateLocaleResources } from "../docs/i18n/registry.js?v=14-lazy-i18n";
+import { LOCALES, loadAllLocales, validateLocaleResources } from "../docs/i18n/registry.js?v=15-runtime-notices";
 
 const locales = await loadAllLocales();
 const english = locales.find(({ code }) => code === "en");
