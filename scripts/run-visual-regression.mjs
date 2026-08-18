@@ -714,13 +714,31 @@ async function loadingState(browser, baseURL, state) {
 
 async function engineErrorState(browser, baseURL, state) {
   await withTracedContext(browser, VIEWPORTS.desktop, "engine-error-state", async (page, context) => {
-    await context.route(/\/engine\/pastafari-fast-worker\.js(?:\?|$)/, (route) => route.abort("failed"));
+    // Do not abort the worker's initial module request here. A very fast startup
+    // failure can race the application's worker.error listener and make this
+    // fixture depend on event timing rather than the UI's engine-error path.
+    // Instead, load a deterministic worker stub that fails the first real
+    // application request through the normal message protocol.
+    await context.route(/\/engine\/pastafari-fast-worker\.js(?:\?|$)/, (route) => route.fulfill({
+      status: 200,
+      contentType: "application/javascript",
+      body: `
+        self.addEventListener("message", (event) => {
+          const id = event.data?.id;
+          self.postMessage({
+            id,
+            ok: false,
+            error: { name: "Error", message: "Forced visual-test engine failure" },
+          });
+        });
+      `,
+    }));
     await page.goto(fixedUrl(baseURL, { locale: "en" }), { waitUntil: "domcontentloaded" });
     await page.locator("#error-panel").waitFor({ state: "visible", timeout: 20_000 });
     await stabilizePage(page);
     await assertNoPageOverflow(page, "engine error state");
     await captureAndCompare(page, { name: "engine-error-en-desktop", selector: "#error-panel" }, state);
-  }, state, {}, [/pastafari-fast-worker/i, /worker/i, /failed/i]);
+  }, state, {}, [/Forced visual-test engine failure/i, /worker/i, /failed/i]);
 }
 
 async function breakpointChecks(browser, baseURL, state) {
