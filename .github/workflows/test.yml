@@ -18,6 +18,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: npm run docs:check
       - run: npm run check:reverse-i18n
       - run: npm run check:i18n
       - run: npm run build:standalone
