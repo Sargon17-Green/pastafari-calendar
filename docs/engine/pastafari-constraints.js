@@ -1,6 +1,13 @@
 "use strict";
 
 import {
+  beginDiagnosticOperation,
+  diagnosticTrace,
+  endDiagnosticOperation,
+  incrementDiagnosticCounter,
+  recordDiagnosticError,
+} from "./pastafari-diagnostics.js";
+import {
   GregorianDate,
   PastafariCalendar,
   SAME_AS_TARGET,
@@ -18,6 +25,7 @@ function fail(ErrorType, message, code, extra = {}) {
 }
 
 function abortError() {
+  incrementDiagnosticCounter("constraints.cancellations");
   const error = new Error("Pastafari constraint solving was aborted.");
   error.name = "AbortError";
   error.code = "ERR_REVERSE_ABORTED";
@@ -365,6 +373,7 @@ function propagateLinear(variables, constraints) {
   let any = false;
   let changed;
   do {
+    incrementDiagnosticCounter("constraints.propagation.passes");
     changed = false;
     for (const c of constraints) {
       if (c.type === "equal") {
@@ -503,7 +512,25 @@ export async function solvePastafariConstraintsDirect(problem, options = {}) {
   const linearConstraints = constraints.filter((c) => c.type !== "pastafari");
   const { components, adjacency } = tarjan([...variables.keys()], constraints);
   const cyclicComponents = components.filter((component) => isCyclicComponent(component, adjacency));
+  incrementDiagnosticCounter("constraints.solve.calls");
+  incrementDiagnosticCounter("constraints.variables", variables.size);
+  incrementDiagnosticCounter("constraints.constraints", constraints.length);
+  incrementDiagnosticCounter("constraints.cyclic-components", cyclicComponents.length);
+  diagnosticTrace("constraints", "solve-start", {
+    variables: variables.size,
+    constraints: constraints.length,
+    pastafariConstraints: pastafariConstraints.length,
+    cyclicComponents: cyclicComponents.length,
+  });
+  const solveToken = beginDiagnosticOperation("constraints", "solve", {
+    variables: variables.size,
+    constraints: constraints.length,
+    pastafariConstraints: pastafariConstraints.length,
+    cyclicComponents: cyclicComponents.length,
+  });
+  let diagnosticOutcome = "ok";
 
+  try {
   let progressScanned = 0n;
   let reverseCalls = 0n;
   let forwardVerifications = 0n;
@@ -523,6 +550,7 @@ export async function solvePastafariConstraintsDirect(problem, options = {}) {
       return false;
     }
     progressScanned += 1n;
+    incrementDiagnosticCounter("constraints.scanned");
     if (progressScanned % BigInt(yieldEvery) === 0n) {
       report(phase, false);
       await breathe();
@@ -567,6 +595,7 @@ export async function solvePastafariConstraintsDirect(problem, options = {}) {
       });
       progressScanned = progressBase + diagonalTotal;
       reverseCalls += 1n;
+      incrementDiagnosticCounter("constraints.reverse-calls");
       for (const candidate of found) {
         if (!hasValue(domain, candidate.targetJdn)) continue;
         relation.pairs.set(pairKey(candidate.calculationJdn, candidate.targetJdn), candidate);
@@ -590,6 +619,7 @@ export async function solvePastafariConstraintsDirect(problem, options = {}) {
       relation.scannedCalculations.add(key);
       const found = await findPastafariDate(c.wanted, { calculationJdn, signal: options.signal });
       reverseCalls += 1n;
+      incrementDiagnosticCounter("constraints.reverse-calls");
       for (const candidate of found) {
         relation.pairs.set(pairKey(candidate.calculationJdn, candidate.targetJdn), candidate);
       }
@@ -684,6 +714,7 @@ export async function solvePastafariConstraintsDirect(problem, options = {}) {
       const calculationJdn = c.calculation.kind === "absolute" ? c.calculation.jdn : assignment.get(c.calculation.name);
       const actual = calendar.convertJdn(targetJdn, { calculationJdn });
       forwardVerifications += 1n;
+      incrementDiagnosticCounter("constraints.forward-verifications");
       if (!samePastafari(actual, c.wanted)) return false;
     }
     return true;
@@ -709,7 +740,10 @@ export async function solvePastafariConstraintsDirect(problem, options = {}) {
     for (const value of valuesByVariable.get(name)) {
       assignment.set(name, value);
       if (partialConsistent()) await search(depth + 1);
-      else pruned += 1n;
+      else {
+        pruned += 1n;
+        incrementDiagnosticCounter("constraints.pruned");
+      }
       assignment.delete(name);
       if (stopped) return;
       if (progressScanned % BigInt(yieldEvery) === 0n) await breathe();
@@ -719,6 +753,17 @@ export async function solvePastafariConstraintsDirect(problem, options = {}) {
   if (!stopped) await search(0);
   const complete = !stopped;
   const termination = complete ? "complete" : maxSolutions !== null && solutions.length >= maxSolutions ? "max-solutions" : "max-scanned";
+  incrementDiagnosticCounter(`constraints.termination.${termination}`);
+  incrementDiagnosticCounter("constraints.solutions", solutions.length);
+  diagnosticTrace("constraints", "solve-end", {
+    termination,
+    scanned: progressScanned,
+    candidates: candidateAssignments,
+    solutions: solutions.length,
+    reverseCalls,
+    forwardVerifications,
+    pruned,
+  });
   report("done", complete, solutions.length);
   return Object.freeze({
     solutions: Object.freeze(solutions.slice()),
@@ -735,4 +780,11 @@ export async function solvePastafariConstraintsDirect(problem, options = {}) {
       relationPairs: BigInt([...relations.values()].reduce((sum, relation) => sum + relation.pairs.size, 0)),
     }),
   });
+  } catch (error) {
+    diagnosticOutcome = error?.name === "AbortError" ? "cancelled" : "error";
+    recordDiagnosticError("constraints", error, solveToken?.id, { phase: "solve" });
+    throw error;
+  } finally {
+    endDiagnosticOperation(solveToken, diagnosticOutcome);
+  }
 }

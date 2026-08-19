@@ -1,5 +1,16 @@
 "use strict";
 
+import {
+  beginDiagnosticOperation,
+  diagnosticTrace,
+  endDiagnosticOperation,
+  incrementDiagnosticCounter,
+  recordDiagnosticCacheEviction,
+  recordDiagnosticCacheLookup,
+  recordDiagnosticError,
+  setDiagnosticGauge,
+} from "./pastafari-diagnostics.js";
+
 // Corrected build: final mixing uses orderNumber; gate checkpoints regenerated.
 
 // Efficient, standalone implementation of the algorithm in "מגילת העיתים".
@@ -151,13 +162,18 @@ function freezePlainDateJSON(value) {
 }
 
 class LruMap {
-  constructor(limit) {
+  constructor(limit, diagnosticName = null) {
     this.limit = limit;
+    this.diagnosticName = diagnosticName;
     this.map = new Map();
   }
 
   get(key) {
     const value = this.map.get(key);
+    if (this.diagnosticName) {
+      recordDiagnosticCacheLookup(this.diagnosticName, value !== undefined);
+      setDiagnosticGauge(`${this.diagnosticName}.size`, this.map.size);
+    }
     if (value === undefined) return undefined;
     this.map.delete(key);
     this.map.set(key, value);
@@ -165,16 +181,29 @@ class LruMap {
   }
 
   set(key, value) {
-    if (this.map.has(key)) this.map.delete(key);
+    const replacing = this.map.has(key);
+    if (replacing) this.map.delete(key);
     this.map.set(key, value);
+    if (this.diagnosticName) {
+      incrementDiagnosticCounter(`${this.diagnosticName}.${replacing ? "replacement" : "insertion"}`);
+      setDiagnosticGauge(`${this.diagnosticName}.size`, this.map.size);
+    }
     if (this.map.size > this.limit) {
       const oldest = this.map.keys().next().value;
       this.map.delete(oldest);
+      if (this.diagnosticName) {
+        recordDiagnosticCacheEviction(this.diagnosticName);
+        setDiagnosticGauge(`${this.diagnosticName}.size`, this.map.size);
+      }
     }
   }
 
   clear() {
     this.map.clear();
+    if (this.diagnosticName) {
+      incrementDiagnosticCounter(`${this.diagnosticName}.clear`);
+      setDiagnosticGauge(`${this.diagnosticName}.size`, 0);
+    }
   }
 
   get size() {
@@ -482,8 +511,8 @@ function chooseUniform(sauceResult, bowlId, seal, count) {
   return ((accepted - 1n) % count) + 1n;
 }
 
-const gateDistanceCache = new LruMap(4096);
-const dynamicGatePositions = new LruMap(4096);
+const gateDistanceCache = new LruMap(4096, "fast.cache.gate-distance");
+const dynamicGatePositions = new LruMap(4096, "fast.cache.gate-position");
 dynamicGatePositions.set(0n, FOUNDATION_JDN);
 
 // Build-time generated checkpoints are inserted here. The zero checkpoint alone is
@@ -564,13 +593,22 @@ function gatePosition(index) {
   const cached = dynamicGatePositions.get(index);
   if (cached !== undefined) return cached;
   const checkpoint = nearestCheckpoint(index);
-  let currentIndex = BigInt(checkpoint[0]);
+  const checkpointIndex = BigInt(checkpoint[0]);
+  let currentIndex = checkpointIndex;
   let position = checkpoint[1];
+  let steps = 0;
+  incrementDiagnosticCounter("fast.checkpoint.lookups");
+  incrementDiagnosticCounter("fast.checkpoint.static-starts");
+  setDiagnosticGauge("fast.checkpoint.last.selected-index", checkpointIndex);
+  setDiagnosticGauge("fast.checkpoint.last.target-index", index);
+  setDiagnosticGauge("fast.checkpoint.last.distance", index >= checkpointIndex ? index - checkpointIndex : checkpointIndex - index);
+  setDiagnosticGauge("fast.checkpoint.last.direction", currentIndex < index ? "forward" : currentIndex > index ? "backward" : "exact");
   if (currentIndex < index) {
     while (currentIndex < index) {
       if (currentIndex < 0n) position += BigInt(gateDistance(currentIndex));
       else position += BigInt(gateDistance(currentIndex + 1n));
       currentIndex += 1n;
+      steps += 1;
       dynamicGatePositions.set(currentIndex, position);
     }
   } else {
@@ -578,9 +616,19 @@ function gatePosition(index) {
       if (currentIndex > 0n) position -= BigInt(gateDistance(currentIndex));
       else position -= BigInt(gateDistance(currentIndex - 1n));
       currentIndex -= 1n;
+      steps += 1;
       dynamicGatePositions.set(currentIndex, position);
     }
   }
+  incrementDiagnosticCounter("fast.checkpoint.steps", steps);
+  diagnosticTrace("fast", "checkpoint-traversal", {
+    targetIndex: index,
+    checkpointIndex,
+    distance: index >= checkpointIndex ? index - checkpointIndex : checkpointIndex - index,
+    direction: checkpointIndex < index ? "forward" : checkpointIndex > index ? "backward" : "exact",
+    steps,
+    checkpointSource: "static-precomputed",
+  });
   return position;
 }
 
@@ -928,8 +976,8 @@ function interleavingCount(lengths) {
 class CalculationState {
   constructor(calculationJdn) {
     this.calculationJdn = calculationJdn;
-    this.sauceCache = new LruMap(64);
-    this.structureCache = new LruMap(8);
+    this.sauceCache = new LruMap(64, "fast.cache.sauce");
+    this.structureCache = new LruMap(8, "fast.cache.structure");
     this.yearsByNumber = new Map();
     this.year5000 = null;
   }
@@ -944,8 +992,13 @@ class CalculationState {
   }
 
   getYear5000() {
-    if (this.year5000 !== null) return this.year5000;
+    if (this.year5000 !== null) {
+      recordDiagnosticCacheLookup("fast.cache.year-5000", true);
+      return this.year5000;
+    }
+    recordDiagnosticCacheLookup("fast.cache.year-5000", false);
     const candidates = enumerateYear5000Candidates(this.calculationJdn);
+    incrementDiagnosticCounter("fast.year-5000.candidates", candidates.length);
     if (candidates.length === 0) {
       fail(Error, "No valid year-5000 candidate was found.", "ERR_YEAR_5000");
     }
@@ -953,7 +1006,10 @@ class CalculationState {
     const selected = candidates[Number(choice - 1n)];
     const year = yearObject(5000n, selected.p, selected.q);
     this.year5000 = year;
+    incrementDiagnosticCounter("fast.cache.year-5000.insertion");
     this.yearsByNumber.set("5000", year);
+    incrementDiagnosticCounter("fast.cache.year-by-number.insertion");
+    setDiagnosticGauge("fast.cache.year-by-number.size", this.yearsByNumber.size);
     return year;
   }
 
@@ -961,13 +1017,18 @@ class CalculationState {
     const number = year.number + 1n;
     const key = number.toString();
     const cached = this.yearsByNumber.get(key);
+    recordDiagnosticCacheLookup("fast.cache.year-by-number", cached !== undefined);
+    setDiagnosticGauge("fast.cache.year-by-number.size", this.yearsByNumber.size);
     if (cached !== undefined) return cached;
     const candidates = enumerateNextYears(year.q);
+    incrementDiagnosticCounter("fast.year.candidates.next", candidates.length);
     const s = this.getSauce(gatePosition(year.q));
     const choice = chooseUniform(s, 0, 11, BigInt(candidates.length));
     const selected = candidates[Number(choice - 1n)];
     const result = yearObject(number, year.q, selected.q);
     this.yearsByNumber.set(key, result);
+    incrementDiagnosticCounter("fast.cache.year-by-number.insertion");
+    setDiagnosticGauge("fast.cache.year-by-number.size", this.yearsByNumber.size);
     return result;
   }
 
@@ -975,24 +1036,61 @@ class CalculationState {
     const number = year.number - 1n;
     const key = number.toString();
     const cached = this.yearsByNumber.get(key);
+    recordDiagnosticCacheLookup("fast.cache.year-by-number", cached !== undefined);
+    setDiagnosticGauge("fast.cache.year-by-number.size", this.yearsByNumber.size);
     if (cached !== undefined) return cached;
     const candidates = enumeratePreviousYears(year.p);
+    incrementDiagnosticCounter("fast.year.candidates.previous", candidates.length);
     const s = this.getSauce(gatePosition(year.p));
     const choice = chooseUniform(s, 0, 12, BigInt(candidates.length));
     const selected = candidates[Number(choice - 1n)];
     const result = yearObject(number, selected.p, year.p);
     this.yearsByNumber.set(key, result);
+    incrementDiagnosticCounter("fast.cache.year-by-number.insertion");
+    setDiagnosticGauge("fast.cache.year-by-number.size", this.yearsByNumber.size);
     return result;
   }
 
   findYear(targetJdn) {
-    let year = this.getYear5000();
-    if (targetJdn < year.startJdn) {
-      while (targetJdn < year.startJdn) year = this.previousYear(year);
-    } else {
-      while (targetJdn > year.endJdn) year = this.nextYear(year);
+    const token = beginDiagnosticOperation("fast", "find-year", {
+      targetDistanceFromCalculation: targetJdn - this.calculationJdn,
+    });
+    let steps = 0;
+    let direction = "anchor";
+    try {
+      let year = this.getYear5000();
+      if (targetJdn < year.startJdn) {
+        direction = "previous";
+        while (targetJdn < year.startJdn) {
+          year = this.previousYear(year);
+          steps += 1;
+        }
+      } else if (targetJdn > year.endJdn) {
+        direction = "next";
+        while (targetJdn > year.endJdn) {
+          year = this.nextYear(year);
+          steps += 1;
+        }
+      }
+      incrementDiagnosticCounter("fast.year-traversal.steps", steps);
+      incrementDiagnosticCounter(`fast.year-traversal.direction.${direction}`);
+      setDiagnosticGauge("fast.year-traversal.last.start-year", 5000);
+      setDiagnosticGauge("fast.year-traversal.last.resolved-year", year.number);
+      setDiagnosticGauge("fast.year-traversal.last.steps", steps);
+      setDiagnosticGauge("fast.year-traversal.last.direction", direction);
+      endDiagnosticOperation(token, "ok", {
+        startYear: 5000,
+        resolvedYear: year.number,
+        targetJdn,
+        steps,
+        direction,
+      });
+      return year;
+    } catch (error) {
+      recordDiagnosticError("fast", error, token?.id, { phase: "find-year", steps, direction });
+      endDiagnosticOperation(token, "error", { steps, direction });
+      throw error;
     }
-    return year;
   }
 
   getStructure(year) {
@@ -1007,13 +1105,31 @@ class CalculationState {
   materialize(targetJdn) {
     const year = this.findYear(targetJdn);
     const structure = this.getStructure(year);
-    return materializeFromStructure(year, structure, targetJdn);
+    const token = beginDiagnosticOperation("fast", "resolve-date", { year: year.number });
+    try {
+      const result = materializeFromStructure(year, structure, targetJdn);
+      endDiagnosticOperation(token, "ok");
+      return result;
+    } catch (error) {
+      recordDiagnosticError("fast", error, token?.id, { phase: "resolve-date" });
+      endDiagnosticOperation(token, "error");
+      throw error;
+    }
   }
 }
 
 function buildYearStructure(state, year) {
+  const token = beginDiagnosticOperation("fast", "build-year-structure", {
+    length: year.length,
+    gaps: year.gaps,
+  });
+  let activePhaseToken = null;
+  let activePhase = "initialize";
+  try {
   const s = state.getSauce(year.startJdn);
   const gapCount = year.gaps;
+  activePhase = "construct-cutlets";
+  activePhaseToken = beginDiagnosticOperation("fast", activePhase, { gapCount });
   const cutletCounts = [];
   for (let n = 6; n <= 17 && n <= gapCount; n += 1) cutletCounts.push(n);
   const cutletCountChoice = chooseUniform(s, 1, 20, BigInt(cutletCounts.length));
@@ -1037,7 +1153,11 @@ function buildYearStructure(state, year) {
   const cutletNameCount = permutationsCount(CUTLET_NAMES.length, cutletCount);
   const cutletNameChoice = chooseUniform(s, 4, 22, cutletNameCount);
   const cutletNames = unrankPermutationNames(CUTLET_NAMES, cutletCount, cutletNameChoice);
+  endDiagnosticOperation(activePhaseToken, "ok", { cutletCount, mandatoryCut: mandatoryCut !== null });
+  activePhaseToken = null;
 
+  activePhase = "construct-months";
+  activePhaseToken = beginDiagnosticOperation("fast", activePhase, { yearLength: year.length });
   const minMonths = Math.ceil(year.length / 123);
   const maxMonths = Math.min(47, Math.floor(year.length / 4));
   const monthCountOptions = maxMonths - minMonths + 1;
@@ -1063,7 +1183,11 @@ function buildYearStructure(state, year) {
     seen[month] += 1;
     dayInMonth[i] = seen[month];
   }
+  endDiagnosticOperation(activePhaseToken, "ok", { monthCount, weaveLength: monthWeave.length });
+  activePhaseToken = null;
 
+  activePhase = "resolve-cutlet-boundaries";
+  activePhaseToken = beginDiagnosticOperation("fast", activePhase, { cutletCount });
   const cutletStartOffsets = new Uint16Array(cutletCount);
   const cutletEndOffsets = new Uint16Array(cutletCount);
   let gapOffset = 0;
@@ -1075,8 +1199,10 @@ function buildYearStructure(state, year) {
     dayOffset = Number(endJdn - year.startJdn + 1n);
     cutletEndOffsets[i] = dayOffset - 1;
   }
+  endDiagnosticOperation(activePhaseToken, "ok", { cutletCount });
+  activePhaseToken = null;
 
-  return Object.freeze({
+  const result = Object.freeze({
     cutletCount,
     cutletGaps: Object.freeze(cutletGaps.slice()),
     cutletNames: Object.freeze(cutletNames.slice()),
@@ -1088,6 +1214,14 @@ function buildYearStructure(state, year) {
     monthWeave,
     dayInMonth,
   });
+  endDiagnosticOperation(token, "ok", { cutletCount, monthCount });
+  return result;
+  } catch (error) {
+    if (activePhaseToken) endDiagnosticOperation(activePhaseToken, "error", { phase: activePhase });
+    recordDiagnosticError("fast", error, token?.id, { phase: activePhase });
+    endDiagnosticOperation(token, "error", { phase: activePhase });
+    throw error;
+  }
 }
 
 function findCutletByOffset(structure, offset) {
@@ -1115,8 +1249,8 @@ function materializeFromStructure(year, structure, targetJdn) {
   );
 }
 
-const calculationStates = new LruMap(4);
-const resultCache = new LruMap(1024);
+const calculationStates = new LruMap(4, "fast.cache.calculation-state");
+const resultCache = new LruMap(1024, "fast.cache.result");
 let cacheHits = 0;
 let cacheMisses = 0;
 
@@ -1131,18 +1265,29 @@ function getCalculationState(calculationJdn) {
 }
 
 function convertWithGlobalCache(targetJdn, calculationJdn) {
+  const token = beginDiagnosticOperation("fast", "convert", {
+    targetDistanceFromCalculation: targetJdn - calculationJdn,
+  });
   const key = `${ALGORITHM_ID}|${calculationJdn}|${targetJdn}`;
-  const cached = resultCache.get(key);
-  if (cached !== undefined) {
-    cacheHits += 1;
-    return new PastafariDate(
-      BigInt(cached.year), cached.cutletName, cached.dayInCutlet, cached.monthName, cached.dayInMonth,
-    );
+  try {
+    const cached = resultCache.get(key);
+    if (cached !== undefined) {
+      cacheHits += 1;
+      endDiagnosticOperation(token, "cache-hit");
+      return new PastafariDate(
+        BigInt(cached.year), cached.cutletName, cached.dayInCutlet, cached.monthName, cached.dayInMonth,
+      );
+    }
+    cacheMisses += 1;
+    const result = getCalculationState(calculationJdn).materialize(targetJdn);
+    resultCache.set(key, freezePlainDateJSON(result.toJSON()));
+    endDiagnosticOperation(token, "cache-miss");
+    return result;
+  } catch (error) {
+    recordDiagnosticError("fast", error, token?.id, { phase: "convert" });
+    endDiagnosticOperation(token, "error");
+    throw error;
   }
-  cacheMisses += 1;
-  const result = getCalculationState(calculationJdn).materialize(targetJdn);
-  resultCache.set(key, freezePlainDateJSON(result.toJSON()));
-  return result;
 }
 
 export class PastafariCalendar {
@@ -1201,6 +1346,7 @@ export class PastafariCalendar {
 }
 
 export function getCutletView(targetJdn, options) {
+  const token = beginDiagnosticOperation("fast", "get-cutlet-view");
   requireBigInt(targetJdn, "targetJdn");
   if (options === null || typeof options !== "object") {
     fail(TypeError, "getCutletView options must be an object.", "ERR_OPTIONS");
@@ -1229,7 +1375,7 @@ export function getCutletView(targetJdn, options) {
     });
   }
   Object.freeze(days);
-  return Object.freeze({
+  const result = Object.freeze({
     selectedJdn: targetJdn,
     selectedIndex: Number(targetJdn - startJdn),
     startJdn,
@@ -1240,9 +1386,13 @@ export function getCutletView(targetJdn, options) {
     cutletName: structure.cutletNames[cutlet],
     days,
   });
+  incrementDiagnosticCounter("fast.cutlet-view.days", days.length);
+  endDiagnosticOperation(token, "ok", { days: days.length });
+  return result;
 }
 
 export function convertJdnRange(startJdn, count, options) {
+  const token = beginDiagnosticOperation("fast", "convert-range", { count });
   requireBigInt(startJdn, "startJdn");
   if (!Number.isSafeInteger(count) || count < 0) {
     fail(RangeError, "count must be a non-negative safe integer.", "ERR_RANGE_COUNT");
@@ -1257,10 +1407,13 @@ export function convertJdnRange(startJdn, count, options) {
   for (let i = 0; i < count; i += 1, jdn += 1n) {
     result[i] = freezePlainDateJSON(state.materialize(jdn).toJSON());
   }
+  incrementDiagnosticCounter("fast.range.days", count);
+  endDiagnosticOperation(token, "ok", { count });
   return Object.freeze(result);
 }
 
 export function clearFastCache() {
+  incrementDiagnosticCounter("fast.cache.clear");
   calculationStates.clear();
   resultCache.clear();
   gateDistanceCache.clear();
@@ -1385,6 +1538,7 @@ function inverseCandidate(targetJdn, calculationJdn) {
 // R0: the original reverse path.  It deliberately knows nothing about
 // recursion, "today", calendar conversion or c=t.
 function reverseWithKnownCalculation(wanted, calculationJdn) {
+  incrementDiagnosticCounter("reverse.known-calculation.calls");
   const state = getCalculationState(calculationJdn);
   let year = state.getYear5000();
   while (year.number < wanted.year) year = state.nextYear(year);
@@ -1580,6 +1734,7 @@ async function letTheEventLoopBreathe() {
 
 // R4 diagonal escape, with the R5 sieve grafted onto it.
 async function diagonalEscape(wanted, range, context) {
+  incrementDiagnosticCounter("reverse.path.same-as-target");
   const { startJdn, endJdn } = await normalizeDiagonalRange(range, context);
   if (wanted.year !== 5000n) return Object.freeze([]);
 
@@ -1590,6 +1745,7 @@ async function diagonalEscape(wanted, range, context) {
     if (context.signal?.aborted) throw reverseAbortError();
     const cheap = diagonalCutletSieve(jdn);
     scanned += 1n;
+    incrementDiagnosticCounter("reverse.diagonal.scanned");
     if (
       cheap.year === wanted.year
       && cheap.cutletName === wanted.cutletName
@@ -1598,7 +1754,10 @@ async function diagonalEscape(wanted, range, context) {
       // R8 is intentionally a complete conversion, even though R5 already
       // repeated a substantial part of the work.
       const forward = convertWithGlobalCache(jdn, jdn);
-      if (samePastafariValue(forward, wanted)) results.push(inverseCandidate(jdn, jdn));
+      if (samePastafariValue(forward, wanted)) {
+        results.push(inverseCandidate(jdn, jdn));
+        incrementDiagnosticCounter("reverse.matches");
+      }
     }
 
     if (context.onProgress && (scanned % BigInt(context.yieldEvery) === 0n || scanned === total)) {
@@ -1653,6 +1812,7 @@ async function reverseThroughDetours(wanted, calculationSpec, localRange, contex
   }
 
   if (isPastafariLike(calculationSpec)) {
+    incrementDiagnosticCounter("reverse.path.nested-pastafari");
     // R7 breadcrumbs use identity, not equality of the five date fields: two
     // equal-looking dates in a finite nested chain are not themselves a cycle.
     if (typeof calculationSpec === "object" && calculationSpec !== null) {
@@ -1694,6 +1854,7 @@ async function reverseThroughDetours(wanted, calculationSpec, localRange, contex
   }
 
   // R2, reached only after the Pastafari detour has declined the input.
+  incrementDiagnosticCounter("reverse.path.absolute-side-door");
   const calculationJdn = await absoluteDayThroughSideDoors(calculationSpec, "calculationDate");
   return reverseWithKnownCalculation(wanted, calculationJdn);
 }
@@ -1712,6 +1873,7 @@ async function reverseThroughDetours(wanted, calculationSpec, localRange, contex
  *   { calendar: "pastafari", date, calculationDate, searchRange }
  */
 export async function findPastafariDate(pastafariDate, options = {}) {
+  const token = beginDiagnosticOperation("reverse", "find");
   if (options === null || typeof options !== "object") {
     fail(TypeError, "findPastafariDate options must be an object.", "ERR_OPTIONS");
   }
@@ -1746,7 +1908,17 @@ export async function findPastafariDate(pastafariDate, options = {}) {
   const calculationSpec = options.calculationJdn === undefined
     ? options.calculationDate
     : { jdn: options.calculationJdn };
-  return deduplicateReverseCandidates(
-    await reverseThroughDetours(wanted, calculationSpec, options.searchRange, context),
-  );
+  try {
+    const result = deduplicateReverseCandidates(
+      await reverseThroughDetours(wanted, calculationSpec, options.searchRange, context),
+    );
+    incrementDiagnosticCounter("reverse.results", result.length);
+    endDiagnosticOperation(token, "ok", { matches: result.length });
+    return result;
+  } catch (error) {
+    const outcome = error?.name === "AbortError" ? "cancelled" : "error";
+    recordDiagnosticError("reverse", error, token?.id);
+    endDiagnosticOperation(token, outcome);
+    throw error;
+  }
 }

@@ -13,9 +13,11 @@ const DOCS_ENGINE_DIR = path.join(ROOT, "docs", "engine");
 
 const COPIED_FILES = Object.freeze([
   "pastafari-calendar-fast.js",
+  "pastafari-fast-worker.js",
   "pastafari-constraints-client.js",
   "pastafari-constraints.js",
   "pastafari-reverse-worker.js",
+  "pastafari-diagnostics.js",
 ]);
 
 for (const fileName of COPIED_FILES) {

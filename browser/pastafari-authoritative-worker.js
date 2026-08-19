@@ -1,5 +1,15 @@
 "use strict";
 
+import {
+  applyPastafariDiagnosticsTransportConfig,
+  beginDiagnosticOperation,
+  endDiagnosticOperation,
+  getPastafariDiagnosticsSnapshot,
+  incrementDiagnosticCounter,
+  isPastafariDiagnosticsEnabled,
+  recordDiagnosticError,
+} from "./pastafari-diagnostics.js";
+
 const CORE_MODULE_URL = new URL("./pastafari-calendar-core.js", import.meta.url);
 const MAX_CUTLET_DAYS = 6_000;
 
@@ -37,6 +47,10 @@ function serializeError(error) {
 }
 
 async function createEngine() {
+  incrementDiagnosticCounter("authoritative.engine-load.attempts");
+  const token = beginDiagnosticOperation("authoritative", "engine-load", { module: "sealed-core" });
+  let outcome = "ok";
+  try {
   if (preloadError) throw preloadError;
 
   const moduleNamespace = await import(CORE_MODULE_URL.href);
@@ -58,6 +72,13 @@ async function createEngine() {
   }
 
   return Object.freeze({ moduleNamespace, calendar });
+  } catch (error) {
+    outcome = "error";
+    recordDiagnosticError("authoritative", error, token?.id, { phase: "engine-load" });
+    throw error;
+  } finally {
+    endDiagnosticOperation(token, outcome);
+  }
 }
 
 function ensureEngine() {
@@ -84,6 +105,7 @@ function deriveCutletView(calendar, targetJdn, calculationJdn) {
   const days = [];
 
   for (let offset = 0; offset < MAX_CUTLET_DAYS; offset += 1) {
+    incrementDiagnosticCounter("authoritative.cutlet-scan.days");
     const jdn = startJdn + BigInt(offset);
     const value = offset === selected.dayInCutlet - 1
       ? selected
@@ -125,6 +147,7 @@ function convertRange(calendar, startJdn, count, calculationJdn) {
     throw new RangeError("The requested authoritative range is too large.");
   }
 
+  incrementDiagnosticCounter("authoritative.range.days", count);
   const result = new Array(count);
   for (let index = 0; index < count; index += 1) {
     result[index] = convertOne(calendar, startJdn + BigInt(index), calculationJdn);
@@ -134,7 +157,13 @@ function convertRange(calendar, startJdn, count, calculationJdn) {
 
 export async function handlePastafariWorkerRequest(operation, payload = {}) {
   const { calendar } = await ensureEngine();
+  const token = beginDiagnosticOperation("authoritative", operation, {
+    operation,
+    count: operation === "convertJdnRange" ? payload.count : undefined,
+  });
+  let outcome = "ok";
 
+  try {
   switch (operation) {
     case "convert": {
       const targetJdn = toBigInt(payload.targetJdn, "targetJdn");
@@ -157,6 +186,13 @@ export async function handlePastafariWorkerRequest(operation, payload = {}) {
     default:
       throw new TypeError(`Unknown authoritative worker operation: ${String(operation)}`);
   }
+  } catch (error) {
+    outcome = "error";
+    recordDiagnosticError("authoritative", error, token?.id, { phase: operation });
+    throw error;
+  } finally {
+    endDiagnosticOperation(token, outcome, { operation });
+  }
 }
 
 const isDedicatedWorker = (
@@ -169,17 +205,31 @@ if (isDedicatedWorker) {
     const message = event.data;
     if (!message || !Number.isSafeInteger(message.id)) return;
 
+    applyPastafariDiagnosticsTransportConfig(message.diagnostics);
+    const token = beginDiagnosticOperation("worker.authoritative", "request", {
+      requestId: message.id,
+      operation: message.operation,
+    });
     try {
       const result = await handlePastafariWorkerRequest(
         message.operation,
         message.payload,
       );
-      globalThis.postMessage({ id: message.id, ok: true, result });
+      endDiagnosticOperation(token, "ok", { operation: message.operation });
+      globalThis.postMessage({
+        id: message.id,
+        ok: true,
+        result,
+        diagnostics: isPastafariDiagnosticsEnabled() ? getPastafariDiagnosticsSnapshot() : null,
+      });
     } catch (error) {
+      recordDiagnosticError("worker.authoritative", error, token?.id, { operation: message.operation });
+      endDiagnosticOperation(token, "error", { operation: message.operation });
       globalThis.postMessage({
         id: message.id,
         ok: false,
         error: serializeError(error),
+        diagnostics: isPastafariDiagnosticsEnabled() ? getPastafariDiagnosticsSnapshot() : null,
       });
     }
   });

@@ -1,5 +1,14 @@
 "use strict";
 
+import {
+  applyPastafariDiagnosticsTransportConfig,
+  beginDiagnosticOperation,
+  endDiagnosticOperation,
+  getPastafariDiagnosticsSnapshot,
+  isPastafariDiagnosticsEnabled,
+  recordDiagnosticError,
+} from "./pastafari-diagnostics.js";
+
 const FAST_MODULE_URL = new URL("./pastafari-calendar-fast.js", import.meta.url);
 const MAX_RANGE_DAYS = 18_000;
 const MAX_CUTLET_DAYS = 6_000;
@@ -238,17 +247,31 @@ if (isDedicatedWorker) {
     const message = event.data;
     if (!message || !Number.isSafeInteger(message.id)) return;
 
+    applyPastafariDiagnosticsTransportConfig(message.diagnostics);
+    const token = beginDiagnosticOperation("worker.fast", "request", {
+      requestId: message.id,
+      operation: message.operation,
+    });
     try {
       const result = await handlePastafariWorkerRequest(
         message.operation,
         message.payload,
       );
-      globalThis.postMessage({ id: message.id, ok: true, result });
+      endDiagnosticOperation(token, "ok", { operation: message.operation });
+      globalThis.postMessage({
+        id: message.id,
+        ok: true,
+        result,
+        diagnostics: isPastafariDiagnosticsEnabled() ? getPastafariDiagnosticsSnapshot() : null,
+      });
     } catch (error) {
+      recordDiagnosticError("worker.fast", error, token?.id, { operation: message.operation });
+      endDiagnosticOperation(token, "error", { operation: message.operation });
       globalThis.postMessage({
         id: message.id,
         ok: false,
         error: serializeError(error),
+        diagnostics: isPastafariDiagnosticsEnabled() ? getPastafariDiagnosticsSnapshot() : null,
       });
     }
   });

@@ -83,7 +83,12 @@ async function loadInstrumentedFastModule() {
     new URL("../browser/pastafari-calendar-fast.js", import.meta.url),
   );
   const source = await readFile(sourcePath, "utf8");
-  const instrumented = `${source}\n\nexport {\n  GATE_CHECKPOINTS as __testGateCheckpoints,\n  gateDistance as __testGateDistance,\n  gatePosition as __testGatePosition,\n  sauce as __testSauce,\n  chooseUniform as __testChooseUniform,\n};\n`;
+  const diagnosticsUrl = new URL("../browser/pastafari-diagnostics.js", import.meta.url).href;
+  const relocatedSource = source.replace(
+    'from "./pastafari-diagnostics.js";',
+    `from ${JSON.stringify(diagnosticsUrl)};`,
+  );
+  const instrumented = `${relocatedSource}\n\nexport {\n  GATE_CHECKPOINTS as __testGateCheckpoints,\n  gateDistance as __testGateDistance,\n  gatePosition as __testGatePosition,\n  sauce as __testSauce,\n  chooseUniform as __testChooseUniform,\n};\n`;
   const temporaryPath = join(
     tmpdir(),
     `pastafari-calendar-fast-instrumented-${process.pid}-${randomUUID()}.mjs`,

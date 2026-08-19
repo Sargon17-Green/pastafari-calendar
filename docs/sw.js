@@ -1,6 +1,6 @@
 "use strict";
 
-const VERSION = "pastafari-static-pwa-hardening-12-skip-link-focus";
+const VERSION = "pastafari-static-pwa-hardening-13-diagnostics";
 const CORE_CACHE = `${VERSION}-core`;
 const RUNTIME_CACHE = "pastafari-runtime-assets";
 const CACHE_PREFIX = "pastafari-static-";
@@ -17,6 +17,7 @@ const CORE_ASSETS = [
   "./calendar-converters.js?v=8-year-structure",
   "./observer-location.js?v=10-venus-day-boundary",
   "./venus-day-boundary.js?v=10-venus-day-boundary",
+  "./engine/pastafari-diagnostics.js",
   "./engine/pastafari-calendar-fast.js",
   "./engine/pastafari-fast-worker.js?v=8-year-structure",
   "./engine/pastafari-constraints-client.js",

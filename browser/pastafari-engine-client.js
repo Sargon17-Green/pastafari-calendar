@@ -1,5 +1,14 @@
 "use strict";
 
+import {
+  beginDiagnosticOperation,
+  endDiagnosticOperation,
+  getPastafariDiagnosticsTransportConfig,
+  incrementDiagnosticCounter,
+  mergePastafariDiagnosticsSnapshot,
+  recordDiagnosticError,
+} from "./pastafari-diagnostics.js";
+
 export const DEFAULT_ENGINE_STARTUP_TIMEOUT_MS = 45_000;
 export const DEFAULT_ENGINE_REQUEST_TIMEOUT_MS = 90_000;
 
@@ -81,45 +90,101 @@ export class PastafariEngineClient {
 
   async request(operation, payload, options = {}) {
     const timeoutMs = options.timeoutMs ?? this.requestTimeoutMs;
-    await this._ensureReady();
-
-    if (this._mode === "inline") {
-      return withRouterTimeout(
-        this._inlineHandler(operation, payload),
-        timeoutMs,
-        `${this.name}:${operation}`,
-        this.name,
-      );
-    }
-
-    const id = this._nextId++;
-    return new Promise((resolve, reject) => {
-      const timer = setTimeout(() => {
-        const error = timeoutError(`${this.name}:${operation}`, timeoutMs, this.name);
-        this.terminate(error);
-      }, timeoutMs);
-
-      this._pending.set(id, { resolve, reject, timer });
-      try {
-        this._worker.postMessage({ id, operation, payload });
-      } catch (error) {
-        clearTimeout(timer);
-        this._pending.delete(id);
-        error.engine = this.name;
-        reject(error);
-      }
+    const reusedTransport = Boolean(this._readyPromise);
+    let phase = reusedTransport ? "ready" : "initialize";
+    const token = beginDiagnosticOperation("engine-client", `${this.name}:${operation}`, {
+      timeoutMs,
+      transportState: reusedTransport ? "reused" : "cold",
     });
+    try {
+      await this._ensureReady();
+
+      if (this._mode === "inline") {
+        phase = "inline-compute";
+        const result = await withRouterTimeout(
+          this._inlineHandler(operation, payload),
+          timeoutMs,
+          `${this.name}:${operation}`,
+          this.name,
+        );
+        endDiagnosticOperation(token, "ok", {
+          mode: "inline",
+          phase,
+          transportState: reusedTransport ? "reused" : "cold",
+        });
+        return result;
+      }
+
+      phase = "worker-round-trip";
+      const id = this._nextId++;
+      const result = await new Promise((resolve, reject) => {
+        const timer = setTimeout(() => {
+          incrementDiagnosticCounter(`engine-client.${this.name}.timeouts`);
+          const error = timeoutError(`${this.name}:${operation}`, timeoutMs, this.name);
+          this.terminate(error);
+        }, timeoutMs);
+
+        this._pending.set(id, { resolve, reject, timer });
+        const sendToken = beginDiagnosticOperation("engine-client", `${this.name}:post-message`, { requestId: id });
+        try {
+          this._worker.postMessage({
+            id,
+            operation,
+            payload,
+            diagnostics: getPastafariDiagnosticsTransportConfig(),
+          });
+          endDiagnosticOperation(sendToken, "ok");
+        } catch (error) {
+          endDiagnosticOperation(sendToken, "error");
+          clearTimeout(timer);
+          this._pending.delete(id);
+          error.engine = this.name;
+          reject(error);
+        }
+      });
+      endDiagnosticOperation(token, "ok", {
+        mode: "worker",
+        phase,
+        requestId: id,
+        transportState: reusedTransport ? "reused" : "cold",
+      });
+      return result;
+    } catch (error) {
+      const outcome = error?.name === "TimeoutError" ? "timeout" : error?.name === "AbortError" ? "cancelled" : "error";
+      recordDiagnosticError("engine-client", error, token?.id, { engine: this.name, operation, phase });
+      endDiagnosticOperation(token, outcome, {
+        engine: this.name,
+        mode: this._mode,
+        phase,
+        timeoutMs,
+        transportState: reusedTransport ? "reused" : "cold",
+      });
+      throw error;
+    }
   }
 
   async _ensureReady() {
-    if (this._readyPromise) return this._readyPromise;
+    if (this._readyPromise) {
+      incrementDiagnosticCounter(`engine-client.${this.name}.ready.reused`);
+      return this._readyPromise;
+    }
 
+    incrementDiagnosticCounter(`engine-client.${this.name}.ready.cold`);
+    const token = beginDiagnosticOperation("engine-client", `${this.name}:initialize`, {
+      startupTimeoutMs: this.startupTimeoutMs,
+    });
     this._readyPromise = withRouterTimeout(
       this._start(),
       this.startupTimeoutMs,
       `${this.name} startup`,
       this.name,
-    ).catch((error) => {
+    ).then((value) => {
+      endDiagnosticOperation(token, "ok", { mode: this._mode });
+      return value;
+    }).catch((error) => {
+      const outcome = error?.name === "TimeoutError" ? "timeout" : "error";
+      recordDiagnosticError("engine-client", error, token?.id, { engine: this.name, phase: "initialize" });
+      endDiagnosticOperation(token, outcome, { mode: this._mode, phase: "initialize" });
       this.terminate(error);
       throw error;
     });
@@ -128,18 +193,23 @@ export class PastafariEngineClient {
   }
 
   async _start() {
+    incrementDiagnosticCounter(`engine-client.${this.name}.starts`);
     let workerError = null;
     if (typeof this.workerFactory === "function") {
       try {
         await this._startWorker();
+        incrementDiagnosticCounter(`engine-client.${this.name}.mode.worker`);
         return;
       } catch (error) {
         workerError = error;
+        incrementDiagnosticCounter(`engine-client.${this.name}.worker-start-failed`);
+        recordDiagnosticError("engine-client", error, null, { engine: this.name, phase: "worker-start" });
         this._resetWorkerOnly();
       }
     }
 
     if (typeof this.inlineLoader === "function") {
+      if (workerError) incrementDiagnosticCounter(`engine-client.${this.name}.worker-fallback-inline`);
       const handler = await this.inlineLoader();
       if (typeof handler !== "function") {
         throw createRouterError(
@@ -151,6 +221,7 @@ export class PastafariEngineClient {
       }
       this._inlineHandler = handler;
       this._mode = "inline";
+      incrementDiagnosticCounter(`engine-client.${this.name}.mode.inline`);
       return;
     }
 
@@ -168,7 +239,15 @@ export class PastafariEngineClient {
       this._readyResolve = resolve;
       this._readyReject = reject;
 
-      const resource = this.workerFactory();
+      const creationToken = beginDiagnosticOperation("engine-client", `${this.name}:worker-create`);
+      let resource;
+      try {
+        resource = this.workerFactory();
+        endDiagnosticOperation(creationToken, "ok");
+      } catch (error) {
+        endDiagnosticOperation(creationToken, "error");
+        throw error;
+      }
       const worker = resource?.worker ?? resource;
       if (
         !worker
@@ -213,6 +292,8 @@ export class PastafariEngineClient {
   _onMessage(event) {
     const message = event.data;
     if (message?.kind === "ready") {
+      incrementDiagnosticCounter(`engine-client.${this.name}.worker.ready`);
+      if (message.degraded) incrementDiagnosticCounter(`engine-client.${this.name}.worker.ready-degraded`);
       const resolve = this._readyResolve;
       this._readyResolve = null;
       this._readyReject = null;
@@ -227,8 +308,15 @@ export class PastafariEngineClient {
 
     this._pending.delete(message.id);
     clearTimeout(pending.timer);
+    if (message.diagnostics) {
+      mergePastafariDiagnosticsSnapshot(`worker.${this.name}`, message.diagnostics);
+    }
+    incrementDiagnosticCounter(`engine-client.${this.name}.worker.responses`);
     if (message.ok) pending.resolve(message.result);
-    else pending.reject(reviveWorkerError(message.error, this.name));
+    else {
+      incrementDiagnosticCounter(`engine-client.${this.name}.worker.response-errors`);
+      pending.reject(reviveWorkerError(message.error, this.name));
+    }
   }
 
   _failWorker(error) {
@@ -254,6 +342,7 @@ export class PastafariEngineClient {
   }
 
   _resetWorkerOnly() {
+    if (this._worker) incrementDiagnosticCounter(`engine-client.${this.name}.worker.resets`);
     try {
       this._worker?.terminate();
     } catch {
@@ -267,6 +356,13 @@ export class PastafariEngineClient {
   }
 
   terminate(reason = null) {
+    incrementDiagnosticCounter(`engine-client.${this.name}.terminations`);
+    const terminationReason = reason?.code === "ERR_ENGINE_TIMEOUT"
+      ? "timeout"
+      : reason instanceof Error
+        ? "error"
+        : "explicit";
+    incrementDiagnosticCounter(`engine-client.${this.name}.termination.${terminationReason}`);
     const error = reason instanceof Error
       ? reason
       : createRouterError("AbortError", `${this.name} was stopped.`, "ERR_ENGINE_TERMINATED", {

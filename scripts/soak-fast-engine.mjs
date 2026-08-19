@@ -532,8 +532,15 @@ async function buildInstrumentedFast(repoRoot, stateDir, fastHash, infraRetries,
   const outputPath = path.join(cacheDir, `pastafari-calendar-fast-instrumented-${fastHash.slice(0, 16)}.mjs`);
   if (await pathExists(outputPath)) return outputPath;
   const source = await readFile(sourcePath, "utf8");
+  const diagnosticsUrl = pathToFileURL(
+    path.join(repoRoot, "browser", "pastafari-diagnostics.js"),
+  ).href;
+  const relocatedSource = source.replace(
+    'from "./pastafari-diagnostics.js";',
+    `from ${JSON.stringify(diagnosticsUrl)};`,
+  );
   const suffix = `\n\n// Added only by the local soak harness; production source is unchanged.\nexport {\n  GATE_CHECKPOINTS as __soakGateCheckpoints,\n  gatePosition as __soakGatePosition,\n  gateDistance as __soakGateDistance,\n  getCalculationState as __soakGetCalculationState,\n  MIN_YEAR_DAYS as __soakMinYearDays,\n  MAX_YEAR_DAYS as __soakMaxYearDays,\n  FOUNDATION_JDN as __soakFoundationJdn,\n};\n`;
-  await atomicWrite(outputPath, source + suffix, infraRetries, recordRetry);
+  await atomicWrite(outputPath, relocatedSource + suffix, infraRetries, recordRetry);
   return outputPath;
 }
 

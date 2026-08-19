@@ -1,5 +1,14 @@
 "use strict";
 
+import {
+  beginDiagnosticOperation,
+  endDiagnosticOperation,
+  getPastafariDiagnosticsTransportConfig,
+  incrementDiagnosticCounter,
+  mergePastafariDiagnosticsSnapshot,
+  recordDiagnosticError,
+} from "./pastafari-diagnostics.js";
+
 const REVERSE_WORKER_URL = new URL("./pastafari-reverse-worker.js", import.meta.url);
 const STARTUP_TIMEOUT_MS = 45_000;
 
@@ -63,8 +72,31 @@ export class PastafariConstraintClient {
       throw new RangeError("timeoutMs must be a positive safe integer.");
     }
 
-    await this._ensureReady();
-    if (this._inline) return this._solveInline(problem, options, timeoutMs);
+    const transportState = this._ready ? "reused" : "cold";
+    const token = beginDiagnosticOperation("constraints-client", "solve", {
+      timeoutMs,
+      transportState,
+    });
+    try {
+      await this._ensureReady();
+    } catch (error) {
+      const outcome = error?.name === "TimeoutError" ? "timeout" : "error";
+      recordDiagnosticError("constraints-client", error, token?.id, { phase: "initialize" });
+      endDiagnosticOperation(token, outcome, { phase: "initialize", timeoutMs, transportState });
+      throw error;
+    }
+    if (this._inline) {
+      try {
+        const result = await this._solveInline(problem, options, timeoutMs);
+        endDiagnosticOperation(token, "ok", { mode: "inline", phase: "compute", transportState });
+        return result;
+      } catch (error) {
+        const outcome = error?.name === "TimeoutError" ? "timeout" : error?.name === "AbortError" ? "cancelled" : "error";
+        recordDiagnosticError("constraints-client", error, token?.id);
+        endDiagnosticOperation(token, outcome, { mode: "inline", phase: "compute", timeoutMs, transportState });
+        throw error;
+      }
+    }
 
     const id = this._nextId++;
     return new Promise((resolve, reject) => {
@@ -75,21 +107,44 @@ export class PastafariConstraintClient {
         this._pending.delete(id);
       };
       const cancel = (error) => {
-        if (!this._pending.has(id)) return;
+        const pending = this._pending.get(id);
+        if (!pending) return;
+        incrementDiagnosticCounter(`constraints-client.${error?.name === "TimeoutError" ? "timeouts" : "cancellations"}`);
         try {
           this._worker.postMessage({ id, kind: "cancel" });
         } catch {
           // Best effort: the caller is already receiving the cancellation.
         }
-        cleanup();
-        reject(error);
+        pending.reject(error);
       };
       const onAbort = () => cancel(abortError());
 
       this._pending.set(id, {
-        resolve: (result) => { cleanup(); resolve(result); },
-        reject: (error) => { cleanup(); reject(error); },
+        resolve: (result) => {
+          const pending = this._pending.get(id);
+          cleanup();
+          endDiagnosticOperation(token, "ok", {
+            mode: "worker", phase: "search", transportState,
+            progressEvents: pending?.progressEvents ?? 0,
+            lastProgress: pending?.lastProgress ?? null,
+          });
+          resolve(result);
+        },
+        reject: (error) => {
+          const pending = this._pending.get(id);
+          cleanup();
+          const outcome = error?.name === "TimeoutError" ? "timeout" : error?.name === "AbortError" ? "cancelled" : "error";
+          recordDiagnosticError("constraints-client", error, token?.id, { phase: "search" });
+          endDiagnosticOperation(token, outcome, {
+            mode: "worker", phase: "search", timeoutMs, transportState,
+            progressEvents: pending?.progressEvents ?? 0,
+            lastProgress: pending?.lastProgress ?? null,
+          });
+          reject(error);
+        },
         onProgress: options.onProgress,
+        progressEvents: 0,
+        lastProgress: null,
       });
       options.signal?.addEventListener("abort", onAbort, { once: true });
       if (timeoutMs !== null) timer = setTimeout(() => cancel(timeoutError(timeoutMs)), timeoutMs);
@@ -99,15 +154,16 @@ export class PastafariConstraintClient {
           id,
           kind: "solve",
           payload: { problem, options: serializableOptions(options) },
+          diagnostics: getPastafariDiagnosticsTransportConfig(),
         });
       } catch (error) {
-        cleanup();
-        reject(error);
+        this._pending.get(id)?.reject(error);
       }
     });
   }
 
   dispose() {
+    incrementDiagnosticCounter("constraints-client.dispose");
     const error = abortError("Pastafari constraint client was disposed.");
     for (const pending of this._pending.values()) pending.reject(error);
     this._pending.clear();
@@ -118,8 +174,19 @@ export class PastafariConstraintClient {
   }
 
   async _ensureReady() {
-    if (this._ready) return this._ready;
-    this._ready = this._start().catch((error) => {
+    if (this._ready) {
+      incrementDiagnosticCounter("constraints-client.transport.reused");
+      return this._ready;
+    }
+    incrementDiagnosticCounter("constraints-client.transport.cold");
+    const token = beginDiagnosticOperation("constraints-client", "initialize", { startupTimeoutMs: this.startupTimeoutMs });
+    this._ready = this._start().then((value) => {
+      endDiagnosticOperation(token, "ok", { mode: this._inline ? "inline" : "worker" });
+      return value;
+    }).catch((error) => {
+      const outcome = error?.name === "TimeoutError" ? "timeout" : "error";
+      recordDiagnosticError("constraints-client", error, token?.id, { phase: "initialize" });
+      endDiagnosticOperation(token, outcome, { phase: "initialize" });
       this.dispose();
       throw error;
     });
@@ -154,11 +221,21 @@ export class PastafariConstraintClient {
   async _start() {
     if (typeof globalThis.Worker !== "function") {
       this._inline = true;
+      incrementDiagnosticCounter("constraints-client.mode.inline");
       return;
     }
     await new Promise((resolve, reject) => {
-      const worker = new Worker(REVERSE_WORKER_URL, { type: "module", name: "pastafari-constraints" });
+      const creationToken = beginDiagnosticOperation("constraints-client", "worker-create");
+      let worker;
+      try {
+        worker = new Worker(REVERSE_WORKER_URL, { type: "module", name: "pastafari-constraints" });
+        endDiagnosticOperation(creationToken, "ok");
+      } catch (error) {
+        endDiagnosticOperation(creationToken, "error");
+        throw error;
+      }
       this._worker = worker;
+      incrementDiagnosticCounter("constraints-client.mode.worker");
       const timer = setTimeout(() => reject(createError(
         "TimeoutError",
         `Pastafari constraint worker did not start within ${this.startupTimeoutMs} ms.`,
@@ -167,11 +244,18 @@ export class PastafariConstraintClient {
       const finish = (handler, value) => { clearTimeout(timer); handler(value); };
       worker.addEventListener("message", (event) => {
         const message = event.data;
-        if (message?.kind === "ready") { finish(resolve); return; }
+        if (message?.kind === "ready") {
+          incrementDiagnosticCounter("constraints-client.worker.ready");
+          finish(resolve);
+          return;
+        }
         if (!message || !Number.isSafeInteger(message.id)) return;
         const pending = this._pending.get(message.id);
         if (!pending) return;
         if (message.kind === "progress") {
+          incrementDiagnosticCounter("constraints-client.progress-events");
+          pending.progressEvents += 1;
+          pending.lastProgress = message.progress;
           try { pending.onProgress?.(message.progress); }
           catch (error) {
             pending.reject(error);
@@ -180,6 +264,7 @@ export class PastafariConstraintClient {
           return;
         }
         if (message.kind === "result") {
+          if (message.diagnostics) mergePastafariDiagnosticsSnapshot("worker.constraints", message.diagnostics);
           if (message.ok) pending.resolve(message.result);
           else pending.reject(reviveWorkerError(message.error));
         }

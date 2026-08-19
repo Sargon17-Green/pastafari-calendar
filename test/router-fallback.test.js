@@ -406,6 +406,7 @@ async function createInlineProject({ includeFast = true } = {}) {
     "pastafari-calendar-router.js",
     "pastafari-calendar-router-core.js",
     "pastafari-engine-client.js",
+    "pastafari-diagnostics.js",
   ]) {
     const source = fileURLToPath(new URL(`../browser/${filename}`, import.meta.url));
     await copyFile(source, join(browser, filename));

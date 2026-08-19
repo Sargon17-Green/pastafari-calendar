@@ -1,5 +1,14 @@
 "use strict";
 
+import {
+  applyPastafariDiagnosticsTransportConfig,
+  beginDiagnosticOperation,
+  endDiagnosticOperation,
+  getPastafariDiagnosticsSnapshot,
+  incrementDiagnosticCounter,
+  isPastafariDiagnosticsEnabled,
+  recordDiagnosticError,
+} from "./pastafari-diagnostics.js";
 import { findPastafariDate as findPastafariDateDirect } from "./pastafari-calendar-fast.js";
 import { solvePastafariConstraintsDirect } from "./pastafari-constraints.js";
 
@@ -64,13 +73,23 @@ if (isDedicatedWorker) {
     if (!message || !Number.isSafeInteger(message.id)) return;
 
     if (message.kind === "cancel") {
-      activeRequests.get(message.id)?.abort();
+      incrementDiagnosticCounter("worker.reverse.cancel-requests");
+      const controller = activeRequests.get(message.id);
+      if (controller) {
+        incrementDiagnosticCounter("worker.reverse.cancel-active");
+        controller.abort();
+      } else {
+        incrementDiagnosticCounter("worker.reverse.cancel-missing");
+      }
       return;
     }
     if (message.kind !== "find" && message.kind !== "solve") return;
 
+    applyPastafariDiagnosticsTransportConfig(message.diagnostics);
     const controller = new AbortController();
     activeRequests.set(message.id, controller);
+    incrementDiagnosticCounter("worker.reverse.requests.started");
+    const token = beginDiagnosticOperation("worker.reverse", message.kind, { requestId: message.id });
     try {
       const hooks = {
         signal: controller.signal,
@@ -81,16 +100,28 @@ if (isDedicatedWorker) {
       const result = message.kind === "find"
         ? await handlePastafariReverseRequest(message.payload, hooks)
         : await handlePastafariConstraintRequest(message.payload, hooks);
-      globalThis.postMessage({ id: message.id, kind: "result", ok: true, result });
+      endDiagnosticOperation(token, "ok", { kind: message.kind });
+      globalThis.postMessage({
+        id: message.id,
+        kind: "result",
+        ok: true,
+        result,
+        diagnostics: isPastafariDiagnosticsEnabled() ? getPastafariDiagnosticsSnapshot() : null,
+      });
     } catch (error) {
+      const outcome = error?.name === "AbortError" ? "cancelled" : "error";
+      recordDiagnosticError("worker.reverse", error, token?.id, { kind: message.kind });
+      endDiagnosticOperation(token, outcome, { kind: message.kind });
       globalThis.postMessage({
         id: message.id,
         kind: "result",
         ok: false,
         error: serializeError(error),
+        diagnostics: isPastafariDiagnosticsEnabled() ? getPastafariDiagnosticsSnapshot() : null,
       });
     } finally {
       activeRequests.delete(message.id);
+      incrementDiagnosticCounter("worker.reverse.requests.settled");
     }
   });
 

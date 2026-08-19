@@ -34,11 +34,11 @@ async function assertDeclaredAssetsExist(assets) {
 test("Pages uses the audited canonical fast engine bytes without a divergent build", async () => {
   assert.equal(
     await sha256("browser/pastafari-calendar-fast.js"),
-    "61318bc0813579f8d703737716704c467b87f2492213c2a1bd0970d9bc9f421b",
+    "f2deba1ca1dfe876d38f29e98216071fcef7984bae77f931a8b17a9d931a74d4",
   );
   assert.equal(
     await sha256("docs/engine/pastafari-calendar-fast.js"),
-    "61318bc0813579f8d703737716704c467b87f2492213c2a1bd0970d9bc9f421b",
+    "f2deba1ca1dfe876d38f29e98216071fcef7984bae77f931a8b17a9d931a74d4",
   );
   assert.equal(
     await sha256("docs/engine/pastafari-calendar-fast.js"),
@@ -72,6 +72,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
     "./calendar-converters.js?v=8-year-structure",
     "./observer-location.js?v=10-venus-day-boundary",
     "./venus-day-boundary.js?v=10-venus-day-boundary",
+    "./engine/pastafari-diagnostics.js",
     "./engine/pastafari-calendar-fast.js",
     "./engine/pastafari-fast-worker.js?v=8-year-structure",
     "./engine/pastafari-constraints-client.js",
@@ -83,7 +84,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
     "./i18n/locales/en.js?v=16-unified-i18n",
   ];
   assert.deepEqual(coreAssets, requiredCore, "CORE_ASSETS must describe the complete deterministic offline application shell");
-  assert.equal(coreAssets.length, 18);
+  assert.equal(coreAssets.length, 19);
 
   const requiredOptional = [
     "./manifest.webmanifest?v=8-year-structure",
@@ -103,7 +104,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   assert.equal(LOCALES.length, 72, "PWA accounting expects the current 72 registered locales");
   assert.equal(LOCALES.filter(({ code }) => code !== "en").length, 71, "Every non-English locale is optional/on-demand");
 
-  assert.match(source, /const VERSION = "pastafari-static-pwa-hardening-12-skip-link-focus";/);
+  assert.match(source, /const VERSION = "pastafari-static-pwa-hardening-13-diagnostics";/);
   assert.match(source, /const RUNTIME_CACHE = "pastafari-runtime-assets";/);
   assert.match(source, /const OPTIONAL_LOCALE_PATH = \/\^\\\/i18n\\\/locales/);
   assert.match(source, /url\.search === LOCALE_REVISION_SEARCH/);

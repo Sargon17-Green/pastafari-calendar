@@ -1,5 +1,14 @@
 "use strict";
 
+import {
+  beginDiagnosticOperation,
+  endDiagnosticOperation,
+  getPastafariDiagnosticsTransportConfig,
+  incrementDiagnosticCounter,
+  mergePastafariDiagnosticsSnapshot,
+  recordDiagnosticError,
+} from "./pastafari-diagnostics.js";
+
 const REVERSE_WORKER_URL = new URL("./pastafari-reverse-worker.js", import.meta.url);
 const STARTUP_TIMEOUT_MS = 45_000;
 
@@ -69,9 +78,30 @@ export class PastafariReverseClient {
       throw new RangeError("timeoutMs must be a positive safe integer.");
     }
 
-    await this._ensureReady();
+    const transportState = this._ready ? "reused" : "cold";
+    const token = beginDiagnosticOperation("reverse-client", "find", {
+      timeoutMs,
+      transportState,
+    });
+    try {
+      await this._ensureReady();
+    } catch (error) {
+      const outcome = error?.name === "TimeoutError" ? "timeout" : "error";
+      recordDiagnosticError("reverse-client", error, token?.id, { phase: "initialize" });
+      endDiagnosticOperation(token, outcome, { phase: "initialize", timeoutMs, transportState });
+      throw error;
+    }
     if (this._inline) {
-      return this._findInline(pastafariDate, options, timeoutMs);
+      try {
+        const result = await this._findInline(pastafariDate, options, timeoutMs);
+        endDiagnosticOperation(token, "ok", { mode: "inline", phase: "compute", transportState });
+        return result;
+      } catch (error) {
+        const outcome = error?.name === "TimeoutError" ? "timeout" : error?.name === "AbortError" ? "cancelled" : "error";
+        recordDiagnosticError("reverse-client", error, token?.id);
+        endDiagnosticOperation(token, outcome, { mode: "inline", phase: "compute", timeoutMs, transportState });
+        throw error;
+      }
     }
 
     const id = this._nextId++;
@@ -84,27 +114,44 @@ export class PastafariReverseClient {
         this._pending.delete(id);
       };
       const cancel = (error) => {
-        if (!this._pending.has(id)) return;
+        const pending = this._pending.get(id);
+        if (!pending) return;
+        incrementDiagnosticCounter(`reverse-client.${error?.name === "TimeoutError" ? "timeouts" : "cancellations"}`);
         try {
           this._worker.postMessage({ id, kind: "cancel" });
         } catch {
           // The request is already rejected; worker cancellation is best effort.
         }
-        cleanup();
-        reject(error);
+        pending.reject(error);
       };
       const onAbort = () => cancel(abortError());
 
       this._pending.set(id, {
         resolve: (result) => {
+          const pending = this._pending.get(id);
           cleanup();
+          endDiagnosticOperation(token, "ok", {
+            mode: "worker", phase: "search", transportState,
+            progressEvents: pending?.progressEvents ?? 0,
+            lastProgress: pending?.lastProgress ?? null,
+          });
           resolve(result);
         },
         reject: (error) => {
+          const pending = this._pending.get(id);
           cleanup();
+          const outcome = error?.name === "TimeoutError" ? "timeout" : error?.name === "AbortError" ? "cancelled" : "error";
+          recordDiagnosticError("reverse-client", error, token?.id, { phase: "search" });
+          endDiagnosticOperation(token, outcome, {
+            mode: "worker", phase: "search", timeoutMs, transportState,
+            progressEvents: pending?.progressEvents ?? 0,
+            lastProgress: pending?.lastProgress ?? null,
+          });
           reject(error);
         },
         onProgress: options.onProgress,
+        progressEvents: 0,
+        lastProgress: null,
       });
       options.signal?.addEventListener("abort", onAbort, { once: true });
       if (timeoutMs !== null) timer = setTimeout(() => cancel(timeoutError(timeoutMs)), timeoutMs);
@@ -114,15 +161,16 @@ export class PastafariReverseClient {
           id,
           kind: "find",
           payload: { pastafariDate, options: serializableOptions(options) },
+          diagnostics: getPastafariDiagnosticsTransportConfig(),
         });
       } catch (error) {
-        cleanup();
-        reject(error);
+        this._pending.get(id)?.reject(error);
       }
     });
   }
 
   dispose() {
+    incrementDiagnosticCounter("reverse-client.dispose");
     const error = abortError("Pastafari reverse client was disposed.");
     for (const pending of this._pending.values()) pending.reject(error);
     this._pending.clear();
@@ -137,8 +185,19 @@ export class PastafariReverseClient {
   }
 
   async _ensureReady() {
-    if (this._ready) return this._ready;
-    this._ready = this._start().catch((error) => {
+    if (this._ready) {
+      incrementDiagnosticCounter("reverse-client.transport.reused");
+      return this._ready;
+    }
+    incrementDiagnosticCounter("reverse-client.transport.cold");
+    const token = beginDiagnosticOperation("reverse-client", "initialize", { startupTimeoutMs: this.startupTimeoutMs });
+    this._ready = this._start().then((value) => {
+      endDiagnosticOperation(token, "ok", { mode: this._inline ? "inline" : "worker" });
+      return value;
+    }).catch((error) => {
+      const outcome = error?.name === "TimeoutError" ? "timeout" : "error";
+      recordDiagnosticError("reverse-client", error, token?.id, { phase: "initialize" });
+      endDiagnosticOperation(token, outcome, { phase: "initialize" });
       this.dispose();
       throw error;
     });
@@ -177,15 +236,25 @@ export class PastafariReverseClient {
   async _start() {
     if (typeof globalThis.Worker !== "function") {
       this._inline = true;
+      incrementDiagnosticCounter("reverse-client.mode.inline");
       return;
     }
 
     await new Promise((resolve, reject) => {
-      const worker = new Worker(REVERSE_WORKER_URL, {
+      const creationToken = beginDiagnosticOperation("reverse-client", "worker-create");
+      let worker;
+      try {
+        worker = new Worker(REVERSE_WORKER_URL, {
         type: "module",
         name: "pastafari-reverse",
       });
+        endDiagnosticOperation(creationToken, "ok");
+      } catch (error) {
+        endDiagnosticOperation(creationToken, "error");
+        throw error;
+      }
       this._worker = worker;
+      incrementDiagnosticCounter("reverse-client.mode.worker");
       const timer = setTimeout(() => reject(createError(
         "TimeoutError",
         `Pastafari reverse worker did not start within ${this.startupTimeoutMs} ms.`,
@@ -199,6 +268,7 @@ export class PastafariReverseClient {
       worker.addEventListener("message", (event) => {
         const message = event.data;
         if (message?.kind === "ready") {
+          incrementDiagnosticCounter("reverse-client.worker.ready");
           finish(resolve);
           return;
         }
@@ -206,6 +276,9 @@ export class PastafariReverseClient {
         const pending = this._pending.get(message.id);
         if (!pending) return;
         if (message.kind === "progress") {
+          incrementDiagnosticCounter("reverse-client.progress-events");
+          pending.progressEvents += 1;
+          pending.lastProgress = message.progress;
           try {
             pending.onProgress?.(message.progress);
           } catch (error) {
@@ -219,6 +292,7 @@ export class PastafariReverseClient {
           return;
         }
         if (message.kind === "result") {
+          if (message.diagnostics) mergePastafariDiagnosticsSnapshot("worker.reverse", message.diagnostics);
           if (message.ok) pending.resolve(message.result);
           else pending.reject(reviveWorkerError(message.error));
         }
