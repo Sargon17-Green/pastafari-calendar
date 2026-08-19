@@ -95,12 +95,12 @@ async function staticFastAudit(enginePath) {
     return Number(match[1]);
   }
   return {
-    resultCacheEntries: capacity(/resultCache\s*=\s*new\s+LruMap\((\d+)\)/, "resultCache"),
-    calculationStates: capacity(/calculationStates\s*=\s*new\s+LruMap\((\d+)\)/, "calculationStates"),
-    gateDistanceEntries: capacity(/gateDistanceCache\s*=\s*new\s+LruMap\((\d+)\)/, "gateDistanceCache"),
-    dynamicGateEntries: capacity(/dynamicGatePositions\s*=\s*new\s+LruMap\((\d+)\)/, "dynamicGatePositions"),
-    sauceEntriesPerCalculationState: capacity(/this\.sauceCache\s*=\s*new\s+LruMap\((\d+)\)/, "CalculationState.sauceCache"),
-    structureEntriesPerCalculationState: capacity(/this\.structureCache\s*=\s*new\s+LruMap\((\d+)\)/, "CalculationState.structureCache"),
+    resultCacheEntries: capacity(/resultCache\s*=\s*new\s+LruMap\(\s*(\d+)(?:\s*,\s*[^)]*)?\)/, "resultCache"),
+    calculationStates: capacity(/calculationStates\s*=\s*new\s+LruMap\(\s*(\d+)(?:\s*,\s*[^)]*)?\)/, "calculationStates"),
+    gateDistanceEntries: capacity(/gateDistanceCache\s*=\s*new\s+LruMap\(\s*(\d+)(?:\s*,\s*[^)]*)?\)/, "gateDistanceCache"),
+    dynamicGateEntries: capacity(/dynamicGatePositions\s*=\s*new\s+LruMap\(\s*(\d+)(?:\s*,\s*[^)]*)?\)/, "dynamicGatePositions"),
+    sauceEntriesPerCalculationState: capacity(/this\.sauceCache\s*=\s*new\s+LruMap\(\s*(\d+)(?:\s*,\s*[^)]*)?\)/, "CalculationState.sauceCache"),
+    structureEntriesPerCalculationState: capacity(/this\.structureCache\s*=\s*new\s+LruMap\(\s*(\d+)(?:\s*,\s*[^)]*)?\)/, "CalculationState.structureCache"),
     yearsByNumberBounded: !/this\.yearsByNumber\s*=\s*new\s+Map\(\)/.test(source),
   };
 }
