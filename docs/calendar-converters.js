@@ -294,6 +294,7 @@ function islamicCivilToJdn({ year, month, day }) {
 }
 
 function solarHijriArithmeticToJdn({ year, month, day }) {
+  if (year === 0n) throw new RangeError("The Solar Hijri calendar has no year zero.");
   const epBase = year - (year >= 0n ? 474n : 473n);
   const epYear = 474n + mod(epBase, 2820n);
   const monthDays = month <= 7 ? BigInt((month - 1) * 31) : BigInt((month - 1) * 30 + 6);
@@ -302,7 +303,7 @@ function solarHijriArithmeticToJdn({ year, month, day }) {
     + floorDiv(682n * epYear - 110n, 2816n)
     + floorDiv(epBase, 2820n) * 1_029_983n;
   const nextStart = (() => {
-    const next = year + 1n;
+    const next = year === -1n ? 1n : year + 1n;
     const nextBase = next - (next >= 0n ? 474n : 473n);
     const nextYear = 474n + mod(nextBase, 2820n);
     return PERSIAN_EPOCH_JDN - 1n

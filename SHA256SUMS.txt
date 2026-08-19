@@ -1,6 +1,7 @@
 2ccdb1d265770e632a75b40d0b47ed80fbd6c5dcbcf53f7b80545bbfc1583b98  ./.github/dependabot.yml
 40c1e01bed514085f1fc1b803f1cbb342dfb3ad62f76846beec432127c2daea0  ./.github/workflows/benchmark.yml
 a6d1bf4c532df77b37771134d7b5e9a49d6e22ff941f635d40003b0af2616229  ./.github/workflows/implementations.yml
+376f2a1852d965e27677185b2549826001ad09f8c4818999db26bd57b2bcb714  ./.github/workflows/property-soak.yml
 cf1d7536f8684a3b7b60f5049a29bde0ca85cfcad35541144409127bc95a8fcd  ./.github/workflows/release-verification.yml
 59d050da96549a70382bd3ca177ea641d6d909f581aa08996529634520866f5a  ./.github/workflows/test.yml
 1578a9a47230ba6e34728fefcee8f5a22ec9c00847661ddf3d4ec011d225878a  ./.github/workflows/visual.yml
@@ -59,11 +60,11 @@ c040204e38cde0f84f2be761aedcdf7714ca0f606dd1931a92f118f724adc77b  ./docs/LICENSE
 463ef06b5c271b5dff0c6787af6dd8d758a3614e338dbdda34d5c24ea42713e3  ./docs/MEMORY-TESTING.md
 bf2fafb98116a2c17372d413bf322a08d42ef134c171ce392e64bbce757fc232  ./docs/README.md
 87853fc8efc0ce9710f8100526e0aad5ca1925f2c7e12f8c5a27fe7231a7ba7f  ./docs/REVERSE-CONSTRAINTS.md
-320a460006ab3b03c238d3ad8c87ce7f2c1c0eebbce411ee37200f4f6be88daa  ./docs/SHA256SUMS.txt
+c87b2708b650ed03e25429185d63415f4887ab06ba5992ad44d3aac70b552b70  ./docs/SHA256SUMS.txt
 2e431b15b351d9253537ac65d0eabb316b450da4576a2d7e399b253ffd738310  ./docs/SUPPLY-CHAIN-SECURITY.md
 f8032c08953d5422cf50a5483ed523c934d1377066da6f5ddc816309a8ecdbcf  ./docs/UPLOAD-TO-GITHUB.md
 ce790b115b7ade666ccb5f50b7dc74cfc9ba8719013c21e70c5e0a3149263480  ./docs/app.js
-4fe75a0b533dae2a9319d853493bc27394b4c252786df9b63ed181036fbd9522  ./docs/calendar-converters.js
+098e70b2a5176492c63df4d350ad3411b28bd6f3bfb295fe7554c3352bc493f4  ./docs/calendar-converters.js
 91f1344b70a734d856b34f947957a495b12fb3827d241b2a7bc0a469643388f8  ./docs/calendar-input-conventions.js
 61318bc0813579f8d703737716704c467b87f2492213c2a1bd0970d9bc9f421b  ./docs/engine/pastafari-calendar-fast.js
 345bbdfdc82f0920b300344734470fbb00e4f495fcf3a9b9eeb1afffbd79469f  ./docs/engine/pastafari-constraints-client.js
@@ -243,6 +244,7 @@ e178461caef907670401aa99e2ba5c0604dae294e9c35d0ce23116a4aa6d42e4  ./scripts/rele
 12d99a0114afc81769c93bdbdb3c0b63ab89e3cb53256c06c9cebf0bf786cadd  ./scripts/release.mjs
 b4d3d5f6dfa57e81b39f248571e9aff0bf17d1ebf6419f534e8471e01e6458dc  ./scripts/report-reverse-i18n.mjs
 beb92ca34a4c2a94926130b07bfa1a44843db96bb437c14955858a6ee65969e4  ./scripts/run-accessibility-tests.mjs
+2470f1865c35ab720581f5a0c1d41d2c74c707a8685991495837e0167bd98f10  ./scripts/run-calendar-property-soak.mjs
 2448792b36fbba707aae8bcf97b201746ecffff1a36c1235d755773352251608  ./scripts/run-calendar-roundtrip-audit.mjs
 7b2f6ff4cf7c539e3178e140f7f85009327bbf686fca53dc0eeb3775112a4a59  ./scripts/run-calendar-roundtrip-browser-smoke.mjs
 21c6080cdc1acb145e1e56eec8591e9aae90675a1d21532875b9617012ef4644  ./scripts/run-day-boundary-smoke.mjs
@@ -464,6 +466,7 @@ b376f198db7358baf7cb9d4d68b85e1199f29cd6c50329db5ab272060cdd2713  ./src/f26d/cb4
 ba6a75f8755762833c5de200e856774dddbe3a879d276967df5d56a8081759c6  ./test/browser-smoke.html
 4ba660fe1cbedcebe65e5bc0f4a8b9bf050ccb3b0099d9c9e8fe381cd479a270  ./test/calendar-converters.test.js
 71acfdf107c13b2a5059a04cf6514e0787b7f59f5a95156c4d4ab8e99ac055ae  ./test/calendar-input-conventions.test.js
+cc1370cb492f670354e4ca8c00b88dc36374e4df9489c8489f9df4c5f68152a4  ./test/calendar-properties.test.js
 d0be117c7d04f029be87596683d0bcfecea560f271d8b67d964dd5b77fb633e3  ./test/calendar-roundtrip-browser-smoke.html
 73d1e9279505a1ffcfd4ddaa729219607b184eaaacdf57f08ed023258e7af1bf  ./test/checkpoint-compatibility.test.js
 ffca09053340cea67eb6ceb395e4837820f361dc9104b228c8b48f6e2ee10ba6  ./test/constraints.test.js
@@ -475,6 +478,8 @@ c31d9aa64b4a2576d33571845d8a0167808679788906e81c5707a00c12633c62  ./test/file-pr
 da1f696434df8c9d9b0335bb6c0288788000687a9a9d8c2701b0711951d06a58  ./test/i18n.test.js
 e7cb405bee7240a4eeb6fc29bdec64ad0ece587563a8d0a196de7e3dc855cb61  ./test/memory-analysis.test.js
 813871413063e6016faa01ca87c2c1531258f92c66f640ff2cca3e45fe025b21  ./test/pages-reverse-engine.test.js
+102cb518ce0724f434765de791e02a5cd0fae15c04aaacbedc29b7ea3fdb7f6e  ./test/property/calendar-property-harness.js
+2b722688e39585834ffab5a2fe3ad4b707bf2735e59c7092f3ad15986b4e228c  ./test/property/regressions/solar-hijri-year-zero.json
 253a8889c936c58ae55b326acf4e43451ccdee17c11827d523526087f4eea3db  ./test/public-api.test.js
 50150dc60f65fb7cc7a7c80f3aa2378ba0008dfb974e3cb5ebbc57692c58825c  ./test/pwa-i18n.test.js
 e3f81f48055586b940e188e6004ddbf28e73790ada8d78b9a8262b938c03c6a3  ./test/release-infrastructure.test.js
