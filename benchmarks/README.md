@@ -1,18 +1,23 @@
 # Performance benchmarks
 
-This directory contains the reproducible performance baseline for the JavaScript package and the real `docs/` Web application.
+This directory contains the reproducible performance and retained-memory baseline infrastructure for the JavaScript package and the real `docs/` Web application.
 
 The benchmark suite is observational. It does not change the Pastafari algorithm, cache policy, production timeouts, routing policy, translations, or astronomical-day code.
 
 ## Commands
 
-- `npm run benchmark` — run engine, reverse/constraints, and Chromium Web benchmarks; write the combined report.
+- `npm run benchmark` — run engine, reverse/constraints, and Chromium Web benchmarks; write the combined performance report.
 - `npm run benchmark:engine` — direct fast/authoritative engine, cache, year-structure, and package-router measurements.
 - `npm run benchmark:reverse` — reverse lookup and constraint-solver measurements.
 - `npm run benchmark:web` — real `docs/` application in Chromium plus direct browser Worker probes.
 - `npm run benchmark:smoke` — short correctness/API smoke for CI; this is not a performance baseline.
+- `npm run test:memory` — retained-memory smoke: isolated Node scenarios plus Chromium UI/Worker memory checks.
+- `npm run test:memory:node` — Node-only retained-memory smoke with explicit GC.
+- `npm run test:memory:browser` — Chromium-only page/DOM/Worker memory smoke.
+- `npm run test:memory:soak` — heavier Node and Chromium memory soak intended for manual CI or deliberate local runs.
+- `npm run memory:snapshot` — explicit local V8 heap snapshot after a representative workload; never a normal CI artifact.
 
-Reports are written to `artifacts/benchmarks/` as both Markdown and JSON. Raw sample arrays are kept in JSON.
+Reports are written to `artifacts/benchmarks/` as both Markdown and JSON. Raw timing sample arrays and memory batch points are kept in JSON.
 
 ## Fixed inputs
 
@@ -30,6 +35,8 @@ There are several different cold states and they are named rather than merged:
 - **warm browser visit**: the same context is reused after the assets/application have already loaded. Service Worker controller state is written into the row notes.
 
 A cached identical lookup is always named `cache-hit`; it must never be interpreted as the cost of a full Pastafari conversion.
+
+For memory scenarios, a fresh child process is the canonical **cold memory state**. Scenarios are process-isolated instead of running one after another in a shared Node heap.
 
 ## What is measured
 
@@ -87,6 +94,16 @@ The Pages Worker does not publish a separate readiness message. Its first-round-
 
 Network counts and JavaScript bytes are collected from the local server's `Content-Length` responses. Those values are useful for regression comparison inside this harness; they are not a claim about GitHub Pages CDN compression or transfer sizes.
 
+### Retained memory
+
+`memory.mjs` is the parent retained-memory runner. It launches `memory-scenario.mjs` in fresh Node processes with `--expose-gc`, calibrates GC-only noise, stores every post-GC batch point, checks output checksums/cache bounds, and computes early/late growth slopes. It measures `heapUsed`, `heapTotal`, RSS, `external`, and `arrayBuffers` separately.
+
+The Node smoke covers repeated identical conversion, enough unique targets to fill the result-cache LRU, many calculation days, repeated calculation-day cycling, and reverse timeout/cancellation cleanup. The full soak additionally covers repeated successful reverse work, successful/cancelled constraints, Pages year structures, router state cleanup, and far-date retained state.
+
+`memory-browser.mjs` is deliberately Chromium-specific. It uses CDP explicit page-target GC, JS heap metrics, and DOM counters while repeatedly exercising target calculations, locale rerenders, calculation-day changes where the UI exposes them, desktop comparison, and real Pages Worker creation/termination. The full browser soak loads every available locale once and then repeats the same locale set so one-time ES-module loading is not confused with repeated leakage.
+
+The complete method, current cache/state ownership map, thresholds, and limitations are documented in `docs/MEMORY-TESTING.md`.
+
 ## Correctness guards
 
 A benchmark is not allowed to “win” by returning or consuming nothing.
@@ -96,6 +113,8 @@ A benchmark is not allowed to “win” by returning or consuming nothing.
 - Reverse results must contain the intended target/calculation pair.
 - Constraint results must contain the intended verified solution and completion state where completion is expected.
 - Web runs verify the selected JDN, language direction, visible result, and identical first/second Worker output.
+- Memory runs consume results and require stable checksums between fresh-process repetitions; candidate/base-commit checksums are compared for portable fast-engine scenarios.
+- Static cache-capacity checks are preferred over heap heuristics where the architecture provides a real bound.
 
 The benchmark suite complements correctness tests; it does not replace them.
 
@@ -105,25 +124,33 @@ Short operations use repeated samples; heavy authoritative/reverse/constraint ca
 
 For a 366-day range the report also states days/second. Avoid comparing more significant digits than the timer noise and sample count justify.
 
+Memory scenarios use a different statistic because their question is different: regression slope on post-GC retained memory across batches, plus late-vs-early growth and measured GC noise. They do not turn RSS or a single before/after heap number into a leak assertion.
+
 ## Environment and comparison
 
-Every report records commit SHA, timestamp, OS, architecture, CPU model, logical CPU count, RAM, Node version, package version, benchmark-suite version, debug state, Chromium version where applicable, and SHA-256 identities for the relevant engine/worker entry files.
+Every report records commit SHA, timestamp, OS, architecture, CPU model, logical CPU count, RAM, Node version, package version, benchmark-suite version, debug state, Chromium version where applicable, and SHA-256 identities for the relevant engine/worker entry files. Memory reports additionally record V8 version, GC exposure/protocol, process isolation, and raw batch measurements.
 
-Do not compare absolute timings from different machines as if they were equivalent. Prefer before/after runs on the same machine, same Node/browser versions, and comparable thermal/background-load conditions. GitHub-hosted runners are useful for coarse longitudinal evidence but are not stable laboratory benchmark machines.
+Do not compare absolute timings or RSS from different machines as if they were equivalent. Prefer before/after runs on the same machine, same Node/browser versions, and comparable thermal/background-load conditions. GitHub-hosted runners are useful for coarse longitudinal evidence but are not stable laboratory benchmark machines.
 
-## Memory
+For push/PR memory checks, the workflow materializes the base commit's fast engine and compares it with the candidate on the same runner. This is preferred to a fabricated or stale version-controlled MB baseline.
 
-The engine report records coarse Node heap usage before and after the mixed workload. This is a baseline signal only. It is not a leak detector and deliberately does not force GC or rely on non-portable browser memory APIs.
+## Memory interpretation
+
+The coarse before/after heap values retained in the older performance reports remain descriptive only. The dedicated memory suite is the leak/regression detector.
+
+Its primary metric is post-GC `heapUsed`. `heapTotal` and RSS may remain high after objects are unreachable because V8 and the system allocator can retain pages. Native-backed data are tracked separately through `external` and `arrayBuffers`.
+
+A late-growth failure is reported as a **possible retained-memory regression**, not automatically a confirmed leak. Some paths intentionally retain bounded or useful state; for example, a calculation-day workload can legitimately fill the bounded result cache, while the router currently retains one status entry per calculation day until `retry()`/`dispose()`. See `docs/MEMORY-TESTING.md` before changing cache policy.
 
 ## CI
 
-`benchmark:smoke` is suitable for ordinary CI and checks that the benchmark-facing APIs still exist and return coherent results. `.github/workflows/benchmark.yml` runs only that smoke job on ordinary `push`/`pull_request` events; its full benchmark job runs only through `workflow_dispatch` and uploads the generated Markdown/JSON reports as an artifact. The full benchmark is intentionally not an absolute-latency gate.
+`benchmark:smoke` remains suitable for ordinary CI and checks that the benchmark-facing APIs still exist and return coherent results. `.github/workflows/benchmark.yml` also runs `memory-smoke` on ordinary `push`/`pull_request` events. The memory job uses Node 22, a base-commit fast-engine file from repository history, three fresh processes per Node scenario, and Chromium for the UI/Worker memory smoke. JSON/Markdown reports are added to the job summary; failure reports are uploaded as artifacts.
 
-The repository also has the separate `performance-regression` job in `.github/workflows/test.yml`, backed by `scripts/run-performance-regression.mjs`. That relative candidate-vs-baseline guard is preserved unchanged by this benchmark suite; the two mechanisms serve different purposes.
+On `workflow_dispatch`, the existing full performance benchmark still runs, and a separate `memory-soak` job executes the heavier Node/browser memory suite and uploads its Markdown/JSON reports. Heap snapshots are never generated or uploaded automatically.
 
-No hard absolute latency threshold is enforced by `benchmark.yml`. Any future threshold changes should be based on enough stable baselines to define statistically defensible limits.
+The repository also has the separate `performance-regression` job in `.github/workflows/test.yml`, backed by `scripts/run-performance-regression.mjs`. That timing/throughput guard is preserved; the dedicated memory suite reuses its same-run base-commit comparison principle rather than replacing it.
 
-The full `workflow_dispatch` run is the intended way to produce a clean GitHub-runner baseline artifact after these files are installed in a repository checkout. A baseline must be generated from an actual checkout; this directory intentionally contains no fabricated reference numbers.
+No hard absolute latency or absolute-MB threshold is enforced by `benchmark.yml`. Memory shape thresholds are relative to the live post-warm-up heap and measured GC noise, with deterministic cache bounds used where possible.
 
 ## Known-source limitation for soak timeout inputs
 
