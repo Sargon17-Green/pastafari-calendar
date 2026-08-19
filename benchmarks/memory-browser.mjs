@@ -210,19 +210,94 @@ async function switchLanguage(page, lang) {
   );
 }
 
+async function waitForCalendarSettled(page) {
+  await page.waitForFunction(() => {
+    const workspace = document.getElementById("calendar-workspace");
+    const errorPanel = document.getElementById("error-panel");
+    const previous = document.getElementById("previous-cutlet");
+    const next = document.getElementById("next-cutlet");
+    const yearLoading = document.getElementById("year-overview-loading");
+    const yearContent = document.getElementById("year-overview-content");
+    const yearError = document.getElementById("year-overview-error");
+    const yearSettled = Boolean(
+      (yearContent && !yearContent.hidden)
+      || (yearError && !yearError.hidden)
+      || (yearLoading && yearLoading.hidden)
+    );
+    return Boolean(
+      workspace
+      && !workspace.hidden
+      && errorPanel?.hidden
+      && previous
+      && next
+      && !previous.disabled
+      && !next.disabled
+      && yearSettled
+    );
+  }, null, { timeout: WEB_TIMEOUT_MS });
+}
+
 async function setTargetDay(page, day, expectedJdn) {
+  // Keep repeated memory operations serialized with the UI's background
+  // year-structure request. This benchmark measures retained state, not
+  // request cancellation under deliberately overlapping navigation.
+  await waitForCalendarSettled(page);
   await page.evaluate(({ day }) => {
     const form = document.getElementById("target-search-form");
-    const input = document.getElementById("target-day") || form?.querySelector('[name="day"]');
-    if (!form || !input) throw new Error("Gregorian target day field is unavailable");
-    input.value = String(day);
+    const calendar = document.getElementById("target-calendar");
+    if (!form || !calendar) throw new Error("Gregorian target form is unavailable");
+    if (calendar.value !== "gregorian") {
+      calendar.value = "gregorian";
+      calendar.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+    const year = document.getElementById("target-year") || form.querySelector('[name="year"]');
+    const month = document.getElementById("target-month") || form.querySelector('[name="month"]');
+    const dayInput = document.getElementById("target-day") || form.querySelector('[name="day"]');
+    if (!year || !month || !dayInput) throw new Error("Gregorian target date fields are unavailable");
+    year.value = "2026";
+    month.value = "8";
+    dayInput.value = String(day);
     form.requestSubmit();
   }, { day });
-  await page.waitForFunction(
-    (wantedJdn) => document.querySelector('.day-card[aria-current="date"]')?.dataset.jdn === wantedJdn,
-    expectedJdn,
-    { timeout: WEB_TIMEOUT_MS },
-  );
+
+  let waitError = null;
+  try {
+    await page.waitForFunction(
+      (wantedJdn) => {
+        const selected = document.querySelector('.day-card[aria-current="date"]');
+        const formError = document.getElementById("target-form-error");
+        const errorPanel = document.getElementById("error-panel");
+        return selected?.dataset.jdn === wantedJdn
+          || Boolean((formError && !formError.hidden) || (errorPanel && !errorPanel.hidden));
+      },
+      expectedJdn,
+      { timeout: WEB_TIMEOUT_MS },
+    );
+  } catch (error) {
+    waitError = error;
+  }
+
+  const diagnostics = await page.evaluate(() => ({
+    href: location.href,
+    selectedJdn: document.querySelector('.day-card[aria-current="date"]')?.dataset.jdn ?? null,
+    targetCalendar: document.getElementById("target-calendar")?.value ?? null,
+    targetYear: document.getElementById("target-year")?.value ?? null,
+    targetMonth: document.getElementById("target-month")?.value ?? null,
+    targetDay: document.getElementById("target-day")?.value ?? null,
+    formError: document.getElementById("target-form-error")?.hidden === false
+      ? document.getElementById("target-form-error")?.textContent
+      : null,
+    appError: document.getElementById("error-panel")?.hidden === false
+      ? document.getElementById("error-message")?.textContent
+      : null,
+    previousDisabled: document.getElementById("previous-cutlet")?.disabled ?? null,
+    nextDisabled: document.getElementById("next-cutlet")?.disabled ?? null,
+    yearLoadingHidden: document.getElementById("year-overview-loading")?.hidden ?? null,
+  }));
+  if (diagnostics.selectedJdn !== expectedJdn) {
+    throw new Error(`Target-day UI did not reach JDN ${expectedJdn}: ${JSON.stringify(diagnostics)}`, waitError ? { cause: waitError } : undefined);
+  }
+  await waitForCalendarSettled(page);
 }
 
 async function setActionDay(page, day, expectedCalculationJdn) {

@@ -34,11 +34,11 @@ async function assertDeclaredAssetsExist(assets) {
 test("Pages uses the audited canonical fast engine bytes without a divergent build", async () => {
   assert.equal(
     await sha256("browser/pastafari-calendar-fast.js"),
-    "f2deba1ca1dfe876d38f29e98216071fcef7984bae77f931a8b17a9d931a74d4",
+    "3e07722e99ab48735635080dac5b61a10f031806f2286bf41571fcd199658ba8",
   );
   assert.equal(
     await sha256("docs/engine/pastafari-calendar-fast.js"),
-    "f2deba1ca1dfe876d38f29e98216071fcef7984bae77f931a8b17a9d931a74d4",
+    "3e07722e99ab48735635080dac5b61a10f031806f2286bf41571fcd199658ba8",
   );
   assert.equal(
     await sha256("docs/engine/pastafari-calendar-fast.js"),
@@ -104,15 +104,17 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   assert.equal(LOCALES.length, 72, "PWA accounting expects the current 72 registered locales");
   assert.equal(LOCALES.filter(({ code }) => code !== "en").length, 71, "Every non-English locale is optional/on-demand");
 
-  assert.match(source, /const VERSION = "pastafari-static-pwa-hardening-13-diagnostics";/);
+  assert.match(source, /const VERSION = "pastafari-static-pwa-hardening-14-diagnostics-streamed-precache";/);
   assert.match(source, /const RUNTIME_CACHE = "pastafari-runtime-assets";/);
   assert.match(source, /const OPTIONAL_LOCALE_PATH = \/\^\\\/i18n\\\/locales/);
   assert.match(source, /url\.search === LOCALE_REVISION_SEARCH/);
   assert.match(source, /cacheKey: scoped\(`\.\/__pwa_core__\/\$\{index\}`\)/);
   assert.match(source, /const CORE_COMPLETE_KEY = scoped\("\.\/__pwa_core__\/complete"\);/);
   assert.match(source, /already exists; bump VERSION before changing sw\.js/);
-  assert.match(source, /const responses = await Promise\.all\(CORE_ENTRIES\.map/);
+  assert.match(source, /await Promise\.all\(CORE_ENTRIES\.map/);
   assert.match(source, /validateAssetResponse\(await fetch\(request\), entry\.url, entry\.path\)/);
+  assert.match(source, /await cache\.put\(entry\.cacheKey, response\)/);
+  assert.doesNotMatch(source, /const responses = await Promise\.all\(CORE_ENTRIES\.map/);
   assert.match(source, /if \(response\.redirected\) throw new Error/);
   assert.match(source, /finalUrl\.origin !== SCOPE_URL\.origin \|\| finalUrl\.href !== expectedUrl/);
   assert.match(source, /Unexpected Content-Type/);

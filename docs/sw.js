@@ -1,6 +1,6 @@
 "use strict";
 
-const VERSION = "pastafari-static-pwa-hardening-13-diagnostics";
+const VERSION = "pastafari-static-pwa-hardening-14-diagnostics-streamed-precache";
 const CORE_CACHE = `${VERSION}-core`;
 const RUNTIME_CACHE = "pastafari-runtime-assets";
 const CACHE_PREFIX = "pastafari-static-";
@@ -138,15 +138,16 @@ self.addEventListener("install", (event) => {
       await caches.delete(CORE_CACHE);
     }
 
-    const responses = await Promise.all(CORE_ENTRIES.map(async (entry) => {
-      const request = new Request(entry.url, { cache: "reload" });
-      const response = validateAssetResponse(await fetch(request), entry.url, entry.path);
-      return { entry, response };
-    }));
-
     const cache = await caches.open(CORE_CACHE);
     try {
-      await Promise.all(responses.map(({ entry, response }) => cache.put(entry.cacheKey, response)));
+      // Consume each response into CacheStorage as soon as it arrives. Holding
+      // every unread response body until all fetches finish can exhaust a
+      // browser's per-origin connection pool and leave installation stuck.
+      await Promise.all(CORE_ENTRIES.map(async (entry) => {
+        const request = new Request(entry.url, { cache: "reload" });
+        const response = validateAssetResponse(await fetch(request), entry.url, entry.path);
+        await cache.put(entry.cacheKey, response);
+      }));
       const missing = [];
       for (const { cacheKey, path } of CORE_ENTRIES) {
         if (!(await cache.match(cacheKey))) missing.push(path);
