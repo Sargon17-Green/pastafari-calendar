@@ -1,0 +1,44 @@
+name: Calendar property soak
+
+on:
+  workflow_dispatch:
+    inputs:
+      cases:
+        description: Random cases per property and seed
+        required: false
+        default: "750"
+  schedule:
+    - cron: "17 3 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  property-soak:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        seed:
+          - "0x7061737461666172"
+          - "0x6d65617462616c6c"
+          - "0x7370616768657474"
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Deterministic property soak
+        env:
+          CASES: ${{ github.event.inputs.cases || '750' }}
+        run: node scripts/run-calendar-property-soak.mjs --mode soak --seed "${{ matrix.seed }}" --cases "$CASES"
+      - name: Upload minimized counterexample
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: calendar-property-counterexample-${{ matrix.seed }}
+          path: artifacts/property-tests/counterexample.json
+          if-no-files-found: ignore
