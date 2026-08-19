@@ -24,6 +24,87 @@ jobs:
       - name: Benchmark API smoke
         run: npm run benchmark:smoke
 
+  memory-smoke:
+    if: github.event_name != 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm run security:supply-chain
+      - run: npm ci
+      - name: Resolve memory baseline commit
+        id: memory-baseline
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PUSH_BEFORE_SHA: ${{ github.event.before }}
+        run: |
+          set -euo pipefail
+          if [[ "${EVENT_NAME}" == "pull_request" ]]; then
+            base_sha="${PR_BASE_SHA}"
+          else
+            base_sha="${PUSH_BEFORE_SHA}"
+          fi
+          if [[ -z "${base_sha}" || "${base_sha}" =~ ^0+$ ]]; then
+            base_sha="$(git rev-parse HEAD^)"
+          fi
+          git cat-file -e "${base_sha}^{commit}"
+          git cat-file -e "${base_sha}:browser/pastafari-calendar-fast.js"
+          echo "sha=${base_sha}" >> "$GITHUB_OUTPUT"
+          echo "Memory baseline commit: ${base_sha}" >> "$GITHUB_STEP_SUMMARY"
+      - name: Materialize base-commit fast engine
+        shell: bash
+        env:
+          BASE_SHA: ${{ steps.memory-baseline.outputs.sha }}
+        run: |
+          set -euo pipefail
+          git show "${BASE_SHA}:browser/pastafari-calendar-fast.js" > "${RUNNER_TEMP}/pastafari-calendar-fast-memory-baseline.mjs"
+      - name: Run Node retained-memory smoke
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --expose-gc benchmarks/memory.mjs \
+            --mode smoke \
+            --baseline "${RUNNER_TEMP}/pastafari-calendar-fast-memory-baseline.mjs" \
+            --output memory-smoke
+      - run: ./node_modules/.bin/playwright install --with-deps chromium
+      - name: Run Chromium memory and Worker lifecycle smoke
+        run: node benchmarks/memory-browser.mjs --mode smoke --output memory-browser-smoke
+      - name: Publish memory smoke reports in job summary
+        if: always()
+        shell: bash
+        run: |
+          found=0
+          for report in artifacts/benchmarks/memory-smoke.md artifacts/benchmarks/memory-browser-smoke.md; do
+            if [[ -f "$report" ]]; then
+              cat "$report" >> "$GITHUB_STEP_SUMMARY"
+              printf '\n' >> "$GITHUB_STEP_SUMMARY"
+              found=1
+            fi
+          done
+          if [[ "$found" -eq 0 ]]; then
+            echo "Memory smoke reports were not produced." >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Upload memory smoke reports on failure
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: memory-smoke-failure-${{ github.sha }}-${{ github.run_id }}
+          path: |
+            artifacts/benchmarks/memory-smoke.json
+            artifacts/benchmarks/memory-smoke.md
+            artifacts/benchmarks/memory-browser-smoke.json
+            artifacts/benchmarks/memory-browser-smoke.md
+          if-no-files-found: warn
+          retention-days: 14
+
   benchmark:
     if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
@@ -56,3 +137,47 @@ jobs:
           path: artifacts/benchmarks/
           if-no-files-found: warn
           retention-days: 30
+
+  memory-soak:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm run security:supply-chain
+      - run: npm ci
+      - run: ./node_modules/.bin/playwright install --with-deps chromium
+      - name: Run full retained-memory soak
+        run: npm run test:memory:soak
+      - name: Publish memory reports in job summary
+        if: always()
+        shell: bash
+        run: |
+          found=0
+          for report in artifacts/benchmarks/memory-soak.md artifacts/benchmarks/memory-browser-soak.md; do
+            if [[ -f "$report" ]]; then
+              cat "$report" >> "$GITHUB_STEP_SUMMARY"
+              printf '\n' >> "$GITHUB_STEP_SUMMARY"
+              found=1
+            fi
+          done
+          if [[ "$found" -eq 0 ]]; then
+            echo "Memory soak reports were not produced." >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Upload memory soak reports
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: memory-soak-${{ github.sha }}-${{ github.run_id }}
+          path: |
+            artifacts/benchmarks/memory-soak.json
+            artifacts/benchmarks/memory-soak.md
+            artifacts/benchmarks/memory-browser-soak.json
+            artifacts/benchmarks/memory-browser-soak.md
+          if-no-files-found: warn
+          retention-days: 30
+
