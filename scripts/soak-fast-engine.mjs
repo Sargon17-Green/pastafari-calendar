@@ -1456,6 +1456,11 @@ async function runFastCaseWithRetry(worker, descriptor, stateDir, config, onAtte
       if (error instanceof PerformanceTimeoutError) {
         timeoutAttempts += 1;
         if (attempt >= config.infraRetries) {
+          // FastWorker.run() rejects only the parent-side promise; the timed-out
+          // calculation is otherwise still consuming CPU in the worker. Restart
+          // after the final bounded attempt as well as between retries so the
+          // harness cannot leak the failed calculation into the next case.
+          await worker.restart();
           return {
             status: "performance-timeout",
             checkedDays: 0,

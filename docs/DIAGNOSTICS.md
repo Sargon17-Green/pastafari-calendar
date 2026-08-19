@@ -127,13 +127,15 @@ Useful summary counters are:
 
 - `fast.checkpoint.lookups`
 - `fast.checkpoint.steps`
+- `fast.checkpoint.static-starts`
+- `fast.checkpoint.cursor-starts`
 - `fast.year-traversal.steps`
 - `fast.year-traversal.direction.next`
 - `fast.year-traversal.direction.previous`
 - `fast.year.candidates.next`
 - `fast.year.candidates.previous`
 
-Summary gauges also retain the last selected checkpoint index, target index, checkpoint distance, direction, resolved year and year-traversal step count. Detailed mode additionally emits `fast/checkpoint-traversal` events with the requested gate index, chosen checkpoint index, distance, direction and actual traversal step count. It does not alter checkpoint selection.
+Summary gauges also retain the last static checkpoint, the actual selected traversal start, both distances, the selected source (`static-precomputed` or `traversal-cursor`), direction, resolved year and year-traversal step count. Detailed mode emits `fast/checkpoint-traversal` events with the same information and the actual traversal step count. The cursor is one bounded exact `(gate index, gate position)` pair: it is used only when closer than the static checkpoint, so diagnostics expose path selection without changing the gate recurrence or calendar result.
 
 ## Router fallback reason codes
 

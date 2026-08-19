@@ -1,0 +1,1433 @@
+{
+  "schema": 2,
+  "title": "Extreme fast-engine performance investigation",
+  "date": "2026-08-19",
+  "repository": "bwtbdyqtmsprytgydym-cpu/pastafari-calendar",
+  "baseCommit": "2b865f2959ded97ad4850e048199e904db26875a",
+  "historicalEvidence": {
+    "sourceRun": "2026-08-14/15 soak run resumed with acknowledgements",
+    "seed": "0x390e9709e4dff6c4",
+    "harnessVersion": "PASTAFARI-FAST-SOAK-1.2.1",
+    "fastEngineSha256": "61318bc0813579f8d703737716704c467b87f2492213c2a1bd0970d9bc9f421b",
+    "timeoutMs": 600000,
+    "knownPerformanceTimeoutCases": 11,
+    "note": "The separate correctness mismatch from the historical soak was not re-investigated as a performance case."
+  },
+  "environment": {
+    "investigation": {
+      "node": "v22.16.0",
+      "v8": "12.4.254.21-node.26",
+      "os": "Linux x86_64",
+      "cpu": "Intel Xeon Platinum 8573C",
+      "ramApproxGiB": 5.93,
+      "diagnostics": "source-instrumented temporary ES module; no production diagnostics export",
+      "osCpusEnumerated": 5,
+      "availableParallelism": 4
+    },
+    "historicalSoak": {
+      "node": "v26.7.0",
+      "v8": "14.6.202.34-node.28",
+      "os": "Windows x64",
+      "logicalCpu": 12
+    }
+  },
+  "rootCause": {
+    "staticCheckpointCount": 65,
+    "lastPositiveCheckpoint": {
+      "gateIndex": "32768",
+      "jdn": "3111357"
+    },
+    "gateDistanceCacheLimit": 4096,
+    "dynamicGatePositionCacheLimit": 4096,
+    "finding": "All 11 historical cases locate their calculation day 4352..5769 gates beyond the last positive static checkpoint. The old gatePosition() restarted each cache miss from nearestCheckpoint(). Once the sequential working set exceeded 4096, LRU eviction caused the next restart to miss the values it needed, repeatedly recomputing gateDistance/sauce work.",
+    "representativePartialOldWork": {
+      "gateDistanceCalls": 8395657,
+      "gateDistanceMisses": 5001,
+      "gatePositionCalls": 4099,
+      "gatePositionCacheHits": 0,
+      "staticRestarts": 4099,
+      "lastGateIndex": "36866",
+      "status": "diagnostic budget stopped before target"
+    },
+    "yearTraversalNotDominant": "All target years are 4998..5001; only 0..2 years are traversed from year 5000.",
+    "residualCost": "After the gate traversal fix, year construction/month interleaving remains a material secondary cost for some years, but it no longer produces the historical 600s timeouts in these cases."
+  },
+  "acceptedOptimization": {
+    "name": "bounded exact gate traversal cursor",
+    "description": "Keep exactly one previously computed gate index/position pair. On a gatePosition cache miss, use it only when its gate-index distance to the target is strictly less than the distance from the old static checkpoint; otherwise use the original checkpoint. Traverse with the unchanged recurrence.",
+    "semanticArgument": "The cursor position is itself produced by the exact gate recurrence. Starting the same recurrence from an exact intermediate state removes duplicate work only; gateDistance, sauce, ordering, precision, outputs, and checkpoint data are unchanged.",
+    "memoryGrowth": "constant: two BigInt values; LRU limits remain 4096",
+    "sourceDeltaBytes": 732,
+    "gzipDeltaBytes": 133,
+    "precomputedDataAdded": false
+  },
+  "toolingFix": {
+    "finding": "FastWorker.run() rejected on timeout but did not terminate the worker. Intermediate retries restarted it; the final retry previously returned without restart, so the timed-out CPU job could continue in the background.",
+    "fix": "Restart/terminate the worker before returning the final performance-timeout record.",
+    "relationshipTo11Cases": "Separate tooling artifact. It can contaminate following-case timing, but does not explain the 11 cases because each was reproduced across bounded retries."
+  },
+  "scaling": {
+    "oldContainingGateIntervalMs": [
+      {
+        "gateDistance": 50,
+        "ms": 31.7
+      },
+      {
+        "gateDistance": 100,
+        "ms": 58.0
+      },
+      {
+        "gateDistance": 200,
+        "ms": 126.5
+      },
+      {
+        "gateDistance": 400,
+        "ms": 253.6
+      },
+      {
+        "gateDistance": 800,
+        "ms": 590.4
+      },
+      {
+        "gateDistance": 1200,
+        "ms": 831.8
+      },
+      {
+        "gateDistance": 1600,
+        "ms": 1405.0
+      },
+      {
+        "gateDistance": 2400,
+        "ms": 3699.0
+      },
+      {
+        "gateDistance": 3200,
+        "ms": 3685.0
+      },
+      {
+        "gateDistance": 4000,
+        "ms": 5217.0
+      },
+      {
+        "gateDistance": 4400,
+        "ms": null,
+        "note": "did not complete within the 45 s measurement cap"
+      }
+    ],
+    "afterWork": [
+      {
+        "gateDistance": 500,
+        "gateDistanceCalls": 501,
+        "ms": 274.22
+      },
+      {
+        "gateDistance": 1000,
+        "gateDistanceCalls": 1001,
+        "ms": 579.114
+      },
+      {
+        "gateDistance": 2000,
+        "gateDistanceCalls": 2001,
+        "ms": 1137.848
+      },
+      {
+        "gateDistance": 3000,
+        "gateDistanceCalls": 3001,
+        "ms": 1682.969
+      },
+      {
+        "gateDistance": 4000,
+        "gateDistanceCalls": 4001,
+        "ms": 3611.441
+      },
+      {
+        "gateDistance": 5000,
+        "gateDistanceCalls": 5001,
+        "ms": 9062.686
+      },
+      {
+        "gateDistance": 5769,
+        "gateDistanceCalls": 5770,
+        "ms": 5348.479
+      }
+    ],
+    "model": "After the fix the recurrence work is exactly linear in tested gate distance (n+1 gateDistance calls in the direct scaling probe). Wall-clock timing is noisy because each work unit includes expensive deterministic arithmetic/crypto.",
+    "directionality": {
+      "distance": 5769,
+      "futureMs": 3154.8,
+      "pastMs": 3193.0,
+      "futureGateDistanceCalls": 5769,
+      "pastGateDistanceCalls": 5769,
+      "finding": "no work-count asymmetry"
+    }
+  },
+  "cpuProfiles": {
+    "oldPartialExtreme": [
+      [
+        "sauce",
+        26.23
+      ],
+      [
+        "LruMap.get",
+        20.33
+      ],
+      [
+        "LruMap.set",
+        17.99
+      ],
+      [
+        "positiveMod",
+        13.73
+      ],
+      [
+        "GC",
+        8.28
+      ],
+      [
+        "gatePosition",
+        4.24
+      ],
+      [
+        "keep",
+        3.77
+      ],
+      [
+        "gateDistance",
+        3.0
+      ]
+    ],
+    "regularCurrentEra": [
+      [
+        "unrankMonthInterleaving",
+        29.33
+      ],
+      [
+        "InterleavingCounter.rebuild",
+        19.84
+      ],
+      [
+        "sauce",
+        13.17
+      ],
+      [
+        "GC",
+        6.95
+      ],
+      [
+        "positiveMod",
+        6.68
+      ],
+      [
+        "binomial",
+        6.03
+      ]
+    ],
+    "afterExtreme004": [
+      [
+        "sauce",
+        43.62
+      ],
+      [
+        "positiveMod",
+        24.79
+      ],
+      [
+        "keep",
+        7.26
+      ],
+      [
+        "GC",
+        5.71
+      ],
+      [
+        "gateDistance",
+        4.77
+      ],
+      [
+        "unrankMonthInterleaving",
+        4.47
+      ],
+      [
+        "InterleavingCounter.rebuild",
+        3.4
+      ],
+      [
+        "bowlPermutation",
+        2.48
+      ],
+      [
+        "binomial",
+        0.98
+      ],
+      [
+        "gatePosition",
+        0.2
+      ]
+    ],
+    "rawProfilesCommitted": false
+  },
+  "checkpointDensityExperiment": {
+    "temporaryStrategy": "Added positive checkpoints every 1024 gates through gate 40960.",
+    "addedSourceBytes": 280,
+    "ext004Ms": 2329.7,
+    "ext001Ms": 5896.7,
+    "outputsChanged": false,
+    "accepted": false,
+    "reason": "Only moves a finite-domain cliff farther out; it does not remove the general duplicate traversal and adds generated data."
+  },
+  "cache": {
+    "sameCaseWarm": "All measured cases became result-cache hits on immediate repeat; warm medians are tens of microseconds.",
+    "nearbyTargetsAfterExt004Ms": {
+      "targetMinus2YearsApproxUnit": 0.0318,
+      "targetMinus1YearsApproxUnit": 0.0114,
+      "targetPlus1YearsApproxUnit": 0.00823,
+      "targetPlus2YearsApproxUnit": 0.01275
+    },
+    "resultCacheBound": 1024,
+    "memory1200Unique": {
+      "beforeHeapDeltaBytes": 529672,
+      "afterHeapDeltaBytes": 488456,
+      "beforeRssDeltaBytes": 4632576,
+      "afterRssDeltaBytes": 565248,
+      "beforeEntries": 1024,
+      "afterEntries": 1024,
+      "note": "single noisy local sample after explicit GC; no retained-memory regression observed"
+    },
+    "unboundedCacheAdded": false
+  },
+  "commonCaseBenchmarks": [
+    {
+      "scenario": "current",
+      "beforeMedianMs": 3086.795,
+      "afterMedianMs": 1906.734,
+      "n": 3
+    },
+    {
+      "scenario": "+1 year",
+      "beforeMedianMs": 2045.581,
+      "afterMedianMs": 1886.657,
+      "n": 3
+    },
+    {
+      "scenario": "-1 year",
+      "beforeMedianMs": 2327.806,
+      "afterMedianMs": 2022.433,
+      "n": 3
+    },
+    {
+      "scenario": "+100 years",
+      "beforeMs": 8615.713,
+      "afterMs": 4280.843,
+      "n": 1
+    },
+    {
+      "scenario": "-100 years",
+      "beforeMs": 2019.032,
+      "afterMs": 1601.236,
+      "n": 1
+    },
+    {
+      "scenario": "+1000 years",
+      "beforeMs": 4145.25,
+      "afterMs": 4207.836,
+      "n": 1,
+      "note": "~1.5% slower in a single noisy sample; not treated as a material regression"
+    },
+    {
+      "scenario": "-1000 years",
+      "beforeMs": 5496.46,
+      "afterMs": 5188.627,
+      "n": 1
+    },
+    {
+      "scenario": "cached identical lookup x10000",
+      "beforeMs": 21.069,
+      "afterMs": 7.819,
+      "n": 1
+    }
+  ],
+  "startup": {
+    "baselineImportMedianMs": 2.8251,
+    "candidateImportMedianMs": 2.5079,
+    "n": 7,
+    "finding": "no startup regression detected"
+  },
+  "correctness": {
+    "directAuthoritativeMatches": [
+      {
+        "id": "EXT-001",
+        "authoritativeMs": 17516.021
+      },
+      {
+        "id": "EXT-002",
+        "authoritativeMs": 8089.624
+      },
+      {
+        "id": "EXT-004",
+        "authoritativeMs": 2853.0,
+        "approx": true
+      }
+    ],
+    "extremeRegressionTest": {
+      "pass": 5,
+      "fail": 0
+    },
+    "focusedSuite": {
+      "pass": 9,
+      "fail": 0,
+      "skip": 1,
+      "command": "node --test test/year-structure.test.js test/year-ceiling-detour.test.js test/public-api.test.js test/extreme-performance.test.js"
+    },
+    "checkpointSides": {
+      "pass": 1,
+      "skip": 2,
+      "command": "PASTAFARI_CHECKPOINT_SIDES=1 node --test test/checkpoint-compatibility.test.js"
+    },
+    "fullFastCompatibility": {
+      "status": "LOCAL_TIMEOUT",
+      "limitMs": 300000,
+      "claim": "No PASS claim is made for this run; the authoritative side exceeded the practical local budget."
+    },
+    "knownFastOutputsChanged": false
+  },
+  "candidates": [
+    {
+      "candidate": "adjacent dynamic-cache reuse only",
+      "result": "improved sequential scans but failed six-gate year-step locality",
+      "correctness": "unchanged in checked cases",
+      "accepted": false
+    },
+    {
+      "candidate": "single exact bounded gate cursor",
+      "result": "removes restart/thrash generally",
+      "correctness": "exact recurrence preserved and tested",
+      "accepted": true
+    },
+    {
+      "candidate": "denser static checkpoints",
+      "result": "improved measured cases but merely moved finite cliff",
+      "correctness": "unchanged in experiment",
+      "accepted": false
+    },
+    {
+      "candidate": "unbounded gate/year cache",
+      "result": "not implemented",
+      "correctness": "not relevant",
+      "accepted": false
+    },
+    {
+      "candidate": "equivalent combinatorial unranking rewrite",
+      "result": "not attempted; residual cost is secondary and equivalence risk is nontrivial",
+      "correctness": "not established",
+      "accepted": false
+    }
+  ],
+  "cases": [
+    {
+      "id": "EXT-001",
+      "batch": 1,
+      "case": 3,
+      "calculationJdn": "5987632",
+      "targetJdn": "5986196",
+      "direction": "past",
+      "historical": {
+        "result": "TIMEOUT",
+        "timeoutMs": 600000,
+        "attempts": 3,
+        "lowerBoundElapsedMs": 600000
+      },
+      "checkpoint": {
+        "staticGateIndex": "32768",
+        "containingGateIndex": "38537",
+        "gateDistance": 5769
+      },
+      "traversal": {
+        "targetYear": "5000",
+        "yearsTraversed": 0,
+        "targetYearDays": 5533,
+        "targetYearGaps": 10
+      },
+      "after": {
+        "coldSamplesMs": [
+          7268.921,
+          7580.768
+        ],
+        "coldMedianMs": 7424.845,
+        "coldN": 2,
+        "warmSamplesMs": [
+          0.05534,
+          0.030685
+        ],
+        "warmMedianMs": 0.043013,
+        "warmN": 2,
+        "knownTimeoutResolved": true,
+        "historicalSpeedupLowerBound": 80.8
+      },
+      "work": {
+        "sauceCalls": 5780,
+        "gateDistanceCalls": 5779,
+        "gateDistanceMisses": 5779,
+        "gatePositionCalls": 5797,
+        "gatePositionCacheHits": 17,
+        "cursorStarts": 5778,
+        "checkpointStarts": 2
+      },
+      "classification": [
+        "C",
+        "D",
+        "E"
+      ],
+      "dominantRootCause": "Repeated gate-position traversal from the static checkpoint after the 4096-entry LRU working set was exceeded."
+    },
+    {
+      "id": "EXT-002",
+      "batch": 3,
+      "case": 2,
+      "calculationJdn": "5662323",
+      "targetJdn": "5667339",
+      "direction": "future",
+      "historical": {
+        "result": "TIMEOUT",
+        "timeoutMs": 600000,
+        "attempts": 3,
+        "lowerBoundElapsedMs": 600000
+      },
+      "checkpoint": {
+        "staticGateIndex": "32768",
+        "containingGateIndex": "37875",
+        "gateDistance": 5107
+      },
+      "traversal": {
+        "targetYear": "5001",
+        "yearsTraversed": 1,
+        "targetYearDays": 4100,
+        "targetYearGaps": 8
+      },
+      "after": {
+        "coldSamplesMs": [
+          4784.051,
+          5128.708
+        ],
+        "coldMedianMs": 4956.38,
+        "coldN": 2,
+        "warmSamplesMs": [
+          0.019076,
+          0.017395
+        ],
+        "warmMedianMs": 0.018236,
+        "warmN": 2,
+        "knownTimeoutResolved": true,
+        "historicalSpeedupLowerBound": 121.1
+      },
+      "work": {
+        "sauceCalls": 5127,
+        "gateDistanceCalls": 5125,
+        "gateDistanceMisses": 5125,
+        "gatePositionCalls": 5147,
+        "gatePositionCacheHits": 21,
+        "cursorStarts": 5124,
+        "checkpointStarts": 2
+      },
+      "classification": [
+        "C",
+        "D",
+        "E"
+      ],
+      "dominantRootCause": "Repeated gate-position traversal from the static checkpoint after the 4096-entry LRU working set was exceeded."
+    },
+    {
+      "id": "EXT-003",
+      "batch": 24,
+      "case": 3,
+      "calculationJdn": "5763396",
+      "targetJdn": "5763396",
+      "direction": "same",
+      "historical": {
+        "result": "TIMEOUT",
+        "timeoutMs": 600000,
+        "attempts": 3,
+        "lowerBoundElapsedMs": 600000
+      },
+      "checkpoint": {
+        "staticGateIndex": "32768",
+        "containingGateIndex": "38083",
+        "gateDistance": 5315
+      },
+      "traversal": {
+        "targetYear": "5000",
+        "yearsTraversed": 0,
+        "targetYearDays": 4890,
+        "targetYearGaps": 10
+      },
+      "after": {
+        "coldSamplesMs": [
+          10531.619,
+          12535.526
+        ],
+        "coldMedianMs": 11533.573,
+        "coldN": 2,
+        "warmSamplesMs": [
+          0.02193,
+          0.09814
+        ],
+        "warmMedianMs": 0.060035,
+        "warmN": 2,
+        "knownTimeoutResolved": true,
+        "historicalSpeedupLowerBound": 52.0
+      },
+      "work": {
+        "sauceCalls": 5329,
+        "gateDistanceCalls": 5328,
+        "gateDistanceMisses": 5328,
+        "gatePositionCalls": 5345,
+        "gatePositionCacheHits": 16,
+        "cursorStarts": 5327,
+        "checkpointStarts": 2
+      },
+      "classification": [
+        "C",
+        "D",
+        "E"
+      ],
+      "dominantRootCause": "Repeated gate-position traversal from the static checkpoint after the 4096-entry LRU working set was exceeded."
+    },
+    {
+      "id": "EXT-004",
+      "batch": 31,
+      "case": 1,
+      "calculationJdn": "5285776",
+      "targetJdn": "5290529",
+      "direction": "future",
+      "historical": {
+        "result": "TIMEOUT",
+        "timeoutMs": 600000,
+        "attempts": 3,
+        "lowerBoundElapsedMs": 600000
+      },
+      "checkpoint": {
+        "staticGateIndex": "32768",
+        "containingGateIndex": "37120",
+        "gateDistance": 4352
+      },
+      "traversal": {
+        "targetYear": "5001",
+        "yearsTraversed": 1,
+        "targetYearDays": 2943,
+        "targetYearGaps": 6
+      },
+      "after": {
+        "coldSamplesMs": [
+          2928.429,
+          5085.123
+        ],
+        "coldMedianMs": 4006.776,
+        "coldN": 2,
+        "warmSamplesMs": [
+          0.016644,
+          0.016299
+        ],
+        "warmMedianMs": 0.016472,
+        "warmN": 2,
+        "knownTimeoutResolved": true,
+        "historicalSpeedupLowerBound": 149.7
+      },
+      "work": {
+        "sauceCalls": 4374,
+        "gateDistanceCalls": 4375,
+        "gateDistanceMisses": 4372,
+        "gatePositionCalls": 4390,
+        "gatePositionCacheHits": 19,
+        "cursorStarts": 4369,
+        "checkpointStarts": 2
+      },
+      "classification": [
+        "C",
+        "D",
+        "E"
+      ],
+      "dominantRootCause": "Repeated gate-position traversal from the static checkpoint after the 4096-entry LRU working set was exceeded."
+    },
+    {
+      "id": "EXT-005",
+      "batch": 35,
+      "case": 10,
+      "calculationJdn": "5629400",
+      "targetJdn": "5629400",
+      "direction": "same",
+      "historical": {
+        "result": "TIMEOUT",
+        "timeoutMs": 600000,
+        "attempts": 3,
+        "lowerBoundElapsedMs": 600000
+      },
+      "checkpoint": {
+        "staticGateIndex": "32768",
+        "containingGateIndex": "37812",
+        "gateDistance": 5044
+      },
+      "traversal": {
+        "targetYear": "5000",
+        "yearsTraversed": 0,
+        "targetYearDays": 2996,
+        "targetYearGaps": 6
+      },
+      "after": {
+        "coldSamplesMs": [
+          3628.366,
+          4913.083
+        ],
+        "coldMedianMs": 4270.725,
+        "coldN": 2,
+        "warmSamplesMs": [
+          0.01496,
+          0.022895
+        ],
+        "warmMedianMs": 0.018927,
+        "warmN": 2,
+        "knownTimeoutResolved": true,
+        "historicalSpeedupLowerBound": 140.5
+      },
+      "work": {
+        "sauceCalls": 5055,
+        "gateDistanceCalls": 5054,
+        "gateDistanceMisses": 5054,
+        "gatePositionCalls": 5071,
+        "gatePositionCacheHits": 16,
+        "cursorStarts": 5053,
+        "checkpointStarts": 2
+      },
+      "classification": [
+        "C",
+        "D",
+        "E"
+      ],
+      "dominantRootCause": "Repeated gate-position traversal from the static checkpoint after the 4096-entry LRU working set was exceeded."
+    },
+    {
+      "id": "EXT-006",
+      "batch": 38,
+      "case": 2,
+      "calculationJdn": "5630989",
+      "targetJdn": "5630431",
+      "direction": "past",
+      "historical": {
+        "result": "TIMEOUT",
+        "timeoutMs": 600000,
+        "attempts": 3,
+        "lowerBoundElapsedMs": 600000
+      },
+      "checkpoint": {
+        "staticGateIndex": "32768",
+        "containingGateIndex": "37815",
+        "gateDistance": 5047
+      },
+      "traversal": {
+        "targetYear": "5000",
+        "yearsTraversed": 0,
+        "targetYearDays": 3973,
+        "targetYearGaps": 6
+      },
+      "after": {
+        "coldSamplesMs": [
+          4457.723,
+          4573.641
+        ],
+        "coldMedianMs": 4515.682,
+        "coldN": 2,
+        "warmSamplesMs": [
+          0.018052,
+          0.015914
+        ],
+        "warmMedianMs": 0.016983,
+        "warmN": 2,
+        "knownTimeoutResolved": true,
+        "historicalSpeedupLowerBound": 132.9
+      },
+      "work": {
+        "sauceCalls": 5061,
+        "gateDistanceCalls": 5060,
+        "gateDistanceMisses": 5060,
+        "gatePositionCalls": 5076,
+        "gatePositionCacheHits": 15,
+        "cursorStarts": 5059,
+        "checkpointStarts": 2
+      },
+      "classification": [
+        "C",
+        "D",
+        "E"
+      ],
+      "dominantRootCause": "Repeated gate-position traversal from the static checkpoint after the 4096-entry LRU working set was exceeded."
+    },
+    {
+      "id": "EXT-007",
+      "batch": 48,
+      "case": 9,
+      "calculationJdn": "5533129",
+      "targetJdn": "5533129",
+      "direction": "same",
+      "historical": {
+        "result": "TIMEOUT",
+        "timeoutMs": 600000,
+        "attempts": 3,
+        "lowerBoundElapsedMs": 600000
+      },
+      "checkpoint": {
+        "staticGateIndex": "32768",
+        "containingGateIndex": "37629",
+        "gateDistance": 4861
+      },
+      "traversal": {
+        "targetYear": "5000",
+        "yearsTraversed": 0,
+        "targetYearDays": 5412,
+        "targetYearGaps": 11
+      },
+      "after": {
+        "coldSamplesMs": [
+          6840.943,
+          7878.106
+        ],
+        "coldMedianMs": 7359.524,
+        "coldN": 2,
+        "warmSamplesMs": [
+          0.036467,
+          0.107071
+        ],
+        "warmMedianMs": 0.071769,
+        "warmN": 2,
+        "knownTimeoutResolved": true,
+        "historicalSpeedupLowerBound": 81.5
+      },
+      "work": {
+        "sauceCalls": 4874,
+        "gateDistanceCalls": 4873,
+        "gateDistanceMisses": 4873,
+        "gatePositionCalls": 4890,
+        "gatePositionCacheHits": 16,
+        "cursorStarts": 4872,
+        "checkpointStarts": 2
+      },
+      "classification": [
+        "C",
+        "D",
+        "E"
+      ],
+      "dominantRootCause": "Repeated gate-position traversal from the static checkpoint after the 4096-entry LRU working set was exceeded."
+    },
+    {
+      "id": "EXT-008",
+      "batch": 54,
+      "case": 4,
+      "calculationJdn": "5352359",
+      "targetJdn": "5342726",
+      "direction": "past",
+      "historical": {
+        "result": "TIMEOUT",
+        "timeoutMs": 600000,
+        "attempts": 3,
+        "lowerBoundElapsedMs": 600000
+      },
+      "checkpoint": {
+        "staticGateIndex": "32768",
+        "containingGateIndex": "37250",
+        "gateDistance": 4482
+      },
+      "traversal": {
+        "targetYear": "4998",
+        "yearsTraversed": 2,
+        "targetYearDays": 4731,
+        "targetYearGaps": 8
+      },
+      "after": {
+        "coldSamplesMs": [
+          10157.852,
+          4866.295
+        ],
+        "coldMedianMs": 7512.074,
+        "coldN": 2,
+        "warmSamplesMs": [
+          0.015831,
+          0.016129
+        ],
+        "warmMedianMs": 0.01598,
+        "warmN": 2,
+        "knownTimeoutResolved": true,
+        "historicalSpeedupLowerBound": 79.9
+      },
+      "work": {
+        "sauceCalls": 4496,
+        "gateDistanceCalls": 4493,
+        "gateDistanceMisses": 4493,
+        "gatePositionCalls": 4528,
+        "gatePositionCacheHits": 34,
+        "cursorStarts": 4492,
+        "checkpointStarts": 2
+      },
+      "classification": [
+        "C",
+        "D",
+        "E"
+      ],
+      "dominantRootCause": "Repeated gate-position traversal from the static checkpoint after the 4096-entry LRU working set was exceeded."
+    },
+    {
+      "id": "EXT-009",
+      "batch": 72,
+      "case": 3,
+      "calculationJdn": "5654482",
+      "targetJdn": "5654482",
+      "direction": "same",
+      "historical": {
+        "result": "TIMEOUT",
+        "timeoutMs": 600000,
+        "attempts": 3,
+        "lowerBoundElapsedMs": 600000
+      },
+      "checkpoint": {
+        "staticGateIndex": "32768",
+        "containingGateIndex": "37859",
+        "gateDistance": 5091
+      },
+      "traversal": {
+        "targetYear": "5000",
+        "yearsTraversed": 0,
+        "targetYearDays": 4504,
+        "targetYearGaps": 8
+      },
+      "after": {
+        "coldSamplesMs": [
+          12545.397,
+          5208.327
+        ],
+        "coldMedianMs": 8876.862,
+        "coldN": 2,
+        "warmSamplesMs": [
+          0.016265,
+          0.021495
+        ],
+        "warmMedianMs": 0.01888,
+        "warmN": 2,
+        "knownTimeoutResolved": true,
+        "historicalSpeedupLowerBound": 67.6
+      },
+      "work": {
+        "sauceCalls": 5104,
+        "gateDistanceCalls": 5103,
+        "gateDistanceMisses": 5103,
+        "gatePositionCalls": 5118,
+        "gatePositionCacheHits": 14,
+        "cursorStarts": 5102,
+        "checkpointStarts": 2
+      },
+      "classification": [
+        "C",
+        "D",
+        "E"
+      ],
+      "dominantRootCause": "Repeated gate-position traversal from the static checkpoint after the 4096-entry LRU working set was exceeded."
+    },
+    {
+      "id": "EXT-010",
+      "batch": 91,
+      "case": 3,
+      "calculationJdn": "5426014",
+      "targetJdn": "5419010",
+      "direction": "past",
+      "historical": {
+        "result": "TIMEOUT",
+        "timeoutMs": 600000,
+        "attempts": 3,
+        "lowerBoundElapsedMs": 600000
+      },
+      "checkpoint": {
+        "staticGateIndex": "32768",
+        "containingGateIndex": "37408",
+        "gateDistance": 4640
+      },
+      "traversal": {
+        "targetYear": "4999",
+        "yearsTraversed": 1,
+        "targetYearDays": 4630,
+        "targetYearGaps": 13
+      },
+      "after": {
+        "coldSamplesMs": [
+          5812.242,
+          5400.956
+        ],
+        "coldMedianMs": 5606.599,
+        "coldN": 2,
+        "warmSamplesMs": [
+          0.021356,
+          0.015822
+        ],
+        "warmMedianMs": 0.018589,
+        "warmN": 2,
+        "knownTimeoutResolved": true,
+        "historicalSpeedupLowerBound": 107.0
+      },
+      "work": {
+        "sauceCalls": 4652,
+        "gateDistanceCalls": 4650,
+        "gateDistanceMisses": 4650,
+        "gatePositionCalls": 4684,
+        "gatePositionCacheHits": 33,
+        "cursorStarts": 4649,
+        "checkpointStarts": 2
+      },
+      "classification": [
+        "C",
+        "D",
+        "E"
+      ],
+      "dominantRootCause": "Repeated gate-position traversal from the static checkpoint after the 4096-entry LRU working set was exceeded."
+    },
+    {
+      "id": "EXT-011",
+      "batch": 95,
+      "case": 1,
+      "calculationJdn": "5940147",
+      "targetJdn": "5940147",
+      "direction": "same",
+      "historical": {
+        "result": "TIMEOUT",
+        "timeoutMs": 600000,
+        "attempts": 3,
+        "lowerBoundElapsedMs": 600000
+      },
+      "checkpoint": {
+        "staticGateIndex": "32768",
+        "containingGateIndex": "38434",
+        "gateDistance": 5666
+      },
+      "traversal": {
+        "targetYear": "5000",
+        "yearsTraversed": 0,
+        "targetYearDays": 3797,
+        "targetYearGaps": 8
+      },
+      "after": {
+        "coldSamplesMs": [
+          4918.482,
+          9114.848
+        ],
+        "coldMedianMs": 7016.665,
+        "coldN": 2,
+        "warmSamplesMs": [
+          0.015079,
+          0.016573
+        ],
+        "warmMedianMs": 0.015826,
+        "warmN": 2,
+        "knownTimeoutResolved": true,
+        "historicalSpeedupLowerBound": 85.5
+      },
+      "work": {
+        "sauceCalls": 5678,
+        "gateDistanceCalls": 5677,
+        "gateDistanceMisses": 5677,
+        "gatePositionCalls": 5693,
+        "gatePositionCacheHits": 15,
+        "cursorStarts": 5676,
+        "checkpointStarts": 2
+      },
+      "classification": [
+        "C",
+        "D",
+        "E"
+      ],
+      "dominantRootCause": "Repeated gate-position traversal from the static checkpoint after the 4096-entry LRU working set was exceeded."
+    }
+  ],
+  "remainingKnownTimeouts": 0,
+  "remainingLimitation": "Gate recurrence still requires approximately linear exact work with distance from the best exact starting point. Much farther unsupported-by-checkpoint dates can still be intrinsically expensive; this change removes the avoidable superlinear duplicate traversal but does not make arbitrary distance O(1) or O(log n).",
+  "filesChanged": [
+    "browser/pastafari-calendar-fast.js",
+    "docs/engine/pastafari-calendar-fast.js",
+    "scripts/soak-fast-engine.mjs",
+    "docs/DIAGNOSTICS.md",
+    "verification/extreme-performance-cases.json",
+    "verification/evidence/extreme-performance-analysis-2026-08-19.json",
+    "scripts/diagnose-extreme-performance.mjs",
+    "test/extreme-performance.test.js",
+    "docs/EXTREME-PERFORMANCE-ANALYSIS.md",
+    "docs/SHA256SUMS.txt",
+    "SHA256SUMS.txt"
+  ],
+  "commands": [
+    {
+      "command": "node --test test/extreme-performance.test.js",
+      "status": "PASS",
+      "details": "5 pass, 0 fail"
+    },
+    {
+      "command": "node --test test/year-structure.test.js test/year-ceiling-detour.test.js test/public-api.test.js test/extreme-performance.test.js",
+      "status": "PASS",
+      "details": "9 pass, 0 fail, 1 optional skip"
+    },
+    {
+      "command": "PASTAFARI_CHECKPOINT_SIDES=1 node --test test/checkpoint-compatibility.test.js",
+      "status": "PASS",
+      "details": "representative checkpoint-sides subtest passed; 2 optional subtests skipped"
+    },
+    {
+      "command": "node --test test/fast-compatibility.test.js",
+      "status": "LOCAL_TIMEOUT",
+      "details": "300 s local cap; no correctness failure observed before cap, but no PASS claim"
+    },
+    {
+      "command": "node scripts/diagnose-extreme-performance.mjs --case EXT-004 --json",
+      "status": "PASS",
+      "details": "machine-readable phase/work diagnostics produced"
+    },
+    {
+      "command": "CPU profiling via Node/V8 --cpu-prof",
+      "status": "PASS",
+      "details": "profiles inspected locally and not committed"
+    }
+  ],
+  "representativePhaseDistribution": {
+    "case": "EXT-004",
+    "coldPhaseTotalMs": 2979.605,
+    "initializationMs": 2369.694,
+    "initializationPercent": 79.53,
+    "yearTraversalMs": 7.421,
+    "yearTraversalPercent": 0.25,
+    "yearConstructionMs": 602.281,
+    "yearConstructionPercent": 20.21,
+    "finalResolutionMs": 0.209,
+    "finalResolutionPercent": 0.01,
+    "note": "Fresh final diagnostic run after the accepted cursor optimization. Historical timeout diagnostics were stopped during gate-location initialization before reaching target-year work."
+  },
+  "rebase": {
+    "sourceArchive": "pastafari-calendar-main (29)(6).zip",
+    "sourceArchiveIdentifier": "b7c19bdd55b734823652f605a8969f585e8d5fbf",
+    "strategy": "file-by-file merge preserving concurrent diagnostics/workflow/benchmark changes",
+    "productionDiagnosticsReused": true,
+    "parallelInstrumentationRemoved": true,
+    "standalone": {
+      "status": "left-byte-identical-to-attached-base",
+      "reason": "attached base already had standalone/source drift and exact locked esbuild 0.28.2 was unavailable locally; generated artifacts were not hand-edited"
+    },
+    "performanceRegressionSentinel": "local-timeout-at-300s-on-attached-baseline",
+    "focusedTest": "5-pass-0-fail",
+    "currentRepresentativeDiagnostics": {
+      "id": "EXT-004",
+      "input": {
+        "id": "EXT-004",
+        "batch": 31,
+        "case": 1,
+        "calculationJdn": "5285776",
+        "targetJdn": "5290529",
+        "relation": "c<t",
+        "direction": "future",
+        "sampleClass": "regular",
+        "previousResult": "TIMEOUT",
+        "historicalStaticCheckpointGateIndex": "32768",
+        "historicalContainingGateIndex": "37120",
+        "historicalCheckpointDistance": 4352,
+        "classification": [
+          "C",
+          "D",
+          "E"
+        ]
+      },
+      "result": {
+        "year": "5001",
+        "cutletName": "קרן",
+        "dayInCutlet": 72,
+        "monthName": "כישור",
+        "dayInMonth": 4
+      },
+      "warmResultIdentical": true,
+      "timingMs": {
+        "coldElapsed": 6022.196497,
+        "warmRepeat": 0.08982100000048376,
+        "phases": {
+          "findYear": 4587.396825,
+          "buildYearStructure": 1432.706059,
+          "constructCutlets": 0.28791000000001077,
+          "constructMonths": 1431.159702,
+          "resolveCutletBoundaries": 0.04915400000027148,
+          "resolveDate": 0.33427299999948445,
+          "convert": 6021.942433
+        }
+      },
+      "cpuMs": {
+        "user": 5992.669,
+        "system": 283.62,
+        "total": 6276.289
+      },
+      "checkpoint": {
+        "historicalStaticGateIndex": "32768",
+        "historicalContainingGateIndex": "37120",
+        "historicalDistance": 4352,
+        "currentLastStaticIndex": "32768",
+        "currentLastSelectedIndex": "37139",
+        "currentLastTargetIndex": "37140",
+        "currentLastStaticDistance": "4372",
+        "currentLastSelectedDistance": "1",
+        "currentLastSource": "traversal-cursor",
+        "staticStarts": 2,
+        "cursorStarts": 4369,
+        "recurrenceSteps": 4375
+      },
+      "traversal": {
+        "yearsTraversed": 1,
+        "direction": "next",
+        "resolvedYear": "5001",
+        "yearStructuresGenerated": 1,
+        "nextYearCandidates": 6,
+        "previousYearCandidates": 0
+      },
+      "work": {
+        "gateDistanceCalls": 4375,
+        "gateDistanceMisses": 4372,
+        "gatePositionCalls": 4396,
+        "gatePositionMisses": 4371,
+        "sauceCache": {
+          "hits": 0,
+          "misses": 3,
+          "insertions": 3,
+          "evictions": 0
+        },
+        "gateDistanceCache": {
+          "hits": 3,
+          "misses": 4372,
+          "insertions": 4372,
+          "evictions": 276
+        },
+        "gatePositionCache": {
+          "hits": 25,
+          "misses": 4371,
+          "insertions": 4373,
+          "evictions": 278
+        },
+        "structureCache": {
+          "hits": 0,
+          "misses": 1,
+          "insertions": 1,
+          "evictions": 0
+        },
+        "resultCache": {
+          "hits": 0,
+          "misses": 1,
+          "insertions": 1,
+          "evictions": 0
+        }
+      },
+      "resultCache": {
+        "beforeWarm": {
+          "entries": 1,
+          "hits": 0,
+          "misses": 1
+        },
+        "afterWarm": {
+          "entries": 1,
+          "hits": 1,
+          "misses": 1
+        }
+      },
+      "memory": {
+        "rssBefore": 49332224,
+        "rssAfterCold": 126386176,
+        "heapUsedBefore": 5076352,
+        "heapUsedAfterCold": 43392816
+      },
+      "diagnostics": {
+        "mode": "summary",
+        "counters": {
+          "fast.cache.calculation-state.insertion": 1,
+          "fast.cache.calculation-state.miss": 1,
+          "fast.cache.gate-distance.eviction": 276,
+          "fast.cache.gate-distance.hit": 3,
+          "fast.cache.gate-distance.insertion": 4372,
+          "fast.cache.gate-distance.miss": 4372,
+          "fast.cache.gate-position.eviction": 278,
+          "fast.cache.gate-position.hit": 25,
+          "fast.cache.gate-position.insertion": 4373,
+          "fast.cache.gate-position.miss": 4371,
+          "fast.cache.gate-position.replacement": 4373,
+          "fast.cache.result.insertion": 1,
+          "fast.cache.result.miss": 1,
+          "fast.cache.sauce.insertion": 3,
+          "fast.cache.sauce.miss": 3,
+          "fast.cache.structure.insertion": 1,
+          "fast.cache.structure.miss": 1,
+          "fast.cache.year-5000.insertion": 1,
+          "fast.cache.year-5000.miss": 1,
+          "fast.cache.year-by-number.insertion": 2,
+          "fast.cache.year-by-number.miss": 1,
+          "fast.checkpoint.cursor-starts": 4369,
+          "fast.checkpoint.lookups": 4371,
+          "fast.checkpoint.static-starts": 2,
+          "fast.checkpoint.steps": 4375,
+          "fast.operations.finished": 7,
+          "fast.operations.started": 7,
+          "fast.outcome.cache-miss": 1,
+          "fast.outcome.ok": 6,
+          "fast.year-5000.candidates": 37,
+          "fast.year-traversal.direction.next": 1,
+          "fast.year-traversal.steps": 1,
+          "fast.year.candidates.next": 6
+        },
+        "gauges": {
+          "fast.cache.calculation-state.size": 1,
+          "fast.cache.gate-distance.size": 4096,
+          "fast.cache.gate-position.size": 4096,
+          "fast.cache.result.size": 1,
+          "fast.cache.sauce.size": 3,
+          "fast.cache.structure.size": 1,
+          "fast.cache.year-by-number.size": 2,
+          "fast.checkpoint.last.direction": "forward",
+          "fast.checkpoint.last.distance": "1",
+          "fast.checkpoint.last.selected-index": "37139",
+          "fast.checkpoint.last.source": "traversal-cursor",
+          "fast.checkpoint.last.static-distance": "4372",
+          "fast.checkpoint.last.static-index": "32768",
+          "fast.checkpoint.last.target-index": "37140",
+          "fast.year-traversal.last.direction": "next",
+          "fast.year-traversal.last.resolved-year": "5001",
+          "fast.year-traversal.last.start-year": 5000,
+          "fast.year-traversal.last.steps": 1
+        },
+        "operations": [
+          {
+            "id": "op-2",
+            "subsystem": "fast",
+            "operation": "find-year",
+            "startedMonotonicMs": 106.400026,
+            "durationMs": 4587.396825,
+            "outcome": "ok",
+            "start": {
+              "targetDistanceFromCalculation": "4753"
+            },
+            "end": {
+              "startYear": 5000,
+              "resolvedYear": "5001",
+              "targetJdn": "5290529",
+              "steps": 1,
+              "direction": "next"
+            }
+          },
+          {
+            "id": "op-4",
+            "subsystem": "fast",
+            "operation": "construct-cutlets",
+            "startedMonotonicMs": 4695.488709,
+            "durationMs": 0.28791000000001077,
+            "outcome": "ok",
+            "start": {
+              "gapCount": 6
+            },
+            "end": {
+              "cutletCount": 6,
+              "mandatoryCut": false
+            }
+          },
+          {
+            "id": "op-5",
+            "subsystem": "fast",
+            "operation": "construct-months",
+            "startedMonotonicMs": 4695.815214,
+            "durationMs": 1431.159702,
+            "outcome": "ok",
+            "start": {
+              "yearLength": 2943
+            },
+            "end": {
+              "monthCount": 31,
+              "weaveLength": 2943
+            }
+          },
+          {
+            "id": "op-6",
+            "subsystem": "fast",
+            "operation": "resolve-cutlet-boundaries",
+            "startedMonotonicMs": 6127.100751,
+            "durationMs": 0.04915400000027148,
+            "outcome": "ok",
+            "start": {
+              "cutletCount": 6
+            },
+            "end": {
+              "cutletCount": 6
+            }
+          },
+          {
+            "id": "op-3",
+            "subsystem": "fast",
+            "operation": "build-year-structure",
+            "startedMonotonicMs": 4694.489251,
+            "durationMs": 1432.706059,
+            "outcome": "ok",
+            "start": {
+              "length": 2943,
+              "gaps": 6
+            },
+            "end": {
+              "cutletCount": 6,
+              "monthCount": 31
+            }
+          },
+          {
+            "id": "op-7",
+            "subsystem": "fast",
+            "operation": "resolve-date",
+            "startedMonotonicMs": 6127.229293,
+            "durationMs": 0.33427299999948445,
+            "outcome": "ok",
+            "start": {
+              "year": "5001"
+            },
+            "end": {}
+          },
+          {
+            "id": "op-1",
+            "subsystem": "fast",
+            "operation": "convert",
+            "startedMonotonicMs": 105.728227,
+            "durationMs": 6021.942433,
+            "outcome": "cache-miss",
+            "start": {
+              "targetDistanceFromCalculation": "4753"
+            },
+            "end": {}
+          }
+        ],
+        "trace": []
+      },
+      "runtime": {
+        "node": "v22.16.0",
+        "v8": "12.4.254.21-node.26",
+        "platform": "linux",
+        "arch": "x64",
+        "release": "6.18.35",
+        "cpus": 4
+      }
+    }
+  },
+  "commandsRebase": [
+    {
+      "command": "node --test test/extreme-performance.test.js",
+      "status": "PASS",
+      "details": "5 pass, 0 fail; ~24.8 s"
+    },
+    {
+      "command": "node scripts/diagnose-extreme-performance.mjs --case EXT-004 --mode=summary --json",
+      "status": "PASS",
+      "details": "6022.2 ms cold; 4375 recurrence steps; 4369 cursor starts; 2 static starts"
+    },
+    {
+      "command": "node --expose-gc scripts/run-performance-regression.mjs ...",
+      "status": "LOCAL_TIMEOUT",
+      "details": "attached baseline did not finish within 300 s"
+    },
+    {
+      "command": "npm run build:standalone",
+      "status": "NOT_RUN",
+      "details": "exact locked esbuild 0.28.2 unavailable locally; attached generated files already predate diagnostics source changes and were preserved"
+    }
+  ]
+}

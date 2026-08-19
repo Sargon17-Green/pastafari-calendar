@@ -36,7 +36,7 @@ c52575da66fabfd9fb841212423d8e274187c3c057dfdb97f6ffbf0296030922  ./browser/exam
 11f68ded7bd366b17cf9d3d0769fbdc21bcf06e67ab10a85e52002a388fd2682  ./browser/pastafari-calendar-core-2.js
 63062339110bd8542d564227c612b4a7634d8d9b392818e5ee6cbdbde7be658a  ./browser/pastafari-calendar-core-chronicle.js
 3e2d0cb5925e1df577fbbac6cbc2caf14e38329090231e173120a51b19c8fe97  ./browser/pastafari-calendar-core.js
-f2deba1ca1dfe876d38f29e98216071fcef7984bae77f931a8b17a9d931a74d4  ./browser/pastafari-calendar-fast.js
+3e07722e99ab48735635080dac5b61a10f031806f2286bf41571fcd199658ba8  ./browser/pastafari-calendar-fast.js
 a9749be9537bf8bcd93aa1870525dda7a10fac73aae26f84afecf245432f7634  ./browser/pastafari-calendar-router-core.js
 5ed6d25d1a7aa07848c80c3f6c17040a5818e985ec64936f9d7a93a6c6d428e6  ./browser/pastafari-calendar-router.js
 1caab6e0c5607ccd15fe265ccad50de44addb96d5948d59475f15a4e5272da6c  ./browser/pastafari-constraints-client.js
@@ -53,8 +53,9 @@ b3acaadd53a047711d4780cca53ff0fcc1d86d9110b14e71d2a7edeaad90f132  ./browser/stan
 184f3f065cd59a119b1bee77ad56211b17ab73adc1f7aa856345b494a1e675a7  ./browser/year-ceiling-detour.js
 102a864a4bfa12b301548165c38147185a7e0142ff850af9cd9243225a48043f  ./docs/ACCESSIBILITY-TESTING.md
 02313a9e6005659fcce4c05813a4e67bc10373495dc946f13935f2eb9a7dda38  ./docs/ASTRONOMICAL-DAY.md
-dd1c4571c1d9692b03b1c8c6478d24bd9e00ed958624c169f3ceacdfe25b4912  ./docs/DIAGNOSTICS.md
+2ef77290bd78ff7be9385c13195aa5d6ccf8cc1dd72dfdedc65d38c744c9baef  ./docs/DIAGNOSTICS.md
 61a995c9e636141286d55c977939bf3aeb0887a598f1c4b7b0f872479868586a  ./docs/DOCUMENTATION-CONSISTENCY.md
+c2a29dd8d9221eed57198f8110d1ae8ddbfa7bb251ccbecdabc3cdff0639dab3  ./docs/EXTREME-PERFORMANCE-ANALYSIS.md
 3bef0fad4b89205ba5ddc1bb4abf250b0b9fb8e0ada470df7ed494df1815c5d8  ./docs/FAST-ENGINE-SOAK-VALIDATION-2026-08-15.md
 a0adbedba2dd30471fb1c54c2d93399f4d092b278c2aee6913f3869b64b3349c  ./docs/I18N-SUPPORT-LEVELS.md
 12bf76d676b2c825195ec26386118977b6d03987fbdb936d49b1b87522570cb8  ./docs/I18N.md
@@ -62,13 +63,13 @@ c040204e38cde0f84f2be761aedcdf7714ca0f606dd1931a92f118f724adc77b  ./docs/LICENSE
 463ef06b5c271b5dff0c6787af6dd8d758a3614e338dbdda34d5c24ea42713e3  ./docs/MEMORY-TESTING.md
 bf2fafb98116a2c17372d413bf322a08d42ef134c171ce392e64bbce757fc232  ./docs/README.md
 87853fc8efc0ce9710f8100526e0aad5ca1925f2c7e12f8c5a27fe7231a7ba7f  ./docs/REVERSE-CONSTRAINTS.md
-6646624ccbbce82349cfbc701888b39d41ba447ac27eadc1ce20964561404551  ./docs/SHA256SUMS.txt
+06f6fe1351b42bb5ba2d34322bcbeb9bf76609b63d1b4a2bc4d35c1d5ec6bf65  ./docs/SHA256SUMS.txt
 2e431b15b351d9253537ac65d0eabb316b450da4576a2d7e399b253ffd738310  ./docs/SUPPLY-CHAIN-SECURITY.md
 f8032c08953d5422cf50a5483ed523c934d1377066da6f5ddc816309a8ecdbcf  ./docs/UPLOAD-TO-GITHUB.md
 ce790b115b7ade666ccb5f50b7dc74cfc9ba8719013c21e70c5e0a3149263480  ./docs/app.js
 098e70b2a5176492c63df4d350ad3411b28bd6f3bfb295fe7554c3352bc493f4  ./docs/calendar-converters.js
 91f1344b70a734d856b34f947957a495b12fb3827d241b2a7bc0a469643388f8  ./docs/calendar-input-conventions.js
-f2deba1ca1dfe876d38f29e98216071fcef7984bae77f931a8b17a9d931a74d4  ./docs/engine/pastafari-calendar-fast.js
+3e07722e99ab48735635080dac5b61a10f031806f2286bf41571fcd199658ba8  ./docs/engine/pastafari-calendar-fast.js
 1caab6e0c5607ccd15fe265ccad50de44addb96d5948d59475f15a4e5272da6c  ./docs/engine/pastafari-constraints-client.js
 ae38cc2f5a8de405ad9387e773e5968389185f7ab3b9985b166b8a51779d0b61  ./docs/engine/pastafari-constraints.js
 95571c0ee10a343417bf5e91eb2a7bf01b912b61810985d7e24391d4e641d24f  ./docs/engine/pastafari-diagnostics.js
@@ -240,6 +241,7 @@ fd201752349bd21044d2cb59dd414a66e8255907a0b0164630f146dff5e643a5  ./scripts/chec
 593844a3fc48e83fc31bb7769d8fc44a0cc78da30ec5487f4d420d6f8e11fea6  ./scripts/check-sha-manifest-completeness.mjs
 cae69abf73fa00ba678ddee43ae494ef1c1c68e1326827b1a30b649095b1c9b1  ./scripts/check-supply-chain.mjs
 d514b8981192e56efca37de05875d00f89e5e720c1c0ce93b2e2269be6a2d02c  ./scripts/checksums.mjs
+2eff03dc2d80e7632338a9bde19310636b28617b41113010683c5e1870c18c3d  ./scripts/diagnose-extreme-performance.mjs
 c36f5dbd80bdb1d8a10c53611f4b23b8f9bc541a866ed56a41bd30d0c042df90  ./scripts/diagnose.mjs
 19fcffe2d1a54ba2d3ed05b54c06d55c16702d09f5eb689706682652ffc50d78  ./scripts/diagnostics-overhead.mjs
 87a1c0951791cc07b75f33729412928a21151939c68ae2648fd31fe680c45243  ./scripts/docs-consistency.mjs
@@ -263,7 +265,7 @@ b629aa04fcacbee7bb5a5267777a921b85edade8d417e2ee1cf7d601623a547e  ./scripts/run-
 6b8b0d02ea5552e4293e2e41817e3a06a34065d00a06585132270beb221e2943  ./scripts/run-ui-race-regression.mjs
 8ae0bca6c88cca4d0ac02f9baf2efd998d113fbd09f3c8a93cac9e5a4047588e  ./scripts/run-user-e2e.mjs
 20db61f01b067ed52cc7198162c2e05955bca4d6b239b0111e37120636265be8  ./scripts/run-visual-regression.mjs
-453eccb80fe23112f5ec597b21517d416a105a199bd9b13c982eb8e4feda3aab  ./scripts/soak-fast-engine.mjs
+df436fdda7be68461eca4b8ddec750b2a857378c633d0c32439c48bb90bb25ef  ./scripts/soak-fast-engine.mjs
 e2ea19be73fc465c8628dbed267bc28ef0d0afd48403fcb0609616df1163da1a  ./scripts/standalone-entry.js
 68764f9606adc291c6e65395a443fe7536daad02b7a5332d4e733b48988f6cca  ./scripts/standalone-router.js
 394c710fb253d085ec985d1349ca19bdbabe0a4a0e9ac23cedf1145f4e9d480c  ./scripts/sync-manifest-i18n.mjs
@@ -478,6 +480,7 @@ ffca09053340cea67eb6ceb395e4837820f361dc9104b228c8b48f6e2ee10ba6  ./test/constra
 4c6015e507962b5073be0378de3fb6c1f7b23628ba3e9650038417d4498b1249  ./test/day-boundary.test.js
 29777abd774670ead2c4810b8e443ca2c835997a3efec4b018394803657d71b1  ./test/diagnostics.test.js
 3dca8ece2be26b36ef7bbbee472a9095ad5f93262b4340b46376c0713eb289df  ./test/docs-consistency.test.js
+c8e740000523ce371426adcc1e2986204ca39a442d4b4d5a25106134b4913c63  ./test/extreme-performance.test.js
 95f12862522c597adb5be5756367d97344c5d96d376f68bd216a7a058c1019d9  ./test/fast-compatibility.test.js
 c31d9aa64b4a2576d33571845d8a0167808679788906e81c5707a00c12633c62  ./test/file-protocol-smoke.html
 9f8b4c23746282b13e50c8b4d2c06eff6bcd26bf77f368874fe6a63a2c9a9285  ./test/i18n-support-levels.test.js
@@ -541,6 +544,7 @@ ba277679410a0835df587b42e30eace4d91b6733227dbcdd6b288a201fd84b47  ./verification
 bf128239110ec8a5eefb5f24aa1add39f2ebff14ab68114b44bd51e74d40f41c  ./verification/evidence/cpp-js-soak-2026-08-16-artifacts.zip
 3afb61c95e17e546babd05892e1c92060ab90f9ca42b29e2947187dc2664c917  ./verification/evidence/cpp-js-soak-2026-08-16.json
 d88c1d48a8f90433dcc8e973832c8b197654e9529dd2c405b92e2a49b69563c5  ./verification/evidence/cpp-js-soak-2026-08-16.md
+65285dda567bffc13e37324c4171c8a6470513479c06e631df99d69fb251c6ca  ./verification/evidence/extreme-performance-analysis-2026-08-19.json
 494c1762ac69ae1f9e68b13426625444fe2bcb7b55ace802835d7d669244c987  ./verification/evidence/multilang/README.md
 e2ae8c1f8546a73d039ebab8fba3937eac1d53809f8c3bbd1421a2a6cf5106f1  ./verification/evidence/multilang/bundle-validation-2026-08-16.md
 6d71fd1bfe0cc9d45b50e6a45e2f61a5e39cc87ee7d997582c73d3e83f1d85ad  ./verification/evidence/multilang/ready-five-canonical-remediation-2026-08-16.md
@@ -549,4 +553,5 @@ ea643393c8c3b72d5857b668ff209d152adb2667afa351f267f9cb813261825d  ./verification
 e80992939a5f9b4b09b222ea25444ae0eeaccb13018d817e9d8cde186e44b844  ./verification/evidence/soak-c5db804-2026-08-13-SHA256SUMS.txt
 7daa0ad643f8dcf1b9ce035876ec49cfe804de34400ac8b5a580ab0c8c5bd80d  ./verification/evidence/soak-c5db804-2026-08-13.jsonl
 1bbd9a0dac2b482750dfee4d136af1ca690039bc2bd996caa956b5de12495eb2  ./verification/evidence/soak-c5db804-2026-08-13.md
+459ca5d0a8e4e792fabdd2d22571fa3868ea913547f4d8456d8424054553c6f9  ./verification/extreme-performance-cases.json
 8b29f17bbe1a275afbe59a39436934c3845ecc9629d14327a06856cffd3797e8  ./verification/pwa-cache-state.json

@@ -514,6 +514,8 @@ function chooseUniform(sauceResult, bowlId, seal, count) {
 const gateDistanceCache = new LruMap(4096, "fast.cache.gate-distance");
 const dynamicGatePositions = new LruMap(4096, "fast.cache.gate-position");
 dynamicGatePositions.set(0n, FOUNDATION_JDN);
+let gateTraversalCursorIndex = 0n;
+let gateTraversalCursorPosition = FOUNDATION_JDN;
 
 // Build-time generated checkpoints are inserted here. The zero checkpoint alone is
 // correct; the generated table only reduces the cold-start cost for distant epochs.
@@ -591,17 +593,39 @@ function gatePosition(index) {
     fail(TypeError, "Gate index must be a bigint.", "ERR_GATE_INDEX");
   }
   const cached = dynamicGatePositions.get(index);
-  if (cached !== undefined) return cached;
+  if (cached !== undefined) {
+    gateTraversalCursorIndex = index;
+    gateTraversalCursorPosition = cached;
+    return cached;
+  }
   const checkpoint = nearestCheckpoint(index);
   const checkpointIndex = BigInt(checkpoint[0]);
-  let currentIndex = checkpointIndex;
-  let position = checkpoint[1];
-  let steps = 0;
+  const checkpointDistance = absBig(index - checkpointIndex);
+  const cursorDistance = absBig(index - gateTraversalCursorIndex);
+  let currentIndex;
+  let position;
+  let checkpointSource;
   incrementDiagnosticCounter("fast.checkpoint.lookups");
-  incrementDiagnosticCounter("fast.checkpoint.static-starts");
-  setDiagnosticGauge("fast.checkpoint.last.selected-index", checkpointIndex);
+  if (cursorDistance < checkpointDistance) {
+    currentIndex = gateTraversalCursorIndex;
+    position = gateTraversalCursorPosition;
+    checkpointSource = "traversal-cursor";
+    incrementDiagnosticCounter("fast.checkpoint.cursor-starts");
+  } else {
+    currentIndex = checkpointIndex;
+    position = checkpoint[1];
+    checkpointSource = "static-precomputed";
+    incrementDiagnosticCounter("fast.checkpoint.static-starts");
+  }
+  const selectedStartIndex = currentIndex;
+  const selectedDistance = absBig(index - selectedStartIndex);
+  let steps = 0;
+  setDiagnosticGauge("fast.checkpoint.last.static-index", checkpointIndex);
+  setDiagnosticGauge("fast.checkpoint.last.selected-index", currentIndex);
   setDiagnosticGauge("fast.checkpoint.last.target-index", index);
-  setDiagnosticGauge("fast.checkpoint.last.distance", index >= checkpointIndex ? index - checkpointIndex : checkpointIndex - index);
+  setDiagnosticGauge("fast.checkpoint.last.static-distance", checkpointDistance);
+  setDiagnosticGauge("fast.checkpoint.last.distance", selectedDistance);
+  setDiagnosticGauge("fast.checkpoint.last.source", checkpointSource);
   setDiagnosticGauge("fast.checkpoint.last.direction", currentIndex < index ? "forward" : currentIndex > index ? "backward" : "exact");
   if (currentIndex < index) {
     while (currentIndex < index) {
@@ -620,14 +644,19 @@ function gatePosition(index) {
       dynamicGatePositions.set(currentIndex, position);
     }
   }
+  dynamicGatePositions.set(index, position);
+  gateTraversalCursorIndex = index;
+  gateTraversalCursorPosition = position;
   incrementDiagnosticCounter("fast.checkpoint.steps", steps);
   diagnosticTrace("fast", "checkpoint-traversal", {
     targetIndex: index,
     checkpointIndex,
-    distance: index >= checkpointIndex ? index - checkpointIndex : checkpointIndex - index,
-    direction: checkpointIndex < index ? "forward" : checkpointIndex > index ? "backward" : "exact",
+    selectedIndex: selectedStartIndex,
+    staticDistance: checkpointDistance,
+    distance: selectedDistance,
+    direction: selectedStartIndex < index ? "forward" : selectedStartIndex > index ? "backward" : "exact",
     steps,
-    checkpointSource: "static-precomputed",
+    checkpointSource,
   });
   return position;
 }
@@ -1419,6 +1448,8 @@ export function clearFastCache() {
   gateDistanceCache.clear();
   dynamicGatePositions.clear();
   dynamicGatePositions.set(0n, FOUNDATION_JDN);
+  gateTraversalCursorIndex = 0n;
+  gateTraversalCursorPosition = FOUNDATION_JDN;
   cacheHits = 0;
   cacheMisses = 0;
 }
