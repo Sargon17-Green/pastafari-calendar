@@ -249,12 +249,20 @@ jobs:
           BASE_SHA: ${{ steps.baseline.outputs.sha }}
         run: |
           set -euo pipefail
-          git show "${BASE_SHA}:browser/pastafari-calendar-fast.js" > "${RUNNER_TEMP}/pastafari-calendar-fast-baseline.mjs"
+          baseline_dir="${RUNNER_TEMP}/pastafari-performance-baseline"
+          rm -rf "${baseline_dir}"
+          mkdir -p "${baseline_dir}"
+          git show "${BASE_SHA}:browser/pastafari-calendar-fast.js" > "${baseline_dir}/pastafari-calendar-fast.mjs"
+          if grep -Fq './pastafari-diagnostics.js' "${baseline_dir}/pastafari-calendar-fast.mjs"; then
+            git cat-file -e "${BASE_SHA}:browser/pastafari-diagnostics.js"
+            git show "${BASE_SHA}:browser/pastafari-diagnostics.js" > "${baseline_dir}/pastafari-diagnostics.js"
+          fi
+          printf '{"type":"module"}\n' > "${baseline_dir}/package.json"
       - name: Detect JavaScript performance regressions
         shell: bash
         run: |
           set -euo pipefail
           timeout 360s node --expose-gc scripts/run-performance-regression.mjs \
-            --baseline "${RUNNER_TEMP}/pastafari-calendar-fast-baseline.mjs" \
+            --baseline "${RUNNER_TEMP}/pastafari-performance-baseline/pastafari-calendar-fast.mjs" \
             --candidate "browser/pastafari-calendar-fast.js" \
             --json "${RUNNER_TEMP}/performance-regression.json"
