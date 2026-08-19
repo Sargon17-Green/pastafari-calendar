@@ -1,6 +1,6 @@
 "use strict";
 
-const VERSION = "pastafari-static-pwa-hardening-14-diagnostics-streamed-precache";
+const VERSION = "pastafari-static-pwa-hardening-15-worker-api-sync";
 const CORE_CACHE = `${VERSION}-core`;
 const RUNTIME_CACHE = "pastafari-runtime-assets";
 const CACHE_PREFIX = "pastafari-static-";
@@ -10,7 +10,7 @@ const CACHE_PREFIX = "pastafari-static-";
 const CORE_ASSETS = [
   "./index.html",
   "./styles.css?v=13-reverse-i18n",
-  "./app.js?v=20-cutlet-focus",
+  "./app.js?v=21-worker-api-sync",
   "./reverse-ui.js?v=18-unified-i18n",
   "./reverse-search-controller.js",
   "./calendar-input-conventions.js?v=9-calendar-input-conventions",
@@ -19,7 +19,7 @@ const CORE_ASSETS = [
   "./venus-day-boundary.js?v=10-venus-day-boundary",
   "./engine/pastafari-diagnostics.js",
   "./engine/pastafari-calendar-fast.js",
-  "./engine/pastafari-fast-worker.js?v=8-year-structure",
+  "./engine/pastafari-fast-worker.js?v=9-worker-api-sync",
   "./engine/pastafari-constraints-client.js",
   "./engine/pastafari-constraints.js",
   "./engine/pastafari-reverse-worker.js",

@@ -65,7 +65,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   const requiredCore = [
     "./index.html",
     "./styles.css?v=13-reverse-i18n",
-    "./app.js?v=20-cutlet-focus",
+    "./app.js?v=21-worker-api-sync",
     "./reverse-ui.js?v=18-unified-i18n",
     "./reverse-search-controller.js",
     "./calendar-input-conventions.js?v=9-calendar-input-conventions",
@@ -74,7 +74,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
     "./venus-day-boundary.js?v=10-venus-day-boundary",
     "./engine/pastafari-diagnostics.js",
     "./engine/pastafari-calendar-fast.js",
-    "./engine/pastafari-fast-worker.js?v=8-year-structure",
+    "./engine/pastafari-fast-worker.js?v=9-worker-api-sync",
     "./engine/pastafari-constraints-client.js",
     "./engine/pastafari-constraints.js",
     "./engine/pastafari-reverse-worker.js",
@@ -104,7 +104,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   assert.equal(LOCALES.length, 72, "PWA accounting expects the current 72 registered locales");
   assert.equal(LOCALES.filter(({ code }) => code !== "en").length, 71, "Every non-English locale is optional/on-demand");
 
-  assert.match(source, /const VERSION = "pastafari-static-pwa-hardening-14-diagnostics-streamed-precache";/);
+  assert.match(source, /const VERSION = "pastafari-static-pwa-hardening-15-worker-api-sync";/);
   assert.match(source, /const RUNTIME_CACHE = "pastafari-runtime-assets";/);
   assert.match(source, /const OPTIONAL_LOCALE_PATH = \/\^\\\/i18n\\\/locales/);
   assert.match(source, /url\.search === LOCALE_REVISION_SEARCH/);
@@ -130,7 +130,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   const html = await readFile(path.join(DOCS, "index.html"), "utf8");
   for (const entry of [
     "./styles.css?v=13-reverse-i18n",
-    "./app.js?v=20-cutlet-focus",
+    "./app.js?v=21-worker-api-sync",
     "./manifest.webmanifest?v=8-year-structure",
     "./icons/icon.svg?v=8-year-structure",
   ]) {

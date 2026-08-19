@@ -35,7 +35,7 @@ import {
 } from "./i18n/runtime.js?v=17-unified-i18n";
 
 
-const ASSET_REVISION = "8-year-structure";
+const ASSET_REVISION = "9-worker-api-sync";
 const DESKTOP_COMPARISON_QUERY = "(min-width: 1000px)";
 const worker = new Worker(
   new URL(`./engine/pastafari-fast-worker.js?v=${ASSET_REVISION}`, import.meta.url),
