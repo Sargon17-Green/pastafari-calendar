@@ -19,7 +19,7 @@ test("Pages markup exposes one reverse-search mount point", async () => {
   assert.equal((html.match(/id="reverse-app"/g) || []).length, 1);
   assert.match(html, /id="reverse-panel"[^>]*aria-labelledby="reverse-heading"/);
   assert.match(html, /styles\.css\?v=13-reverse-i18n/);
-  assert.match(html, /app\.js\?v=20-cutlet-focus/);
+  assert.match(html, /app\.js\?v=21-worker-api-sync/);
 });
 
 test("app wires reverse results back into the canonical calendar state", async () => {

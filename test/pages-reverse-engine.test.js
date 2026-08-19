@@ -13,7 +13,6 @@ const DOCS_ENGINE_DIR = path.join(ROOT, "docs", "engine");
 
 const COPIED_FILES = Object.freeze([
   "pastafari-calendar-fast.js",
-  "pastafari-fast-worker.js",
   "pastafari-constraints-client.js",
   "pastafari-constraints.js",
   "pastafari-reverse-worker.js",
@@ -34,6 +33,13 @@ for (const fileName of COPIED_FILES) {
   });
 }
 
+test("Pages fast worker preserves the UI-specific adapter contract", async () => {
+  const source = await readFile(path.join(DOCS_ENGINE_DIR, "pastafari-fast-worker.js"), "utf8");
+  assert.match(source, /cutletIndexFromInternalName/);
+  assert.match(source, /monthIndexFromInternalName/);
+  assert.match(source, /case "getRangeView"/);
+  assert.match(source, /case "getYearStructure"/);
+});
 test("Pages fast engine exposes the primitives required by the reverse solver", async () => {
   const engine = await import(pathToFileURL(path.join(DOCS_ENGINE_DIR, "pastafari-calendar-fast.js")).href);
   assert.equal(typeof engine.findPastafariDate, "function");

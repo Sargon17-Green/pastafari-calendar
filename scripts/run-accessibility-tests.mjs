@@ -679,6 +679,7 @@ async function main() {
     }
   }
 
+  let fatalSuiteError = null;
   try {
     await page.goto(server.baseURL, { waitUntil: "domcontentloaded" });
 
@@ -899,6 +900,16 @@ async function main() {
 
     await page.setViewportSize(DESKTOP);
     await chooseLocale(page, "en");
+  } catch (error) {
+    fatalSuiteError = error;
+    report.failures += 1;
+    report.checks.push({
+      id: "fatal-suite-error",
+      result: "FAIL",
+      durationMs: Math.round(performance.now() - started),
+      error: errorText(error),
+      screenshot: null,
+    });
   } finally {
     report.durationMs = Math.round(performance.now() - started);
     if (report.failures) {
@@ -920,6 +931,7 @@ async function main() {
 
   console.log(`\nAccessibility report: ${path.relative(ROOT, path.join(ARTIFACTS, "report.md"))}`);
   console.log(`PASS=${report.passes} FAIL=${report.failures} AXE_VIOLATIONS=${report.axeViolations.length} INCOMPLETE=${report.axeIncomplete.length}`);
+  if (fatalSuiteError) throw fatalSuiteError;
   if (report.failures) process.exitCode = 1;
 }
 

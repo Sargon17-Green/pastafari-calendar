@@ -100,8 +100,8 @@ async function startStaticServer(state) {
     let body = await readFile(resolved);
     if (relativePath === "sw.js") {
       const text = body.toString("utf8").replace(
-        /pastafari-static-pwa-hardening-14-diagnostics-streamed-precache/g,
-        `pastafari-static-pwa-hardening-14-diagnostics-streamed-precache-test-${state.swVariant}`,
+        /pastafari-static-pwa-hardening-15-worker-api-sync/g,
+        `pastafari-static-pwa-hardening-15-worker-api-sync-test-${state.swVariant}`,
       );
       body = Buffer.from(text, "utf8");
     }
@@ -653,7 +653,7 @@ const startedAt = Date.now();
 const swSource = await readFile(SW_PATH, "utf8");
 const coreAssets = parseStringArray(swSource, "CORE_ASSETS");
 const optionalAssets = parseStringArray(swSource, "OPTIONAL_ASSETS");
-assert.equal(coreAssets.length, 18, `Expected 18 core assets, got ${coreAssets.length}`);
+assert.equal(coreAssets.length, 19, `Expected 19 core assets, got ${coreAssets.length}`);
 assert.equal(optionalAssets.length, 4, `Expected 4 optional static assets, got ${optionalAssets.length}`);
 console.log(`[INFO] install composition: core=${coreAssets.length}, optional-precache=0, optional-static=${optionalAssets.length}`);
 
@@ -709,7 +709,7 @@ try {
   const newFrFailures = diagnostics.requestFailures.slice(expectedFr.requestFailures);
   assert(newFrFailures.every((entry) => entry.url.includes("/i18n/locales/fr.js")), `Unexpected request failure during failed optional locale: ${JSON.stringify(newFrFailures)}`);
   const newFrConsole = diagnostics.consoleErrors.slice(expectedFr.consoleErrors);
-  assert(newFrConsole.every((entry) => /fetch|import|module|locale|503/i.test(entry.text)), `Unexpected console error during failed optional locale: ${JSON.stringify(newFrConsole)}`);
+  assert(newFrConsole.every((entry) => /(?:failed to load resource:\s*(?:net::ERR_FAILED|.*503)|failed to fetch dynamically imported module:.*\/i18n\/locales\/fr\.js(?:\?|$))/i.test(entry.text)), `Unexpected console error during failed optional locale: ${JSON.stringify(newFrConsole)}`);
   diagnostics.badResponses.length = expectedFr.badResponses;
   diagnostics.requestFailures.length = expectedFr.requestFailures;
   diagnostics.consoleErrors.length = expectedFr.consoleErrors;
@@ -791,7 +791,7 @@ try {
   const newDeBad = diagnostics.badResponses.slice(expectedDe.badResponses);
   assert(newDeBad.every((entry) => entry.url.includes("/i18n/locales/de.js")), `Unexpected HTTP diagnostic during never-loaded offline locale: ${JSON.stringify(newDeBad)}`);
   const newDeConsole = diagnostics.consoleErrors.slice(expectedDe.consoleErrors);
-  assert(newDeConsole.every((entry) => /fetch|import|module|locale|network/i.test(entry.text)), `Unexpected console error during never-loaded offline locale: ${JSON.stringify(newDeConsole)}`);
+  assert(newDeConsole.every((entry) => /(?:failed to load resource:\s*net::ERR_(?:FAILED|INTERNET_DISCONNECTED)|failed to fetch dynamically imported module:.*\/i18n\/locales\/de\.js(?:\?|$))/i.test(entry.text)), `Unexpected console error during never-loaded offline locale: ${JSON.stringify(newDeConsole)}`);
   diagnostics.requestFailures.length = expectedDe.requestFailures;
   diagnostics.badResponses.length = expectedDe.badResponses;
   diagnostics.consoleErrors.length = expectedDe.consoleErrors;
