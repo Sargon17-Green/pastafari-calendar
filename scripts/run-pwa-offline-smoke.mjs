@@ -160,6 +160,11 @@ function createDiagnostics(origin) {
     requestFailures: [],
     badResponses: [],
     offlineResponses: [],
+    serviceWorkerEvents: [],
+    serviceWorkerConsole: [],
+    serviceWorkerRequests: [],
+    serviceWorkerResponses: [],
+    serviceWorkerRequestFailures: [],
     successfulOfflineNavigationPhases: new Set(),
     origin,
   };
@@ -213,6 +218,71 @@ function attachDiagnostics(page, diagnostics) {
   });
 }
 
+function attachServiceWorkerDiagnostics(context, diagnostics) {
+  const observeWorker = (worker) => {
+    diagnostics.serviceWorkerEvents.push({
+      phase: diagnostics.phase,
+      event: "created",
+      url: worker.url(),
+    });
+    worker.on("console", (message) => {
+      diagnostics.serviceWorkerConsole.push({
+        phase: diagnostics.phase,
+        type: message.type(),
+        text: message.text(),
+        workerUrl: worker.url(),
+      });
+    });
+    worker.on("close", () => {
+      diagnostics.serviceWorkerEvents.push({
+        phase: diagnostics.phase,
+        event: "closed",
+        url: worker.url(),
+      });
+    });
+  };
+
+  for (const worker of context.serviceWorkers()) observeWorker(worker);
+  context.on("serviceworker", observeWorker);
+
+  context.on("request", (request) => {
+    const worker = request.serviceWorker();
+    if (!worker) return;
+    diagnostics.serviceWorkerRequests.push({
+      phase: diagnostics.phase,
+      url: request.url(),
+      method: request.method(),
+      resourceType: request.resourceType(),
+      workerUrl: worker.url(),
+    });
+  });
+
+  context.on("requestfailed", (request) => {
+    const worker = request.serviceWorker();
+    if (!worker) return;
+    diagnostics.serviceWorkerRequestFailures.push({
+      phase: diagnostics.phase,
+      url: request.url(),
+      method: request.method(),
+      resourceType: request.resourceType(),
+      errorText: request.failure()?.errorText ?? "unknown",
+      workerUrl: worker.url(),
+    });
+  });
+
+  context.on("response", (response) => {
+    const worker = response.request().serviceWorker();
+    if (!worker) return;
+    diagnostics.serviceWorkerResponses.push({
+      phase: diagnostics.phase,
+      url: response.url(),
+      status: response.status(),
+      resourceType: response.request().resourceType(),
+      workerUrl: worker.url(),
+    });
+  });
+}
+
 async function liveDomSnapshot(page) {
   return page.evaluate(() => {
     const workspace = document.querySelector("#calendar-workspace");
@@ -247,6 +317,11 @@ function compactDiagnostics(diagnostics, dom = null) {
     requestFailures: diagnostics.requestFailures.slice(-30),
     badResponses: diagnostics.badResponses.slice(-30),
     offlineResponses: diagnostics.offlineResponses.slice(-50),
+    serviceWorkerEvents: diagnostics.serviceWorkerEvents.slice(-30),
+    serviceWorkerConsole: diagnostics.serviceWorkerConsole.slice(-50),
+    serviceWorkerRequests: diagnostics.serviceWorkerRequests.slice(-80),
+    serviceWorkerResponses: diagnostics.serviceWorkerResponses.slice(-80),
+    serviceWorkerRequestFailures: diagnostics.serviceWorkerRequestFailures.slice(-50),
   };
 }
 
@@ -329,31 +404,71 @@ async function waitForCalendar(page, label) {
 }
 
 async function waitForServiceWorkerReady(page) {
-  const snapshot = await page.evaluate(async (timeoutMs) => {
+  const outcome = await page.evaluate(async (timeoutMs) => {
+    const registrationSnapshot = (registration) => ({
+      scope: registration.scope,
+      active: registration.active ? {
+        state: registration.active.state,
+        scriptURL: registration.active.scriptURL,
+      } : null,
+      installing: registration.installing ? {
+        state: registration.installing.state,
+        scriptURL: registration.installing.scriptURL,
+      } : null,
+      waiting: registration.waiting ? {
+        state: registration.waiting.state,
+        scriptURL: registration.waiting.scriptURL,
+      } : null,
+    });
     const withTimeout = (promise, label) => Promise.race([
       promise,
       new Promise((_, reject) => setTimeout(() => reject(new Error(`${label} timed out after ${timeoutMs} ms`)), timeoutMs)),
     ]);
-    const registration = await withTimeout(navigator.serviceWorker.ready, "navigator.serviceWorker.ready");
-    if (!navigator.serviceWorker.controller) {
-      await withTimeout(new Promise((resolve) => {
-        navigator.serviceWorker.addEventListener("controllerchange", resolve, { once: true });
-      }), "controllerchange");
+
+    try {
+      const registration = await withTimeout(navigator.serviceWorker.ready, "navigator.serviceWorker.ready");
+      if (!navigator.serviceWorker.controller) {
+        await withTimeout(new Promise((resolve) => {
+          navigator.serviceWorker.addEventListener("controllerchange", resolve, { once: true });
+        }), "controllerchange");
+      }
+      return {
+        ok: true,
+        scope: registration.scope,
+        activeState: registration.active?.state ?? null,
+        activeScriptURL: registration.active?.scriptURL ?? null,
+        controlled: Boolean(navigator.serviceWorker.controller),
+        controllerState: navigator.serviceWorker.controller?.state ?? null,
+        controllerScriptURL: navigator.serviceWorker.controller?.scriptURL ?? null,
+      };
+    } catch (error) {
+      const registrations = await navigator.serviceWorker.getRegistrations().catch(() => []);
+      const cacheNames = await caches.keys().catch(() => []);
+      return {
+        ok: false,
+        error: {
+          name: error?.name ?? "Error",
+          message: error?.message ?? String(error),
+          stack: error?.stack ?? null,
+        },
+        registrations: registrations.map(registrationSnapshot),
+        cacheNames,
+        controlled: Boolean(navigator.serviceWorker.controller),
+        controllerState: navigator.serviceWorker.controller?.state ?? null,
+        controllerScriptURL: navigator.serviceWorker.controller?.scriptURL ?? null,
+      };
     }
-    return {
-      scope: registration.scope,
-      activeState: registration.active?.state ?? null,
-      activeScriptURL: registration.active?.scriptURL ?? null,
-      controlled: Boolean(navigator.serviceWorker.controller),
-      controllerState: navigator.serviceWorker.controller?.state ?? null,
-      controllerScriptURL: navigator.serviceWorker.controller?.scriptURL ?? null,
-    };
   }, SW_TIMEOUT_MS);
-  assert.equal(snapshot.activeState, "activated", "Service Worker did not activate");
-  assert(snapshot.controlled, "Page is not controlled after clients.claim()");
-  assert.equal(snapshot.controllerState, "activated", `Service Worker controller state is ${snapshot.controllerState}`);
-  console.log(`[PASS] Service Worker ready: ${JSON.stringify(snapshot)}`);
-  return snapshot;
+
+  if (!outcome.ok) {
+    throw new Error(`Service Worker did not become ready: ${JSON.stringify(outcome)}`);
+  }
+
+  assert.equal(outcome.activeState, "activated", "Service Worker did not activate");
+  assert(outcome.controlled, "Page is not controlled after clients.claim()");
+  assert.equal(outcome.controllerState, "activated", `Service Worker controller state is ${outcome.controllerState}`);
+  console.log(`[PASS] Service Worker ready: ${JSON.stringify(outcome)}`);
+  return outcome;
 }
 
 async function updateServiceWorker(page) {
@@ -555,6 +670,7 @@ let page;
 try {
   browser = await chromium.launch({ headless: true });
   context = await browser.newContext({ serviceWorkers: "allow", locale: "en-US" });
+  attachServiceWorkerDiagnostics(context, diagnostics);
   page = await context.newPage();
   attachDiagnostics(page, diagnostics);
 
