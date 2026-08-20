@@ -338,7 +338,7 @@ export async function runRelease({ mode, tag = null }) {
         "manifest/localization synchronization",
         "locale coverage validation",
         "reverse i18n validation",
-        "node correctness tests",
+        "node correctness tiers (fast + compatibility + deep)",
         "i18n support-level browser smoke",
         "file:// standalone/browser smoke",
         "PWA offline smoke",
@@ -460,9 +460,9 @@ export async function runRelease({ mode, tag = null }) {
 
     await step(
       report,
-      "Run release-critical Node correctness tests",
-      () => run("npm", ["test"], { timeoutMs: TIMEOUTS.tests }),
-      "npm test",
+      "Run release-critical Node correctness tiers",
+      () => run("npm", ["run", "test:release"], { timeoutMs: TIMEOUTS.tests }),
+      "npm run test:release",
     );
 
     await step(
