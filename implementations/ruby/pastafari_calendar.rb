@@ -359,7 +359,7 @@ module Pastafari
         previous_id = order[(place - 1) % 6]
         next_id = order[(place + 1) % 6]
         mixed = old[bowl_id] + 3 * old[previous_id] + 5 * old[next_id] +
-                order_number + round_number + (place + 1)**2
+                bowl_sum + round_number + (place + 1)**2
         bowls[bowl_id] = keep(mixed * mixed + 7 * old[previous_id] * old[next_id])
       end
     end
