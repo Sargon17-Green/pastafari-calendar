@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
-import { createHash } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
+import { spawnSync } from "node:child_process";
 import { mkdtemp, readFile, readdir, rm, writeFile, copyFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
@@ -9,6 +10,7 @@ import test from "node:test";
 import { GateIndex, PastafariCalendar } from "../browser/pastafari-calendar-core.js";
 import { compareOrderedStages } from "../verification/reference-oracle/compare.mjs";
 import { observeAuthoritative } from "../verification/reference-oracle/authoritative-adapter.mjs";
+import { runDifferential } from "../verification/reference-oracle/differential.mjs";
 import {
   FOUNDATION_JDN,
   GREAT_NUMBER,
@@ -26,6 +28,44 @@ const ROOT = path.resolve(import.meta.dirname, "..");
 const REFERENCE = path.join(ROOT, "verification/reference-oracle/reference.mjs");
 const FIXTURE = path.join(ROOT, "implementations/tests/spec-derived-canonical-vectors.json");
 const SPEC_SHA256 = "d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96";
+
+
+
+async function loadInstrumentedFastSauce() {
+  const sourcePath = path.join(ROOT, "browser/pastafari-calendar-fast.js");
+  const source = await readFile(sourcePath, "utf8");
+  const diagnosticsUrl = pathToFileURL(path.join(ROOT, "browser/pastafari-diagnostics.js")).href;
+  const relocatedSource = source.replace(
+    'from "./pastafari-diagnostics.js";',
+    `from ${JSON.stringify(diagnosticsUrl)};`,
+  );
+  const temporaryPath = path.join(
+    os.tmpdir(),
+    `pastafari-reference-fast-${process.pid}-${randomUUID()}.mjs`,
+  );
+  await writeFile(temporaryPath, `${relocatedSource}\nexport { sauce as __testSauce };\n`, "utf8");
+  try {
+    const module = await import(`${pathToFileURL(temporaryPath).href}?v=${randomUUID()}`);
+    return module.__testSauce;
+  } finally {
+    await rm(temporaryPath, { force: true });
+  }
+}
+
+function authoritativeStirTrace(calculationJdn, targetJdn) {
+  const runner = path.join(ROOT, "verification/reference-oracle/authoritative-stir-trace-runner.mjs");
+  const child = spawnSync(
+    process.execPath,
+    [runner, String(calculationJdn), String(targetJdn)],
+    { cwd: ROOT, encoding: "utf8", maxBuffer: 8 * 1024 * 1024 },
+  );
+  assert.equal(child.status, 0, child.stderr || child.stdout);
+  return JSON.parse(child.stdout);
+}
+
+function sum(values) {
+  return values.reduce((total, value) => total + BigInt(value), 0n);
+}
 
 async function repositoryScrollPath() {
   const sourceDir = path.join(ROOT, "sources");
@@ -178,4 +218,134 @@ test("unimplemented calendar stages fail explicitly and never fall back", () => 
       return true;
     });
   }
+});
+
+
+test("final-stir reference preserves the Scroll's two distinct sum/order roles and simultaneous snapshot", () => {
+  const trace = sauce(2461273n, 2461273n, { detail: "full" });
+  assert.equal(trace.postStirs.length, 12);
+
+  for (let roundIndex = 0; roundIndex < trace.postStirs.length; roundIndex += 1) {
+    const round = trace.postStirs[roundIndex];
+    const expectedSum = sum(round.bowlsBefore);
+    assert.equal(round.bowlSum, expectedSum, `round ${round.round}: bowlSum must be the raw pre-round sum`);
+    assert.equal(
+      round.orderNumber,
+      keep(expectedSum + 149n * BigInt(round.round)),
+      `round ${round.round}: orderNumber`,
+    );
+    assert.equal(round.permutationRank, 1n + ((round.orderNumber - 1n) % 720n));
+    assert.deepEqual(round.permutation, bowlPermutation(round.permutationRank));
+
+    const recomputedAfter = new Array(6).fill(null);
+    for (const stir of round.stirs) {
+      const bowl = stir.bowl - 1;
+      const previous = stir.previousBowl - 1;
+      const next = stir.nextBowl - 1;
+      const expectedU = round.bowlsBefore[bowl]
+        + 3n * round.bowlsBefore[previous]
+        + 5n * round.bowlsBefore[next]
+        + round.bowlSum
+        + BigInt(round.round)
+        + BigInt(stir.place) ** 2n;
+      assert.equal(stir.u, expectedU, `round ${round.round}, place ${stir.place}: u must use bowlSum`);
+      assert.equal(
+        stir.output,
+        keep(expectedU ** 2n + 7n * round.bowlsBefore[previous] * round.bowlsBefore[next]),
+        `round ${round.round}, place ${stir.place}: kept output`,
+      );
+      recomputedAfter[bowl] = stir.output;
+    }
+    assert.deepEqual(recomputedAfter, round.bowlsAfter, `round ${round.round}: six outputs are applied together`);
+
+    // Replacing bowl 1 in a mutable copy demonstrates why the saved sum cannot
+    // be recomputed after any output has been produced in this round.
+    const mutated = [...round.bowlsBefore];
+    mutated[0] = round.bowlsAfter[0];
+    assert.equal(round.bowlSum, expectedSum, `round ${round.round}: saved bowlSum is immutable for the round`);
+    assert.notEqual(sum(mutated), round.bowlSum, `round ${round.round}: a sequentially recomputed sum would differ`);
+
+    if (roundIndex + 1 < trace.postStirs.length) {
+      const following = trace.postStirs[roundIndex + 1];
+      assert.equal(following.bowlSum, sum(round.bowlsAfter), `round ${following.round}: next round takes a fresh sum`);
+    }
+  }
+
+  // Anti-regression: using raw bowlSum to choose the permutation is also wrong.
+  const first = trace.postStirs[0];
+  const wrongRawSumRank = 1n + ((first.bowlSum - 1n) % 720n);
+  assert.notEqual(wrongRawSumRank, first.permutationRank);
+  assert.notDeepEqual(bowlPermutation(wrongRawSumRank), first.permutation);
+});
+
+test("authoritative generated final-stir trace matches the independent reference", { timeout: 120_000 }, () => {
+  const c = 2461273n;
+  const t = 2461273n;
+  const authoritative = authoritativeStirTrace(c, t);
+  const reference = sauce(c, t, { detail: "full" });
+  assert.equal(authoritative.rounds.length, 12);
+
+  for (let i = 0; i < 12; i += 1) {
+    const actual = authoritative.rounds[i];
+    const expected = reference.postStirs[i];
+    assert.equal(actual.round, expected.round);
+    assert.deepEqual(actual.bowlsBefore.map(BigInt), expected.bowlsBefore);
+    assert.equal(BigInt(actual.bowlSum), expected.bowlSum);
+    assert.equal(BigInt(actual.orderNumber), expected.orderNumber);
+    assert.deepEqual(actual.permutation.map((value) => value + 1), expected.permutation);
+    assert.equal(actual.stirs.length, 6);
+    for (let j = 0; j < 6; j += 1) {
+      const a = actual.stirs[j];
+      const e = expected.stirs[j];
+      assert.equal(a.place, e.place);
+      assert.equal(a.bowlIndex + 1, e.bowl);
+      assert.equal(a.previousIndex + 1, e.previousBowl);
+      assert.equal(a.nextIndex + 1, e.nextBowl);
+      assert.equal(BigInt(a.u), e.u);
+      assert.equal(BigInt(a.output), e.output);
+    }
+  }
+  assert.deepEqual(authoritative.final.bowls.map(BigInt), reference.final.bowls);
+});
+
+test("fast direct sauce matches reference on positive, negative and random discriminators", async () => {
+  const fastSauce = await loadInstrumentedFastSauce();
+  for (const [c, t] of [
+    [2461273n, 2461273n],
+    [0n, 0n],
+    [2461273n, 2461200n],
+    [2461273n, 2461350n],
+    [-1000n, -1200n],
+    [-19650164n, 5504306n],
+  ]) {
+    const actual = fastSauce(c, t);
+    const expected = sauce(c, t, { detail: "summary" });
+    assert.deepEqual(actual.bowls.map(BigInt), expected.final.bowls, `fast sauce mismatch for c=${c}, t=${t}`);
+    assert.deepEqual(actual.lastDropPermutation, expected.final.lastDropPermutation.map((value) => value - 1));
+  }
+});
+
+test("direct authoritative gate-gap calculation matches reference without checkpoints", () => {
+  const oracle = new ReferenceOracle();
+  for (const index of [1, 2, 3, -1, -2, -3]) {
+    const target = FOUNDATION_JDN + BigInt(index);
+    const authoritative = observeAuthoritative(FOUNDATION_JDN, target, { randomSeed: 0x00c0ffee });
+    // Authoritative chooseIndex is zero-based; Scroll/reference chooseUniform is 1-based.
+    const directGap = authoritative.response.choose922 + 42n;
+    assert.equal(directGap, oracle.gateGap(index).gap, `direct gate gap ${index}`);
+  }
+});
+
+test("differential normalizes the authoritative zero-based response choice", () => {
+  const result = runDifferential({
+    calculationJdn: 2461273n,
+    targetJdn: 2461273n,
+    detail: "summary",
+    randomSeed: 0x00c0ffee,
+  });
+  const choice = result.comparison.fields.find(
+    (row) => row.stage === "response" && row.field === "choose922",
+  );
+  assert.equal(choice?.status, "match");
+  assert.equal(result.comparison.mismatchCount, 0);
 });
