@@ -2,7 +2,7 @@
 
 This document describes the retained-memory tests for the JavaScript engine, reverse/constraint paths, router state, the Pages UI, and browser Workers.
 
-The memory suite is an extension of the repository's existing `benchmarks/` infrastructure. It writes JSON and Markdown into `artifacts/benchmarks/`, uses the same deterministic calculation-day fixtures, and does not change the Pastafari algorithms, cache policy, routing policy, public API, production timeouts, translations, Service Worker policy, or astronomical-day code.
+The memory suite is an extension of the repository's existing `benchmarks/` infrastructure. It writes JSON and Markdown into `artifacts/benchmarks/`, uses the same deterministic calculation-day fixtures, and does not change the Pastafari algorithms, routing decisions, public API shape, production timeouts, translations, Service Worker policy, or astronomical-day code. The router-state workload also verifies the bounded calculation-day cache introduced for router lifecycle management.
 
 ## What the suite is trying to distinguish
 
@@ -34,7 +34,7 @@ The table below records the state that is directly relevant to the memory worklo
 | reverse client `_pending` | `PastafariReverseClient` | request id | request lifetime | deleted on result/error/timeout/abort; cleared by `dispose()` |
 | constraint client `_pending` | `PastafariConstraintClient` | request id | request lifetime | deleted on result/error/timeout/abort; cleared by `dispose()` |
 | constraint solver `universeCache` and queues/maps | one direct solve call | variable/domain work | solve-call lifetime | local references; expected to become unreachable after completion/cancellation |
-| router `_states` | `PastafariCalendarRouterCore` | calculation JDN | router lifetime | **no automatic bound**; `retry()` can delete one/all and `dispose()` clears all |
+| router `_states` | `PastafariCalendarRouterCore` | calculation JDN | retained calculation state; protected work may temporarily exceed the steady-state limit | LRU, 64 retained states in steady state; active requests, in-flight authoritative requests, and verification are protected; cached `authoritative-only` failures are retained ahead of ordinary idle states when possible; `retry()` can delete one/all and `dispose()` clears all |
 | router `authoritativeRequests` | one router calculation state | target JDN | in-flight request lifetime | `.finally()` deletes the completed request |
 | router authoritative shutdown timer | router instance | singleton timer | until shutdown/retry/dispose | previous timer is cleared before replacement; `dispose()` clears it |
 | Pages UI `pending` Worker requests | `docs/app.js` document module | request id | in-flight request lifetime | deleted on result or timeout; request timer cleared on result |
@@ -78,7 +78,7 @@ The suite implements the following isolated scenarios:
 - `reverse-cancel` — repeated client timeout/cancellation, disposal, cache reset, event-loop settling, and post-GC measurement;
 - `constraints-success` — repeated successful acyclic constraint solving with solution verification;
 - `constraints-cancel` — repeated timeout/cancellation through the public constraint client;
-- `router-state` — deliberately grows the router's per-calculation-day status map and then measures cleanup after `dispose()`; this is reported as retained useful state because the current architecture has no automatic bound;
+- `router-state` — exercises more distinct calculation days than the router cache capacity, verifies that retained states settle at the 64-state bound, and then measures cleanup after `dispose()`;
 - `far-date` — increasing far-date traversals for observing retained year/checkpoint behavior; it is informational because `CalculationState.yearsByNumber` has no explicit per-state eviction bound.
 
 The regular memory smoke uses the smaller forward/calculation/cancellation set. The manual soak adds the heavier year, reverse/constraint, router, and far-date paths.
@@ -123,7 +123,7 @@ The stronger invariants are:
 - fast calculation states are statically bounded to four live states;
 - the public result cache is bounded to 1024 entries;
 - repeated cycling among three already-seen calculation days is a plateau-gated workload;
-- the router is different: its status map is not automatically bounded and is reported separately rather than being confused with the fast-engine calculation-state LRU.
+- the router has its own independent 64-state LRU; active requests, in-flight authoritative requests, and verification are protected and may cause only temporary overflow until work settles.
 
 If a future implementation changes one of those ownership rules, the source-bound diagnostics and this document must be updated together.
 
