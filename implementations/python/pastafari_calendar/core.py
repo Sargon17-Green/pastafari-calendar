@@ -469,7 +469,7 @@ def sauce(calculation_jdn: int, target_jdn: int) -> SauceResult:
                 old[bowl_id]
                 + 3 * old[previous_id]
                 + 5 * old[next_id]
-                + order_number
+                + bowl_sum
                 + round_number
                 + (place + 1) ** 2
             )
