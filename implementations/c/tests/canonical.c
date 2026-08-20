@@ -84,13 +84,14 @@ static void json_output(const PastafariOutput *value, char *buffer, size_t capac
 
 int main(void) {
     /* Sorted by calculation day and then target day for efficient state reuse. */
+    /* Mirrors implementations/tests/conformance-vectors.json; regenerated from the clear normative reference. */
     static const Vector vectors[] = {
-        {"binding_5778_same", -14269936, -14269936, "{\"year\":\"5000\",\"cutletName\":\"מחשבה\",\"dayInCutlet\":1,\"monthName\":\"ארידו\",\"dayInMonth\":93}"},
-        {"foundation_previous", -13334246, -13334247, "{\"year\":\"5000\",\"cutletName\":\"עקרב\",\"dayInCutlet\":502,\"monthName\":\"הדלת הסגורה\",\"dayInMonth\":21}"},
-        {"foundation_same", -13334246, -13334246, "{\"year\":\"5000\",\"cutletName\":\"עקרב\",\"dayInCutlet\":503,\"monthName\":\"באר\",\"dayInMonth\":56}"},
-        {"foundation_next", -13334246, -13334245, "{\"year\":\"5000\",\"cutletName\":\"צחוק\",\"dayInCutlet\":1,\"monthName\":\"צפרדע\",\"dayInMonth\":38}"},
-        {"present_same", 2461259, 2461259, "{\"year\":\"5000\",\"cutletName\":\"כליה\",\"dayInCutlet\":306,\"monthName\":\"לשון\",\"dayInMonth\":23}"},
-        {"present_forward", 2461259, 2461265, "{\"year\":\"5000\",\"cutletName\":\"כליה\",\"dayInCutlet\":312,\"monthName\":\"סערה\",\"dayInMonth\":33}"},
+        {"binding_5778_same", -14269936, -14269936, "{\"year\":\"5000\",\"cutletName\":\"הכד הריק\",\"dayInCutlet\":191,\"monthName\":\"שמחה\",\"dayInMonth\":72}"},
+        {"foundation_previous", -13334246, -13334247, "{\"year\":\"5000\",\"cutletName\":\"לגש\",\"dayInCutlet\":761,\"monthName\":\"הדלת הסגורה\",\"dayInMonth\":114}"},
+        {"foundation_same", -13334246, -13334246, "{\"year\":\"5000\",\"cutletName\":\"לגש\",\"dayInCutlet\":762,\"monthName\":\"לבונה\",\"dayInMonth\":105}"},
+        {"foundation_next", -13334246, -13334245, "{\"year\":\"5000\",\"cutletName\":\"כליה\",\"dayInCutlet\":1,\"monthName\":\"אבן־גיר\",\"dayInMonth\":91}"},
+        {"present_same", 2461259, 2461259, "{\"year\":\"5000\",\"cutletName\":\"מחשבה\",\"dayInCutlet\":13,\"monthName\":\"חרטה\",\"dayInMonth\":16}"},
+        {"present_forward", 2461259, 2461265, "{\"year\":\"5000\",\"cutletName\":\"מחשבה\",\"dayInCutlet\":19,\"monthName\":\"ערפל\",\"dayInMonth\":10}"},
     };
 
     BatchState batch = {0};
