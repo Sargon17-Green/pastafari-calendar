@@ -30,18 +30,17 @@ jobs:
         run: |
           set -euo pipefail
           expected_base='be2a145bbe22c586771e94d7f1b9f4064ca44a3e'
-          actual_parent="$(git rev-parse HEAD^)"
-          if [[ "$actual_parent" != "$expected_base" ]]; then
-            echo "Refusing to apply Update 3: branch parent is $actual_parent, expected $expected_base." >&2
-            echo "Create a fresh branch from the current expected main commit and upload only this workflow file." >&2
+          if ! git merge-base --is-ancestor "$expected_base" HEAD; then
+            echo "Refusing to apply Update 3: expected base $expected_base is not an ancestor of HEAD." >&2
             exit 1
           fi
-          mapfile -t changed < <(git diff --name-only HEAD^ HEAD)
+          mapfile -t changed < <(git diff --name-only "$expected_base" HEAD)
           if [[ ${#changed[@]} -ne 1 || "${changed[0]}" != '.github/workflows/router-update3-bootstrap.yml' ]]; then
-            echo 'Refusing to apply Update 3: the bootstrap commit contains files other than this workflow.' >&2
+            echo 'Refusing to apply Update 3: since the expected base, the branch contains changes other than this workflow.' >&2
             printf 'Changed: %s\n' "${changed[@]}" >&2
             exit 1
           fi
+          echo "Safe bootstrap base verified; bootstrap-only commits since $expected_base: $(git rev-list --count "$expected_base"..HEAD)"
 
       - name: Apply Router Update 3 source delta
         shell: bash
@@ -863,16 +862,28 @@ jobs:
       - name: Package API verification
         run: npm run package:verify
 
-      - name: Remove bootstrap workflow and transient artifacts
+      - name: Remove bootstrap workflow, transient artifacts, and stage final tracked file set
         run: |
           rm -- .github/workflows/router-update3-bootstrap.yml
           rm -rf -- artifacts
+          git add -- \
+            browser/pastafari-calendar-router-core.js \
+            browser/README.md \
+            browser/standalone/pastafari-date.js \
+            browser/standalone/pastafari-date.min.js \
+            benchmarks/memory-scenario.mjs \
+            docs/MEMORY-TESTING.md \
+            package.json \
+            test/router-cache-lifecycle.test.js \
+            test/router-memory-bounds.test.js
+          git add -u -- .github/workflows/router-update3-bootstrap.yml
 
       - name: Generate and verify final checksum manifests
         run: |
           npm run checksums:generate
           npm run checksums:verify
           node scripts/check-sha-manifest-completeness.mjs
+          git add -- docs/SHA256SUMS.txt SHA256SUMS.txt
 
       - name: Verify final tree changed only in Update 3 scope
         shell: bash
@@ -968,7 +979,6 @@ jobs:
             test/router-cache-lifecycle.test.js \
             test/router-memory-bounds.test.js \
             SHA256SUMS.txt
-          git rm -- .github/workflows/router-update3-bootstrap.yml
           git commit -m 'Bound router calculation-day state cache'
           git push origin "HEAD:${GITHUB_REF_NAME}"
 
