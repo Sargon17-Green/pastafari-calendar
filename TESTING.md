@@ -76,3 +76,13 @@ For a normal edit, run `npm test`. Before a release or a sensitive engine/revers
 - Calendar-converter audit: `scripts/run-calendar-roundtrip-audit.mjs` remains a separate audit harness rather than part of the default developer gate.
 
 The CI workflows preserve these specialized gates separately. A suite is not converted into a warning, shortened by reducing its cases, or silently skipped merely to make `npm test` faster.
+
+## Change-aware GitHub Actions
+
+Push and pull-request workflows use `scripts/ci-change-classifier.mjs` to classify the complete changed-file set before specialized jobs are selected. The policy is deliberately conservative: unknown paths, workflow changes, package metadata, and CI/security/release infrastructure force the full specialized CI set. `SHA256SUMS.txt` does not force full CI by itself because it normally changes alongside the real edited files and is verified by the always-on `node-test` job.
+
+The `node-test` job remains unconditional and keeps the fast test tier, documentation checks, i18n validation, standalone rebuild comparison, supply-chain check, and repository checksum verification. Specialized compatibility, deep, browser, accessibility, PWA, day-boundary, performance, benchmark, visual, and independent-implementation jobs are selected only when their mapped inputs can be affected. The checkpoint matrix retains all three historical check names; when irrelevant its matrix jobs execute only a cheap no-op rather than removing those checks.
+
+Manual benchmark and visual workflows retain their previous behavior. Manual benchmark runs still execute the full benchmark and memory-soak jobs, and visual `workflow_dispatch` still runs either the normal visual suite or baseline capture according to the existing `capture_baselines` input. Scheduled property soak and manual release verification are unchanged.
+
+Run `npm run test:ci-change-classifier` to validate representative engine, UI, locale, documentation, workflow, package, mixed, manual, benchmark, implementation, checksum-manifest, and unknown-path scenarios. The same classifier policy is used for both push and pull-request changed-file sets; new branches, unsupported events, missing SHAs, or failed `git diff` resolution fall back to full CI.

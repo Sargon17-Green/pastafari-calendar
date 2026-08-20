@@ -42,7 +42,7 @@
     "release:verify": "node scripts/release.mjs verify",
     "test:release-infra": "node --test test/release-infrastructure.test.js",
     "test": "npm run test:fast",
-    "test:fast": "node --test test/calendar-converters.test.js test/calendar-input-conventions.test.js test/calendar-properties.test.js test/day-boundary.test.js test/docs-consistency.test.js test/i18n-support-levels.test.js test/memory-analysis.test.js test/pages-reverse-engine.test.js test/public-api.test.js test/pwa-i18n.test.js test/release-infrastructure.test.js test/reverse-pages-integration.test.js test/reverse-pages-wiring.test.js test/reverse-search-controller.test.js test/router-concurrency.test.js test/router-fallback.test.js test/standalone-build.test.js test/year-ceiling-detour.test.js",
+    "test:fast": "node --test test/calendar-converters.test.js test/ci-change-classifier.test.js test/calendar-input-conventions.test.js test/calendar-properties.test.js test/day-boundary.test.js test/docs-consistency.test.js test/i18n-support-levels.test.js test/memory-analysis.test.js test/pages-reverse-engine.test.js test/public-api.test.js test/pwa-i18n.test.js test/release-infrastructure.test.js test/reverse-pages-integration.test.js test/reverse-pages-wiring.test.js test/reverse-search-controller.test.js test/router-concurrency.test.js test/router-fallback.test.js test/standalone-build.test.js test/year-ceiling-detour.test.js",
     "test:compatibility": "node --test test/fast-compatibility.test.js",
     "test:deep": "node --test test/constraints.test.js test/diagnostics.test.js test/extreme-performance.test.js test/i18n.test.js test/reverse.test.js test/year-structure.test.js",
     "test:full": "npm run test:fast && npm run test:compatibility && npm run test:deep",
@@ -82,7 +82,8 @@
     "test:visual:layout": "node scripts/run-visual-regression.mjs --layout-only",
     "test:visual:self-test": "node scripts/run-visual-regression.mjs --regression-self-test",
     "docs:generate": "node scripts/docs-consistency.mjs --write",
-    "docs:check": "node scripts/docs-consistency.mjs"
+    "docs:check": "node scripts/docs-consistency.mjs",
+    "test:ci-change-classifier": "node --test test/ci-change-classifier.test.js"
   },
   "devDependencies": {
     "axe-core": "4.12.1",
