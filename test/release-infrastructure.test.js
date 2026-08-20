@@ -6,6 +6,8 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
 
+import { validatePackageSizeBudget } from "../scripts/check-package.mjs";
+
 import {
   assertGeneratedArtifactMatches,
   assertReproducibleArtifacts,
@@ -64,6 +66,18 @@ test("package validation rejects a missing explicit export target", () => {
   assert.throws(
     () => validatePackageFileSet(fixture, ["index.js", "package.json"]),
     /Export \.\/missing target is missing/u,
+  );
+});
+
+test("package size guard allows ordinary drift but rejects material package bloat", () => {
+  const budget = { packageSize: 100, unpackedSize: 200, fileCount: 10 };
+  assert.deepEqual(
+    validatePackageSizeBudget({ packageSize: 95, unpackedSize: 190, files: Array(9).fill({}) }, budget),
+    { packageSize: 95, unpackedSize: 190, fileCount: 9 },
+  );
+  assert.throws(
+    () => validatePackageSizeBudget({ packageSize: 101, unpackedSize: 190, files: Array(9).fill({}) }, budget),
+    /packageSize 101 exceeds budget 100/u,
   );
 });
 
