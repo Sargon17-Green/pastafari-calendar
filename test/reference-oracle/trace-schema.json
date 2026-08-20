@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pastafari.invalid/reference-oracle/trace-schema-v1.json",
+  "title": "Pastafari authoritative/reference differential envelope",
+  "type": "object",
+  "required": ["schemaVersion", "input", "authoritative", "reference", "comparison"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "input": {
+      "type": "object",
+      "required": ["calculationJdn", "targetJdn"],
+      "properties": {
+        "calculationJdn": { "$ref": "#/$defs/integerString" },
+        "targetJdn": { "$ref": "#/$defs/integerString" }
+      }
+    },
+    "authoritative": { "type": "object" },
+    "reference": { "type": "object" },
+    "comparison": {
+      "type": "object",
+      "required": ["finalMatch", "comparableFields", "mismatchCount", "firstMismatch", "fields"],
+      "properties": {
+        "finalMatch": { "type": ["boolean", "null"] },
+        "comparableFields": { "type": "integer", "minimum": 0 },
+        "mismatchCount": { "type": "integer", "minimum": 0 },
+        "firstMismatch": { "type": ["object", "null"] },
+        "fields": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["stage", "field", "status"],
+            "properties": {
+              "stage": { "type": "string" },
+              "field": { "type": "string" },
+              "status": {
+                "enum": [
+                  "match",
+                  "mismatch",
+                  "missing-on-authoritative",
+                  "missing-on-reference",
+                  "not-implemented-in-reference"
+                ]
+              },
+              "context": { "type": ["object", "null"] }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "integerString": { "type": "string", "pattern": "^[+-]?[0-9]+$" }
+  }
+}
