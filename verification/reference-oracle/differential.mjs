@@ -110,7 +110,8 @@ export function runDifferential(input) {
   );
   stages.push({ stage: "response", field: "first", authoritative: authoritative.response.first, reference: referenceResponse.first });
   stages.push({ stage: "response", field: "step", authoritative: authoritative.response.step, reference: referenceResponse.step });
-  stages.push({ stage: "response", field: "choose922", authoritative: authoritative.response.choose922, reference: referenceResponse.choice });
+  // Authoritative chooseIndex is zero-based; the Scroll/reference choice is 1-based.
+  stages.push({ stage: "response", field: "choose922", authoritative: authoritative.response.choose922 + 1n, reference: referenceResponse.choice });
 
   let referenceGate = null;
   if (Number.isSafeInteger(input.gateIndex) && input.gateIndex !== 0) {
