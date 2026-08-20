@@ -15,6 +15,7 @@ import {
 
 export const DEFAULT_VERIFICATION_TIMEOUT_MS = 240_000;
 export const DEFAULT_AUTHORITATIVE_IDLE_SHUTDOWN_MS = 500;
+const DEFAULT_MAX_CACHED_CALCULATION_STATES = 64;
 
 function fallbackReasonCode(error) {
   switch (error?.code) {
@@ -103,6 +104,7 @@ function newCalculationState(calculationJdn) {
     error: null,
     verifiedAt: null,
     authoritativeRequests: new Map(),
+    activeRequests: 0,
   };
 }
 
@@ -183,6 +185,8 @@ export class PastafariCalendarRouterCore {
       ?? DEFAULT_AUTHORITATIVE_IDLE_SHUTDOWN_MS;
 
     this._states = new Map();
+    this._stateRecency = new Map();
+    this._maxCachedStates = DEFAULT_MAX_CACHED_CALCULATION_STATES;
     this._fastDisabledError = null;
     this._authoritativeShutdownTimer = null;
   }
@@ -190,9 +194,16 @@ export class PastafariCalendarRouterCore {
   async convert(targetJdn, calculationJdn) {
     assertBigInt(targetJdn, "targetJdn");
     assertBigInt(calculationJdn, "calculationJdn");
-    const token = beginDiagnosticOperation("router", "convert", { targetJdn, calculationJdn });
+    const state = this._acquireState(calculationJdn);
+    try {
+      return await this._convertWithState(targetJdn, calculationJdn, state);
+    } finally {
+      this._releaseState(state);
+    }
+  }
 
-    const state = this._stateFor(calculationJdn);
+  async _convertWithState(targetJdn, calculationJdn, state) {
+    const token = beginDiagnosticOperation("router", "convert", { targetJdn, calculationJdn });
     if (state.status === "verified" && !this._fastDisabledError) {
       incrementDiagnosticCounter("router.route.fast");
       const routeDetails = token ? { fallbackOccurred: false } : null;
@@ -256,9 +267,16 @@ export class PastafariCalendarRouterCore {
   async getCutletView(targetJdn, calculationJdn) {
     assertBigInt(targetJdn, "targetJdn");
     assertBigInt(calculationJdn, "calculationJdn");
-    const token = beginDiagnosticOperation("router", "get-cutlet-view", { targetJdn, calculationJdn });
+    const state = this._acquireState(calculationJdn);
+    try {
+      return await this._getCutletViewWithState(targetJdn, calculationJdn, state);
+    } finally {
+      this._releaseState(state);
+    }
+  }
 
-    const state = this._stateFor(calculationJdn);
+  async _getCutletViewWithState(targetJdn, calculationJdn, state) {
+    const token = beginDiagnosticOperation("router", "get-cutlet-view", { targetJdn, calculationJdn });
     if (state.status === "verified" && !this._fastDisabledError) {
       incrementDiagnosticCounter("router.route.fast-view");
       const routeDetails = token ? { fallbackOccurred: false } : null;
@@ -334,9 +352,12 @@ export class PastafariCalendarRouterCore {
     incrementDiagnosticCounter("router.retry");
     if (calculationJdn !== undefined && calculationJdn !== null) {
       assertBigInt(calculationJdn, "calculationJdn");
-      this._states.delete(calculationJdn.toString());
+      const key = calculationJdn.toString();
+      this._states.delete(key);
+      this._stateRecency.delete(key);
     } else {
       this._states.clear();
+      this._stateRecency.clear();
     }
     setDiagnosticGauge("router.calculation-state.scopes", this._states.size);
 
@@ -353,6 +374,7 @@ export class PastafariCalendarRouterCore {
     this._authoritative.terminate();
     this._fast.terminate();
     this._states.clear();
+    this._stateRecency.clear();
     setDiagnosticGauge("router.calculation-state.scopes", 0);
   }
 
@@ -365,7 +387,62 @@ export class PastafariCalendarRouterCore {
       this._states.set(key, state);
       setDiagnosticGauge("router.calculation-state.scopes", this._states.size);
     }
+    this._touchState(state);
     return state;
+  }
+
+  _acquireState(calculationJdn) {
+    const state = this._stateFor(calculationJdn);
+    state.activeRequests += 1;
+    this._trimStateCache();
+    return state;
+  }
+
+  _releaseState(state) {
+    if (state.activeRequests > 0) state.activeRequests -= 1;
+    this._trimStateCache();
+  }
+
+  _touchState(state) {
+    const key = state.calculationJdn.toString();
+    if (this._states.get(key) !== state) return;
+    this._stateRecency.delete(key);
+    this._stateRecency.set(key, true);
+  }
+
+  _stateCanBeEvicted(state) {
+    return state.activeRequests === 0
+      && state.status !== "verifying"
+      && state.authoritativeRequests.size === 0;
+  }
+
+  _trimStateCache() {
+    let changed = false;
+    while (this._states.size > this._maxCachedStates) {
+      let evicted = false;
+      // Keep cached failures when an ordinary idle state can be discarded instead.
+      // If failures alone exceed the bound, the oldest idle failure is still evicted.
+      for (const preserveFailures of [true, false]) {
+        for (const key of this._stateRecency.keys()) {
+          const state = this._states.get(key);
+          if (!state) {
+            this._stateRecency.delete(key);
+            continue;
+          }
+          if (!this._stateCanBeEvicted(state)) continue;
+          if (preserveFailures && state.status === "authoritative-only") continue;
+
+          this._states.delete(key);
+          this._stateRecency.delete(key);
+          evicted = true;
+          changed = true;
+          break;
+        }
+        if (evicted) break;
+      }
+      if (!evicted) break;
+    }
+    if (changed) setDiagnosticGauge("router.calculation-state.scopes", this._states.size);
   }
 
   _authoritativeConvert(state, targetJdn, calculationJdn) {
@@ -416,6 +493,7 @@ export class PastafariCalendarRouterCore {
       state.verifiedAt = new Date().toISOString();
       state.error = null;
       this._scheduleAuthoritativeShutdown();
+      this._trimStateCache();
       return "verified";
     }).catch((error) => {
       if (this._states.get(state.calculationJdn.toString()) !== state) {
@@ -437,6 +515,7 @@ export class PastafariCalendarRouterCore {
         this._fastDisabledError = error;
         this._fast.terminate(error);
       }
+      this._trimStateCache();
       return "authoritative-only";
     });
 

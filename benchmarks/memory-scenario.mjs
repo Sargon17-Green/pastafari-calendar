@@ -484,11 +484,12 @@ async function routerState(mode) {
     verificationTimeoutMs: 5_000,
     authoritativeIdleShutdownMs: 60_000,
   });
+  const cacheLimit = router._maxCachedStates;
   const batches = mode === "soak" ? 12 : 8;
-  const perBatch = mode === "soak" ? 25 : 8;
+  const perBatch = mode === "soak" ? 25 : 12;
   let count = 0;
   const result = await batched({
-    label: "router calculation-day retained status",
+    label: "router bounded calculation-day state cache",
     batches,
     gate: false,
     warmup: async () => { await forceGc(); },
@@ -503,15 +504,21 @@ async function routerState(mode) {
     afterBatch: () => ({ routerStates: router.getStatus().calculations.length }),
   });
   const peakStates = router.getStatus().calculations.length;
-  assert.equal(peakStates, batches * perBatch);
+  assert.equal(peakStates, Math.min(batches * perBatch, cacheLimit));
   const peakHeap = result.points.at(-1).heapUsed;
   const baselineHeap = result.points[0].heapUsed;
   router.dispose();
   const postDispose = await postGcPoint("post-dispose");
-  result.workload = { batches, calculationDaysPerBatch: perBatch, totalStates: peakStates };
+  result.workload = {
+    batches,
+    calculationDaysPerBatch: perBatch,
+    distinctCalculationDays: batches * perBatch,
+    cacheLimit,
+    cachedStates: peakStates,
+  };
   result.postDispose = postDispose;
   result.estimatedRetainedBytesPerState = Math.max(0, peakHeap - baselineHeap) / Math.max(1, peakStates);
-  result.classification = "retained-useful-state/unbounded-until-retry-or-dispose";
+  result.classification = "bounded-cache/lru-idle-state";
   return result;
 }
 
