@@ -10,7 +10,7 @@ permissions:
 jobs:
   node-test:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
@@ -25,11 +25,49 @@ jobs:
       - run: npm run build:standalone
       - run: git diff --exit-code -- browser/standalone/pastafari-date.js browser/standalone/pastafari-date.min.js
       - run: npm test
+      - run: sha256sum -c SHA256SUMS.txt
+      - run: node scripts/check-sha-manifest-completeness.mjs
+
+  node-compatibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm run security:supply-chain
+      - run: npm ci
+      - run: npm run test:compatibility
+
+  node-deep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm run security:supply-chain
+      - run: npm ci
+      - run: npm run test:deep
+
+  browser-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm run security:supply-chain
+      - run: npm ci
       - run: ./node_modules/.bin/playwright install --with-deps chromium firefox
       - run: npm run test:i18n-support
       - run: npm run test:file-protocol
-      - run: sha256sum -c SHA256SUMS.txt
-      - run: node scripts/check-sha-manifest-completeness.mjs
 
   accessibility:
     runs-on: ubuntu-latest
