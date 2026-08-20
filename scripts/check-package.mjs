@@ -11,6 +11,18 @@ import { validatePackageFileSet } from "./release-lib.mjs";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const PACKAGE_JSON = JSON.parse(await readFile(path.join(ROOT, "package.json"), "utf8"));
 const DEFAULT_TIMEOUT_MS = 300_000;
+const PACKAGE_BUDGET = Object.freeze({
+  packageSize: 95_000_000,
+  unpackedSize: 125_000_000,
+  fileCount: 300,
+});
+const INTENTIONAL_PACKAGE_EXCLUSIONS = Object.freeze([
+  "src/ABSTRACT.txt",
+  "types/soak-fast-engine.mjs",
+]);
+const INTENTIONAL_PACKAGE_EXCLUDED_PREFIXES = Object.freeze([
+  "61fe/",
+]);
 
 function npmExecutable() {
   return process.platform === "win32" ? "npm.cmd" : "npm";
@@ -74,6 +86,69 @@ function packedPaths(packResult) {
   return packResult.files.map((entry) => entry.path).filter((value) => typeof value === "string");
 }
 
+async function listFilesRecursively(directory, relativePrefix = "") {
+  const entries = await readdir(directory, { withFileTypes: true });
+  const files = [];
+  for (const entry of entries) {
+    const relative = relativePrefix ? `${relativePrefix}/${entry.name}` : entry.name;
+    const absolute = path.join(directory, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...await listFilesRecursively(absolute, relative));
+    } else if (entry.isFile()) {
+      files.push(relative);
+    }
+  }
+  return files.sort();
+}
+
+export function validatePackageSizeBudget(packResult, budget = PACKAGE_BUDGET) {
+  const failures = [];
+  for (const key of ["packageSize", "unpackedSize"]) {
+    const actual = packResult[key];
+    const maximum = budget[key];
+    if (typeof actual !== "number") failures.push(`npm pack did not report ${key}`);
+    else if (actual > maximum) failures.push(`${key} ${actual} exceeds budget ${maximum}`);
+  }
+  const fileCount = Array.isArray(packResult.files) ? packResult.files.length : packResult.entryCount;
+  if (typeof fileCount !== "number") failures.push("npm pack did not report file count");
+  else if (fileCount > budget.fileCount) failures.push(`fileCount ${fileCount} exceeds budget ${budget.fileCount}`);
+  if (failures.length) throw new Error(`Package-size regression guard failed:\n${failures.map((x) => `- ${x}`).join("\n")}`);
+  return { packageSize: packResult.packageSize, unpackedSize: packResult.unpackedSize, fileCount };
+}
+
+async function validatePackageContentPolicy(packResult, root = ROOT) {
+  const files = new Set(packedPaths(packResult));
+  const failures = [];
+
+  for (const excluded of INTENTIONAL_PACKAGE_EXCLUSIONS) {
+    if (files.has(excluded)) failures.push(`development-only file leaked into package: ${excluded}`);
+  }
+  for (const prefix of INTENTIONAL_PACKAGE_EXCLUDED_PREFIXES) {
+    for (const file of files) {
+      if (file.startsWith(prefix)) failures.push(`development-only path leaked into package: ${file}`);
+    }
+  }
+
+  // ./browser/* is a public wildcard export.  Packaging must therefore keep
+  // every browser file that exists in the source tree, including nested
+  // standalone assets and non-module static examples.
+  const sourceBrowserFiles = (await listFilesRecursively(path.join(root, "browser")))
+    .map((file) => `browser/${file}`);
+  const missingBrowserFiles = sourceBrowserFiles.filter((file) => !files.has(file));
+  if (missingBrowserFiles.length) {
+    failures.push(`public ./browser/* files missing from package: ${missingBrowserFiles.join(", ")}`);
+  }
+
+  if (failures.length) {
+    throw new Error(`Package-content policy failed:\n${failures.map((failure) => `- ${failure}`).join("\n")}`);
+  }
+  return {
+    browserFilesChecked: sourceBrowserFiles.length,
+    intentionalExclusionsChecked: INTENTIONAL_PACKAGE_EXCLUSIONS.length
+      + INTENTIONAL_PACKAGE_EXCLUDED_PREFIXES.length,
+  };
+}
+
 async function smokePackedPackage(consumerRoot) {
   const smokeSource = String.raw`
 import assert from "node:assert/strict";
@@ -83,6 +158,9 @@ import * as root from "pastafari-calendar";
 import * as reverse from "pastafari-calendar/reverse";
 import * as constraints from "pastafari-calendar/constraints";
 import * as fast from "pastafari-calendar/browser/pastafari-calendar-fast.js";
+import * as router from "pastafari-calendar/browser/pastafari-calendar-router.js";
+import * as diagnostics from "pastafari-calendar/browser/pastafari-diagnostics.js";
+import * as routerCore from "pastafari-calendar/browser/pastafari-calendar-router-core.js";
 
 const require = createRequire(import.meta.url);
 const metadata = require("pastafari-calendar/package.json");
@@ -94,6 +172,9 @@ assert.equal(typeof reverse.findPastafariDate, "function");
 assert.equal(typeof constraints.solvePastafariConstraints, "function");
 assert.equal(typeof fast.PastafariCalendar, "function");
 assert.equal(typeof fast.GregorianDate, "function");
+assert.equal(typeof router.PastafariCalendarRouter, "function");
+assert.equal(typeof routerCore.PastafariCalendarRouterCore, "function");
+assert.equal(typeof diagnostics.getPastafariDiagnosticsSnapshot, "function");
 
 const calculationJdn = 2451545n;
 const calendar = new fast.PastafariCalendar({
@@ -108,6 +189,20 @@ assert.equal(typeof canonical.monthName, "string");
 assert.ok(Number.isInteger(canonical.dayInMonth) && canonical.dayInMonth >= 1);
 
 await access(new URL("./node_modules/pastafari-calendar/${PACKAGE_JSON.types.replace(/^\.\//u, "")}", import.meta.url));
+for (const relative of [
+  "browser/pastafari-authoritative-worker.js",
+  "browser/pastafari-fast-worker.js",
+  "browser/pastafari-calendar-core-1.js",
+  "browser/pastafari-calendar-core-2.js",
+  "browser/standalone/pastafari-date.js",
+  "browser/standalone/pastafari-date.min.js",
+  "browser/standalone/example-file.html",
+  "browser/example.html",
+  "browser/example_weekly_colored.html",
+]) {
+  await access(new URL("./node_modules/pastafari-calendar/" + relative, import.meta.url));
+}
+router.sharedPastafariRouter?.dispose?.();
 console.log("packed-package smoke PASS", JSON.stringify({ version: metadata.version, calculationJdn: String(calculationJdn) }));
 `;
   const smokePath = path.join(consumerRoot, "smoke.mjs");
@@ -132,6 +227,12 @@ export async function inspectPackedPackage({ root = ROOT } = {}) {
 
   const filePaths = packedPaths(dryRun);
   const validation = validatePackageFileSet(PACKAGE_JSON, filePaths);
+  const sizeBudget = validatePackageSizeBudget({
+    packageSize: dryRun.size,
+    unpackedSize: dryRun.unpackedSize,
+    files: dryRun.files,
+  });
+  const contentPolicy = await validatePackageContentPolicy(dryRun, root);
   const tempRoot = await mkdtemp(path.join(tmpdir(), "pastafari-release-pack-"));
   const packDirectory = path.join(tempRoot, "pack");
   const consumerRoot = path.join(tempRoot, "consumer");
@@ -183,6 +284,8 @@ export async function inspectPackedPackage({ root = ROOT } = {}) {
       fileCount: filePaths.length,
       files: filePaths,
       checkedTargets: validation.checkedTargets,
+      sizeBudget,
+      contentPolicy,
       smoke: "PASS",
       temporaryTarballRemoved: true,
     };
