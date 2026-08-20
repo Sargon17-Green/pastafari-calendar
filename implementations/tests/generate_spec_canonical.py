@@ -12,6 +12,7 @@ regression corpus are not inputs to this generator.
 from __future__ import annotations
 
 import json
+import os
 from dataclasses import dataclass
 from functools import lru_cache
 from itertools import permutations
@@ -323,8 +324,14 @@ def gate_distance(index: int) -> int:
 class GateTable:
     def __init__(self) -> None:
         self.positions: dict[int, int] = {0: FOUNDATION_JDN}
-        self.minimum = 0
-        self.maximum = 0
+        cache_path = os.environ.get("PASTAFARI_REFERENCE_GATE_CACHE")
+        if cache_path:
+            document = json.loads(Path(cache_path).read_text(encoding="utf-8"))
+            if document.get("canonicalId") != CANONICAL_ID or document.get("normativeSourceSha256") != SOURCE_SHA256:
+                raise RuntimeError("reference gate cache was derived from a different normative source")
+            self.positions.update({int(index): int(position) for index, position in document["positions"]})
+        self.minimum = min(self.positions)
+        self.maximum = max(self.positions)
 
     def ensure(self, index: int) -> None:
         while self.maximum < index:
@@ -893,7 +900,7 @@ def generate() -> dict[str, object]:
     print("stage: signed year chain fixture", flush=True)
     deep_chain_path = Path(__file__).with_name("spec-derived-deep-year-chain.json")
     if not deep_chain_path.exists():
-        raise RuntimeError("run generate_spec_deep_year_chain.py before the main canonical generator")
+        raise RuntimeError("run the specification-derived deep-year-chain generator before the main canonical generator")
     deep_chain = json.loads(deep_chain_path.read_text(encoding="utf-8"))
     if deep_chain.get("normativeSourceSha256") != SOURCE_SHA256:
         raise RuntimeError("deep year-chain fixture was derived from a different normative source")
