@@ -651,7 +651,7 @@ public final class PastafariCalendar {
                 BigInteger mixed = old[bowlId]
                     .add(times(old[previousId], 3))
                     .add(times(old[nextId], 5))
-                    .add(orderNumber)
+                    .add(bowlSum)
                     .add(bi(roundNumber))
                     .add(bi((long) (place + 1) * (place + 1)));
                 bowls[bowlId] = keep(
