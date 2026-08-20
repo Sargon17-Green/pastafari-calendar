@@ -183,7 +183,8 @@ def sauce(calculation_jdn: int, target_jdn: int) -> SauceTrace:
     stir_orders: list[tuple[int, ...]] = []
     bowls_after_stirs: list[tuple[int, ...]] = []
     for round_number in range(1, 13):
-        order_number = saved(sum(bowls) + 149 * round_number)
+        bowl_sum = sum(bowls)
+        order_number = saved(bowl_sum + 149 * round_number)
         stir_order_numbers.append(order_number)
         order = bowl_permutation(1 + (order_number - 1) % 720)
         stir_orders.append(order)
@@ -194,7 +195,7 @@ def sauce(calculation_jdn: int, target_jdn: int) -> SauceTrace:
             next_id = order[(place + 1) % 6]
             mixed = (
                 old[bowl_id] + 3 * old[previous_id] + 5 * old[next_id]
-                + order_number + round_number + (place + 1) ** 2
+                + bowl_sum + round_number + (place + 1) ** 2
             )
             bowls[bowl_id] = saved(
                 mixed * mixed + 7 * old[previous_id] * old[next_id]
@@ -264,14 +265,15 @@ def sauce_final(calculation_jdn: int, target_jdn: int) -> FinalSauce:
             bowls[bowl_id] = saved(mixed * mixed + 5 * old[previous_id] * old[next_id] + drop_number * (place + 1))
     assert last is not None
     for round_number in range(1, 13):
-        order_number = saved(sum(bowls) + 149 * round_number)
+        bowl_sum = sum(bowls)
+        order_number = saved(bowl_sum + 149 * round_number)
         order = bowl_permutation(1 + (order_number - 1) % 720)
         old = bowls
         bowls = [0] * 6
         for place, bowl_id in enumerate(order):
             previous_id = order[(place - 1) % 6]
             next_id = order[(place + 1) % 6]
-            mixed = old[bowl_id] + 3 * old[previous_id] + 5 * old[next_id] + order_number + round_number + (place + 1) ** 2
+            mixed = old[bowl_id] + 3 * old[previous_id] + 5 * old[next_id] + bowl_sum + round_number + (place + 1) ** 2
             bowls[bowl_id] = saved(mixed * mixed + 7 * old[previous_id] * old[next_id])
     return FinalSauce(tuple(bowls), last)
 
