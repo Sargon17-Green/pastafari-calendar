@@ -336,7 +336,7 @@ SauceResult sauce(const BigInt& calculation_jdn, const BigInt& target_jdn) {
             const BigInt mixed = old[bowl_id]
                 + 3 * old[previous_id]
                 + 5 * old[next_id]
-                + order_number
+                + bowl_sum
                 + round
                 + (place + 1) * (place + 1);
             next[bowl_id] = keep(
