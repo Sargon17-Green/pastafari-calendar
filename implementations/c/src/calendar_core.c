@@ -226,6 +226,7 @@ static void sauce(
     WideInt expression;
     WideInt temporary;
     WideInt second_temporary;
+    WideInt bowl_sum;
     wi_init(&calculation);
     wi_init(&target);
     wi_init(&distance);
@@ -234,6 +235,7 @@ static void sauce(
     wi_init(&expression);
     wi_init(&temporary);
     wi_init(&second_temporary);
+    wi_init(&bowl_sum);
     for (size_t index = 0; index < 7; ++index) wi_init(&hidden[index]);
     for (size_t index = 0; index < 46; ++index) wi_init(&drops[index]);
     for (size_t index = 0; index < 6; ++index) {
@@ -394,6 +396,7 @@ static void sauce(
         for (size_t bowl = 0; bowl < 6; ++bowl) {
             wi_add(&expression, &expression, &result->bowls[bowl]);
         }
+        wi_copy(&bowl_sum, &expression);
         wi_add_u32(&expression, &expression, 149 * round);
         wi_keep(&value, &expression);
         uint8_t order[6];
@@ -409,7 +412,7 @@ static void sauce(
             wi_copy(&expression, &old_bowls[bowl]);
             add_scaled(&expression, &old_bowls[previous_bowl], 3, &temporary);
             add_scaled(&expression, &old_bowls[next_bowl], 5, &temporary);
-            wi_add(&expression, &expression, &value);
+            wi_add(&expression, &expression, &bowl_sum);
             wi_add_u32(
                 &expression,
                 &expression,
@@ -430,6 +433,7 @@ static void sauce(
     wi_destroy(&expression);
     wi_destroy(&temporary);
     wi_destroy(&second_temporary);
+    wi_destroy(&bowl_sum);
     for (size_t index = 0; index < 7; ++index) wi_destroy(&hidden[index]);
     for (size_t index = 0; index < 46; ++index) wi_destroy(&drops[index]);
     for (size_t index = 0; index < 6; ++index) {
