@@ -11,7 +11,7 @@ import {
   setDiagnosticGauge,
 } from "./pastafari-diagnostics.js";
 
-// Corrected build: final mixing uses orderNumber; gate checkpoints regenerated.
+// Normative final-stir detour: orderNumber selects the permutation; raw bowlSum enters u. Gate checkpoints remain stale until their dedicated rebuild.
 
 // Efficient, standalone implementation of the algorithm in "מגילת העיתים".
 // Rename to pastafari-calendar-fast.js when placing it in an ES-module project.
@@ -451,7 +451,7 @@ function sauce(calculationJdn, targetJdn) {
       const u = old[bowlId]
         + 3n * old[previousId]
         + 5n * old[nextId]
-        + orderNumber
+        + bowlSum
         + roundBig
         + BigInt((place + 1) * (place + 1));
       nextBowls[bowlId] = keep(u * u + 7n * old[previousId] * old[nextId]);
