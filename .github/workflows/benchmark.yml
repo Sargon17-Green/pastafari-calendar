@@ -8,9 +8,37 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
-  smoke:
+  changes:
+    name: classify changes
     if: github.event_name != 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      benchmark_smoke: ${{ steps.classify.outputs.benchmark_smoke }}
+      memory_smoke: ${{ steps.classify.outputs.memory_smoke }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+      - name: Classify changed files
+        id: classify
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: node scripts/ci-change-classifier.mjs --event "$EVENT_NAME" --base "$BASE_SHA" --head "$HEAD_SHA"
+
+  smoke:
+    needs: changes
+    if: ${{ always() && github.event_name != 'workflow_dispatch' && (needs.changes.result != 'success' || needs.changes.outputs.benchmark_smoke == 'true') }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -25,7 +53,8 @@ jobs:
         run: npm run benchmark:smoke
 
   memory-smoke:
-    if: github.event_name != 'workflow_dispatch'
+    needs: changes
+    if: ${{ always() && github.event_name != 'workflow_dispatch' && (needs.changes.result != 'success' || needs.changes.outputs.memory_smoke == 'true') }}
     runs-on: ubuntu-latest
     timeout-minutes: 35
     steps:

@@ -7,8 +7,41 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
+  changes:
+    name: classify changes
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      impl_python_job: ${{ steps.classify.outputs.impl_python_job }}
+      impl_c_job: ${{ steps.classify.outputs.impl_c_job }}
+      impl_cpp_job: ${{ steps.classify.outputs.impl_cpp_job }}
+      impl_java_job: ${{ steps.classify.outputs.impl_java_job }}
+      impl_ruby_job: ${{ steps.classify.outputs.impl_ruby_job }}
+      impl_cobol_job: ${{ steps.classify.outputs.impl_cobol_job }}
+      impl_gate_job: ${{ steps.classify.outputs.impl_gate_job }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+      - name: Classify changed files
+        id: classify
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: node scripts/ci-change-classifier.mjs --event "$EVENT_NAME" --base "$BASE_SHA" --head "$HEAD_SHA"
+
   python-canonical:
+    needs: changes
+    if: ${{ always() && (needs.changes.result != 'success' || needs.changes.outputs.impl_python_job == 'true') }}
     name: Python 3 canonical
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -22,6 +55,8 @@ jobs:
         run: PYTHONPATH=python python3 -m unittest python.tests.test_conformance -v
 
   c-canonical:
+    needs: changes
+    if: ${{ always() && (needs.changes.result != 'success' || needs.changes.outputs.impl_c_job == 'true') }}
     name: C17 canonical
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -35,6 +70,8 @@ jobs:
         run: make -C implementations/c test-canonical
 
   cpp-canonical:
+    needs: changes
+    if: ${{ always() && (needs.changes.result != 'success' || needs.changes.outputs.impl_cpp_job == 'true') }}
     name: C++20 canonical
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -48,6 +85,8 @@ jobs:
         run: make -C implementations/cpp test-canonical
 
   java-canonical:
+    needs: changes
+    if: ${{ always() && (needs.changes.result != 'success' || needs.changes.outputs.impl_java_job == 'true') }}
     name: Java 17 canonical
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -67,6 +106,8 @@ jobs:
         run: make -C implementations/java test-canonical
 
   ruby-canonical:
+    needs: changes
+    if: ${{ always() && (needs.changes.result != 'success' || needs.changes.outputs.impl_ruby_job == 'true') }}
     name: Ruby canonical
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -79,6 +120,8 @@ jobs:
         run: make -C implementations/ruby test-canonical
 
   cobol-compatibility:
+    needs: changes
+    if: ${{ always() && (needs.changes.result != 'success' || needs.changes.outputs.impl_cobol_job == 'true') }}
     name: COBOL compatibility
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -95,6 +138,8 @@ jobs:
         run: make -C implementations/cobol test
 
   gate-checkpoints:
+    needs: changes
+    if: ${{ always() && (needs.changes.result != 'success' || needs.changes.outputs.impl_gate_job == 'true') }}
     name: Shared gate checkpoints
     runs-on: ubuntu-latest
     timeout-minutes: 15

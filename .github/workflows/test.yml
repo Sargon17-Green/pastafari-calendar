@@ -7,7 +7,40 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
+  changes:
+    name: classify changes
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      node_compatibility: ${{ steps.classify.outputs.node_compatibility }}
+      node_deep: ${{ steps.classify.outputs.node_deep }}
+      browser_smoke: ${{ steps.classify.outputs.browser_smoke }}
+      accessibility: ${{ steps.classify.outputs.accessibility }}
+      checkpoint_test: ${{ steps.classify.outputs.checkpoint_test }}
+      pwa_offline: ${{ steps.classify.outputs.pwa_offline }}
+      day_boundary_job: ${{ steps.classify.outputs.day_boundary_job }}
+      node_minimum: ${{ steps.classify.outputs.node_minimum }}
+      performance_regression: ${{ steps.classify.outputs.performance_regression }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+      - name: Classify changed files
+        id: classify
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: node scripts/ci-change-classifier.mjs --event "$EVENT_NAME" --base "$BASE_SHA" --head "$HEAD_SHA"
+
   node-test:
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -29,6 +62,8 @@ jobs:
       - run: node scripts/check-sha-manifest-completeness.mjs
 
   node-compatibility:
+    needs: changes
+    if: ${{ always() && (needs.changes.result != 'success' || needs.changes.outputs.node_compatibility == 'true') }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -42,6 +77,8 @@ jobs:
       - run: npm run test:compatibility
 
   node-deep:
+    needs: changes
+    if: ${{ always() && (needs.changes.result != 'success' || needs.changes.outputs.node_deep == 'true') }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -55,6 +92,8 @@ jobs:
       - run: npm run test:deep
 
   browser-smoke:
+    needs: changes
+    if: ${{ always() && (needs.changes.result != 'success' || needs.changes.outputs.browser_smoke == 'true') }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -70,6 +109,8 @@ jobs:
       - run: npm run test:file-protocol
 
   accessibility:
+    needs: changes
+    if: ${{ always() && (needs.changes.result != 'success' || needs.changes.outputs.accessibility == 'true') }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -116,6 +157,8 @@ jobs:
 
   checkpoint-test:
     name: checkpoint-test (${{ matrix.checkpoint }})
+    needs: changes
+    if: ${{ always() }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     strategy:
@@ -132,14 +175,22 @@ jobs:
             env_var: PASTAFARI_REBUILD_CHECKPOINTS
             test_name: optionally reconstruct every checkpoint interval from gate distances
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+      - name: Checkpoint suite not affected
+        if: ${{ needs.changes.result == 'success' && needs.changes.outputs.checkpoint_test != 'true' }}
+        run: echo "Checkpoint suite skipped by conservative changed-file classification."
+      - if: ${{ needs.changes.result != 'success' || needs.changes.outputs.checkpoint_test == 'true' }}
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - if: ${{ needs.changes.result != 'success' || needs.changes.outputs.checkpoint_test == 'true' }}
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 22
           cache: npm
-      - run: npm run security:supply-chain
-      - run: npm ci
+      - if: ${{ needs.changes.result != 'success' || needs.changes.outputs.checkpoint_test == 'true' }}
+        run: npm run security:supply-chain
+      - if: ${{ needs.changes.result != 'success' || needs.changes.outputs.checkpoint_test == 'true' }}
+        run: npm ci
       - name: Run checkpoint test (${{ matrix.checkpoint }})
+        if: ${{ needs.changes.result != 'success' || needs.changes.outputs.checkpoint_test == 'true' }}
         shell: bash
         env:
           CHECKPOINT_LABEL: ${{ matrix.checkpoint }}
@@ -206,6 +257,8 @@ jobs:
           fi
 
   pwa-offline:
+    needs: changes
+    if: ${{ always() && (needs.changes.result != 'success' || needs.changes.outputs.pwa_offline == 'true') }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -223,6 +276,8 @@ jobs:
         run: npm run test:reverse-ui
 
   day-boundary:
+    needs: changes
+    if: ${{ always() && (needs.changes.result != 'success' || needs.changes.outputs.day_boundary_job == 'true') }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -238,6 +293,8 @@ jobs:
         run: npm run test:day-boundary
 
   node-minimum:
+    needs: changes
+    if: ${{ always() && (needs.changes.result != 'success' || needs.changes.outputs.node_minimum == 'true') }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -251,6 +308,8 @@ jobs:
         run: node scripts/test-minimum-node.mjs
 
   performance-regression:
+    needs: changes
+    if: ${{ always() && (needs.changes.result != 'success' || needs.changes.outputs.performance_regression == 'true') }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
