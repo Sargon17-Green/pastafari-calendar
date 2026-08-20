@@ -865,7 +865,7 @@ jobs:
       - name: Remove bootstrap workflow, transient artifacts, and stage final tracked file set
         run: |
           rm -- .github/workflows/router-update3-bootstrap.yml
-          rm -rf -- artifacts
+          rm -rf -- artifacts node_modules
           git add -- \
             browser/pastafari-calendar-router-core.js \
             browser/README.md \
