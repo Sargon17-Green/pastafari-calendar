@@ -5,6 +5,8 @@
 > **Verified `main` head:** `78cc29a12b8d16bf91fd54284851a0e6740aae36` (`2026-08-20T17:07:32Z`)  
 > **Purpose:** describe the authoritative implementation **as it executes**, not the intended calendar manuscript and not the fast/reference engine.
 
+> **Historical baseline note (2026-08-21):** treat this document as a frozen specification of the repository state at verified `main` head `78cc29a12b8d16bf91fd54284851a0e6740aae36` (`2026-08-20T17:07:32Z`). This point is **after the Update 2 final-stir `bowlSum` correction** described in this document, and **before the later remediation/hardening updates in the current 19-update series**. The document is intentionally **not being incrementally corrected during that series**; semantic and architectural corrections discovered in subsequent updates are to be reconciled into the specification only after the series is complete.
+
 ## 0. Reading contract: what “complete” means here
 
 This document is a no-skip architectural execution specification. It covers every execution layer that can participate in the authoritative conversion path: static carrier reconstruction, both runtime-generated programs, shared mutable state, randomness, proxy/witness machinery, all nine decoded semantic modules, all 91 public carriers, calendar conversion helpers, combinatorics, Sauce, embedded/dynamic gates, year discovery, year structure construction, output materialization, the external year-ceiling detour, public entry wrappers, and the authoritative Worker.
