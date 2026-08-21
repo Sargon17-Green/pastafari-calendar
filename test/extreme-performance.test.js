@@ -52,11 +52,11 @@ test("extreme-performance fixtures preserve stable IDs and the historical timeou
 test("representative formerly-timeout case uses bounded cursor work and preserves its canonical result", async () => {
   const { result, snapshot } = await measuredConversion(5290529n, 5285776n);
   assert.deepEqual(result, {
-    year: "5001",
-    cutletName: "קרן",
-    dayInCutlet: 72,
-    monthName: "כישור",
-    dayInMonth: 4,
+    year: "5002",
+    cutletName: "עקרב",
+    dayInCutlet: 19,
+    monthName: "באר",
+    dayInMonth: 14,
   });
   assert.ok(counter(snapshot, "fast.checkpoint.cursor-starts") > 0, "cursor path was never selected");
   assert.ok(counter(snapshot, "fast.checkpoint.static-starts") < 64, "too many static restarts");

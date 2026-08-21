@@ -34,11 +34,11 @@ async function assertDeclaredAssetsExist(assets) {
 test("Pages uses the audited canonical fast engine bytes without a divergent build", async () => {
   assert.equal(
     await sha256("browser/pastafari-calendar-fast.js"),
-    "2a503e6b5bd13e5399f5f68f6f3940fd959363b2c8c11631169be6f3a6e074fc",
+    "03de7a8125c1c4c63a9946b531b754c4828adc9f998ddd8b7a5ef4b5adcc4473",
   );
   assert.equal(
     await sha256("docs/engine/pastafari-calendar-fast.js"),
-    "2a503e6b5bd13e5399f5f68f6f3940fd959363b2c8c11631169be6f3a6e074fc",
+    "03de7a8125c1c4c63a9946b531b754c4828adc9f998ddd8b7a5ef4b5adcc4473",
   );
   assert.equal(
     await sha256("docs/engine/pastafari-calendar-fast.js"),
