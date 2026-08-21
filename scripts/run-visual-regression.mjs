@@ -28,9 +28,9 @@ const STABILITY_MULTIPLIER = 3;
 const DEFAULT_STABILITY_RUNS = 3;
 const EXPECTED_PLAYWRIGHT_VERSION = "1.62.1";
 const FIXED = Object.freeze({
-  target: 2465429n,       // 2038-01-05 Gregorian; start of a 51-day cutlet
-  middle: 2465454n,       // same short cutlet, away from either edge
-  complexYear: 2469021n,  // year 5002; structurally different from target year 5001
+  target: 2487531n,       // 2098-07-11 Gregorian; start of a 92-day cutlet
+  middle: 2487576n,       // same cutlet, day 46, away from either edge
+  complexYear: 2488509n,  // year 5007; structurally different from target year 5006
   action: 2461141n,       // 2026-04-10 Gregorian
   comparison: 2461143n,   // 2026-04-12 Gregorian
 });

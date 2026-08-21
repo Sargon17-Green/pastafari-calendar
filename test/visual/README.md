@@ -34,9 +34,9 @@ The core visual matrix covers:
 | Engine error | English | LTR | 1440×1000 | worker request deliberately failed | `engine-error-en-desktop` |
 | Script diversity | Bengali | LTR | 390×844 | fixed result loaded | `script-bn-mobile` |
 
-All application data used by the suite is deterministic. The primary target/calculation/comparison JDN values are fixed (`2465429`, `2461141`, `2461143`), language is explicit, the browser timezone is `Asia/Jerusalem`, and service workers are blocked for the visual HTTP suite. The astronomical current-day mechanism is not modified or mocked; fixed URL state simply prevents it from influencing the baselines.
+All application data used by the suite is deterministic. The primary target/calculation/comparison JDN values are fixed (`2487531`, `2461141`, `2461143`), language is explicit, the browser timezone is `Asia/Jerusalem`, and service workers are blocked for the visual HTTP suite. The astronomical current-day mechanism is not modified or mocked; fixed URL state simply prevents it from influencing the baselines.
 
-The calendar fixtures are fixed rather than rediscovered at runtime. JDN `2465429` is the first day of a 51-day cutlet in year 5,001 for calculation JDN `2461141`; JDN `2465454` is a middle day of that same cutlet. JDN `2469021` exercises year 5,002, whose year structure differs from year 5,001 (3,928 vs. 3,851 days, 6 vs. 7 cutlets, and 41 vs. 40 months). No synthetic calendar data is used, and the runner asserts the edge/middle and distinct-year invariants before accepting the corresponding snapshots.
+The calendar fixtures are fixed rather than rediscovered at runtime. JDN `2487531` is the first day of a 92-day cutlet in year 5,006 for calculation JDN `2461141`; JDN `2487576` is day 46 of that same cutlet, away from both edges. JDN `2488509` exercises year 5,007, whose year structure differs from year 5,006 (5,581 vs. 2,964 days, 6 vs. 7 cutlets, and 46 vs. 42 months). No synthetic calendar data is used, and the runner asserts the edge/middle and distinct-year invariants before accepting the corresponding snapshots.
 
 ## Responsive/layout checks
 
