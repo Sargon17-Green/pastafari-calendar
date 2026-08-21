@@ -6,10 +6,12 @@ import { installGateDataDetour } from "./gate-data-detour.js";
 import { installYearCeilingDetour } from "./year-ceiling-detour.js";
 import { installYearCeilingDetourDetour } from "./year-ceiling-detour-detour.js";
 import { installYearCeilingDetourDetourDetour } from "./year-ceiling-detour-detour-detour.js";
+import { installAuthoritativeCacheEpochDetour } from "./cache-epoch-detour.js";
 
 installGateDataDetour(GateIndex);
 installYearCeilingDetourDetour(PastafariCalendar, GateIndex);
 installYearCeilingDetourDetourDetour(PastafariCalendar, GateIndex);
 installYearCeilingDetour(PastafariCalendar, GateIndex);
+installAuthoritativeCacheEpochDetour(PastafariCalendar);
 
 export * from "./pastafari-calendar-core-chronicle.js";

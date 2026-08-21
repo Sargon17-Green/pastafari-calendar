@@ -7,6 +7,7 @@ import { installGateDataDetour } from "../browser/gate-data-detour.js";
 import { installYearCeilingDetour } from "../browser/year-ceiling-detour.js";
 import { installYearCeilingDetourDetour } from "../browser/year-ceiling-detour-detour.js";
 import { installYearCeilingDetourDetourDetour } from "../browser/year-ceiling-detour-detour-detour.js";
+import { installAuthoritativeCacheEpochDetour } from "../browser/cache-epoch-detour.js";
 
 // Node reaches a separately wrapped copy of the authoritative chronicle, so
 // invite the same gate-reader detour here before the friendly public subclass
@@ -15,6 +16,7 @@ installGateDataDetour(GateIndex);
 installYearCeilingDetourDetour(MonsterPastafariCalendar, GateIndex);
 installYearCeilingDetourDetourDetour(MonsterPastafariCalendar, GateIndex);
 installYearCeilingDetour(MonsterPastafariCalendar, GateIndex);
+installAuthoritativeCacheEpochDetour(MonsterPastafariCalendar);
 
 export * from "./5efdcc3e6fb071cbaffdcb117507a169dd76.js";
 export {
