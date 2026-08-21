@@ -48,16 +48,19 @@ function parseArguments(argv) {
 }
 
 // The standalone authoritative worker takes an intentionally different scenic
-// route for Update 5.  Hide the source-level third detour from esbuild so the
-// old minified detour landmark remains stable, then inject the correction into
-// that generated worker after minification.  This is deliberately brittle:
-// if the old spaghetti changes, the build must fail instead of silently
-// relocating the corrective lie.
+// route for Update 5.  Hide the source-level third detour from esbuild, plant a
+// sacrificial call between detour #2 and the historical detour, then replace
+// that call with the third detour after minification.  This keeps the generated
+// scenic route without coupling Update 6 to esbuild's current short identifiers:
+// if the doorway changes, the build still fails instead of silently relocating
+// the corrective lie.
 const STANDALONE_THIRD_DETOUR_IMPORT =
   'import { installYearCeilingDetourDetourDetour } from "./year-ceiling-detour-detour-detour.js";\n';
 const STANDALONE_THIRD_DETOUR_INSTALL =
   'installYearCeilingDetourDetourDetour(PastafariCalendar, GateIndex);\n';
-const STANDALONE_OLD_DETOUR_LANDMARK = "Xr(y);Lr(re,y);Be(re,y);";
+const STANDALONE_SCENIC_LANDMARK_PROPERTY = "pastafari-u6-scenic-third-detour-landmark";
+const STANDALONE_SECOND_DETOUR_INSTALL =
+  'installYearCeilingDetourDetour(PastafariCalendar, GateIndex);\n';
 const STANDALONE_THIRD_DETOUR_PAYLOAD = 'var U5ThirdSet=new WeakSet,U6Scenic=Symbol.for("pastafari.runtime-patch-ledger.scenic-delegate");function U5Calc(e){let r=e[1];return!r||r.calculationJdn===void 0||r.calculationJdn===null?null:BigInt(r.calculationJdn)}function U5Belongs(e,r){return r===null?!0:String(e).startsWith(`${r}|`)}function U5Forbidden(e){return e>5778n&&e<=5781n}function U5Looks(e,r,c,a){if(!e.yearCache||typeof e.yearCache.entries!="function")return!1;for(let[n,U]of e.yearCache.entries()){if(!U5Belongs(n,r))continue;let l=U?.gateIndices;if(!Array.isArray(l)||l.length<2)continue;let b=l[0],f=l[l.length-1];if(c<=b-6&&a===U.openingGate-5782n||c>=f+6&&a===U.closingGate+5782n)return!0}return!1}function U5Nearest(e,r,c,a,n){if(!e.yearCache||typeof e.yearCache.entries!="function")return null;let U=null,l=null;for(let[b,f]of e.yearCache.entries()){if(!U5Belongs(b,r))continue;let N=f?.gateIndices;if(!Array.isArray(N)||N.length<2)continue;let s=N[0],q=N[N.length-1];if(c>=q+6){let d=c-q;(U===null||d<U.distance)&&(U={direction:"forward",distance:d,boundaryIndex:q,boundaryDay:a.call(n,q)})}if(c<=s-6){let d=s-c;(l===null||d<l.distance)&&(l={direction:"backward",distance:d,boundaryIndex:s,boundaryDay:a.call(n,s)})}}return U===null?l:l===null?U:U.distance<=l.distance?U:l}function U6Same(e,r){return!!e&&!!r&&e.value===r.value&&e.writable===r.writable&&e.enumerable===r.enumerable&&e.configurable===r.configurable&&e.get===r.get&&e.set===r.set}function U5Install(e,r){if(U5ThirdSet.has(e))return e;let c=e.prototype.convertJdn,a=r.prototype.gate;return e.prototype.convertJdn=function(...n){let U=this,l=U5Calc(n),b=r.prototype.gate,E=Object.getOwnPropertyDescriptor(r.prototype,"gate"),w=function(f){let N=b.call(this,f);if(!U5Looks(U,l,f,N))return N;let s=a.call(this,f);if(N===s)return N;let q=U5Nearest(U,l,f,a,this);if(q===null)return N;let d=q.direction==="forward"?s-q.boundaryDay:q.boundaryDay-s;return U5Forbidden(d)?N:s};Object.defineProperty(w,U6Scenic,{value:b});Object.defineProperty(r.prototype,"gate",{...E,value:w});let I=Object.getOwnPropertyDescriptor(r.prototype,"gate");try{return c.apply(this,n)}finally{let f=Object.getOwnPropertyDescriptor(r.prototype,"gate"),N=U6Same(f,I);try{Reflect.set(r.prototype,"gate",b,r.prototype)}catch{}Object.defineProperty(r.prototype,"gate",N?E:f)}},U5ThirdSet.add(e),e}';
 
 function hideThirdYearCeilingTurnFromStandaloneBundler() {
@@ -68,12 +71,17 @@ function hideThirdYearCeilingTurnFromStandaloneBundler() {
         if (path.resolve(args.path) !== AUTHORITATIVE_CORE) return null;
         let source = await readFile(args.path, "utf8");
         if (source.split(STANDALONE_THIRD_DETOUR_IMPORT).length !== 2
-          || source.split(STANDALONE_THIRD_DETOUR_INSTALL).length !== 2) {
+          || source.split(STANDALONE_THIRD_DETOUR_INSTALL).length !== 2
+          || source.split(STANDALONE_SECOND_DETOUR_INSTALL).length !== 2) {
           throw new Error("The third year-ceiling detour doorway changed; update the standalone scenic rewrite.");
         }
         source = source
           .replace(STANDALONE_THIRD_DETOUR_IMPORT, "")
-          .replace(STANDALONE_THIRD_DETOUR_INSTALL, "");
+          .replace(STANDALONE_THIRD_DETOUR_INSTALL, "")
+          .replace(
+            STANDALONE_SECOND_DETOUR_INSTALL,
+            `${STANDALONE_SECOND_DETOUR_INSTALL}globalThis["${STANDALONE_SCENIC_LANDMARK_PROPERTY}"](PastafariCalendar, GateIndex);\n`,
+          );
         return { contents: source, loader: "js" };
       });
     },
@@ -81,13 +89,25 @@ function hideThirdYearCeilingTurnFromStandaloneBundler() {
 }
 
 function injectThirdYearCeilingTurnIntoStandaloneWorker(source) {
-  const occurrences = source.split(STANDALONE_OLD_DETOUR_LANDMARK).length - 1;
-  if (occurrences !== 1) {
-    throw new Error(`Expected one old year-ceiling landmark in bundled authoritative worker, found ${occurrences}.`);
+  // Do not bind this rewrite to esbuild's current minified identifier names.
+  // Update 6 added the patch ledger, which legitimately renamed every symbol
+  // around the old "Xr/Lr/Be" landmark.  The source transform above instead
+  // plants a deliberately impossible global call between detour #2 and the
+  // historical detour.  Minification may rename its arguments, but cannot
+  // legally rewrite the hyphenated property into dot notation.
+  const escapedProperty = STANDALONE_SCENIC_LANDMARK_PROPERTY.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
+  const landmarkPattern = new RegExp(
+    `globalThis\\[["']${escapedProperty}["']\\]\\(([$\\w]+),([$\\w]+)\\);?`,
+    "gu",
+  );
+  const matches = [...source.matchAll(landmarkPattern)];
+  if (matches.length !== 1) {
+    throw new Error(`Expected one Update 6 scenic landmark in bundled authoritative worker, found ${matches.length}.`);
   }
+  const [wholeLandmark, CalendarConstructor, GateIndex] = matches[0];
   return source.replace(
-    STANDALONE_OLD_DETOUR_LANDMARK,
-    `Xr(y);Lr(re,y);${STANDALONE_THIRD_DETOUR_PAYLOAD}U5Install(re,y);Be(re,y);`,
+    wholeLandmark,
+    `${STANDALONE_THIRD_DETOUR_PAYLOAD}U5Install(${CalendarConstructor},${GateIndex});`,
   );
 }
 
