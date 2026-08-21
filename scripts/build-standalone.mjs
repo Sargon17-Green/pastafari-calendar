@@ -21,6 +21,7 @@ const STANDARD_ROUTER = path.join(BROWSER_DIR, "pastafari-calendar-router.js");
 const STANDALONE_ROUTER = path.join(ROOT, "scripts", "standalone-router.js");
 const PACKAGE = JSON.parse(await readFile(path.join(ROOT, "package.json"), "utf8"));
 const FAST_ENGINE = path.join(BROWSER_DIR, "pastafari-calendar-fast.js");
+const AUTHORITATIVE_CORE = path.join(BROWSER_DIR, "pastafari-calendar-core.js");
 const OUTPUTS = Object.freeze([
   ["pastafari-date.js", false],
   ["pastafari-date.min.js", true],
@@ -44,6 +45,50 @@ function parseArguments(argv) {
     }
   }
   return { verify, reportPath };
+}
+
+// The standalone authoritative worker takes an intentionally different scenic
+// route for Update 5.  Hide the source-level third detour from esbuild so the
+// old minified detour landmark remains stable, then inject the correction into
+// that generated worker after minification.  This is deliberately brittle:
+// if the old spaghetti changes, the build must fail instead of silently
+// relocating the corrective lie.
+const STANDALONE_THIRD_DETOUR_IMPORT =
+  'import { installYearCeilingDetourDetourDetour } from "./year-ceiling-detour-detour-detour.js";\n';
+const STANDALONE_THIRD_DETOUR_INSTALL =
+  'installYearCeilingDetourDetourDetour(PastafariCalendar, GateIndex);\n';
+const STANDALONE_OLD_DETOUR_LANDMARK = "Xr(y);Lr(re,y);Be(re,y);";
+const STANDALONE_THIRD_DETOUR_PAYLOAD = 'var U5ThirdSet=new WeakSet;function U5Calc(e){let r=e[1];return!r||r.calculationJdn===void 0||r.calculationJdn===null?null:BigInt(r.calculationJdn)}function U5Belongs(e,r){return r===null?!0:String(e).startsWith(`${r}|`)}function U5Forbidden(e){return e>5778n&&e<=5781n}function U5Looks(e,r,c,a){if(!e.yearCache||typeof e.yearCache.entries!="function")return!1;for(let[n,U]of e.yearCache.entries()){if(!U5Belongs(n,r))continue;let l=U?.gateIndices;if(!Array.isArray(l)||l.length<2)continue;let b=l[0],f=l[l.length-1];if(c<=b-6&&a===U.openingGate-5782n||c>=f+6&&a===U.closingGate+5782n)return!0}return!1}function U5Nearest(e,r,c,a,n){if(!e.yearCache||typeof e.yearCache.entries!="function")return null;let U=null,l=null;for(let[b,f]of e.yearCache.entries()){if(!U5Belongs(b,r))continue;let N=f?.gateIndices;if(!Array.isArray(N)||N.length<2)continue;let s=N[0],q=N[N.length-1];if(c>=q+6){let d=c-q;(U===null||d<U.distance)&&(U={direction:"forward",distance:d,boundaryIndex:q,boundaryDay:a.call(n,q)})}if(c<=s-6){let d=s-c;(l===null||d<l.distance)&&(l={direction:"backward",distance:d,boundaryIndex:s,boundaryDay:a.call(n,s)})}}return U===null?l:l===null?U:U.distance<=l.distance?U:l}function U5Install(e,r){if(U5ThirdSet.has(e))return e;let c=e.prototype.convertJdn,a=r.prototype.gate;return e.prototype.convertJdn=function(...n){let U=this,l=U5Calc(n),b=r.prototype.gate;r.prototype.gate=function(f){let N=b.call(this,f);if(!U5Looks(U,l,f,N))return N;let s=a.call(this,f);if(N===s)return N;let q=U5Nearest(U,l,f,a,this);if(q===null)return N;let d=q.direction==="forward"?s-q.boundaryDay:q.boundaryDay-s;return U5Forbidden(d)?N:s};try{return c.apply(this,n)}finally{r.prototype.gate=b}},U5ThirdSet.add(e),e}';
+
+function hideThirdYearCeilingTurnFromStandaloneBundler() {
+  return {
+    name: "pastafari-hide-third-year-ceiling-turn",
+    setup(buildContext) {
+      buildContext.onLoad({ filter: /pastafari-calendar-core\.js$/ }, async (args) => {
+        if (path.resolve(args.path) !== AUTHORITATIVE_CORE) return null;
+        let source = await readFile(args.path, "utf8");
+        if (source.split(STANDALONE_THIRD_DETOUR_IMPORT).length !== 2
+          || source.split(STANDALONE_THIRD_DETOUR_INSTALL).length !== 2) {
+          throw new Error("The third year-ceiling detour doorway changed; update the standalone scenic rewrite.");
+        }
+        source = source
+          .replace(STANDALONE_THIRD_DETOUR_IMPORT, "")
+          .replace(STANDALONE_THIRD_DETOUR_INSTALL, "");
+        return { contents: source, loader: "js" };
+      });
+    },
+  };
+}
+
+function injectThirdYearCeilingTurnIntoStandaloneWorker(source) {
+  const occurrences = source.split(STANDALONE_OLD_DETOUR_LANDMARK).length - 1;
+  if (occurrences !== 1) {
+    throw new Error(`Expected one old year-ceiling landmark in bundled authoritative worker, found ${occurrences}.`);
+  }
+  return source.replace(
+    STANDALONE_OLD_DETOUR_LANDMARK,
+    `Xr(y);Lr(re,y);${STANDALONE_THIRD_DETOUR_PAYLOAD}U5Install(re,y);Be(re,y);`,
+  );
 }
 
 function staticWorkerEngineImport(filename) {
@@ -124,6 +169,9 @@ function removableReverseSideDoor() {
 
 async function bundleWorker(filename) {
   const plugins = [staticWorkerEngineImport(filename)];
+  if (filename === "pastafari-authoritative-worker.js") {
+    plugins.push(hideThirdYearCeilingTurnFromStandaloneBundler());
+  }
   if (filename === "pastafari-fast-worker.js") plugins.push(removableReverseSideDoor());
 
   const result = await build({
@@ -144,7 +192,10 @@ async function bundleWorker(filename) {
   if (result.outputFiles.length !== 1) {
     throw new Error(`Expected one bundled Worker for ${filename}.`);
   }
-  return result.outputFiles[0].text;
+  const source = result.outputFiles[0].text;
+  return filename === "pastafari-authoritative-worker.js"
+    ? injectThirdYearCeilingTurnIntoStandaloneWorker(source)
+    : source;
 }
 
 function standaloneRouterAlias() {

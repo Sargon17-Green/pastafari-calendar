@@ -3,6 +3,7 @@ import test from "node:test";
 
 import { installYearCeilingDetour } from "../browser/year-ceiling-detour.js";
 import { installYearCeilingDetourDetour } from "../browser/year-ceiling-detour-detour.js";
+import { installYearCeilingDetourDetourDetour } from "../browser/year-ceiling-detour-detour-detour.js";
 import { discoverYearCandidates, selectYearCandidate } from "../verification/reference-oracle/reference.mjs";
 
 function makeCachedScanFixture() {
@@ -260,12 +261,15 @@ test("real backward-search regression from soak batch 37 case 3", {
   const expected = canonical(makeCalendar(fast).convertJdn(targetJdn, { calculationJdn }));
 
   assert.deepEqual(actual, expected);
+  // This historical soak case ceased to be a discriminator after the corrected
+  // gate artifacts were rebuilt.  Keep it as a regression that public and fast
+  // agree on the current normative result instead of pinning the obsolete tuple.
   assert.deepEqual(actual, {
-    year: "4997",
-    cutletName: "אפר",
-    dayInCutlet: 288,
-    monthName: "חרטה",
-    dayInMonth: 19,
+    year: "4998",
+    cutletName: "קרן",
+    dayInCutlet: 942,
+    monthName: "שלושה חלקים מחמישה",
+    dayInMonth: 65,
   });
 });
 
@@ -338,6 +342,168 @@ test("detour-of-a-detour restores its nested gate wrapper after a throw and repe
   assert.equal(FakeGateIndex.prototype.gate, originalGate);
   assert.equal(calendar.convertJdn(0n, { calculationJdn: 9n }), 8n);
   assert.equal(FakeGateIndex.prototype.gate, originalGate);
+});
+
+
+test("third detour reverses stale cached-boundary poisoning without weakening the real ceiling", () => {
+  class FakeGateIndex {
+    gate(index) {
+      const positions = new Map([
+        // Forward: stale year ends at 110, active year ends at 116.
+        [110, 10_000n],
+        [116, 12_000n],
+        [122, 15_780n], // stale length 5,780; active length 3,780 (legal)
+        [123, 17_779n], // active length 5,779 (truly forbidden)
+        // Backward: stale year opens at 200, active year opens at 194.
+        [200, 30_000n],
+        [194, 27_000n],
+        [188, 24_220n], // stale length 5,780; active length 2,780 (legal)
+        [187, 21_220n], // active length 5,780 (truly forbidden)
+      ]);
+      return positions.get(index) ?? BigInt(index);
+    }
+  }
+
+  class FakeCalendar {
+    constructor() {
+      this.gates = new FakeGateIndex();
+      this.yearCache = new Map([
+        ["222|5000", { openingGate: 5_000n, closingGate: 10_000n, gateIndices: [100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110] }],
+        ["222|5001", { openingGate: 10_000n, closingGate: 12_000n, gateIndices: [110, 111, 112, 113, 114, 115, 116] }],
+        ["222|4999", { openingGate: 30_000n, closingGate: 35_000n, gateIndices: [200, 201, 202, 203, 204, 205, 206] }],
+        ["222|4998", { openingGate: 27_000n, closingGate: 30_000n, gateIndices: [194, 195, 196, 197, 198, 199, 200] }],
+      ]);
+    }
+    convertJdn(_target, { probes, calculationJdn }) {
+      void calculationJdn;
+      return probes.map((index) => this.gates.gate(index));
+    }
+  }
+
+  const originalGate = FakeGateIndex.prototype.gate;
+  installYearCeilingDetourDetour(FakeCalendar, FakeGateIndex);
+  installYearCeilingDetourDetourDetour(FakeCalendar, FakeGateIndex);
+  installYearCeilingDetour(FakeCalendar, FakeGateIndex);
+  const calendar = new FakeCalendar();
+
+  assert.deepEqual(
+    calendar.convertJdn(0n, { calculationJdn: 222n, probes: [122, 123] }),
+    [15_780n, 17_782n],
+    "forward stale poisoning must be undone, while the nearest active 5,779-day candidate stays poisoned",
+  );
+  assert.deepEqual(
+    calendar.convertJdn(0n, { calculationJdn: 222n, probes: [188, 187] }),
+    [24_220n, 21_218n],
+    "backward stale poisoning must be undone, while the nearest active 5,780-day candidate stays poisoned",
+  );
+  assert.equal(FakeGateIndex.prototype.gate, originalGate);
+});
+
+test("third detour restores its gate wrapper after exceptions and repeated calls", () => {
+  class FakeGateIndex {
+    gate(index) {
+      const positions = new Map([[110, 10_000n], [116, 12_000n], [122, 15_780n]]);
+      return positions.get(index) ?? BigInt(index);
+    }
+  }
+  class FakeCalendar {
+    constructor() {
+      this.gates = new FakeGateIndex();
+      this.calls = 0;
+      this.yearCache = new Map([
+        ["222|5000", { openingGate: 5_000n, closingGate: 10_000n, gateIndices: [100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110] }],
+        ["222|5001", { openingGate: 10_000n, closingGate: 12_000n, gateIndices: [110, 111, 112, 113, 114, 115, 116] }],
+      ]);
+    }
+    convertJdn(_target, { calculationJdn }) {
+      void calculationJdn;
+      this.calls += 1;
+      const value = this.gates.gate(122);
+      if (this.calls === 1) throw new Error("third-detour fault injection");
+      return value;
+    }
+  }
+
+  const originalGate = FakeGateIndex.prototype.gate;
+  installYearCeilingDetourDetour(FakeCalendar, FakeGateIndex);
+  installYearCeilingDetourDetourDetour(FakeCalendar, FakeGateIndex);
+  installYearCeilingDetour(FakeCalendar, FakeGateIndex);
+  const calendar = new FakeCalendar();
+  assert.throws(() => calendar.convertJdn(0n, { calculationJdn: 222n }), /third-detour fault injection/);
+  assert.equal(FakeGateIndex.prototype.gate, originalGate);
+  for (let i = 0; i < 100; i += 1) {
+    assert.equal(calendar.convertJdn(0n, { calculationJdn: 222n }), 15_780n);
+    assert.equal(FakeGateIndex.prototype.gate, originalGate);
+  }
+});
+
+test("multiple consecutive public next/previous selections match the independent reference entry-for-entry", {
+  skip: !runRealRegression,
+  timeout: 600_000,
+}, async () => {
+  const authoritative = await import("../browser/pastafari-calendar-core.js");
+  const gates = new authoritative.GateIndex();
+  const gateAt = (index) => gates.gate(index);
+  const calculationJdn = 821_446n;
+
+  const referenceYears = new Map();
+  const containingGateIndex = gates.indexAtOrBefore(calculationJdn - 1n);
+  let discovery = discoverYearCandidates({ mode: "anchor", calculationJdn, containingGateIndex, gateAt });
+  let selection = selectYearCandidate({ calculationJdn, discovery });
+  referenceYears.set(5000, { discovery, selection });
+
+  let forward = selection.selectedCandidate;
+  for (let year = 5001; year <= 5002; year += 1) {
+    discovery = discoverYearCandidates({ mode: "next", fixedGateIndex: forward.closeGateIndex, gateAt });
+    selection = selectYearCandidate({
+      calculationJdn,
+      discovery,
+      selectionTargetJdn: gateAt(forward.closeGateIndex),
+    });
+    referenceYears.set(year, { discovery, selection });
+    forward = selection.selectedCandidate;
+  }
+
+  let backward = referenceYears.get(5000).selection.selectedCandidate;
+  for (let year = 4999; year >= 4998; year -= 1) {
+    discovery = discoverYearCandidates({ mode: "previous", fixedGateIndex: backward.openGateIndex, gateAt });
+    selection = selectYearCandidate({
+      calculationJdn,
+      discovery,
+      selectionTargetJdn: gateAt(backward.openGateIndex),
+    });
+    referenceYears.set(year, { discovery, selection });
+    backward = selection.selectedCandidate;
+  }
+
+  const makeCalendar = () => new authoritative.PastafariCalendar({
+    todayProvider: () => new authoritative.GregorianDate(2000n, 1, 1),
+  });
+
+  const compareCachedYears = (calendar) => {
+    for (const [cacheKey, year] of calendar.yearCache.entries()) {
+      if (!String(cacheKey).startsWith(`${calculationJdn}|`)) continue;
+      const yearNumber = Number(String(cacheKey).split("|").at(-1));
+      const reference = referenceYears.get(yearNumber);
+      if (!reference) continue;
+      const candidate = reference.selection.selectedCandidate;
+      assert.equal(year.gateIndices[0], candidate.openGateIndex, `year ${yearNumber} opening gate index`);
+      assert.equal(year.gateIndices.at(-1), candidate.closeGateIndex, `year ${yearNumber} closing gate index`);
+      assert.equal(year.openingGate, candidate.openingGate, `year ${yearNumber} opening gate day`);
+      assert.equal(year.closingGate, candidate.closingGate, `year ${yearNumber} closing gate day`);
+      assert.equal(year.closingGate - year.openingGate, candidate.yearLength, `year ${yearNumber} length`);
+    }
+  };
+
+  const forwardCalendar = makeCalendar();
+  forwardCalendar.convertJdn(827_224n, { calculationJdn });
+  compareCachedYears(forwardCalendar);
+  assert.equal(forwardCalendar.yearCache.get(`${calculationJdn}|5002`).closingGate, 827_226n,
+    "the historical stale-boundary +2 poisoning must not reappear");
+
+  const backwardCalendar = makeCalendar();
+  backwardCalendar.convertJdn(805_838n, { calculationJdn });
+  compareCachedYears(backwardCalendar);
 });
 
 test("new public 5,778 discriminators match reference cardinality and fast final tuple", {
