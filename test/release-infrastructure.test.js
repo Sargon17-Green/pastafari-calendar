@@ -12,6 +12,7 @@ import {
   assertGeneratedArtifactMatches,
   assertReproducibleArtifacts,
   buildChecksumManifest,
+  checksumPolicies,
   computeServiceWorkerCoreDigest,
   sha256Buffer,
   validatePackageFileSet,
@@ -38,6 +39,20 @@ test("generated artifact drift is rejected with the artifact name", () => {
     ),
     /browser\/standalone\/pastafari-date\.js has generated-file drift/u,
   );
+});
+
+test("repository checksum policy excludes Python bytecode caches", async () => {
+  await withTemporaryDirectory("pastafari-checksum-pycache-", async (root) => {
+    await mkdir(path.join(root, "implementations", "tests", "__pycache__"), { recursive: true });
+    await writeFile(path.join(root, "tracked.py"), "print('tracked')\n", "utf8");
+    await writeFile(
+      path.join(root, "implementations", "tests", "__pycache__", "generated.cpython-313.pyc"),
+      Buffer.from([0x42, 0x0d, 0x0d, 0x0a]),
+    );
+    const manifest = await buildChecksumManifest(root, checksumPolicies.repository);
+    assert.match(manifest.text, /\.\/tracked\.py/u);
+    assert.doesNotMatch(manifest.text, /__pycache__|\.pyc/u);
+  });
 });
 
 test("checksum verification rejects a modified file", async () => {

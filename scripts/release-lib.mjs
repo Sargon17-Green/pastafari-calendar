@@ -49,6 +49,10 @@ function defaultRepositoryExclusion(relativePath) {
     || normalized.startsWith("node_modules/")
     || normalized === "artifacts"
     || normalized.startsWith("artifacts/")
+    || normalized === "__pycache__"
+    || normalized.startsWith("__pycache__/")
+    || normalized.includes("/__pycache__/")
+    || normalized.endsWith(".pyc")
     || normalized.endsWith(".tgz");
 }
 
