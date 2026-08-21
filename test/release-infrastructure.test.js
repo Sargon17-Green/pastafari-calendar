@@ -55,6 +55,23 @@ test("repository checksum policy excludes Python bytecode caches", async () => {
   });
 });
 
+
+test("checksum manifests preserve Unicode paths verbatim", async () => {
+  await withTemporaryDirectory("pastafari-checksum-unicode-", async (root) => {
+    await mkdir(path.join(root, "sources"), { recursive: true });
+    const relative = "sources/מגילת העיתים.md";
+    await writeFile(path.join(root, ...relative.split("/")), "scroll\n", "utf8");
+    const manifest = await buildChecksumManifest(root, { exclude: () => false });
+    assert.match(manifest.text, /\.\/sources\/מגילת העיתים\.md/u);
+    assert.doesNotMatch(manifest.text, /#U[0-9a-f]{4}/iu);
+    const verified = await verifyChecksumManifest(root, manifest.text, {
+      exclude: () => false,
+      manifestName: "fixture.txt",
+    });
+    assert.equal(verified.count, 1);
+  });
+});
+
 test("checksum verification rejects a modified file", async () => {
   await withTemporaryDirectory("pastafari-checksum-test-", async (root) => {
     await writeFile(path.join(root, "alpha.txt"), "one\n", "utf8");
