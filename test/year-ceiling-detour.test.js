@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { installYearCeilingDetour } from "../browser/year-ceiling-detour.js";
+import { installYearCeilingDetourDetour } from "../browser/year-ceiling-detour-detour.js";
 import { discoverYearCandidates, selectYearCandidate } from "../verification/reference-oracle/reference.mjs";
 
 function makeCachedScanFixture() {
@@ -266,4 +267,153 @@ test("real backward-search regression from soak batch 37 case 3", {
     monthName: "חרטה",
     dayInMonth: 19,
   });
+});
+
+
+test("detour-of-a-detour catches the first +1 anchor-matrix row before cardinality", () => {
+  class FakeGateIndex {
+    constructor(closeDay, staleOpeningDay) {
+      this.closeDay = closeDay;
+      this.staleOpeningDay = staleOpeningDay;
+    }
+    gate(index) {
+      const positions = new Map([
+        [12, this.staleOpeningDay + 1n],
+        [11, 10_000n], // true first-row opening after the descending probe
+        [10, this.staleOpeningDay], // opening incorrectly retained by the older detour
+        [17, this.closeDay],
+      ]);
+      return positions.get(index) ?? BigInt(index);
+    }
+  }
+
+  class FakeCalendar {
+    constructor(closeDay, staleOpeningDay) {
+      this.gates = new FakeGateIndex(closeDay, staleOpeningDay);
+      this.yearCache = new Map();
+    }
+    convertJdn(_target, { calculationJdn }) {
+      void calculationJdn;
+      return [12, 11, 10, 11, 17].map((index) => this.gates.gate(index));
+    }
+  }
+
+  const originalGate = FakeGateIndex.prototype.gate;
+  installYearCeilingDetourDetour(FakeCalendar, FakeGateIndex);
+  installYearCeilingDetour(FakeCalendar, FakeGateIndex);
+
+  const legal = new FakeCalendar(15_778n, 10_000n).convertJdn(0n, { calculationJdn: 1n });
+  assert.equal(legal.at(-1), 15_778n, "5,778 must survive the first-row turn");
+
+  for (const forbiddenClose of [15_779n, 15_780n, 15_781n]) {
+    // Keep the older detour's stale opening exactly 5,778 days before the close
+    // so it cannot reject this row by itself. The second detour must recognize
+    // the true opening at gate 11 and poison the forbidden length.
+    const staleOpeningDay = forbiddenClose - 5_778n;
+    const values = new FakeCalendar(forbiddenClose, staleOpeningDay).convertJdn(0n, { calculationJdn: 1n });
+    assert.equal(values.at(-1), 15_782n, `${forbiddenClose - 10_000n}-day first-row candidate must be poisoned`);
+    assert.equal(FakeGateIndex.prototype.gate, originalGate, "both gate wrappers must restore after each conversion");
+  }
+});
+
+test("detour-of-a-detour restores its nested gate wrapper after a throw and repeated calls", () => {
+  class FakeGateIndex { gate(index) { return BigInt(index); } }
+  class FakeCalendar {
+    constructor() { this.gates = new FakeGateIndex(); this.yearCache = new Map(); this.calls = 0; }
+    convertJdn() {
+      this.calls += 1;
+      this.gates.gate(3);
+      this.gates.gate(2);
+      this.gates.gate(1);
+      this.gates.gate(2);
+      if (this.calls === 1) throw new Error("second-detour fault injection");
+      return this.gates.gate(8);
+    }
+  }
+  const originalGate = FakeGateIndex.prototype.gate;
+  installYearCeilingDetourDetour(FakeCalendar, FakeGateIndex);
+  installYearCeilingDetour(FakeCalendar, FakeGateIndex);
+  const calendar = new FakeCalendar();
+  assert.throws(() => calendar.convertJdn(0n, { calculationJdn: 9n }), /second-detour fault injection/);
+  assert.equal(FakeGateIndex.prototype.gate, originalGate);
+  assert.equal(calendar.convertJdn(0n, { calculationJdn: 9n }), 8n);
+  assert.equal(FakeGateIndex.prototype.gate, originalGate);
+});
+
+test("new public 5,778 discriminators match reference cardinality and fast final tuple", {
+  skip: !runRealRegression,
+  timeout: 600_000,
+}, async () => {
+  const authoritative = await import("../browser/pastafari-calendar-core.js");
+  const fast = await import("../browser/pastafari-calendar-fast.js");
+  const gates = new authoritative.GateIndex();
+  const gateAt = (index) => gates.gate(index);
+  const originalChoose = authoritative.SauceResult.prototype.chooseIndex;
+
+  const cases = [
+    {
+      calculationJdn: -14_035_472n,
+      targetJdn: -14_009_523n,
+      cardinality: 77,
+      selectedOneBased: 47,
+      forbidden: [-1430, -1417, 5_780n],
+      expected: { year: "5006", cutletName: "עקרב", dayInCutlet: 296, monthName: "רימון", dayInMonth: 89 },
+    },
+    {
+      calculationJdn: -15_557_375n,
+      targetJdn: -15_552_346n,
+      cardinality: 32,
+      selectedOneBased: 2,
+      forbidden: [-4468, -4457, 5_781n],
+      expected: null,
+    },
+  ];
+
+  for (const fixture of cases) {
+    const containingGateIndex = gates.indexAtOrBefore(fixture.calculationJdn - 1n);
+    const discovery = discoverYearCandidates({
+      mode: "anchor",
+      calculationJdn: fixture.calculationJdn,
+      containingGateIndex,
+      gateAt,
+    });
+    const selection = selectYearCandidate({ calculationJdn: fixture.calculationJdn, discovery });
+    assert.equal(discovery.cardinality, fixture.cardinality);
+    assert.equal(selection.selectedOneBased, fixture.selectedOneBased);
+    assert.equal(
+      discovery.beforeFiltering.some((candidate) =>
+        candidate.openGateIndex === fixture.forbidden[0]
+        && candidate.closeGateIndex === fixture.forbidden[1]
+        && candidate.yearLength === fixture.forbidden[2]),
+      true,
+    );
+    assert.equal(
+      discovery.afterFiltering.some((candidate) => candidate.yearLength > 5_778n),
+      false,
+    );
+
+    const events = [];
+    authoritative.SauceResult.prototype.chooseIndex = function observedChoice(bowl, seal, count) {
+      const selected = originalChoose.call(this, bowl, seal, count);
+      if (Number(bowl) === 1 && Number(seal) === 10) {
+        events.push({ count: Number(count), selectedOneBased: Number(selected) + 1 });
+      }
+      return selected;
+    };
+
+    try {
+      const makeCalendar = (namespace) => new namespace.PastafariCalendar({
+        todayProvider: () => new namespace.GregorianDate(2000n, 1, 1),
+      });
+      const actual = makeCalendar(authoritative).convertJdn(fixture.targetJdn, { calculationJdn: fixture.calculationJdn }).toJSON();
+      const expected = makeCalendar(fast).convertJdn(fixture.targetJdn, { calculationJdn: fixture.calculationJdn }).toJSON();
+      assert.deepEqual(events.filter((event) => event.count === fixture.cardinality), [
+        { count: fixture.cardinality, selectedOneBased: fixture.selectedOneBased },
+      ]);
+      assert.deepEqual(actual, expected);
+      if (fixture.expected) assert.deepEqual(actual, fixture.expected);
+    } finally {
+      authoritative.SauceResult.prototype.chooseIndex = originalChoose;
+    }
+  }
 });

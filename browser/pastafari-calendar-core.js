@@ -4,8 +4,10 @@
 import { GateIndex, PastafariCalendar } from "./pastafari-calendar-core-chronicle.js";
 import { installGateDataDetour } from "./gate-data-detour.js";
 import { installYearCeilingDetour } from "./year-ceiling-detour.js";
+import { installYearCeilingDetourDetour } from "./year-ceiling-detour-detour.js";
 
 installGateDataDetour(GateIndex);
+installYearCeilingDetourDetour(PastafariCalendar, GateIndex);
 installYearCeilingDetour(PastafariCalendar, GateIndex);
 
 export * from "./pastafari-calendar-core-chronicle.js";

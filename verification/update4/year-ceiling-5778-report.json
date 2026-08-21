@@ -1,0 +1,2826 @@
+{
+  "schema": "pastafari-year-ceiling-update4-v1",
+  "baseCommit": "03e404637f9856d8f5d603c480b064d45591dd2e",
+  "normativeRule": {
+    "maxYearDays": 5778,
+    "inclusive": true,
+    "filterBeforeCardinality": true
+  },
+  "implementation": {
+    "preservedOldDetour": "browser/year-ceiling-detour.js",
+    "addedDetourAroundDetour": "browser/year-ceiling-detour-detour.js",
+    "preservedInternalLegacyCeiling": 5781,
+    "mechanism": "Detect the descending-scan to +1 first-row turn and poison 5779..5781 closes as 5782 before the sealed candidate list counts them."
+  },
+  "discriminators": [
+    {
+      "classification": "final-tuple+cardinality",
+      "input": {
+        "calculationJdn": "-14035472",
+        "targetJdn": "-14009523"
+      },
+      "beforeFix": {
+        "candidateCount": 78,
+        "selectedOneBased": 33,
+        "selectedCandidate": {
+          "openGateIndex": -1422,
+          "closeGateIndex": -1413,
+          "openingGate": "-14036787",
+          "closingGate": "-14032855",
+          "yearLength": "3932",
+          "gapCount": 9
+        },
+        "finalTuple": {
+          "year": "5006",
+          "cutletName": "אפר",
+          "dayInCutlet": 296,
+          "monthName": "טין",
+          "dayInMonth": 12
+        },
+        "candidateList": [
+          {
+            "openGateIndex": -1430,
+            "closeGateIndex": -1417,
+            "openingGate": "-14041199",
+            "closingGate": "-14035419",
+            "yearLength": "5780",
+            "gapCount": 13
+          },
+          {
+            "openGateIndex": -1429,
+            "closeGateIndex": -1417,
+            "openingGate": "-14041077",
+            "closingGate": "-14035419",
+            "yearLength": "5658",
+            "gapCount": 12
+          },
+          {
+            "openGateIndex": -1428,
+            "closeGateIndex": -1417,
+            "openingGate": "-14040883",
+            "closingGate": "-14035419",
+            "yearLength": "5464",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1427,
+            "closeGateIndex": -1417,
+            "openingGate": "-14039938",
+            "closingGate": "-14035419",
+            "yearLength": "4519",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -1427,
+            "closeGateIndex": -1416,
+            "openingGate": "-14039938",
+            "closingGate": "-14034819",
+            "yearLength": "5119",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1427,
+            "closeGateIndex": -1415,
+            "openingGate": "-14039938",
+            "closingGate": "-14034539",
+            "yearLength": "5399",
+            "gapCount": 12
+          },
+          {
+            "openGateIndex": -1426,
+            "closeGateIndex": -1417,
+            "openingGate": "-14039433",
+            "closingGate": "-14035419",
+            "yearLength": "4014",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -1426,
+            "closeGateIndex": -1416,
+            "openingGate": "-14039433",
+            "closingGate": "-14034819",
+            "yearLength": "4614",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -1426,
+            "closeGateIndex": -1415,
+            "openingGate": "-14039433",
+            "closingGate": "-14034539",
+            "yearLength": "4894",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1425,
+            "closeGateIndex": -1417,
+            "openingGate": "-14038810",
+            "closingGate": "-14035419",
+            "yearLength": "3391",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -1425,
+            "closeGateIndex": -1416,
+            "openingGate": "-14038810",
+            "closingGate": "-14034819",
+            "yearLength": "3991",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -1425,
+            "closeGateIndex": -1415,
+            "openingGate": "-14038810",
+            "closingGate": "-14034539",
+            "yearLength": "4271",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -1425,
+            "closeGateIndex": -1414,
+            "openingGate": "-14038810",
+            "closingGate": "-14033602",
+            "yearLength": "5208",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1424,
+            "closeGateIndex": -1417,
+            "openingGate": "-14037869",
+            "closingGate": "-14035419",
+            "yearLength": "2450",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -1424,
+            "closeGateIndex": -1416,
+            "openingGate": "-14037869",
+            "closingGate": "-14034819",
+            "yearLength": "3050",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -1424,
+            "closeGateIndex": -1415,
+            "openingGate": "-14037869",
+            "closingGate": "-14034539",
+            "yearLength": "3330",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -1424,
+            "closeGateIndex": -1414,
+            "openingGate": "-14037869",
+            "closingGate": "-14033602",
+            "yearLength": "4267",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -1424,
+            "closeGateIndex": -1413,
+            "openingGate": "-14037869",
+            "closingGate": "-14032855",
+            "yearLength": "5014",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1424,
+            "closeGateIndex": -1412,
+            "openingGate": "-14037869",
+            "closingGate": "-14032813",
+            "yearLength": "5056",
+            "gapCount": 12
+          },
+          {
+            "openGateIndex": -1424,
+            "closeGateIndex": -1411,
+            "openingGate": "-14037869",
+            "closingGate": "-14032448",
+            "yearLength": "5421",
+            "gapCount": 13
+          },
+          {
+            "openGateIndex": -1423,
+            "closeGateIndex": -1417,
+            "openingGate": "-14037131",
+            "closingGate": "-14035419",
+            "yearLength": "1712",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -1423,
+            "closeGateIndex": -1416,
+            "openingGate": "-14037131",
+            "closingGate": "-14034819",
+            "yearLength": "2312",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -1423,
+            "closeGateIndex": -1415,
+            "openingGate": "-14037131",
+            "closingGate": "-14034539",
+            "yearLength": "2592",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -1423,
+            "closeGateIndex": -1414,
+            "openingGate": "-14037131",
+            "closingGate": "-14033602",
+            "yearLength": "3529",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -1423,
+            "closeGateIndex": -1413,
+            "openingGate": "-14037131",
+            "closingGate": "-14032855",
+            "yearLength": "4276",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -1423,
+            "closeGateIndex": -1412,
+            "openingGate": "-14037131",
+            "closingGate": "-14032813",
+            "yearLength": "4318",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1423,
+            "closeGateIndex": -1411,
+            "openingGate": "-14037131",
+            "closingGate": "-14032448",
+            "yearLength": "4683",
+            "gapCount": 12
+          },
+          {
+            "openGateIndex": -1423,
+            "closeGateIndex": -1410,
+            "openingGate": "-14037131",
+            "closingGate": "-14031919",
+            "yearLength": "5212",
+            "gapCount": 13
+          },
+          {
+            "openGateIndex": -1423,
+            "closeGateIndex": -1409,
+            "openingGate": "-14037131",
+            "closingGate": "-14031848",
+            "yearLength": "5283",
+            "gapCount": 14
+          },
+          {
+            "openGateIndex": -1422,
+            "closeGateIndex": -1416,
+            "openingGate": "-14036787",
+            "closingGate": "-14034819",
+            "yearLength": "1968",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -1422,
+            "closeGateIndex": -1415,
+            "openingGate": "-14036787",
+            "closingGate": "-14034539",
+            "yearLength": "2248",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -1422,
+            "closeGateIndex": -1414,
+            "openingGate": "-14036787",
+            "closingGate": "-14033602",
+            "yearLength": "3185",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -1422,
+            "closeGateIndex": -1413,
+            "openingGate": "-14036787",
+            "closingGate": "-14032855",
+            "yearLength": "3932",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -1422,
+            "closeGateIndex": -1412,
+            "openingGate": "-14036787",
+            "closingGate": "-14032813",
+            "yearLength": "3974",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -1422,
+            "closeGateIndex": -1411,
+            "openingGate": "-14036787",
+            "closingGate": "-14032448",
+            "yearLength": "4339",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1422,
+            "closeGateIndex": -1410,
+            "openingGate": "-14036787",
+            "closingGate": "-14031919",
+            "yearLength": "4868",
+            "gapCount": 12
+          },
+          {
+            "openGateIndex": -1422,
+            "closeGateIndex": -1409,
+            "openingGate": "-14036787",
+            "closingGate": "-14031848",
+            "yearLength": "4939",
+            "gapCount": 13
+          },
+          {
+            "openGateIndex": -1422,
+            "closeGateIndex": -1408,
+            "openingGate": "-14036787",
+            "closingGate": "-14031184",
+            "yearLength": "5603",
+            "gapCount": 14
+          },
+          {
+            "openGateIndex": -1421,
+            "closeGateIndex": -1415,
+            "openingGate": "-14035904",
+            "closingGate": "-14034539",
+            "yearLength": "1365",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -1421,
+            "closeGateIndex": -1414,
+            "openingGate": "-14035904",
+            "closingGate": "-14033602",
+            "yearLength": "2302",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -1421,
+            "closeGateIndex": -1413,
+            "openingGate": "-14035904",
+            "closingGate": "-14032855",
+            "yearLength": "3049",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -1421,
+            "closeGateIndex": -1412,
+            "openingGate": "-14035904",
+            "closingGate": "-14032813",
+            "yearLength": "3091",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -1421,
+            "closeGateIndex": -1411,
+            "openingGate": "-14035904",
+            "closingGate": "-14032448",
+            "yearLength": "3456",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -1421,
+            "closeGateIndex": -1410,
+            "openingGate": "-14035904",
+            "closingGate": "-14031919",
+            "yearLength": "3985",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1421,
+            "closeGateIndex": -1409,
+            "openingGate": "-14035904",
+            "closingGate": "-14031848",
+            "yearLength": "4056",
+            "gapCount": 12
+          },
+          {
+            "openGateIndex": -1421,
+            "closeGateIndex": -1408,
+            "openingGate": "-14035904",
+            "closingGate": "-14031184",
+            "yearLength": "4720",
+            "gapCount": 13
+          },
+          {
+            "openGateIndex": -1421,
+            "closeGateIndex": -1407,
+            "openingGate": "-14035904",
+            "closingGate": "-14030659",
+            "yearLength": "5245",
+            "gapCount": 14
+          },
+          {
+            "openGateIndex": -1421,
+            "closeGateIndex": -1406,
+            "openingGate": "-14035904",
+            "closingGate": "-14030604",
+            "yearLength": "5300",
+            "gapCount": 15
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1414,
+            "openingGate": "-14035600",
+            "closingGate": "-14033602",
+            "yearLength": "1998",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1413,
+            "openingGate": "-14035600",
+            "closingGate": "-14032855",
+            "yearLength": "2745",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1412,
+            "openingGate": "-14035600",
+            "closingGate": "-14032813",
+            "yearLength": "2787",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1411,
+            "openingGate": "-14035600",
+            "closingGate": "-14032448",
+            "yearLength": "3152",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1410,
+            "openingGate": "-14035600",
+            "closingGate": "-14031919",
+            "yearLength": "3681",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1409,
+            "openingGate": "-14035600",
+            "closingGate": "-14031848",
+            "yearLength": "3752",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1408,
+            "openingGate": "-14035600",
+            "closingGate": "-14031184",
+            "yearLength": "4416",
+            "gapCount": 12
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1407,
+            "openingGate": "-14035600",
+            "closingGate": "-14030659",
+            "yearLength": "4941",
+            "gapCount": 13
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1406,
+            "openingGate": "-14035600",
+            "closingGate": "-14030604",
+            "yearLength": "4996",
+            "gapCount": 14
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1405,
+            "openingGate": "-14035600",
+            "closingGate": "-14030065",
+            "yearLength": "5535",
+            "gapCount": 15
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1404,
+            "openingGate": "-14035600",
+            "closingGate": "-14029864",
+            "yearLength": "5736",
+            "gapCount": 16
+          },
+          {
+            "openGateIndex": -1419,
+            "closeGateIndex": -1413,
+            "openingGate": "-14035558",
+            "closingGate": "-14032855",
+            "yearLength": "2703",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -1419,
+            "closeGateIndex": -1412,
+            "openingGate": "-14035558",
+            "closingGate": "-14032813",
+            "yearLength": "2745",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -1419,
+            "closeGateIndex": -1411,
+            "openingGate": "-14035558",
+            "closingGate": "-14032448",
+            "yearLength": "3110",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -1419,
+            "closeGateIndex": -1410,
+            "openingGate": "-14035558",
+            "closingGate": "-14031919",
+            "yearLength": "3639",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -1419,
+            "closeGateIndex": -1409,
+            "openingGate": "-14035558",
+            "closingGate": "-14031848",
+            "yearLength": "3710",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -1419,
+            "closeGateIndex": -1408,
+            "openingGate": "-14035558",
+            "closingGate": "-14031184",
+            "yearLength": "4374",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1419,
+            "closeGateIndex": -1407,
+            "openingGate": "-14035558",
+            "closingGate": "-14030659",
+            "yearLength": "4899",
+            "gapCount": 12
+          },
+          {
+            "openGateIndex": -1419,
+            "closeGateIndex": -1406,
+            "openingGate": "-14035558",
+            "closingGate": "-14030604",
+            "yearLength": "4954",
+            "gapCount": 13
+          },
+          {
+            "openGateIndex": -1419,
+            "closeGateIndex": -1405,
+            "openingGate": "-14035558",
+            "closingGate": "-14030065",
+            "yearLength": "5493",
+            "gapCount": 14
+          },
+          {
+            "openGateIndex": -1419,
+            "closeGateIndex": -1404,
+            "openingGate": "-14035558",
+            "closingGate": "-14029864",
+            "yearLength": "5694",
+            "gapCount": 15
+          },
+          {
+            "openGateIndex": -1418,
+            "closeGateIndex": -1412,
+            "openingGate": "-14035496",
+            "closingGate": "-14032813",
+            "yearLength": "2683",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -1418,
+            "closeGateIndex": -1411,
+            "openingGate": "-14035496",
+            "closingGate": "-14032448",
+            "yearLength": "3048",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -1418,
+            "closeGateIndex": -1410,
+            "openingGate": "-14035496",
+            "closingGate": "-14031919",
+            "yearLength": "3577",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -1418,
+            "closeGateIndex": -1409,
+            "openingGate": "-14035496",
+            "closingGate": "-14031848",
+            "yearLength": "3648",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -1418,
+            "closeGateIndex": -1408,
+            "openingGate": "-14035496",
+            "closingGate": "-14031184",
+            "yearLength": "4312",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -1418,
+            "closeGateIndex": -1407,
+            "openingGate": "-14035496",
+            "closingGate": "-14030659",
+            "yearLength": "4837",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1418,
+            "closeGateIndex": -1406,
+            "openingGate": "-14035496",
+            "closingGate": "-14030604",
+            "yearLength": "4892",
+            "gapCount": 12
+          },
+          {
+            "openGateIndex": -1418,
+            "closeGateIndex": -1405,
+            "openingGate": "-14035496",
+            "closingGate": "-14030065",
+            "yearLength": "5431",
+            "gapCount": 13
+          },
+          {
+            "openGateIndex": -1418,
+            "closeGateIndex": -1404,
+            "openingGate": "-14035496",
+            "closingGate": "-14029864",
+            "yearLength": "5632",
+            "gapCount": 14
+          }
+        ],
+        "forbiddenSurvivors": [
+          {
+            "openGateIndex": -1430,
+            "closeGateIndex": -1417,
+            "openingGate": "-14041199",
+            "closingGate": "-14035419",
+            "yearLength": "5780",
+            "gapCount": 13
+          }
+        ]
+      },
+      "reference": {
+        "candidateCount": 77,
+        "selectedOneBased": 47,
+        "selectedCandidate": {
+          "openGateIndex": -1426,
+          "closeGateIndex": -1416,
+          "openingGate": "-14039433",
+          "closingGate": "-14034819",
+          "yearLength": "4614",
+          "gapCount": 10
+        },
+        "candidateList": [
+          {
+            "openGateIndex": -1421,
+            "closeGateIndex": -1415,
+            "openingGate": "-14035904",
+            "closingGate": "-14034539",
+            "yearLength": "1365",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -1423,
+            "closeGateIndex": -1417,
+            "openingGate": "-14037131",
+            "closingGate": "-14035419",
+            "yearLength": "1712",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -1422,
+            "closeGateIndex": -1416,
+            "openingGate": "-14036787",
+            "closingGate": "-14034819",
+            "yearLength": "1968",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1414,
+            "openingGate": "-14035600",
+            "closingGate": "-14033602",
+            "yearLength": "1998",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -1422,
+            "closeGateIndex": -1415,
+            "openingGate": "-14036787",
+            "closingGate": "-14034539",
+            "yearLength": "2248",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -1421,
+            "closeGateIndex": -1414,
+            "openingGate": "-14035904",
+            "closingGate": "-14033602",
+            "yearLength": "2302",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -1423,
+            "closeGateIndex": -1416,
+            "openingGate": "-14037131",
+            "closingGate": "-14034819",
+            "yearLength": "2312",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -1424,
+            "closeGateIndex": -1417,
+            "openingGate": "-14037869",
+            "closingGate": "-14035419",
+            "yearLength": "2450",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -1423,
+            "closeGateIndex": -1415,
+            "openingGate": "-14037131",
+            "closingGate": "-14034539",
+            "yearLength": "2592",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -1418,
+            "closeGateIndex": -1412,
+            "openingGate": "-14035496",
+            "closingGate": "-14032813",
+            "yearLength": "2683",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -1419,
+            "closeGateIndex": -1413,
+            "openingGate": "-14035558",
+            "closingGate": "-14032855",
+            "yearLength": "2703",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1413,
+            "openingGate": "-14035600",
+            "closingGate": "-14032855",
+            "yearLength": "2745",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -1419,
+            "closeGateIndex": -1412,
+            "openingGate": "-14035558",
+            "closingGate": "-14032813",
+            "yearLength": "2745",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1412,
+            "openingGate": "-14035600",
+            "closingGate": "-14032813",
+            "yearLength": "2787",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -1418,
+            "closeGateIndex": -1411,
+            "openingGate": "-14035496",
+            "closingGate": "-14032448",
+            "yearLength": "3048",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -1421,
+            "closeGateIndex": -1413,
+            "openingGate": "-14035904",
+            "closingGate": "-14032855",
+            "yearLength": "3049",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -1424,
+            "closeGateIndex": -1416,
+            "openingGate": "-14037869",
+            "closingGate": "-14034819",
+            "yearLength": "3050",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -1421,
+            "closeGateIndex": -1412,
+            "openingGate": "-14035904",
+            "closingGate": "-14032813",
+            "yearLength": "3091",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -1419,
+            "closeGateIndex": -1411,
+            "openingGate": "-14035558",
+            "closingGate": "-14032448",
+            "yearLength": "3110",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1411,
+            "openingGate": "-14035600",
+            "closingGate": "-14032448",
+            "yearLength": "3152",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -1422,
+            "closeGateIndex": -1414,
+            "openingGate": "-14036787",
+            "closingGate": "-14033602",
+            "yearLength": "3185",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -1424,
+            "closeGateIndex": -1415,
+            "openingGate": "-14037869",
+            "closingGate": "-14034539",
+            "yearLength": "3330",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -1425,
+            "closeGateIndex": -1417,
+            "openingGate": "-14038810",
+            "closingGate": "-14035419",
+            "yearLength": "3391",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -1421,
+            "closeGateIndex": -1411,
+            "openingGate": "-14035904",
+            "closingGate": "-14032448",
+            "yearLength": "3456",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -1423,
+            "closeGateIndex": -1414,
+            "openingGate": "-14037131",
+            "closingGate": "-14033602",
+            "yearLength": "3529",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -1418,
+            "closeGateIndex": -1410,
+            "openingGate": "-14035496",
+            "closingGate": "-14031919",
+            "yearLength": "3577",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -1419,
+            "closeGateIndex": -1410,
+            "openingGate": "-14035558",
+            "closingGate": "-14031919",
+            "yearLength": "3639",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -1418,
+            "closeGateIndex": -1409,
+            "openingGate": "-14035496",
+            "closingGate": "-14031848",
+            "yearLength": "3648",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1410,
+            "openingGate": "-14035600",
+            "closingGate": "-14031919",
+            "yearLength": "3681",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -1419,
+            "closeGateIndex": -1409,
+            "openingGate": "-14035558",
+            "closingGate": "-14031848",
+            "yearLength": "3710",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1409,
+            "openingGate": "-14035600",
+            "closingGate": "-14031848",
+            "yearLength": "3752",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1422,
+            "closeGateIndex": -1413,
+            "openingGate": "-14036787",
+            "closingGate": "-14032855",
+            "yearLength": "3932",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -1422,
+            "closeGateIndex": -1412,
+            "openingGate": "-14036787",
+            "closingGate": "-14032813",
+            "yearLength": "3974",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -1421,
+            "closeGateIndex": -1410,
+            "openingGate": "-14035904",
+            "closingGate": "-14031919",
+            "yearLength": "3985",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1425,
+            "closeGateIndex": -1416,
+            "openingGate": "-14038810",
+            "closingGate": "-14034819",
+            "yearLength": "3991",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -1426,
+            "closeGateIndex": -1417,
+            "openingGate": "-14039433",
+            "closingGate": "-14035419",
+            "yearLength": "4014",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -1421,
+            "closeGateIndex": -1409,
+            "openingGate": "-14035904",
+            "closingGate": "-14031848",
+            "yearLength": "4056",
+            "gapCount": 12
+          },
+          {
+            "openGateIndex": -1424,
+            "closeGateIndex": -1414,
+            "openingGate": "-14037869",
+            "closingGate": "-14033602",
+            "yearLength": "4267",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -1425,
+            "closeGateIndex": -1415,
+            "openingGate": "-14038810",
+            "closingGate": "-14034539",
+            "yearLength": "4271",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -1423,
+            "closeGateIndex": -1413,
+            "openingGate": "-14037131",
+            "closingGate": "-14032855",
+            "yearLength": "4276",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -1418,
+            "closeGateIndex": -1408,
+            "openingGate": "-14035496",
+            "closingGate": "-14031184",
+            "yearLength": "4312",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -1423,
+            "closeGateIndex": -1412,
+            "openingGate": "-14037131",
+            "closingGate": "-14032813",
+            "yearLength": "4318",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1422,
+            "closeGateIndex": -1411,
+            "openingGate": "-14036787",
+            "closingGate": "-14032448",
+            "yearLength": "4339",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1419,
+            "closeGateIndex": -1408,
+            "openingGate": "-14035558",
+            "closingGate": "-14031184",
+            "yearLength": "4374",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1408,
+            "openingGate": "-14035600",
+            "closingGate": "-14031184",
+            "yearLength": "4416",
+            "gapCount": 12
+          },
+          {
+            "openGateIndex": -1427,
+            "closeGateIndex": -1417,
+            "openingGate": "-14039938",
+            "closingGate": "-14035419",
+            "yearLength": "4519",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -1426,
+            "closeGateIndex": -1416,
+            "openingGate": "-14039433",
+            "closingGate": "-14034819",
+            "yearLength": "4614",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -1423,
+            "closeGateIndex": -1411,
+            "openingGate": "-14037131",
+            "closingGate": "-14032448",
+            "yearLength": "4683",
+            "gapCount": 12
+          },
+          {
+            "openGateIndex": -1421,
+            "closeGateIndex": -1408,
+            "openingGate": "-14035904",
+            "closingGate": "-14031184",
+            "yearLength": "4720",
+            "gapCount": 13
+          },
+          {
+            "openGateIndex": -1418,
+            "closeGateIndex": -1407,
+            "openingGate": "-14035496",
+            "closingGate": "-14030659",
+            "yearLength": "4837",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1422,
+            "closeGateIndex": -1410,
+            "openingGate": "-14036787",
+            "closingGate": "-14031919",
+            "yearLength": "4868",
+            "gapCount": 12
+          },
+          {
+            "openGateIndex": -1418,
+            "closeGateIndex": -1406,
+            "openingGate": "-14035496",
+            "closingGate": "-14030604",
+            "yearLength": "4892",
+            "gapCount": 12
+          },
+          {
+            "openGateIndex": -1426,
+            "closeGateIndex": -1415,
+            "openingGate": "-14039433",
+            "closingGate": "-14034539",
+            "yearLength": "4894",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1419,
+            "closeGateIndex": -1407,
+            "openingGate": "-14035558",
+            "closingGate": "-14030659",
+            "yearLength": "4899",
+            "gapCount": 12
+          },
+          {
+            "openGateIndex": -1422,
+            "closeGateIndex": -1409,
+            "openingGate": "-14036787",
+            "closingGate": "-14031848",
+            "yearLength": "4939",
+            "gapCount": 13
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1407,
+            "openingGate": "-14035600",
+            "closingGate": "-14030659",
+            "yearLength": "4941",
+            "gapCount": 13
+          },
+          {
+            "openGateIndex": -1419,
+            "closeGateIndex": -1406,
+            "openingGate": "-14035558",
+            "closingGate": "-14030604",
+            "yearLength": "4954",
+            "gapCount": 13
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1406,
+            "openingGate": "-14035600",
+            "closingGate": "-14030604",
+            "yearLength": "4996",
+            "gapCount": 14
+          },
+          {
+            "openGateIndex": -1424,
+            "closeGateIndex": -1413,
+            "openingGate": "-14037869",
+            "closingGate": "-14032855",
+            "yearLength": "5014",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1424,
+            "closeGateIndex": -1412,
+            "openingGate": "-14037869",
+            "closingGate": "-14032813",
+            "yearLength": "5056",
+            "gapCount": 12
+          },
+          {
+            "openGateIndex": -1427,
+            "closeGateIndex": -1416,
+            "openingGate": "-14039938",
+            "closingGate": "-14034819",
+            "yearLength": "5119",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1425,
+            "closeGateIndex": -1414,
+            "openingGate": "-14038810",
+            "closingGate": "-14033602",
+            "yearLength": "5208",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1423,
+            "closeGateIndex": -1410,
+            "openingGate": "-14037131",
+            "closingGate": "-14031919",
+            "yearLength": "5212",
+            "gapCount": 13
+          },
+          {
+            "openGateIndex": -1421,
+            "closeGateIndex": -1407,
+            "openingGate": "-14035904",
+            "closingGate": "-14030659",
+            "yearLength": "5245",
+            "gapCount": 14
+          },
+          {
+            "openGateIndex": -1423,
+            "closeGateIndex": -1409,
+            "openingGate": "-14037131",
+            "closingGate": "-14031848",
+            "yearLength": "5283",
+            "gapCount": 14
+          },
+          {
+            "openGateIndex": -1421,
+            "closeGateIndex": -1406,
+            "openingGate": "-14035904",
+            "closingGate": "-14030604",
+            "yearLength": "5300",
+            "gapCount": 15
+          },
+          {
+            "openGateIndex": -1427,
+            "closeGateIndex": -1415,
+            "openingGate": "-14039938",
+            "closingGate": "-14034539",
+            "yearLength": "5399",
+            "gapCount": 12
+          },
+          {
+            "openGateIndex": -1424,
+            "closeGateIndex": -1411,
+            "openingGate": "-14037869",
+            "closingGate": "-14032448",
+            "yearLength": "5421",
+            "gapCount": 13
+          },
+          {
+            "openGateIndex": -1418,
+            "closeGateIndex": -1405,
+            "openingGate": "-14035496",
+            "closingGate": "-14030065",
+            "yearLength": "5431",
+            "gapCount": 13
+          },
+          {
+            "openGateIndex": -1428,
+            "closeGateIndex": -1417,
+            "openingGate": "-14040883",
+            "closingGate": "-14035419",
+            "yearLength": "5464",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1419,
+            "closeGateIndex": -1405,
+            "openingGate": "-14035558",
+            "closingGate": "-14030065",
+            "yearLength": "5493",
+            "gapCount": 14
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1405,
+            "openingGate": "-14035600",
+            "closingGate": "-14030065",
+            "yearLength": "5535",
+            "gapCount": 15
+          },
+          {
+            "openGateIndex": -1422,
+            "closeGateIndex": -1408,
+            "openingGate": "-14036787",
+            "closingGate": "-14031184",
+            "yearLength": "5603",
+            "gapCount": 14
+          },
+          {
+            "openGateIndex": -1418,
+            "closeGateIndex": -1404,
+            "openingGate": "-14035496",
+            "closingGate": "-14029864",
+            "yearLength": "5632",
+            "gapCount": 14
+          },
+          {
+            "openGateIndex": -1429,
+            "closeGateIndex": -1417,
+            "openingGate": "-14041077",
+            "closingGate": "-14035419",
+            "yearLength": "5658",
+            "gapCount": 12
+          },
+          {
+            "openGateIndex": -1419,
+            "closeGateIndex": -1404,
+            "openingGate": "-14035558",
+            "closingGate": "-14029864",
+            "yearLength": "5694",
+            "gapCount": 15
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1404,
+            "openingGate": "-14035600",
+            "closingGate": "-14029864",
+            "yearLength": "5736",
+            "gapCount": 16
+          }
+        ],
+        "forbiddenSurvivors": []
+      },
+      "afterFix": {
+        "candidateCount": 77,
+        "selectedOneBased": 47,
+        "selectedCandidate": {
+          "openGateIndex": -1426,
+          "closeGateIndex": -1416,
+          "openingGate": "-14039433",
+          "closingGate": "-14034819",
+          "yearLength": "4614",
+          "gapCount": 10
+        },
+        "finalTuple": {
+          "year": "5006",
+          "cutletName": "עקרב",
+          "dayInCutlet": 296,
+          "monthName": "רימון",
+          "dayInMonth": 89
+        },
+        "candidateList": [
+          {
+            "openGateIndex": -1421,
+            "closeGateIndex": -1415,
+            "openingGate": "-14035904",
+            "closingGate": "-14034539",
+            "yearLength": "1365",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -1423,
+            "closeGateIndex": -1417,
+            "openingGate": "-14037131",
+            "closingGate": "-14035419",
+            "yearLength": "1712",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -1422,
+            "closeGateIndex": -1416,
+            "openingGate": "-14036787",
+            "closingGate": "-14034819",
+            "yearLength": "1968",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1414,
+            "openingGate": "-14035600",
+            "closingGate": "-14033602",
+            "yearLength": "1998",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -1422,
+            "closeGateIndex": -1415,
+            "openingGate": "-14036787",
+            "closingGate": "-14034539",
+            "yearLength": "2248",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -1421,
+            "closeGateIndex": -1414,
+            "openingGate": "-14035904",
+            "closingGate": "-14033602",
+            "yearLength": "2302",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -1423,
+            "closeGateIndex": -1416,
+            "openingGate": "-14037131",
+            "closingGate": "-14034819",
+            "yearLength": "2312",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -1424,
+            "closeGateIndex": -1417,
+            "openingGate": "-14037869",
+            "closingGate": "-14035419",
+            "yearLength": "2450",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -1423,
+            "closeGateIndex": -1415,
+            "openingGate": "-14037131",
+            "closingGate": "-14034539",
+            "yearLength": "2592",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -1418,
+            "closeGateIndex": -1412,
+            "openingGate": "-14035496",
+            "closingGate": "-14032813",
+            "yearLength": "2683",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -1419,
+            "closeGateIndex": -1413,
+            "openingGate": "-14035558",
+            "closingGate": "-14032855",
+            "yearLength": "2703",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1413,
+            "openingGate": "-14035600",
+            "closingGate": "-14032855",
+            "yearLength": "2745",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -1419,
+            "closeGateIndex": -1412,
+            "openingGate": "-14035558",
+            "closingGate": "-14032813",
+            "yearLength": "2745",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1412,
+            "openingGate": "-14035600",
+            "closingGate": "-14032813",
+            "yearLength": "2787",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -1418,
+            "closeGateIndex": -1411,
+            "openingGate": "-14035496",
+            "closingGate": "-14032448",
+            "yearLength": "3048",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -1421,
+            "closeGateIndex": -1413,
+            "openingGate": "-14035904",
+            "closingGate": "-14032855",
+            "yearLength": "3049",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -1424,
+            "closeGateIndex": -1416,
+            "openingGate": "-14037869",
+            "closingGate": "-14034819",
+            "yearLength": "3050",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -1421,
+            "closeGateIndex": -1412,
+            "openingGate": "-14035904",
+            "closingGate": "-14032813",
+            "yearLength": "3091",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -1419,
+            "closeGateIndex": -1411,
+            "openingGate": "-14035558",
+            "closingGate": "-14032448",
+            "yearLength": "3110",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1411,
+            "openingGate": "-14035600",
+            "closingGate": "-14032448",
+            "yearLength": "3152",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -1422,
+            "closeGateIndex": -1414,
+            "openingGate": "-14036787",
+            "closingGate": "-14033602",
+            "yearLength": "3185",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -1424,
+            "closeGateIndex": -1415,
+            "openingGate": "-14037869",
+            "closingGate": "-14034539",
+            "yearLength": "3330",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -1425,
+            "closeGateIndex": -1417,
+            "openingGate": "-14038810",
+            "closingGate": "-14035419",
+            "yearLength": "3391",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -1421,
+            "closeGateIndex": -1411,
+            "openingGate": "-14035904",
+            "closingGate": "-14032448",
+            "yearLength": "3456",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -1423,
+            "closeGateIndex": -1414,
+            "openingGate": "-14037131",
+            "closingGate": "-14033602",
+            "yearLength": "3529",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -1418,
+            "closeGateIndex": -1410,
+            "openingGate": "-14035496",
+            "closingGate": "-14031919",
+            "yearLength": "3577",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -1419,
+            "closeGateIndex": -1410,
+            "openingGate": "-14035558",
+            "closingGate": "-14031919",
+            "yearLength": "3639",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -1418,
+            "closeGateIndex": -1409,
+            "openingGate": "-14035496",
+            "closingGate": "-14031848",
+            "yearLength": "3648",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1410,
+            "openingGate": "-14035600",
+            "closingGate": "-14031919",
+            "yearLength": "3681",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -1419,
+            "closeGateIndex": -1409,
+            "openingGate": "-14035558",
+            "closingGate": "-14031848",
+            "yearLength": "3710",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1409,
+            "openingGate": "-14035600",
+            "closingGate": "-14031848",
+            "yearLength": "3752",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1422,
+            "closeGateIndex": -1413,
+            "openingGate": "-14036787",
+            "closingGate": "-14032855",
+            "yearLength": "3932",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -1422,
+            "closeGateIndex": -1412,
+            "openingGate": "-14036787",
+            "closingGate": "-14032813",
+            "yearLength": "3974",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -1421,
+            "closeGateIndex": -1410,
+            "openingGate": "-14035904",
+            "closingGate": "-14031919",
+            "yearLength": "3985",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1425,
+            "closeGateIndex": -1416,
+            "openingGate": "-14038810",
+            "closingGate": "-14034819",
+            "yearLength": "3991",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -1426,
+            "closeGateIndex": -1417,
+            "openingGate": "-14039433",
+            "closingGate": "-14035419",
+            "yearLength": "4014",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -1421,
+            "closeGateIndex": -1409,
+            "openingGate": "-14035904",
+            "closingGate": "-14031848",
+            "yearLength": "4056",
+            "gapCount": 12
+          },
+          {
+            "openGateIndex": -1424,
+            "closeGateIndex": -1414,
+            "openingGate": "-14037869",
+            "closingGate": "-14033602",
+            "yearLength": "4267",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -1425,
+            "closeGateIndex": -1415,
+            "openingGate": "-14038810",
+            "closingGate": "-14034539",
+            "yearLength": "4271",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -1423,
+            "closeGateIndex": -1413,
+            "openingGate": "-14037131",
+            "closingGate": "-14032855",
+            "yearLength": "4276",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -1418,
+            "closeGateIndex": -1408,
+            "openingGate": "-14035496",
+            "closingGate": "-14031184",
+            "yearLength": "4312",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -1423,
+            "closeGateIndex": -1412,
+            "openingGate": "-14037131",
+            "closingGate": "-14032813",
+            "yearLength": "4318",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1422,
+            "closeGateIndex": -1411,
+            "openingGate": "-14036787",
+            "closingGate": "-14032448",
+            "yearLength": "4339",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1419,
+            "closeGateIndex": -1408,
+            "openingGate": "-14035558",
+            "closingGate": "-14031184",
+            "yearLength": "4374",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1408,
+            "openingGate": "-14035600",
+            "closingGate": "-14031184",
+            "yearLength": "4416",
+            "gapCount": 12
+          },
+          {
+            "openGateIndex": -1427,
+            "closeGateIndex": -1417,
+            "openingGate": "-14039938",
+            "closingGate": "-14035419",
+            "yearLength": "4519",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -1426,
+            "closeGateIndex": -1416,
+            "openingGate": "-14039433",
+            "closingGate": "-14034819",
+            "yearLength": "4614",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -1423,
+            "closeGateIndex": -1411,
+            "openingGate": "-14037131",
+            "closingGate": "-14032448",
+            "yearLength": "4683",
+            "gapCount": 12
+          },
+          {
+            "openGateIndex": -1421,
+            "closeGateIndex": -1408,
+            "openingGate": "-14035904",
+            "closingGate": "-14031184",
+            "yearLength": "4720",
+            "gapCount": 13
+          },
+          {
+            "openGateIndex": -1418,
+            "closeGateIndex": -1407,
+            "openingGate": "-14035496",
+            "closingGate": "-14030659",
+            "yearLength": "4837",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1422,
+            "closeGateIndex": -1410,
+            "openingGate": "-14036787",
+            "closingGate": "-14031919",
+            "yearLength": "4868",
+            "gapCount": 12
+          },
+          {
+            "openGateIndex": -1418,
+            "closeGateIndex": -1406,
+            "openingGate": "-14035496",
+            "closingGate": "-14030604",
+            "yearLength": "4892",
+            "gapCount": 12
+          },
+          {
+            "openGateIndex": -1426,
+            "closeGateIndex": -1415,
+            "openingGate": "-14039433",
+            "closingGate": "-14034539",
+            "yearLength": "4894",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1419,
+            "closeGateIndex": -1407,
+            "openingGate": "-14035558",
+            "closingGate": "-14030659",
+            "yearLength": "4899",
+            "gapCount": 12
+          },
+          {
+            "openGateIndex": -1422,
+            "closeGateIndex": -1409,
+            "openingGate": "-14036787",
+            "closingGate": "-14031848",
+            "yearLength": "4939",
+            "gapCount": 13
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1407,
+            "openingGate": "-14035600",
+            "closingGate": "-14030659",
+            "yearLength": "4941",
+            "gapCount": 13
+          },
+          {
+            "openGateIndex": -1419,
+            "closeGateIndex": -1406,
+            "openingGate": "-14035558",
+            "closingGate": "-14030604",
+            "yearLength": "4954",
+            "gapCount": 13
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1406,
+            "openingGate": "-14035600",
+            "closingGate": "-14030604",
+            "yearLength": "4996",
+            "gapCount": 14
+          },
+          {
+            "openGateIndex": -1424,
+            "closeGateIndex": -1413,
+            "openingGate": "-14037869",
+            "closingGate": "-14032855",
+            "yearLength": "5014",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1424,
+            "closeGateIndex": -1412,
+            "openingGate": "-14037869",
+            "closingGate": "-14032813",
+            "yearLength": "5056",
+            "gapCount": 12
+          },
+          {
+            "openGateIndex": -1427,
+            "closeGateIndex": -1416,
+            "openingGate": "-14039938",
+            "closingGate": "-14034819",
+            "yearLength": "5119",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1425,
+            "closeGateIndex": -1414,
+            "openingGate": "-14038810",
+            "closingGate": "-14033602",
+            "yearLength": "5208",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1423,
+            "closeGateIndex": -1410,
+            "openingGate": "-14037131",
+            "closingGate": "-14031919",
+            "yearLength": "5212",
+            "gapCount": 13
+          },
+          {
+            "openGateIndex": -1421,
+            "closeGateIndex": -1407,
+            "openingGate": "-14035904",
+            "closingGate": "-14030659",
+            "yearLength": "5245",
+            "gapCount": 14
+          },
+          {
+            "openGateIndex": -1423,
+            "closeGateIndex": -1409,
+            "openingGate": "-14037131",
+            "closingGate": "-14031848",
+            "yearLength": "5283",
+            "gapCount": 14
+          },
+          {
+            "openGateIndex": -1421,
+            "closeGateIndex": -1406,
+            "openingGate": "-14035904",
+            "closingGate": "-14030604",
+            "yearLength": "5300",
+            "gapCount": 15
+          },
+          {
+            "openGateIndex": -1427,
+            "closeGateIndex": -1415,
+            "openingGate": "-14039938",
+            "closingGate": "-14034539",
+            "yearLength": "5399",
+            "gapCount": 12
+          },
+          {
+            "openGateIndex": -1424,
+            "closeGateIndex": -1411,
+            "openingGate": "-14037869",
+            "closingGate": "-14032448",
+            "yearLength": "5421",
+            "gapCount": 13
+          },
+          {
+            "openGateIndex": -1418,
+            "closeGateIndex": -1405,
+            "openingGate": "-14035496",
+            "closingGate": "-14030065",
+            "yearLength": "5431",
+            "gapCount": 13
+          },
+          {
+            "openGateIndex": -1428,
+            "closeGateIndex": -1417,
+            "openingGate": "-14040883",
+            "closingGate": "-14035419",
+            "yearLength": "5464",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -1419,
+            "closeGateIndex": -1405,
+            "openingGate": "-14035558",
+            "closingGate": "-14030065",
+            "yearLength": "5493",
+            "gapCount": 14
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1405,
+            "openingGate": "-14035600",
+            "closingGate": "-14030065",
+            "yearLength": "5535",
+            "gapCount": 15
+          },
+          {
+            "openGateIndex": -1422,
+            "closeGateIndex": -1408,
+            "openingGate": "-14036787",
+            "closingGate": "-14031184",
+            "yearLength": "5603",
+            "gapCount": 14
+          },
+          {
+            "openGateIndex": -1418,
+            "closeGateIndex": -1404,
+            "openingGate": "-14035496",
+            "closingGate": "-14029864",
+            "yearLength": "5632",
+            "gapCount": 14
+          },
+          {
+            "openGateIndex": -1429,
+            "closeGateIndex": -1417,
+            "openingGate": "-14041077",
+            "closingGate": "-14035419",
+            "yearLength": "5658",
+            "gapCount": 12
+          },
+          {
+            "openGateIndex": -1419,
+            "closeGateIndex": -1404,
+            "openingGate": "-14035558",
+            "closingGate": "-14029864",
+            "yearLength": "5694",
+            "gapCount": 15
+          },
+          {
+            "openGateIndex": -1420,
+            "closeGateIndex": -1404,
+            "openingGate": "-14035600",
+            "closingGate": "-14029864",
+            "yearLength": "5736",
+            "gapCount": 16
+          }
+        ],
+        "forbiddenSurvivors": []
+      },
+      "knownExtraCandidate": {
+        "openGateIndex": -1430,
+        "closeGateIndex": -1417,
+        "openingGate": "-14041199",
+        "closingGate": "-14035419",
+        "yearLength": "5780",
+        "gapCount": 13
+      }
+    },
+    {
+      "classification": "candidate-set-only+cardinality",
+      "input": {
+        "calculationJdn": "-15557375",
+        "targetJdn": "-15552346"
+      },
+      "beforeFix": {
+        "candidateCount": 33,
+        "selectedOneBased": 12,
+        "selectedCandidate": {
+          "openGateIndex": -4463,
+          "closeGateIndex": -4456,
+          "openingGate": "-15561021",
+          "closingGate": "-15556772",
+          "yearLength": "4249",
+          "gapCount": 7
+        },
+        "finalTuple": {
+          "year": "5002",
+          "cutletName": "עקרב",
+          "dayInCutlet": 170,
+          "monthName": "חרוב",
+          "dayInMonth": 18
+        },
+        "candidateList": [
+          {
+            "openGateIndex": -4468,
+            "closeGateIndex": -4457,
+            "openingGate": "-15563137",
+            "closingGate": "-15557356",
+            "yearLength": "5781",
+            "gapCount": 11
+          },
+          {
+            "openGateIndex": -4467,
+            "closeGateIndex": -4457,
+            "openingGate": "-15563004",
+            "closingGate": "-15557356",
+            "yearLength": "5648",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -4466,
+            "closeGateIndex": -4457,
+            "openingGate": "-15562392",
+            "closingGate": "-15557356",
+            "yearLength": "5036",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -4466,
+            "closeGateIndex": -4456,
+            "openingGate": "-15562392",
+            "closingGate": "-15556772",
+            "yearLength": "5620",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -4465,
+            "closeGateIndex": -4457,
+            "openingGate": "-15561799",
+            "closingGate": "-15557356",
+            "yearLength": "4443",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -4465,
+            "closeGateIndex": -4456,
+            "openingGate": "-15561799",
+            "closingGate": "-15556772",
+            "yearLength": "5027",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -4465,
+            "closeGateIndex": -4455,
+            "openingGate": "-15561799",
+            "closingGate": "-15556218",
+            "yearLength": "5581",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -4464,
+            "closeGateIndex": -4457,
+            "openingGate": "-15561718",
+            "closingGate": "-15557356",
+            "yearLength": "4362",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -4464,
+            "closeGateIndex": -4456,
+            "openingGate": "-15561718",
+            "closingGate": "-15556772",
+            "yearLength": "4946",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -4464,
+            "closeGateIndex": -4455,
+            "openingGate": "-15561718",
+            "closingGate": "-15556218",
+            "yearLength": "5500",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -4463,
+            "closeGateIndex": -4457,
+            "openingGate": "-15561021",
+            "closingGate": "-15557356",
+            "yearLength": "3665",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -4463,
+            "closeGateIndex": -4456,
+            "openingGate": "-15561021",
+            "closingGate": "-15556772",
+            "yearLength": "4249",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -4463,
+            "closeGateIndex": -4455,
+            "openingGate": "-15561021",
+            "closingGate": "-15556218",
+            "yearLength": "4803",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -4463,
+            "closeGateIndex": -4454,
+            "openingGate": "-15561021",
+            "closingGate": "-15555715",
+            "yearLength": "5306",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -4462,
+            "closeGateIndex": -4456,
+            "openingGate": "-15560621",
+            "closingGate": "-15556772",
+            "yearLength": "3849",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -4462,
+            "closeGateIndex": -4455,
+            "openingGate": "-15560621",
+            "closingGate": "-15556218",
+            "yearLength": "4403",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -4462,
+            "closeGateIndex": -4454,
+            "openingGate": "-15560621",
+            "closingGate": "-15555715",
+            "yearLength": "4906",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -4462,
+            "closeGateIndex": -4453,
+            "openingGate": "-15560621",
+            "closingGate": "-15554849",
+            "yearLength": "5772",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -4461,
+            "closeGateIndex": -4455,
+            "openingGate": "-15560311",
+            "closingGate": "-15556218",
+            "yearLength": "4093",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -4461,
+            "closeGateIndex": -4454,
+            "openingGate": "-15560311",
+            "closingGate": "-15555715",
+            "yearLength": "4596",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -4461,
+            "closeGateIndex": -4453,
+            "openingGate": "-15560311",
+            "closingGate": "-15554849",
+            "yearLength": "5462",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -4461,
+            "closeGateIndex": -4452,
+            "openingGate": "-15560311",
+            "closingGate": "-15554675",
+            "yearLength": "5636",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -4460,
+            "closeGateIndex": -4454,
+            "openingGate": "-15559672",
+            "closingGate": "-15555715",
+            "yearLength": "3957",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -4460,
+            "closeGateIndex": -4453,
+            "openingGate": "-15559672",
+            "closingGate": "-15554849",
+            "yearLength": "4823",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -4460,
+            "closeGateIndex": -4452,
+            "openingGate": "-15559672",
+            "closingGate": "-15554675",
+            "yearLength": "4997",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -4459,
+            "closeGateIndex": -4453,
+            "openingGate": "-15558804",
+            "closingGate": "-15554849",
+            "yearLength": "3955",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -4459,
+            "closeGateIndex": -4452,
+            "openingGate": "-15558804",
+            "closingGate": "-15554675",
+            "yearLength": "4129",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -4459,
+            "closeGateIndex": -4451,
+            "openingGate": "-15558804",
+            "closingGate": "-15553838",
+            "yearLength": "4966",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -4459,
+            "closeGateIndex": -4450,
+            "openingGate": "-15558804",
+            "closingGate": "-15553102",
+            "yearLength": "5702",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -4458,
+            "closeGateIndex": -4452,
+            "openingGate": "-15558167",
+            "closingGate": "-15554675",
+            "yearLength": "3492",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -4458,
+            "closeGateIndex": -4451,
+            "openingGate": "-15558167",
+            "closingGate": "-15553838",
+            "yearLength": "4329",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -4458,
+            "closeGateIndex": -4450,
+            "openingGate": "-15558167",
+            "closingGate": "-15553102",
+            "yearLength": "5065",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -4458,
+            "closeGateIndex": -4449,
+            "openingGate": "-15558167",
+            "closingGate": "-15552516",
+            "yearLength": "5651",
+            "gapCount": 9
+          }
+        ],
+        "forbiddenSurvivors": [
+          {
+            "openGateIndex": -4468,
+            "closeGateIndex": -4457,
+            "openingGate": "-15563137",
+            "closingGate": "-15557356",
+            "yearLength": "5781",
+            "gapCount": 11
+          }
+        ]
+      },
+      "reference": {
+        "candidateCount": 32,
+        "selectedOneBased": 2,
+        "selectedCandidate": {
+          "openGateIndex": -4463,
+          "closeGateIndex": -4457,
+          "openingGate": "-15561021",
+          "closingGate": "-15557356",
+          "yearLength": "3665",
+          "gapCount": 6
+        },
+        "candidateList": [
+          {
+            "openGateIndex": -4458,
+            "closeGateIndex": -4452,
+            "openingGate": "-15558167",
+            "closingGate": "-15554675",
+            "yearLength": "3492",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -4463,
+            "closeGateIndex": -4457,
+            "openingGate": "-15561021",
+            "closingGate": "-15557356",
+            "yearLength": "3665",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -4462,
+            "closeGateIndex": -4456,
+            "openingGate": "-15560621",
+            "closingGate": "-15556772",
+            "yearLength": "3849",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -4459,
+            "closeGateIndex": -4453,
+            "openingGate": "-15558804",
+            "closingGate": "-15554849",
+            "yearLength": "3955",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -4460,
+            "closeGateIndex": -4454,
+            "openingGate": "-15559672",
+            "closingGate": "-15555715",
+            "yearLength": "3957",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -4461,
+            "closeGateIndex": -4455,
+            "openingGate": "-15560311",
+            "closingGate": "-15556218",
+            "yearLength": "4093",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -4459,
+            "closeGateIndex": -4452,
+            "openingGate": "-15558804",
+            "closingGate": "-15554675",
+            "yearLength": "4129",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -4463,
+            "closeGateIndex": -4456,
+            "openingGate": "-15561021",
+            "closingGate": "-15556772",
+            "yearLength": "4249",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -4458,
+            "closeGateIndex": -4451,
+            "openingGate": "-15558167",
+            "closingGate": "-15553838",
+            "yearLength": "4329",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -4464,
+            "closeGateIndex": -4457,
+            "openingGate": "-15561718",
+            "closingGate": "-15557356",
+            "yearLength": "4362",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -4462,
+            "closeGateIndex": -4455,
+            "openingGate": "-15560621",
+            "closingGate": "-15556218",
+            "yearLength": "4403",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -4465,
+            "closeGateIndex": -4457,
+            "openingGate": "-15561799",
+            "closingGate": "-15557356",
+            "yearLength": "4443",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -4461,
+            "closeGateIndex": -4454,
+            "openingGate": "-15560311",
+            "closingGate": "-15555715",
+            "yearLength": "4596",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -4463,
+            "closeGateIndex": -4455,
+            "openingGate": "-15561021",
+            "closingGate": "-15556218",
+            "yearLength": "4803",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -4460,
+            "closeGateIndex": -4453,
+            "openingGate": "-15559672",
+            "closingGate": "-15554849",
+            "yearLength": "4823",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -4462,
+            "closeGateIndex": -4454,
+            "openingGate": "-15560621",
+            "closingGate": "-15555715",
+            "yearLength": "4906",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -4464,
+            "closeGateIndex": -4456,
+            "openingGate": "-15561718",
+            "closingGate": "-15556772",
+            "yearLength": "4946",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -4459,
+            "closeGateIndex": -4451,
+            "openingGate": "-15558804",
+            "closingGate": "-15553838",
+            "yearLength": "4966",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -4460,
+            "closeGateIndex": -4452,
+            "openingGate": "-15559672",
+            "closingGate": "-15554675",
+            "yearLength": "4997",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -4465,
+            "closeGateIndex": -4456,
+            "openingGate": "-15561799",
+            "closingGate": "-15556772",
+            "yearLength": "5027",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -4466,
+            "closeGateIndex": -4457,
+            "openingGate": "-15562392",
+            "closingGate": "-15557356",
+            "yearLength": "5036",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -4458,
+            "closeGateIndex": -4450,
+            "openingGate": "-15558167",
+            "closingGate": "-15553102",
+            "yearLength": "5065",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -4463,
+            "closeGateIndex": -4454,
+            "openingGate": "-15561021",
+            "closingGate": "-15555715",
+            "yearLength": "5306",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -4461,
+            "closeGateIndex": -4453,
+            "openingGate": "-15560311",
+            "closingGate": "-15554849",
+            "yearLength": "5462",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -4464,
+            "closeGateIndex": -4455,
+            "openingGate": "-15561718",
+            "closingGate": "-15556218",
+            "yearLength": "5500",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -4465,
+            "closeGateIndex": -4455,
+            "openingGate": "-15561799",
+            "closingGate": "-15556218",
+            "yearLength": "5581",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -4466,
+            "closeGateIndex": -4456,
+            "openingGate": "-15562392",
+            "closingGate": "-15556772",
+            "yearLength": "5620",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -4461,
+            "closeGateIndex": -4452,
+            "openingGate": "-15560311",
+            "closingGate": "-15554675",
+            "yearLength": "5636",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -4467,
+            "closeGateIndex": -4457,
+            "openingGate": "-15563004",
+            "closingGate": "-15557356",
+            "yearLength": "5648",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -4458,
+            "closeGateIndex": -4449,
+            "openingGate": "-15558167",
+            "closingGate": "-15552516",
+            "yearLength": "5651",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -4459,
+            "closeGateIndex": -4450,
+            "openingGate": "-15558804",
+            "closingGate": "-15553102",
+            "yearLength": "5702",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -4462,
+            "closeGateIndex": -4453,
+            "openingGate": "-15560621",
+            "closingGate": "-15554849",
+            "yearLength": "5772",
+            "gapCount": 9
+          }
+        ],
+        "forbiddenSurvivors": []
+      },
+      "afterFix": {
+        "candidateCount": 32,
+        "selectedOneBased": 2,
+        "selectedCandidate": {
+          "openGateIndex": -4463,
+          "closeGateIndex": -4457,
+          "openingGate": "-15561021",
+          "closingGate": "-15557356",
+          "yearLength": "3665",
+          "gapCount": 6
+        },
+        "finalTuple": {
+          "year": "5002",
+          "cutletName": "עקרב",
+          "dayInCutlet": 170,
+          "monthName": "חרוב",
+          "dayInMonth": 18
+        },
+        "candidateList": [
+          {
+            "openGateIndex": -4458,
+            "closeGateIndex": -4452,
+            "openingGate": "-15558167",
+            "closingGate": "-15554675",
+            "yearLength": "3492",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -4463,
+            "closeGateIndex": -4457,
+            "openingGate": "-15561021",
+            "closingGate": "-15557356",
+            "yearLength": "3665",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -4462,
+            "closeGateIndex": -4456,
+            "openingGate": "-15560621",
+            "closingGate": "-15556772",
+            "yearLength": "3849",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -4459,
+            "closeGateIndex": -4453,
+            "openingGate": "-15558804",
+            "closingGate": "-15554849",
+            "yearLength": "3955",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -4460,
+            "closeGateIndex": -4454,
+            "openingGate": "-15559672",
+            "closingGate": "-15555715",
+            "yearLength": "3957",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -4461,
+            "closeGateIndex": -4455,
+            "openingGate": "-15560311",
+            "closingGate": "-15556218",
+            "yearLength": "4093",
+            "gapCount": 6
+          },
+          {
+            "openGateIndex": -4459,
+            "closeGateIndex": -4452,
+            "openingGate": "-15558804",
+            "closingGate": "-15554675",
+            "yearLength": "4129",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -4463,
+            "closeGateIndex": -4456,
+            "openingGate": "-15561021",
+            "closingGate": "-15556772",
+            "yearLength": "4249",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -4458,
+            "closeGateIndex": -4451,
+            "openingGate": "-15558167",
+            "closingGate": "-15553838",
+            "yearLength": "4329",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -4464,
+            "closeGateIndex": -4457,
+            "openingGate": "-15561718",
+            "closingGate": "-15557356",
+            "yearLength": "4362",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -4462,
+            "closeGateIndex": -4455,
+            "openingGate": "-15560621",
+            "closingGate": "-15556218",
+            "yearLength": "4403",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -4465,
+            "closeGateIndex": -4457,
+            "openingGate": "-15561799",
+            "closingGate": "-15557356",
+            "yearLength": "4443",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -4461,
+            "closeGateIndex": -4454,
+            "openingGate": "-15560311",
+            "closingGate": "-15555715",
+            "yearLength": "4596",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -4463,
+            "closeGateIndex": -4455,
+            "openingGate": "-15561021",
+            "closingGate": "-15556218",
+            "yearLength": "4803",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -4460,
+            "closeGateIndex": -4453,
+            "openingGate": "-15559672",
+            "closingGate": "-15554849",
+            "yearLength": "4823",
+            "gapCount": 7
+          },
+          {
+            "openGateIndex": -4462,
+            "closeGateIndex": -4454,
+            "openingGate": "-15560621",
+            "closingGate": "-15555715",
+            "yearLength": "4906",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -4464,
+            "closeGateIndex": -4456,
+            "openingGate": "-15561718",
+            "closingGate": "-15556772",
+            "yearLength": "4946",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -4459,
+            "closeGateIndex": -4451,
+            "openingGate": "-15558804",
+            "closingGate": "-15553838",
+            "yearLength": "4966",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -4460,
+            "closeGateIndex": -4452,
+            "openingGate": "-15559672",
+            "closingGate": "-15554675",
+            "yearLength": "4997",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -4465,
+            "closeGateIndex": -4456,
+            "openingGate": "-15561799",
+            "closingGate": "-15556772",
+            "yearLength": "5027",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -4466,
+            "closeGateIndex": -4457,
+            "openingGate": "-15562392",
+            "closingGate": "-15557356",
+            "yearLength": "5036",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -4458,
+            "closeGateIndex": -4450,
+            "openingGate": "-15558167",
+            "closingGate": "-15553102",
+            "yearLength": "5065",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -4463,
+            "closeGateIndex": -4454,
+            "openingGate": "-15561021",
+            "closingGate": "-15555715",
+            "yearLength": "5306",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -4461,
+            "closeGateIndex": -4453,
+            "openingGate": "-15560311",
+            "closingGate": "-15554849",
+            "yearLength": "5462",
+            "gapCount": 8
+          },
+          {
+            "openGateIndex": -4464,
+            "closeGateIndex": -4455,
+            "openingGate": "-15561718",
+            "closingGate": "-15556218",
+            "yearLength": "5500",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -4465,
+            "closeGateIndex": -4455,
+            "openingGate": "-15561799",
+            "closingGate": "-15556218",
+            "yearLength": "5581",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -4466,
+            "closeGateIndex": -4456,
+            "openingGate": "-15562392",
+            "closingGate": "-15556772",
+            "yearLength": "5620",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -4461,
+            "closeGateIndex": -4452,
+            "openingGate": "-15560311",
+            "closingGate": "-15554675",
+            "yearLength": "5636",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -4467,
+            "closeGateIndex": -4457,
+            "openingGate": "-15563004",
+            "closingGate": "-15557356",
+            "yearLength": "5648",
+            "gapCount": 10
+          },
+          {
+            "openGateIndex": -4458,
+            "closeGateIndex": -4449,
+            "openingGate": "-15558167",
+            "closingGate": "-15552516",
+            "yearLength": "5651",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -4459,
+            "closeGateIndex": -4450,
+            "openingGate": "-15558804",
+            "closingGate": "-15553102",
+            "yearLength": "5702",
+            "gapCount": 9
+          },
+          {
+            "openGateIndex": -4462,
+            "closeGateIndex": -4453,
+            "openingGate": "-15560621",
+            "closingGate": "-15554849",
+            "yearLength": "5772",
+            "gapCount": 9
+          }
+        ],
+        "forbiddenSurvivors": []
+      },
+      "knownExtraCandidate": {
+        "openGateIndex": -4468,
+        "closeGateIndex": -4457,
+        "openingGate": "-15563137",
+        "closingGate": "-15557356",
+        "yearLength": "5781",
+        "gapCount": 11
+      }
+    }
+  ],
+  "postFixAudit": {
+    "corpusInputs": 1575,
+    "candidateSetMismatches": 0,
+    "selectedIndexMismatches": 0,
+    "selectedCandidateMismatches": 0,
+    "forbiddenGatePairMidpoints": 273,
+    "randomWideInputs": 500,
+    "sharedCacheInputs": 100,
+    "sharedCacheMismatches": 0,
+    "note": "Results are from the deterministic post-fix differential run performed against this exact detour-of-a-detour implementation; the two discriminator integration test was rerun on the final source tree."
+  }
+}
