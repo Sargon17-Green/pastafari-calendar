@@ -11,6 +11,13 @@
 // only lies back when the nearest cached boundary proves that lie belongs to a
 // stale year rather than to the active traversal.
 
+import {
+  borrowRuntimePatchInvocation,
+  installRuntimePatchCostume,
+  returnRuntimePatchInvocation,
+  runHistoricalRestoreThenRepair,
+} from "./runtime-patch-ledger.js";
+
 const DETOURED_DETOURED_DETOURS = new WeakSet();
 
 function explicitCalculationJdn(argumentsForTheChronicle) {
@@ -94,14 +101,20 @@ export function installYearCeilingDetourDetourDetour(CalendarConstructor, GateIn
   const canonicalGateReader = GateIndex.prototype.gate;
 
   CalendarConstructor.prototype.convertJdn = function convertJdnThroughTheDetourAroundTheDetourAroundTheDetour(...argumentsForTheChronicle) {
+    const invocation = borrowRuntimePatchInvocation();
     const calendar = this;
     const calculationJdn = explicitCalculationJdn(argumentsForTheChronicle);
     // At call time the outer historical detour has already installed its own
     // gate reader, so this is the value-producing liar we need to supervise.
     const gateReaderFromOlderDetour = GateIndex.prototype.gate;
 
-    GateIndex.prototype.gate = function gateSeenThroughTheThirdDetour(gateIndex) {
-      const claimedGateDay = gateReaderFromOlderDetour.call(this, gateIndex);
+    const costume = installRuntimePatchCostume({
+      target: GateIndex.prototype,
+      property: "gate",
+      token: invocation.token,
+      owner: "year-ceiling-detour-detour-detour",
+      makeValue: (gateReaderForThisInvocation) => function gateSeenThroughTheThirdDetour(gateIndex) {
+      const claimedGateDay = gateReaderForThisInvocation.call(this, gateIndex);
       // The historical detour can only manufacture a cached-boundary value at
       // exactly boundary ± 5,782.  Avoid rereading the canonical gate unless
       // the claimed value has that fingerprint; ordinary lookups stay on the
@@ -130,12 +143,17 @@ export function installYearCeilingDetourDetourDetour(CalendarConstructor, GateIn
       // legitimate and must survive.  Otherwise the mismatch was caused by a
       // stale cached year, so return the pre-ceiling gate value instead.
       return forbidden(activeLength) ? claimedGateDay : canonicalGateDay;
-    };
+      },
+    });
 
     try {
       return originalConvertJdn.apply(this, argumentsForTheChronicle);
     } finally {
-      GateIndex.prototype.gate = gateReaderFromOlderDetour;
+      try {
+        runHistoricalRestoreThenRepair(costume, gateReaderFromOlderDetour);
+      } finally {
+        returnRuntimePatchInvocation(invocation.token, invocation.ownsToken);
+      }
     }
   };
 

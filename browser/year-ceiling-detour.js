@@ -1,6 +1,13 @@
 // Compatibility detour for the sealed authoritative engine's historical
 // 5,781-day ceiling.  The public engine ceiling is 5,778 days.
 
+import {
+  borrowRuntimePatchInvocation,
+  installRuntimePatchCostume,
+  returnRuntimePatchInvocation,
+  runHistoricalRestoreThenRepair,
+} from "./runtime-patch-ledger.js";
+
 const DETOURED_CONSTRUCTORS = new WeakSet();
 
 function obtainCeilingByRemovingTheThreeErrantDays() {
@@ -36,6 +43,7 @@ export function installYearCeilingDetour(CalendarConstructor, GateIndex) {
   const originalGate = GateIndex.prototype.gate;
 
   CalendarConstructor.prototype.convertJdn = function convertJdnThroughTheYearCeilingDetour(...argumentsForTheChronicle) {
+    const invocation = borrowRuntimePatchInvocation({ fresh: true });
     const calendar = this;
     let opening = null;
     let lastGateIndex = null;
@@ -43,8 +51,14 @@ export function installYearCeilingDetour(CalendarConstructor, GateIndex) {
     const rejectionLength = oneDayBeyondTheOldCeiling();
     const calculationJdn = explicitCalculationJdn(argumentsForTheChronicle);
 
-    GateIndex.prototype.gate = function gateWithRejectedHistoricalCeilingCandidates(gateIndex) {
-      const gateDay = originalGate.call(this, gateIndex);
+    const costume = installRuntimePatchCostume({
+      target: GateIndex.prototype,
+      property: "gate",
+      token: invocation.token,
+      owner: "year-ceiling-detour",
+      peelMarkedForeign: true,
+      makeValue: (gateReaderForThisInvocation) => function gateWithRejectedHistoricalCeilingCandidates(gateIndex) {
+      const gateDay = gateReaderForThisInvocation.call(this, gateIndex);
 
       // Once a year is cached, next/previous-year searches do not reread their
       // fixed boundary gate.  Only cached years for THIS calculation day may
@@ -111,12 +125,17 @@ export function installYearCeilingDetour(CalendarConstructor, GateIndex) {
 
       lastGateIndex = gateIndex;
       return gateDay;
-    };
+      },
+    });
 
     try {
       return originalConvertJdn.apply(this, argumentsForTheChronicle);
     } finally {
-      GateIndex.prototype.gate = originalGate;
+      try {
+        runHistoricalRestoreThenRepair(costume, originalGate);
+      } finally {
+        returnRuntimePatchInvocation(invocation.token, invocation.ownsToken);
+      }
     }
   };
 

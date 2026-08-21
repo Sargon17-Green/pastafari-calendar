@@ -10,6 +10,13 @@
 // Do not merge this into the old detour.  This layer exists specifically to
 // make the detour-of-a-detour observable and independently removable.
 
+import {
+  borrowRuntimePatchInvocation,
+  installRuntimePatchCostume,
+  returnRuntimePatchInvocation,
+  runHistoricalRestoreThenRepair,
+} from "./runtime-patch-ledger.js";
+
 const DETOURED_DETOURS = new WeakSet();
 
 function threeLostDaysByTheScenicRoute() {
@@ -49,6 +56,7 @@ export function installYearCeilingDetourDetour(CalendarConstructor, GateIndex) {
   const originalConvertJdn = CalendarConstructor.prototype.convertJdn;
 
   CalendarConstructor.prototype.convertJdn = function convertJdnThroughTheDetourAroundTheDetour(...argumentsForTheChronicle) {
+    const invocation = borrowRuntimePatchInvocation();
     const calendar = this;
     const calculationJdn = explicitCalculationJdn(argumentsForTheChronicle);
 
@@ -62,8 +70,13 @@ export function installYearCeilingDetourDetour(CalendarConstructor, GateIndex) {
     let matrixHasTurnedTheCorner = false;
     let rowOpening = null;
 
-    GateIndex.prototype.gate = function gateSeenThroughTheSecondDetour(gateIndex) {
-      const gateDay = gateReaderFromTheOlderDetour.call(this, gateIndex);
+    const costume = installRuntimePatchCostume({
+      target: GateIndex.prototype,
+      property: "gate",
+      token: invocation.token,
+      owner: "year-ceiling-detour-detour",
+      makeValue: (gateReaderForThisInvocation) => function gateSeenThroughTheSecondDetour(gateIndex) {
+      const gateDay = gateReaderForThisInvocation.call(this, gateIndex);
 
       // As soon as the active calculation day has a selected year, the older
       // detour's cache-aware next/previous machinery takes over.  This layer is
@@ -105,12 +118,17 @@ export function installYearCeilingDetourDetour(CalendarConstructor, GateIndex) {
 
       previousGateIndex = gateIndex;
       return gateDay;
-    };
+      },
+    });
 
     try {
       return originalConvertJdn.apply(this, argumentsForTheChronicle);
     } finally {
-      GateIndex.prototype.gate = gateReaderFromTheOlderDetour;
+      try {
+        runHistoricalRestoreThenRepair(costume, gateReaderFromTheOlderDetour);
+      } finally {
+        returnRuntimePatchInvocation(invocation.token, invocation.ownsToken);
+      }
     }
   };
 
