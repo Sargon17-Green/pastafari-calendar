@@ -24,6 +24,11 @@ export const GREAT_NUMBER = (1n << 127n) - 1n;
 // therefore Foundation JDN = -15,055,671 + 1,721,425 = -13,334,246.
 export const FOUNDATION_JDN = -13_334_246n;
 
+// Scroll, tablet 17 and the binding correction in footnote 13.
+export const MIN_YEAR_DAYS = 252n;
+export const MAX_YEAR_DAYS = 5_778n;
+export const MIN_YEAR_GAPS = 6;
+
 const STONE_NAMES = Object.freeze(["wheat", "barley", "salt", "bitter", "red"]);
 const INITIAL_STONES = Object.freeze([17n, 29n, 43n, 71n, 101n]);
 const BOWL_PRIMES = Object.freeze([17n, 19n, 23n, 29n, 31n, 37n]);
@@ -532,6 +537,162 @@ export function gatePosition(index) {
   return position;
 }
 
+function requireGateIndex(value, name) {
+  if (!Number.isSafeInteger(value)) throw new TypeError(`${name} must be a safe integer`);
+  return value;
+}
+
+function requireGateReader(gateAt) {
+  if (gateAt === undefined) return (index) => gatePosition(index);
+  if (typeof gateAt !== "function") throw new TypeError("gateAt must be a function");
+  return (index) => requireBigInt(gateAt(requireGateIndex(index, "gate index")), `gateAt(${index})`);
+}
+
+function yearCandidate(openGateIndex, closeGateIndex, gateAt) {
+  const openingGate = gateAt(openGateIndex);
+  const closingGate = gateAt(closeGateIndex);
+  return Object.freeze({
+    openGateIndex,
+    closeGateIndex,
+    openingGate,
+    closingGate,
+    yearLength: closingGate - openingGate,
+    gapCount: closeGateIndex - openGateIndex,
+  });
+}
+
+function sortYearCandidates(candidates) {
+  return [...candidates].sort((a, b) => {
+    if (a.yearLength !== b.yearLength) return a.yearLength < b.yearLength ? -1 : 1;
+    return a.openGateIndex - b.openGateIndex;
+  });
+}
+
+function isNormativeYearCandidate(candidate) {
+  return candidate.gapCount >= MIN_YEAR_GAPS
+    && candidate.yearLength >= MIN_YEAR_DAYS
+    && candidate.yearLength <= MAX_YEAR_DAYS;
+}
+
+/**
+ * Clear year-candidate discovery from Scroll tablet 17.
+ *
+ * mode="anchor": pass calculationJdn and containingGateIndex k satisfying
+ * G_k < calculationJdn <= G_(k+1).  All opening/closing pairs from the
+ * normative endpoint windows are materialized in `beforeFiltering`, then the
+ * 252..5778 + six-gap rule is applied before sorting/selection.
+ *
+ * mode="next": pass fixedGateIndex equal to the previous year's closing gate.
+ * mode="previous": pass fixedGateIndex equal to the current year's opening gate.
+ *
+ * `gateAt` is an optional dependency injection point for diagnostics.  The
+ * reference module never imports production gate data.  When omitted, direct
+ * source-derived gatePosition() is used (intentionally slow for large indices).
+ */
+export function discoverYearCandidates(options = {}) {
+  const mode = options.mode ?? "anchor";
+  const gateAt = requireGateReader(options.gateAt);
+  const beforeFiltering = [];
+
+  if (mode === "anchor") {
+    const calculationJdn = requireBigInt(options.calculationJdn, "calculationJdn");
+    const interval = requireGateIndex(options.containingGateIndex, "containingGateIndex");
+    const intervalGate = gateAt(interval);
+    const nextIntervalGate = gateAt(interval + 1);
+    if (!(intervalGate < calculationJdn && calculationJdn <= nextIntervalGate)) {
+      throw new RangeError("containingGateIndex must satisfy G_k < calculationJdn <= G_(k+1)");
+    }
+
+    const openings = [];
+    for (let index = interval; ; index -= 1) {
+      const position = gateAt(index);
+      if (calculationJdn - position > MAX_YEAR_DAYS) break;
+      openings.push(Object.freeze({ index, position }));
+    }
+    const closings = [];
+    for (let index = interval + 1; ; index += 1) {
+      const position = gateAt(index);
+      if (position - calculationJdn > MAX_YEAR_DAYS) break;
+      closings.push(Object.freeze({ index, position }));
+    }
+
+    for (const opening of openings) {
+      for (const closing of closings) {
+        beforeFiltering.push(Object.freeze({
+          openGateIndex: opening.index,
+          closeGateIndex: closing.index,
+          openingGate: opening.position,
+          closingGate: closing.position,
+          yearLength: closing.position - opening.position,
+          gapCount: closing.index - opening.index,
+        }));
+      }
+    }
+  } else if (mode === "next") {
+    const openGateIndex = requireGateIndex(options.fixedGateIndex, "fixedGateIndex");
+    const openingGate = gateAt(openGateIndex);
+    for (let closeGateIndex = openGateIndex + MIN_YEAR_GAPS; ; closeGateIndex += 1) {
+      const candidate = yearCandidate(openGateIndex, closeGateIndex, gateAt);
+      beforeFiltering.push(candidate);
+      if (candidate.yearLength > MAX_YEAR_DAYS) break;
+      if (candidate.closingGate <= openingGate) throw new RangeError("gate positions must increase with gate index");
+    }
+  } else if (mode === "previous") {
+    const closeGateIndex = requireGateIndex(options.fixedGateIndex, "fixedGateIndex");
+    const closingGate = gateAt(closeGateIndex);
+    for (let openGateIndex = closeGateIndex - MIN_YEAR_GAPS; ; openGateIndex -= 1) {
+      const candidate = yearCandidate(openGateIndex, closeGateIndex, gateAt);
+      beforeFiltering.push(candidate);
+      if (candidate.yearLength > MAX_YEAR_DAYS) break;
+      if (candidate.openingGate >= closingGate) throw new RangeError("gate positions must increase with gate index");
+    }
+  } else {
+    throw new RangeError('mode must be "anchor", "next", or "previous"');
+  }
+
+  const afterFiltering = sortYearCandidates(beforeFiltering.filter(isNormativeYearCandidate));
+  return Object.freeze({
+    mode,
+    maxYearDays: MAX_YEAR_DAYS,
+    minYearDays: MIN_YEAR_DAYS,
+    minYearGaps: MIN_YEAR_GAPS,
+    beforeFiltering: Object.freeze(beforeFiltering),
+    afterFiltering: Object.freeze(afterFiltering),
+    cardinality: afterFiltering.length,
+  });
+}
+
+export function selectYearCandidate(options = {}) {
+  const calculationJdn = requireBigInt(options.calculationJdn, "calculationJdn");
+  const discovery = options.discovery;
+  if (!discovery || !Array.isArray(discovery.afterFiltering)) {
+    throw new TypeError("discovery must be a discoverYearCandidates() result");
+  }
+  if (discovery.afterFiltering.length < 1) throw new RangeError("no legal year candidates");
+
+  const mode = discovery.mode;
+  const seal = mode === "anchor" ? 10n : mode === "next" ? 11n : mode === "previous" ? 12n : null;
+  if (seal === null) throw new RangeError("unknown discovery mode");
+  const targetJdn = mode === "anchor"
+    ? calculationJdn
+    : requireBigInt(options.selectionTargetJdn, "selectionTargetJdn");
+  const sauceResult = sauce(calculationJdn, targetJdn, { detail: options.detail ?? "summary" });
+  const choice = chooseUniform(sauceResult, 1, seal, BigInt(discovery.afterFiltering.length));
+  const selectedIndex = Number(choice.choice - 1n);
+  const selectedCandidate = discovery.afterFiltering[selectedIndex];
+  return Object.freeze({
+    mode,
+    bowlNumber: 1,
+    seal,
+    selectionTargetJdn: targetJdn,
+    cardinality: discovery.afterFiltering.length,
+    selectedIndex,
+    selectedOneBased: selectedIndex + 1,
+    selectedCandidate,
+    choiceTrace: choice,
+  });
+}
+
 // Stable architecture for later updates.  These methods never fall back to any
 // production engine; incomplete stages fail loudly and explicitly.
 export class ReferenceOracle {
@@ -571,12 +732,12 @@ export class ReferenceOracle {
     return gatePosition(index);
   }
 
-  discoverYearCandidates() {
-    throw new ReferenceNotImplementedError("year-candidate-discovery");
+  discoverYearCandidates(options) {
+    return discoverYearCandidates(options);
   }
 
-  selectYear() {
-    throw new ReferenceNotImplementedError("year-selection");
+  selectYear(options) {
+    return selectYearCandidate(options);
   }
 
   buildCutletStructure() {

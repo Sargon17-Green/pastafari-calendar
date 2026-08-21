@@ -14,13 +14,16 @@ import { runDifferential } from "../verification/reference-oracle/differential.m
 import {
   FOUNDATION_JDN,
   GREAT_NUMBER,
+  MAX_YEAR_DAYS,
   ReferenceNotImplementedError,
   ReferenceOracle,
   bowlPermutation,
   canonicalCounters,
+  discoverYearCandidates,
   generateStones,
   keep,
   sauce,
+  selectYearCandidate,
   serializeBigInts,
 } from "../verification/reference-oracle/reference.mjs";
 
@@ -206,8 +209,6 @@ test("two identical reference executions return byte-for-byte equivalent trace d
 test("unimplemented calendar stages fail explicitly and never fall back", () => {
   const oracle = new ReferenceOracle();
   for (const method of [
-    "discoverYearCandidates",
-    "selectYear",
     "buildCutletStructure",
     "buildMonthStructure",
     "finalPastafarianTuple",
@@ -220,6 +221,55 @@ test("unimplemented calendar stages fail explicitly and never fall back", () => 
   }
 });
 
+
+test("year candidate reference filters above 5,778 before cardinality and selection", () => {
+  assert.equal(MAX_YEAR_DAYS, 5_778n);
+  const positions = new Map([
+    [0, 0n],
+    [1, 300n],
+    [2, 700n],
+    [3, 1_100n],
+    [4, 1_600n],
+    [5, 2_100n],
+    [6, 2_600n],
+    [7, 5_778n],
+    [8, 5_779n],
+  ]);
+  const gateAt = (index) => {
+    if (!positions.has(index)) throw new RangeError(`synthetic gate ${index} is unavailable`);
+    return positions.get(index);
+  };
+  const next = discoverYearCandidates({ mode: "next", fixedGateIndex: 0, gateAt });
+  assert.deepEqual(
+    next.afterFiltering.map((candidate) => candidate.yearLength),
+    [2_600n, 5_778n],
+  );
+  assert.equal(next.beforeFiltering.at(-1).yearLength, 5_779n, "first over-ceiling probe remains diagnostic only");
+  assert.equal(next.cardinality, 2);
+
+  const anchorGates = new GateIndex();
+  const calculationJdn = -13_258_058n;
+  const containingGateIndex = anchorGates.indexAtOrBefore(calculationJdn - 1n);
+  const anchor = discoverYearCandidates({
+    mode: "anchor",
+    calculationJdn,
+    containingGateIndex,
+    gateAt: (index) => anchorGates.gate(index),
+  });
+  assert.equal(anchor.cardinality, 41);
+  assert.equal(anchor.afterFiltering.some((candidate) => candidate.yearLength > MAX_YEAR_DAYS), false);
+  assert.equal(
+    anchor.beforeFiltering.some((candidate) => candidate.openGateIndex === 147 && candidate.closeGateIndex === 156 && candidate.yearLength === 5_779n),
+    true,
+    "fresh corrected-gate discriminator must expose the forbidden pair before normative filtering",
+  );
+  const selection = selectYearCandidate({ calculationJdn, discovery: anchor });
+  assert.equal(selection.selectedOneBased, 27);
+  assert.deepEqual(
+    [selection.selectedCandidate.openGateIndex, selection.selectedCandidate.closeGateIndex, selection.selectedCandidate.yearLength],
+    [139, 149, 4_785n],
+  );
+});
 
 test("final-stir reference preserves the Scroll's two distinct sum/order roles and simultaneous snapshot", () => {
   const trace = sauce(2461273n, 2461273n, { detail: "full" });
