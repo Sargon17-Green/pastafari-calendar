@@ -1,0 +1,105 @@
+TAP version 13
+# [stage7-compat] START fixed vectors with calculation day 2026-08-06
+# [stage7-compat] DONE fixed vectors with calculation day 2026-08-06 elapsedMs=42801
+# [stage7-compat] START fixed vectors with calculation day 2000-01-01
+# [stage7-compat] DONE fixed vectors with calculation day 2000-01-01 elapsedMs=18424
+# [stage7-compat] START fixed vectors with calculation day foundation
+# [stage7-compat] DONE fixed vectors with calculation day foundation elapsedMs=30783
+# [stage7-compat] START the foundation day and its immediate surroundings match
+# [stage7-compat] DONE the foundation day and its immediate surroundings match elapsedMs=4
+# [stage7-compat] START deterministic pseudo-random target days match
+# [stage7-compat] DONE deterministic pseudo-random target days match elapsedMs=34385
+# [stage7-compat] START short and wide uniform choices match
+# Subtest: the fast implementation matches the authoritative implementation
+    # Subtest: fixed vectors with calculation day 2026-08-06
+    ok 1 - fixed vectors with calculation day 2026-08-06
+      ---
+      duration_ms: 42800.387672
+      type: 'test'
+      ...
+    # Subtest: fixed vectors with calculation day 2000-01-01
+    ok 2 - fixed vectors with calculation day 2000-01-01
+      ---
+      duration_ms: 18423.969767
+      type: 'test'
+      ...
+    # Subtest: fixed vectors with calculation day foundation
+    ok 3 - fixed vectors with calculation day foundation
+      ---
+      duration_ms: 30782.375488
+      type: 'test'
+      ...
+    # Subtest: the foundation day and its immediate surroundings match
+    ok 4 - the foundation day and its immediate surroundings match
+      ---
+      duration_ms: 3.878664
+      type: 'test'
+      ...
+    # Subtest: deterministic pseudo-random target days match
+    ok 5 - deterministic pseudo-random target days match
+      ---
+      duration_ms: 34385.145289
+      type: 'test'
+      ...
+# [stage7-compat] DONE short and wide uniform choices match elapsedMs=16
+# [stage7-compat] START complete previous, current and next cutlets match
+# [stage7-compat] DONE complete previous, current and next cutlets match elapsedMs=181
+# [stage7-compat] START the generated checkpoint table is exactly the corrected table
+    # Subtest: short and wide uniform choices match
+    ok 6 - short and wide uniform choices match
+      ---
+      duration_ms: 16.260585
+      type: 'test'
+      ...
+    # Subtest: complete previous, current and next cutlets match
+    ok 7 - complete previous, current and next cutlets match
+      ---
+      duration_ms: 181.130785
+      type: 'test'
+      ...
+# [stage7-compat] DONE the generated checkpoint table is exactly the corrected table elapsedMs=6
+# [stage7-compat] START all 65 checkpoints match the authoritative gate index
+# [stage7-compat] DONE all 65 checkpoints match the authoritative gate index elapsedMs=80719
+# [stage7-compat] START dates before the first checkpoint match
+# [stage7-compat] DONE dates before the first checkpoint match elapsedMs=20326
+# [stage7-compat] START dates after the last checkpoint match
+# [stage7-compat] DONE dates after the last checkpoint match elapsedMs=16033
+    # Subtest: the generated checkpoint table is exactly the corrected table
+    ok 8 - the generated checkpoint table is exactly the corrected table
+      ---
+      duration_ms: 5.434736
+      type: 'test'
+      ...
+    # Subtest: all 65 checkpoints match the authoritative gate index
+    ok 9 - all 65 checkpoints match the authoritative gate index
+      ---
+      duration_ms: 80718.970378
+      type: 'test'
+      ...
+    # Subtest: dates before the first checkpoint match
+    ok 10 - dates before the first checkpoint match
+      ---
+      duration_ms: 20325.394828
+      type: 'test'
+      ...
+    # Subtest: dates after the last checkpoint match
+    ok 11 - dates after the last checkpoint match
+      ---
+      duration_ms: 16033.158464
+      type: 'test'
+      ...
+    1..11
+ok 1 - the fast implementation matches the authoritative implementation
+  ---
+  duration_ms: 243681.560289
+  type: 'test'
+  ...
+1..1
+# tests 12
+# suites 0
+# pass 12
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 247425.844741

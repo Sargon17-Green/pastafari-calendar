@@ -1,0 +1,30 @@
+{
+  "managedChromiumPolicy": {
+    "httpLoopback": {
+      "result": "BLOCKED_BY_INFRASTRUCTURE",
+      "observedPage": "127.0.0.1 is blocked / Your organization doesn’t allow you to view this site"
+    },
+    "httpPrivateAddress": {
+      "result": "BLOCKED_BY_INFRASTRUCTURE",
+      "observedPage": "172.26.36.27 is blocked / Your organization doesn’t allow you to view this site"
+    },
+    "fileProtocol": {
+      "result": "BLOCKED_BY_INFRASTRUCTURE",
+      "observedPage": "“file” links are blocked / Your organization doesn’t allow you to view this site"
+    },
+    "directPublishedModuleWorker": {
+      "result": "BLOCKED_BY_INFRASTRUCTURE",
+      "reason": "A valid local non-opaque page origin could not be established. A test-only blob-module Worker from about:blank failed initialization and is not treated as product evidence."
+    }
+  },
+  "canonicalBuild": {
+    "result": "BLOCKED_BY_INFRASTRUCTURE",
+    "localFailure": "ERR_MODULE_NOT_FOUND for esbuild@0.28.2",
+    "offlineRestoreFailure": "npm ci --offline -> ENOTCACHED",
+    "newGitHubCiFailure": "403 Resource not accessible by integration"
+  },
+  "node18": {
+    "result": "BLOCKED_BY_INFRASTRUCTURE",
+    "reason": "Node 18.0.0 is not installed locally and a new GitHub CI verification branch could not be created with the available integration permission."
+  }
+}

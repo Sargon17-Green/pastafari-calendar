@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "seed": "update8-stage7-two-anchor-neighbourhood-v1",
+  "normalization": ["year as decimal string", "numeric day fields as Number"],
+  "referenceProvenance": {
+    "primary": "verification/update8/stage-01-baseline.json canonicalSuccessVectors; Stage 6 reference oracle",
+    "expanded": "authoritative public API on the Stage-6-production-equivalent snapshot; deterministic nearby offsets at the same two calculation anchors"
+  },
+  "vectors": [
+    {"id":"foundation_same","calculationJdn":"-13334246","targetJdn":"-13334246","expected":{"year":"5000","cutletName":"לגש","dayInCutlet":762,"monthName":"לבונה","dayInMonth":105}},
+    {"id":"foundation_next","calculationJdn":"-13334246","targetJdn":"-13334245","expected":{"year":"5000","cutletName":"כליה","dayInCutlet":1,"monthName":"אבן־גיר","dayInMonth":91}},
+    {"id":"foundation_previous","calculationJdn":"-13334246","targetJdn":"-13334247","expected":{"year":"5000","cutletName":"לגש","dayInCutlet":761,"monthName":"הדלת הסגורה","dayInMonth":114}},
+    {"id":"present_same","calculationJdn":"2461259","targetJdn":"2461259","expected":{"year":"5000","cutletName":"מחשבה","dayInCutlet":13,"monthName":"חרטה","dayInMonth":16}},
+    {"id":"present_forward","calculationJdn":"2461259","targetJdn":"2461265","expected":{"year":"5000","cutletName":"מחשבה","dayInCutlet":19,"monthName":"ערפל","dayInMonth":10}},
+    {"id":"foundation_minus2","calculationJdn":"-13334246","targetJdn":"-13334248","expected":{"year":"5000","cutletName":"לגש","dayInCutlet":760,"monthName":"ערפל","dayInMonth":110}},
+    {"id":"foundation_plus2","calculationJdn":"-13334246","targetJdn":"-13334244","expected":{"year":"5000","cutletName":"כליה","dayInCutlet":2,"monthName":"בדיל","dayInMonth":113}},
+    {"id":"foundation_plus3","calculationJdn":"-13334246","targetJdn":"-13334243","expected":{"year":"5000","cutletName":"כליה","dayInCutlet":3,"monthName":"שלושה חלקים מחמישה","dayInMonth":106}},
+    {"id":"present_minus1","calculationJdn":"2461259","targetJdn":"2461258","expected":{"year":"5000","cutletName":"מחשבה","dayInCutlet":12,"monthName":"נחושת","dayInMonth":11}},
+    {"id":"present_plus1","calculationJdn":"2461259","targetJdn":"2461260","expected":{"year":"5000","cutletName":"מחשבה","dayInCutlet":14,"monthName":"אבן־גיר","dayInMonth":15}},
+    {"id":"present_plus2","calculationJdn":"2461259","targetJdn":"2461261","expected":{"year":"5000","cutletName":"מחשבה","dayInCutlet":15,"monthName":"קשת","dayInMonth":13}},
+    {"id":"present_plus10","calculationJdn":"2461259","targetJdn":"2461269","expected":{"year":"5000","cutletName":"מחשבה","dayInCutlet":23,"monthName":"אבן־גיר","dayInMonth":16}},
+    {"id":"present_plus13","calculationJdn":"2461259","targetJdn":"2461272","expected":{"year":"5000","cutletName":"מחשבה","dayInCutlet":26,"monthName":"קשת","dayInMonth":14}}
+  ]
+}

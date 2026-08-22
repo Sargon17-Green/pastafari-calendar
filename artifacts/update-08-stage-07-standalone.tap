@@ -1,0 +1,13 @@
+TAP version 13
+ok 1 - unminified standalone exact committed bytes execute in real Chromium and instantiate worker transports
+ok 2 - minified standalone exact committed bytes execute in real Chromium and instantiate worker transports
+not ok 3 - unminified standalone shared cross-environment sequence
+  # foundation verified, then present calculation-day bootstrap aborted after 512 ms: ERR_ENGINE_TERMINATED
+not ok 4 - minified standalone shared cross-environment sequence
+  # foundation verified, then present calculation-day bootstrap aborted after 518 ms: ERR_ENGINE_TERMINATED
+ok 5 - unminified retry after failure returns canonical present_same
+ok 6 - minified retry after failure returns canonical present_same
+ok 7 - unminified and minified have normalized semantic parity for the reproduced failure/recovery
+not ok 8 - actual file:// navigation smoke in this environment
+  # BLOCKED_BY_INFRASTRUCTURE: managed Chromium policy says “file links are blocked / Your organization doesn’t allow you to view this site”.
+1..8

@@ -1,0 +1,215 @@
+{
+  "result": "PASS",
+  "runtime": {
+    "node": "v22.16.0",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  "vectorCount": 13,
+  "vectors": [
+    {
+      "name": "vector:foundation_same",
+      "ok": true,
+      "elapsedMs": 8693
+    },
+    {
+      "name": "vector:foundation_next",
+      "ok": true,
+      "elapsedMs": 1
+    },
+    {
+      "name": "vector:foundation_previous",
+      "ok": true,
+      "elapsedMs": 0
+    },
+    {
+      "name": "vector:present_same",
+      "ok": true,
+      "elapsedMs": 16339
+    },
+    {
+      "name": "vector:present_forward",
+      "ok": true,
+      "elapsedMs": 1
+    },
+    {
+      "name": "vector:foundation_minus2",
+      "ok": true,
+      "elapsedMs": 1
+    },
+    {
+      "name": "vector:foundation_plus2",
+      "ok": true,
+      "elapsedMs": 0
+    },
+    {
+      "name": "vector:foundation_plus3",
+      "ok": true,
+      "elapsedMs": 1
+    },
+    {
+      "name": "vector:present_minus1",
+      "ok": true,
+      "elapsedMs": 0
+    },
+    {
+      "name": "vector:present_plus1",
+      "ok": true,
+      "elapsedMs": 0
+    },
+    {
+      "name": "vector:present_plus2",
+      "ok": true,
+      "elapsedMs": 0
+    },
+    {
+      "name": "vector:present_plus10",
+      "ok": true,
+      "elapsedMs": 0
+    },
+    {
+      "name": "vector:present_plus13",
+      "ok": true,
+      "elapsedMs": 0
+    }
+  ],
+  "focusedFailures": [
+    {
+      "name": "GregorianDate invalid month",
+      "exception": {
+        "name": "TypeError",
+        "message": "החודש והיום הגריגוריאניים חייבים להיות מספרים שלמים"
+      },
+      "postFailureRecovery": true
+    },
+    {
+      "name": "IslamicDate invalid variant",
+      "exception": {
+        "name": "RangeError",
+        "message": "לוח היג׳רי אינו חד־משמעי; variant חייב להיות \"civil\" או \"umalqura\""
+      },
+      "postFailureRecovery": true
+    },
+    {
+      "name": "MonthWeavingCounter invalid lengths",
+      "exception": {
+        "name": "RangeError",
+        "message": "אורכי החודשים חייבים להיות חיוביים"
+      },
+      "postFailureRecovery": true
+    },
+    {
+      "name": "PastafariCalendar invalid todayProvider",
+      "exception": {
+        "name": "TypeError",
+        "message": "todayProvider חייב להיות פונקציה"
+      },
+      "postFailureRecovery": true
+    }
+  ],
+  "repeatProbe": {
+    "failure": "IslamicDate invalid variant",
+    "count": 100,
+    "postFailureRecovery": true
+  },
+  "exportKeys": [
+    "BahaiDate",
+    "COPTIC_EPOCH_JDN",
+    "CUTLET_NAMES",
+    "ChineseDate",
+    "CopticDate",
+    "DELIVERY_DISTANCE",
+    "DELIVERY_GREGORIAN_DAY",
+    "DELIVERY_GREGORIAN_MONTH",
+    "DELIVERY_GREGORIAN_YEAR",
+    "DELIVERY_JDN",
+    "ETHIOPIC_EPOCH_JDN",
+    "EthiopicDate",
+    "FOUNDATION_JDN",
+    "GREGORIAN_EPOCH_JDN",
+    "GateIndex",
+    "GregorianDate",
+    "HEBREW_EPOCH_JDN",
+    "HebrewDate",
+    "HinduDate",
+    "ISLAMIC_EPOCH_JDN",
+    "IslamicCivilDate",
+    "IslamicDate",
+    "IslamicUmmAlQuraDate",
+    "JULIAN_EPOCH_JDN",
+    "JapaneseImperialDate",
+    "JulianDate",
+    "M",
+    "MAYA_GMT_CORRELATION",
+    "MONTH_NAMES",
+    "MayaLongCountDate",
+    "MinguoDate",
+    "MonthWeavingCounter",
+    "OldHinduLunarDate",
+    "OldHinduSolarDate",
+    "PERSIAN_EPOCH_JDN",
+    "PastafariCalendar",
+    "PastafariConstraintClient",
+    "PastafariDate",
+    "PastafariReverseClient",
+    "ResponseCycle",
+    "SAME_AS_TARGET",
+    "STONES",
+    "SakaDate",
+    "SauceResult",
+    "SolarHijriDate",
+    "Stones",
+    "ThaiBuddhistDate",
+    "UNIX_EPOCH_JDN",
+    "YearBounds",
+    "YearStructure",
+    "bahaiToJdn",
+    "boundedCompositionCount",
+    "calendarDateToJdn",
+    "calendarObjectToDate",
+    "chineseToJdn",
+    "coerceGregorian",
+    "comb",
+    "copticToJdn",
+    "dayNumber",
+    "daysInGregorianMonth",
+    "daysInHebrewMonth",
+    "daysInHebrewYear",
+    "daysInIslamicCivilMonth",
+    "daysInJulianMonth",
+    "ethiopicToJdn",
+    "factorial",
+    "fallingFactorial",
+    "findPastafariDate",
+    "gregorianToJdn",
+    "hebrewToJdn",
+    "hinduToJdn",
+    "isGregorianLeapYear",
+    "isHebrewLeapYear",
+    "isIslamicCivilLeapYear",
+    "isJulianLeapYear",
+    "islamicCivilToJdn",
+    "islamicToJdn",
+    "japaneseImperialToJdn",
+    "julianToJdn",
+    "localToday",
+    "makeSauce",
+    "makeSauceUncached",
+    "mayaLongCountToJdn",
+    "minguoToJdn",
+    "parseHebrewGregorianDate",
+    "sakaToJdn",
+    "sharedPastafariConstraintClient",
+    "sharedPastafariReverseClient",
+    "solarHijriArithmeticToJdn",
+    "solarHijriToJdn",
+    "solvePastafariConstraints",
+    "store",
+    "thaiBuddhistToJdn",
+    "unrankBoundedComposition",
+    "unrankLexicographicPermutation",
+    "unrankPartialPermutation",
+    "unrankPositiveCompositionWithRequiredBoundary",
+    "validateGregorian"
+  ]
+}

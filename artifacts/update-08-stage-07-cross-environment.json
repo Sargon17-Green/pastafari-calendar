@@ -1,0 +1,420 @@
+{
+  "repository": "https://github.com/Sargon17-Green/pastafari-calendar",
+  "branch": "main",
+  "commit": "c16c9c14c1fe0233d9bb74b94824410915315a00",
+  "executionSnapshot": {
+    "kind": "user-supplied ZIP without .git metadata",
+    "stage6VerifiedCommit": "9b86695f2f693742837bce8b865a24643c522ebf",
+    "currentMain": "c16c9c14c1fe0233d9bb74b94824410915315a00",
+    "mainAdvanceCharacterization": "GitHub compare from Stage-6 commit to current main changed only Stage-6 artifacts/verification files and SHA256SUMS.txt; no production/runtime files.",
+    "productionEquivalentToStage6": true
+  },
+  "packageVersion": "1.3.0",
+  "environment": {
+    "node": "v22.16.0",
+    "npm": "10.9.2",
+    "os": "Linux 6.18.35 x86_64 GNU/Linux",
+    "chromium": {
+      "protocolVersion": "1.3",
+      "product": "Chrome/144.0.7559.96",
+      "revision": "@d7b80622cfab91c265741194e7942eefd2d21811",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/144.0.0.0 Safari/537.36",
+      "jsVersion": "14.4.258.22"
+    },
+    "workingTree": "not a Git working tree; extracted verification ZIP",
+    "nodeSupport": {
+      "engines": ">=18",
+      "canonicalCI": "Node 22",
+      "minimumCI": "Node 18.0.0"
+    },
+    "node18Stage7": {
+      "result": "BLOCKED_BY_INFRASTRUCTURE",
+      "reason": "Node 18.0.0 is not installed locally; GitHub verification branch creation returned 403 Resource not accessible by integration."
+    },
+    "managedChromiumNavigationPolicy": {
+      "file": "blocked",
+      "httpLoopback": "blocked",
+      "httpPrivateAddress": "blocked",
+      "effect": "actual file:// and local-http navigation cannot be accepted as runtime evidence in this environment"
+    }
+  },
+  "productionAlignment": {
+    "stage5ProductionPatchCommit": "44d5e1d3818b400df0f7a36bf17216d04345add6",
+    "stage6VerifiedCommit": "9b86695f2f693742837bce8b865a24643c522ebf",
+    "currentMain": "c16c9c14c1fe0233d9bb74b94824410915315a00",
+    "productionEquivalent": true,
+    "productionFilesChangedDuringStage7": "none"
+  },
+  "distributionHashes": {
+    "src/5efdcc3e6fb071cbaffdcb117507a169dd76.js": "99c7a18b015b669654eec06b49740df1b884465b43702b9705e4f6d9fd87ede9",
+    "browser/pastafari-calendar-core-chronicle.js": "36fed61386d9c545a191393e4bfd647ccefbc26fef11bec88faa708ed69b77ea",
+    "browser/standalone/pastafari-date.js": "532ccdd809633ee79aab618bda9b98b48d740798436fd1c1917f3fcf3340136d",
+    "browser/standalone/pastafari-date.min.js": "a78dfc01c8dd250e5639972756aadbb80e7bb9e77cc5bd9b8f0b68e1793f0b6a"
+  },
+  "sharedCorpus": {
+    "path": "verification/update8/stage-07-cross-environment-vectors.json",
+    "count": 13,
+    "mandatoryCanonicalCount": 5,
+    "expandedCount": 8,
+    "seed": "update8-stage7-two-anchor-neighbourhood-v1"
+  },
+  "environments": {
+    "nodeRawAuthoritative": {
+      "result": "PASS_INHERITED_STAGE6",
+      "evidence": "artifacts/update-08-stage-06-verification.json"
+    },
+    "nodePublicApi": {
+      "result": "PASS",
+      "vectors": 13,
+      "focusedFailures": 4,
+      "repeatProbe": 100
+    },
+    "browserAuthoritative": {
+      "result": "PASS",
+      "runtime": "real Chromium",
+      "vectors": 13,
+      "focusedFailures": 4,
+      "repeatProbe": 100,
+      "arenaDelta": 0,
+      "holesDelta": 0,
+      "loadingQualification": "real Chromium about:blank; exact local module sources loaded as blob modules with test-only import/new-URL specifier rewriting because managed policy blocks local URL navigation"
+    },
+    "browserFast": {
+      "result": "PASS",
+      "vectors": 13
+    },
+    "directModuleWorker": {
+      "result": "BLOCKED_BY_INFRASTRUCTURE",
+      "reason": "Managed Chromium local-URL policy prevents a non-opaque local page origin; test-only blob module Worker from about:blank failed initialization and is not treated as product evidence."
+    },
+    "standaloneUnminified": {
+      "result": "FAIL_WITH_REPRODUCTION",
+      "realChromium": true,
+      "realWorkerModes": {
+        "authoritative": "worker",
+        "fast": "worker"
+      },
+      "failure": {
+        "name": "AbortError",
+        "message": "authoritative was stopped.",
+        "code": "ERR_ENGINE_TERMINATED",
+        "elapsedMs": 512
+      },
+      "retryRecovery": true
+    },
+    "standaloneMinified": {
+      "result": "FAIL_WITH_REPRODUCTION",
+      "realChromium": true,
+      "realWorkerModes": {
+        "authoritative": "worker",
+        "fast": "worker"
+      },
+      "failure": {
+        "name": "AbortError",
+        "message": "authoritative was stopped.",
+        "code": "ERR_ENGINE_TERMINATED",
+        "elapsedMs": 518
+      },
+      "retryRecovery": true
+    },
+    "router": {
+      "result": "FAIL_WITH_REPRODUCTION",
+      "sharedCore": "browser/pastafari-calendar-router-core.js (also embedded by standalone)",
+      "defaultAuthoritativeIdleShutdownMs": 500,
+      "reproduction": {
+        "precondition": "foundation calculation day reaches verified with real worker transports",
+        "nextOperation": "convert present_same on a previously unseen calculation day",
+        "unminified": {
+          "name": "AbortError",
+          "message": "authoritative was stopped.",
+          "code": "ERR_ENGINE_TERMINATED",
+          "elapsedMs": 512
+        },
+        "minified": {
+          "name": "AbortError",
+          "message": "authoritative was stopped.",
+          "code": "ERR_ENGINE_TERMINATED",
+          "elapsedMs": 518
+        },
+        "unminifiedRetryOk": true,
+        "minifiedRetryOk": true,
+        "normalizedSemanticParity": true
+      },
+      "mechanism": "_scheduleAuthoritativeShutdown() checks state.status for verifying/authoritative-only only; a new slow authoritative request remains unverified while state.authoritativeRequests is non-empty, so the 500 ms idle timer can call this._authoritative.terminate() on an in-flight Worker request.",
+      "productionFixApplied": false
+    },
+    "packedNpm": {
+      "result": "PASS",
+      "tarballFiles": 270,
+      "requiredFilesPresent": true,
+      "leaks": 0,
+      "exportParity": true,
+      "exportCount": 98,
+      "consumerSmoke": "PASS"
+    },
+    "node18Minimum": {
+      "result": "BLOCKED_BY_INFRASTRUCTURE"
+    }
+  },
+  "browser": {
+    "result": "PASS_FOR_MAIN_THREAD_AUTHORITATIVE",
+    "chromium": "Chrome/144.0.7559.96",
+    "vectors": 13,
+    "focusedFailureTransactionality": "PASS",
+    "repeat100": "PASS",
+    "actualLocalUrlNavigation": "BLOCKED_BY_INFRASTRUCTURE"
+  },
+  "worker": {
+    "result": "FAIL_IN_INTEGRATION",
+    "realWorkerEvidence": "Both exact standalone bundles reported authoritative=worker and fast=worker before the reproduced failure.",
+    "directPublishedModuleProtocol": "BLOCKED_BY_INFRASTRUCTURE",
+    "lifecycleFailure": {
+      "precondition": "foundation calculation day reaches verified with real worker transports",
+      "nextOperation": "convert present_same on a previously unseen calculation day",
+      "unminified": {
+        "name": "AbortError",
+        "message": "authoritative was stopped.",
+        "code": "ERR_ENGINE_TERMINATED",
+        "elapsedMs": 512
+      },
+      "minified": {
+        "name": "AbortError",
+        "message": "authoritative was stopped.",
+        "code": "ERR_ENGINE_TERMINATED",
+        "elapsedMs": 518
+      },
+      "unminifiedRetryOk": true,
+      "minifiedRetryOk": true,
+      "normalizedSemanticParity": true
+    }
+  },
+  "standalone": {
+    "result": "FAIL_WITH_REPRODUCTION",
+    "hash": "532ccdd809633ee79aab618bda9b98b48d740798436fd1c1917f3fcf3340136d",
+    "failure": {
+      "name": "AbortError",
+      "message": "authoritative was stopped.",
+      "code": "ERR_ENGINE_TERMINATED",
+      "elapsedMs": 512
+    },
+    "retryRecovery": "PASS"
+  },
+  "standaloneMinified": {
+    "result": "FAIL_WITH_REPRODUCTION",
+    "hash": "a78dfc01c8dd250e5639972756aadbb80e7bb9e77cc5bd9b8f0b68e1793f0b6a",
+    "failure": {
+      "name": "AbortError",
+      "message": "authoritative was stopped.",
+      "code": "ERR_ENGINE_TERMINATED",
+      "elapsedMs": 518
+    },
+    "retryRecovery": "PASS",
+    "normalizedFailureParityWithUnminified": true
+  },
+  "fast": {
+    "result": "PASS",
+    "compatibility": {
+      "command": "npm run test:compatibility",
+      "result": "PASS",
+      "tests": 12,
+      "pass": 12,
+      "fail": 0,
+      "totalDurationMs": 250817.629141,
+      "subtestDurationsMs": {
+        "fixed vectors with calculation day 2026-08-06": 44994.172643,
+        "fixed vectors with calculation day 2000-01-01": 18526.669266,
+        "fixed vectors with calculation day foundation": 30960.569458,
+        "the foundation day and its immediate surroundings match": 4.490533,
+        "deterministic pseudo-random target days match": 35086.494355,
+        "short and wide uniform choices match": 22.498444,
+        "complete previous, current and next cutlets match": 188.145049,
+        "the generated checkpoint table is exactly the corrected table": 4.951097,
+        "all 65 checkpoints match the authoritative gate index": 81124.208299,
+        "dates before the first checkpoint match": 20247.228226,
+        "dates after the last checkpoint match": 15956.035427
+      },
+      "characterization": "progressing computation, not a hang; Node test parent timeout is 360000ms on non-Windows and run completed below it"
+    },
+    "historySensitivity": {
+      "result": "PASS",
+      "authoritativeFailures": 100,
+      "sharedVectors": 13,
+      "historyEquivalent": true
+    }
+  },
+  "router": {
+    "result": "FAIL_WITH_REPRODUCTION",
+    "sharedCore": "browser/pastafari-calendar-router-core.js (also embedded by standalone)",
+    "defaultAuthoritativeIdleShutdownMs": 500,
+    "reproduction": {
+      "precondition": "foundation calculation day reaches verified with real worker transports",
+      "nextOperation": "convert present_same on a previously unseen calculation day",
+      "unminified": {
+        "name": "AbortError",
+        "message": "authoritative was stopped.",
+        "code": "ERR_ENGINE_TERMINATED",
+        "elapsedMs": 512
+      },
+      "minified": {
+        "name": "AbortError",
+        "message": "authoritative was stopped.",
+        "code": "ERR_ENGINE_TERMINATED",
+        "elapsedMs": 518
+      },
+      "unminifiedRetryOk": true,
+      "minifiedRetryOk": true,
+      "normalizedSemanticParity": true
+    },
+    "mechanism": "_scheduleAuthoritativeShutdown() checks state.status for verifying/authoritative-only only; a new slow authoritative request remains unverified while state.authoritativeRequests is non-empty, so the 500 ms idle timer can call this._authoritative.terminate() on an in-flight Worker request.",
+    "productionFixApplied": false
+  },
+  "package": {
+    "result": "PASS",
+    "packDryRun": "PASS",
+    "pack": "PASS",
+    "realTarballInstall": "PASS",
+    "consumerSmoke": "PASS",
+    "exportsPreserved": true,
+    "exportCount": 98,
+    "packageIntegrity": {
+      "result": "PASS",
+      "totalFiles": 270,
+      "required": {
+        "package/src/public-api.js": true,
+        "package/browser/pastafari-calendar-core.js": true,
+        "package/browser/pastafari-calendar-core-chronicle.js": true,
+        "package/browser/pastafari-authoritative-worker.js": true,
+        "package/browser/pastafari-calendar-fast.js": true,
+        "package/browser/pastafari-fast-worker.js": true,
+        "package/browser/pastafari-calendar-router.js": true,
+        "package/browser/standalone/pastafari-date.js": true,
+        "package/browser/standalone/pastafari-date.min.js": true,
+        "package/package.json": true
+      },
+      "leaks": []
+    }
+  },
+  "build": {
+    "canonicalCommand": "npm run build:standalone",
+    "lockedEsbuildVersion": "0.28.2",
+    "localAttempt": {
+      "result": "BLOCKED_BY_INFRASTRUCTURE",
+      "exitCode": 1,
+      "reason": "ERR_MODULE_NOT_FOUND: esbuild is not installed in the supplied ZIP environment"
+    },
+    "offlineInstallAttempt": {
+      "result": "BLOCKED_BY_INFRASTRUCTURE",
+      "reason": "npm ci --offline returned ENOTCACHED (playwright-core@1.62.1 not cached; esbuild also unavailable)"
+    },
+    "newCiAttempt": {
+      "result": "BLOCKED_BY_INFRASTRUCTURE",
+      "reason": "GitHub integration returned 403 Resource not accessible by integration when creating a verification branch"
+    },
+    "priorCanonicalProvenance": {
+      "source": "artifacts/update-08-stage-05-browser-standalone.json",
+      "environment": "GitHub Actions test.yml / node-test / Node 22",
+      "artifact": "update3-generated-standalone-f52c4c3e754ffe9deb14b1c09575635ee848f385.zip",
+      "artifactSha256": "ebf81a835ae5c527d3f78692ecdd9648a2cea823e81ee1aa08d2c9497b0d02cf",
+      "readableSha256": "532ccdd809633ee79aab618bda9b98b48d740798436fd1c1917f3fcf3340136d",
+      "minifiedSha256": "a78dfc01c8dd250e5639972756aadbb80e7bb9e77cc5bd9b8f0b68e1793f0b6a",
+      "currentHashesMatchPriorCanonicalArtifact": true
+    },
+    "standaloneBuildTests": {
+      "result": "PASS",
+      "tests": 3,
+      "pass": 3,
+      "fail": 0
+    },
+    "byteRebuildStage7": "NOT_COMPLETED_DUE_INFRASTRUCTURE",
+    "semanticRuntimeEvidence": "FAIL_WITH_REPRODUCTION due router lifecycle race; not a minifier mismatch"
+  },
+  "compatibility": {
+    "command": "npm run test:compatibility",
+    "result": "PASS",
+    "tests": 12,
+    "pass": 12,
+    "fail": 0,
+    "totalDurationMs": 250817.629141,
+    "subtestDurationsMs": {
+      "fixed vectors with calculation day 2026-08-06": 44994.172643,
+      "fixed vectors with calculation day 2000-01-01": 18526.669266,
+      "fixed vectors with calculation day foundation": 30960.569458,
+      "the foundation day and its immediate surroundings match": 4.490533,
+      "deterministic pseudo-random target days match": 35086.494355,
+      "short and wide uniform choices match": 22.498444,
+      "complete previous, current and next cutlets match": 188.145049,
+      "the generated checkpoint table is exactly the corrected table": 4.951097,
+      "all 65 checkpoints match the authoritative gate index": 81124.208299,
+      "dates before the first checkpoint match": 20247.228226,
+      "dates after the last checkpoint match": 15956.035427
+    },
+    "characterization": "progressing computation, not a hang; Node test parent timeout is 360000ms on non-Windows and run completed below it"
+  },
+  "failures": [
+    {
+      "id": "ROUTER_IDLE_SHUTDOWN_INFLIGHT_AUTHORITATIVE",
+      "classification": "PRODUCTION_INTEGRATION_FAILURE",
+      "severityForStage7": "BLOCKING",
+      "affectedDistributions": [
+        "standalone unminified",
+        "standalone minified",
+        "shared router core; therefore normal worker-backed browser router is code-path affected, although direct normal-browser module Worker runtime was infrastructure-blocked"
+      ],
+      "reproduction": {
+        "precondition": "foundation calculation day reaches verified with real worker transports",
+        "nextOperation": "convert present_same on a previously unseen calculation day",
+        "unminified": {
+          "name": "AbortError",
+          "message": "authoritative was stopped.",
+          "code": "ERR_ENGINE_TERMINATED",
+          "elapsedMs": 512
+        },
+        "minified": {
+          "name": "AbortError",
+          "message": "authoritative was stopped.",
+          "code": "ERR_ENGINE_TERMINATED",
+          "elapsedMs": 518
+        },
+        "unminifiedRetryOk": true,
+        "minifiedRetryOk": true,
+        "normalizedSemanticParity": true
+      },
+      "mechanism": "_scheduleAuthoritativeShutdown() checks state.status for verifying/authoritative-only only; a new slow authoritative request remains unverified while state.authoritativeRequests is non-empty, so the 500 ms idle timer can call this._authoritative.terminate() on an in-flight Worker request."
+    },
+    {
+      "id": "LOCAL_BROWSER_NAVIGATION_POLICY",
+      "classification": "INFRASTRUCTURE_BLOCKER",
+      "blockingEvidence": [
+        "actual file:// load",
+        "direct local-http module Worker page"
+      ]
+    },
+    {
+      "id": "CANONICAL_REBUILD_DEPENDENCIES_UNAVAILABLE",
+      "classification": "INFRASTRUCTURE_BLOCKER",
+      "blockingEvidence": [
+        "fresh Stage-7 byte rebuild"
+      ]
+    },
+    {
+      "id": "NODE18_RUNTIME_UNAVAILABLE",
+      "classification": "INFRASTRUCTURE_BLOCKER",
+      "blockingEvidence": [
+        "fresh Stage-7 Node 18.0.0 runtime smoke"
+      ]
+    }
+  ],
+  "productionDiff": {
+    "productionFilesChangedDuringStage7": "none",
+    "verifiedByFinalHashes": true,
+    "hashes": {
+      "src/5efdcc3e6fb071cbaffdcb117507a169dd76.js": "99c7a18b015b669654eec06b49740df1b884465b43702b9705e4f6d9fd87ede9",
+      "browser/pastafari-calendar-core-chronicle.js": "36fed61386d9c545a191393e4bfd647ccefbc26fef11bec88faa708ed69b77ea",
+      "browser/standalone/pastafari-date.js": "532ccdd809633ee79aab618bda9b98b48d740798436fd1c1917f3fcf3340136d",
+      "browser/standalone/pastafari-date.min.js": "a78dfc01c8dd250e5639972756aadbb80e7bb9e77cc5bd9b8f0b68e1793f0b6a"
+    }
+  },
+  "result": "CROSS_ENVIRONMENT_VERIFICATION_FAILED",
+  "readyForStage8": false,
+  "decisionReason": "A reproducible production integration failure exists in both standalone bundles: the shared router idle-shutdown timer terminates an in-flight authoritative Worker request when switching from a verified calculation day to a new slow calculation day. Stage 7 is verification-only, so no production repair was made."
+}

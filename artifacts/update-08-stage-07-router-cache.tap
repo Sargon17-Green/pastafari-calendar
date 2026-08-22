@@ -1,0 +1,202 @@
+TAP version 13
+# Subtest: a fossil entry remains physically present but cannot determine semantics
+ok 1 - a fossil entry remains physically present but cannot determine semantics
+  ---
+  duration_ms: 2.458544
+  type: 'test'
+  ...
+# Subtest: warm repeats hit the normative shadow instead of recomputing
+ok 2 - warm repeats hit the normative shadow instead of recomputing
+  ---
+  duration_ms: 0.268208
+  type: 'test'
+  ...
+# Subtest: manual external poisoning after warming is masked during conversion
+ok 3 - manual external poisoning after warming is masked during conversion
+  ---
+  duration_ms: 0.293846
+  type: 'test'
+  ...
+# Subtest: failed population rolls shadow mutations back and leaves no partial valid entry
+ok 4 - failed population rolls shadow mutations back and leaves no partial valid entry
+  ---
+  duration_ms: 0.589476
+  type: 'test'
+  ...
+# Subtest: nested population commits once and restores depth to zero
+ok 5 - nested population commits once and restores depth to zero
+  ---
+  duration_ms: 0.252395
+  type: 'test'
+  ...
+# Subtest: trace instrumentation reports writer, depth, cache and algorithm marker
+ok 6 - trace instrumentation reports writer, depth, cache and algorithm marker
+  ---
+  duration_ms: 0.298534
+  type: 'test'
+  ...
+# Subtest: historical core-before-public warmed instance converges to fresh public and fast results
+ok 7 - historical core-before-public warmed instance converges to fresh public and fast results
+  ---
+  duration_ms: 25314.156284
+  type: 'test'
+  ...
+# Subtest: router cache is bounded and uses least-recently-used idle eviction
+ok 8 - router cache is bounded and uses least-recently-used idle eviction
+  ---
+  duration_ms: 4.470263
+  type: 'test'
+  ...
+# Subtest: eviction followed by recreation preserves exact conversion output
+ok 9 - eviction followed by recreation preserves exact conversion output
+  ---
+  duration_ms: 1.944911
+  type: 'test'
+  ...
+# Subtest: active states are never evicted even when the temporary live set exceeds the limit
+ok 10 - active states are never evicted even when the temporary live set exceeds the limit
+  ---
+  duration_ms: 4.625584
+  type: 'test'
+  ...
+# Subtest: a state with verification in flight is protected from eviction
+ok 11 - a state with verification in flight is protected from eviction
+  ---
+  duration_ms: 2.091608
+  type: 'test'
+  ...
+# Subtest: concurrent same-key requests share one authoritative bootstrap request
+ok 12 - concurrent same-key requests share one authoritative bootstrap request
+  ---
+  duration_ms: 1.629241
+  type: 'test'
+  ...
+# Subtest: concurrent different-key requests settle back to the configured cache bound
+ok 13 - concurrent different-key requests settle back to the configured cache bound
+  ---
+  duration_ms: 6.046246
+  type: 'test'
+  ...
+# Subtest: failed verification remains cached and authoritative-only while its state is retained
+ok 14 - failed verification remains cached and authoritative-only while its state is retained
+  ---
+  duration_ms: 0.818406
+  type: 'test'
+  ...
+# Subtest: failed states are retained preferentially without defeating the hard idle bound
+ok 15 - failed states are retained preferentially without defeating the hard idle bound
+  ---
+  duration_ms: 0.660752
+  type: 'test'
+  ...
+# Subtest: retry removes cache bookkeeping and recreates a clean state
+ok 16 - retry removes cache bookkeeping and recreates a clean state
+  ---
+  duration_ms: 0.715163
+  type: 'test'
+  ...
+# Subtest: dispose clears states and LRU bookkeeping and remains safe when called twice
+ok 17 - dispose clears states and LRU bookkeeping and remains safe when called twice
+  ---
+  duration_ms: 0.532151
+  type: 'test'
+  ...
+# Subtest: 600-case bounded-vs-unbounded differential keeps canonical results identical
+ok 18 - 600-case bounded-vs-unbounded differential keeps canonical results identical
+  ---
+  duration_ms: 63.101004
+  type: 'test'
+  ...
+# Subtest: requests arriving during verification keep their own target day
+ok 19 - requests arriving during verification keep their own target day
+  ---
+  duration_ms: 187.254004
+  type: 'test'
+  ...
+# Subtest: verification state is isolated for every calculation day
+ok 20 - verification state is isolated for every calculation day
+  ---
+  duration_ms: 177.678815
+  type: 'test'
+  ...
+# Subtest: identical concurrent authoritative conversions share one request
+ok 21 - identical concurrent authoritative conversions share one request
+  ---
+  duration_ms: 27.152741
+  type: 'test'
+  ...
+# Subtest: a cutlet request made during verification returns the requested cutlet
+ok 22 - a cutlet request made during verification returns the requested cutlet
+  ---
+  duration_ms: 217.966941
+  type: 'test'
+  ...
+# Subtest: many consumers sharing one router do not leak results between calls
+ok 23 - many consumers sharing one router do not leak results between calls
+  ---
+  duration_ms: 28.736555
+  type: 'test'
+  ...
+# Subtest: a fast-engine request failure leaves the calculation day on the authoritative engine
+ok 24 - a fast-engine request failure leaves the calculation day on the authoritative engine
+  ---
+  duration_ms: 29.206924
+  type: 'test'
+  ...
+# Subtest: a verified fast-engine timeout falls back to the authoritative result
+ok 25 - a verified fast-engine timeout falls back to the authoritative result
+  ---
+  duration_ms: 122.742971
+  type: 'test'
+  ...
+# Subtest: an authoritative timeout terminates its worker and the next request starts a fresh one
+ok 26 - an authoritative timeout terminates its worker and the next request starts a fresh one
+  ---
+  duration_ms: 37.862822
+  type: 'test'
+  ...
+# Subtest: a mismatch disables the fast engine globally and later calculation days stay authoritative
+ok 27 - a mismatch disables the fast engine globally and later calculation days stay authoritative
+  ---
+  duration_ms: 21.408595
+  type: 'test'
+  ...
+# Subtest: an invalid fast cutlet view disables the fast engine
+ok 28 - an invalid fast cutlet view disables the fast engine
+  ---
+  duration_ms: 21.052095
+  type: 'test'
+  ...
+# Subtest: an authoritative conversion failure is propagated and does not start fast verification
+ok 29 - an authoritative conversion failure is propagated and does not start fast verification
+  ---
+  duration_ms: 5.630197
+  type: 'test'
+  ...
+# Subtest: the router works through inline modules when Worker is unavailable
+ok 30 - the router works through inline modules when Worker is unavailable
+  ---
+  duration_ms: 28.35354
+  type: 'test'
+  ...
+# Subtest: a missing fast module leaves the inline router usable in authoritative-only mode
+ok 31 - a missing fast module leaves the inline router usable in authoritative-only mode
+  ---
+  duration_ms: 22.356854
+  type: 'test'
+  ...
+# Subtest: 5,000 distinct calculation days do not create an unbounded idle router cache
+ok 32 - 5,000 distinct calculation days do not create an unbounded idle router cache
+  ---
+  duration_ms: 334.250213
+  type: 'test'
+  ...
+1..32
+# tests 32
+# suites 0
+# pass 32
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 25381.28971

@@ -1,0 +1,10 @@
+TAP version 13
+ok 1 - real Chromium standalone router selected real authoritative and fast Workers in unminified bundle
+ok 2 - real Chromium standalone router selected real authoritative and fast Workers in minified bundle
+not ok 3 - cross-calculation-day authoritative Worker request survives prior verification idle-shutdown
+  # unminified: AbortError ERR_ENGINE_TERMINATED "authoritative was stopped." after 512 ms
+  # minified: AbortError ERR_ENGINE_TERMINATED "authoritative was stopped." after 518 ms
+ok 4 - explicit router retry restores a valid authoritative result in both bundles
+not ok 5 - direct browser module Worker protocol independently completed
+  # BLOCKED_BY_INFRASTRUCTURE: managed Chromium policy blocks local HTTP/private-address/file navigation; blob-module Worker from opaque about:blank origin failed to initialize and is not treated as product evidence.
+1..5
