@@ -1,0 +1,41 @@
+{
+  "stage": "Update 8 Stage 7 focused router repair",
+  "repository": "Sargon17-Green/pastafari-calendar",
+  "baselineMainCommit": "547f07cae63ff5c20073f5b2ede2b33fbee97ea6",
+  "productionAlignment": {
+    "stage7Baseline": "c16c9c14c1fe0233d9bb74b94824410915315a00",
+    "mainSinceBaseline": "artifacts/checksum-only before this repair",
+    "productionEquivalentBeforeRepair": true
+  },
+  "defect": {
+    "id": "ROUTER_IDLE_SHUTDOWN_INFLIGHT_AUTHORITATIVE",
+    "baselineReproduction": {
+      "result": "FAIL_WITH_REPRODUCTION",
+      "errorName": "AbortError",
+      "errorCode": "ERR_ENGINE_TERMINATED",
+      "message": "authoritative was stopped."
+    },
+    "rootCause": "_scheduleAuthoritativeShutdown() considered verifying/authoritative-only states but ignored state.authoritativeRequests, allowing the idle timer to terminate the authoritative worker during an unverified bootstrap conversion for a new calculation day."
+  },
+  "fix": {
+    "canonicalSource": "browser/pastafari-calendar-router-core.js",
+    "behavior": "An idle-shutdown timer now treats any non-empty state.authoritativeRequests map as an in-flight authoritative request, defers termination, and reschedules the idle check. Normal idle termination is preserved.",
+    "publicApiChanged": false
+  },
+  "tests": {
+    "focusedConcurrency": {"tests": 8, "pass": 8, "fail": 0},
+    "routerMatrix": {"tests": 28, "pass": 28, "fail": 0},
+    "npmTest": {"tests": 199, "pass": 195, "fail": 0, "skipped": 4}
+  },
+  "distribution": {
+    "canonicalStandaloneRebuildLocal": "BLOCKED_BY_INFRASTRUCTURE",
+    "reason": "Locked esbuild dependency is not present; npm ci cannot complete because the execution environment has no usable outbound DNS/network.",
+    "manualGeneratedBundleEditing": false,
+    "committedStandaloneBundlesStillOld": true,
+    "ciWorkflow": ".github/workflows/update-08-stage-07-router-fix.yml",
+    "expectedCiArtifact": "update-08-stage-07-router-fix-generated"
+  },
+  "status": "SOURCE_FIX_VERIFIED_AWAITING_CANONICAL_STANDALONE_REBUILD",
+  "stage7Result": "CROSS_ENVIRONMENT_VERIFICATION_FAILED_UNTIL_REBUILD_AND_RERUN",
+  "readyForStage8": false
+}

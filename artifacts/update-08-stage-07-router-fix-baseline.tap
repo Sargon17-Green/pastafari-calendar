@@ -1,0 +1,57 @@
+TAP version 13
+# Subtest: requests arriving during verification keep their own target day
+ok 1 - requests arriving during verification keep their own target day
+  ---
+  duration_ms: 184.277521
+  type: 'test'
+  ...
+# Subtest: verification state is isolated for every calculation day
+ok 2 - verification state is isolated for every calculation day
+  ---
+  duration_ms: 175.546401
+  type: 'test'
+  ...
+# Subtest: identical concurrent authoritative conversions share one request
+ok 3 - identical concurrent authoritative conversions share one request
+  ---
+  duration_ms: 27.345979
+  type: 'test'
+  ...
+# Subtest: a cutlet request made during verification returns the requested cutlet
+ok 4 - a cutlet request made during verification returns the requested cutlet
+  ---
+  duration_ms: 185.576427
+  type: 'test'
+  ...
+# Subtest: many consumers sharing one router do not leak results between calls
+ok 5 - many consumers sharing one router do not leak results between calls
+  ---
+  duration_ms: 27.273901
+  type: 'test'
+  ...
+# Subtest: authoritative idle shutdown does not terminate a bootstrap request for a new calculation day
+not ok 6 - authoritative idle shutdown does not terminate a bootstrap request for a new calculation day
+  ---
+  duration_ms: 192.682998
+  type: 'test'
+  location: '/mnt/data/stage7_repo/pastafari-calendar-main/test/router-concurrency.test.js:317:1'
+  failureType: 'testCodeFailure'
+  error: 'authoritative was stopped.'
+  code: 'ERR_ENGINE_TERMINATED'
+  name: 'AbortError'
+  stack: |-
+    createRouterError (file:///mnt/data/stage7_repo/pastafari-calendar-main/browser/pastafari-engine-client.js:16:17)
+    PastafariEngineClient.terminate (file:///mnt/data/stage7_repo/pastafari-calendar-main/browser/pastafari-engine-client.js:368:9)
+    Timeout._onTimeout (file:///mnt/data/stage7_repo/pastafari-calendar-main/browser/pastafari-calendar-router-core.js:644:29)
+    listOnTimeout (node:internal/timers:588:17)
+    process.processTimers (node:internal/timers:523:7)
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 5
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 843.81003

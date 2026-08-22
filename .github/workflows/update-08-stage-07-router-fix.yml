@@ -1,0 +1,133 @@
+name: Update 8 Stage 7 Router Fix Rebuild
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - browser/pastafari-calendar-router-core.js
+      - test/router-concurrency.test.js
+      - verification/update8/run-stage-07-standalone-router-race.mjs
+      - .github/workflows/update-08-stage-07-router-fix.yml
+
+permissions:
+  contents: read
+
+jobs:
+  rebuild-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Focused router regressions
+        shell: bash
+        run: |
+          set -o pipefail
+          node --test \
+            test/router-concurrency.test.js \
+            test/router-cache-lifecycle.test.js \
+            test/router-fallback.test.js \
+            test/router-memory-bounds.test.js \
+            | tee artifacts/update-08-stage-07-router-fix-router.tap
+
+      - name: Fast project regression suite
+        shell: bash
+        run: |
+          set -o pipefail
+          npm test | tee artifacts/update-08-stage-07-router-fix-npm-test.tap
+
+      - name: Canonical standalone rebuild
+        shell: bash
+        run: |
+          set -o pipefail
+          npm run build:standalone -- \
+            --report artifacts/update-08-stage-07-router-fix-build.json \
+            | tee artifacts/update-08-stage-07-router-fix-build.log
+
+      - name: Verify generated standalone scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          actual="$(git diff --name-only -- browser/standalone | sort)"
+          expected="$(printf '%s\n' \
+            browser/standalone/pastafari-date.js \
+            browser/standalone/pastafari-date.min.js | sort)"
+          if [[ "$actual" != "$expected" ]]; then
+            echo "Unexpected standalone diff after canonical rebuild" >&2
+            printf 'Expected:\n%s\nActual:\n%s\n' "$expected" "$actual" >&2
+            exit 1
+          fi
+          sha256sum \
+            browser/standalone/pastafari-date.js \
+            browser/standalone/pastafari-date.min.js \
+            | tee artifacts/update-08-stage-07-router-fix-generated-sha256sums.txt
+
+      - name: Standalone static tests
+        shell: bash
+        run: |
+          set -o pipefail
+          node --test test/standalone-build.test.js \
+            | tee artifacts/update-08-stage-07-router-fix-standalone-build.tap
+
+      - name: Install Chromium for real standalone runtime
+        run: npx playwright install --with-deps chromium
+
+      - name: Resolve Playwright Chromium path
+        shell: bash
+        run: |
+          node --input-type=module -e "import { chromium } from 'playwright'; console.log('CHROMIUM_PATH=' + chromium.executablePath())" >> "$GITHUB_ENV"
+
+      - name: Re-run Stage 7 standalone router reproduction
+        shell: bash
+        env:
+          STAGE7_ROUTER_RACE_OUTPUT: artifacts/update-08-stage-07-router-fix-standalone-router-race.json
+        run: |
+          set -o pipefail
+          node verification/update8/run-stage-07-standalone-router-race.mjs \
+            | tee artifacts/update-08-stage-07-router-fix-standalone-runtime.log
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const r = JSON.parse(fs.readFileSync(
+            'artifacts/update-08-stage-07-router-fix-standalone-router-race.json',
+            'utf8',
+          ));
+          if (r.result !== 'PASS' || r.reproduced || !r.unminified?.runtime?.switchOk || !r.minified?.runtime?.switchOk) {
+            console.error(JSON.stringify(r, null, 2));
+            process.exit(1);
+          }
+          NODE
+
+      - name: Package generated standalone handoff
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/update-08-stage-07-router-fix-generated/browser/standalone
+          cp browser/standalone/pastafari-date.js \
+            artifacts/update-08-stage-07-router-fix-generated/browser/standalone/
+          cp browser/standalone/pastafari-date.min.js \
+            artifacts/update-08-stage-07-router-fix-generated/browser/standalone/
+
+      - name: Upload generated bundles and evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: update-08-stage-07-router-fix-generated
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            artifacts/update-08-stage-07-router-fix-*.json
+            artifacts/update-08-stage-07-router-fix-*.log
+            artifacts/update-08-stage-07-router-fix-*.tap
+            artifacts/update-08-stage-07-router-fix-*.txt
+            artifacts/update-08-stage-07-router-fix-generated/browser/standalone/pastafari-date.js
+            artifacts/update-08-stage-07-router-fix-generated/browser/standalone/pastafari-date.min.js

@@ -636,14 +636,23 @@ export class PastafariCalendarRouterCore {
   _scheduleAuthoritativeShutdown() {
     clearTimeout(this._authoritativeShutdownTimer);
     this._authoritativeShutdownTimer = setTimeout(() => {
-      const requiresAuthoritative = [...this._states.values()].some((state) => (
+      this._authoritativeShutdownTimer = null;
+      const states = [...this._states.values()];
+      const requiresAuthoritative = states.some((state) => (
         state.status === "verifying" || state.status === "authoritative-only"
       ));
-      if (!requiresAuthoritative) {
-        incrementDiagnosticCounter("router.authoritative-idle-shutdown");
-        this._authoritative.terminate();
+      if (requiresAuthoritative) return;
+
+      const hasInFlightAuthoritativeRequest = states.some(
+        (state) => state.authoritativeRequests.size > 0,
+      );
+      if (hasInFlightAuthoritativeRequest) {
+        this._scheduleAuthoritativeShutdown();
+        return;
       }
-      this._authoritativeShutdownTimer = null;
+
+      incrementDiagnosticCounter("router.authoritative-idle-shutdown");
+      this._authoritative.terminate();
     }, this._authoritativeIdleShutdownMs);
   }
 }

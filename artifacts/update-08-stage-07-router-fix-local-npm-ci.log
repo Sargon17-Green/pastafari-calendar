@@ -1,0 +1,22 @@
+Local canonical rebuild infrastructure evidence
+
+Node: v22.16.0
+npm: 10.9.2
+
+Attempt:
+  npm ci --ignore-scripts
+Result:
+  external execution timeout after 120 seconds
+  no package installation completed
+
+Direct network probe:
+  curl -fL https://esbuild.github.io/dl/v0.28.2
+Result:
+  curl: (6) Could not resolve host: esbuild.github.io
+
+Local esbuild executable/module search:
+  no usable esbuild installation found
+
+Conclusion:
+  canonical standalone rebuild is BLOCKED_BY_INFRASTRUCTURE locally.
+  Generated standalone production files were not edited manually.

@@ -313,3 +313,74 @@ test("many consumers sharing one router do not leak results between calls", asyn
     assert.deepEqual(results[index], calendarValue(targetJdn, calculationJdn));
   }
 });
+
+test("authoritative idle shutdown does not terminate a bootstrap request for a new calculation day", async (t) => {
+  const router = new PastafariCalendarRouter({ authoritativeIdleShutdownMs: 20 });
+  t.after(() => router.dispose());
+
+  const firstCalculationJdn = 1_200n;
+  const secondCalculationJdn = 1_201n;
+  const firstTargetJdn = 500n;
+  const secondTargetJdn = 501n;
+
+  assert.deepEqual(
+    await router.convert(firstTargetJdn, firstCalculationJdn),
+    calendarValue(firstTargetJdn, firstCalculationJdn),
+  );
+  await waitForStatus(router, firstCalculationJdn, "verified");
+
+  const second = await router.convert(secondTargetJdn, secondCalculationJdn);
+  assert.deepEqual(second, calendarValue(secondTargetJdn, secondCalculationJdn));
+
+  await waitForStatus(router, secondCalculationJdn, "verified");
+  assert.equal(router.getStatus(secondCalculationJdn).status, "verified");
+});
+
+test("authoritative idle shutdown preserves concurrent bootstrap requests", async (t) => {
+  const router = new PastafariCalendarRouter({ authoritativeIdleShutdownMs: 20 });
+  t.after(() => router.dispose());
+
+  const verifiedCalculationJdn = 1_300n;
+  await router.convert(600n, verifiedCalculationJdn);
+  await waitForStatus(router, verifiedCalculationJdn, "verified");
+
+  const calculationJdn = 1_301n;
+  const [first, second] = await Promise.all([
+    router.convert(601n, calculationJdn),
+    router.convert(604n, calculationJdn),
+  ]);
+
+  assert.deepEqual(first, calendarValue(601n, calculationJdn));
+  assert.deepEqual(second, calendarValue(604n, calculationJdn));
+  await waitForStatus(router, calculationJdn, "verified");
+});
+
+test("authoritative idle shutdown still terminates the worker after requests become idle", async (t) => {
+  const router = new PastafariCalendarRouter({ authoritativeIdleShutdownMs: 20 });
+  t.after(() => router.dispose());
+
+  const firstCalculationJdn = 1_400n;
+  await router.convert(700n, firstCalculationJdn);
+  await waitForStatus(router, firstCalculationJdn, "verified");
+
+  const firstWorkerId = requestLog.find((item) => (
+    item.engine === "authoritative"
+    && item.operation === "convert"
+    && item.payload.calculationJdn === firstCalculationJdn
+  ))?.workerId;
+  assert.ok(firstWorkerId, "The first authoritative worker was not observed.");
+
+  await sleep(60);
+
+  const secondCalculationJdn = 1_401n;
+  await router.convert(701n, secondCalculationJdn);
+  const secondWorkerId = requestLog.find((item) => (
+    item.engine === "authoritative"
+    && item.operation === "convert"
+    && item.payload.calculationJdn === secondCalculationJdn
+  ))?.workerId;
+
+  assert.ok(secondWorkerId, "The second authoritative worker was not observed.");
+  assert.notEqual(secondWorkerId, firstWorkerId, "The idle authoritative worker was not terminated.");
+  await waitForStatus(router, secondCalculationJdn, "verified");
+});

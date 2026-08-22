@@ -5,6 +5,7 @@ fed2626156ec45931c566beaf4f11ab4ef47240838ef6e8809c6988e7a2dec8a  ./.github/work
 cf1d7536f8684a3b7b60f5049a29bde0ca85cfcad35541144409127bc95a8fcd  ./.github/workflows/release-verification.yml
 ee54359b8bdaacc2050566ce3d25ac03c5e930c00eeb1bca9145e359ba2f03b9  ./.github/workflows/test.yml
 d66517372fa259f2bebf4f261dfd040c9a3b001b821488e26798403cd3a63b0d  ./.github/workflows/update-08-stage-04a.yml
+063cce87a26840ce3d39ec37160716c69c3f9718595657bd33effb6c75eb44f0  ./.github/workflows/update-08-stage-07-router-fix.yml
 a8cab7c57509c67568e04be2945491fb73fe1c0b41c933b2ae5c6042bcf4fa3e  ./.github/workflows/visual.yml
 55824e6894cba83ba09f30abed3d55553d6f6cb24c110e5911e7f434cd2c3901  ./61fe/22ceb387c793e7d3a04faf662fa5507d62bd.gz
 491f0f722a78da4dd0bce0834f7c2a4fe1ac8f33d93072dd2b11ed8ae0d9cb90  ./CLEAN-ROOM-VALIDATION-2026-08-15.md
@@ -123,6 +124,14 @@ fd717808f7183a5a987e3558020b345d1246a46fef30c6988bdc33469a4eea3a  ./artifacts/up
 6ae336f57ead411e3a42a67ad9768496b9050140cfe5c0871cb65008342fcbc7  ./artifacts/update-08-stage-07-production-hashes-after.txt
 9a44779d8fe6f83a2beea5ba599b0d91e31b6be823ea46a5fedabf9850f521bd  ./artifacts/update-08-stage-07-report.md
 d3e999967ba6d48d31ebf89f99d869d7aa047cc68bcc92d859db584bc487fe7a  ./artifacts/update-08-stage-07-router-cache.tap
+ab6fd621dfbd8bfdb3e55fdbd0fb3ad9a89e32dfb3655fe9095586e9bf65251a  ./artifacts/update-08-stage-07-router-fix-baseline.tap
+fd673c839f3b6be12672c0af21c082e3b1357c1357e2528d99841fe8c575e6af  ./artifacts/update-08-stage-07-router-fix-focused.tap
+be12832068d8fdb1b58ea32bd020b853bdf3137ad50d219865d54a797332bd91  ./artifacts/update-08-stage-07-router-fix-local-npm-ci.log
+78f01bb15e090e4e49700f10005fc40aab87a0c31a6b7a6f1ae90d3413978d47  ./artifacts/update-08-stage-07-router-fix-npm-test.tap
+8d6061262b2d3c137a67792ae8971586b7bcf8ec5ee214b0eba126e127aa43f5  ./artifacts/update-08-stage-07-router-fix-report.md
+bc20169f796d2eb8c63ba150923e5e258cd4f26614f9c39af95363b7958bfb4f  ./artifacts/update-08-stage-07-router-fix-router.tap
+c3e0f55b42b0f80259a9b35c04b7319b653812fe7f1b3f34f0c7c255c921ba18  ./artifacts/update-08-stage-07-router-fix-sha256sums.txt
+809460e8f528f1a66a4555cdf64a72719418173c80504c767a39c1170481813f  ./artifacts/update-08-stage-07-router-fix.json
 0a6faf47f3463882e2ef7d0937924234006b251d090011f27af90c92d9692687  ./artifacts/update-08-stage-07-sha256-check.log
 4763ac29eebe102cd24b68c8d8e5c70eccec20a39cf7b400caa905a789c052fb  ./artifacts/update-08-stage-07-sha256sums.txt
 7257f00e3d64ff8b72ac84fec89e541f0c1456f577ca3e5a1f9c6c3e1bfff08b  ./artifacts/update-08-stage-07-standalone-build-test.tap
@@ -155,7 +164,7 @@ f90a569dc21aacb1ee1b0f5463402f36f42426ca398c6d5e3a7d98dc61d44d59  ./browser/gene
 36fed61386d9c545a191393e4bfd647ccefbc26fef11bec88faa708ed69b77ea  ./browser/pastafari-calendar-core-chronicle.js
 4dc4fd6a3eb3a061d6fae88c1404117df472439e03b027e34798cb447a3eb365  ./browser/pastafari-calendar-core.js
 03de7a8125c1c4c63a9946b531b754c4828adc9f998ddd8b7a5ef4b5adcc4473  ./browser/pastafari-calendar-fast.js
-ca33d7645c942249e2248140a35e5a9af3ca9fc40ad42a53382819de445977c6  ./browser/pastafari-calendar-router-core.js
+ca2e0544c9e73076cac24d218431e535d19a155298bdbf002b5e98bea3af5b03  ./browser/pastafari-calendar-router-core.js
 5ed6d25d1a7aa07848c80c3f6c17040a5818e985ec64936f9d7a93a6c6d428e6  ./browser/pastafari-calendar-router.js
 1caab6e0c5607ccd15fe265ccad50de44addb96d5948d59475f15a4e5272da6c  ./browser/pastafari-constraints-client.js
 ae38cc2f5a8de405ad9387e773e5968389185f7ab3b9985b166b8a51779d0b61  ./browser/pastafari-constraints.js
@@ -630,7 +639,7 @@ fa0a3f10edf08e2708a311e905df439f444871f16f3772facd971dfd4d5caa54  ./test/reverse
 c235976c5dbf25f0362dfa7ac531c2b668c3d09d9999472f31b9fde74e42fa0d  ./test/reverse-search-controller.test.js
 c0339026a1b5a9d6b4f7fa3f002e7095b0fd7c6221f52c87eedc8b6ea9d6c13d  ./test/reverse.test.js
 4390fddccfdb22ab16cbad0df6c91ad407d83a823381a4c436058e02c10eb027  ./test/router-cache-lifecycle.test.js
-e3482d2c648d63478c3f99f92514204e68fff6682b63455bf95e736bd74697be  ./test/router-concurrency.test.js
+6d8298dfccd1b25069b3455dceb066ba2c8949634ff906bdd9fdcc136e13b631  ./test/router-concurrency.test.js
 7920f55b6648d828f87c4961e6ad694b9e0baddef79207e3fe8457354810a0fd  ./test/router-fallback.test.js
 1d46e485dcfc23f4f66db89b19d65c09feae942b9594fe21747d9931b0dbff9e  ./test/router-memory-bounds.test.js
 e566520b12afea301de0e2fd04ddb3725d5cf6e223df1e2540086ee12e21a81d  ./test/runtime-patching.test.js
@@ -721,8 +730,7 @@ a8cde151f927d0e2ba24b71e50763a7d605c6b81948a7fe721ce4f3d006a10dc  ./verification
 e875ef1f54c50327c10d73386f4767809dd49e916d80efd1839d1541417762a3  ./verification/update8/run-stage-07-compatibility.mjs
 a96d0d1f9c7514666a211f6a66f2053cb3bf10171459212ef1f3ff7487113466  ./verification/update8/run-stage-07-fast-history.mjs
 ab65431c2734e5515cefe9ed5f10150662c9a0829e9136227e5accbe9a55bcab  ./verification/update8/run-stage-07-node-public.mjs
-fbf8322d2f3dbf795446ab042388656ddd4d01875ef662ec145813dc2c39cdb6  ./verification/update8/run-stage-07-standalone-router-race.mjs
-2f4b3d92760aa3114e6960d88efc10eda4d869ba494bafc15680cda832b84b59  ./verification/update8/stage-07-cross-environment-vectors.json
+faf4fe4024a1ddbd3446df0c1cb8f175b1db7e867cb5cdad6ae9f1ed70c21f17  ./verification/update8/run-stage-07-standalone-router-race.mjs
 9d8b43be5eb6673f88e9285097a27c2b4acd718c0bfc8770866d073ca5d2890c  ./verification/update8/stage-01-baseline.json
 db84dbe05c955ae32b98c6120c5ecebc71a2c7e330a02339cdf5e05c09e4b79f  ./verification/update8/stage-01-reference-safe.tap
 4d95572d02d01cb543c8657346c26c35b6fb88d8aa2c9b7339785f325f6f1e2e  ./verification/update8/stage-01-report.md
@@ -735,3 +743,5 @@ d3dd1f14b992e16c8125b3f4954475d66dc22216e38fd7d51d91d453ba3ef0fd  ./verification
 6e8453940cd2fffe3a8b3dceb65d27793aea52b72087f4ba39dd68c323abc632  ./verification/update8/stage-03-snapshot-schema.json
 6c3073811bbe920ef3dccff7204bbee38679a795a5d1ecdd02e961ba24c17076  ./verification/update8/stage-04a-completion-delta-sha256sums.txt
 3781224343bc6d075ee6b2f5b4414a5950d4993be77711955a70f7e6dbf77bb0  ./verification/update8/stage-04a-correction-v2-sha256sums.txt
+2f4b3d92760aa3114e6960d88efc10eda4d869ba494bafc15680cda832b84b59  ./verification/update8/stage-07-cross-environment-vectors.json
+48073b622596271009e4927751872aec9264bef40081080a86c20c2ce3b3d619  ./verification/update8/stage-07-router-fix-delta-sha256sums.txt
