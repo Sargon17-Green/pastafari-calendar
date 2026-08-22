@@ -1,0 +1,850 @@
+{
+  "schema": "pastafari.update8.stage05.fix.v1",
+  "generatedAt": "2026-08-22T20:58:05.763188Z",
+  "repository": "Sargon17-Green/pastafari-calendar",
+  "preFixCommit": "2bc2d97bd5638b498014ed8c1c925fb735819a6b",
+  "stage5SourceCommit": "f52c4c3e754ffe9deb14b1c09575635ee848f385",
+  "postFixTree": "sha256:b42f832a56588431c55aab7806780e84eea9cc284b640203623e173ab5ea97bc",
+  "packageVersion": "1.3.0",
+  "nodeVersion": "v22.16.0",
+  "npmVersion": "10.9.2",
+  "workingTree": "archive workspace without .git; main alignment and CI build provenance verified through GitHub",
+  "productionFilesChanged": [
+    {
+      "path": "src/5efdcc3e6fb071cbaffdcb117507a169dd76.js",
+      "sha256": "99c7a18b015b669654eec06b49740df1b884465b43702b9705e4f6d9fd87ede9"
+    },
+    {
+      "path": "browser/pastafari-calendar-core-chronicle.js",
+      "sha256": "36fed61386d9c545a191393e4bfd647ccefbc26fef11bec88faa708ed69b77ea"
+    },
+    {
+      "path": "browser/standalone/pastafari-date.js",
+      "sha256": "532ccdd809633ee79aab618bda9b98b48d740798436fd1c1917f3fcf3340136d"
+    },
+    {
+      "path": "browser/standalone/pastafari-date.min.js",
+      "sha256": "a78dfc01c8dd250e5639972756aadbb80e7bb9e77cc5bd9b8f0b68e1793f0b6a"
+    }
+  ],
+  "design": {
+    "note": "artifacts/update-08-stage-05-design.md",
+    "targetFamilies": [
+      "STATE:generated:shared-invocation-arena",
+      "STATE:generated:identity-map-and-counter"
+    ],
+    "scope": "minimal generated-loader compensation; no public API change and no broad runtime refactor"
+  },
+  "arenaFix": {
+    "ownershipBoundary": "Dynamic01 common invocation executor entry length",
+    "mechanism": "On exceptional exit, best-effort truncate the shared arena back to the entry length owned by that invocation, then rethrow the original exception. Existing normal-return cleanup is retained.",
+    "globalBaselineUsed": false,
+    "nestingSafe": true,
+    "retainedTailAfterFailure": false,
+    "evidence": "artifacts/update-08-stage-05-transactionality.json"
+  },
+  "identityFix": {
+    "ownershipBoundary": "Dynamic00 generated public construct transaction",
+    "mechanism": "Per-construction nested transaction stack journals only newly allocated identity keys and the entry counter. Success transfers owned keys to the parent or commits at top level; failure deletes only owned new keys and restores the entry counter when cleanup succeeds.",
+    "weakMapEnumerationUsed": false,
+    "naiveCounterDecrementUsed": false,
+    "preexistingMappingsJournaled": false,
+    "evidence": "artifacts/update-08-stage-05-transactionality.json"
+  },
+  "naturalFailures": [
+    {
+      "id": "F_BAHAI_INVALID_VARIANT",
+      "arenaDelta": 0,
+      "holesDelta": 0,
+      "failedNewIdentityAbsentAfter": true,
+      "exception": {
+        "name": "RangeError",
+        "message": "variant של הלוח הבהאי חייב להיות \"tehran-equinox\" או \"western-arithmetic\""
+      },
+      "exceptionContractPreserved": true,
+      "repeated1000": {
+        "arenaDelta": 0,
+        "holesDelta": 0
+      }
+    },
+    {
+      "id": "F_GREGORIAN_NONINTEGER_MONTH",
+      "arenaDelta": 0,
+      "holesDelta": 0,
+      "failedNewIdentityAbsentAfter": null,
+      "exception": {
+        "name": "TypeError",
+        "message": "החודש והיום הגריגוריאניים חייבים להיות מספרים שלמים"
+      },
+      "exceptionContractPreserved": true,
+      "repeated1000": {
+        "arenaDelta": 0,
+        "holesDelta": 0
+      }
+    },
+    {
+      "id": "F_HINDU_INVALID_SCHEME",
+      "arenaDelta": 0,
+      "holesDelta": 0,
+      "failedNewIdentityAbsentAfter": true,
+      "exception": {
+        "name": "RangeError",
+        "message": "אין לוח הינדי יחיד; scheme חייב להיות \"old-solar\" או \"old-lunar\""
+      },
+      "exceptionContractPreserved": true,
+      "repeated1000": {
+        "arenaDelta": 0,
+        "holesDelta": 0
+      }
+    },
+    {
+      "id": "F_ISLAMIC_INVALID_VARIANT",
+      "arenaDelta": 0,
+      "holesDelta": 0,
+      "failedNewIdentityAbsentAfter": true,
+      "exception": {
+        "name": "RangeError",
+        "message": "לוח היג׳רי אינו חד־משמעי; variant חייב להיות \"civil\" או \"umalqura\""
+      },
+      "exceptionContractPreserved": true,
+      "repeated1000": {
+        "arenaDelta": 0,
+        "holesDelta": 0
+      }
+    },
+    {
+      "id": "F_JAPANESE_NONSTRING_ERA",
+      "arenaDelta": 0,
+      "holesDelta": 0,
+      "failedNewIdentityAbsentAfter": null,
+      "exception": {
+        "name": "TypeError",
+        "message": "שם התקופה היפנית חייב להיות מחרוזת"
+      },
+      "exceptionContractPreserved": true,
+      "repeated1000": {
+        "arenaDelta": 0,
+        "holesDelta": 0
+      }
+    },
+    {
+      "id": "F_MONTH_WEAVING_NONPOSITIVE",
+      "arenaDelta": 0,
+      "holesDelta": 0,
+      "failedNewIdentityAbsentAfter": true,
+      "exception": {
+        "name": "RangeError",
+        "message": "אורכי החודשים חייבים להיות חיוביים"
+      },
+      "exceptionContractPreserved": true,
+      "repeated1000": {
+        "arenaDelta": 0,
+        "holesDelta": 0
+      }
+    },
+    {
+      "id": "F_PASTAFARI_INVALID_TODAY_PROVIDER",
+      "arenaDelta": 0,
+      "holesDelta": 0,
+      "failedNewIdentityAbsentAfter": true,
+      "exception": {
+        "name": "TypeError",
+        "message": "todayProvider חייב להיות פונקציה"
+      },
+      "exceptionContractPreserved": true,
+      "repeated1000": {
+        "arenaDelta": 0,
+        "holesDelta": 0
+      }
+    },
+    {
+      "id": "F_SOLAR_HIJRI_INVALID_VARIANT",
+      "arenaDelta": 0,
+      "holesDelta": 0,
+      "failedNewIdentityAbsentAfter": true,
+      "exception": {
+        "name": "RangeError",
+        "message": "variant של הלוח ההיג׳רי השמשי חייב להיות \"official\" או \"arithmetic-2820\""
+      },
+      "exceptionContractPreserved": true,
+      "repeated1000": {
+        "arenaDelta": 0,
+        "holesDelta": 0
+      }
+    },
+    {
+      "id": "F_RAW_PASTAFARI_DEFAULT",
+      "arenaDelta": 0,
+      "holesDelta": 0,
+      "failedNewIdentityAbsentAfter": null,
+      "exception": {
+        "name": "ReferenceError",
+        "message": "localToday is not defined"
+      },
+      "exceptionContractPreserved": true,
+      "repeated1000": {
+        "arenaDelta": 0,
+        "holesDelta": 0
+      }
+    }
+  ],
+  "faultInjection": [
+    {
+      "constructionId": "CTOR:authoritative:GregorianDate",
+      "checkpoint": "GEN_WRAP_ENTRY",
+      "category": "ENTRY",
+      "repeat": 1,
+      "stateAlreadyMutated": false,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:GregorianDate",
+      "checkpoint": "GEN_WRAP_AFTER_RESERVATION",
+      "category": "AFTER_RESERVATION",
+      "repeat": 1,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:GregorianDate",
+      "checkpoint": "GEN_WRAP_AFTER_RESERVATION",
+      "category": "AFTER_RESERVATION",
+      "repeat": 2,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:GregorianDate",
+      "checkpoint": "GEN_WRAP_AFTER_RESERVATION",
+      "category": "AFTER_RESERVATION",
+      "repeat": 3,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:GregorianDate",
+      "checkpoint": "GEN_RESERVE_AFTER_BASE",
+      "category": "AFTER_INNER_BASE_RESERVATION",
+      "repeat": 1,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:GregorianDate",
+      "checkpoint": "GEN_RESERVE_AFTER_ARGUMENTS",
+      "category": "AFTER_ARGUMENT_MEASUREMENT",
+      "repeat": 1,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:GregorianDate",
+      "checkpoint": "GEN_WRAP_AFTER_TARGET",
+      "category": "AFTER_TARGET_CONSTRUCTION",
+      "repeat": 1,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:GregorianDate",
+      "checkpoint": "GEN_WRAP_BEFORE_CLEANUP",
+      "category": "BEFORE_RETURN_CLEANUP",
+      "repeat": 1,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:GregorianDate",
+      "checkpoint": "GEN_WRAP_AFTER_CLEANUP",
+      "category": "AFTER_OUTER_CLEANUP",
+      "repeat": 1,
+      "stateAlreadyMutated": false,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:GregorianDate",
+      "checkpoint": "GREGORIAN_AFTER_VALIDATION",
+      "category": "CONSTRUCTOR_BODY",
+      "repeat": 1,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:GregorianDate",
+      "checkpoint": "GREGORIAN_AFTER_YEAR_WRITE",
+      "category": "CONSTRUCTOR_BODY",
+      "repeat": 1,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:GregorianDate",
+      "checkpoint": "GREGORIAN_AFTER_MONTH_WRITE",
+      "category": "CONSTRUCTOR_BODY",
+      "repeat": 1,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:GregorianDate",
+      "checkpoint": "GREGORIAN_AFTER_DAY_WRITE",
+      "category": "CONSTRUCTOR_BODY",
+      "repeat": 1,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:IslamicDate",
+      "checkpoint": "ISLAMIC_AFTER_VALIDATION",
+      "category": "CONSTRUCTOR_BODY",
+      "repeat": 1,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:IslamicDate",
+      "checkpoint": "ISLAMIC_AFTER_YEAR_WRITE",
+      "category": "CONSTRUCTOR_BODY",
+      "repeat": 1,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:IslamicDate",
+      "checkpoint": "ISLAMIC_AFTER_MONTH_WRITE",
+      "category": "CONSTRUCTOR_BODY",
+      "repeat": 1,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:IslamicDate",
+      "checkpoint": "ISLAMIC_AFTER_DAY_WRITE",
+      "category": "CONSTRUCTOR_BODY",
+      "repeat": 1,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:IslamicDate",
+      "checkpoint": "ISLAMIC_AFTER_VARIANT_WRITE",
+      "category": "CONSTRUCTOR_BODY",
+      "repeat": 1,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:IslamicDate",
+      "checkpoint": "ISLAMIC_BEFORE_FINALIZATION",
+      "category": "CONSTRUCTOR_BODY",
+      "repeat": 1,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:IslamicDate",
+      "checkpoint": "ISLAMIC_AFTER_FINALIZATION",
+      "category": "CONSTRUCTOR_BODY",
+      "repeat": 1,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:MonthWeavingCounter",
+      "checkpoint": "MONTH_WEAVING_AFTER_VALIDATION",
+      "category": "CONSTRUCTOR_BODY_OR_NESTED_HELPER",
+      "repeat": 1,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:MonthWeavingCounter",
+      "checkpoint": "MONTH_WEAVING_AFTER_LENGTHS_WRITE",
+      "category": "CONSTRUCTOR_BODY_OR_NESTED_HELPER",
+      "repeat": 1,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:MonthWeavingCounter",
+      "checkpoint": "MONTH_WEAVING_AFTER_MONTHCOUNT_WRITE",
+      "category": "CONSTRUCTOR_BODY_OR_NESTED_HELPER",
+      "repeat": 1,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:MonthWeavingCounter",
+      "checkpoint": "MONTH_WEAVING_AFTER_TOTALLENGTH_WRITE",
+      "category": "CONSTRUCTOR_BODY_OR_NESTED_HELPER",
+      "repeat": 1,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:MonthWeavingCounter",
+      "checkpoint": "MONTH_WEAVING_AFTER_PREFIX_WRITE",
+      "category": "CONSTRUCTOR_BODY_OR_NESTED_HELPER",
+      "repeat": 1,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:PastafariCalendar",
+      "checkpoint": "PASTAFARI_AFTER_VALIDATION",
+      "category": "NESTED_CONSTRUCTION_OR_ALLOCATION",
+      "repeat": 1,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:PastafariCalendar",
+      "checkpoint": "PASTAFARI_AFTER_TODAY_PROVIDER_WRITE",
+      "category": "NESTED_CONSTRUCTION_OR_ALLOCATION",
+      "repeat": 1,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:PastafariCalendar",
+      "checkpoint": "PASTAFARI_BEFORE_GATE_INDEX_CONSTRUCTION",
+      "category": "NESTED_CONSTRUCTION_OR_ALLOCATION",
+      "repeat": 1,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:PastafariCalendar",
+      "checkpoint": "PASTAFARI_AFTER_GATE_INDEX_CONSTRUCTION",
+      "category": "NESTED_CONSTRUCTION_OR_ALLOCATION",
+      "repeat": 1,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:PastafariCalendar",
+      "checkpoint": "PASTAFARI_AFTER_ANCHOR_CACHE_ALLOCATION",
+      "category": "NESTED_CONSTRUCTION_OR_ALLOCATION",
+      "repeat": 1,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:PastafariCalendar",
+      "checkpoint": "PASTAFARI_AFTER_YEAR_CACHE_ALLOCATION",
+      "category": "NESTED_CONSTRUCTION_OR_ALLOCATION",
+      "repeat": 1,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:PastafariCalendar",
+      "checkpoint": "PASTAFARI_AFTER_STRUCTURE_CACHE_ALLOCATION",
+      "category": "NESTED_CONSTRUCTION_OR_ALLOCATION",
+      "repeat": 1,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:PastafariCalendar",
+      "checkpoint": "GEN_RESERVE_AFTER_ARGUMENTS",
+      "category": "IDENTITY_METADATA",
+      "repeat": 1,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:PastafariCalendar",
+      "checkpoint": "GEN_RESERVE_AFTER_ARGUMENTS",
+      "category": "IDENTITY_METADATA",
+      "repeat": 2,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    },
+    {
+      "constructionId": "CTOR:authoritative:PastafariCalendar",
+      "checkpoint": "GEN_RESERVE_AFTER_ARGUMENTS",
+      "category": "IDENTITY_METADATA",
+      "repeat": 3,
+      "stateAlreadyMutated": true,
+      "throwObserved": true,
+      "stateRestored": true,
+      "arenaDelta": 0,
+      "mapChanges": 0,
+      "weakKnownChanges": 0,
+      "publicIdentityRestored": true
+    }
+  ],
+  "nestedCases": [
+    {
+      "depth": 1,
+      "finalArenaDelta": 0,
+      "outerKeysCommitted": true,
+      "innerKeysAbsent": true,
+      "allFramesEntryRelative": true
+    },
+    {
+      "depth": 2,
+      "finalArenaDelta": 0,
+      "outerKeysCommitted": true,
+      "innerKeysAbsent": true,
+      "allFramesEntryRelative": true
+    },
+    {
+      "depth": 3,
+      "finalArenaDelta": 0,
+      "outerKeysCommitted": true,
+      "innerKeysAbsent": true,
+      "allFramesEntryRelative": true
+    },
+    {
+      "depth": 5,
+      "finalArenaDelta": 0,
+      "outerKeysCommitted": true,
+      "innerKeysAbsent": true,
+      "allFramesEntryRelative": true
+    },
+    {
+      "depth": 10,
+      "finalArenaDelta": 0,
+      "outerKeysCommitted": true,
+      "innerKeysAbsent": true,
+      "allFramesEntryRelative": true
+    },
+    {
+      "scenario": "inner-failure-then-outer-failure",
+      "beforeInner": 1175755,
+      "afterInner": 1175755,
+      "innerArenaDelta": 0,
+      "finalArenaDelta": 0,
+      "innerKeyAbsent": true,
+      "outerKeyAbsent": true,
+      "exception": {
+        "name": "Stage5OuterFault",
+        "message": "STAGE5_OUTER_FAULT_AFTER_INNER_FAILURE"
+      }
+    }
+  ],
+  "identityCases": [
+    {
+      "case": "preexisting-key",
+      "pass": true,
+      "idBefore": 2,
+      "idAfter": 2
+    },
+    {
+      "case": "same-failed-key-repeated",
+      "pass": true,
+      "iterations": 10
+    },
+    {
+      "case": "distinct-failed-keys",
+      "pass": true,
+      "keys": 3
+    },
+    {
+      "case": "clean-history-sequence",
+      "pass": true,
+      "dirtyBeforeId": 3,
+      "dirtyAfterId": 4,
+      "dirtyGap": 1,
+      "cleanBeforeId": 3,
+      "cleanAfterId": 4,
+      "cleanGap": 1,
+      "equal": true
+    }
+  ],
+  "referenceChecks": [
+    {
+      "name": "reference-oracle",
+      "tests": 19,
+      "pass": 19,
+      "fail": 0,
+      "result": "PASS",
+      "evidence": "artifacts/update-08-stage-05-reference-oracle.tap"
+    },
+    {
+      "name": "canonical-vectors",
+      "vectors": [
+        "foundation_same",
+        "foundation_next",
+        "foundation_previous"
+      ],
+      "result": "PASS",
+      "evidence": "artifacts/update-08-stage-05-canonical-vectors.json"
+    },
+    {
+      "name": "browser-source-parity",
+      "vectors": [
+        "foundation_same",
+        "foundation_next",
+        "foundation_previous"
+      ],
+      "result": "PASS",
+      "evidence": "artifacts/update-08-stage-05-browser-parity.json"
+    },
+    {
+      "name": "canonical-standalone-build",
+      "result": "PASS",
+      "evidence": "artifacts/update-08-stage-05-browser-standalone.json"
+    }
+  ],
+  "regressions": [
+    {
+      "name": "focused-core",
+      "tests": 67,
+      "pass": 63,
+      "fail": 0,
+      "skipped": 4,
+      "result": "PASS",
+      "evidence": "artifacts/update-08-stage-05-core-regressions.tap"
+    },
+    {
+      "name": "npm-test-pre-standalone",
+      "tests": 196,
+      "pass": 192,
+      "fail": 0,
+      "skipped": 4,
+      "result": "PASS",
+      "evidence": "artifacts/update-08-stage-05-npm-test.tap"
+    },
+    {
+      "name": "npm-test-post-standalone",
+      "tests": 196,
+      "pass": 192,
+      "fail": 0,
+      "skipped": 4,
+      "result": "PASS",
+      "evidence": "artifacts/update-08-stage-05-post-standalone-npm-test.tap"
+    },
+    {
+      "name": "runtime-patching",
+      "tests": 21,
+      "pass": 21,
+      "fail": 0,
+      "result": "PASS",
+      "evidence": "artifacts/stage5-runtime-patching.tap"
+    },
+    {
+      "name": "cache-epoch-focused",
+      "tests": 6,
+      "pass": 6,
+      "fail": 0,
+      "result": "PASS",
+      "evidence": "artifacts/stage5-cache-epoch-focused.tap"
+    },
+    {
+      "name": "router-cache-lifecycle",
+      "tests": 11,
+      "pass": 11,
+      "fail": 0,
+      "result": "PASS",
+      "evidence": "artifacts/stage5-router-cache-lifecycle.tap"
+    },
+    {
+      "name": "matched-prefix",
+      "cases": 9,
+      "repetitionsPerPath": 20,
+      "result": "PASS",
+      "evidence": "artifacts/update-08-stage-05-matched-prefix.json"
+    }
+  ],
+  "acceptance": {
+    "twoDefectFamiliesFixed": true,
+    "naturalFailuresArenaNeutral": true,
+    "failures1000NoAccumulation": true,
+    "failedArgumentsNotRetainedInArenaTail": true,
+    "failedNewIdentityKeyAbsent": true,
+    "preexistingIdentityPreserved": true,
+    "failedAllocationsDoNotShiftSequence": true,
+    "nestedInnerFailurePreservesOuterState": true,
+    "outerFailureRestoresCallerEntryState": true,
+    "multiInstanceRegressionPreserved": true,
+    "originalExceptionsPreserved": true,
+    "successSemanticsUnchanged": true,
+    "authoritativeEqualsReference": true,
+    "runtimePatchTestsPass": true,
+    "cacheTransactionTestsPass": true,
+    "publicApiChanged": false,
+    "broadArchitecturalRefactor": false
+  },
+  "limitations": [
+    "Broad fast-vs-authoritative compatibility suite produced no subtest result within the 10-minute outer run window; Stage-5 Group 2 acceptance is reference/oracle + canonical vectors + Node/core regressions, all of which passed. This timed-out heavy suite is not reported as PASS or FAIL.",
+    "This container Chromium is administratively blocked for file:// and 127.0.0.1. A local VM Worker emulation was not accepted as authoritative runtime evidence after exceeding its run window. Cross-environment standalone runtime proof remains Stage 6 scope; no Stage-5 acceptance criterion relies on that emulation."
+  ],
+  "remainingIssues": [
+    "Stage 6 must independently re-prove the fix across the requested environment/matrix set. No known Stage-5 defect remains."
+  ],
+  "result": "FIX_IMPLEMENTED",
+  "readyForStage6": true
+}

@@ -1,0 +1,82 @@
+TAP version 13
+# Subtest: year-ceiling detour rejects forbidden cached candidates in both scan directions
+ok 1 - year-ceiling detour rejects forbidden cached candidates in both scan directions
+  ---
+  duration_ms: 3.988418
+  type: 'test'
+  ...
+# Subtest: an unrelated cached calculation day does not disable a fresh anchor scan
+ok 2 - an unrelated cached calculation day does not disable a fresh anchor scan
+  ---
+  duration_ms: 2.053068
+  type: 'test'
+  ...
+# Subtest: year-ceiling detour poisons all three forbidden lengths but not 5,778
+ok 3 - year-ceiling detour poisons all three forbidden lengths but not 5,778
+  ---
+  duration_ms: 0.688518
+  type: 'test'
+  ...
+# Subtest: year-ceiling detour restores the gate reader after a thrown candidate search
+ok 4 - year-ceiling detour restores the gate reader after a thrown candidate search
+  ---
+  duration_ms: 0.830807
+  type: 'test'
+  ...
+# Subtest: fresh corrected-gate anchor/next/previous candidate counts match the independent reference
+ok 5 - fresh corrected-gate anchor/next/previous candidate counts match the independent reference # SKIP
+  ---
+  duration_ms: 0.424223
+  type: 'test'
+  ...
+# Subtest: real backward-search regression from soak batch 37 case 3
+ok 6 - real backward-search regression from soak batch 37 case 3 # SKIP
+  ---
+  duration_ms: 0.167863
+  type: 'test'
+  ...
+# Subtest: detour-of-a-detour catches the first +1 anchor-matrix row before cardinality
+ok 7 - detour-of-a-detour catches the first +1 anchor-matrix row before cardinality
+  ---
+  duration_ms: 1.598877
+  type: 'test'
+  ...
+# Subtest: detour-of-a-detour restores its nested gate wrapper after a throw and repeated calls
+ok 8 - detour-of-a-detour restores its nested gate wrapper after a throw and repeated calls
+  ---
+  duration_ms: 0.486457
+  type: 'test'
+  ...
+# Subtest: third detour reverses stale cached-boundary poisoning without weakening the real ceiling
+ok 9 - third detour reverses stale cached-boundary poisoning without weakening the real ceiling
+  ---
+  duration_ms: 1.749947
+  type: 'test'
+  ...
+# Subtest: third detour restores its gate wrapper after exceptions and repeated calls
+ok 10 - third detour restores its gate wrapper after exceptions and repeated calls
+  ---
+  duration_ms: 7.617459
+  type: 'test'
+  ...
+# Subtest: multiple consecutive public next/previous selections match the independent reference entry-for-entry
+ok 11 - multiple consecutive public next/previous selections match the independent reference entry-for-entry # SKIP
+  ---
+  duration_ms: 0.270073
+  type: 'test'
+  ...
+# Subtest: new public 5,778 discriminators match reference cardinality and fast final tuple
+ok 12 - new public 5,778 discriminators match reference cardinality and fast final tuple # SKIP
+  ---
+  duration_ms: 0.092551
+  type: 'test'
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 4
+# todo 0
+# duration_ms 204.551251
