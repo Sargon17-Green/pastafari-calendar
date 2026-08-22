@@ -1,0 +1,208 @@
+{
+  "schema": "pastafari.update8.stage04b.nested-reentrancy-isolation.v1",
+  "stage": "4B",
+  "generatedAt": "2026-08-22T19:00:00+03:00",
+  "revision": {
+    "repository": "Sargon17-Green/pastafari-calendar",
+    "branch": "main",
+    "commit": "e2189879a9593c6df7f155a8b3c7bef1af5e207a",
+    "packageVersion": "1.3.0",
+    "workingTree": "remote repository snapshot; literal local git working tree unavailable in this runtime",
+    "productionAlignment": {
+      "productionBase": "81cc54b1e15d8f3c0cd9cc8cb41d07f57fdecddf",
+      "currentAheadBy": 2,
+      "productionCodeChangedSinceBase": false,
+      "note": "81cc54b..e218987 adds only Stage 4C/4D artifacts and verification scripts."
+    }
+  },
+  "alignment": {
+    "stage1Present": true,
+    "stage2aPresent": true,
+    "stage2bPresent": true,
+    "stage3PresentInCurrentRepo": false,
+    "stage3Status": "MISSING_FROM_CURRENT_REPOSITORY; strict Stage-3 artifact/SHA alignment cannot be certified",
+    "stage4cPresent": true,
+    "stage4dPresent": true,
+    "freshLocalCheckoutExecuted": false,
+    "executionEvidencePolicy": "Reuse committed test/fault-injection evidence from production-identical tree because current main differs only by verification/artifact additions."
+  },
+  "evidence": {
+    "regressionTap": {
+      "path": "artifacts/update-08-stage-04c-regression-tests.tap",
+      "tests": 40,
+      "pass": 36,
+      "fail": 0,
+      "skipped": 4
+    },
+    "runtimePatching": {
+      "nestingDepthsPassed": [
+        1,
+        2,
+        3,
+        5,
+        10
+      ],
+      "twoInstanceNestedCallPassed": true,
+      "innerFailureCaughtOuterContinuesPassed": true,
+      "innerThenOuterFailureRestorationPassed": true,
+      "throwingUserPatchPreservedPassed": true,
+      "lifoRepairTracePassed": true,
+      "mixedDeterministicCalls": 200,
+      "mixedCallPatchDrift": 0,
+      "abaHistoryAndInterleavingPassed": true,
+      "externalXThenYNoResurrectionPassed": true,
+      "recursiveLateUserPatchPassed": true,
+      "latePatchInstallingNewerPatchPassed": true
+    },
+    "generatedArenaFromStage4C": {
+      "stateId": "STATE:generated:shared-invocation-arena",
+      "outerFrameWidth": 12,
+      "ordinaryBodyFailureNetDelta": 12,
+      "postLocalCleanupNestedAncestorDelta": 12,
+      "interpretation": "Local cleanup can succeed while an ancestor invocation wrapper still leaks its own frame when a descendant throws. Failure transactionality is therefore compositional/nesting-sensitive."
+    },
+    "identityMetadataFromStage4C": {
+      "stateId": "STATE:generated:identity-map-and-counter",
+      "persistentFailedKeyPublication": true,
+      "sameFailedKeyReusesAssignedId": true,
+      "distinctFailedKeysAdvanceCounter": true,
+      "transactional": false
+    },
+    "cacheAndInstanceIsolationFromStage4D": {
+      "instanceCachesDistinctBetweenAAndB": true,
+      "failedCachePopulationRolledBack": true,
+      "nestedCacheTransactionsRestoreDepthZero": true,
+      "crossInstanceCacheContaminationObserved": false
+    },
+    "successReferenceSanity": {
+      "foundation_same": "PASS",
+      "foundation_next": "PASS",
+      "foundation_previous": "PASS",
+      "referenceOracleTests": {
+        "tests": 19,
+        "pass": 19,
+        "fail": 0
+      }
+    }
+  },
+  "matrix": [
+    {
+      "case": "nesting-depth-1-2-3-5-10",
+      "stateFamilies": [
+        "STATE:detour:runtime-patch-ledger"
+      ],
+      "result": "PASS",
+      "details": "descriptor/function identity restored; invocationDepth=0; patchDepth=0; owners/tokens empty"
+    },
+    {
+      "case": "two-instances nested",
+      "stateFamilies": [
+        "STATE:detour:runtime-patch-ledger",
+        "STATE:instance:pastafari-calendar-caches"
+      ],
+      "result": "PASS",
+      "details": "runtime patch state did not leak outer->inner; per-instance caches remain distinct"
+    },
+    {
+      "case": "inner throws, outer catches and continues",
+      "stateFamilies": [
+        "STATE:detour:runtime-patch-ledger"
+      ],
+      "result": "PASS",
+      "details": "outer semantic result preserved and ledger restored"
+    },
+    {
+      "case": "inner throws, then outer throws",
+      "stateFamilies": [
+        "STATE:detour:runtime-patch-ledger"
+      ],
+      "result": "PASS",
+      "details": "entry descriptor/function identity restored"
+    },
+    {
+      "case": "preexisting late user patch",
+      "stateFamilies": [
+        "STATE:detour:runtime-patch-ledger"
+      ],
+      "result": "PASS",
+      "details": "patch remains value-producing and descriptor survives project restoration"
+    },
+    {
+      "case": "non-LIFO external replacement during call",
+      "stateFamilies": [
+        "STATE:detour:runtime-patch-ledger"
+      ],
+      "result": "PASS",
+      "details": "external writer is not erased"
+    },
+    {
+      "case": "external X then external Y",
+      "stateFamilies": [
+        "STATE:detour:runtime-patch-ledger"
+      ],
+      "result": "PASS",
+      "details": "older external state is never resurrected"
+    },
+    {
+      "case": "recursive public-API call from late patch",
+      "stateFamilies": [
+        "STATE:detour:runtime-patch-ledger"
+      ],
+      "result": "PASS",
+      "details": "reentrancy preserves late external patch ownership"
+    },
+    {
+      "case": "nested cache population failure",
+      "stateFamilies": [
+        "STATE:detour:cache-epoch",
+        "STATE:instance:pastafari-calendar-caches"
+      ],
+      "result": "PASS",
+      "details": "failed transaction contributes no committed shadow/visible entry; depth returns to zero"
+    },
+    {
+      "case": "generated descendant throw after local cleanup",
+      "stateFamilies": [
+        "STATE:generated:shared-invocation-arena"
+      ],
+      "result": "FAIL_TRANSACTIONALITY",
+      "details": "ancestor wrapper retains +12 cells even though descendant/local cleanup already completed"
+    },
+    {
+      "case": "failed construction with object identity measurement",
+      "stateFamilies": [
+        "STATE:generated:identity-map-and-counter"
+      ],
+      "result": "FAIL_TRANSACTIONALITY",
+      "details": "failed key can remain assigned in WeakMap and distinct failed keys advance shared counter"
+    }
+  ],
+  "ownershipAssessment": {
+    "runtimePatchLedger": "LIFO/ownership semantics passed all available nested, exception, interference, and two-instance tests.",
+    "cacheEpoch": "Nested ownership/transaction stack restores to depth zero; no partial cache publication observed.",
+    "generatedSharedArena": "No per-call ownership rollback exists at the common outer wrapper; ancestor frames can outlive failed descendants.",
+    "generatedIdentityMetadata": "No rollback ownership for failed-key publication/counter advance."
+  },
+  "multiInstanceAssessment": {
+    "perInstanceCaches": "ISOLATED",
+    "runtimePatchLedger": "SHARED_BUT_NESTING_SAFE_IN_TESTED_PATHS",
+    "sharedInvocationArena": "MODULE_SHARED_AND_NOT_FAILURE_TRANSACTIONAL",
+    "identityMapAndCounter": "MODULE_SHARED_AND_NOT_FAILURE_TRANSACTIONAL",
+    "overall": "PARTIAL_ISOLATION_ONLY"
+  },
+  "productionChanges": "none",
+  "stageConclusion": {
+    "STAGE_4B_RESULT": "TECHNICAL_FINDINGS_CONFIRMED_FORMAL_CLOSE_BLOCKED_BY_MISSING_STAGE_3_ARTIFACT",
+    "transactionalFailureBugs": [
+      "STATE:generated:shared-invocation-arena",
+      "STATE:generated:identity-map-and-counter"
+    ],
+    "nestedOwnershipSubsystemsPassing": [
+      "STATE:detour:runtime-patch-ledger",
+      "STATE:detour:cache-epoch",
+      "STATE:instance:pastafari-calendar-caches"
+    ],
+    "READY_FOR_STAGE_5_FROM_4B": "no",
+    "readyReason": "4B technical evidence is sufficient to classify nested/reentrant/ownership behavior, but strict Stage-3 artifact alignment is unavailable; Stage 5 also requires unified 4A–4D synthesis."
+  }
+}
