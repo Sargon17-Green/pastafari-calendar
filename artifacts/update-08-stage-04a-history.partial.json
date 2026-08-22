@@ -1,0 +1,137 @@
+{
+  "schema": "pastafari.update8.stage04a.history.v1.partial",
+  "stage": "4A",
+  "status": "INCOMPLETE_EXECUTION_ENVIRONMENT_BLOCKED",
+  "revision": {
+    "repository": "Sargon17-Green/pastafari-calendar",
+    "branch": "main",
+    "commit": "4ddceddba65502a3064a2876b6b85745b8974c4b",
+    "packageVersion": "1.3.0",
+    "workingTreeStatus": "REMOTE_MAIN_VERIFIED; local checkout unavailable because runtime DNS could not resolve github.com"
+  },
+  "alignment": {
+    "stage1Present": true,
+    "stage2aPresent": true,
+    "stage2bPresent": true,
+    "stage3Present": false,
+    "stage3Status": "MISSING_FROM_CURRENT_REPOSITORY; strict Stage-3 harness/SHA alignment cannot be certified",
+    "productionEquivalence": {
+      "base": "81cc54b1e15d8f3c0cd9cc8cb41d07f57fdecddf",
+      "head": "4ddceddba65502a3064a2876b6b85745b8974c4b",
+      "aheadBy": 3,
+      "productionFilesChanged": false,
+      "changedFilesAreOnly": "Stage 4B/4C/4D verification scripts and artifacts"
+    }
+  },
+  "sanityEvidence": {
+    "source": "committed Stage 4B/4C evidence on production-identical tree",
+    "foundation_same": "PASS",
+    "foundation_next": "PASS",
+    "foundation_previous": "PASS",
+    "referenceOracle": {
+      "tests": 19,
+      "pass": 19,
+      "fail": 0
+    },
+    "freshStage4AExecutionOnCurrentMain": false
+  },
+  "naturalFailureEvidenceAlreadyExecuted": [
+    {
+      "id": "PastafariCalendar_invalid_options",
+      "exception": {
+        "name": "TypeError",
+        "message": "todayProvider חייב להיות פונקציה"
+      },
+      "arenaDelta": 12
+    },
+    {
+      "id": "IslamicDate_invalid_variant",
+      "exception": {
+        "name": "RangeError",
+        "message": "לוח היג׳רי אינו חד־משמעי; variant חייב להיות \"civil\" או \"umalqura\""
+      },
+      "arenaDelta": 12
+    },
+    {
+      "id": "MonthWeavingCounter_invalid_lengths",
+      "exception": {
+        "name": "RangeError",
+        "message": "אורכי החודשים חייבים להיות חיוביים"
+      },
+      "arenaDelta": 12
+    },
+    {
+      "id": "GregorianDate_noninteger_month",
+      "exception": {
+        "name": "TypeError",
+        "message": "החודש והיום הגריגוריאניים חייבים להיות מספרים שלמים"
+      },
+      "arenaDelta": 12
+    }
+  ],
+  "repeatedFailureEvidenceAlreadyExecuted": {
+    "path": "PastafariCalendar_invalid_options with ten distinct failing option objects",
+    "count": 10,
+    "initial": 1175776,
+    "final": 1175896,
+    "netDelta": 120,
+    "measuredPattern": "+12 per call over the measured 10-call sequence only",
+    "failedKeysReachableFromRetainedTail": 10
+  },
+  "postFailureEvidenceAlreadyExecuted": {
+    "success": "GregorianDate(2026,8,22)",
+    "arenaDeltaDuringSuccess": 0,
+    "fields": {
+      "year": "2026",
+      "month": 8,
+      "day": 22
+    },
+    "priorResiduePreserved": true
+  },
+  "requiredStage4AExecutionMissing": {
+    "repeatedIdenticalFailure100": true,
+    "repeatedIdenticalFailure1000": true,
+    "allConfirmedNaturalFailurePathsRepeated": true,
+    "alternatingSuccessFailure": true,
+    "freshFailA_vs_freshA": true,
+    "A_fail_A_multipleA": true,
+    "failCounts_1_2_5_10_100_then_A": true,
+    "differentFailureOrders": true,
+    "sameMultisetDifferentOrder": true,
+    "freshProcessComparisons": true,
+    "successSoakAfterLongFailures": true,
+    "exceptionStabilityAcross100_1000": true,
+    "firstDivergenceForPermutationMismatch": true,
+    "memory100_1000": true
+  },
+  "classifications": {
+    "confirmedAccumulation": [
+      "STATE:generated:shared-invocation-arena: +12 on four measured natural failures",
+      "10 measured PastafariCalendar invalid-option failures: +120 total"
+    ],
+    "historyDependence": [
+      "Arena size depends on failure count over the measured 10-call sequence",
+      "Order dependence is UNRESOLVED because same-multiset permutations were not executed"
+    ],
+    "semanticCorruption": "UNRESOLVED_FOR_STAGE_4A; existing post-failure controls/sanity did not show corruption, but required 4A sequences were not executed",
+    "zeroDeltaPaths": "No natural failure path can be classified zero-delta from the four measured 4D paths; other natural paths remain unexecuted for 4A",
+    "unresolved": [
+      "Stage 3 artifact/harness absent",
+      "100/1000 failure probes",
+      "all eight explicit validation paths plus raw default-path failure",
+      "alternating and A→FAIL→A matrices",
+      "failure-order permutations",
+      "fresh-process comparisons",
+      "memory boundedness at 100/1000"
+    ]
+  },
+  "productionFilesChanged": [],
+  "filesCreatedByThisPartialAttempt": [
+    "artifacts/update-08-stage-04a-history.partial.json",
+    "artifacts/update-08-stage-04a-report.partial.md"
+  ],
+  "stageConclusion": {
+    "STAGE_4A_RESULT": "INCOMPLETE_ENVIRONMENT_BLOCKED_EXISTING_ACCUMULATION_EVIDENCE_CONFIRMED",
+    "READY_FOR_STAGE_5_FROM_4A": "no"
+  }
+}
