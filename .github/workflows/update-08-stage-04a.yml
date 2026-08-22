@@ -1,0 +1,90 @@
+name: Update 8 Stage 4A history evidence
+
+on:
+  push:
+    paths:
+      - "verification/update8/run-stage-04a-history.mjs"
+      - ".github/workflows/update-08-stage-04a.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  stage-04a-history:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+
+      - name: Record revision
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rev-parse HEAD
+          git status --short
+          node --version
+          node -p "require('./package.json').version"
+
+      - name: Run Stage 4A history campaign
+        id: campaign
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          node --expose-gc verification/update8/run-stage-04a-history.mjs --write \
+            2>&1 | tee artifacts/update-08-stage-04a-run.log
+
+      - name: Show Stage 4A conclusion
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -f artifacts/update-08-stage-04a-history.json ]]; then
+            node -e '
+              const a=require("./artifacts/update-08-stage-04a-history.json");
+              console.log(JSON.stringify({
+                result:a.stageConclusion.STAGE_4A_RESULT,
+                ready:a.stageConclusion.READY_FOR_STAGE_5_FROM_4A,
+                confirmedPaths:a.confirmedNaturalFailurePaths,
+                acceptance:a.acceptance
+              }, null, 2));
+            '
+          else
+            echo "Stage 4A machine-readable artifact was not produced."
+          fi
+
+      - name: Upload Stage 4A evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0 # v7.0.1
+        with:
+          name: update-08-stage-04a-${{ github.sha }}
+          path: |
+            artifacts/update-08-stage-04a-history.json
+            artifacts/update-08-stage-04a-report.md
+            artifacts/update-08-stage-04a-sha256sums.txt
+            artifacts/update-08-stage-04a-run.log
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Enforce Stage 4A acceptance
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f artifacts/update-08-stage-04a-history.json
+          node -e '
+            const a=require("./artifacts/update-08-stage-04a-history.json");
+            if (a.stageConclusion.READY_FOR_STAGE_5_FROM_4A !== "yes") {
+              console.error("READY_FOR_STAGE_5_FROM_4A != yes");
+              process.exit(1);
+            }
+          '
+          test "${{ steps.campaign.outcome }}" = "success"
