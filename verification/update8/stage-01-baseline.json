@@ -1,0 +1,228 @@
+{
+  "stage": "Update 8 / Stage 1",
+  "status": "CLOSED",
+  "repository": "Sargon17-Green/pastafari-calendar",
+  "mainCommit": "1dd41cbf7c2ff6172c2b5793fb1637a446a1d272",
+  "packageVersion": "1.3.0",
+  "snapshotVerification": {
+    "remoteMainVerified": true,
+    "remoteSha256SumsGitBlob": "5cb005fbcf86cab96fd8ff410ca035b749d7ff41",
+    "localSha256SumsGitBlob": "5cb005fbcf86cab96fd8ff410ca035b749d7ff41",
+    "listedFilesVerified": 592,
+    "listedFilesFailed": 0,
+    "zipFilenameNormalization": {
+      "required": true,
+      "originalExtractedName": "sources/#U05de#U05d2#U05d9#U05dc#U05ea #U05d4#U05e2#U05d9#U05ea#U05d9#U05dd.md",
+      "normalizedWorkingCopyName": "sources/מגילת העיתים.md",
+      "contentSha256": "d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96",
+      "note": "Extraction-only filename normalization; content was unchanged."
+    }
+  },
+  "authoritative": {
+    "browserEntry": "browser/pastafari-calendar-core.js",
+    "nodePublicEntry": "src/public-api.js",
+    "semanticCall": "PastafariCalendar.convertJdn(targetJdn, { calculationJdn })"
+  },
+  "reference": {
+    "differentialReference": "verification/reference-oracle/reference.mjs",
+    "fullTupleGenerator": "implementations/tests/generate_spec_canonical.py",
+    "canonicalCorpus": "implementations/tests/conformance-vectors.json",
+    "normativeSourceSha256": "d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96"
+  },
+  "canonicalSuccessVectors": [
+    {
+      "id": "foundation_same",
+      "input": {
+        "calculationJdn": "-13334246",
+        "targetJdn": "-13334246"
+      },
+      "expected": {
+        "year": "5000",
+        "cutletName": "לגש",
+        "dayInCutlet": 762,
+        "monthName": "לבונה",
+        "dayInMonth": 105
+      },
+      "authoritativeActual": {
+        "year": "5000",
+        "cutletName": "לגש",
+        "dayInCutlet": 762,
+        "monthName": "לבונה",
+        "dayInMonth": 105
+      },
+      "status": "PASS",
+      "routesVerified": [
+        "browser/pastafari-calendar-core.js",
+        "src/public-api.js"
+      ]
+    },
+    {
+      "id": "foundation_next",
+      "input": {
+        "calculationJdn": "-13334246",
+        "targetJdn": "-13334245"
+      },
+      "expected": {
+        "year": "5000",
+        "cutletName": "כליה",
+        "dayInCutlet": 1,
+        "monthName": "אבן־גיר",
+        "dayInMonth": 91
+      },
+      "authoritativeActual": {
+        "year": "5000",
+        "cutletName": "כליה",
+        "dayInCutlet": 1,
+        "monthName": "אבן־גיר",
+        "dayInMonth": 91
+      },
+      "status": "PASS",
+      "routesVerified": [
+        "browser/pastafari-calendar-core.js",
+        "src/public-api.js"
+      ]
+    },
+    {
+      "id": "foundation_previous",
+      "input": {
+        "calculationJdn": "-13334246",
+        "targetJdn": "-13334247"
+      },
+      "expected": {
+        "year": "5000",
+        "cutletName": "לגש",
+        "dayInCutlet": 761,
+        "monthName": "הדלת הסגורה",
+        "dayInMonth": 114
+      },
+      "authoritativeActual": {
+        "year": "5000",
+        "cutletName": "לגש",
+        "dayInCutlet": 761,
+        "monthName": "הדלת הסגורה",
+        "dayInMonth": 114
+      },
+      "status": "PASS",
+      "routesVerified": [
+        "browser/pastafari-calendar-core.js",
+        "src/public-api.js"
+      ]
+    },
+    {
+      "id": "present_same",
+      "input": {
+        "calculationJdn": "2461259",
+        "targetJdn": "2461259"
+      },
+      "expected": {
+        "year": "5000",
+        "cutletName": "מחשבה",
+        "dayInCutlet": 13,
+        "monthName": "חרטה",
+        "dayInMonth": 16
+      },
+      "authoritativeActual": {
+        "year": "5000",
+        "cutletName": "מחשבה",
+        "dayInCutlet": 13,
+        "monthName": "חרטה",
+        "dayInMonth": 16
+      },
+      "status": "PASS",
+      "routesVerified": [
+        "browser/pastafari-calendar-core.js"
+      ]
+    },
+    {
+      "id": "present_forward",
+      "input": {
+        "calculationJdn": "2461259",
+        "targetJdn": "2461265"
+      },
+      "expected": {
+        "year": "5000",
+        "cutletName": "מחשבה",
+        "dayInCutlet": 19,
+        "monthName": "ערפל",
+        "dayInMonth": 10
+      },
+      "authoritativeActual": {
+        "year": "5000",
+        "cutletName": "מחשבה",
+        "dayInCutlet": 19,
+        "monthName": "ערפל",
+        "dayInMonth": 10
+      },
+      "status": "PASS",
+      "routesVerified": [
+        "browser/pastafari-calendar-core.js"
+      ]
+    },
+    {
+      "id": "binding_5778_same",
+      "input": {
+        "calculationJdn": "-14269936",
+        "targetJdn": "-14269936"
+      },
+      "expected": {
+        "year": "5000",
+        "cutletName": "הכד הריק",
+        "dayInCutlet": 191,
+        "monthName": "שמחה",
+        "dayInMonth": 72
+      },
+      "authoritativeActual": null,
+      "status": "NOT_COMPLETED_TIMEOUT",
+      "note": "The extreme 5,778 canonical vector did not return before the execution timeout; no mismatch or exception was observed."
+    }
+  ],
+  "additional5778SuccessDiscriminator": {
+    "status": "PASS",
+    "calculationJdn": "-13258058",
+    "reference": {
+      "cardinality": 41,
+      "selectedOneBased": 27,
+      "openGateIndex": 139,
+      "closeGateIndex": 149,
+      "yearLength": "4785"
+    },
+    "authoritative": {
+      "tuple": {
+        "year": "5000",
+        "cutletName": "אפר",
+        "dayInCutlet": 1,
+        "monthName": "נמר",
+        "dayInMonth": 81
+      },
+      "anchorGateIndices": [
+        139,
+        140,
+        141,
+        142,
+        143,
+        144,
+        145,
+        146,
+        147,
+        148,
+        149
+      ]
+    }
+  },
+  "successOnlyTests": {
+    "test/reference-oracle.test.js": {
+      "selected": 12,
+      "passed": 12,
+      "failed": 0,
+      "faultInjectionSubtestsExecuted": false
+    }
+  },
+  "scopeCompliance": {
+    "productionCodeChanged": false,
+    "faultInjectionPerformed": false,
+    "failureStateInstrumentationPerformed": false,
+    "constructorFailurePathsInvestigated": false,
+    "stage2Entered": false
+  },
+  "conclusion": "Stage 1 acceptance is satisfied by fresh representative authoritative/reference success-path execution on current main plus a separate fresh 5,778 year-selection discriminator. The one extreme canonical 5,778 tuple timed out and is recorded as not completed, not as a failure."
+}
