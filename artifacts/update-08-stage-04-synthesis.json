@@ -1,0 +1,327 @@
+{
+  "schema": "update-08-stage-04-synthesis-v1",
+  "stage": "4-closure",
+  "repository": "Sargon17-Green/pastafari-calendar",
+  "branch": "main",
+  "currentCommit": "768efa46edda7f2320cf75e4f7fffee5d47fb983",
+  "packageVersion": "1.3.0",
+  "workingTree": {
+    "sourceSnapshot": "uploaded GitHub-style archive; .git metadata absent",
+    "literalGitStatusAvailable": false,
+    "synthesisWorkingCopy": "only the Stage-4 synthesis artifacts are created; production files are not modified"
+  },
+  "artifactIntegrity": {
+    "stage3Checksums": "PASS",
+    "stage4AChecksums": "PASS",
+    "stage4BChecksums": "PASS",
+    "stage4CChecksums": "PASS",
+    "stage4DChecksums": "PASS"
+  },
+  "productionAlignment": {
+    "aligned": true,
+    "classification": "different commits, but production tree equivalent",
+    "sameLiteralCommitAcrossStages": false,
+    "currentMainVerifiedFromGitHub": true,
+    "currentMainCommit": "768efa46edda7f2320cf75e4f7fffee5d47fb983",
+    "stage2BProductionHashes": {
+      "src/5efdcc3e6fb071cbaffdcb117507a169dd76.js": "a7e01b505870a7a72ce0bde98dc5e4d19f39bd8d560fdf961a4d5f4d2dfdd30d",
+      "src/public-api.js": "9d8c63636033659753d658ac9d76fa955ee8423bbf1cd11bfb90eab25a49f827",
+      "browser/pastafari-calendar-core-chronicle.js": "315f46a49f13db13b61d325915a6a5a32b7f043594c541c1886cfd8c0865db4a",
+      "browser/standalone/pastafari-date.js": "958f7f30cb8ad6a3a95570d8ed025e3131481b543c761ac9582103f069ad3b13"
+    },
+    "uploadedSnapshotHashesMatchStage2BBaseline": true,
+    "compareEvidence": [
+      {
+        "stage": "3",
+        "baseCommit": "4ddceddba65502a3064a2876b6b85745b8974c4b",
+        "headCommit": "768efa46edda7f2320cf75e4f7fffee5d47fb983",
+        "aheadBy": 7,
+        "productionFilesChanged": false,
+        "changedClasses": [
+          "artifacts",
+          "verification",
+          "workflow"
+        ]
+      },
+      {
+        "stage": "4A",
+        "baseCommit": "ce49a21700316a4339f29411f104c22dd2616295",
+        "headCommit": "768efa46edda7f2320cf75e4f7fffee5d47fb983",
+        "aheadBy": 1,
+        "productionFilesChanged": false,
+        "changedClasses": [
+          "artifacts"
+        ]
+      },
+      {
+        "stage": "4B",
+        "baseCommit": "e2189879a9593c6df7f155a8b3c7bef1af5e207a",
+        "headCommit": "768efa46edda7f2320cf75e4f7fffee5d47fb983",
+        "aheadBy": 8,
+        "productionFilesChanged": false,
+        "changedClasses": [
+          "artifacts",
+          "verification",
+          "workflow"
+        ]
+      },
+      {
+        "stage": "4C",
+        "baseCommit": "c141a94840a7806c73a8aaf8a87db22b7a9af1bc",
+        "headCommit": "768efa46edda7f2320cf75e4f7fffee5d47fb983",
+        "aheadBy": 9,
+        "productionFilesChanged": false,
+        "changedClasses": [
+          "artifacts",
+          "verification",
+          "workflow"
+        ]
+      },
+      {
+        "stage": "4D",
+        "baseCommit": "81cc54b1e15d8f3c0cd9cc8cb41d07f57fdecddf",
+        "headCommit": "768efa46edda7f2320cf75e4f7fffee5d47fb983",
+        "aheadBy": 10,
+        "productionFilesChanged": false,
+        "changedClasses": [
+          "artifacts",
+          "verification",
+          "workflow"
+        ]
+      }
+    ],
+    "evidenceNotes": [
+      "GitHub compare from each Stage 3/4A/4B/4C/4D recorded revision to current main shows only artifacts, verification scripts, and/or workflow additions.",
+      "No relevant production-source path appears in any compare set.",
+      "The four production hashes carried by Stage 2B/3/4A/4C/4D match the uploaded snapshot byte-for-byte."
+    ]
+  },
+  "stages": {
+    "3": {
+      "report": "artifacts/update-08-stage-03-report.md",
+      "data": "artifacts/update-08-stage-03-reproduction.json",
+      "reportCurrentMainCommit": "4ddceddba65502a3064a2876b6b85745b8974c4b",
+      "dynamicNaturalEvidenceCommit": "81cc54b1e15d8f3c0cd9cc8cb41d07f57fdecddf",
+      "result": "CONFIRMED_LEAK",
+      "status": "present; integrity verified; production-equivalent to current main"
+    },
+    "4A": {
+      "revisionCommit": "ce49a21700316a4339f29411f104c22dd2616295",
+      "result": "TECHNICAL_EVIDENCE_COMPLETE",
+      "readyForStage5Historical": "yes",
+      "requiredNaturalFailurePathsAttempted": 9,
+      "requiredNaturalFailurePathsConfirmed": 9,
+      "repeated100Complete": true,
+      "repeated1000Complete": true,
+      "allMeasuredPathsAccumulated": true,
+      "per1000ArenaDeltaCellsPerPath": 12000,
+      "exceptionContractsStable": true,
+      "postFailureSuccessReferenceEqual": true,
+      "aFailAPassed": true,
+      "alternatingPassed": true,
+      "freshProcessComparisonsPassed": true,
+      "permutationHistoryDependenceMeasured": true,
+      "successSoakPassed": true,
+      "zeroDeltaSuccessControlPassed": true,
+      "unresolved": []
+    },
+    "4B": {
+      "revisionCommit": "e2189879a9593c6df7f155a8b3c7bef1af5e207a",
+      "historicalResult": "TECHNICAL_FINDINGS_CONFIRMED_FORMAL_CLOSE_BLOCKED_BY_MISSING_STAGE_3_ARTIFACT",
+      "historicalReadyForStage5": "no",
+      "historicalBlocker": "Stage 3 artifact / SHA alignment missing at the time",
+      "closureTreatment": "STALE_FORMAL_BLOCKER_CLEARED_BY_STAGE3_PRESENCE_AND_PRODUCTION_EQUIVALENCE",
+      "broken": [
+        "STATE:generated:shared-invocation-arena",
+        "STATE:generated:identity-map-and-counter"
+      ],
+      "passing": [
+        "STATE:detour:runtime-patch-ledger",
+        "STATE:detour:cache-epoch",
+        "STATE:instance:pastafari-calendar-caches"
+      ],
+      "compositionalFinding": "ancestor wrapper reserves -> descendant runs/cleans locally -> descendant throws -> ancestor cleanup is bypassed -> ancestor frame remains"
+    },
+    "4C": {
+      "revisionCommit": "c141a94840a7806c73a8aaf8a87db22b7a9af1bc",
+      "historicalResult": "TECHNICAL_FINDINGS_CONFIRMED_FORMAL_CLOSE_BLOCKED_BY_MISSING_STAGE_3_ARTIFACT",
+      "historicalReadyForStage5": "no",
+      "historicalBlocker": "Stage 3 artifact / SHA alignment missing at the time",
+      "closureTreatment": "STALE_FORMAL_BLOCKER_CLEARED_BY_STAGE3_PRESENCE_AND_PRODUCTION_EQUIVALENCE",
+      "faultInjection": {
+        "testOnly": true,
+        "deterministic": true,
+        "optIn": true,
+        "normalProductionFilesModified": false,
+        "disabledNormalExecutionDoesNotThrow": true
+      },
+      "cleanupWindow": {
+        "GEN_WRAP_ENTRY": 0,
+        "GEN_WRAP_AFTER_RESERVATION": 12
+      },
+      "measuredArenaSignatures": [
+        12,
+        24,
+        27,
+        33
+      ],
+      "signatureMeaning": "lifecycle/reservation evidence, not repair constants",
+      "nestedAncestorResidueConfirmed": true
+    },
+    "4D": {
+      "revisionCommit": "81cc54b1e15d8f3c0cd9cc8cb41d07f57fdecddf",
+      "historicalResult": "FINDINGS_CONFIRMED_FORMAL_CLOSE_BLOCKED_BY_MISSING_STAGE_3_ARTIFACT",
+      "historicalReadyForStage5": "no",
+      "historicalBlocker": "Stage 3 artifact / SHA alignment missing at the time",
+      "closureTreatment": "STALE_FORMAL_BLOCKER_CLEARED_BY_STAGE3_PRESENCE_AND_PRODUCTION_EQUIVALENCE",
+      "confirmedDefectStateIds": [
+        "STATE:generated:shared-invocation-arena",
+        "STATE:generated:identity-map-and-counter"
+      ],
+      "confirmedNoResidueFamilies": [
+        "STATE:decoded:combinatorial-memo",
+        "STATE:decoded:sauce-lru",
+        "STATE:decoded:forward-gap-memo",
+        "STATE:decoded:backward-gap-memo",
+        "STATE:instance:pastafari-calendar-caches",
+        "STATE:detour:cache-epoch",
+        "STATE:detour:runtime-patch-ledger",
+        "STATE:detour:installation-registries-and-prototype-patches",
+        "prototype/function descriptors and exported constructor/prototype identity",
+        "partial constructor this publication"
+      ],
+      "supportedPublicApiSemanticCorruptionObserved": false
+    }
+  },
+  "unifiedInvariant": {
+    "primary": "state_after_failed_call == state_at_invocation_entry",
+    "explicitlyNot": "state_after_failed_call == process_startup_state",
+    "ownershipQualification": "restore only state owned/contributed by the failed invocation while preserving preexisting and legitimate outer state"
+  },
+  "confirmedDefects": [
+    {
+      "id": "DEFECT:shared-invocation-arena-failure-residue",
+      "stateId": "STATE:generated:shared-invocation-arena",
+      "scope": "module/global shared generated invocation arena",
+      "writer": "common generated invocation wrapper and preamble reservation/argument-measurement logic",
+      "reader": "later generated wrappers that derive frame/base positions from shared arena state",
+      "failureWindow": "starts no later than the first outer reservation write; GEN_WRAP_ENTRY is zero-residue, GEN_WRAP_AFTER_RESERVATION is residue-producing",
+      "nestedBehavior": "descendant/local cleanup can complete, then descendant throws; an ancestor wrapper whose cleanup is bypassed retains its own frame. Cleanup must therefore be compositional and ownership-aware.",
+      "repeatBehavior": "ordinary natural failures add +12 cells each; 100 failures -> +1200 and 1000 -> +12000 on all 9 Stage-4A natural failure paths; repeated residue is unbounded over the measured sequences",
+      "publicationRetentionBehavior": "retained arena tail contains strong references, including failed caller argument containers/keys; later success has zero net arena delta but does not remove earlier residue",
+      "semanticOutputEffectObserved": "no authoritative/reference tuple corruption observed in tested post-failure successes",
+      "exceptionEffectObserved": "natural exception class and message remained stable in Stage 4A; injected faults used a distinct deterministic test-only sentinel",
+      "measuredFaultSignatures": [
+        0,
+        12,
+        24,
+        27,
+        33
+      ],
+      "signatureInterpretation": "evidence of lifecycle/reservation structure only; not hard-coded repair constants",
+      "requiredPostFailureInvariant": "restore the arena to this invocation's entry-equivalent state without deleting legitimate preexisting/outer state and without retaining stale strong references owned by the failed invocation"
+    },
+    {
+      "id": "DEFECT:identity-weakmap-counter-failure-publication",
+      "stateId": "STATE:generated:identity-map-and-counter",
+      "scope": "module-shared identity WeakMap plus associated monotonic identity counter",
+      "writer": "generated limited-measure/argument-identity helper executed before constructor success is known",
+      "reader": "later limited-measure identity lookup using known-key WeakMap has/get and assigned IDs",
+      "failureWindow": "object/function argument identity may be published before validation/constructor completion; failed construction does not compensate it",
+      "nestedBehavior": "no failure-transaction ownership was observed for failed-key mapping/counter advancement; Stage 5 must make rollback/compensation nesting-safe and preserve identities that predated the invocation",
+      "repeatBehavior": "same failed key reuses its failure-assigned ID; distinct failed keys advance identity state sequentially",
+      "publicationRetentionBehavior": "WeakMap mapping is observable for caller-held known keys after failure; WeakMap itself is weak and is not claimed to strongly retain dead keys. Counter advancement persists independently.",
+      "semanticOutputEffectObserved": "no calendar-output mismatch observed from identity residue",
+      "exceptionEffectObserved": "natural exception class/message remained stable",
+      "requiredPostFailureInvariant": "a failed invocation must not leave newly-owned known-key identity metadata or identity-sequence state distinguishable from the equivalent history in which that failed invocation did not publish it, while preserving preexisting/legitimate outer identities",
+      "weakMapCardinalityEnumerated": false,
+      "knownKeySemanticsRequired": true
+    }
+  ],
+  "confirmedNonTargets": [
+    "STATE:decoded:combinatorial-memo",
+    "STATE:decoded:sauce-lru",
+    "STATE:decoded:forward-gap-memo",
+    "STATE:decoded:backward-gap-memo",
+    "STATE:instance:pastafari-calendar-caches",
+    "STATE:detour:cache-epoch",
+    "STATE:detour:runtime-patch-ledger",
+    "STATE:detour:installation-registries-and-prototype-patches",
+    "prototype/function descriptors and exported constructor/prototype identity",
+    "partial constructor this publication"
+  ],
+  "identityQuestion": {
+    "observableTestable": "known caller-held keys can be tested with captured WeakMap has/get; same failed key reuses its assigned ID; distinct failed keys receive sequential IDs. WeakMap cardinality is not enumerated.",
+    "weakMapMappingRollback": "Required semantically for mappings newly published solely by a failed invocation: after failure, a key that was absent at invocation entry must not remain observable as newly mapped because of that failed invocation. Implementation mechanism is deferred to Stage 5.",
+    "counterRollback": "Required semantically at the identity-sequence level: failed calls must not advance the observable future identity sequence relative to an equivalent clean history, while preserving preexisting and legitimate nested/outer assignments. Naive unconditional decrement/reset is not specified.",
+    "invocationEntryInvariant": "known-key identity state and future identity-allocation behavior after a failed invocation must be entry-equivalent, subject to preservation of legitimate outer/preexisting state",
+    "nesting": "rollback/compensation needs ownership so an inner failure cannot erase identities established before the inner invocation, and an outer failure cannot corrupt unrelated/preexisting identity state",
+    "stage5Proof": [
+      "failed-new-key has/get returns to entry-equivalent absence",
+      "preexisting key keeps the same ID",
+      "same-key failure does not create persistent metadata",
+      "distinct failed keys do not perturb subsequent clean-history ID behavior",
+      "nested failure cases preserve outer/preexisting identities",
+      "success outputs/exceptions remain unchanged"
+    ]
+  },
+  "arenaQuestion": {
+    "globalBaselineTruncationRejected": true,
+    "reason": "a global/startup baseline can erase legitimate preexisting or outer frames; Stage 4B proves nested ancestor/descendant ownership matters",
+    "conceptualRequirement": "capture/derive this invocation entry state and on failure remove only this invocation-owned contribution, with child/parent ownership composed safely; do not hard-code frame widths as the repair",
+    "implementationCandidatesNonBinding": [
+      "per-invocation entry snapshot/restore with ownership checks",
+      "owner/frame stack",
+      "undo/compensation ledger",
+      "frame transaction/tombstone-style bookkeeping"
+    ]
+  },
+  "stage5Constraints": [
+    "Rollback semantics are defined relative to each invocation entry, not process startup.",
+    "Cleanup/compensation must be nesting- and reentrancy-safe and compositionally LIFO/ownership-aware.",
+    "Preserve legitimate outer frames/state and all preexisting state.",
+    "Preserve multi-instance isolation and do not introduce cross-instance cache contamination.",
+    "Preserve natural exception class and exact message.",
+    "Preserve successful outputs and authoritative/reference equality.",
+    "Prevent repeated-failure accumulation and history-dependent retained arena tails.",
+    "Remove strong stale argument references contributed by failed invocation arena frames.",
+    "Treat identity metadata transactionally to the extent required by observed known-key mapping and sequential-ID evidence.",
+    "Do not reset to a global startup baseline.",
+    "Do not blanket-clear the shared arena or erase legitimate outer frames.",
+    "Do not clear unrelated caches or decoded memo Maps.",
+    "Do not redesign runtime patch ownership ledger or cache-epoch transactions absent new evidence.",
+    "Do not refactor away intentionally shared/spaghetti architecture merely to solve this defect.",
+    "Do not change public API or successful-call semantics.",
+    "Measured +12/+24/+27/+33 signatures are evidence, not constants to hard-code into the repair."
+  ],
+  "stage5RegressionObligations": [
+    "all Stage-3 natural reproductions",
+    "all Stage-4A 100-failure campaigns",
+    "all Stage-4A 1000-failure campaigns",
+    "alternating success/failure",
+    "A → FAIL → A",
+    "fresh-process dirty-vs-clean comparisons",
+    "failure permutations / same-multiset different order",
+    "post-failure success soak",
+    "Stage-4A zero-delta success control",
+    "Stage-4B nested failure cases",
+    "inner fail / outer continue",
+    "inner fail / outer fail",
+    "nesting depths 1/2/3/5/10 where applicable",
+    "multi-instance isolation",
+    "preexisting/outer state preservation",
+    "Stage-4C checkpoint faults including GEN_WRAP_ENTRY zero-residue and post-reservation failure points",
+    "Stage-4D publication/cache/identity readers using known-key semantics",
+    "reference oracle",
+    "existing cache/reentrancy/runtime-patching regression suites"
+  ],
+  "blockers": [],
+  "unresolvedItems": [
+    "The raw identity counter is not exported; evidence is from sequential assigned IDs rather than direct counter reads.",
+    "WeakMap cardinality remains intentionally non-enumerated; Stage 5 verification should continue to use known-key semantics.",
+    "No immediate supported-public-API semantic corruption has been observed; this does not weaken the transactional-state requirement."
+  ],
+  "productionFilesChanged": [],
+  "result": "READY_FOR_STAGE_5",
+  "STAGE_4_CLOSURE_RESULT": "READY_FOR_STAGE_5"
+}
