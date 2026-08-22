@@ -1,0 +1,62 @@
+{
+  "schema": "pastafari.update8.stage05.browser-standalone.v1",
+  "generatedAt": "2026-08-22T20:31:30Z",
+  "repository": "Sargon17-Green/pastafari-calendar",
+  "currentMainCommitAtValidation": "1dfa8ff180891a02b3d9e9c5e07ce162a3937324",
+  "productionBaselineCommit": "2bc2d97bd5638b498014ed8c1c925fb735819a6b",
+  "browserSourceParity": {
+    "result": "PASS",
+    "evidence": "artifacts/update-08-stage-05-browser-parity.json",
+    "canonicalVectors": ["foundation_same", "foundation_next", "foundation_previous"]
+  },
+  "canonicalStandaloneBuild": {
+    "result": "BLOCKED_ENVIRONMENT",
+    "command": "npm run build:standalone -- --report artifacts/update-08-stage-05-standalone-build.json",
+    "failure": "ERR_MODULE_NOT_FOUND: Cannot find package 'esbuild' imported from scripts/build-standalone.mjs",
+    "requiredPackage": {
+      "name": "esbuild",
+      "version": "0.28.2",
+      "lockfileResolved": "https://registry.npmjs.org/esbuild/-/esbuild-0.28.2.tgz",
+      "lockfileIntegrity": "sha512-HKVLS8dvII+xoKW9kmqxbRKrnWEXfJJr/FZhhJmiqIB0e053QNYFqOBouTMO/k5sID4MvCiUCvv8b9M4h32wIA=="
+    },
+    "requiredNativePackage": {
+      "name": "@esbuild/linux-x64",
+      "version": "0.28.2",
+      "lockfileResolved": "https://registry.npmjs.org/@esbuild/linux-x64/-/linux-x64-0.28.2.tgz",
+      "lockfileIntegrity": "sha512-4xTZr1FUmSoQW4XIWmit3tzQrUTZM+N3P0XV8xROKYF50XfI7xeO90+1bZvNwxIufQ9hDQVRJH5YhgPVF8A/HQ=="
+    },
+    "dependencyRecovery": {
+      "npmCi": "FAILED_NO_NETWORK_OR_TIMED_OUT",
+      "npmCiOffline": "ENOTCACHED (first missing tarball: playwright-core-1.62.1.tgz)",
+      "containerOutboundDns": false,
+      "cachedEsbuild": false,
+      "esbuildBinaryOnFilesystem": false
+    }
+  },
+  "checkedInStandaloneState": {
+    "readable": {
+      "path": "browser/standalone/pastafari-date.js",
+      "baselineSha256": "958f7f30cb8ad6a3a95570d8ed025e3131481b543c761ac9582103f069ad3b13",
+      "currentSha256": "958f7f30cb8ad6a3a95570d8ed025e3131481b543c761ac9582103f069ad3b13",
+      "unchangedFromBaseline": true,
+      "containsStage5IdentityMarker": false
+    },
+    "minified": {
+      "path": "browser/standalone/pastafari-date.min.js",
+      "baselineSha256": "edff06be7c89eb211a3ebd544caf2f69cc75bd78d6925c9adbfc3ef970741ad7",
+      "currentSha256": "edff06be7c89eb211a3ebd544caf2f69cc75bd78d6925c9adbfc3ef970741ad7",
+      "unchangedFromBaseline": true,
+      "containsStage5IdentityMarker": false
+    },
+    "patchedBrowserChronicle": {
+      "path": "browser/pastafari-calendar-core-chronicle.js",
+      "baselineSha256": "315f46a49f13db13b61d325915a6a5a32b7f043594c541c1886cfd8c0865db4a",
+      "currentSha256": "36fed61386d9c545a191393e4bfd647ccefbc26fef11bec88faa708ed69b77ea",
+      "changedFromBaseline": true,
+      "containsStage5IdentityMarker": true
+    },
+    "conclusion": "The checked-in standalone bundles are stale relative to the patched browser chronicle; treating them as rebuilt would be false."
+  },
+  "result": "BLOCKED_ENVIRONMENT",
+  "stage5CanClose": false
+}

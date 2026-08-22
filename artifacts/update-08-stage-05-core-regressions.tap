@@ -1,0 +1,413 @@
+TAP version 13
+# Subtest: the public date search exposes every calendar family already supported by the project
+ok 1 - the public date search exposes every calendar family already supported by the project
+  ---
+  duration_ms: 5.68869
+  type: 'test'
+  ...
+# Subtest: representative dates from every input calendar convert to the established JDN
+ok 2 - representative dates from every input calendar convert to the established JDN
+  ---
+  duration_ms: 66.555462
+  type: 'test'
+  ...
+# Subtest: Gregorian JDN conversion round-trips across ordinary and signed years
+ok 3 - Gregorian JDN conversion round-trips across ordinary and signed years
+  ---
+  duration_ms: 0.454713
+  type: 'test'
+  ...
+# Subtest: Tehran-equinox boundary years follow the project's established day convention
+ok 4 - Tehran-equinox boundary years follow the project's established day convention
+  ---
+  duration_ms: 0.89139
+  type: 'test'
+  ...
+# Subtest: invalid civil and era dates are rejected rather than normalized silently
+ok 5 - invalid civil and era dates are rejected rather than normalized silently
+  ---
+  duration_ms: 0.918493
+  type: 'test'
+  ...
+# Subtest: Old Hindu Lunar leap flags are accepted only at the model's intercalary month
+ok 6 - Old Hindu Lunar leap flags are accepted only at the model's intercalary month
+  ---
+  duration_ms: 0.891772
+  type: 'test'
+  ...
+# Subtest: deterministic calendar conversion and input property smoke
+ok 7 - deterministic calendar conversion and input property smoke
+  ---
+  duration_ms: 456.117761
+  type: 'test'
+  ...
+# calendar-property generator=calendar-properties-v1 seed=0x7061737461666172 mode=smoke\\nchecksum=c554c43acf27664f441a89b9884dd7cf633b18012d0f41a42e2dac8e25faed65 elapsedMs=453\\ntotals properties=30 boundary=214 random=660 regressions=1 passed=875 failed=0\\ngregorian/jdn-roundtrip: boundary=7 random=24 passed=31 failed=0\\ngregorian/date-roundtrip: boundary=7 random=24 passed=31 failed=0\\ngregorian/month-year-boundary-continuity: boundary=5 random=24 passed=29 failed=0\\ngregorian/leap-rule: boundary=12 random=24 passed=36 failed=0\\ngregorian/ecmascript-utc-cross-check: boundary=5 random=24 passed=29 failed=0\\njulian/month-year-boundary-continuity: boundary=4 random=24 passed=28 failed=0\\njulian/leap-rule: boundary=9 random=24 passed=33 failed=0\\nhebrew/metonic-year-and-month-boundaries: boundary=10 random=24 passed=34 failed=0\\nislamic-civil/tabular-cycle-and-month-boundaries: boundary=7 random=24 passed=31 failed=0\\nsolar-hijri-arithmetic/month-year-boundaries: boundary=9 random=24 passed=33 failed=0\\nsolar-hijri-arithmetic/year-zero-domain: boundary=1 random=24 passed=25 failed=0\\ncoptic/thirteen-month-boundaries: boundary=7 random=24 passed=31 failed=0\\nethiopic/thirteen-month-boundaries: boundary=7 random=24 passed=31 failed=0\\nsaka/year-and-month-boundaries: boundary=7 random=24 passed=31 failed=0\\nthai-buddhist/gregorian-offset-equivalence: boundary=6 random=24 passed=30 failed=0\\nminguo/gregorian-offset-equivalence: boundary=6 random=24 passed=30 failed=0\\njapanese-imperial/era-boundary-and-gregorian-equivalence: boundary=10 random=24 passed=34 failed=0\\nmaya-long-count/mixed-radix-linearity-and-carries: boundary=3 random=24 passed=27 failed=0\\nbahai-western/new-year-and-intercalary-boundaries: boundary=6 random=24 passed=30 failed=0\\nbahai-tehran/supported-range-and-year-continuity: boundary=10 random=24 passed=34 failed=0\\nhindu-old-solar/adjacent-day-monotonicity: boundary=3 random=24 passed=27 failed=0\\nhindu-old-lunar/tithi-monotonicity-and-leap-month-uniqueness: boundary=2 random=24 passed=26 failed=0\\nislamic-umalqura/intl-supported-date-determinism: boundary=1 random=4 passed=5 failed=0\\nsolar-hijri-official/intl-supported-date-determinism: boundary=1 random=4 passed=5 failed=0\\nchinese/intl-related-year-determinism: boundary=2 random=4 passed=6 failed=0\\ninput/hebrew-numeral-unicode-and-whitespace: boundary=6 random=24 passed=30 failed=0\\ninput/japanese-gannen-normalization: boundary=2 random=24 passed=26 failed=0\\ninput/month-choice-cache-order-independence: boundary=18 random=24 passed=42 failed=0\\ninput/malformed-inputs-reject-without-non-range-crashes: boundary=38 random=24 passed=62 failed=0\\ninput/conversion-order-independence: boundary=3 random=24 passed=27 failed=0
+# Subtest: the published calendar bypasses the monster default-today binding defect
+ok 8 - the published calendar bypasses the monster default-today binding defect
+  ---
+  duration_ms: 146.033308
+  type: 'test'
+  ...
+# Subtest: the public bypass preserves an explicitly supplied todayProvider
+ok 9 - the public bypass preserves an explicitly supplied todayProvider
+  ---
+  duration_ms: 168.966967
+  type: 'test'
+  ...
+# Subtest: router cache is bounded and uses least-recently-used idle eviction
+ok 10 - router cache is bounded and uses least-recently-used idle eviction
+  ---
+  duration_ms: 9.920363
+  type: 'test'
+  ...
+# Subtest: eviction followed by recreation preserves exact conversion output
+ok 11 - eviction followed by recreation preserves exact conversion output
+  ---
+  duration_ms: 5.775099
+  type: 'test'
+  ...
+# Subtest: active states are never evicted even when the temporary live set exceeds the limit
+ok 12 - active states are never evicted even when the temporary live set exceeds the limit
+  ---
+  duration_ms: 10.009407
+  type: 'test'
+  ...
+# Subtest: a state with verification in flight is protected from eviction
+ok 13 - a state with verification in flight is protected from eviction
+  ---
+  duration_ms: 10.503297
+  type: 'test'
+  ...
+# Subtest: concurrent same-key requests share one authoritative bootstrap request
+ok 14 - concurrent same-key requests share one authoritative bootstrap request
+  ---
+  duration_ms: 4.180488
+  type: 'test'
+  ...
+# Subtest: concurrent different-key requests settle back to the configured cache bound
+ok 15 - concurrent different-key requests settle back to the configured cache bound
+  ---
+  duration_ms: 16.890965
+  type: 'test'
+  ...
+# Subtest: failed verification remains cached and authoritative-only while its state is retained
+ok 16 - failed verification remains cached and authoritative-only while its state is retained
+  ---
+  duration_ms: 1.735829
+  type: 'test'
+  ...
+# Subtest: failed states are retained preferentially without defeating the hard idle bound
+ok 17 - failed states are retained preferentially without defeating the hard idle bound
+  ---
+  duration_ms: 1.841076
+  type: 'test'
+  ...
+# Subtest: retry removes cache bookkeeping and recreates a clean state
+ok 18 - retry removes cache bookkeeping and recreates a clean state
+  ---
+  duration_ms: 2.346948
+  type: 'test'
+  ...
+# Subtest: dispose clears states and LRU bookkeeping and remains safe when called twice
+ok 19 - dispose clears states and LRU bookkeeping and remains safe when called twice
+  ---
+  duration_ms: 1.654669
+  type: 'test'
+  ...
+# Subtest: 600-case bounded-vs-unbounded differential keeps canonical results identical
+ok 20 - 600-case bounded-vs-unbounded differential keeps canonical results identical
+  ---
+  duration_ms: 157.12084
+  type: 'test'
+  ...
+# Subtest: requests arriving during verification keep their own target day
+ok 21 - requests arriving during verification keep their own target day
+  ---
+  duration_ms: 192.386736
+  type: 'test'
+  ...
+# Subtest: verification state is isolated for every calculation day
+ok 22 - verification state is isolated for every calculation day
+  ---
+  duration_ms: 177.266344
+  type: 'test'
+  ...
+# Subtest: identical concurrent authoritative conversions share one request
+ok 23 - identical concurrent authoritative conversions share one request
+  ---
+  duration_ms: 29.22301
+  type: 'test'
+  ...
+# Subtest: a cutlet request made during verification returns the requested cutlet
+ok 24 - a cutlet request made during verification returns the requested cutlet
+  ---
+  duration_ms: 192.740488
+  type: 'test'
+  ...
+# Subtest: many consumers sharing one router do not leak results between calls
+ok 25 - many consumers sharing one router do not leak results between calls
+  ---
+  duration_ms: 29.278371
+  type: 'test'
+  ...
+# Subtest: a fast-engine request failure leaves the calculation day on the authoritative engine
+ok 26 - a fast-engine request failure leaves the calculation day on the authoritative engine
+  ---
+  duration_ms: 44.355605
+  type: 'test'
+  ...
+# Subtest: a verified fast-engine timeout falls back to the authoritative result
+ok 27 - a verified fast-engine timeout falls back to the authoritative result
+  ---
+  duration_ms: 119.907347
+  type: 'test'
+  ...
+# Subtest: an authoritative timeout terminates its worker and the next request starts a fresh one
+ok 28 - an authoritative timeout terminates its worker and the next request starts a fresh one
+  ---
+  duration_ms: 39.41717
+  type: 'test'
+  ...
+# Subtest: a mismatch disables the fast engine globally and later calculation days stay authoritative
+ok 29 - a mismatch disables the fast engine globally and later calculation days stay authoritative
+  ---
+  duration_ms: 21.642403
+  type: 'test'
+  ...
+# Subtest: an invalid fast cutlet view disables the fast engine
+ok 30 - an invalid fast cutlet view disables the fast engine
+  ---
+  duration_ms: 22.744973
+  type: 'test'
+  ...
+# Subtest: an authoritative conversion failure is propagated and does not start fast verification
+ok 31 - an authoritative conversion failure is propagated and does not start fast verification
+  ---
+  duration_ms: 6.577244
+  type: 'test'
+  ...
+# Subtest: the router works through inline modules when Worker is unavailable
+ok 32 - the router works through inline modules when Worker is unavailable
+  ---
+  duration_ms: 50.1152
+  type: 'test'
+  ...
+# Subtest: a missing fast module leaves the inline router usable in authoritative-only mode
+ok 33 - a missing fast module leaves the inline router usable in authoritative-only mode
+  ---
+  duration_ms: 26.519617
+  type: 'test'
+  ...
+# Subtest: 5,000 distinct calculation days do not create an unbounded idle router cache
+ok 34 - 5,000 distinct calculation days do not create an unbounded idle router cache
+  ---
+  duration_ms: 650.549986
+  type: 'test'
+  ...
+# Subtest: runtime patch stack is semantically stable at nesting depth 1
+ok 35 - runtime patch stack is semantically stable at nesting depth 1
+  ---
+  duration_ms: 5.438992
+  type: 'test'
+  ...
+# Subtest: runtime patch stack is semantically stable at nesting depth 2
+ok 36 - runtime patch stack is semantically stable at nesting depth 2
+  ---
+  duration_ms: 1.476165
+  type: 'test'
+  ...
+# Subtest: runtime patch stack is semantically stable at nesting depth 3
+ok 37 - runtime patch stack is semantically stable at nesting depth 3
+  ---
+  duration_ms: 2.807572
+  type: 'test'
+  ...
+# Subtest: runtime patch stack is semantically stable at nesting depth 5
+ok 38 - runtime patch stack is semantically stable at nesting depth 5
+  ---
+  duration_ms: 0.782926
+  type: 'test'
+  ...
+# Subtest: runtime patch stack is semantically stable at nesting depth 10
+ok 39 - runtime patch stack is semantically stable at nesting depth 10
+  ---
+  duration_ms: 0.549003
+  type: 'test'
+  ...
+# Subtest: nested calls on two instances do not leak the outer wrapper state into the inner call
+ok 40 - nested calls on two instances do not leak the outer wrapper state into the inner call
+  ---
+  duration_ms: 0.479629
+  type: 'test'
+  ...
+# Subtest: late external patch is invoked and survives normal restoration with its descriptor
+ok 41 - late external patch is invoked and survives normal restoration with its descriptor
+  ---
+  duration_ms: 0.548738
+  type: 'test'
+  ...
+# Subtest: a non-LIFO external replacement installed during a project call is not erased
+ok 42 - a non-LIFO external replacement installed during a project call is not erased
+  ---
+  duration_ms: 0.37309
+  type: 'test'
+  ...
+# Subtest: descriptor and ownership state restore after after-install exception
+ok 43 - descriptor and ownership state restore after after-install exception
+  ---
+  duration_ms: 1.815421
+  type: 'test'
+  ...
+# Subtest: descriptor and ownership state restore after mid-patched exception
+ok 44 - descriptor and ownership state restore after mid-patched exception
+  ---
+  duration_ms: 0.900347
+  type: 'test'
+  ...
+# Subtest: descriptor and ownership state restore after after-inner exception
+ok 45 - descriptor and ownership state restore after after-inner exception
+  ---
+  duration_ms: 0.466637
+  type: 'test'
+  ...
+# Subtest: descriptor and ownership state restore after before-return exception
+ok 46 - descriptor and ownership state restore after before-return exception
+  ---
+  duration_ms: 0.284979
+  type: 'test'
+  ...
+# Subtest: inner exception can be caught by outer call and outer continues with its own patch state
+ok 47 - inner exception can be caught by outer call and outer continues with its own patch state
+  ---
+  duration_ms: 0.558022
+  type: 'test'
+  ...
+# Subtest: inner exception followed by outer exception still restores the entry descriptor
+ok 48 - inner exception followed by outer exception still restores the entry descriptor
+  ---
+  duration_ms: 0.610137
+  type: 'test'
+  ...
+# Subtest: throwing user patch survives the project finally
+ok 49 - throwing user patch survives the project finally
+  ---
+  duration_ms: 0.494357
+  type: 'test'
+  ...
+# Subtest: patch trace proves LIFO repair resurrects the outer costume after inner historical restore
+ok 50 - patch trace proves LIFO repair resurrects the outer costume after inner historical restore
+  ---
+  duration_ms: 1.826492
+  type: 'test'
+  ...
+# Subtest: 200 deterministic mixed calls leave no patch drift
+ok 51 - 200 deterministic mixed calls leave no patch drift
+  ---
+  duration_ms: 38.800269
+  type: 'test'
+  ...
+# Subtest: A-B-A history and two-instance interleaving do not change semantic output
+ok 52 - A-B-A history and two-instance interleaving do not change semantic output
+  ---
+  duration_ms: 0.903865
+  type: 'test'
+  ...
+# Subtest: external X followed by external Y is never resurrected back to X
+ok 53 - external X followed by external Y is never resurrected back to X
+  ---
+  duration_ms: 0.523379
+  type: 'test'
+  ...
+# Subtest: late user patch may recurse into the public API without losing itself
+ok 54 - late user patch may recurse into the public API without losing itself
+  ---
+  duration_ms: 0.369495
+  type: 'test'
+  ...
+# Subtest: a user patch may install another late patch and the newer patch survives
+ok 55 - a user patch may install another late patch and the newer patch survives
+  ---
+  duration_ms: 0.44883
+  type: 'test'
+  ...
+# Subtest: year-ceiling detour rejects forbidden cached candidates in both scan directions
+ok 56 - year-ceiling detour rejects forbidden cached candidates in both scan directions
+  ---
+  duration_ms: 4.21012
+  type: 'test'
+  ...
+# Subtest: an unrelated cached calculation day does not disable a fresh anchor scan
+ok 57 - an unrelated cached calculation day does not disable a fresh anchor scan
+  ---
+  duration_ms: 1.897567
+  type: 'test'
+  ...
+# Subtest: year-ceiling detour poisons all three forbidden lengths but not 5,778
+ok 58 - year-ceiling detour poisons all three forbidden lengths but not 5,778
+  ---
+  duration_ms: 0.652987
+  type: 'test'
+  ...
+# Subtest: year-ceiling detour restores the gate reader after a thrown candidate search
+ok 59 - year-ceiling detour restores the gate reader after a thrown candidate search
+  ---
+  duration_ms: 3.194773
+  type: 'test'
+  ...
+# Subtest: fresh corrected-gate anchor/next/previous candidate counts match the independent reference
+ok 60 - fresh corrected-gate anchor/next/previous candidate counts match the independent reference # SKIP
+  ---
+  duration_ms: 0.371504
+  type: 'test'
+  ...
+# Subtest: real backward-search regression from soak batch 37 case 3
+ok 61 - real backward-search regression from soak batch 37 case 3 # SKIP
+  ---
+  duration_ms: 0.149786
+  type: 'test'
+  ...
+# Subtest: detour-of-a-detour catches the first +1 anchor-matrix row before cardinality
+ok 62 - detour-of-a-detour catches the first +1 anchor-matrix row before cardinality
+  ---
+  duration_ms: 2.336173
+  type: 'test'
+  ...
+# Subtest: detour-of-a-detour restores its nested gate wrapper after a throw and repeated calls
+ok 63 - detour-of-a-detour restores its nested gate wrapper after a throw and repeated calls
+  ---
+  duration_ms: 0.913143
+  type: 'test'
+  ...
+# Subtest: third detour reverses stale cached-boundary poisoning without weakening the real ceiling
+ok 64 - third detour reverses stale cached-boundary poisoning without weakening the real ceiling
+  ---
+  duration_ms: 1.967372
+  type: 'test'
+  ...
+# Subtest: third detour restores its gate wrapper after exceptions and repeated calls
+ok 65 - third detour restores its gate wrapper after exceptions and repeated calls
+  ---
+  duration_ms: 7.75223
+  type: 'test'
+  ...
+# Subtest: multiple consecutive public next/previous selections match the independent reference entry-for-entry
+ok 66 - multiple consecutive public next/previous selections match the independent reference entry-for-entry # SKIP
+  ---
+  duration_ms: 0.274857
+  type: 'test'
+  ...
+# Subtest: new public 5,778 discriminators match reference cardinality and fast final tuple
+ok 67 - new public 5,778 discriminators match reference cardinality and fast final tuple # SKIP
+  ---
+  duration_ms: 0.103566
+  type: 'test'
+  ...
+1..67
+# tests 67
+# suites 0
+# pass 63
+# fail 0
+# cancelled 0
+# skipped 4
+# todo 0
+# duration_ms 8082.269792

@@ -1,0 +1,136 @@
+TAP version 13
+# Subtest: runtime patch stack is semantically stable at nesting depth 1
+ok 1 - runtime patch stack is semantically stable at nesting depth 1
+  ---
+  duration_ms: 5.653787
+  type: 'test'
+  ...
+# Subtest: runtime patch stack is semantically stable at nesting depth 2
+ok 2 - runtime patch stack is semantically stable at nesting depth 2
+  ---
+  duration_ms: 1.394086
+  type: 'test'
+  ...
+# Subtest: runtime patch stack is semantically stable at nesting depth 3
+ok 3 - runtime patch stack is semantically stable at nesting depth 3
+  ---
+  duration_ms: 4.092923
+  type: 'test'
+  ...
+# Subtest: runtime patch stack is semantically stable at nesting depth 5
+ok 4 - runtime patch stack is semantically stable at nesting depth 5
+  ---
+  duration_ms: 0.799942
+  type: 'test'
+  ...
+# Subtest: runtime patch stack is semantically stable at nesting depth 10
+ok 5 - runtime patch stack is semantically stable at nesting depth 10
+  ---
+  duration_ms: 0.584301
+  type: 'test'
+  ...
+# Subtest: nested calls on two instances do not leak the outer wrapper state into the inner call
+ok 6 - nested calls on two instances do not leak the outer wrapper state into the inner call
+  ---
+  duration_ms: 0.575663
+  type: 'test'
+  ...
+# Subtest: late external patch is invoked and survives normal restoration with its descriptor
+ok 7 - late external patch is invoked and survives normal restoration with its descriptor
+  ---
+  duration_ms: 0.67674
+  type: 'test'
+  ...
+# Subtest: a non-LIFO external replacement installed during a project call is not erased
+ok 8 - a non-LIFO external replacement installed during a project call is not erased
+  ---
+  duration_ms: 0.349317
+  type: 'test'
+  ...
+# Subtest: descriptor and ownership state restore after after-install exception
+ok 9 - descriptor and ownership state restore after after-install exception
+  ---
+  duration_ms: 1.665906
+  type: 'test'
+  ...
+# Subtest: descriptor and ownership state restore after mid-patched exception
+ok 10 - descriptor and ownership state restore after mid-patched exception
+  ---
+  duration_ms: 1.087921
+  type: 'test'
+  ...
+# Subtest: descriptor and ownership state restore after after-inner exception
+ok 11 - descriptor and ownership state restore after after-inner exception
+  ---
+  duration_ms: 0.624693
+  type: 'test'
+  ...
+# Subtest: descriptor and ownership state restore after before-return exception
+ok 12 - descriptor and ownership state restore after before-return exception
+  ---
+  duration_ms: 0.304272
+  type: 'test'
+  ...
+# Subtest: inner exception can be caught by outer call and outer continues with its own patch state
+ok 13 - inner exception can be caught by outer call and outer continues with its own patch state
+  ---
+  duration_ms: 0.698138
+  type: 'test'
+  ...
+# Subtest: inner exception followed by outer exception still restores the entry descriptor
+ok 14 - inner exception followed by outer exception still restores the entry descriptor
+  ---
+  duration_ms: 0.738249
+  type: 'test'
+  ...
+# Subtest: throwing user patch survives the project finally
+ok 15 - throwing user patch survives the project finally
+  ---
+  duration_ms: 0.497667
+  type: 'test'
+  ...
+# Subtest: patch trace proves LIFO repair resurrects the outer costume after inner historical restore
+ok 16 - patch trace proves LIFO repair resurrects the outer costume after inner historical restore
+  ---
+  duration_ms: 1.907124
+  type: 'test'
+  ...
+# Subtest: 200 deterministic mixed calls leave no patch drift
+ok 17 - 200 deterministic mixed calls leave no patch drift
+  ---
+  duration_ms: 37.689175
+  type: 'test'
+  ...
+# Subtest: A-B-A history and two-instance interleaving do not change semantic output
+ok 18 - A-B-A history and two-instance interleaving do not change semantic output
+  ---
+  duration_ms: 1.1592
+  type: 'test'
+  ...
+# Subtest: external X followed by external Y is never resurrected back to X
+ok 19 - external X followed by external Y is never resurrected back to X
+  ---
+  duration_ms: 0.414588
+  type: 'test'
+  ...
+# Subtest: late user patch may recurse into the public API without losing itself
+ok 20 - late user patch may recurse into the public API without losing itself
+  ---
+  duration_ms: 0.337295
+  type: 'test'
+  ...
+# Subtest: a user patch may install another late patch and the newer patch survives
+ok 21 - a user patch may install another late patch and the newer patch survives
+  ---
+  duration_ms: 0.388311
+  type: 'test'
+  ...
+1..21
+# tests 21
+# suites 0
+# pass 21
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 249.018562

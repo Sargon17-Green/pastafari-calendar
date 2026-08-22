@@ -1,0 +1,627 @@
+{
+  "schema": "pastafari.update8.stage05.matched-prefix.v1",
+  "generatedAt": "2026-08-22T20:15:59.854Z",
+  "repository": "Sargon17-Green/pastafari-calendar",
+  "productionBaselineCommit": "2bc2d97bd5638b498014ed8c1c925fb735819a6b",
+  "currentMainCommitAtValidation": "1dfa8ff180891a02b3d9e9c5e07ce162a3937324",
+  "mainDeltaNote": "Compared with production baseline 2bc2d97b: only SHA256SUMS.txt and implementations/cobol/SHA256SUMS.txt changed; no production source changed.",
+  "stateFamily": "STATE:generated:arena-prefix-churn",
+  "purpose": "Distinguish known success-path numeric prefix churn from the two Stage-5 rollback defect families; this is a matched-control check, not a new rollback target.",
+  "repetitionsPerSuccessAndFailure": 20,
+  "initialArenaLength": 1175728,
+  "finalArenaLength": 1175728,
+  "initialHoles": 0,
+  "finalHoles": 0,
+  "cases": [
+    {
+      "id": "BahaiDate",
+      "repetitions": 20,
+      "success": {
+        "minChangedPrefixCells": 5,
+        "maxChangedPrefixCells": 5,
+        "counts": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "uniqueChangedIndices": 5
+      },
+      "failure": {
+        "minChangedPrefixCells": 1,
+        "maxChangedPrefixCells": 1,
+        "counts": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "uniqueChangedIndices": 1,
+        "exceptionSignatures": [
+          "RangeError\u0000variant של הלוח הבהאי חייב להיות \"tehran-equinox\" או \"western-arithmetic\""
+        ]
+      },
+      "checks": {
+        "everyCallPreservedLength": true,
+        "everyCallPreservedHoleCount": true,
+        "churnWasNumericOnly": true,
+        "failureChurnDidNotExceedMatchedSuccessControl": true
+      }
+    },
+    {
+      "id": "GregorianDate",
+      "repetitions": 20,
+      "success": {
+        "minChangedPrefixCells": 2,
+        "maxChangedPrefixCells": 2,
+        "counts": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "uniqueChangedIndices": 2
+      },
+      "failure": {
+        "minChangedPrefixCells": 2,
+        "maxChangedPrefixCells": 2,
+        "counts": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "uniqueChangedIndices": 2,
+        "exceptionSignatures": [
+          "TypeError\u0000החודש והיום הגריגוריאניים חייבים להיות מספרים שלמים"
+        ]
+      },
+      "checks": {
+        "everyCallPreservedLength": true,
+        "everyCallPreservedHoleCount": true,
+        "churnWasNumericOnly": true,
+        "failureChurnDidNotExceedMatchedSuccessControl": true
+      }
+    },
+    {
+      "id": "HinduDate",
+      "repetitions": 20,
+      "success": {
+        "minChangedPrefixCells": 5,
+        "maxChangedPrefixCells": 5,
+        "counts": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "uniqueChangedIndices": 5
+      },
+      "failure": {
+        "minChangedPrefixCells": 1,
+        "maxChangedPrefixCells": 1,
+        "counts": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "uniqueChangedIndices": 1,
+        "exceptionSignatures": [
+          "RangeError\u0000אין לוח הינדי יחיד; scheme חייב להיות \"old-solar\" או \"old-lunar\""
+        ]
+      },
+      "checks": {
+        "everyCallPreservedLength": true,
+        "everyCallPreservedHoleCount": true,
+        "churnWasNumericOnly": true,
+        "failureChurnDidNotExceedMatchedSuccessControl": true
+      }
+    },
+    {
+      "id": "IslamicDate",
+      "repetitions": 20,
+      "success": {
+        "minChangedPrefixCells": 5,
+        "maxChangedPrefixCells": 5,
+        "counts": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "uniqueChangedIndices": 5
+      },
+      "failure": {
+        "minChangedPrefixCells": 1,
+        "maxChangedPrefixCells": 1,
+        "counts": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "uniqueChangedIndices": 1,
+        "exceptionSignatures": [
+          "RangeError\u0000לוח היג׳רי אינו חד־משמעי; variant חייב להיות \"civil\" או \"umalqura\""
+        ]
+      },
+      "checks": {
+        "everyCallPreservedLength": true,
+        "everyCallPreservedHoleCount": true,
+        "churnWasNumericOnly": true,
+        "failureChurnDidNotExceedMatchedSuccessControl": true
+      }
+    },
+    {
+      "id": "JapaneseImperialDate",
+      "repetitions": 20,
+      "success": {
+        "minChangedPrefixCells": 5,
+        "maxChangedPrefixCells": 5,
+        "counts": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "uniqueChangedIndices": 5
+      },
+      "failure": {
+        "minChangedPrefixCells": 1,
+        "maxChangedPrefixCells": 1,
+        "counts": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "uniqueChangedIndices": 1,
+        "exceptionSignatures": [
+          "TypeError\u0000שם התקופה היפנית חייב להיות מחרוזת"
+        ]
+      },
+      "checks": {
+        "everyCallPreservedLength": true,
+        "everyCallPreservedHoleCount": true,
+        "churnWasNumericOnly": true,
+        "failureChurnDidNotExceedMatchedSuccessControl": true
+      }
+    },
+    {
+      "id": "MonthWeavingCounter",
+      "repetitions": 20,
+      "success": {
+        "minChangedPrefixCells": 4,
+        "maxChangedPrefixCells": 4,
+        "counts": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "uniqueChangedIndices": 4
+      },
+      "failure": {
+        "minChangedPrefixCells": 1,
+        "maxChangedPrefixCells": 1,
+        "counts": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "uniqueChangedIndices": 1,
+        "exceptionSignatures": [
+          "RangeError\u0000אורכי החודשים חייבים להיות חיוביים"
+        ]
+      },
+      "checks": {
+        "everyCallPreservedLength": true,
+        "everyCallPreservedHoleCount": true,
+        "churnWasNumericOnly": true,
+        "failureChurnDidNotExceedMatchedSuccessControl": true
+      }
+    },
+    {
+      "id": "PastafariCalendar",
+      "repetitions": 20,
+      "success": {
+        "minChangedPrefixCells": 4,
+        "maxChangedPrefixCells": 4,
+        "counts": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "uniqueChangedIndices": 40
+      },
+      "failure": {
+        "minChangedPrefixCells": 1,
+        "maxChangedPrefixCells": 1,
+        "counts": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "uniqueChangedIndices": 1,
+        "exceptionSignatures": [
+          "TypeError\u0000todayProvider חייב להיות פונקציה"
+        ]
+      },
+      "checks": {
+        "everyCallPreservedLength": true,
+        "everyCallPreservedHoleCount": true,
+        "churnWasNumericOnly": true,
+        "failureChurnDidNotExceedMatchedSuccessControl": true
+      }
+    },
+    {
+      "id": "SolarHijriDate",
+      "repetitions": 20,
+      "success": {
+        "minChangedPrefixCells": 5,
+        "maxChangedPrefixCells": 5,
+        "counts": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "uniqueChangedIndices": 5
+      },
+      "failure": {
+        "minChangedPrefixCells": 1,
+        "maxChangedPrefixCells": 1,
+        "counts": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "uniqueChangedIndices": 1,
+        "exceptionSignatures": [
+          "RangeError\u0000variant של הלוח ההיג׳רי השמשי חייב להיות \"official\" או \"arithmetic-2820\""
+        ]
+      },
+      "checks": {
+        "everyCallPreservedLength": true,
+        "everyCallPreservedHoleCount": true,
+        "churnWasNumericOnly": true,
+        "failureChurnDidNotExceedMatchedSuccessControl": true
+      }
+    },
+    {
+      "id": "PastafariCalendarDefault",
+      "repetitions": 20,
+      "success": {
+        "minChangedPrefixCells": 4,
+        "maxChangedPrefixCells": 4,
+        "counts": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "uniqueChangedIndices": 42
+      },
+      "failure": {
+        "minChangedPrefixCells": 0,
+        "maxChangedPrefixCells": 0,
+        "counts": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "uniqueChangedIndices": 0,
+        "exceptionSignatures": [
+          "ReferenceError\u0000localToday is not defined"
+        ]
+      },
+      "checks": {
+        "everyCallPreservedLength": true,
+        "everyCallPreservedHoleCount": true,
+        "churnWasNumericOnly": true,
+        "failureChurnDidNotExceedMatchedSuccessControl": true
+      }
+    }
+  ],
+  "conclusion": {
+    "arenaShapeRestoredAfterEveryFailure": true,
+    "noFailureIntroducedNonNumericPrefixState": true,
+    "noFailureExceededMatchedSuccessPrefixChurnCardinality": true,
+    "classification": "MATCHED_SUCCESS_PATH_NUMERIC_CHURN_ONLY",
+    "stage5BlockingFinding": false
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "schema": "pastafari.update8.stage05.reference-regressions.v1",
+  "generatedAt": "2026-08-22T20:19:56.293Z",
+  "repository": "Sargon17-Green/pastafari-calendar",
+  "currentMainCommitAtValidation": "1dfa8ff180891a02b3d9e9c5e07ce162a3937324",
+  "productionBaselineCommit": "2bc2d97bd5638b498014ed8c1c925fb735819a6b",
+  "referenceOracle": {
+    "command": "npm run test:reference-oracle",
+    "file": "artifacts/update-08-stage-05-reference-oracle.tap",
+    "tests": 19,
+    "pass": 19,
+    "fail": 0,
+    "skipped": 0,
+    "result": "PASS"
+  },
+  "canonicalVectors": {
+    "command": "node verification/update8/run-stage-05-canonical-vectors.mjs",
+    "artifact": "artifacts/update-08-stage-05-canonical-vectors.json",
+    "result": "PASS"
+  },
+  "focusedCore": {
+    "command": "node --test calendar-converters calendar-properties public-api runtime-patching router-* year-ceiling-detour",
+    "file": "artifacts/update-08-stage-05-core-regressions.tap",
+    "tests": 67,
+    "pass": 63,
+    "fail": 0,
+    "skipped": 4,
+    "result": "PASS"
+  },
+  "npmTest": {
+    "command": "npm test",
+    "file": "artifacts/update-08-stage-05-npm-test.tap",
+    "tests": 196,
+    "pass": 192,
+    "fail": 0,
+    "skipped": 4,
+    "result": "PASS"
+  },
+  "compatibilityAttempt": {
+    "command": "npm run test:compatibility",
+    "result": "TIMEOUT_BEFORE_RESULT",
+    "countedForStage5Group2": false,
+    "note": "Broad fast-vs-authoritative compatibility suite produced no subtest result within the 10-minute outer run window; Stage-5 Group 2 acceptance is reference/oracle + canonical vectors + Node/core regressions, all of which passed. This timed-out heavy suite is not reported as PASS or FAIL."
+  },
+  "result": "PASS"
+}

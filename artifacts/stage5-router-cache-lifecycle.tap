@@ -1,0 +1,76 @@
+TAP version 13
+# Subtest: router cache is bounded and uses least-recently-used idle eviction
+ok 1 - router cache is bounded and uses least-recently-used idle eviction
+  ---
+  duration_ms: 9.611738
+  type: 'test'
+  ...
+# Subtest: eviction followed by recreation preserves exact conversion output
+ok 2 - eviction followed by recreation preserves exact conversion output
+  ---
+  duration_ms: 4.268946
+  type: 'test'
+  ...
+# Subtest: active states are never evicted even when the temporary live set exceeds the limit
+ok 3 - active states are never evicted even when the temporary live set exceeds the limit
+  ---
+  duration_ms: 6.769129
+  type: 'test'
+  ...
+# Subtest: a state with verification in flight is protected from eviction
+ok 4 - a state with verification in flight is protected from eviction
+  ---
+  duration_ms: 8.770796
+  type: 'test'
+  ...
+# Subtest: concurrent same-key requests share one authoritative bootstrap request
+ok 5 - concurrent same-key requests share one authoritative bootstrap request
+  ---
+  duration_ms: 2.906619
+  type: 'test'
+  ...
+# Subtest: concurrent different-key requests settle back to the configured cache bound
+ok 6 - concurrent different-key requests settle back to the configured cache bound
+  ---
+  duration_ms: 16.951331
+  type: 'test'
+  ...
+# Subtest: failed verification remains cached and authoritative-only while its state is retained
+ok 7 - failed verification remains cached and authoritative-only while its state is retained
+  ---
+  duration_ms: 1.910613
+  type: 'test'
+  ...
+# Subtest: failed states are retained preferentially without defeating the hard idle bound
+ok 8 - failed states are retained preferentially without defeating the hard idle bound
+  ---
+  duration_ms: 2.2338
+  type: 'test'
+  ...
+# Subtest: retry removes cache bookkeeping and recreates a clean state
+ok 9 - retry removes cache bookkeeping and recreates a clean state
+  ---
+  duration_ms: 4.062781
+  type: 'test'
+  ...
+# Subtest: dispose clears states and LRU bookkeeping and remains safe when called twice
+ok 10 - dispose clears states and LRU bookkeeping and remains safe when called twice
+  ---
+  duration_ms: 2.811103
+  type: 'test'
+  ...
+# Subtest: 600-case bounded-vs-unbounded differential keeps canonical results identical
+ok 11 - 600-case bounded-vs-unbounded differential keeps canonical results identical
+  ---
+  duration_ms: 151.338644
+  type: 'test'
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 406.71284

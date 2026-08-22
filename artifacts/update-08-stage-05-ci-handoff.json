@@ -1,0 +1,51 @@
+{
+  "schema": "pastafari.update8.stage05.ci-handoff.v1",
+  "stage": 5,
+  "repository": "Sargon17-Green/pastafari-calendar",
+  "packageVersion": "1.3.0",
+  "productionBaselineCommit": "2bc2d97bd5638b498014ed8c1c925fb735819a6b",
+  "currentMainObserved": "1dfa8ff180891a02b3d9e9c5e07ce162a3937324",
+  "mainChangesSinceBaseline": {
+    "productionChanged": false,
+    "note": "Observed changes after the Stage-5 production baseline were checksum/manifest-only; no relevant production source changed."
+  },
+  "productionFilesIncluded": [
+    "src/5efdcc3e6fb071cbaffdcb117507a169dd76.js",
+    "browser/pastafari-calendar-core-chronicle.js"
+  ],
+  "standaloneFilesIncluded": [],
+  "standaloneStatus": "NOT_INCLUDED_STALE_REQUIRES_CANONICAL_CI_REBUILD",
+  "verificationStatus": {
+    "transactionality": "PASS",
+    "naturalFailures1000": "PASS",
+    "identityRollback": "PASS",
+    "nestedDepths_1_2_3_5_10": "PASS",
+    "matchedPrefix": "PASS",
+    "faultInjection": "PASS",
+    "referenceOracle": "PASS_19_OF_19",
+    "canonicalVectors": "PASS",
+    "focusedCore": "PASS_63_FAIL_0_SKIP_4",
+    "npmTest": "PASS_192_FAIL_0_SKIP_4",
+    "runtimePatching": "PASS_21_OF_21",
+    "cacheEpochFocused": "PASS_6_OF_6",
+    "routerCacheLifecycle": "PASS_11_OF_11",
+    "browserSourceParity": "PASS",
+    "compatibility": "TIMEOUT_BEFORE_RESULT_NOT_COUNTED",
+    "canonicalStandaloneBuildLocal": "BLOCKED_ENVIRONMENT_MISSING_ESBUILD_0_28_2"
+  },
+  "existingCIContinuation": {
+    "workflow": ".github/workflows/test.yml",
+    "job": "node-test",
+    "sequence": [
+      "npm ci",
+      "npm run build:standalone",
+      "sha256sum generated standalone files",
+      "upload artifact update3-generated-standalone-${github.sha}",
+      "git diff --exit-code on standalone files"
+    ],
+    "expectedFirstRun": "The job is expected to fail at git diff because the checked-in standalone bundles are intentionally not included in this partial delta. The generated standalone artifact is uploaded before that expected failure."
+  },
+  "nextRequiredInput": "GitHub Actions artifact update3-generated-standalone-<commit>.zip from the first CI run after this delta is committed.",
+  "stage5Result": "BLOCKED_PENDING_CANONICAL_STANDALONE_REBUILD",
+  "readyForStage6": false
+}

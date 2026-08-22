@@ -1,0 +1,46 @@
+TAP version 13
+# Subtest: a fossil entry remains physically present but cannot determine semantics
+ok 1 - a fossil entry remains physically present but cannot determine semantics
+  ---
+  duration_ms: 6.107127
+  type: 'test'
+  ...
+# Subtest: warm repeats hit the normative shadow instead of recomputing
+ok 2 - warm repeats hit the normative shadow instead of recomputing
+  ---
+  duration_ms: 1.083619
+  type: 'test'
+  ...
+# Subtest: manual external poisoning after warming is masked during conversion
+ok 3 - manual external poisoning after warming is masked during conversion
+  ---
+  duration_ms: 0.825306
+  type: 'test'
+  ...
+# Subtest: failed population rolls shadow mutations back and leaves no partial valid entry
+ok 4 - failed population rolls shadow mutations back and leaves no partial valid entry
+  ---
+  duration_ms: 1.359864
+  type: 'test'
+  ...
+# Subtest: nested population commits once and restores depth to zero
+ok 5 - nested population commits once and restores depth to zero
+  ---
+  duration_ms: 0.76359
+  type: 'test'
+  ...
+# Subtest: trace instrumentation reports writer, depth, cache and algorithm marker
+ok 6 - trace instrumentation reports writer, depth, cache and algorithm marker
+  ---
+  duration_ms: 0.717398
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 186.134771

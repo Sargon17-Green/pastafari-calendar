@@ -1,0 +1,1195 @@
+
+> pastafari-calendar@1.3.0 test
+> npm run test:fast
+
+
+> pastafari-calendar@1.3.0 test:fast
+> node --test test/calendar-converters.test.js test/ci-change-classifier.test.js test/calendar-input-conventions.test.js test/calendar-properties.test.js test/day-boundary.test.js test/docs-consistency.test.js test/gate-data-regeneration.test.js test/i18n-support-levels.test.js test/memory-analysis.test.js test/pages-reverse-engine.test.js test/public-api.test.js test/pwa-i18n.test.js test/release-infrastructure.test.js test/reverse-pages-integration.test.js test/reverse-pages-wiring.test.js test/reverse-search-controller.test.js test/router-cache-lifecycle.test.js test/router-concurrency.test.js test/router-fallback.test.js test/router-memory-bounds.test.js test/runtime-patching.test.js test/standalone-build.test.js test/reference-oracle.test.js test/year-ceiling-detour.test.js
+
+TAP version 13
+# Subtest: the public date search exposes every calendar family already supported by the project
+ok 1 - the public date search exposes every calendar family already supported by the project
+  ---
+  duration_ms: 5.440546
+  type: 'test'
+  ...
+# Subtest: representative dates from every input calendar convert to the established JDN
+ok 2 - representative dates from every input calendar convert to the established JDN
+  ---
+  duration_ms: 52.48641
+  type: 'test'
+  ...
+# Subtest: Gregorian JDN conversion round-trips across ordinary and signed years
+ok 3 - Gregorian JDN conversion round-trips across ordinary and signed years
+  ---
+  duration_ms: 0.481773
+  type: 'test'
+  ...
+# Subtest: Tehran-equinox boundary years follow the project's established day convention
+ok 4 - Tehran-equinox boundary years follow the project's established day convention
+  ---
+  duration_ms: 0.897882
+  type: 'test'
+  ...
+# Subtest: invalid civil and era dates are rejected rather than normalized silently
+ok 5 - invalid civil and era dates are rejected rather than normalized silently
+  ---
+  duration_ms: 1.054358
+  type: 'test'
+  ...
+# Subtest: Old Hindu Lunar leap flags are accepted only at the model's intercalary month
+ok 6 - Old Hindu Lunar leap flags are accepted only at the model's intercalary month
+  ---
+  duration_ms: 1.15556
+  type: 'test'
+  ...
+# Subtest: Hebrew day numerals accept traditional letter notation
+ok 7 - Hebrew day numerals accept traditional letter notation
+  ---
+  duration_ms: 2.334457
+  type: 'test'
+  ...
+# Subtest: Hebrew year numerals support omitted and explicit thousands
+ok 8 - Hebrew year numerals support omitted and explicit thousands
+  ---
+  duration_ms: 0.694927
+  type: 'test'
+  ...
+# Subtest: calendar-specific textual numerals are normalized without changing the converter API
+ok 9 - calendar-specific textual numerals are normalized without changing the converter API
+  ---
+  duration_ms: 1.222594
+  type: 'test'
+  ...
+# Subtest: Hebrew month input uses names and distinguishes both Adar forms
+ok 10 - Hebrew month input uses names and distinguishes both Adar forms
+  ---
+  duration_ms: 42.242408
+  type: 'test'
+  ...
+# Subtest: named-month selectors are available for the supported civil calendar families
+ok 11 - named-month selectors are available for the supported civil calendar families
+  ---
+  duration_ms: 220.686908
+  type: 'test'
+  ...
+# Subtest: Bahai and old Hindu month labels use their calendar names rather than bare ordinals
+ok 12 - Bahai and old Hindu month labels use their calendar names rather than bare ordinals
+  ---
+  duration_ms: 0.463101
+  type: 'test'
+  ...
+# Subtest: deterministic calendar conversion and input property smoke
+ok 13 - deterministic calendar conversion and input property smoke
+  ---
+  duration_ms: 541.971727
+  type: 'test'
+  ...
+# calendar-property generator=calendar-properties-v1 seed=0x7061737461666172 mode=smoke\\nchecksum=c554c43acf27664f441a89b9884dd7cf633b18012d0f41a42e2dac8e25faed65 elapsedMs=539\\ntotals properties=30 boundary=214 random=660 regressions=1 passed=875 failed=0\\ngregorian/jdn-roundtrip: boundary=7 random=24 passed=31 failed=0\\ngregorian/date-roundtrip: boundary=7 random=24 passed=31 failed=0\\ngregorian/month-year-boundary-continuity: boundary=5 random=24 passed=29 failed=0\\ngregorian/leap-rule: boundary=12 random=24 passed=36 failed=0\\ngregorian/ecmascript-utc-cross-check: boundary=5 random=24 passed=29 failed=0\\njulian/month-year-boundary-continuity: boundary=4 random=24 passed=28 failed=0\\njulian/leap-rule: boundary=9 random=24 passed=33 failed=0\\nhebrew/metonic-year-and-month-boundaries: boundary=10 random=24 passed=34 failed=0\\nislamic-civil/tabular-cycle-and-month-boundaries: boundary=7 random=24 passed=31 failed=0\\nsolar-hijri-arithmetic/month-year-boundaries: boundary=9 random=24 passed=33 failed=0\\nsolar-hijri-arithmetic/year-zero-domain: boundary=1 random=24 passed=25 failed=0\\ncoptic/thirteen-month-boundaries: boundary=7 random=24 passed=31 failed=0\\nethiopic/thirteen-month-boundaries: boundary=7 random=24 passed=31 failed=0\\nsaka/year-and-month-boundaries: boundary=7 random=24 passed=31 failed=0\\nthai-buddhist/gregorian-offset-equivalence: boundary=6 random=24 passed=30 failed=0\\nminguo/gregorian-offset-equivalence: boundary=6 random=24 passed=30 failed=0\\njapanese-imperial/era-boundary-and-gregorian-equivalence: boundary=10 random=24 passed=34 failed=0\\nmaya-long-count/mixed-radix-linearity-and-carries: boundary=3 random=24 passed=27 failed=0\\nbahai-western/new-year-and-intercalary-boundaries: boundary=6 random=24 passed=30 failed=0\\nbahai-tehran/supported-range-and-year-continuity: boundary=10 random=24 passed=34 failed=0\\nhindu-old-solar/adjacent-day-monotonicity: boundary=3 random=24 passed=27 failed=0\\nhindu-old-lunar/tithi-monotonicity-and-leap-month-uniqueness: boundary=2 random=24 passed=26 failed=0\\nislamic-umalqura/intl-supported-date-determinism: boundary=1 random=4 passed=5 failed=0\\nsolar-hijri-official/intl-supported-date-determinism: boundary=1 random=4 passed=5 failed=0\\nchinese/intl-related-year-determinism: boundary=2 random=4 passed=6 failed=0\\ninput/hebrew-numeral-unicode-and-whitespace: boundary=6 random=24 passed=30 failed=0\\ninput/japanese-gannen-normalization: boundary=2 random=24 passed=26 failed=0\\ninput/month-choice-cache-order-independence: boundary=18 random=24 passed=42 failed=0\\ninput/malformed-inputs-reject-without-non-range-crashes: boundary=38 random=24 passed=62 failed=0\\ninput/conversion-order-independence: boundary=3 random=24 passed=27 failed=0
+# Subtest: engine changes enable the broad correctness, browser, performance, visual, and implementation gates
+ok 14 - engine changes enable the broad correctness, browser, performance, visual, and implementation gates
+  ---
+  duration_ms: 2.948636
+  type: 'test'
+  ...
+# Subtest: CSS-only UI changes avoid algorithmic compatibility, deep, checkpoint, performance, and native implementation jobs
+ok 15 - CSS-only UI changes avoid algorithmic compatibility, deep, checkpoint, performance, and native implementation jobs
+  ---
+  duration_ms: 1.218592
+  type: 'test'
+  ...
+# Subtest: locale-only changes run i18n-relevant browser gates but not algorithmic heavy gates
+ok 16 - locale-only changes run i18n-relevant browser gates but not algorithmic heavy gates
+  ---
+  duration_ms: 0.323438
+  type: 'test'
+  ...
+# Subtest: documentation-only changes leave specialized jobs disabled
+ok 17 - documentation-only changes leave specialized jobs disabled
+  ---
+  duration_ms: 0.782153
+  type: 'test'
+  ...
+# Subtest: workflow changes force conservative full CI
+ok 18 - workflow changes force conservative full CI
+  ---
+  duration_ms: 0.470486
+  type: 'test'
+  ...
+# Subtest: package.json changes force conservative full CI and packaging coverage
+ok 19 - package.json changes force conservative full CI and packaging coverage
+  ---
+  duration_ms: 0.362673
+  type: 'test'
+  ...
+# Subtest: mixed UI and engine changes take the union and therefore include engine-heavy gates
+ok 20 - mixed UI and engine changes take the union and therefore include engine-heavy gates
+  ---
+  duration_ms: 0.628843
+  type: 'test'
+  ...
+# Subtest: manual classification is full by default
+ok 21 - manual classification is full by default
+  ---
+  duration_ms: 0.3632
+  type: 'test'
+  ...
+# Subtest: PR and push resolve the complete changed-file range through the same policy
+ok 22 - PR and push resolve the complete changed-file range through the same policy
+  ---
+  duration_ms: 276.230994
+  type: 'test'
+  ...
+# Subtest: checksum manifest updates do not erase the selectivity of the files they accompany
+ok 23 - checksum manifest updates do not erase the selectivity of the files they accompany
+  ---
+  duration_ms: 2.180202
+  type: 'test'
+  ...
+# Subtest: benchmark-only changes stay within benchmark and memory/performance gates
+ok 24 - benchmark-only changes stay within benchmark and memory/performance gates
+  ---
+  duration_ms: 0.779827
+  type: 'test'
+  ...
+# Subtest: unknown paths fail safe by forcing every specialized job
+ok 25 - unknown paths fail safe by forcing every specialized job
+  ---
+  duration_ms: 0.586661
+  type: 'test'
+  ...
+# Subtest: language-specific implementation changes do not fan out to unrelated implementations
+ok 26 - language-specific implementation changes do not fan out to unrelated implementations
+  ---
+  duration_ms: 0.245618
+  type: 'test'
+  ...
+# Subtest: shared implementation vectors fan out to every implementation
+ok 27 - shared implementation vectors fan out to every implementation
+  ---
+  duration_ms: 0.331381
+  type: 'test'
+  ...
+# Subtest: astronomical day-boundary assets enable the dedicated browser gate without engine benchmarks
+ok 28 - astronomical day-boundary assets enable the dedicated browser gate without engine benchmarks
+  ---
+  duration_ms: 1.457457
+  type: 'test'
+  ...
+# Subtest: Day of Foundation is the sole numbering anchor
+ok 29 - Day of Foundation is the sole numbering anchor
+  ---
+  duration_ms: 2.471814
+  type: 'test'
+  ...
+# Subtest: Kisurra boundaries are consecutive and the day changes exactly at the Venus boundary
+ok 30 - Kisurra boundaries are consecutive and the day changes exactly at the Venus boundary
+  ---
+  duration_ms: 36.143178
+  type: 'test'
+  ...
+# Subtest: observer coordinates affect the astronomical boundary
+ok 31 - observer coordinates affect the astronomical boundary
+  ---
+  duration_ms: 7.893969
+  type: 'test'
+  ...
+# Subtest: astronomical boundaries stay ordered across the supported model range
+ok 32 - astronomical boundaries stay ordered across the supported model range
+  ---
+  duration_ms: 58.100541
+  type: 'test'
+  ...
+# Subtest: Kisurra boundaries remain one-per-day across a dense contemporary interval
+ok 33 - Kisurra boundaries remain one-per-day across a dense contemporary interval
+  ---
+  duration_ms: 365.333142
+  type: 'test'
+  ...
+# Subtest: location resolver never prompts: non-granted permission falls back to Kisurra
+ok 34 - location resolver never prompts: non-granted permission falls back to Kisurra
+  ---
+  duration_ms: 0.630955
+  type: 'test'
+  ...
+# Subtest: location resolver uses a valid device position when permission is already granted
+ok 35 - location resolver uses a valid device position when permission is already granted
+  ---
+  duration_ms: 0.623312
+  type: 'test'
+  ...
+# Subtest: explicit device-location request may call geolocation without changing the automatic no-prompt rule
+ok 36 - explicit device-location request may call geolocation without changing the automatic no-prompt rule
+  ---
+  duration_ms: 0.425997
+  type: 'test'
+  ...
+# Subtest: locale-count mismatch fails deterministically
+ok 37 - locale-count mismatch fails deterministically
+  ---
+  duration_ms: 107.732987
+  type: 'test'
+  ...
+# Subtest: missing current local link fails
+ok 38 - missing current local link fails
+  ---
+  duration_ms: 62.906688
+  type: 'test'
+  ...
+# Subtest: invalid npm run reference fails without executing it
+ok 39 - invalid npm run reference fails without executing it
+  ---
+  duration_ms: 56.307484
+  type: 'test'
+  ...
+# Subtest: historical snapshot may retain old package and locale values
+ok 40 - historical snapshot may retain old package and locale values
+  ---
+  duration_ms: 48.429965
+  type: 'test'
+  ...
+# Subtest: generated section drift fails and generator repairs it
+ok 41 - generated section drift fails and generator repairs it
+  ---
+  duration_ms: 42.943615
+  type: 'test'
+  ...
+# Subtest: wrong-case local path fails even on case-insensitive development systems
+ok 42 - wrong-case local path fails even on case-insensitive development systems
+  ---
+  duration_ms: 23.063207
+  type: 'test'
+  ...
+# Subtest: missing inline repository path fails conservatively
+ok 43 - missing inline repository path fails conservatively
+  ---
+  duration_ms: 22.460766
+  type: 'test'
+  ...
+# Subtest: package subpath import must exist in package.json exports
+ok 44 - package subpath import must exist in package.json exports
+  ---
+  duration_ms: 36.302335
+  type: 'test'
+  ...
+# Subtest: support-level count mismatch fails deterministically
+ok 45 - support-level count mismatch fails deterministically
+  ---
+  duration_ms: 20.61505
+  type: 'test'
+  ...
+# Subtest: Node pins in every workflow must honor the package minimum
+ok 46 - Node pins in every workflow must honor the package minimum
+  ---
+  duration_ms: 47.565024
+  type: 'test'
+  ...
+# Subtest: normative source checksum metadata must match the source manifest
+ok 47 - normative source checksum metadata must match the source manifest
+  ---
+  duration_ms: 35.508025
+  type: 'test'
+  ...
+# Subtest: generated gate shadow decodes to the declared 40,001 positive positions
+ok 48 - generated gate shadow decodes to the declared 40,001 positive positions
+  ---
+  duration_ms: 36.206831
+  type: 'test'
+  ...
+# Subtest: sealed historical positive table is stale but becomes semantically dead through the detour
+ok 49 - sealed historical positive table is stale but becomes semantically dead through the detour
+  ---
+  duration_ms: 174.692153
+  type: 'test'
+  ...
+# Subtest: all 40,001 authoritative positive runtime lookups equal the regenerated shadow
+ok 50 - all 40,001 authoritative positive runtime lookups equal the regenerated shadow
+  ---
+  duration_ms: 174.600849
+  type: 'test'
+  ...
+# Subtest: 1,000 deterministic positive lookups exercise non-checkpoint and boundary positions
+ok 51 - 1,000 deterministic positive lookups exercise non-checkpoint and boundary positions
+  ---
+  duration_ms: 127.390556
+  type: 'test'
+  ...
+# Subtest: direct authoritative and clear-reference negative gaps agree for -1..-2048
+ok 52 - direct authoritative and clear-reference negative gaps agree for -1..-2048
+  ---
+  duration_ms: 11892.751597
+  type: 'test'
+  ...
+# Subtest: positive/negative proof sample includes ±1..20 plus deterministic non-fixture indices
+ok 53 - positive/negative proof sample includes ±1..20 plus deterministic non-fixture indices
+  ---
+  duration_ms: 299.490642
+  type: 'test'
+  ...
+# Subtest: one-byte corruption of the normative encoded payload is detected
+ok 54 - one-byte corruption of the normative encoded payload is detected
+  ---
+  duration_ms: 3.541786
+  type: 'test'
+  ...
+# Subtest: registry is the single source of truth for explicit support levels
+ok 55 - registry is the single source of truth for explicit support levels
+  ---
+  duration_ms: 5.010676
+  type: 'test'
+  ...
+# Subtest: a complete locale fails when a required key is missing
+ok 56 - a complete locale fails when a required key is missing
+  ---
+  duration_ms: 1.76273
+  type: 'test'
+  ...
+# Subtest: a partial locale may omit a key and receives it from English fallback
+ok 57 - a partial locale may omit a key and receives it from English fallback
+  ---
+  duration_ms: 0.920225
+  type: 'test'
+  ...
+# Subtest: a minimal experimental locale remains loadable through fallback
+ok 58 - a minimal experimental locale remains loadable through fallback
+  ---
+  duration_ms: 0.714527
+  type: 'test'
+  ...
+# Subtest: unknown keys are rejected even for experimental locales
+ok 59 - unknown keys are rejected even for experimental locales
+  ---
+  duration_ms: 0.302909
+  type: 'test'
+  ...
+# Subtest: empty, null and non-string overrides are rejected at every support level
+ok 60 - empty, null and non-string overrides are rejected at every support level
+  ---
+  duration_ms: 0.657523
+  type: 'test'
+  ...
+# Subtest: message placeholder names must match the English source while order may differ
+ok 61 - message placeholder names must match the English source while order may differ
+  ---
+  duration_ms: 1.321486
+  type: 'test'
+  ...
+# Subtest: malformed resource-group types fail even when fallback is permitted
+ok 62 - malformed resource-group types fail even when fallback is permitted
+  ---
+  duration_ms: 0.660772
+  type: 'test'
+  ...
+# Subtest: support metadata is not allowed inside a locale source module
+ok 63 - support metadata is not allowed inside a locale source module
+  ---
+  duration_ms: 0.978663
+  type: 'test'
+  ...
+# Subtest: registry metadata validation catches invalid status, direction, codes and aliases
+ok 64 - registry metadata validation catches invalid status, direction, codes and aliases
+  ---
+  duration_ms: 4.091774
+  type: 'test'
+  ...
+# Subtest: registry/module inventory mismatch is detected in both directions
+ok 65 - registry/module inventory mismatch is detected in both directions
+  ---
+  duration_ms: 0.699733
+  type: 'test'
+  ...
+# Subtest: runtime notices are ordinary message resources in every current locale
+ok 66 - runtime notices are ordinary message resources in every current locale
+  ---
+  duration_ms: 179.26694
+  type: 'test'
+  ...
+# Subtest: current partial locales use the normal English fallback only for newly untranslated UI errors and brand text
+ok 67 - current partial locales use the normal English fallback only for newly untranslated UI errors and brand text
+  ---
+  duration_ms: 67.357657
+  type: 'test'
+  ...
+# Subtest: memory shape guard accepts a warm-up curve that reaches a plateau
+ok 68 - memory shape guard accepts a warm-up curve that reaches a plateau
+  ---
+  duration_ms: 1.959875
+  type: 'test'
+  ...
+# Subtest: memory shape guard catches sustained approximately linear retained growth
+ok 69 - memory shape guard catches sustained approximately linear retained growth
+  ---
+  duration_ms: 4.087479
+  type: 'test'
+  ...
+# Subtest: GC-sized jitter does not become a leak assertion
+ok 70 - GC-sized jitter does not become a leak assertion
+  ---
+  duration_ms: 0.529075
+  type: 'test'
+  ...
+# Subtest: base-commit comparison catches a meaningful new late-growth pattern
+ok 71 - base-commit comparison catches a meaningful new late-growth pattern
+  ---
+  duration_ms: 0.809611
+  type: 'test'
+  ...
+# Subtest: Pages reverse artifact is byte-identical to browser/pastafari-calendar-fast.js
+ok 72 - Pages reverse artifact is byte-identical to browser/pastafari-calendar-fast.js
+  ---
+  duration_ms: 14.004593
+  type: 'test'
+  ...
+# Subtest: Pages reverse artifact is byte-identical to browser/pastafari-constraints-client.js
+ok 73 - Pages reverse artifact is byte-identical to browser/pastafari-constraints-client.js
+  ---
+  duration_ms: 1.978563
+  type: 'test'
+  ...
+# Subtest: Pages reverse artifact is byte-identical to browser/pastafari-constraints.js
+ok 74 - Pages reverse artifact is byte-identical to browser/pastafari-constraints.js
+  ---
+  duration_ms: 6.078437
+  type: 'test'
+  ...
+# Subtest: Pages reverse artifact is byte-identical to browser/pastafari-reverse-worker.js
+ok 75 - Pages reverse artifact is byte-identical to browser/pastafari-reverse-worker.js
+  ---
+  duration_ms: 1.250674
+  type: 'test'
+  ...
+# Subtest: Pages reverse artifact is byte-identical to browser/pastafari-diagnostics.js
+ok 76 - Pages reverse artifact is byte-identical to browser/pastafari-diagnostics.js
+  ---
+  duration_ms: 2.673203
+  type: 'test'
+  ...
+# Subtest: Pages fast worker preserves the UI-specific adapter contract
+ok 77 - Pages fast worker preserves the UI-specific adapter contract
+  ---
+  duration_ms: 2.103357
+  type: 'test'
+  ...
+# Subtest: Pages fast engine exposes the primitives required by the reverse solver
+ok 78 - Pages fast engine exposes the primitives required by the reverse solver
+  ---
+  duration_ms: 10.407341
+  type: 'test'
+  ...
+# Subtest: Pages constraint module exposes the direct solver
+ok 79 - Pages constraint module exposes the direct solver
+  ---
+  duration_ms: 8.025346
+  type: 'test'
+  ...
+# Subtest: Pages constraint client exposes the worker-backed public solver
+ok 80 - Pages constraint client exposes the worker-backed public solver
+  ---
+  duration_ms: 7.419507
+  type: 'test'
+  ...
+# Subtest: the published calendar bypasses the monster default-today binding defect
+ok 81 - the published calendar bypasses the monster default-today binding defect
+  ---
+  duration_ms: 150.832993
+  type: 'test'
+  ...
+# Subtest: the public bypass preserves an explicitly supplied todayProvider
+ok 82 - the public bypass preserves an explicitly supplied todayProvider
+  ---
+  duration_ms: 171.897401
+  type: 'test'
+  ...
+# Subtest: Pages uses the audited canonical fast engine bytes without a divergent build
+ok 83 - Pages uses the audited canonical fast engine bytes without a divergent build
+  ---
+  duration_ms: 11.379962
+  type: 'test'
+  ...
+# Subtest: stable calendar identifiers preserve the engine's canonical name order
+ok 84 - stable calendar identifiers preserve the engine's canonical name order
+  ---
+  duration_ms: 4.853372
+  type: 'test'
+  ...
+# Subtest: service worker keeps an atomic core shell and a bounded optional/on-demand cache
+ok 85 - service worker keeps an atomic core shell and a bounded optional/on-demand cache
+  ---
+  duration_ms: 16.29134
+  type: 'test'
+  ...
+# Subtest: registry contains only dynamic locale imports
+ok 86 - registry contains only dynamic locale imports
+  ---
+  duration_ms: 1.800542
+  type: 'test'
+  ...
+# Subtest: every static HTML translation binding exists in every locale
+ok 87 - every static HTML translation binding exists in every locale
+  ---
+  duration_ms: 357.590868
+  type: 'test'
+  ...
+# Subtest: application logic contains no Hebrew UI literals or hard-coded Hebrew Intl locale
+ok 88 - application logic contains no Hebrew UI literals or hard-coded Hebrew Intl locale
+  ---
+  duration_ms: 4.562954
+  type: 'test'
+  ...
+# Subtest: known user-facing runtime text has no side dictionaries or direct locale-table lookup
+ok 89 - known user-facing runtime text has no side dictionaries or direct locale-table lookup
+  ---
+  duration_ms: 4.477541
+  type: 'test'
+  ...
+# Subtest: the public UI searches dates, keeps ordinary days non-interactive, and aligns desktop comparison rows
+ok 90 - the public UI searches dates, keeps ordinary days non-interactive, and aligns desktop comparison rows
+  ---
+  duration_ms: 3.040555
+  type: 'test'
+  ...
+# Subtest: manifest is valid JSON with localized metadata for every registered locale
+ok 91 - manifest is valid JSON with localized metadata for every registered locale
+  ---
+  duration_ms: 8.123211
+  type: 'test'
+  ...
+# Subtest: reference source has the documented normative SHA-256
+ok 92 - reference source has the documented normative SHA-256
+  ---
+  duration_ms: 9.395915
+  type: 'test'
+  ...
+# Subtest: reference module imports no project implementation, fast engine, fixture or generator
+ok 93 - reference module imports no project implementation, fast engine, fixture or generator
+  ---
+  duration_ms: 2.305923
+  type: 'test'
+  ...
+# Subtest: small fixed expectations are independently checkable from explicit Scroll rules
+ok 94 - small fixed expectations are independently checkable from explicit Scroll rules
+  ---
+  duration_ms: 0.543708
+  type: 'test'
+  ...
+# Subtest: canonical counters match a hand-checkable Foundation + 1 example
+ok 95 - canonical counters match a hand-checkable Foundation + 1 example
+  ---
+  duration_ms: 0.279384
+  type: 'test'
+  ...
+# Subtest: stone recurrence has an independently hand-calculated second row
+ok 96 - stone recurrence has an independently hand-calculated second row
+  ---
+  duration_ms: 0.438932
+  type: 'test'
+  ...
+# Subtest: Foundation sauce exposes manually checkable initial values without self-generated fixtures
+ok 97 - Foundation sauce exposes manually checkable initial values without self-generated fixtures
+  ---
+  duration_ms: 3.630096
+  type: 'test'
+  ...
+# Subtest: mocking authoritative functions cannot change reference output
+ok 98 - mocking authoritative functions cannot change reference output
+  ---
+  duration_ms: 4.033039
+  type: 'test'
+  ...
+# Subtest: mutating a copied existing canonical fixture cannot affect the byte-identical reference module
+ok 99 - mutating a copied existing canonical fixture cannot affect the byte-identical reference module
+  ---
+  duration_ms: 32.974007
+  type: 'test'
+  ...
+# Subtest: authoritative observation is stable across controlled Math.random seeds
+ok 100 - authoritative observation is stable across controlled Math.random seeds
+  ---
+  duration_ms: 20.632147
+  type: 'test'
+  ...
+# Subtest: comparison runner detects an artificial mismatch
+ok 101 - comparison runner detects an artificial mismatch
+  ---
+  duration_ms: 1.020017
+  type: 'test'
+  ...
+# Subtest: comparison runner reports the first divergence, not a later/final one
+ok 102 - comparison runner reports the first divergence, not a later/final one
+  ---
+  duration_ms: 0.375258
+  type: 'test'
+  ...
+# Subtest: two identical reference executions return byte-for-byte equivalent trace data
+ok 103 - two identical reference executions return byte-for-byte equivalent trace data
+  ---
+  duration_ms: 36.413157
+  type: 'test'
+  ...
+# Subtest: unimplemented calendar stages fail explicitly and never fall back
+ok 104 - unimplemented calendar stages fail explicitly and never fall back
+  ---
+  duration_ms: 0.971921
+  type: 'test'
+  ...
+# Subtest: year candidate reference filters above 5,778 before cardinality and selection
+ok 105 - year candidate reference filters above 5,778 before cardinality and selection
+  ---
+  duration_ms: 150.515907
+  type: 'test'
+  ...
+# Subtest: final-stir reference preserves the Scroll's two distinct sum/order roles and simultaneous snapshot
+ok 106 - final-stir reference preserves the Scroll's two distinct sum/order roles and simultaneous snapshot
+  ---
+  duration_ms: 3.000248
+  type: 'test'
+  ...
+# Subtest: authoritative generated final-stir trace matches the independent reference
+ok 107 - authoritative generated final-stir trace matches the independent reference
+  ---
+  duration_ms: 8438.904313
+  type: 'test'
+  ...
+# Subtest: fast direct sauce matches reference on positive, negative and random discriminators
+ok 108 - fast direct sauce matches reference on positive, negative and random discriminators
+  ---
+  duration_ms: 80.649776
+  type: 'test'
+  ...
+# Subtest: direct authoritative gate-gap calculation matches reference without checkpoints
+ok 109 - direct authoritative gate-gap calculation matches reference without checkpoints
+  ---
+  duration_ms: 62.439298
+  type: 'test'
+  ...
+# Subtest: differential normalizes the authoritative zero-based response choice
+ok 110 - differential normalizes the authoritative zero-based response choice
+  ---
+  duration_ms: 10.628003
+  type: 'test'
+  ...
+# Subtest: generated artifact drift is rejected with the artifact name
+ok 111 - generated artifact drift is rejected with the artifact name
+  ---
+  duration_ms: 2.823013
+  type: 'test'
+  ...
+# Subtest: repository checksum policy excludes Python bytecode caches
+ok 112 - repository checksum policy excludes Python bytecode caches
+  ---
+  duration_ms: 24.287476
+  type: 'test'
+  ...
+# Subtest: checksum manifests preserve Unicode paths verbatim
+ok 113 - checksum manifests preserve Unicode paths verbatim
+  ---
+  duration_ms: 8.09467
+  type: 'test'
+  ...
+# Subtest: checksum verification rejects a modified file
+ok 114 - checksum verification rejects a modified file
+  ---
+  duration_ms: 9.440688
+  type: 'test'
+  ...
+# Subtest: package validation rejects a missing explicit export target
+ok 115 - package validation rejects a missing explicit export target
+  ---
+  duration_ms: 1.020891
+  type: 'test'
+  ...
+# Subtest: package size guard allows ordinary drift but rejects material package bloat
+ok 116 - package size guard allows ordinary drift but rejects material package bloat
+  ---
+  duration_ms: 1.259534
+  type: 'test'
+  ...
+# Subtest: reproducibility comparison rejects different bytes from two builds
+ok 117 - reproducibility comparison rejects different bytes from two builds
+  ---
+  duration_ms: 0.689058
+  type: 'test'
+  ...
+# Subtest: tag validation rejects a package version mismatch
+ok 118 - tag validation rejects a package version mismatch
+  ---
+  duration_ms: 0.299732
+  type: 'test'
+  ...
+# Subtest: PWA cache validation rejects changed core bytes without a VERSION bump
+ok 119 - PWA cache validation rejects changed core bytes without a VERSION bump
+  ---
+  duration_ms: 13.832866
+  type: 'test'
+  ...
+# Subtest: checksum parser detects an extra repository file missing from the manifest
+ok 120 - checksum parser detects an extra repository file missing from the manifest
+  ---
+  duration_ms: 23.057747
+  type: 'test'
+  ...
+# Subtest: Pages controller solves a real single-date reverse query through the copied solver stack
+ok 121 - Pages controller solves a real single-date reverse query through the copied solver stack
+  ---
+  duration_ms: 8659.66995
+  type: 'test'
+  ...
+# Subtest: Pages controller preserves the bounded c=t diagonal path
+ok 122 - Pages controller preserves the bounded c=t diagonal path
+  ---
+  duration_ms: 5.614041
+  type: 'test'
+  ...
+# Subtest: Pages markup exposes one reverse-search mount point
+ok 123 - Pages markup exposes one reverse-search mount point
+  ---
+  duration_ms: 9.256926
+  type: 'test'
+  ...
+# Subtest: app wires reverse results back into the canonical calendar state
+ok 124 - app wires reverse results back into the canonical calendar state
+  ---
+  duration_ms: 2.647106
+  type: 'test'
+  ...
+# Subtest: service worker precaches every module required by offline reverse search
+ok 125 - service worker precaches every module required by offline reverse search
+  ---
+  duration_ms: 2.088039
+  type: 'test'
+  ...
+# Subtest: reverse-search resources obey the declared support-level contract
+ok 126 - reverse-search resources obey the declared support-level contract
+  ---
+  duration_ms: 435.296121
+  type: 'test'
+  ...
+# Subtest: reverse UI uses the canonical site translator without a side fallback table
+ok 127 - reverse UI uses the canonical site translator without a side fallback table
+  ---
+  duration_ms: 2.169369
+  type: 'test'
+  ...
+# Subtest: known runtime-notice wrappers and direct message-table UI lookups are absent
+ok 128 - known runtime-notice wrappers and direct message-table UI lookups are absent
+  ---
+  duration_ms: 2.429184
+  type: 'test'
+  ...
+# Subtest: canonicalPastafariInput maps localized identifiers to internal engine names
+ok 129 - canonicalPastafariInput maps localized identifiers to internal engine names
+  ---
+  duration_ms: 4.097524
+  type: 'test'
+  ...
+# Subtest: simpleReverseProblem uses the active calculation JDN without inventing a search range
+ok 130 - simpleReverseProblem uses the active calculation JDN without inventing a search range
+  ---
+  duration_ms: 0.521371
+  type: 'test'
+  ...
+# Subtest: sameTargetReverseProblem keeps c=t on a finite diagonal domain
+ok 131 - sameTargetReverseProblem keeps c=t on a finite diagonal domain
+  ---
+  duration_ms: 0.628441
+  type: 'test'
+  ...
+# Subtest: variableSpec accepts exact and bounded JDN domains
+ok 132 - variableSpec accepts exact and bounded JDN domains
+  ---
+  duration_ms: 0.970445
+  type: 'test'
+  ...
+# Subtest: advancedReverseProblem preserves the four supported constraint families
+ok 133 - advancedReverseProblem preserves the four supported constraint families
+  ---
+  duration_ms: 0.659875
+  type: 'test'
+  ...
+# Subtest: controller cancels an older run before starting a newer run
+ok 134 - controller cancels an older run before starting a newer run
+  ---
+  duration_ms: 0.949849
+  type: 'test'
+  ...
+# Subtest: result classification never confuses an incomplete empty search with no solution
+ok 135 - result classification never confuses an incomplete empty search with no solution
+  ---
+  duration_ms: 0.482072
+  type: 'test'
+  ...
+# Subtest: router cache is bounded and uses least-recently-used idle eviction
+ok 136 - router cache is bounded and uses least-recently-used idle eviction
+  ---
+  duration_ms: 10.167505
+  type: 'test'
+  ...
+# Subtest: eviction followed by recreation preserves exact conversion output
+ok 137 - eviction followed by recreation preserves exact conversion output
+  ---
+  duration_ms: 4.309812
+  type: 'test'
+  ...
+# Subtest: active states are never evicted even when the temporary live set exceeds the limit
+ok 138 - active states are never evicted even when the temporary live set exceeds the limit
+  ---
+  duration_ms: 7.711468
+  type: 'test'
+  ...
+# Subtest: a state with verification in flight is protected from eviction
+ok 139 - a state with verification in flight is protected from eviction
+  ---
+  duration_ms: 10.350713
+  type: 'test'
+  ...
+# Subtest: concurrent same-key requests share one authoritative bootstrap request
+ok 140 - concurrent same-key requests share one authoritative bootstrap request
+  ---
+  duration_ms: 4.486883
+  type: 'test'
+  ...
+# Subtest: concurrent different-key requests settle back to the configured cache bound
+ok 141 - concurrent different-key requests settle back to the configured cache bound
+  ---
+  duration_ms: 37.170914
+  type: 'test'
+  ...
+# Subtest: failed verification remains cached and authoritative-only while its state is retained
+ok 142 - failed verification remains cached and authoritative-only while its state is retained
+  ---
+  duration_ms: 3.669559
+  type: 'test'
+  ...
+# Subtest: failed states are retained preferentially without defeating the hard idle bound
+ok 143 - failed states are retained preferentially without defeating the hard idle bound
+  ---
+  duration_ms: 3.833435
+  type: 'test'
+  ...
+# Subtest: retry removes cache bookkeeping and recreates a clean state
+ok 144 - retry removes cache bookkeeping and recreates a clean state
+  ---
+  duration_ms: 5.412826
+  type: 'test'
+  ...
+# Subtest: dispose clears states and LRU bookkeeping and remains safe when called twice
+ok 145 - dispose clears states and LRU bookkeeping and remains safe when called twice
+  ---
+  duration_ms: 2.731144
+  type: 'test'
+  ...
+# Subtest: 600-case bounded-vs-unbounded differential keeps canonical results identical
+ok 146 - 600-case bounded-vs-unbounded differential keeps canonical results identical
+  ---
+  duration_ms: 163.820491
+  type: 'test'
+  ...
+# Subtest: requests arriving during verification keep their own target day
+ok 147 - requests arriving during verification keep their own target day
+  ---
+  duration_ms: 191.759982
+  type: 'test'
+  ...
+# Subtest: verification state is isolated for every calculation day
+ok 148 - verification state is isolated for every calculation day
+  ---
+  duration_ms: 175.574581
+  type: 'test'
+  ...
+# Subtest: identical concurrent authoritative conversions share one request
+ok 149 - identical concurrent authoritative conversions share one request
+  ---
+  duration_ms: 27.513658
+  type: 'test'
+  ...
+# Subtest: a cutlet request made during verification returns the requested cutlet
+ok 150 - a cutlet request made during verification returns the requested cutlet
+  ---
+  duration_ms: 187.297224
+  type: 'test'
+  ...
+# Subtest: many consumers sharing one router do not leak results between calls
+ok 151 - many consumers sharing one router do not leak results between calls
+  ---
+  duration_ms: 27.989945
+  type: 'test'
+  ...
+# Subtest: a fast-engine request failure leaves the calculation day on the authoritative engine
+ok 152 - a fast-engine request failure leaves the calculation day on the authoritative engine
+  ---
+  duration_ms: 31.108984
+  type: 'test'
+  ...
+# Subtest: a verified fast-engine timeout falls back to the authoritative result
+ok 153 - a verified fast-engine timeout falls back to the authoritative result
+  ---
+  duration_ms: 118.16483
+  type: 'test'
+  ...
+# Subtest: an authoritative timeout terminates its worker and the next request starts a fresh one
+ok 154 - an authoritative timeout terminates its worker and the next request starts a fresh one
+  ---
+  duration_ms: 38.634831
+  type: 'test'
+  ...
+# Subtest: a mismatch disables the fast engine globally and later calculation days stay authoritative
+ok 155 - a mismatch disables the fast engine globally and later calculation days stay authoritative
+  ---
+  duration_ms: 23.718144
+  type: 'test'
+  ...
+# Subtest: an invalid fast cutlet view disables the fast engine
+ok 156 - an invalid fast cutlet view disables the fast engine
+  ---
+  duration_ms: 22.454436
+  type: 'test'
+  ...
+# Subtest: an authoritative conversion failure is propagated and does not start fast verification
+ok 157 - an authoritative conversion failure is propagated and does not start fast verification
+  ---
+  duration_ms: 6.587966
+  type: 'test'
+  ...
+# Subtest: the router works through inline modules when Worker is unavailable
+ok 158 - the router works through inline modules when Worker is unavailable
+  ---
+  duration_ms: 36.718274
+  type: 'test'
+  ...
+# Subtest: a missing fast module leaves the inline router usable in authoritative-only mode
+ok 159 - a missing fast module leaves the inline router usable in authoritative-only mode
+  ---
+  duration_ms: 19.347018
+  type: 'test'
+  ...
+# Subtest: 5,000 distinct calculation days do not create an unbounded idle router cache
+ok 160 - 5,000 distinct calculation days do not create an unbounded idle router cache
+  ---
+  duration_ms: 741.856629
+  type: 'test'
+  ...
+# Subtest: runtime patch stack is semantically stable at nesting depth 1
+ok 161 - runtime patch stack is semantically stable at nesting depth 1
+  ---
+  duration_ms: 5.67324
+  type: 'test'
+  ...
+# Subtest: runtime patch stack is semantically stable at nesting depth 2
+ok 162 - runtime patch stack is semantically stable at nesting depth 2
+  ---
+  duration_ms: 1.427095
+  type: 'test'
+  ...
+# Subtest: runtime patch stack is semantically stable at nesting depth 3
+ok 163 - runtime patch stack is semantically stable at nesting depth 3
+  ---
+  duration_ms: 3.815849
+  type: 'test'
+  ...
+# Subtest: runtime patch stack is semantically stable at nesting depth 5
+ok 164 - runtime patch stack is semantically stable at nesting depth 5
+  ---
+  duration_ms: 1.125291
+  type: 'test'
+  ...
+# Subtest: runtime patch stack is semantically stable at nesting depth 10
+ok 165 - runtime patch stack is semantically stable at nesting depth 10
+  ---
+  duration_ms: 0.657836
+  type: 'test'
+  ...
+# Subtest: nested calls on two instances do not leak the outer wrapper state into the inner call
+ok 166 - nested calls on two instances do not leak the outer wrapper state into the inner call
+  ---
+  duration_ms: 0.475379
+  type: 'test'
+  ...
+# Subtest: late external patch is invoked and survives normal restoration with its descriptor
+ok 167 - late external patch is invoked and survives normal restoration with its descriptor
+  ---
+  duration_ms: 0.57114
+  type: 'test'
+  ...
+# Subtest: a non-LIFO external replacement installed during a project call is not erased
+ok 168 - a non-LIFO external replacement installed during a project call is not erased
+  ---
+  duration_ms: 0.385519
+  type: 'test'
+  ...
+# Subtest: descriptor and ownership state restore after after-install exception
+ok 169 - descriptor and ownership state restore after after-install exception
+  ---
+  duration_ms: 1.737711
+  type: 'test'
+  ...
+# Subtest: descriptor and ownership state restore after mid-patched exception
+ok 170 - descriptor and ownership state restore after mid-patched exception
+  ---
+  duration_ms: 0.906165
+  type: 'test'
+  ...
+# Subtest: descriptor and ownership state restore after after-inner exception
+ok 171 - descriptor and ownership state restore after after-inner exception
+  ---
+  duration_ms: 0.644509
+  type: 'test'
+  ...
+# Subtest: descriptor and ownership state restore after before-return exception
+ok 172 - descriptor and ownership state restore after before-return exception
+  ---
+  duration_ms: 0.268521
+  type: 'test'
+  ...
+# Subtest: inner exception can be caught by outer call and outer continues with its own patch state
+ok 173 - inner exception can be caught by outer call and outer continues with its own patch state
+  ---
+  duration_ms: 0.460387
+  type: 'test'
+  ...
+# Subtest: inner exception followed by outer exception still restores the entry descriptor
+ok 174 - inner exception followed by outer exception still restores the entry descriptor
+  ---
+  duration_ms: 0.633113
+  type: 'test'
+  ...
+# Subtest: throwing user patch survives the project finally
+ok 175 - throwing user patch survives the project finally
+  ---
+  duration_ms: 0.446301
+  type: 'test'
+  ...
+# Subtest: patch trace proves LIFO repair resurrects the outer costume after inner historical restore
+ok 176 - patch trace proves LIFO repair resurrects the outer costume after inner historical restore
+  ---
+  duration_ms: 2.249161
+  type: 'test'
+  ...
+# Subtest: 200 deterministic mixed calls leave no patch drift
+ok 177 - 200 deterministic mixed calls leave no patch drift
+  ---
+  duration_ms: 33.961609
+  type: 'test'
+  ...
+# Subtest: A-B-A history and two-instance interleaving do not change semantic output
+ok 178 - A-B-A history and two-instance interleaving do not change semantic output
+  ---
+  duration_ms: 1.252433
+  type: 'test'
+  ...
+# Subtest: external X followed by external Y is never resurrected back to X
+ok 179 - external X followed by external Y is never resurrected back to X
+  ---
+  duration_ms: 0.487605
+  type: 'test'
+  ...
+# Subtest: late user patch may recurse into the public API without losing itself
+ok 180 - late user patch may recurse into the public API without losing itself
+  ---
+  duration_ms: 0.366011
+  type: 'test'
+  ...
+# Subtest: a user patch may install another late patch and the newer patch survives
+ok 181 - a user patch may install another late patch and the newer patch survives
+  ---
+  duration_ms: 0.313174
+  type: 'test'
+  ...
+# Subtest: standalone artifacts are self-contained classic scripts
+ok 182 - standalone artifacts are self-contained classic scripts
+  ---
+  duration_ms: 1169.989815
+  type: 'test'
+  ...
+# Subtest: minified and readable standalone artifacts are complete
+ok 183 - minified and readable standalone artifacts are complete
+  ---
+  duration_ms: 1.844315
+  type: 'test'
+  ...
+# Subtest: the local example loads exactly one classic standalone script
+ok 184 - the local example loads exactly one classic standalone script
+  ---
+  duration_ms: 2.99179
+  type: 'test'
+  ...
+# Subtest: year-ceiling detour rejects forbidden cached candidates in both scan directions
+ok 185 - year-ceiling detour rejects forbidden cached candidates in both scan directions
+  ---
+  duration_ms: 3.497092
+  type: 'test'
+  ...
+# Subtest: an unrelated cached calculation day does not disable a fresh anchor scan
+ok 186 - an unrelated cached calculation day does not disable a fresh anchor scan
+  ---
+  duration_ms: 1.690729
+  type: 'test'
+  ...
+# Subtest: year-ceiling detour poisons all three forbidden lengths but not 5,778
+ok 187 - year-ceiling detour poisons all three forbidden lengths but not 5,778
+  ---
+  duration_ms: 6.713216
+  type: 'test'
+  ...
+# Subtest: year-ceiling detour restores the gate reader after a thrown candidate search
+ok 188 - year-ceiling detour restores the gate reader after a thrown candidate search
+  ---
+  duration_ms: 1.0052
+  type: 'test'
+  ...
+# Subtest: fresh corrected-gate anchor/next/previous candidate counts match the independent reference
+ok 189 - fresh corrected-gate anchor/next/previous candidate counts match the independent reference # SKIP
+  ---
+  duration_ms: 0.259072
+  type: 'test'
+  ...
+# Subtest: real backward-search regression from soak batch 37 case 3
+ok 190 - real backward-search regression from soak batch 37 case 3 # SKIP
+  ---
+  duration_ms: 0.141964
+  type: 'test'
+  ...
+# Subtest: detour-of-a-detour catches the first +1 anchor-matrix row before cardinality
+ok 191 - detour-of-a-detour catches the first +1 anchor-matrix row before cardinality
+  ---
+  duration_ms: 1.777625
+  type: 'test'
+  ...
+# Subtest: detour-of-a-detour restores its nested gate wrapper after a throw and repeated calls
+ok 192 - detour-of-a-detour restores its nested gate wrapper after a throw and repeated calls
+  ---
+  duration_ms: 0.507383
+  type: 'test'
+  ...
+# Subtest: third detour reverses stale cached-boundary poisoning without weakening the real ceiling
+ok 193 - third detour reverses stale cached-boundary poisoning without weakening the real ceiling
+  ---
+  duration_ms: 1.686855
+  type: 'test'
+  ...
+# Subtest: third detour restores its gate wrapper after exceptions and repeated calls
+ok 194 - third detour restores its gate wrapper after exceptions and repeated calls
+  ---
+  duration_ms: 7.20258
+  type: 'test'
+  ...
+# Subtest: multiple consecutive public next/previous selections match the independent reference entry-for-entry
+ok 195 - multiple consecutive public next/previous selections match the independent reference entry-for-entry # SKIP
+  ---
+  duration_ms: 0.241898
+  type: 'test'
+  ...
+# Subtest: new public 5,778 discriminators match reference cardinality and fast final tuple
+ok 196 - new public 5,778 discriminators match reference cardinality and fast final tuple # SKIP
+  ---
+  duration_ms: 0.092786
+  type: 'test'
+  ...
+1..196
+# tests 196
+# suites 0
+# pass 192
+# fail 0
+# cancelled 0
+# skipped 4
+# todo 0
+# duration_ms 22933.905607
