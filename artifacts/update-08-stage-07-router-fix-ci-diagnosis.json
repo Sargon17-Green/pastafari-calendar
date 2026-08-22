@@ -1,0 +1,50 @@
+{
+  "stage": "Update 8 Stage 7 router fix CI diagnosis",
+  "mainCommitObserved": "b68ac554945b7e65f286412483a4430959423e35",
+  "failingRunsProvided": [
+    "88361473587",
+    "88361473549"
+  ],
+  "failureClass": "CI_SUPPLY_CHAIN_POLICY",
+  "productionFixFailure": false,
+  "errors": [
+    {
+      "path": ".github/workflows/update-08-stage-07-router-fix.yml",
+      "line": 22,
+      "issue": "actions/checkout@v4 was not pinned to a full 40-hex commit SHA"
+    },
+    {
+      "path": ".github/workflows/update-08-stage-07-router-fix.yml",
+      "line": 25,
+      "issue": "actions/setup-node@v4 was not pinned to a full 40-hex commit SHA"
+    },
+    {
+      "path": ".github/workflows/update-08-stage-07-router-fix.yml",
+      "line": 84,
+      "issue": "npx is forbidden in CI by repository supply-chain policy"
+    },
+    {
+      "path": ".github/workflows/update-08-stage-07-router-fix.yml",
+      "line": 122,
+      "issue": "actions/upload-artifact@v4 was not pinned to a full 40-hex commit SHA"
+    }
+  ],
+  "correction": {
+    "checkout": "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+    "setupNode": "actions/setup-node@820762786026740c76f36085b0efc47a31fe5020",
+    "uploadArtifact": "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
+    "playwrightInstall": "./node_modules/.bin/playwright install --with-deps chromium"
+  },
+  "dedicatedWorkflowEvidence": {
+    "canonicalBuild": "PASS",
+    "esbuild": "0.28.2",
+    "byteReproducible": true,
+    "unminifiedSha256": "f1adfc1f4e64d9fc7dcb591a7c5e852210e0d2de3ff3d2a08668a8c17ffbea2b",
+    "minifiedSha256": "7a2f60e304dfe1c8dc98d54fa894e337e9864648ff5b401a51e661e9f5290481",
+    "standaloneStaticTests": "3/3 PASS",
+    "chromiumRaceReproduction": "PASS",
+    "raceReproduced": false,
+    "semanticParity": true
+  },
+  "result": "WORKFLOW_POLICY_ERROR_CONFIRMED_PRODUCTION_FIX_EVIDENCE_PASS"
+}

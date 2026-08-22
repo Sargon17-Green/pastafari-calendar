@@ -23,19 +23,68 @@
     "publicApiChanged": false
   },
   "tests": {
-    "focusedConcurrency": {"tests": 8, "pass": 8, "fail": 0},
-    "routerMatrix": {"tests": 28, "pass": 28, "fail": 0},
-    "npmTest": {"tests": 199, "pass": 195, "fail": 0, "skipped": 4}
+    "focusedConcurrency": {
+      "tests": 8,
+      "pass": 8,
+      "fail": 0
+    },
+    "routerMatrix": {
+      "tests": 28,
+      "pass": 28,
+      "fail": 0
+    },
+    "npmTest": {
+      "tests": 199,
+      "pass": 195,
+      "fail": 0,
+      "skipped": 4
+    }
   },
   "distribution": {
     "canonicalStandaloneRebuildLocal": "BLOCKED_BY_INFRASTRUCTURE",
-    "reason": "Locked esbuild dependency is not present; npm ci cannot complete because the execution environment has no usable outbound DNS/network.",
-    "manualGeneratedBundleEditing": false,
-    "committedStandaloneBundlesStillOld": true,
-    "ciWorkflow": ".github/workflows/update-08-stage-07-router-fix.yml",
-    "expectedCiArtifact": "update-08-stage-07-router-fix-generated"
+    "canonicalStandaloneRebuildCI": "PASS",
+    "esbuild": "0.28.2",
+    "byteReproducible": true,
+    "unminifiedSha256": "f1adfc1f4e64d9fc7dcb591a7c5e852210e0d2de3ff3d2a08668a8c17ffbea2b",
+    "minifiedSha256": "7a2f60e304dfe1c8dc98d54fa894e337e9864648ff5b401a51e661e9f5290481",
+    "standaloneStaticTests": {
+      "tests": 3,
+      "pass": 3,
+      "fail": 0
+    },
+    "chromiumRace": {
+      "result": "PASS",
+      "reproduced": false,
+      "semanticParity": true
+    },
+    "generatedBundleEditing": "CI_BUILD_OUTPUT_ONLY",
+    "ciWorkflow": ".github/workflows/update-08-stage-07-router-fix.yml"
   },
-  "status": "SOURCE_FIX_VERIFIED_AWAITING_CANONICAL_STANDALONE_REBUILD",
-  "stage7Result": "CROSS_ENVIRONMENT_VERIFICATION_FAILED_UNTIL_REBUILD_AND_RERUN",
-  "readyForStage8": false
+  "status": "SOURCE_FIX_AND_CANONICAL_STANDALONE_VERIFIED_AWAITING_COMMIT_AND_FOCUSED_STAGE7_RERUN",
+  "stage7Result": "CROSS_ENVIRONMENT_VERIFICATION_FAILED_UNTIL_GENERATED_BUNDLES_COMMITTED_AND_FOCUSED_RERUN",
+  "readyForStage8": false,
+  "ciDiagnosis": {
+    "providedFailingRuns": [
+      "88361473587",
+      "88361473549"
+    ],
+    "failureClass": "CI_SUPPLY_CHAIN_POLICY",
+    "productionFixFailure": false,
+    "violations": 4,
+    "correctionPrepared": true
+  },
+  "postCiLocalSanity": {
+    "supplyChain": {
+      "pinnedExternalActions": 73,
+      "mutableRefs": 0,
+      "result": "PASS"
+    },
+    "focusedRouterAndStandaloneStatic": {
+      "tests": 31,
+      "pass": 31,
+      "fail": 0
+    },
+    "redundantLocalChromiumRerun": "TIMED_OUT_AT_120S_NOT_USED_AS_SEMANTIC_EVIDENCE",
+    "authoritativeRuntimeEvidence": "DEDICATED_CI_ARTIFACT_PASS"
+  }
 }
