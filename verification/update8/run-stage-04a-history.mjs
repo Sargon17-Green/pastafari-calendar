@@ -310,62 +310,95 @@ function failureDefinitions(raw) {
     {
       id: "F_BAHAI_INVALID_VARIANT",
       constructionId: "CTOR:authoritative:BahaiDate",
+      input: ["183n", 1, 1, { variant: "invalid-stage4a" }],
       run: () => new raw.BahaiDate(183n, 1, 1, stableBahaiOptions),
       knownKey: stableBahaiOptions,
-      expectedException: { name: "RangeError", messageIncludes: "variant" },
+      expectedException: {
+        name: "RangeError",
+        message: 'variant של הלוח הבהאי חייב להיות "tehran-equinox" או "western-arithmetic"',
+      },
     },
     {
       id: "F_GREGORIAN_NONINTEGER_MONTH",
       constructionId: "CTOR:authoritative:GregorianDate",
+      input: ["2026n", 1.25, 22],
       run: () => new raw.GregorianDate(2026n, 1.25, 22),
       knownKey: null,
-      expectedException: { name: "TypeError", messageIncludes: "גריגוריאניים" },
+      expectedException: {
+        name: "TypeError",
+        message: "החודש והיום הגריגוריאניים חייבים להיות מספרים שלמים",
+      },
     },
     {
       id: "F_HINDU_INVALID_SCHEME",
       constructionId: "CTOR:authoritative:HinduDate",
+      input: ["1948n", 1, 1, { scheme: "invalid-stage4a" }],
       run: () => new raw.HinduDate(1948n, 1, 1, stableHinduOptions),
       knownKey: stableHinduOptions,
-      expectedException: { name: "RangeError", messageIncludes: "scheme" },
+      expectedException: {
+        name: "RangeError",
+        message: 'אין לוח הינדי יחיד; scheme חייב להיות "old-solar" או "old-lunar"',
+      },
     },
     {
       id: "F_ISLAMIC_INVALID_VARIANT",
       constructionId: "CTOR:authoritative:IslamicDate",
+      input: ["1448n", 1, 1, { variant: "invalid-stage4a" }],
       run: () => new raw.IslamicDate(1448n, 1, 1, stableIslamicOptions),
       knownKey: stableIslamicOptions,
-      expectedException: { name: "RangeError", messageIncludes: "variant" },
+      expectedException: {
+        name: "RangeError",
+        message: 'לוח היג׳רי אינו חד־משמעי; variant חייב להיות "civil" או "umalqura"',
+      },
     },
     {
       id: "F_JAPANESE_NONSTRING_ERA",
       constructionId: "CTOR:authoritative:JapaneseImperialDate",
+      input: [123, "8n", 1, 1],
       run: () => new raw.JapaneseImperialDate(123, 8n, 1, 1),
       knownKey: null,
-      expectedException: { name: "TypeError", messageIncludes: "היפנית" },
+      expectedException: {
+        name: "TypeError",
+        message: "שם התקופה היפנית חייב להיות מחרוזת",
+      },
     },
     {
       id: "F_MONTH_WEAVING_NONPOSITIVE",
       constructionId: "CTOR:authoritative:MonthWeavingCounter",
+      input: [[1, 0, 2]],
       run: () => new raw.MonthWeavingCounter(stableMonthLengths),
       knownKey: stableMonthLengths,
-      expectedException: { name: "RangeError", messageIncludes: "חיוביים" },
+      expectedException: {
+        name: "RangeError",
+        message: "אורכי החודשים חייבים להיות חיוביים",
+      },
     },
     {
       id: "F_PASTAFARI_INVALID_TODAY_PROVIDER",
       constructionId: "CTOR:authoritative:PastafariCalendar",
+      input: [{ todayProvider: 123 }],
       run: () => new raw.PastafariCalendar(stablePastafariOptions),
       knownKey: stablePastafariOptions,
-      expectedException: { name: "TypeError", messageIncludes: "todayProvider" },
+      expectedException: {
+        name: "TypeError",
+        message: "todayProvider חייב להיות פונקציה",
+      },
     },
     {
       id: "F_SOLAR_HIJRI_INVALID_VARIANT",
       constructionId: "CTOR:authoritative:SolarHijriDate",
+      input: ["1405n", 1, 1, { variant: "invalid-stage4a" }],
       run: () => new raw.SolarHijriDate(1405n, 1, 1, stableSolarOptions),
       knownKey: stableSolarOptions,
-      expectedException: { name: "RangeError", messageIncludes: "variant" },
+      expectedException: {
+        name: "RangeError",
+        message: 'variant של הלוח ההיג׳רי השמשי חייב להיות "official" או "arithmetic-2820"',
+      },
     },
     {
       id: "F_RAW_PASTAFARI_DEFAULT",
       constructionId: "CTOR:authoritative:PastafariCalendar:raw-default",
+      input: [],
       run: () => new raw.PastafariCalendar(),
       knownKey: null,
       expectedException: { name: "ReferenceError", messageIncludes: "localToday" },
@@ -384,11 +417,10 @@ function executeFailure(definition) {
 }
 
 function exceptionMatches(observed, expected) {
-  return Boolean(
-    observed?.threw &&
-    observed.exception?.name === expected.name &&
-    observed.exception?.message?.includes(expected.messageIncludes),
-  );
+  if (!observed?.threw || observed.exception?.name !== expected.name) return false;
+  if (typeof expected.message === "string") return observed.exception?.message === expected.message;
+  if (typeof expected.messageIncludes === "string") return observed.exception?.message?.includes(expected.messageIncludes);
+  return true;
 }
 
 function mapDeltas(before, after) {
@@ -562,6 +594,7 @@ async function childRepeated(payload) {
     kind: "repeated",
     failureId: definition.id,
     constructionId: definition.constructionId,
+    input: definition.input,
     conditionalConfirmedPath: Boolean(definition.conditionalConfirmedPath),
     expectedException: definition.expectedException,
     baseline,
@@ -749,6 +782,8 @@ async function childFailuresThenSuccess(payload) {
 async function childPermutation(payload) {
   const env = await bootstrapInstrumented();
   const defs = new Map(failureDefinitions(env.raw).map((entry) => [entry.id, entry]));
+  const vector = canonicalSubset().find((entry) => entry.id === (payload.vectorId ?? "foundation_same"));
+  if (!vector) throw new Error(`unknown permutation success vector: ${payload.vectorId}`);
   const baselineLength = env.arena.length;
   const baseline = env.snapshot({ baselineLength, includeMemory: true });
   const steps = [];
@@ -761,7 +796,9 @@ async function childPermutation(payload) {
     steps.push({
       operationIndex: i + 1,
       failureId: def.id,
+      input: def.input,
       result,
+      expectedContractMatches: exceptionMatches(result, def.expectedException),
       diff: stateDiff(before, after),
       normalizedState: {
         arenaDeltaFromBaseline: after.arenaDeltaFromBaseline,
@@ -773,18 +810,27 @@ async function childPermutation(payload) {
       },
     });
   }
+  const afterFailures = env.snapshot({ baselineLength, includeMemory: true });
+  const success = runSuccessVector(env.published, vector);
   const final = env.snapshot({ baselineLength, includeMemory: true });
   const allThrow = steps.every((entry) => entry.result.threw);
+  const allExpectedContracts = steps.every((entry) => entry.expectedContractMatches);
+  const semanticsStable = allExpectedContracts && success.matchesReference;
   return {
     kind: "permutation",
     id: payload.id,
     sequence: payload.sequence,
+    vectorId: vector.id,
     baseline,
     steps,
+    afterFailures,
+    successAfterSequence: success,
     final,
     finalDiff: stateDiff(baseline, final),
     allThrow,
-    classification: classify(semanticStateStable(stateDiff(baseline, final)), allThrow),
+    allExpectedContracts,
+    semanticsStable,
+    classification: classify(semanticStateStable(stateDiff(baseline, final)), semanticsStable),
   };
 }
 
@@ -802,19 +848,60 @@ async function childSuccessSoak(payload) {
     exceptions.push(result.threw ? `${result.exception.name}\u0000${result.exception.message}` : "<NO_THROW>");
   }
   const afterFailures = env.snapshot({ baselineLength, knownKey: def.knownKey, includeMemory: true });
-  const successes = vectors.map((vector) => runSuccessVector(env.published, vector));
+  const successes = [];
+  const successRounds = payload.successRounds ?? 3;
+  for (let round = 0; round < successRounds; round += 1) {
+    for (const vector of vectors) successes.push({ round: round + 1, ...runSuccessVector(env.published, vector) });
+  }
   const final = env.snapshot({ baselineLength, knownKey: def.knownKey, includeMemory: true });
   return {
     kind: "success_soak",
     failureId: def.id,
     count: payload.count,
+    successRounds,
     baseline,
     afterFailures,
     successes,
     allSuccessesMatchReference: successes.every((entry) => entry.matchesReference),
-    exceptionStable: new Set(exceptions).size === 1,
+    exceptionStable: new Set(exceptions).size === 1 && exceptions.every((signature) => !signature.startsWith("<NO_THROW>")),
     final,
     finalDiff: stateDiff(baseline, final),
+  };
+}
+
+async function childZeroDeltaControl() {
+  const env = await bootstrapInstrumented();
+  const baselineLength = env.arena.length;
+  const baseline = env.snapshot({ baselineLength, includeMemory: true });
+  const checkpoints = [{ n: 0, snapshot: baseline }];
+  let error = null;
+  for (let i = 1; i <= 1000; i += 1) {
+    try {
+      new env.raw.GregorianDate(2026n, 8, 22);
+    } catch (caught) {
+      error = summarizeError(caught);
+      break;
+    }
+    if (CHECKPOINTS.has(i)) {
+      checkpoints.push({
+        n: i,
+        snapshot: env.snapshot({ baselineLength, includeMemory: i === 100 || i === 1000 }),
+      });
+    }
+  }
+  const final = env.snapshot({ baselineLength, includeMemory: true });
+  const diff = stateDiff(baseline, final);
+  return {
+    kind: "zero_delta_control",
+    id: "CONTROL_VALID_GREGORIAN_CONSTRUCTION",
+    input: ["2026n", 8, 22],
+    count: 1000,
+    error,
+    baseline,
+    checkpoints,
+    final,
+    finalDiff: diff,
+    passed: error === null && diff.arenaDelta === 0 && diff.mapDeltas.length === 0 && diff.identitiesRestored,
   };
 }
 
@@ -827,6 +914,7 @@ async function runChild(kind, payload) {
   if (kind === "failures_then_success") return childFailuresThenSuccess(payload);
   if (kind === "permutation") return childPermutation(payload);
   if (kind === "success_soak") return childSuccessSoak(payload);
+  if (kind === "zero_delta_control") return childZeroDeltaControl(payload);
   throw new Error(`unknown child kind: ${kind}`);
 }
 
@@ -882,6 +970,30 @@ function gitRevision() {
     branch: branch.status === 0 ? branch.stdout.trim() : process.env.GITHUB_REF_NAME ?? null,
     workingTree: status.status === 0 ? (status.stdout.trim() || "clean") : "unavailable",
   };
+}
+
+function productionAlignment() {
+  const inventoryPath = path.join(ROOT, "verification", "update8", "stage-02b-shared-state-inventory.json");
+  const result = {
+    source: "verification/update8/stage-02b-shared-state-inventory.json",
+    available: false,
+    files: [],
+    allMatches: false,
+  };
+  try {
+    const inventory = JSON.parse(fs.readFileSync(inventoryPath, "utf8"));
+    const expected = inventory?.snapshot?.productionHashes ?? {};
+    result.available = Object.keys(expected).length > 0;
+    result.files = Object.entries(expected).map(([relativePath, expectedSha256]) => {
+      const absolute = path.join(ROOT, relativePath);
+      const actualSha256 = fs.existsSync(absolute) ? sha256(fs.readFileSync(absolute)) : null;
+      return { relativePath, expectedSha256, actualSha256, matches: actualSha256 === expectedSha256 };
+    });
+    result.allMatches = result.available && result.files.every((entry) => entry.matches);
+  } catch (error) {
+    result.error = summarizeError(error);
+  }
+  return result;
 }
 
 function packageVersion() {
@@ -1001,8 +1113,20 @@ function writeArtifacts(artifact) {
 async function orchestrate() {
   const revision = gitRevision();
   const stagePresence = loadStagePresence();
+  const productionAlignmentData = productionAlignment();
 
   const sanity = spawnChild("sanity");
+
+  const requiredFailureIds = [
+    "F_BAHAI_INVALID_VARIANT",
+    "F_GREGORIAN_NONINTEGER_MONTH",
+    "F_HINDU_INVALID_SCHEME",
+    "F_ISLAMIC_INVALID_VARIANT",
+    "F_JAPANESE_NONSTRING_ERA",
+    "F_MONTH_WEAVING_NONPOSITIVE",
+    "F_PASTAFARI_INVALID_TODAY_PROVIDER",
+    "F_SOLAR_HIJRI_INVALID_VARIANT",
+  ];
 
   const failureIds = [
     "F_BAHAI_INVALID_VARIANT",
@@ -1017,9 +1141,9 @@ async function orchestrate() {
   ];
 
   const repeatedFailures = failureIds.map((failureId) => spawnChild("repeated", { failureId }));
+  const requiredRepeated = repeatedFailures.filter((entry) => requiredFailureIds.includes(entry.failureId));
   const confirmedNatural = repeatedFailures.filter((entry) =>
-    entry.exceptionStability.expectedContractMatches ||
-    (!entry.conditionalConfirmedPath && entry.checkpoints.some((cp) => cp.n === 1 && cp.exception?.threw))
+    entry.checkpoints.some((cp) => cp.n === 1 && cp.exception?.threw)
   );
 
   const alternating = spawnChild("alternating", {
@@ -1074,8 +1198,12 @@ async function orchestrate() {
     F: "F_SOLAR_HIJRI_INVALID_VARIANT",
   };
   const permutationSpecs = [
+    { id: "ABC", sequence: [P.A, P.B, P.C] },
+    { id: "CBA", sequence: [P.C, P.B, P.A] },
+    { id: "AABBCC", sequence: [P.A, P.A, P.B, P.B, P.C, P.C] },
     { id: "ABCABC", sequence: [P.A, P.B, P.C, P.A, P.B, P.C] },
-    { id: "CBACBA", sequence: [P.C, P.B, P.A, P.C, P.B, P.A] },
+    { id: "ACAC", sequence: [P.A, P.C, P.A, P.C] },
+    { id: "BACB", sequence: [P.B, P.A, P.C, P.B] },
     { id: "ABCDEF", sequence: [P.A, P.B, P.C, P.D, P.E, P.F] },
     { id: "FEDCBA", sequence: [P.F, P.E, P.D, P.C, P.B, P.A] },
     { id: "ACEBDF", sequence: [P.A, P.C, P.E, P.B, P.D, P.F] },
@@ -1093,7 +1221,12 @@ async function orchestrate() {
     };
   }
 
-  const pairIds = [["ABCABC", "CBACBA"], ["ABCDEF", "FEDCBA"]];
+  const pairIds = [
+    ["ABC", "CBA"],
+    ["AABBCC", "ABCABC"],
+    ["ABCDEF", "FEDCBA"],
+    ["ABCDEF", "ACEBDF"],
+  ];
   const permutationComparisons = pairIds.map(([leftId, rightId]) => {
     const left = permutations.find((entry) => entry.id === leftId);
     const right = permutations.find((entry) => entry.id === rightId);
@@ -1110,11 +1243,16 @@ async function orchestrate() {
 
   const successSoak = spawnChild("success_soak", {
     count: 1000,
+    successRounds: 3,
     failureId: "F_PASTAFARI_INVALID_TODAY_PROVIDER",
   });
+  const zeroDeltaControl = spawnChild("zero_delta_control");
 
   const allRepeated100 = confirmedNatural.every((entry) => entry.checkpoints.some((cp) => cp.n === 100));
   const allRepeated1000 = confirmedNatural.every((entry) => entry.checkpoints.some((cp) => cp.n === 1000));
+  const requiredExceptionsExactAndStable =
+    requiredRepeated.length === requiredFailureIds.length &&
+    requiredRepeated.every((entry) => entry.exceptionStability.stable && entry.exceptionStability.expectedContractMatches);
   const exceptionsStable = confirmedNatural.every((entry) => entry.exceptionStability.stable);
   const allSuccessComparisonsStable =
     sanity.allMatch &&
@@ -1122,6 +1260,7 @@ async function orchestrate() {
     aFailA.semanticsStable &&
     freshPairs.every((entry) => entry.resultAfterFailureEqualsClean && entry.bothEqualReference) &&
     failuresThenSuccess.every((entry) => entry.successMatchesReference) &&
+    permutations.every((entry) => entry.successAfterSequence.matchesReference) &&
     successSoak.allSuccessesMatchReference;
 
   const confirmedAccumulation = confirmedNatural
@@ -1134,6 +1273,7 @@ async function orchestrate() {
   const zeroDeltaPaths = confirmedNatural
     .filter((entry) => entry.checkpoints.find((cp) => cp.n === 1000)?.snapshot.arenaDeltaFromBaseline === 0)
     .map((entry) => entry.failureId);
+  if (zeroDeltaControl.passed) zeroDeltaPaths.push(zeroDeltaControl.id);
 
   const orderDependentPairs = permutationComparisons
     .filter((entry) => !entry.finalNormalizedEqual)
@@ -1149,10 +1289,15 @@ async function orchestrate() {
   if (!allRepeated100) unresolved.push("Not every confirmed natural failure path reached 100 repetitions.");
   if (!allRepeated1000) unresolved.push("Not every confirmed natural failure path reached 1000 repetitions.");
   if (!exceptionsStable) unresolved.push("At least one repeated natural failure changed exception class/message.");
+  if (!requiredExceptionsExactAndStable) unresolved.push("At least one required Stage-2A validation path did not preserve the exact exception class/message baseline.");
+  if (!productionAlignmentData.allMatches) unresolved.push("Current production hashes do not fully align with the Stage-2B production snapshot.");
+  if (!zeroDeltaControl.passed) unresolved.push("The 1000-call valid-construction zero-delta control did not remain structurally stable.");
   if (!allSuccessComparisonsStable) unresolved.push("At least one semantic comparison is unstable.");
 
   const technicalAcceptance =
     sanity.allMatch &&
+    productionAlignmentData.allMatches &&
+    requiredExceptionsExactAndStable &&
     confirmedNatural.length >= 8 &&
     allRepeated100 &&
     allRepeated1000 &&
@@ -1162,7 +1307,8 @@ async function orchestrate() {
     aFailA.semanticsStable &&
     freshPairs.every((entry) => entry.resultAfterFailureEqualsClean && entry.bothEqualReference) &&
     failuresThenSuccess.every((entry) => entry.successMatchesReference && entry.exceptionStable) &&
-    permutations.every((entry) => entry.allThrow) &&
+    permutations.every((entry) => entry.allThrow && entry.allExpectedContracts && entry.successAfterSequence.matchesReference) &&
+    zeroDeltaControl.passed &&
     successSoak.allSuccessesMatchReference &&
     successSoak.exceptionStable;
 
@@ -1179,6 +1325,7 @@ async function orchestrate() {
     },
     alignment: {
       stagePresence,
+      productionAlignment: productionAlignmentData,
       focusedRevalidationPerformed: true,
       snapshotSchemaBasis: [
         "verification/update8/stage-02b-shared-state-inventory.json",
@@ -1198,6 +1345,8 @@ async function orchestrate() {
     permutations,
     permutationComparisons,
     successSoak,
+    zeroDeltaControl,
+    deterministicGeneration: { randomUsed: false, seed: null, note: "All Stage 4A sequences and inputs are fixed and deterministic." },
     boundedness: {
       primaryStructuralMetric: "STATE:generated:shared-invocation-arena length / retained tail",
       heapMeasurementPolicy: "heapUsed/RSS recorded after explicit GC where available; heap trend alone is not treated as proof of leakage",
@@ -1227,6 +1376,9 @@ async function orchestrate() {
       fullSnapshotProjectionUsed: true,
       referenceComparisonAfterFailuresCompleted: true,
       exceptionBaselinesPreserved: exceptionsStable,
+      requiredStage2AExceptionBaselinesExact: requiredExceptionsExactAndStable,
+      productionAlignmentWithStage2B: productionAlignmentData.allMatches,
+      zeroDeltaControl1000Passed: zeroDeltaControl.passed,
       productionBehaviorChanged: false,
     },
     stageConclusion: {
