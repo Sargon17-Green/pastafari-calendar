@@ -1,0 +1,378 @@
+{
+  "schema": "pastafari.update8.stage02b.shared-mutable-state.v1",
+  "stage": "2B",
+  "title": "Shared mutable state inventory related to authoritative construction",
+  "snapshot": {
+    "uploadedZipSha256": "084946267b9c36ffae7fc8f2948adffc200a9cc074c447ae3aaec97ecc7b9cce",
+    "packageVersion": "1.3.0",
+    "gitMetadataAvailable": false,
+    "productionHashes": {
+      "src/5efdcc3e6fb071cbaffdcb117507a169dd76.js": "a7e01b505870a7a72ce0bde98dc5e4d19f39bd8d560fdf961a4d5f4d2dfdd30d",
+      "src/public-api.js": "9d8c63636033659753d658ac9d76fa955ee8423bbf1cd11bfb90eab25a49f827",
+      "browser/pastafari-calendar-core-chronicle.js": "315f46a49f13db13b61d325915a6a5a32b7f043594c541c1886cfd8c0865db4a",
+      "browser/standalone/pastafari-date.js": "958f7f30cb8ad6a3a95570d8ed025e3131481b543c761ac9582103f069ad3b13"
+    }
+  },
+  "scope": {
+    "productionBehaviorChanged": false,
+    "productionFilesChanged": false,
+    "testsChanged": false,
+    "faultInjection": false,
+    "failedConstructorCampaign": false,
+    "successOnlyRuntimeObservation": true,
+    "decodedSourceInspection": true
+  },
+  "decodedAuthoritativeCode": {
+    "nodeAndBrowserDecodedBodiesByteIdentical": true,
+    "capturedFunctionBodies": [
+      {
+        "captureFile": "000-7083974.js",
+        "functionBodyCharacterLength": 7083974,
+        "utf8Bytes": 7083974,
+        "sha256": "3ae100735a87cff040c5b88140bd366ca0ad15d70a2ad036bc497e809ffaf612"
+      },
+      {
+        "captureFile": "001-21637.js",
+        "functionBodyCharacterLength": 21637,
+        "utf8Bytes": 21731,
+        "sha256": "21947a1e744ca182bf150f1ad660c22eda3a4b49569fc98826148fb09a0bc2d2"
+      },
+      {
+        "captureFile": "002-32423.js",
+        "functionBodyCharacterLength": 32423,
+        "utf8Bytes": 32525,
+        "sha256": "34285e83a1e9d237f53b740e63532aecdb08db6f4bcb79171d693667bbd5d115"
+      },
+      {
+        "captureFile": "003-32143.js",
+        "functionBodyCharacterLength": 32143,
+        "utf8Bytes": 32254,
+        "sha256": "d2409d00cf6d2316eda80301465cad803eb1c9f78c433645f499ee5abc8c8f2f"
+      },
+      {
+        "captureFile": "004-85972.js",
+        "functionBodyCharacterLength": 85972,
+        "utf8Bytes": 86642,
+        "sha256": "11a6e75113562be761dd1c1e443130a8565571027d5e21120cc25015b4aceaa1"
+      },
+      {
+        "captureFile": "005-372933.js",
+        "functionBodyCharacterLength": 372933,
+        "utf8Bytes": 374323,
+        "sha256": "174932102939afe58386177ba61102ceefb3814c5f4784f7b6d4ca8786f6ee83"
+      },
+      {
+        "captureFile": "006-160549.js",
+        "functionBodyCharacterLength": 160549,
+        "utf8Bytes": 161102,
+        "sha256": "49a09b10fff798ba7965eb3f40180c719e737293d07695a388b4c257a9a7d073"
+      },
+      {
+        "captureFile": "007-152897.js",
+        "functionBodyCharacterLength": 152897,
+        "utf8Bytes": 153094,
+        "sha256": "906871830496a0a8f2fc88f0e8dfc15b3a49395d4e25f35df327a26b54929cdc"
+      },
+      {
+        "captureFile": "008-130859.js",
+        "functionBodyCharacterLength": 130859,
+        "utf8Bytes": 130888,
+        "sha256": "a9d1cc8c102402c64441cab567177bf117aaaa6c89fef5c2a4fbae61f3bc67b0"
+      },
+      {
+        "captureFile": "009-181206.js",
+        "functionBodyCharacterLength": 181206,
+        "utf8Bytes": 181770,
+        "sha256": "ae17868eefa4eee20e526b307c1e0ed143b99de7536f00cd462a6a434ac09fb2"
+      }
+    ],
+    "semanticConstructorCountFromStage2A": 28,
+    "constructorRitualAudit": {
+      "outerConstructorBodiesAudited": 28,
+      "allHaveReserveBeforeLocalTry": true,
+      "allHaveCleanupInsideLocalFinallyAfterThatTry": true,
+      "note": "One outer constructor body contains nested constructor definitions, so naive textual ritual counts exceed one; ordering of the outer constructor boundary is still reserve -> try -> finally -> cleanup."
+    }
+  },
+  "primaryLeakMechanism": {
+    "storageId": "STATE:generated:shared-invocation-arena",
+    "wrapperDecodedOffset": 6995943,
+    "wrapperSha256": "17273b62469466b61a4c64a7f41c4c12c5ed62d11ba1ad6828863af85130c14b",
+    "savedEntryLength": true,
+    "baseFrameWidth": 12,
+    "targetDispatch": [
+      "Reflect.construct",
+      "Reflect.apply"
+    ],
+    "wrapperHasTry": false,
+    "wrapperHasFinally": false,
+    "normalReturnCleanup": "arena.length = savedEntryLength",
+    "cleanupOccursAfterTargetDispatch": true,
+    "staticConsequence": "If the target throws, control bypasses the only truncation in this wrapper, retaining the 12-cell frame.",
+    "historicalTwelveCellClaimStatus": "statically confirmed on this snapshot; dynamic failed-call reproduction remains Stage 3"
+  },
+  "constructorPreamble": {
+    "reserveMethodKeySuffix": "obrzed_8c04901c3798_m9",
+    "reserveMethodDecodedOffset": 7012750,
+    "reserveMethodSha256": "8c4ba9a5cdafd419e202c13e7b0cab00e6acab249698248967bcd7fe50dff331",
+    "baseFrameWidth": 12,
+    "additionalCellsPerArgument": 3,
+    "reserveMethodHasTry": false,
+    "reserveMethodHasFinally": false,
+    "localConstructorTryBeginsAfterReserveReturns": true,
+    "localConstructorFinallyCallsCleanup": true,
+    "preambleCanThrow": true,
+    "representativeThrowCapableOperation": "object measurement uses Reflect.ownKeys for object inputs; a throwing Proxy ownKeys trap can fail before the constructor-local try starts",
+    "staticConsequence": "A preamble failure can retain the outer 12-cell frame plus the inner base frame and any per-argument cells already appended; this is a distinct Stage-3 case from an ordinary validation throw inside the constructor body."
+  },
+  "sharedArenaSuccessObservation": {
+    "analysisOnlyInstrumentation": true,
+    "mainFactoryInputLength": 280,
+    "mainFactoryLengthAfterReturn": 1175637,
+    "postImportLength": 1175728,
+    "postImportHoles": 0,
+    "successfulCalls": [
+      {
+        "call": "new GregorianDate(2026n, 8, 22)",
+        "beforeLength": 1175728,
+        "afterLength": 1175728,
+        "changedExistingPrefixCells": 2
+      },
+      {
+        "call": "new GateIndex()",
+        "beforeLength": 1175728,
+        "afterLength": 1175728,
+        "changedExistingPrefixCells": 3
+      },
+      {
+        "call": "new PastafariCalendar({todayProvider:()=>null})",
+        "beforeLength": 1175728,
+        "afterLength": 1175728,
+        "changedExistingPrefixCells": 4
+      }
+    ],
+    "interpretation": "Length/tail stability and full-array byte/value equality are different invariants. Successful construction preserves length but intentionally churns some prefix cells."
+  },
+  "stateInventory": [
+    {
+      "id": "STATE:generated:shared-invocation-arena",
+      "kind": "Array",
+      "scope": "module/shared across generated authoritative exports",
+      "constructionRelationship": "direct",
+      "writers": [
+        "core invocation wrapper",
+        "constructor ritual reserve/event/mix/catch/cleanup helpers"
+      ],
+      "normalCleanup": "outer frame truncates only on normal return; inner ritual frame truncates in constructor-local finally once the preamble has returned",
+      "failureRisk": "HIGH",
+      "stage3Treatment": "capture length, tail slice, selected prefix fingerprint and object-identity-safe summaries before/after each failure"
+    },
+    {
+      "id": "STATE:generated:arena-prefix-churn",
+      "kind": "existing cells inside shared invocation arena",
+      "scope": "shared",
+      "constructionRelationship": "direct",
+      "writers": [
+        "ritual/event/measurement helpers"
+      ],
+      "normalCleanup": "not restored to identical values; success-only control changed 2-4 existing cells for sampled constructors",
+      "failureRisk": "CONFUNDER",
+      "stage3Treatment": "do not use raw full-array equality as the sole assertion; compare against matched successful controls and separately assert no retained tail/frame"
+    },
+    {
+      "id": "STATE:generated:random-pool-and-cursor",
+      "kind": "Uint32Array(1024) + scalar cursor",
+      "scope": "shared wrapper runtime",
+      "constructionRelationship": "indirect through witness/transport helpers",
+      "writers": [
+        "random-word fetch/refill helper"
+      ],
+      "normalCleanup": "none; consumptive state",
+      "failureRisk": "CONFOUNDER/PERSISTENT",
+      "stage3Treatment": "snapshot cursor/refill generation separately; normalize as consumptive noise unless evidence shows semantic influence"
+    },
+    {
+      "id": "STATE:generated:identity-map-and-counter",
+      "kind": "WeakMap + uint32 counter",
+      "scope": "shared wrapper runtime",
+      "constructionRelationship": "indirect when object/function values are measured",
+      "writers": [
+        "limited-measure helper"
+      ],
+      "normalCleanup": "none",
+      "failureRisk": "PERSISTENT",
+      "stage3Treatment": "observe counter delta and known-object identity assignment where instrumentation permits; do not infer WeakMap cardinality"
+    },
+    {
+      "id": "STATE:generated:witness-counter",
+      "kind": "uint32 scalar",
+      "scope": "shared wrapper runtime",
+      "constructionRelationship": "indirect through value transfer helper",
+      "writers": [
+        "transfer helper"
+      ],
+      "normalCleanup": "none",
+      "failureRisk": "PERSISTENT/LIKELY_NONSEMANTIC",
+      "stage3Treatment": "record separately from structural leak state"
+    },
+    {
+      "id": "STATE:decoded:combinatorial-memo",
+      "kind": "Map",
+      "scope": "module-shared decoded module 006",
+      "constructionRelationship": "indirect; helper cache used by combinatorial/month-weaving code",
+      "writers": [
+        "comb helper .set"
+      ],
+      "normalCleanup": "none; memoization",
+      "failureRisk": "MEDIUM",
+      "stage3Treatment": "instrument size/key digest around MonthWeavingCounter and nested PastafariCalendar failures"
+    },
+    {
+      "id": "STATE:decoded:sauce-lru",
+      "kind": "Map capped at 1024 entries",
+      "scope": "module-shared decoded module 007",
+      "constructionRelationship": "primarily makeSauce/conversion-time; SauceResult construction is downstream",
+      "writers": [
+        "makeSauce LRU get/delete/set path"
+      ],
+      "normalCleanup": "bounded eviction, not rollback",
+      "failureRisk": "LOW_FOR_DIRECT_CONSTRUCTION / RELEVANT_FOR_NESTED_PATHS",
+      "stage3Treatment": "include when failed construction is reached through makeSauce or a conversion path; otherwise classify as unchanged control"
+    },
+    {
+      "id": "STATE:decoded:forward-gap-memo",
+      "kind": "Map",
+      "scope": "module-shared decoded module 009",
+      "constructionRelationship": "GateIndex static/method helper state, not directly referenced by constructor body",
+      "writers": [
+        "forwardGap .set"
+      ],
+      "normalCleanup": "none; memoization",
+      "failureRisk": "LOW_DIRECT / MEDIUM_NESTED",
+      "stage3Treatment": "snapshot if a failure path invokes GateIndex gap resolution"
+    },
+    {
+      "id": "STATE:decoded:backward-gap-memo",
+      "kind": "Map",
+      "scope": "module-shared decoded module 009",
+      "constructionRelationship": "GateIndex static/method helper state, not directly referenced by constructor body",
+      "writers": [
+        "backwardGap .set"
+      ],
+      "normalCleanup": "none; memoization",
+      "failureRisk": "LOW_DIRECT / MEDIUM_NESTED",
+      "stage3Treatment": "snapshot if a failure path invokes GateIndex gap resolution"
+    },
+    {
+      "id": "STATE:instance:pastafari-calendar-caches",
+      "kind": "three per-instance Maps: anchorCache, yearCache, structureCache",
+      "scope": "instance-local, not shared merely by construction",
+      "constructionRelationship": "created during PastafariCalendar constructor",
+      "writers": [
+        "convertJdn and cache detour"
+      ],
+      "normalCleanup": "instance lifetime",
+      "failureRisk": "NOT_A_SHARED_CONSTRUCTOR_LEAK_BY_ITSELF",
+      "stage3Treatment": "exclude from global shared-state equality unless a failed path demonstrably publishes/leaks the partial instance"
+    },
+    {
+      "id": "STATE:detour:cache-epoch",
+      "kind": "WeakSet constructor registry + per-cache shadow/provenance/foreignOverrides/transactions/depth state",
+      "scope": "module-shared registry; per-instance cache state",
+      "constructionRelationship": "prototype installed at module initialization; cache state attached on first convertJdn, not ordinary construction",
+      "writers": [
+        "installAuthoritativeCacheEpochDetour",
+        "dressCache",
+        "conversion transaction helpers"
+      ],
+      "normalCleanup": "conversion transactions commit/rollback in finally",
+      "failureRisk": "OUTSIDE_DIRECT_CONSTRUCTOR_BOUNDARY; important nested-conversion control",
+      "stage3Treatment": "assert unchanged for direct constructor probes; use existing rollback semantics for conversion probes"
+    },
+    {
+      "id": "STATE:detour:gate-data",
+      "kind": "WeakSet PRIMED + lazily decoded positive gate array + per-instance positive replacement",
+      "scope": "module-shared plus GateIndex instance",
+      "constructionRelationship": "detour installed at module initialization; prime occurs on first gate-method call, not plain new GateIndex()",
+      "writers": [
+        "canonicalPositive",
+        "prime"
+      ],
+      "normalCleanup": "none; one-time/lifetime state",
+      "failureRisk": "OUTSIDE_PLAIN_CONSTRUCTOR; nested method paths may touch it",
+      "stage3Treatment": "separate first-use initialization from failed-constructor deltas"
+    },
+    {
+      "id": "STATE:detour:runtime-patch-ledger",
+      "kind": "WeakMaps + invocation array + trace Set + ticket counter + prototype descriptors",
+      "scope": "module-shared",
+      "constructionRelationship": "used by year-ceiling conversion wrappers, not direct constructor bodies",
+      "writers": [
+        "borrow/return invocation",
+        "install/repair costume"
+      ],
+      "normalCleanup": "nested finally/repair logic",
+      "failureRisk": "OUTSIDE_DIRECT_CONSTRUCTOR_BOUNDARY",
+      "stage3Treatment": "assert depth/patch stack unchanged around constructor-only probes; use as nested-conversion control"
+    },
+    {
+      "id": "STATE:detour:installation-registries-and-prototype-patches",
+      "kind": "WeakSets + prototype method replacements in year-ceiling/cache detours",
+      "scope": "module initialization",
+      "constructionRelationship": "installed before public PastafariCalendar construction via src/public-api.js",
+      "writers": [
+        "install*Detour functions"
+      ],
+      "normalCleanup": "installation is intentionally persistent/idempotent",
+      "failureRisk": "BOOTSTRAP_STATE_NOT_PER_CALL",
+      "stage3Treatment": "freeze baseline only after module import/detour installation; do not treat installation itself as constructor leakage"
+    }
+  ],
+  "negativeInventory": [
+    {
+      "item": "four Object.freeze(new Map(...)) tables in decoded module 005",
+      "reason": "Object.freeze does not make Map entries immutable, but no .set/.delete/.clear writers to those bindings were found in the decoded source; they are not state that changes during construction in this snapshot."
+    },
+    {
+      "item": "router/worker process state",
+      "reason": "transport lifecycle is outside the authoritative constructor-internal state boundary mapped by Stage 2B; it remains relevant for later deployment parity tests, not for the first Stage-3 constructor reproduction."
+    }
+  ],
+  "stage3MeasurementContract": {
+    "baselineMoment": "after module import and all persistent detour installation, before the probed constructor call",
+    "mustCapture": [
+      "shared arena length",
+      "shared arena tail fingerprint/slice",
+      "selected prefix digest or changed-index set",
+      "shared memo Map sizes/key digests when reachable",
+      "wrapper scalar counters/cursors via analysis instrumentation",
+      "constructor result/error identity and message"
+    ],
+    "mustUseControls": [
+      "fresh-process baseline",
+      "matched successful constructor control",
+      "repeat failed call",
+      "valid call after failed call"
+    ],
+    "importantCorrection": "Literal full internal-state equality is not a valid raw oracle because successful constructors intentionally churn existing arena prefix cells and consumptive counters. The semantic transactional invariant must isolate persistent semantic structures and retained frames from expected success-path noise.",
+    "ready": true
+  },
+  "unresolved": [
+    {
+      "id": "UNRESOLVED:failed-call-dynamic-reproduction",
+      "blocking": false,
+      "reason": "Deliberately belongs to Stage 3; Stage 2B did not execute invalid/faulting constructors."
+    },
+    {
+      "id": "UNRESOLVED:standalone-runtime-state-materialization",
+      "blocking": false,
+      "reason": "Stage 2A established the embedded standalone construction copy. Stage 2B proved Node and browser decoded bodies byte-identical, but did not launch the standalone Blob Worker solely to duplicate the state inventory."
+    },
+    {
+      "id": "UNRESOLVED:literal-git-status",
+      "blocking": false,
+      "reason": "The uploaded ZIP has no .git metadata."
+    }
+  ],
+  "status": "READY_FOR_STAGE_3_STATE_SIDE = yes"
+}
