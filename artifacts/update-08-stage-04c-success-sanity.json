@@ -1,0 +1,156 @@
+{
+  "schema": "pastafari.update8.stage04c.success-sanity.v1",
+  "stage": "4C",
+  "revision": {
+    "repository": "Sargon17-Green/pastafari-calendar",
+    "branch": "main",
+    "campaignBaseCommit": "c141a94840a7806c73a8aaf8a87db22b7a9af1bc",
+    "packageVersion": "1.3.0",
+    "workingTree": "uploaded archive has no .git; analysis-only test script/artifacts added; production files unchanged"
+  },
+  "beforeFaultInjection": {
+    "id": "foundation_same",
+    "input": {
+      "calculationJdn": "-13334246",
+      "targetJdn": "-13334246"
+    },
+    "expected": {
+      "year": "5000",
+      "cutletName": "לגש",
+      "dayInCutlet": 762,
+      "monthName": "לבונה",
+      "dayInMonth": 105
+    },
+    "actual": {
+      "year": "5000",
+      "cutletName": "לגש",
+      "dayInCutlet": 762,
+      "monthName": "לבונה",
+      "dayInMonth": 105
+    },
+    "authoritativeEqualsReference": true
+  },
+  "afterFaultCampaign": {
+    "id": "foundation_same",
+    "input": {
+      "calculationJdn": "-13334246",
+      "targetJdn": "-13334246"
+    },
+    "expected": {
+      "year": "5000",
+      "cutletName": "לגש",
+      "dayInCutlet": 762,
+      "monthName": "לבונה",
+      "dayInMonth": 105
+    },
+    "actual": {
+      "year": "5000",
+      "cutletName": "לגש",
+      "dayInCutlet": 762,
+      "monthName": "לבונה",
+      "dayInMonth": 105
+    },
+    "authoritativeEqualsReference": true
+  },
+  "disabledConstructorControls": [
+    {
+      "symbol": "GregorianDate",
+      "ok": true,
+      "error": null,
+      "arenaDelta": 0,
+      "result": {
+        "year": "2026",
+        "month": 8,
+        "day": 22
+      }
+    },
+    {
+      "symbol": "IslamicDate",
+      "ok": true,
+      "error": null,
+      "arenaDelta": 0,
+      "result": {
+        "year": "1448",
+        "month": 2,
+        "day": 9,
+        "variant": "civil",
+        "calendar": "islamic"
+      }
+    },
+    {
+      "symbol": "MonthWeavingCounter",
+      "ok": true,
+      "error": null,
+      "arenaDelta": 0,
+      "result": {
+        "lengths": "[Array:3]",
+        "monthCount": 3,
+        "totalLength": 90,
+        "prefix": "[Array:4]",
+        "h": "[Array:5]"
+      }
+    },
+    {
+      "symbol": "PastafariCalendar",
+      "ok": true,
+      "error": null,
+      "arenaDelta": 0,
+      "result": {
+        "todayProvider": "[function]",
+        "gates": "[AleksanderJagiellonczyk_DynastiaPiastowskaWedlugTytuluJagiellonskaWedlugStopkiIWazowskaWedlugNumeruStrony_lokalny_94bb4d254329_j2]",
+        "anchorCache": {
+          "MapSize": 0
+        },
+        "yearCache": {
+          "MapSize": 0
+        },
+        "structureCache": {
+          "MapSize": 0
+        }
+      }
+    },
+    {
+      "symbol": "GateIndex",
+      "ok": true,
+      "error": null,
+      "arenaDelta": 0,
+      "result": {
+        "positive": "[Array:40001]",
+        "negative": "[Array:1]"
+      }
+    }
+  ],
+  "postFailureConstructorControls": [
+    {
+      "symbol": "GregorianDate",
+      "ok": true,
+      "error": null,
+      "arenaDelta": 0
+    },
+    {
+      "symbol": "IslamicDate",
+      "ok": true,
+      "error": null,
+      "arenaDelta": 0
+    },
+    {
+      "symbol": "MonthWeavingCounter",
+      "ok": true,
+      "error": null,
+      "arenaDelta": 0
+    },
+    {
+      "symbol": "PastafariCalendar",
+      "ok": true,
+      "error": null,
+      "arenaDelta": 0
+    },
+    {
+      "symbol": "GateIndex",
+      "ok": true,
+      "error": null,
+      "arenaDelta": 0
+    }
+  ],
+  "allPass": true
+}

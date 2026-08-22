@@ -1,0 +1,250 @@
+TAP version 13
+# Subtest: a fossil entry remains physically present but cannot determine semantics
+ok 1 - a fossil entry remains physically present but cannot determine semantics
+  ---
+  duration_ms: 2.296497
+  type: 'test'
+  ...
+# Subtest: warm repeats hit the normative shadow instead of recomputing
+ok 2 - warm repeats hit the normative shadow instead of recomputing
+  ---
+  duration_ms: 0.370632
+  type: 'test'
+  ...
+# Subtest: manual external poisoning after warming is masked during conversion
+ok 3 - manual external poisoning after warming is masked during conversion
+  ---
+  duration_ms: 0.499683
+  type: 'test'
+  ...
+# Subtest: failed population rolls shadow mutations back and leaves no partial valid entry
+ok 4 - failed population rolls shadow mutations back and leaves no partial valid entry
+  ---
+  duration_ms: 0.762624
+  type: 'test'
+  ...
+# Subtest: nested population commits once and restores depth to zero
+ok 5 - nested population commits once and restores depth to zero
+  ---
+  duration_ms: 0.360046
+  type: 'test'
+  ...
+# Subtest: trace instrumentation reports writer, depth, cache and algorithm marker
+ok 6 - trace instrumentation reports writer, depth, cache and algorithm marker
+  ---
+  duration_ms: 0.399915
+  type: 'test'
+  ...
+# Subtest: historical core-before-public warmed instance converges to fresh public and fast results
+ok 7 - historical core-before-public warmed instance converges to fresh public and fast results
+  ---
+  duration_ms: 22818.985892
+  type: 'test'
+  ...
+# Subtest: runtime patch stack is semantically stable at nesting depth 1
+ok 8 - runtime patch stack is semantically stable at nesting depth 1
+  ---
+  duration_ms: 2.218931
+  type: 'test'
+  ...
+# Subtest: runtime patch stack is semantically stable at nesting depth 2
+ok 9 - runtime patch stack is semantically stable at nesting depth 2
+  ---
+  duration_ms: 0.650668
+  type: 'test'
+  ...
+# Subtest: runtime patch stack is semantically stable at nesting depth 3
+ok 10 - runtime patch stack is semantically stable at nesting depth 3
+  ---
+  duration_ms: 0.903284
+  type: 'test'
+  ...
+# Subtest: runtime patch stack is semantically stable at nesting depth 5
+ok 11 - runtime patch stack is semantically stable at nesting depth 5
+  ---
+  duration_ms: 0.367557
+  type: 'test'
+  ...
+# Subtest: runtime patch stack is semantically stable at nesting depth 10
+ok 12 - runtime patch stack is semantically stable at nesting depth 10
+  ---
+  duration_ms: 0.293096
+  type: 'test'
+  ...
+# Subtest: nested calls on two instances do not leak the outer wrapper state into the inner call
+ok 13 - nested calls on two instances do not leak the outer wrapper state into the inner call
+  ---
+  duration_ms: 0.24233
+  type: 'test'
+  ...
+# Subtest: late external patch is invoked and survives normal restoration with its descriptor
+ok 14 - late external patch is invoked and survives normal restoration with its descriptor
+  ---
+  duration_ms: 0.307738
+  type: 'test'
+  ...
+# Subtest: a non-LIFO external replacement installed during a project call is not erased
+ok 15 - a non-LIFO external replacement installed during a project call is not erased
+  ---
+  duration_ms: 0.218385
+  type: 'test'
+  ...
+# Subtest: descriptor and ownership state restore after after-install exception
+ok 16 - descriptor and ownership state restore after after-install exception
+  ---
+  duration_ms: 0.640953
+  type: 'test'
+  ...
+# Subtest: descriptor and ownership state restore after mid-patched exception
+ok 17 - descriptor and ownership state restore after mid-patched exception
+  ---
+  duration_ms: 0.482058
+  type: 'test'
+  ...
+# Subtest: descriptor and ownership state restore after after-inner exception
+ok 18 - descriptor and ownership state restore after after-inner exception
+  ---
+  duration_ms: 0.244724
+  type: 'test'
+  ...
+# Subtest: descriptor and ownership state restore after before-return exception
+ok 19 - descriptor and ownership state restore after before-return exception
+  ---
+  duration_ms: 0.145817
+  type: 'test'
+  ...
+# Subtest: inner exception can be caught by outer call and outer continues with its own patch state
+ok 20 - inner exception can be caught by outer call and outer continues with its own patch state
+  ---
+  duration_ms: 0.207318
+  type: 'test'
+  ...
+# Subtest: inner exception followed by outer exception still restores the entry descriptor
+ok 21 - inner exception followed by outer exception still restores the entry descriptor
+  ---
+  duration_ms: 0.222521
+  type: 'test'
+  ...
+# Subtest: throwing user patch survives the project finally
+ok 22 - throwing user patch survives the project finally
+  ---
+  duration_ms: 0.184244
+  type: 'test'
+  ...
+# Subtest: patch trace proves LIFO repair resurrects the outer costume after inner historical restore
+ok 23 - patch trace proves LIFO repair resurrects the outer costume after inner historical restore
+  ---
+  duration_ms: 0.24888
+  type: 'test'
+  ...
+# Subtest: 200 deterministic mixed calls leave no patch drift
+ok 24 - 200 deterministic mixed calls leave no patch drift
+  ---
+  duration_ms: 10.541592
+  type: 'test'
+  ...
+# Subtest: A-B-A history and two-instance interleaving do not change semantic output
+ok 25 - A-B-A history and two-instance interleaving do not change semantic output
+  ---
+  duration_ms: 0.461246
+  type: 'test'
+  ...
+# Subtest: external X followed by external Y is never resurrected back to X
+ok 26 - external X followed by external Y is never resurrected back to X
+  ---
+  duration_ms: 0.240518
+  type: 'test'
+  ...
+# Subtest: late user patch may recurse into the public API without losing itself
+ok 27 - late user patch may recurse into the public API without losing itself
+  ---
+  duration_ms: 0.214249
+  type: 'test'
+  ...
+# Subtest: a user patch may install another late patch and the newer patch survives
+ok 28 - a user patch may install another late patch and the newer patch survives
+  ---
+  duration_ms: 0.182321
+  type: 'test'
+  ...
+# Subtest: year-ceiling detour rejects forbidden cached candidates in both scan directions
+ok 29 - year-ceiling detour rejects forbidden cached candidates in both scan directions
+  ---
+  duration_ms: 2.130981
+  type: 'test'
+  ...
+# Subtest: an unrelated cached calculation day does not disable a fresh anchor scan
+ok 30 - an unrelated cached calculation day does not disable a fresh anchor scan
+  ---
+  duration_ms: 1.175829
+  type: 'test'
+  ...
+# Subtest: year-ceiling detour poisons all three forbidden lengths but not 5,778
+ok 31 - year-ceiling detour poisons all three forbidden lengths but not 5,778
+  ---
+  duration_ms: 0.346846
+  type: 'test'
+  ...
+# Subtest: year-ceiling detour restores the gate reader after a thrown candidate search
+ok 32 - year-ceiling detour restores the gate reader after a thrown candidate search
+  ---
+  duration_ms: 1.18277
+  type: 'test'
+  ...
+# Subtest: fresh corrected-gate anchor/next/previous candidate counts match the independent reference
+ok 33 - fresh corrected-gate anchor/next/previous candidate counts match the independent reference # SKIP
+  ---
+  duration_ms: 0.21503
+  type: 'test'
+  ...
+# Subtest: real backward-search regression from soak batch 37 case 3
+ok 34 - real backward-search regression from soak batch 37 case 3 # SKIP
+  ---
+  duration_ms: 0.130354
+  type: 'test'
+  ...
+# Subtest: detour-of-a-detour catches the first +1 anchor-matrix row before cardinality
+ok 35 - detour-of-a-detour catches the first +1 anchor-matrix row before cardinality
+  ---
+  duration_ms: 1.070723
+  type: 'test'
+  ...
+# Subtest: detour-of-a-detour restores its nested gate wrapper after a throw and repeated calls
+ok 36 - detour-of-a-detour restores its nested gate wrapper after a throw and repeated calls
+  ---
+  duration_ms: 0.345895
+  type: 'test'
+  ...
+# Subtest: third detour reverses stale cached-boundary poisoning without weakening the real ceiling
+ok 37 - third detour reverses stale cached-boundary poisoning without weakening the real ceiling
+  ---
+  duration_ms: 0.8268
+  type: 'test'
+  ...
+# Subtest: third detour restores its gate wrapper after exceptions and repeated calls
+ok 38 - third detour restores its gate wrapper after exceptions and repeated calls
+  ---
+  duration_ms: 2.391347
+  type: 'test'
+  ...
+# Subtest: multiple consecutive public next/previous selections match the independent reference entry-for-entry
+ok 39 - multiple consecutive public next/previous selections match the independent reference entry-for-entry # SKIP
+  ---
+  duration_ms: 0.120479
+  type: 'test'
+  ...
+# Subtest: new public 5,778 discriminators match reference cardinality and fast final tuple
+ok 40 - new public 5,778 discriminators match reference cardinality and fast final tuple # SKIP
+  ---
+  duration_ms: 0.055382
+  type: 'test'
+  ...
+1..40
+# tests 40
+# suites 0
+# pass 36
+# fail 0
+# cancelled 0
+# skipped 4
+# todo 0
+# duration_ms 22889.838986
