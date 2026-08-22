@@ -1,0 +1,196 @@
+TAP version 13
+# Subtest: router cache is bounded and uses least-recently-used idle eviction
+ok 1 - router cache is bounded and uses least-recently-used idle eviction
+  ---
+  duration_ms: 3.759787
+  type: 'test'
+  ...
+# Subtest: eviction followed by recreation preserves exact conversion output
+ok 2 - eviction followed by recreation preserves exact conversion output
+  ---
+  duration_ms: 1.592877
+  type: 'test'
+  ...
+# Subtest: active states are never evicted even when the temporary live set exceeds the limit
+ok 3 - active states are never evicted even when the temporary live set exceeds the limit
+  ---
+  duration_ms: 3.361615
+  type: 'test'
+  ...
+# Subtest: a state with verification in flight is protected from eviction
+ok 4 - a state with verification in flight is protected from eviction
+  ---
+  duration_ms: 2.153761
+  type: 'test'
+  ...
+# Subtest: concurrent same-key requests share one authoritative bootstrap request
+ok 5 - concurrent same-key requests share one authoritative bootstrap request
+  ---
+  duration_ms: 1.367893
+  type: 'test'
+  ...
+# Subtest: concurrent different-key requests settle back to the configured cache bound
+ok 6 - concurrent different-key requests settle back to the configured cache bound
+  ---
+  duration_ms: 5.377752
+  type: 'test'
+  ...
+# Subtest: failed verification remains cached and authoritative-only while its state is retained
+ok 7 - failed verification remains cached and authoritative-only while its state is retained
+  ---
+  duration_ms: 0.740851
+  type: 'test'
+  ...
+# Subtest: failed states are retained preferentially without defeating the hard idle bound
+ok 8 - failed states are retained preferentially without defeating the hard idle bound
+  ---
+  duration_ms: 0.69334
+  type: 'test'
+  ...
+# Subtest: retry removes cache bookkeeping and recreates a clean state
+ok 9 - retry removes cache bookkeeping and recreates a clean state
+  ---
+  duration_ms: 0.664517
+  type: 'test'
+  ...
+# Subtest: dispose clears states and LRU bookkeeping and remains safe when called twice
+ok 10 - dispose clears states and LRU bookkeeping and remains safe when called twice
+  ---
+  duration_ms: 0.476047
+  type: 'test'
+  ...
+# Subtest: 600-case bounded-vs-unbounded differential keeps canonical results identical
+ok 11 - 600-case bounded-vs-unbounded differential keeps canonical results identical
+  ---
+  duration_ms: 50.706063
+  type: 'test'
+  ...
+# Subtest: requests arriving during verification keep their own target day
+ok 12 - requests arriving during verification keep their own target day
+  ---
+  duration_ms: 185.955946
+  type: 'test'
+  ...
+# Subtest: verification state is isolated for every calculation day
+ok 13 - verification state is isolated for every calculation day
+  ---
+  duration_ms: 173.478032
+  type: 'test'
+  ...
+# Subtest: identical concurrent authoritative conversions share one request
+ok 14 - identical concurrent authoritative conversions share one request
+  ---
+  duration_ms: 27.606486
+  type: 'test'
+  ...
+# Subtest: a cutlet request made during verification returns the requested cutlet
+ok 15 - a cutlet request made during verification returns the requested cutlet
+  ---
+  duration_ms: 186.302415
+  type: 'test'
+  ...
+# Subtest: many consumers sharing one router do not leak results between calls
+ok 16 - many consumers sharing one router do not leak results between calls
+  ---
+  duration_ms: 26.726988
+  type: 'test'
+  ...
+# Subtest: authoritative idle shutdown does not terminate a bootstrap request for a new calculation day
+ok 17 - authoritative idle shutdown does not terminate a bootstrap request for a new calculation day
+  ---
+  duration_ms: 340.791995
+  type: 'test'
+  ...
+# Subtest: authoritative idle shutdown preserves concurrent bootstrap requests
+ok 18 - authoritative idle shutdown preserves concurrent bootstrap requests
+  ---
+  duration_ms: 343.187905
+  type: 'test'
+  ...
+# Subtest: authoritative idle shutdown still terminates the worker after requests become idle
+ok 19 - authoritative idle shutdown still terminates the worker after requests become idle
+  ---
+  duration_ms: 407.84855
+  type: 'test'
+  ...
+# Subtest: a fast-engine request failure leaves the calculation day on the authoritative engine
+ok 20 - a fast-engine request failure leaves the calculation day on the authoritative engine
+  ---
+  duration_ms: 25.195733
+  type: 'test'
+  ...
+# Subtest: a verified fast-engine timeout falls back to the authoritative result
+ok 21 - a verified fast-engine timeout falls back to the authoritative result
+  ---
+  duration_ms: 122.894811
+  type: 'test'
+  ...
+# Subtest: an authoritative timeout terminates its worker and the next request starts a fresh one
+ok 22 - an authoritative timeout terminates its worker and the next request starts a fresh one
+  ---
+  duration_ms: 38.639091
+  type: 'test'
+  ...
+# Subtest: a mismatch disables the fast engine globally and later calculation days stay authoritative
+ok 23 - a mismatch disables the fast engine globally and later calculation days stay authoritative
+  ---
+  duration_ms: 21.544286
+  type: 'test'
+  ...
+# Subtest: an invalid fast cutlet view disables the fast engine
+ok 24 - an invalid fast cutlet view disables the fast engine
+  ---
+  duration_ms: 21.894497
+  type: 'test'
+  ...
+# Subtest: an authoritative conversion failure is propagated and does not start fast verification
+ok 25 - an authoritative conversion failure is propagated and does not start fast verification
+  ---
+  duration_ms: 6.18395
+  type: 'test'
+  ...
+# Subtest: the router works through inline modules when Worker is unavailable
+ok 26 - the router works through inline modules when Worker is unavailable
+  ---
+  duration_ms: 21.97084
+  type: 'test'
+  ...
+# Subtest: a missing fast module leaves the inline router usable in authoritative-only mode
+ok 27 - a missing fast module leaves the inline router usable in authoritative-only mode
+  ---
+  duration_ms: 18.442777
+  type: 'test'
+  ...
+# Subtest: 5,000 distinct calculation days do not create an unbounded idle router cache
+ok 28 - 5,000 distinct calculation days do not create an unbounded idle router cache
+  ---
+  duration_ms: 213.845788
+  type: 'test'
+  ...
+# Subtest: standalone artifacts are self-contained classic scripts
+ok 29 - standalone artifacts are self-contained classic scripts
+  ---
+  duration_ms: 206.945288
+  type: 'test'
+  ...
+# Subtest: minified and readable standalone artifacts are complete
+ok 30 - minified and readable standalone artifacts are complete
+  ---
+  duration_ms: 1.017742
+  type: 'test'
+  ...
+# Subtest: the local example loads exactly one classic standalone script
+ok 31 - the local example loads exactly one classic standalone script
+  ---
+  duration_ms: 1.253522
+  type: 'test'
+  ...
+1..31
+# tests 31
+# suites 0
+# pass 31
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1747.599628

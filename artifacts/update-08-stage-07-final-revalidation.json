@@ -1,0 +1,88 @@
+{
+  "stage": "Update 8 Stage 7 final focused revalidation",
+  "repository": "Sargon17-Green/pastafari-calendar",
+  "commit": "0328180ed6331e9ea935a4795c3064cc92930af6",
+  "supersedesStage7Failure": true,
+  "defect": "ROUTER_IDLE_SHUTDOWN_INFLIGHT_AUTHORITATIVE",
+  "productionDeltaSincePreRepair": [
+    "browser/pastafari-calendar-router-core.js",
+    "browser/standalone/pastafari-date.js",
+    "browser/standalone/pastafari-date.min.js"
+  ],
+  "sourceFix": {
+    "result": "PASS",
+    "publicApiChanged": false
+  },
+  "currentDedicatedCiArtifact": {
+    "result": "PASS",
+    "generatedAt": "2026-08-22T23:28:42.245Z",
+    "esbuild": "0.28.2",
+    "byteReproducible": true,
+    "unminifiedSha256": "f1adfc1f4e64d9fc7dcb591a7c5e852210e0d2de3ff3d2a08668a8c17ffbea2b",
+    "minifiedSha256": "7a2f60e304dfe1c8dc98d54fa894e337e9864648ff5b401a51e661e9f5290481",
+    "committedBundlesMatchArtifact": true,
+    "standaloneStaticTests": "3/3 PASS",
+    "realChromium": {
+      "version": "151.0.7922.34",
+      "raceReproduced": false,
+      "unminified": "PASS",
+      "minified": "PASS",
+      "semanticParity": true
+    }
+  },
+  "focusedRevalidation": {
+    "nodePublic": {
+      "vectors": 13,
+      "focusedFailureFamilies": 4,
+      "repeatedFailures": 100,
+      "result": "PASS"
+    },
+    "routerAndStandaloneStatic": {
+      "tests": 31,
+      "pass": 31,
+      "fail": 0,
+      "result": "PASS"
+    },
+    "packageTarballConsumer": {
+      "result": "PASS",
+      "npmPackDryRun": "PASS",
+      "npmPack": "PASS",
+      "tarballSha256": "621cbea5dddd253bbcb740d99e5785bcb7a1a0d35090b7e5dbad92ccb3146daf",
+      "files": 270,
+      "packageSize": 90136568,
+      "unpackedSize": 120648213,
+      "cleanTarballConsumer": {
+        "install": "PASS",
+        "exports": 98,
+        "canonicalPresentSame": {
+          "year": "5000",
+          "cutletName": "מחשבה",
+          "dayInCutlet": 13,
+          "monthName": "חרטה",
+          "dayInMonth": 16
+        },
+        "invalidTodayProviderFailure": "TypeError",
+        "postFailureRecovery": "PASS"
+      }
+    },
+    "supplyChain": {
+      "externalActionOccurrences": 73,
+      "pinned": 73,
+      "mutableRefs": 0,
+      "result": "PASS"
+    },
+    "browserAuthoritativeAndFastCore": {
+      "status": "UNCHANGED_FROM_ORIGINAL_STAGE7_PASS",
+      "basis": "GitHub compare from 547f07ca... to 0328180e... shows no changes to browser/pastafari-calendar-core.js or browser/pastafari-calendar-fast.js."
+    },
+    "fastHistory": {
+      "status": "PRIOR_STAGE7_PASS_RETAINED",
+      "freshLocalAttempt": "TIMED_OUT_IN_SLOW_LOCAL_ENVIRONMENT",
+      "semanticBasis": "No authoritative/fast engine source changed in the repair; changed runtime surface is router lifecycle and generated standalone propagation."
+    }
+  },
+  "zipFilenameEncodingNote": "The downloaded repository ZIP encoded sources/מגילת העיתים.md as #U05...; GitHub commit 0328180e contains the correctly named file. This is an export artifact, not a repository checksum defect.",
+  "stage7Result": "CROSS_ENVIRONMENT_VERIFIED_AFTER_ROUTER_REPAIR",
+  "readyForStage8": true,
+  "productionFilesChangedByFinalRevalidation": []
+}
