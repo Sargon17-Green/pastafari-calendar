@@ -1,0 +1,1027 @@
+{
+  "schema": "pastafari.update8.stage04d.publication-cache.v1",
+  "stage": "4D",
+  "generatedAt": "2026-08-22T21:53:05.943Z",
+  "revision": {
+    "repository": "Sargon17-Green/pastafari-calendar",
+    "branch": "main",
+    "commit": "81cc54b1e15d8f3c0cd9cc8cb41d07f57fdecddf",
+    "packageVersion": "1.3.0",
+    "workingTree": "archive snapshot; no .git metadata; analysis-only script/artifacts added locally"
+  },
+  "capturedRuntimeStructures": {
+    "mapsAtImport": [
+      {
+        "index": 0,
+        "size": 0
+      },
+      {
+        "index": 1,
+        "size": 13
+      },
+      {
+        "index": 2,
+        "size": 20
+      },
+      {
+        "index": 3,
+        "size": 12
+      },
+      {
+        "index": 4,
+        "size": 4
+      },
+      {
+        "index": 5,
+        "size": 0
+      },
+      {
+        "index": 6,
+        "size": 0
+      },
+      {
+        "index": 7,
+        "size": 0
+      },
+      {
+        "index": 8,
+        "size": 0
+      },
+      {
+        "index": 9,
+        "size": 0
+      },
+      {
+        "index": 10,
+        "size": 0
+      },
+      {
+        "index": 11,
+        "size": 0
+      },
+      {
+        "index": 12,
+        "size": 0
+      },
+      {
+        "index": 13,
+        "size": 0
+      },
+      {
+        "index": 14,
+        "size": 0
+      },
+      {
+        "index": 15,
+        "size": 1
+      },
+      {
+        "index": 16,
+        "size": 0
+      },
+      {
+        "index": 17,
+        "size": 0
+      },
+      {
+        "index": 18,
+        "size": 0
+      }
+    ],
+    "weakMapCount": 3,
+    "weakSetCount": 5
+  },
+  "failureCases": [
+    {
+      "id": "GregorianDate_noninteger_month",
+      "returned": false,
+      "error": {
+        "name": "TypeError",
+        "message": "החודש והיום הגריגוריאניים חייבים להיות מספרים שלמים"
+      },
+      "mapSizeChanges": [],
+      "knownKeyWeakMapBefore": null,
+      "knownKeyWeakMapAfter": null
+    },
+    {
+      "id": "IslamicDate_invalid_variant",
+      "returned": false,
+      "error": {
+        "name": "RangeError",
+        "message": "לוח היג׳רי אינו חד־משמעי; variant חייב להיות \"civil\" או \"umalqura\""
+      },
+      "mapSizeChanges": [],
+      "knownKeyWeakMapBefore": [
+        {
+          "index": 0,
+          "has": false,
+          "value": null
+        },
+        {
+          "index": 1,
+          "has": false,
+          "value": null
+        },
+        {
+          "index": 2,
+          "has": false,
+          "value": null
+        }
+      ],
+      "knownKeyWeakMapAfter": [
+        {
+          "index": 0,
+          "has": false,
+          "value": null
+        },
+        {
+          "index": 1,
+          "has": false,
+          "value": null
+        },
+        {
+          "index": 2,
+          "has": false,
+          "value": null
+        }
+      ]
+    },
+    {
+      "id": "SolarHijriDate_invalid_variant",
+      "returned": false,
+      "error": {
+        "name": "RangeError",
+        "message": "variant של הלוח ההיג׳רי השמשי חייב להיות \"official\" או \"arithmetic-2820\""
+      },
+      "mapSizeChanges": [],
+      "knownKeyWeakMapBefore": [
+        {
+          "index": 0,
+          "has": false,
+          "value": null
+        },
+        {
+          "index": 1,
+          "has": false,
+          "value": null
+        },
+        {
+          "index": 2,
+          "has": false,
+          "value": null
+        }
+      ],
+      "knownKeyWeakMapAfter": [
+        {
+          "index": 0,
+          "has": false,
+          "value": null
+        },
+        {
+          "index": 1,
+          "has": false,
+          "value": null
+        },
+        {
+          "index": 2,
+          "has": false,
+          "value": null
+        }
+      ]
+    },
+    {
+      "id": "HinduDate_invalid_scheme",
+      "returned": false,
+      "error": {
+        "name": "RangeError",
+        "message": "אין לוח הינדי יחיד; scheme חייב להיות \"old-solar\" או \"old-lunar\""
+      },
+      "mapSizeChanges": [],
+      "knownKeyWeakMapBefore": [
+        {
+          "index": 0,
+          "has": false,
+          "value": null
+        },
+        {
+          "index": 1,
+          "has": false,
+          "value": null
+        },
+        {
+          "index": 2,
+          "has": false,
+          "value": null
+        }
+      ],
+      "knownKeyWeakMapAfter": [
+        {
+          "index": 0,
+          "has": false,
+          "value": null
+        },
+        {
+          "index": 1,
+          "has": false,
+          "value": null
+        },
+        {
+          "index": 2,
+          "has": false,
+          "value": null
+        }
+      ]
+    },
+    {
+      "id": "JapaneseImperialDate_nonstring_era",
+      "returned": false,
+      "error": {
+        "name": "TypeError",
+        "message": "שם התקופה היפנית חייב להיות מחרוזת"
+      },
+      "mapSizeChanges": [],
+      "knownKeyWeakMapBefore": null,
+      "knownKeyWeakMapAfter": null
+    },
+    {
+      "id": "BahaiDate_invalid_variant",
+      "returned": false,
+      "error": {
+        "name": "RangeError",
+        "message": "variant של הלוח הבהאי חייב להיות \"tehran-equinox\" או \"western-arithmetic\""
+      },
+      "mapSizeChanges": [],
+      "knownKeyWeakMapBefore": [
+        {
+          "index": 0,
+          "has": false,
+          "value": null
+        },
+        {
+          "index": 1,
+          "has": false,
+          "value": null
+        },
+        {
+          "index": 2,
+          "has": false,
+          "value": null
+        }
+      ],
+      "knownKeyWeakMapAfter": [
+        {
+          "index": 0,
+          "has": false,
+          "value": null
+        },
+        {
+          "index": 1,
+          "has": false,
+          "value": null
+        },
+        {
+          "index": 2,
+          "has": false,
+          "value": null
+        }
+      ]
+    },
+    {
+      "id": "MonthWeavingCounter_nonpositive_length",
+      "returned": false,
+      "error": {
+        "name": "RangeError",
+        "message": "אורכי החודשים חייבים להיות חיוביים"
+      },
+      "mapSizeChanges": [],
+      "knownKeyWeakMapBefore": [
+        {
+          "index": 0,
+          "has": false,
+          "value": null
+        },
+        {
+          "index": 1,
+          "has": false,
+          "value": null
+        },
+        {
+          "index": 2,
+          "has": false,
+          "value": null
+        }
+      ],
+      "knownKeyWeakMapAfter": [
+        {
+          "index": 0,
+          "has": false,
+          "value": null
+        },
+        {
+          "index": 1,
+          "has": false,
+          "value": null
+        },
+        {
+          "index": 2,
+          "has": false,
+          "value": null
+        }
+      ]
+    },
+    {
+      "id": "PastafariCalendar_nonfunction_todayProvider",
+      "returned": false,
+      "error": {
+        "name": "TypeError",
+        "message": "todayProvider חייב להיות פונקציה"
+      },
+      "mapSizeChanges": [],
+      "knownKeyWeakMapBefore": [
+        {
+          "index": 0,
+          "has": false,
+          "value": null
+        },
+        {
+          "index": 1,
+          "has": false,
+          "value": null
+        },
+        {
+          "index": 2,
+          "has": false,
+          "value": null
+        }
+      ],
+      "knownKeyWeakMapAfter": [
+        {
+          "index": 0,
+          "has": false,
+          "value": null
+        },
+        {
+          "index": 1,
+          "has": false,
+          "value": null
+        },
+        {
+          "index": 2,
+          "has": false,
+          "value": null
+        }
+      ]
+    }
+  ],
+  "partialPublication": [
+    {
+      "id": "GregorianDate_injected_after_month_assignment",
+      "publicationSite": "this.year / this.month",
+      "productionExternalPublication": false,
+      "error": {
+        "name": "Error",
+        "message": "STAGE4D_INJECT_AFTER_month"
+      },
+      "ownState": {
+        "year": {
+          "type": "bigint",
+          "mapSize": null,
+          "writable": true,
+          "enumerable": true,
+          "configurable": true
+        },
+        "month": {
+          "type": "number",
+          "mapSize": null,
+          "writable": true,
+          "enumerable": true,
+          "configurable": true
+        }
+      },
+      "partialObjectRecordedInWeakMap": [],
+      "classification": "NO_EXTERNAL_PUBLICATION"
+    },
+    {
+      "id": "PastafariCalendar_injected_after_structureCache_assignment",
+      "publicationSite": "instance fields only",
+      "productionExternalPublication": false,
+      "error": {
+        "name": "Error",
+        "message": "STAGE4D_INJECT_AFTER_structureCache"
+      },
+      "ownState": {
+        "todayProvider": {
+          "type": "function",
+          "mapSize": null,
+          "writable": true,
+          "enumerable": true,
+          "configurable": true
+        },
+        "gates": {
+          "type": "object",
+          "mapSize": null,
+          "writable": true,
+          "enumerable": true,
+          "configurable": true
+        },
+        "anchorCache": {
+          "type": "Map",
+          "mapSize": 0,
+          "writable": true,
+          "enumerable": true,
+          "configurable": true
+        },
+        "yearCache": {
+          "type": "Map",
+          "mapSize": 0,
+          "writable": true,
+          "enumerable": true,
+          "configurable": true
+        },
+        "structureCache": {
+          "type": "Map",
+          "mapSize": 0,
+          "writable": true,
+          "enumerable": true,
+          "configurable": true
+        }
+      },
+      "partialObjectRecordedInWeakMap": [],
+      "cacheSizes": {
+        "anchorCache": 0,
+        "yearCache": 0,
+        "structureCache": 0
+      },
+      "classification": "NO_EXTERNAL_PUBLICATION"
+    }
+  ],
+  "weakMapWeakSet": {
+    "generatedIdentityMapCandidates": [],
+    "sameKeyReuse": {
+      "firstError": {
+        "name": "TypeError",
+        "message": "todayProvider חייב להיות פונקציה"
+      },
+      "afterFailure": [
+        {
+          "index": 0,
+          "has": false,
+          "value": null
+        },
+        {
+          "index": 1,
+          "has": false,
+          "value": null
+        },
+        {
+          "index": 2,
+          "has": false,
+          "value": null
+        }
+      ],
+      "secondError": null,
+      "successObjectFields": [
+        "todayProvider",
+        "gates",
+        "anchorCache",
+        "yearCache",
+        "structureCache"
+      ],
+      "afterSuccess": [
+        {
+          "index": 0,
+          "has": true,
+          "value": 3
+        },
+        {
+          "index": 1,
+          "has": false,
+          "value": null
+        },
+        {
+          "index": 2,
+          "has": false,
+          "value": null
+        }
+      ]
+    },
+    "repeatedDifferentFailedKeys": [
+      {
+        "iteration": 1,
+        "memberships": []
+      },
+      {
+        "iteration": 2,
+        "memberships": []
+      },
+      {
+        "iteration": 3,
+        "memberships": []
+      },
+      {
+        "iteration": 4,
+        "memberships": []
+      },
+      {
+        "iteration": 5,
+        "memberships": []
+      },
+      {
+        "iteration": 6,
+        "memberships": []
+      },
+      {
+        "iteration": 7,
+        "memberships": []
+      },
+      {
+        "iteration": 8,
+        "memberships": []
+      }
+    ],
+    "constructorRegistry": {
+      "before": [
+        {
+          "index": 0,
+          "has": false
+        },
+        {
+          "index": 1,
+          "has": true
+        },
+        {
+          "index": 2,
+          "has": true
+        },
+        {
+          "index": 3,
+          "has": true
+        },
+        {
+          "index": 4,
+          "has": true
+        }
+      ],
+      "after": [
+        {
+          "index": 0,
+          "has": false
+        },
+        {
+          "index": 1,
+          "has": true
+        },
+        {
+          "index": 2,
+          "has": true
+        },
+        {
+          "index": 3,
+          "has": true
+        },
+        {
+          "index": 4,
+          "has": true
+        }
+      ]
+    }
+  },
+  "cacheChecks": {
+    "naturalConstructorFailureMapSizeChanges": [],
+    "realAuthoritativeFailureDuringPopulation": {
+      "vector": "foundation_same",
+      "failure": {
+        "name": "Error",
+        "message": "STAGE4D_CACHE_POPULATION_AFTER_SET"
+      },
+      "injectedSetCount": 1,
+      "before": {
+        "anchorCache": null,
+        "yearCache": null,
+        "structureCache": null
+      },
+      "afterFailure": {
+        "anchorCache": {
+          "algorithmMarker": "scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778",
+          "fossilEntries": 0,
+          "shadowEntries": 0,
+          "visibleEntries": 0,
+          "callDepth": 0,
+          "provenance": []
+        },
+        "yearCache": {
+          "algorithmMarker": "scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778",
+          "fossilEntries": 0,
+          "shadowEntries": 0,
+          "visibleEntries": 0,
+          "callDepth": 0,
+          "provenance": []
+        },
+        "structureCache": {
+          "algorithmMarker": "scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778",
+          "fossilEntries": 0,
+          "shadowEntries": 0,
+          "visibleEntries": 0,
+          "callDepth": 0,
+          "provenance": []
+        }
+      },
+      "sameKeyAfterRestoration": {
+        "year": "5000",
+        "cutletName": "לגש",
+        "dayInCutlet": 762,
+        "monthName": "לבונה",
+        "dayInMonth": 105
+      },
+      "expectedReference": {
+        "year": "5000",
+        "cutletName": "לגש",
+        "dayInCutlet": 762,
+        "monthName": "לבונה",
+        "dayInMonth": 105
+      },
+      "authoritativeEqualsReference": true,
+      "ledgerBefore": {
+        "invocationDepth": 0,
+        "patchDepth": 0,
+        "owners": [],
+        "tokens": []
+      },
+      "ledgerAfterFailure": {
+        "invocationDepth": 0,
+        "patchDepth": 0,
+        "owners": [],
+        "tokens": []
+      },
+      "gateDescriptorRestored": {
+        "existsEqual": true,
+        "valueIdentityEqual": true,
+        "getIdentityEqual": true,
+        "setIdentityEqual": true,
+        "writableEqual": true,
+        "enumerableEqual": true,
+        "configurableEqual": true
+      }
+    },
+    "detourTransactionControls": {
+      "before": {
+        "anchorCache": {
+          "algorithmMarker": "scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778",
+          "fossilEntries": 0,
+          "shadowEntries": 1,
+          "visibleEntries": 1,
+          "callDepth": 0,
+          "provenance": [
+            [
+              "stable",
+              {
+                "algorithmMarker": "scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778",
+                "writer": "PastafariCalendar.convertJdn"
+              }
+            ]
+          ]
+        },
+        "yearCache": {
+          "algorithmMarker": "scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778",
+          "fossilEntries": 0,
+          "shadowEntries": 0,
+          "visibleEntries": 0,
+          "callDepth": 0,
+          "provenance": []
+        },
+        "structureCache": {
+          "algorithmMarker": "scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778",
+          "fossilEntries": 0,
+          "shadowEntries": 0,
+          "visibleEntries": 0,
+          "callDepth": 0,
+          "provenance": []
+        }
+      },
+      "sameKeyErrors": [
+        {
+          "name": "Error",
+          "message": "injected:A"
+        },
+        {
+          "name": "Error",
+          "message": "injected:A"
+        },
+        {
+          "name": "Error",
+          "message": "injected:A"
+        }
+      ],
+      "afterRepeatedSameKeyFailure": {
+        "anchorCache": {
+          "algorithmMarker": "scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778",
+          "fossilEntries": 0,
+          "shadowEntries": 1,
+          "visibleEntries": 1,
+          "callDepth": 0,
+          "provenance": [
+            [
+              "stable",
+              {
+                "algorithmMarker": "scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778",
+                "writer": "PastafariCalendar.convertJdn"
+              }
+            ]
+          ]
+        },
+        "yearCache": {
+          "algorithmMarker": "scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778",
+          "fossilEntries": 0,
+          "shadowEntries": 0,
+          "visibleEntries": 0,
+          "callDepth": 0,
+          "provenance": []
+        },
+        "structureCache": {
+          "algorithmMarker": "scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778",
+          "fossilEntries": 0,
+          "shadowEntries": 0,
+          "visibleEntries": 0,
+          "callDepth": 0,
+          "provenance": []
+        }
+      },
+      "sameKeySuccess": "norm:A",
+      "afterSameKeySuccess": {
+        "anchorCache": {
+          "algorithmMarker": "scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778",
+          "fossilEntries": 0,
+          "shadowEntries": 2,
+          "visibleEntries": 2,
+          "callDepth": 0,
+          "provenance": [
+            [
+              "stable",
+              {
+                "algorithmMarker": "scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778",
+                "writer": "PastafariCalendar.convertJdn"
+              }
+            ],
+            [
+              "A",
+              {
+                "algorithmMarker": "scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778",
+                "writer": "PastafariCalendar.convertJdn"
+              }
+            ]
+          ]
+        },
+        "yearCache": {
+          "algorithmMarker": "scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778",
+          "fossilEntries": 0,
+          "shadowEntries": 0,
+          "visibleEntries": 0,
+          "callDepth": 0,
+          "provenance": []
+        },
+        "structureCache": {
+          "algorithmMarker": "scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778",
+          "fossilEntries": 0,
+          "shadowEntries": 0,
+          "visibleEntries": 0,
+          "callDepth": 0,
+          "provenance": []
+        }
+      },
+      "differentKeyFailure": {
+        "name": "Error",
+        "message": "injected:C"
+      },
+      "differentKeySuccess": "norm:B",
+      "afterDifferentKey": {
+        "anchorCache": {
+          "algorithmMarker": "scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778",
+          "fossilEntries": 0,
+          "shadowEntries": 3,
+          "visibleEntries": 3,
+          "callDepth": 0,
+          "provenance": [
+            [
+              "stable",
+              {
+                "algorithmMarker": "scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778",
+                "writer": "PastafariCalendar.convertJdn"
+              }
+            ],
+            [
+              "A",
+              {
+                "algorithmMarker": "scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778",
+                "writer": "PastafariCalendar.convertJdn"
+              }
+            ],
+            [
+              "B",
+              {
+                "algorithmMarker": "scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778",
+                "writer": "PastafariCalendar.convertJdn"
+              }
+            ]
+          ]
+        },
+        "yearCache": {
+          "algorithmMarker": "scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778",
+          "fossilEntries": 0,
+          "shadowEntries": 0,
+          "visibleEntries": 0,
+          "callDepth": 0,
+          "provenance": []
+        },
+        "structureCache": {
+          "algorithmMarker": "scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778",
+          "fossilEntries": 0,
+          "shadowEntries": 0,
+          "visibleEntries": 0,
+          "callDepth": 0,
+          "provenance": []
+        }
+      },
+      "nestedFailure": {
+        "name": "Error",
+        "message": "injected:inner"
+      },
+      "nestedAfterFailure": {
+        "anchorCache": {
+          "algorithmMarker": "scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778",
+          "fossilEntries": 0,
+          "shadowEntries": 0,
+          "visibleEntries": 0,
+          "callDepth": 0,
+          "provenance": []
+        },
+        "yearCache": {
+          "algorithmMarker": "scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778",
+          "fossilEntries": 0,
+          "shadowEntries": 0,
+          "visibleEntries": 0,
+          "callDepth": 0,
+          "provenance": []
+        },
+        "structureCache": {
+          "algorithmMarker": "scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778",
+          "fossilEntries": 0,
+          "shadowEntries": 0,
+          "visibleEntries": 0,
+          "callDepth": 0,
+          "provenance": []
+        }
+      },
+      "nestedRecoveryOuter": "norm:outer",
+      "nestedRecoveryInner": "norm:inner",
+      "nestedAfterRecovery": {
+        "anchorCache": {
+          "algorithmMarker": "scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778",
+          "fossilEntries": 0,
+          "shadowEntries": 2,
+          "visibleEntries": 2,
+          "callDepth": 0,
+          "provenance": [
+            [
+              "outer",
+              {
+                "algorithmMarker": "scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778",
+                "writer": "PastafariCalendar.convertJdn"
+              }
+            ],
+            [
+              "inner",
+              {
+                "algorithmMarker": "scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778",
+                "writer": "PastafariCalendar.convertJdn"
+              }
+            ]
+          ]
+        },
+        "yearCache": {
+          "algorithmMarker": "scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778",
+          "fossilEntries": 0,
+          "shadowEntries": 0,
+          "visibleEntries": 0,
+          "callDepth": 0,
+          "provenance": []
+        },
+        "structureCache": {
+          "algorithmMarker": "scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778",
+          "fossilEntries": 0,
+          "shadowEntries": 0,
+          "visibleEntries": 0,
+          "callDepth": 0,
+          "provenance": []
+        }
+      }
+    },
+    "multiInstance": {
+      "instanceAFailureOccurred": true,
+      "instanceBConstructed": true,
+      "instanceBCacheSizesAtConstruction": {
+        "anchorCache": 0,
+        "yearCache": 0,
+        "structureCache": 0
+      },
+      "cacheObjectIdentitySeparate": {
+        "anchorCache": true,
+        "yearCache": true,
+        "structureCache": true
+      }
+    },
+    "mapSizeChangesAcrossNaturalFailures": [],
+    "capturedPersistentMapLabels": {
+      "5": "STATE:decoded:combinatorial-memo",
+      "6": "STATE:decoded:sauce-lru",
+      "7": "STATE:decoded:forward-gap-memo",
+      "8": "STATE:decoded:backward-gap-memo",
+      "note": "indices identified by isolated controlled success probes in the same snapshot; natural failed-constructor campaign was measured before those probes"
+    }
+  },
+  "identityAndDescriptors": {
+    "prototypeIdentity": {
+      "rawCalendarPrototypeSame": true,
+      "rawGatePrototypeSame": true,
+      "publicCalendarPrototypeSame": true
+    },
+    "descriptors": {
+      "rawConvertJdn": {
+        "existsEqual": true,
+        "valueIdentityEqual": true,
+        "getIdentityEqual": true,
+        "setIdentityEqual": true,
+        "writableEqual": true,
+        "enumerableEqual": true,
+        "configurableEqual": true
+      },
+      "rawGate": {
+        "existsEqual": true,
+        "valueIdentityEqual": true,
+        "getIdentityEqual": true,
+        "setIdentityEqual": true,
+        "writableEqual": true,
+        "enumerableEqual": true,
+        "configurableEqual": true
+      },
+      "publicConstructor": {
+        "existsEqual": true,
+        "valueIdentityEqual": true,
+        "getIdentityEqual": true,
+        "setIdentityEqual": true,
+        "writableEqual": true,
+        "enumerableEqual": true,
+        "configurableEqual": true
+      }
+    },
+    "exportedIdentity": {
+      "GregorianDateSame": true,
+      "makeSauceSame": true,
+      "STONESSame": true,
+      "CUTLET_NAMESSame": true,
+      "MONTH_NAMESSame": true
+    }
+  },
+  "semantics": {
+    "coldFailuresThenSuccess": {
+      "vector": "foundation_same",
+      "precedingFailures": "natural constructor campaign + injected cache-population failure",
+      "actual": {
+        "year": "5000",
+        "cutletName": "לגש",
+        "dayInCutlet": 762,
+        "monthName": "לבונה",
+        "dayInMonth": 105
+      },
+      "expectedReference": {
+        "year": "5000",
+        "cutletName": "לגש",
+        "dayInCutlet": 762,
+        "monthName": "לבונה",
+        "dayInMonth": 105
+      },
+      "authoritativeEqualsReference": true
+    },
+    "warmFailureThenSameSuccess": {
+      "failure": {
+        "name": "TypeError",
+        "message": "todayProvider חייב להיות פונקציה"
+      },
+      "actual": {
+        "year": "5000",
+        "cutletName": "לגש",
+        "dayInCutlet": 762,
+        "monthName": "לבונה",
+        "dayInMonth": 105
+      },
+      "expectedReference": {
+        "year": "5000",
+        "cutletName": "לגש",
+        "dayInCutlet": 762,
+        "monthName": "לבונה",
+        "dayInMonth": 105
+      },
+      "authoritativeEqualsReference": true,
+      "equalsPreviousSuccess": true
+    }
+  }
+}

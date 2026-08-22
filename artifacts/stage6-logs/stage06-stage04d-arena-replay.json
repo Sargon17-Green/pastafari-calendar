@@ -1,0 +1,121 @@
+{
+  "schema": "pastafari.update8.stage04d.arena-publication.v1",
+  "stateId": "STATE:generated:shared-invocation-arena",
+  "initialLength": 1175728,
+  "cases": [
+    {
+      "id": "PastafariCalendar_invalid_options",
+      "before": 1175728,
+      "after": 1175728,
+      "delta": 0,
+      "error": {
+        "name": "TypeError",
+        "message": "todayProvider חייב להיות פונקציה"
+      },
+      "leakedCells": [],
+      "knownKeyDirectlyInLeakedCells": false,
+      "knownKeyReachableWithinLeakedArraysDepth2": false
+    },
+    {
+      "id": "IslamicDate_invalid_variant",
+      "before": 1175728,
+      "after": 1175728,
+      "delta": 0,
+      "error": {
+        "name": "RangeError",
+        "message": "לוח היג׳רי אינו חד־משמעי; variant חייב להיות \"civil\" או \"umalqura\""
+      },
+      "leakedCells": [],
+      "knownKeyDirectlyInLeakedCells": false,
+      "knownKeyReachableWithinLeakedArraysDepth2": false
+    },
+    {
+      "id": "MonthWeavingCounter_invalid_lengths",
+      "before": 1175728,
+      "after": 1175728,
+      "delta": 0,
+      "error": {
+        "name": "RangeError",
+        "message": "אורכי החודשים חייבים להיות חיוביים"
+      },
+      "leakedCells": [],
+      "knownKeyDirectlyInLeakedCells": false,
+      "knownKeyReachableWithinLeakedArraysDepth2": false
+    },
+    {
+      "id": "GregorianDate_noninteger_month",
+      "before": 1175728,
+      "after": 1175728,
+      "delta": 0,
+      "error": {
+        "name": "TypeError",
+        "message": "החודש והיום הגריגוריאניים חייבים להיות מספרים שלמים"
+      },
+      "leakedCells": [],
+      "knownKeyDirectlyInLeakedCells": null,
+      "knownKeyReachableWithinLeakedArraysDepth2": null
+    }
+  ],
+  "repeatedDistinctFailures": {
+    "count": 10,
+    "before": 1175728,
+    "after": 1175728,
+    "delta": 0,
+    "expectedIfTwelveEach": 120,
+    "exactTwelveEach": false,
+    "failedKeysReachableFromTail": [
+      {
+        "index": 0,
+        "reachable": false
+      },
+      {
+        "index": 1,
+        "reachable": false
+      },
+      {
+        "index": 2,
+        "reachable": false
+      },
+      {
+        "index": 3,
+        "reachable": false
+      },
+      {
+        "index": 4,
+        "reachable": false
+      },
+      {
+        "index": 5,
+        "reachable": false
+      },
+      {
+        "index": 6,
+        "reachable": false
+      },
+      {
+        "index": 7,
+        "reachable": false
+      },
+      {
+        "index": 8,
+        "reachable": false
+      },
+      {
+        "index": 9,
+        "reachable": false
+      }
+    ]
+  },
+  "successAfterFailures": {
+    "before": 1175728,
+    "after": 1175728,
+    "delta": 0,
+    "error": null,
+    "fields": {
+      "year": "2026",
+      "month": 8,
+      "day": 22
+    },
+    "priorResiduePreserved": true
+  }
+}

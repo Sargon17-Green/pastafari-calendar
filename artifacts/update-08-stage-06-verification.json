@@ -1,0 +1,2083 @@
+{
+  "schema": "pastafari.update8.stage06.verification.v1",
+  "generatedAt": "2026-08-22T21:58:22.929625+00:00",
+  "repository": "https://github.com/Sargon17-Green/pastafari-calendar",
+  "branch": "main",
+  "commit": "9b86695f2f693742837bce8b865a24643c522ebf",
+  "packageVersion": "1.3.0",
+  "nodeVersion": "v22.16.0",
+  "npmVersion": "10.9.2",
+  "workingTree": "snapshot ZIP has no .git metadata; Stage-6 production-directory byte comparison is clean; only test/verification/artifact files were created",
+  "productionAlignment": {
+    "stage5PatchCommit": "44d5e1d3818b400df0f7a36bf17216d04345add6",
+    "currentMain": "9b86695f2f693742837bce8b865a24643c522ebf",
+    "commitsAheadOfStage5": 2,
+    "githubDiffAfterStage5": [
+      "SHA256SUMS.txt",
+      "test/update-08-stage-05-transactionality.test.js"
+    ],
+    "productionChangedSinceStage5": false,
+    "productionHashesExpected": {
+      "src/5efdcc3e6fb071cbaffdcb117507a169dd76.js": "99c7a18b015b669654eec06b49740df1b884465b43702b9705e4f6d9fd87ede9",
+      "browser/pastafari-calendar-core-chronicle.js": "36fed61386d9c545a191393e4bfd647ccefbc26fef11bec88faa708ed69b77ea",
+      "browser/standalone/pastafari-date.js": "532ccdd809633ee79aab618bda9b98b48d740798436fd1c1917f3fcf3340136d",
+      "browser/standalone/pastafari-date.min.js": "a78dfc01c8dd250e5639972756aadbb80e7bb9e77cc5bd9b8f0b68e1793f0b6a"
+    },
+    "productionHashesObserved": {
+      "src/5efdcc3e6fb071cbaffdcb117507a169dd76.js": "99c7a18b015b669654eec06b49740df1b884465b43702b9705e4f6d9fd87ede9",
+      "browser/pastafari-calendar-core-chronicle.js": "36fed61386d9c545a191393e4bfd647ccefbc26fef11bec88faa708ed69b77ea",
+      "browser/standalone/pastafari-date.js": "532ccdd809633ee79aab618bda9b98b48d740798436fd1c1917f3fcf3340136d",
+      "browser/standalone/pastafari-date.min.js": "a78dfc01c8dd250e5639972756aadbb80e7bb9e77cc5bd9b8f0b68e1793f0b6a"
+    },
+    "allProductionHashesMatchStage5": true,
+    "stage5ProductionFingerprint": "sha256:b42f832a56588431c55aab7806780e84eea9cc284b640203623e173ab5ea97bc"
+  },
+  "independence": {
+    "stage5SelfTest": {
+      "status": "PASS",
+      "tests": 1,
+      "pass": 1,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 20284.619634
+    },
+    "legacyStage3HarnessPostFix": {
+      "testedFailurePaths": 8,
+      "leakingFailurePaths": 0,
+      "zeroDeltaFailurePaths": 8,
+      "unresolvedFailurePaths": 0,
+      "successCasesTested": 8,
+      "baselineSemanticsPreservedAfterCampaign": true,
+      "STAGE_3_RESULT": "NO_LEAK_IN_NATURAL_FAILURES"
+    },
+    "legacyStage4DArenaHarnessPostFix": {
+      "cases": [
+        {
+          "id": "PastafariCalendar_invalid_options",
+          "arenaDelta": null
+        },
+        {
+          "id": "IslamicDate_invalid_variant",
+          "arenaDelta": null
+        },
+        {
+          "id": "MonthWeavingCounter_invalid_lengths",
+          "arenaDelta": null
+        },
+        {
+          "id": "GregorianDate_noninteger_month",
+          "arenaDelta": null
+        }
+      ],
+      "repeatedDistinctFailures": {
+        "count": 10,
+        "before": 1175728,
+        "after": 1175728,
+        "delta": 0,
+        "expectedIfTwelveEach": 120,
+        "exactTwelveEach": false,
+        "failedKeysReachableFromTail": [
+          {
+            "index": 0,
+            "reachable": false
+          },
+          {
+            "index": 1,
+            "reachable": false
+          },
+          {
+            "index": 2,
+            "reachable": false
+          },
+          {
+            "index": 3,
+            "reachable": false
+          },
+          {
+            "index": 4,
+            "reachable": false
+          },
+          {
+            "index": 5,
+            "reachable": false
+          },
+          {
+            "index": 6,
+            "reachable": false
+          },
+          {
+            "index": 7,
+            "reachable": false
+          },
+          {
+            "index": 8,
+            "reachable": false
+          },
+          {
+            "index": 9,
+            "reachable": false
+          }
+        ]
+      },
+      "successAfterFailures": {
+        "before": 1175728,
+        "after": 1175728,
+        "delta": 0,
+        "error": null,
+        "fields": {
+          "year": "2026",
+          "month": 8,
+          "day": 22
+        },
+        "priorResiduePreserved": true
+      }
+    },
+    "stage6IndependentVerifier": "PASS",
+    "stage5AndIndependentAgree": true
+  },
+  "defectFamilies": {
+    "STATE:generated:shared-invocation-arena": "CLOSED_BY_STAGE6_EVIDENCE",
+    "STATE:generated:identity-map-and-counter": "CLOSED_BY_STAGE6_EVIDENCE"
+  },
+  "preFixComparison": [
+    {
+      "case": "natural failed construction",
+      "preFix": "+12 arena (representative natural failures)",
+      "postFixExpected": "0",
+      "stage6Observed": "0"
+    },
+    {
+      "case": "100 failures",
+      "preFix": "+1200 arena",
+      "postFixExpected": "0",
+      "stage6Observed": "0 on every natural path checkpoint"
+    },
+    {
+      "case": "1000 failures",
+      "preFix": "+12000 arena",
+      "postFixExpected": "0",
+      "stage6Observed": "0 on every natural path checkpoint"
+    },
+    {
+      "case": "failed-new identity key",
+      "preFix": "mapped",
+      "postFixExpected": "absent",
+      "stage6Observed": "absent immediately after each applicable failure"
+    },
+    {
+      "case": "distinct failed keys",
+      "preFix": "counter/sequence advances",
+      "postFixExpected": "no clean-history perturbation",
+      "stage6Observed": "100 failed keys: next ID equals matched clean history"
+    },
+    {
+      "case": "nested descendant throw",
+      "preFix": "ancestor frame remained with descendant residue",
+      "postFixExpected": "no descendant residue; ancestor survives inner rollback",
+      "stage6Observed": "outer state preserved; inner absent; parent failure restores caller entry"
+    }
+  ],
+  "naturalFailures": [
+    {
+      "id": "F_BAHAI_INVALID_VARIANT",
+      "exception": {
+        "name": "RangeError",
+        "message": "variant של הלוח הבהאי חייב להיות \"tehran-equinox\" או \"western-arithmetic\""
+      },
+      "arenaDelta": 0,
+      "holesDelta": 0,
+      "keyAbsentAfter": true,
+      "keyArenaReachableAfter": false,
+      "prefixChurn": {
+        "count": 1,
+        "referenceChanges": 0,
+        "primitiveChanges": 1,
+        "sample": [
+          47351
+        ]
+      },
+      "exceptionMatchesStage5": true
+    },
+    {
+      "id": "F_GREGORIAN_NONINTEGER_MONTH",
+      "exception": {
+        "name": "TypeError",
+        "message": "החודש והיום הגריגוריאניים חייבים להיות מספרים שלמים"
+      },
+      "arenaDelta": 0,
+      "holesDelta": 0,
+      "keyAbsentAfter": null,
+      "keyArenaReachableAfter": null,
+      "prefixChurn": {
+        "count": 2,
+        "referenceChanges": 0,
+        "primitiveChanges": 2,
+        "sample": [
+          44587,
+          45277
+        ]
+      },
+      "exceptionMatchesStage5": true
+    },
+    {
+      "id": "F_HINDU_INVALID_SCHEME",
+      "exception": {
+        "name": "RangeError",
+        "message": "אין לוח הינדי יחיד; scheme חייב להיות \"old-solar\" או \"old-lunar\""
+      },
+      "arenaDelta": 0,
+      "holesDelta": 0,
+      "keyAbsentAfter": true,
+      "keyArenaReachableAfter": false,
+      "prefixChurn": {
+        "count": 1,
+        "referenceChanges": 0,
+        "primitiveChanges": 1,
+        "sample": [
+          51344
+        ]
+      },
+      "exceptionMatchesStage5": true
+    },
+    {
+      "id": "F_ISLAMIC_INVALID_VARIANT",
+      "exception": {
+        "name": "RangeError",
+        "message": "לוח היג׳רי אינו חד־משמעי; variant חייב להיות \"civil\" או \"umalqura\""
+      },
+      "arenaDelta": 0,
+      "holesDelta": 0,
+      "keyAbsentAfter": true,
+      "keyArenaReachableAfter": false,
+      "prefixChurn": {
+        "count": 1,
+        "referenceChanges": 0,
+        "primitiveChanges": 1,
+        "sample": [
+          62244
+        ]
+      },
+      "exceptionMatchesStage5": true
+    },
+    {
+      "id": "F_JAPANESE_NONSTRING_ERA",
+      "exception": {
+        "name": "TypeError",
+        "message": "שם התקופה היפנית חייב להיות מחרוזת"
+      },
+      "arenaDelta": 0,
+      "holesDelta": 0,
+      "keyAbsentAfter": null,
+      "keyArenaReachableAfter": null,
+      "prefixChurn": {
+        "count": 1,
+        "referenceChanges": 0,
+        "primitiveChanges": 1,
+        "sample": [
+          64905
+        ]
+      },
+      "exceptionMatchesStage5": true
+    },
+    {
+      "id": "F_MONTH_WEAVING_NONPOSITIVE",
+      "exception": {
+        "name": "RangeError",
+        "message": "אורכי החודשים חייבים להיות חיוביים"
+      },
+      "arenaDelta": 0,
+      "holesDelta": 0,
+      "keyAbsentAfter": true,
+      "keyArenaReachableAfter": false,
+      "prefixChurn": {
+        "count": 1,
+        "referenceChanges": 0,
+        "primitiveChanges": 1,
+        "sample": [
+          13309
+        ]
+      },
+      "exceptionMatchesStage5": true
+    },
+    {
+      "id": "F_PASTAFARI_INVALID_TODAY_PROVIDER",
+      "exception": {
+        "name": "TypeError",
+        "message": "todayProvider חייב להיות פונקציה"
+      },
+      "arenaDelta": 0,
+      "holesDelta": 0,
+      "keyAbsentAfter": true,
+      "keyArenaReachableAfter": false,
+      "prefixChurn": {
+        "count": 1,
+        "referenceChanges": 0,
+        "primitiveChanges": 1,
+        "sample": [
+          8952
+        ]
+      },
+      "exceptionMatchesStage5": true
+    },
+    {
+      "id": "F_SOLAR_HIJRI_INVALID_VARIANT",
+      "exception": {
+        "name": "RangeError",
+        "message": "variant של הלוח ההיג׳רי השמשי חייב להיות \"official\" או \"arithmetic-2820\""
+      },
+      "arenaDelta": 0,
+      "holesDelta": 0,
+      "keyAbsentAfter": true,
+      "keyArenaReachableAfter": false,
+      "prefixChurn": {
+        "count": 1,
+        "referenceChanges": 0,
+        "primitiveChanges": 1,
+        "sample": [
+          5882
+        ]
+      },
+      "exceptionMatchesStage5": true
+    },
+    {
+      "id": "F_RAW_PASTAFARI_DEFAULT",
+      "exception": {
+        "name": "ReferenceError",
+        "message": "localToday is not defined"
+      },
+      "arenaDelta": 0,
+      "holesDelta": 0,
+      "keyAbsentAfter": null,
+      "keyArenaReachableAfter": null,
+      "prefixChurn": {
+        "count": 0,
+        "referenceChanges": 0,
+        "primitiveChanges": 0,
+        "sample": []
+      },
+      "exceptionMatchesStage5": true
+    }
+  ],
+  "exceptionContract": {
+    "allNineExactClassAndMessageMatchStage5": true
+  },
+  "repeatedFailures": [
+    {
+      "id": "F_BAHAI_INVALID_VARIANT",
+      "checkpoints": [
+        {
+          "n": 1,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": true
+        },
+        {
+          "n": 10,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": true
+        },
+        {
+          "n": 100,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": true
+        },
+        {
+          "n": 1000,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": true
+        }
+      ],
+      "finalArenaDelta": 0,
+      "finalHolesDelta": 0,
+      "exceptionSignature": "RangeError\u0000variant של הלוח הבהאי חייב להיות \"tehran-equinox\" או \"western-arithmetic\""
+    },
+    {
+      "id": "F_GREGORIAN_NONINTEGER_MONTH",
+      "checkpoints": [
+        {
+          "n": 1,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": null
+        },
+        {
+          "n": 10,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": null
+        },
+        {
+          "n": 100,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": null
+        },
+        {
+          "n": 1000,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": null
+        }
+      ],
+      "finalArenaDelta": 0,
+      "finalHolesDelta": 0,
+      "exceptionSignature": "TypeError\u0000החודש והיום הגריגוריאניים חייבים להיות מספרים שלמים"
+    },
+    {
+      "id": "F_HINDU_INVALID_SCHEME",
+      "checkpoints": [
+        {
+          "n": 1,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": true
+        },
+        {
+          "n": 10,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": true
+        },
+        {
+          "n": 100,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": true
+        },
+        {
+          "n": 1000,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": true
+        }
+      ],
+      "finalArenaDelta": 0,
+      "finalHolesDelta": 0,
+      "exceptionSignature": "RangeError\u0000אין לוח הינדי יחיד; scheme חייב להיות \"old-solar\" או \"old-lunar\""
+    },
+    {
+      "id": "F_ISLAMIC_INVALID_VARIANT",
+      "checkpoints": [
+        {
+          "n": 1,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": true
+        },
+        {
+          "n": 10,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": true
+        },
+        {
+          "n": 100,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": true
+        },
+        {
+          "n": 1000,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": true
+        }
+      ],
+      "finalArenaDelta": 0,
+      "finalHolesDelta": 0,
+      "exceptionSignature": "RangeError\u0000לוח היג׳רי אינו חד־משמעי; variant חייב להיות \"civil\" או \"umalqura\""
+    },
+    {
+      "id": "F_JAPANESE_NONSTRING_ERA",
+      "checkpoints": [
+        {
+          "n": 1,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": null
+        },
+        {
+          "n": 10,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": null
+        },
+        {
+          "n": 100,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": null
+        },
+        {
+          "n": 1000,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": null
+        }
+      ],
+      "finalArenaDelta": 0,
+      "finalHolesDelta": 0,
+      "exceptionSignature": "TypeError\u0000שם התקופה היפנית חייב להיות מחרוזת"
+    },
+    {
+      "id": "F_MONTH_WEAVING_NONPOSITIVE",
+      "checkpoints": [
+        {
+          "n": 1,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": true
+        },
+        {
+          "n": 10,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": true
+        },
+        {
+          "n": 100,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": true
+        },
+        {
+          "n": 1000,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": true
+        }
+      ],
+      "finalArenaDelta": 0,
+      "finalHolesDelta": 0,
+      "exceptionSignature": "RangeError\u0000אורכי החודשים חייבים להיות חיוביים"
+    },
+    {
+      "id": "F_PASTAFARI_INVALID_TODAY_PROVIDER",
+      "checkpoints": [
+        {
+          "n": 1,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": true
+        },
+        {
+          "n": 10,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": true
+        },
+        {
+          "n": 100,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": true
+        },
+        {
+          "n": 1000,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": true
+        }
+      ],
+      "finalArenaDelta": 0,
+      "finalHolesDelta": 0,
+      "exceptionSignature": "TypeError\u0000todayProvider חייב להיות פונקציה"
+    },
+    {
+      "id": "F_SOLAR_HIJRI_INVALID_VARIANT",
+      "checkpoints": [
+        {
+          "n": 1,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": true
+        },
+        {
+          "n": 10,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": true
+        },
+        {
+          "n": 100,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": true
+        },
+        {
+          "n": 1000,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": true
+        }
+      ],
+      "finalArenaDelta": 0,
+      "finalHolesDelta": 0,
+      "exceptionSignature": "RangeError\u0000variant של הלוח ההיג׳רי השמשי חייב להיות \"official\" או \"arithmetic-2820\""
+    },
+    {
+      "id": "F_RAW_PASTAFARI_DEFAULT",
+      "checkpoints": [
+        {
+          "n": 1,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": null
+        },
+        {
+          "n": 10,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": null
+        },
+        {
+          "n": 100,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": null
+        },
+        {
+          "n": 1000,
+          "arenaDelta": 0,
+          "holesDelta": 0,
+          "keyAbsent": null
+        }
+      ],
+      "finalArenaDelta": 0,
+      "finalHolesDelta": 0,
+      "exceptionSignature": "ReferenceError\u0000localToday is not defined"
+    }
+  ],
+  "longCampaign": {
+    "path": "F_ISLAMIC_INVALID_VARIANT",
+    "count": 5000,
+    "checkpoints": [
+      {
+        "n": 100,
+        "arenaDelta": 0,
+        "holesDelta": 0,
+        "lastKeyAbsent": true
+      },
+      {
+        "n": 1000,
+        "arenaDelta": 0,
+        "holesDelta": 0,
+        "lastKeyAbsent": true
+      },
+      {
+        "n": 5000,
+        "arenaDelta": 0,
+        "holesDelta": 0,
+        "lastKeyAbsent": true
+      }
+    ],
+    "finalArenaDelta": 0,
+    "finalHolesDelta": 0,
+    "allFailedKeysAbsent": true,
+    "retainedReferenceReachable": false,
+    "exception": {
+      "name": "RangeError",
+      "message": "לוח היג׳רי אינו חד־משמעי; variant חייב להיות \"civil\" או \"umalqura\""
+    }
+  },
+  "retainedReferences": {
+    "callerHeldFailedKeys": 5000,
+    "allIdentityMappingsAbsent": true,
+    "anyReachableFromArena": false
+  },
+  "memory": {
+    "gcAvailable": true,
+    "samples": [
+      {
+        "label": "baseline-before-long",
+        "rss": 327430144,
+        "heapTotal": 164474880,
+        "heapUsed": 121923944,
+        "external": 31993598,
+        "arrayBuffers": 20715
+      },
+      {
+        "label": "100",
+        "rss": 330051584,
+        "heapTotal": 163950592,
+        "heapUsed": 121931984,
+        "external": 2117138,
+        "arrayBuffers": 20715
+      },
+      {
+        "label": "1000",
+        "rss": 331886592,
+        "heapTotal": 164212736,
+        "heapUsed": 122022128,
+        "external": 2219538,
+        "arrayBuffers": 20715
+      },
+      {
+        "label": "5000",
+        "rss": 332017664,
+        "heapTotal": 164474880,
+        "heapUsed": 122421056,
+        "external": 2221250,
+        "arrayBuffers": 20715
+      },
+      {
+        "label": "post-success",
+        "rss": 334114816,
+        "heapTotal": 164737024,
+        "heapUsed": 122449416,
+        "external": 2133470,
+        "arrayBuffers": 20715
+      }
+    ],
+    "policy": "informational only; structural equality is decisive"
+  },
+  "alternating": {
+    "operations": 500,
+    "failures": 250,
+    "finalArenaDelta": 0,
+    "finalHolesDelta": 0
+  },
+  "aFailA": [
+    {
+      "id": "foundation_same",
+      "A1": {
+        "year": "5000",
+        "cutletName": "לגש",
+        "dayInCutlet": 762,
+        "monthName": "לבונה",
+        "dayInMonth": 105
+      },
+      "A2": {
+        "year": "5000",
+        "cutletName": "לגש",
+        "dayInCutlet": 762,
+        "monthName": "לבונה",
+        "dayInMonth": 105
+      },
+      "reference": {
+        "year": "5000",
+        "cutletName": "לגש",
+        "dayInCutlet": 762,
+        "monthName": "לבונה",
+        "dayInMonth": 105
+      },
+      "A1EqualsA2": true,
+      "failureArenaDelta": 0,
+      "failureHolesDelta": null
+    },
+    {
+      "id": "foundation_next",
+      "A1": {
+        "year": "5000",
+        "cutletName": "כליה",
+        "dayInCutlet": 1,
+        "monthName": "אבן־גיר",
+        "dayInMonth": 91
+      },
+      "A2": {
+        "year": "5000",
+        "cutletName": "כליה",
+        "dayInCutlet": 1,
+        "monthName": "אבן־גיר",
+        "dayInMonth": 91
+      },
+      "reference": {
+        "year": "5000",
+        "cutletName": "כליה",
+        "dayInCutlet": 1,
+        "monthName": "אבן־גיר",
+        "dayInMonth": 91
+      },
+      "A1EqualsA2": true,
+      "failureArenaDelta": 0,
+      "failureHolesDelta": null
+    },
+    {
+      "id": "foundation_previous",
+      "A1": {
+        "year": "5000",
+        "cutletName": "לגש",
+        "dayInCutlet": 761,
+        "monthName": "הדלת הסגורה",
+        "dayInMonth": 114
+      },
+      "A2": {
+        "year": "5000",
+        "cutletName": "לגש",
+        "dayInCutlet": 761,
+        "monthName": "הדלת הסגורה",
+        "dayInMonth": 114
+      },
+      "reference": {
+        "year": "5000",
+        "cutletName": "לגש",
+        "dayInCutlet": 761,
+        "monthName": "הדלת הסגורה",
+        "dayInMonth": 114
+      },
+      "A1EqualsA2": true,
+      "failureArenaDelta": 0,
+      "failureHolesDelta": null
+    },
+    {
+      "id": "present_same",
+      "A1": {
+        "year": "5000",
+        "cutletName": "מחשבה",
+        "dayInCutlet": 13,
+        "monthName": "חרטה",
+        "dayInMonth": 16
+      },
+      "A2": {
+        "year": "5000",
+        "cutletName": "מחשבה",
+        "dayInCutlet": 13,
+        "monthName": "חרטה",
+        "dayInMonth": 16
+      },
+      "reference": {
+        "year": "5000",
+        "cutletName": "מחשבה",
+        "dayInCutlet": 13,
+        "monthName": "חרטה",
+        "dayInMonth": 16
+      },
+      "A1EqualsA2": true,
+      "failureArenaDelta": 0,
+      "failureHolesDelta": null
+    },
+    {
+      "id": "present_forward",
+      "A1": {
+        "year": "5000",
+        "cutletName": "מחשבה",
+        "dayInCutlet": 19,
+        "monthName": "ערפל",
+        "dayInMonth": 10
+      },
+      "A2": {
+        "year": "5000",
+        "cutletName": "מחשבה",
+        "dayInCutlet": 19,
+        "monthName": "ערפל",
+        "dayInMonth": 10
+      },
+      "reference": {
+        "year": "5000",
+        "cutletName": "מחשבה",
+        "dayInCutlet": 19,
+        "monthName": "ערפל",
+        "dayInMonth": 10
+      },
+      "A1EqualsA2": true,
+      "failureArenaDelta": 0,
+      "failureHolesDelta": null
+    }
+  ],
+  "severalFailuresBeforeSuccess": [
+    {
+      "failures": 1,
+      "stateBeforeSuccessEntryEquivalent": true,
+      "allFailedKeysAbsent": true,
+      "success": {
+        "year": "2026",
+        "month": 8,
+        "day": 22
+      }
+    },
+    {
+      "failures": 2,
+      "stateBeforeSuccessEntryEquivalent": true,
+      "allFailedKeysAbsent": true,
+      "success": {
+        "year": "2026",
+        "month": 8,
+        "day": 22
+      }
+    },
+    {
+      "failures": 5,
+      "stateBeforeSuccessEntryEquivalent": true,
+      "allFailedKeysAbsent": true,
+      "success": {
+        "year": "2026",
+        "month": 8,
+        "day": 22
+      }
+    },
+    {
+      "failures": 10,
+      "stateBeforeSuccessEntryEquivalent": true,
+      "allFailedKeysAbsent": true,
+      "success": {
+        "year": "2026",
+        "month": 8,
+        "day": 22
+      }
+    },
+    {
+      "failures": 100,
+      "stateBeforeSuccessEntryEquivalent": true,
+      "allFailedKeysAbsent": true,
+      "success": {
+        "year": "2026",
+        "month": 8,
+        "day": 22
+      }
+    },
+    {
+      "failures": 1000,
+      "stateBeforeSuccessEntryEquivalent": true,
+      "allFailedKeysAbsent": true,
+      "success": {
+        "year": "2026",
+        "month": 8,
+        "day": 22
+      }
+    }
+  ],
+  "permutations": [
+    {
+      "sequence": "ABC",
+      "finalArenaDelta": 0,
+      "finalHolesDelta": 0,
+      "allFailedKeysAbsent": true
+    },
+    {
+      "sequence": "CBA",
+      "finalArenaDelta": 0,
+      "finalHolesDelta": 0,
+      "allFailedKeysAbsent": true
+    },
+    {
+      "sequence": "AABBCC",
+      "finalArenaDelta": 0,
+      "finalHolesDelta": 0,
+      "allFailedKeysAbsent": true
+    },
+    {
+      "sequence": "ABCABC",
+      "finalArenaDelta": 0,
+      "finalHolesDelta": 0,
+      "allFailedKeysAbsent": true
+    },
+    {
+      "sequence": "ABCDEF",
+      "finalArenaDelta": 0,
+      "finalHolesDelta": 0,
+      "allFailedKeysAbsent": true
+    },
+    {
+      "sequence": "FEDCBA",
+      "finalArenaDelta": 0,
+      "finalHolesDelta": 0,
+      "allFailedKeysAbsent": true
+    },
+    {
+      "sequence": "ABCDEF",
+      "finalArenaDelta": 0,
+      "finalHolesDelta": 0,
+      "allFailedKeysAbsent": true
+    },
+    {
+      "sequence": "ACEBDF",
+      "finalArenaDelta": 0,
+      "finalHolesDelta": 0,
+      "allFailedKeysAbsent": true
+    }
+  ],
+  "randomSequence": {
+    "seed": "0x6a09e667",
+    "generator": "xorshift32",
+    "operations": 2000,
+    "counts": {
+      "A": 336,
+      "B": 348,
+      "F1": 342,
+      "F2": 298,
+      "F3": 356,
+      "fragment": 320
+    },
+    "sequenceSha256": "2715c765ee622356d42bd1eeee68a73766c6ccddf6b769624c228af0b22c5575",
+    "first50": [
+      "B",
+      "AFA",
+      "F2",
+      "AFA",
+      "F2",
+      "F3",
+      "F3",
+      "F1",
+      "F2",
+      "F3",
+      "F2",
+      "F1",
+      "F1",
+      "F2",
+      "B",
+      "F1",
+      "F3",
+      "F1",
+      "A",
+      "F3",
+      "A",
+      "B",
+      "F3",
+      "A",
+      "F1",
+      "F2",
+      "A",
+      "F1",
+      "A",
+      "AFA",
+      "A",
+      "F1",
+      "AFA",
+      "AFA",
+      "B",
+      "F1",
+      "F2",
+      "A",
+      "A",
+      "AFA",
+      "A",
+      "AFA",
+      "B",
+      "F2",
+      "F1",
+      "F1",
+      "B",
+      "F1",
+      "F1",
+      "B"
+    ],
+    "last50": [
+      "AFA",
+      "A",
+      "F3",
+      "A",
+      "B",
+      "AFA",
+      "AFA",
+      "AFA",
+      "F1",
+      "F2",
+      "A",
+      "A",
+      "F3",
+      "F2",
+      "F3",
+      "AFA",
+      "AFA",
+      "F2",
+      "A",
+      "F3",
+      "F3",
+      "A",
+      "F3",
+      "F2",
+      "F2",
+      "F3",
+      "F2",
+      "AFA",
+      "F2",
+      "A",
+      "AFA",
+      "B",
+      "AFA",
+      "B",
+      "F2",
+      "F1",
+      "A",
+      "A",
+      "A",
+      "B",
+      "B",
+      "F3",
+      "F1",
+      "F3",
+      "F1",
+      "F3",
+      "F1",
+      "F1",
+      "B",
+      "A"
+    ],
+    "finalArenaDelta": 0,
+    "finalHolesDelta": 0,
+    "failedOnlyKeysAbsent": true
+  },
+  "nested": {
+    "innerFailsOuterContinues": [
+      {
+        "depth": 1,
+        "trace": [
+          {
+            "depth": 1,
+            "outerMappedBeforeInner": true,
+            "before": 1175755,
+            "after": 1175755,
+            "delta": 0
+          }
+        ],
+        "outerCommitted": true,
+        "innerAbsent": true,
+        "finalArenaDelta": 0
+      },
+      {
+        "depth": 2,
+        "trace": [
+          {
+            "depth": 1,
+            "outerMappedBeforeInner": true,
+            "before": 1175782,
+            "after": 1175782,
+            "delta": 0
+          },
+          {
+            "depth": 2,
+            "outerMappedBeforeInner": true,
+            "before": 1175755,
+            "after": 1175755,
+            "delta": 0
+          }
+        ],
+        "outerCommitted": true,
+        "innerAbsent": true,
+        "finalArenaDelta": 0
+      },
+      {
+        "depth": 3,
+        "trace": [
+          {
+            "depth": 1,
+            "outerMappedBeforeInner": true,
+            "before": 1175809,
+            "after": 1175809,
+            "delta": 0
+          },
+          {
+            "depth": 2,
+            "outerMappedBeforeInner": true,
+            "before": 1175782,
+            "after": 1175782,
+            "delta": 0
+          },
+          {
+            "depth": 3,
+            "outerMappedBeforeInner": true,
+            "before": 1175755,
+            "after": 1175755,
+            "delta": 0
+          }
+        ],
+        "outerCommitted": true,
+        "innerAbsent": true,
+        "finalArenaDelta": 0
+      },
+      {
+        "depth": 5,
+        "trace": [
+          {
+            "depth": 1,
+            "outerMappedBeforeInner": true,
+            "before": 1175863,
+            "after": 1175863,
+            "delta": 0
+          },
+          {
+            "depth": 2,
+            "outerMappedBeforeInner": true,
+            "before": 1175836,
+            "after": 1175836,
+            "delta": 0
+          },
+          {
+            "depth": 3,
+            "outerMappedBeforeInner": true,
+            "before": 1175809,
+            "after": 1175809,
+            "delta": 0
+          },
+          {
+            "depth": 4,
+            "outerMappedBeforeInner": true,
+            "before": 1175782,
+            "after": 1175782,
+            "delta": 0
+          },
+          {
+            "depth": 5,
+            "outerMappedBeforeInner": true,
+            "before": 1175755,
+            "after": 1175755,
+            "delta": 0
+          }
+        ],
+        "outerCommitted": true,
+        "innerAbsent": true,
+        "finalArenaDelta": 0
+      },
+      {
+        "depth": 10,
+        "trace": [
+          {
+            "depth": 1,
+            "outerMappedBeforeInner": true,
+            "before": 1175998,
+            "after": 1175998,
+            "delta": 0
+          },
+          {
+            "depth": 2,
+            "outerMappedBeforeInner": true,
+            "before": 1175971,
+            "after": 1175971,
+            "delta": 0
+          },
+          {
+            "depth": 3,
+            "outerMappedBeforeInner": true,
+            "before": 1175944,
+            "after": 1175944,
+            "delta": 0
+          },
+          {
+            "depth": 4,
+            "outerMappedBeforeInner": true,
+            "before": 1175917,
+            "after": 1175917,
+            "delta": 0
+          },
+          {
+            "depth": 5,
+            "outerMappedBeforeInner": true,
+            "before": 1175890,
+            "after": 1175890,
+            "delta": 0
+          },
+          {
+            "depth": 6,
+            "outerMappedBeforeInner": true,
+            "before": 1175863,
+            "after": 1175863,
+            "delta": 0
+          },
+          {
+            "depth": 7,
+            "outerMappedBeforeInner": true,
+            "before": 1175836,
+            "after": 1175836,
+            "delta": 0
+          },
+          {
+            "depth": 8,
+            "outerMappedBeforeInner": true,
+            "before": 1175809,
+            "after": 1175809,
+            "delta": 0
+          },
+          {
+            "depth": 9,
+            "outerMappedBeforeInner": true,
+            "before": 1175782,
+            "after": 1175782,
+            "delta": 0
+          },
+          {
+            "depth": 10,
+            "outerMappedBeforeInner": true,
+            "before": 1175755,
+            "after": 1175755,
+            "delta": 0
+          }
+        ],
+        "outerCommitted": true,
+        "innerAbsent": true,
+        "finalArenaDelta": 0
+      },
+      {
+        "depth": 25,
+        "trace": [
+          {
+            "depth": 1,
+            "outerMappedBeforeInner": true,
+            "before": 1176403,
+            "after": 1176403,
+            "delta": 0
+          },
+          {
+            "depth": 2,
+            "outerMappedBeforeInner": true,
+            "before": 1176376,
+            "after": 1176376,
+            "delta": 0
+          },
+          {
+            "depth": 3,
+            "outerMappedBeforeInner": true,
+            "before": 1176349,
+            "after": 1176349,
+            "delta": 0
+          },
+          {
+            "depth": 4,
+            "outerMappedBeforeInner": true,
+            "before": 1176322,
+            "after": 1176322,
+            "delta": 0
+          },
+          {
+            "depth": 5,
+            "outerMappedBeforeInner": true,
+            "before": 1176295,
+            "after": 1176295,
+            "delta": 0
+          },
+          {
+            "depth": 6,
+            "outerMappedBeforeInner": true,
+            "before": 1176268,
+            "after": 1176268,
+            "delta": 0
+          },
+          {
+            "depth": 7,
+            "outerMappedBeforeInner": true,
+            "before": 1176241,
+            "after": 1176241,
+            "delta": 0
+          },
+          {
+            "depth": 8,
+            "outerMappedBeforeInner": true,
+            "before": 1176214,
+            "after": 1176214,
+            "delta": 0
+          },
+          {
+            "depth": 9,
+            "outerMappedBeforeInner": true,
+            "before": 1176187,
+            "after": 1176187,
+            "delta": 0
+          },
+          {
+            "depth": 10,
+            "outerMappedBeforeInner": true,
+            "before": 1176160,
+            "after": 1176160,
+            "delta": 0
+          },
+          {
+            "depth": 11,
+            "outerMappedBeforeInner": true,
+            "before": 1176133,
+            "after": 1176133,
+            "delta": 0
+          },
+          {
+            "depth": 12,
+            "outerMappedBeforeInner": true,
+            "before": 1176106,
+            "after": 1176106,
+            "delta": 0
+          },
+          {
+            "depth": 13,
+            "outerMappedBeforeInner": true,
+            "before": 1176079,
+            "after": 1176079,
+            "delta": 0
+          },
+          {
+            "depth": 14,
+            "outerMappedBeforeInner": true,
+            "before": 1176052,
+            "after": 1176052,
+            "delta": 0
+          },
+          {
+            "depth": 15,
+            "outerMappedBeforeInner": true,
+            "before": 1176025,
+            "after": 1176025,
+            "delta": 0
+          },
+          {
+            "depth": 16,
+            "outerMappedBeforeInner": true,
+            "before": 1175998,
+            "after": 1175998,
+            "delta": 0
+          },
+          {
+            "depth": 17,
+            "outerMappedBeforeInner": true,
+            "before": 1175971,
+            "after": 1175971,
+            "delta": 0
+          },
+          {
+            "depth": 18,
+            "outerMappedBeforeInner": true,
+            "before": 1175944,
+            "after": 1175944,
+            "delta": 0
+          },
+          {
+            "depth": 19,
+            "outerMappedBeforeInner": true,
+            "before": 1175917,
+            "after": 1175917,
+            "delta": 0
+          },
+          {
+            "depth": 20,
+            "outerMappedBeforeInner": true,
+            "before": 1175890,
+            "after": 1175890,
+            "delta": 0
+          },
+          {
+            "depth": 21,
+            "outerMappedBeforeInner": true,
+            "before": 1175863,
+            "after": 1175863,
+            "delta": 0
+          },
+          {
+            "depth": 22,
+            "outerMappedBeforeInner": true,
+            "before": 1175836,
+            "after": 1175836,
+            "delta": 0
+          },
+          {
+            "depth": 23,
+            "outerMappedBeforeInner": true,
+            "before": 1175809,
+            "after": 1175809,
+            "delta": 0
+          },
+          {
+            "depth": 24,
+            "outerMappedBeforeInner": true,
+            "before": 1175782,
+            "after": 1175782,
+            "delta": 0
+          },
+          {
+            "depth": 25,
+            "outerMappedBeforeInner": true,
+            "before": 1175755,
+            "after": 1175755,
+            "delta": 0
+          }
+        ],
+        "outerCommitted": true,
+        "innerAbsent": true,
+        "finalArenaDelta": 0
+      }
+    ],
+    "innerAndOuterFail": {
+      "finalArenaDelta": 0,
+      "outerKeyAbsent": true,
+      "innerKeyAbsent": true,
+      "exception": {
+        "name": "Stage6OuterFault",
+        "message": "STAGE6_OUTER_FAULT_AFTER_INNER_FAILURE"
+      }
+    },
+    "innerSuccessOuterFailsIdentityTransfer": {
+      "finalArenaDelta": 0,
+      "parentAbsent": true,
+      "childAbsent": true,
+      "exception": {
+        "name": "Stage6ParentFault",
+        "message": "STAGE6_PARENT_FAIL_AFTER_CHILD_SUCCESS"
+      }
+    },
+    "nestedSuccessCommit": {
+      "parentCommitted": true,
+      "childCommitted": true
+    },
+    "depths": [
+      1,
+      2,
+      3,
+      5,
+      10,
+      25
+    ]
+  },
+  "reentrant": {
+    "source": "npm test + focused runtime-patching.test.js",
+    "status": "PASS",
+    "covered": [
+      "runtime patch ledger",
+      "ownership tokens",
+      "late external patches",
+      "descriptor restoration",
+      "inner exception caught by outer",
+      "inner+outer exception restoration",
+      "deterministic mixed reentry",
+      "A-B-A/two-instance semantics"
+    ]
+  },
+  "multiInstance": {
+    "AStableAfterFailure": true,
+    "BStableAfterFailure": true,
+    "moduleGlobalArenaDelta": 0
+  },
+  "identity": {
+    "failedNewFamilies": [
+      {
+        "id": "F_BAHAI_INVALID_VARIANT",
+        "keyAbsent": true,
+        "keyReachable": null
+      },
+      {
+        "id": "F_HINDU_INVALID_SCHEME",
+        "keyAbsent": true,
+        "keyReachable": null
+      },
+      {
+        "id": "F_ISLAMIC_INVALID_VARIANT",
+        "keyAbsent": true,
+        "keyReachable": null
+      },
+      {
+        "id": "F_MONTH_WEAVING_NONPOSITIVE",
+        "keyAbsent": true,
+        "keyReachable": null
+      },
+      {
+        "id": "F_PASTAFARI_INVALID_TODAY_PROVIDER",
+        "keyAbsent": true,
+        "keyReachable": null
+      },
+      {
+        "id": "F_SOLAR_HIJRI_INVALID_VARIANT",
+        "keyAbsent": true,
+        "keyReachable": null
+      }
+    ],
+    "preexisting": {
+      "idBefore": 52,
+      "idAfter": 52,
+      "preserved": true
+    },
+    "sameFailedKey": [
+      {
+        "n": 1,
+        "absent": true
+      },
+      {
+        "n": 10,
+        "absent": true
+      },
+      {
+        "n": 100,
+        "absent": true
+      }
+    ],
+    "distinct100ThenSuccess": {
+      "allFailedAbsent": true,
+      "dirtyAnchorId": 4,
+      "cleanAnchorId": 4,
+      "dirtyNextId": 5,
+      "cleanNextId": 5,
+      "dirtyGap": 1,
+      "cleanGap": 1,
+      "equal": true
+    },
+    "collision": {
+      "ids": [
+        3,
+        4,
+        6,
+        5,
+        7
+      ],
+      "unique": true,
+      "committedCount": 5
+    }
+  },
+  "freshProcess": {
+    "clean": {
+      "mode": "clean",
+      "id": 3,
+      "fields": {
+        "year": "1448",
+        "month": 2,
+        "day": 9,
+        "variant": "civil",
+        "calendar": "islamic"
+      },
+      "arenaDelta": 0,
+      "holesDelta": 0,
+      "failedKeysAbsent": true
+    },
+    "dirty": {
+      "mode": "dirty",
+      "id": 3,
+      "fields": {
+        "year": "1448",
+        "month": 2,
+        "day": 9,
+        "variant": "civil",
+        "calendar": "islamic"
+      },
+      "arenaDelta": 0,
+      "holesDelta": 0,
+      "failedKeysAbsent": true
+    },
+    "sameSuccess": true,
+    "sameNextIdentity": true
+  },
+  "faultInjection": {
+    "totalInjectedFailures": 335,
+    "baseCheckpointCampaignCount": 35,
+    "allStateRestored": true,
+    "leakingCheckpoints": [],
+    "zeroDeltaCheckpoints": [
+      "GEN_WRAP_ENTRY",
+      "GEN_WRAP_AFTER_RESERVATION",
+      "GEN_RESERVE_AFTER_BASE",
+      "GEN_RESERVE_AFTER_ARGUMENTS",
+      "GEN_WRAP_AFTER_TARGET",
+      "GEN_WRAP_BEFORE_CLEANUP",
+      "GEN_WRAP_AFTER_CLEANUP",
+      "GREGORIAN_AFTER_VALIDATION",
+      "GREGORIAN_AFTER_YEAR_WRITE",
+      "GREGORIAN_AFTER_MONTH_WRITE",
+      "GREGORIAN_AFTER_DAY_WRITE",
+      "ISLAMIC_AFTER_VALIDATION",
+      "ISLAMIC_AFTER_YEAR_WRITE",
+      "ISLAMIC_AFTER_MONTH_WRITE",
+      "ISLAMIC_AFTER_DAY_WRITE",
+      "ISLAMIC_AFTER_VARIANT_WRITE",
+      "ISLAMIC_BEFORE_FINALIZATION",
+      "ISLAMIC_AFTER_FINALIZATION",
+      "MONTH_WEAVING_AFTER_VALIDATION",
+      "MONTH_WEAVING_AFTER_LENGTHS_WRITE",
+      "MONTH_WEAVING_AFTER_MONTHCOUNT_WRITE",
+      "MONTH_WEAVING_AFTER_TOTALLENGTH_WRITE",
+      "MONTH_WEAVING_AFTER_PREFIX_WRITE",
+      "PASTAFARI_AFTER_VALIDATION",
+      "PASTAFARI_AFTER_TODAY_PROVIDER_WRITE",
+      "PASTAFARI_BEFORE_GATE_INDEX_CONSTRUCTION",
+      "PASTAFARI_AFTER_GATE_INDEX_CONSTRUCTION",
+      "PASTAFARI_AFTER_ANCHOR_CACHE_ALLOCATION",
+      "PASTAFARI_AFTER_YEAR_CACHE_ALLOCATION",
+      "PASTAFARI_AFTER_STRUCTURE_CACHE_ALLOCATION"
+    ],
+    "repeatedPostMutationCampaigns": [
+      {
+        "checkpoint": "GEN_WRAP_AFTER_RESERVATION",
+        "count": 100
+      },
+      {
+        "checkpoint": "GEN_WRAP_BEFORE_CLEANUP",
+        "count": 100
+      },
+      {
+        "checkpoint": "GEN_RESERVE_AFTER_ARGUMENTS",
+        "constructor": "PastafariCalendar",
+        "count": 100
+      }
+    ],
+    "legacyStage4CHarnessReplay": {
+      "status": "HARNESS_INCOMPATIBLE_WITH_POST_FIX_BODY",
+      "reason": "old exact transform needle became non-unique after Stage 5 production rewrite",
+      "productionFailure": false,
+      "replacementEvidence": "Stage 6 replayed all 35 checkpoints with updated test-only instrumentation and added 300 repeated injected failures; all restored."
+    }
+  },
+  "publicationCacheRegression": {
+    "sameKeyFailureThenSuccess": {
+      "firstError": {
+        "name": "TypeError",
+        "message": "todayProvider חייב להיות פונקציה"
+      },
+      "afterFailure": [
+        {
+          "index": 0,
+          "has": false,
+          "value": null
+        },
+        {
+          "index": 1,
+          "has": false,
+          "value": null
+        },
+        {
+          "index": 2,
+          "has": false,
+          "value": null
+        }
+      ],
+      "secondError": null,
+      "successObjectFields": [
+        "todayProvider",
+        "gates",
+        "anchorCache",
+        "yearCache",
+        "structureCache"
+      ],
+      "afterSuccess": [
+        {
+          "index": 0,
+          "has": true,
+          "value": 3
+        },
+        {
+          "index": 1,
+          "has": false,
+          "value": null
+        },
+        {
+          "index": 2,
+          "has": false,
+          "value": null
+        }
+      ]
+    },
+    "differentKeyIsolation": {
+      "failure": {
+        "name": "Error",
+        "message": "injected:C"
+      },
+      "success": "norm:B"
+    },
+    "nestedCachePopulation": {
+      "failure": {
+        "name": "Error",
+        "message": "injected:inner"
+      },
+      "recoveryOuter": "norm:outer",
+      "recoveryInner": "norm:inner"
+    },
+    "realPopulationRollback": {
+      "authoritativeEqualsReference": true,
+      "ledgerRestored": true,
+      "gateDescriptorRestored": true
+    },
+    "multiInstance": {
+      "instanceAFailureOccurred": true,
+      "instanceBConstructed": true,
+      "instanceBCacheSizesAtConstruction": {
+        "anchorCache": 0,
+        "yearCache": 0,
+        "structureCache": 0
+      },
+      "cacheObjectIdentitySeparate": {
+        "anchorCache": true,
+        "yearCache": true,
+        "structureCache": true
+      }
+    },
+    "constructorRegistryStable": true,
+    "prototypeIdentity": {
+      "rawCalendarPrototypeSame": true,
+      "rawGatePrototypeSame": true,
+      "publicCalendarPrototypeSame": true
+    },
+    "descriptors": {
+      "rawConvertJdn": {
+        "existsEqual": true,
+        "valueIdentityEqual": true,
+        "getIdentityEqual": true,
+        "setIdentityEqual": true,
+        "writableEqual": true,
+        "enumerableEqual": true,
+        "configurableEqual": true
+      },
+      "rawGate": {
+        "existsEqual": true,
+        "valueIdentityEqual": true,
+        "getIdentityEqual": true,
+        "setIdentityEqual": true,
+        "writableEqual": true,
+        "enumerableEqual": true,
+        "configurableEqual": true
+      },
+      "publicConstructor": {
+        "existsEqual": true,
+        "valueIdentityEqual": true,
+        "getIdentityEqual": true,
+        "setIdentityEqual": true,
+        "writableEqual": true,
+        "enumerableEqual": true,
+        "configurableEqual": true
+      }
+    },
+    "exportedIdentity": {
+      "GregorianDateSame": true,
+      "makeSauceSame": true,
+      "STONESSame": true,
+      "CUTLET_NAMESSame": true,
+      "MONTH_NAMESSame": true
+    },
+    "coldFailuresThenSuccessReferenceEqual": true,
+    "warmFailureThenSameSuccessReferenceEqual": true
+  },
+  "reference": {
+    "oracle": {
+      "command": "npm run test:reference-oracle",
+      "status": "PASS",
+      "tests": 19,
+      "pass": 19,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 13609.395916
+    },
+    "canonicalVectors": {
+      "foundation_same": {
+        "actual": {
+          "year": "5000",
+          "cutletName": "לגש",
+          "dayInCutlet": 762,
+          "monthName": "לבונה",
+          "dayInMonth": 105
+        },
+        "reference": {
+          "year": "5000",
+          "cutletName": "לגש",
+          "dayInCutlet": 762,
+          "monthName": "לבונה",
+          "dayInMonth": 105
+        },
+        "equal": true
+      },
+      "foundation_next": {
+        "actual": {
+          "year": "5000",
+          "cutletName": "כליה",
+          "dayInCutlet": 1,
+          "monthName": "אבן־גיר",
+          "dayInMonth": 91
+        },
+        "reference": {
+          "year": "5000",
+          "cutletName": "כליה",
+          "dayInCutlet": 1,
+          "monthName": "אבן־גיר",
+          "dayInMonth": 91
+        },
+        "equal": true
+      },
+      "foundation_previous": {
+        "actual": {
+          "year": "5000",
+          "cutletName": "לגש",
+          "dayInCutlet": 761,
+          "monthName": "הדלת הסגורה",
+          "dayInMonth": 114
+        },
+        "reference": {
+          "year": "5000",
+          "cutletName": "לגש",
+          "dayInCutlet": 761,
+          "monthName": "הדלת הסגורה",
+          "dayInMonth": 114
+        },
+        "equal": true
+      }
+    },
+    "expandedSuccessSample": {
+      "foundation_same": {
+        "actual": {
+          "year": "5000",
+          "cutletName": "לגש",
+          "dayInCutlet": 762,
+          "monthName": "לבונה",
+          "dayInMonth": 105
+        },
+        "reference": {
+          "year": "5000",
+          "cutletName": "לגש",
+          "dayInCutlet": 762,
+          "monthName": "לבונה",
+          "dayInMonth": 105
+        },
+        "equal": true
+      },
+      "foundation_next": {
+        "actual": {
+          "year": "5000",
+          "cutletName": "כליה",
+          "dayInCutlet": 1,
+          "monthName": "אבן־גיר",
+          "dayInMonth": 91
+        },
+        "reference": {
+          "year": "5000",
+          "cutletName": "כליה",
+          "dayInCutlet": 1,
+          "monthName": "אבן־גיר",
+          "dayInMonth": 91
+        },
+        "equal": true
+      },
+      "foundation_previous": {
+        "actual": {
+          "year": "5000",
+          "cutletName": "לגש",
+          "dayInCutlet": 761,
+          "monthName": "הדלת הסגורה",
+          "dayInMonth": 114
+        },
+        "reference": {
+          "year": "5000",
+          "cutletName": "לגש",
+          "dayInCutlet": 761,
+          "monthName": "הדלת הסגורה",
+          "dayInMonth": 114
+        },
+        "equal": true
+      },
+      "present_same": {
+        "actual": {
+          "year": "5000",
+          "cutletName": "מחשבה",
+          "dayInCutlet": 13,
+          "monthName": "חרטה",
+          "dayInMonth": 16
+        },
+        "reference": {
+          "year": "5000",
+          "cutletName": "מחשבה",
+          "dayInCutlet": 13,
+          "monthName": "חרטה",
+          "dayInMonth": 16
+        },
+        "equal": true
+      },
+      "present_forward": {
+        "actual": {
+          "year": "5000",
+          "cutletName": "מחשבה",
+          "dayInCutlet": 19,
+          "monthName": "ערפל",
+          "dayInMonth": 10
+        },
+        "reference": {
+          "year": "5000",
+          "cutletName": "מחשבה",
+          "dayInCutlet": 19,
+          "monthName": "ערפל",
+          "dayInMonth": 10
+        },
+        "equal": true
+      }
+    },
+    "expandedSampleCount": 5
+  },
+  "regressions": {
+    "npmTest": {
+      "command": "npm test",
+      "status": "PASS",
+      "tests": 196,
+      "pass": 192,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 4,
+      "todo": 0,
+      "durationMs": 18048.976046,
+      "note": "4 skips are pre-existing/expected and not counted as failures"
+    },
+    "focusedCore": {
+      "status": "PASS",
+      "tests": 44,
+      "pass": 40,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 4,
+      "todo": 0,
+      "durationMs": 354.011948
+    },
+    "cacheEpoch": {
+      "status": "PASS",
+      "tests": 7,
+      "pass": 7,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 32832.720494
+    },
+    "stage4DPublicationCacheReplay": "PASS"
+  },
+  "compatibility": {
+    "command": "npm run test:compatibility",
+    "attemptWindowSeconds": 120,
+    "tapObserved": "TAP version 13 only; no completed subtest/result before termination",
+    "processCpuActive": true,
+    "status": "DEFERRED_TO_STAGE_7_CROSS_ENVIRONMENT",
+    "reason": "The script is fast-engine compatibility/distribution verification. Stage 6 isolated the engine/core transactionality and did not obtain a completed compatibility subtest within the bounded attempt; timeout is not counted as PASS.",
+    "stage5Relation": "reproduces Stage 5 behavior: no subtest result within bounded window",
+    "notEvidenceOfProductionFailure": true
+  },
+  "instrumentationAudit": {
+    "productionFilesModified": false,
+    "rollbackAddedByHarness": false,
+    "globalsRestoredAfterImport": true,
+    "publicApiAdded": false,
+    "arenaObservation": "in-memory Function-construction hook only",
+    "identityObservation": "captured WeakMaps; identity map selected by a committed probe key"
+  },
+  "productionDiff": {
+    "srcDiffLines": 0,
+    "browserDiffLines": 0,
+    "temporaryStage6PublicApiFilesRemaining": 0,
+    "productionFilesChangedDuringStage6": "none"
+  },
+  "remainingIssues": [
+    {
+      "id": "LEGACY_STAGE4C_TRANSFORM_NEEDLE",
+      "severity": "test-harness-only",
+      "status": "superseded",
+      "detail": "The unchanged Stage 4C post-fix replay cannot transform the rewritten generated body because its old needle is non-unique. Stage 6 updated only test instrumentation and replayed the same 35 checkpoints plus 300 repeats successfully."
+    },
+    {
+      "id": "FAST_COMPATIBILITY_BOUNDED_ATTEMPT",
+      "severity": "Stage7-scope",
+      "status": "DEFERRED_TO_STAGE_7_CROSS_ENVIRONMENT",
+      "detail": "npm run test:compatibility produced no completed subtest within the bounded Stage 6 attempt. It is not counted as PASS or FAIL; fast/distribution compatibility belongs to Stage 7."
+    }
+  ],
+  "acceptance": {
+    "allNineNaturalFailuresNeutral": true,
+    "exceptionsIdentical": true,
+    "repeated1_10_100_1000Zero": true,
+    "longCampaignZero": true,
+    "failedReferencesNotRetained": true,
+    "failedNewIdentityAbsent": true,
+    "preexistingIdentityPreserved": true,
+    "cleanHistoryIdentitySequencePreserved": true,
+    "nestedIdentityCorrect": true,
+    "innerFailurePreservesOuter": true,
+    "outerFailureRestoresCallerEntry": true,
+    "multiInstanceIsolation": true,
+    "permutationsInitialEquivalent": true,
+    "mixedCampaignNoDrift": true,
+    "faultInjectionClean": true,
+    "referenceOraclePass": true,
+    "canonicalVectorsPass": true,
+    "fullCoreSuitePass": true,
+    "nonTargetRegressionsPass": true,
+    "noProductionChange": true,
+    "allRequiredStage6AcceptanceCriteriaMet": true
+  },
+  "result": "FIX_INDEPENDENTLY_VERIFIED",
+  "readyForStage7": true
+}
