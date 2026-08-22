@@ -1,0 +1,114 @@
+{
+  "schema": "pastafari.update8.stage03.snapshot-schema.v1",
+  "version": 1,
+  "purpose": "Read-only, test-only state snapshot definition for failed authoritative construction.",
+  "states": [
+    {
+      "id": "STATE:generated:shared-invocation-arena",
+      "kind": "Array",
+      "identitySensitive": true,
+      "measurable": true,
+      "fields": [
+        "length",
+        "numericOwnCount",
+        "holeCount",
+        "firstOwnIndices",
+        "lastOwnIndices",
+        "symbolKeys",
+        "lengthDescriptor",
+        "selectedEntries",
+        "retainedTailOnGrowth"
+      ],
+      "snapshotMethod": "direct captured array reference; no production-file modification",
+      "notes": "The array is >1M elements, so full own-key materialization is intentionally replaced by numeric-own count, hole count, edge indices and selected identity-sensitive entries."
+    },
+    {
+      "id": "STATE:generated:arena-prefix-churn",
+      "kind": "existing Array cells",
+      "identitySensitive": true,
+      "measurable": "PARTIAL",
+      "fields": ["selectedEntries"],
+      "snapshotMethod": "matched before/after samples",
+      "notes": "Stage 2B proved successful construction can legitimately churn some existing prefix cells; raw full-array equality is therefore not the sole invariant."
+    },
+    {
+      "id": "STATE:generated:identity-map-and-counter",
+      "kind": "WeakMap + uint32 counter",
+      "identitySensitive": true,
+      "measurable": "PARTIAL",
+      "fields": ["knownKey.has", "knownKey.valueIdentityOrPrimitiveId"],
+      "snapshotMethod": "capture WeakMap objects at bootstrap and query only known keys",
+      "limitations": "WeakMap cardinality is never enumerated; raw scalar counter is not directly exported, so monotonic advancement is inferred only when assigned IDs are observable through known-key get()."
+    },
+    {
+      "id": "STATE:captured:bootstrap-maps",
+      "kind": "Map[]",
+      "identitySensitive": true,
+      "measurable": true,
+      "fields": ["size", "selectedEntries.keyIdentity", "selectedEntries.valueIdentity"],
+      "snapshotMethod": "capture Map instances created during authoritative/public bootstrap",
+      "notes": "Exact semantic label of every captured Map is not inferred from ordinal position alone. Stage 2B/4D supplies the semantic map-family attribution."
+    },
+    {
+      "id": "STATE:captured:bootstrap-weaksets-known-key",
+      "kind": "WeakSet[]",
+      "identitySensitive": true,
+      "measurable": "KNOWN_KEYS_ONLY",
+      "fields": ["knownKey.has"],
+      "snapshotMethod": "capture WeakSet instances and query only known keys"
+    },
+    {
+      "id": "STATE:public:identity-descriptors-prototypes",
+      "kind": "functions + property descriptors + prototypes",
+      "identitySensitive": true,
+      "measurable": true,
+      "fields": [
+        "prototypeIdentity",
+        "functionIdentity",
+        "descriptor.value",
+        "descriptor.get",
+        "descriptor.set",
+        "descriptor.writable",
+        "descriptor.enumerable",
+        "descriptor.configurable"
+      ],
+      "snapshotMethod": "Object.getOwnPropertyDescriptor and direct identity tokens"
+    },
+    {
+      "id": "STATE:generated:random-pool-and-cursor",
+      "kind": "Uint32Array + scalar cursor",
+      "identitySensitive": false,
+      "measurable": false,
+      "limitation": "No read-only direct handle is exported by the Stage-3 lightweight observation hook. Stage 2B classifies it as consumptive confounder; deeper hook coverage belongs to later stages."
+    },
+    {
+      "id": "STATE:generated:witness-counter",
+      "kind": "uint32 scalar",
+      "identitySensitive": false,
+      "measurable": false,
+      "limitation": "No read-only direct handle is exported by the Stage-3 lightweight observation hook."
+    },
+    {
+      "id": "STATE:instance:pastafari-calendar-caches",
+      "kind": "three instance Maps",
+      "identitySensitive": true,
+      "measurable": "SUCCESS_INSTANCE_ONLY_IN_STAGE3",
+      "fields": ["anchorCache", "yearCache", "structureCache"],
+      "notes": "A naturally failed constructor returns no instance, and Stage 2B found no production publication edge for a partial instance. Synthetic partial-object capture is intentionally excluded from Stage 3."
+    }
+  ],
+  "differenceTypes": [
+    "VALUE_CHANGED",
+    "IDENTITY_CHANGED",
+    "ADDED",
+    "REMOVED",
+    "LENGTH_CHANGED",
+    "HOLE_CHANGED",
+    "DESCRIPTOR_CHANGED",
+    "PROTOTYPE_CHANGED",
+    "COUNTER_CHANGED",
+    "REGISTRY_CHANGED",
+    "CACHE_CHANGED",
+    "UNKNOWN"
+  ]
+}

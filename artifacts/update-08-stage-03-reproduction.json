@@ -1,0 +1,285 @@
+{
+  "schema": "pastafari.update8.stage03.reproduction-evidence.v1",
+  "stage": "3",
+  "generatedAt": "2026-08-22T20:32:00+03:00",
+  "repository": "Sargon17-Green/pastafari-calendar",
+  "branch": "main",
+  "currentMainCommit": "4ddceddba65502a3064a2876b6b85745b8974c4b",
+  "packageVersion": "1.3.0",
+  "workingTreeStatus": "REMOTE_MAIN_INSPECTED; literal local git status unavailable in this runtime",
+  "stateSchemaVersion": 1,
+  "evidencePolicy": {
+    "literalFreshDynamicRunAtCurrentMainCommit": false,
+    "reason": "The local container could not resolve github.com, so a fresh checkout of current main could not be executed here.",
+    "dynamicEvidenceCommit": "81cc54b1e15d8f3c0cd9cc8cb41d07f57fdecddf",
+    "currentMainProductionEquivalentToDynamicEvidence": true,
+    "productionEquivalenceBasis": "GitHub compare 81cc54b1e15d8f3c0cd9cc8cb41d07f57fdecddf..4ddceddba65502a3064a2876b6b85745b8974c4b shows only Stage 4B/4C/4D verification scripts and artifacts; no production source files changed.",
+    "naturalFailureEvidenceOnly": true,
+    "faultInjectionUsedAsStage3Proof": false,
+    "note": "Stage 4D natural-failure measurements are reused only because they execute the same production tree and supply the dynamic evidence that the missing Stage 3 artifact should have recorded. The new Stage 3 harness is observation-only and can replay these cases independently."
+  },
+  "alignment": {
+    "stage1": {
+      "artifact": "verification/update8/stage-01-baseline.json",
+      "commit": "1dd41cbf7c2ff6172c2b5793fb1637a446a1d272",
+      "sameShaAsCurrentMain": false,
+      "focusedRevalidation": "No production-source changes from Stage 1 baseline to current main; later committed success sanity also matches the same independent reference vectors."
+    },
+    "stage2a": {
+      "artifact": "verification/update8/stage-02a-construction-inventory.json",
+      "commit": "b94d1a3976731784459ff50f0e7d598cd2d59e70",
+      "sameShaAsCurrentMain": false,
+      "focusedRevalidation": "GitHub comparison to current main contains Stage 2B and later verification/artifact additions only; no production-source changes."
+    },
+    "stage2b": {
+      "artifact": "verification/update8/stage-02b-shared-state-inventory.json",
+      "productionHashes": {
+        "src/5efdcc3e6fb071cbaffdcb117507a169dd76.js": "a7e01b505870a7a72ce0bde98dc5e4d19f39bd8d560fdf961a4d5f4d2dfdd30d",
+        "src/public-api.js": "9d8c63636033659753d658ac9d76fa955ee8423bbf1cd11bfb90eab25a49f827",
+        "browser/pastafari-calendar-core-chronicle.js": "315f46a49f13db13b61d325915a6a5a32b7f043594c541c1886cfd8c0865db4a",
+        "browser/standalone/pastafari-date.js": "958f7f30cb8ad6a3a95570d8ed025e3131481b543c761ac9582103f069ad3b13"
+      },
+      "focusedRevalidation": "Current main is production-equivalent to the tree on which Stage 2B and the dynamic natural-failure evidence were produced."
+    }
+  },
+  "baselineSemanticSanity": {
+    "sourceArtifact": "artifacts/update-08-stage-04d-success-sanity.json",
+    "productionTreeCommit": "81cc54b1e15d8f3c0cd9cc8cb41d07f57fdecddf",
+    "vectors": [
+      {
+        "id": "foundation_same",
+        "input": { "calculationJdn": "-13334246", "targetJdn": "-13334246" },
+        "actual": { "year": "5000", "cutletName": "לגש", "dayInCutlet": 762, "monthName": "לבונה", "dayInMonth": 105 },
+        "expected": { "year": "5000", "cutletName": "לגש", "dayInCutlet": 762, "monthName": "לבונה", "dayInMonth": 105 },
+        "pass": true
+      },
+      {
+        "id": "foundation_next",
+        "input": { "calculationJdn": "-13334246", "targetJdn": "-13334245" },
+        "actual": { "year": "5000", "cutletName": "כליה", "dayInCutlet": 1, "monthName": "אבן־גיר", "dayInMonth": 91 },
+        "expected": { "year": "5000", "cutletName": "כליה", "dayInCutlet": 1, "monthName": "אבן־גיר", "dayInMonth": 91 },
+        "pass": true
+      },
+      {
+        "id": "foundation_previous",
+        "input": { "calculationJdn": "-13334246", "targetJdn": "-13334247" },
+        "actual": { "year": "5000", "cutletName": "לגש", "dayInCutlet": 761, "monthName": "הדלת הסגורה", "dayInMonth": 114 },
+        "expected": { "year": "5000", "cutletName": "לגש", "dayInCutlet": 761, "monthName": "הדלת הסגורה", "dayInMonth": 114 },
+        "pass": true
+      }
+    ]
+  },
+  "stateCoverage": {
+    "schemaArtifact": "verification/update8/stage-03-snapshot-schema.json",
+    "coveredStateIds": [
+      "STATE:generated:shared-invocation-arena",
+      "STATE:generated:arena-prefix-churn",
+      "STATE:generated:identity-map-and-counter",
+      "STATE:captured:bootstrap-maps",
+      "STATE:captured:bootstrap-weaksets-known-key",
+      "STATE:public:identity-descriptors-prototypes"
+    ],
+    "arrayCoverage": ["length", "numeric own-property count", "holes", "first/last own indices", "selected values", "selected identities", "length descriptor", "symbol keys", "retained tail on growth"],
+    "mapCoverage": ["size", "selected key identity", "selected value identity"],
+    "weakMapCoverage": ["known-key has", "known-key get", "value identity where applicable"],
+    "weakSetCoverage": ["known-key has"],
+    "descriptorCoverage": ["value identity", "get identity", "set identity", "writable", "enumerable", "configurable"],
+    "prototypeCoverage": "identity-sensitive",
+    "limitations": [
+      "WeakMap/WeakSet cardinality is not enumerated.",
+      "The generated raw identity counter is not exported; counter advancement is inferred from sequential assigned IDs.",
+      "The generated random-pool cursor and witness counter are not directly exposed by the lightweight Stage 3 harness.",
+      "Full 1.17M-cell arena content is summarized rather than serialized wholesale; mismatching retained tail cells are preserved structurally."
+    ]
+  },
+  "successCases": [
+    { "constructionId": "CTOR:authoritative:GregorianDate", "input": "new GregorianDate(2026n, 8, 22)", "status": "PROVEN_SUCCESS" },
+    { "constructionId": "CTOR:authoritative:IslamicDate", "input": "new IslamicDate(1448n, 1, 1, {variant:\"civil\"})", "status": "PROVEN_SUCCESS" },
+    { "constructionId": "CTOR:authoritative:SolarHijriDate", "input": "new SolarHijriDate(1405n, 1, 1, {variant:\"arithmetic-2820\"})", "status": "PROVEN_SUCCESS" },
+    { "constructionId": "CTOR:authoritative:HinduDate", "input": "new HinduDate(2083n, 1, 1, {scheme:\"old-solar\"})", "status": "PROVEN_SUCCESS" },
+    { "constructionId": "CTOR:authoritative:JapaneseImperialDate", "input": "new JapaneseImperialDate(\"Reiwa\", 8n, 1, 1)", "status": "PROVEN_SUCCESS" },
+    { "constructionId": "CTOR:authoritative:BahaiDate", "input": "new BahaiDate(183n, 1, 1)", "status": "PROVEN_SUCCESS" },
+    { "constructionId": "CTOR:authoritative:MonthWeavingCounter", "input": "new MonthWeavingCounter([4,5,6])", "status": "PROVEN_SUCCESS" },
+    { "constructionId": "CTOR:authoritative:PastafariCalendar", "input": "new PastafariCalendar({todayProvider:()=>null})", "status": "PROVEN_SUCCESS" }
+  ],
+  "cases": [
+    {
+      "constructionId": "CTOR:authoritative:GregorianDate",
+      "failurePath": "noninteger month validation",
+      "input": "new GregorianDate(2026n, 1.25, 22)",
+      "exception": { "name": "TypeError", "message": "החודש והיום הגריגוריאניים חייבים להיות מספרים שלמים" },
+      "stateBefore": { "STATE:generated:shared-invocation-arena": { "length": 1175764 }, "bootstrapMapSizeChanges": [] },
+      "stateAfter": { "STATE:generated:shared-invocation-arena": { "length": 1175776 }, "bootstrapMapSizeChanges": [] },
+      "equal": false,
+      "differences": [
+        { "stateId": "STATE:generated:shared-invocation-arena", "path": "length", "differenceType": "LENGTH_CHANGED", "before": 1175764, "after": 1175776, "delta": 12 }
+      ],
+      "firstMismatch": { "stateId": "STATE:generated:shared-invocation-arena", "differenceType": "LENGTH_CHANGED", "before": 1175764, "after": 1175776, "delta": 12 },
+      "classification": "CONFIRMED_LEAK",
+      "postFailureSemanticChecks": [{ "check": "campaign foundation_same vs independent reference", "pass": true }]
+    },
+    {
+      "constructionId": "CTOR:authoritative:IslamicDate",
+      "failurePath": "invalid variant validation",
+      "input": "new IslamicDate(1448n, 1, 1, {variant:\"invalid-stage4d\"})",
+      "exception": { "name": "RangeError", "message": "לוח היג׳רי אינו חד־משמעי; variant חייב להיות \"civil\" או \"umalqura\"" },
+      "stateBefore": { "STATE:generated:shared-invocation-arena": { "length": 1175740 }, "STATE:generated:identity-map-and-counter": { "knownKeyWeakMapIndex": 0, "has": false, "value": null }, "bootstrapMapSizeChanges": [] },
+      "stateAfter": { "STATE:generated:shared-invocation-arena": { "length": 1175752 }, "STATE:generated:identity-map-and-counter": { "knownKeyWeakMapIndex": 0, "has": true, "value": 2 }, "bootstrapMapSizeChanges": [] },
+      "equal": false,
+      "differences": [
+        { "stateId": "STATE:generated:shared-invocation-arena", "path": "length", "differenceType": "LENGTH_CHANGED", "before": 1175740, "after": 1175752, "delta": 12 },
+        { "stateId": "STATE:generated:identity-map-and-counter", "path": "knownKey.weakMap[0]", "differenceType": "ADDED", "before": { "has": false, "value": null }, "after": { "has": true, "value": 2 } }
+      ],
+      "firstMismatch": { "stateId": "STATE:generated:shared-invocation-arena", "differenceType": "LENGTH_CHANGED", "before": 1175740, "after": 1175752, "delta": 12 },
+      "classification": "CONFIRMED_LEAK",
+      "postFailureSemanticChecks": [{ "check": "campaign foundation_same vs independent reference", "pass": true }]
+    },
+    {
+      "constructionId": "CTOR:authoritative:SolarHijriDate",
+      "failurePath": "invalid variant validation",
+      "input": "new SolarHijriDate(1405n, 1, 1, {variant:\"invalid-stage4d\"})",
+      "exception": { "name": "RangeError", "message": "variant של הלוח ההיג׳רי השמשי חייב להיות \"official\" או \"arithmetic-2820\"" },
+      "stateBefore": { "STATE:generated:identity-map-and-counter": { "knownKeyWeakMapIndex": 0, "has": false, "value": null }, "bootstrapMapSizeChanges": [] },
+      "stateAfter": { "STATE:generated:identity-map-and-counter": { "knownKeyWeakMapIndex": 0, "has": true, "value": 3 }, "bootstrapMapSizeChanges": [] },
+      "equal": false,
+      "differences": [
+        { "stateId": "STATE:generated:identity-map-and-counter", "path": "knownKey.weakMap[0]", "differenceType": "ADDED", "before": { "has": false, "value": null }, "after": { "has": true, "value": 3 } }
+      ],
+      "firstMismatch": { "stateId": "STATE:generated:identity-map-and-counter", "differenceType": "ADDED", "before": { "has": false }, "after": { "has": true, "value": 3 } },
+      "classification": "CONFIRMED_LEAK",
+      "postFailureSemanticChecks": [{ "check": "campaign foundation_same vs independent reference", "pass": true }]
+    },
+    {
+      "constructionId": "CTOR:authoritative:HinduDate",
+      "failurePath": "invalid scheme validation",
+      "input": "new HinduDate(2083n, 1, 1, {scheme:\"invalid-stage4d\"})",
+      "exception": { "name": "RangeError", "message": "אין לוח הינדי יחיד; scheme חייב להיות \"old-solar\" או \"old-lunar\"" },
+      "stateBefore": { "STATE:generated:identity-map-and-counter": { "knownKeyWeakMapIndex": 0, "has": false, "value": null }, "bootstrapMapSizeChanges": [] },
+      "stateAfter": { "STATE:generated:identity-map-and-counter": { "knownKeyWeakMapIndex": 0, "has": true, "value": 4 }, "bootstrapMapSizeChanges": [] },
+      "equal": false,
+      "differences": [
+        { "stateId": "STATE:generated:identity-map-and-counter", "path": "knownKey.weakMap[0]", "differenceType": "ADDED", "before": { "has": false, "value": null }, "after": { "has": true, "value": 4 } }
+      ],
+      "firstMismatch": { "stateId": "STATE:generated:identity-map-and-counter", "differenceType": "ADDED", "before": { "has": false }, "after": { "has": true, "value": 4 } },
+      "classification": "CONFIRMED_LEAK",
+      "postFailureSemanticChecks": [{ "check": "campaign foundation_same vs independent reference", "pass": true }]
+    },
+    {
+      "constructionId": "CTOR:authoritative:JapaneseImperialDate",
+      "failurePath": "non-string era validation",
+      "input": "new JapaneseImperialDate(123, 1n, 1, 1)",
+      "exception": { "name": "TypeError", "message": "שם התקופה היפנית חייב להיות מחרוזת" },
+      "stateBefore": { "bootstrapMapSizeChanges": [] },
+      "stateAfter": { "bootstrapMapSizeChanges": [] },
+      "equal": null,
+      "differences": [],
+      "firstMismatch": null,
+      "classification": "UNRESOLVED_STATE_DELTA",
+      "unresolvedReason": "The natural failure and exception were dynamically executed, but the committed Stage 4D natural-failure record did not capture arena length for this specific case and it had no object/array known key for identity-WeakMap observation. Static common-wrapper reasoning is deliberately not promoted to a dynamic Stage 3 measurement.",
+      "postFailureSemanticChecks": [{ "check": "campaign foundation_same vs independent reference", "pass": true }]
+    },
+    {
+      "constructionId": "CTOR:authoritative:BahaiDate",
+      "failurePath": "invalid variant validation",
+      "input": "new BahaiDate(183n, 1, 1, {variant:\"invalid-stage4d\"})",
+      "exception": { "name": "RangeError", "message": "variant של הלוח הבהאי חייב להיות \"tehran-equinox\" או \"western-arithmetic\"" },
+      "stateBefore": { "STATE:generated:identity-map-and-counter": { "knownKeyWeakMapIndex": 0, "has": false, "value": null }, "bootstrapMapSizeChanges": [] },
+      "stateAfter": { "STATE:generated:identity-map-and-counter": { "knownKeyWeakMapIndex": 0, "has": true, "value": 5 }, "bootstrapMapSizeChanges": [] },
+      "equal": false,
+      "differences": [
+        { "stateId": "STATE:generated:identity-map-and-counter", "path": "knownKey.weakMap[0]", "differenceType": "ADDED", "before": { "has": false, "value": null }, "after": { "has": true, "value": 5 } }
+      ],
+      "firstMismatch": { "stateId": "STATE:generated:identity-map-and-counter", "differenceType": "ADDED", "before": { "has": false }, "after": { "has": true, "value": 5 } },
+      "classification": "CONFIRMED_LEAK",
+      "postFailureSemanticChecks": [{ "check": "campaign foundation_same vs independent reference", "pass": true }]
+    },
+    {
+      "constructionId": "CTOR:authoritative:MonthWeavingCounter",
+      "failurePath": "non-positive length validation",
+      "input": "new MonthWeavingCounter([1,0,2])",
+      "exception": { "name": "RangeError", "message": "אורכי החודשים חייבים להיות חיוביים" },
+      "stateBefore": { "STATE:generated:shared-invocation-arena": { "length": 1175752 }, "STATE:generated:identity-map-and-counter": { "knownKeyWeakMapIndex": 0, "has": false, "value": null }, "bootstrapMapSizeChanges": [] },
+      "stateAfter": { "STATE:generated:shared-invocation-arena": { "length": 1175764 }, "STATE:generated:identity-map-and-counter": { "knownKeyWeakMapIndex": 0, "has": true, "value": 6 }, "bootstrapMapSizeChanges": [] },
+      "equal": false,
+      "differences": [
+        { "stateId": "STATE:generated:shared-invocation-arena", "path": "length", "differenceType": "LENGTH_CHANGED", "before": 1175752, "after": 1175764, "delta": 12 },
+        { "stateId": "STATE:generated:identity-map-and-counter", "path": "knownKey.weakMap[0]", "differenceType": "ADDED", "before": { "has": false, "value": null }, "after": { "has": true, "value": 6 } }
+      ],
+      "firstMismatch": { "stateId": "STATE:generated:shared-invocation-arena", "differenceType": "LENGTH_CHANGED", "before": 1175752, "after": 1175764, "delta": 12 },
+      "classification": "CONFIRMED_LEAK",
+      "postFailureSemanticChecks": [{ "check": "campaign foundation_same vs independent reference", "pass": true }]
+    },
+    {
+      "constructionId": "CTOR:authoritative:PastafariCalendar",
+      "failurePath": "non-function todayProvider validation",
+      "input": "new PastafariCalendar({todayProvider:123})",
+      "exception": { "name": "TypeError", "message": "todayProvider חייב להיות פונקציה" },
+      "stateBefore": { "STATE:generated:shared-invocation-arena": { "length": 1175728 }, "STATE:generated:identity-map-and-counter": { "knownKeyWeakMapIndex": 0, "has": false, "value": null }, "bootstrapMapSizeChanges": [] },
+      "stateAfter": { "STATE:generated:shared-invocation-arena": { "length": 1175740 }, "STATE:generated:identity-map-and-counter": { "knownKeyWeakMapIndex": 0, "has": true, "value": 7 }, "bootstrapMapSizeChanges": [] },
+      "equal": false,
+      "differences": [
+        { "stateId": "STATE:generated:shared-invocation-arena", "path": "length", "differenceType": "LENGTH_CHANGED", "before": 1175728, "after": 1175740, "delta": 12 },
+        { "stateId": "STATE:generated:identity-map-and-counter", "path": "knownKey.weakMap[0]", "differenceType": "ADDED", "before": { "has": false, "value": null }, "after": { "has": true, "value": 7 } }
+      ],
+      "firstMismatch": { "stateId": "STATE:generated:shared-invocation-arena", "differenceType": "LENGTH_CHANGED", "before": 1175728, "after": 1175740, "delta": 12 },
+      "classification": "CONFIRMED_LEAK",
+      "postFailureSemanticChecks": [{ "check": "campaign foundation_same vs independent reference", "pass": true }]
+    }
+  ],
+  "campaignWideObservations": {
+    "naturalFailureBootstrapMapSizeChanges": [],
+    "publicPrototypeFunctionDescriptorIdentitiesChanged": false,
+    "installationWeakSetMembershipChanged": false,
+    "calendarSemanticCorruptionObserved": false,
+    "stateSemanticsClassification": "STATE_DIFF_SEMANTICS_SAME",
+    "postFailureFoundationSame": {
+      "actual": { "year": "5000", "cutletName": "לגש", "dayInCutlet": 762, "monthName": "לבונה", "dayInMonth": 105 },
+      "expected": { "year": "5000", "cutletName": "לגש", "dayInCutlet": 762, "monthName": "לבונה", "dayInMonth": 105 },
+      "pass": true
+    },
+    "warmA_Fail_A": {
+      "sequence": "foundation_same success -> failed PastafariCalendar construction -> same foundation_same success",
+      "result": "PASS_REFERENCE_MATCH"
+    }
+  },
+  "minimalRepeatedFailureProbe": {
+    "sourceArtifact": "artifacts/update-08-stage-04d-arena-publication.json",
+    "constructionId": "CTOR:authoritative:PastafariCalendar",
+    "count": 10,
+    "before": 1175776,
+    "after": 1175896,
+    "delta": 120,
+    "measuredPerFailureDelta": 12,
+    "allFailedKeysReachableFromRetainedTail": true,
+    "laterSuccessfulGregorianConstructionDelta": 0,
+    "laterSuccessClearedPriorResidue": false,
+    "note": "This existing committed observation exceeds the Stage 3 preferred x3/x5 probe but is reused as evidence only; the new Stage 3 harness itself performs exactly three repeats. No extrapolation beyond measured runs is made."
+  },
+  "exceptionBaseline": [
+    { "constructionId": "CTOR:authoritative:GregorianDate", "name": "TypeError", "message": "החודש והיום הגריגוריאניים חייבים להיות מספרים שלמים" },
+    { "constructionId": "CTOR:authoritative:IslamicDate", "name": "RangeError", "message": "לוח היג׳רי אינו חד־משמעי; variant חייב להיות \"civil\" או \"umalqura\"" },
+    { "constructionId": "CTOR:authoritative:SolarHijriDate", "name": "RangeError", "message": "variant של הלוח ההיג׳רי השמשי חייב להיות \"official\" או \"arithmetic-2820\"" },
+    { "constructionId": "CTOR:authoritative:HinduDate", "name": "RangeError", "message": "אין לוח הינדי יחיד; scheme חייב להיות \"old-solar\" או \"old-lunar\"" },
+    { "constructionId": "CTOR:authoritative:JapaneseImperialDate", "name": "TypeError", "message": "שם התקופה היפנית חייב להיות מחרוזת" },
+    { "constructionId": "CTOR:authoritative:BahaiDate", "name": "RangeError", "message": "variant של הלוח הבהאי חייב להיות \"tehran-equinox\" או \"western-arithmetic\"" },
+    { "constructionId": "CTOR:authoritative:MonthWeavingCounter", "name": "RangeError", "message": "אורכי החודשים חייבים להיות חיוביים" },
+    { "constructionId": "CTOR:authoritative:PastafariCalendar", "name": "TypeError", "message": "todayProvider חייב להיות פונקציה" }
+  ],
+  "reproductionCommands": [
+    "node verification/update8/run-stage-03-snapshot-reproduction.mjs --write",
+    "node verification/update8/run-stage-03-snapshot-reproduction.mjs",
+    "node --check verification/update8/run-stage-03-snapshot-reproduction.mjs"
+  ],
+  "summary": {
+    "testedFailurePaths": 8,
+    "leakingFailurePaths": 7,
+    "zeroDeltaFailurePaths": 0,
+    "unresolvedFailurePaths": 1,
+    "confirmedArenaLeakPathsWithDirectNaturalMeasurement": 4,
+    "confirmedKnownKeyIdentityPublicationPaths": 6,
+    "productionFilesChanged": 0,
+    "rollbackAdded": false,
+    "faultInjectionCampaignPerformedForStage3": false,
+    "STAGE_3_RESULT": "CONFIRMED_LEAK"
+  }
+}
