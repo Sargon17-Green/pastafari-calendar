@@ -24,6 +24,19 @@ e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ./artifacts/st
 cd6c2d93975bdd9b34f1751e52ce3d229c83e97847cffb26f6fd5372e9bc84c4  ./artifacts/stage5-router-cache-lifecycle.tap
 6d6216d59ab46d25ef3b0033dc9e7242a5da59ed913f2de35acc41458768cf5d  ./artifacts/stage5-runtime-patching.tap
 7819c99598913959bcaa32a7e1f3c7a1df4bc02812c431e237e3b1b16ffd6d57  ./artifacts/stage5-year-ceiling-detour.tap
+a09290171174025fa4ed7c6a8075e016928840108bd868a9fc3d5d0f3c0b0e86  ./artifacts/stage6-logs/stage06-cache-epoch.tap
+75338b8a05ddaac0bcd69cc08b8127c8431dc6e2ca5229e53fcb7a331b8af26f  ./artifacts/stage6-logs/stage06-compatibility-status.json
+f70678c95ef2b2bc7927d410a80c0e2f204c2d9edb8d2620712dec7d9559b71c  ./artifacts/stage6-logs/stage06-compatibility.tap
+7e9604516be571f7e99a7370fd0e29bb303694f466e67d48c580654635c8516f  ./artifacts/stage6-logs/stage06-core-verification.log
+ef7fd292dcfe48b4347f30b1fdb235c0de5204f57fcfba834d1a8addf461697e  ./artifacts/stage6-logs/stage06-fault-injection.log
+4b214993c759368132f8d0ad9c2a81c6779a2ff20c142c54e519adc3982f87e6  ./artifacts/stage6-logs/stage06-focused-regressions-core.tap
+482705277f2be1884cd517a6ab8acb555efada1474fdb3c14482b4ad6c4a677f  ./artifacts/stage6-logs/stage06-independent-stage03.json
+54355aa9aa4a218b47f0ce528f2bbe67d981a1e65b0bb1886e06809d92ee0446  ./artifacts/stage6-logs/stage06-legacy-stage04c-incompatibility.log
+fdd3ae8714faf0ac0c2155abcf963bdc814c6f0c8785f45dd247530e55142591  ./artifacts/stage6-logs/stage06-npm-test.tap
+8108a096063c656026d7ce3919d4a8086499b5c133eebcb0e0d49b2540230f48  ./artifacts/stage6-logs/stage06-reference-oracle.tap
+b600f3e5d3205265ee8ea2044eb36edf0fc65b8a58b5a69140a04d60a254142c  ./artifacts/stage6-logs/stage06-stage04d-arena-replay.json
+79e00f2ff27a5364ba3981f963a3b684e5b57729baf9795ad16fbaaeaa13a640  ./artifacts/stage6-logs/stage06-stage04d-publication-cache-replay.json
+cb9faba64afb8942ddc089484567e5961ba89705ce976e74857865b2ed59b81d  ./artifacts/stage6-logs/stage5-transactionality-selftest.tap
 6b4bb4bd537d9c5a91f139febea89013560c4a29ba5508bff4b66cc39b1748a8  ./artifacts/update-08-stage-03-report.md
 0645646dac2e2d4a090df02a8e972aa4905196eecfd519e457326289a527f603  ./artifacts/update-08-stage-03-reproduction.json
 1f60ed9fb4f9c5ce5a6c5e7fee8d9433944b1a87e3932700a79dc7a3729a0b1d  ./artifacts/update-08-stage-03-sha256sums.txt
@@ -80,6 +93,11 @@ b55af8eda00c0f5e65c5e0424617bc9a0a177be4f9cf7ab243931d468622fed7  ./artifacts/up
 f0dbf4f9091b188aecaf4f26e01a16d4292002e1816ef391b4ca959e9d859e97  ./artifacts/update-08-stage-05-standalone-build.tap
 ba5dd5f42adea5e0fa8c01f7c2c5a2fe1afe1eca8838fcda987422548a81266d  ./artifacts/update-08-stage-05-transactionality.json
 85670d8308dd481e187e85779dba58c286c59ab49694ee9e61991f30125e87a7  ./artifacts/update-08-stage-05-transactionality.tap
+feb04fcc3d2cca4aee19c013f4efcf058cdb7cd7b5d12308a148f5267401edb2  ./artifacts/update-08-stage-06-fault-injection.json
+a36f4c506460d3ffadde538d4b8e8632e8f42a805fffffc456c0c12724c11a24  ./artifacts/update-08-stage-06-report.md
+5a6c7ac9d0dd3a72d5e2aee3f45e1d9ec27dced67253454eafbb36839527a499  ./artifacts/update-08-stage-06-sha256sums.txt
+81654356721359295c2944e79e0ccc336950fdea20debe82c192aed520f9bd2b  ./artifacts/update-08-stage-06-verification-core.json
+1106bad8eedc8746e161b82cab5d08e6930e11b9e7a6ce119f2e47c4431bfc3d  ./artifacts/update-08-stage-06-verification.json
 f9dcb2d16ff0f38368c11b39ec34a64f4dafe1d2feeb2e9ecc9d5278c7e2864c  ./benchmarks/README.md
 a1ebb8d3301467fab8d7d9cb6c49951a2d16dc2a9ff89492971b8cf814ac6923  ./benchmarks/engine.mjs
 e2f022665edda7d05474db475a7903bd3db2ab2549d01a4b9ed07dda3158083f  ./benchmarks/lib.mjs
@@ -352,8 +370,8 @@ e2ea19be73fc465c8628dbed267bc28ef0d0afd48403fcb0609616df1163da1a  ./scripts/stan
 95a5a40ef201c6951434c768ac8f1af5a205eedb527a19f9251bc423079353de  ./scripts/sync-pages-reverse-engine.mjs
 5b63284e84acaa02513044529b23bfe0bc78da7035e9e29062b6296a611adab3  ./scripts/test-file-protocol.mjs
 cd420d59468b552156fb9995356c9a62f3f40c61a277d8fd0ce8a9a286a09d23  ./scripts/test-minimum-node.mjs
-d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96  ./sources/מגילת העיתים.md
 004b6708793e3232fc9fe29a85b545674936f013d1230a1a7133282494c5b800  ./sources/SHA256SUMS.txt
+d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96  ./sources/מגילת העיתים.md
 570a038bc728785ffe5e49b62b0185f3709d3643ca4ecc740b19f8b65b2dbc25  ./src/020b/9b69e8749cd7a881ee2063b64d2c5d.js
 3d5be4f34dc92aa3278d33a376f8e8246e2e15e55cfd098f446fc4aa3dcbf16a  ./src/0259/b0790f627f7067d79ae9544e6eb730.js
 33f38e9c667b4da08ac809f065fe7e671fb87a3a02e2819f3468d869768077e7  ./src/030f/d61b663d481ea6350bb0dfd5228e9a.js
@@ -666,6 +684,8 @@ a8cde151f927d0e2ba24b71e50763a7d605c6b81948a7fe721ce4f3d006a10dc  ./verification
 218cecd9156e34578c67115fd87f88566a9c0bc628baba0cf090dcdfcd69d726  ./verification/update8/run-stage-05-fault-injection.mjs
 1b14383026b7dada00abcb9b76a85f602e0c88c3863df2fdc5a6d5c81f8f769f  ./verification/update8/run-stage-05-fix-verification.mjs
 576e8e61d47d7a65078eefa78e86921e555d104a32428075849a3370c2551bc8  ./verification/update8/run-stage-05-matched-prefix.mjs
+34a20fecede0677c17ae89e6c226575779826030bd985b3b65eb70df82ac9091  ./verification/update8/run-stage-06-fault-injection.mjs
+302a82de8e8891fd156d27ad2f8a296567c3602bef460971e915f958b89fdd21  ./verification/update8/run-stage-06-verification.mjs
 9d8b43be5eb6673f88e9285097a27c2b4acd718c0bfc8770866d073ca5d2890c  ./verification/update8/stage-01-baseline.json
 db84dbe05c955ae32b98c6120c5ecebc71a2c7e330a02339cdf5e05c09e4b79f  ./verification/update8/stage-01-reference-safe.tap
 4d95572d02d01cb543c8657346c26c35b6fb88d8aa2c9b7339785f325f6f1e2e  ./verification/update8/stage-01-report.md
