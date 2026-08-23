@@ -1,13 +1,13 @@
 {
   "stage": "Update 10G",
-  "result": "UPDATE_10_BLOCKED_BY_PUBLIC_STRUCTURED_CHINESE_API_GAP",
-  "acceptanceStatus": "NOT_ACCEPTED_FOR_UPDATE_10_CLOSURE",
+  "result": "UPDATE_10_ACCEPTED_FOR_CLOSURE",
+  "acceptanceStatus": "ACCEPTED",
   "packageVersion": "1.3.0",
   "sourceRuleId": "PASTAFARI_CHINESE_DEEP_DELTA_T_V1",
   "checksumFilesChanged": false,
   "additionalChecksumManifestsAffectedButNotUpdated": [],
   "technicalPass": true,
-  "closurePass": false,
+  "closurePass": true,
   "foundation": {
     "jdn": "-13334246",
     "actualChinese": {
@@ -132,23 +132,28 @@
   "publicApi": {
     "chineseExports": [
       "ChineseDate",
-      "chineseToJdn"
+      "ChineseStructuredDate",
+      "chineseStructuredDateToJdn",
+      "chineseToJdn",
+      "jdnToChinese"
     ],
     "sourceStructuredExports": [
       "jdnToChinese",
       "chineseStructuredDateToJdn",
       "chineseRelatedDateToJdn"
     ],
-    "publicStructuredExports": [],
-    "typeStructuredDeclarations": []
+    "publicStructuredExports": [
+      "jdnToChinese",
+      "chineseStructuredDateToJdn"
+    ],
+    "typeStructuredDeclarations": [
+      "jdnToChinese",
+      "chineseStructuredDateToJdn",
+      "ChineseStructuredDate"
+    ]
   },
   "warnings": [],
   "failures": [],
-  "closureBlockers": [
-    "public API does not export jdnToChinese(), so JDN -> structured Chinese representation is still not public",
-    "public API does not export chineseStructuredDateToJdn(), so cycle/yearInCycle input is not public",
-    "public .d.ts does not declare jdnToChinese()",
-    "public .d.ts does not declare a structured Chinese date shape"
-  ],
-  "nextStage": "Update 10H — public structured Chinese API and types"
+  "closureBlockers": [],
+  "nextStage": "Update 11"
 }

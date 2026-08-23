@@ -1,8 +1,8 @@
 # Update 10G — Chinese cross-environment acceptance audit
 
-Result: **UPDATE_10_BLOCKED_BY_PUBLIC_STRUCTURED_CHINESE_API_GAP**
+Result: **UPDATE_10_ACCEPTED_FOR_CLOSURE**
 
-Acceptance: **NOT_ACCEPTED_FOR_UPDATE_10_CLOSURE**
+Acceptance: **ACCEPTED**
 
 Checksum manifests changed: **none**
 
@@ -12,7 +12,7 @@ Additional checksum manifests affected but intentionally not updated: **none**
 
 The deterministic Chinese engine passes the cross-environment conversion checks that are in scope for this audit: source, public related-year conversion, docs/browser input conversion, PWA asset wiring, package file inclusion, and Intl fault injection.
 
-However, Update 10 is not ready for closure because the original public representation gap remains: the public package still exposes only related-year Chinese conversion, not a structured cycle/yearInCycle/stem/branch API.
+No public structured API closure blockers remain.
 
 ## Foundation discriminator
 
@@ -48,18 +48,11 @@ However, Update 10 is not ready for closure because the original public represen
 
 ## Public API exposure
 
-- public Chinese-related exports: `ChineseDate, chineseToJdn`
+- public Chinese-related exports: `ChineseDate, ChineseStructuredDate, chineseStructuredDateToJdn, chineseToJdn, jdnToChinese`
 - source structured exports: `jdnToChinese, chineseStructuredDateToJdn, chineseRelatedDateToJdn`
-- public structured exports: `none`
-- type structured declarations: `none`
-
-## Closure blockers
-
-- public API does not export jdnToChinese(), so JDN -> structured Chinese representation is still not public
-- public API does not export chineseStructuredDateToJdn(), so cycle/yearInCycle input is not public
-- public .d.ts does not declare jdnToChinese()
-- public .d.ts does not declare a structured Chinese date shape
+- public structured exports: `jdnToChinese, chineseStructuredDateToJdn`
+- type structured declarations: `jdnToChinese, chineseStructuredDateToJdn, ChineseStructuredDate`
 
 ## Decision
 
-Do not proceed to Update 11 yet. Perform Update 10H to expose the structured Chinese API and type declarations without changing the already-passing deterministic engine.
+Update 10 is accepted for closure. Proceed to Update 11.

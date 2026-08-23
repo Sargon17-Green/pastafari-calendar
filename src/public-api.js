@@ -25,7 +25,12 @@ import { installYearCeilingDetour } from "../browser/year-ceiling-detour.js";
 import { installYearCeilingDetourDetour } from "../browser/year-ceiling-detour-detour.js";
 import { installYearCeilingDetourDetourDetour } from "../browser/year-ceiling-detour-detour-detour.js";
 import { installAuthoritativeCacheEpochDetour } from "../browser/cache-epoch-detour.js";
-import { chineseRelatedDateToJdn } from "./chinese-calendrica-detour.js";
+import {
+  ChineseStructuredDate,
+  chineseRelatedDateToJdn,
+  chineseStructuredDateToJdn as deterministicChineseStructuredDateToJdn,
+  jdnToChinese as deterministicJdnToChinese,
+} from "./chinese-calendrica-detour.js";
 
 // Node reaches a separately wrapped copy of the authoritative chronicle, so
 // invite the same gate-reader detour here before the friendly public subclass
@@ -56,19 +61,40 @@ const prolepticNegativeYearDetours = createProlepticNegativeYearDetours({
 });
 
 export const bahaiToJdn = prolepticNegativeYearDetours.bahaiToJdn;
+function isChineseRelatedDateLike(value) {
+  return value instanceof ChineseDate
+    || (value?.calendar === "chinese" && value?.relatedYear !== undefined);
+}
+
+function isChineseStructuredDateLike(value) {
+  return value instanceof ChineseStructuredDate
+    || (value?.calendar === "chinese" && value?.cycle !== undefined && value?.yearInCycle !== undefined);
+}
+
 function isChineseDateLike(value) {
-  return value instanceof ChineseDate || value?.calendar === "chinese";
+  return isChineseRelatedDateLike(value) || isChineseStructuredDateLike(value);
+}
+
+export function chineseStructuredDateToJdn(value) {
+  return deterministicChineseStructuredDateToJdn(value);
+}
+
+export function jdnToChinese(jdn) {
+  return deterministicJdnToChinese(jdn);
 }
 
 export function chineseToJdn(value) {
-  if (!isChineseDateLike(value)) return monsterChineseToJdn(value);
-  return chineseRelatedDateToJdn(value);
+  if (isChineseStructuredDateLike(value)) return chineseStructuredDateToJdn(value);
+  if (isChineseRelatedDateLike(value)) return chineseRelatedDateToJdn(value);
+  return monsterChineseToJdn(value);
 }
 
 export function calendarDateToJdn(value) {
   if (isChineseDateLike(value)) return chineseToJdn(value);
   return prolepticNegativeYearDetours.calendarDateToJdn(value);
 }
+
+export { ChineseStructuredDate };
 
 export const copticToJdn = prolepticNegativeYearDetours.copticToJdn;
 export const ethiopicToJdn = prolepticNegativeYearDetours.ethiopicToJdn;

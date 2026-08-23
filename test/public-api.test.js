@@ -42,3 +42,32 @@ test("the published Chinese converter uses the source-locked deterministic shado
     -13_334_246n,
   );
 });
+
+test("the public Chinese API exposes structured cycle/year/stem/branch conversion", () => {
+  const foundation = published.jdnToChinese(-13_334_246n);
+  assert.deepEqual(foundation, {
+    cycle: -643,
+    yearInCycle: 57,
+    heavenlyStem: "geng",
+    earthlyBranch: "shen",
+    stem: 7,
+    branch: 9,
+    month: 1,
+    leap: false,
+    leapMonth: false,
+    day: 22,
+    relatedYear: -41221n,
+  });
+
+  const structured = new published.ChineseStructuredDate(-643, 57, 1, 22, { leap: false });
+  assert.equal(structured.calendar, "chinese");
+  assert.equal(structured.heavenlyStem, "geng");
+  assert.equal(structured.earthlyBranch, "shen");
+  assert.equal(published.chineseStructuredDateToJdn(structured), -13_334_246n);
+  assert.equal(published.chineseToJdn(structured), -13_334_246n);
+  assert.equal(published.calendarDateToJdn(structured), -13_334_246n);
+  assert.equal(
+    published.chineseStructuredDateToJdn({ calendar: "chinese", cycle: -643, yearInCycle: 57, month: 1, day: 22, leapMonth: false }),
+    -13_334_246n,
+  );
+});

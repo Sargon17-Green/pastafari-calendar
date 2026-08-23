@@ -1,0 +1,111 @@
+{
+  "stage": "Update 10H",
+  "result": "PUBLIC_STRUCTURED_CHINESE_API_AND_TYPES_ACCEPTED",
+  "acceptanceStatus": "ACCEPTED",
+  "checksumFilesChanged": false,
+  "additionalChecksumManifestsAffectedButNotUpdated": [
+    "docs/SHA256SUMS.txt"
+  ],
+  "publicChineseExports": [
+    "ChineseDate",
+    "ChineseStructuredDate",
+    "chineseStructuredDateToJdn",
+    "chineseToJdn",
+    "jdnToChinese"
+  ],
+  "foundation": {
+    "jdn": "-13334246",
+    "actualStructured": {
+      "cycle": -643,
+      "yearInCycle": 57,
+      "heavenlyStem": "geng",
+      "earthlyBranch": "shen",
+      "stem": 7,
+      "branch": 9,
+      "month": 1,
+      "leap": false,
+      "leapMonth": false,
+      "day": 22,
+      "relatedYear": "-41221"
+    },
+    "expectedStructured": {
+      "cycle": -643,
+      "yearInCycle": 57,
+      "heavenlyStem": "geng",
+      "earthlyBranch": "shen",
+      "stem": 7,
+      "branch": 9,
+      "month": 1,
+      "leap": false,
+      "leapMonth": false,
+      "day": 22,
+      "relatedYear": "-41221"
+    },
+    "match": true
+  },
+  "checks": [
+    {
+      "label": "public jdnToChinese export exists",
+      "ok": true
+    },
+    {
+      "label": "public chineseStructuredDateToJdn export exists",
+      "ok": true
+    },
+    {
+      "label": "public ChineseStructuredDate constructor exists",
+      "ok": true
+    },
+    {
+      "label": "public type declares ChineseStructuredDate",
+      "ok": true
+    },
+    {
+      "label": "public type declares ChineseStructuredDateResult",
+      "ok": true
+    },
+    {
+      "label": "public type declares jdnToChinese",
+      "ok": true
+    },
+    {
+      "label": "public type declares chineseStructuredDateToJdn",
+      "ok": true
+    },
+    {
+      "label": "src/docs deterministic detours remain identical",
+      "ok": true
+    },
+    {
+      "label": "Foundation JDN -> structured Chinese tuple",
+      "ok": true,
+      "details": "{\"cycle\":-643,\"yearInCycle\":57,\"heavenlyStem\":\"geng\",\"earthlyBranch\":\"shen\",\"stem\":7,\"branch\":9,\"month\":1,\"leap\":false,\"leapMonth\":false,\"day\":22,\"relatedYear\":\"-41221\"}"
+    },
+    {
+      "label": "structured object -> JDN",
+      "ok": true
+    },
+    {
+      "label": "ChineseStructuredDate -> JDN",
+      "ok": true
+    },
+    {
+      "label": "chineseToJdn accepts ChineseStructuredDate",
+      "ok": true
+    },
+    {
+      "label": "calendarDateToJdn accepts ChineseStructuredDate",
+      "ok": true
+    },
+    {
+      "label": "structured conversion is Intl-independent",
+      "ok": true
+    },
+    {
+      "label": "JDN conversion is Intl-independent",
+      "ok": true
+    }
+  ],
+  "failures": [],
+  "nextStage": "Update 10G revalidation / Update 10 closure"
+}

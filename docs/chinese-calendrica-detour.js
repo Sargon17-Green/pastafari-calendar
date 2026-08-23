@@ -288,6 +288,25 @@ function stemBranchNames(yearInCycle) {
   return { heavenlyStem: stems[stem - 1], earthlyBranch: branches[branch - 1], stem, branch };
 }
 
+
+export class ChineseStructuredDate {
+  constructor(cycle, yearInCycle, month, day, options = {}) {
+    this.calendar = "chinese";
+    this.cycle = assertSafeNumber(cycle, "cycle");
+    this.yearInCycle = assertSafeNumber(yearInCycle, "yearInCycle");
+    this.month = assertSafeNumber(month, "month");
+    this.day = assertSafeNumber(day, "day");
+    this.leap = options?.leap === true || options?.leapMonth === true;
+    this.leapMonth = this.leap;
+    const names = stemBranchNames(this.yearInCycle);
+    this.heavenlyStem = names.heavenlyStem;
+    this.earthlyBranch = names.earthlyBranch;
+    this.stem = names.stem;
+    this.branch = names.branch;
+    Object.freeze(this);
+  }
+}
+
 function chineseFromFixedCore(fixedDay) {
   const date = assertSafeNumber(fixedDay, "fixedDay");
   const s1 = chineseWinterSolsticeOnOrBefore(date);

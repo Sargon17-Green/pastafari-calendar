@@ -62,6 +62,48 @@ export class ChineseDate {
   constructor(relatedYear: IntegerLike, month: number, day: number, options?: { leapMonth?: boolean });
 }
 
+export type ChineseHeavenlyStem = "jia" | "yi" | "bing" | "ding" | "wu" | "ji" | "geng" | "xin" | "ren" | "gui";
+export type ChineseEarthlyBranch = "zi" | "chou" | "yin" | "mao" | "chen" | "si" | "wu" | "wei" | "shen" | "you" | "xu" | "hai";
+
+export class ChineseStructuredDate {
+  readonly calendar: "chinese";
+  readonly cycle: number;
+  readonly yearInCycle: number;
+  readonly heavenlyStem: ChineseHeavenlyStem;
+  readonly earthlyBranch: ChineseEarthlyBranch;
+  readonly stem: number;
+  readonly branch: number;
+  readonly month: number;
+  readonly day: number;
+  readonly leap: boolean;
+  readonly leapMonth: boolean;
+  constructor(cycle: IntegerLike, yearInCycle: IntegerLike, month: number, day: number, options?: { leap?: boolean; leapMonth?: boolean });
+}
+
+export interface ChineseStructuredDateValue {
+  readonly calendar?: "chinese";
+  readonly cycle: IntegerLike;
+  readonly yearInCycle: IntegerLike;
+  readonly month: number;
+  readonly day: number;
+  readonly leap?: boolean;
+  readonly leapMonth?: boolean;
+}
+
+export interface ChineseStructuredDateResult {
+  readonly cycle: number;
+  readonly yearInCycle: number;
+  readonly heavenlyStem: ChineseHeavenlyStem;
+  readonly earthlyBranch: ChineseEarthlyBranch;
+  readonly stem: number;
+  readonly branch: number;
+  readonly relatedYear: bigint;
+  readonly month: number;
+  readonly day: number;
+  readonly leap: boolean;
+  readonly leapMonth: boolean;
+}
+
 export class HinduDate {
   readonly calendar: "hindu";
   readonly year: bigint;
@@ -180,6 +222,8 @@ export type CalendarDateInput =
   | IslamicDate
   | SolarHijriDate
   | ChineseDate
+  | ChineseStructuredDate
+  | ChineseStructuredDateValue
   | HinduDate
   | SakaDate
   | ThaiBuddhistDate
@@ -507,7 +551,9 @@ export function islamicCivilToJdn(value: IslamicDate): bigint;
 export function islamicToJdn(value: IslamicDate): bigint;
 export function solarHijriArithmeticToJdn(value: SolarHijriDate): bigint;
 export function solarHijriToJdn(value: SolarHijriDate): bigint;
-export function chineseToJdn(value: ChineseDate): bigint;
+export function chineseToJdn(value: ChineseDate | ChineseStructuredDate | ChineseStructuredDateValue): bigint;
+export function chineseStructuredDateToJdn(value: ChineseStructuredDate | ChineseStructuredDateValue): bigint;
+export function jdnToChinese(jdn: IntegerLike | string): ChineseStructuredDateResult;
 export function hinduToJdn(value: HinduDate): bigint;
 export function sakaToJdn(value: SakaDate): bigint;
 export function thaiBuddhistToJdn(value: ThaiBuddhistDate): bigint;
