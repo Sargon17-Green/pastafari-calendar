@@ -601,9 +601,9 @@ function tehranEquinoxStartJdn(gregorianYear) {
 }
 
 function bahaiYearStart(year, variant) {
-  if (year < 1n) throw new RangeError("The Baha'i year must be positive.");
   const gregorianYear = 1843n + year;
   if (variant === "western") return gregorianToJdn({ year: gregorianYear, month: 3, day: 21 });
+  if (year < 1n) throw new RangeError("The Tehran-equinox Baha'i year must be positive.");
   if (gregorianYear > 3000n) throw new RangeError("The Tehran-equinox variant supports Gregorian years 1844 through 3000.");
   return tehranEquinoxStartJdn(gregorianYear);
 }
