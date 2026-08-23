@@ -1,0 +1,84 @@
+{
+  "update": 10,
+  "title": "Chinese calendar closure",
+  "result": "UPDATE_10_CLOSED",
+  "ready_for_update_11": true,
+  "scope": "documentation-only closure note",
+  "repository": "Sargon17-Green/pastafari-calendar",
+  "branch": "main",
+  "latest_observed_commit": "ee208f2b63485b43971ee3525ecc7bf4cf543127",
+  "stages": [
+    {
+      "stage": "10A",
+      "result": "BLOCKED_NORMATIVE_SOURCE_INCOMPLETE_AND_PUBLIC_CHINESE_HOST_DEPENDENT"
+    },
+    {
+      "stage": "10B",
+      "result": "SOURCE_SELECTED_BUT_REPAIR_BLOCKED_UNTIL_EXACT_CALENDRICA_PORT"
+    },
+    {
+      "stage": "10C",
+      "result": "CALENDRICA_PORT_DIVERGES_FROM_MAGILLAH_FOUNDATION"
+    },
+    {
+      "stage": "10D",
+      "result": "FOUNDATION_OFFSET_RECONCILED_AS_DELTA_T_EXTRAPOLATION_SENSITIVITY"
+    },
+    {
+      "stage": "10E",
+      "result": "CHINESE_DEEP_DELTA_T_SOURCE_RULE_LOCKED"
+    },
+    {
+      "stage": "10F",
+      "result": "CHINESE_DETERMINISTIC_ENGINE_IMPLEMENTED"
+    },
+    {
+      "stage": "10G",
+      "initial_result": "UPDATE_10_BLOCKED_BY_PUBLIC_STRUCTURED_CHINESE_API_GAP",
+      "final_result_after_10H": "UPDATE_10_ACCEPTED_FOR_CLOSURE"
+    },
+    {
+      "stage": "10H",
+      "result": "PUBLIC_STRUCTURED_CHINESE_API_AND_TYPES_ACCEPTED"
+    }
+  ],
+  "accepted_behavior": {
+    "foundation": {
+      "jdn": -13334246,
+      "cycle": -643,
+      "yearInCycle": 57,
+      "heavenlyStem": "geng",
+      "earthlyBranch": "shen",
+      "month": 1,
+      "leap": false,
+      "day": 22
+    },
+    "modern_vector_preserved": {
+      "input": "ChineseDate(2026, 7, 1, non-leap)",
+      "jdn": 2461266
+    },
+    "public_structured_api": [
+      "ChineseStructuredDate",
+      "jdnToChinese",
+      "chineseStructuredDateToJdn"
+    ],
+    "legacy_api_compatibility": true,
+    "host_intl_dependency_removed_for_chinese_path": true,
+    "pwa_core_asset_included": "docs/chinese-calendrica-detour.js",
+    "standalone_artifacts_synchronized": true
+  },
+  "non_goals_preserved": [
+    "No silent +3 day fixture hack",
+    "No host Intl/ICU dependency for the repaired Chinese path",
+    "Deep-antiquity Delta-T behavior is source-locked",
+    "No intentional non-Chinese calendar semantic changes"
+  ],
+  "changed_paths": [
+    "artifacts/update-10-closure-report.md",
+    "artifacts/update-10-closure.json"
+  ],
+  "checksum_manifests_included": false,
+  "docs_changed": false,
+  "sources_changed": false,
+  "additional_checksum_manifests_to_update": []
+}
