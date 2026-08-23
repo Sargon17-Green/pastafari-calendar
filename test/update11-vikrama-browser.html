@@ -1,0 +1,26 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Update 11 Vikrama browser smoke</title>
+<pre id="result">pending</pre>
+<script type="module">
+  import { jdnToVikrama, vikramaToJdn, VikramaDate } from "../browser/vikrama-api.js";
+  const result = document.querySelector("#result");
+  try {
+    const foundation = jdnToVikrama(-13334246n);
+    const back = vikramaToJdn(new VikramaDate(-41162n, 8, 16, { leapMonth: false, leapTithi: false }));
+    const payload = {
+      status: foundation.year === -41162n
+        && foundation.month === 8
+        && foundation.monthName === "Kārttika"
+        && foundation.leapMonth === false
+        && foundation.tithi === 16
+        && foundation.leapTithi === false
+        && back === -13334246n ? "PASS" : "FAIL",
+      foundation: { ...foundation, year: foundation.year.toString() },
+      back: back.toString(),
+    };
+    result.textContent = `UPDATE11_VIKRAMA_BROWSER=${JSON.stringify(payload)}`;
+  } catch (error) {
+    result.textContent = `UPDATE11_VIKRAMA_BROWSER=${JSON.stringify({ status: "FAIL", error: String(error?.stack || error) })}`;
+  }
+</script>

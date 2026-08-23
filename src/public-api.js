@@ -31,6 +31,12 @@ import {
   chineseStructuredDateToJdn as deterministicChineseStructuredDateToJdn,
   jdnToChinese as deterministicJdnToChinese,
 } from "./chinese-calendrica-detour.js";
+import {
+  VikramaDate,
+  VIKRAMA_MONTH_NAMES,
+  jdnToVikrama as deterministicJdnToVikrama,
+  vikramaToJdn as deterministicVikramaToJdn,
+} from "../browser/vikrama-api.js";
 
 // Node reaches a separately wrapped copy of the authoritative chronicle, so
 // invite the same gate-reader detour here before the friendly public subclass
@@ -75,6 +81,18 @@ function isChineseDateLike(value) {
   return isChineseRelatedDateLike(value) || isChineseStructuredDateLike(value);
 }
 
+function isVikramaDateLike(value) {
+  return value instanceof VikramaDate || value?.calendar === "vikrama";
+}
+
+export function jdnToVikrama(jdn) {
+  return deterministicJdnToVikrama(jdn);
+}
+
+export function vikramaToJdn(value) {
+  return deterministicVikramaToJdn(value);
+}
+
 export function chineseStructuredDateToJdn(value) {
   return deterministicChineseStructuredDateToJdn(value);
 }
@@ -91,10 +109,11 @@ export function chineseToJdn(value) {
 
 export function calendarDateToJdn(value) {
   if (isChineseDateLike(value)) return chineseToJdn(value);
+  if (isVikramaDateLike(value)) return vikramaToJdn(value);
   return prolepticNegativeYearDetours.calendarDateToJdn(value);
 }
 
-export { ChineseStructuredDate };
+export { ChineseStructuredDate, VikramaDate, VIKRAMA_MONTH_NAMES };
 
 export const copticToJdn = prolepticNegativeYearDetours.copticToJdn;
 export const ethiopicToJdn = prolepticNegativeYearDetours.ethiopicToJdn;

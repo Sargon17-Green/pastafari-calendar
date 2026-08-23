@@ -104,6 +104,45 @@ export interface ChineseStructuredDateResult {
   readonly leapMonth: boolean;
 }
 
+export type VikramaMonthName =
+  | "Caitra" | "Vaiśākha" | "Jyaiṣṭha" | "Āṣāḍha" | "Śrāvaṇa" | "Bhādrapada"
+  | "Āśvina" | "Kārttika" | "Mārgaśīrṣa" | "Pauṣa" | "Māgha" | "Phālguna";
+
+export const VIKRAMA_MONTH_NAMES: readonly VikramaMonthName[];
+
+export class VikramaDate {
+  readonly calendar: "vikrama";
+  readonly year: bigint;
+  readonly month: number;
+  readonly tithi: number;
+  readonly leapMonth: boolean;
+  readonly leapTithi: boolean;
+  constructor(
+    year: IntegerLike,
+    month: number,
+    tithi: number,
+    options?: { leapMonth?: boolean; leapTithi?: boolean },
+  );
+}
+
+export interface VikramaDateValue {
+  readonly calendar?: "vikrama";
+  readonly year: IntegerLike;
+  readonly month: number;
+  readonly tithi: number;
+  readonly leapMonth?: boolean;
+  readonly leapTithi?: boolean;
+}
+
+export interface VikramaDateResult {
+  readonly year: bigint;
+  readonly month: number;
+  readonly monthName: VikramaMonthName;
+  readonly leapMonth: boolean;
+  readonly tithi: number;
+  readonly leapTithi: boolean;
+}
+
 export class HinduDate {
   readonly calendar: "hindu";
   readonly year: bigint;
@@ -224,6 +263,8 @@ export type CalendarDateInput =
   | ChineseDate
   | ChineseStructuredDate
   | ChineseStructuredDateValue
+  | VikramaDate
+  | VikramaDateValue
   | HinduDate
   | SakaDate
   | ThaiBuddhistDate
@@ -554,6 +595,8 @@ export function solarHijriToJdn(value: SolarHijriDate): bigint;
 export function chineseToJdn(value: ChineseDate | ChineseStructuredDate | ChineseStructuredDateValue): bigint;
 export function chineseStructuredDateToJdn(value: ChineseStructuredDate | ChineseStructuredDateValue): bigint;
 export function jdnToChinese(jdn: IntegerLike | string): ChineseStructuredDateResult;
+export function jdnToVikrama(jdn: IntegerLike | string): VikramaDateResult;
+export function vikramaToJdn(value: VikramaDate | VikramaDateValue): bigint;
 export function hinduToJdn(value: HinduDate): bigint;
 export function sakaToJdn(value: SakaDate): bigint;
 export function thaiBuddhistToJdn(value: ThaiBuddhistDate): bigint;
