@@ -1,0 +1,347 @@
+{
+  "stage": "Update 8 Stage 8A anti-cleanup / anti-refactor audit",
+  "repository": "Sargon17-Green/pastafari-calendar",
+  "branch": "main",
+  "commit": "8eadf7f6d91ed072763542ddc5c1dc193b1bd243",
+  "packageVersion": "1.3.0",
+  "workingTree": {
+    "status": "NOT_APPLICABLE_REMOTE_COMMIT_SNAPSHOT",
+    "note": "The audit inspected the GitHub main commit directly. A GitHub commit snapshot has no uncommitted working-tree state."
+  },
+  "baseline": {
+    "preFixProductionCommit": "2bc2d97bd5638b498014ed8c1c925fb735819a6b",
+    "stage5ProductionCommit": "44d5e1d3818b400df0f7a36bf17216d04345add6",
+    "currentMain": "8eadf7f6d91ed072763542ddc5c1dc193b1bd243"
+  },
+  "evidenceLoaded": [
+    "artifacts/update-08-stage-04-synthesis-report.md",
+    "artifacts/update-08-stage-05-design.md",
+    "artifacts/update-08-stage-05-report.md",
+    "artifacts/update-08-stage-05-fix.json",
+    "artifacts/update-08-stage-06-report.md",
+    "artifacts/update-08-stage-07-report.md",
+    "artifacts/update-08-stage-07-router-fix-report.md",
+    "artifacts/update-08-stage-07-final-revalidation-report.md",
+    "artifacts/update-08-stage-07-final-revalidation.json"
+  ],
+  "compare": {
+    "preFixToStage5": {
+      "commits": 5,
+      "production": [
+        "src/5efdcc3e6fb071cbaffdcb117507a169dd76.js",
+        "browser/pastafari-calendar-core-chronicle.js",
+        "browser/standalone/pastafari-date.js",
+        "browser/standalone/pastafari-date.min.js"
+      ],
+      "generatedOutputs": [
+        "browser/standalone/pastafari-date.js",
+        "browser/standalone/pastafari-date.min.js"
+      ],
+      "testsAndVerification": "Stage-5 verification scripts and test evidence added; no production classification assigned to them.",
+      "artifacts": "Stage-5 reports, JSON evidence and TAP/JSON logs added.",
+      "checksums": [
+        "SHA256SUMS.txt",
+        "implementations/cobol/SHA256SUMS.txt",
+        "artifacts/update-08-stage-05-partial-sha256sums.txt",
+        "artifacts/update-08-stage-05-sha256sums.txt"
+      ],
+      "workflows": []
+    },
+    "stage5ToCurrent": {
+      "commits": 9,
+      "production": [
+        "browser/pastafari-calendar-router-core.js",
+        "browser/standalone/pastafari-date.js",
+        "browser/standalone/pastafari-date.min.js"
+      ],
+      "transactionalitySourceChangedAfterStage5": false,
+      "transactionalitySourceFilesUnchanged": [
+        "src/5efdcc3e6fb071cbaffdcb117507a169dd76.js",
+        "browser/pastafari-calendar-core-chronicle.js"
+      ],
+      "laterProductionChangeExplanation": "Stage 7 ROUTER_IDLE_SHUTDOWN_INFLIGHT_AUTHORITATIVE repair plus canonical standalone propagation; not a Stage-5 transactionality cleanup/refactor.",
+      "tests": [
+        "test/router-concurrency.test.js",
+        "test/update-08-stage-05-transactionality.test.js"
+      ],
+      "workflows": [
+        ".github/workflows/update-08-stage-07-router-fix.yml"
+      ]
+    }
+  },
+  "productionDiff": [
+    {
+      "file": "src/5efdcc3e6fb071cbaffdcb117507a169dd76.js",
+      "role": "Node authoritative generated-loader source",
+      "githubLineStats": {
+        "added": 1,
+        "removed": 1,
+        "note": "one-line generated source; textual line count understates logical edits"
+      },
+      "hunks": [
+        {
+          "region": "Dynamic00 identity subsystem transform",
+          "classification": "REQUIRED_FIX",
+          "defectFamily": "STATE:generated:identity-map-and-counter",
+          "details": [
+            "Keeps the existing WeakMap and global identity counter.",
+            "Adds per-construction transaction frames and a journal of newly allocated keys.",
+            "Captures WeakMap.prototype.delete and deletes only keys owned by the failed frame.",
+            "Restores the counter to the frame's entry-relative value; does not reset to module-start state.",
+            "Preserves the original successful Reflect.construct path and rethrows the original construction exception."
+          ]
+        },
+        {
+          "region": "Dynamic01 common executor shared-arena transform",
+          "classification": "REQUIRED_FIX",
+          "defectFamily": "STATE:generated:shared-invocation-arena",
+          "details": [
+            "Wraps the existing reservation/push through existing success cleanup in try/catch.",
+            "On failure truncates the existing arena to the already-saved invocation entry length.",
+            "Keeps the shared arena, reservations, measurement machinery and success ritual.",
+            "No hard-coded 12/24/27/33 cleanup length and no module-start reset."
+          ]
+        }
+      ]
+    },
+    {
+      "file": "browser/pastafari-calendar-core-chronicle.js",
+      "role": "Browser authoritative generated-loader mirror",
+      "githubLineStats": {
+        "added": 1,
+        "removed": 1,
+        "note": "large/generated source; logical regions mirror the Node loader"
+      },
+      "hunks": [
+        {
+          "region": "Dynamic00 identity subsystem transform",
+          "classification": "REQUIRED_FIX",
+          "defectFamily": "STATE:generated:identity-map-and-counter",
+          "details": "Equivalent browser source-of-truth mirror of the Node transaction transform."
+        },
+        {
+          "region": "Dynamic01 common executor shared-arena transform",
+          "classification": "REQUIRED_FIX",
+          "defectFamily": "STATE:generated:shared-invocation-arena",
+          "details": "Equivalent browser source-of-truth mirror of the Node entry-relative failure compensation."
+        }
+      ]
+    },
+    {
+      "file": "browser/standalone/pastafari-date.js",
+      "role": "Canonical generated standalone output",
+      "githubLineStats": {
+        "added": 1,
+        "removed": 1,
+        "note": "Stage-5 generated whole-line output"
+      },
+      "hunks": [
+        {
+          "region": "canonical bundle rebuild",
+          "classification": "GENERATED_PROPAGATION",
+          "defectFamily": [
+            "STATE:generated:shared-invocation-arena",
+            "STATE:generated:identity-map-and-counter"
+          ],
+          "details": "Generated propagation of the same authoritative loader fix; no separately designed transaction model."
+        }
+      ]
+    },
+    {
+      "file": "browser/standalone/pastafari-date.min.js",
+      "role": "Canonical generated minified standalone output",
+      "githubLineStats": {
+        "added": 1,
+        "removed": 1,
+        "note": "Stage-5 generated minified whole-line output"
+      },
+      "hunks": [
+        {
+          "region": "canonical minified bundle rebuild",
+          "classification": "GENERATED_PROPAGATION",
+          "defectFamily": [
+            "STATE:generated:shared-invocation-arena",
+            "STATE:generated:identity-map-and-counter"
+          ],
+          "details": "Minified canonical propagation; not hand-edited as a third implementation."
+        }
+      ]
+    }
+  ],
+  "defectScopeMapping": [
+    {
+      "defectFamily": "STATE:generated:shared-invocation-arena",
+      "mechanism": "entry-relative failure compensation in the existing Dynamic01 common executor",
+      "ownerScope": "current failed invocation's saved entry length",
+      "successPathReplaced": false,
+      "architectureReplaced": false
+    },
+    {
+      "defectFamily": "STATE:generated:identity-map-and-counter",
+      "mechanism": "nested transaction-frame stack plus journal of newly allocated identity keys",
+      "ownerScope": "current construction frame; nested success remains owned by the parent frame",
+      "weakMapPreserved": true,
+      "weakMapEnumerated": false,
+      "counterResetPolicy": "restore to frame entry value on failed construction; not module-start reset",
+      "architectureReplaced": false
+    }
+  ],
+  "arenaAudit": {
+    "entryRelativeStatePreserved": true,
+    "exceptionCompensationAdded": true,
+    "sharedArenaRemoved": false,
+    "sharedArenaReplaced": false,
+    "successRitualBypassed": false,
+    "reservationsOrMeasurementRemoved": false,
+    "hardCodedObservedFailureLengths": false,
+    "moduleStartupReset": false,
+    "nestedOwnershipModel": "Existing per-invocation saved entry length is reused as the ownership boundary; no new broad arena architecture."
+  },
+  "identityAudit": {
+    "weakMapPreserved": true,
+    "identitySubsystemReplaced": false,
+    "newMechanism": "transaction frames + allocation journal + scoped compensation",
+    "weakMapEnumeration": false,
+    "successfulIdentitySemanticsChangedByInspection": false,
+    "naiveGlobalCounterReset": false,
+    "preexistingMappingsDeleted": false,
+    "unrelatedGeneratedMetadataChanged": false,
+    "internalTransformGuards": {
+      "present": true,
+      "codes": [
+        "E8",
+        "E9",
+        "EA",
+        "EB",
+        "EC"
+      ],
+      "classification": "REQUIRED_FIX_SUPPORT",
+      "note": "Internal exact-transform integrity guards, analogous to pre-existing E6/E7; they do not change the documented construction exception contract in the compatible generated payload."
+    }
+  },
+  "nonTargetAudit": [
+    {
+      "subsystem": "decoded combinatorial memo Maps",
+      "productionRedesign": false
+    },
+    {
+      "subsystem": "sauce LRU",
+      "productionRedesign": false
+    },
+    {
+      "subsystem": "forward/backward gap memos",
+      "productionRedesign": false
+    },
+    {
+      "subsystem": "PastafariCalendar per-instance caches",
+      "productionRedesign": false
+    },
+    {
+      "subsystem": "cache-epoch transaction machinery",
+      "productionRedesign": false
+    },
+    {
+      "subsystem": "runtime patch ownership ledger",
+      "productionRedesign": false,
+      "genericTransactionLayerReuse": false
+    },
+    {
+      "subsystem": "installation registries / WeakSets",
+      "productionRedesign": false
+    },
+    {
+      "subsystem": "prototype/function descriptors",
+      "productionRedesign": false
+    },
+    {
+      "subsystem": "partial constructor-this publication",
+      "productionRedesign": false
+    }
+  ],
+  "cacheAudit": {
+    "productionCacheTransactionCleanupOrUnification": false,
+    "note": "Cache-related Stage-5 material is test/evidence; the Stage-5 production hunks do not redesign cache machinery."
+  },
+  "runtimePatchLedgerAudit": {
+    "reusedAsGenericTransactionLayer": false,
+    "note": "Stage 5 uses dedicated local identity journaling and the existing arena entry-length boundary instead of repurposing runtime-patch ownership."
+  },
+  "hiddenCleanupAudit": {
+    "unrelatedArrayClearOrSplice": false,
+    "mapClear": false,
+    "cacheInvalidationBroadening": false,
+    "registryReset": false,
+    "prototypeReset": false,
+    "globalReinitialization": false,
+    "ownerScopedTruncations": [
+      "shared invocation arena -> saved invocation entry length on failure",
+      "new Stage-5 identity journal -> current frame journalStart"
+    ]
+  },
+  "publicApiAudit": {
+    "packageJsonBlobSamePreFixAndCurrent": true,
+    "packageJsonBlobSha": "50a5ce66e928034078a3554734cc7362092151dd",
+    "publicApiSourceBlobSamePreFixAndCurrent": true,
+    "publicApiSourceBlobSha": "a4bf89cea6000f15942b8d4c272ab9655416c2f0",
+    "typesBlobSamePreFixAndCurrent": true,
+    "typesBlobSha": "9374f0e8b0935e2fed456843adff540401f738ac",
+    "packageExportsChanged": false,
+    "constructorNamesAndSignaturesChanged": false,
+    "documentedEntryPointsChanged": false,
+    "publicObjectShapesChanged": false,
+    "constructionExceptionPropagation": "Stage-5 wrappers rethrow the original exception object; Stage-7 final clean consumer still observes TypeError for invalid todayProvider and successful recovery.",
+    "stage7FinalTarballExportCount": 98,
+    "stage7RouterRepairPublicApiChanged": false
+  },
+  "generatedPropagation": {
+    "nodeAndBrowserTransactionModelEquivalent": true,
+    "standaloneHandEditedThirdModelFound": false,
+    "stage5StandaloneMethod": "canonical npm run build:standalone propagation",
+    "postStage5StandaloneChanges": "Stage-7 router fix propagation only; transactionality source files stayed unchanged.",
+    "stage7FinalCanonicalRebuild": {
+      "esbuild": "0.28.2",
+      "byteReproducible": true,
+      "unminifiedSha256": "f1adfc1f4e64d9fc7dcb591a7c5e852210e0d2de3ff3d2a08668a8c17ffbea2b",
+      "minifiedSha256": "7a2f60e304dfe1c8dc98d54fa894e337e9864648ff5b401a51e661e9f5290481",
+      "realChromiumParity": true
+    }
+  },
+  "spaghettiPreservation": {
+    "deletedWrapperLayers": false,
+    "removedDetours": false,
+    "removedFossils": false,
+    "collapsedGeneratedIndirection": false,
+    "replacedSharedStateWithCleanEncapsulation": false,
+    "rewrittenConstructorFramework": false,
+    "largeGeneratedMachineryRenamedOrReorganized": false,
+    "existingM6TransformDetourPreserved": true,
+    "existingGlobalFunctionProxyRitualPreserved": true,
+    "conclusion": "The patch is compensating and deliberately inserted into the existing generated/detour architecture rather than replacing it."
+  },
+  "successPathInspection": {
+    "arenaSuccessCleanupStillPresent": true,
+    "identityArgumentRitualStillPresent": true,
+    "reflectConstructStillUsed": true,
+    "alternateCleanSuccessPathIntroduced": false,
+    "normativeLogicReplaced": false
+  },
+  "blastRadius": {
+    "stage5ProductionFilesChanged": 4,
+    "stage5GithubTextualLinesAdded": 4,
+    "stage5GithubTextualLinesRemoved": 4,
+    "lineCountCaveat": "All four Stage-5 production files are generated/large and reported as whole-line replacements; logical scope is two narrow transform regions plus two generated outputs.",
+    "stage5ApproximateChangedRegions": "Two logical transaction injection regions in each of the Node/browser authoritative loader copies; canonical standalone rebuild/minification.",
+    "postStage5ProductionFilesChanged": 3,
+    "postStage5GithubTextualLinesAdded": 27,
+    "postStage5GithubTextualLinesRemoved": 11,
+    "postStage5Reason": "Independent Stage-7 router lifecycle repair plus standalone propagation."
+  },
+  "unexpectedChanges": [],
+  "blockers": [],
+  "historicalArtifactsModifiedDuringStage8A": false,
+  "productionFilesChangedDuringStage8A": [],
+  "result": "ANTI_CLEANUP_AUDIT_PASS",
+  "stage8AResult": "STAGE_8A_RESULT = ANTI_CLEANUP_AUDIT_PASS",
+  "readyForStage8DFrom8A": true,
+  "readyMarker": "READY_FOR_STAGE_8D_FROM_8A = yes"
+}
