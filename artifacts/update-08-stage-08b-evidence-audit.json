@@ -1,0 +1,1073 @@
+{
+  "schema": "pastafari.update8.stage8b.evidence-audit.v1",
+  "stage": "Update 8 Stage 8B Final full evidence-consistency audit",
+  "generatedAt": "2026-08-23T00:38:00Z",
+  "supersedes": [
+    "artifacts/update-08-stage-08b-report.md",
+    "artifacts/update-08-stage-08b-evidence-ledger.json",
+    "artifacts/update-08-stage-08b-sha256sums.txt"
+  ],
+  "revision": {
+    "repository": "Sargon17-Green/pastafari-calendar",
+    "branch": "main",
+    "headSha": "aa626097a175a167ae022e706c6b704eeb55769c",
+    "treeSha": "845b875bbead29c89d60c58dfa933c9893faa762",
+    "headCommitDate": "2026-08-23T00:32:12Z",
+    "packageVersion": "1.3.0",
+    "workingTree": "uploaded ZIP; no .git directory. GitHub branch API verified the current main HEAD/tree; local extraction was used for filesystem artifact audit.",
+    "uploadedArchive": {
+      "path": "/mnt/data/pastafari-calendar-main (1)(1).zip",
+      "sha256": "9c88a56650483b0c36d41e799f7285442606ef1176a15347bbeb9323939c81ba",
+      "sizeBytes": 109791922
+    },
+    "unicodeFilenameNormalization": {
+      "needed": true,
+      "path": "sources/מגילת העיתים.md",
+      "archiveNameWasEscaped": "sources/#U05de#U05d2#U05d9#U05dc#U05ea #U05d4#U05e2#U05d9#U05ea#U05d9#U05dd.md",
+      "classification": "ARCHIVE_EXPORT_FILENAME_ENCODING_ONLY"
+    },
+    "commitsSinceStage8A": {
+      "base": "8eadf7f6d91ed072763542ddc5c1dc193b1bd243",
+      "head": "aa626097a175a167ae022e706c6b704eeb55769c",
+      "aheadBy": 3,
+      "productionFilesChanged": [],
+      "changedFiles": [
+        "SHA256SUMS.txt",
+        "artifacts/update-08-stage-08a-anti-cleanup.json",
+        "artifacts/update-08-stage-08a-report.md",
+        "artifacts/update-08-stage-08a-sha256sums.txt",
+        "artifacts/update-08-stage-08b-evidence-ledger.json",
+        "artifacts/update-08-stage-08b-report.md",
+        "artifacts/update-08-stage-08b-sha256sums.txt",
+        "artifacts/update-08-stage-08c-package-audit.json",
+        "artifacts/update-08-stage-08c-report.md",
+        "artifacts/update-08-stage-08c-sha256sums.txt"
+      ],
+      "classification": "ARTIFACT_AND_CHECKSUM_ONLY_PRODUCTION_EQUIVALENT"
+    }
+  },
+  "scope": {
+    "auditOnly": true,
+    "productionFilesChangedDuringStage8B": "none",
+    "productionChangesAllowed": false,
+    "stage8DExecuted": false
+  },
+  "controllingStageLedger": [
+    {
+      "stage": "Stage 1",
+      "finalControllingArtifact": "verification/update8/stage-01-report.md + stage-01-baseline.json",
+      "result": "CLOSED / success baseline accepted",
+      "readyFlag": "Stage 2 allowed",
+      "status": "PASS_WITH_NOTED_TIMEOUT_RESOLVED_BY_REPLACEMENT_DISCRIMINATOR_AND_LATER_STAGES"
+    },
+    {
+      "stage": "Stage 2A",
+      "finalControllingArtifact": "verification/update8/stage-02a-construction-report.md + stage-02a-construction-inventory.json",
+      "result": "CLOSED construction inventory",
+      "readyFlag": "READY_FOR_STAGE_3_CONSTRUCTION_SIDE = yes",
+      "status": "PASS"
+    },
+    {
+      "stage": "Stage 2B",
+      "finalControllingArtifact": "verification/update8/stage-02b-shared-state-report.md + stage-02b-shared-state-inventory.json",
+      "result": "shared-state inventory ready",
+      "readyFlag": "READY_FOR_STAGE_3_STATE_SIDE = yes",
+      "status": "PASS"
+    },
+    {
+      "stage": "Stage 3",
+      "finalControllingArtifact": "artifacts/update-08-stage-03-report.md + update-08-stage-03-reproduction.json",
+      "result": "CONFIRMED_LEAK",
+      "readyFlag": "Stage 4 scope remains; no Stage 5 readiness claimed",
+      "status": "PASS_FOR_LEAK_REPRODUCTION"
+    },
+    {
+      "stage": "Stage 4A",
+      "finalControllingArtifact": "artifacts/update-08-stage-04a-report.md + update-08-stage-04a-history.json",
+      "result": "TECHNICAL_EVIDENCE_COMPLETE",
+      "readyFlag": "READY_FOR_STAGE_5_FROM_4A = yes",
+      "status": "PASS"
+    },
+    {
+      "stage": "Stage 4B",
+      "finalControllingArtifact": "artifacts/update-08-stage-04b-report.md + update-08-stage-04b-nested-isolation.json, superseded for readiness by Stage-4 Closure",
+      "result": "TECHNICAL_FINDINGS_CONFIRMED_FORMAL_CLOSE_BLOCKED_BY_MISSING_STAGE_3_ARTIFACT",
+      "readyFlag": "historical READY_FOR_STAGE_5_FROM_4B = no",
+      "status": "SUPERSEDED_FOR_READYNESS_BY_STAGE_4_CLOSURE"
+    },
+    {
+      "stage": "Stage 4C",
+      "finalControllingArtifact": "artifacts/update-08-stage-04c-report.md + update-08-stage-04c-fault-injection.json, superseded for readiness by Stage-4 Closure",
+      "result": "TECHNICAL_FINDINGS_CONFIRMED_FORMAL_CLOSE_BLOCKED_BY_MISSING_STAGE_3_ARTIFACT",
+      "readyFlag": "historical READY_FOR_STAGE_5_FROM_4C = no",
+      "status": "SUPERSEDED_FOR_READYNESS_BY_STAGE_4_CLOSURE"
+    },
+    {
+      "stage": "Stage 4D",
+      "finalControllingArtifact": "artifacts/update-08-stage-04d-report.md + update-08-stage-04d-publication-cache.json, superseded for readiness by Stage-4 Closure",
+      "result": "FINDINGS_CONFIRMED_FORMAL_CLOSE_BLOCKED_BY_MISSING_STAGE_3_ARTIFACT",
+      "readyFlag": "historical READY_FOR_STAGE_5_FROM_4D = no",
+      "status": "SUPERSEDED_FOR_READYNESS_BY_STAGE_4_CLOSURE"
+    },
+    {
+      "stage": "Stage 4 Closure",
+      "finalControllingArtifact": "artifacts/update-08-stage-04-synthesis-report.md + update-08-stage-04-synthesis.json",
+      "result": "READY_FOR_STAGE_5",
+      "readyFlag": "STAGE_4_CLOSURE_RESULT = READY_FOR_STAGE_5",
+      "status": "PASS"
+    },
+    {
+      "stage": "Stage 5",
+      "finalControllingArtifact": "artifacts/update-08-stage-05-report.md + update-08-stage-05-fix.json",
+      "result": "FIX_IMPLEMENTED",
+      "readyFlag": "READY_FOR_STAGE_6 = yes",
+      "status": "PASS_WITH_COMPATIBILITY_DEFERRED_TO_STAGE_7"
+    },
+    {
+      "stage": "Stage 6",
+      "finalControllingArtifact": "artifacts/update-08-stage-06-report.md + update-08-stage-06-verification.json",
+      "result": "FIX_INDEPENDENTLY_VERIFIED",
+      "readyFlag": "READY_FOR_STAGE_7 = yes",
+      "status": "PASS_WITH_COMPATIBILITY_DEFERRED_TO_STAGE_7"
+    },
+    {
+      "stage": "Stage 7 original",
+      "finalControllingArtifact": "artifacts/update-08-stage-07-report.md + update-08-stage-07-cross-environment.json",
+      "result": "CROSS_ENVIRONMENT_VERIFICATION_FAILED",
+      "readyFlag": "READY_FOR_STAGE_8 = no",
+      "status": "SUPERSEDED_HISTORICAL_FAILURE"
+    },
+    {
+      "stage": "Stage 7 router repair",
+      "finalControllingArtifact": "artifacts/update-08-stage-07-router-fix-report.md + update-08-stage-07-router-fix.json",
+      "result": "CROSS_ENVIRONMENT_VERIFICATION_FAILED_UNTIL_GENERATED_BUNDLES_COMMITTED_AND_FOCUSED_RERUN",
+      "readyFlag": "READY_FOR_STAGE_8 = no until final rerun",
+      "status": "PRODUCTION_REPAIR_AND_INTERMEDIATE_VERIFICATION"
+    },
+    {
+      "stage": "Stage 7 final revalidation",
+      "finalControllingArtifact": "artifacts/update-08-stage-07-final-revalidation-report.md + update-08-stage-07-final-revalidation.json",
+      "result": "CROSS_ENVIRONMENT_VERIFIED_AFTER_ROUTER_REPAIR",
+      "readyFlag": "READY_FOR_STAGE_8 = yes",
+      "status": "PASS_CONTROLLING_STAGE_7_RESULT"
+    },
+    {
+      "stage": "Stage 8A",
+      "finalControllingArtifact": "artifacts/update-08-stage-08a-report.md + update-08-stage-08a-anti-cleanup.json",
+      "result": "ANTI_CLEANUP_AUDIT_PASS",
+      "readyFlag": "READY_FOR_STAGE_8D_FROM_8A = yes",
+      "status": "PASS"
+    },
+    {
+      "stage": "Stage 8C",
+      "finalControllingArtifact": "artifacts/update-08-stage-08c-report.md + update-08-stage-08c-package-audit.json",
+      "result": "PACKAGE_AND_ARTIFACT_AUDIT_PASS",
+      "readyFlag": "READY_FOR_STAGE_8D_FROM_8C = yes, supporting only; needs short revalidation after this Stage 8B final commit",
+      "status": "PASS_SUPPORTING_NEEDS_POST_8B_REVALIDATION"
+    },
+    {
+      "stage": "Stage 8B regenerated ledger",
+      "finalControllingArtifact": "artifacts/update-08-stage-08b-report.md + update-08-stage-08b-evidence-ledger.json",
+      "result": "STAGE_8B_REGENERATED_MISSING_LEDGER_ARTIFACTS",
+      "readyFlag": "READY_FOR_STAGE_8D_FROM_STAGE_8B_ALONE = no",
+      "status": "SUPERSEDED_HISTORICAL_PROVENANCE"
+    },
+    {
+      "stage": "Stage 8B final audit",
+      "finalControllingArtifact": "artifacts/update-08-stage-08b-final-report.md + update-08-stage-08b-evidence-audit.json",
+      "result": "EVIDENCE_AUDIT_PASS",
+      "readyFlag": "READY_FOR_STAGE_8D_FROM_8B = yes",
+      "status": "PASS_CONTROLLING_STAGE_8B_RESULT"
+    }
+  ],
+  "chronologyProvenanceAudit": [
+    {
+      "stage": "Stage 1",
+      "commit": "1dd41cbf7c2ff6172c2b5793fb1637a446a1d272",
+      "productionChanging": false,
+      "artifactOnly": true,
+      "productionEquivalentToCurrent": "yes per Stage 3/4 synthesis evidence",
+      "laterSuperseded": "no"
+    },
+    {
+      "stage": "Stage 2A",
+      "commit": "b94d1a3976731784459ff50f0e7d598cd2d59e70",
+      "productionChanging": false,
+      "artifactOnly": true,
+      "productionEquivalentToCurrent": "yes per Stage 2A/Stage 4 closure",
+      "laterSuperseded": "no"
+    },
+    {
+      "stage": "Stage 2B",
+      "commit": "not individually recorded here; hashes matched by Stage 4 closure",
+      "productionChanging": false,
+      "artifactOnly": true,
+      "productionEquivalentToCurrent": "yes",
+      "laterSuperseded": "no"
+    },
+    {
+      "stage": "Stage 3",
+      "commit": "currentMainCommit recorded in artifact; production-equivalence asserted to current main",
+      "productionChanging": false,
+      "artifactOnly": true,
+      "productionEquivalentToCurrent": "yes",
+      "laterSuperseded": "pre-fix leak evidence later closed by Stage 5/6, but remains valid provenance"
+    },
+    {
+      "stage": "Stage 4A",
+      "commit": "ce49a21700316a4339f29411f104c22dd2616295",
+      "productionChanging": false,
+      "artifactOnly": true,
+      "productionEquivalentToCurrent": "pre-fix evidence used by Stage 4 closure",
+      "laterSuperseded": "technical evidence remains; readiness superseded by Stage 4 closure"
+    },
+    {
+      "stage": "Stage 4B/4C/4D",
+      "commit": "81cc54b/e218987-era artifacts per reports",
+      "productionChanging": false,
+      "artifactOnly": true,
+      "productionEquivalentToCurrent": "yes for pre-fix evidence; formal blockers superseded by closure",
+      "laterSuperseded": "ready flags superseded by Stage 4 closure"
+    },
+    {
+      "stage": "Stage 4 Closure",
+      "commit": "768efa46edda7f2320cf75e4f7fffee5d47fb983 per report",
+      "productionChanging": false,
+      "artifactOnly": true,
+      "productionEquivalentToCurrent": "yes until Stage 5 repair intentionally changed production",
+      "laterSuperseded": "no"
+    },
+    {
+      "stage": "Stage 5",
+      "commit": "44d5e1d3818b400df0f7a36bf17216d04345add6 per Stage8A baseline",
+      "productionChanging": true,
+      "artifactOnly": false,
+      "productionEquivalentToCurrent": "transactionality source files unchanged after Stage 5 per Stage8A; standalone later regenerated by Stage7 router repair",
+      "laterSuperseded": "no for transactionality, yes for standalone bundle hashes"
+    },
+    {
+      "stage": "Stage 6",
+      "commit": "post-Stage5 production-equivalent per update-08-stage-06-verification.json",
+      "productionChanging": false,
+      "artifactOnly": true,
+      "productionEquivalentToCurrent": "yes for transactionality source files; Stage7 router only changed router/standalone",
+      "laterSuperseded": "compatibility deferred resolved by Stage7"
+    },
+    {
+      "stage": "Stage 7 original",
+      "commit": "c16c9c14c1fe0233d9bb74b94824410915315a00",
+      "productionChanging": false,
+      "artifactOnly": true,
+      "productionEquivalentToCurrent": "no for router runtime after later repair; historical failure only",
+      "laterSuperseded": "yes by router repair + final revalidation"
+    },
+    {
+      "stage": "Stage 7 router repair",
+      "commit": "between original Stage7 and final 0328180e",
+      "productionChanging": true,
+      "artifactOnly": false,
+      "productionEquivalentToCurrent": "yes; final revalidation controls",
+      "laterSuperseded": "intermediate status superseded by final revalidation"
+    },
+    {
+      "stage": "Stage 7 final revalidation",
+      "commit": "0328180ed6331e9ea935a4795c3064cc92930af6",
+      "productionChanging": false,
+      "artifactOnly": true,
+      "productionEquivalentToCurrent": "yes; current main since Stage8A changed only artifacts/checksums",
+      "laterSuperseded": "no"
+    },
+    {
+      "stage": "Stage 8A",
+      "commit": "8eadf7f6d91ed072763542ddc5c1dc193b1bd243",
+      "productionChanging": false,
+      "artifactOnly": true,
+      "productionEquivalentToCurrent": "yes; compare to current shows artifacts/checksums only",
+      "laterSuperseded": "no"
+    },
+    {
+      "stage": "Stage 8B regenerated",
+      "commit": "475acbc88c55d07051a67db872cc91a9021c4047 inferred by report",
+      "productionChanging": false,
+      "artifactOnly": true,
+      "productionEquivalentToCurrent": "yes; historical regenerated ledger only",
+      "laterSuperseded": "yes by this final audit"
+    },
+    {
+      "stage": "Stage 8C",
+      "commit": "current main includes 8C artifacts at aa626097...",
+      "productionChanging": false,
+      "artifactOnly": true,
+      "productionEquivalentToCurrent": "yes; supporting evidence only until short revalidation after this commit",
+      "laterSuperseded": "no, but requires post-8B revalidation"
+    }
+  ],
+  "timeoutDeferredAudit": [
+    {
+      "item": "Stage 1 sixth extreme 5,778 canonical vector timeout",
+      "classification": "RESOLVED_LATER",
+      "evidence": "Stage 1 replacement 5,778 discriminator PASS; Stage 6 canonical/reference checks PASS; Stage 7 packaged consumer canonical present_same PASS."
+    },
+    {
+      "item": "Stage 2A NOT_RUN failure/rollback tests",
+      "classification": "OUT_OF_SCOPE",
+      "evidence": "Stage 2A was inventory-only and explicitly did not run failure probing; Stages 3-7 executed the failure/rollback evidence."
+    },
+    {
+      "item": "Stage 2A unresolved working-tree / preamble / standalone identity",
+      "classification": "RESOLVED_LATER",
+      "evidence": "Stage 3+4 characterize preamble/failure state; Stage 7 final real standalone/Chromium verification PASS; archive lacks .git but GitHub main SHA/tree verified."
+    },
+    {
+      "item": "Stage 3 one unresolved Japanese arena-length case among 8 natural paths",
+      "classification": "RESOLVED_LATER",
+      "evidence": "Stage 4A confirmed 9 natural failure paths; Stage 6 post-fix reports all 9 natural failures neutral."
+    },
+    {
+      "item": "Stage 4B/4C/4D historical missing Stage-3 blocker and READY=no",
+      "classification": "SUPERSEDED",
+      "evidence": "Stage-4 Closure loaded Stage 3/4A-4D, verified production equivalence, and returned READY_FOR_STAGE_5."
+    },
+    {
+      "item": "Stage 4C legacy instrumentation gaps / no global random witness patch",
+      "classification": "OUT_OF_SCOPE_OR_RESOLVED_LATER",
+      "evidence": "Stage 4C deliberately avoided unsafe global patching; Stage 6 replay uses post-fix test-only replay and finds no leakage."
+    },
+    {
+      "item": "Stage 5 test:compatibility timeout / TAP header only",
+      "classification": "RESOLVED_LATER",
+      "evidence": "Stage 5 did not count it as PASS; Stage 7 reports compatibility PASS 12/12 in ~250.8s."
+    },
+    {
+      "item": "Stage 5 local browser/standalone blocked and Worker emulation not used",
+      "classification": "RESOLVED_LATER",
+      "evidence": "Stage 7 final uses real Chromium 151 standalone unminified+minified PASS and byte-reproducible esbuild 0.28.2 bundles."
+    },
+    {
+      "item": "Stage 6 compatibility deferred to Stage 7",
+      "classification": "RESOLVED_LATER",
+      "evidence": "Stage 7 compatibility PASS and Stage 7 final revalidation package/router/standalone PASS."
+    },
+    {
+      "item": "Stage 7 original direct module Worker/file protocol/Node18/rebuild blockers",
+      "classification": "SUPERSEDED_OR_OUT_OF_SCOPE",
+      "evidence": "The controlling Stage 7 result is after router repair; direct published-module Worker remained an infrastructure limitation but shipped worker-backed standalone was proven in real Chromium."
+    },
+    {
+      "item": "Stage 7 original router/standalone FAIL",
+      "classification": "SUPERSEDED",
+      "evidence": "Router repair changed production; final Stage 7 revalidation result is CROSS_ENVIRONMENT_VERIFIED_AFTER_ROUTER_REPAIR."
+    },
+    {
+      "item": "Stage 8B regenerated ledger READY=no",
+      "classification": "SUPERSEDED",
+      "evidence": "This final Stage 8B evidence audit supersedes it while retaining it as historical provenance."
+    },
+    {
+      "item": "Stage 8C release checksum script policy warning",
+      "classification": "STILL_OPEN_NON_BLOCKING_FOR_8B",
+      "evidence": "Raw SHA256SUMS verifies after Unicode filename normalization; scripts/checksums.mjs policy mismatch remains warning for Stage 8D policy gate."
+    }
+  ],
+  "noFakePassAudit": {
+    "status": "PASS",
+    "findings": [
+      "TAP header without completed subtests in Stage 5/6 compatibility is explicitly not counted as PASS.",
+      "Killed/timeout/browser-blocked/worker-emulation paths are classified as DEFERRED, BLOCKED, or not-evidence, not PASS.",
+      "Stage 7 final uses real Chromium standalone evidence after router repair; old source-level explanation is not the controlling runtime proof.",
+      "Checksum manifests used as final evidence were actually verified; historical/superseded mismatches are not promoted to PASS.",
+      "Artifact existence alone is not used as acceptance evidence; each major claim maps to JSON/report/test evidence."
+    ]
+  },
+  "contradictionAudit": [
+    {
+      "issue": "Stage 7 pre-router-fix failure vs final revalidation",
+      "classification": "SUPERSEDED_ARTIFACT",
+      "resolution": "Old CROSS_ENVIRONMENT_VERIFICATION_FAILED evidence is historical; router repair is production change; final controlling result is CROSS_ENVIRONMENT_VERIFIED_AFTER_ROUTER_REPAIR."
+    },
+    {
+      "issue": "8 required natural failure paths vs 9 measured paths",
+      "classification": "BENIGN_PROVENANCE_DIFFERENCE",
+      "resolution": "Stage 3 used 8 natural paths and left one unresolved; Stage 4A expanded/confirmed 9 paths; Stage 6 verifies all 9 neutral post-fix."
+    },
+    {
+      "issue": "Historical READY=no in Stage 4B/4C/4D vs Stage-4 Closure READY",
+      "classification": "SUPERSEDED_ARTIFACT",
+      "resolution": "READY=no was correct before Stage 3 artifact/SHA alignment; closure performed unified synthesis and cleared it."
+    },
+    {
+      "issue": "Stage 4C legacy harness incompatibility vs Stage 6 replacement replay",
+      "classification": "BENIGN_PROVENANCE_DIFFERENCE",
+      "resolution": "Legacy harness did not fit post-fix generated body; Stage 6 test-only replay is the controlling post-fix evidence and reports no production failure."
+    },
+    {
+      "issue": "8B regenerated ledger vs Stage 8B final audit",
+      "classification": "SUPERSEDED_ARTIFACT",
+      "resolution": "Regenerated ledger remains provenance of missing original 8B; this final audit provides the controlling Stage 8B result."
+    },
+    {
+      "issue": "8C brokenLiteralArtifactReferences = 4",
+      "classification": "DOCUMENTATION_ONLY_FALSE_POSITIVE",
+      "resolution": "All four references are literal prefix/glob notation artifacts/update-08-stage-08b-* in regenerated files, not concrete missing paths."
+    },
+    {
+      "issue": "Root SHA256SUMS raw local check failed in uploaded ZIP before normalization",
+      "classification": "BENIGN_PROVENANCE_DIFFERENCE",
+      "resolution": "The ZIP exported the Hebrew Scroll source name as #U05...; checksum matches after extraction-only rename to the Unicode path already listed by root manifest."
+    },
+    {
+      "issue": "Stage 5 manifest mismatch on standalone bundles after Stage 7 router repair",
+      "classification": "SUPERSEDED_ARTIFACT",
+      "resolution": "Stage 5 manifest captured pre-router-repair generated bundles; Stage 7 final manifest is controlling for current standalone outputs and passes."
+    },
+    {
+      "issue": "Original Stage 7 manifest mismatch for run-stage-07-standalone-router-race.mjs after repair",
+      "classification": "SUPERSEDED_ARTIFACT",
+      "resolution": "Original Stage 7 evidence is historical failure; router-fix and final Stage 7 manifests pass."
+    }
+  ],
+  "brokenLiteralArtifactReferencesAudit": {
+    "stage8CReportedCount": 4,
+    "items": [
+      {
+        "source": "artifacts/update-08-stage-08b-report.md",
+        "reference": "artifacts/update-08-stage-08b-",
+        "classification": "SCANNER_FALSE_POSITIVE_PREFIX_GLOB",
+        "rationale": "Literal text is a prefix/glob notation for the historical missing Stage-8B family, not a concrete file path. Concrete Stage-8B regenerated files exist, and this final audit adds superseding concrete paths."
+      },
+      {
+        "source": "artifacts/update-08-stage-08b-evidence-ledger.json",
+        "reference": "artifacts/update-08-stage-08b-",
+        "classification": "SCANNER_FALSE_POSITIVE_PREFIX_GLOB",
+        "rationale": "Literal text is a prefix/glob notation for the historical missing Stage-8B family, not a concrete file path. Concrete Stage-8B regenerated files exist, and this final audit adds superseding concrete paths."
+      },
+      {
+        "source": "artifacts/update-08-stage-08b-evidence-ledger.json",
+        "reference": "artifacts/update-08-stage-08b-",
+        "classification": "SCANNER_FALSE_POSITIVE_PREFIX_GLOB",
+        "rationale": "Literal text is a prefix/glob notation for the historical missing Stage-8B family, not a concrete file path. Concrete Stage-8B regenerated files exist, and this final audit adds superseding concrete paths."
+      },
+      {
+        "source": "artifacts/update-08-stage-08b-evidence-ledger.json",
+        "reference": "artifacts/update-08-stage-08b-",
+        "classification": "SCANNER_FALSE_POSITIVE_PREFIX_GLOB",
+        "rationale": "Literal text is a prefix/glob notation for the historical missing Stage-8B family, not a concrete file path. Concrete Stage-8B regenerated files exist, and this final audit adds superseding concrete paths."
+      }
+    ],
+    "blockingMissingConcretePaths": [],
+    "result": "PASS_FALSE_POSITIVES_ONLY"
+  },
+  "acceptanceTraceabilityMatrix": [
+    {
+      "requirement": "successful semantics baseline",
+      "status": "PASS",
+      "artifactPath": "verification/update8/stage-01-baseline.json; artifacts/update-08-stage-03-reproduction.json; artifacts/update-08-stage-06-verification.json",
+      "specificEvidence": "Stage 1 5/5 representative vectors PASS + replacement 5778 discriminator PASS; Stage 3 baseline semantic sanity all pass; Stage 6 reference/canonical checks PASS."
+    },
+    {
+      "requirement": "construction inventory",
+      "status": "PASS",
+      "artifactPath": "verification/update8/stage-02a-construction-inventory.json",
+      "specificEvidence": "28 semantic authoritative constructors; 56 direct physical public implementations; 84 generated deployment copies; unresolved items non-blocking and later covered."
+    },
+    {
+      "requirement": "shared-state inventory",
+      "status": "PASS",
+      "artifactPath": "verification/update8/stage-02b-shared-state-inventory.json",
+      "specificEvidence": "Primary generated shared arena risk and identity/counter risk catalogued; Stage 3 measurement contract ready."
+    },
+    {
+      "requirement": "natural leak reproduction",
+      "status": "PASS",
+      "artifactPath": "artifacts/update-08-stage-03-reproduction.json",
+      "specificEvidence": "8 natural failure paths tested, 7 leaking, 1 unresolved; confirmed arena and known-key identity publication evidence."
+    },
+    {
+      "requirement": "repeated accumulation",
+      "status": "PASS",
+      "artifactPath": "artifacts/update-08-stage-04a-history.json",
+      "specificEvidence": "9 confirmed natural paths; 100/1000 campaigns show +1200/+12000 retained arena tail pre-fix."
+    },
+    {
+      "requirement": "history/order dependence",
+      "status": "PASS",
+      "artifactPath": "artifacts/update-08-stage-04a-history.json",
+      "specificEvidence": "Alternating, A→FAIL→A, fresh-process, permutations and success soak recorded; semantics stable but state drifts pre-fix."
+    },
+    {
+      "requirement": "nested ownership",
+      "status": "PASS",
+      "artifactPath": "artifacts/update-08-stage-04b-nested-isolation.json; artifacts/update-08-stage-06-verification.json",
+      "specificEvidence": "Nested failure and ownership risks classified pre-fix; Stage 6 inner/outer preservation accepted."
+    },
+    {
+      "requirement": "fault-window localization",
+      "status": "PASS",
+      "artifactPath": "artifacts/update-08-stage-04c-fault-injection.json",
+      "specificEvidence": "GEN_WRAP_ENTRY zero-delta; post-reservation windows +12/+24/+27/+33 pre-fix; defect families isolated."
+    },
+    {
+      "requirement": "publication/cache audit",
+      "status": "PASS",
+      "artifactPath": "artifacts/update-08-stage-04d-publication-cache.json",
+      "specificEvidence": "Partial this/cache/registry/runtimes classified; generated arena and identity metadata are the two actual defects; cache/patch surfaces non-target."
+    },
+    {
+      "requirement": "two defect families isolated",
+      "status": "PASS",
+      "artifactPath": "artifacts/update-08-stage-04-synthesis.json",
+      "specificEvidence": "STATE:generated:shared-invocation-arena and STATE:generated:identity-map-and-counter are the only Stage-5 targets."
+    },
+    {
+      "requirement": "Stage-5 rollback implementation",
+      "status": "PASS",
+      "artifactPath": "artifacts/update-08-stage-05-fix.json; artifacts/update-08-stage-05-report.md",
+      "specificEvidence": "FIX_IMPLEMENTED; arena entry-relative rollback and identity journal/counter compensation."
+    },
+    {
+      "requirement": "arena transactionality fixed",
+      "status": "PASS",
+      "artifactPath": "artifacts/update-08-stage-05-transactionality.json; artifacts/update-08-stage-06-verification.json",
+      "specificEvidence": "Failure arena deltas zero post-fix; long 5000 campaign all failed keys absent."
+    },
+    {
+      "requirement": "identity transactionality fixed",
+      "status": "PASS",
+      "artifactPath": "artifacts/update-08-stage-05-fix.json; artifacts/update-08-stage-06-verification.json",
+      "specificEvidence": "Failed new identity keys absent; identity sequence/collision/preexisting mappings preserved."
+    },
+    {
+      "requirement": "exception contracts preserved",
+      "status": "PASS",
+      "artifactPath": "artifacts/update-08-stage-06-verification.json; artifacts/update-08-stage-08a-anti-cleanup.json",
+      "specificEvidence": "Stage 6 confirms contracts; Stage 8A confirms same exception object is rethrown in failure path."
+    },
+    {
+      "requirement": "success semantics preserved",
+      "status": "PASS",
+      "artifactPath": "artifacts/update-08-stage-05-fix.json; artifacts/update-08-stage-06-verification.json",
+      "specificEvidence": "Reference oracle/canonical vectors pass; public API unchanged."
+    },
+    {
+      "requirement": "independent Stage-6 verification",
+      "status": "PASS",
+      "artifactPath": "artifacts/update-08-stage-06-verification.json",
+      "specificEvidence": "FIX_INDEPENDENTLY_VERIFIED; acceptance.allRequiredStage6AcceptanceCriteriaMet true."
+    },
+    {
+      "requirement": "5000 failure campaign",
+      "status": "PASS",
+      "artifactPath": "artifacts/update-08-stage-06-verification-core.json",
+      "specificEvidence": "longCampaign.count=5000; allFailedKeysAbsent=true."
+    },
+    {
+      "requirement": "nested depth verification",
+      "status": "PASS",
+      "artifactPath": "artifacts/update-08-stage-06-report.md; artifacts/update-08-stage-06-verification.json",
+      "specificEvidence": "Stage 6 report records nesting depths 1/2/3/5/10 and acceptance for inner/outer failure preservation."
+    },
+    {
+      "requirement": "real browser verification",
+      "status": "PASS",
+      "artifactPath": "artifacts/update-08-stage-07-cross-environment.json; artifacts/update-08-stage-07-final-revalidation.json",
+      "specificEvidence": "Browser authoritative and fast PASS; real Chromium standalone final PASS after router repair."
+    },
+    {
+      "requirement": "real Worker verification",
+      "status": "PASS",
+      "artifactPath": "artifacts/update-08-stage-07-final-revalidation.json",
+      "specificEvidence": "Worker-backed standalone unminified and minified real Chromium PASS after router repair."
+    },
+    {
+      "requirement": "standalone/minified verification",
+      "status": "PASS",
+      "artifactPath": "artifacts/update-08-stage-07-final-revalidation.json",
+      "specificEvidence": "Committed bundles match dedicated CI artifact; unminified/minified PASS; byte reproducible."
+    },
+    {
+      "requirement": "fast compatibility",
+      "status": "PASS",
+      "artifactPath": "artifacts/update-08-stage-07-cross-environment.json",
+      "specificEvidence": "fast.compatibility PASS 12/12 and fast history PASS; retained by final revalidation because fast core unchanged."
+    },
+    {
+      "requirement": "router verification after repair",
+      "status": "PASS",
+      "artifactPath": "artifacts/update-08-stage-07-final-revalidation.json",
+      "specificEvidence": "Router + standalone static 31/31 PASS; race no longer reproduced in real Chromium."
+    },
+    {
+      "requirement": "npm package/tarball consumer",
+      "status": "PASS",
+      "artifactPath": "artifacts/update-08-stage-07-final-revalidation.json; artifacts/update-08-stage-08c-package-audit.json",
+      "specificEvidence": "npm pack PASS; clean tarball consumer import PASS, 98 exports, postFailureRecovery PASS."
+    },
+    {
+      "requirement": "reproducible standalone build",
+      "status": "PASS",
+      "artifactPath": "artifacts/update-08-stage-07-final-revalidation.json",
+      "specificEvidence": "Dedicated CI esbuild 0.28.2 byte reproducible; committed bundle hashes match artifact."
+    },
+    {
+      "requirement": "anti-cleanup audit",
+      "status": "PASS",
+      "artifactPath": "artifacts/update-08-stage-08a-anti-cleanup.json",
+      "specificEvidence": "ANTI_CLEANUP_AUDIT_PASS; no architectural cleanup/redesign/non-target changes."
+    }
+  ],
+  "regressionObligationClosure": [
+    {
+      "obligation": "all Stage-3 natural reproductions",
+      "status": "PASS",
+      "evidenceArtifact": "artifacts/update-08-stage-06-verification.json",
+      "evidence": "legacyStage3HarnessPostFix: 8 tested, 0 leaking, 8 zero-delta; Stage 6 naturalFailures cover 9 final paths."
+    },
+    {
+      "obligation": "all Stage-4A 100-failure campaigns",
+      "status": "PASS",
+      "evidenceArtifact": "artifacts/update-08-stage-05-transactionality.json; artifacts/update-08-stage-06-verification.json",
+      "evidence": "Stage 5 repeated counts include 1000; Stage 6 severalFailuresBeforeSuccess includes 100 and long campaign."
+    },
+    {
+      "obligation": "all Stage-4A 1000-failure campaigns",
+      "status": "PASS",
+      "evidenceArtifact": "artifacts/update-08-stage-05-transactionality.json; artifacts/update-08-stage-06-verification.json",
+      "evidence": "natural.repeated count=1000; Stage 6 severalFailuresBeforeSuccess 1000 all failed keys absent."
+    },
+    {
+      "obligation": "alternating success/failure",
+      "status": "PASS",
+      "evidenceArtifact": "artifacts/update-08-stage-06-verification.json",
+      "evidence": "alternating.failures=250; accepted."
+    },
+    {
+      "obligation": "A → FAIL → A",
+      "status": "PASS",
+      "evidenceArtifact": "artifacts/update-08-stage-06-verification-core.json",
+      "evidence": "aFailA failureArenaDelta=0 across tracked cases."
+    },
+    {
+      "obligation": "fresh-process dirty-vs-clean comparisons",
+      "status": "PASS",
+      "evidenceArtifact": "artifacts/update-08-stage-06-verification.json",
+      "evidence": "freshProcess clean/dirty failedKeysAbsent true."
+    },
+    {
+      "obligation": "permutation / same-multiset-different-order",
+      "status": "PASS",
+      "evidenceArtifact": "artifacts/update-08-stage-06-verification.json",
+      "evidence": "permutations allFailedKeysAbsent true; randomSequence failedOnlyKeysAbsent true."
+    },
+    {
+      "obligation": "post-failure success soak",
+      "status": "PASS",
+      "evidenceArtifact": "artifacts/update-08-stage-05-fix.json; artifacts/update-08-stage-06-verification.json",
+      "evidence": "success semantics unchanged; cold/warm failures then success equal reference."
+    },
+    {
+      "obligation": "Stage-4A zero-delta success control",
+      "status": "PASS",
+      "evidenceArtifact": "artifacts/update-08-stage-05-fix.json; artifacts/update-08-stage-06-verification.json",
+      "evidence": "acceptance natural/success semantics; zero accumulation post-fix."
+    },
+    {
+      "obligation": "Stage-4B nested failure cases",
+      "status": "PASS",
+      "evidenceArtifact": "artifacts/update-08-stage-06-verification.json",
+      "evidence": "innerFailurePreservesOuter and outerFailureRestoresCallerEntry true."
+    },
+    {
+      "obligation": "inner fail / outer continue",
+      "status": "PASS",
+      "evidenceArtifact": "artifacts/update-08-stage-06-verification.json",
+      "evidence": "acceptance.innerFailurePreservesOuter true."
+    },
+    {
+      "obligation": "inner fail / outer fail",
+      "status": "PASS",
+      "evidenceArtifact": "artifacts/update-08-stage-06-verification.json",
+      "evidence": "outer failure restoration accepted; LIFO/nested rollback in report."
+    },
+    {
+      "obligation": "nesting depths 1/2/3/5/10",
+      "status": "PASS",
+      "evidenceArtifact": "artifacts/update-08-stage-06-report.md",
+      "evidence": "Report section 22 states nesting depths covered where applicable."
+    },
+    {
+      "obligation": "multi-instance isolation",
+      "status": "PASS",
+      "evidenceArtifact": "artifacts/update-08-stage-06-verification.json",
+      "evidence": "multiInstance AStableAfterFailure and BStableAfterFailure true."
+    },
+    {
+      "obligation": "preexisting/outer state preservation",
+      "status": "PASS",
+      "evidenceArtifact": "artifacts/update-08-stage-06-verification.json; artifacts/update-08-stage-08a-anti-cleanup.json",
+      "evidence": "preexisting identities and outer state preserved; no broad cleanup."
+    },
+    {
+      "obligation": "Stage-4C checkpoint faults",
+      "status": "PASS",
+      "evidenceArtifact": "artifacts/update-08-stage-06-verification.json",
+      "evidence": "335 injected failures; base 35 checkpoints; all restored; GEN_WRAP_ENTRY zero."
+    },
+    {
+      "obligation": "Stage-4D publication/cache/identity readers",
+      "status": "PASS",
+      "evidenceArtifact": "artifacts/update-08-stage-06-verification.json",
+      "evidence": "publication/cache replay PASS; cold/warm same success reference equal."
+    },
+    {
+      "obligation": "independent reference oracle",
+      "status": "PASS",
+      "evidenceArtifact": "artifacts/update-08-stage-06-verification.json",
+      "evidence": "reference.oracle PASS 19/19, 0 fail, 0 skip."
+    },
+    {
+      "obligation": "existing cache/reentrancy/runtime-patching regression suites",
+      "status": "PASS",
+      "evidenceArtifact": "artifacts/update-08-stage-06-verification.json",
+      "evidence": "npm/focused/cacheEpoch regressions PASS with expected skips only."
+    }
+  ],
+  "testCountAudit": [
+    {
+      "surface": "reference oracle",
+      "count": "Stage 1 12/12 PASS; Stage 4D/5/6 19/19 PASS",
+      "skipExplanation": "No skip in Stage 6 reference oracle."
+    },
+    {
+      "surface": "npm test",
+      "count": "Stage 5/6: 192 pass, 0 fail, 4 skip; router-fix local: 195 pass, 0 fail, 4 skip",
+      "skipExplanation": "Four skips are pre-existing/expected per Stage 6; no new regression-hiding skip identified."
+    },
+    {
+      "surface": "runtime-patching",
+      "count": "Stage 4B/4C focused evidence 36 PASS / 0 FAIL / 4 SKIP; Stage 6 focused core 40 PASS / 0 FAIL / 4 SKIP",
+      "skipExplanation": "Expected focused-suite skips retained; not used to hide failed construction regression."
+    },
+    {
+      "surface": "cache",
+      "count": "Stage 6 cacheEpoch 7/7 PASS; Stage 4D cache/publication replay PASS",
+      "skipExplanation": "No cache skip blocking closure."
+    },
+    {
+      "surface": "router",
+      "count": "Router repair matrix 28/28 PASS; final router+standalone static 31/31 PASS",
+      "skipExplanation": "Original router failure superseded by production repair and final real-Chromium revalidation."
+    },
+    {
+      "surface": "fault injection",
+      "count": "Stage 4C 35 pre-fix checkpoints; Stage 6 335 injected failures restored",
+      "skipExplanation": "Legacy Stage4C harness incompatibility post-fix is superseded by Stage6 replacement replay, not a skip."
+    },
+    {
+      "surface": "compatibility",
+      "count": "Stage 7 compatibility PASS 12/12",
+      "skipExplanation": "Stage 5/6 timeout/deferred was not counted as PASS and is resolved by Stage 7."
+    },
+    {
+      "surface": "browser",
+      "count": "Stage 7 browser authoritative PASS; browser fast PASS; final real Chromium standalone PASS",
+      "skipExplanation": "Local browser blockers were not converted to PASS."
+    },
+    {
+      "surface": "Worker",
+      "count": "Stage 7 final worker-backed standalone unminified PASS and minified PASS in Chromium 151",
+      "skipExplanation": "Worker emulation was explicitly not accepted as semantic evidence."
+    },
+    {
+      "surface": "standalone",
+      "count": "Stage 7 standalone static 3/3 PASS; final byte reproducibility PASS for unminified/minified",
+      "skipExplanation": "Stage 5 pre-router standalone hashes superseded by Stage 7 final hashes."
+    }
+  ],
+  "evidenceFileSanity": {
+    "machineReadableArtifacts": [
+      {
+        "path": "verification/update8/stage-01-baseline.json",
+        "exists": true,
+        "size": 6495,
+        "json": "PASS",
+        "status": "CLOSED"
+      },
+      {
+        "path": "verification/update8/stage-02a-construction-inventory.json",
+        "exists": true,
+        "size": 224786,
+        "json": "PASS",
+        "status": "CLOSED"
+      },
+      {
+        "path": "verification/update8/stage-02b-shared-state-inventory.json",
+        "exists": true,
+        "size": 17223,
+        "json": "PASS",
+        "status": "READY_FOR_STAGE_3_STATE_SIDE = yes"
+      },
+      {
+        "path": "artifacts/update-08-stage-03-reproduction.json",
+        "exists": true,
+        "size": 21234,
+        "json": "PASS"
+      },
+      {
+        "path": "artifacts/update-08-stage-04a-history.json",
+        "exists": true,
+        "size": 854497,
+        "json": "PASS"
+      },
+      {
+        "path": "artifacts/update-08-stage-04b-nested-isolation.json",
+        "exists": true,
+        "size": 7799,
+        "json": "PASS"
+      },
+      {
+        "path": "artifacts/update-08-stage-04c-fault-injection.json",
+        "exists": true,
+        "size": 259795,
+        "json": "PASS"
+      },
+      {
+        "path": "artifacts/update-08-stage-04d-arena-publication.json",
+        "exists": true,
+        "size": 7893,
+        "json": "PASS"
+      },
+      {
+        "path": "artifacts/update-08-stage-04d-publication-cache.json",
+        "exists": true,
+        "size": 48341,
+        "json": "PASS"
+      },
+      {
+        "path": "artifacts/update-08-stage-04-synthesis.json",
+        "exists": true,
+        "size": 17614,
+        "json": "PASS",
+        "result": "READY_FOR_STAGE_5"
+      },
+      {
+        "path": "artifacts/update-08-stage-05-fix.json",
+        "exists": true,
+        "size": 26004,
+        "json": "PASS",
+        "result": "FIX_IMPLEMENTED"
+      },
+      {
+        "path": "artifacts/update-08-stage-05-transactionality.json",
+        "exists": true,
+        "size": 23404,
+        "json": "PASS"
+      },
+      {
+        "path": "artifacts/update-08-stage-05-fault-injection.json",
+        "exists": true,
+        "size": 191636,
+        "json": "PASS"
+      },
+      {
+        "path": "artifacts/update-08-stage-06-verification.json",
+        "exists": true,
+        "size": 52197,
+        "json": "PASS",
+        "result": "FIX_INDEPENDENTLY_VERIFIED"
+      },
+      {
+        "path": "artifacts/update-08-stage-06-verification-core.json",
+        "exists": true,
+        "size": 32414,
+        "json": "PASS",
+        "result": "PASS"
+      },
+      {
+        "path": "artifacts/update-08-stage-07-cross-environment.json",
+        "exists": true,
+        "size": 17442,
+        "json": "PASS",
+        "result": "CROSS_ENVIRONMENT_VERIFICATION_FAILED"
+      },
+      {
+        "path": "artifacts/update-08-stage-07-router-fix.json",
+        "exists": true,
+        "size": 3130,
+        "json": "PASS",
+        "status": "SOURCE_FIX_AND_CANONICAL_STANDALONE_VERIFIED_AWAITING_COMMIT_AND_FOCUSED_STAGE7_RERUN",
+        "stage7Result": "CROSS_ENVIRONMENT_VERIFICATION_FAILED_UNTIL_GENERATED_BUNDLES_COMMITTED_AND_FOCUSED_RERUN"
+      },
+      {
+        "path": "artifacts/update-08-stage-07-final-revalidation.json",
+        "exists": true,
+        "size": 3169,
+        "json": "PASS",
+        "stage7Result": "CROSS_ENVIRONMENT_VERIFIED_AFTER_ROUTER_REPAIR"
+      },
+      {
+        "path": "artifacts/update-08-stage-08a-anti-cleanup.json",
+        "exists": true,
+        "size": 14293,
+        "json": "PASS",
+        "result": "ANTI_CLEANUP_AUDIT_PASS",
+        "stage8AResult": "STAGE_8A_RESULT = ANTI_CLEANUP_AUDIT_PASS"
+      },
+      {
+        "path": "artifacts/update-08-stage-08c-package-audit.json",
+        "exists": true,
+        "size": 6171,
+        "json": "PASS",
+        "result": "PACKAGE_AND_ARTIFACT_AUDIT_PASS",
+        "readyForStage8DFrom8C": true
+      }
+    ],
+    "verifiedManifests": [
+      {
+        "manifest": "verification/update8/delta-sha256sums.txt",
+        "cwd": ".",
+        "exitCode": 0,
+        "status": "PASS",
+        "tail": "verification/update8/stage-01-snapshot-verification.txt: OK\nverification/update8/stage-01-year-5778.json: OK\nverification/update8/stage-02a-construction-inventory.json: OK\nverification/update8/stage-02a-construction-report.md: OK\nverification/update8/stage-02b-shared-state-inventory.json: OK\nverification/update8/stage-02b-shared-state-report.md: OK"
+      },
+      {
+        "manifest": "artifacts/update-08-stage-03-sha256sums.txt",
+        "cwd": ".",
+        "exitCode": 0,
+        "status": "PASS",
+        "tail": "verification/update8/run-stage-03-snapshot-reproduction.mjs: OK\nverification/update8/stage-03-snapshot-schema.json: OK\nartifacts/update-08-stage-03-reproduction.json: OK\nartifacts/update-08-stage-03-report.md: OK"
+      },
+      {
+        "manifest": "artifacts/update-08-stage-04a-sha256sums.txt",
+        "cwd": ".",
+        "exitCode": 0,
+        "status": "PASS",
+        "tail": "artifacts/update-08-stage-04a-history.json: OK\nartifacts/update-08-stage-04a-report.md: OK"
+      },
+      {
+        "manifest": "artifacts/update-08-stage-04b-sha256sums.txt",
+        "cwd": ".",
+        "exitCode": 0,
+        "status": "PASS",
+        "tail": "artifacts/update-08-stage-04b-nested-isolation.json: OK\nartifacts/update-08-stage-04b-report.md: OK\nartifacts/update-08-stage-04b-provenance.txt: OK"
+      },
+      {
+        "manifest": "artifacts/update-08-stage-04c-sha256sums.txt",
+        "cwd": ".",
+        "exitCode": 0,
+        "status": "PASS",
+        "tail": "artifacts/update-08-stage-04c-fault-injection.json: OK\nartifacts/update-08-stage-04c-success-sanity.json: OK\nartifacts/update-08-stage-04c-reference-oracle.log: OK\nartifacts/update-08-stage-04c-regression-tests.tap: OK\nartifacts/update-08-stage-04c-report.md: OK\nverification/update8/run-stage-04c-fault-injection.mjs: OK"
+      },
+      {
+        "manifest": "artifacts/update-08-stage-04d-sha256sums.txt",
+        "cwd": ".",
+        "exitCode": 0,
+        "status": "PASS",
+        "tail": "artifacts/update-08-stage-04d-success-sanity.json: OK\nartifacts/update-08-stage-04d-reference-oracle.log: OK\nartifacts/update-08-stage-04d-regression-tests.tap: OK\nartifacts/update-08-stage-04d-report.md: OK\nverification/update8/run-stage-04d-publication-cache.mjs: OK\nverification/update8/run-stage-04d-arena-publication.mjs: OK"
+      },
+      {
+        "manifest": "artifacts/update-08-stage-04-synthesis-sha256sums.txt",
+        "cwd": ".",
+        "exitCode": 0,
+        "status": "PASS",
+        "tail": "artifacts/update-08-stage-04-synthesis.json: OK\nartifacts/update-08-stage-04-synthesis-report.md: OK"
+      },
+      {
+        "manifest": "artifacts/update-08-stage-06-sha256sums.txt",
+        "cwd": ".",
+        "exitCode": 0,
+        "status": "PASS",
+        "tail": "artifacts/stage6-logs/stage06-focused-regressions-core.tap: OK\nartifacts/stage6-logs/stage06-cache-epoch.tap: OK\nartifacts/stage6-logs/stage06-compatibility.tap: OK\nartifacts/stage6-logs/stage06-compatibility-status.json: OK\nartifacts/stage6-logs/stage06-legacy-stage04c-incompatibility.log: OK\nartifacts/stage6-logs/stage5-transactionality-selftest.tap: OK"
+      },
+      {
+        "manifest": "artifacts/update-08-stage-07-router-fix-sha256sums.txt",
+        "cwd": ".",
+        "exitCode": 0,
+        "status": "PASS",
+        "tail": "artifacts/update-08-stage-07-router-fix-report.md: OK\nartifacts/update-08-stage-07-router-fix-router.tap: OK\nartifacts/update-08-stage-07-router-fix-standalone-build.tap: OK\nartifacts/update-08-stage-07-router-fix-standalone-router-race.json: OK\nartifacts/update-08-stage-07-router-fix-standalone-runtime.log: OK\nartifacts/update-08-stage-07-router-fix-supply-chain.log: OK"
+      },
+      {
+        "manifest": "artifacts/update-08-stage-07-final-sha256sums.txt",
+        "cwd": ".",
+        "exitCode": 0,
+        "status": "PASS",
+        "tail": "./artifacts/update-08-stage-07-final-node-public.tap: OK\n./artifacts/update-08-stage-07-final-node-public.json: OK\n./artifacts/update-08-stage-07-final-router-standalone.tap: OK\n./artifacts/update-08-stage-07-final-package.json: OK\n./artifacts/update-08-stage-07-final-revalidation.json: OK\n./artifacts/update-08-stage-07-final-revalidation-report.md: OK"
+      },
+      {
+        "manifest": "update-08-stage-08a-sha256sums.txt",
+        "cwd": "artifacts",
+        "exitCode": 0,
+        "status": "PASS",
+        "tail": "update-08-stage-08a-anti-cleanup.json: OK\nupdate-08-stage-08a-report.md: OK"
+      },
+      {
+        "manifest": "artifacts/update-08-stage-08b-sha256sums.txt",
+        "cwd": ".",
+        "exitCode": 0,
+        "status": "PASS",
+        "tail": "./artifacts/update-08-stage-08b-evidence-ledger.json: OK\n./artifacts/update-08-stage-08b-report.md: OK"
+      },
+      {
+        "manifest": "artifacts/update-08-stage-08c-sha256sums.txt",
+        "cwd": ".",
+        "exitCode": 0,
+        "status": "PASS",
+        "tail": "./artifacts/update-08-stage-08c-package-audit.json: OK\n./artifacts/update-08-stage-08c-report.md: OK"
+      },
+      {
+        "manifest": "SHA256SUMS.txt",
+        "cwd": ".",
+        "exitCode": 0,
+        "status": "PASS",
+        "tail": "./artifacts/update-08-stage-08b-evidence-ledger.json: OK\n./artifacts/update-08-stage-08b-report.md: OK\n./artifacts/update-08-stage-08b-sha256sums.txt: OK\n./artifacts/update-08-stage-08c-package-audit.json: OK\n./artifacts/update-08-stage-08c-report.md: OK\n./artifacts/update-08-stage-08c-sha256sums.txt: OK"
+      }
+    ],
+    "nonControllingSupersededManifestNotes": [
+      {
+        "manifest": "artifacts/update-08-stage-05-sha256sums.txt",
+        "status": "SUPERSEDED_PARTIAL_MISMATCH",
+        "reason": "Mismatches browser/standalone/pastafari-date.js and .min.js because Stage 7 router repair regenerated current standalone bundles. Stage 5 production-source evidence remains valid; Stage 7 final manifest controls current bundles."
+      },
+      {
+        "manifest": "artifacts/update-08-stage-07-sha256sums.txt",
+        "status": "SUPERSEDED_PARTIAL_MISMATCH",
+        "reason": "Mismatches verification/update8/run-stage-07-standalone-router-race.mjs after router repair. Original Stage 7 is historical failure evidence; router-fix/final manifests pass."
+      }
+    ]
+  },
+  "stage8A": "STAGE_8A_RESULT = ANTI_CLEANUP_AUDIT_PASS; READY_FOR_STAGE_8D_FROM_8A = yes",
+  "stage8C": "STAGE_8C_RESULT = PACKAGE_AND_ARTIFACT_AUDIT_PASS; READY_FOR_STAGE_8D_FROM_8C = yes; short revalidation required after this Stage-8B final commit",
+  "blockers": [],
+  "warnings": [
+    "CHECKSUM_POLICY_SCRIPT_REJECTS_ARTIFACT_ENTRIES remains a Stage-8D policy warning if scripts/checksums.mjs verify is required.",
+    "Stage 8C must be revalidated after committing these new Stage-8B final artifacts."
+  ],
+  "result": "EVIDENCE_AUDIT_PASS",
+  "stage8BResult": "STAGE_8B_RESULT = EVIDENCE_AUDIT_PASS",
+  "readyForStage8DFrom8B": true,
+  "readyMarker": "READY_FOR_STAGE_8D_FROM_8B = yes",
+  "stage8BFinalChecksumManifest": {
+    "path": "artifacts/update-08-stage-08b-final-sha256sums.txt",
+    "verification": {
+      "manifest": "artifacts/update-08-stage-08b-final-sha256sums.txt",
+      "cwd": ".",
+      "exitCode": 0,
+      "status": "PASS",
+      "tail": "./artifacts/update-08-stage-08b-evidence-audit.json: OK\n./artifacts/update-08-stage-08b-final-report.md: OK"
+    }
+  },
+  "rootManifestAfterStage8B": {
+    "path": "SHA256SUMS.txt",
+    "verification": {
+      "manifest": "SHA256SUMS.txt",
+      "cwd": ".",
+      "exitCode": 0,
+      "status": "PASS",
+      "tail": "./artifacts/update-08-stage-08c-package-audit.json: OK\n./artifacts/update-08-stage-08c-report.md: OK\n./artifacts/update-08-stage-08c-sha256sums.txt: OK\n./artifacts/update-08-stage-08b-evidence-audit.json: OK\n./artifacts/update-08-stage-08b-final-report.md: OK\n./artifacts/update-08-stage-08b-final-sha256sums.txt: OK"
+    },
+    "entriesAdded": [
+      "./artifacts/update-08-stage-08b-evidence-audit.json",
+      "./artifacts/update-08-stage-08b-final-report.md",
+      "./artifacts/update-08-stage-08b-final-sha256sums.txt"
+    ]
+  }
+}
