@@ -1,0 +1,102 @@
+{
+  "stage": "Update 8 Stage 8B",
+  "kind": "regenerated missing evidence-ledger artifact",
+  "repository": "https://github.com/Sargon17-Green/pastafari-calendar",
+  "branch": "main",
+  "generatedAt": "2026-08-23T00:16:00Z",
+  "generationReason": "Stage 8C found no committed artifacts/update-08-stage-08b-* files in current main; this artifact reconstructs a conservative Stage 8B ledger so final closure no longer depends on an absent reference.",
+  "currentMainAtRegeneration": {
+    "commit": "475acbc88c55d07051a67db872cc91a9021c4047",
+    "tree": "5b8d587dc48a7916b23fdbc48f85e3cecb3a21ca",
+    "packageVersion": "1.3.0"
+  },
+  "scope": {
+    "productionChangeAllowed": false,
+    "productionFilesChangedDuringStage8B": "none",
+    "directFilesystemVerification": "not performed in this regenerated ledger; no checkout/worktree was available here",
+    "role": "bridge artifact between Stage 8A anti-cleanup audit and a required Stage 8C rerun",
+    "nonGoal": "does not certify global SHA256SUMS, npm pack, tarball contents, or leakage scan as PASS"
+  },
+  "inputsUsed": [
+    {
+      "path": "artifacts/update-08-stage-08a-report.md",
+      "classification": "FINAL",
+      "factsUsed": [
+        "STAGE_8A_RESULT = ANTI_CLEANUP_AUDIT_PASS",
+        "READY_FOR_STAGE_8D_FROM_8A = yes",
+        "production files changed during Stage 8A: none",
+        "Stage 8A audited commit 8eadf7f6d91ed072763542ddc5c1dc193b1bd243"
+      ]
+    },
+    {
+      "path": "artifacts/update-08-stage-07-final-revalidation.json",
+      "classification": "FINAL",
+      "factsUsed": [
+        "STAGE_7_RESULT = CROSS_ENVIRONMENT_VERIFIED_AFTER_ROUTER_REPAIR",
+        "readyForStage8 = true",
+        "productionFilesChangedByFinalRevalidation = []",
+        "standalone byte reproducibility PASS with esbuild 0.28.2",
+        "package/tarball consumer PASS in Stage 7 final evidence"
+      ]
+    },
+    {
+      "path": "artifacts/update-08-stage-08c-report.md and update-08-stage-08c-package-audit.json",
+      "classification": "FAILED_AUDIT_EVIDENCE",
+      "factsUsed": [
+        "Stage 8C classified artifacts/update-08-stage-08b-* as MISSING_REFERENCED_FILE",
+        "Stage 8C result was PACKAGE_AND_ARTIFACT_AUDIT_FAILED",
+        "Stage 8C did not rerun checksum/package/tarball/leakage verification because no complete worktree was available"
+      ]
+    }
+  ],
+  "artifactInventoryDelta": {
+    "beforeRegeneration": {
+      "artifacts/update-08-stage-08b-*": "MISSING_REFERENCED_FILE"
+    },
+    "providedByThisRegeneration": [
+      "artifacts/update-08-stage-08b-evidence-ledger.json",
+      "artifacts/update-08-stage-08b-report.md",
+      "artifacts/update-08-stage-08b-sha256sums.txt"
+    ],
+    "remainingRequiredAfterUpload": [
+      "rerun Stage 8C or equivalent full filesystem/package/checksum audit against the current tree",
+      "verify SHA256SUMS.txt and nested manifests with the new Stage 8B files included",
+      "verify npm pack --dry-run, npm pack, tarball listing/hash, clean-install exports, and leakage/path scans"
+    ]
+  },
+  "checks": [
+    {
+      "name": "Stage 8B artifacts absent in current main before regeneration",
+      "status": "CONFIRMED_BY_STAGE_8C_AND_REPOSITORY_SEARCH",
+      "result": "MISSING_BEFORE_THIS_REGENERATION"
+    },
+    {
+      "name": "Production files changed by Stage 8B",
+      "status": "not changed by this local artifact generation",
+      "result": "NONE"
+    },
+    {
+      "name": "Can this artifact substitute for Stage 8C filesystem audit?",
+      "status": "no",
+      "result": "NO_SUBSTITUTION"
+    },
+    {
+      "name": "Can final Stage 8D proceed immediately after uploading 8B only?",
+      "status": "no",
+      "result": "STAGE_8C_RERUN_REQUIRED"
+    }
+  ],
+  "blockersClearedByThisArtifact": [
+    "UPDATE_08_STAGE_08B_ARTIFACTS_NOT_FOUND_IN_CURRENT_MAIN, once these files are committed and included in the global checksum manifest"
+  ],
+  "blockersNotClearedByThisArtifact": [
+    "FULL_WORKTREE_UNAVAILABLE_FOR_STAGE_8C_REEXECUTION",
+    "CHECKSUM_MANIFESTS_NOT_REVERIFIED_IN_STAGE_8C",
+    "NPM_PACK_AND_TARBALL_NOT_REEXECUTED_IN_STAGE_8C",
+    "CURRENT_PACKAGE_DEBUG_LEAKAGE_SCAN_NOT_REEXECUTED_IN_STAGE_8C"
+  ],
+  "result": "STAGE_8B_REGENERATED_MISSING_LEDGER_ARTIFACTS",
+  "readyForStage8CRerun": true,
+  "readyForStage8DFromStage8BAlone": false,
+  "productionFilesChangedDuringStage8B": "none"
+}
