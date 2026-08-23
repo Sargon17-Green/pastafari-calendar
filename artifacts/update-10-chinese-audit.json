@@ -1,0 +1,1176 @@
+{
+  "result": "BLOCKED_NORMATIVE_SOURCE_INCOMPLETE_AND_PUBLIC_CHINESE_HOST_DEPENDENT",
+  "acceptanceStatus": "NOT_ACCEPTED_FOR_UPDATE_10_REPAIR",
+  "reason": [
+    "The current public Chinese path fails the Foundation discriminator in Node/ICU.",
+    "The Magillah in this repository gives the Foundation Chinese anchor and says the result depends on the astronomical extension/model, but it does not specify the complete month-start/leap-month astronomical algorithm or its version.",
+    "A general non-Intl normative implementation would require inventing missing rules, which would violate the source-of-truth requirement and the no-fixture-only-hack requirement."
+  ],
+  "baseline": {
+    "node": {
+      "version": "v22.16.0",
+      "icu": "77.1",
+      "v8": "12.4.254.21-node.26",
+      "timeZone": "UTC"
+    },
+    "commitSha": "fae94d044a2449da9ee767d89d285c483c0a2be8",
+    "packageVersion": "1.3.0",
+    "foundation": {
+      "linearDayIndex": "-15055671",
+      "jdnExpected": "-13334246",
+      "jdnViaPublicGregorian": "-13334246",
+      "gregorianAstronomical": {
+        "year": "-41221",
+        "month": 12,
+        "day": 22
+      },
+      "megillahChineseAnchor": {
+        "cycle": -643,
+        "yearInCycle": 57,
+        "heavenlyStemTransliterated": "geng",
+        "earthlyBranchTransliterated": "shen",
+        "month": 1,
+        "leap": false,
+        "day": 22
+      }
+    },
+    "publicExports": [
+      "ChineseDate",
+      "chineseToJdn"
+    ],
+    "publicChineseDateShape": [
+      "calendar",
+      "day",
+      "leapMonth",
+      "month",
+      "relatedYear"
+    ],
+    "sourceEvidence": [
+      {
+        "line": 19,
+        "text": ">> במניין רצוף שבו הראשון בינואר בשנת אחת לספירה בלוח הגריגוריאני הוא היום הראשון, יום מסירת הלוחות הוא $-278,522$. לפיכך מניין יום היסוד באותו מניין רצוף הוא $-15,055,671$."
+      },
+      {
+        "line": 27,
+        "text": ">> - סיני מסורתי: מחזור ‎−643, שנה 57 במחזור – גֶנְג־שֶׁן – החודש הראשון, היום ה־22; החודש אינו מעובר.[^6]"
+      },
+      {
+        "line": 20,
+        "text": ">> כל התאריכים שלפנינו הם הארכות חישוביות לאחור. במקום שבו ללוח אין שנה היסטורית הנושאת מניין כזה, נכתב מניין שנה הכולל גם שנת אפס; בלוח היוליאני נשמר המשפט שאין בו שנת אפס. בלוח ההיג'רי השמשי ננקט החשבון המחזורי הקבוע; בלוח הסיני ובלוח ההינדי ננקטה ההארכה האלגוריתמית[^2] המחייבת לצורך ספר זה בלבד; ובמניין הארוך של המאיה ננקט מתאם גודמן–מרטינס–תומפסון. אלה תאריכי יום היסוד:"
+      },
+      {
+        "line": 1101,
+        "text": "[^6]: זהו תאריך פרולפטי המחושב בהארכה לאחור של כללי הלוח הסיני האסטרונומי; הלוח לא התקיים בתקופה זו, ותוצאת החודש והיום תלויה במודל האסטרונומי ובהגדרת ההארכה."
+      }
+    ],
+    "directIntlFoundation": {
+      "ok": true,
+      "value": {
+        "iso": "-041221-12-22T00:00:00.000Z",
+        "format": "10/17/-41221",
+        "parts": [
+          {
+            "type": "month",
+            "value": "10"
+          },
+          {
+            "type": "literal",
+            "value": "/"
+          },
+          {
+            "type": "day",
+            "value": "17"
+          },
+          {
+            "type": "literal",
+            "value": "/"
+          },
+          {
+            "type": "relatedYear",
+            "value": "-41221"
+          }
+        ],
+        "record": {
+          "month": "10",
+          "day": "17",
+          "relatedYear": "-41221"
+        }
+      }
+    },
+    "directIntlModern2026_07_01": {
+      "ok": true,
+      "value": {
+        "iso": "2026-08-13T00:00:00.000Z",
+        "format": "7/1/2026",
+        "parts": [
+          {
+            "type": "month",
+            "value": "7"
+          },
+          {
+            "type": "literal",
+            "value": "/"
+          },
+          {
+            "type": "day",
+            "value": "1"
+          },
+          {
+            "type": "literal",
+            "value": "/"
+          },
+          {
+            "type": "relatedYear",
+            "value": "2026"
+          }
+        ],
+        "record": {
+          "month": "7",
+          "day": "1",
+          "relatedYear": "2026"
+        }
+      }
+    },
+    "chromiumHeadlessIntlFoundation": {
+      "ok": false,
+      "name": "ChromiumNoDomOutput",
+      "message": "Headless Chromium exited without DOM output in this sandbox; treat browser comparison as attempted but inconclusive here.",
+      "stdoutSnippet": "",
+      "stderrTail": "2.111881:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory\n[2798:2798:0823/023032.130029:ERROR:dbus/object_proxy.cc:573] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: \n[2798:2826:0823/023032.130264:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are \"tcp\" and on UNIX \"unix\")\n[2798:2798:0823/023032.134125:ERROR:dbus/object_proxy.cc:573] Failed to call method: org.freedesktop.DBus.Properties.GetAll: object_path= /org/freedesktop/UPower/devices/DisplayDevice: unknown error type: \n[2798:2798:0823/023032.135458:ERROR:dbus/object_proxy.cc:573] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: \n[2798:2826:0823/023032.136065:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are \"tcp\" and on UNIX \"unix\")\n[2798:2798:0823/023032.137626:ERROR:dbus/object_proxy.cc:573] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: \n[2798:2826:0823/023032.137702:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are \"tcp\" and on UNIX \"unix\")\n[2798:2798:0823/023032.137901:ERROR:dbus/object_proxy.cc:573] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: \n[2798:2826:0823/023032.137952:ERROR:dbus/bus.cc:406] Failed to connect to the bus: Could not parse server address: Unknown address type (examples of valid types are \"tcp\" and on UNIX \"unix\")\n[2798:2798:0823/023032.141070:ERROR:dbus/object_proxy.cc:573] Failed to call method: org.freedesktop.DBus.NameHasOwner: object_path= /org/freedesktop/DBus: unknown error type: \n"
+    },
+    "nodePublicFoundationSpecific": {
+      "ok": false,
+      "name": "TypeError",
+      "message": "Internal error. Icu error."
+    },
+    "nodePublicFoundationGeneric": {
+      "ok": false,
+      "name": "TypeError",
+      "message": "Internal error. Icu error."
+    },
+    "browserCoreFoundationSpecificInNodeRuntime": {
+      "ok": false,
+      "name": "TypeError",
+      "message": "Internal error. Icu error."
+    },
+    "docsFoundationBrowserInputConverterInNodeRuntime": {
+      "ok": false,
+      "name": "TypeError",
+      "message": "Internal error. Icu error."
+    },
+    "nodePublicModernVector": {
+      "ok": true,
+      "value": "2461266"
+    },
+    "docsModernVector": {
+      "ok": true,
+      "value": "2461266"
+    },
+    "intlFaultInjectionThrowing": {
+      "nodePublicModernVector": {
+        "ok": false,
+        "name": "RangeError",
+        "message": "synthetic Intl.DateTimeFormat failure for Update 10 audit"
+      }
+    },
+    "intlFaultInjectionNonsense": {
+      "nodePublicModernVector": {
+        "ok": false,
+        "name": "RangeError",
+        "message": "התאריך אינו קיים או אינו נמצא בטווח הנתמך של לוח chinese"
+      }
+    }
+  },
+  "termMatches": [
+    {
+      "term": "ChineseDate",
+      "file": "src/5efdcc3e6fb071cbaffdcb117507a169dd76.js",
+      "line": 1,
+      "text": "import _707db1dfcf63 from \"./0fb1/0ec0a2ba7d5bcc00d8b54a80238a7f.js\";import _5c45ab3791c8 from \"./25f4/de4b5ef6fd394ac55e01d55b5d3c78.js\";import _b4dc948893d9 from \"./c8c1/a21392c32455676b437a0b6ce7c4ae.js\";import _1d852"
+    },
+    {
+      "term": "chineseToJdn",
+      "file": "src/5efdcc3e6fb071cbaffdcb117507a169dd76.js",
+      "line": 1,
+      "text": "import _707db1dfcf63 from \"./0fb1/0ec0a2ba7d5bcc00d8b54a80238a7f.js\";import _5c45ab3791c8 from \"./25f4/de4b5ef6fd394ac55e01d55b5d3c78.js\";import _b4dc948893d9 from \"./c8c1/a21392c32455676b437a0b6ce7c4ae.js\";import _1d852"
+    },
+    {
+      "term": "ChineseDate",
+      "file": "browser/pastafari-calendar-core-chronicle.js",
+      "line": 199,
+      "text": "const _pastafariStage5M6Transform=(_7c54fca86b1d29)=>{let _51c92a7bf3e105=String(_7c54fca86b1d29);if(!_51c92a7bf3e105.includes(\", 4483, [...\")||!_51c92a7bf3e105.includes(\", 4492, \"))return _51c92a7bf3e105;const _8534c0a6"
+    },
+    {
+      "term": "chineseToJdn",
+      "file": "browser/pastafari-calendar-core-chronicle.js",
+      "line": 199,
+      "text": "const _pastafariStage5M6Transform=(_7c54fca86b1d29)=>{let _51c92a7bf3e105=String(_7c54fca86b1d29);if(!_51c92a7bf3e105.includes(\", 4483, [...\")||!_51c92a7bf3e105.includes(\", 4492, \"))return _51c92a7bf3e105;const _8534c0a6"
+    },
+    {
+      "term": "Intl.DateTimeFormat",
+      "file": "browser/standalone/pastafari-date.js",
+      "line": 1160,
+      "text": "  var AUTHORITATIVE_WORKER_SOURCE = '\"use strict\";(()=>{var b0=Object.defineProperty;var U0=(e,r)=>{for(var t in r)b0(e,t,{get:r[t],enumerable:!0})};var u0=Object.freeze([\"disabled\",\"summary\",\"detailed\"]),q8=Object.freez"
+    },
+    {
+      "term": "u-ca-chinese",
+      "file": "browser/standalone/pastafari-date.js",
+      "line": 1160,
+      "text": "  var AUTHORITATIVE_WORKER_SOURCE = '\"use strict\";(()=>{var b0=Object.defineProperty;var U0=(e,r)=>{for(var t in r)b0(e,t,{get:r[t],enumerable:!0})};var u0=Object.freeze([\"disabled\",\"summary\",\"detailed\"]),q8=Object.freez"
+    },
+    {
+      "term": "relatedYear",
+      "file": "browser/standalone/pastafari-date.js",
+      "line": 1160,
+      "text": "  var AUTHORITATIVE_WORKER_SOURCE = '\"use strict\";(()=>{var b0=Object.defineProperty;var U0=(e,r)=>{for(var t in r)b0(e,t,{get:r[t],enumerable:!0})};var u0=Object.freeze([\"disabled\",\"summary\",\"detailed\"]),q8=Object.freez"
+    },
+    {
+      "term": "formatToParts",
+      "file": "browser/standalone/pastafari-date.js",
+      "line": 1160,
+      "text": "  var AUTHORITATIVE_WORKER_SOURCE = '\"use strict\";(()=>{var b0=Object.defineProperty;var U0=(e,r)=>{for(var t in r)b0(e,t,{get:r[t],enumerable:!0})};var u0=Object.freeze([\"disabled\",\"summary\",\"detailed\"]),q8=Object.freez"
+    },
+    {
+      "term": "ChineseDate",
+      "file": "browser/standalone/pastafari-date.js",
+      "line": 1160,
+      "text": "  var AUTHORITATIVE_WORKER_SOURCE = '\"use strict\";(()=>{var b0=Object.defineProperty;var U0=(e,r)=>{for(var t in r)b0(e,t,{get:r[t],enumerable:!0})};var u0=Object.freeze([\"disabled\",\"summary\",\"detailed\"]),q8=Object.freez"
+    },
+    {
+      "term": "chineseToJdn",
+      "file": "browser/standalone/pastafari-date.js",
+      "line": 1160,
+      "text": "  var AUTHORITATIVE_WORKER_SOURCE = '\"use strict\";(()=>{var b0=Object.defineProperty;var U0=(e,r)=>{for(var t in r)b0(e,t,{get:r[t],enumerable:!0})};var u0=Object.freeze([\"disabled\",\"summary\",\"detailed\"]),q8=Object.freez"
+    },
+    {
+      "term": "Intl.DateTimeFormat",
+      "file": "docs/AUTHORITATIVE-ENGINE-ARCHITECTURE.md",
+      "line": 1887,
+      "text": "5. allocates a **new** `Intl.DateTimeFormat` for the requested calendar/timeZone with numeric year/month/day fields;"
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/AUTHORITATIVE-ENGINE-ARCHITECTURE.md",
+      "line": 1537,
+      "text": "1. site 4047: `relatedYear = asBigInt(relatedYear, ...)`;"
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/AUTHORITATIVE-ENGINE-ARCHITECTURE.md",
+      "line": 1903,
+      "text": "5. derive `formattedYear = Number(parts.relatedYear ?? parts.year)`;"
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/AUTHORITATIVE-ENGINE-ARCHITECTURE.md",
+      "line": 1999,
+      "text": "2. site 4151 bridge `relatedYear` to safe Number;"
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/AUTHORITATIVE-ENGINE-ARCHITECTURE.md",
+      "line": 2001,
+      "text": "4. site 4152 allocate/convert Gregorian `relatedYear-01-01`;"
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/AUTHORITATIVE-ENGINE-ARCHITECTURE.md",
+      "line": 2002,
+      "text": "5. site 4153 allocate/convert Gregorian `(relatedYear+1)-03-31`;"
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/AUTHORITATIVE-ENGINE-ARCHITECTURE.md",
+      "line": 2532,
+      "text": "- Chinese uses `input.relatedYear ?? input.year`;"
+    },
+    {
+      "term": "formatToParts",
+      "file": "docs/AUTHORITATIVE-ENGINE-ARCHITECTURE.md",
+      "line": 1889,
+      "text": "7. calls `.formatToParts(date)`;"
+    },
+    {
+      "term": "ChineseDate",
+      "file": "docs/AUTHORITATIVE-ENGINE-ARCHITECTURE.md",
+      "line": 1210,
+      "text": "| 45 | `ChineseDate` | M3 |"
+    },
+    {
+      "term": "ChineseDate",
+      "file": "docs/AUTHORITATIVE-ENGINE-ARCHITECTURE.md",
+      "line": 1533,
+      "text": "### 11.9 `ChineseDate` — ENTER 1041"
+    },
+    {
+      "term": "ChineseDate",
+      "file": "docs/AUTHORITATIVE-ENGINE-ARCHITECTURE.md",
+      "line": 1998,
+      "text": "1. require `ChineseDate`;"
+    },
+    {
+      "term": "ChineseDate",
+      "file": "docs/AUTHORITATIVE-ENGINE-ARCHITECTURE.md",
+      "line": 2547,
+      "text": "7. `ChineseDate`;"
+    },
+    {
+      "term": "chineseToJdn",
+      "file": "docs/AUTHORITATIVE-ENGINE-ARCHITECTURE.md",
+      "line": 1244,
+      "text": "| 79 | `chineseToJdn` | M4 |"
+    },
+    {
+      "term": "Intl.DateTimeFormat",
+      "file": "docs/app.js",
+      "line": 105,
+      "text": "  dateFormatter = new Intl.DateTimeFormat(activeLocale.intlLocale, {"
+    },
+    {
+      "term": "Intl.DateTimeFormat",
+      "file": "docs/calendar-converters.js",
+      "line": 325,
+      "text": "    intlFormatters.set(key, new Intl.DateTimeFormat(locale, {"
+    },
+    {
+      "term": "u-ca-chinese",
+      "file": "docs/calendar-converters.js",
+      "line": 398,
+      "text": "    locale: \"en-u-ca-chinese-nu-latn\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/calendar-converters.js",
+      "line": 52,
+      "text": "    Object.freeze({ name: \"relatedYear\", labelKey: \"field.relatedYear\", kind: \"integer\" }),"
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/calendar-converters.js",
+      "line": 395,
+      "text": "function chineseToJdn({ relatedYear, month, day, leapMonth }) {"
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/calendar-converters.js",
+      "line": 396,
+      "text": "  const start = gregorianToJdn({ year: relatedYear, month: 1, day: 1 });"
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/calendar-converters.js",
+      "line": 405,
+      "text": "      return Number(parts.relatedYear) === Number(relatedYear)"
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/calendar-converters.js",
+      "line": 655,
+      "text": "      relatedYear: integer(values, \"relatedYear\"),"
+    },
+    {
+      "term": "formatToParts",
+      "file": "docs/calendar-converters.js",
+      "line": 350,
+      "text": "    formatter.formatToParts(dateForIntlJdn(jdn))"
+    },
+    {
+      "term": "chineseToJdn",
+      "file": "docs/calendar-converters.js",
+      "line": 395,
+      "text": "function chineseToJdn({ relatedYear, month, day, leapMonth }) {"
+    },
+    {
+      "term": "chineseToJdn",
+      "file": "docs/calendar-converters.js",
+      "line": 654,
+      "text": "    return chineseToJdn({"
+    },
+    {
+      "term": "Intl.DateTimeFormat",
+      "file": "docs/calendar-input-conventions.js",
+      "line": 168,
+      "text": "  const formatter = new Intl.DateTimeFormat(intlLocale, {"
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/calendar-input-conventions.js",
+      "line": 201,
+      "text": "        relatedYear: \"2024\","
+    },
+    {
+      "term": "formatToParts",
+      "file": "docs/calendar-input-conventions.js",
+      "line": 173,
+      "text": "  const part = formatter.formatToParts(dateFromJdn(jdn)).find(({ type }) => type === \"month\");"
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/af.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Bijbehorend Gregoriaans jaar\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/ar.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"السنة الغريغورية المرتبطة\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/az.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"İlişkili Gregoryen il\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/be.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Пов’язаний григоріанський рік\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/bg.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Связанный григорианский година\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/bn.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"সম্পর্কিত গ্রেগরিয়ান বছর\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/bs.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Povezana gregorijanska godina\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/ca.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Any gregorià relacionado\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/cs.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Související gregoriánský rok\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/da.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Relateret gregoriansk år\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/de.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Zugehöriges gregorianisches Jahr\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/el.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Σχετικό Γρηγοριανό έτος\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/en.js",
+      "line": 55,
+      "text": "    \"field.relatedYear\": \"Related Gregorian year\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/eo.js",
+      "line": 54,
+      "text": "    \"field.relatedYear\": \"Rilata gregoria jaro\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/es.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Año gregoriano relacionado\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/et.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Liittyvä gregoriaaninen aasta\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/fa.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"سال میلادی مرتبط\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/fi.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Liittyvä gregoriaaninen vuosi\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/fil.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Kaugnay na taong Gregorian\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/fo.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Relateret gregoriansk ár\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/fr.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Année grégorienne correspondante\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/fy.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Bijbehorend Gregoriaans jier\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/gl.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Ano gregoriano relacionado\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/gu.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"સંબંધિત ગ્રેગોરિયન વર્ષ\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/ha.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Shekarar Gregorian da ta dace\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/he.js",
+      "line": 55,
+      "text": "    \"field.relatedYear\": \"שנה גריגוריאנית קשורה\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/hi.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"संबंधित ग्रेगोरियन वर्ष\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/hr.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Povezana gregorijanska godina\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/ht.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Ane grégorienne correspondante\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/hu.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Kapcsolódó Gergely-naptári év\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/hy.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Կապակցված Գրիգորյան տարի\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/id.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Tahun Gregorian terkait\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/is.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Relateret gregoriansk ár\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/it.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Anno gregoriano correlato\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/ja.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"対応するグレゴリオ暦年\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/jv.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Taun Gregorian terkait\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/ka.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"დაკავშირებული გრიგორიანული წელი\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/kk.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Байланысты Григориан жылы\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/ko.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"관련 그레고리력 연도\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/lb.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Zugehöriges gregorianisches Joer\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/lt.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Susiję Grigaliaus metai\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/lv.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Saistītais Gregora gads\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/mk.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Связанный григорианский година\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/mr.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"संबंधित ग्रेगोरियन वर्ष\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/ms.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Tahun Gregorian terkait\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/nb.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Tilknyttet gregoriansk år\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/ne.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"सम्बन्धित ग्रेगोरियन वर्ष\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/nl.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Bijbehorend Gregoriaans jaar\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/nn.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Tilknyttet gregoriansk år\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/pa.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"ਸੰਬੰਧਿਤ ਗ੍ਰੇਗੋਰੀਅਨ ਸਾਲ\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/pl.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Powiązany rok gregoriański\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/pt.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Ano gregoriano relacionado\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/ro.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"An gregorian asociat\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/ru.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Связанный григорианский год\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/sk.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Súvisiaci gregoriánsky rok\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/sl.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Povezana gregorijanska leto\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/so.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Sannadka Gregorian ee la xiriira\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/sq.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Viti gregorian përkatës\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/sr.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Povezana gregorijanska godina\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/sv.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Relaterat gregorianskt år\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/sw.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Mwaka wa Gregori unaohusiana\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/ta.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"தொடர்புடைய கிரிகோரியன் ஆண்டு\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/te.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"సంబంధిత గ్రెగోరియన్ సంవత్సరం\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/th.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"ปีเกรกอเรียนที่เกี่ยวข้อง\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/tr.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"İlişkili Gregoryen yıl\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/uk.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Пов’язаний григоріанський рік\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/ur.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"متعلقہ گریگورین سال\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/uz.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Bog‘liq Gregorian yili\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/vi.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Năm Gregory liên quan\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/yo.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Ọdún Gregorian tó bá a mu\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/zh.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"对应的公历年份\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "docs/i18n/locales/zu.js",
+      "line": 50,
+      "text": "    \"field.relatedYear\": \"Unyaka we-Gregorian ohlobene\","
+    },
+    {
+      "term": "relatedYear",
+      "file": "test/calendar-converters.test.js",
+      "line": 44,
+      "text": "    [\"chinese\", { relatedYear: \"2026\", month: \"7\", day: \"1\", leapMonth: false }, 2_461_266n],"
+    },
+    {
+      "term": "Intl.DateTimeFormat",
+      "file": "test/calendar-roundtrip-browser-smoke.html",
+      "line": 27,
+      "text": "    eq(new Intl.DateTimeFormat(`en-u-ca-${cal}`).resolvedOptions().calendar, cal, cal);"
+    },
+    {
+      "term": "relatedYear",
+      "file": "test/calendar-roundtrip-browser-smoke.html",
+      "line": 32,
+      "text": "check(\"chinese-vector\", () => eq(calendarDateToJdn(\"chinese\", { relatedYear:\"2026\", month:\"7\", day:\"1\", leapMonth:false }), 2461266n));"
+    },
+    {
+      "term": "relatedYear",
+      "file": "test/property/calendar-property-harness.js",
+      "line": 566,
+      "text": "    boundaries: [{ relatedYear: 2024, month: 1, day: 1 }, { relatedYear: 2026, month: 7, day: 1 }],"
+    },
+    {
+      "term": "relatedYear",
+      "file": "test/property/calendar-property-harness.js",
+      "line": 567,
+      "text": "    generate: (rng) => ({ relatedYear: rng.int(1950, 2100), month: rng.int(1, 12), day: 1 }),"
+    },
+    {
+      "term": "ChineseDate",
+      "file": "verification/update8/stage-02a-construction-inventory.json",
+      "line": 99,
+      "text": "      \"id\": \"TYPE:authoritative:ChineseDate\","
+    },
+    {
+      "term": "ChineseDate",
+      "file": "verification/update8/stage-02a-construction-inventory.json",
+      "line": 100,
+      "text": "      \"symbol\": \"ChineseDate\","
+    },
+    {
+      "term": "ChineseDate",
+      "file": "verification/update8/stage-02a-construction-inventory.json",
+      "line": 102,
+      "text": "        \"CTOR:src/5efdcc3e6fb071cbaffdcb117507a169dd76.js:ChineseDate\","
+    },
+    {
+      "term": "ChineseDate",
+      "file": "verification/update8/stage-02a-construction-inventory.json",
+      "line": 103,
+      "text": "        \"CTOR:browser/pastafari-calendar-core-chronicle.js:ChineseDate\","
+    },
+    {
+      "term": "ChineseDate",
+      "file": "verification/update8/stage-02a-construction-inventory.json",
+      "line": 104,
+      "text": "        \"CTOR:browser/standalone/pastafari-date.js#AUTHORITATIVE_WORKER_SOURCE:ChineseDate\""
+    },
+    {
+      "term": "ChineseDate",
+      "file": "verification/update8/stage-02a-construction-inventory.json",
+      "line": 401,
+      "text": "      \"id\": \"CTOR:src/5efdcc3e6fb071cbaffdcb117507a169dd76.js:ChineseDate\","
+    },
+    {
+      "term": "ChineseDate",
+      "file": "verification/update8/stage-02a-construction-inventory.json",
+      "line": 402,
+      "text": "      \"canonicalId\": \"TYPE:authoritative:ChineseDate\","
+    },
+    {
+      "term": "ChineseDate",
+      "file": "verification/update8/stage-02a-construction-inventory.json",
+      "line": 403,
+      "text": "      \"symbol\": \"ChineseDate\","
+    },
+    {
+      "term": "ChineseDate",
+      "file": "verification/update8/stage-02a-construction-inventory.json",
+      "line": 411,
+      "text": "        \"package-root export ChineseDate\""
+    },
+    {
+      "term": "ChineseDate",
+      "file": "verification/update8/stage-02a-construction-inventory.json",
+      "line": 439,
+      "text": "        \"inputOrPath\": \"new ChineseDate(2026n, 1, 1)\","
+    },
+    {
+      "term": "ChineseDate",
+      "file": "verification/update8/stage-02a-construction-inventory.json",
+      "line": 1928,
+      "text": "      \"id\": \"CTOR:browser/pastafari-calendar-core-chronicle.js:ChineseDate\","
+    },
+    {
+      "term": "ChineseDate",
+      "file": "verification/update8/stage-02a-construction-inventory.json",
+      "line": 1929,
+      "text": "      \"canonicalId\": \"TYPE:authoritative:ChineseDate\","
+    },
+    {
+      "term": "ChineseDate",
+      "file": "verification/update8/stage-02a-construction-inventory.json",
+      "line": 1930,
+      "text": "      \"symbol\": \"ChineseDate\","
+    },
+    {
+      "term": "ChineseDate",
+      "file": "verification/update8/stage-02a-construction-inventory.json",
+      "line": 1938,
+      "text": "        \"browser/pastafari-calendar-core.js re-export ChineseDate\""
+    },
+    {
+      "term": "ChineseDate",
+      "file": "verification/update8/stage-02a-construction-inventory.json",
+      "line": 1966,
+      "text": "        \"inputOrPath\": \"new ChineseDate(2026n, 1, 1)\","
+    },
+    {
+      "term": "ChineseDate",
+      "file": "verification/update8/stage-02a-construction-inventory.json",
+      "line": 3451,
+      "text": "      \"id\": \"CTOR:browser/standalone/pastafari-date.js#AUTHORITATIVE_WORKER_SOURCE:ChineseDate\","
+    },
+    {
+      "term": "ChineseDate",
+      "file": "verification/update8/stage-02a-construction-inventory.json",
+      "line": 3452,
+      "text": "      \"canonicalId\": \"TYPE:authoritative:ChineseDate\","
+    },
+    {
+      "term": "ChineseDate",
+      "file": "verification/update8/stage-02a-construction-inventory.json",
+      "line": 3453,
+      "text": "      \"symbol\": \"ChineseDate\","
+    },
+    {
+      "term": "ChineseDate",
+      "file": "verification/update8/stage-02a-construction-inventory.json",
+      "line": 4946,
+      "text": "        \"ChineseDate\","
+    },
+    {
+      "term": "ChineseDate",
+      "file": "verification/update8/stage-02a-construction-inventory.json",
+      "line": 5261,
+      "text": "      \"to\": \"ChineseDate\","
+    },
+    {
+      "term": "ChineseDate",
+      "file": "verification/update8/stage-02a-construction-inventory.json",
+      "line": 5351,
+      "text": "      \"to\": \"ChineseDate\","
+    },
+    {
+      "term": "ChineseDate",
+      "file": "verification/update8/stage-02a-construction-inventory.json",
+      "line": 5435,
+      "text": "      \"to\": \"ChineseDate\","
+    },
+    {
+      "term": "chineseToJdn",
+      "file": "verification/update8/stage-02a-construction-inventory.json",
+      "line": 4977,
+      "text": "      \"id\": \"FACTORY:core:chineseToJdn\","
+    },
+    {
+      "term": "chineseToJdn",
+      "file": "verification/update8/stage-02a-construction-inventory.json",
+      "line": 5144,
+      "text": "      \"id\": \"PATH:converter:chineseToJdn\","
+    },
+    {
+      "term": "chineseToJdn",
+      "file": "verification/update8/stage-02a-construction-inventory.json",
+      "line": 5145,
+      "text": "      \"entry\": \"chineseToJdn(...)\","
+    },
+    {
+      "term": "chineseToJdn",
+      "file": "verification/update8/stage-02a-construction-inventory.json",
+      "line": 5434,
+      "text": "      \"from\": \"chineseToJdn\","
+    },
+    {
+      "term": "chineseToJdn",
+      "file": "verification/update8/stage-02a-construction-inventory.json",
+      "line": 5440,
+      "text": "      \"from\": \"chineseToJdn\","
+    },
+    {
+      "term": "ChineseDate",
+      "file": "verification/update8/stage-02a-construction-report.md",
+      "line": 33,
+      "text": "| TYPE:authoritative:ChineseDate | ChineseDate | generated Proxy class | PUBLIC_DIRECT (root/browser); GENERATED+INTERNAL_REACHABLE (standalone) | package root/browser core | — | POSSIBLE_THROW | yes: generated try/catch"
+    },
+    {
+      "term": "Intl.DateTimeFormat",
+      "file": "scripts/run-calendar-roundtrip-audit.mjs",
+      "line": 145,
+      "text": "    f = new Intl.DateTimeFormat(locale, { timeZone, year: \"numeric\", month: \"numeric\", day: \"numeric\" });"
+    },
+    {
+      "term": "Intl.DateTimeFormat",
+      "file": "scripts/run-calendar-roundtrip-audit.mjs",
+      "line": 429,
+      "text": "  \"islamic-umalqura\": { classification:\"Intl-backed\", inverseSource:\"Intl.DateTimeFormat islamic-umalqura\", independence:\"independent Intl representation\", confidence:\"high within runtime ICU\", inverse:jdn=>jdnToIntlSimp"
+    },
+    {
+      "term": "Intl.DateTimeFormat",
+      "file": "scripts/run-calendar-roundtrip-audit.mjs",
+      "line": 430,
+      "text": "  \"solar-hijri-official\": { classification:\"Intl-backed\", inverseSource:\"Intl.DateTimeFormat persian\", independence:\"independent Intl representation\", confidence:\"high within runtime ICU\", inverse:jdn=>jdnToIntlSimple(\"e"
+    },
+    {
+      "term": "Intl.DateTimeFormat",
+      "file": "scripts/run-calendar-roundtrip-audit.mjs",
+      "line": 432,
+      "text": "  chinese: { classification:\"Intl-backed special-structure\", inverseSource:\"Intl.DateTimeFormat chinese relatedYear/month/day\", independence:\"independent Intl representation\", confidence:\"high within runtime ICU\", invers"
+    },
+    {
+      "term": "Intl.DateTimeFormat",
+      "file": "scripts/run-calendar-roundtrip-audit.mjs",
+      "line": 484,
+      "text": "    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,"
+    },
+    {
+      "term": "Intl.DateTimeFormat",
+      "file": "scripts/run-calendar-roundtrip-audit.mjs",
+      "line": 488,
+      "text": "    ].map(([k,cal])=>{try{return[k,new Intl.DateTimeFormat(`en-u-ca-${cal}`).resolvedOptions().calendar===cal];}catch{return[k,false];}})),"
+    },
+    {
+      "term": "u-ca-chinese",
+      "file": "scripts/run-calendar-roundtrip-audit.mjs",
+      "line": 231,
+      "text": "  const p = intlParts(\"en-u-ca-chinese-nu-latn\", \"Asia/Shanghai\", jdn);"
+    },
+    {
+      "term": "u-ca-chinese",
+      "file": "scripts/run-calendar-roundtrip-audit.mjs",
+      "line": 651,
+      "text": "        try{const p=intlParts(\"en-u-ca-chinese-nu-latn\",\"Asia/Shanghai\",j);if(/bis$/i.test(String(p.month||\"\"))){found=jdnToChinese(j);break outer;}}catch{}"
+    },
+    {
+      "term": "relatedYear",
+      "file": "scripts/run-calendar-roundtrip-audit.mjs",
+      "line": 234,
+      "text": "    relatedYear: String(Number(p.relatedYear)),"
+    },
+    {
+      "term": "relatedYear",
+      "file": "scripts/run-calendar-roundtrip-audit.mjs",
+      "line": 432,
+      "text": "  chinese: { classification:\"Intl-backed special-structure\", inverseSource:\"Intl.DateTimeFormat chinese relatedYear/month/day\", independence:\"independent Intl representation\", confidence:\"high within runtime ICU\", invers"
+    },
+    {
+      "term": "relatedYear",
+      "file": "scripts/run-calendar-roundtrip-audit.mjs",
+      "line": 454,
+      "text": "  [\"chinese\", {relatedYear:\"2026\",month:\"7\",day:\"1\",leapMonth:false}, 2461266n, \"existing test vector\"],"
+    },
+    {
+      "term": "relatedYear",
+      "file": "scripts/run-calendar-roundtrip-audit.mjs",
+      "line": 563,
+      "text": "    case\"chinese\":return[{relatedYear:\"2023\",month:\"1\",day:\"1\",leapMonth:false},{relatedYear:\"2026\",month:\"7\",day:\"1\",leapMonth:false}];"
+    },
+    {
+      "term": "relatedYear",
+      "file": "scripts/run-calendar-roundtrip-audit.mjs",
+      "line": 656,
+      "text": "      let lastLeapJ=leapJ;while(true){const next=jdnToChinese(lastLeapJ+1n);if(next.relatedYear!==found.relatedYear||next.month!==found.month||!next.leapMonth)break;lastLeapJ+=1n;}"
+    },
+    {
+      "term": "relatedYear",
+      "file": "scripts/run-calendar-roundtrip-audit.mjs",
+      "line": 667,
+      "text": "      chinese:{relatedYear:\"2024\",day:\"1\",leapMonth:false}, \"hindu-old-solar\":{year:\"5127\",day:\"1\"},"
+    },
+    {
+      "term": "relatedYear",
+      "file": "scripts/run-calendar-roundtrip-audit.mjs",
+      "line": 748,
+      "text": "    const yearField=definition.fields.find(f=>f.name===\"year\"||f.name===\"relatedYear\");"
+    },
+    {
+      "term": "relatedYear",
+      "file": "scripts/run-calendar-roundtrip-audit.mjs",
+      "line": 757,
+      "text": "    case\"chinese\":expectInvalid(report,id,{relatedYear:\"2023\",month:\"1\",day:\"1\",leapMonth:true},\"nonexistent-leap-month\");expectInvalid(report,id,{relatedYear:\"2023\",month:\"1\",day:\"31\",leapMonth:false},\"day31\");break;"
+    },
+    {
+      "term": "formatToParts",
+      "file": "scripts/run-calendar-roundtrip-audit.mjs",
+      "line": 151,
+      "text": "  return Object.fromEntries(intlFormatter(locale, timeZone).formatToParts(dateForJdn(jdn))"
+    },
+    {
+      "term": "relatedYear",
+      "file": "types/5fd0767aaf5331241ec60f8540edf2a6.d.ts",
+      "line": 58,
+      "text": "  readonly relatedYear: bigint;"
+    },
+    {
+      "term": "relatedYear",
+      "file": "types/5fd0767aaf5331241ec60f8540edf2a6.d.ts",
+      "line": 62,
+      "text": "  constructor(relatedYear: IntegerLike, month: number, day: number, options?: { leapMonth?: boolean });"
+    },
+    {
+      "term": "ChineseDate",
+      "file": "types/5fd0767aaf5331241ec60f8540edf2a6.d.ts",
+      "line": 56,
+      "text": "export class ChineseDate {"
+    },
+    {
+      "term": "ChineseDate",
+      "file": "types/5fd0767aaf5331241ec60f8540edf2a6.d.ts",
+      "line": 182,
+      "text": "  | ChineseDate"
+    },
+    {
+      "term": "ChineseDate",
+      "file": "types/5fd0767aaf5331241ec60f8540edf2a6.d.ts",
+      "line": 510,
+      "text": "export function chineseToJdn(value: ChineseDate): bigint;"
+    },
+    {
+      "term": "chineseToJdn",
+      "file": "types/5fd0767aaf5331241ec60f8540edf2a6.d.ts",
+      "line": 510,
+      "text": "export function chineseToJdn(value: ChineseDate): bigint;"
+    }
+  ]
+}
