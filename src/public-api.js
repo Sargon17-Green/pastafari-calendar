@@ -26,6 +26,12 @@ import { installYearCeilingDetourDetour } from "../browser/year-ceiling-detour-d
 import { installYearCeilingDetourDetourDetour } from "../browser/year-ceiling-detour-detour-detour.js";
 import { installAuthoritativeCacheEpochDetour } from "../browser/cache-epoch-detour.js";
 import {
+  KokiDate,
+  isKokiDateLike,
+  jdnToKoki as deterministicJdnToKoki,
+  kokiToJdn as deterministicKokiToJdn,
+} from "../browser/koki-api.js";
+import {
   ChineseStructuredDate,
   chineseRelatedDateToJdn,
   chineseStructuredDateToJdn as deterministicChineseStructuredDateToJdn,
@@ -67,6 +73,10 @@ const prolepticNegativeYearDetours = createProlepticNegativeYearDetours({
 });
 
 export const bahaiToJdn = prolepticNegativeYearDetours.bahaiToJdn;
+
+export { KokiDate };
+export const kokiToJdn = deterministicKokiToJdn;
+export const jdnToKoki = deterministicJdnToKoki;
 function isChineseRelatedDateLike(value) {
   return value instanceof ChineseDate
     || (value?.calendar === "chinese" && value?.relatedYear !== undefined);
@@ -108,6 +118,7 @@ export function chineseToJdn(value) {
 }
 
 export function calendarDateToJdn(value) {
+  if (isKokiDateLike(value)) return kokiToJdn(value);
   if (isChineseDateLike(value)) return chineseToJdn(value);
   if (isVikramaDateLike(value)) return vikramaToJdn(value);
   return prolepticNegativeYearDetours.calendarDateToJdn(value);

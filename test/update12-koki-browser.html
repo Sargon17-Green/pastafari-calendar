@@ -1,0 +1,63 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Update 12 Koki browser smoke</title>
+<pre id="result">pending</pre>
+<script type="module">
+  import {
+    JapaneseImperialDate,
+    japaneseImperialToJdn,
+  } from "../browser/pastafari-calendar-core.js";
+  import {
+    KokiDate,
+    jdnToKoki,
+    kokiToJdn,
+  } from "../browser/koki-api.js";
+
+  const out = document.querySelector("#result");
+  try {
+    const foundationJdn = -13334246n;
+    const foundation = jdnToKoki(foundationJdn);
+    const back = kokiToJdn(new KokiDate(-40561n, 12, 22));
+    const reiwaJdn = japaneseImperialToJdn(new JapaneseImperialDate("reiwa", 8n, 8, 23));
+    const reiwaKoki = jdnToKoki(reiwaJdn);
+
+    const workerResult = await new Promise((resolve, reject) => {
+      const worker = new Worker(new URL("./update12-koki-worker.js", import.meta.url), { type: "module" });
+      const timer = setTimeout(() => { worker.terminate(); reject(new Error("Update 12 Kōki Worker timeout")); }, 30_000);
+      worker.addEventListener("message", (event) => { clearTimeout(timer); worker.terminate(); resolve(event.data); }, { once: true });
+      worker.addEventListener("error", (event) => { clearTimeout(timer); worker.terminate(); reject(event.error || new Error(event.message)); }, { once: true });
+    });
+
+    const original = Intl.DateTimeFormat;
+    let intlIndependent = false;
+    try {
+      Intl.DateTimeFormat = function () { throw new Error("UPDATE12_INTL_FAULT"); };
+      intlIndependent = jdnToKoki(foundationJdn).year === -40561n
+        && kokiToJdn(new KokiDate(-40561n, 12, 22)) === foundationJdn;
+    } finally {
+      Intl.DateTimeFormat = original;
+    }
+
+    const pass = foundation.year === -40561n
+      && foundation.month === 12
+      && foundation.day === 22
+      && back === foundationJdn
+      && reiwaKoki.year === 2686n
+      && reiwaKoki.month === 8
+      && reiwaKoki.day === 23
+      && intlIndependent
+      && workerResult.status === "PASS";
+
+    out.textContent = `UPDATE12_KOKI_BROWSER=${JSON.stringify({
+      status: pass ? "PASS" : "FAIL",
+      foundation: { ...foundation, year: foundation.year.toString() },
+      back: back.toString(),
+      reiwaJdn: reiwaJdn.toString(),
+      reiwaKoki: { ...reiwaKoki, year: reiwaKoki.year.toString() },
+      intlIndependent,
+      workerResult,
+    })}`;
+  } catch (error) {
+    out.textContent = `UPDATE12_KOKI_BROWSER=${JSON.stringify({ status: "FAIL", error: String(error?.stack || error) })}`;
+  }
+</script>

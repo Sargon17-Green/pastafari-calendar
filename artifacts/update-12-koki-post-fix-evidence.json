@@ -1,0 +1,826 @@
+{
+  "update": 12,
+  "status": "PASS",
+  "baseline": {
+    "commitSha": "1f33a5b66261f202082d9a2f1087ccfa1ff1ab51",
+    "packageVersion": "1.3.0"
+  },
+  "classification": "B_KOKI_WAS_MISSING_COMPLETELY",
+  "normative": {
+    "source": {
+      "canonicalPath": "sources/מגילת העיתים.md",
+      "anchor": ">> - יפני קיסרי: אין לאותו יום שם תקופה קיסרית היסטורי; בהארכת מניין קוֹקי לאחור: 22 בדצמבר, שנת ‎−40,561.",
+      "yearZero": "[^11]: מנייני השנים השליליים הם הרחבה חשבונית בלבד. כאשר התאריך נכתב בצורת „לפני הספירה”, נשמר המספור ההיסטורי שאין בו שנת אפס; בחישובים שבהם השנה נכתבת כמספר שלם חתום, שנת אפס נמצאת בין שנה 1 לשנה ‎−1. לפיכך יש להבחין בין שנה אסטרונומית ‎−41221 לבין 41,222 לפני הספירה."
+    },
+    "convention": {
+      "formula": "kokiYear = prolepticGregorianAstronomicalYear + 660",
+      "inverse": "gregorianAstronomicalYear = kokiYear - 660",
+      "monthDay": "same proleptic-Gregorian month/day",
+      "signedYearZero": true,
+      "epoch": "Koki 1 = Gregorian astronomical -659 = 660 BCE; Koki 0 = astronomical -660 = 661 BCE",
+      "imperialErasAreSeparate": true
+    },
+    "externalCorroboration": [
+      "National Archives of Japan, Imperial Ordinance No. 90 (1898): leap-year rule subtracts 660 from the Jimmu-era year before Gregorian century handling.",
+      "National Diet Library reference: 1940 = Koki 2600; epoch is 660 BCE."
+    ]
+  },
+  "preFix": {
+    "baseline": {
+      "commitSha": "1f33a5b66261f202082d9a2f1087ccfa1ff1ab51",
+      "packageVersion": "1.3.0",
+      "foundationJdn": "-13334246",
+      "source": "pastafari-calendar-main(20260823-151507).zip"
+    },
+    "publicExports": [],
+    "japaneseExports": [
+      "JapaneseImperialDate",
+      "japaneseImperialToJdn"
+    ],
+    "vikramaExports": [
+      "VIKRAMA_MONTH_NAMES",
+      "VikramaDate",
+      "jdnToVikrama",
+      "vikramaToJdn"
+    ],
+    "japaneseFoundation": {
+      "ok": false,
+      "error": {
+        "name": "RangeError",
+        "message": "השנה בתקופה היפנית חייבת להיות חיובית"
+      }
+    },
+    "japaneseFoundationMeiji": {
+      "ok": false,
+      "error": {
+        "name": "RangeError",
+        "message": "השנה בתקופה היפנית חייבת להיות חיובית"
+      }
+    },
+    "docsKoki": {
+      "ok": false,
+      "error": {
+        "name": "RangeError",
+        "message": "Unknown calendar input: koki"
+      }
+    },
+    "samples": [
+      {
+        "jdn": "-13334247",
+        "reference": {
+          "system": "koki",
+          "calendar": "koki",
+          "year": "-40561",
+          "month": 12,
+          "day": 21
+        }
+      },
+      {
+        "jdn": "-13334246",
+        "reference": {
+          "system": "koki",
+          "calendar": "koki",
+          "year": "-40561",
+          "month": 12,
+          "day": 22
+        }
+      },
+      {
+        "jdn": "-13334245",
+        "reference": {
+          "system": "koki",
+          "calendar": "koki",
+          "year": "-40561",
+          "month": 12,
+          "day": 23
+        }
+      },
+      {
+        "jdn": "1479999",
+        "reference": {
+          "system": "koki",
+          "calendar": "koki",
+          "year": "-1",
+          "month": 12,
+          "day": 31
+        }
+      },
+      {
+        "jdn": "1480000",
+        "reference": {
+          "system": "koki",
+          "calendar": "koki",
+          "year": "0",
+          "month": 1,
+          "day": 1
+        }
+      },
+      {
+        "jdn": "1480365",
+        "reference": {
+          "system": "koki",
+          "calendar": "koki",
+          "year": "0",
+          "month": 12,
+          "day": 31
+        }
+      },
+      {
+        "jdn": "1480366",
+        "reference": {
+          "system": "koki",
+          "calendar": "koki",
+          "year": "1",
+          "month": 1,
+          "day": 1
+        }
+      },
+      {
+        "jdn": "2429630",
+        "reference": {
+          "system": "koki",
+          "calendar": "koki",
+          "year": "2600",
+          "month": 1,
+          "day": 1
+        }
+      },
+      {
+        "jdn": "2458605",
+        "reference": {
+          "system": "koki",
+          "calendar": "koki",
+          "year": "2679",
+          "month": 5,
+          "day": 1
+        }
+      },
+      {
+        "jdn": "2461276",
+        "reference": {
+          "system": "koki",
+          "calendar": "koki",
+          "year": "2686",
+          "month": 8,
+          "day": 23
+        }
+      }
+    ],
+    "modern": [
+      {
+        "era": "meiji",
+        "year": "1",
+        "month": 10,
+        "day": 23,
+        "result": {
+          "ok": true,
+          "value": "2403629"
+        }
+      },
+      {
+        "era": "taisho",
+        "year": "1",
+        "month": 7,
+        "day": 30,
+        "result": {
+          "ok": true,
+          "value": "2419614"
+        }
+      },
+      {
+        "era": "showa",
+        "year": "1",
+        "month": 12,
+        "day": 25,
+        "result": {
+          "ok": true,
+          "value": "2424875"
+        }
+      },
+      {
+        "era": "heisei",
+        "year": "1",
+        "month": 1,
+        "day": 8,
+        "result": {
+          "ok": true,
+          "value": "2447535"
+        }
+      },
+      {
+        "era": "reiwa",
+        "year": "1",
+        "month": 5,
+        "day": 1,
+        "result": {
+          "ok": true,
+          "value": "2458605"
+        }
+      },
+      {
+        "era": "reiwa",
+        "year": "8",
+        "month": 8,
+        "day": 23,
+        "result": {
+          "ok": true,
+          "value": "2461276"
+        }
+      }
+    ]
+  },
+  "foundation": {
+    "linearDay": "-15055671",
+    "jdn": "-13334246",
+    "gregorianAstronomical": {
+      "year": "-41221",
+      "month": 12,
+      "day": 22
+    },
+    "reference": {
+      "system": "koki",
+      "calendar": "koki",
+      "year": "-40561",
+      "month": 12,
+      "day": 22
+    },
+    "node": {
+      "system": "koki",
+      "calendar": "koki",
+      "year": "-40561",
+      "month": 12,
+      "day": 22
+    },
+    "browser": {
+      "system": "koki",
+      "calendar": "koki",
+      "year": "-40561",
+      "month": 12,
+      "day": 22
+    },
+    "docs": {
+      "system": "koki",
+      "calendar": "koki",
+      "year": "-40561",
+      "month": 12,
+      "day": 22
+    },
+    "nodeRoundTrip": "-13334246",
+    "browserRoundTrip": "-13334246",
+    "docsRoundTrip": "-13334246",
+    "match": true
+  },
+  "epochProof": [
+    {
+      "koki": "-2",
+      "gregorianAstronomical": "-662",
+      "historical": "663 BCE",
+      "january1Jdn": "1479270",
+      "offsetCheck": "-2"
+    },
+    {
+      "koki": "-1",
+      "gregorianAstronomical": "-661",
+      "historical": "662 BCE",
+      "january1Jdn": "1479635",
+      "offsetCheck": "-1"
+    },
+    {
+      "koki": "0",
+      "gregorianAstronomical": "-660",
+      "historical": "661 BCE",
+      "january1Jdn": "1480000",
+      "offsetCheck": "0"
+    },
+    {
+      "koki": "1",
+      "gregorianAstronomical": "-659",
+      "historical": "660 BCE",
+      "january1Jdn": "1480366",
+      "offsetCheck": "1"
+    },
+    {
+      "koki": "2",
+      "gregorianAstronomical": "-658",
+      "historical": "659 BCE",
+      "january1Jdn": "1480731",
+      "offsetCheck": "2"
+    },
+    {
+      "koki": "2600",
+      "gregorianAstronomical": "1940",
+      "historical": "1940 CE",
+      "january1Jdn": "2429630",
+      "offsetCheck": "2600"
+    },
+    {
+      "koki": "2686",
+      "gregorianAstronomical": "2026",
+      "historical": "2026 CE",
+      "january1Jdn": "2461042",
+      "offsetCheck": "2686"
+    }
+  ],
+  "foundationNeighborsAndBoundaries": [
+    {
+      "jdn": "-13334247",
+      "reference": {
+        "system": "koki",
+        "calendar": "koki",
+        "year": "-40561",
+        "month": 12,
+        "day": 21
+      },
+      "authoritative": {
+        "system": "koki",
+        "calendar": "koki",
+        "year": "-40561",
+        "month": 12,
+        "day": 21
+      }
+    },
+    {
+      "jdn": "-13334246",
+      "reference": {
+        "system": "koki",
+        "calendar": "koki",
+        "year": "-40561",
+        "month": 12,
+        "day": 22
+      },
+      "authoritative": {
+        "system": "koki",
+        "calendar": "koki",
+        "year": "-40561",
+        "month": 12,
+        "day": 22
+      }
+    },
+    {
+      "jdn": "-13334245",
+      "reference": {
+        "system": "koki",
+        "calendar": "koki",
+        "year": "-40561",
+        "month": 12,
+        "day": 23
+      },
+      "authoritative": {
+        "system": "koki",
+        "calendar": "koki",
+        "year": "-40561",
+        "month": 12,
+        "day": 23
+      }
+    },
+    {
+      "jdn": "-13334602",
+      "reference": {
+        "system": "koki",
+        "calendar": "koki",
+        "year": "-40562",
+        "month": 12,
+        "day": 31
+      },
+      "authoritative": {
+        "system": "koki",
+        "calendar": "koki",
+        "year": "-40562",
+        "month": 12,
+        "day": 31
+      }
+    },
+    {
+      "jdn": "-13334601",
+      "reference": {
+        "system": "koki",
+        "calendar": "koki",
+        "year": "-40561",
+        "month": 1,
+        "day": 1
+      },
+      "authoritative": {
+        "system": "koki",
+        "calendar": "koki",
+        "year": "-40561",
+        "month": 1,
+        "day": 1
+      }
+    },
+    {
+      "jdn": "-13334237",
+      "reference": {
+        "system": "koki",
+        "calendar": "koki",
+        "year": "-40561",
+        "month": 12,
+        "day": 31
+      },
+      "authoritative": {
+        "system": "koki",
+        "calendar": "koki",
+        "year": "-40561",
+        "month": 12,
+        "day": 31
+      }
+    },
+    {
+      "jdn": "-13334236",
+      "reference": {
+        "system": "koki",
+        "calendar": "koki",
+        "year": "-40560",
+        "month": 1,
+        "day": 1
+      },
+      "authoritative": {
+        "system": "koki",
+        "calendar": "koki",
+        "year": "-40560",
+        "month": 1,
+        "day": 1
+      }
+    }
+  ],
+  "leapEvidence": [
+    {
+      "kokiYear": "2560",
+      "gregorianYear": "1900",
+      "feb29Legal": false,
+      "result": {
+        "ok": false,
+        "error": {
+          "name": "RangeError",
+          "message": "The Kōki day is outside the selected month."
+        }
+      }
+    },
+    {
+      "kokiYear": "2600",
+      "gregorianYear": "1940",
+      "feb29Legal": true,
+      "result": {
+        "ok": true,
+        "value": "2429689"
+      }
+    },
+    {
+      "kokiYear": "2660",
+      "gregorianYear": "2000",
+      "feb29Legal": true,
+      "result": {
+        "ok": true,
+        "value": "2451604"
+      }
+    },
+    {
+      "kokiYear": "2700",
+      "gregorianYear": "2040",
+      "feb29Legal": true,
+      "result": {
+        "ok": true,
+        "value": "2466214"
+      }
+    }
+  ],
+  "modernDual": {
+    "jdn": "2461276",
+    "gregorian": {
+      "year": "2026",
+      "month": 8,
+      "day": 23
+    },
+    "japaneseImperial": {
+      "era": "reiwa",
+      "year": "8",
+      "month": 8,
+      "day": 23
+    },
+    "koki": {
+      "system": "koki",
+      "calendar": "koki",
+      "year": "2686",
+      "month": 8,
+      "day": 23
+    }
+  },
+  "eraRegressions": [
+    {
+      "era": "meiji",
+      "eraYear": "1",
+      "month": 10,
+      "day": 23,
+      "gregorian": {
+        "year": "1868",
+        "month": 10,
+        "day": 23
+      },
+      "actual": "2403629",
+      "expected": "2403629",
+      "match": true
+    },
+    {
+      "era": "meiji",
+      "eraYear": "45",
+      "month": 7,
+      "day": 29,
+      "gregorian": {
+        "year": "1912",
+        "month": 7,
+        "day": 29
+      },
+      "actual": "2419613",
+      "expected": "2419613",
+      "match": true
+    },
+    {
+      "era": "taisho",
+      "eraYear": "1",
+      "month": 7,
+      "day": 30,
+      "gregorian": {
+        "year": "1912",
+        "month": 7,
+        "day": 30
+      },
+      "actual": "2419614",
+      "expected": "2419614",
+      "match": true
+    },
+    {
+      "era": "taisho",
+      "eraYear": "15",
+      "month": 12,
+      "day": 24,
+      "gregorian": {
+        "year": "1926",
+        "month": 12,
+        "day": 24
+      },
+      "actual": "2424874",
+      "expected": "2424874",
+      "match": true
+    },
+    {
+      "era": "showa",
+      "eraYear": "1",
+      "month": 12,
+      "day": 25,
+      "gregorian": {
+        "year": "1926",
+        "month": 12,
+        "day": 25
+      },
+      "actual": "2424875",
+      "expected": "2424875",
+      "match": true
+    },
+    {
+      "era": "showa",
+      "eraYear": "64",
+      "month": 1,
+      "day": 7,
+      "gregorian": {
+        "year": "1989",
+        "month": 1,
+        "day": 7
+      },
+      "actual": "2447534",
+      "expected": "2447534",
+      "match": true
+    },
+    {
+      "era": "heisei",
+      "eraYear": "1",
+      "month": 1,
+      "day": 8,
+      "gregorian": {
+        "year": "1989",
+        "month": 1,
+        "day": 8
+      },
+      "actual": "2447535",
+      "expected": "2447535",
+      "match": true
+    },
+    {
+      "era": "heisei",
+      "eraYear": "31",
+      "month": 4,
+      "day": 30,
+      "gregorian": {
+        "year": "2019",
+        "month": 4,
+        "day": 30
+      },
+      "actual": "2458604",
+      "expected": "2458604",
+      "match": true
+    },
+    {
+      "era": "reiwa",
+      "eraYear": "1",
+      "month": 5,
+      "day": 1,
+      "gregorian": {
+        "year": "2019",
+        "month": 5,
+        "day": 1
+      },
+      "actual": "2458605",
+      "expected": "2458605",
+      "match": true
+    },
+    {
+      "era": "reiwa",
+      "eraYear": "8",
+      "month": 8,
+      "day": 23,
+      "gregorian": {
+        "year": "2026",
+        "month": 8,
+        "day": 23
+      },
+      "actual": "2461276",
+      "expected": "2461276",
+      "match": true
+    }
+  ],
+  "intlFaultInjection": {
+    "node": {
+      "ok": true,
+      "value": {
+        "system": "koki",
+        "calendar": "koki",
+        "year": "-40561",
+        "month": 12,
+        "day": 22
+      }
+    },
+    "browserModule": {
+      "ok": true,
+      "value": {
+        "system": "koki",
+        "calendar": "koki",
+        "year": "-40561",
+        "month": 12,
+        "day": 22
+      }
+    },
+    "docs": {
+      "ok": true,
+      "value": {
+        "system": "koki",
+        "calendar": "koki",
+        "year": "-40561",
+        "month": 12,
+        "day": 22
+      }
+    },
+    "nodeReverse": {
+      "ok": true,
+      "value": "-13334246"
+    },
+    "docsReverse": {
+      "ok": true,
+      "value": "-13334246"
+    }
+  },
+  "invalidInputs": [
+    {
+      "label": "NaN",
+      "ok": false,
+      "error": {
+        "name": "TypeError",
+        "message": "Kōki year must be an integer."
+      }
+    },
+    {
+      "label": "Infinity",
+      "ok": false,
+      "error": {
+        "name": "TypeError",
+        "message": "Kōki year must be an integer."
+      }
+    },
+    {
+      "label": "fractional",
+      "ok": false,
+      "error": {
+        "name": "TypeError",
+        "message": "Kōki year must be an integer."
+      }
+    },
+    {
+      "label": "invalid type",
+      "ok": false,
+      "error": {
+        "name": "TypeError",
+        "message": "Kōki year must be an integer."
+      }
+    },
+    {
+      "label": "bad month",
+      "ok": false,
+      "error": {
+        "name": "RangeError",
+        "message": "Kōki month must be in 1..12."
+      }
+    },
+    {
+      "label": "bad day",
+      "ok": false,
+      "error": {
+        "name": "RangeError",
+        "message": "The Kōki day is outside the selected month."
+      }
+    },
+    {
+      "label": "unsupported shape",
+      "ok": false,
+      "error": {
+        "name": "TypeError",
+        "message": "A Kōki date is required."
+      }
+    }
+  ],
+  "wideDifferential": {
+    "seed": "0x4b4f4b49",
+    "randomSamples": 10000,
+    "checked": 12023,
+    "mismatches": [],
+    "mismatchCount": 0
+  },
+  "api": {
+    "nodeKokiExports": [
+      "KokiDate",
+      "jdnToKoki",
+      "kokiToJdn"
+    ],
+    "browserKokiExports": [
+      "KOKI_GREGORIAN_YEAR_OFFSET",
+      "KOKI_SYSTEM_ID",
+      "KokiDate",
+      "isKokiDateLike",
+      "jdnToKoki",
+      "kokiToJdn"
+    ],
+    "docsHiddenDefinition": {
+      "id": "koki",
+      "labelKey": "calendarInput.koki",
+      "fields": [
+        {
+          "name": "year",
+          "labelKey": "field.year",
+          "kind": "integer"
+        },
+        {
+          "name": "month",
+          "labelKey": "field.month",
+          "kind": "integer",
+          "min": 1,
+          "max": 12
+        },
+        {
+          "name": "day",
+          "labelKey": "field.day",
+          "kind": "integer",
+          "min": 1,
+          "max": 31
+        }
+      ],
+      "helpKey": "calendarHelp.koki"
+    },
+    "docsVisibleCalendarListContainsKoki": false,
+    "note": "The docs adapter accepts Koki through a hidden definition so the existing translated UI list is not refactored in Update 12."
+  },
+  "spaghetti": {
+    "legacyJapaneseEraTableRemoved": false,
+    "intlPathRemoved": false,
+    "mechanism": "Each Koki conversion deliberately sends a synthetic era='koki' request through the legacy Japanese-imperial converter. Its normal rejection (or any accidental future success) is discarded. A separate signed arithmetic shadow then applies the normative Koki/Gregorian year relation and returns the public result.",
+    "sharedMutablePatch": false,
+    "exceptionCleanupNeeded": false,
+    "reentrancyRisk": "none introduced; no temporary global/table mutation is installed",
+    "publicEraMutationDependency": false
+  },
+  "performance": {
+    "count": 10000,
+    "kokiToJdnMs": 708.5409259999997,
+    "jdnToKokiMs": 357.00605499999983,
+    "kokiToJdnMicrosecondsPerCall": 70.85409259999996,
+    "jdnToKokiMicrosecondsPerCall": 35.70060549999998
+  },
+  "memory": {
+    "available": true,
+    "calls": 40000,
+    "heapBefore": 237986824,
+    "heapAfter": 237936448,
+    "heapDelta": -50376
+  },
+  "environment": {
+    "node": "v22.16.0",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  "failures": []
+}

@@ -48,7 +48,7 @@
     "test:release-infra": "node --test test/release-infrastructure.test.js",
     "test:reference-oracle": "node --test test/reference-oracle.test.js",
     "test": "npm run test:fast",
-    "test:fast": "node --test test/calendar-converters.test.js test/ci-change-classifier.test.js test/calendar-input-conventions.test.js test/calendar-properties.test.js test/day-boundary.test.js test/docs-consistency.test.js test/gate-data-regeneration.test.js test/i18n-support-levels.test.js test/memory-analysis.test.js test/pages-reverse-engine.test.js test/public-api.test.js test/pwa-i18n.test.js test/release-infrastructure.test.js test/reverse-pages-integration.test.js test/reverse-pages-wiring.test.js test/reverse-search-controller.test.js test/router-cache-lifecycle.test.js test/router-concurrency.test.js test/router-fallback.test.js test/router-memory-bounds.test.js test/runtime-patching.test.js test/update09-proleptic-negative-year.test.js test/standalone-build.test.js test/reference-oracle.test.js test/year-ceiling-detour.test.js test/update11-vikrama.test.js",
+    "test:fast": "node --test test/calendar-converters.test.js test/ci-change-classifier.test.js test/calendar-input-conventions.test.js test/calendar-properties.test.js test/day-boundary.test.js test/docs-consistency.test.js test/gate-data-regeneration.test.js test/i18n-support-levels.test.js test/memory-analysis.test.js test/pages-reverse-engine.test.js test/public-api.test.js test/pwa-i18n.test.js test/release-infrastructure.test.js test/reverse-pages-integration.test.js test/reverse-pages-wiring.test.js test/reverse-search-controller.test.js test/router-cache-lifecycle.test.js test/router-concurrency.test.js test/router-fallback.test.js test/router-memory-bounds.test.js test/runtime-patching.test.js test/update09-proleptic-negative-year.test.js test/update12-koki-proleptic.test.js test/standalone-build.test.js test/reference-oracle.test.js test/year-ceiling-detour.test.js test/update11-vikrama.test.js",
     "test:compatibility": "node --test test/fast-compatibility.test.js",
     "test:deep": "node --test test/constraints.test.js test/diagnostics.test.js test/extreme-performance.test.js test/i18n.test.js test/reverse.test.js test/year-structure.test.js",
     "test:full": "npm run test:fast && npm run test:compatibility && npm run test:deep",
@@ -92,7 +92,9 @@
     "test:ci-change-classifier": "node --test test/ci-change-classifier.test.js",
     "test:runtime-patching": "node --test test/runtime-patching.test.js",
     "test:update11:vikrama": "node --test test/update11-vikrama.test.js && node verification/update11/run-vikrama-final-audit.mjs",
-    "test:update11:vikrama:browser": "node scripts/run-update11-vikrama-browser-smoke.mjs"
+    "test:update11:vikrama:browser": "node scripts/run-update11-vikrama-browser-smoke.mjs",
+    "test:update12:koki": "node --test test/update12-koki-proleptic.test.js && node verification/update12/run-koki-audit.mjs",
+    "test:update12:koki:browser": "node scripts/run-update12-koki-browser-smoke.mjs"
   },
   "devDependencies": {
     "axe-core": "4.12.1",

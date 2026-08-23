@@ -207,6 +207,31 @@ export class JapaneseImperialDate {
   constructor(era: string, year: IntegerLike, month: number, day: number);
 }
 
+export class KokiDate {
+  readonly calendar: "koki";
+  readonly system: "koki";
+  readonly year: bigint;
+  readonly month: number;
+  readonly day: number;
+  constructor(year: IntegerLike, month: number, day: number);
+}
+
+export interface KokiDateValue {
+  readonly calendar?: "koki";
+  readonly system?: "koki";
+  readonly year: IntegerLike;
+  readonly month: number;
+  readonly day: number;
+}
+
+export interface KokiDateResult {
+  readonly calendar: "koki";
+  readonly system: "koki";
+  readonly year: bigint;
+  readonly month: number;
+  readonly day: number;
+}
+
 export class MinguoDate {
   readonly calendar: "minguo";
   readonly year: bigint;
@@ -271,6 +296,8 @@ export type CalendarDateInput =
   | EthiopicDate
   | CopticDate
   | JapaneseImperialDate
+  | KokiDate
+  | KokiDateValue
   | MinguoDate
   | BahaiDate
   | MayaLongCountDate
@@ -603,6 +630,8 @@ export function thaiBuddhistToJdn(value: ThaiBuddhistDate): bigint;
 export function ethiopicToJdn(value: EthiopicDate): bigint;
 export function copticToJdn(value: CopticDate): bigint;
 export function japaneseImperialToJdn(value: JapaneseImperialDate): bigint;
+export function kokiToJdn(value: KokiDate | KokiDateValue): bigint;
+export function jdnToKoki(jdn: IntegerLike | string): KokiDateResult;
 export function minguoToJdn(value: MinguoDate): bigint;
 export function bahaiToJdn(value: BahaiDate): bigint;
 export function mayaLongCountToJdn(value: MayaLongCountDate): bigint;

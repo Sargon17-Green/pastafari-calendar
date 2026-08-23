@@ -134,7 +134,11 @@ export const CALENDAR_DEFINITIONS = Object.freeze([
   ], "calendarHelp.maya"),
 ]);
 
-const DEFINITIONS_BY_ID = new Map(CALENDAR_DEFINITIONS.map((entry) => [entry.id, entry]));
+const KOKI_SHADOW_DEFINITION = definition("koki", "calendarInput.koki", YMD_FIELDS, "calendarHelp.koki");
+const DEFINITIONS_BY_ID = new Map([
+  ...CALENDAR_DEFINITIONS.map((entry) => [entry.id, entry]),
+  [KOKI_SHADOW_DEFINITION.id, KOKI_SHADOW_DEFINITION],
+]);
 
 export function getCalendarDefinition(id) {
   const found = DEFINITIONS_BY_ID.get(id);
@@ -469,6 +473,52 @@ function japaneseImperialToJdn({ era, year, month, day }) {
   return value;
 }
 
+export function kokiToJdn({ year, month, day }) {
+  const normalizedYear = integer({ year }, "year");
+  const normalizedMonth = smallInteger({ month }, "month", 1, 12);
+  const normalizedDay = smallInteger({ day }, "day", 1, 31);
+
+  // Update 12 spaghetti detour: ask the imperial-era table to accept a fake
+  // Kōki era first.  It is expected to refuse; its refusal is not normative.
+  try {
+    japaneseImperialToJdn({
+      era: "koki",
+      year: normalizedYear,
+      month: normalizedMonth,
+      day: normalizedDay,
+    });
+  } catch {
+    // The hidden arithmetic clerk below supplies the actual Kōki result.
+  }
+
+  const gregorianYear = normalizedYear - 660n;
+  validateCivilDate(gregorianYear, normalizedMonth, normalizedDay, isGregorianLeapYear);
+  return gregorianToJdn({ year: gregorianYear, month: normalizedMonth, day: normalizedDay });
+}
+
+export function jdnToKoki(jdn) {
+  const gregorian = jdnToGregorian(BigInt(jdn));
+  const result = Object.freeze({
+    system: "koki",
+    calendar: "koki",
+    year: gregorian.year + 660n,
+    month: gregorian.month,
+    day: gregorian.day,
+  });
+
+  try {
+    japaneseImperialToJdn({
+      era: "koki",
+      year: result.year,
+      month: result.month,
+      day: result.day,
+    });
+  } catch {
+    // Preserve the old imperial failure path; the shadow result survives it.
+  }
+  return result;
+}
+
 const EQUINOX_TERMS = Object.freeze([
   [485, 324.96, 1934.136], [203, 337.23, 32964.467], [199, 342.08, 20.186],
   [182, 27.85, 445267.112], [156, 73.14, 45036.886], [136, 171.52, 22518.443],
@@ -662,6 +712,7 @@ export function calendarDateToJdn(calendarId, values) {
   }
   if (calendarId === "ethiopic") return fixedThirteenMonthToJdn(readCommonDate(values, 13), ETHIOPIC_EPOCH_JDN);
   if (calendarId === "coptic") return fixedThirteenMonthToJdn(readCommonDate(values, 13), COPTIC_EPOCH_JDN);
+  if (calendarId === "koki") return kokiToJdn(readCommonDate(values));
   if (calendarId === "japanese-imperial") {
     return japaneseImperialToJdn({
       era: String(values?.era || ""),
