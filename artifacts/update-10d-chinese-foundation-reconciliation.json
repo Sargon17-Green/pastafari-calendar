@@ -1,0 +1,544 @@
+{
+  "result": "FOUNDATION_OFFSET_RECONCILED_AS_DELTA_T_EXTRAPOLATION_SENSITIVITY",
+  "acceptanceStatus": "DIAGNOSTIC_ONLY_NOT_A_PRODUCTION_FIX",
+  "stage": "Update 10D diagnostic / Update 10C reconciliation",
+  "scope": "No production converter or public API path is modified. This stage diagnoses why the Magillah Foundation anchor is three fixed days after the baseline CALENDRICA-derived port.",
+  "packageVersion": "1.3.0",
+  "foundation": {
+    "fixedDay": -15055671,
+    "expected": {
+      "cycle": -643,
+      "yearInCycle": 57,
+      "heavenlyStem": "geng",
+      "earthlyBranch": "shen",
+      "stem": 7,
+      "branch": 9,
+      "month": 1,
+      "leap": false,
+      "day": 22
+    },
+    "expectedMonthStart": -15055692
+  },
+  "baseline": {
+    "name": "deltaT-factor-1",
+    "deltaTFactor": 1,
+    "zone": "default",
+    "newMoonShift": 0,
+    "ok": true,
+    "actual": {
+      "cycle": -643,
+      "yearInCycle": 57,
+      "heavenlyStem": "geng",
+      "earthlyBranch": "shen",
+      "stem": 7,
+      "branch": 9,
+      "month": 1,
+      "leap": false,
+      "day": 19
+    },
+    "match": false,
+    "mismatchFields": [
+      "day"
+    ],
+    "reverseExpectedDeltaFromFoundation": 3,
+    "monthStart": -15055689,
+    "monthStartDeltaFromMagillahImpliedStart": 3,
+    "m12": -15055719,
+    "s1": -15055726
+  },
+  "factorSweep": [
+    {
+      "name": "deltaT-factor-0",
+      "deltaTFactor": 0,
+      "zone": "default",
+      "newMoonShift": 0,
+      "ok": true,
+      "actual": {
+        "cycle": -643,
+        "yearInCycle": 56,
+        "heavenlyStem": "ji",
+        "earthlyBranch": "wei",
+        "stem": 6,
+        "branch": 8,
+        "month": 10,
+        "leap": false,
+        "day": 10
+      },
+      "match": false,
+      "mismatchFields": [
+        "yearInCycle",
+        "heavenlyStem",
+        "earthlyBranch",
+        "stem",
+        "branch",
+        "month",
+        "day"
+      ],
+      "reverseExpectedDeltaFromFoundation": 278,
+      "monthStart": -15055680,
+      "monthStartDeltaFromMagillahImpliedStart": 12,
+      "m12": -15055975,
+      "s1": -15056023
+    },
+    {
+      "name": "deltaT-factor-0.8",
+      "deltaTFactor": 0.8,
+      "zone": "default",
+      "newMoonShift": 0,
+      "ok": true,
+      "actual": {
+        "cycle": -643,
+        "yearInCycle": 57,
+        "heavenlyStem": "geng",
+        "earthlyBranch": "shen",
+        "stem": 7,
+        "branch": 9,
+        "month": 1,
+        "leap": false,
+        "day": 5
+      },
+      "match": false,
+      "mismatchFields": [
+        "day"
+      ],
+      "reverseExpectedDeltaFromFoundation": 17,
+      "monthStart": -15055675,
+      "monthStartDeltaFromMagillahImpliedStart": 17,
+      "m12": -15055705,
+      "s1": -15055712
+    },
+    {
+      "name": "deltaT-factor-0.9",
+      "deltaTFactor": 0.9,
+      "zone": "default",
+      "newMoonShift": 0,
+      "ok": true,
+      "actual": {
+        "cycle": -643,
+        "yearInCycle": 57,
+        "heavenlyStem": "geng",
+        "earthlyBranch": "shen",
+        "stem": 7,
+        "branch": 9,
+        "month": 1,
+        "leap": false,
+        "day": 12
+      },
+      "match": false,
+      "mismatchFields": [
+        "day"
+      ],
+      "reverseExpectedDeltaFromFoundation": 10,
+      "monthStart": -15055682,
+      "monthStartDeltaFromMagillahImpliedStart": 10,
+      "m12": -15055712,
+      "s1": -15055719
+    },
+    {
+      "name": "deltaT-factor-0.95",
+      "deltaTFactor": 0.95,
+      "zone": "default",
+      "newMoonShift": 0,
+      "ok": true,
+      "actual": {
+        "cycle": -643,
+        "yearInCycle": 57,
+        "heavenlyStem": "geng",
+        "earthlyBranch": "shen",
+        "stem": 7,
+        "branch": 9,
+        "month": 1,
+        "leap": false,
+        "day": 16
+      },
+      "match": false,
+      "mismatchFields": [
+        "day"
+      ],
+      "reverseExpectedDeltaFromFoundation": 6,
+      "monthStart": -15055686,
+      "monthStartDeltaFromMagillahImpliedStart": 6,
+      "m12": -15055715,
+      "s1": -15055723
+    },
+    {
+      "name": "deltaT-factor-1",
+      "deltaTFactor": 1,
+      "zone": "default",
+      "newMoonShift": 0,
+      "ok": true,
+      "actual": {
+        "cycle": -643,
+        "yearInCycle": 57,
+        "heavenlyStem": "geng",
+        "earthlyBranch": "shen",
+        "stem": 7,
+        "branch": 9,
+        "month": 1,
+        "leap": false,
+        "day": 19
+      },
+      "match": false,
+      "mismatchFields": [
+        "day"
+      ],
+      "reverseExpectedDeltaFromFoundation": 3,
+      "monthStart": -15055689,
+      "monthStartDeltaFromMagillahImpliedStart": 3,
+      "m12": -15055719,
+      "s1": -15055726
+    },
+    {
+      "name": "deltaT-factor-1.01",
+      "deltaTFactor": 1.01,
+      "zone": "default",
+      "newMoonShift": 0,
+      "ok": true,
+      "actual": {
+        "cycle": -643,
+        "yearInCycle": 57,
+        "heavenlyStem": "geng",
+        "earthlyBranch": "shen",
+        "stem": 7,
+        "branch": 9,
+        "month": 1,
+        "leap": false,
+        "day": 20
+      },
+      "match": false,
+      "mismatchFields": [
+        "day"
+      ],
+      "reverseExpectedDeltaFromFoundation": 2,
+      "monthStart": -15055690,
+      "monthStartDeltaFromMagillahImpliedStart": 2,
+      "m12": -15055719,
+      "s1": -15055727
+    },
+    {
+      "name": "deltaT-factor-1.02",
+      "deltaTFactor": 1.02,
+      "zone": "default",
+      "newMoonShift": 0,
+      "ok": true,
+      "actual": {
+        "cycle": -643,
+        "yearInCycle": 57,
+        "heavenlyStem": "geng",
+        "earthlyBranch": "shen",
+        "stem": 7,
+        "branch": 9,
+        "month": 1,
+        "leap": false,
+        "day": 20
+      },
+      "match": false,
+      "mismatchFields": [
+        "day"
+      ],
+      "reverseExpectedDeltaFromFoundation": 2,
+      "monthStart": -15055690,
+      "monthStartDeltaFromMagillahImpliedStart": 2,
+      "m12": -15055720,
+      "s1": -15055727
+    },
+    {
+      "name": "deltaT-factor-1.03",
+      "deltaTFactor": 1.03,
+      "zone": "default",
+      "newMoonShift": 0,
+      "ok": true,
+      "actual": {
+        "cycle": -643,
+        "yearInCycle": 57,
+        "heavenlyStem": "geng",
+        "earthlyBranch": "shen",
+        "stem": 7,
+        "branch": 9,
+        "month": 1,
+        "leap": false,
+        "day": 21
+      },
+      "match": false,
+      "mismatchFields": [
+        "day"
+      ],
+      "reverseExpectedDeltaFromFoundation": 1,
+      "monthStart": -15055691,
+      "monthStartDeltaFromMagillahImpliedStart": 1,
+      "m12": -15055721,
+      "s1": -15055728
+    },
+    {
+      "name": "deltaT-factor-1.035",
+      "deltaTFactor": 1.035,
+      "zone": "default",
+      "newMoonShift": 0,
+      "ok": true,
+      "actual": {
+        "cycle": -643,
+        "yearInCycle": 57,
+        "heavenlyStem": "geng",
+        "earthlyBranch": "shen",
+        "stem": 7,
+        "branch": 9,
+        "month": 1,
+        "leap": false,
+        "day": 21
+      },
+      "match": false,
+      "mismatchFields": [
+        "day"
+      ],
+      "reverseExpectedDeltaFromFoundation": 1,
+      "monthStart": -15055691,
+      "monthStartDeltaFromMagillahImpliedStart": 1,
+      "m12": -15055721,
+      "s1": -15055728
+    },
+    {
+      "name": "deltaT-factor-1.04",
+      "deltaTFactor": 1.04,
+      "zone": "default",
+      "newMoonShift": 0,
+      "ok": true,
+      "actual": {
+        "cycle": -643,
+        "yearInCycle": 57,
+        "heavenlyStem": "geng",
+        "earthlyBranch": "shen",
+        "stem": 7,
+        "branch": 9,
+        "month": 1,
+        "leap": false,
+        "day": 22
+      },
+      "match": true,
+      "mismatchFields": [],
+      "reverseExpectedDeltaFromFoundation": 0,
+      "monthStart": -15055692,
+      "monthStartDeltaFromMagillahImpliedStart": 0,
+      "m12": -15055722,
+      "s1": -15055729
+    },
+    {
+      "name": "deltaT-factor-1.045",
+      "deltaTFactor": 1.045,
+      "zone": "default",
+      "newMoonShift": 0,
+      "ok": true,
+      "actual": {
+        "cycle": -643,
+        "yearInCycle": 57,
+        "heavenlyStem": "geng",
+        "earthlyBranch": "shen",
+        "stem": 7,
+        "branch": 9,
+        "month": 1,
+        "leap": false,
+        "day": 22
+      },
+      "match": true,
+      "mismatchFields": [],
+      "reverseExpectedDeltaFromFoundation": 0,
+      "monthStart": -15055692,
+      "monthStartDeltaFromMagillahImpliedStart": 0,
+      "m12": -15055722,
+      "s1": -15055729
+    },
+    {
+      "name": "deltaT-factor-1.05",
+      "deltaTFactor": 1.05,
+      "zone": "default",
+      "newMoonShift": 0,
+      "ok": true,
+      "actual": {
+        "cycle": -643,
+        "yearInCycle": 57,
+        "heavenlyStem": "geng",
+        "earthlyBranch": "shen",
+        "stem": 7,
+        "branch": 9,
+        "month": 1,
+        "leap": false,
+        "day": 22
+      },
+      "match": true,
+      "mismatchFields": [],
+      "reverseExpectedDeltaFromFoundation": 0,
+      "monthStart": -15055692,
+      "monthStartDeltaFromMagillahImpliedStart": 0,
+      "m12": -15055722,
+      "s1": -15055730
+    },
+    {
+      "name": "deltaT-factor-1.055",
+      "deltaTFactor": 1.055,
+      "zone": "default",
+      "newMoonShift": 0,
+      "ok": true,
+      "actual": {
+        "cycle": -643,
+        "yearInCycle": 57,
+        "heavenlyStem": "geng",
+        "earthlyBranch": "shen",
+        "stem": 7,
+        "branch": 9,
+        "month": 1,
+        "leap": false,
+        "day": 23
+      },
+      "match": false,
+      "mismatchFields": [
+        "day"
+      ],
+      "reverseExpectedDeltaFromFoundation": -1,
+      "monthStart": -15055693,
+      "monthStartDeltaFromMagillahImpliedStart": -1,
+      "m12": -15055723,
+      "s1": -15055730
+    },
+    {
+      "name": "deltaT-factor-1.06",
+      "deltaTFactor": 1.06,
+      "zone": "default",
+      "newMoonShift": 0,
+      "ok": true,
+      "actual": {
+        "cycle": -643,
+        "yearInCycle": 57,
+        "heavenlyStem": "geng",
+        "earthlyBranch": "shen",
+        "stem": 7,
+        "branch": 9,
+        "month": 1,
+        "leap": false,
+        "day": 23
+      },
+      "match": false,
+      "mismatchFields": [
+        "day"
+      ],
+      "reverseExpectedDeltaFromFoundation": -1,
+      "monthStart": -15055693,
+      "monthStartDeltaFromMagillahImpliedStart": -1,
+      "m12": -15055723,
+      "s1": -15055730
+    },
+    {
+      "name": "deltaT-factor-1.1",
+      "deltaTFactor": 1.1,
+      "zone": "default",
+      "newMoonShift": 0,
+      "ok": true,
+      "actual": {
+        "cycle": -643,
+        "yearInCycle": 57,
+        "heavenlyStem": "geng",
+        "earthlyBranch": "shen",
+        "stem": 7,
+        "branch": 9,
+        "month": 1,
+        "leap": false,
+        "day": 26
+      },
+      "match": false,
+      "mismatchFields": [
+        "day"
+      ],
+      "reverseExpectedDeltaFromFoundation": -4,
+      "monthStart": -15055696,
+      "monthStartDeltaFromMagillahImpliedStart": -4,
+      "m12": -15055726,
+      "s1": -15055733
+    }
+  ],
+  "controlVariants": [
+    {
+      "name": "zone-forced-plus8",
+      "deltaTFactor": 1,
+      "zone": "forced+8",
+      "newMoonShift": 0,
+      "ok": true,
+      "actual": {
+        "cycle": -643,
+        "yearInCycle": 57,
+        "heavenlyStem": "geng",
+        "earthlyBranch": "shen",
+        "stem": 7,
+        "branch": 9,
+        "month": 1,
+        "leap": false,
+        "day": 19
+      },
+      "match": false,
+      "mismatchFields": [
+        "day"
+      ],
+      "reverseExpectedDeltaFromFoundation": 3,
+      "monthStart": -15055689,
+      "monthStartDeltaFromMagillahImpliedStart": 3,
+      "m12": -15055719,
+      "s1": -15055726
+    },
+    {
+      "name": "newmoon-floor-minus1",
+      "deltaTFactor": 1,
+      "zone": "default",
+      "newMoonShift": -1,
+      "ok": true,
+      "actual": {
+        "cycle": -643,
+        "yearInCycle": 56,
+        "heavenlyStem": "ji",
+        "earthlyBranch": "wei",
+        "stem": 6,
+        "branch": 8,
+        "month": 12,
+        "leap": false,
+        "day": 20
+      },
+      "match": false,
+      "mismatchFields": [
+        "yearInCycle",
+        "heavenlyStem",
+        "earthlyBranch",
+        "stem",
+        "branch",
+        "month",
+        "day"
+      ],
+      "reverseExpectedDeltaFromFoundation": -28,
+      "monthStart": -15055690,
+      "monthStartDeltaFromMagillahImpliedStart": 2,
+      "m12": -15055720,
+      "s1": -15055726
+    },
+    {
+      "name": "newmoon-floor-plus1",
+      "deltaTFactor": 1,
+      "zone": "default",
+      "newMoonShift": 1,
+      "ok": false,
+      "error": "[update10c] FAIL\nRangeError: Maximum call stack size exceeded\n    at solarLongitude (file:///mnt/data/recon10d/base/pastafari-calendar-main/scripts/.tmp-update10d-newmoon-floor-plus1.mjs:48:24)\n    at lunarPhase (file:///mnt/data/recon10d/base/pastafari-calendar-main/scripts/.tmp-update10d-newmoon-floor-plus1.mjs:59:61)\n    at newMoonAtOrAfter (file:///mnt/data/recon10d/base/pastafari-calendar-main/scripts/.tmp-update10d-newmoon-floor-plus1.mjs:61:67)\n    at chineseNewMoonOnOrAfter (file:///mnt/data/recon10d/base/pastafari-calendar-main/scripts/.tmp-update10d-newmoon-floor-plus1.mjs:67:51)\n    at noMajorSolarTerm (file:///mnt/data/recon10d/base/pastafari-calendar-main/scripts/.tmp-update10d-newmoon-floor-plus1.mjs:69:95)\n    at priorLeapMonth (file:///mnt/data/recon10d/base/pastafari-calendar-main/scripts/.tmp-update10d-newmoon-floor-plus1.mjs:73:70)\n    at priorLeapMonth (file:///mnt/data/recon10d/base/pastafari-calendar-main/scripts/.tmp-update10d-newmoon-floor-plus1.mjs:73:93)\n    at priorLeapMonth (file:///mnt/data/recon10d/base/pastafari-calendar-main/scripts/.tmp-update10d-newmoon-floor-plus1.mjs:73:93)\n    at priorLeapMonth (file:///mnt/data/recon10d/base/pastafari-calendar-main/scripts/.tmp-update10d-newmoon-floor-plus1.mjs:73:93)\n    at priorLeapMonth (file:///mnt/data/recon10d/base/pastafari-calendar-main/scripts/.tmp-update10d-newmoon-floor-plus1.mjs:73:93)\n"
+    }
+  ],
+  "matchingDeltaTFactors": [
+    1.04,
+    1.045,
+    1.05
+  ],
+  "firstMatchingDeltaTFactor": 1.04,
+  "interpretation": [
+    "The baseline CALENDRICA-derived port places the start of the Foundation month at Foundation-18 and therefore reports day 19.",
+    "The Magillah anchor implies that the same month began at Foundation-21.",
+    "Small civil-time convention changes are too small or move in the wrong direction: forcing the old Chinese zone to +08:00 does not remove the three-day gap, and a one-day floor/ceil-style new-moon shift cannot explain it.",
+    "Scaling only the deep-antiquity Delta-T extrapolation used by the port to about 1.04-1.05 makes the CALENDRICA structure reproduce the Magillah Foundation discriminator exactly.",
+    "Therefore the three-day discrepancy is best explained as sensitivity to an unsupported deep-antiquity astronomical/Delta-T convention, not as an RD/JDN off-by-one or public API formatting issue."
+  ],
+  "decision": [
+    "Do not patch production with a simple +3-day offset; that would be a fixture-specific hack.",
+    "Do not claim unmodified CALENDRICA is the Magillah source of truth for 41,222 BCE.",
+    "The next acceptable repair path is to make the Magillah/source text explicitly choose the deep-antiquity Delta-T convention/calibration for the Chinese calendar, then implement that convention as a named shadow engine with tests."
+  ]
+}
