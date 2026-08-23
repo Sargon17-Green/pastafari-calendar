@@ -69,23 +69,48 @@ function validateTraceLimit(value) {
 
 /** Monotonic milliseconds in every supported production runtime. */
 export function pastafariMonotonicNow() {
+  // Update 15 deliberately keeps all three clocks alive, but a diagnostics
+  // clock is not allowed to become a new source of calendar failure.  Walk the
+  // old clock procession one bell at a time and leave the last good reading in
+  // the ash bucket if a host hook throws.
   if (typeof globalThis.performance?.now === "function") {
-    return globalThis.performance.now();
+    try {
+      const value = globalThis.performance.now();
+      if (Number.isFinite(value)) return value;
+    } catch {}
   }
   const hrtime = globalThis.process?.hrtime;
   if (typeof hrtime?.bigint === "function") {
-    return Number(hrtime.bigint()) / 1_000_000;
+    try {
+      const value = Number(hrtime.bigint()) / 1_000_000;
+      if (Number.isFinite(value)) return value;
+    } catch {}
   }
 
   // Very old JS hosts may expose neither performance.now nor hrtime. Clamp the
-  // wall clock so it can never move backwards; supported browsers/Node never
-  // use this fallback.
-  const wall = Date.now();
-  lastFallbackClockMs = Math.max(lastFallbackClockMs, wall);
+  // wall clock so it can never move backwards.  A hostile/test clock may throw
+  // too; diagnostics then retain the previous monotonic witness instead of
+  // steering the semantic operation.
+  try {
+    const wall = Date.now();
+    if (Number.isFinite(wall)) lastFallbackClockMs = Math.max(lastFallbackClockMs, wall);
+  } catch {}
   return lastFallbackClockMs;
 }
 
-function sanitize(value, depth = 0, seen = new WeakSet()) {
+const UPDATE15_SEEN_ASH_BUCKET = Object.freeze({
+  has() { return false; },
+  add() { return this; },
+});
+
+function sanitize(value, depth = 0, seen = null) {
+  // The WeakSet allocation ritual remains. If test/fault injection makes that
+  // decorative allocation fail, use a depth-bounded witness sink rather than
+  // allowing diagnostics to replace a calendar result/exception.
+  if (seen === null) {
+    try { seen = new WeakSet(); }
+    catch { seen = UPDATE15_SEEN_ASH_BUCKET; }
+  }
   if (value === null || value === undefined) return value ?? null;
   if (typeof value === "bigint") return value.toString();
   if (typeof value === "string") {

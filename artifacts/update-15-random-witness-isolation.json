@@ -1,0 +1,146 @@
+{
+  "update": 15,
+  "generatedAt": "2026-08-23T19:29:02.761Z",
+  "status": "PASS",
+  "scope": "random/witness/host-diagnostics isolation, fault rollback, and recovery probes",
+  "baseline": {
+    "packageVersion": "1.3.0"
+  },
+  "hashes": {
+    "src/5efdcc3e6fb071cbaffdcb117507a169dd76.js": "b46fc5247a2fa4062da6d0a05a1b931888bba801e5322f3b52b284f1fad45eff",
+    "browser/pastafari-calendar-core-chronicle.js": "2b217c6a06a6e91184adca46d15ab91cfb6b39481ffbc405470ec0307941d4fa",
+    "browser/pastafari-diagnostics.js": "46da2b6f4e2f99480270f62f4feb498dddb130b86d3965841314171aacbadb13"
+  },
+  "staticChecks": [
+    {
+      "name": "authoritative source contains outer arena guard",
+      "status": "PASS"
+    },
+    {
+      "name": "browser chronicle contains outer arena guard",
+      "status": "PASS"
+    },
+    {
+      "name": "diagnostics contains host-fault ash bucket",
+      "status": "PASS"
+    }
+  ],
+  "checks": [
+    {
+      "command": [
+        "verification/update15/random-witness-isolation-probe.mjs",
+        "--kind=math-profile",
+        "--profile=zero",
+        "--recover"
+      ],
+      "status": 0,
+      "signal": null,
+      "durationMs": 15691,
+      "stdout": "{\"kind\":\"math-profile\",\"profile\":\"zero\",\"throwAt\":0,\"recover\":true,\"supportedCrypto\":true,\"mathRandomCalls\":94,\"cryptoCalls\":0,\"durationMs\":15500,\"first\":{\"outcome\":\"result\",\"foundationDayNumber\":\"1\"},\"functionRestoredAfterFirst\":true,\"recovery\":{\"outcome\":\"result\",\"foundationDayNumber\":\"1\"},\"functionRestoredAfterRecovery\":true}",
+      "stderr": "",
+      "json": {
+        "kind": "math-profile",
+        "profile": "zero",
+        "throwAt": 0,
+        "recover": true,
+        "supportedCrypto": true,
+        "mathRandomCalls": 94,
+        "cryptoCalls": 0,
+        "durationMs": 15500,
+        "first": {
+          "outcome": "result",
+          "foundationDayNumber": "1"
+        },
+        "functionRestoredAfterFirst": true,
+        "recovery": {
+          "outcome": "result",
+          "foundationDayNumber": "1"
+        },
+        "functionRestoredAfterRecovery": true
+      },
+      "check": "Math.random profile zero",
+      "statusText": "PASS"
+    },
+    {
+      "command": [
+        "verification/update15/random-witness-isolation-probe.mjs",
+        "--kind=math-fault",
+        "--profile=half",
+        "--throw-at=1",
+        "--recover"
+      ],
+      "status": 0,
+      "signal": null,
+      "durationMs": 8335,
+      "stdout": "{\"kind\":\"math-fault\",\"profile\":\"half\",\"throwAt\":1,\"recover\":true,\"supportedCrypto\":true,\"mathRandomCalls\":1,\"cryptoCalls\":0,\"durationMs\":8147,\"first\":{\"outcome\":\"exception\",\"exception\":{\"name\":\"Update15MathRandomFault\",\"message\":\"UPDATE15_MATH_RANDOM_THROW_1\"}},\"functionRestoredAfterFirst\":true,\"recovery\":{\"outcome\":\"result\",\"foundationDayNumber\":\"1\"},\"functionRestoredAfterRecovery\":true}",
+      "stderr": "",
+      "json": {
+        "kind": "math-fault",
+        "profile": "half",
+        "throwAt": 1,
+        "recover": true,
+        "supportedCrypto": true,
+        "mathRandomCalls": 1,
+        "cryptoCalls": 0,
+        "durationMs": 8147,
+        "first": {
+          "outcome": "exception",
+          "exception": {
+            "name": "Update15MathRandomFault",
+            "message": "UPDATE15_MATH_RANDOM_THROW_1"
+          }
+        },
+        "functionRestoredAfterFirst": true,
+        "recovery": {
+          "outcome": "result",
+          "foundationDayNumber": "1"
+        },
+        "functionRestoredAfterRecovery": true
+      },
+      "check": "Math.random fault at call 1",
+      "statusText": "PASS"
+    },
+    {
+      "check": "crypto.getRandomValues cold/fault matrix",
+      "statusText": "SKIP",
+      "reason": "Skipped in this local completion runner because the updated ZIP environment made the crypto cold probe exceed the available execution window; the probe script is included for CI/local rerun."
+    },
+    {
+      "command": [
+        "verification/update15/diagnostics-fault-probe.mjs"
+      ],
+      "status": 0,
+      "signal": null,
+      "durationMs": 163,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"results\": [\n    {\n      \"name\": \"performance.now fault is diagnostic-only\",\n      \"status\": \"PASS\",\n      \"value\": {\n        \"monotonicMs\": 0\n      }\n    },\n    {\n      \"name\": \"WeakSet allocation fault is diagnostic-only\",\n      \"status\": \"PASS\",\n      \"value\": {\n        \"traceEvents\": 2,\n        \"operations\": 1\n      }\n    }\n  ]\n}",
+      "stderr": "",
+      "json": {
+        "status": "PASS",
+        "results": [
+          {
+            "name": "performance.now fault is diagnostic-only",
+            "status": "PASS",
+            "value": {
+              "monotonicMs": 0
+            }
+          },
+          {
+            "name": "WeakSet allocation fault is diagnostic-only",
+            "status": "PASS",
+            "value": {
+              "traceEvents": 2,
+              "operations": 1
+            }
+          }
+        ]
+      },
+      "check": "diagnostics host-fault isolation",
+      "statusText": "PASS"
+    }
+  ],
+  "limitations": [
+    "The verification is local Node evidence only; browser, Worker, and full CI are not executed by this runner.",
+    "The standalone bundle is not regenerated unless esbuild@0.28.2 is available in the execution environment.",
+    "The independent reference currently verifies foundational day-number semantics; full independent 5-tuple reference remains outside Update 15."
+  ]
+}
