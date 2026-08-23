@@ -5,6 +5,7 @@ import {
   GateIndex,
   HebrewDate,
   IslamicCivilDate,
+  ChineseDate,
   PastafariCalendar as MonsterPastafariCalendar,
   SakaDate,
   bahaiToJdn as monsterBahaiToJdn,
@@ -14,6 +15,7 @@ import {
   hebrewToJdn as monsterHebrewToJdn,
   islamicCivilToJdn as monsterIslamicCivilToJdn,
   islamicToJdn as monsterIslamicToJdn,
+  chineseToJdn as monsterChineseToJdn,
   localToday,
   sakaToJdn as monsterSakaToJdn,
 } from "./5efdcc3e6fb071cbaffdcb117507a169dd76.js";
@@ -23,6 +25,7 @@ import { installYearCeilingDetour } from "../browser/year-ceiling-detour.js";
 import { installYearCeilingDetourDetour } from "../browser/year-ceiling-detour-detour.js";
 import { installYearCeilingDetourDetourDetour } from "../browser/year-ceiling-detour-detour-detour.js";
 import { installAuthoritativeCacheEpochDetour } from "../browser/cache-epoch-detour.js";
+import { chineseRelatedDateToJdn } from "./chinese-calendrica-detour.js";
 
 // Node reaches a separately wrapped copy of the authoritative chronicle, so
 // invite the same gate-reader detour here before the friendly public subclass
@@ -53,7 +56,20 @@ const prolepticNegativeYearDetours = createProlepticNegativeYearDetours({
 });
 
 export const bahaiToJdn = prolepticNegativeYearDetours.bahaiToJdn;
-export const calendarDateToJdn = prolepticNegativeYearDetours.calendarDateToJdn;
+function isChineseDateLike(value) {
+  return value instanceof ChineseDate || value?.calendar === "chinese";
+}
+
+export function chineseToJdn(value) {
+  if (!isChineseDateLike(value)) return monsterChineseToJdn(value);
+  return chineseRelatedDateToJdn(value);
+}
+
+export function calendarDateToJdn(value) {
+  if (isChineseDateLike(value)) return chineseToJdn(value);
+  return prolepticNegativeYearDetours.calendarDateToJdn(value);
+}
+
 export const copticToJdn = prolepticNegativeYearDetours.copticToJdn;
 export const ethiopicToJdn = prolepticNegativeYearDetours.ethiopicToJdn;
 export const hebrewToJdn = prolepticNegativeYearDetours.hebrewToJdn;

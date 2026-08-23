@@ -1,0 +1,83 @@
+{
+  "result": "CHINESE_DETERMINISTIC_ENGINE_IMPLEMENTED",
+  "acceptanceStatus": "READY_FOR_STAGE_10G_CROSS_ENV_PACKAGING_AUDIT",
+  "stage": "Update 10F",
+  "packageVersion": "1.3.0",
+  "productionFilesChanged": true,
+  "checksumFilesChanged": false,
+  "sourceRuleId": "PASTAFARI_CHINESE_DEEP_DELTA_T_V1",
+  "foundation": {
+    "jdn": "-13334246",
+    "actualChinese": {
+      "cycle": -643,
+      "yearInCycle": 57,
+      "heavenlyStem": "geng",
+      "earthlyBranch": "shen",
+      "stem": 7,
+      "branch": 9,
+      "relatedYear": "-41221",
+      "month": 1,
+      "leap": false,
+      "leapMonth": false,
+      "day": 22
+    },
+    "expectedChinese": {
+      "cycle": -643,
+      "yearInCycle": 57,
+      "heavenlyStem": "geng",
+      "earthlyBranch": "shen",
+      "stem": 7,
+      "branch": 9,
+      "relatedYear": "-41221",
+      "month": 1,
+      "leap": false,
+      "leapMonth": false,
+      "day": 22
+    },
+    "match": true
+  },
+  "jdnChecks": {
+    "structuredFoundationJdn": "-13334246",
+    "relatedFoundationJdn": "-13334246",
+    "publicFoundationJdn": "-13334246",
+    "publicGenericFoundationJdn": "-13334246",
+    "docsFoundationJdn": "-13334246",
+    "publicModernJdn": "2461266",
+    "docsModernJdn": "2461266"
+  },
+  "faultInjection": [
+    {
+      "label": "public chineseToJdn under Intl fault",
+      "ok": true,
+      "value": "-13334246"
+    },
+    {
+      "label": "public calendarDateToJdn under Intl fault",
+      "ok": true,
+      "value": "-13334246"
+    },
+    {
+      "label": "docs calendarDateToJdn under Intl fault",
+      "ok": true,
+      "value": "-13334246"
+    }
+  ],
+  "filesChanged": [
+    "src/chinese-calendrica-detour.js",
+    "src/public-api.js",
+    "docs/chinese-calendrica-detour.js",
+    "docs/calendar-converters.js",
+    "docs/sw.js",
+    "package.json",
+    "test/calendar-converters.test.js",
+    "test/public-api.test.js",
+    "test/pwa-i18n.test.js",
+    "scripts/run-update10f-chinese-deterministic-engine.mjs",
+    "artifacts/update-10f-chinese-deterministic-engine.json",
+    "artifacts/update-10f-chinese-deterministic-engine-report.md"
+  ],
+  "additionalChecksumManifestsAffectedButNotUpdated": [
+    "docs/SHA256SUMS.txt"
+  ],
+  "failures": []
+}

@@ -1,3 +1,5 @@
+import { chineseRelatedDateToJdn } from "./chinese-calendrica-detour.js";
+
 "use strict";
 
 // Lightweight input adapters for the public site.  They only translate an
@@ -393,21 +395,7 @@ function solarHijriOfficialToJdn({ year, month, day }) {
 }
 
 function chineseToJdn({ relatedYear, month, day, leapMonth }) {
-  const start = gregorianToJdn({ year: relatedYear, month: 1, day: 1 });
-  return findIntlDate({
-    locale: "en-u-ca-chinese-nu-latn",
-    timeZone: "Asia/Shanghai",
-    startJdn: start,
-    endJdn: start + 500n,
-    matches: (parts) => {
-      const monthText = String(parts.month || "");
-      const isLeap = /bis$/i.test(monthText);
-      return Number(parts.relatedYear) === Number(relatedYear)
-        && Number.parseInt(monthText, 10) === month
-        && Number(parts.day) === day
-        && isLeap === leapMonth;
-    },
-  });
+  return chineseRelatedDateToJdn({ relatedYear, month, day, leapMonth });
 }
 
 function oldHinduSolarToJdn({ year, month, day }) {

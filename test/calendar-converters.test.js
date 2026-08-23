@@ -42,6 +42,7 @@ test("representative dates from every input calendar convert to the established 
     ["solar-hijri-official", { year: "1405", month: "6", day: "1" }, 2_461_276n],
     ["solar-hijri-arithmetic", { year: "1405", month: "5", day: "22" }, 2_461_266n],
     ["chinese", { relatedYear: "2026", month: "7", day: "1", leapMonth: false }, 2_461_266n],
+    ["chinese", { relatedYear: "-41221", month: "1", day: "22", leapMonth: false }, -13_334_246n],
     ["hindu-old-solar", { year: "5127", month: "4", day: "30" }, 2_461_268n],
     ["hindu-old-lunar", { year: "5127", month: "5", day: "1", leapMonth: false }, 2_461_266n],
     ["saka", { year: "1948", month: "5", day: "22" }, 2_461_266n],

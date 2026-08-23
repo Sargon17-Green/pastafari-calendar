@@ -27,3 +27,18 @@ test("the public bypass preserves an explicitly supplied todayProvider", () => {
     (error) => error === sentinel,
   );
 });
+
+test("the published Chinese converter uses the source-locked deterministic shadow engine", () => {
+  assert.equal(
+    published.chineseToJdn(new published.ChineseDate(2026n, 7, 1, { leapMonth: false })),
+    2_461_266n,
+  );
+  assert.equal(
+    published.chineseToJdn(new published.ChineseDate(-41221n, 1, 22, { leapMonth: false })),
+    -13_334_246n,
+  );
+  assert.equal(
+    published.calendarDateToJdn(new published.ChineseDate(-41221n, 1, 22, { leapMonth: false })),
+    -13_334_246n,
+  );
+});

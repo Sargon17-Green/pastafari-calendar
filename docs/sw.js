@@ -1,6 +1,6 @@
 "use strict";
 
-const VERSION = "pastafari-static-pwa-hardening-15-worker-api-sync";
+const VERSION = "pastafari-static-pwa-hardening-16-chinese-detour";
 const CORE_CACHE = `${VERSION}-core`;
 const RUNTIME_CACHE = "pastafari-runtime-assets";
 const CACHE_PREFIX = "pastafari-static-";
@@ -15,6 +15,7 @@ const CORE_ASSETS = [
   "./reverse-search-controller.js",
   "./calendar-input-conventions.js?v=9-calendar-input-conventions",
   "./calendar-converters.js?v=8-year-structure",
+  "./chinese-calendrica-detour.js",
   "./observer-location.js?v=10-venus-day-boundary",
   "./venus-day-boundary.js?v=10-venus-day-boundary",
   "./engine/pastafari-diagnostics.js",
