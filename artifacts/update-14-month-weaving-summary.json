@@ -1,0 +1,57 @@
+{
+  "schema": "pastafari.update14.summary.v2",
+  "baselineCommit": "c81a11f4b96adfb82743ed76d774308b6221466c",
+  "baselineContext": "GitHub main after Update 13 merge; uploaded ZIP pastafari-calendar-main(20260823-183728).zip",
+  "packageVersion": "1.3.0",
+  "normativeCalendarDomain": {
+    "monthCountMin": 3,
+    "monthCountMax": 47,
+    "monthLengthMin": 4,
+    "monthLengthMax": 123
+  },
+  "publicConstructorDomain": "non-empty Array of positive integer Numbers that can be constructed within runtime resource limits",
+  "minimalCounterexampleBefore": {
+    "lengths": [
+      2,
+      1
+    ],
+    "productionCount": "2",
+    "referenceCount": "1",
+    "firstGhostRank": 1,
+    "error": {
+      "name": "Error",
+      "message": "ניסיון לסיים חודש שלא לפי סדר ההופעות האחרונות"
+    }
+  },
+  "classification": "COUNT_BUG_GHOST_RANK_SPACE",
+  "fix": "singleton separator + mixed-radix ghost-rank detour over untouched legacy counters",
+  "beforeDifferential": {
+    "cases": 500,
+    "failures": 268,
+    "unrankOperations": 22060
+  },
+  "afterDifferential": {
+    "cases": 500,
+    "mismatches": 0,
+    "unrankOperations": 50926,
+    "rankOperations": 2506
+  },
+  "tests": {
+    "monthWeavingFocused": "9/9 PASS",
+    "publicApi": "4/4 PASS",
+    "update13IntlSemanticFirewall": "6/6 PASS",
+    "update11AndUpdate12Regression": "16/16 PASS",
+    "standaloneStaticArtifacts": "3/3 PASS",
+    "npmPackDryRun": "PASS: 296 files, packageSize 90,226,139 bytes, unpackedSize 120,979,585 bytes",
+    "npmTest": "TIMED_OUT_AFTER_300S_AFTER_109_OK_SUBTESTS_WITH_NO_OBSERVED_FAILURE",
+    "testCompatibility": "TIMED_OUT_AFTER_300S_BEFORE_COMPLETION",
+    "packageVerify": "TIMED_OUT_AFTER_300S_DURING_TEMPORARY_TARBALL_INSTALL"
+  },
+  "standaloneRebuild": {
+    "result": "BLOCKED_ENVIRONMENT",
+    "reason": "esbuild@0.28.2 unavailable in the container; canonical rebuild not executed locally",
+    "sourceTransformRestoresBaselineCoreBytes": true,
+    "checkedInStandaloneStaticTests": "PASS"
+  },
+  "result": "PASS_WITH_ENVIRONMENTAL_LONG_RUNNING_CHECK_BLOCKERS"
+}

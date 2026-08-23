@@ -2836,7 +2836,7 @@ Every access allocates a **new** `[0,...this.lengths]` and calls the completion 
 
 Candidates are tested in increasing numeric-label order. On the successful domain the resulting weave is lexicographic and satisfies both first-occurrence and last-occurrence order by month number.
 
-The public constructor accepts month length 1 although the normal calendar path supplies only 4..123. This exposes a real exported-API inconsistency: `[2,1]` reports `count=2`; rank 0 returns `[1,1,2]`; rank 1 throws the last-occurrence-order error. `[3,1]` reports 3 but only rank 0 succeeds; `[2,2,1]` reports 5 with only some ranks succeeding. Mutating `h` also changes public `count`; the internal DP rows are not protected from caller mutation.
+The sealed chronicle constructor still accepts month length 1 although the normal calendar path supplies only 4..123. At the raw chronicle level this exposes the historical inconsistency: `[2,1]` counts two internal ranks although only `[1,1,2]` satisfies both appearance-order rules. Update 14 deliberately leaves that old DP intact. The Node and browser public doorways install `month-weaving-domain-detour.js`: singleton months become hard separators, public `count` is the product of the untouched legacy counters for the non-singleton runs, public `unrank` translates the contiguous mixed-radix rank into those old rank spaces, and public `rank` performs the inverse translation. Domains without a singleton continue through the original count/unrank machinery. The standalone Worker deliberately strips this public-only detour during canonical bundling because it does not expose `MonthWeavingCounter` and the calendar path supplies only 4..123. Mutating `h` can still affect raw-chronicle behavior; Update 14 does not turn the counter into an immutable object.
 
 ## 14. M6 — Sauce
 
@@ -4381,7 +4381,7 @@ This section describes **actual current behavior**, not proposed fixes.
 7. **Import-order/cache dependence:** caches populated through the raw chronicle are not invalidated when the detour is installed later.
 8. **Unbounded caches:** binomial, gap, anchor/year/structure state can grow for long-lived/extreme usage (Sauce alone has a 1024-entry cap).
 9. **Host ICU dependence:** Umm-al-Qura, official Solar Hijri, and Chinese conversion paths depend on host `Intl`/ICU data and supported proleptic range.
-10. **MonthWeavingCounter public inconsistency:** certain invalid-for-calendar short length vectors expose `count`/`unrank` disagreement.
+10. **MonthWeavingCounter raw-chronicle singleton inconsistency, publicly detoured:** the sealed counter still overcounts singleton-month ghost ranks, but the Node/browser public doorways translate that space through the Update 14 singleton-separator detour; the legal calendar domain remains 4..123.
 11. **Solar-Hijri arithmetic edge:** known year -1/0 anomaly in the arithmetic-2820 branch.
 
 ## 27. Exact semantic distinction from the fast/reference engines

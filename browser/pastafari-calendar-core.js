@@ -11,6 +11,8 @@ import {
   IslamicCivilDate,
   PastafariCalendar,
   SakaDate,
+  MonthWeavingCounter,
+  comb,
   bahaiToJdn as chronicleBahaiToJdn,
   calendarDateToJdn as chronicleCalendarDateToJdn,
   chineseToJdn as chronicleChineseToJdn,
@@ -28,12 +30,14 @@ import { installYearCeilingDetour } from "./year-ceiling-detour.js";
 import { installYearCeilingDetourDetour } from "./year-ceiling-detour-detour.js";
 import { installYearCeilingDetourDetourDetour } from "./year-ceiling-detour-detour-detour.js";
 import { installAuthoritativeCacheEpochDetour } from "./cache-epoch-detour.js";
+import { installMonthWeavingGhostDetour } from "./month-weaving-domain-detour.js";
 
 installGateDataDetour(GateIndex);
 installYearCeilingDetourDetour(PastafariCalendar, GateIndex);
 installYearCeilingDetourDetourDetour(PastafariCalendar, GateIndex);
 installYearCeilingDetour(PastafariCalendar, GateIndex);
 installAuthoritativeCacheEpochDetour(PastafariCalendar);
+installMonthWeavingGhostDetour(MonthWeavingCounter, comb);
 
 
 const prolepticNegativeYearDetours = createProlepticNegativeYearDetours({

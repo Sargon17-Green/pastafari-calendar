@@ -658,5 +658,6 @@ export class MonthWeavingCounter {
   readonly totalLength: number;
   constructor(lengths: readonly number[]);
   get count(): bigint;
+  rank(weaving: readonly number[]): bigint;
   unrank(rank: IntegerLike): number[];
 }

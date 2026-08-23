@@ -8,6 +8,8 @@ import {
   ChineseDate,
   PastafariCalendar as MonsterPastafariCalendar,
   SakaDate,
+  MonthWeavingCounter as MonsterMonthWeavingCounter,
+  comb as monsterComb,
   bahaiToJdn as monsterBahaiToJdn,
   calendarDateToJdn as monsterCalendarDateToJdn,
   copticToJdn as monsterCopticToJdn,
@@ -25,6 +27,7 @@ import { installYearCeilingDetour } from "../browser/year-ceiling-detour.js";
 import { installYearCeilingDetourDetour } from "../browser/year-ceiling-detour-detour.js";
 import { installYearCeilingDetourDetourDetour } from "../browser/year-ceiling-detour-detour-detour.js";
 import { installAuthoritativeCacheEpochDetour } from "../browser/cache-epoch-detour.js";
+import { installMonthWeavingGhostDetour } from "../browser/month-weaving-domain-detour.js";
 import {
   KokiDate,
   isKokiDateLike,
@@ -52,6 +55,7 @@ installYearCeilingDetourDetour(MonsterPastafariCalendar, GateIndex);
 installYearCeilingDetourDetourDetour(MonsterPastafariCalendar, GateIndex);
 installYearCeilingDetour(MonsterPastafariCalendar, GateIndex);
 installAuthoritativeCacheEpochDetour(MonsterPastafariCalendar);
+installMonthWeavingGhostDetour(MonsterMonthWeavingCounter, monsterComb);
 
 
 const prolepticNegativeYearDetours = createProlepticNegativeYearDetours({
