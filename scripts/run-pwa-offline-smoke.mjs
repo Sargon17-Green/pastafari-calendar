@@ -36,6 +36,16 @@ function contentType(filePath) {
   return MIME_TYPES.get(path.extname(filePath).toLowerCase()) ?? "application/octet-stream";
 }
 
+function serviceWorkerSourceForVariant(source, variant) {
+  const match = source.match(/\bconst\s+VERSION\s*=\s*"([^"]+)"\s*;/);
+  assert(match, "Could not locate VERSION in docs/sw.js");
+  const version = match[1];
+  return source.replace(
+    `const VERSION = "${version}";`,
+    `const VERSION = "${version}-test-${variant}";`,
+  );
+}
+
 function createServerState(swSource) {
   return {
     swSource,
@@ -99,10 +109,7 @@ async function startStaticServer(state) {
 
     let body = await readFile(resolved);
     if (relativePath === "sw.js") {
-      const text = body.toString("utf8").replace(
-        /pastafari-static-pwa-hardening-15-worker-api-sync/g,
-        `pastafari-static-pwa-hardening-15-worker-api-sync-test-${state.swVariant}`,
-      );
+      const text = serviceWorkerSourceForVariant(body.toString("utf8"), state.swVariant);
       body = Buffer.from(text, "utf8");
     }
 
