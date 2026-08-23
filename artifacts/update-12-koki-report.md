@@ -44,7 +44,7 @@ The historical candidate `-40561` is therefore confirmed exactly.
 
 Kōki is implemented as a separate public side-door. Each conversion first sends a synthetic `era = "koki"` request through the unchanged legacy Japanese-imperial doorway. Its rejection is deliberately ignored. A shadow arithmetic layer then performs the normative signed proleptic conversion. The Meiji/Reiwa machinery, era table and any existing Intl path remain intact.
 
-The authoritative browser core was deliberately restored byte-for-byte to the aligned baseline. Kōki is exposed from `browser/koki-api.js`, analogous to Update 11's separate Vikrama browser API. This avoids changing the standalone authoritative-worker input graph merely to expose an external calendar side-door.
+The authoritative browser core remains byte-for-byte identical to the aligned baseline. Kōki is exposed from `browser/koki-api.js`, analogous to Update 11's separate Vikrama browser API. However, CI revalidation demonstrated that the canonical standalone build also embeds the package authoritative worker source generated from `src/public-api.js`; therefore the new public Kōki exports legitimately change the generated standalone bundles even though `browser/pastafari-calendar-core.js` itself is unchanged.
 
 ## Differential and regression results
 
@@ -56,14 +56,15 @@ The authoritative browser core was deliberately restored byte-for-byte to the al
 - Update 11 full regression/audit: PASS; Foundation ±1000 days = 2001 samples, 0 mismatches; seeded random = 512 samples, 0 mismatches
 - Fast suite excluding generated standalone rebuild: 217 PASS, 0 FAIL, 4 intentional SKIP
 - Existing standalone structural tests: 3/3 PASS
+- Canonical CI `build:standalone`: PASS; first upload then failed the committed-generated parity check because the two checked-in standalone bundles were stale
 - Package verification: PASS; temporary tarball installs with scripts disabled
 - Intl fault injection: PASS in Node/reference audit; browser and Worker smoke include the same fault injection and are wired into CI
 
 ## Standalone and browser/Worker status
 
-`browser/pastafari-calendar-core.js` is byte-for-byte identical to the aligned baseline, and both checked-in standalone bundles are byte-for-byte unchanged. The package version remains `1.3.0`. Therefore this delta does not alter the standalone source graph used by the public standalone API.
+`browser/pastafari-calendar-core.js` is byte-for-byte identical to the aligned baseline. The package version remains `1.3.0`. The first uploaded Update 12 commit (`f4775f989764d1ecad4b0379cd45491045f4fa1f`) proved in CI that the canonical standalone build nevertheless changes because it embeds the authoritative worker source generated from `src/public-api.js`. The generated bundles from workflow run `32648854082`, artifact `9495638714`, are therefore the canonical reconciliation outputs and are included in the follow-up delta. Their SHA-256 values are `afa8e6df6652f7f60912d9a90a7f3d60c65468b1246382ee5d31099354362d5c` and `1d9b2af16d821fd10fe90fdbfc1071b071e3ba1c8492c4295d06c8a3be62814f`.
 
-A real Chromium browser + module-Worker smoke is added as `test:update12:koki:browser` and is added to the existing browser CI job. It should be treated as CI verification after upload because the local container lacks the installed Playwright dependency/browser environment needed for the canonical project smoke runner.
+The real Chromium + module-Worker smoke `test:update12:koki:browser` ran successfully in that CI run. `node-compatibility`, `node-deep`, `node-minimum`, PWA offline, accessibility, day-boundary, all three checkpoint jobs, and performance-regression also passed. The sole failing job was `node-test`, specifically its generated-standalone `git diff --exit-code` step; `build:standalone` itself passed and uploaded the exact reconciliation artifact used here.
 
 ## Performance and memory sanity
 
@@ -79,7 +80,9 @@ No unbounded wrapper/cache growth was observed.
 ```text
 READY_FOR_UPLOAD_AND_CI = yes
 UPDATE_12_NUMERIC_AND_NODE_AUDIT = PASS
-UPDATE_12_BROWSER_WORKER_CI = pending upload/CI
+UPDATE_12_BROWSER_WORKER_CI = PASS
+UPDATE_12_FIRST_UPLOAD_GENERATED_PARITY = FAIL_STALE_STANDALONE
+UPDATE_12_GENERATED_RECONCILIATION = PREPARED_FROM_CANONICAL_CI_ARTIFACT
 UPDATE_12_FINAL_CLOSURE = pending CI
 ```
 
