@@ -2,13 +2,14 @@
 "use strict";
 
 import { createReadStream } from "node:fs";
-import { stat } from "node:fs/promises";
+import { mkdir, stat, writeFile } from "node:fs/promises";
 import { createServer } from "node:http";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const EVIDENCE_PATH = path.join(ROOT, "artifacts", "update-13-browser-worker-smoke.json");
 const MIME = new Map([[".html", "text/html; charset=utf-8"], [".js", "text/javascript; charset=utf-8"], [".mjs", "text/javascript; charset=utf-8"]]);
 
 const server = createServer(async (request, response) => {
@@ -27,6 +28,14 @@ const server = createServer(async (request, response) => {
 await new Promise((resolve, reject) => { server.once("error", reject); server.listen(0, "127.0.0.1", resolve); });
 
 let browser;
+let evidence = {
+  schema: "pastafari-update13-browser-worker-smoke-v1",
+  status: "FAIL",
+  browserVersion: null,
+  pageResult: null,
+  runnerErrors: [],
+};
+
 try {
   const address = server.address();
   browser = await chromium.launch({ headless: true });
@@ -38,11 +47,29 @@ try {
   await page.waitForFunction(() => document.querySelector("#result")?.textContent?.startsWith("UPDATE13_INTL_BROWSER="), null, { timeout: 60_000 });
   const text = await page.locator("#result").textContent();
   const result = JSON.parse(text.slice("UPDATE13_INTL_BROWSER=".length));
-  if (errors.length) result.errors = errors;
-  console.log(`[browser] ${await browser.version()}`);
-  console.log(JSON.stringify(result, null, 2));
-  if (result.status !== "PASS" || errors.length) process.exitCode = 1;
+  const browserVersion = await browser.version();
+  evidence = {
+    schema: "pastafari-update13-browser-worker-smoke-v1",
+    status: result.status === "PASS" && errors.length === 0 ? "PASS" : "FAIL",
+    browserVersion,
+    pageResult: result,
+    runnerErrors: errors,
+  };
+  console.log(`[browser] ${browserVersion}`);
+  console.log(JSON.stringify(evidence, null, 2));
+  if (evidence.status !== "PASS") process.exitCode = 1;
+} catch (error) {
+  evidence = {
+    ...evidence,
+    status: "FAIL",
+    browserVersion: await browser?.version().catch(() => null) ?? null,
+    runnerErrors: [...evidence.runnerErrors, String(error?.stack || error)],
+  };
+  console.error(JSON.stringify(evidence, null, 2));
+  process.exitCode = 1;
 } finally {
+  await mkdir(path.dirname(EVIDENCE_PATH), { recursive: true });
+  await writeFile(EVIDENCE_PATH, `${JSON.stringify(evidence, null, 2)}\n`, "utf8");
   await browser?.close().catch(() => {});
   await new Promise(resolve => server.close(resolve));
 }

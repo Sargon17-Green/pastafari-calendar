@@ -38,6 +38,8 @@ jobs:
         run: |
           set +e
           overall=0
+          status_file="artifacts/update-13-ci-run-status.txt"
+          : > "$status_file"
           run_case() {
             label="$1"
             shift
@@ -45,12 +47,14 @@ jobs:
             "$@"
             status=$?
             echo "${label}: exit ${status}"
+            printf '%s\t%s\n' "$label" "$status" >> "$status_file"
             echo "::endgroup::"
             if (( status != 0 )); then overall=1; fi
             return 0
           }
 
           run_case "focused Node firewall tests" npm run test:update13:intl
+          run_case "checksum manifest verification" npm run checksums:verify
           run_case "Intl/locale/timezone matrix" npm run test:update13:intl:matrix
           run_case "random independent-reference differential" npm run test:update13:intl:random
           run_case "Update 10 Chinese cross-environment regression" node scripts/run-update10g-chinese-cross-environment-audit.mjs
