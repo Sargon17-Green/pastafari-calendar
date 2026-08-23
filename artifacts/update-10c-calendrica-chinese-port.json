@@ -1,0 +1,461 @@
+{
+  "result": "CALENDRICA_PORT_DIVERGES_FROM_MAGILLAH_FOUNDATION",
+  "acceptanceStatus": "NOT_ACCEPTED_AS_UPDATE_10_REPAIR",
+  "stage": "Update 10C",
+  "scope": "diagnostic/reference port only; production converter and public API unchanged",
+  "packageVersion": "1.3.0",
+  "sources": {
+    "copyableImplementation": "CALENDRICA 4.0 / calendar-code2 / Apache-2.0",
+    "officialNormativeReference": "GB/T 33661-2017 — 农历的编算和颁行",
+    "repositoryChineseSourceText": "sources/chinese/农历规范算法.zh.md"
+  },
+  "foundation": {
+    "fixedDay": -15055671,
+    "jdn": -13334246,
+    "expected": {
+      "cycle": -643,
+      "yearInCycle": 57,
+      "heavenlyStem": "geng",
+      "earthlyBranch": "shen",
+      "stem": 7,
+      "branch": 9,
+      "month": 1,
+      "leap": false,
+      "day": 22
+    }
+  },
+  "diagnostics": {
+    "foundationActual": {
+      "cycle": -643,
+      "yearInCycle": 57,
+      "heavenlyStem": "geng",
+      "earthlyBranch": "shen",
+      "stem": 7,
+      "branch": 9,
+      "month": 1,
+      "leap": false,
+      "day": 19
+    },
+    "foundationExpected": {
+      "cycle": -643,
+      "yearInCycle": 57,
+      "heavenlyStem": "geng",
+      "earthlyBranch": "shen",
+      "stem": 7,
+      "branch": 9,
+      "month": 1,
+      "leap": false,
+      "day": 22
+    },
+    "foundationMatch": false,
+    "mismatches": [
+      {
+        "field": "day",
+        "actual": 19,
+        "expected": 22
+      }
+    ],
+    "reverseExpected": -15055668,
+    "reverseExpectedDeltaFromFoundation": 3,
+    "neighbors": [
+      {
+        "offset": -2,
+        "fixedDay": -15055673,
+        "chinese": {
+          "cycle": -643,
+          "yearInCycle": 57,
+          "heavenlyStem": "geng",
+          "earthlyBranch": "shen",
+          "stem": 7,
+          "branch": 9,
+          "month": 1,
+          "leap": false,
+          "day": 17
+        }
+      },
+      {
+        "offset": -1,
+        "fixedDay": -15055672,
+        "chinese": {
+          "cycle": -643,
+          "yearInCycle": 57,
+          "heavenlyStem": "geng",
+          "earthlyBranch": "shen",
+          "stem": 7,
+          "branch": 9,
+          "month": 1,
+          "leap": false,
+          "day": 18
+        }
+      },
+      {
+        "offset": 0,
+        "fixedDay": -15055671,
+        "chinese": {
+          "cycle": -643,
+          "yearInCycle": 57,
+          "heavenlyStem": "geng",
+          "earthlyBranch": "shen",
+          "stem": 7,
+          "branch": 9,
+          "month": 1,
+          "leap": false,
+          "day": 19
+        }
+      },
+      {
+        "offset": 1,
+        "fixedDay": -15055670,
+        "chinese": {
+          "cycle": -643,
+          "yearInCycle": 57,
+          "heavenlyStem": "geng",
+          "earthlyBranch": "shen",
+          "stem": 7,
+          "branch": 9,
+          "month": 1,
+          "leap": false,
+          "day": 20
+        }
+      },
+      {
+        "offset": 2,
+        "fixedDay": -15055669,
+        "chinese": {
+          "cycle": -643,
+          "yearInCycle": 57,
+          "heavenlyStem": "geng",
+          "earthlyBranch": "shen",
+          "stem": 7,
+          "branch": 9,
+          "month": 1,
+          "leap": false,
+          "day": 21
+        }
+      }
+    ],
+    "sampledWindow": [
+      {
+        "offset": -1000,
+        "fixedDay": -15056671,
+        "chinese": {
+          "cycle": -643,
+          "yearInCycle": 54,
+          "heavenlyStem": "ding",
+          "earthlyBranch": "si",
+          "stem": 4,
+          "branch": 6,
+          "month": 4,
+          "leap": false,
+          "day": 24
+        }
+      },
+      {
+        "offset": -900,
+        "fixedDay": -15056571,
+        "chinese": {
+          "cycle": -643,
+          "yearInCycle": 54,
+          "heavenlyStem": "ding",
+          "earthlyBranch": "si",
+          "stem": 4,
+          "branch": 6,
+          "month": 8,
+          "leap": false,
+          "day": 5
+        }
+      },
+      {
+        "offset": -800,
+        "fixedDay": -15056471,
+        "chinese": {
+          "cycle": -643,
+          "yearInCycle": 54,
+          "heavenlyStem": "ding",
+          "earthlyBranch": "si",
+          "stem": 4,
+          "branch": 6,
+          "month": 10,
+          "leap": true,
+          "day": 16
+        }
+      },
+      {
+        "offset": -700,
+        "fixedDay": -15056371,
+        "chinese": {
+          "cycle": -643,
+          "yearInCycle": 55,
+          "heavenlyStem": "wu",
+          "earthlyBranch": "wu",
+          "stem": 5,
+          "branch": 7,
+          "month": 1,
+          "leap": false,
+          "day": 28
+        }
+      },
+      {
+        "offset": -600,
+        "fixedDay": -15056271,
+        "chinese": {
+          "cycle": -643,
+          "yearInCycle": 55,
+          "heavenlyStem": "wu",
+          "earthlyBranch": "wu",
+          "stem": 5,
+          "branch": 7,
+          "month": 5,
+          "leap": false,
+          "day": 10
+        }
+      },
+      {
+        "offset": -500,
+        "fixedDay": -15056171,
+        "chinese": {
+          "cycle": -643,
+          "yearInCycle": 55,
+          "heavenlyStem": "wu",
+          "earthlyBranch": "wu",
+          "stem": 5,
+          "branch": 7,
+          "month": 8,
+          "leap": false,
+          "day": 22
+        }
+      },
+      {
+        "offset": -400,
+        "fixedDay": -15056071,
+        "chinese": {
+          "cycle": -643,
+          "yearInCycle": 55,
+          "heavenlyStem": "wu",
+          "earthlyBranch": "wu",
+          "stem": 5,
+          "branch": 7,
+          "month": 12,
+          "leap": false,
+          "day": 3
+        }
+      },
+      {
+        "offset": -300,
+        "fixedDay": -15055971,
+        "chinese": {
+          "cycle": -643,
+          "yearInCycle": 56,
+          "heavenlyStem": "ji",
+          "earthlyBranch": "wei",
+          "stem": 6,
+          "branch": 8,
+          "month": 3,
+          "leap": false,
+          "day": 14
+        }
+      },
+      {
+        "offset": -200,
+        "fixedDay": -15055871,
+        "chinese": {
+          "cycle": -643,
+          "yearInCycle": 56,
+          "heavenlyStem": "ji",
+          "earthlyBranch": "wei",
+          "stem": 6,
+          "branch": 8,
+          "month": 6,
+          "leap": false,
+          "day": 26
+        }
+      },
+      {
+        "offset": -100,
+        "fixedDay": -15055771,
+        "chinese": {
+          "cycle": -643,
+          "yearInCycle": 56,
+          "heavenlyStem": "ji",
+          "earthlyBranch": "wei",
+          "stem": 6,
+          "branch": 8,
+          "month": 10,
+          "leap": false,
+          "day": 8
+        }
+      },
+      {
+        "offset": 0,
+        "fixedDay": -15055671,
+        "chinese": {
+          "cycle": -643,
+          "yearInCycle": 57,
+          "heavenlyStem": "geng",
+          "earthlyBranch": "shen",
+          "stem": 7,
+          "branch": 9,
+          "month": 1,
+          "leap": false,
+          "day": 19
+        }
+      },
+      {
+        "offset": 100,
+        "fixedDay": -15055571,
+        "chinese": {
+          "cycle": -643,
+          "yearInCycle": 57,
+          "heavenlyStem": "geng",
+          "earthlyBranch": "shen",
+          "stem": 7,
+          "branch": 9,
+          "month": 5,
+          "leap": false,
+          "day": 1
+        }
+      },
+      {
+        "offset": 200,
+        "fixedDay": -15055471,
+        "chinese": {
+          "cycle": -643,
+          "yearInCycle": 57,
+          "heavenlyStem": "geng",
+          "earthlyBranch": "shen",
+          "stem": 7,
+          "branch": 9,
+          "month": 7,
+          "leap": true,
+          "day": 13
+        }
+      },
+      {
+        "offset": 300,
+        "fixedDay": -15055371,
+        "chinese": {
+          "cycle": -643,
+          "yearInCycle": 57,
+          "heavenlyStem": "geng",
+          "earthlyBranch": "shen",
+          "stem": 7,
+          "branch": 9,
+          "month": 10,
+          "leap": false,
+          "day": 24
+        }
+      },
+      {
+        "offset": 400,
+        "fixedDay": -15055271,
+        "chinese": {
+          "cycle": -643,
+          "yearInCycle": 58,
+          "heavenlyStem": "xin",
+          "earthlyBranch": "you",
+          "stem": 8,
+          "branch": 10,
+          "month": 2,
+          "leap": false,
+          "day": 6
+        }
+      },
+      {
+        "offset": 500,
+        "fixedDay": -15055171,
+        "chinese": {
+          "cycle": -643,
+          "yearInCycle": 58,
+          "heavenlyStem": "xin",
+          "earthlyBranch": "you",
+          "stem": 8,
+          "branch": 10,
+          "month": 5,
+          "leap": false,
+          "day": 17
+        }
+      },
+      {
+        "offset": 600,
+        "fixedDay": -15055071,
+        "chinese": {
+          "cycle": -643,
+          "yearInCycle": 58,
+          "heavenlyStem": "xin",
+          "earthlyBranch": "you",
+          "stem": 8,
+          "branch": 10,
+          "month": 8,
+          "leap": false,
+          "day": 29
+        }
+      },
+      {
+        "offset": 700,
+        "fixedDay": -15054971,
+        "chinese": {
+          "cycle": -643,
+          "yearInCycle": 58,
+          "heavenlyStem": "xin",
+          "earthlyBranch": "you",
+          "stem": 8,
+          "branch": 10,
+          "month": 12,
+          "leap": false,
+          "day": 11
+        }
+      },
+      {
+        "offset": 800,
+        "fixedDay": -15054871,
+        "chinese": {
+          "cycle": -643,
+          "yearInCycle": 59,
+          "heavenlyStem": "ren",
+          "earthlyBranch": "xu",
+          "stem": 9,
+          "branch": 11,
+          "month": 3,
+          "leap": false,
+          "day": 22
+        }
+      },
+      {
+        "offset": 900,
+        "fixedDay": -15054771,
+        "chinese": {
+          "cycle": -643,
+          "yearInCycle": 59,
+          "heavenlyStem": "ren",
+          "earthlyBranch": "xu",
+          "stem": 9,
+          "branch": 11,
+          "month": 7,
+          "leap": false,
+          "day": 3
+        }
+      },
+      {
+        "offset": 1000,
+        "fixedDay": -15054671,
+        "chinese": {
+          "cycle": -643,
+          "yearInCycle": 59,
+          "heavenlyStem": "ren",
+          "earthlyBranch": "xu",
+          "stem": 9,
+          "branch": 11,
+          "month": 10,
+          "leap": false,
+          "day": 15
+        }
+      }
+    ]
+  },
+  "conclusion": [
+    "The port is deterministic and independent of Intl, but it does not reproduce the Magillah Foundation discriminator.",
+    "The disagreement is not a cosmetic API issue: the CALENDRICA-derived month start places Foundation on day 19 of month 1, while the Magillah anchor requires day 22 of month 1.",
+    "The expected structured Chinese date round-trips to Foundation+3 under this port, so production must not be patched with it.",
+    "A further reconciliation source or an explicit Magillah convention amendment is required before Update 10 can be accepted as fixed."
+  ]
+}
