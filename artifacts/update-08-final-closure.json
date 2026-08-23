@@ -1,0 +1,266 @@
+{
+  "schema": "pastafari-calendar.update08.final-closure.v1",
+  "update": 8,
+  "stage": "8D",
+  "generatedAt": "2026-08-23T00:57:53+00:00",
+  "repository": "https://github.com/Sargon17-Green/pastafari-calendar",
+  "branch": "main",
+  "commit": "aa626097a175a167ae022e706c6b704eeb55769c",
+  "treeSha": "845b875bbead29c89d60c58dfa933c9893faa762",
+  "packageVersion": "1.3.0",
+  "workingTree": {
+    "status": "uploaded ZIP archive; .git unavailable",
+    "stage8DLocalChanges": [
+      "artifacts/update-08-final-closure.json",
+      "artifacts/update-08-final-report.md",
+      "artifacts/update-08-final-sha256sums.txt",
+      "SHA256SUMS.txt"
+    ],
+    "productionFilesChangedDuringStage8D": []
+  },
+  "prerequisites": {
+    "READY_FOR_STAGE_8D_FROM_8A": "yes",
+    "READY_FOR_STAGE_8D_FROM_8B": "yes",
+    "READY_FOR_STAGE_8D_FROM_8C": "yes",
+    "STAGE_8D_PREREQUISITES": "SATISFIED"
+  },
+  "originalDefects": [
+    {
+      "id": "STATE:generated:shared-invocation-arena",
+      "summary": "Failed construction could leave generated shared invocation arena residue, including +12 natural-failure residues and linearly accumulating repeated failures."
+    },
+    {
+      "id": "STATE:generated:identity-map-and-counter",
+      "summary": "Failed-new caller argument object identities could be published to a WeakMap and the identity sequence could advance on failed calls."
+    }
+  ],
+  "semanticInvariant": "state_after_failed_call == state_at_invocation_entry",
+  "notInvariant": "state_after_failed_call == process_startup_state",
+  "additionalDefectsDiscoveredDuringVerification": [
+    {
+      "id": "ROUTER_IDLE_SHUTDOWN_INFLIGHT_AUTHORITATIVE",
+      "summary": "Router lifecycle race: idle shutdown could terminate the authoritative worker while an authoritative request was still in flight.",
+      "stageDiscovered": "Stage 7",
+      "classification": "separate integration/router defect, not the original Stage-5 transactionality root cause",
+      "productionFilesChanged": [
+        "browser/pastafari-calendar-router-core.js",
+        "browser/standalone/pastafari-date.js",
+        "browser/standalone/pastafari-date.min.js"
+      ]
+    }
+  ],
+  "productionChanges": [
+    {
+      "stage": "5",
+      "kind": "failed-construction transactionality fix",
+      "targets": [
+        "STATE:generated:shared-invocation-arena",
+        "STATE:generated:identity-map-and-counter"
+      ],
+      "files": [
+        {
+          "path": "src/5efdcc3e6fb071cbaffdcb117507a169dd76.js",
+          "sha256": "99c7a18b015b669654eec06b49740df1b884465b43702b9705e4f6d9fd87ede9"
+        },
+        {
+          "path": "browser/pastafari-calendar-core-chronicle.js",
+          "sha256": "36fed61386d9c545a191393e4bfd647ccefbc26fef11bec88faa708ed69b77ea"
+        },
+        {
+          "path": "browser/standalone/pastafari-date.js",
+          "sha256": "532ccdd809633ee79aab618bda9b98b48d740798436fd1c1917f3fcf3340136d"
+        },
+        {
+          "path": "browser/standalone/pastafari-date.min.js",
+          "sha256": "a78dfc01c8dd250e5639972756aadbb80e7bb9e77cc5bd9b8f0b68e1793f0b6a"
+        }
+      ]
+    },
+    {
+      "stage": "7 router repair",
+      "kind": "separately discovered router lifecycle/race repair",
+      "targets": [
+        "ROUTER_IDLE_SHUTDOWN_INFLIGHT_AUTHORITATIVE"
+      ],
+      "files": [
+        "browser/pastafari-calendar-router-core.js",
+        "browser/standalone/pastafari-date.js",
+        "browser/standalone/pastafari-date.min.js"
+      ]
+    },
+    {
+      "stage": "8D",
+      "kind": "closure artifacts only",
+      "files": []
+    }
+  ],
+  "stageLedger": [
+    {
+      "stage": "1",
+      "finalResult": "success baseline accepted",
+      "controllingStatus": "PASS"
+    },
+    {
+      "stage": "2A",
+      "finalResult": "construction inventory closed",
+      "controllingStatus": "PASS"
+    },
+    {
+      "stage": "2B",
+      "finalResult": "shared-state inventory ready",
+      "controllingStatus": "PASS"
+    },
+    {
+      "stage": "3",
+      "finalResult": "CONFIRMED_LEAK",
+      "controllingStatus": "PASS evidence"
+    },
+    {
+      "stage": "4A",
+      "finalResult": "TECHNICAL_EVIDENCE_COMPLETE",
+      "controllingStatus": "PASS"
+    },
+    {
+      "stage": "4B–4D",
+      "finalResult": "historical findings confirmed; historical READY=no preserved",
+      "controllingStatus": "superseded readiness"
+    },
+    {
+      "stage": "4 Closure",
+      "finalResult": "READY_FOR_STAGE_5",
+      "controllingStatus": "PASS"
+    },
+    {
+      "stage": "5",
+      "finalResult": "FIX_IMPLEMENTED",
+      "controllingStatus": "PASS"
+    },
+    {
+      "stage": "6",
+      "finalResult": "FIX_INDEPENDENTLY_VERIFIED",
+      "controllingStatus": "PASS"
+    },
+    {
+      "stage": "7",
+      "finalResult": "CROSS_ENVIRONMENT_VERIFIED_AFTER_ROUTER_REPAIR",
+      "controllingStatus": "PASS"
+    },
+    {
+      "stage": "8A",
+      "finalResult": "ANTI_CLEANUP_AUDIT_PASS",
+      "controllingStatus": "PASS"
+    },
+    {
+      "stage": "8B",
+      "finalResult": "EVIDENCE_AUDIT_PASS",
+      "controllingStatus": "PASS"
+    },
+    {
+      "stage": "8C",
+      "finalResult": "revalidation PASS",
+      "controllingStatus": "PASS"
+    }
+  ],
+  "requirementsClosure": [
+    {
+      "category": "reproduction",
+      "status": "CLOSED"
+    },
+    {
+      "category": "root cause",
+      "status": "CLOSED"
+    },
+    {
+      "category": "history",
+      "status": "CLOSED"
+    },
+    {
+      "category": "nesting",
+      "status": "CLOSED"
+    },
+    {
+      "category": "fault injection",
+      "status": "CLOSED"
+    },
+    {
+      "category": "publication",
+      "status": "CLOSED"
+    },
+    {
+      "category": "fix",
+      "status": "CLOSED"
+    },
+    {
+      "category": "independent proof",
+      "status": "CLOSED"
+    },
+    {
+      "category": "cross-environment",
+      "status": "CLOSED"
+    },
+    {
+      "category": "package",
+      "status": "CLOSED"
+    },
+    {
+      "category": "anti-refactor",
+      "status": "CLOSED"
+    },
+    {
+      "category": "evidence integrity",
+      "status": "CLOSED"
+    },
+    {
+      "category": "checksum/artifact integrity",
+      "status": "CLOSED"
+    }
+  ],
+  "finalProductionHashes": {
+    "src/5efdcc3e6fb071cbaffdcb117507a169dd76.js": "99c7a18b015b669654eec06b49740df1b884465b43702b9705e4f6d9fd87ede9",
+    "src/public-api.js": "9d8c63636033659753d658ac9d76fa955ee8423bbf1cd11bfb90eab25a49f827",
+    "browser/pastafari-calendar-core-chronicle.js": "36fed61386d9c545a191393e4bfd647ccefbc26fef11bec88faa708ed69b77ea",
+    "browser/pastafari-calendar-router-core.js": "ca2e0544c9e73076cac24d218431e535d19a155298bdbf002b5e98bea3af5b03",
+    "browser/pastafari-authoritative-worker.js": "02d7222dab128cc23b355f6048f4965368e1a74db4b2944a34e2401bdd434656",
+    "browser/pastafari-calendar-fast.js": "03de7a8125c1c4c63a9946b531b754c4828adc9f998ddd8b7a5ef4b5adcc4473",
+    "browser/standalone/pastafari-date.js": "f1adfc1f4e64d9fc7dcb591a7c5e852210e0d2de3ff3d2a08668a8c17ffbea2b",
+    "browser/standalone/pastafari-date.min.js": "7a2f60e304dfe1c8dc98d54fa894e337e9864648ff5b401a51e661e9f5290481",
+    "package.json": "5e02e6b190d57fea928ffe11fd84cf22573c02c0b635fc07372218565205a40f"
+  },
+  "publicCompatibility": {
+    "stage5PublicApiChanged": false,
+    "stage7RouterRepairPublicApiChanged": false,
+    "exceptionBehaviorPreserved": true,
+    "successOutputsPreserved": true,
+    "referenceEqualityPreserved": true,
+    "packageExportsPreserved": true
+  },
+  "warnings": [
+    {
+      "id": "CHECKSUM_POLICY_SCRIPT_REJECTS_ARTIFACT_ENTRIES",
+      "classification": "KNOWN_PREEXISTING_POLICY_MISMATCH_NON_BLOCKING_FOR_UPDATE_8_CLOSURE",
+      "rawManifestStatus": "PASS",
+      "policyScriptStatus": "FAIL_PREEXISTING_POLICY_MISMATCH",
+      "nonBlocking": true,
+      "note": "sha256sum -c SHA256SUMS.txt passes; repository policy script rejects artifacts/* entries by policy. Not a cryptographic checksum failure."
+    }
+  ],
+  "blockers": [],
+  "remainingIssues": {
+    "BLOCKING": [],
+    "NON_BLOCKING": [
+      {
+        "id": "CHECKSUM_POLICY_SCRIPT_REJECTS_ARTIFACT_ENTRIES",
+        "classification": "KNOWN_PREEXISTING_POLICY_MISMATCH_NON_BLOCKING_FOR_UPDATE_8_CLOSURE",
+        "rawManifestStatus": "PASS",
+        "policyScriptStatus": "FAIL_PREEXISTING_POLICY_MISMATCH",
+        "nonBlocking": true,
+        "note": "sha256sum -c SHA256SUMS.txt passes; repository policy script rejects artifacts/* entries by policy. Not a cryptographic checksum failure."
+      }
+    ],
+    "OUT_OF_SCOPE_FUTURE_WORK": []
+  },
+  "result": "COMPLETE",
+  "updateClosed": true,
+  "readyForNextUpdate": true,
+  "productionFilesChangedDuringStage8D": []
+}
