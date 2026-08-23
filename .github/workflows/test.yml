@@ -80,6 +80,7 @@ jobs:
             browser/standalone/pastafari-date.js \
             browser/standalone/pastafari-date.min.js \
             | tee generated-standalone-SHA256SUMS.txt
+      - run: npm run test:update13:intl:standalone
       - name: Upload generated standalone for Update 3 reconciliation
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
@@ -88,6 +89,7 @@ jobs:
             browser/standalone/pastafari-date.js
             browser/standalone/pastafari-date.min.js
             generated-standalone-SHA256SUMS.txt
+            artifacts/update-13-standalone-firewall.json
           if-no-files-found: error
           retention-days: 7
       - run: git diff --exit-code -- browser/standalone/pastafari-date.js browser/standalone/pastafari-date.min.js
@@ -143,6 +145,15 @@ jobs:
       - run: npm run test:file-protocol
       - run: npm run test:update11:vikrama:browser
       - run: npm run test:update12:koki:browser
+      - run: npm run test:update13:intl:browser
+      - name: Upload Update 13 browser/Worker evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: update13-browser-worker-${{ github.sha }}
+          path: artifacts/update-13-browser-worker-smoke.json
+          if-no-files-found: warn
+          retention-days: 7
 
   accessibility:
     needs: changes

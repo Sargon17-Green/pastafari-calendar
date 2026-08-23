@@ -1,0 +1,89 @@
+name: Update 13 Intl-ICU isolation audit
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'browser/pastafari-calendar-core.js'
+      - 'browser/intl-calendar-semantic-firewall.js'
+      - 'src/**'
+      - 'docs/calendar-converters.js'
+      - 'docs/INTL-ICU-SEMANTIC-BOUNDARY.md'
+      - 'verification/update13/**'
+      - 'test/update13-intl-*'
+      - 'scripts/run-update13-intl-browser-smoke.mjs'
+      - 'scripts/check-update13-standalone-firewall.mjs'
+      - 'package.json'
+      - '.github/workflows/update-13-intl-audit.yml'
+      - '.github/workflows/test.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  intl-icu-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm run security:supply-chain
+      - run: npm ci
+      - run: ./node_modules/.bin/playwright install --with-deps chromium
+      - name: Run Update 13 evidence campaign
+        shell: bash
+        run: |
+          set +e
+          overall=0
+          run_case() {
+            label="$1"
+            shift
+            echo "::group::${label}"
+            "$@"
+            status=$?
+            echo "${label}: exit ${status}"
+            echo "::endgroup::"
+            if (( status != 0 )); then overall=1; fi
+            return 0
+          }
+
+          run_case "focused Node firewall tests" npm run test:update13:intl
+          run_case "Intl/locale/timezone matrix" npm run test:update13:intl:matrix
+          run_case "random independent-reference differential" npm run test:update13:intl:random
+          run_case "Update 10 Chinese cross-environment regression" node scripts/run-update10g-chinese-cross-environment-audit.mjs
+          run_case "Update 11 Vikrama regression" npm run test:update11:vikrama
+          run_case "Update 12 Koki regression" npm run test:update12:koki
+          run_case "compatibility regression" npm run test:compatibility
+          run_case "documentation consistency" npm run docs:check
+          run_case "package verification" npm run package:verify
+          run_case "canonical standalone rebuild" npm run build:standalone
+          run_case "standalone firewall markers" npm run test:update13:intl:standalone
+          run_case "Chromium + Worker fault injection" npm run test:update13:intl:browser
+
+          exit "$overall"
+      - name: Record generated standalone hashes
+        if: always()
+        shell: bash
+        run: |
+          if [[ -f browser/standalone/pastafari-date.js && -f browser/standalone/pastafari-date.min.js ]]; then
+            sha256sum \
+              browser/standalone/pastafari-date.js \
+              browser/standalone/pastafari-date.min.js \
+              > artifacts/update-13-generated-standalone-sha256sums.txt
+          fi
+      - name: Upload Update 13 evidence and rebuilt standalone
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: update13-intl-icu-audit-${{ github.sha }}
+          path: |
+            artifacts/update-13-*.json
+            artifacts/update-13-*.txt
+            artifacts/update13-runs/*.json
+            browser/standalone/pastafari-date.js
+            browser/standalone/pastafari-date.min.js
+          if-no-files-found: warn
+          retention-days: 14

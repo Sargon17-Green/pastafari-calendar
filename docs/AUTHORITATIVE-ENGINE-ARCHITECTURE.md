@@ -4503,3 +4503,9 @@ A literal source-code transcription or restoration of every row of the unavailab
 ---
 
 **End of current authoritative-engine execution specification.**
+
+## Update 13 semantic-boundary addendum
+
+The historical sections above describe the sealed chronicle itself and remain accurate: its Umm al-Qura, official Persian, and legacy Chinese converters consult host `Intl`/ICU. They must not be read as a statement that all supported public/browser routes are normative.
+
+As of Update 13, the supported `browser/pastafari-calendar-core.js` doorway places `browser/intl-calendar-semantic-firewall.js` in front of the chronicle's Chinese conversion route. Normative Chinese conversion is source-locked and deterministic; the old chronicle converter remains as a tainted host witness. Umm al-Qura and official Persian remain host-backed, non-normative convenience paths. See `INTL-ICU-SEMANTIC-BOUNDARY.md` and `artifacts/intl-icu-dependency-matrix.json`.

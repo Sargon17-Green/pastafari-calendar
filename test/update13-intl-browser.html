@@ -1,0 +1,43 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Update 13 Intl/ICU semantic firewall</title>
+<pre id="result">pending</pre>
+<script type="module">
+  import * as core from "../browser/pastafari-calendar-core.js";
+  import * as koki from "../browser/koki-api.js";
+  import * as vikrama from "../browser/vikrama-api.js";
+
+  const out = document.querySelector("#result");
+  const F = -13334246n;
+  const original = Intl.DateTimeFormat;
+  const scenarios = [
+    ["throw", () => { throw new Error("UPDATE13_BROWSER_INTL_THROW"); }],
+    ["fake-parts", () => ({ formatToParts: () => [{ type: "year", value: "garbage" }] })],
+    ["wrong-values", () => ({ formatToParts: () => [{ type: "relatedYear", value: "999999" }, { type: "month", value: "12" }, { type: "day", value: "30" }] })],
+    ["alien-names", () => ({ formatToParts: () => [{ type: "era", value: "HOST_ERA" }, { type: "month", value: "HOST_MONTH" }, { type: "day", value: "22" }] })],
+  ];
+  try {
+    const rows = [];
+    for (const [name, factory] of scenarios) {
+      let calls = 0;
+      Intl.DateTimeFormat = function Update13BrowserFault() { calls += 1; return factory(); };
+      const chinese = core.chineseToJdn(new core.ChineseDate(-41221n, 1, 22, { leapMonth: false }));
+      const generic = core.calendarDateToJdn(new core.ChineseDate(-41221n, 1, 22, { leapMonth: false }));
+      const k = koki.kokiToJdn(new koki.KokiDate(-40561n, 12, 22));
+      const v = vikrama.vikramaToJdn(new vikrama.VikramaDate(-41162n, 8, 16, { leapMonth: false, leapTithi: false }));
+      rows.push({ name, calls, pass: chinese === F && generic === F && k === F && v === F && calls === 0 });
+    }
+    Intl.DateTimeFormat = original;
+    const workerResult = await new Promise((resolve, reject) => {
+      const worker = new Worker(new URL("./update13-intl-worker.js", import.meta.url), { type: "module" });
+      const timer = setTimeout(() => { worker.terminate(); reject(new Error("Update 13 Worker timeout")); }, 60000);
+      worker.addEventListener("message", event => { clearTimeout(timer); worker.terminate(); resolve(event.data); }, { once: true });
+      worker.addEventListener("error", event => { clearTimeout(timer); worker.terminate(); reject(event.error || new Error(event.message)); }, { once: true });
+    });
+    const pass = rows.every(row => row.pass) && workerResult.status === "PASS";
+    out.textContent = `UPDATE13_INTL_BROWSER=${JSON.stringify({ status: pass ? "PASS" : "FAIL", rows, workerResult })}`;
+  } catch (error) {
+    Intl.DateTimeFormat = original;
+    out.textContent = `UPDATE13_INTL_BROWSER=${JSON.stringify({ status: "FAIL", error: String(error?.stack || error) })}`;
+  }
+</script>

@@ -1,0 +1,169 @@
+{
+  "schemaVersion": 1,
+  "baselineCommit": "d8361bf852f54597f62daeaa293443e5c5d9ef84",
+  "packageVersion": "1.3.0",
+  "representations": [
+    {
+      "calendarRepresentation": "gregorian",
+      "api": "gregorianToJdn",
+      "normativeSource": "anchor/source arithmetic",
+      "deterministicImplementation": true,
+      "referenceImplementation": true,
+      "intlInSemantics": "no",
+      "faultInjectionStatus": "PASS"
+    },
+    {
+      "calendarRepresentation": "julian",
+      "api": "julianToJdn",
+      "normativeSource": "anchor/source arithmetic",
+      "deterministicImplementation": true,
+      "referenceImplementation": true,
+      "intlInSemantics": "no",
+      "faultInjectionStatus": "PASS"
+    },
+    {
+      "calendarRepresentation": "hebrew",
+      "api": "hebrewToJdn",
+      "normativeSource": "update9 reference",
+      "deterministicImplementation": true,
+      "referenceImplementation": true,
+      "intlInSemantics": "no",
+      "faultInjectionStatus": "PASS"
+    },
+    {
+      "calendarRepresentation": "islamic-civil",
+      "api": "islamicCivilToJdn",
+      "normativeSource": "update9 reference",
+      "deterministicImplementation": true,
+      "referenceImplementation": true,
+      "intlInSemantics": "no",
+      "faultInjectionStatus": "PASS"
+    },
+    {
+      "calendarRepresentation": "solar-hijri-arithmetic-2820",
+      "api": "solarHijriArithmeticToJdn",
+      "normativeSource": "source arithmetic",
+      "deterministicImplementation": true,
+      "referenceImplementation": true,
+      "intlInSemantics": "no",
+      "faultInjectionStatus": "PASS"
+    },
+    {
+      "calendarRepresentation": "saka",
+      "api": "sakaToJdn",
+      "normativeSource": "update9 reference",
+      "deterministicImplementation": true,
+      "referenceImplementation": true,
+      "intlInSemantics": "no",
+      "faultInjectionStatus": "PASS"
+    },
+    {
+      "calendarRepresentation": "thai-buddhist",
+      "api": "thaiBuddhistToJdn",
+      "normativeSource": "Gregorian arithmetic",
+      "deterministicImplementation": true,
+      "referenceImplementation": true,
+      "intlInSemantics": "no",
+      "faultInjectionStatus": "PASS"
+    },
+    {
+      "calendarRepresentation": "ethiopic",
+      "api": "ethiopicToJdn",
+      "normativeSource": "update9 reference",
+      "deterministicImplementation": true,
+      "referenceImplementation": true,
+      "intlInSemantics": "no",
+      "faultInjectionStatus": "PASS"
+    },
+    {
+      "calendarRepresentation": "coptic",
+      "api": "copticToJdn",
+      "normativeSource": "update9 reference",
+      "deterministicImplementation": true,
+      "referenceImplementation": true,
+      "intlInSemantics": "no",
+      "faultInjectionStatus": "PASS"
+    },
+    {
+      "calendarRepresentation": "minguo",
+      "api": "minguoToJdn",
+      "normativeSource": "Gregorian arithmetic",
+      "deterministicImplementation": true,
+      "referenceImplementation": true,
+      "intlInSemantics": "no",
+      "faultInjectionStatus": "PASS"
+    },
+    {
+      "calendarRepresentation": "bahai-western-arithmetic",
+      "api": "bahaiToJdn(western-arithmetic)",
+      "normativeSource": "update9 reference",
+      "deterministicImplementation": true,
+      "referenceImplementation": true,
+      "intlInSemantics": "no",
+      "faultInjectionStatus": "PASS"
+    },
+    {
+      "calendarRepresentation": "maya-long-count-GMT",
+      "api": "mayaLongCountToJdn",
+      "normativeSource": "source arithmetic",
+      "deterministicImplementation": true,
+      "referenceImplementation": true,
+      "intlInSemantics": "no",
+      "faultInjectionStatus": "PASS"
+    },
+    {
+      "calendarRepresentation": "chinese",
+      "api": "src/public-api.js chineseToJdn + calendarDateToJdn",
+      "normativeSource": "Update 10 source-locked deterministic engine; Foundation/source anchors and round-trip evidence; no separate independent full reference module",
+      "deterministicImplementation": true,
+      "referenceImplementation": false,
+      "intlInSemantics": "no",
+      "faultInjectionStatus": "PASS"
+    },
+    {
+      "calendarRepresentation": "chinese",
+      "api": "src/public-api.js jdnToChinese",
+      "normativeSource": "source-locked deterministic Update 10 engine",
+      "deterministicImplementation": true,
+      "referenceImplementation": false,
+      "intlInSemantics": "no",
+      "faultInjectionStatus": "PASS"
+    },
+    {
+      "calendarRepresentation": "chinese",
+      "api": "browser/pastafari-calendar-core.js chineseToJdn + calendarDateToJdn",
+      "normativeSource": "Update 13 fixes browser-core contamination",
+      "deterministicImplementation": true,
+      "referenceImplementation": false,
+      "intlInSemantics": "no",
+      "faultInjectionStatus": "PASS"
+    },
+    {
+      "calendarRepresentation": "chinese",
+      "api": "docs/calendar-converters.js calendarDateToJdn(chinese)",
+      "normativeSource": "Update 10 deterministic detour",
+      "deterministicImplementation": true,
+      "referenceImplementation": false,
+      "intlInSemantics": "no",
+      "faultInjectionStatus": "PASS"
+    },
+    {
+      "calendarRepresentation": "koki",
+      "api": "kokiToJdn / jdnToKoki",
+      "normativeSource": "Update 12 independent reference",
+      "deterministicImplementation": true,
+      "referenceImplementation": true,
+      "intlInSemantics": "no",
+      "faultInjectionStatus": "PASS"
+    },
+    {
+      "calendarRepresentation": "vikrama",
+      "api": "vikramaToJdn / jdnToVikrama",
+      "normativeSource": "Update 11 independent reference",
+      "deterministicImplementation": true,
+      "referenceImplementation": true,
+      "intlInSemantics": "no",
+      "faultInjectionStatus": "PASS"
+    }
+  ]
+}
