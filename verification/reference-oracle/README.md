@@ -55,9 +55,11 @@ The reference currently implements, from the Scroll itself:
 - gate-gap generation and direct uncached gate traversal for diagnostic-sized
   gate indices.
 
-Stable interfaces also exist for year-candidate discovery, year selection,
-cutlet structure, month structure and final 5-tuple generation, but those stages
-are intentionally `not implemented` in Update 1 rather than delegated.
+Year-candidate discovery and year selection are implemented in the reference and
+validated by small direct discriminators, including the 5,778-day ceiling case.
+Stable interfaces also exist for cutlet structure, month structure and final
+5-tuple generation, but those stages remain intentionally `not implemented`
+rather than delegated.
 
 ## Trace levels
 
@@ -113,3 +115,13 @@ implementation.
 
 That distinction is deliberate: a future read-only trace hook can add precise
 per-round authoritative values without changing the reference or its schema.
+
+
+## Update 16 authority clarification
+
+The authority registry, dependency graph, coverage matrix and vector provenance
+under `verification/update16/` define the test authority boundary. Legacy files
+whose names include `canonical`, `spec`, `oracle`, `conformance`, `golden` or
+`expected` are not automatically normative. The retained
+`implementations/tests/generate_spec_canonical.py` path is a compatibility
+generator/witness, not the judge.

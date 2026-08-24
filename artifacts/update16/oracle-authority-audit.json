@@ -1,0 +1,141 @@
+{
+  "schema": "pastafari-update16-authority-audit-result-v1",
+  "status": "PASS",
+  "headCommitChecked": "6b9d49361633b91d7c3e8fe58b514d5650791f1e",
+  "packageVersion": "1.3.0",
+  "scrollSha256": "d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96",
+  "referenceSha256": "14d42517493426f61eae023987b72607bca714497534e738fb4b56709bcb0c4a",
+  "authorityNamedPathCount": 40,
+  "authorityNamedPaths": [
+    "artifacts/update-08-stage-05-canonical-vectors.json",
+    "artifacts/update-08-stage-05-reference-regressions.json",
+    "artifacts/update16/oracle-authority-audit.json",
+    "docs/authority/ORACLE-AUTHORITY.md",
+    "implementations/c/tests/canonical.c",
+    "implementations/cpp/tests/conformance.cpp",
+    "implementations/docs/CONFORMANCE.md",
+    "implementations/python/tests/test_conformance.py",
+    "implementations/tests/conformance-vectors.json",
+    "implementations/tests/export_reference_gate_cache.mjs",
+    "implementations/tests/generate_oracle_corpus.mjs",
+    "implementations/tests/generate_spec_binding_5778.py",
+    "implementations/tests/generate_spec_canonical.py",
+    "implementations/tests/generate_spec_deep_year_chain.mjs",
+    "implementations/tests/generate_spec_deep_year_chain.py",
+    "implementations/tests/oracle-differential-10000.tsv",
+    "implementations/tests/run_cli_conformance.py",
+    "implementations/tests/spec-derived-binding-5778.json",
+    "implementations/tests/spec-derived-canonical-vectors.json",
+    "implementations/tests/spec-derived-deep-year-chain.json",
+    "implementations/tests/spec-derived-gate-checkpoints.json",
+    "test/reference-oracle.test.js",
+    "verification/evidence/multilang/ready-five-canonical-remediation-2026-08-16.md",
+    "verification/reference-oracle/PROVENANCE.md",
+    "verification/reference-oracle/README.md",
+    "verification/reference-oracle/authoritative-adapter.mjs",
+    "verification/reference-oracle/authoritative-stir-trace-runner.mjs",
+    "verification/reference-oracle/compare.mjs",
+    "verification/reference-oracle/diagnose-post-stir-substitution.mjs",
+    "verification/reference-oracle/differential.mjs",
+    "verification/reference-oracle/evidence/update-1-sanity.json",
+    "verification/reference-oracle/reference.mjs",
+    "verification/reference-oracle/trace-schema.json",
+    "verification/update11/CANDIDATE-VIKRAMA-REFERENCE.md",
+    "verification/update11/vikrama-reference.mjs",
+    "verification/update12/reference-koki.mjs",
+    "verification/update14/month-weaving-reference.mjs",
+    "verification/update16/reference-provenance.json",
+    "verification/update8/run-stage-05-canonical-vectors.mjs",
+    "verification/update9/proleptic-negative-year-reference.mjs"
+  ],
+  "authorityNamedSymbolCount": 386,
+  "generatorFixtureVectorPathCount": 17,
+  "generatorFixtureVectorPaths": [
+    "artifacts/update-08-stage-05-canonical-vectors.json",
+    "artifacts/update-08-stage-07-router-fix-generated-sha256sums.txt",
+    "artifacts/update-13-generated-standalone-sha256sums.txt",
+    "browser/generated/pastafari-gate-shadow.js",
+    "browser/generated/pastafari-gate-shadow.manifest.json",
+    "implementations/tests/conformance-vectors.json",
+    "implementations/tests/generate_oracle_corpus.mjs",
+    "implementations/tests/generate_spec_binding_5778.py",
+    "implementations/tests/generate_spec_canonical.py",
+    "implementations/tests/generate_spec_deep_year_chain.mjs",
+    "implementations/tests/generate_spec_deep_year_chain.py",
+    "implementations/tests/historical-regression-vectors-16.json",
+    "implementations/tests/spec-derived-canonical-vectors.json",
+    "scripts/regenerate-gate-artifacts.mjs",
+    "verification/update16/vector-provenance.json",
+    "verification/update8/run-stage-05-canonical-vectors.mjs",
+    "verification/update8/stage-07-cross-environment-vectors.json"
+  ],
+  "updatesEvidence": {
+    "update09": true,
+    "update11": true,
+    "update12": true,
+    "update13": true,
+    "update14": true,
+    "update15": true
+  },
+  "notImplementedReferenceStages": [
+    "cutlets",
+    "months",
+    "final tuple"
+  ],
+  "forbiddenDependencyEdges": [
+    {
+      "from": "reference",
+      "to": "authoritative",
+      "kind": "imports/calls",
+      "allowed": false,
+      "reason": "shared production bug would become oracle bug"
+    },
+    {
+      "from": "reference",
+      "to": "fast",
+      "kind": "imports/calls",
+      "allowed": false,
+      "reason": "fast engine is not an oracle"
+    },
+    {
+      "from": "reference",
+      "to": "vectors",
+      "kind": "reads-output-from",
+      "allowed": false,
+      "reason": "fixture fallback is tautological"
+    },
+    {
+      "from": "reference",
+      "to": "generators",
+      "kind": "imports/calls",
+      "allowed": false,
+      "reason": "legacy generator is a witness, not judge"
+    },
+    {
+      "from": "authoritative",
+      "to": "reference",
+      "kind": "runtime-imports",
+      "allowed": false,
+      "reason": "production may not correct itself using test oracle"
+    },
+    {
+      "from": "fast",
+      "to": "reference",
+      "kind": "runtime-imports",
+      "allowed": false,
+      "reason": "production bundle must not depend on reference runtime"
+    }
+  ],
+  "productionReferenceImportHits": [],
+  "normativePassRule": {
+    "requires": [
+      "reference matches direct scroll-derived evidence for the implemented stage",
+      "implementation matches the independent reference for that implemented stage"
+    ],
+    "forbids": [
+      "authoritative == fast == generator as a substitute for scroll conformance",
+      "current implementation output recorded as normative expected output without independent reference validation",
+      "majority vote among implementations or generators"
+    ]
+  }
+}

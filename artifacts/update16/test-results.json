@@ -1,0 +1,71 @@
+{
+  "schema": "pastafari-update16-test-results-v1",
+  "update": 16,
+  "timestampUtc": "2026-08-24T07:10:00Z",
+  "baselineHeadChecked": "6b9d49361633b91d7c3e8fe58b514d5650791f1e",
+  "packageVersion": "1.3.0",
+  "results": [
+    {
+      "command": "node scripts/run-update16-authority-audit.mjs --write",
+      "status": "PASS",
+      "summary": "authority audit PASS; report written to artifacts/update16/oracle-authority-audit.json"
+    },
+    {
+      "command": "node --test test/update16-authority-boundary.test.js",
+      "status": "PASS",
+      "summary": "10/10 pass"
+    },
+    {
+      "command": "npm run test:update16",
+      "status": "PASS",
+      "summary": "authority audit + 10/10 Update 16 tests pass"
+    },
+    {
+      "command": "node --test test/reference-oracle.test.js test/update16-authority-boundary.test.js",
+      "status": "PASS",
+      "summary": "29/29 pass"
+    },
+    {
+      "command": "npm run gate-data:check",
+      "status": "PASS",
+      "summary": "drift=[]; elapsed 14553ms"
+    },
+    {
+      "command": "npm run docs:check",
+      "status": "PASS",
+      "summary": "72 locales, 5 accepted implementations"
+    },
+    {
+      "command": "npm run security:supply-chain",
+      "status": "PASS",
+      "summary": "77/77 external GitHub actions pinned; 0 mutable refs"
+    },
+    {
+      "command": "npm run checksums:generate && npm run checksums:verify",
+      "status": "PASS",
+      "summary": "docs=113, repository=929 before final report artifacts"
+    },
+    {
+      "command": "python implementations/tests/generate_spec_canonical.py",
+      "status": "TIMEOUT_LOCAL",
+      "summary": "local generation exceeded 300s during boundary/full-structure phase; generator metadata and vectors were patched consistently but full corpus regeneration remains deferred to Update 17"
+    },
+    {
+      "command": "npm run package:verify",
+      "status": "TIMEOUT_LOCAL",
+      "summary": "timed out after npm pack dry-run and temporary tarball creation/install start; no repository debris retained"
+    }
+  ],
+  "blockedOrDeferred": [
+    {
+      "area": "full corpus regeneration/revalidation",
+      "status": "DEFERRED_BY_DESIGN",
+      "reason": "Update 16 is authority/provenance/guards only; Update 17 is the regeneration stage."
+    },
+    {
+      "area": "browser/Worker smoke and fresh standalone rebuild",
+      "status": "NOT_RERUN_IN_THIS_PACKAGING_PASS",
+      "reason": "this pass focused on final packaging after prior environment/tool timeout; no Playwright/esbuild dependency install was completed here."
+    }
+  ]
+}

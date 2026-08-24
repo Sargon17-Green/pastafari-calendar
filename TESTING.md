@@ -86,3 +86,8 @@ The `node-test` job remains unconditional and keeps the fast test tier, document
 Manual benchmark and visual workflows retain their previous behavior. Manual benchmark runs still execute the full benchmark and memory-soak jobs, and visual `workflow_dispatch` still runs either the normal visual suite or baseline capture according to the existing `capture_baselines` input. Scheduled property soak and manual release verification are unchanged.
 
 Run `npm run test:ci-change-classifier` to validate representative engine, UI, locale, documentation, workflow, package, mixed, manual, benchmark, implementation, checksum-manifest, and unknown-path scenarios. The same classifier policy is used for both push and pull-request changed-file sets; new branches, unsupported events, missing SHAs, or failed `git diff` resolution fall back to full CI.
+
+### Update 16 oracle authority boundary
+
+Normative conformance is judged by the hierarchy `Scroll > independent reference > implementations/generated artifacts`. Legacy canonical-format generators and vectors remain useful regression witnesses, but they are explicitly non-authoritative unless validated downstream of the independent reference. See `docs/authority/ORACLE-AUTHORITY.md` and `verification/update16/`.
+

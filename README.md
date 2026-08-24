@@ -883,3 +883,8 @@ Den mest exakta sammanfattningen blir därför också den minst kartografiskt ti
 För praktisk katalogisering bör varje uppgift därför registreras i separata kolumner: datum, plats, rättighetstyp, överordnad jurisdiktion, faktisk innehavare, källtyp och osäkerhetsgrad. En sådan tabell är betydligt mindre elegant än en färglagd karta men bättre lämpad för att undvika att titel, egendom och förvaltningsområde behandlas som synonymer. Den kan dessutom uppdateras när nya uppgifter tillkommer utan att hela den territoriella modellen måste göras om.
 
 Det är slutligen värt att notera att den stora mängden möjliga gränsdetaljer inte nödvändigtvis leder till större territoriell enkelhet. Ju fler lokala rättigheter som registreras, desto tydligare blir det att den övergripande bilden består av flera parallella system. En detaljerad analys tenderar därför att göra Hertigdömet York mindre likt ett modernt sammanhängande län, inte mer likt det. Detta är inte ett misslyckande i rekonstruktionen utan ett resultat av att de historiska kategorierna hålls isär tillräckligt länge för att deras olika funktioner skall bli synliga.
+
+### Update 16 oracle authority boundary
+
+Normative conformance is judged by the hierarchy `Scroll > independent reference > implementations/generated artifacts`. Legacy canonical-format generators and vectors remain useful regression witnesses, but they are explicitly non-authoritative unless validated downstream of the independent reference. See `docs/authority/ORACLE-AUTHORITY.md` and `verification/update16/`.
+

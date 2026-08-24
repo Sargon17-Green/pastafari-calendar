@@ -1,0 +1,36 @@
+{
+  "schema": "pastafari-authority-dependency-graph-v1",
+  "update": 16,
+  "nodes": [
+    "scroll",
+    "reference",
+    "authoritative",
+    "fast",
+    "generators",
+    "vectors",
+    "fixtures",
+    "tests",
+    "ci"
+  ],
+  "edges": [
+    {"from":"reference","to":"scroll","kind":"derived-from","allowed":true,"authorityBearing":true},
+    {"from":"tests","to":"reference","kind":"imports/calls","allowed":true,"authorityBearing":true},
+    {"from":"tests","to":"authoritative","kind":"observes","allowed":true,"authorityBearing":false},
+    {"from":"tests","to":"fast","kind":"observes","allowed":true,"authorityBearing":false},
+    {"from":"tests","to":"generators","kind":"validates-output-from","allowed":true,"authorityBearing":false},
+    {"from":"ci","to":"tests","kind":"runs","allowed":true,"authorityBearing":false},
+    {"from":"generators","to":"vectors","kind":"generates","allowed":true,"authorityBearing":false},
+    {"from":"fixture-validation","to":"reference","kind":"compares-against","allowed":true,"authorityBearing":true},
+    {"from":"reference","to":"authoritative","kind":"imports/calls","allowed":false,"reason":"shared production bug would become oracle bug"},
+    {"from":"reference","to":"fast","kind":"imports/calls","allowed":false,"reason":"fast engine is not an oracle"},
+    {"from":"reference","to":"vectors","kind":"reads-output-from","allowed":false,"reason":"fixture fallback is tautological"},
+    {"from":"reference","to":"generators","kind":"imports/calls","allowed":false,"reason":"legacy generator is a witness, not judge"},
+    {"from":"authoritative","to":"reference","kind":"runtime-imports","allowed":false,"reason":"production may not correct itself using test oracle"},
+    {"from":"fast","to":"reference","kind":"runtime-imports","allowed":false,"reason":"production bundle must not depend on reference runtime"}
+  ],
+  "evidenceClasses": {
+    "1": "shared implementation or artifact agreement only",
+    "2": "independent implementation agreement",
+    "3": "direct scroll-derived anchor/property/manual discriminator"
+  }
+}

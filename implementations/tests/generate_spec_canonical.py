@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
-"""Generate the specification-derived Pastafari conformance corpus.
+"""Generate the historical Pastafari regression/conformance-format corpus.
 
-This file is a test/reference derivation from the sole normative source:
-"מגילת העיתים — לוח סוד הרוטב ושמות הימים" (2026-08-16), SHA-256
-D36B0C944B4685D1AA1D89BB20A8DD530EE3167C897DCDF85161A7EC0DDE9C96.
+Compatibility warning: this script keeps its legacy "spec canonical" filename
+and still emits the historical canonical-format artifacts, but Update 16 makes
+its authority status explicit.  It is a generator/witness, not the normative
+oracle.  Normative conformance is judged by the scroll-derived independent
+reference plus direct scroll-derived evidence, never by generator agreement or
+majority vote.
 
-It deliberately does not import, execute, or query any production Pastafari
+This file does not import, execute, or query any production Pastafari
 implementation.  The historical JavaScript engine and the retained 10,000-row
 regression corpus are not inputs to this generator.
 """
@@ -56,6 +59,25 @@ DIRECT_MULTIPLIERS = (3, 5, 7)
 DIRECT_STONES = (0, 1, 2)
 DROP_MIX_STONES = (0, 1, 2, 3, 4, 0)
 BOWL_PERMUTATIONS = tuple(permutations(range(6)))
+
+
+def authority_metadata() -> dict[str, object]:
+    return {
+        "component": "implementations/tests/generate_spec_canonical.py",
+        "role": "historical-fixture-generator",
+        "generatorClass": "C",
+        "normativeAuthority": False,
+        "compatibilityNameRetained": True,
+        "authorityWarning": (
+            "Legacy canonical-format generator output is regression evidence only. "
+            "It must not be used as the normative oracle; compare it downstream "
+            "against the independent reference where the reference is implemented."
+        ),
+        "update16": {
+            "corpusRegenerated": False,
+            "fullCorpusRevalidationDeferredTo": "Update 17",
+        },
+    }
 
 
 def saved(value: int) -> int:
@@ -1084,6 +1106,7 @@ def generate() -> dict[str, object]:
     print("stage: assemble document", flush=True)
     return {
         "canonicalId": CANONICAL_ID,
+        "authority": authority_metadata(),
         "normativeSource": {
             "title": "מגילת העיתים — לוח סוד הרוטב ושמות הימים",
             "date": "2026-08-16",
@@ -1168,7 +1191,8 @@ def main() -> int:
         raise RuntimeError("compact canonical vector selection is incomplete")
     compact = {
         "canonicalId": CANONICAL_ID,
-        "fixtureType": "specification-derived-canonical",
+        "fixtureType": "legacy-canonical-format-regression",
+        "authority": authority_metadata(),
         "normativeSourceSha256": SOURCE_SHA256,
         "inputOrder": ["calculationJdn", "targetJdn"],
         "vectors": compact_vectors,

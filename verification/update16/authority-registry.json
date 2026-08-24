@@ -1,0 +1,118 @@
+{
+  "schema": "pastafari-authority-registry-v1",
+  "update": 16,
+  "hierarchy": [
+    "scroll",
+    "independent-reference",
+    "implementations-and-generated-artifacts"
+  ],
+  "normativePassRule": {
+    "requires": [
+      "reference matches direct scroll-derived evidence for the implemented stage",
+      "implementation matches the independent reference for that implemented stage"
+    ],
+    "forbids": [
+      "authoritative == fast == generator as a substitute for scroll conformance",
+      "current implementation output recorded as normative expected output without independent reference validation",
+      "majority vote among implementations or generators"
+    ]
+  },
+  "components": [
+    {
+      "component": "sources/מגילת העיתים.md",
+      "role": "normative-scroll-source",
+      "normativeAuthority": true,
+      "authorityLevel": 3,
+      "sha256": "d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96",
+      "status": "source-of-truth"
+    },
+    {
+      "component": "verification/reference-oracle/reference.mjs",
+      "role": "independent-reference",
+      "normativeAuthority": true,
+      "authorityLevel": 2,
+      "independentFromProduction": true,
+      "status": "implemented-partial-no-fallback"
+    },
+    {
+      "component": "verification/update11/vikrama-reference.mjs",
+      "role": "external-calendar-reference",
+      "normativeAuthority": true,
+      "authorityLevel": 2,
+      "status": "implemented-for-vikrama-stage"
+    },
+    {
+      "component": "verification/update12/reference-koki.mjs",
+      "role": "external-calendar-reference",
+      "normativeAuthority": true,
+      "authorityLevel": 2,
+      "status": "implemented-for-koki-stage"
+    },
+    {
+      "component": "verification/update14/month-weaving-reference.mjs",
+      "role": "component-reference",
+      "normativeAuthority": true,
+      "authorityLevel": 2,
+      "status": "independent-enumerator-for-month-weaving"
+    },
+    {
+      "component": "verification/update9/proleptic-negative-year-reference.mjs",
+      "role": "external-calendar-reference",
+      "normativeAuthority": true,
+      "authorityLevel": 2,
+      "status": "implemented-for-arithmetic-negative-year-calendars"
+    },
+    {
+      "component": "browser/pastafari-calendar-core.js",
+      "role": "authoritative-production-engine",
+      "normativeAuthority": false,
+      "authorityLevel": 1,
+      "status": "consumer-of-reference-in-tests-only"
+    },
+    {
+      "component": "browser/pastafari-calendar-fast.js",
+      "role": "fast-production-engine",
+      "normativeAuthority": false,
+      "authorityLevel": 1,
+      "status": "consumer-of-reference-in-tests-only"
+    },
+    {
+      "component": "implementations/tests/generate_spec_canonical.py",
+      "role": "historical-fixture-generator",
+      "generatorClass": "C",
+      "normativeAuthority": false,
+      "authorityLevel": 1,
+      "compatibilityPathRetained": true,
+      "status": "legacy-name-retained-output-must-be-validated-downstream"
+    },
+    {
+      "component": "implementations/tests/generate_oracle_corpus.mjs",
+      "role": "historical-regression-corpus-generator",
+      "generatorClass": "D",
+      "normativeAuthority": false,
+      "authorityLevel": 1,
+      "status": "regression-tool-not-conformance-oracle"
+    },
+    {
+      "component": "implementations/tests/conformance-vectors.json",
+      "role": "legacy-compact-regression-vectors",
+      "normativeAuthority": false,
+      "authorityLevel": 1,
+      "status": "historically-generated-not-corpus-revalidated-in-update16"
+    },
+    {
+      "component": "implementations/tests/spec-derived-canonical-vectors.json",
+      "role": "legacy-expanded-regression-vectors",
+      "normativeAuthority": false,
+      "authorityLevel": 1,
+      "status": "historically-generated-not-corpus-revalidated-in-update16"
+    },
+    {
+      "component": "implementations/tests/oracle-differential-10000.tsv",
+      "role": "historical-regression-corpus",
+      "normativeAuthority": false,
+      "authorityLevel": 1,
+      "status": "known-stale-candidate-for-update17-revalidation"
+    }
+  ]
+}

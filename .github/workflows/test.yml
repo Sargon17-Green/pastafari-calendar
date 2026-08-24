@@ -53,7 +53,9 @@ jobs:
       - run: npm run security:supply-chain
       - run: npm ci
       - run: npm run gate-data:check
-      - name: Verify specification-derived gate artifacts are committed
+      - name: Verify oracle authority boundary
+        run: npm run test:update16
+      - name: Verify legacy generated regression artifacts are reproducible, not authoritative
         shell: bash
         run: |
           set -euo pipefail
