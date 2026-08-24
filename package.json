@@ -100,7 +100,12 @@
     "test:update13:intl:standalone": "node scripts/check-update13-standalone-firewall.mjs",
     "test:update13:intl:matrix": "node verification/update13/run-environment-matrix.mjs",
     "test:update13:intl:random": "node verification/update13/run-random-differential.mjs",
-    "test:update16": "node scripts/run-update16-authority-audit.mjs --write && node --test test/update16-authority-boundary.test.js"
+    "test:update16": "node scripts/run-update16-authority-audit.mjs --write && node --test test/update16-authority-boundary.test.js",
+    "evidence:update17:generate": "node verification/update17/generate-canonical-evidence.mjs",
+    "evidence:update17:verify": "node verification/update17/verify-canonical-evidence.mjs",
+    "evidence:update17:stale": "node verification/update17/check-canonical-stale.mjs",
+    "test:update17": "node --test test/update17-canonical-evidence.test.js && node verification/update17/verify-canonical-evidence.mjs && node verification/update17/run-engine-matrix.mjs --engine=fast",
+    "test:update17:matrix": "node verification/update17/run-engine-matrix.mjs --engine=authoritative"
   },
   "devDependencies": {
     "axe-core": "4.12.1",

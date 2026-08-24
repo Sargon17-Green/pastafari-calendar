@@ -24,12 +24,12 @@ does not parse the source file at runtime.
 | Twelve post-pour stirs | 556–598 | At the start of each round, raw `bowlSum = sum(old bowls)` is saved. Separately `orderNumber = keep(bowlSum + 149*round)` selects the permutation. Each bowl’s `u` adds the **saved raw bowlSum**, round and place²; output adds `7*prev*next`, then keeps. Lines 574 and 587 independently repeat that the saved sum, not the kept order number, is used in `u`. |
 | Response ring | 601–666 | Seals are numeric. “Next bowl” follows the permutation from visible drop 46, not a post-stir permutation. First response and direction use the stated constants 181/179 and 193/197; odd direction means +1, even means -1 around `1..M`. |
 | Uniform short choice | 669–687 | Rejection limit is largest multiple of `n` not exceeding `M`; accept response `<= limit`, then ordinary `((response-1) mod n)+1`. |
-| Wide choice interface | 689–715 | Interface reserved but **not implemented in Update 1**. It fails explicitly. |
+| Wide choice | 689–715 | Deterministic multi-response rejection construction used when the choice count exceeds the short response ring; implemented without production helpers. |
 | Gate gaps | 733–770 | Calculation JDN remains Foundation. For gap index `+k`, target is Foundation + `k`; for `-k`, target is Foundation - `k`. Ask bowl 1 with seal 1, choose uniformly among 922, add 41. Gate 0 is Foundation; diagnostic traversal is direct and uncached. |
-| Year candidates / selection | 773 onward | Interface present; **not implemented in Update 1**. |
-| Cutlet structure | 820 onward | Interface present; **not implemented in Update 1**. |
-| Month structure | 889 onward | Interface present; **not implemented in Update 1**. |
-| Final Pastafarian tuple | 1027 onward | Interface present; **not implemented in Update 1**. |
+| Year candidates / selection | 773 onward | Candidate gates are filtered by the Scroll constraints, including the 252..5778-day ceiling, before cardinality; selection uses the independent sauce response. |
+| Cutlet structure | 820 onward | Direct composition counting/unranking with the mandatory internal-gate rule, followed by ordered cutlet-name selection. Implemented in Update 17. |
+| Month structure | 889 onward | Bounded month-length counting/unranking, lexicographic position-order month weaving, and ordered month-name selection. Implemented in Update 17. |
+| Final Pastafarian tuple | 1027 onward | Reference year traversal from year 5000, structure materialization, and direct `(year, cutlet, day-in-cutlet, month, day-in-month)` lookup. Implemented in Update 17. |
 
 ## Representation decisions
 

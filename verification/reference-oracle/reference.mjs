@@ -29,6 +29,22 @@ export const MIN_YEAR_DAYS = 252n;
 export const MAX_YEAR_DAYS = 5_778n;
 export const MIN_YEAR_GAPS = 6;
 
+export const CUTLET_NAMES = Object.freeze([
+  "ארד", "שועל", "כליה", "לגש", "מחשבה", "ארבעה חלקים מתשעה",
+  "פַּלְגּוּרַשׁ", "גומא", "אשכול", "עקרב", "אפר", "חיטה", "נהר",
+  "צחוק", "אכד", "קרן", "הכד הריק",
+]);
+
+export const MONTH_NAMES = Object.freeze([
+  "טין", "רימון", "מרפק", "קנאה", "ארידו", "משחת־שיניים",
+  "שלושה חלקים מחמישה", "כַּרְשׁוּמַב", "נמר", "בדיל", "ערפל", "לבונה",
+  "כישור", "צלע", "חרוב", "אורוק", "בושה", "גמל", "נחושת", "באר",
+  "חלמון", "כוכב", "דבש", "טחול", "אבן־גיר", "שמחה", "תאנה", "נינוה",
+  "צפרדע", "זפת", "נר", "הדלת הסגורה", "שומשום", "עורף", "כסף", "שושן",
+  "סערה", "חמור", "קמח", "חרטה", "בבל", "לשון", "פשתן", "מלח", "אגס",
+  "קשת", "חול",
+]);
+
 const STONE_NAMES = Object.freeze(["wheat", "barley", "salt", "bitter", "red"]);
 const INITIAL_STONES = Object.freeze([17n, 29n, 43n, 71n, 101n]);
 const BOWL_PRIMES = Object.freeze([17n, 19n, 23n, 29n, 31n, 37n]);
@@ -130,6 +146,11 @@ export function generateStones(count = 46) {
   }
   return rows;
 }
+
+// Pure reference optimization: the 46 stone rows depend on no input. Cache one
+// deeply frozen copy so large independent gate traversals do not allocate the
+// same immutable table tens of thousands of times. This changes no semantics.
+const SAUCE_STONES = Object.freeze(generateStones(46).map((row) => Object.freeze([...row])));
 
 // 1-based lexicographic rank among permutations of [1,2,3,4,5,6].
 // Scroll, tablet 11.
@@ -417,7 +438,7 @@ export function sauce(calculationJdn, targetJdn, options = {}) {
   const c = requireBigInt(calculationJdn, "calculationJdn");
   const t = requireBigInt(targetJdn, "targetJdn");
   const counters = canonicalCounters(c, t);
-  const stones = generateStones(46);
+  const stones = SAUCE_STONES;
   const hidden = makeHiddenDrops(counters, stones, detail);
   const visible = computeVisibleDropsAndBowls(counters, stones, hidden.hiddenByDistance, detail);
   const after = postStirs(visible.bowls, detail);
@@ -500,8 +521,47 @@ export function chooseUniform(sauceResult, bowlNumber, seal, count) {
     }
   }
 
-  // Wide selection interface is intentionally present but not implemented in Update 1.
-  throw new ReferenceNotImplementedError("uniform-choice-wide");
+  // Scroll, tablet 16 wide choice.  The response digits are interpreted in
+  // little-endian base GREAT_NUMBER after subtracting one from each 1..M
+  // response.  Rejection then advances by one in the same wide circular space;
+  // it does not consume a fresh unrelated response tuple.
+  let width = 1;
+  let space = GREAT_NUMBER;
+  while (space < n) {
+    space *= GREAT_NUMBER;
+    width += 1;
+  }
+  let wideFirst = 1n;
+  let weight = 1n;
+  const digits = [];
+  for (let offset = 0; offset < width; offset += 1) {
+    const response = responseAt(descriptor, offset);
+    digits.push(response);
+    wideFirst += (response - 1n) * weight;
+    weight *= GREAT_NUMBER;
+  }
+  const acceptanceLimit = (space / n) * n;
+  let accepted = wideFirst;
+  let discarded = 0n;
+  if (accepted > acceptanceLimit) {
+    discarded = descriptor.direction === "forward"
+      ? space - accepted + 1n
+      : accepted - acceptanceLimit;
+    accepted = descriptor.direction === "forward" ? 1n : acceptanceLimit;
+  }
+  const choice = positiveMod(accepted - 1n, n) + 1n;
+  return Object.freeze({
+    mode: "wide",
+    descriptor,
+    width,
+    space,
+    digits: Object.freeze(digits),
+    wideFirst,
+    acceptanceLimit,
+    acceptedResponse: accepted,
+    discarded,
+    choice,
+  });
 }
 
 // Scroll, tablet 17. Gate gaps are derived directly from fresh sauce calls;
@@ -535,6 +595,51 @@ export function gatePosition(index) {
     for (let i = -1; i >= index; i -= 1) position -= gateGap(i).gap;
   }
   return position;
+}
+
+/**
+ * Deterministic reference-side gate cache.  Every cached entry is derived only
+ * by gateGap() above.  No production checkpoint/blob/vector is read.
+ */
+export class ReferenceGateTable {
+  constructor() {
+    this.positions = new Map([[0, FOUNDATION_JDN]]);
+    this.minimum = 0;
+    this.maximum = 0;
+  }
+
+  ensure(index) {
+    requireGateIndex(index, "gate index");
+    while (this.maximum < index) {
+      const next = this.maximum + 1;
+      this.positions.set(next, this.positions.get(this.maximum) + gateGap(next).gap);
+      this.maximum = next;
+    }
+    while (this.minimum > index) {
+      const next = this.minimum - 1;
+      this.positions.set(next, this.positions.get(this.minimum) - gateGap(next).gap);
+      this.minimum = next;
+    }
+  }
+
+  position(index) {
+    this.ensure(index);
+    return this.positions.get(index);
+  }
+
+  containingInterval(jdn) {
+    const day = requireBigInt(jdn, "jdn");
+    if (day > FOUNDATION_JDN) {
+      let index = 0;
+      while (this.position(index + 1) < day) index += 1;
+      while (this.position(index) >= day) index -= 1;
+      return index;
+    }
+    let index = -1;
+    while (this.position(index) >= day) index -= 1;
+    while (this.position(index + 1) < day) index += 1;
+    return index;
+  }
 }
 
 function requireGateIndex(value, name) {
@@ -693,6 +798,531 @@ export function selectYearCandidate(options = {}) {
   });
 }
 
+// Scroll tablets 20-21: exact combinatorial counters/unrankers.  These helpers
+// intentionally spell out the ordering rules instead of importing production
+// counters or the legacy canonical generator.
+export function binomialCount(nValue, kValue) {
+  const n = Number(nValue);
+  let k = Number(kValue);
+  if (!Number.isSafeInteger(n) || !Number.isSafeInteger(k) || n < 0 || k < 0 || k > n) return 0n;
+  k = Math.min(k, n - k);
+  let result = 1n;
+  for (let value = 1; value <= k; value += 1) {
+    result = (result * BigInt(n - k + value)) / BigInt(value);
+  }
+  return result;
+}
+
+export function permutationCount(nValue, kValue) {
+  const n = Number(nValue);
+  const k = Number(kValue);
+  if (!Number.isSafeInteger(n) || !Number.isSafeInteger(k) || k < 0 || k > n) return 0n;
+  let result = 1n;
+  for (let value = n - k + 1; value <= n; value += 1) result *= BigInt(value);
+  return result;
+}
+
+export function unrankOrderedNames(names, countValue, rankValue) {
+  const count = Number(countValue);
+  let rank = requireBigInt(rankValue, "rank");
+  if (!Array.isArray(names) || !Number.isSafeInteger(count) || count < 0 || count > names.length) {
+    throw new RangeError("invalid ordered-name domain");
+  }
+  const total = permutationCount(names.length, count);
+  if (rank < 1n || rank > total) throw new RangeError("name rank outside valid range");
+  rank -= 1n;
+  const available = [...names];
+  const result = [];
+  for (let position = 0; position < count; position += 1) {
+    const block = permutationCount(available.length - 1, count - position - 1);
+    const index = Number(rank / block);
+    rank %= block;
+    result.push(available.splice(index, 1)[0]);
+  }
+  return result;
+}
+
+function compositionSuffixCount(remaining, parts, mandatoryOffset) {
+  if (parts === 0) return remaining === 0 && (mandatoryOffset === null || mandatoryOffset === 0) ? 1n : 0n;
+  if (remaining < parts) return 0n;
+  if (mandatoryOffset === null || mandatoryOffset === 0) return binomialCount(remaining - 1, parts - 1);
+  if (mandatoryOffset <= 0 || mandatoryOffset >= remaining || parts < 2) return 0n;
+  return binomialCount(remaining - 2, parts - 2);
+}
+
+export function unrankCutletComposition(totalValue, partsValue, mandatoryCutValue, rankValue) {
+  const total = Number(totalValue);
+  const parts = Number(partsValue);
+  const mandatoryCut = mandatoryCutValue === null || mandatoryCutValue === undefined ? null : Number(mandatoryCutValue);
+  let rank = requireBigInt(rankValue, "rank");
+  if (!Number.isSafeInteger(total) || !Number.isSafeInteger(parts) || total < 1 || parts < 1 || parts > total) {
+    throw new RangeError("invalid composition domain");
+  }
+  const totalWays = mandatoryCut === null
+    ? binomialCount(total - 1, parts - 1)
+    : binomialCount(total - 2, parts - 2);
+  if (rank < 1n || rank > totalWays) throw new RangeError("composition rank outside valid range");
+
+  let remaining = total;
+  let cumulative = 0;
+  let hit = mandatoryCut === null;
+  const result = [];
+  for (let position = 0; position < parts; position += 1) {
+    const left = parts - position - 1;
+    let selected = false;
+    for (let value = 1; value <= remaining - left; value += 1) {
+      const after = remaining - value;
+      const newCumulative = cumulative + value;
+      const newHit = hit || (mandatoryCut !== null && newCumulative === mandatoryCut);
+      let mandatoryOffset = null;
+      if (!newHit) {
+        if (mandatoryCut === null || mandatoryCut < newCumulative) continue;
+        mandatoryOffset = mandatoryCut - newCumulative;
+      }
+      const block = compositionSuffixCount(after, left, newHit ? null : mandatoryOffset);
+      if (rank > block) {
+        rank -= block;
+        continue;
+      }
+      result.push(value);
+      remaining = after;
+      cumulative = newCumulative;
+      hit = newHit;
+      selected = true;
+      break;
+    }
+    if (!selected) throw new Error("composition rank exhausted");
+  }
+  return result;
+}
+
+const monthLengthCountCache = new Map();
+export function boundedMonthLengthCount(totalValue, partsValue) {
+  const total = Number(totalValue);
+  const parts = Number(partsValue);
+  if (!Number.isSafeInteger(total) || !Number.isSafeInteger(parts) || parts < 0) return 0n;
+  const key = `${total}:${parts}`;
+  const cached = monthLengthCountCache.get(key);
+  if (cached !== undefined) return cached;
+  const shifted = total - 4 * parts;
+  if (shifted < 0 || shifted > 119 * parts) {
+    monthLengthCountCache.set(key, 0n);
+    return 0n;
+  }
+  let answer = 0n;
+  const maximumExcluded = Math.min(parts, Math.floor(shifted / 120));
+  for (let excluded = 0; excluded <= maximumExcluded; excluded += 1) {
+    const ways = binomialCount(parts, excluded)
+      * binomialCount(shifted - 120 * excluded + parts - 1, parts - 1);
+    answer += excluded % 2 === 0 ? ways : -ways;
+  }
+  monthLengthCountCache.set(key, answer);
+  return answer;
+}
+
+export function unrankMonthLengths(totalValue, partsValue, rankValue) {
+  const total = Number(totalValue);
+  const parts = Number(partsValue);
+  let rank = requireBigInt(rankValue, "rank");
+  const totalWays = boundedMonthLengthCount(total, parts);
+  if (rank < 1n || rank > totalWays) throw new RangeError("month-length rank outside valid range");
+  let remaining = total;
+  const result = [];
+  for (let position = 0; position < parts; position += 1) {
+    const left = parts - position - 1;
+    const maximum = Math.min(123, remaining - 4 * left);
+    let selected = false;
+    for (let value = 4; value <= maximum; value += 1) {
+      const after = remaining - value;
+      const block = left === 0 ? (after === 0 ? 1n : 0n) : boundedMonthLengthCount(after, left);
+      if (rank > block) {
+        rank -= block;
+        continue;
+      }
+      result.push(value);
+      remaining = after;
+      selected = true;
+      break;
+    }
+    if (!selected) throw new Error("month-length rank exhausted");
+  }
+  return result;
+}
+
+class ReferenceInterleavingCounter {
+  constructor(lengths) {
+    this.lengths = [...lengths];
+    this.cache = new Map();
+  }
+
+  get(lastSeen, q) {
+    const last = this.lengths.length - 1;
+    if (lastSeen >= last) return 1n;
+    const cached = this.cache.get(lastSeen);
+    if (cached !== undefined && cached.length > q) return cached[q];
+    this.rebuild(lastSeen, q);
+    return this.cache.get(lastSeen)[q];
+  }
+
+  rebuild(start, qStart) {
+    const m = this.lengths.length;
+    const needed = new Array(m).fill(0);
+    needed[start] = qStart;
+    for (let i = start; i < m - 1; i += 1) needed[i + 1] = needed[i] + this.lengths[i + 1] - 1;
+    let following = null;
+    this.cache.clear();
+    for (let i = m - 1; i >= start; i -= 1) {
+      const qMaximum = needed[i];
+      let current;
+      if (i === m - 1) {
+        current = new Array(qMaximum + 1).fill(1n);
+      } else {
+        current = new Array(qMaximum + 1).fill(0n);
+        const monthLength = this.lengths[i + 1];
+        let cumulative = 0n;
+        let weight = 1n;
+        for (let q = 1; q <= qMaximum; q += 1) {
+          const r = q - 1;
+          cumulative += weight * following[monthLength + r];
+          current[q] = cumulative;
+          weight = (weight * BigInt(monthLength + r - 1)) / BigInt(r + 1);
+        }
+      }
+      following = current;
+      if (i <= start + 7) this.cache.set(i, current);
+    }
+  }
+}
+
+export function monthInterleavingCount(lengthsValue) {
+  const lengths = [...lengthsValue].map(Number);
+  if (lengths.length < 1 || lengths.some((value) => !Number.isSafeInteger(value) || value < 1)) {
+    throw new RangeError("month lengths must be positive safe integers");
+  }
+  return new ReferenceInterleavingCounter(lengths).get(0, lengths[0]);
+}
+
+export function unrankMonthInterleaving(lengthsValue, rankValue) {
+  const lengths = [...lengthsValue].map(Number);
+  const m = lengths.length;
+  const totalLength = lengths.reduce((sum, value) => sum + value, 0);
+  const counter = new ReferenceInterleavingCounter(lengths);
+  const weave = new Array(totalLength).fill(0);
+  const remaining = [...lengths];
+  weave[0] = 0;
+  remaining[0] -= 1;
+  let low = 0;
+  let high = 0;
+  let activeTotal = remaining[0];
+  let baseCount = 1n;
+  let rank = requireBigInt(rankValue, "rank");
+  const expectedTotal = counter.get(0, activeTotal + 1);
+  if (rank < 1n || rank > expectedTotal) throw new RangeError("interleaving rank outside valid range");
+
+  for (let position = 1; position < totalLength; position += 1) {
+    const prefix = [];
+    let running = 0;
+    for (let i = low; i <= high; i += 1) {
+      running += remaining[i];
+      prefix.push(running);
+    }
+    const span = prefix.length;
+    const suffixP = new Array(span + 1).fill(1n);
+    const suffixPm1 = new Array(span + 1).fill(1n);
+    for (let off = span - 1; off >= 0; off -= 1) {
+      suffixP[off] = suffixP[off + 1] * BigInt(prefix[off]);
+      suffixPm1[off] = suffixPm1[off + 1] * BigInt(prefix[off] - 1);
+    }
+    const futureSame = high < m - 1 ? counter.get(high, activeTotal) : 1n;
+    let selected = false;
+    for (let month = low; month <= high; month += 1) {
+      const remainingForMonth = remaining[month];
+      if (remainingForMonth === 1 && month !== low) continue;
+      const off = month - low;
+      let numerator;
+      let denominator;
+      if (remainingForMonth > 1) {
+        numerator = BigInt(remainingForMonth - 1) * suffixP[off];
+        denominator = BigInt(activeTotal) * suffixPm1[off];
+      } else {
+        numerator = suffixP[off + 1];
+        denominator = BigInt(activeTotal) * suffixPm1[off + 1];
+      }
+      const nextBase = (baseCount * numerator) / denominator;
+      const block = nextBase * futureSame;
+      if (rank > block) {
+        rank -= block;
+        continue;
+      }
+      weave[position] = month;
+      remaining[month] -= 1;
+      activeTotal -= 1;
+      baseCount = nextBase;
+      if (remaining[month] === 0) low += 1;
+      selected = true;
+      break;
+    }
+    if (selected) continue;
+    if (high + 1 >= m) throw new Error("interleaving rank exhausted");
+    const month = high + 1;
+    const newRemaining = lengths[month] - 1;
+    const nextBase = baseCount * binomialCount(activeTotal + newRemaining - 1, newRemaining - 1);
+    const nextActive = activeTotal + newRemaining;
+    const future = month < m - 1 ? counter.get(month, nextActive + 1) : 1n;
+    const block = nextBase * future;
+    if (rank > block) throw new Error("interleaving final branch exhausted");
+    weave[position] = month;
+    high = month;
+    remaining[month] -= 1;
+    if (low > month - 1) low = month;
+    activeTotal = nextActive;
+    baseCount = nextBase;
+  }
+  return weave;
+}
+
+function makeReferenceYear(numberValue, openGateIndex, closeGateIndex, gateTable) {
+  const number = requireBigInt(numberValue, "year number");
+  const openingGate = gateTable.position(openGateIndex);
+  const closingGate = gateTable.position(closeGateIndex);
+  return Object.freeze({
+    number,
+    openGateIndex,
+    closeGateIndex,
+    openingGate,
+    closingGate,
+    startJdn: openingGate + 1n,
+    endJdn: closingGate,
+    length: closingGate - openingGate,
+    gapCount: closeGateIndex - openGateIndex,
+  });
+}
+
+export function referenceYear5000(calculationJdn, options = {}) {
+  const c = requireBigInt(calculationJdn, "calculationJdn");
+  const gateTable = options.gateTable ?? new ReferenceGateTable();
+  const containingGateIndex = gateTable.containingInterval(c);
+  const discovery = discoverYearCandidates({
+    mode: "anchor",
+    calculationJdn: c,
+    containingGateIndex,
+    gateAt: (index) => gateTable.position(index),
+  });
+  const selection = selectYearCandidate({ calculationJdn: c, discovery, detail: options.detail ?? "summary" });
+  const selected = selection.selectedCandidate;
+  return Object.freeze({
+    year: makeReferenceYear(5000n, selected.openGateIndex, selected.closeGateIndex, gateTable),
+    discovery,
+    selection,
+    containingGateIndex,
+    gateTable,
+  });
+}
+
+function referenceAdjacentYear(calculationJdn, year, direction, gateTable, detail = "summary") {
+  const mode = direction === "next" ? "next" : direction === "previous" ? "previous" : null;
+  if (mode === null) throw new RangeError("direction must be next or previous");
+  const fixedGateIndex = mode === "next" ? year.closeGateIndex : year.openGateIndex;
+  const discovery = discoverYearCandidates({
+    mode,
+    fixedGateIndex,
+    gateAt: (index) => gateTable.position(index),
+  });
+  const selectionTargetJdn = gateTable.position(fixedGateIndex);
+  const selection = selectYearCandidate({
+    calculationJdn,
+    discovery,
+    selectionTargetJdn,
+    detail,
+  });
+  const selected = selection.selectedCandidate;
+  const number = mode === "next" ? year.number + 1n : year.number - 1n;
+  return Object.freeze({
+    year: makeReferenceYear(number, selected.openGateIndex, selected.closeGateIndex, gateTable),
+    discovery,
+    selection,
+  });
+}
+
+export function buildReferenceYearStructure(calculationJdn, year, options = {}) {
+  const c = requireBigInt(calculationJdn, "calculationJdn");
+  const gateTable = options.gateTable ?? new ReferenceGateTable();
+  const yearLength = Number(year.length);
+  const gapCount = Number(year.gapCount);
+  if (!Number.isSafeInteger(yearLength) || yearLength < 1 || !Number.isSafeInteger(gapCount) || gapCount < MIN_YEAR_GAPS) {
+    throw new RangeError("invalid reference year");
+  }
+  const s = sauce(c, year.startJdn, { detail: options.detail ?? "summary" });
+
+  const cutletCountMaximum = Math.min(17, gapCount);
+  const cutletCountOptions = cutletCountMaximum - 5;
+  const cutletCountChoice = chooseUniform(s, 2, 20n, BigInt(cutletCountOptions));
+  const cutletCount = 5 + Number(cutletCountChoice.choice);
+
+  let mandatoryCut = null;
+  if (c >= year.startJdn && c <= year.endJdn) {
+    for (let gateIndex = year.openGateIndex + 1; gateIndex < year.closeGateIndex; gateIndex += 1) {
+      if (gateTable.position(gateIndex) === c) {
+        mandatoryCut = gateIndex - year.openGateIndex;
+        break;
+      }
+    }
+  }
+  const partitionCount = mandatoryCut === null
+    ? binomialCount(gapCount - 1, cutletCount - 1)
+    : binomialCount(gapCount - 2, cutletCount - 2);
+  const partitionChoice = chooseUniform(s, 2, 21n, partitionCount);
+  const cutletGaps = unrankCutletComposition(gapCount, cutletCount, mandatoryCut, partitionChoice.choice);
+
+  const cutletNameCount = permutationCount(CUTLET_NAMES.length, cutletCount);
+  const cutletNameChoice = chooseUniform(s, 5, 22n, cutletNameCount);
+  const cutletNames = unrankOrderedNames(CUTLET_NAMES, cutletCount, cutletNameChoice.choice);
+
+  const minimumMonths = Math.ceil(yearLength / 123);
+  const maximumMonths = Math.min(47, Math.floor(yearLength / 4));
+  const monthCountChoice = chooseUniform(s, 3, 30n, BigInt(maximumMonths - minimumMonths + 1));
+  const monthCount = minimumMonths + Number(monthCountChoice.choice) - 1;
+
+  const monthLengthWays = boundedMonthLengthCount(yearLength, monthCount);
+  const monthLengthChoice = chooseUniform(s, 3, 31n, monthLengthWays);
+  const monthLengths = unrankMonthLengths(yearLength, monthCount, monthLengthChoice.choice);
+
+  const weaveWays = monthInterleavingCount(monthLengths);
+  const weaveChoice = chooseUniform(s, 4, 32n, weaveWays);
+  const monthWeave = unrankMonthInterleaving(monthLengths, weaveChoice.choice);
+
+  const monthNameWays = permutationCount(MONTH_NAMES.length, monthCount);
+  const monthNameChoice = chooseUniform(s, 5, 33n, monthNameWays);
+  const monthNames = unrankOrderedNames(MONTH_NAMES, monthCount, monthNameChoice.choice);
+
+  const seen = new Array(monthCount).fill(0);
+  const dayInMonth = new Array(yearLength);
+  for (let offset = 0; offset < monthWeave.length; offset += 1) {
+    const month = monthWeave[offset];
+    seen[month] += 1;
+    dayInMonth[offset] = seen[month];
+  }
+
+  const cutletStartOffsets = [];
+  const cutletEndOffsets = [];
+  let gapOffset = 0;
+  let dayOffset = 0;
+  for (const gaps of cutletGaps) {
+    cutletStartOffsets.push(dayOffset);
+    gapOffset += gaps;
+    const endJdn = gateTable.position(year.openGateIndex + gapOffset);
+    dayOffset = Number(endJdn - year.startJdn + 1n);
+    cutletEndOffsets.push(dayOffset - 1);
+  }
+
+  return Object.freeze({
+    cutletCount,
+    mandatoryCut,
+    partitionCount,
+    cutletCountChoice,
+    partitionChoice,
+    cutletNameChoice,
+    cutletGaps: Object.freeze(cutletGaps),
+    cutletNames: Object.freeze(cutletNames),
+    cutletStartOffsets: Object.freeze(cutletStartOffsets),
+    cutletEndOffsets: Object.freeze(cutletEndOffsets),
+    monthCount,
+    monthCountChoice,
+    monthLengthWays,
+    monthLengthChoice,
+    monthLengths: Object.freeze(monthLengths),
+    weaveWays,
+    weaveChoice,
+    monthWeave: Object.freeze(monthWeave),
+    monthNameWays,
+    monthNameChoice,
+    monthNames: Object.freeze(monthNames),
+    dayInMonth: Object.freeze(dayInMonth),
+  });
+}
+
+export function materializeReferenceTuple(year, structure, targetJdn) {
+  const target = requireBigInt(targetJdn, "targetJdn");
+  const offsetBig = target - year.startJdn;
+  if (offsetBig < 0n || offsetBig >= year.length) throw new RangeError("target outside reference year");
+  const offset = Number(offsetBig);
+  let cutlet = -1;
+  for (let index = 0; index < structure.cutletCount; index += 1) {
+    if (offset >= structure.cutletStartOffsets[index] && offset <= structure.cutletEndOffsets[index]) {
+      cutlet = index;
+      break;
+    }
+  }
+  if (cutlet < 0) throw new Error("reference cutlet partition lost target day");
+  const month = structure.monthWeave[offset];
+  return Object.freeze({
+    year: year.number,
+    cutletName: structure.cutletNames[cutlet],
+    dayInCutlet: offset - structure.cutletStartOffsets[cutlet] + 1,
+    monthName: structure.monthNames[month],
+    dayInMonth: structure.dayInMonth[offset],
+  });
+}
+
+export class ReferenceCalendar {
+  constructor(calculationJdn, options = {}) {
+    this.calculationJdn = requireBigInt(calculationJdn, "calculationJdn");
+    this.gateTable = options.gateTable ?? new ReferenceGateTable();
+    this.detail = options.detail ?? "summary";
+    const anchor = referenceYear5000(this.calculationJdn, { gateTable: this.gateTable, detail: this.detail });
+    this.anchorEvidence = anchor;
+    this.years = new Map([["5000", anchor.year]]);
+    this.structures = new Map();
+  }
+
+  nextYear(year) {
+    const number = year.number + 1n;
+    const key = number.toString();
+    if (this.years.has(key)) return this.years.get(key);
+    const result = referenceAdjacentYear(this.calculationJdn, year, "next", this.gateTable, this.detail).year;
+    this.years.set(key, result);
+    return result;
+  }
+
+  previousYear(year) {
+    const number = year.number - 1n;
+    const key = number.toString();
+    if (this.years.has(key)) return this.years.get(key);
+    const result = referenceAdjacentYear(this.calculationJdn, year, "previous", this.gateTable, this.detail).year;
+    this.years.set(key, result);
+    return result;
+  }
+
+  findYear(targetJdn) {
+    const target = requireBigInt(targetJdn, "targetJdn");
+    let year = this.years.get("5000");
+    while (target < year.startJdn) year = this.previousYear(year);
+    while (target > year.endJdn) year = this.nextYear(year);
+    return year;
+  }
+
+  structure(year) {
+    const key = `${year.openGateIndex}:${year.closeGateIndex}`;
+    if (!this.structures.has(key)) {
+      this.structures.set(key, buildReferenceYearStructure(this.calculationJdn, year, { gateTable: this.gateTable, detail: this.detail }));
+    }
+    return this.structures.get(key);
+  }
+
+  convertJdn(targetJdn) {
+    const target = requireBigInt(targetJdn, "targetJdn");
+    const year = this.findYear(target);
+    const structure = this.structure(year);
+    return materializeReferenceTuple(year, structure, target);
+  }
+}
+
+export function finalPastafarianTuple(calculationJdn, targetJdn, options = {}) {
+  const calendar = new ReferenceCalendar(calculationJdn, options);
+  return calendar.convertJdn(targetJdn);
+}
+
+
 // Stable architecture for later updates.  These methods never fall back to any
 // production engine; incomplete stages fail loudly and explicitly.
 export class ReferenceOracle {
@@ -740,16 +1370,35 @@ export class ReferenceOracle {
     return selectYearCandidate(options);
   }
 
-  buildCutletStructure() {
-    throw new ReferenceNotImplementedError("cutlet-structure");
+  buildCutletStructure(calculationJdn, year, options) {
+    const structure = buildReferenceYearStructure(calculationJdn, year, options);
+    return Object.freeze({
+      cutletCount: structure.cutletCount,
+      mandatoryCut: structure.mandatoryCut,
+      partitionCount: structure.partitionCount,
+      cutletGaps: structure.cutletGaps,
+      cutletNames: structure.cutletNames,
+      cutletStartOffsets: structure.cutletStartOffsets,
+      cutletEndOffsets: structure.cutletEndOffsets,
+    });
   }
 
-  buildMonthStructure() {
-    throw new ReferenceNotImplementedError("month-structure");
+  buildMonthStructure(calculationJdn, year, options) {
+    const structure = buildReferenceYearStructure(calculationJdn, year, options);
+    return Object.freeze({
+      monthCount: structure.monthCount,
+      monthLengthWays: structure.monthLengthWays,
+      monthLengths: structure.monthLengths,
+      weaveWays: structure.weaveWays,
+      monthWeave: structure.monthWeave,
+      monthNameWays: structure.monthNameWays,
+      monthNames: structure.monthNames,
+      dayInMonth: structure.dayInMonth,
+    });
   }
 
-  finalPastafarianTuple() {
-    throw new ReferenceNotImplementedError("final-pastafarian-tuple");
+  finalPastafarianTuple(calculationJdn, targetJdn, options) {
+    return finalPastafarianTuple(calculationJdn, targetJdn, options);
   }
 }
 

@@ -1,0 +1,3 @@
+#!/usr/bin/env node
+import{mkdtemp,readFile,rm}from'node:fs/promises';import{execFileSync}from'node:child_process';import os from'node:os';import path from'node:path';
+const ROOT=process.cwd(),d=await mkdtemp(path.join(os.tmpdir(),'u17-stale-'));try{execFileSync(process.execPath,['verification/update17/generate-canonical-evidence.mjs',`--out=${d}`],{cwd:ROOT,stdio:'inherit',timeout:600000});const a=await readFile('verification/update17/generated/SHA256SUMS.txt','utf8'),b=await readFile(path.join(d,'SHA256SUMS.txt'),'utf8');if(a!==b)throw new Error('Update17 canonical corpus is stale');console.log('UPDATE17_CANONICAL_STALE_CHECK=PASS');}finally{await rm(d,{recursive:true,force:true})}

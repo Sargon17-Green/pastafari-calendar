@@ -1,6 +1,6 @@
 {
   "schema": "pastafari-reference-provenance-v1",
-  "update": 16,
+  "update": 17,
   "scroll": {
     "path": "sources/מגילת העיתים.md",
     "sha256": "d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96"
@@ -8,17 +8,66 @@
   "reference": {
     "path": "verification/reference-oracle/reference.mjs",
     "imports": [],
-    "fallbackPolicy": "throw ERR_REFERENCE_NOT_IMPLEMENTED",
+    "fallbackPolicy": "no fallback to production/fast/generators/fixtures; invalid or unsupported requests fail explicitly",
     "integerSemantics": "ECMAScript BigInt; positive modulo for kept remainder; explicit 1..M keep() range",
     "coordinateSystem": "continuous JDN axis with Foundation JDN -13334246 and project dayNumber mapping"
   },
   "modules": [
-    {"module":"counters","scrollSection":"tablet 1-2","formula":"Foundation dayNumber; inclusive distance; sum; direction 1/2/3","bounds":"linear-day inputs as BigInt","floorMod":"not used","status":"implemented"},
-    {"module":"keep/great-number","scrollSection":"tablet 5-6","formula":"M=2^127-1; keep(x)=positiveMod(x-1,M)+1","bounds":"1..M inclusive","floorMod":"positive modulo","status":"implemented"},
-    {"module":"stones/hidden/visible drops","scrollSection":"tablet 7 onward","formula":"stone recurrence, hidden drops, visible drops, 11 grinds","bounds":"46 visible + 7 hidden drops","floorMod":"keep() after every saved value","status":"implemented"},
-    {"module":"direct pourings and final stirs","scrollSection":"sauce tablets final stir rule","formula":"u=b_i+3b_prev+5b_next+bowlSum+r+i^2; orderNumber selects permutation only","bounds":"six bowls; twelve final stirs","floorMod":"keep() for orderNumber and stirred output","status":"implemented"},
-    {"module":"gates/gaps","scrollSection":"gate-gap tablets","formula":"direct uncached traversal for diagnostic-sized gate indices","bounds":"small reference diagnostics, not precomputed blob input","floorMod":"keep() where the scroll keeps values","status":"implemented-diagnostic-sized"},
-    {"module":"year discovery/selection","scrollSection":"year tablets and 5778 ceiling correction","formula":"candidate filtering before cardinality; sauce-based uniform choice","bounds":"252..5778 days; >=6 gaps","floorMod":"selection through response descriptor","status":"implemented"},
-    {"module":"cutlets/months/final tuple","scrollSection":"structure tablets","formula":"not implemented in core reference in Update 16","bounds":"none","floorMod":"none","status":"notImplemented"}
+    {
+      "module": "counters",
+      "scrollSection": "tablet 1-2",
+      "formula": "Foundation dayNumber; inclusive distance; sum; direction 1/2/3",
+      "bounds": "linear-day inputs as BigInt",
+      "floorMod": "not used",
+      "status": "implemented"
+    },
+    {
+      "module": "keep/great-number",
+      "scrollSection": "tablet 5-6",
+      "formula": "M=2^127-1; keep(x)=positiveMod(x-1,M)+1",
+      "bounds": "1..M inclusive",
+      "floorMod": "positive modulo",
+      "status": "implemented"
+    },
+    {
+      "module": "stones/hidden/visible drops",
+      "scrollSection": "tablet 7 onward",
+      "formula": "stone recurrence, hidden drops, visible drops, 11 grinds",
+      "bounds": "46 visible + 7 hidden drops",
+      "floorMod": "keep() after every saved value",
+      "status": "implemented"
+    },
+    {
+      "module": "direct pourings and final stirs",
+      "scrollSection": "sauce tablets final stir rule",
+      "formula": "u=b_i+3b_prev+5b_next+bowlSum+r+i^2; orderNumber selects permutation only",
+      "bounds": "six bowls; twelve final stirs",
+      "floorMod": "keep() for orderNumber and stirred output",
+      "status": "implemented"
+    },
+    {
+      "module": "gates/gaps",
+      "scrollSection": "gate-gap tablets",
+      "formula": "direct uncached traversal for diagnostic-sized gate indices",
+      "bounds": "direct reference traversal; Update17 canonical rebuild range -32768..40000; no production/checkpoint input",
+      "floorMod": "keep() where the scroll keeps values",
+      "status": "implemented"
+    },
+    {
+      "module": "year discovery/selection",
+      "scrollSection": "year tablets and 5778 ceiling correction",
+      "formula": "candidate filtering before cardinality; sauce-based uniform choice",
+      "bounds": "252..5778 days; >=6 gaps",
+      "floorMod": "selection through response descriptor",
+      "status": "implemented"
+    },
+    {
+      "module": "cutlets/months/final tuple",
+      "scrollSection": "structure tablets",
+      "formula": "direct scroll-derived year structure: cutlet composition/names, bounded month lengths, lexicographic month weaving/names, materialized 5-tuple",
+      "bounds": "legal year/cutlet/month domains defined by the Scroll; calendar traversal from reference year 5000",
+      "floorMod": "selection only through reference response/choice rules",
+      "status": "implemented-update17"
+    }
   ]
 }

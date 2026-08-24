@@ -7,7 +7,6 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 import {
   FOUNDATION_JDN,
-  ReferenceNotImplementedError,
   ReferenceOracle,
   bowlPermutation,
   discoverYearCandidates,
@@ -52,7 +51,7 @@ test("Update 16 authority audit passes and writes machine-readable evidence", ()
   assert.equal(report.status, "PASS");
   assert.equal(report.productionReferenceImportHits.length, 0);
   assert.ok(report.authorityNamedPathCount >= 20);
-  assert.ok(report.notImplementedReferenceStages.includes("final tuple"));
+  assert.deepEqual(report.notImplementedReferenceStages, []);
 });
 
 test("legacy vectors and generator are explicitly witnesses, not normative authorities", async () => {
@@ -165,15 +164,9 @@ test("5778 candidate exclusion is an independent small discriminator", () => {
   assert.equal(next.beforeFiltering.at(-1).yearLength, 5_779n);
 });
 
-test("unimplemented reference stages throw instead of falling back to production", () => {
+test("Update17-completed reference final tuple remains independent from production", () => {
   const oracle = new ReferenceOracle();
-  for (const method of ["buildCutletStructure", "buildMonthStructure", "finalPastafarianTuple"]) {
-    assert.throws(() => oracle[method](), (error) => {
-      assert.ok(error instanceof ReferenceNotImplementedError);
-      assert.equal(error.code, "ERR_REFERENCE_NOT_IMPLEMENTED");
-      return true;
-    });
-  }
+  assert.deepEqual(serializeBigInts(oracle.finalPastafarianTuple(FOUNDATION_JDN, FOUNDATION_JDN)), { year: "5000", cutletName: "לגש", dayInCutlet: 762, monthName: "לבונה", dayInMonth: 105 });
 });
 
 test("authoritative observation is random-call independent for comparable fields", () => {

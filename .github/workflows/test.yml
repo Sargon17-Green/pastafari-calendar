@@ -55,6 +55,12 @@ jobs:
       - run: npm run gate-data:check
       - name: Verify oracle authority boundary
         run: npm run test:update16
+      - name: Verify Update 17 canonical evidence and fast/reference matrix
+        run: npm run test:update17
+      - name: Verify Update 17 corpus is not stale
+        run: npm run evidence:update17:stale
+      - name: Verify Update 17 authoritative/reference matrix
+        run: npm run test:update17:matrix
       - name: Verify legacy generated regression artifacts are reproducible, not authoritative
         shell: bash
         run: |

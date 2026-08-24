@@ -1,0 +1,13 @@
+{
+  "schema":"pastafari-update17-state-scenarios-v1",
+  "role":"C-regression-scenario-evidence",
+  "normativeAuthority":false,
+  "expectedSource":"verification/update17/generated/normative-final-tuples.json",
+  "scenarios":[
+    {"id":"reentrancy-normal-vs-nested","evidenceTest":"test/router-concurrency.test.js","expected":"same semantic tuple"},
+    {"id":"cache-cold-warm-old-new","evidenceTest":"test/router-cache-lifecycle.test.js","expected":"same semantic tuple"},
+    {"id":"failed-construction-A-failure-A","evidenceTest":"test/router-cache-lifecycle.test.js","expected":"final A equals canonical A"},
+    {"id":"random-witness-noise-profiles","evidenceTest":"test/update15-random-witness-isolation.test.js","expected":"semantic tuple independent of random/witness/noise"},
+    {"id":"intl-throws-or-nonsense","evidenceTest":"test/update13-intl-semantic-firewall.test.js","expected":"normative structured calendar values unchanged"}
+  ]
+}

@@ -4,7 +4,7 @@ export const GATE_SHADOW_META = Object.freeze({
   "canonicalId": "PASTAFARI-SCROLL-2026-08-16-D36B0C94",
   "format": "pastafari-gate-shadow-xor10-v1",
   "normativeSourceSha256": "d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96",
-  "referenceSha256": "14d42517493426f61eae023987b72607bca714497534e738fb4b56709bcb0c4a",
+  "referenceSha256": "40f08fab56b3f0e90b6ce43a24948856972ecdd26d2bbbeb84bda26905fdc379",
   "generatorSha256": "c75a3a34dad840e9870e7b471814d88948d58b8278148f651b0c030de851a328",
   "positiveEntryCount": 40001,
   "positiveGapCount": 40000,

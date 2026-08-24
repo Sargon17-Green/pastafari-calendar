@@ -1,0 +1,314 @@
+{
+  "schema": "pastafari-update17-artifact-inventory-v1",
+  "sourceBaselineCommit": "482fb6cc0f11ef0c988b5c1934afbe722b3ac9f7",
+  "artifacts": [
+    {
+      "path": "implementations/tests/conformance-vectors.json",
+      "role": "C-regression-vectors",
+      "generator": "implementations/tests/generate_spec_canonical.py",
+      "originalAuthority": "legacy canonical-format generator",
+      "currentAuthorityStatus": "non-normative regression",
+      "referenceValidated": "revalidated in Update17 diff report",
+      "stale": true,
+      "regenerate": "legacy compatibility regeneration only; never normative",
+      "historicalOnly": false,
+      "readers": [
+        ".github/workflows/test.yml",
+        "scripts/run-update16-authority-audit.mjs",
+        "test/update16-authority-boundary.test.js",
+        "implementations/c/tests/canonical.c",
+        "implementations/cpp/tests/conformance.cpp",
+        "implementations/java/src/main/java/org/appointedtimes/PastafariCalendar.java"
+      ]
+    },
+    {
+      "path": "implementations/tests/spec-derived-canonical-vectors.json",
+      "role": "C-regression-vectors",
+      "generator": "implementations/tests/generate_spec_canonical.py",
+      "originalAuthority": "legacy spec-canonical generator",
+      "currentAuthorityStatus": "non-normative regression",
+      "referenceValidated": "revalidated in Update17 diff report",
+      "stale": true,
+      "regenerate": "legacy compatibility regeneration only; never normative",
+      "historicalOnly": false,
+      "readers": [
+        ".github/workflows/test.yml",
+        "scripts/run-update16-authority-audit.mjs",
+        "test/reference-oracle.test.js",
+        "test/update16-authority-boundary.test.js"
+      ]
+    },
+    {
+      "path": "implementations/tests/spec-derived-gate-checkpoints.json",
+      "role": "C-regression-checkpoints",
+      "generator": "implementations/tests/generate_spec_canonical.py",
+      "originalAuthority": "legacy spec-canonical generator",
+      "currentAuthorityStatus": "non-normative regression",
+      "referenceValidated": "covered by Update17 independent gate corpus",
+      "stale": true,
+      "regenerate": "legacy compatibility regeneration only; never normative",
+      "historicalOnly": false,
+      "readers": [
+        ".github/workflows/test.yml"
+      ]
+    },
+    {
+      "path": "implementations/tests/spec-derived-binding-5778.json",
+      "role": "C-regression-discriminator",
+      "generator": "implementations/tests/generate_spec_binding_5778.py",
+      "originalAuthority": "legacy spec-derived script",
+      "currentAuthorityStatus": "non-normative regression",
+      "referenceValidated": "superseded normatively by rediscovered 5779/5780/5781 discriminators",
+      "stale": true,
+      "regenerate": "legacy compatibility regeneration only; never normative",
+      "historicalOnly": false,
+      "readers": [
+        ".github/workflows/test.yml"
+      ]
+    },
+    {
+      "path": "implementations/tests/spec-derived-deep-year-chain.json",
+      "role": "C-regression-vectors",
+      "generator": "implementations/tests/generate_spec_deep_year_chain.mjs",
+      "originalAuthority": "legacy spec-derived script",
+      "currentAuthorityStatus": "non-normative regression",
+      "referenceValidated": "not an oracle; retained for compatibility",
+      "stale": true,
+      "regenerate": "legacy compatibility regeneration only; never normative",
+      "historicalOnly": false,
+      "readers": [
+        ".github/workflows/test.yml"
+      ]
+    },
+    {
+      "path": "implementations/tests/oracle-differential-10000.tsv",
+      "role": "D-historical-fossil",
+      "generator": "implementations/tests/generate_oracle_corpus.mjs",
+      "originalAuthority": "historical implementation differential",
+      "currentAuthorityStatus": "historical-only",
+      "referenceValidated": "not reference validated as a normative corpus",
+      "stale": true,
+      "regenerate": "no",
+      "historicalOnly": true,
+      "readers": []
+    },
+    {
+      "path": "implementations/tests/historical-regression-vectors-16.json",
+      "role": "D-historical-fossil",
+      "generator": "historical engine capture",
+      "originalAuthority": "PASTAFARI-TABLETS-2026-08-11-V2-5778",
+      "currentAuthorityStatus": "historical-only",
+      "referenceValidated": "compared against current reference in Update17 diff report",
+      "stale": true,
+      "regenerate": "no",
+      "historicalOnly": true,
+      "readers": []
+    },
+    {
+      "path": "artifacts/update-08-stage-05-canonical-vectors.json",
+      "role": "D-historical-fossil",
+      "generator": "verification/update8/run-stage-05-canonical-vectors.mjs",
+      "originalAuthority": "Update8 stage baseline",
+      "currentAuthorityStatus": "historical-only",
+      "referenceValidated": "retained as archival evidence",
+      "stale": true,
+      "regenerate": "no",
+      "historicalOnly": true,
+      "readers": []
+    },
+    {
+      "path": "verification/update8/stage-07-cross-environment-vectors.json",
+      "role": "C-regression-vectors",
+      "generator": "Update8 stage-07 expansion",
+      "originalAuthority": "authoritative Stage6-equivalent snapshot",
+      "currentAuthorityStatus": "non-normative regression",
+      "referenceValidated": "compared against current reference in Update17 diff report",
+      "stale": true,
+      "regenerate": "no",
+      "historicalOnly": false,
+      "readers": [
+        "verification/update8/run-stage-07-browser-core.mjs"
+      ]
+    },
+    {
+      "path": "artifacts/month-weaving-domain-before.json",
+      "role": "D-historical-fossil",
+      "generator": "Update14 audit",
+      "originalAuthority": "pre-fix MonthWeaving behavior",
+      "currentAuthorityStatus": "historical-only",
+      "referenceValidated": "superseded by independent exhaustive Update17 evidence",
+      "stale": true,
+      "regenerate": "no",
+      "historicalOnly": true,
+      "readers": []
+    },
+    {
+      "path": "artifacts/month-weaving-domain-after.json",
+      "role": "C-regression-evidence",
+      "generator": "Update14 audit",
+      "originalAuthority": "post-fix MonthWeaving behavior",
+      "currentAuthorityStatus": "non-normative regression",
+      "referenceValidated": "independently covered by Update17 small-domain corpus",
+      "stale": true,
+      "regenerate": "no",
+      "historicalOnly": false,
+      "readers": []
+    },
+    {
+      "path": "artifacts/update-13-normative-representation-matrix.json",
+      "role": "C-regression-evidence",
+      "generator": "Update13 audit",
+      "originalAuthority": "Update13 semantic-firewall audit",
+      "currentAuthorityStatus": "non-normative regression",
+      "referenceValidated": "external normative representations regenerated independently in Update17",
+      "stale": true,
+      "regenerate": "no",
+      "historicalOnly": false,
+      "readers": []
+    },
+    {
+      "path": "artifacts/update-15-random-witness-isolation.json",
+      "role": "C-regression-scenario-evidence",
+      "generator": "Update15 audit",
+      "originalAuthority": "Update15 scenario audit",
+      "currentAuthorityStatus": "non-normative regression",
+      "referenceValidated": "state/noise scenario remains exercised by Update15 tests",
+      "stale": true,
+      "regenerate": "no",
+      "historicalOnly": false,
+      "readers": []
+    },
+    {
+      "path": "verification/update17/generated/normative-sauce-vectors.json",
+      "role": "A-normative-conformance",
+      "generator": "verification/update17/generate-canonical-evidence.mjs",
+      "originalAuthority": "scroll -> independent reference",
+      "currentAuthorityStatus": "reference-validated canonical evidence",
+      "referenceValidated": "yes; hash-bound to scroll/reference/generator",
+      "stale": false,
+      "regenerate": "canonical Update17 regeneration",
+      "historicalOnly": false,
+      "readers": []
+    },
+    {
+      "path": "verification/update17/generated/normative-gate-vectors.json",
+      "role": "A-normative-conformance",
+      "generator": "verification/update17/generate-canonical-evidence.mjs",
+      "originalAuthority": "scroll -> independent reference",
+      "currentAuthorityStatus": "reference-validated canonical evidence",
+      "referenceValidated": "yes; hash-bound to scroll/reference/generator",
+      "stale": false,
+      "regenerate": "canonical Update17 regeneration",
+      "historicalOnly": false,
+      "readers": []
+    },
+    {
+      "path": "verification/update17/generated/normative-year-vectors.json",
+      "role": "A-normative-conformance",
+      "generator": "verification/update17/generate-canonical-evidence.mjs",
+      "originalAuthority": "scroll -> independent reference",
+      "currentAuthorityStatus": "reference-validated canonical evidence",
+      "referenceValidated": "yes; hash-bound to scroll/reference/generator",
+      "stale": false,
+      "regenerate": "canonical Update17 regeneration",
+      "historicalOnly": false,
+      "readers": []
+    },
+    {
+      "path": "verification/update17/generated/normative-structure-vectors.json",
+      "role": "A-normative-conformance",
+      "generator": "verification/update17/generate-canonical-evidence.mjs",
+      "originalAuthority": "scroll -> independent reference",
+      "currentAuthorityStatus": "reference-validated canonical evidence",
+      "referenceValidated": "yes; hash-bound to scroll/reference/generator",
+      "stale": false,
+      "regenerate": "canonical Update17 regeneration",
+      "historicalOnly": false,
+      "readers": []
+    },
+    {
+      "path": "verification/update17/generated/normative-final-tuples.json",
+      "role": "A-normative-conformance",
+      "generator": "verification/update17/generate-canonical-evidence.mjs",
+      "originalAuthority": "scroll -> independent reference",
+      "currentAuthorityStatus": "reference-validated canonical evidence",
+      "referenceValidated": "yes; hash-bound to scroll/reference/generator",
+      "stale": false,
+      "regenerate": "canonical Update17 regeneration",
+      "historicalOnly": false,
+      "readers": []
+    },
+    {
+      "path": "verification/update17/generated/month-weaving-small-domain.json",
+      "role": "B-independent-hand-property-discriminator",
+      "generator": "verification/update17/generate-canonical-evidence.mjs",
+      "originalAuthority": "scroll -> independent reference",
+      "currentAuthorityStatus": "reference-validated canonical evidence",
+      "referenceValidated": "yes; hash-bound to scroll/reference/generator",
+      "stale": false,
+      "regenerate": "canonical Update17 regeneration",
+      "historicalOnly": false,
+      "readers": []
+    },
+    {
+      "path": "verification/update17/generated/hand-discriminators.json",
+      "role": "B-independent-hand-property-discriminator",
+      "generator": "verification/update17/generate-canonical-evidence.mjs",
+      "originalAuthority": "scroll -> independent reference",
+      "currentAuthorityStatus": "reference-validated canonical evidence",
+      "referenceValidated": "yes; hash-bound to scroll/reference/generator",
+      "stale": false,
+      "regenerate": "canonical Update17 regeneration",
+      "historicalOnly": false,
+      "readers": []
+    },
+    {
+      "path": "verification/update17/generated/foundation-evidence.json",
+      "role": "B-independent-hand-property-discriminator",
+      "generator": "verification/update17/generate-canonical-evidence.mjs",
+      "originalAuthority": "scroll -> independent reference",
+      "currentAuthorityStatus": "reference-validated canonical evidence",
+      "referenceValidated": "yes; hash-bound to scroll/reference/generator",
+      "stale": false,
+      "regenerate": "canonical Update17 regeneration",
+      "historicalOnly": false,
+      "readers": []
+    },
+    {
+      "path": "verification/update17/generated/external-calendar-vectors.json",
+      "role": "A-normative-conformance",
+      "generator": "verification/update17/generate-canonical-evidence.mjs",
+      "originalAuthority": "scroll -> independent reference",
+      "currentAuthorityStatus": "reference-validated canonical evidence",
+      "referenceValidated": "yes; hash-bound to scroll/reference/generator",
+      "stale": false,
+      "regenerate": "canonical Update17 regeneration",
+      "historicalOnly": false,
+      "readers": []
+    },
+    {
+      "path": "verification/update17/generated/coverage-report.json",
+      "role": "coverage-metadata",
+      "generator": "verification/update17/generate-canonical-evidence.mjs",
+      "originalAuthority": "scroll -> independent reference",
+      "currentAuthorityStatus": "reference-validated canonical evidence",
+      "referenceValidated": "yes; hash-bound to scroll/reference/generator",
+      "stale": false,
+      "regenerate": "canonical Update17 regeneration",
+      "historicalOnly": false,
+      "readers": []
+    },
+    {
+      "path": "verification/update17/generated/normative-evidence-manifest.json",
+      "role": "provenance-manifest",
+      "generator": "verification/update17/generate-canonical-evidence.mjs",
+      "originalAuthority": "scroll -> independent reference",
+      "currentAuthorityStatus": "machine-readable authority/provenance registry",
+      "referenceValidated": "yes",
+      "stale": false,
+      "regenerate": "canonical Update17 regeneration",
+      "historicalOnly": false,
+      "readers": []
+    }
+  ]
+}
