@@ -9,12 +9,16 @@ const AUTHORITY_WORD = /(spec|canonical|oracle|reference|golden|expected|conform
 const GENERATOR_WORD = /(generate|generator|fixture|vector)/i;
 const SOURCE_EXT = /\.(?:mjs|js|py|rb|c|cc|cpp|h|hpp|java|json|md|yml|yaml|tsv|txt)$/i;
 const SKIP_DIRS = new Set([".git", "node_modules", ".DS_Store"]);
+const CI_TRANSIENT_FILES = new Set([
+  "generated-standalone-SHA256SUMS.txt",
+]);
 
 async function walk(dir = ".") {
   const out = [];
   for (const entry of await readdir(path.join(ROOT, dir), { withFileTypes: true })) {
     if (SKIP_DIRS.has(entry.name)) continue;
     const rel = dir === "." ? entry.name : `${dir}/${entry.name}`;
+    if (CI_TRANSIENT_FILES.has(rel)) continue;
     if (entry.isDirectory()) out.push(...await walk(rel));
     else if (SOURCE_EXT.test(entry.name)) out.push(rel);
   }
