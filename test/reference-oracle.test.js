@@ -15,7 +15,6 @@ import {
   FOUNDATION_JDN,
   GREAT_NUMBER,
   MAX_YEAR_DAYS,
-  ReferenceNotImplementedError,
   ReferenceOracle,
   bowlPermutation,
   canonicalCounters,
@@ -206,19 +205,9 @@ test("two identical reference executions return byte-for-byte equivalent trace d
   assert.deepEqual(second, first);
 });
 
-test("unimplemented calendar stages fail explicitly and never fall back", () => {
+test("completed calendar reference produces the Foundation 5-tuple without production fallback", () => {
   const oracle = new ReferenceOracle();
-  for (const method of [
-    "buildCutletStructure",
-    "buildMonthStructure",
-    "finalPastafarianTuple",
-  ]) {
-    assert.throws(() => oracle[method](), (error) => {
-      assert.ok(error instanceof ReferenceNotImplementedError);
-      assert.equal(error.code, "ERR_REFERENCE_NOT_IMPLEMENTED");
-      return true;
-    });
-  }
+  assert.deepEqual(serializeBigInts(oracle.finalPastafarianTuple(FOUNDATION_JDN, FOUNDATION_JDN)), { year: "5000", cutletName: "לגש", dayInCutlet: 762, monthName: "לבונה", dayInMonth: 105 });
 });
 
 

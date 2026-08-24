@@ -1,0 +1,950 @@
+{
+  "distribution": {
+    "calculationAnchors": [
+      {
+        "domain": "Foundation anchor",
+        "id": "foundation",
+        "jdn": "-13334246"
+      },
+      {
+        "domain": "Tablets/delivery anchor",
+        "id": "tablets",
+        "jdn": "1442903"
+      },
+      {
+        "domain": "modern positive JDN",
+        "id": "modern",
+        "jdn": "2461259"
+      },
+      {
+        "domain": "~13.7k years before Foundation",
+        "id": "deep-past",
+        "jdn": "-18334246"
+      },
+      {
+        "domain": "~13.7k years after Foundation",
+        "id": "deep-future",
+        "jdn": "-8334246"
+      }
+    ],
+    "crossYearBoundaryAnchors": [
+      "foundation",
+      "tablets",
+      "modern"
+    ],
+    "crossYearBoundaryStrata": [
+      "previous-year-boundary",
+      "next-year-boundary"
+    ],
+    "fixedStrataPerAnchor": [
+      "same-day",
+      "before-1",
+      "after-1",
+      "before-137",
+      "after-137",
+      "year-start",
+      "year-end"
+    ],
+    "seed": 398524398,
+    "seededStrataPerAnchor": [
+      "seeded-before",
+      "seeded-after"
+    ]
+  },
+  "meta": {
+    "canonicalSerialization": "UTF-8 NFC, LF, sorted object keys, decimal BigInt strings, -0 normalized to 0",
+    "caseCount": 51,
+    "generatorComponentHashes": {
+      "anchorEvidenceWorker": "8338c41682e320cc3813aa00c5e39ca1f3803b06aafe131b15788b4c928f3260",
+      "chineseReference": "96a09ab5ba7c73cb6baac5a1a9e12393cebfc3a3feac2757f7c5bf05a25a2902",
+      "externalCalendarReference": "170678988d966491ad8f20a2a3e32e196a139c381d9d01bdb53212935c98aff3",
+      "gateBatchWorker": "643cc05170b032dd5859873cc7685516fd1f0cc9516df4f8a8afe76bbb8b7120",
+      "gateCacheBuilder": "491c55bed5dbc2ba55726dab8ad015b513cce2e9d94e546b883b528ae41dbcac",
+      "generator": "faedb1c0d6ba40bf0243ebd0e2417ce29eb3124b03151da2f319b4bee1529f89",
+      "kokiReference": "7c15de0a3b7cc9e53d74c3a870851c15a439e84e53c9cb735624ad7c66df2f79",
+      "monthWeavingReference": "c11b96c80cdf32f4c9ffad11f9bc02165e04a09043aa3f92653d06f1d454ca1a",
+      "negativeCalendarReference": "ae1fc5fd4f82601f51689bc77091df87be744c5fb33e5e5f756cba8a310a4557",
+      "vikramaReference": "a6e0d87e88db25a998d6bad668b3eee9c4e49914f380fc39d1d8605ca37bdb5e"
+    },
+    "generatorHash": "3a99e9f3ddae4f485ccd48c0f622b0280bc184da043849acab33290bc4174090",
+    "generatorPath": "verification/update17/generate-canonical-evidence.mjs",
+    "inputDomain": "51 stratified calculation/target pairs across same/before/after, year boundaries, Foundation, Tablets, modern positive JDN and ~±13.7k-year absolute anchors; explicit cross-year neighbor cases retained on the three principal anchors",
+    "packageVersion": "1.3.0",
+    "referenceHash": "40f08fab56b3f0e90b6ce43a24948856972ecdd26d2bbbeb84bda26905fdc379",
+    "referencePath": "verification/reference-oracle/reference.mjs",
+    "role": "A-normative-conformance",
+    "schemaVersion": 1,
+    "scrollHash": "d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96",
+    "scrollPath": "sources/מגילת העיתים.md",
+    "sourceBaselineCommit": "482fb6cc0f11ef0c988b5c1934afbe722b3ac9f7"
+  },
+  "vectors": [
+    {
+      "calculationDomain": "Foundation anchor",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "לגש",
+        "dayInCutlet": 762,
+        "dayInMonth": 105,
+        "monthName": "לבונה",
+        "year": "5000"
+      },
+      "id": "final-foundation-same-day-1533039e536e",
+      "input": {
+        "calculationJdn": "-13334246",
+        "targetJdn": "-13334246"
+      },
+      "stratum": "same-day"
+    },
+    {
+      "calculationDomain": "Foundation anchor",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "לגש",
+        "dayInCutlet": 761,
+        "dayInMonth": 114,
+        "monthName": "הדלת הסגורה",
+        "year": "5000"
+      },
+      "id": "final-foundation-before-1-54f246082e1d",
+      "input": {
+        "calculationJdn": "-13334246",
+        "targetJdn": "-13334247"
+      },
+      "stratum": "before-1"
+    },
+    {
+      "calculationDomain": "Foundation anchor",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "כליה",
+        "dayInCutlet": 1,
+        "dayInMonth": 91,
+        "monthName": "אבן־גיר",
+        "year": "5000"
+      },
+      "id": "final-foundation-after-1-9d1afb542dae",
+      "input": {
+        "calculationJdn": "-13334246",
+        "targetJdn": "-13334245"
+      },
+      "stratum": "after-1"
+    },
+    {
+      "calculationDomain": "Foundation anchor",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "לגש",
+        "dayInCutlet": 625,
+        "dayInMonth": 116,
+        "monthName": "אורוק",
+        "year": "5000"
+      },
+      "id": "final-foundation-before-137-9188f2157957",
+      "input": {
+        "calculationJdn": "-13334246",
+        "targetJdn": "-13334383"
+      },
+      "stratum": "before-137"
+    },
+    {
+      "calculationDomain": "Foundation anchor",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "כליה",
+        "dayInCutlet": 137,
+        "dayInMonth": 113,
+        "monthName": "שושן",
+        "year": "5000"
+      },
+      "id": "final-foundation-after-137-36bb07efcc26",
+      "input": {
+        "calculationJdn": "-13334246",
+        "targetJdn": "-13334109"
+      },
+      "stratum": "after-137"
+    },
+    {
+      "calculationDomain": "Foundation anchor",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "עקרב",
+        "dayInCutlet": 1,
+        "dayInMonth": 1,
+        "monthName": "שמחה",
+        "year": "5000"
+      },
+      "id": "final-foundation-year-start-ca798bde9032",
+      "input": {
+        "calculationJdn": "-13334246",
+        "targetJdn": "-13338267"
+      },
+      "stratum": "year-start"
+    },
+    {
+      "calculationDomain": "Foundation anchor",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "כליה",
+        "dayInCutlet": 377,
+        "dayInMonth": 108,
+        "monthName": "צפרדע",
+        "year": "5000"
+      },
+      "id": "final-foundation-year-end-b0afef8e1ec3",
+      "input": {
+        "calculationJdn": "-13334246",
+        "targetJdn": "-13333869"
+      },
+      "stratum": "year-end"
+    },
+    {
+      "calculationDomain": "Foundation anchor",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "פַּלְגּוּרַשׁ",
+        "dayInCutlet": 122,
+        "dayInMonth": 57,
+        "monthName": "בדיל",
+        "year": "5000"
+      },
+      "id": "final-foundation-seeded-before-8f2dfe05a108",
+      "input": {
+        "calculationJdn": "-13334246",
+        "targetJdn": "-13335983"
+      },
+      "stratum": "seeded-before"
+    },
+    {
+      "calculationDomain": "Foundation anchor",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "נהר",
+        "dayInCutlet": 345,
+        "dayInMonth": 46,
+        "monthName": "נינוה",
+        "year": "5001"
+      },
+      "id": "final-foundation-seeded-after-f8c9c335cacf",
+      "input": {
+        "calculationJdn": "-13334246",
+        "targetJdn": "-13331699"
+      },
+      "stratum": "seeded-after"
+    },
+    {
+      "calculationDomain": "Foundation anchor",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "נהר",
+        "dayInCutlet": 538,
+        "dayInMonth": 123,
+        "monthName": "בושה",
+        "year": "4999"
+      },
+      "id": "final-foundation-previous-year-boundary-fafb65b52648",
+      "input": {
+        "calculationJdn": "-13334246",
+        "targetJdn": "-13338268"
+      },
+      "stratum": "previous-year-boundary"
+    },
+    {
+      "calculationDomain": "Foundation anchor",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "אשכול",
+        "dayInCutlet": 1,
+        "dayInMonth": 1,
+        "monthName": "שומשום",
+        "year": "5001"
+      },
+      "id": "final-foundation-next-year-boundary-afb76b7fff26",
+      "input": {
+        "calculationJdn": "-13334246",
+        "targetJdn": "-13333868"
+      },
+      "stratum": "next-year-boundary"
+    },
+    {
+      "calculationDomain": "Tablets/delivery anchor",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "הכד הריק",
+        "dayInCutlet": 103,
+        "dayInMonth": 10,
+        "monthName": "ארידו",
+        "year": "5000"
+      },
+      "id": "final-tablets-same-day-2e19ae61fa82",
+      "input": {
+        "calculationJdn": "1442903",
+        "targetJdn": "1442903"
+      },
+      "stratum": "same-day"
+    },
+    {
+      "calculationDomain": "Tablets/delivery anchor",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "הכד הריק",
+        "dayInCutlet": 102,
+        "dayInMonth": 5,
+        "monthName": "כישור",
+        "year": "5000"
+      },
+      "id": "final-tablets-before-1-b13699ac6f24",
+      "input": {
+        "calculationJdn": "1442903",
+        "targetJdn": "1442902"
+      },
+      "stratum": "before-1"
+    },
+    {
+      "calculationDomain": "Tablets/delivery anchor",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "הכד הריק",
+        "dayInCutlet": 104,
+        "dayInMonth": 7,
+        "monthName": "קמח",
+        "year": "5000"
+      },
+      "id": "final-tablets-after-1-c8bfdab53606",
+      "input": {
+        "calculationJdn": "1442903",
+        "targetJdn": "1442904"
+      },
+      "stratum": "after-1"
+    },
+    {
+      "calculationDomain": "Tablets/delivery anchor",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "שועל",
+        "dayInCutlet": 124,
+        "dayInMonth": 3,
+        "monthName": "שלושה חלקים מחמישה",
+        "year": "5000"
+      },
+      "id": "final-tablets-before-137-4546f6db876b",
+      "input": {
+        "calculationJdn": "1442903",
+        "targetJdn": "1442766"
+      },
+      "stratum": "before-137"
+    },
+    {
+      "calculationDomain": "Tablets/delivery anchor",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "הכד הריק",
+        "dayInCutlet": 240,
+        "dayInMonth": 12,
+        "monthName": "לשון",
+        "year": "5000"
+      },
+      "id": "final-tablets-after-137-7c4a2582b2fb",
+      "input": {
+        "calculationJdn": "1442903",
+        "targetJdn": "1443040"
+      },
+      "stratum": "after-137"
+    },
+    {
+      "calculationDomain": "Tablets/delivery anchor",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "שועל",
+        "dayInCutlet": 1,
+        "dayInMonth": 1,
+        "monthName": "טחול",
+        "year": "5000"
+      },
+      "id": "final-tablets-year-start-802b4bb3f64b",
+      "input": {
+        "calculationJdn": "1442903",
+        "targetJdn": "1442643"
+      },
+      "stratum": "year-start"
+    },
+    {
+      "calculationDomain": "Tablets/delivery anchor",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "גומא",
+        "dayInCutlet": 767,
+        "dayInMonth": 112,
+        "monthName": "ערפל",
+        "year": "5000"
+      },
+      "id": "final-tablets-year-end-da63fed41804",
+      "input": {
+        "calculationJdn": "1442903",
+        "targetJdn": "1446942"
+      },
+      "stratum": "year-end"
+    },
+    {
+      "calculationDomain": "Tablets/delivery anchor",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "ארד",
+        "dayInCutlet": 797,
+        "dayInMonth": 39,
+        "monthName": "אגס",
+        "year": "4999"
+      },
+      "id": "final-tablets-seeded-before-2106932b0aea",
+      "input": {
+        "calculationJdn": "1442903",
+        "targetJdn": "1440613"
+      },
+      "stratum": "seeded-before"
+    },
+    {
+      "calculationDomain": "Tablets/delivery anchor",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "לגש",
+        "dayInCutlet": 324,
+        "dayInMonth": 93,
+        "monthName": "כוכב",
+        "year": "5000"
+      },
+      "id": "final-tablets-seeded-after-a937585fe13b",
+      "input": {
+        "calculationJdn": "1442903",
+        "targetJdn": "1446013"
+      },
+      "stratum": "seeded-after"
+    },
+    {
+      "calculationDomain": "Tablets/delivery anchor",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "צחוק",
+        "dayInCutlet": 368,
+        "dayInMonth": 107,
+        "monthName": "סערה",
+        "year": "4999"
+      },
+      "id": "final-tablets-previous-year-boundary-d20f4b5f389c",
+      "input": {
+        "calculationJdn": "1442903",
+        "targetJdn": "1442642"
+      },
+      "stratum": "previous-year-boundary"
+    },
+    {
+      "calculationDomain": "Tablets/delivery anchor",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "שועל",
+        "dayInCutlet": 1,
+        "dayInMonth": 1,
+        "monthName": "אבן־גיר",
+        "year": "5001"
+      },
+      "id": "final-tablets-next-year-boundary-ab1cead152d2",
+      "input": {
+        "calculationJdn": "1442903",
+        "targetJdn": "1446943"
+      },
+      "stratum": "next-year-boundary"
+    },
+    {
+      "calculationDomain": "modern positive JDN",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "מחשבה",
+        "dayInCutlet": 13,
+        "dayInMonth": 16,
+        "monthName": "חרטה",
+        "year": "5000"
+      },
+      "id": "final-modern-same-day-1163784d9fac",
+      "input": {
+        "calculationJdn": "2461259",
+        "targetJdn": "2461259"
+      },
+      "stratum": "same-day"
+    },
+    {
+      "calculationDomain": "modern positive JDN",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "מחשבה",
+        "dayInCutlet": 12,
+        "dayInMonth": 11,
+        "monthName": "נחושת",
+        "year": "5000"
+      },
+      "id": "final-modern-before-1-6054cd93c2a8",
+      "input": {
+        "calculationJdn": "2461259",
+        "targetJdn": "2461258"
+      },
+      "stratum": "before-1"
+    },
+    {
+      "calculationDomain": "modern positive JDN",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "מחשבה",
+        "dayInCutlet": 14,
+        "dayInMonth": 15,
+        "monthName": "אבן־גיר",
+        "year": "5000"
+      },
+      "id": "final-modern-after-1-bf5d9e6ecc7d",
+      "input": {
+        "calculationJdn": "2461259",
+        "targetJdn": "2461260"
+      },
+      "stratum": "after-1"
+    },
+    {
+      "calculationDomain": "modern positive JDN",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "לגש",
+        "dayInCutlet": 512,
+        "dayInMonth": 8,
+        "monthName": "שמחה",
+        "year": "5000"
+      },
+      "id": "final-modern-before-137-b8f5ff0a32d7",
+      "input": {
+        "calculationJdn": "2461259",
+        "targetJdn": "2461122"
+      },
+      "stratum": "before-137"
+    },
+    {
+      "calculationDomain": "modern positive JDN",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "מחשבה",
+        "dayInCutlet": 150,
+        "dayInMonth": 19,
+        "monthName": "חרוב",
+        "year": "5000"
+      },
+      "id": "final-modern-after-137-a02bae53aa84",
+      "input": {
+        "calculationJdn": "2461259",
+        "targetJdn": "2461396"
+      },
+      "stratum": "after-137"
+    },
+    {
+      "calculationDomain": "modern positive JDN",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "לגש",
+        "dayInCutlet": 1,
+        "dayInMonth": 1,
+        "monthName": "ערפל",
+        "year": "5000"
+      },
+      "id": "final-modern-year-start-838865c9ebc6",
+      "input": {
+        "calculationJdn": "2461259",
+        "targetJdn": "2460611"
+      },
+      "stratum": "year-start"
+    },
+    {
+      "calculationDomain": "modern positive JDN",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "הכד הריק",
+        "dayInCutlet": 545,
+        "dayInMonth": 120,
+        "monthName": "משחת־שיניים",
+        "year": "5000"
+      },
+      "id": "final-modern-year-end-3e6ba84b2fc6",
+      "input": {
+        "calculationJdn": "2461259",
+        "targetJdn": "2466317"
+      },
+      "stratum": "year-end"
+    },
+    {
+      "calculationDomain": "modern positive JDN",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "גומא",
+        "dayInCutlet": 1379,
+        "dayInMonth": 92,
+        "monthName": "פשתן",
+        "year": "4999"
+      },
+      "id": "final-modern-seeded-before-773a4eef8f32",
+      "input": {
+        "calculationJdn": "2461259",
+        "targetJdn": "2458857"
+      },
+      "stratum": "seeded-before"
+    },
+    {
+      "calculationDomain": "modern positive JDN",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "פַּלְגּוּרַשׁ",
+        "dayInCutlet": 297,
+        "dayInMonth": 53,
+        "monthName": "ערפל",
+        "year": "5000"
+      },
+      "id": "final-modern-seeded-after-88ccd282562a",
+      "input": {
+        "calculationJdn": "2461259",
+        "targetJdn": "2463405"
+      },
+      "stratum": "seeded-after"
+    },
+    {
+      "calculationDomain": "modern positive JDN",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "מחשבה",
+        "dayInCutlet": 960,
+        "dayInMonth": 123,
+        "monthName": "צלע",
+        "year": "4999"
+      },
+      "id": "final-modern-previous-year-boundary-a11e4c704126",
+      "input": {
+        "calculationJdn": "2461259",
+        "targetJdn": "2460610"
+      },
+      "stratum": "previous-year-boundary"
+    },
+    {
+      "calculationDomain": "modern positive JDN",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "שועל",
+        "dayInCutlet": 1,
+        "dayInMonth": 1,
+        "monthName": "שושן",
+        "year": "5001"
+      },
+      "id": "final-modern-next-year-boundary-e7e6cd7e658a",
+      "input": {
+        "calculationJdn": "2461259",
+        "targetJdn": "2466318"
+      },
+      "stratum": "next-year-boundary"
+    },
+    {
+      "calculationDomain": "~13.7k years before Foundation",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "אכד",
+        "dayInCutlet": 126,
+        "dayInMonth": 109,
+        "monthName": "דבש",
+        "year": "5000"
+      },
+      "id": "final-deep-past-same-day-0423411cb3d8",
+      "input": {
+        "calculationJdn": "-18334246",
+        "targetJdn": "-18334246"
+      },
+      "stratum": "same-day"
+    },
+    {
+      "calculationDomain": "~13.7k years before Foundation",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "אכד",
+        "dayInCutlet": 125,
+        "dayInMonth": 102,
+        "monthName": "אורוק",
+        "year": "5000"
+      },
+      "id": "final-deep-past-before-1-a66d9d4cad77",
+      "input": {
+        "calculationJdn": "-18334246",
+        "targetJdn": "-18334247"
+      },
+      "stratum": "before-1"
+    },
+    {
+      "calculationDomain": "~13.7k years before Foundation",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "אכד",
+        "dayInCutlet": 127,
+        "dayInMonth": 108,
+        "monthName": "צלע",
+        "year": "5000"
+      },
+      "id": "final-deep-past-after-1-da181ea9547c",
+      "input": {
+        "calculationJdn": "-18334246",
+        "targetJdn": "-18334245"
+      },
+      "stratum": "after-1"
+    },
+    {
+      "calculationDomain": "~13.7k years before Foundation",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "ארד",
+        "dayInCutlet": 868,
+        "dayInMonth": 94,
+        "monthName": "מלח",
+        "year": "5000"
+      },
+      "id": "final-deep-past-before-137-8863f6e77d31",
+      "input": {
+        "calculationJdn": "-18334246",
+        "targetJdn": "-18334383"
+      },
+      "stratum": "before-137"
+    },
+    {
+      "calculationDomain": "~13.7k years before Foundation",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "אכד",
+        "dayInCutlet": 263,
+        "dayInMonth": 109,
+        "monthName": "נינוה",
+        "year": "5000"
+      },
+      "id": "final-deep-past-after-137-a4809390946a",
+      "input": {
+        "calculationJdn": "-18334246",
+        "targetJdn": "-18334109"
+      },
+      "stratum": "after-137"
+    },
+    {
+      "calculationDomain": "~13.7k years before Foundation",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "חיטה",
+        "dayInCutlet": 1,
+        "dayInMonth": 1,
+        "monthName": "גמל",
+        "year": "5000"
+      },
+      "id": "final-deep-past-year-start-1660fcd00f81",
+      "input": {
+        "calculationJdn": "-18334246",
+        "targetJdn": "-18339176"
+      },
+      "stratum": "year-start"
+    },
+    {
+      "calculationDomain": "~13.7k years before Foundation",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "אכד",
+        "dayInCutlet": 600,
+        "dayInMonth": 118,
+        "monthName": "שושן",
+        "year": "5000"
+      },
+      "id": "final-deep-past-year-end-569e97f99487",
+      "input": {
+        "calculationJdn": "-18334246",
+        "targetJdn": "-18333772"
+      },
+      "stratum": "year-end"
+    },
+    {
+      "calculationDomain": "~13.7k years before Foundation",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "לגש",
+        "dayInCutlet": 796,
+        "dayInMonth": 82,
+        "monthName": "בדיל",
+        "year": "5000"
+      },
+      "id": "final-deep-past-seeded-before-fed42833eeb8",
+      "input": {
+        "calculationJdn": "-18334246",
+        "targetJdn": "-18335394"
+      },
+      "stratum": "seeded-before"
+    },
+    {
+      "calculationDomain": "~13.7k years before Foundation",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "ארד",
+        "dayInCutlet": 593,
+        "dayInMonth": 90,
+        "monthName": "משחת־שיניים",
+        "year": "5001"
+      },
+      "id": "final-deep-past-seeded-after-1d28e0999f39",
+      "input": {
+        "calculationJdn": "-18334246",
+        "targetJdn": "-18330122"
+      },
+      "stratum": "seeded-after"
+    },
+    {
+      "calculationDomain": "~13.7k years after Foundation",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "אכד",
+        "dayInCutlet": 556,
+        "dayInMonth": 110,
+        "monthName": "בבל",
+        "year": "5000"
+      },
+      "id": "final-deep-future-same-day-accb23af25ff",
+      "input": {
+        "calculationJdn": "-8334246",
+        "targetJdn": "-8334246"
+      },
+      "stratum": "same-day"
+    },
+    {
+      "calculationDomain": "~13.7k years after Foundation",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "אכד",
+        "dayInCutlet": 555,
+        "dayInMonth": 52,
+        "monthName": "קמח",
+        "year": "5000"
+      },
+      "id": "final-deep-future-before-1-2bdb7fa21069",
+      "input": {
+        "calculationJdn": "-8334246",
+        "targetJdn": "-8334247"
+      },
+      "stratum": "before-1"
+    },
+    {
+      "calculationDomain": "~13.7k years after Foundation",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "אכד",
+        "dayInCutlet": 557,
+        "dayInMonth": 26,
+        "monthName": "בדיל",
+        "year": "5000"
+      },
+      "id": "final-deep-future-after-1-c4a8a162b799",
+      "input": {
+        "calculationJdn": "-8334246",
+        "targetJdn": "-8334245"
+      },
+      "stratum": "after-1"
+    },
+    {
+      "calculationDomain": "~13.7k years after Foundation",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "אכד",
+        "dayInCutlet": 419,
+        "dayInMonth": 88,
+        "monthName": "הדלת הסגורה",
+        "year": "5000"
+      },
+      "id": "final-deep-future-before-137-933bec836a44",
+      "input": {
+        "calculationJdn": "-8334246",
+        "targetJdn": "-8334383"
+      },
+      "stratum": "before-137"
+    },
+    {
+      "calculationDomain": "~13.7k years after Foundation",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "אכד",
+        "dayInCutlet": 693,
+        "dayInMonth": 82,
+        "monthName": "זפת",
+        "year": "5000"
+      },
+      "id": "final-deep-future-after-137-f56a55e1a866",
+      "input": {
+        "calculationJdn": "-8334246",
+        "targetJdn": "-8334109"
+      },
+      "stratum": "after-137"
+    },
+    {
+      "calculationDomain": "~13.7k years after Foundation",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "פַּלְגּוּרַשׁ",
+        "dayInCutlet": 1,
+        "dayInMonth": 1,
+        "monthName": "בדיל",
+        "year": "5000"
+      },
+      "id": "final-deep-future-year-start-dceefecbd97a",
+      "input": {
+        "calculationJdn": "-8334246",
+        "targetJdn": "-8337902"
+      },
+      "stratum": "year-start"
+    },
+    {
+      "calculationDomain": "~13.7k years after Foundation",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "אכד",
+        "dayInCutlet": 934,
+        "dayInMonth": 122,
+        "monthName": "תאנה",
+        "year": "5000"
+      },
+      "id": "final-deep-future-year-end-9f11e6af1a15",
+      "input": {
+        "calculationJdn": "-8334246",
+        "targetJdn": "-8333868"
+      },
+      "stratum": "year-end"
+    },
+    {
+      "calculationDomain": "~13.7k years after Foundation",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "צחוק",
+        "dayInCutlet": 526,
+        "dayInMonth": 49,
+        "monthName": "אבן־גיר",
+        "year": "5000"
+      },
+      "id": "final-deep-future-seeded-before-1e767672af38",
+      "input": {
+        "calculationJdn": "-8334246",
+        "targetJdn": "-8336357"
+      },
+      "stratum": "seeded-before"
+    },
+    {
+      "calculationDomain": "~13.7k years after Foundation",
+      "category": "A-normative-conformance",
+      "expected": {
+        "cutletName": "אשכול",
+        "dayInCutlet": 357,
+        "dayInMonth": 58,
+        "monthName": "שושן",
+        "year": "5001"
+      },
+      "id": "final-deep-future-seeded-after-9076d483ae16",
+      "input": {
+        "calculationJdn": "-8334246",
+        "targetJdn": "-8331284"
+      },
+      "stratum": "seeded-after"
+    }
+  ]
+}

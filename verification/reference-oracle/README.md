@@ -37,10 +37,9 @@ Runner-side code is kept separate:
   behavioral diagnostic used to characterize a discovered mismatch. It is not
   called by `reference.mjs`.
 
-There is no fallback from an unimplemented reference stage to any project
-engine. Unimplemented stages throw `ERR_REFERENCE_NOT_IMPLEMENTED`.
+There is no fallback from any reference stage to a project engine. Update 17 extends the independent reference through cutlet structure, month structure and the final Pastafarian 5-tuple; unsupported reference requests still fail explicitly rather than delegating.
 
-## Implemented in Update 1
+## Implemented reference surface (Update 1, extended by Update 17)
 
 The reference currently implements, from the Scroll itself:
 
@@ -55,11 +54,7 @@ The reference currently implements, from the Scroll itself:
 - gate-gap generation and direct uncached gate traversal for diagnostic-sized
   gate indices.
 
-Year-candidate discovery and year selection are implemented in the reference and
-validated by small direct discriminators, including the 5,778-day ceiling case.
-Stable interfaces also exist for cutlet structure, month structure and final
-5-tuple generation, but those stages remain intentionally `not implemented`
-rather than delegated.
+Year-candidate discovery and year selection are implemented in the reference and validated by direct discriminators, including the 5,778-day ceiling. Update 17 additionally implements cutlet composition/names, bounded month lengths, lexicographic month weaving/names, year traversal around reference year 5000, and final 5-tuple materialization. None of those stages delegates to authoritative, fast, legacy vectors, or legacy generators.
 
 ## Trace levels
 
@@ -96,12 +91,9 @@ Optional controls:
 - `--random-seed N` stubs `Math.random` while the authoritative observation is
   executed (default `12648430`, i.e. `0x00c0ffee`);
 - `--foundation` is shorthand for Foundation as both inputs;
-- `--convert-final` asks the authoritative side for its current final tuple, but
-  the reference final tuple remains explicitly unimplemented in Update 1.
+- `--convert-final` compares the authoritative final tuple with the independently computed reference final tuple.
 
-Exit status is `0` when all currently comparable fields match, `2` when at least
-one comparable field mismatches, `3` for an explicitly requested unimplemented
-reference stage, and `1` for runner/input errors.
+Exit status is `0` when all currently comparable fields match, `2` when at least one comparable field mismatches, `3` for an explicitly unsupported reference request, and `1` for runner/input errors.
 
 ## Meaning of “first mismatch”
 

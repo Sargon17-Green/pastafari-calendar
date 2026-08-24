@@ -117,7 +117,8 @@ async function main() {
   if (forbiddenEdges.length < 4) fail("dependency graph lacks forbidden dependency directions", {});
   const uncovered = coverage.components.filter((entry) => entry.reference === "notImplemented").map((entry) => entry.component);
   for (const component of ["cutlets", "months", "final tuple"]) {
-    if (!uncovered.includes(component)) fail("coverage matrix must explicitly mark core incomplete stage", { component });
+    const row = coverage.components.find((entry) => entry.component === component);
+    if (!row || row.reference !== "implemented" || row.normativeTests !== true) fail("Update17-completed core reference stage is not marked implemented", { component, row });
   }
   if (!vectorProvenance.vectors.every((entry) => entry.normativeAuthority === false)) {
     fail("vector provenance contains an authority-bearing generated vector", {});
@@ -143,7 +144,7 @@ async function main() {
   const report = {
     schema: "pastafari-update16-authority-audit-result-v1",
     status: "PASS",
-    headCommitChecked: "6b9d49361633b91d7c3e8fe58b514d5650791f1e",
+    sourceBaselineCommit: "482fb6cc0f11ef0c988b5c1934afbe722b3ac9f7",
     packageVersion: (await readJson("package.json")).version,
     scrollSha256: scrollHash,
     referenceSha256: await sha256("verification/reference-oracle/reference.mjs"),

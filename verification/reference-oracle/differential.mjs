@@ -122,14 +122,12 @@ export function runDifferential(input) {
     stages.push({ stage: "gate", field: "position", authoritative: authoritative.gate?.position, reference: position, context: { gateIndex: input.gateIndex } });
   }
 
-  // Architecture placeholders: Update 1 makes the absence explicit instead of
-  // falling back to authoritative or fast.
-  const notImplemented = (stage) => ({ __notImplemented: true, stage });
-  stages.push({ stage: "year-candidate-discovery", field: "candidates", authoritative: undefined, reference: notImplemented("year-candidate-discovery") });
-  stages.push({ stage: "year-selection", field: "selectedYear", authoritative: undefined, reference: notImplemented("year-selection") });
-  stages.push({ stage: "cutlet-structure", field: "structure", authoritative: undefined, reference: notImplemented("cutlet-structure") });
-  stages.push({ stage: "month-structure", field: "structure", authoritative: undefined, reference: notImplemented("month-structure") });
-  stages.push({ stage: "final-pastafarian-tuple", field: "tuple", authoritative: authoritative.final, reference: notImplemented("final-pastafarian-tuple") });
+  let referenceFinal = null;
+  if (input.convertFinal) {
+    referenceFinal = oracle.finalPastafarianTuple(input.calculationJdn, input.targetJdn);
+    const canonicalFinal = (value) => { const v = value?.toJSON?.() ?? value; return { year: String(v.year), cutletName: v.cutletName, dayInCutlet: Number(v.dayInCutlet), monthName: v.monthName, dayInMonth: Number(v.dayInMonth) }; };
+    stages.push({ stage: "final-pastafarian-tuple", field: "tuple", authoritative: canonicalFinal(authoritative.final), reference: canonicalFinal(referenceFinal) });
+  }
 
   const comparison = compareOrderedStages(stages);
   const comparable = comparison.fields.filter((row) => row.status === "match" || row.status === "mismatch");
@@ -148,11 +146,11 @@ export function runDifferential(input) {
       sauce: referenceSauce,
       response: referenceResponse,
       gate: referenceGate,
-      yearCandidateDiscovery: { status: "not-implemented" },
-      yearSelection: { status: "not-implemented" },
-      cutletStructure: { status: "not-implemented" },
-      monthStructure: { status: "not-implemented" },
-      final: { status: "not-implemented" },
+      yearCandidateDiscovery: { status: "implemented-not-observed-by-authoritative-adapter" },
+      yearSelection: { status: "implemented-not-observed-by-authoritative-adapter" },
+      cutletStructure: { status: "implemented-not-observed-by-authoritative-adapter" },
+      monthStructure: { status: "implemented-not-observed-by-authoritative-adapter" },
+      final: input.convertFinal ? referenceFinal : { status: "implemented-not-requested" },
     },
     comparison: {
       finalMatch,
@@ -180,7 +178,7 @@ function human(result) {
   } else {
     lines.push("FIRST MISMATCH: none among comparable fields");
   }
-  lines.push(`final tuple match: ${result.comparison.finalMatch === null ? "not comparable (reference stage not implemented)" : result.comparison.finalMatch}`);
+  lines.push(`final tuple match: ${result.comparison.finalMatch === null ? "not requested/comparable in this run" : result.comparison.finalMatch}`);
   return lines.join("\n");
 }
 
