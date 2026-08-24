@@ -100,7 +100,8 @@
     "test:update13:intl:standalone": "node scripts/check-update13-standalone-firewall.mjs",
     "test:update13:intl:matrix": "node verification/update13/run-environment-matrix.mjs",
     "test:update13:intl:random": "node verification/update13/run-random-differential.mjs",
-    "test:update16": "node scripts/run-update16-authority-audit.mjs --write && node --test test/update16-authority-boundary.test.js"
+    "test:update16": "node scripts/run-update16-authority-audit.mjs && node --test test/update16-authority-boundary.test.js",
+    "update16:audit:write": "node scripts/run-update16-authority-audit.mjs --write"
   },
   "devDependencies": {
     "axe-core": "4.12.1",
