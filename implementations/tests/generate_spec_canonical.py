@@ -61,10 +61,10 @@ DROP_MIX_STONES = (0, 1, 2, 3, 4, 0)
 BOWL_PERMUTATIONS = tuple(permutations(range(6)))
 
 
-def authority_metadata() -> dict[str, object]:
+def authority_metadata(role: str = "historical-fixture-generator") -> dict[str, object]:
     return {
         "component": "implementations/tests/generate_spec_canonical.py",
-        "role": "historical-fixture-generator",
+        "role": role,
         "generatorClass": "C",
         "normativeAuthority": False,
         "compatibilityNameRetained": True,
@@ -1106,7 +1106,6 @@ def generate() -> dict[str, object]:
     print("stage: assemble document", flush=True)
     return {
         "canonicalId": CANONICAL_ID,
-        "authority": authority_metadata(),
         "normativeSource": {
             "title": "מגילת העיתים — לוח סוד הרוטב ושמות הימים",
             "date": "2026-08-16",
@@ -1174,6 +1173,7 @@ def generate() -> dict[str, object]:
             "forwardVectorCount": len(full_vectors),
         },
         "periodBoundaryWitnesses": period_witnesses,
+        "authority": authority_metadata(),
     }
 
 
@@ -1192,10 +1192,10 @@ def main() -> int:
     compact = {
         "canonicalId": CANONICAL_ID,
         "fixtureType": "legacy-canonical-format-regression",
-        "authority": authority_metadata(),
         "normativeSourceSha256": SOURCE_SHA256,
         "inputOrder": ["calculationJdn", "targetJdn"],
         "vectors": compact_vectors,
+        "authority": authority_metadata("legacy-compact-regression-vectors"),
     }
     compact_path = Path(__file__).with_name("conformance-vectors.json")
     compact_path.write_text(json.dumps(compact, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
