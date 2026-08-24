@@ -1,0 +1,4871 @@
+{
+  "coverage": {
+    "browserRuntime": "NOT_RUN_IN_NODE_ONLY_HARNESS",
+    "canonicalCorpusCases": 1,
+    "canonicalCorpusTotalAvailable": 51,
+    "componentDeepCoverage": "RUN",
+    "denseAndGridCases": 1,
+    "externalCalendarRows": 30,
+    "fastFallbackStaticScan": {
+      "importsAuthoritativeCore": true,
+      "note": "static scan only; final tuple calls used fast module exports directly",
+      "referencesReferenceOracle": false
+    },
+    "freshHoldoutCases": 2,
+    "intlFaultRows": 12,
+    "monthWeavingCoverage": "NOT_RUN_IN_CI_TIER",
+    "monthWeavingRows": 0,
+    "negativeGateRows": 8,
+    "noReferenceImportsProductionStaticScan": {
+      "authoritativeReferencesReferenceOracle": false,
+      "referenceImportsProduction": false
+    },
+    "performanceMemorySanity": "elapsedMs recorded per case; no dedicated heap soak in CI tier",
+    "positiveGateRows": 8,
+    "publicApiCompatibility": "covered indirectly by imports and external API calls; no signature drift diff performed here",
+    "standaloneClassicScript": "NOT_RUN_IN_NODE_ONLY_HARNESS",
+    "stateHistoryProfiles": 2,
+    "workerHandlerCases": 0,
+    "workerHandlerCoverage": "NOT_RUN_IN_CI_TIER"
+  },
+  "environment": {
+    "icu": "77.1",
+    "locale": "en-US",
+    "node": "v22.16.0",
+    "npm": "10.9.2",
+    "osRelease": "6.18.35",
+    "platform": "linux/x64",
+    "timezone": "UTC",
+    "v8": "12.4.254.21-node.26"
+  },
+  "finalClosureReason": "CI tier does not launch a real browser runtime or the standalone classic-script Blob Worker; run extended/browser jobs before declaring Update 18 final closure.",
+  "finalClosureStatus": "INTEGRATION_INCOMPLETE_MISSING_PREREQUISITE",
+  "generatedAt": "2026-08-24T20:45:37.716Z",
+  "options": {
+    "canonicalLimit": 1,
+    "componentGateLimit": 8,
+    "denseRadius": 0,
+    "holdoutRandomLimit": 0,
+    "includeComponents": true,
+    "includeExpensiveGates": false,
+    "includeImportOrder": false,
+    "includeMonthWeaving": false,
+    "includeWorker": false
+  },
+  "policy": {
+    "canonicalExpectedSource": "Update 17 committed reference corpus for group A only",
+    "holdoutExpectedSource": "reference runtime",
+    "noExpectedFromActual": true,
+    "noMajorityVote": true,
+    "productionImportsReference": false,
+    "referenceAdjudicator": true,
+    "referenceImportsProduction": false
+  },
+  "prerequisites": {
+    "canonicalFinalTuplesSha256": "4ccde5d6332ffe9105a2a970946d051c55fb7566a004b5dadb51f42ab191a69a",
+    "packageName": "pastafari-calendar",
+    "packageVersion": "1.3.0",
+    "referenceHash": "40f08fab56b3f0e90b6ce43a24948856972ecdd26d2bbbeb84bda26905fdc379",
+    "scrollHash": "d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96",
+    "scrollPathObserved": "sources/מגילת העיתים.md",
+    "unicodeExtractionWarning": null,
+    "update17CanonicalSource": "independent reference oracle (per update17 manifest/generator policy)",
+    "update17ManifestStatus": null,
+    "update17TotalCases": 141,
+    "update17Verified": true
+  },
+  "records": [
+    {
+      "authoritative": {
+        "cutletName": "לגש",
+        "dayInCutlet": 762,
+        "dayInMonth": 105,
+        "monthName": "לבונה",
+        "year": "5000"
+      },
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "A-committed-canonical-final-tuples",
+      "environment": "node-module",
+      "expectedSource": "update17-canonical-reference-corpus",
+      "fast": {
+        "cutletName": "לגש",
+        "dayInCutlet": 762,
+        "dayInMonth": 105,
+        "monthName": "לבונה",
+        "year": "5000"
+      },
+      "fastComparison": {
+        "status": "PASS"
+      },
+      "firstMismatch": null,
+      "id": "canonical-final-foundation-same-day-1533039e536e",
+      "input": {
+        "calculationJdn": "-13334246",
+        "targetJdn": "-13334246"
+      },
+      "reference": {
+        "cutletName": "לגש",
+        "dayInCutlet": 762,
+        "dayInMonth": 105,
+        "monthName": "לבונה",
+        "year": "5000"
+      },
+      "stateProfile": "canonical-corpus",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 14060.112
+      }
+    },
+    {
+      "authoritative": {
+        "cutletName": "לגש",
+        "dayInCutlet": 731,
+        "dayInMonth": 68,
+        "monthName": "חול",
+        "year": "5000"
+      },
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "B-fresh-deterministic-holdout",
+      "environment": "node-module",
+      "expectedSource": "reference-runtime",
+      "fast": {
+        "cutletName": "לגש",
+        "dayInCutlet": 731,
+        "dayInMonth": 68,
+        "monthName": "חול",
+        "year": "5000"
+      },
+      "fastComparison": {
+        "status": "PASS"
+      },
+      "firstMismatch": null,
+      "id": "holdout-foundation-m13334277",
+      "input": {
+        "calculationJdn": "-13334246",
+        "targetJdn": "-13334277"
+      },
+      "reference": {
+        "cutletName": "לגש",
+        "dayInCutlet": 731,
+        "dayInMonth": 68,
+        "monthName": "חול",
+        "year": "5000"
+      },
+      "stateProfile": "fresh-reference-runtime",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 2947.925
+      }
+    },
+    {
+      "authoritative": {
+        "cutletName": "כליה",
+        "dayInCutlet": 17,
+        "dayInMonth": 98,
+        "monthName": "בושה",
+        "year": "5000"
+      },
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "B-fresh-deterministic-holdout",
+      "environment": "node-module",
+      "expectedSource": "reference-runtime",
+      "fast": {
+        "cutletName": "כליה",
+        "dayInCutlet": 17,
+        "dayInMonth": 98,
+        "monthName": "בושה",
+        "year": "5000"
+      },
+      "fastComparison": {
+        "status": "PASS"
+      },
+      "firstMismatch": null,
+      "id": "holdout-foundation-m13334229",
+      "input": {
+        "calculationJdn": "-13334246",
+        "targetJdn": "-13334229"
+      },
+      "reference": {
+        "cutletName": "כליה",
+        "dayInCutlet": 17,
+        "dayInMonth": 98,
+        "monthName": "בושה",
+        "year": "5000"
+      },
+      "stateProfile": "fresh-reference-runtime",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 0.733
+      }
+    },
+    {
+      "authoritative": {
+        "cutletName": "לגש",
+        "dayInCutlet": 762,
+        "dayInMonth": 105,
+        "monthName": "לבונה",
+        "year": "5000"
+      },
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "C-directed-dense-fixed-c",
+      "environment": "node-module",
+      "expectedSource": "reference-runtime",
+      "fast": {
+        "cutletName": "לגש",
+        "dayInCutlet": 762,
+        "dayInMonth": 105,
+        "monthName": "לבונה",
+        "year": "5000"
+      },
+      "fastComparison": {
+        "status": "PASS"
+      },
+      "firstMismatch": null,
+      "id": "dense-fixed-c-foundation-0",
+      "input": {
+        "calculationJdn": "-13334246",
+        "targetJdn": "-13334246"
+      },
+      "reference": {
+        "cutletName": "לגש",
+        "dayInCutlet": 762,
+        "dayInMonth": 105,
+        "monthName": "לבונה",
+        "year": "5000"
+      },
+      "stateProfile": "dense-local-sweep",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 0.614
+      }
+    },
+    {
+      "authoritative": {
+        "cutletName": "כליה",
+        "dayInCutlet": 17,
+        "dayInMonth": 98,
+        "monthName": "בושה",
+        "year": "5000"
+      },
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "state-history-matrix",
+      "environment": "node-module",
+      "expectedSource": "reference-runtime",
+      "fast": {
+        "cutletName": "כליה",
+        "dayInCutlet": 17,
+        "dayInMonth": 98,
+        "monthName": "בושה",
+        "year": "5000"
+      },
+      "fastComparison": {
+        "status": "PASS"
+      },
+      "firstMismatch": null,
+      "id": "state-warm-process-repeat",
+      "input": {
+        "calculationJdn": "-13334246",
+        "targetJdn": "-13334229"
+      },
+      "reference": {
+        "cutletName": "כליה",
+        "dayInCutlet": 17,
+        "dayInMonth": 98,
+        "monthName": "בושה",
+        "year": "5000"
+      },
+      "stateProfile": "warm-process-repeat",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 0.581
+      }
+    },
+    {
+      "authoritative": {
+        "cutletName": "כליה",
+        "dayInCutlet": 17,
+        "dayInMonth": 98,
+        "monthName": "בושה",
+        "year": "5000"
+      },
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "state-history-matrix",
+      "environment": "node-module",
+      "expectedSource": "reference-runtime",
+      "fast": {
+        "cutletName": "כליה",
+        "dayInCutlet": 17,
+        "dayInMonth": 98,
+        "monthName": "בושה",
+        "year": "5000"
+      },
+      "fastComparison": {
+        "status": "PASS"
+      },
+      "firstMismatch": null,
+      "id": "state-after-failed-call",
+      "input": {
+        "calculationJdn": "-13334246",
+        "targetJdn": "-13334229"
+      },
+      "reference": {
+        "cutletName": "כליה",
+        "dayInCutlet": 17,
+        "dayInMonth": 98,
+        "monthName": "בושה",
+        "year": "5000"
+      },
+      "stateProfile": "after-failed-call",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 0.631
+      }
+    },
+    {
+      "authoritative": {
+        "cutletName": "כליה",
+        "dayInCutlet": 17,
+        "dayInMonth": 98,
+        "monthName": "בושה",
+        "year": "5000"
+      },
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "reentrancy-nested",
+      "environment": "node-module",
+      "expectedSource": "reference-runtime",
+      "fast": {
+        "cutletName": "כליה",
+        "dayInCutlet": 17,
+        "dayInMonth": 98,
+        "monthName": "בושה",
+        "year": "5000"
+      },
+      "fastComparison": {
+        "status": "PASS"
+      },
+      "firstMismatch": null,
+      "id": "reentrancy-depth-2",
+      "input": {
+        "calculationJdn": "-13334246",
+        "targetJdn": "-13334229"
+      },
+      "reference": {
+        "cutletName": "כליה",
+        "dayInCutlet": 17,
+        "dayInMonth": 98,
+        "monthName": "בושה",
+        "year": "5000"
+      },
+      "stateProfile": "nested-depth-2",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 0.478
+      }
+    },
+    {
+      "authoritative": {
+        "calculation": "26668513",
+        "direction": "1",
+        "distance": "16",
+        "sum": "53336996",
+        "target": "26668483"
+      },
+      "category": "component-counters",
+      "environment": "reference-only-vs-formula",
+      "fast": {
+        "calculation": "26668513",
+        "direction": "1",
+        "distance": "16",
+        "sum": "53336996",
+        "target": "26668483"
+      },
+      "id": "counter-before",
+      "input": {
+        "calculationJdn": "10",
+        "targetJdn": "-5"
+      },
+      "reference": {
+        "calculation": "26668513",
+        "direction": "1",
+        "distance": "16",
+        "sum": "53336996",
+        "target": "26668483"
+      },
+      "stateProfile": "pure",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 0
+      }
+    },
+    {
+      "authoritative": {
+        "calculation": "26668459",
+        "direction": "2",
+        "distance": "1",
+        "sum": "53336918",
+        "target": "26668459"
+      },
+      "category": "component-counters",
+      "environment": "reference-only-vs-formula",
+      "fast": {
+        "calculation": "26668459",
+        "direction": "2",
+        "distance": "1",
+        "sum": "53336918",
+        "target": "26668459"
+      },
+      "id": "counter-same",
+      "input": {
+        "calculationJdn": "-17",
+        "targetJdn": "-17"
+      },
+      "reference": {
+        "calculation": "26668459",
+        "direction": "2",
+        "distance": "1",
+        "sum": "53336918",
+        "target": "26668459"
+      },
+      "stateProfile": "pure",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 0
+      }
+    },
+    {
+      "authoritative": {
+        "calculation": "26668483",
+        "direction": "3",
+        "distance": "16",
+        "sum": "53336996",
+        "target": "26668513"
+      },
+      "category": "component-counters",
+      "environment": "reference-only-vs-formula",
+      "fast": {
+        "calculation": "26668483",
+        "direction": "3",
+        "distance": "16",
+        "sum": "53336996",
+        "target": "26668513"
+      },
+      "id": "counter-after",
+      "input": {
+        "calculationJdn": "-5",
+        "targetJdn": "10"
+      },
+      "reference": {
+        "calculation": "26668483",
+        "direction": "3",
+        "distance": "16",
+        "sum": "53336996",
+        "target": "26668513"
+      },
+      "stateProfile": "pure",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 0
+      }
+    },
+    {
+      "authoritative": {
+        "calculation": "1",
+        "direction": "3",
+        "distance": "2",
+        "sum": "4",
+        "target": "3"
+      },
+      "category": "component-counters",
+      "environment": "reference-only-vs-formula",
+      "fast": {
+        "calculation": "1",
+        "direction": "3",
+        "distance": "2",
+        "sum": "4",
+        "target": "3"
+      },
+      "id": "counter-foundation",
+      "input": {
+        "calculationJdn": "-13334246",
+        "targetJdn": "-13334245"
+      },
+      "reference": {
+        "calculation": "1",
+        "direction": "3",
+        "distance": "2",
+        "sum": "4",
+        "target": "3"
+      },
+      "stateProfile": "pure",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 0
+      }
+    },
+    {
+      "authoritative": {
+        "bowls": [
+          "67068226522203060890658143482200172502",
+          "156830781782038036265833091137164500083",
+          "27860245395513113590943202859639481773",
+          "154958270957687565769906933601352753179",
+          "83762519477527209919484977230999195024",
+          "154633989471499313687998830839607736513"
+        ],
+        "finalDropOrder": [
+          4,
+          5,
+          2,
+          3,
+          6,
+          1
+        ]
+      },
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "component-sauce-final12-stirs",
+      "environment": "node-instrumented",
+      "fast": {
+        "bowls": [
+          "67068226522203060890658143482200172502",
+          "156830781782038036265833091137164500083",
+          "27860245395513113590943202859639481773",
+          "154958270957687565769906933601352753179",
+          "83762519477527209919484977230999195024",
+          "154633989471499313687998830839607736513"
+        ],
+        "finalDropOrder": [
+          4,
+          5,
+          2,
+          3,
+          6,
+          1
+        ]
+      },
+      "fastComparison": {
+        "status": "PASS"
+      },
+      "firstMismatch": null,
+      "id": "sauce-sauce-foundation-same",
+      "input": {
+        "calculationJdn": "-13334246",
+        "targetJdn": "-13334246"
+      },
+      "reference": {
+        "bowls": [
+          "67068226522203060890658143482200172502",
+          "156830781782038036265833091137164500083",
+          "27860245395513113590943202859639481773",
+          "154958270957687565769906933601352753179",
+          "83762519477527209919484977230999195024",
+          "154633989471499313687998830839607736513"
+        ],
+        "finalDropOrder": [
+          4,
+          5,
+          2,
+          3,
+          6,
+          1
+        ]
+      },
+      "stateProfile": "uncached",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 6.254
+      }
+    },
+    {
+      "authoritative": "-14345298",
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "negative-gate-differential",
+      "environment": "node-instrumented",
+      "expectedSource": "update17-canonical-reference-gate-corpus",
+      "fast": "-14345298",
+      "fastComparison": {
+        "status": "PASS"
+      },
+      "firstMismatch": null,
+      "id": "gate-canonical-gate-n2048",
+      "input": {
+        "gateIndex": -2048
+      },
+      "reference": "-14345298",
+      "stateProfile": "direct-gate",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 5278.904
+      }
+    },
+    {
+      "authoritative": "-13842051",
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "negative-gate-differential",
+      "environment": "node-instrumented",
+      "expectedSource": "update17-canonical-reference-gate-corpus",
+      "fast": "-13842051",
+      "fastComparison": {
+        "status": "PASS"
+      },
+      "firstMismatch": null,
+      "id": "gate-canonical-gate-n1024",
+      "input": {
+        "gateIndex": -1024
+      },
+      "reference": "-13842051",
+      "stateProfile": "direct-gate",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 0.043
+      }
+    },
+    {
+      "authoritative": "-13335521",
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "negative-gate-differential",
+      "environment": "node-instrumented",
+      "expectedSource": "update17-canonical-reference-gate-corpus",
+      "fast": "-13335521",
+      "fastComparison": {
+        "status": "PASS"
+      },
+      "firstMismatch": null,
+      "id": "gate-canonical-gate-n2",
+      "input": {
+        "gateIndex": -2
+      },
+      "reference": "-13335521",
+      "stateProfile": "direct-gate",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 1.528
+      }
+    },
+    {
+      "authoritative": "-13335008",
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "negative-gate-differential",
+      "environment": "node-instrumented",
+      "expectedSource": "update17-canonical-reference-gate-corpus",
+      "fast": "-13335008",
+      "fastComparison": {
+        "status": "PASS"
+      },
+      "firstMismatch": null,
+      "id": "gate-canonical-gate-n1",
+      "input": {
+        "gateIndex": -1
+      },
+      "reference": "-13335008",
+      "stateProfile": "direct-gate",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 0.015
+      }
+    },
+    {
+      "authoritative": "-13334246",
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "positive-gate-differential",
+      "environment": "node-instrumented",
+      "expectedSource": "update17-canonical-reference-gate-corpus",
+      "fast": "-13334246",
+      "fastComparison": {
+        "status": "PASS"
+      },
+      "firstMismatch": null,
+      "id": "gate-canonical-gate-p0",
+      "input": {
+        "gateIndex": 0
+      },
+      "reference": "-13334246",
+      "stateProfile": "direct-gate",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 0.011
+      }
+    },
+    {
+      "authoritative": "-13333869",
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "positive-gate-differential",
+      "environment": "node-instrumented",
+      "expectedSource": "update17-canonical-reference-gate-corpus",
+      "fast": "-13333869",
+      "fastComparison": {
+        "status": "PASS"
+      },
+      "firstMismatch": null,
+      "id": "gate-canonical-gate-p1",
+      "input": {
+        "gateIndex": 1
+      },
+      "reference": "-13333869",
+      "stateProfile": "direct-gate",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 2.861
+      }
+    },
+    {
+      "authoritative": "-13333129",
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "positive-gate-differential",
+      "environment": "node-instrumented",
+      "expectedSource": "update17-canonical-reference-gate-corpus",
+      "fast": "-13333129",
+      "fastComparison": {
+        "status": "PASS"
+      },
+      "firstMismatch": null,
+      "id": "gate-canonical-gate-p2",
+      "input": {
+        "gateIndex": 2
+      },
+      "reference": "-13333129",
+      "stateProfile": "direct-gate",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 0.732
+      }
+    },
+    {
+      "authoritative": "-12818296",
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "positive-gate-differential",
+      "environment": "node-instrumented",
+      "expectedSource": "update17-canonical-reference-gate-corpus",
+      "fast": "-12818296",
+      "fastComparison": {
+        "status": "PASS"
+      },
+      "firstMismatch": null,
+      "id": "gate-canonical-gate-p1024",
+      "input": {
+        "gateIndex": 1024
+      },
+      "reference": "-12818296",
+      "stateProfile": "direct-gate",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 0.044
+      }
+    },
+    {
+      "authoritative": "-13332244",
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "positive-gate-differential",
+      "environment": "node-instrumented",
+      "expectedSource": "reference-runtime",
+      "fast": "-13332244",
+      "fastComparison": {
+        "status": "PASS"
+      },
+      "firstMismatch": null,
+      "id": "gate-holdout-3",
+      "input": {
+        "gateIndex": 3
+      },
+      "reference": "-13332244",
+      "stateProfile": "direct-gate",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 2.848
+      }
+    },
+    {
+      "authoritative": "-13332044",
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "positive-gate-differential",
+      "environment": "node-instrumented",
+      "expectedSource": "reference-runtime",
+      "fast": "-13332044",
+      "fastComparison": {
+        "status": "PASS"
+      },
+      "firstMismatch": null,
+      "id": "gate-holdout-4",
+      "input": {
+        "gateIndex": 4
+      },
+      "reference": "-13332044",
+      "stateProfile": "direct-gate",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 3.198
+      }
+    },
+    {
+      "authoritative": "-13331168",
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "positive-gate-differential",
+      "environment": "node-instrumented",
+      "expectedSource": "reference-runtime",
+      "fast": "-13331168",
+      "fastComparison": {
+        "status": "PASS"
+      },
+      "firstMismatch": null,
+      "id": "gate-holdout-5",
+      "input": {
+        "gateIndex": 5
+      },
+      "reference": "-13331168",
+      "stateProfile": "direct-gate",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 3.887
+      }
+    },
+    {
+      "authoritative": "-13324727",
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "positive-gate-differential",
+      "environment": "node-instrumented",
+      "expectedSource": "reference-runtime",
+      "fast": "-13324727",
+      "fastComparison": {
+        "status": "PASS"
+      },
+      "firstMismatch": null,
+      "id": "gate-holdout-17",
+      "input": {
+        "gateIndex": 17
+      },
+      "reference": "-13324727",
+      "stateProfile": "direct-gate",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 24.169
+      }
+    },
+    {
+      "authoritative": "-13336105",
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "negative-gate-differential",
+      "environment": "node-instrumented",
+      "expectedSource": "reference-runtime",
+      "fast": "-13336105",
+      "fastComparison": {
+        "status": "PASS"
+      },
+      "firstMismatch": null,
+      "id": "gate-holdout--3",
+      "input": {
+        "gateIndex": -3
+      },
+      "reference": "-13336105",
+      "stateProfile": "direct-gate",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 2.204
+      }
+    },
+    {
+      "authoritative": "-13336913",
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "negative-gate-differential",
+      "environment": "node-instrumented",
+      "expectedSource": "reference-runtime",
+      "fast": "-13336913",
+      "fastComparison": {
+        "status": "PASS"
+      },
+      "firstMismatch": null,
+      "id": "gate-holdout--4",
+      "input": {
+        "gateIndex": -4
+      },
+      "reference": "-13336913",
+      "stateProfile": "direct-gate",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 2.696
+      }
+    },
+    {
+      "authoritative": "-13337762",
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "negative-gate-differential",
+      "environment": "node-instrumented",
+      "expectedSource": "reference-runtime",
+      "fast": "-13337762",
+      "fastComparison": {
+        "status": "PASS"
+      },
+      "firstMismatch": null,
+      "id": "gate-holdout--5",
+      "input": {
+        "gateIndex": -5
+      },
+      "reference": "-13337762",
+      "stateProfile": "direct-gate",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 5.841
+      }
+    },
+    {
+      "authoritative": "-13343010",
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "negative-gate-differential",
+      "environment": "node-instrumented",
+      "expectedSource": "reference-runtime",
+      "fast": "-13343010",
+      "fastComparison": {
+        "status": "PASS"
+      },
+      "firstMismatch": null,
+      "id": "gate-holdout--17",
+      "input": {
+        "gateIndex": -17
+      },
+      "reference": "-13343010",
+      "stateProfile": "direct-gate",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 18.423
+      }
+    },
+    {
+      "authoritative": {
+        "reason": "no stable public candidate trace hook",
+        "status": "NOT_APPLICABLE"
+      },
+      "category": "year-candidate-discovery-5778",
+      "committedCanonical": {
+        "candidateGates": [
+          {
+            "closeGateIndex": 0,
+            "closingGate": "-13334246",
+            "gapCount": 1,
+            "openGateIndex": -1,
+            "openingGate": "-13335008",
+            "yearLength": "762"
+          },
+          {
+            "closeGateIndex": 1,
+            "closingGate": "-13333869",
+            "gapCount": 2,
+            "openGateIndex": -1,
+            "openingGate": "-13335008",
+            "yearLength": "1139"
+          },
+          {
+            "closeGateIndex": 2,
+            "closingGate": "-13333129",
+            "gapCount": 3,
+            "openGateIndex": -1,
+            "openingGate": "-13335008",
+            "yearLength": "1879"
+          },
+          {
+            "closeGateIndex": 3,
+            "closingGate": "-13332244",
+            "gapCount": 4,
+            "openGateIndex": -1,
+            "openingGate": "-13335008",
+            "yearLength": "2764"
+          },
+          {
+            "closeGateIndex": 4,
+            "closingGate": "-13332044",
+            "gapCount": 5,
+            "openGateIndex": -1,
+            "openingGate": "-13335008",
+            "yearLength": "2964"
+          },
+          {
+            "closeGateIndex": 5,
+            "closingGate": "-13331168",
+            "gapCount": 6,
+            "openGateIndex": -1,
+            "openingGate": "-13335008",
+            "yearLength": "3840"
+          },
+          {
+            "closeGateIndex": 6,
+            "closingGate": "-13330552",
+            "gapCount": 7,
+            "openGateIndex": -1,
+            "openingGate": "-13335008",
+            "yearLength": "4456"
+          },
+          {
+            "closeGateIndex": 7,
+            "closingGate": "-13329848",
+            "gapCount": 8,
+            "openGateIndex": -1,
+            "openingGate": "-13335008",
+            "yearLength": "5160"
+          },
+          {
+            "closeGateIndex": 8,
+            "closingGate": "-13329485",
+            "gapCount": 9,
+            "openGateIndex": -1,
+            "openingGate": "-13335008",
+            "yearLength": "5523"
+          },
+          {
+            "closeGateIndex": 9,
+            "closingGate": "-13329033",
+            "gapCount": 10,
+            "openGateIndex": -1,
+            "openingGate": "-13335008",
+            "yearLength": "5975"
+          },
+          {
+            "closeGateIndex": 0,
+            "closingGate": "-13334246",
+            "gapCount": 2,
+            "openGateIndex": -2,
+            "openingGate": "-13335521",
+            "yearLength": "1275"
+          },
+          {
+            "closeGateIndex": 1,
+            "closingGate": "-13333869",
+            "gapCount": 3,
+            "openGateIndex": -2,
+            "openingGate": "-13335521",
+            "yearLength": "1652"
+          },
+          {
+            "closeGateIndex": 2,
+            "closingGate": "-13333129",
+            "gapCount": 4,
+            "openGateIndex": -2,
+            "openingGate": "-13335521",
+            "yearLength": "2392"
+          },
+          {
+            "closeGateIndex": 3,
+            "closingGate": "-13332244",
+            "gapCount": 5,
+            "openGateIndex": -2,
+            "openingGate": "-13335521",
+            "yearLength": "3277"
+          },
+          {
+            "closeGateIndex": 4,
+            "closingGate": "-13332044",
+            "gapCount": 6,
+            "openGateIndex": -2,
+            "openingGate": "-13335521",
+            "yearLength": "3477"
+          },
+          {
+            "closeGateIndex": 5,
+            "closingGate": "-13331168",
+            "gapCount": 7,
+            "openGateIndex": -2,
+            "openingGate": "-13335521",
+            "yearLength": "4353"
+          },
+          {
+            "closeGateIndex": 6,
+            "closingGate": "-13330552",
+            "gapCount": 8,
+            "openGateIndex": -2,
+            "openingGate": "-13335521",
+            "yearLength": "4969"
+          },
+          {
+            "closeGateIndex": 7,
+            "closingGate": "-13329848",
+            "gapCount": 9,
+            "openGateIndex": -2,
+            "openingGate": "-13335521",
+            "yearLength": "5673"
+          },
+          {
+            "closeGateIndex": 8,
+            "closingGate": "-13329485",
+            "gapCount": 10,
+            "openGateIndex": -2,
+            "openingGate": "-13335521",
+            "yearLength": "6036"
+          },
+          {
+            "closeGateIndex": 9,
+            "closingGate": "-13329033",
+            "gapCount": 11,
+            "openGateIndex": -2,
+            "openingGate": "-13335521",
+            "yearLength": "6488"
+          },
+          {
+            "closeGateIndex": 0,
+            "closingGate": "-13334246",
+            "gapCount": 3,
+            "openGateIndex": -3,
+            "openingGate": "-13336105",
+            "yearLength": "1859"
+          },
+          {
+            "closeGateIndex": 1,
+            "closingGate": "-13333869",
+            "gapCount": 4,
+            "openGateIndex": -3,
+            "openingGate": "-13336105",
+            "yearLength": "2236"
+          },
+          {
+            "closeGateIndex": 2,
+            "closingGate": "-13333129",
+            "gapCount": 5,
+            "openGateIndex": -3,
+            "openingGate": "-13336105",
+            "yearLength": "2976"
+          },
+          {
+            "closeGateIndex": 3,
+            "closingGate": "-13332244",
+            "gapCount": 6,
+            "openGateIndex": -3,
+            "openingGate": "-13336105",
+            "yearLength": "3861"
+          },
+          {
+            "closeGateIndex": 4,
+            "closingGate": "-13332044",
+            "gapCount": 7,
+            "openGateIndex": -3,
+            "openingGate": "-13336105",
+            "yearLength": "4061"
+          },
+          {
+            "closeGateIndex": 5,
+            "closingGate": "-13331168",
+            "gapCount": 8,
+            "openGateIndex": -3,
+            "openingGate": "-13336105",
+            "yearLength": "4937"
+          },
+          {
+            "closeGateIndex": 6,
+            "closingGate": "-13330552",
+            "gapCount": 9,
+            "openGateIndex": -3,
+            "openingGate": "-13336105",
+            "yearLength": "5553"
+          },
+          {
+            "closeGateIndex": 7,
+            "closingGate": "-13329848",
+            "gapCount": 10,
+            "openGateIndex": -3,
+            "openingGate": "-13336105",
+            "yearLength": "6257"
+          },
+          {
+            "closeGateIndex": 8,
+            "closingGate": "-13329485",
+            "gapCount": 11,
+            "openGateIndex": -3,
+            "openingGate": "-13336105",
+            "yearLength": "6620"
+          },
+          {
+            "closeGateIndex": 9,
+            "closingGate": "-13329033",
+            "gapCount": 12,
+            "openGateIndex": -3,
+            "openingGate": "-13336105",
+            "yearLength": "7072"
+          },
+          {
+            "closeGateIndex": 0,
+            "closingGate": "-13334246",
+            "gapCount": 4,
+            "openGateIndex": -4,
+            "openingGate": "-13336913",
+            "yearLength": "2667"
+          },
+          {
+            "closeGateIndex": 1,
+            "closingGate": "-13333869",
+            "gapCount": 5,
+            "openGateIndex": -4,
+            "openingGate": "-13336913",
+            "yearLength": "3044"
+          },
+          {
+            "closeGateIndex": 2,
+            "closingGate": "-13333129",
+            "gapCount": 6,
+            "openGateIndex": -4,
+            "openingGate": "-13336913",
+            "yearLength": "3784"
+          },
+          {
+            "closeGateIndex": 3,
+            "closingGate": "-13332244",
+            "gapCount": 7,
+            "openGateIndex": -4,
+            "openingGate": "-13336913",
+            "yearLength": "4669"
+          },
+          {
+            "closeGateIndex": 4,
+            "closingGate": "-13332044",
+            "gapCount": 8,
+            "openGateIndex": -4,
+            "openingGate": "-13336913",
+            "yearLength": "4869"
+          },
+          {
+            "closeGateIndex": 5,
+            "closingGate": "-13331168",
+            "gapCount": 9,
+            "openGateIndex": -4,
+            "openingGate": "-13336913",
+            "yearLength": "5745"
+          },
+          {
+            "closeGateIndex": 6,
+            "closingGate": "-13330552",
+            "gapCount": 10,
+            "openGateIndex": -4,
+            "openingGate": "-13336913",
+            "yearLength": "6361"
+          },
+          {
+            "closeGateIndex": 7,
+            "closingGate": "-13329848",
+            "gapCount": 11,
+            "openGateIndex": -4,
+            "openingGate": "-13336913",
+            "yearLength": "7065"
+          },
+          {
+            "closeGateIndex": 8,
+            "closingGate": "-13329485",
+            "gapCount": 12,
+            "openGateIndex": -4,
+            "openingGate": "-13336913",
+            "yearLength": "7428"
+          },
+          {
+            "closeGateIndex": 9,
+            "closingGate": "-13329033",
+            "gapCount": 13,
+            "openGateIndex": -4,
+            "openingGate": "-13336913",
+            "yearLength": "7880"
+          },
+          {
+            "closeGateIndex": 0,
+            "closingGate": "-13334246",
+            "gapCount": 5,
+            "openGateIndex": -5,
+            "openingGate": "-13337762",
+            "yearLength": "3516"
+          },
+          {
+            "closeGateIndex": 1,
+            "closingGate": "-13333869",
+            "gapCount": 6,
+            "openGateIndex": -5,
+            "openingGate": "-13337762",
+            "yearLength": "3893"
+          },
+          {
+            "closeGateIndex": 2,
+            "closingGate": "-13333129",
+            "gapCount": 7,
+            "openGateIndex": -5,
+            "openingGate": "-13337762",
+            "yearLength": "4633"
+          },
+          {
+            "closeGateIndex": 3,
+            "closingGate": "-13332244",
+            "gapCount": 8,
+            "openGateIndex": -5,
+            "openingGate": "-13337762",
+            "yearLength": "5518"
+          },
+          {
+            "closeGateIndex": 4,
+            "closingGate": "-13332044",
+            "gapCount": 9,
+            "openGateIndex": -5,
+            "openingGate": "-13337762",
+            "yearLength": "5718"
+          },
+          {
+            "closeGateIndex": 5,
+            "closingGate": "-13331168",
+            "gapCount": 10,
+            "openGateIndex": -5,
+            "openingGate": "-13337762",
+            "yearLength": "6594"
+          },
+          {
+            "closeGateIndex": 6,
+            "closingGate": "-13330552",
+            "gapCount": 11,
+            "openGateIndex": -5,
+            "openingGate": "-13337762",
+            "yearLength": "7210"
+          },
+          {
+            "closeGateIndex": 7,
+            "closingGate": "-13329848",
+            "gapCount": 12,
+            "openGateIndex": -5,
+            "openingGate": "-13337762",
+            "yearLength": "7914"
+          },
+          {
+            "closeGateIndex": 8,
+            "closingGate": "-13329485",
+            "gapCount": 13,
+            "openGateIndex": -5,
+            "openingGate": "-13337762",
+            "yearLength": "8277"
+          },
+          {
+            "closeGateIndex": 9,
+            "closingGate": "-13329033",
+            "gapCount": 14,
+            "openGateIndex": -5,
+            "openingGate": "-13337762",
+            "yearLength": "8729"
+          },
+          {
+            "closeGateIndex": 0,
+            "closingGate": "-13334246",
+            "gapCount": 6,
+            "openGateIndex": -6,
+            "openingGate": "-13338268",
+            "yearLength": "4022"
+          },
+          {
+            "closeGateIndex": 1,
+            "closingGate": "-13333869",
+            "gapCount": 7,
+            "openGateIndex": -6,
+            "openingGate": "-13338268",
+            "yearLength": "4399"
+          },
+          {
+            "closeGateIndex": 2,
+            "closingGate": "-13333129",
+            "gapCount": 8,
+            "openGateIndex": -6,
+            "openingGate": "-13338268",
+            "yearLength": "5139"
+          },
+          {
+            "closeGateIndex": 3,
+            "closingGate": "-13332244",
+            "gapCount": 9,
+            "openGateIndex": -6,
+            "openingGate": "-13338268",
+            "yearLength": "6024"
+          },
+          {
+            "closeGateIndex": 4,
+            "closingGate": "-13332044",
+            "gapCount": 10,
+            "openGateIndex": -6,
+            "openingGate": "-13338268",
+            "yearLength": "6224"
+          },
+          {
+            "closeGateIndex": 5,
+            "closingGate": "-13331168",
+            "gapCount": 11,
+            "openGateIndex": -6,
+            "openingGate": "-13338268",
+            "yearLength": "7100"
+          },
+          {
+            "closeGateIndex": 6,
+            "closingGate": "-13330552",
+            "gapCount": 12,
+            "openGateIndex": -6,
+            "openingGate": "-13338268",
+            "yearLength": "7716"
+          },
+          {
+            "closeGateIndex": 7,
+            "closingGate": "-13329848",
+            "gapCount": 13,
+            "openGateIndex": -6,
+            "openingGate": "-13338268",
+            "yearLength": "8420"
+          },
+          {
+            "closeGateIndex": 8,
+            "closingGate": "-13329485",
+            "gapCount": 14,
+            "openGateIndex": -6,
+            "openingGate": "-13338268",
+            "yearLength": "8783"
+          },
+          {
+            "closeGateIndex": 9,
+            "closingGate": "-13329033",
+            "gapCount": 15,
+            "openGateIndex": -6,
+            "openingGate": "-13338268",
+            "yearLength": "9235"
+          },
+          {
+            "closeGateIndex": 0,
+            "closingGate": "-13334246",
+            "gapCount": 7,
+            "openGateIndex": -7,
+            "openingGate": "-13338806",
+            "yearLength": "4560"
+          },
+          {
+            "closeGateIndex": 1,
+            "closingGate": "-13333869",
+            "gapCount": 8,
+            "openGateIndex": -7,
+            "openingGate": "-13338806",
+            "yearLength": "4937"
+          },
+          {
+            "closeGateIndex": 2,
+            "closingGate": "-13333129",
+            "gapCount": 9,
+            "openGateIndex": -7,
+            "openingGate": "-13338806",
+            "yearLength": "5677"
+          },
+          {
+            "closeGateIndex": 3,
+            "closingGate": "-13332244",
+            "gapCount": 10,
+            "openGateIndex": -7,
+            "openingGate": "-13338806",
+            "yearLength": "6562"
+          },
+          {
+            "closeGateIndex": 4,
+            "closingGate": "-13332044",
+            "gapCount": 11,
+            "openGateIndex": -7,
+            "openingGate": "-13338806",
+            "yearLength": "6762"
+          },
+          {
+            "closeGateIndex": 5,
+            "closingGate": "-13331168",
+            "gapCount": 12,
+            "openGateIndex": -7,
+            "openingGate": "-13338806",
+            "yearLength": "7638"
+          },
+          {
+            "closeGateIndex": 6,
+            "closingGate": "-13330552",
+            "gapCount": 13,
+            "openGateIndex": -7,
+            "openingGate": "-13338806",
+            "yearLength": "8254"
+          },
+          {
+            "closeGateIndex": 7,
+            "closingGate": "-13329848",
+            "gapCount": 14,
+            "openGateIndex": -7,
+            "openingGate": "-13338806",
+            "yearLength": "8958"
+          },
+          {
+            "closeGateIndex": 8,
+            "closingGate": "-13329485",
+            "gapCount": 15,
+            "openGateIndex": -7,
+            "openingGate": "-13338806",
+            "yearLength": "9321"
+          },
+          {
+            "closeGateIndex": 9,
+            "closingGate": "-13329033",
+            "gapCount": 16,
+            "openGateIndex": -7,
+            "openingGate": "-13338806",
+            "yearLength": "9773"
+          },
+          {
+            "closeGateIndex": 0,
+            "closingGate": "-13334246",
+            "gapCount": 8,
+            "openGateIndex": -8,
+            "openingGate": "-13339120",
+            "yearLength": "4874"
+          },
+          {
+            "closeGateIndex": 1,
+            "closingGate": "-13333869",
+            "gapCount": 9,
+            "openGateIndex": -8,
+            "openingGate": "-13339120",
+            "yearLength": "5251"
+          },
+          {
+            "closeGateIndex": 2,
+            "closingGate": "-13333129",
+            "gapCount": 10,
+            "openGateIndex": -8,
+            "openingGate": "-13339120",
+            "yearLength": "5991"
+          },
+          {
+            "closeGateIndex": 3,
+            "closingGate": "-13332244",
+            "gapCount": 11,
+            "openGateIndex": -8,
+            "openingGate": "-13339120",
+            "yearLength": "6876"
+          },
+          {
+            "closeGateIndex": 4,
+            "closingGate": "-13332044",
+            "gapCount": 12,
+            "openGateIndex": -8,
+            "openingGate": "-13339120",
+            "yearLength": "7076"
+          },
+          {
+            "closeGateIndex": 5,
+            "closingGate": "-13331168",
+            "gapCount": 13,
+            "openGateIndex": -8,
+            "openingGate": "-13339120",
+            "yearLength": "7952"
+          },
+          {
+            "closeGateIndex": 6,
+            "closingGate": "-13330552",
+            "gapCount": 14,
+            "openGateIndex": -8,
+            "openingGate": "-13339120",
+            "yearLength": "8568"
+          },
+          {
+            "closeGateIndex": 7,
+            "closingGate": "-13329848",
+            "gapCount": 15,
+            "openGateIndex": -8,
+            "openingGate": "-13339120",
+            "yearLength": "9272"
+          },
+          {
+            "closeGateIndex": 8,
+            "closingGate": "-13329485",
+            "gapCount": 16,
+            "openGateIndex": -8,
+            "openingGate": "-13339120",
+            "yearLength": "9635"
+          },
+          {
+            "closeGateIndex": 9,
+            "closingGate": "-13329033",
+            "gapCount": 17,
+            "openGateIndex": -8,
+            "openingGate": "-13339120",
+            "yearLength": "10087"
+          },
+          {
+            "closeGateIndex": 0,
+            "closingGate": "-13334246",
+            "gapCount": 9,
+            "openGateIndex": -9,
+            "openingGate": "-13339777",
+            "yearLength": "5531"
+          },
+          {
+            "closeGateIndex": 1,
+            "closingGate": "-13333869",
+            "gapCount": 10,
+            "openGateIndex": -9,
+            "openingGate": "-13339777",
+            "yearLength": "5908"
+          },
+          {
+            "closeGateIndex": 2,
+            "closingGate": "-13333129",
+            "gapCount": 11,
+            "openGateIndex": -9,
+            "openingGate": "-13339777",
+            "yearLength": "6648"
+          },
+          {
+            "closeGateIndex": 3,
+            "closingGate": "-13332244",
+            "gapCount": 12,
+            "openGateIndex": -9,
+            "openingGate": "-13339777",
+            "yearLength": "7533"
+          },
+          {
+            "closeGateIndex": 4,
+            "closingGate": "-13332044",
+            "gapCount": 13,
+            "openGateIndex": -9,
+            "openingGate": "-13339777",
+            "yearLength": "7733"
+          },
+          {
+            "closeGateIndex": 5,
+            "closingGate": "-13331168",
+            "gapCount": 14,
+            "openGateIndex": -9,
+            "openingGate": "-13339777",
+            "yearLength": "8609"
+          },
+          {
+            "closeGateIndex": 6,
+            "closingGate": "-13330552",
+            "gapCount": 15,
+            "openGateIndex": -9,
+            "openingGate": "-13339777",
+            "yearLength": "9225"
+          },
+          {
+            "closeGateIndex": 7,
+            "closingGate": "-13329848",
+            "gapCount": 16,
+            "openGateIndex": -9,
+            "openingGate": "-13339777",
+            "yearLength": "9929"
+          },
+          {
+            "closeGateIndex": 8,
+            "closingGate": "-13329485",
+            "gapCount": 17,
+            "openGateIndex": -9,
+            "openingGate": "-13339777",
+            "yearLength": "10292"
+          },
+          {
+            "closeGateIndex": 9,
+            "closingGate": "-13329033",
+            "gapCount": 18,
+            "openGateIndex": -9,
+            "openingGate": "-13339777",
+            "yearLength": "10744"
+          }
+        ],
+        "cardinality": 29,
+        "filteredCandidateSet": [
+          {
+            "closeGateIndex": 4,
+            "closingGate": "-13332044",
+            "gapCount": 6,
+            "openGateIndex": -2,
+            "openingGate": "-13335521",
+            "yearLength": "3477"
+          },
+          {
+            "closeGateIndex": 2,
+            "closingGate": "-13333129",
+            "gapCount": 6,
+            "openGateIndex": -4,
+            "openingGate": "-13336913",
+            "yearLength": "3784"
+          },
+          {
+            "closeGateIndex": 5,
+            "closingGate": "-13331168",
+            "gapCount": 6,
+            "openGateIndex": -1,
+            "openingGate": "-13335008",
+            "yearLength": "3840"
+          },
+          {
+            "closeGateIndex": 3,
+            "closingGate": "-13332244",
+            "gapCount": 6,
+            "openGateIndex": -3,
+            "openingGate": "-13336105",
+            "yearLength": "3861"
+          },
+          {
+            "closeGateIndex": 1,
+            "closingGate": "-13333869",
+            "gapCount": 6,
+            "openGateIndex": -5,
+            "openingGate": "-13337762",
+            "yearLength": "3893"
+          },
+          {
+            "closeGateIndex": 0,
+            "closingGate": "-13334246",
+            "gapCount": 6,
+            "openGateIndex": -6,
+            "openingGate": "-13338268",
+            "yearLength": "4022"
+          },
+          {
+            "closeGateIndex": 4,
+            "closingGate": "-13332044",
+            "gapCount": 7,
+            "openGateIndex": -3,
+            "openingGate": "-13336105",
+            "yearLength": "4061"
+          },
+          {
+            "closeGateIndex": 5,
+            "closingGate": "-13331168",
+            "gapCount": 7,
+            "openGateIndex": -2,
+            "openingGate": "-13335521",
+            "yearLength": "4353"
+          },
+          {
+            "closeGateIndex": 1,
+            "closingGate": "-13333869",
+            "gapCount": 7,
+            "openGateIndex": -6,
+            "openingGate": "-13338268",
+            "yearLength": "4399"
+          },
+          {
+            "closeGateIndex": 6,
+            "closingGate": "-13330552",
+            "gapCount": 7,
+            "openGateIndex": -1,
+            "openingGate": "-13335008",
+            "yearLength": "4456"
+          },
+          {
+            "closeGateIndex": 0,
+            "closingGate": "-13334246",
+            "gapCount": 7,
+            "openGateIndex": -7,
+            "openingGate": "-13338806",
+            "yearLength": "4560"
+          },
+          {
+            "closeGateIndex": 2,
+            "closingGate": "-13333129",
+            "gapCount": 7,
+            "openGateIndex": -5,
+            "openingGate": "-13337762",
+            "yearLength": "4633"
+          },
+          {
+            "closeGateIndex": 3,
+            "closingGate": "-13332244",
+            "gapCount": 7,
+            "openGateIndex": -4,
+            "openingGate": "-13336913",
+            "yearLength": "4669"
+          },
+          {
+            "closeGateIndex": 4,
+            "closingGate": "-13332044",
+            "gapCount": 8,
+            "openGateIndex": -4,
+            "openingGate": "-13336913",
+            "yearLength": "4869"
+          },
+          {
+            "closeGateIndex": 0,
+            "closingGate": "-13334246",
+            "gapCount": 8,
+            "openGateIndex": -8,
+            "openingGate": "-13339120",
+            "yearLength": "4874"
+          },
+          {
+            "closeGateIndex": 1,
+            "closingGate": "-13333869",
+            "gapCount": 8,
+            "openGateIndex": -7,
+            "openingGate": "-13338806",
+            "yearLength": "4937"
+          },
+          {
+            "closeGateIndex": 5,
+            "closingGate": "-13331168",
+            "gapCount": 8,
+            "openGateIndex": -3,
+            "openingGate": "-13336105",
+            "yearLength": "4937"
+          },
+          {
+            "closeGateIndex": 6,
+            "closingGate": "-13330552",
+            "gapCount": 8,
+            "openGateIndex": -2,
+            "openingGate": "-13335521",
+            "yearLength": "4969"
+          },
+          {
+            "closeGateIndex": 2,
+            "closingGate": "-13333129",
+            "gapCount": 8,
+            "openGateIndex": -6,
+            "openingGate": "-13338268",
+            "yearLength": "5139"
+          },
+          {
+            "closeGateIndex": 7,
+            "closingGate": "-13329848",
+            "gapCount": 8,
+            "openGateIndex": -1,
+            "openingGate": "-13335008",
+            "yearLength": "5160"
+          },
+          {
+            "closeGateIndex": 1,
+            "closingGate": "-13333869",
+            "gapCount": 9,
+            "openGateIndex": -8,
+            "openingGate": "-13339120",
+            "yearLength": "5251"
+          },
+          {
+            "closeGateIndex": 3,
+            "closingGate": "-13332244",
+            "gapCount": 8,
+            "openGateIndex": -5,
+            "openingGate": "-13337762",
+            "yearLength": "5518"
+          },
+          {
+            "closeGateIndex": 8,
+            "closingGate": "-13329485",
+            "gapCount": 9,
+            "openGateIndex": -1,
+            "openingGate": "-13335008",
+            "yearLength": "5523"
+          },
+          {
+            "closeGateIndex": 0,
+            "closingGate": "-13334246",
+            "gapCount": 9,
+            "openGateIndex": -9,
+            "openingGate": "-13339777",
+            "yearLength": "5531"
+          },
+          {
+            "closeGateIndex": 6,
+            "closingGate": "-13330552",
+            "gapCount": 9,
+            "openGateIndex": -3,
+            "openingGate": "-13336105",
+            "yearLength": "5553"
+          },
+          {
+            "closeGateIndex": 7,
+            "closingGate": "-13329848",
+            "gapCount": 9,
+            "openGateIndex": -2,
+            "openingGate": "-13335521",
+            "yearLength": "5673"
+          },
+          {
+            "closeGateIndex": 2,
+            "closingGate": "-13333129",
+            "gapCount": 9,
+            "openGateIndex": -7,
+            "openingGate": "-13338806",
+            "yearLength": "5677"
+          },
+          {
+            "closeGateIndex": 4,
+            "closingGate": "-13332044",
+            "gapCount": 9,
+            "openGateIndex": -5,
+            "openingGate": "-13337762",
+            "yearLength": "5718"
+          },
+          {
+            "closeGateIndex": 5,
+            "closingGate": "-13331168",
+            "gapCount": 9,
+            "openGateIndex": -4,
+            "openingGate": "-13336913",
+            "yearLength": "5745"
+          }
+        ]
+      },
+      "environment": "reference-vs-committed-reference",
+      "fast": {
+        "reason": "no stable public candidate trace hook",
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "year-candidates-year5000-foundation",
+      "input": {
+        "calculationJdn": "-13334246",
+        "domain": "Foundation anchor"
+      },
+      "reference": {
+        "candidateGates": [
+          {
+            "closeGateIndex": 0,
+            "closingGate": "-13334246",
+            "gapCount": 1,
+            "openGateIndex": -1,
+            "openingGate": "-13335008",
+            "yearLength": "762"
+          },
+          {
+            "closeGateIndex": 1,
+            "closingGate": "-13333869",
+            "gapCount": 2,
+            "openGateIndex": -1,
+            "openingGate": "-13335008",
+            "yearLength": "1139"
+          },
+          {
+            "closeGateIndex": 2,
+            "closingGate": "-13333129",
+            "gapCount": 3,
+            "openGateIndex": -1,
+            "openingGate": "-13335008",
+            "yearLength": "1879"
+          },
+          {
+            "closeGateIndex": 3,
+            "closingGate": "-13332244",
+            "gapCount": 4,
+            "openGateIndex": -1,
+            "openingGate": "-13335008",
+            "yearLength": "2764"
+          },
+          {
+            "closeGateIndex": 4,
+            "closingGate": "-13332044",
+            "gapCount": 5,
+            "openGateIndex": -1,
+            "openingGate": "-13335008",
+            "yearLength": "2964"
+          },
+          {
+            "closeGateIndex": 5,
+            "closingGate": "-13331168",
+            "gapCount": 6,
+            "openGateIndex": -1,
+            "openingGate": "-13335008",
+            "yearLength": "3840"
+          },
+          {
+            "closeGateIndex": 6,
+            "closingGate": "-13330552",
+            "gapCount": 7,
+            "openGateIndex": -1,
+            "openingGate": "-13335008",
+            "yearLength": "4456"
+          },
+          {
+            "closeGateIndex": 7,
+            "closingGate": "-13329848",
+            "gapCount": 8,
+            "openGateIndex": -1,
+            "openingGate": "-13335008",
+            "yearLength": "5160"
+          },
+          {
+            "closeGateIndex": 8,
+            "closingGate": "-13329485",
+            "gapCount": 9,
+            "openGateIndex": -1,
+            "openingGate": "-13335008",
+            "yearLength": "5523"
+          },
+          {
+            "closeGateIndex": 9,
+            "closingGate": "-13329033",
+            "gapCount": 10,
+            "openGateIndex": -1,
+            "openingGate": "-13335008",
+            "yearLength": "5975"
+          },
+          {
+            "closeGateIndex": 0,
+            "closingGate": "-13334246",
+            "gapCount": 2,
+            "openGateIndex": -2,
+            "openingGate": "-13335521",
+            "yearLength": "1275"
+          },
+          {
+            "closeGateIndex": 1,
+            "closingGate": "-13333869",
+            "gapCount": 3,
+            "openGateIndex": -2,
+            "openingGate": "-13335521",
+            "yearLength": "1652"
+          },
+          {
+            "closeGateIndex": 2,
+            "closingGate": "-13333129",
+            "gapCount": 4,
+            "openGateIndex": -2,
+            "openingGate": "-13335521",
+            "yearLength": "2392"
+          },
+          {
+            "closeGateIndex": 3,
+            "closingGate": "-13332244",
+            "gapCount": 5,
+            "openGateIndex": -2,
+            "openingGate": "-13335521",
+            "yearLength": "3277"
+          },
+          {
+            "closeGateIndex": 4,
+            "closingGate": "-13332044",
+            "gapCount": 6,
+            "openGateIndex": -2,
+            "openingGate": "-13335521",
+            "yearLength": "3477"
+          },
+          {
+            "closeGateIndex": 5,
+            "closingGate": "-13331168",
+            "gapCount": 7,
+            "openGateIndex": -2,
+            "openingGate": "-13335521",
+            "yearLength": "4353"
+          },
+          {
+            "closeGateIndex": 6,
+            "closingGate": "-13330552",
+            "gapCount": 8,
+            "openGateIndex": -2,
+            "openingGate": "-13335521",
+            "yearLength": "4969"
+          },
+          {
+            "closeGateIndex": 7,
+            "closingGate": "-13329848",
+            "gapCount": 9,
+            "openGateIndex": -2,
+            "openingGate": "-13335521",
+            "yearLength": "5673"
+          },
+          {
+            "closeGateIndex": 8,
+            "closingGate": "-13329485",
+            "gapCount": 10,
+            "openGateIndex": -2,
+            "openingGate": "-13335521",
+            "yearLength": "6036"
+          },
+          {
+            "closeGateIndex": 9,
+            "closingGate": "-13329033",
+            "gapCount": 11,
+            "openGateIndex": -2,
+            "openingGate": "-13335521",
+            "yearLength": "6488"
+          },
+          {
+            "closeGateIndex": 0,
+            "closingGate": "-13334246",
+            "gapCount": 3,
+            "openGateIndex": -3,
+            "openingGate": "-13336105",
+            "yearLength": "1859"
+          },
+          {
+            "closeGateIndex": 1,
+            "closingGate": "-13333869",
+            "gapCount": 4,
+            "openGateIndex": -3,
+            "openingGate": "-13336105",
+            "yearLength": "2236"
+          },
+          {
+            "closeGateIndex": 2,
+            "closingGate": "-13333129",
+            "gapCount": 5,
+            "openGateIndex": -3,
+            "openingGate": "-13336105",
+            "yearLength": "2976"
+          },
+          {
+            "closeGateIndex": 3,
+            "closingGate": "-13332244",
+            "gapCount": 6,
+            "openGateIndex": -3,
+            "openingGate": "-13336105",
+            "yearLength": "3861"
+          },
+          {
+            "closeGateIndex": 4,
+            "closingGate": "-13332044",
+            "gapCount": 7,
+            "openGateIndex": -3,
+            "openingGate": "-13336105",
+            "yearLength": "4061"
+          },
+          {
+            "closeGateIndex": 5,
+            "closingGate": "-13331168",
+            "gapCount": 8,
+            "openGateIndex": -3,
+            "openingGate": "-13336105",
+            "yearLength": "4937"
+          },
+          {
+            "closeGateIndex": 6,
+            "closingGate": "-13330552",
+            "gapCount": 9,
+            "openGateIndex": -3,
+            "openingGate": "-13336105",
+            "yearLength": "5553"
+          },
+          {
+            "closeGateIndex": 7,
+            "closingGate": "-13329848",
+            "gapCount": 10,
+            "openGateIndex": -3,
+            "openingGate": "-13336105",
+            "yearLength": "6257"
+          },
+          {
+            "closeGateIndex": 8,
+            "closingGate": "-13329485",
+            "gapCount": 11,
+            "openGateIndex": -3,
+            "openingGate": "-13336105",
+            "yearLength": "6620"
+          },
+          {
+            "closeGateIndex": 9,
+            "closingGate": "-13329033",
+            "gapCount": 12,
+            "openGateIndex": -3,
+            "openingGate": "-13336105",
+            "yearLength": "7072"
+          },
+          {
+            "closeGateIndex": 0,
+            "closingGate": "-13334246",
+            "gapCount": 4,
+            "openGateIndex": -4,
+            "openingGate": "-13336913",
+            "yearLength": "2667"
+          },
+          {
+            "closeGateIndex": 1,
+            "closingGate": "-13333869",
+            "gapCount": 5,
+            "openGateIndex": -4,
+            "openingGate": "-13336913",
+            "yearLength": "3044"
+          },
+          {
+            "closeGateIndex": 2,
+            "closingGate": "-13333129",
+            "gapCount": 6,
+            "openGateIndex": -4,
+            "openingGate": "-13336913",
+            "yearLength": "3784"
+          },
+          {
+            "closeGateIndex": 3,
+            "closingGate": "-13332244",
+            "gapCount": 7,
+            "openGateIndex": -4,
+            "openingGate": "-13336913",
+            "yearLength": "4669"
+          },
+          {
+            "closeGateIndex": 4,
+            "closingGate": "-13332044",
+            "gapCount": 8,
+            "openGateIndex": -4,
+            "openingGate": "-13336913",
+            "yearLength": "4869"
+          },
+          {
+            "closeGateIndex": 5,
+            "closingGate": "-13331168",
+            "gapCount": 9,
+            "openGateIndex": -4,
+            "openingGate": "-13336913",
+            "yearLength": "5745"
+          },
+          {
+            "closeGateIndex": 6,
+            "closingGate": "-13330552",
+            "gapCount": 10,
+            "openGateIndex": -4,
+            "openingGate": "-13336913",
+            "yearLength": "6361"
+          },
+          {
+            "closeGateIndex": 7,
+            "closingGate": "-13329848",
+            "gapCount": 11,
+            "openGateIndex": -4,
+            "openingGate": "-13336913",
+            "yearLength": "7065"
+          },
+          {
+            "closeGateIndex": 8,
+            "closingGate": "-13329485",
+            "gapCount": 12,
+            "openGateIndex": -4,
+            "openingGate": "-13336913",
+            "yearLength": "7428"
+          },
+          {
+            "closeGateIndex": 9,
+            "closingGate": "-13329033",
+            "gapCount": 13,
+            "openGateIndex": -4,
+            "openingGate": "-13336913",
+            "yearLength": "7880"
+          },
+          {
+            "closeGateIndex": 0,
+            "closingGate": "-13334246",
+            "gapCount": 5,
+            "openGateIndex": -5,
+            "openingGate": "-13337762",
+            "yearLength": "3516"
+          },
+          {
+            "closeGateIndex": 1,
+            "closingGate": "-13333869",
+            "gapCount": 6,
+            "openGateIndex": -5,
+            "openingGate": "-13337762",
+            "yearLength": "3893"
+          },
+          {
+            "closeGateIndex": 2,
+            "closingGate": "-13333129",
+            "gapCount": 7,
+            "openGateIndex": -5,
+            "openingGate": "-13337762",
+            "yearLength": "4633"
+          },
+          {
+            "closeGateIndex": 3,
+            "closingGate": "-13332244",
+            "gapCount": 8,
+            "openGateIndex": -5,
+            "openingGate": "-13337762",
+            "yearLength": "5518"
+          },
+          {
+            "closeGateIndex": 4,
+            "closingGate": "-13332044",
+            "gapCount": 9,
+            "openGateIndex": -5,
+            "openingGate": "-13337762",
+            "yearLength": "5718"
+          },
+          {
+            "closeGateIndex": 5,
+            "closingGate": "-13331168",
+            "gapCount": 10,
+            "openGateIndex": -5,
+            "openingGate": "-13337762",
+            "yearLength": "6594"
+          },
+          {
+            "closeGateIndex": 6,
+            "closingGate": "-13330552",
+            "gapCount": 11,
+            "openGateIndex": -5,
+            "openingGate": "-13337762",
+            "yearLength": "7210"
+          },
+          {
+            "closeGateIndex": 7,
+            "closingGate": "-13329848",
+            "gapCount": 12,
+            "openGateIndex": -5,
+            "openingGate": "-13337762",
+            "yearLength": "7914"
+          },
+          {
+            "closeGateIndex": 8,
+            "closingGate": "-13329485",
+            "gapCount": 13,
+            "openGateIndex": -5,
+            "openingGate": "-13337762",
+            "yearLength": "8277"
+          },
+          {
+            "closeGateIndex": 9,
+            "closingGate": "-13329033",
+            "gapCount": 14,
+            "openGateIndex": -5,
+            "openingGate": "-13337762",
+            "yearLength": "8729"
+          },
+          {
+            "closeGateIndex": 0,
+            "closingGate": "-13334246",
+            "gapCount": 6,
+            "openGateIndex": -6,
+            "openingGate": "-13338268",
+            "yearLength": "4022"
+          },
+          {
+            "closeGateIndex": 1,
+            "closingGate": "-13333869",
+            "gapCount": 7,
+            "openGateIndex": -6,
+            "openingGate": "-13338268",
+            "yearLength": "4399"
+          },
+          {
+            "closeGateIndex": 2,
+            "closingGate": "-13333129",
+            "gapCount": 8,
+            "openGateIndex": -6,
+            "openingGate": "-13338268",
+            "yearLength": "5139"
+          },
+          {
+            "closeGateIndex": 3,
+            "closingGate": "-13332244",
+            "gapCount": 9,
+            "openGateIndex": -6,
+            "openingGate": "-13338268",
+            "yearLength": "6024"
+          },
+          {
+            "closeGateIndex": 4,
+            "closingGate": "-13332044",
+            "gapCount": 10,
+            "openGateIndex": -6,
+            "openingGate": "-13338268",
+            "yearLength": "6224"
+          },
+          {
+            "closeGateIndex": 5,
+            "closingGate": "-13331168",
+            "gapCount": 11,
+            "openGateIndex": -6,
+            "openingGate": "-13338268",
+            "yearLength": "7100"
+          },
+          {
+            "closeGateIndex": 6,
+            "closingGate": "-13330552",
+            "gapCount": 12,
+            "openGateIndex": -6,
+            "openingGate": "-13338268",
+            "yearLength": "7716"
+          },
+          {
+            "closeGateIndex": 7,
+            "closingGate": "-13329848",
+            "gapCount": 13,
+            "openGateIndex": -6,
+            "openingGate": "-13338268",
+            "yearLength": "8420"
+          },
+          {
+            "closeGateIndex": 8,
+            "closingGate": "-13329485",
+            "gapCount": 14,
+            "openGateIndex": -6,
+            "openingGate": "-13338268",
+            "yearLength": "8783"
+          },
+          {
+            "closeGateIndex": 9,
+            "closingGate": "-13329033",
+            "gapCount": 15,
+            "openGateIndex": -6,
+            "openingGate": "-13338268",
+            "yearLength": "9235"
+          },
+          {
+            "closeGateIndex": 0,
+            "closingGate": "-13334246",
+            "gapCount": 7,
+            "openGateIndex": -7,
+            "openingGate": "-13338806",
+            "yearLength": "4560"
+          },
+          {
+            "closeGateIndex": 1,
+            "closingGate": "-13333869",
+            "gapCount": 8,
+            "openGateIndex": -7,
+            "openingGate": "-13338806",
+            "yearLength": "4937"
+          },
+          {
+            "closeGateIndex": 2,
+            "closingGate": "-13333129",
+            "gapCount": 9,
+            "openGateIndex": -7,
+            "openingGate": "-13338806",
+            "yearLength": "5677"
+          },
+          {
+            "closeGateIndex": 3,
+            "closingGate": "-13332244",
+            "gapCount": 10,
+            "openGateIndex": -7,
+            "openingGate": "-13338806",
+            "yearLength": "6562"
+          },
+          {
+            "closeGateIndex": 4,
+            "closingGate": "-13332044",
+            "gapCount": 11,
+            "openGateIndex": -7,
+            "openingGate": "-13338806",
+            "yearLength": "6762"
+          },
+          {
+            "closeGateIndex": 5,
+            "closingGate": "-13331168",
+            "gapCount": 12,
+            "openGateIndex": -7,
+            "openingGate": "-13338806",
+            "yearLength": "7638"
+          },
+          {
+            "closeGateIndex": 6,
+            "closingGate": "-13330552",
+            "gapCount": 13,
+            "openGateIndex": -7,
+            "openingGate": "-13338806",
+            "yearLength": "8254"
+          },
+          {
+            "closeGateIndex": 7,
+            "closingGate": "-13329848",
+            "gapCount": 14,
+            "openGateIndex": -7,
+            "openingGate": "-13338806",
+            "yearLength": "8958"
+          },
+          {
+            "closeGateIndex": 8,
+            "closingGate": "-13329485",
+            "gapCount": 15,
+            "openGateIndex": -7,
+            "openingGate": "-13338806",
+            "yearLength": "9321"
+          },
+          {
+            "closeGateIndex": 9,
+            "closingGate": "-13329033",
+            "gapCount": 16,
+            "openGateIndex": -7,
+            "openingGate": "-13338806",
+            "yearLength": "9773"
+          },
+          {
+            "closeGateIndex": 0,
+            "closingGate": "-13334246",
+            "gapCount": 8,
+            "openGateIndex": -8,
+            "openingGate": "-13339120",
+            "yearLength": "4874"
+          },
+          {
+            "closeGateIndex": 1,
+            "closingGate": "-13333869",
+            "gapCount": 9,
+            "openGateIndex": -8,
+            "openingGate": "-13339120",
+            "yearLength": "5251"
+          },
+          {
+            "closeGateIndex": 2,
+            "closingGate": "-13333129",
+            "gapCount": 10,
+            "openGateIndex": -8,
+            "openingGate": "-13339120",
+            "yearLength": "5991"
+          },
+          {
+            "closeGateIndex": 3,
+            "closingGate": "-13332244",
+            "gapCount": 11,
+            "openGateIndex": -8,
+            "openingGate": "-13339120",
+            "yearLength": "6876"
+          },
+          {
+            "closeGateIndex": 4,
+            "closingGate": "-13332044",
+            "gapCount": 12,
+            "openGateIndex": -8,
+            "openingGate": "-13339120",
+            "yearLength": "7076"
+          },
+          {
+            "closeGateIndex": 5,
+            "closingGate": "-13331168",
+            "gapCount": 13,
+            "openGateIndex": -8,
+            "openingGate": "-13339120",
+            "yearLength": "7952"
+          },
+          {
+            "closeGateIndex": 6,
+            "closingGate": "-13330552",
+            "gapCount": 14,
+            "openGateIndex": -8,
+            "openingGate": "-13339120",
+            "yearLength": "8568"
+          },
+          {
+            "closeGateIndex": 7,
+            "closingGate": "-13329848",
+            "gapCount": 15,
+            "openGateIndex": -8,
+            "openingGate": "-13339120",
+            "yearLength": "9272"
+          },
+          {
+            "closeGateIndex": 8,
+            "closingGate": "-13329485",
+            "gapCount": 16,
+            "openGateIndex": -8,
+            "openingGate": "-13339120",
+            "yearLength": "9635"
+          },
+          {
+            "closeGateIndex": 9,
+            "closingGate": "-13329033",
+            "gapCount": 17,
+            "openGateIndex": -8,
+            "openingGate": "-13339120",
+            "yearLength": "10087"
+          },
+          {
+            "closeGateIndex": 0,
+            "closingGate": "-13334246",
+            "gapCount": 9,
+            "openGateIndex": -9,
+            "openingGate": "-13339777",
+            "yearLength": "5531"
+          },
+          {
+            "closeGateIndex": 1,
+            "closingGate": "-13333869",
+            "gapCount": 10,
+            "openGateIndex": -9,
+            "openingGate": "-13339777",
+            "yearLength": "5908"
+          },
+          {
+            "closeGateIndex": 2,
+            "closingGate": "-13333129",
+            "gapCount": 11,
+            "openGateIndex": -9,
+            "openingGate": "-13339777",
+            "yearLength": "6648"
+          },
+          {
+            "closeGateIndex": 3,
+            "closingGate": "-13332244",
+            "gapCount": 12,
+            "openGateIndex": -9,
+            "openingGate": "-13339777",
+            "yearLength": "7533"
+          },
+          {
+            "closeGateIndex": 4,
+            "closingGate": "-13332044",
+            "gapCount": 13,
+            "openGateIndex": -9,
+            "openingGate": "-13339777",
+            "yearLength": "7733"
+          },
+          {
+            "closeGateIndex": 5,
+            "closingGate": "-13331168",
+            "gapCount": 14,
+            "openGateIndex": -9,
+            "openingGate": "-13339777",
+            "yearLength": "8609"
+          },
+          {
+            "closeGateIndex": 6,
+            "closingGate": "-13330552",
+            "gapCount": 15,
+            "openGateIndex": -9,
+            "openingGate": "-13339777",
+            "yearLength": "9225"
+          },
+          {
+            "closeGateIndex": 7,
+            "closingGate": "-13329848",
+            "gapCount": 16,
+            "openGateIndex": -9,
+            "openingGate": "-13339777",
+            "yearLength": "9929"
+          },
+          {
+            "closeGateIndex": 8,
+            "closingGate": "-13329485",
+            "gapCount": 17,
+            "openGateIndex": -9,
+            "openingGate": "-13339777",
+            "yearLength": "10292"
+          },
+          {
+            "closeGateIndex": 9,
+            "closingGate": "-13329033",
+            "gapCount": 18,
+            "openGateIndex": -9,
+            "openingGate": "-13339777",
+            "yearLength": "10744"
+          }
+        ],
+        "cardinality": 29,
+        "filteredCandidateSet": [
+          {
+            "closeGateIndex": 4,
+            "closingGate": "-13332044",
+            "gapCount": 6,
+            "openGateIndex": -2,
+            "openingGate": "-13335521",
+            "yearLength": "3477"
+          },
+          {
+            "closeGateIndex": 2,
+            "closingGate": "-13333129",
+            "gapCount": 6,
+            "openGateIndex": -4,
+            "openingGate": "-13336913",
+            "yearLength": "3784"
+          },
+          {
+            "closeGateIndex": 5,
+            "closingGate": "-13331168",
+            "gapCount": 6,
+            "openGateIndex": -1,
+            "openingGate": "-13335008",
+            "yearLength": "3840"
+          },
+          {
+            "closeGateIndex": 3,
+            "closingGate": "-13332244",
+            "gapCount": 6,
+            "openGateIndex": -3,
+            "openingGate": "-13336105",
+            "yearLength": "3861"
+          },
+          {
+            "closeGateIndex": 1,
+            "closingGate": "-13333869",
+            "gapCount": 6,
+            "openGateIndex": -5,
+            "openingGate": "-13337762",
+            "yearLength": "3893"
+          },
+          {
+            "closeGateIndex": 0,
+            "closingGate": "-13334246",
+            "gapCount": 6,
+            "openGateIndex": -6,
+            "openingGate": "-13338268",
+            "yearLength": "4022"
+          },
+          {
+            "closeGateIndex": 4,
+            "closingGate": "-13332044",
+            "gapCount": 7,
+            "openGateIndex": -3,
+            "openingGate": "-13336105",
+            "yearLength": "4061"
+          },
+          {
+            "closeGateIndex": 5,
+            "closingGate": "-13331168",
+            "gapCount": 7,
+            "openGateIndex": -2,
+            "openingGate": "-13335521",
+            "yearLength": "4353"
+          },
+          {
+            "closeGateIndex": 1,
+            "closingGate": "-13333869",
+            "gapCount": 7,
+            "openGateIndex": -6,
+            "openingGate": "-13338268",
+            "yearLength": "4399"
+          },
+          {
+            "closeGateIndex": 6,
+            "closingGate": "-13330552",
+            "gapCount": 7,
+            "openGateIndex": -1,
+            "openingGate": "-13335008",
+            "yearLength": "4456"
+          },
+          {
+            "closeGateIndex": 0,
+            "closingGate": "-13334246",
+            "gapCount": 7,
+            "openGateIndex": -7,
+            "openingGate": "-13338806",
+            "yearLength": "4560"
+          },
+          {
+            "closeGateIndex": 2,
+            "closingGate": "-13333129",
+            "gapCount": 7,
+            "openGateIndex": -5,
+            "openingGate": "-13337762",
+            "yearLength": "4633"
+          },
+          {
+            "closeGateIndex": 3,
+            "closingGate": "-13332244",
+            "gapCount": 7,
+            "openGateIndex": -4,
+            "openingGate": "-13336913",
+            "yearLength": "4669"
+          },
+          {
+            "closeGateIndex": 4,
+            "closingGate": "-13332044",
+            "gapCount": 8,
+            "openGateIndex": -4,
+            "openingGate": "-13336913",
+            "yearLength": "4869"
+          },
+          {
+            "closeGateIndex": 0,
+            "closingGate": "-13334246",
+            "gapCount": 8,
+            "openGateIndex": -8,
+            "openingGate": "-13339120",
+            "yearLength": "4874"
+          },
+          {
+            "closeGateIndex": 1,
+            "closingGate": "-13333869",
+            "gapCount": 8,
+            "openGateIndex": -7,
+            "openingGate": "-13338806",
+            "yearLength": "4937"
+          },
+          {
+            "closeGateIndex": 5,
+            "closingGate": "-13331168",
+            "gapCount": 8,
+            "openGateIndex": -3,
+            "openingGate": "-13336105",
+            "yearLength": "4937"
+          },
+          {
+            "closeGateIndex": 6,
+            "closingGate": "-13330552",
+            "gapCount": 8,
+            "openGateIndex": -2,
+            "openingGate": "-13335521",
+            "yearLength": "4969"
+          },
+          {
+            "closeGateIndex": 2,
+            "closingGate": "-13333129",
+            "gapCount": 8,
+            "openGateIndex": -6,
+            "openingGate": "-13338268",
+            "yearLength": "5139"
+          },
+          {
+            "closeGateIndex": 7,
+            "closingGate": "-13329848",
+            "gapCount": 8,
+            "openGateIndex": -1,
+            "openingGate": "-13335008",
+            "yearLength": "5160"
+          },
+          {
+            "closeGateIndex": 1,
+            "closingGate": "-13333869",
+            "gapCount": 9,
+            "openGateIndex": -8,
+            "openingGate": "-13339120",
+            "yearLength": "5251"
+          },
+          {
+            "closeGateIndex": 3,
+            "closingGate": "-13332244",
+            "gapCount": 8,
+            "openGateIndex": -5,
+            "openingGate": "-13337762",
+            "yearLength": "5518"
+          },
+          {
+            "closeGateIndex": 8,
+            "closingGate": "-13329485",
+            "gapCount": 9,
+            "openGateIndex": -1,
+            "openingGate": "-13335008",
+            "yearLength": "5523"
+          },
+          {
+            "closeGateIndex": 0,
+            "closingGate": "-13334246",
+            "gapCount": 9,
+            "openGateIndex": -9,
+            "openingGate": "-13339777",
+            "yearLength": "5531"
+          },
+          {
+            "closeGateIndex": 6,
+            "closingGate": "-13330552",
+            "gapCount": 9,
+            "openGateIndex": -3,
+            "openingGate": "-13336105",
+            "yearLength": "5553"
+          },
+          {
+            "closeGateIndex": 7,
+            "closingGate": "-13329848",
+            "gapCount": 9,
+            "openGateIndex": -2,
+            "openingGate": "-13335521",
+            "yearLength": "5673"
+          },
+          {
+            "closeGateIndex": 2,
+            "closingGate": "-13333129",
+            "gapCount": 9,
+            "openGateIndex": -7,
+            "openingGate": "-13338806",
+            "yearLength": "5677"
+          },
+          {
+            "closeGateIndex": 4,
+            "closingGate": "-13332044",
+            "gapCount": 9,
+            "openGateIndex": -5,
+            "openingGate": "-13337762",
+            "yearLength": "5718"
+          },
+          {
+            "closeGateIndex": 5,
+            "closingGate": "-13331168",
+            "gapCount": 9,
+            "openGateIndex": -4,
+            "openingGate": "-13336913",
+            "yearLength": "5745"
+          }
+        ]
+      },
+      "stateProfile": "candidate-entry-for-entry",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 80.716
+      }
+    },
+    {
+      "authoritative": {
+        "branch": 9,
+        "cycle": -643,
+        "day": 22,
+        "earthlyBranch": "shen",
+        "heavenlyStem": "geng",
+        "leap": false,
+        "leapMonth": false,
+        "month": 1,
+        "relatedYear": "-41221",
+        "stem": 7,
+        "yearInCycle": 57
+      },
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "external-calendar-normative",
+      "environment": "public-api",
+      "fast": {
+        "reason": "fast engine does not advertise external calendar support",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "external-chinese-external-c19ec3766be5",
+      "input": {
+        "calendar": "chinese",
+        "jdn": "-13334246"
+      },
+      "reference": {
+        "branch": 9,
+        "cycle": -643,
+        "day": 22,
+        "earthlyBranch": "shen",
+        "heavenlyStem": "geng",
+        "leap": false,
+        "leapMonth": false,
+        "month": 1,
+        "relatedYear": "-41221",
+        "stem": 7,
+        "yearInCycle": 57
+      },
+      "stateProfile": "structured-semantic",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 5.495
+      }
+    },
+    {
+      "authoritative": {
+        "leapMonth": false,
+        "leapTithi": false,
+        "month": 8,
+        "monthName": "Kārttika",
+        "tithi": 16,
+        "year": "-41162"
+      },
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "external-calendar-normative",
+      "environment": "public-api",
+      "fast": {
+        "reason": "fast engine does not advertise external calendar support",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "external-vikrama-external-c19ec3766be5",
+      "input": {
+        "calendar": "vikrama",
+        "jdn": "-13334246"
+      },
+      "reference": {
+        "leapMonth": false,
+        "leapTithi": false,
+        "month": 8,
+        "monthName": "Kārttika",
+        "tithi": 16,
+        "year": "-41162"
+      },
+      "stateProfile": "structured-semantic",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 2.235
+      }
+    },
+    {
+      "authoritative": {
+        "calendar": "koki",
+        "day": 22,
+        "month": 12,
+        "system": "koki",
+        "year": "-40561"
+      },
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "external-calendar-normative",
+      "environment": "public-api",
+      "fast": {
+        "reason": "fast engine does not advertise external calendar support",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "external-koki-external-c19ec3766be5",
+      "input": {
+        "calendar": "koki",
+        "jdn": "-13334246"
+      },
+      "reference": {
+        "calendar": "koki",
+        "day": 22,
+        "month": 12,
+        "system": "koki",
+        "year": "-40561"
+      },
+      "stateProfile": "structured-semantic",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 1.205
+      }
+    },
+    {
+      "authoritative": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "authoritativeComparison": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "category": "external-calendar-normative",
+      "environment": "public-api",
+      "fast": {
+        "reason": "fast engine does not advertise external calendar support",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "external-gregorian-external-c19ec3766be5",
+      "input": {
+        "calendar": "gregorian",
+        "jdn": "-13334246"
+      },
+      "reference": {
+        "day": 22,
+        "month": 12,
+        "year": "-41221"
+      },
+      "stateProfile": "structured-semantic",
+      "status": "NOT_APPLICABLE",
+      "timing": {
+        "elapsedMs": 0.006
+      }
+    },
+    {
+      "authoritative": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "authoritativeComparison": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "category": "external-calendar-normative",
+      "environment": "public-api",
+      "fast": {
+        "reason": "fast engine does not advertise external calendar support",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "external-julian-external-c19ec3766be5",
+      "input": {
+        "calendar": "julian",
+        "jdn": "-13334246"
+      },
+      "reference": {
+        "astronomicalYear": "-41220",
+        "day": 28,
+        "displayYear": "41221",
+        "era": "BCE",
+        "historicalYear": "-41221",
+        "month": 10
+      },
+      "stateProfile": "structured-semantic",
+      "status": "NOT_APPLICABLE",
+      "timing": {
+        "elapsedMs": 0.004
+      }
+    },
+    {
+      "authoritative": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "authoritativeComparison": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "category": "external-calendar-normative",
+      "environment": "public-api",
+      "fast": {
+        "reason": "fast engine does not advertise external calendar support",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "external-hebrew-external-c19ec3766be5",
+      "input": {
+        "calendar": "hebrew",
+        "jdn": "-13334246"
+      },
+      "reference": {
+        "day": 19,
+        "month": 3,
+        "year": "-37460"
+      },
+      "stateProfile": "structured-semantic",
+      "status": "NOT_APPLICABLE",
+      "timing": {
+        "elapsedMs": 0.003
+      }
+    },
+    {
+      "authoritative": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "authoritativeComparison": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "category": "external-calendar-normative",
+      "environment": "public-api",
+      "fast": {
+        "reason": "fast engine does not advertise external calendar support",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "external-islamicCivil-external-c19ec3766be5",
+      "input": {
+        "calendar": "islamicCivil",
+        "jdn": "-13334246"
+      },
+      "reference": {
+        "day": 27,
+        "month": 3,
+        "year": "-43126"
+      },
+      "stateProfile": "structured-semantic",
+      "status": "NOT_APPLICABLE",
+      "timing": {
+        "elapsedMs": 0.004
+      }
+    },
+    {
+      "authoritative": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "authoritativeComparison": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "category": "external-calendar-normative",
+      "environment": "public-api",
+      "fast": {
+        "reason": "fast engine does not advertise external calendar support",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "external-solarHijriArithmetic-external-c19ec3766be5",
+      "input": {
+        "calendar": "solarHijriArithmetic",
+        "jdn": "-13334246"
+      },
+      "reference": {
+        "day": 18,
+        "month": 9,
+        "year": "-41843"
+      },
+      "stateProfile": "structured-semantic",
+      "status": "NOT_APPLICABLE",
+      "timing": {
+        "elapsedMs": 0.003
+      }
+    },
+    {
+      "authoritative": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "authoritativeComparison": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "category": "external-calendar-normative",
+      "environment": "public-api",
+      "fast": {
+        "reason": "fast engine does not advertise external calendar support",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "external-saka-external-c19ec3766be5",
+      "input": {
+        "calendar": "saka",
+        "jdn": "-13334246"
+      },
+      "reference": {
+        "day": 1,
+        "month": 10,
+        "year": "-41299"
+      },
+      "stateProfile": "structured-semantic",
+      "status": "NOT_APPLICABLE",
+      "timing": {
+        "elapsedMs": 0.005
+      }
+    },
+    {
+      "authoritative": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "authoritativeComparison": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "category": "external-calendar-normative",
+      "environment": "public-api",
+      "fast": {
+        "reason": "fast engine does not advertise external calendar support",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "external-thaiBuddhist-external-c19ec3766be5",
+      "input": {
+        "calendar": "thaiBuddhist",
+        "jdn": "-13334246"
+      },
+      "reference": {
+        "day": 22,
+        "month": 12,
+        "year": "-40678"
+      },
+      "stateProfile": "structured-semantic",
+      "status": "NOT_APPLICABLE",
+      "timing": {
+        "elapsedMs": 0.004
+      }
+    },
+    {
+      "authoritative": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "authoritativeComparison": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "category": "external-calendar-normative",
+      "environment": "public-api",
+      "fast": {
+        "reason": "fast engine does not advertise external calendar support",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "external-ethiopic-external-c19ec3766be5",
+      "input": {
+        "calendar": "ethiopic",
+        "jdn": "-13334246"
+      },
+      "reference": {
+        "day": 1,
+        "month": 3,
+        "year": "-41227"
+      },
+      "stateProfile": "structured-semantic",
+      "status": "NOT_APPLICABLE",
+      "timing": {
+        "elapsedMs": 0.005
+      }
+    },
+    {
+      "authoritative": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "authoritativeComparison": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "category": "external-calendar-normative",
+      "environment": "public-api",
+      "fast": {
+        "reason": "fast engine does not advertise external calendar support",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "external-coptic-external-c19ec3766be5",
+      "input": {
+        "calendar": "coptic",
+        "jdn": "-13334246"
+      },
+      "reference": {
+        "day": 1,
+        "month": 3,
+        "year": "-41503"
+      },
+      "stateProfile": "structured-semantic",
+      "status": "NOT_APPLICABLE",
+      "timing": {
+        "elapsedMs": 0.003
+      }
+    },
+    {
+      "authoritative": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "authoritativeComparison": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "category": "external-calendar-normative",
+      "environment": "public-api",
+      "fast": {
+        "reason": "fast engine does not advertise external calendar support",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "external-minguo-external-c19ec3766be5",
+      "input": {
+        "calendar": "minguo",
+        "jdn": "-13334246"
+      },
+      "reference": {
+        "day": 22,
+        "month": 12,
+        "year": "-43132"
+      },
+      "stateProfile": "structured-semantic",
+      "status": "NOT_APPLICABLE",
+      "timing": {
+        "elapsedMs": 0.003
+      }
+    },
+    {
+      "authoritative": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "authoritativeComparison": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "category": "external-calendar-normative",
+      "environment": "public-api",
+      "fast": {
+        "reason": "fast engine does not advertise external calendar support",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "external-bahaiWestern-external-c19ec3766be5",
+      "input": {
+        "calendar": "bahaiWestern",
+        "jdn": "-13334246"
+      },
+      "reference": {
+        "day": 11,
+        "month": 15,
+        "year": "-43064"
+      },
+      "stateProfile": "structured-semantic",
+      "status": "NOT_APPLICABLE",
+      "timing": {
+        "elapsedMs": 0.003
+      }
+    },
+    {
+      "authoritative": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "authoritativeComparison": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "category": "external-calendar-normative",
+      "environment": "public-api",
+      "fast": {
+        "reason": "fast engine does not advertise external calendar support",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "external-mayaLongCount-external-c19ec3766be5",
+      "input": {
+        "calendar": "mayaLongCount",
+        "jdn": "-13334246"
+      },
+      "reference": {
+        "baktun": "-97",
+        "katun": "6",
+        "kin": "11",
+        "tun": "17",
+        "uinal": "7"
+      },
+      "stateProfile": "structured-semantic",
+      "status": "NOT_APPLICABLE",
+      "timing": {
+        "elapsedMs": 0.003
+      }
+    },
+    {
+      "authoritative": {
+        "branch": 9,
+        "cycle": -643,
+        "day": 21,
+        "earthlyBranch": "shen",
+        "heavenlyStem": "geng",
+        "leap": false,
+        "leapMonth": false,
+        "month": 1,
+        "relatedYear": "-41221",
+        "stem": 7,
+        "yearInCycle": 57
+      },
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "external-calendar-normative",
+      "environment": "public-api",
+      "fast": {
+        "reason": "fast engine does not advertise external calendar support",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "external-chinese-external-095e5baf3a00",
+      "input": {
+        "calendar": "chinese",
+        "jdn": "-13334247"
+      },
+      "reference": {
+        "branch": 9,
+        "cycle": -643,
+        "day": 21,
+        "earthlyBranch": "shen",
+        "heavenlyStem": "geng",
+        "leap": false,
+        "leapMonth": false,
+        "month": 1,
+        "relatedYear": "-41221",
+        "stem": 7,
+        "yearInCycle": 57
+      },
+      "stateProfile": "structured-semantic",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 5.281
+      }
+    },
+    {
+      "authoritative": {
+        "leapMonth": false,
+        "leapTithi": false,
+        "month": 8,
+        "monthName": "Kārttika",
+        "tithi": 15,
+        "year": "-41162"
+      },
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "external-calendar-normative",
+      "environment": "public-api",
+      "fast": {
+        "reason": "fast engine does not advertise external calendar support",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "external-vikrama-external-095e5baf3a00",
+      "input": {
+        "calendar": "vikrama",
+        "jdn": "-13334247"
+      },
+      "reference": {
+        "leapMonth": false,
+        "leapTithi": false,
+        "month": 8,
+        "monthName": "Kārttika",
+        "tithi": 15,
+        "year": "-41162"
+      },
+      "stateProfile": "structured-semantic",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 0.442
+      }
+    },
+    {
+      "authoritative": {
+        "calendar": "koki",
+        "day": 21,
+        "month": 12,
+        "system": "koki",
+        "year": "-40561"
+      },
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "external-calendar-normative",
+      "environment": "public-api",
+      "fast": {
+        "reason": "fast engine does not advertise external calendar support",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "external-koki-external-095e5baf3a00",
+      "input": {
+        "calendar": "koki",
+        "jdn": "-13334247"
+      },
+      "reference": {
+        "calendar": "koki",
+        "day": 21,
+        "month": 12,
+        "system": "koki",
+        "year": "-40561"
+      },
+      "stateProfile": "structured-semantic",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 0.275
+      }
+    },
+    {
+      "authoritative": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "authoritativeComparison": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "category": "external-calendar-normative",
+      "environment": "public-api",
+      "fast": {
+        "reason": "fast engine does not advertise external calendar support",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "external-gregorian-external-095e5baf3a00",
+      "input": {
+        "calendar": "gregorian",
+        "jdn": "-13334247"
+      },
+      "reference": {
+        "day": 21,
+        "month": 12,
+        "year": "-41221"
+      },
+      "stateProfile": "structured-semantic",
+      "status": "NOT_APPLICABLE",
+      "timing": {
+        "elapsedMs": 0.011
+      }
+    },
+    {
+      "authoritative": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "authoritativeComparison": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "category": "external-calendar-normative",
+      "environment": "public-api",
+      "fast": {
+        "reason": "fast engine does not advertise external calendar support",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "external-julian-external-095e5baf3a00",
+      "input": {
+        "calendar": "julian",
+        "jdn": "-13334247"
+      },
+      "reference": {
+        "astronomicalYear": "-41220",
+        "day": 27,
+        "displayYear": "41221",
+        "era": "BCE",
+        "historicalYear": "-41221",
+        "month": 10
+      },
+      "stateProfile": "structured-semantic",
+      "status": "NOT_APPLICABLE",
+      "timing": {
+        "elapsedMs": 0.006
+      }
+    },
+    {
+      "authoritative": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "authoritativeComparison": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "category": "external-calendar-normative",
+      "environment": "public-api",
+      "fast": {
+        "reason": "fast engine does not advertise external calendar support",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "external-hebrew-external-095e5baf3a00",
+      "input": {
+        "calendar": "hebrew",
+        "jdn": "-13334247"
+      },
+      "reference": {
+        "day": 18,
+        "month": 3,
+        "year": "-37460"
+      },
+      "stateProfile": "structured-semantic",
+      "status": "NOT_APPLICABLE",
+      "timing": {
+        "elapsedMs": 0.063
+      }
+    },
+    {
+      "authoritative": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "authoritativeComparison": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "category": "external-calendar-normative",
+      "environment": "public-api",
+      "fast": {
+        "reason": "fast engine does not advertise external calendar support",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "external-islamicCivil-external-095e5baf3a00",
+      "input": {
+        "calendar": "islamicCivil",
+        "jdn": "-13334247"
+      },
+      "reference": {
+        "day": 26,
+        "month": 3,
+        "year": "-43126"
+      },
+      "stateProfile": "structured-semantic",
+      "status": "NOT_APPLICABLE",
+      "timing": {
+        "elapsedMs": 0.004
+      }
+    },
+    {
+      "authoritative": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "authoritativeComparison": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "category": "external-calendar-normative",
+      "environment": "public-api",
+      "fast": {
+        "reason": "fast engine does not advertise external calendar support",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "external-solarHijriArithmetic-external-095e5baf3a00",
+      "input": {
+        "calendar": "solarHijriArithmetic",
+        "jdn": "-13334247"
+      },
+      "reference": {
+        "day": 17,
+        "month": 9,
+        "year": "-41843"
+      },
+      "stateProfile": "structured-semantic",
+      "status": "NOT_APPLICABLE",
+      "timing": {
+        "elapsedMs": 0.003
+      }
+    },
+    {
+      "authoritative": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "authoritativeComparison": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "category": "external-calendar-normative",
+      "environment": "public-api",
+      "fast": {
+        "reason": "fast engine does not advertise external calendar support",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "external-saka-external-095e5baf3a00",
+      "input": {
+        "calendar": "saka",
+        "jdn": "-13334247"
+      },
+      "reference": {
+        "day": 30,
+        "month": 9,
+        "year": "-41299"
+      },
+      "stateProfile": "structured-semantic",
+      "status": "NOT_APPLICABLE",
+      "timing": {
+        "elapsedMs": 0.003
+      }
+    },
+    {
+      "authoritative": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "authoritativeComparison": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "category": "external-calendar-normative",
+      "environment": "public-api",
+      "fast": {
+        "reason": "fast engine does not advertise external calendar support",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "external-thaiBuddhist-external-095e5baf3a00",
+      "input": {
+        "calendar": "thaiBuddhist",
+        "jdn": "-13334247"
+      },
+      "reference": {
+        "day": 21,
+        "month": 12,
+        "year": "-40678"
+      },
+      "stateProfile": "structured-semantic",
+      "status": "NOT_APPLICABLE",
+      "timing": {
+        "elapsedMs": 0.003
+      }
+    },
+    {
+      "authoritative": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "authoritativeComparison": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "category": "external-calendar-normative",
+      "environment": "public-api",
+      "fast": {
+        "reason": "fast engine does not advertise external calendar support",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "external-ethiopic-external-095e5baf3a00",
+      "input": {
+        "calendar": "ethiopic",
+        "jdn": "-13334247"
+      },
+      "reference": {
+        "day": 30,
+        "month": 2,
+        "year": "-41227"
+      },
+      "stateProfile": "structured-semantic",
+      "status": "NOT_APPLICABLE",
+      "timing": {
+        "elapsedMs": 0.003
+      }
+    },
+    {
+      "authoritative": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "authoritativeComparison": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "category": "external-calendar-normative",
+      "environment": "public-api",
+      "fast": {
+        "reason": "fast engine does not advertise external calendar support",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "external-coptic-external-095e5baf3a00",
+      "input": {
+        "calendar": "coptic",
+        "jdn": "-13334247"
+      },
+      "reference": {
+        "day": 30,
+        "month": 2,
+        "year": "-41503"
+      },
+      "stateProfile": "structured-semantic",
+      "status": "NOT_APPLICABLE",
+      "timing": {
+        "elapsedMs": 0.003
+      }
+    },
+    {
+      "authoritative": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "authoritativeComparison": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "category": "external-calendar-normative",
+      "environment": "public-api",
+      "fast": {
+        "reason": "fast engine does not advertise external calendar support",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "external-minguo-external-095e5baf3a00",
+      "input": {
+        "calendar": "minguo",
+        "jdn": "-13334247"
+      },
+      "reference": {
+        "day": 21,
+        "month": 12,
+        "year": "-43132"
+      },
+      "stateProfile": "structured-semantic",
+      "status": "NOT_APPLICABLE",
+      "timing": {
+        "elapsedMs": 0.003
+      }
+    },
+    {
+      "authoritative": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "authoritativeComparison": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "category": "external-calendar-normative",
+      "environment": "public-api",
+      "fast": {
+        "reason": "fast engine does not advertise external calendar support",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "external-bahaiWestern-external-095e5baf3a00",
+      "input": {
+        "calendar": "bahaiWestern",
+        "jdn": "-13334247"
+      },
+      "reference": {
+        "day": 10,
+        "month": 15,
+        "year": "-43064"
+      },
+      "stateProfile": "structured-semantic",
+      "status": "NOT_APPLICABLE",
+      "timing": {
+        "elapsedMs": 0.004
+      }
+    },
+    {
+      "authoritative": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "authoritativeComparison": {
+        "reason": "no public jdnTo structured converter in this package export",
+        "status": "NOT_APPLICABLE"
+      },
+      "category": "external-calendar-normative",
+      "environment": "public-api",
+      "fast": {
+        "reason": "fast engine does not advertise external calendar support",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "external-mayaLongCount-external-095e5baf3a00",
+      "input": {
+        "calendar": "mayaLongCount",
+        "jdn": "-13334247"
+      },
+      "reference": {
+        "baktun": "-97",
+        "katun": "6",
+        "kin": "10",
+        "tun": "17",
+        "uinal": "7"
+      },
+      "stateProfile": "structured-semantic",
+      "status": "NOT_APPLICABLE",
+      "timing": {
+        "elapsedMs": 0.003
+      }
+    },
+    {
+      "authoritative": {
+        "branch": 9,
+        "cycle": -643,
+        "day": 22,
+        "earthlyBranch": "shen",
+        "heavenlyStem": "geng",
+        "leap": false,
+        "leapMonth": false,
+        "month": 1,
+        "relatedYear": "-41221",
+        "stem": 7,
+        "yearInCycle": 57
+      },
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "intl-icu-fault-normative-firewall",
+      "environment": "public-api-with-monkey-patched-Intl",
+      "fast": {
+        "reason": "fast does not expose external calendars",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "intl-fault-Intl-throws-chinese-external-c19ec3766be5",
+      "input": {
+        "calendar": "chinese",
+        "fault": "Intl-throws",
+        "jdn": "-13334246"
+      },
+      "reference": {
+        "branch": 9,
+        "cycle": -643,
+        "day": 22,
+        "earthlyBranch": "shen",
+        "heavenlyStem": "geng",
+        "leap": false,
+        "leapMonth": false,
+        "month": 1,
+        "relatedYear": "-41221",
+        "stem": 7,
+        "yearInCycle": 57
+      },
+      "stateProfile": "Intl-throws",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 1.963
+      }
+    },
+    {
+      "authoritative": {
+        "leapMonth": false,
+        "leapTithi": false,
+        "month": 8,
+        "monthName": "Kārttika",
+        "tithi": 16,
+        "year": "-41162"
+      },
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "intl-icu-fault-normative-firewall",
+      "environment": "public-api-with-monkey-patched-Intl",
+      "fast": {
+        "reason": "fast does not expose external calendars",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "intl-fault-Intl-throws-vikrama-external-c19ec3766be5",
+      "input": {
+        "calendar": "vikrama",
+        "fault": "Intl-throws",
+        "jdn": "-13334246"
+      },
+      "reference": {
+        "leapMonth": false,
+        "leapTithi": false,
+        "month": 8,
+        "monthName": "Kārttika",
+        "tithi": 16,
+        "year": "-41162"
+      },
+      "stateProfile": "Intl-throws",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 0.727
+      }
+    },
+    {
+      "authoritative": {
+        "calendar": "koki",
+        "day": 22,
+        "month": 12,
+        "system": "koki",
+        "year": "-40561"
+      },
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "intl-icu-fault-normative-firewall",
+      "environment": "public-api-with-monkey-patched-Intl",
+      "fast": {
+        "reason": "fast does not expose external calendars",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "intl-fault-Intl-throws-koki-external-c19ec3766be5",
+      "input": {
+        "calendar": "koki",
+        "fault": "Intl-throws",
+        "jdn": "-13334246"
+      },
+      "reference": {
+        "calendar": "koki",
+        "day": 22,
+        "month": 12,
+        "system": "koki",
+        "year": "-40561"
+      },
+      "stateProfile": "Intl-throws",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 0.228
+      }
+    },
+    {
+      "authoritative": {
+        "branch": 9,
+        "cycle": -643,
+        "day": 21,
+        "earthlyBranch": "shen",
+        "heavenlyStem": "geng",
+        "leap": false,
+        "leapMonth": false,
+        "month": 1,
+        "relatedYear": "-41221",
+        "stem": 7,
+        "yearInCycle": 57
+      },
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "intl-icu-fault-normative-firewall",
+      "environment": "public-api-with-monkey-patched-Intl",
+      "fast": {
+        "reason": "fast does not expose external calendars",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "intl-fault-Intl-throws-chinese-external-095e5baf3a00",
+      "input": {
+        "calendar": "chinese",
+        "fault": "Intl-throws",
+        "jdn": "-13334247"
+      },
+      "reference": {
+        "branch": 9,
+        "cycle": -643,
+        "day": 21,
+        "earthlyBranch": "shen",
+        "heavenlyStem": "geng",
+        "leap": false,
+        "leapMonth": false,
+        "month": 1,
+        "relatedYear": "-41221",
+        "stem": 7,
+        "yearInCycle": 57
+      },
+      "stateProfile": "Intl-throws",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 2.167
+      }
+    },
+    {
+      "authoritative": {
+        "leapMonth": false,
+        "leapTithi": false,
+        "month": 8,
+        "monthName": "Kārttika",
+        "tithi": 15,
+        "year": "-41162"
+      },
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "intl-icu-fault-normative-firewall",
+      "environment": "public-api-with-monkey-patched-Intl",
+      "fast": {
+        "reason": "fast does not expose external calendars",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "intl-fault-Intl-throws-vikrama-external-095e5baf3a00",
+      "input": {
+        "calendar": "vikrama",
+        "fault": "Intl-throws",
+        "jdn": "-13334247"
+      },
+      "reference": {
+        "leapMonth": false,
+        "leapTithi": false,
+        "month": 8,
+        "monthName": "Kārttika",
+        "tithi": 15,
+        "year": "-41162"
+      },
+      "stateProfile": "Intl-throws",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 0.389
+      }
+    },
+    {
+      "authoritative": {
+        "calendar": "koki",
+        "day": 21,
+        "month": 12,
+        "system": "koki",
+        "year": "-40561"
+      },
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "intl-icu-fault-normative-firewall",
+      "environment": "public-api-with-monkey-patched-Intl",
+      "fast": {
+        "reason": "fast does not expose external calendars",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "intl-fault-Intl-throws-koki-external-095e5baf3a00",
+      "input": {
+        "calendar": "koki",
+        "fault": "Intl-throws",
+        "jdn": "-13334247"
+      },
+      "reference": {
+        "calendar": "koki",
+        "day": 21,
+        "month": 12,
+        "system": "koki",
+        "year": "-40561"
+      },
+      "stateProfile": "Intl-throws",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 0.169
+      }
+    },
+    {
+      "authoritative": {
+        "branch": 9,
+        "cycle": -643,
+        "day": 22,
+        "earthlyBranch": "shen",
+        "heavenlyStem": "geng",
+        "leap": false,
+        "leapMonth": false,
+        "month": 1,
+        "relatedYear": "-41221",
+        "stem": 7,
+        "yearInCycle": 57
+      },
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "intl-icu-fault-normative-firewall",
+      "environment": "public-api-with-monkey-patched-Intl",
+      "fast": {
+        "reason": "fast does not expose external calendars",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "intl-fault-Intl-nonsense-chinese-external-c19ec3766be5",
+      "input": {
+        "calendar": "chinese",
+        "fault": "Intl-nonsense",
+        "jdn": "-13334246"
+      },
+      "reference": {
+        "branch": 9,
+        "cycle": -643,
+        "day": 22,
+        "earthlyBranch": "shen",
+        "heavenlyStem": "geng",
+        "leap": false,
+        "leapMonth": false,
+        "month": 1,
+        "relatedYear": "-41221",
+        "stem": 7,
+        "yearInCycle": 57
+      },
+      "stateProfile": "Intl-nonsense",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 2.025
+      }
+    },
+    {
+      "authoritative": {
+        "leapMonth": false,
+        "leapTithi": false,
+        "month": 8,
+        "monthName": "Kārttika",
+        "tithi": 16,
+        "year": "-41162"
+      },
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "intl-icu-fault-normative-firewall",
+      "environment": "public-api-with-monkey-patched-Intl",
+      "fast": {
+        "reason": "fast does not expose external calendars",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "intl-fault-Intl-nonsense-vikrama-external-c19ec3766be5",
+      "input": {
+        "calendar": "vikrama",
+        "fault": "Intl-nonsense",
+        "jdn": "-13334246"
+      },
+      "reference": {
+        "leapMonth": false,
+        "leapTithi": false,
+        "month": 8,
+        "monthName": "Kārttika",
+        "tithi": 16,
+        "year": "-41162"
+      },
+      "stateProfile": "Intl-nonsense",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 0.371
+      }
+    },
+    {
+      "authoritative": {
+        "calendar": "koki",
+        "day": 22,
+        "month": 12,
+        "system": "koki",
+        "year": "-40561"
+      },
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "intl-icu-fault-normative-firewall",
+      "environment": "public-api-with-monkey-patched-Intl",
+      "fast": {
+        "reason": "fast does not expose external calendars",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "intl-fault-Intl-nonsense-koki-external-c19ec3766be5",
+      "input": {
+        "calendar": "koki",
+        "fault": "Intl-nonsense",
+        "jdn": "-13334246"
+      },
+      "reference": {
+        "calendar": "koki",
+        "day": 22,
+        "month": 12,
+        "system": "koki",
+        "year": "-40561"
+      },
+      "stateProfile": "Intl-nonsense",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 0.116
+      }
+    },
+    {
+      "authoritative": {
+        "branch": 9,
+        "cycle": -643,
+        "day": 21,
+        "earthlyBranch": "shen",
+        "heavenlyStem": "geng",
+        "leap": false,
+        "leapMonth": false,
+        "month": 1,
+        "relatedYear": "-41221",
+        "stem": 7,
+        "yearInCycle": 57
+      },
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "intl-icu-fault-normative-firewall",
+      "environment": "public-api-with-monkey-patched-Intl",
+      "fast": {
+        "reason": "fast does not expose external calendars",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "intl-fault-Intl-nonsense-chinese-external-095e5baf3a00",
+      "input": {
+        "calendar": "chinese",
+        "fault": "Intl-nonsense",
+        "jdn": "-13334247"
+      },
+      "reference": {
+        "branch": 9,
+        "cycle": -643,
+        "day": 21,
+        "earthlyBranch": "shen",
+        "heavenlyStem": "geng",
+        "leap": false,
+        "leapMonth": false,
+        "month": 1,
+        "relatedYear": "-41221",
+        "stem": 7,
+        "yearInCycle": 57
+      },
+      "stateProfile": "Intl-nonsense",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 0.91
+      }
+    },
+    {
+      "authoritative": {
+        "leapMonth": false,
+        "leapTithi": false,
+        "month": 8,
+        "monthName": "Kārttika",
+        "tithi": 15,
+        "year": "-41162"
+      },
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "intl-icu-fault-normative-firewall",
+      "environment": "public-api-with-monkey-patched-Intl",
+      "fast": {
+        "reason": "fast does not expose external calendars",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "intl-fault-Intl-nonsense-vikrama-external-095e5baf3a00",
+      "input": {
+        "calendar": "vikrama",
+        "fault": "Intl-nonsense",
+        "jdn": "-13334247"
+      },
+      "reference": {
+        "leapMonth": false,
+        "leapTithi": false,
+        "month": 8,
+        "monthName": "Kārttika",
+        "tithi": 15,
+        "year": "-41162"
+      },
+      "stateProfile": "Intl-nonsense",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 0.234
+      }
+    },
+    {
+      "authoritative": {
+        "calendar": "koki",
+        "day": 21,
+        "month": 12,
+        "system": "koki",
+        "year": "-40561"
+      },
+      "authoritativeComparison": {
+        "status": "PASS"
+      },
+      "category": "intl-icu-fault-normative-firewall",
+      "environment": "public-api-with-monkey-patched-Intl",
+      "fast": {
+        "reason": "fast does not expose external calendars",
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": null,
+      "id": "intl-fault-Intl-nonsense-koki-external-095e5baf3a00",
+      "input": {
+        "calendar": "koki",
+        "fault": "Intl-nonsense",
+        "jdn": "-13334247"
+      },
+      "reference": {
+        "calendar": "koki",
+        "day": 21,
+        "month": 12,
+        "system": "koki",
+        "year": "-40561"
+      },
+      "stateProfile": "Intl-nonsense",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 0.1
+      }
+    },
+    {
+      "authoritative": {
+        "cutletName": "לגש",
+        "dayInCutlet": 762,
+        "dayInMonth": 106,
+        "monthName": "לבונה",
+        "year": "5000"
+      },
+      "authoritativeComparison": {
+        "firstMismatch": {
+          "actualValue": 106,
+          "firstStage": "mutation.authoritative.dayInMonth",
+          "path": "dayInMonth",
+          "referenceValue": 105
+        },
+        "status": "MISMATCH"
+      },
+      "category": "mutation-self-test",
+      "environment": "test-harness-only",
+      "fast": {
+        "status": "NOT_APPLICABLE"
+      },
+      "fastComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "firstMismatch": {
+        "actualValue": 106,
+        "firstStage": "mutation.authoritative.dayInMonth",
+        "path": "dayInMonth",
+        "referenceValue": 105
+      },
+      "id": "mutation-authoritative-field",
+      "input": {
+        "calculationJdn": "-13334246",
+        "targetJdn": "-13334246"
+      },
+      "mutationDetection": "DETECTED",
+      "reference": {
+        "cutletName": "לגש",
+        "dayInCutlet": 762,
+        "dayInMonth": 105,
+        "monthName": "לבונה",
+        "year": "5000"
+      },
+      "stateProfile": "mutated-authoritative-result",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 0
+      }
+    },
+    {
+      "authoritative": {
+        "status": "NOT_APPLICABLE"
+      },
+      "authoritativeComparison": {
+        "status": "NOT_APPLICABLE"
+      },
+      "category": "mutation-self-test",
+      "environment": "test-harness-only",
+      "fast": {
+        "cutletName": "לגש__mutant",
+        "dayInCutlet": 762,
+        "dayInMonth": 105,
+        "monthName": "לבונה",
+        "year": "5000"
+      },
+      "fastComparison": {
+        "firstMismatch": {
+          "actualValue": "לגש__mutant",
+          "firstStage": "mutation.fast.cutletName",
+          "path": "cutletName",
+          "referenceValue": "לגש"
+        },
+        "status": "MISMATCH"
+      },
+      "firstMismatch": {
+        "actualValue": "לגש__mutant",
+        "firstStage": "mutation.fast.cutletName",
+        "path": "cutletName",
+        "referenceValue": "לגש"
+      },
+      "id": "mutation-fast-field",
+      "input": {
+        "calculationJdn": "-13334246",
+        "targetJdn": "-13334246"
+      },
+      "mutationDetection": "DETECTED",
+      "reference": {
+        "cutletName": "לגש",
+        "dayInCutlet": 762,
+        "dayInMonth": 105,
+        "monthName": "לבונה",
+        "year": "5000"
+      },
+      "stateProfile": "mutated-fast-result",
+      "status": "PASS",
+      "timing": {
+        "elapsedMs": 0
+      }
+    }
+  ],
+  "schema": "pastafari-update18-final-differential-integration-v1",
+  "seed": 404184813,
+  "status": "INTEGRATION_PASS",
+  "summaryMatrix": [
+    {
+      "authoritativeMismatch": 0,
+      "authoritativePass": 1,
+      "cases": 1,
+      "errors": 0,
+      "fastMismatch": 0,
+      "fastPass": 1,
+      "feature": "A-committed-canonical-final-tuples",
+      "mismatchRows": 0,
+      "notApplicable": 0,
+      "passRows": 1,
+      "referenceNotImplemented": 0,
+      "timeouts": 0
+    },
+    {
+      "authoritativeMismatch": 0,
+      "authoritativePass": 2,
+      "cases": 2,
+      "errors": 0,
+      "fastMismatch": 0,
+      "fastPass": 2,
+      "feature": "B-fresh-deterministic-holdout",
+      "mismatchRows": 0,
+      "notApplicable": 0,
+      "passRows": 2,
+      "referenceNotImplemented": 0,
+      "timeouts": 0
+    },
+    {
+      "authoritativeMismatch": 0,
+      "authoritativePass": 1,
+      "cases": 1,
+      "errors": 0,
+      "fastMismatch": 0,
+      "fastPass": 1,
+      "feature": "C-directed-dense-fixed-c",
+      "mismatchRows": 0,
+      "notApplicable": 0,
+      "passRows": 1,
+      "referenceNotImplemented": 0,
+      "timeouts": 0
+    },
+    {
+      "authoritativeMismatch": 0,
+      "authoritativePass": 0,
+      "cases": 4,
+      "errors": 0,
+      "fastMismatch": 0,
+      "fastPass": 0,
+      "feature": "component-counters",
+      "mismatchRows": 0,
+      "notApplicable": 0,
+      "passRows": 4,
+      "referenceNotImplemented": 0,
+      "timeouts": 0
+    },
+    {
+      "authoritativeMismatch": 0,
+      "authoritativePass": 1,
+      "cases": 1,
+      "errors": 0,
+      "fastMismatch": 0,
+      "fastPass": 1,
+      "feature": "component-sauce-final12-stirs",
+      "mismatchRows": 0,
+      "notApplicable": 0,
+      "passRows": 1,
+      "referenceNotImplemented": 0,
+      "timeouts": 0
+    },
+    {
+      "authoritativeMismatch": 0,
+      "authoritativePass": 6,
+      "cases": 30,
+      "errors": 0,
+      "fastMismatch": 0,
+      "fastPass": 0,
+      "feature": "external-calendar-normative",
+      "mismatchRows": 0,
+      "notApplicable": 54,
+      "passRows": 6,
+      "referenceNotImplemented": 0,
+      "timeouts": 0
+    },
+    {
+      "authoritativeMismatch": 0,
+      "authoritativePass": 12,
+      "cases": 12,
+      "errors": 0,
+      "fastMismatch": 0,
+      "fastPass": 0,
+      "feature": "intl-icu-fault-normative-firewall",
+      "mismatchRows": 0,
+      "notApplicable": 12,
+      "passRows": 12,
+      "referenceNotImplemented": 0,
+      "timeouts": 0
+    },
+    {
+      "authoritativeMismatch": 1,
+      "authoritativePass": 0,
+      "cases": 2,
+      "errors": 0,
+      "fastMismatch": 1,
+      "fastPass": 0,
+      "feature": "mutation-self-test",
+      "mismatchRows": 0,
+      "notApplicable": 2,
+      "passRows": 2,
+      "referenceNotImplemented": 0,
+      "timeouts": 0
+    },
+    {
+      "authoritativeMismatch": 0,
+      "authoritativePass": 8,
+      "cases": 8,
+      "errors": 0,
+      "fastMismatch": 0,
+      "fastPass": 8,
+      "feature": "negative-gate-differential",
+      "mismatchRows": 0,
+      "notApplicable": 0,
+      "passRows": 8,
+      "referenceNotImplemented": 0,
+      "timeouts": 0
+    },
+    {
+      "authoritativeMismatch": 0,
+      "authoritativePass": 8,
+      "cases": 8,
+      "errors": 0,
+      "fastMismatch": 0,
+      "fastPass": 8,
+      "feature": "positive-gate-differential",
+      "mismatchRows": 0,
+      "notApplicable": 0,
+      "passRows": 8,
+      "referenceNotImplemented": 0,
+      "timeouts": 0
+    },
+    {
+      "authoritativeMismatch": 0,
+      "authoritativePass": 1,
+      "cases": 1,
+      "errors": 0,
+      "fastMismatch": 0,
+      "fastPass": 1,
+      "feature": "reentrancy-nested",
+      "mismatchRows": 0,
+      "notApplicable": 0,
+      "passRows": 1,
+      "referenceNotImplemented": 0,
+      "timeouts": 0
+    },
+    {
+      "authoritativeMismatch": 0,
+      "authoritativePass": 2,
+      "cases": 2,
+      "errors": 0,
+      "fastMismatch": 0,
+      "fastPass": 2,
+      "feature": "state-history-matrix",
+      "mismatchRows": 0,
+      "notApplicable": 0,
+      "passRows": 2,
+      "referenceNotImplemented": 0,
+      "timeouts": 0
+    },
+    {
+      "authoritativeMismatch": 0,
+      "authoritativePass": 0,
+      "cases": 1,
+      "errors": 0,
+      "fastMismatch": 0,
+      "fastPass": 0,
+      "feature": "year-candidate-discovery-5778",
+      "mismatchRows": 0,
+      "notApplicable": 0,
+      "passRows": 1,
+      "referenceNotImplemented": 0,
+      "timeouts": 0
+    }
+  ],
+  "tier": "ci",
+  "timing": {
+    "elapsedMs": 22703.27
+  },
+  "totals": {
+    "authoritativeMismatches": 0,
+    "errors": 0,
+    "fastMismatches": 0,
+    "mismatches": 0,
+    "mutationDetections": 2,
+    "notApplicableRows": 24,
+    "pass": 49,
+    "records": 73,
+    "referenceNotImplemented": 0,
+    "timeouts": 0
+  }
+}

@@ -105,7 +105,10 @@
     "evidence:update17:verify": "node verification/update17/verify-canonical-evidence.mjs",
     "evidence:update17:stale": "node verification/update17/check-canonical-stale.mjs",
     "test:update17": "node --test test/update17-canonical-evidence.test.js && node verification/update17/verify-canonical-evidence.mjs && node verification/update17/run-engine-matrix.mjs --engine=fast",
-    "test:update17:matrix": "node verification/update17/run-engine-matrix.mjs --engine=authoritative"
+    "test:update17:matrix": "node verification/update17/run-engine-matrix.mjs --engine=authoritative",
+    "test:differential:final": "node --test test/update18-final-differential-integration.test.js",
+    "test:differential:final:extended": "node verification/update18/run-final-differential-integration.mjs --tier=extended --include-worker=true --include-components=true --include-import-order=true",
+    "test:update18": "node --test test/update18-final-differential-integration.test.js"
   },
   "devDependencies": {
     "axe-core": "4.12.1",

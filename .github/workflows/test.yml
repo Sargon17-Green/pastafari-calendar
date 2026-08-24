@@ -61,6 +61,8 @@ jobs:
         run: npm run evidence:update17:stale
       - name: Verify Update 17 authoritative/reference matrix
         run: npm run test:update17:matrix
+      - name: Verify Update 18 final differential integration CI tier
+        run: npm run test:update18
       - name: Verify legacy generated regression artifacts are reproducible, not authoritative
         shell: bash
         run: |
