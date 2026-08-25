@@ -2,34 +2,34 @@
 
 ## Status
 
-- status: `INTEGRATION_INCOMPLETE_MISSING_PREREQUISITE`
-- finalClosureStatus: `INTEGRATION_INCOMPLETE_MISSING_PREREQUISITE`
+- status: `INTEGRATION_PASS`
+- final closure status: `INTEGRATION_PASS`
 - real mismatches: `0`
 - authoritative mismatches: `0`
 - fast mismatches: `0`
-- errors: `0`
-- timeouts: `0`
 - mutation detections: `2`
 - records: `111`
 
-## Coverage
-- browserRuntime: `awaiting browser evidence promotion`
-- canonicalCorpusCases: `51`
-- canonicalCorpusComparedThroughUpdate17Matrices: `True`
-- externalCalendarRows: `15`
-- finalClosureMissing: browser runtime differential; Worker runtime differential; standalone classic-script differential
-- freshUpdate18FinalTupleHoldout: `4`
-- holdoutCases: `12`
-- holdoutSeed: `396434711`
-- importOrderMatrix: `4`
-- monthWeavingRows: `8`
-- negativeGateRows: `3`
-- positiveGateRows: `5`
-- sauceRows: `0`
-- soakMemoryTrend: `1`
-- standaloneRuntime: `awaiting browser standalone evidence promotion`
-- workerRuntime: `awaiting browser Worker evidence promotion`
-- yearCandidateRows: `0`
+## Browser closure evidence
+
+- browserRuntime: `PASS`
+- workerRuntime: `PASS`
+- standaloneRuntime: `PASS`
+- browserVersion: `151.0.7922.34`
+
+## Remaining blockers
+
+- none
+
+## CI closure source
+
+- workflow: `.github/workflows/test.yml`
+- run id: `32824499590`
+- browser-smoke job id: `97729546428`
+- head SHA: `8e9f837180f3b252a3a5c8992ae9d10ac229b3f7`
+- browser differential: `PASS`
+- promote-final-closure: `INTEGRATION_PASS`
+- close-final-status: `INTEGRATION_PASS`
 
 ## Summary matrix
 
@@ -47,7 +47,3 @@
 | negative-gate-differential | 3 | 3 | 0 | 0 | 0 | 0 |
 | positive-gate-differential | 5 | 5 | 0 | 0 | 0 | 0 |
 | soak-memory-trend | 1 | 1 | 0 | 0 | 0 | 0 |
-
-## Interpretation
-
-Node-side Update 18 final evidence now promotes fresh Update 18 production holdout, import-order matrix, and soak/memory sanity. Final closure still requires the browser job to produce browser, Worker, and standalone runtime evidence, after which `promote-final-closure.mjs` can remove the remaining blockers and `close-final-status.mjs` must pass.

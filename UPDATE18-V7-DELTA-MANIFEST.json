@@ -1,0 +1,43 @@
+{
+  "schema": "pastafari-update18-v7-closure-archival-delta-v1",
+  "update": 18,
+  "stage": "v7-closure-archival",
+  "purpose": "Commit the final Update 18 closure evidence after the CI browser runtime, Worker runtime, and standalone classic-script differential checks passed and promote-final-closure reported INTEGRATION_PASS.",
+  "baseBranch": "Update-18",
+  "baseHeadShaObserved": "8e9f837180f3b252a3a5c8992ae9d10ac229b3f7",
+  "ciEvidence": {
+    "workflow": ".github/workflows/test.yml",
+    "runId": 32824499590,
+    "browserSmokeJobId": 97729546428,
+    "browserSmokeConclusion": "success",
+    "observedBrowserVersion": "151.0.7922.34",
+    "promoteFinalClosureStatus": "INTEGRATION_PASS",
+    "closeFinalStatus": "INTEGRATION_PASS"
+  },
+  "changedFiles": [
+    "UPDATE18-V7-DELTA-MANIFEST.json",
+    "SHA256SUMS.txt",
+    "docs/SHA256SUMS.txt",
+    "artifacts/update-18/browser-final-differential.json",
+    "artifacts/update-18/final-differential-integration.json",
+    "artifacts/update-18/report.md",
+    "artifacts/update-18/SHA256SUMS.txt",
+    "test/update18-final-differential-integration.test.js"
+  ],
+  "policy": {
+    "productionFilesChanged": false,
+    "semanticExpectedValuesChanged": false,
+    "referenceAdjudicatorPreserved": true,
+    "noExpectedFromActual": true,
+    "archivalOnly": true
+  },
+  "result": {
+    "finalClosureStatus": "INTEGRATION_PASS",
+    "remainingBlockers": [],
+    "realMismatches": 0,
+    "authoritativeMismatches": 0,
+    "fastMismatches": 0,
+    "errors": 0,
+    "timeouts": 0
+  }
+}
