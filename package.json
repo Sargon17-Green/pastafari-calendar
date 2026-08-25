@@ -106,9 +106,12 @@
     "evidence:update17:stale": "node verification/update17/check-canonical-stale.mjs",
     "test:update17": "node --test test/update17-canonical-evidence.test.js && node verification/update17/verify-canonical-evidence.mjs && node verification/update17/run-engine-matrix.mjs --engine=fast",
     "test:update17:matrix": "node verification/update17/run-engine-matrix.mjs --engine=authoritative",
-    "test:differential:final": "node --test test/update18-final-differential-integration.test.js",
-    "test:differential:final:extended": "node verification/update18/run-final-differential-integration.mjs --tier=extended --include-worker=true --include-components=true --include-import-order=true",
-    "test:update18": "node --test test/update18-final-differential-integration.test.js"
+    "test:differential:final": "node verification/update18/run-final-differential-integration.mjs",
+    "test:differential:final:node": "node verification/update18/run-final-differential-integration.mjs --tier=extended --gate-limit=26 --sauce-limit=6 --year-limit=1 --external-limit=0",
+    "test:differential:final:browser": "node verification/update18/run-final-differential-integration.mjs && node scripts/run-update18-browser-final-differential.mjs",
+    "test:differential:final:extended": "node verification/update18/run-final-differential-integration.mjs --tier=extended --gate-limit=26 --sauce-limit=6 --year-limit=1 --external-limit=0",
+    "test:update18": "node --test test/update18-final-differential-integration.test.js",
+    "test:differential:final:closure": "node verification/update18/close-final-status.mjs"
   },
   "devDependencies": {
     "axe-core": "4.12.1",

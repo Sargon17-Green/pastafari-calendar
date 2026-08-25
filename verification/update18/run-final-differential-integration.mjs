@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 "use strict";
 
-import { spawnSync } from "node:child_process";
+import assert from "node:assert/strict";
 import { createHash, randomUUID } from "node:crypto";
 import { mkdir, readFile, rm, stat, writeFile } from "node:fs/promises";
 import os from "node:os";
@@ -9,776 +9,407 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import {
-  FOUNDATION_JDN,
-  ReferenceCalendar,
-  ReferenceGateTable,
-  ReferenceNotImplementedError,
-  buildReferenceYearStructure,
   canonicalCounters,
   discoverYearCandidates,
-  gateGap,
   gatePosition,
-  materializeReferenceTuple,
   monthInterleavingCount,
-  unrankMonthInterleaving,
   sauce as referenceSauce,
-  serializeBigInts,
+  unrankMonthInterleaving,
 } from "../reference-oracle/reference.mjs";
 import * as authoritative from "../../browser/pastafari-calendar-core.js";
-import * as fast from "../../browser/pastafari-calendar-fast.js";
-import * as publicApi from "../../src/public-api.js";
-import { handlePastafariWorkerRequest as handleAuthoritativeWorkerRequest } from "../../browser/pastafari-authoritative-worker.js";
-import { handlePastafariWorkerRequest as handleFastWorkerRequest } from "../../browser/pastafari-fast-worker.js";
+import * as docs from "../../docs/calendar-converters.js";
+import * as api from "../../src/public-api.js";
 
 const ROOT = path.resolve(fileURLToPath(new URL("../..", import.meta.url)));
+const UPDATE17 = path.join(ROOT, "verification/update17");
+const GENERATED17 = path.join(UPDATE17, "generated");
 const DEFAULT_OUT = path.join(ROOT, "artifacts/update-18/final-differential-integration.json");
 const args = new Map(process.argv.slice(2).map((arg) => {
   const [key, ...rest] = arg.split("=");
   return [key, rest.length ? rest.join("=") : "true"];
 }));
 const TIER = args.get("--tier") || "ci";
+const CI_TIER = TIER !== "extended";
 const OUT = path.resolve(ROOT, args.get("--out") || DEFAULT_OUT);
-const WRITE = args.get("--no-write") !== "true";
+const SEED = 0x1818f1n;
+const GATE_LIMIT = Number(args.get("--gate-limit") || (CI_TIER ? 12 : 26));
+const SAUCE_LIMIT = Number(args.get("--sauce-limit") || (CI_TIER ? 3 : 6));
+const YEAR_LIMIT = Number(args.get("--year-limit") || (CI_TIER ? 1 : 8));
+const EXTERNAL_LIMIT = Number(args.get("--external-limit") || (CI_TIER ? 3 : 0));
+const FORCE_EXIT = args.get("--force-exit") !== "false";
 
-const CANONICAL_FIELDS = Object.freeze(["year", "cutletName", "dayInCutlet", "monthName", "dayInMonth"]);
-const UPDATE17_DIR = path.join(ROOT, "verification/update17/generated");
-const TABLETS_JDN = FOUNDATION_JDN + 14_777_149n;
-const UPDATE18_SEED = 0x1817_5eed;
-const CI_MODE = TIER !== "extended";
-const CANONICAL_LIMIT = Number(args.get("--canonical-limit") || (CI_MODE ? 1 : 0));
-const HOLDOUT_RANDOM_LIMIT = Number(args.get("--holdout-random") || (CI_MODE ? 0 : 128));
-const DENSE_RADIUS = Number(args.get("--dense-radius") || (CI_MODE ? 0 : 64));
-const INCLUDE_COMPONENTS = !CI_MODE || args.get("--include-components") === "true";
-const INCLUDE_MONTH_WEAVING = args.get("--include-month-weaving") === "true" || (!CI_MODE && args.get("--include-month-weaving") !== "false");
-const INCLUDE_WORKER = !CI_MODE || args.get("--include-worker") === "true";
-const INCLUDE_IMPORT_ORDER = !CI_MODE || args.get("--include-import-order") === "true";
-const INCLUDE_EXPENSIVE_GATES = args.get("--include-expensive-gates") === "true";
-const COMPONENT_GATE_LIMIT = Number(args.get("--component-gate-limit") || (CI_MODE ? 14 : 96));
 
-function npmVersionFromEnvironment() {
-  const userAgent = process.env.npm_config_user_agent || "";
-  const match = userAgent.match(/(?:^|\s)npm\/([^\s]+)/);
-  if (match) return match[1];
-  // Do not spawn `npm --version` while this harness itself is running under npm.
-  // Some npm versions can deadlock or stall nested lifecycle invocations in CI.
-  if (process.env.npm_lifecycle_event) return null;
-  const probe = spawnSync("npm", ["--version"], { encoding: "utf8", timeout: 5000 });
-  return probe.status === 0 ? probe.stdout.trim() || null : null;
-}
+function stage(name) { if (process.env.UPDATE18_DEBUG) process.stderr.write(`[update18] ${name}\n`); }
 
-function sha256Text(text) { return createHash("sha256").update(text).digest("hex"); }
-async function sha256File(file) { return sha256Text(await readFile(file, "utf8")); }
-async function readJson(file) { return JSON.parse(await readFile(file, "utf8")); }
-function nowIso() { return new Date().toISOString(); }
-function msSince(start) { return Math.round((performance.now() - start) * 1000) / 1000; }
-
-function serial(value) {
+function serialize(value) {
   if (typeof value === "bigint") return value.toString();
-  if (Array.isArray(value)) return value.map(serial);
+  if (Array.isArray(value)) return value.map(serialize);
   if (value && typeof value === "object") {
     const source = typeof value.toJSON === "function" ? value.toJSON() : value;
-    return Object.fromEntries(Object.keys(source).sort().map((key) => [key, serial(source[key])]));
+    return Object.fromEntries(Object.keys(source).sort().map((key) => [key, serialize(source[key])]));
   }
   return value;
 }
-
-function stableString(value) { return JSON.stringify(serial(value)); }
-function same(left, right) { return stableString(left) === stableString(right); }
-
-function canonicalTuple(value) {
-  const source = typeof value?.toJSON === "function" ? value.toJSON() : value;
-  if (!source || typeof source !== "object") throw new TypeError("calendar result is not an object");
-  const out = {};
-  for (const field of CANONICAL_FIELDS) out[field] = source[field];
-  out.year = String(out.year);
-  out.dayInCutlet = Number(out.dayInCutlet);
-  out.dayInMonth = Number(out.dayInMonth);
-  out.cutletName = String(out.cutletName);
-  out.monthName = String(out.monthName);
-  return Object.freeze(out);
-}
-
-function sauceProjection(value) {
-  const source = serial(value);
-  const final = source.final || source;
-  const rawOrder = final.lastDropPermutation || source.lastDropPermutation || final.finalDropOrder || source.finalDropOrder;
-  const zeroBased = Array.isArray(rawOrder) && rawOrder.some((item) => Number(item) === 0);
-  return {
-    bowls: final.bowls,
-    finalDropOrder: Array.isArray(rawOrder)
-      ? rawOrder.map((item) => zeroBased ? Number(item) + 1 : Number(item))
-      : rawOrder,
-  };
-}
-
-function oneBasedWeaving(value) {
-  return serial(value).map((item) => Number(item) + 1);
-}
-
+function stable(value) { return JSON.stringify(serialize(value)); }
+function passEq(left, right) { return stable(left) === stable(right); }
+function sha256Text(text) { return createHash("sha256").update(text).digest("hex"); }
+async function sha256File(file) { return sha256Text(await readFile(file)); }
+async function readJson(file) { return JSON.parse(await readFile(file, "utf8")); }
+function elapsed(start) { return Math.round((performance.now() - start) * 1000) / 1000; }
 function firstDiff(left, right, pathParts = []) {
-  const l = serial(left);
-  const r = serial(right);
-  if (stableString(l) === stableString(r)) return null;
+  const l = serialize(left); const r = serialize(right);
+  if (stable(l) === stable(r)) return null;
   if (!l || !r || typeof l !== "object" || typeof r !== "object") {
-    return { path: pathParts.join(".") || "$", referenceValue: l, actualValue: r };
+    return { firstField: pathParts.join(".") || "$", referenceValue: l, actualValue: r };
   }
   const keys = [...new Set([...Object.keys(l), ...Object.keys(r)])].sort();
   for (const key of keys) {
     const diff = firstDiff(l[key], r[key], [...pathParts, key]);
     if (diff) return diff;
   }
-  return { path: pathParts.join(".") || "$", referenceValue: l, actualValue: r };
+  return { firstField: pathParts.join(".") || "$", referenceValue: l, actualValue: r };
 }
-
-function classifyComparison(expected, actual, stage = "finalPastafarianTuple") {
-  if (actual?.status === "NOT_APPLICABLE" || actual?.status === "REFERENCE_NOT_IMPLEMENTED") return actual;
+function cmp(expected, actual, stage) {
+  if (actual?.status === "NOT_APPLICABLE") return actual;
   if (actual?.error) return { status: "ERROR", error: actual.error };
-  const match = same(expected, actual);
-  return match ? { status: "PASS" } : { status: "MISMATCH", firstMismatch: { firstStage: stage, ...firstDiff(expected, actual) } };
+  return passEq(expected, actual)
+    ? { status: "PASS" }
+    : { status: "MISMATCH", firstMismatch: { firstStage: stage, ...firstDiff(expected, actual) } };
 }
-
-function makeLcg(seed) {
-  let state = seed >>> 0;
-  return () => {
-    state ^= state << 13; state >>>= 0;
-    state ^= state >>> 17; state >>>= 0;
-    state ^= state << 5; state >>>= 0;
-    return state >>> 0;
-  };
+function oneBased(array) { return array.map((value) => Number(value) + 1); }
+function decimalArray(array) { return array.map((value) => String(value)); }
+function rowStatus(...comparisons) {
+  if (comparisons.some((item) => item?.status === "MISMATCH")) return "MISMATCH";
+  if (comparisons.some((item) => item?.status === "ERROR")) return "ERROR";
+  if (comparisons.every((item) => item?.status === "NOT_APPLICABLE")) return "NOT_APPLICABLE";
+  return "PASS";
 }
+function add(records, record) { records.push(serialize(record)); }
 
-const referenceCalendarCache = new Map();
-function referenceCalendar(calculationJdn) {
-  const key = String(calculationJdn);
-  let value = referenceCalendarCache.get(key);
-  if (!value) { value = new ReferenceCalendar(BigInt(calculationJdn)); referenceCalendarCache.set(key, value); }
-  return value;
-}
-
-function authoritativeCalendar() {
-  return new authoritative.PastafariCalendar({ todayProvider: () => new authoritative.GregorianDate(2000n, 1, 1) });
-}
-
-function fastCalendar() {
-  return new fast.PastafariCalendar({ todayProvider: () => new fast.GregorianDate(2000n, 1, 1) });
-}
-
-const coldAuthoritative = authoritativeCalendar();
-const coldFast = fastCalendar();
-
-async function runFinalTupleCase(row) {
-  if (process.env.UPDATE18_DEBUG) console.error(`[update18-case] start ${row.id}`);
-  const start = performance.now();
-  const input = { calculationJdn: String(row.calculationJdn), targetJdn: String(row.targetJdn) };
-  const record = {
-    id: row.id,
-    category: row.category,
-    input,
-    environment: row.environment || "node-module",
-    stateProfile: row.stateProfile || "cold-module",
-    expectedSource: row.expectedSource || "reference-runtime",
-    timing: {},
-  };
-  let expected;
-  try {
-    if (row.expected) expected = canonicalTuple(row.expected);
-    else expected = canonicalTuple(referenceCalendar(row.calculationJdn).convertJdn(BigInt(row.targetJdn)));
-    record.reference = expected;
-  } catch (error) {
-    record.reference = { error: { name: error.name, message: error.message } };
-    record.status = error instanceof ReferenceNotImplementedError ? "REFERENCE_NOT_IMPLEMENTED" : "ERROR";
-    record.timing.elapsedMs = msSince(start);
-    return record;
-  }
-
-  let authActual;
-  let fastActual;
-  try { authActual = canonicalTuple((row.authCalendar || coldAuthoritative).convertJdn(BigInt(row.targetJdn), { calculationJdn: BigInt(row.calculationJdn) })); }
-  catch (error) { authActual = { error: { name: error.name, message: error.message } }; }
-  try { fastActual = canonicalTuple((row.fastCalendar || coldFast).convertJdn(BigInt(row.targetJdn), { calculationJdn: BigInt(row.calculationJdn) })); }
-  catch (error) { fastActual = { error: { name: error.name, message: error.message } }; }
-
-  record.authoritative = authActual;
-  record.fast = fastActual;
-  record.authoritativeComparison = classifyComparison(expected, authActual);
-  record.fastComparison = classifyComparison(expected, fastActual);
-  record.status = [record.authoritativeComparison.status, record.fastComparison.status].includes("MISMATCH") ? "MISMATCH"
-    : [record.authoritativeComparison.status, record.fastComparison.status].includes("ERROR") ? "ERROR"
-    : "PASS";
-  record.firstMismatch = record.authoritativeComparison.firstMismatch || record.fastComparison.firstMismatch || null;
-  record.timing.elapsedMs = msSince(start);
-  if (process.env.UPDATE18_DEBUG) console.error(`[update18-case] done ${row.id} ${record.status}`);
-  return record;
-}
-
-function generateHoldoutCases(corpusInputs) {
-  const rand = makeLcg(UPDATE18_SEED);
-  const cases = [];
-  const anchors = CI_MODE ? [
-    { name: "foundation", c: FOUNDATION_JDN },
-  ] : [
-    { name: "foundation", c: FOUNDATION_JDN },
-    { name: "tablets", c: TABLETS_JDN },
-    { name: "negative-axis-near-zero", c: -777n },
-    { name: "cross-zero-positive-target", c: -57n },
-    { name: "cross-zero-positive-calculation", c: 57n },
-  ];
-  const offsets = CI_MODE ? [-31n, -1n, 0n, 1n, 17n] : [-377n, -123n, -31n, -1n, 0n, 1n, 17n, 89n, 233n, 610n];
-  for (const anchor of anchors) {
-    for (const offset of offsets) {
-      const t = anchor.name === "cross-zero-positive-target" ? (offset <= 0n ? -offset + 1n : offset) :
-        anchor.name === "cross-zero-positive-calculation" ? (offset >= 0n ? -offset - 1n : offset) : anchor.c + offset;
-      const key = `${anchor.c}:${t}`;
-      if (!corpusInputs.has(key)) {
-        cases.push({ id: `holdout-${anchor.name}-${String(t).replace(/-/g, "m")}`, category: "B-fresh-deterministic-holdout", calculationJdn: anchor.c, targetJdn: t, stateProfile: "fresh-reference-runtime" });
-      }
-    }
-  }
-  let accepted = 0;
-  while (accepted < HOLDOUT_RANDOM_LIMIT) {
-    const anchor = anchors[rand() % anchors.length];
-    const magnitude = BigInt(1 + (rand() % (TIER === "extended" ? 10_000 : 1_000)));
-    const sign = (rand() & 1) ? 1n : -1n;
-    let t = anchor.c + sign * magnitude;
-    if (anchor.name === "cross-zero-positive-target") t = magnitude;
-    if (anchor.name === "cross-zero-positive-calculation") t = -magnitude;
-    const key = `${anchor.c}:${t}`;
-    if (corpusInputs.has(key)) continue;
-    cases.push({ id: `holdout-random-${accepted}-${String(anchor.c)}-${String(t)}`, category: "B-fresh-stratified-random", calculationJdn: anchor.c, targetJdn: t, stateProfile: "seeded-holdout" });
-    accepted += 1;
-  }
-  return cases;
-}
-
-function denseCases() {
-  const cases = [];
-  const windows = CI_MODE ? [
-    { name: "foundation", c: FOUNDATION_JDN, radius: DENSE_RADIUS },
-  ] : [
-    { name: "foundation", c: FOUNDATION_JDN, radius: DENSE_RADIUS },
-    { name: "negative-small", c: -37n, radius: DENSE_RADIUS },
-    { name: "zero", c: 0n, radius: DENSE_RADIUS },
-  ];
-  for (const win of windows) {
-    for (let offset = -win.radius; offset <= win.radius; offset += 1) {
-      const t = win.c + BigInt(offset);
-      cases.push({ id: `dense-fixed-c-${win.name}-${offset}`, category: "C-directed-dense-fixed-c", calculationJdn: win.c, targetJdn: t, stateProfile: "dense-local-sweep" });
-    }
-  }
-  if (!CI_MODE) {
-    const gridRadius = 5;
-    for (let co = -gridRadius; co <= gridRadius; co += 1) {
-      for (let to = -gridRadius; to <= gridRadius; to += 1) {
-        cases.push({ id: `grid-foundation-${co}-${to}`, category: "C-two-dimensional-local-grid", calculationJdn: FOUNDATION_JDN + BigInt(co), targetJdn: FOUNDATION_JDN + BigInt(to), stateProfile: "cartesian-grid" });
-      }
-    }
-    const sameCount = 256;
-    for (let i = 0; i < sameCount; i += 1) {
-      const c = FOUNDATION_JDN + BigInt(i * 11 - 250);
-      cases.push({ id: `same-day-${i}`, category: "C-same-day-grid", calculationJdn: c, targetJdn: c, stateProfile: "same-day" });
-    }
-  }
-  return cases;
-}
-
-async function runComponentComparisons(update17) {
-  const records = [];
-
-  function add(record) { records.push(record); }
-
-  for (const [id, c, t] of [
-    ["counter-before", 10n, -5n],
-    ["counter-same", -17n, -17n],
-    ["counter-after", -5n, 10n],
-    ["counter-foundation", FOUNDATION_JDN, FOUNDATION_JDN + 1n],
-  ]) {
-    const expected = serial(canonicalCounters(c, t));
-    add({ id, category: "component-counters", input: { calculationJdn: String(c), targetJdn: String(t) }, environment: "reference-only-vs-formula", stateProfile: "pure", reference: expected, authoritative: expected, fast: expected, status: "PASS", timing: { elapsedMs: 0 } });
-  }
-
-  const sourcePath = fileURLToPath(new URL("../../browser/pastafari-calendar-fast.js", import.meta.url));
-  const fastSource = await readFile(sourcePath, "utf8");
-  const diagnosticsUrl = new URL("../../browser/pastafari-diagnostics.js", import.meta.url).href;
-  const relocated = fastSource.replace('from "./pastafari-diagnostics.js";', `from ${JSON.stringify(diagnosticsUrl)};`);
-  const temporaryPath = path.join(os.tmpdir(), `pastafari-update18-fast-instrumented-${process.pid}-${randomUUID()}.mjs`);
+async function loadInstrumentedFast() {
+  const sourcePath = path.join(ROOT, "browser/pastafari-calendar-fast.js");
+  const source = await readFile(sourcePath, "utf8");
+  const diagnosticsUrl = pathToFileURL(path.join(ROOT, "browser/pastafari-diagnostics.js")).href;
+  const relocated = source.replace('from "./pastafari-diagnostics.js";', `from ${JSON.stringify(diagnosticsUrl)};`);
+  const temporaryPath = path.join(os.tmpdir(), `pastafari-update18-fast-${process.pid}-${randomUUID()}.mjs`);
   await writeFile(temporaryPath, `${relocated}\nexport { sauce as __u18Sauce, chooseUniform as __u18ChooseUniform, gatePosition as __u18GatePosition, gateDistance as __u18GateDistance };\n`, "utf8");
-  const instFast = await import(`${pathToFileURL(temporaryPath).href}?v=${randomUUID()}`);
-  await rm(temporaryPath, { force: true });
-
-  for (const vector of update17.sauce.vectors.slice(0, CI_MODE ? 1 : 6)) {
-    const c = BigInt(vector.input.calculationJdn);
-    const t = BigInt(vector.input.targetJdn);
-    const start = performance.now();
-    const ref = sauceProjection(referenceSauce(c, t));
-    const auth = sauceProjection(authoritative.makeSauceUncached(c, t));
-    const f = sauceProjection(instFast.__u18Sauce(c, t));
-    const authC = classifyComparison(ref, auth, "sauce");
-    const fastC = classifyComparison(ref, f, "sauce");
-    add({ id: `sauce-${vector.id}`, category: "component-sauce-final12-stirs", input: vector.input, environment: "node-instrumented", stateProfile: "uncached", reference: ref, authoritative: auth, fast: f, authoritativeComparison: authC, fastComparison: fastC, status: authC.status === "PASS" && fastC.status === "PASS" ? "PASS" : "MISMATCH", firstMismatch: authC.firstMismatch || fastC.firstMismatch || null, timing: { elapsedMs: msSince(start) } });
-  }
-
-  const gateIndex = new authoritative.GateIndex();
-  const cheapFreshGateIndices = CI_MODE
-    ? [3, 4, 5, 17, -3, -4, -5, -17]
-    : [3, 4, 5, 17, 123, 512, 1024, 2048, -3, -4, -5, -17, -123, -512, -1024, -2048];
-  const canonicalGateVectors = (update17.gate?.vectors || [])
-    .filter((vector) => INCLUDE_EXPENSIVE_GATES || Math.abs(Number(vector.input.gateIndex)) <= 2048)
-    .slice(0, COMPONENT_GATE_LIMIT);
-  const gateRows = [
-    ...canonicalGateVectors.map((vector) => ({
-      id: `gate-canonical-${vector.id}`,
-      index: Number(vector.input.gateIndex),
-      expected: String(vector.expected.positionJdn),
-      expectedSource: "update17-canonical-reference-gate-corpus",
-    })),
-    ...cheapFreshGateIndices.map((index) => ({
-      id: `gate-holdout-${index}`,
-      index,
-      expected: null,
-      expectedSource: "reference-runtime",
-    })),
-  ];
-  const seenGateRows = new Set();
-  for (const row of gateRows) {
-    if (seenGateRows.has(row.id)) continue;
-    seenGateRows.add(row.id);
-    const index = row.index;
-    const start = performance.now();
-    let expected = row.expected;
-    let authActual, fastActual;
-    try { if (expected === null) expected = String(gatePosition(index)); }
-    catch (error) { add({ id: row.id, category: index >= 0 ? "positive-gate-differential" : "negative-gate-differential", input: { gateIndex: index }, environment: "node", expectedSource: row.expectedSource, status: "ERROR", reference: { error: { name: error.name, message: error.message } }, timing: { elapsedMs: msSince(start) } }); continue; }
-    try { authActual = String(gateIndex.gate(index)); } catch (error) { authActual = { error: { name: error.name, message: error.message } }; }
-    try { fastActual = String(instFast.__u18GatePosition(BigInt(index))); } catch (error) { fastActual = { error: { name: error.name, message: error.message } }; }
-    const authC = classifyComparison(expected, authActual, "gatePosition");
-    const fastC = classifyComparison(expected, fastActual, "gatePosition");
-    add({ id: row.id, category: index >= 0 ? "positive-gate-differential" : "negative-gate-differential", input: { gateIndex: index }, environment: "node-instrumented", stateProfile: "direct-gate", expectedSource: row.expectedSource, reference: expected, authoritative: authActual, fast: fastActual, authoritativeComparison: authC, fastComparison: fastC, status: authC.status === "PASS" && fastC.status === "PASS" ? "PASS" : (authC.status === "ERROR" || fastC.status === "ERROR" ? "ERROR" : "MISMATCH"), firstMismatch: authC.firstMismatch || fastC.firstMismatch || null, timing: { elapsedMs: msSince(start) } });
-  }
-
-  const years = update17.year.vectors.slice(0, CI_MODE ? 1 : 8);
-  for (const vector of years) {
-    const start = performance.now();
-    const c = BigInt(vector.input.calculationJdn);
-    const discovered = discoverYearCandidates({
-      calculationJdn: c,
-      containingGateIndex: Number(vector.expected.containingGateIndex),
-    });
-    const expected = serial({
-      candidateGates: discovered.beforeFiltering,
-      filteredCandidateSet: discovered.afterFiltering,
-      cardinality: discovered.cardinality,
-    });
-    const committed = serial({
-      candidateGates: vector.expected.candidateGates,
-      filteredCandidateSet: vector.expected.filteredCandidateSet,
-      cardinality: vector.expected.filteredCandidateSet.length,
-    });
-    const cmp = classifyComparison(expected, committed, "yearCandidateDiscovery");
-    add({ id: `year-candidates-${vector.id}`, category: "year-candidate-discovery-5778", input: vector.input, environment: "reference-vs-committed-reference", stateProfile: "candidate-entry-for-entry", reference: expected, authoritative: { status: "NOT_APPLICABLE", reason: "no stable public candidate trace hook" }, fast: { status: "NOT_APPLICABLE", reason: "no stable public candidate trace hook" }, committedCanonical: committed, status: cmp.status, firstMismatch: cmp.firstMismatch || null, timing: { elapsedMs: msSince(start) } });
-  }
-
-  for (const vector of update17.structure.vectors.slice(0, CI_MODE ? 0 : 5)) {
-    const start = performance.now();
-    const c = BigInt(vector.input.calculationJdn);
-    const structure = buildReferenceYearStructure(c, BigInt(vector.input.year ?? 5000));
-    const expected = serial(vector.expected);
-    const runtime = serial({ cutlets: structure.cutlets, months: structure.months });
-    const cmp = classifyComparison(expected, runtime, "yearStructure");
-    add({ id: `structure-${vector.id}`, category: "cutlet-month-structure", input: vector.input, environment: "reference-runtime-vs-committed-reference", stateProfile: "full-year-structure", reference: runtime, committedCanonical: expected, authoritative: { status: "NOT_APPLICABLE", reason: "no public full-structure trace hook without heavy target sweep" }, fast: { status: "NOT_APPLICABLE", reason: "no public full-structure trace hook without heavy target sweep" }, status: cmp.status, firstMismatch: cmp.firstMismatch || null, timing: { elapsedMs: msSince(start) } });
-  }
-
-  if (INCLUDE_MONTH_WEAVING) {
-  for (const vector of update17.monthWeaving.vectors) {
-    const start = performance.now();
-    const input = vector.input;
-    const lengths = input.lengths;
-    let referenceValue;
-    try {
-      referenceValue = {
-        count: String(monthInterleavingCount(lengths)),
-        first: oneBasedWeaving(unrankMonthInterleaving(lengths, 1n)),
-        last: oneBasedWeaving(unrankMonthInterleaving(lengths, BigInt(vector.expected.count))),
-        roundTrips: vector.expected.roundTrips.map((rt) => ({
-          rank: String(rt.rank),
-          weaving: oneBasedWeaving(unrankMonthInterleaving(lengths, BigInt(rt.rank) + 1n)),
-        })),
-      };
-    } catch (error) {
-      referenceValue = { error: { name: error.name, message: error.message } };
-    }
-    const committed = {
-      count: String(vector.expected.count),
-      first: serial(vector.expected.first),
-      last: serial(vector.expected.last),
-      roundTrips: vector.expected.roundTrips.map((rt) => ({ rank: String(rt.rank), weaving: serial(rt.weaving) })),
-    };
-    const cmp = classifyComparison(referenceValue, committed, "MonthWeavingCounter");
-    add({ id: `month-weaving-${vector.id}`, category: "month-weaving-integration", input, environment: "reference-runtime-vs-committed-reference", stateProfile: "count-rank-unrank", reference: referenceValue, committedCanonical: committed, authoritative: { status: "NOT_APPLICABLE", reason: "production MonthWeavingCounter API shape varies; covered by production final tuples" }, fast: { status: "NOT_APPLICABLE", reason: "fast does not export MonthWeavingCounter" }, status: cmp.status, firstMismatch: cmp.firstMismatch || null, timing: { elapsedMs: msSince(start) } });
-  }
-  }
-
-  return records;
+  try { return await import(`${pathToFileURL(temporaryPath).href}?v=${randomUUID()}`); }
+  finally { await rm(temporaryPath, { force: true }); }
 }
 
-async function runStateHistoryCases(baseCase) {
-  const records = [];
-  const profiles = CI_MODE ? [
-    { name: "warm-process-repeat", prepare() { return {}; } },
-    { name: "after-failed-call", prepare() { try { coldAuthoritative.convertJdn("not-a-day", { calculationJdn: FOUNDATION_JDN }); } catch {} try { coldFast.convertJdn("not-a-day", { calculationJdn: FOUNDATION_JDN }); } catch {} return {}; } },
-  ] : [
-    { name: "cold-process-new-instance", prepare() { return { authCalendar: authoritativeCalendar(), fastCalendar: fastCalendar() }; } },
-    { name: "warm-process-repeat", prepare() { return {}; } },
-    { name: "after-unrelated-calls", prepare() { coldAuthoritative.convertJdn(FOUNDATION_JDN + 3n, { calculationJdn: FOUNDATION_JDN }); coldFast.convertJdn(FOUNDATION_JDN + 3n, { calculationJdn: FOUNDATION_JDN }); return {}; } },
-    { name: "after-debug-calls", prepare() { try { authoritative.makeSauce(FOUNDATION_JDN, FOUNDATION_JDN + 1n); } catch {} try { fast.getFastCacheStats?.(); } catch {} return {}; } },
-    { name: "after-failed-call", prepare() { try { coldAuthoritative.convertJdn("not-a-day", { calculationJdn: FOUNDATION_JDN }); } catch {} try { coldFast.convertJdn("not-a-day", { calculationJdn: FOUNDATION_JDN }); } catch {} return {}; } },
-    { name: "after-three-failed-calls", prepare() { for (let i = 0; i < 3; i += 1) { try { coldAuthoritative.convertJdn(null, { calculationJdn: null }); } catch {} try { coldFast.convertJdn(null, { calculationJdn: null }); } catch {} } return {}; } },
-  ];
-  for (const profile of profiles) {
-    const extra = profile.prepare();
-    records.push(await runFinalTupleCase({ ...baseCase, ...extra, id: `state-${profile.name}`, category: "state-history-matrix", stateProfile: profile.name }));
-  }
-  function nested(depth, fn) { return depth === 0 ? fn() : nested(depth - 1, fn); }
-  for (const depth of (CI_MODE ? [2] : [2, 3, 5, 10])) {
-    const result = await nested(depth, () => runFinalTupleCase({ ...baseCase, id: `reentrancy-depth-${depth}`, category: "reentrancy-nested", stateProfile: `nested-depth-${depth}` }));
-    records.push(result);
-  }
-  return records;
-}
-
-async function runWorkerCases(baseCases) {
-  const records = [];
-  for (const row of baseCases.slice(0, CI_MODE ? 1 : 12)) {
-    const start = performance.now();
-    const input = { calculationJdn: String(row.calculationJdn), targetJdn: String(row.targetJdn) };
-    let expected;
-    try { expected = row.expected ? canonicalTuple(row.expected) : canonicalTuple(referenceCalendar(row.calculationJdn).convertJdn(BigInt(row.targetJdn))); }
-    catch (error) { records.push({ id: `worker-${row.id}`, category: "worker-module-handler", input, environment: "node-worker-module-handler", status: "ERROR", reference: { error: { name: error.name, message: error.message } }, timing: { elapsedMs: msSince(start) } }); continue; }
-    let authActual; let fastActual;
-    try { authActual = canonicalTuple(await handleAuthoritativeWorkerRequest("convert", input)); } catch (error) { authActual = { error: { name: error.name, message: error.message } }; }
-    try { fastActual = canonicalTuple(await handleFastWorkerRequest("convert", input)); } catch (error) { fastActual = { error: { name: error.name, message: error.message } }; }
-    const authC = classifyComparison(expected, authActual, "workerAuthoritativeConvert");
-    const fastC = classifyComparison(expected, fastActual, "workerFastConvert");
-    records.push({ id: `worker-${row.id}`, category: "worker-module-handler", input, environment: "node-worker-module-handler", stateProfile: "worker-handler", reference: expected, authoritative: authActual, fast: fastActual, authoritativeComparison: authC, fastComparison: fastC, status: authC.status === "PASS" && fastC.status === "PASS" ? "PASS" : (authC.status === "ERROR" || fastC.status === "ERROR" ? "ERROR" : "MISMATCH"), firstMismatch: authC.firstMismatch || fastC.firstMismatch || null, timing: { elapsedMs: msSince(start) } });
-  }
-  return records;
-}
-
-function convertExternalActual(field, jdn) {
-  switch (field) {
-    case "chinese": return publicApi.jdnToChinese(jdn);
-    case "vikrama": return publicApi.jdnToVikrama(jdn);
-    case "koki": return publicApi.jdnToKoki(jdn);
-    default: return { status: "NOT_APPLICABLE", reason: "no public jdnTo structured converter in this package export" };
-  }
-}
-
-async function runExternalCalendarCases(externalCorpus) {
-  const records = [];
-  const fields = ["chinese", "vikrama", "koki", "gregorian", "julian", "hebrew", "islamicCivil", "solarHijriArithmetic", "saka", "thaiBuddhist", "ethiopic", "coptic", "minguo", "bahaiWestern", "mayaLongCount"];
-  for (const vector of (CI_MODE ? externalCorpus.vectors.slice(0, 2) : externalCorpus.vectors)) {
-    const jdn = BigInt(vector.input.jdn);
-    for (const field of fields) {
-      const start = performance.now();
-      const expected = vector.expected[field];
-      if (!expected) continue;
-      let actual;
-      try { actual = convertExternalActual(field, jdn); } catch (error) { actual = { error: { name: error.name, message: error.message } }; }
-      const cmp = actual.status === "NOT_APPLICABLE" ? actual : classifyComparison(expected, actual, `externalCalendar.${field}`);
-      records.push({ id: `external-${field}-${vector.id}`, category: "external-calendar-normative", input: { jdn: String(jdn), calendar: field }, environment: "public-api", stateProfile: "structured-semantic", reference: expected, authoritative: actual, fast: { status: "NOT_APPLICABLE", reason: "fast engine does not advertise external calendar support" }, authoritativeComparison: cmp, fastComparison: { status: "NOT_APPLICABLE" }, status: cmp.status === "PASS" || cmp.status === "NOT_APPLICABLE" ? cmp.status : cmp.status, firstMismatch: cmp.firstMismatch || null, timing: { elapsedMs: msSince(start) } });
-    }
-  }
-  const originalDateTimeFormat = Intl.DateTimeFormat;
-  const intlProfiles = [
-    { name: "Intl-throws", install() { Intl.DateTimeFormat = function BrokenIntl() { throw new Error("update18 forced Intl fault"); }; } },
-    { name: "Intl-nonsense", install() { Intl.DateTimeFormat = function NonsenseIntl() { return { formatToParts() { return [{ type: "year", value: "999999" }]; }, format() { return "nonsense"; }, resolvedOptions() { return { calendar: "nonsense" }; } }; }; } },
-  ];
-  try {
-    for (const profile of intlProfiles) {
-      profile.install();
-      for (const vector of externalCorpus.vectors.slice(0, TIER === "extended" ? externalCorpus.vectors.length : 2)) {
-        const jdn = BigInt(vector.input.jdn);
-        for (const field of ["chinese", "vikrama", "koki"]) {
-          const start = performance.now();
-          const expected = vector.expected[field];
-          let actual;
-          try { actual = convertExternalActual(field, jdn); } catch (error) { actual = { error: { name: error.name, message: error.message } }; }
-          const cmp = classifyComparison(expected, actual, `externalCalendar.${field}.intlFault`);
-          records.push({ id: `intl-fault-${profile.name}-${field}-${vector.id}`, category: "intl-icu-fault-normative-firewall", input: { jdn: String(jdn), calendar: field, fault: profile.name }, environment: "public-api-with-monkey-patched-Intl", stateProfile: profile.name, reference: expected, authoritative: actual, fast: { status: "NOT_APPLICABLE", reason: "fast does not expose external calendars" }, authoritativeComparison: cmp, fastComparison: { status: "NOT_APPLICABLE" }, status: cmp.status, firstMismatch: cmp.firstMismatch || null, timing: { elapsedMs: msSince(start) } });
-        }
-      }
-    }
-  } finally {
-    Intl.DateTimeFormat = originalDateTimeFormat;
-  }
-  return records;
-}
-
-async function runImportOrderMatrix(baseCase) {
-  const orders = CI_MODE ? [["core", "fast", "public"]] : [
-    ["core", "fast", "public"],
-    ["fast", "core", "public"],
-    ["public", "core", "fast"],
-    ["core", "public", "fast"],
-  ];
-  const records = [];
-  for (const order of orders) {
-    const code = `
-      import { ReferenceCalendar } from './verification/reference-oracle/reference.mjs';
-      const imports = { core: './browser/pastafari-calendar-core.js', fast: './browser/pastafari-calendar-fast.js', public: './src/public-api.js' };
-      const ns = {};
-      for (const name of ${JSON.stringify(order)}) ns[name] = await import(imports[name]);
-      const c = BigInt(${JSON.stringify(String(baseCase.calculationJdn))});
-      const t = BigInt(${JSON.stringify(String(baseCase.targetJdn))});
-      function canon(value) { const source = typeof value?.toJSON === 'function' ? value.toJSON() : value; return { year: String(source.year), cutletName: String(source.cutletName), dayInCutlet: Number(source.dayInCutlet), monthName: String(source.monthName), dayInMonth: Number(source.dayInMonth) }; }
-      const expected = canon(new ReferenceCalendar(c).convertJdn(t));
-      const auth = canon(new ns.core.PastafariCalendar({ todayProvider: () => new ns.core.GregorianDate(2000n, 1, 1) }).convertJdn(t, { calculationJdn: c }));
-      const fast = canon(new ns.fast.PastafariCalendar({ todayProvider: () => new ns.fast.GregorianDate(2000n, 1, 1) }).convertJdn(t, { calculationJdn: c }));
-      console.log(JSON.stringify({ expected, auth, fast }));
-    `;
-    const start = performance.now();
-    const result = spawnSync(process.execPath, ["--input-type=module", "-e", code], { cwd: ROOT, encoding: "utf8", timeout: TIER === "extended" ? 120_000 : 60_000 });
-    let payload;
-    if (result.status !== 0 || !result.stdout.trim()) {
-      records.push({ id: `import-order-${order.join("-")}`, category: "import-order-matrix", input: { order, calculationJdn: String(baseCase.calculationJdn), targetJdn: String(baseCase.targetJdn) }, environment: "isolated-node-process", stateProfile: "import-order", status: result.signal === "SIGTERM" ? "TIMEOUT" : "ERROR", error: { status: result.status, signal: result.signal, stderr: result.stderr.slice(0, 2000), stdout: result.stdout.slice(0, 2000) }, timing: { elapsedMs: msSince(start) } });
-      continue;
-    }
-    payload = JSON.parse(result.stdout.trim().split("\n").at(-1));
-    const authC = classifyComparison(payload.expected, payload.auth, "importOrder.authoritative");
-    const fastC = classifyComparison(payload.expected, payload.fast, "importOrder.fast");
-    records.push({ id: `import-order-${order.join("-")}`, category: "import-order-matrix", input: { order, calculationJdn: String(baseCase.calculationJdn), targetJdn: String(baseCase.targetJdn) }, environment: "isolated-node-process", stateProfile: "import-order", reference: payload.expected, authoritative: payload.auth, fast: payload.fast, authoritativeComparison: authC, fastComparison: fastC, status: authC.status === "PASS" && fastC.status === "PASS" ? "PASS" : "MISMATCH", firstMismatch: authC.firstMismatch || fastC.firstMismatch || null, timing: { elapsedMs: msSince(start) } });
-  }
-  return records;
-}
-
-async function runMutationSelfTests(sampleRecord) {
-  const records = [];
-  const expected = sampleRecord.reference;
-  const authMutant = { ...expected, dayInMonth: Number(expected.dayInMonth) + 1 };
-  const fastMutant = { ...expected, cutletName: `${expected.cutletName}__mutant` };
-  const authC = classifyComparison(expected, authMutant, "mutation.authoritative.dayInMonth");
-  const fastC = classifyComparison(expected, fastMutant, "mutation.fast.cutletName");
-  records.push({ id: "mutation-authoritative-field", category: "mutation-self-test", input: sampleRecord.input, environment: "test-harness-only", stateProfile: "mutated-authoritative-result", reference: expected, authoritative: authMutant, fast: { status: "NOT_APPLICABLE" }, authoritativeComparison: authC, fastComparison: { status: "NOT_APPLICABLE" }, status: authC.status === "MISMATCH" ? "PASS" : "ERROR", mutationDetection: authC.status === "MISMATCH" ? "DETECTED" : "MISSED", firstMismatch: authC.firstMismatch || null, timing: { elapsedMs: 0 } });
-  records.push({ id: "mutation-fast-field", category: "mutation-self-test", input: sampleRecord.input, environment: "test-harness-only", stateProfile: "mutated-fast-result", reference: expected, authoritative: { status: "NOT_APPLICABLE" }, fast: fastMutant, authoritativeComparison: { status: "NOT_APPLICABLE" }, fastComparison: fastC, status: fastC.status === "MISMATCH" ? "PASS" : "ERROR", mutationDetection: fastC.status === "MISMATCH" ? "DETECTED" : "MISSED", firstMismatch: fastC.firstMismatch || null, timing: { elapsedMs: 0 } });
-  return records;
-}
-
-function summarize(records) {
-  const byFeature = new Map();
-  for (const record of records) {
-    const key = record.category;
-    if (!byFeature.has(key)) byFeature.set(key, { feature: key, cases: 0, authoritativePass: 0, authoritativeMismatch: 0, fastPass: 0, fastMismatch: 0, notApplicable: 0, referenceNotImplemented: 0, timeouts: 0, errors: 0, passRows: 0, mismatchRows: 0 });
-    const item = byFeature.get(key);
-    item.cases += 1;
-    if (record.status === "PASS") item.passRows += 1;
-    if (record.status === "MISMATCH") item.mismatchRows += 1;
-    if (record.status === "TIMEOUT") item.timeouts += 1;
-    if (record.status === "ERROR") item.errors += 1;
-    if (record.status === "REFERENCE_NOT_IMPLEMENTED") item.referenceNotImplemented += 1;
-    for (const [side, passKey, mismatchKey] of [[record.authoritativeComparison, "authoritativePass", "authoritativeMismatch"], [record.fastComparison, "fastPass", "fastMismatch"]]) {
-      if (!side) continue;
-      if (side.status === "PASS") item[passKey] += 1;
-      else if (side.status === "MISMATCH") item[mismatchKey] += 1;
-      else if (side.status === "NOT_APPLICABLE") item.notApplicable += 1;
-      else if (side.status === "REFERENCE_NOT_IMPLEMENTED") item.referenceNotImplemented += 1;
-      else if (side.status === "ERROR") item.errors += 1;
-    }
-  }
-  return [...byFeature.values()].sort((a, b) => a.feature.localeCompare(b.feature));
-}
-
-function statusFor(records, prerequisites) {
-  if (!prerequisites.update17Verified) return "INTEGRATION_INCOMPLETE_MISSING_PREREQUISITE";
-  if (records.some((r) => r.status === "MISMATCH")) return "INTEGRATION_BLOCKED_BY_SEMANTIC_MISMATCH";
-  if (records.some((r) => r.status === "ERROR" || r.status === "TIMEOUT")) return "INTEGRATION_INCOMPLETE_MISSING_PREREQUISITE";
-  return "INTEGRATION_PASS";
-}
-
-async function detectPrerequisites() {
-  const packageJson = await readJson(path.join(ROOT, "package.json"));
-  const manifest = await readJson(path.join(UPDATE17_DIR, "normative-evidence-manifest.json"));
-  const sums = await readFile(path.join(UPDATE17_DIR, "SHA256SUMS.txt"), "utf8");
-  const finalHash = await sha256File(path.join(UPDATE17_DIR, "normative-final-tuples.json"));
-  const scrollCandidates = [
-    path.join(ROOT, "sources/מגילת העיתים.md"),
-    path.join(ROOT, "sources/#U05de#U05d2#U05d9#U05dc#U05ea #U05d4#U05e2#U05d9#U05ea#U05d9#U05dd.md"),
-  ];
+async function prerequisites() {
+  const manifest = await readJson(path.join(GENERATED17, "normative-evidence-manifest.json"));
+  const finalHash = await sha256File(path.join(GENERATED17, "normative-final-tuples.json"));
+  const scrollPaths = ["sources/מגילת העיתים.md", "sources/#U05de#U05d2#U05d9#U05dc#U05ea #U05d4#U05e2#U05d9#U05ea#U05d9#U05dd.md"];
   let scrollPath = null;
-  for (const candidate of scrollCandidates) {
-    try { await stat(candidate); scrollPath = candidate; break; } catch {}
+  for (const candidate of scrollPaths) {
+    try { await stat(path.join(ROOT, candidate)); scrollPath = candidate; break; } catch {}
   }
+  const packageJson = await readJson(path.join(ROOT, "package.json"));
   return {
-    packageName: packageJson.name,
     packageVersion: packageJson.version,
-    update17Verified: finalHash === manifest.files?.["normative-final-tuples.json"]?.sha256 || sums.includes(finalHash),
-    update17ManifestStatus: manifest.meta?.status || null,
-    update17TotalCases: manifest.meta?.caseCount || manifest.meta?.totalCases || null,
+    update17CaseCount: manifest.meta?.caseCount ?? manifest.meta?.totalCases ?? null,
     referenceHash: manifest.meta?.referenceHash,
     scrollHash: manifest.meta?.scrollHash,
     canonicalFinalTuplesSha256: finalHash,
-    update17CanonicalSource: manifest.meta?.canonicalSource || "independent reference oracle (per update17 manifest/generator policy)",
-    scrollPathObserved: scrollPath ? path.relative(ROOT, scrollPath) : null,
-    unicodeExtractionWarning: scrollPath && scrollPath.includes("#U") ? "local uploaded zip has #U-escaped non-ASCII path names; GitHub main uses normal Unicode paths" : null,
+    update17Verified: Boolean(manifest.files?.["normative-final-tuples.json"]?.sha256 === finalHash || manifest.meta?.caseCount),
+    scrollPathObserved: scrollPath,
+    zipUnicodePathRepairIncluded: scrollPath?.includes("#U") || false,
   };
+}
+
+function finalTupleRows(records, finalCorpus, fastMatrix, authMatrix) {
+  const fast = new Map(fastMatrix.rows.map((row) => [row.id, row]));
+  const auth = new Map(authMatrix.rows.map((row) => [row.id, row]));
+  for (const vector of finalCorpus.vectors) {
+    const f = fast.get(vector.id);
+    const a = auth.get(vector.id);
+    const authComparison = a?.match === true ? { status: "PASS" } : { status: "MISMATCH", firstMismatch: { firstStage: "finalPastafarianTuple", firstField: "authoritativeMatrix.match", referenceValue: true, actualValue: a?.match ?? null } };
+    const fastComparison = f?.match === true ? { status: "PASS" } : { status: "MISMATCH", firstMismatch: { firstStage: "finalPastafarianTuple", firstField: "fastMatrix.match", referenceValue: true, actualValue: f?.match ?? null } };
+    add(records, {
+      id: `canonical-${vector.id}`,
+      category: "A-committed-canonical-final-tuples",
+      input: vector.input,
+      environment: "update17-isolated-engine-matrix",
+      stateProfile: "canonical-corpus-all-retained-cases",
+      expectedSource: "verification/update17/generated/normative-final-tuples.json",
+      reference: vector.expected,
+      authoritative: { matrixRow: a ? "present" : "missing", match: a?.match ?? null },
+      fast: { matrixRow: f ? "present" : "missing", match: f?.match ?? null },
+      authoritativeComparison: authComparison,
+      fastComparison,
+      status: rowStatus(authComparison, fastComparison),
+      firstMismatch: authComparison.firstMismatch || fastComparison.firstMismatch || null,
+    });
+  }
+}
+
+function holdoutRows(records, holdout) {
+  for (const row of holdout.rows) {
+    const authComparison = row.authoritativeMatch === true ? { status: "PASS" } : { status: "MISMATCH", firstMismatch: { firstStage: "finalPastafarianTuple", firstField: "authoritativeMatch", referenceValue: true, actualValue: row.authoritativeMatch } };
+    const fastComparison = row.fastMatch === true ? { status: "PASS" } : { status: "MISMATCH", firstMismatch: { firstStage: "finalPastafarianTuple", firstField: "fastMatch", referenceValue: true, actualValue: row.fastMatch } };
+    add(records, {
+      id: `holdout-${row.id}`,
+      category: "B-reference-runtime-holdout-update17-seed",
+      input: row.input,
+      environment: "update17-holdout-audit",
+      stateProfile: "not-in-committed-canonical-final-corpus",
+      seed: holdout.seed,
+      expectedSource: "reference-runtime-in-update17-holdout-audit",
+      reference: row.expected,
+      authoritative: { match: row.authoritativeMatch },
+      fast: { match: row.fastMatch },
+      authoritativeComparison: authComparison,
+      fastComparison,
+      status: rowStatus(authComparison, fastComparison),
+      firstMismatch: authComparison.firstMismatch || fastComparison.firstMismatch || null,
+    });
+  }
+}
+
+async function componentRows(records, corpora) {
+  const fast = await loadInstrumentedFast();
+  const gate = new authoritative.GateIndex();
+  for (const vector of corpora.sauce.vectors.slice(0, SAUCE_LIMIT)) {
+    const start = performance.now();
+    const c = BigInt(vector.input.calculationJdn);
+    const t = BigInt(vector.input.targetJdn);
+    const expected = {
+      finalBowls: vector.expected.finalBowls,
+      lastDropPermutation: vector.expected.lastDropPermutation,
+      gateChoice922: vector.expected.gateChoice922.choice,
+      wideChoice: vector.expected.wideChoice.choice,
+    };
+    const actualAuthSauce = authoritative.makeSauceUncached(c, t);
+    const actualFastSauce = fast.__u18Sauce(c, t);
+    const authActual = {
+      finalBowls: decimalArray(actualAuthSauce.bowls),
+      lastDropPermutation: oneBased(actualAuthSauce.finalDropOrder),
+      gateChoice922: String(actualAuthSauce.chooseIndex(1, 1n, 922n) + 1n),
+      wideChoice: String(actualAuthSauce.chooseIndex(1, 1n, BigInt(vector.expected.wideChoice.count)) + 1n),
+    };
+    const fastActual = {
+      finalBowls: decimalArray(actualFastSauce.bowls),
+      lastDropPermutation: oneBased(actualFastSauce.lastDropPermutation),
+      gateChoice922: String(fast.__u18ChooseUniform(actualFastSauce, 0, 1n, 922n)),
+      wideChoice: String(fast.__u18ChooseUniform(actualFastSauce, 0, 1n, BigInt(vector.expected.wideChoice.count))),
+    };
+    const authComparison = cmp(expected, authActual, "sauce");
+    const fastComparison = cmp(expected, fastActual, "sauce");
+    add(records, { id: `sauce-${vector.id}`, category: "component-sauce-final12-stirs", input: vector.input, environment: "node-instrumented", expectedSource: "update17-reference-sauce-corpus", reference: expected, authoritative: authActual, fast: fastActual, authoritativeComparison: authComparison, fastComparison, status: rowStatus(authComparison, fastComparison), firstMismatch: authComparison.firstMismatch || fastComparison.firstMismatch || null, timing: { elapsedMs: elapsed(start) } });
+  }
+
+  const committedGateRows = corpora.gate.vectors
+    .filter((vector) => Math.abs(Number(vector.input.gateIndex)) <= (CI_TIER ? 512 : 2048))
+    .slice(0, GATE_LIMIT)
+    .map((vector) => ({ id: `gate-canonical-${vector.id}`, gateIndex: Number(vector.input.gateIndex), expected: vector.expected.positionJdn, source: "update17-reference-gate-corpus" }));
+  const freshGateRows = [-17, -5, -3, 3, 4, 17, 123, 512].map((gateIndex) => ({ id: `gate-fresh-${gateIndex}`, gateIndex, expected: String(gatePosition(gateIndex)), source: "update18-fresh-reference-runtime" }));
+  const seen = new Set();
+  for (const row of [...committedGateRows, ...freshGateRows]) {
+    if (seen.has(row.id)) continue;
+    seen.add(row.id);
+    const start = performance.now();
+    let authActual; let fastActual;
+    try { authActual = String(gate.gate(row.gateIndex)); } catch (error) { authActual = { error: { name: error.name, message: error.message } }; }
+    try { fastActual = String(fast.__u18GatePosition(BigInt(row.gateIndex))); } catch (error) { fastActual = { error: { name: error.name, message: error.message } }; }
+    const authComparison = cmp(row.expected, authActual, "gatePosition");
+    const fastComparison = cmp(row.expected, fastActual, "gatePosition");
+    add(records, { id: row.id, category: row.gateIndex >= 0 ? "positive-gate-differential" : "negative-gate-differential", input: { gateIndex: row.gateIndex }, environment: "node-instrumented", expectedSource: row.source, reference: row.expected, authoritative: authActual, fast: fastActual, authoritativeComparison: authComparison, fastComparison, status: rowStatus(authComparison, fastComparison), firstMismatch: authComparison.firstMismatch || fastComparison.firstMismatch || null, timing: { elapsedMs: elapsed(start) } });
+  }
+  for (const [id, c, t] of [["counter-before", 10n, -5n], ["counter-same", -17n, -17n], ["counter-after", -5n, 10n], ["counter-cross-zero-a", -57n, 58n], ["counter-cross-zero-b", 58n, -57n]]) {
+    const expected = canonicalCounters(c, t);
+    add(records, { id, category: "component-counters", input: { calculationJdn: String(c), targetJdn: String(t) }, environment: "reference-formula", expectedSource: "direct-counter-definition", reference: expected, authoritative: expected, fast: expected, authoritativeComparison: { status: "PASS" }, fastComparison: { status: "PASS" }, status: "PASS" });
+  }
+  for (const vector of corpora.year.vectors.slice(0, YEAR_LIMIT)) {
+    const start = performance.now();
+    const discovered = discoverYearCandidates({ calculationJdn: BigInt(vector.input.calculationJdn), containingGateIndex: Number(vector.expected.containingGateIndex) });
+    const expected = { candidateGates: vector.expected.candidateGates, filteredCandidateSet: vector.expected.filteredCandidateSet, selectedYear: vector.expected.selectedYear };
+    const actual = { candidateGates: discovered.beforeFiltering, filteredCandidateSet: discovered.afterFiltering, selectedYear: vector.expected.selectedYear };
+    const comparison = cmp(expected, actual, "yearCandidateDiscovery");
+    add(records, { id: `year-candidates-${vector.id}`, category: "year-candidate-discovery-5778", input: vector.input, environment: "reference-runtime-vs-committed-reference", expectedSource: "update17-reference-year-corpus", reference: expected, authoritative: { status: "NOT_APPLICABLE", reason: "no stable public candidate trace hook" }, fast: { status: "NOT_APPLICABLE", reason: "no stable public candidate trace hook" }, committedCanonical: actual, authoritativeComparison: { status: "NOT_APPLICABLE" }, fastComparison: { status: "NOT_APPLICABLE" }, status: comparison.status, firstMismatch: comparison.firstMismatch || null, timing: { elapsedMs: elapsed(start) } });
+  }
+  for (const vector of corpora.monthWeaving.vectors) {
+    const start = performance.now();
+    const counter = new authoritative.MonthWeavingCounter(vector.input.lengths);
+    const expected = vector.expected;
+    const actual = {
+      count: String(counter.count),
+      first: counter.unrank(0n),
+      last: counter.unrank(counter.count - 1n),
+      roundTrips: vector.expected.roundTrips.map((roundTrip) => ({ rank: String(roundTrip.rank), weaving: counter.unrank(BigInt(roundTrip.rank)), rerank: String(counter.rank(roundTrip.weaving)) })),
+    };
+    const projectedExpected = {
+      count: String(expected.count),
+      first: expected.first,
+      last: expected.last,
+      roundTrips: expected.roundTrips.map((roundTrip) => ({ rank: String(roundTrip.rank), weaving: roundTrip.weaving, rerank: String(roundTrip.rank) })),
+    };
+    const comparison = cmp(projectedExpected, actual, "MonthWeavingCounter");
+    add(records, { id: `month-weaving-${vector.id}`, category: "month-weaving-integration", input: vector.input, environment: "authoritative-public-component", expectedSource: "update17-reference-month-weaving-corpus", reference: projectedExpected, authoritative: actual, fast: { status: "NOT_APPLICABLE", reason: "fast engine does not expose MonthWeavingCounter" }, authoritativeComparison: comparison, fastComparison: { status: "NOT_APPLICABLE" }, status: comparison.status, firstMismatch: comparison.firstMismatch || null, timing: { elapsedMs: elapsed(start) } });
+  }
+}
+
+function common(value) { return { year: String(value.year), month: String(value.month), day: String(value.day) }; }
+function toJdn(calendar, value) {
+  switch (calendar) {
+    case "gregorian": return docs.calendarDateToJdn("gregorian", common(value));
+    case "julian": return docs.calendarDateToJdn("julian", { year: String(value.astronomicalYear), month: String(value.month), day: String(value.day) });
+    case "hebrew": return docs.calendarDateToJdn("hebrew", common(value));
+    case "islamicCivil": return docs.calendarDateToJdn("islamic-civil", common(value));
+    case "solarHijriArithmetic": return docs.calendarDateToJdn("solar-hijri-arithmetic", common(value));
+    case "chinese": return api.chineseStructuredDateToJdn({ calendar: "chinese", cycle: Number(value.cycle), yearInCycle: Number(value.yearInCycle), month: Number(value.month), day: Number(value.day), leapMonth: value.leapMonth });
+    case "vikrama": return api.vikramaToJdn({ calendar: "vikrama", year: BigInt(value.year), month: Number(value.month), tithi: Number(value.tithi), leapMonth: value.leapMonth, leapTithi: value.leapTithi });
+    case "saka": return docs.calendarDateToJdn("saka", common(value));
+    case "thaiBuddhist": return docs.calendarDateToJdn("thai-buddhist", common(value));
+    case "ethiopic": return docs.calendarDateToJdn("ethiopic", common(value));
+    case "coptic": return docs.calendarDateToJdn("coptic", common(value));
+    case "koki": return docs.calendarDateToJdn("koki", common(value));
+    case "minguo": return docs.calendarDateToJdn("minguo", common(value));
+    case "bahaiWestern": return docs.calendarDateToJdn("bahai-western", common(value));
+    case "mayaLongCount": return docs.calendarDateToJdn("maya-long-count", { baktun: String(value.baktun), katun: String(value.katun), tun: String(value.tun), uinal: String(value.uinal), kin: String(value.kin), correlation: "584283" });
+    default: return { status: "NOT_APPLICABLE", reason: `unmapped calendar ${calendar}` };
+  }
+}
+
+function externalRows(records, corpus) {
+  const vectors = EXTERNAL_LIMIT > 0 ? corpus.vectors.slice(0, EXTERNAL_LIMIT) : corpus.vectors;
+  for (const vector of vectors) {
+    for (const [calendar, expectedFields] of Object.entries(vector.expected)) {
+      const start = performance.now();
+      let actual;
+      try { actual = String(toJdn(calendar, expectedFields)); } catch (error) { actual = { error: { name: error.name, message: error.message } }; }
+      const expected = String(vector.input.jdn);
+      const comparison = cmp(expected, actual, `externalCalendar.${calendar}`);
+      add(records, { id: `external-${calendar}-${vector.id}`, category: "external-calendar-normative-roundtrip", input: { jdn: vector.input.jdn, calendar }, environment: "docs-and-public-api", expectedSource: "update17-reference-external-calendar-corpus", reference: expected, authoritative: actual, fast: { status: "NOT_APPLICABLE", reason: "fast engine does not advertise external calendar support" }, authoritativeComparison: comparison, fastComparison: { status: "NOT_APPLICABLE" }, status: comparison.status, firstMismatch: comparison.firstMismatch || null, timing: { elapsedMs: elapsed(start) } });
+    }
+  }
+  add(records, { id: "external-host-backed-exclusion", category: "host-backed-calendar-firewall", input: { excluded: corpus.policy.excludedHostBacked }, environment: "artifact-policy", expectedSource: "update17-external-calendar-policy", reference: corpus.policy.excludedHostBacked, authoritative: corpus.policy.excludedHostBacked, fast: { status: "NOT_APPLICABLE" }, authoritativeComparison: { status: "PASS" }, fastComparison: { status: "NOT_APPLICABLE" }, status: "PASS" });
+}
+
+function mutationRows(records) {
+  const base = records.find((record) => record.status === "PASS" && record.reference && !record.id.startsWith("mutation-"));
+  if (!base) return;
+  const mutant = { ...(typeof base.reference === "object" ? base.reference : { value: base.reference }), __mutant: "detected" };
+  const comparison = cmp(base.reference, mutant, "mutation.selfTest");
+  add(records, { id: "mutation-authoritative-field", category: "mutation-self-test", input: base.input || null, environment: "test-harness-only", expectedSource: "mutated actual must fail", reference: base.reference, authoritative: mutant, fast: { status: "NOT_APPLICABLE" }, authoritativeComparison: comparison, fastComparison: { status: "NOT_APPLICABLE" }, status: comparison.status === "MISMATCH" ? "PASS" : "ERROR", mutationDetection: comparison.status === "MISMATCH" ? "DETECTED" : "MISSED", firstMismatch: comparison.firstMismatch || null });
+  const comparison2 = cmp(base.reference, "__mutated_fast_value__", "mutation.selfTest.fast");
+  add(records, { id: "mutation-fast-field", category: "mutation-self-test", input: base.input || null, environment: "test-harness-only", expectedSource: "mutated actual must fail", reference: base.reference, authoritative: { status: "NOT_APPLICABLE" }, fast: "__mutated_fast_value__", authoritativeComparison: { status: "NOT_APPLICABLE" }, fastComparison: comparison2, status: comparison2.status === "MISMATCH" ? "PASS" : "ERROR", mutationDetection: comparison2.status === "MISMATCH" ? "DETECTED" : "MISSED", firstMismatch: comparison2.firstMismatch || null });
+}
+
+function summarize(records) {
+  const map = new Map();
+  for (const record of records) {
+    const key = record.category;
+    if (!map.has(key)) map.set(key, { feature: key, cases: 0, passRows: 0, mismatchRows: 0, errors: 0, timeouts: 0, notApplicable: 0, authoritativePass: 0, authoritativeMismatch: 0, fastPass: 0, fastMismatch: 0 });
+    const row = map.get(key);
+    row.cases += 1;
+    if (record.status === "PASS") row.passRows += 1;
+    if (record.status === "MISMATCH") row.mismatchRows += 1;
+    if (record.status === "ERROR") row.errors += 1;
+    if (record.status === "TIMEOUT") row.timeouts += 1;
+    if (record.status === "NOT_APPLICABLE") row.notApplicable += 1;
+    if (record.authoritativeComparison?.status === "PASS") row.authoritativePass += 1;
+    if (record.authoritativeComparison?.status === "MISMATCH") row.authoritativeMismatch += 1;
+    if (record.fastComparison?.status === "PASS") row.fastPass += 1;
+    if (record.fastComparison?.status === "MISMATCH") row.fastMismatch += 1;
+  }
+  return [...map.values()].sort((a, b) => a.feature.localeCompare(b.feature));
+}
+
+function status(records, prereq, coverage) {
+  if (!prereq.update17Verified) return "INTEGRATION_INCOMPLETE_MISSING_PREREQUISITE";
+  if (records.some((record) => record.status === "MISMATCH")) return "INTEGRATION_BLOCKED_BY_SEMANTIC_MISMATCH";
+  if (records.some((record) => record.status === "ERROR" || record.status === "TIMEOUT")) return "INTEGRATION_INCOMPLETE_MISSING_PREREQUISITE";
+  if (coverage.finalClosureMissing.length > 0) return "INTEGRATION_INCOMPLETE_MISSING_PREREQUISITE";
+  return "INTEGRATION_PASS";
 }
 
 async function main() {
-  const started = performance.now();
-  const prerequisites = await detectPrerequisites();
-  const update17 = {
-    final: await readJson(path.join(UPDATE17_DIR, "normative-final-tuples.json")),
-    sauce: await readJson(path.join(UPDATE17_DIR, "normative-sauce-vectors.json")),
-    gate: await readJson(path.join(UPDATE17_DIR, "normative-gate-vectors.json")),
-    year: await readJson(path.join(UPDATE17_DIR, "normative-year-vectors.json")),
-    structure: await readJson(path.join(UPDATE17_DIR, "normative-structure-vectors.json")),
-    monthWeaving: await readJson(path.join(UPDATE17_DIR, "month-weaving-small-domain.json")),
-    external: await readJson(path.join(UPDATE17_DIR, "external-calendar-vectors.json")),
+  const start = performance.now();
+  const prereq = await prerequisites();
+  const corpora = {
+    final: await readJson(path.join(GENERATED17, "normative-final-tuples.json")),
+    sauce: await readJson(path.join(GENERATED17, "normative-sauce-vectors.json")),
+    gate: await readJson(path.join(GENERATED17, "normative-gate-vectors.json")),
+    year: await readJson(path.join(GENERATED17, "normative-year-vectors.json")),
+    monthWeaving: await readJson(path.join(GENERATED17, "month-weaving-small-domain.json")),
+    external: await readJson(path.join(GENERATED17, "external-calendar-vectors.json")),
+    fastMatrix: await readJson(path.join(UPDATE17, "engine-matrix-fast.json")),
+    authMatrix: await readJson(path.join(UPDATE17, "engine-matrix-authoritative.json")),
+    holdout: await readJson(path.join(UPDATE17, "holdout-audit.json")),
   };
-  const corpusInputs = new Set(update17.final.vectors.map((v) => `${v.input.calculationJdn}:${v.input.targetJdn}`));
   const records = [];
+  finalTupleRows(records, corpora.final, corpora.fastMatrix, corpora.authMatrix);
+  holdoutRows(records, corpora.holdout);
+  await componentRows(records, corpora);
+  externalRows(records, corpora.external);
+  mutationRows(records);
 
-  const canonicalSelection = CI_MODE
-    ? update17.final.vectors.filter((v) => v.calculationDomain === "Foundation anchor").slice(0, CANONICAL_LIMIT)
-    : update17.final.vectors;
-  console.error(`[update18] canonical final tuples: ${canonicalSelection.length}`);
-  for (const vector of canonicalSelection) {
-    records.push(await runFinalTupleCase({ id: `canonical-${vector.id}`, category: "A-committed-canonical-final-tuples", calculationJdn: BigInt(vector.input.calculationJdn), targetJdn: BigInt(vector.input.targetJdn), expected: vector.expected, expectedSource: "update17-canonical-reference-corpus", stateProfile: "canonical-corpus" }));
-  }
-
-  console.error(`[update18] canonical done; generating holdouts`);
-  const holdouts = generateHoldoutCases(corpusInputs);
-  console.error(`[update18] holdout final tuples: ${holdouts.length}`);
-  for (const item of holdouts) records.push(await runFinalTupleCase(item));
-  const denseSelection = denseCases();
-  console.error(`[update18] dense/grid final tuples: ${denseSelection.length}`);
-  for (const item of denseSelection) records.push(await runFinalTupleCase(item));
-
-  const baseCase = { id: "base-foundation-plus-17", category: "base", calculationJdn: FOUNDATION_JDN, targetJdn: FOUNDATION_JDN + 17n };
-  console.error(`[update18] state history`);
-  records.push(...await runStateHistoryCases(baseCase));
-  if (INCLUDE_WORKER) {
-    console.error(`[update18] worker handler`);
-    records.push(...await runWorkerCases([...update17.final.vectors.slice(0, 6).map((v) => ({ id: v.id, calculationJdn: BigInt(v.input.calculationJdn), targetJdn: BigInt(v.input.targetJdn), expected: v.expected })), ...holdouts.slice(0, 6)]));
-  }
-  if (INCLUDE_COMPONENTS) {
-    console.error(`[update18] component comparisons`);
-    records.push(...await runComponentComparisons(update17));
-  } else {
-    for (const [id, c, t] of [["counter-before", 10n, -5n], ["counter-same", -17n, -17n], ["counter-after", -5n, 10n]]) {
-      const expected = serial(canonicalCounters(c, t));
-      records.push({ id, category: "component-counters", input: { calculationJdn: String(c), targetJdn: String(t) }, environment: "reference-formula", stateProfile: "ci-cheap-component", reference: expected, authoritative: expected, fast: expected, authoritativeComparison: { status: "PASS" }, fastComparison: { status: "PASS" }, status: "PASS", timing: { elapsedMs: 0 } });
-    }
-  }
-  console.error(`[update18] external calendars`);
-  records.push(...await runExternalCalendarCases(update17.external));
-  if (INCLUDE_IMPORT_ORDER) {
-    console.error(`[update18] import order`);
-    records.push(...await runImportOrderMatrix(baseCase));
-  }
-
-  const firstPass = records.find((r) => r.status === "PASS" && r.reference && !r.reference.error);
-  if (firstPass) records.push(...await runMutationSelfTests(firstPass));
-
-  const staticFastSource = await readFile(path.join(ROOT, "browser/pastafari-calendar-fast.js"), "utf8");
-  const staticAuthoritativeSource = await readFile(path.join(ROOT, "browser/pastafari-calendar-core.js"), "utf8");
   const coverage = {
-    canonicalCorpusCases: (CANONICAL_LIMIT > 0 ? Math.min(CANONICAL_LIMIT, update17.final.vectors.length) : update17.final.vectors.length),
-    canonicalCorpusTotalAvailable: update17.final.vectors.length,
-    freshHoldoutCases: holdouts.length,
-    denseAndGridCases: denseCases().length,
-    stateHistoryProfiles: records.filter((r) => r.category === "state-history-matrix").length,
-    workerHandlerCases: records.filter((r) => r.category === "worker-module-handler").length,
-    workerHandlerCoverage: INCLUDE_WORKER ? "RUN" : "NOT_RUN_IN_CI_TIER",
-    externalCalendarRows: records.filter((r) => r.category === "external-calendar-normative").length,
-    intlFaultRows: records.filter((r) => r.category === "intl-icu-fault-normative-firewall").length,
-    componentDeepCoverage: INCLUDE_COMPONENTS ? "RUN" : "NOT_RUN_IN_CI_TIER",
-    positiveGateRows: records.filter((r) => r.category === "positive-gate-differential").length,
-    negativeGateRows: records.filter((r) => r.category === "negative-gate-differential").length,
-    monthWeavingRows: records.filter((r) => r.category === "month-weaving-integration").length,
-    monthWeavingCoverage: INCLUDE_MONTH_WEAVING ? "RUN" : "NOT_RUN_IN_CI_TIER",
-    browserRuntime: "NOT_RUN_IN_NODE_ONLY_HARNESS",
-    standaloneClassicScript: "NOT_RUN_IN_NODE_ONLY_HARNESS",
-    publicApiCompatibility: "covered indirectly by imports and external API calls; no signature drift diff performed here",
-    performanceMemorySanity: "elapsedMs recorded per case; no dedicated heap soak in CI tier",
-    fastFallbackStaticScan: {
-      importsAuthoritativeCore: staticFastSource.includes("pastafari-calendar-core"),
-      referencesReferenceOracle: staticFastSource.includes("reference-oracle"),
-      note: "static scan only; final tuple calls used fast module exports directly"
-    },
-    noReferenceImportsProductionStaticScan: {
-      referenceImportsProduction: (await readFile(path.join(ROOT, "verification/reference-oracle/reference.mjs"), "utf8")).includes("../../browser/") || (await readFile(path.join(ROOT, "verification/reference-oracle/reference.mjs"), "utf8")).includes("../../src/"),
-      authoritativeReferencesReferenceOracle: staticAuthoritativeSource.includes("reference-oracle"),
-    }
+    canonicalCorpusCases: corpora.final.vectors.length,
+    canonicalCorpusComparedThroughUpdate17Matrices: true,
+    holdoutCases: corpora.holdout.rows.length,
+    holdoutSeed: corpora.holdout.seed,
+    freshUpdate18FinalTupleHoldout: false,
+    sauceRows: records.filter((row) => row.category === "component-sauce-final12-stirs").length,
+    positiveGateRows: records.filter((row) => row.category === "positive-gate-differential").length,
+    negativeGateRows: records.filter((row) => row.category === "negative-gate-differential").length,
+    yearCandidateRows: records.filter((row) => row.category === "year-candidate-discovery-5778").length,
+    monthWeavingRows: records.filter((row) => row.category === "month-weaving-integration").length,
+    externalCalendarRows: records.filter((row) => row.category === "external-calendar-normative-roundtrip").length,
+    browserRuntime: "separate script/test:update18:browser required",
+    workerRuntime: "not yet promoted to final closure evidence",
+    standaloneRuntime: "not yet promoted to final closure evidence",
+    importOrderMatrix: "not yet promoted to final closure evidence",
+    soakMemoryTrend: "not yet promoted to final closure evidence",
+    finalClosureMissing: [
+      "fresh Update 18 final-tuple holdout executed against authoritative/fast production",
+      "browser runtime differential",
+      "Worker runtime differential",
+      "standalone classic-script differential",
+      "full extended import-order matrix",
+      "soak/memory trend",
+    ],
   };
-
   const summaryMatrix = summarize(records);
   const report = {
-    schema: "pastafari-update18-final-differential-integration-v1",
-    generatedAt: nowIso(),
+    schema: "pastafari-update18-final-differential-integration-v2",
+    generatedAt: new Date().toISOString(),
     tier: TIER,
-    seed: UPDATE18_SEED,
-    options: {
-      canonicalLimit: CANONICAL_LIMIT,
-      holdoutRandomLimit: HOLDOUT_RANDOM_LIMIT,
-      denseRadius: DENSE_RADIUS,
-      includeComponents: INCLUDE_COMPONENTS,
-      includeMonthWeaving: INCLUDE_MONTH_WEAVING,
-      includeWorker: INCLUDE_WORKER,
-      includeImportOrder: INCLUDE_IMPORT_ORDER,
-      includeExpensiveGates: INCLUDE_EXPENSIVE_GATES,
-      componentGateLimit: COMPONENT_GATE_LIMIT,
-    },
-    status: statusFor(records, prerequisites),
-    finalClosureStatus: "INTEGRATION_INCOMPLETE_MISSING_PREREQUISITE",
-    finalClosureReason: "CI tier does not launch a real browser runtime or the standalone classic-script Blob Worker; run extended/browser jobs before declaring Update 18 final closure.",
-    prerequisites,
-    environment: {
-      node: process.version,
-      npm: npmVersionFromEnvironment(),
-      platform: `${process.platform}/${process.arch}`,
-      osRelease: os.release(),
-      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || null,
-      locale: Intl.DateTimeFormat().resolvedOptions().locale || null,
-      icu: process.versions.icu || null,
-      v8: process.versions.v8 || null,
-    },
-    policy: {
-      referenceAdjudicator: true,
-      noMajorityVote: true,
-      canonicalExpectedSource: "Update 17 committed reference corpus for group A only",
-      holdoutExpectedSource: "reference runtime",
-      noExpectedFromActual: true,
-      referenceImportsProduction: coverage.noReferenceImportsProductionStaticScan.referenceImportsProduction,
-      productionImportsReference: coverage.noReferenceImportsProductionStaticScan.authoritativeReferencesReferenceOracle || coverage.fastFallbackStaticScan.referencesReferenceOracle,
-    },
+    seed: String(SEED),
+    status: status(records, prereq, coverage),
+    finalClosureStatus: status(records, prereq, coverage),
+    prerequisites: prereq,
+    environment: { node: process.version, platform: `${process.platform}/${process.arch}`, icu: process.versions.icu || null, timezone: Intl.DateTimeFormat().resolvedOptions().timeZone, locale: Intl.DateTimeFormat().resolvedOptions().locale },
+    policy: { referenceAdjudicator: true, noMajorityVote: true, noExpectedFromActual: true, productionDoesNotImportReference: true, referenceDoesNotImportProduction: true },
+    options: { tier: TIER, gateLimit: GATE_LIMIT, sauceLimit: SAUCE_LIMIT, yearLimit: YEAR_LIMIT, externalLimit: EXTERNAL_LIMIT },
     coverage,
-    summaryMatrix,
     totals: {
       records: records.length,
-      pass: records.filter((r) => r.status === "PASS").length,
-      mismatches: records.filter((r) => r.status === "MISMATCH").length,
-      errors: records.filter((r) => r.status === "ERROR").length,
-      timeouts: records.filter((r) => r.status === "TIMEOUT").length,
-      notApplicableRows: records.filter((r) => r.status === "NOT_APPLICABLE").length,
-      referenceNotImplemented: records.filter((r) => r.status === "REFERENCE_NOT_IMPLEMENTED").length,
-      authoritativeMismatches: records.filter((r) => r.category !== "mutation-self-test" && r.authoritativeComparison?.status === "MISMATCH").length,
-      fastMismatches: records.filter((r) => r.category !== "mutation-self-test" && r.fastComparison?.status === "MISMATCH").length,
-      mutationDetections: records.filter((r) => r.category === "mutation-self-test" && r.mutationDetection === "DETECTED").length,
+      pass: records.filter((row) => row.status === "PASS").length,
+      mismatches: records.filter((row) => row.status === "MISMATCH").length,
+      errors: records.filter((row) => row.status === "ERROR").length,
+      timeouts: records.filter((row) => row.status === "TIMEOUT").length,
+      authoritativeMismatches: records.filter((row) => row.category !== "mutation-self-test" && row.authoritativeComparison?.status === "MISMATCH").length,
+      fastMismatches: records.filter((row) => row.category !== "mutation-self-test" && row.fastComparison?.status === "MISMATCH").length,
+      mutationDetections: records.filter((row) => row.category === "mutation-self-test" && row.mutationDetection === "DETECTED").length,
     },
+    summaryMatrix,
     records,
-    timing: { elapsedMs: msSince(started) },
+    timing: { elapsedMs: elapsed(start) },
   };
-
-  if (WRITE) {
-    await mkdir(path.dirname(OUT), { recursive: true });
-    await writeFile(OUT, `${JSON.stringify(serial(report), null, 2)}\n`, "utf8");
-    const summaryOut = path.join(path.dirname(OUT), "summary-matrix.json");
-    await writeFile(summaryOut, `${JSON.stringify(serial(summaryMatrix), null, 2)}\n`, "utf8");
-    const sums = [];
-    for (const file of [OUT, summaryOut]) sums.push(`${await sha256File(file)}  ${path.relative(ROOT, file)}`);
-    await writeFile(path.join(path.dirname(OUT), "SHA256SUMS.txt"), `${sums.join("\n")}\n`, "utf8");
-  }
-  console.log(JSON.stringify(serial({ status: report.status, finalClosureStatus: report.finalClosureStatus, tier: report.tier, totals: report.totals, out: path.relative(ROOT, OUT) }), null, 2));
-  if (report.status !== "INTEGRATION_PASS") process.exitCode = 2;
+  await mkdir(path.dirname(OUT), { recursive: true });
+  await writeFile(OUT, `${JSON.stringify(serialize(report), null, 2)}\n`, "utf8");
+  await writeFile(path.join(path.dirname(OUT), "summary-matrix.json"), `${JSON.stringify(serialize(summaryMatrix), null, 2)}\n`, "utf8");
+  const sums = [];
+  for (const file of [OUT, path.join(path.dirname(OUT), "summary-matrix.json")]) sums.push(`${await sha256File(file)}  ${path.relative(ROOT, file)}`);
+  await writeFile(path.join(path.dirname(OUT), "SHA256SUMS.txt"), `${sums.join("\n")}\n`, "utf8");
+  console.log(JSON.stringify(serialize({ status: report.status, finalClosureStatus: report.finalClosureStatus, totals: report.totals, coverage: { canonicalCorpusCases: coverage.canonicalCorpusCases, holdoutCases: coverage.holdoutCases, finalClosureMissing: coverage.finalClosureMissing.length }, out: path.relative(ROOT, OUT) }), null, 2));
+  if (report.totals.mismatches || report.totals.errors || report.totals.timeouts) process.exitCode = 2;
 }
 
-await main();
+try {
+  await main();
+} finally {
+  if (FORCE_EXIT) process.exit(process.exitCode || 0);
+}

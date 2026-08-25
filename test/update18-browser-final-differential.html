@@ -1,0 +1,33 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Update 18 browser differential smoke</title>
+<pre id="result">RUNNING</pre>
+<script type="module">
+const result = document.getElementById("result");
+function finish(payload) {
+  globalThis.__PASTAFARI_UPDATE18_BROWSER_DIFFERENTIAL__ = { ...payload, complete: true };
+  result.textContent = `UPDATE18_BROWSER_DIFFERENTIAL=${JSON.stringify(globalThis.__PASTAFARI_UPDATE18_BROWSER_DIFFERENTIAL__)}`;
+}
+try {
+  const [core, fast, reportResponse] = await Promise.all([
+    import("../browser/pastafari-calendar-core.js"),
+    import("../browser/pastafari-calendar-fast.js"),
+    fetch("../artifacts/update-18/final-differential-integration.json", { cache: "no-store" }),
+  ]);
+  if (!reportResponse.ok) throw new Error(`missing update18 node evidence: HTTP ${reportResponse.status}`);
+  const report = await reportResponse.json();
+  const checks = {
+    coreCalendar: typeof core.PastafariCalendar === "function",
+    fastCalendar: typeof fast.PastafariCalendar === "function",
+    coreFoundation: String(core.FOUNDATION_JDN) === "-13334246",
+    fastFoundation: String(fast.FOUNDATION_JDN) === "-13334246",
+    nodeEvidenceHasZeroMismatches: report.totals?.mismatches === 0,
+    nodeEvidenceHasZeroErrors: report.totals?.errors === 0,
+    nodeEvidenceKeepsFinalClosureOpen: report.finalClosureStatus === "INTEGRATION_INCOMPLETE_MISSING_PREREQUISITE",
+  };
+  const failures = Object.entries(checks).filter(([, value]) => value !== true).map(([key]) => key);
+  finish({ schema: "pastafari-update18-browser-differential-smoke-v1", status: failures.length ? "FAIL" : "PASS", failures, checks });
+} catch (error) {
+  finish({ schema: "pastafari-update18-browser-differential-smoke-v1", status: "ERROR", error: { name: error?.name || "Error", message: error?.message || String(error) } });
+}
+</script>
