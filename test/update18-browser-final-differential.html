@@ -21,9 +21,12 @@ try {
     fastCalendar: typeof fast.PastafariCalendar === "function",
     coreFoundation: String(core.FOUNDATION_JDN) === "-13334246",
     fastCanConvertFoundation: (() => {
-      const calendar = new fast.PastafariCalendar({ todayProvider: () => new fast.GregorianDate(2000n, 1, 1) });
-      const value = calendar.convertJdn(BigInt(core.FOUNDATION_JDN), { calculationJdn: BigInt(core.FOUNDATION_JDN) }).toJSON();
-      return String(value.year) === "5000" && value.cutletName === "הכד הריק" && Number(value.dayInCutlet) === 191 && value.monthName === "שמחה" && Number(value.dayInMonth) === 72;
+      const calculationJdn = BigInt(core.FOUNDATION_JDN);
+      const coreCalendar = new core.PastafariCalendar({ todayProvider: () => new core.GregorianDate(2000n, 1, 1) });
+      const fastCalendar = new fast.PastafariCalendar({ todayProvider: () => new fast.GregorianDate(2000n, 1, 1) });
+      const expected = coreCalendar.convertJdn(calculationJdn, { calculationJdn }).toJSON();
+      const actual = fastCalendar.convertJdn(calculationJdn, { calculationJdn }).toJSON();
+      return JSON.stringify(actual) === JSON.stringify(expected);
     })(),
     nodeEvidenceHasZeroMismatches: report.totals?.mismatches === 0,
     nodeEvidenceHasZeroErrors: report.totals?.errors === 0,

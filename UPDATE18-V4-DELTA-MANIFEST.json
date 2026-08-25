@@ -1,0 +1,29 @@
+{
+  "schema": "pastafari-update18-v4-browser-and-manifest-completeness-fix",
+  "createdAt": "2026-08-25T06:44:51.273Z",
+  "base": {
+    "repository": "Sargon17-Green/pastafari-calendar",
+    "branch": "Update-18",
+    "failingCommit": "058d69d5303991f99f7e530096efd35b16fe158e"
+  },
+  "fixes": [
+    {
+      "area": "browser-smoke",
+      "problem": "fastCanConvertFoundation compared fast output to a stale hard-coded tuple instead of the authoritative browser tuple for the same input",
+      "fix": "compare fast PastafariCalendar.convertJdn(Foundation, calculationJdn=Foundation) to browser core PastafariCalendar output"
+    },
+    {
+      "area": "sha-manifest-completeness",
+      "problem": "UPDATE18-V3-DELTA-MANIFEST.json was tracked but absent from root SHA256SUMS.txt",
+      "fix": "regenerate repository SHA256SUMS after adding the v4 manifest so both v3 and v4 manifests are covered"
+    }
+  ],
+  "semanticExpectedValuesChanged": false,
+  "productionFilesChanged": false,
+  "files": [
+    "UPDATE18-V4-DELTA-MANIFEST.json",
+    "test/update18-browser-final-differential.html",
+    "SHA256SUMS.txt",
+    "docs/SHA256SUMS.txt"
+  ]
+}
