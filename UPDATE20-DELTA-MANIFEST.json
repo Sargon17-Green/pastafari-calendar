@@ -1,5 +1,5 @@
 {
-  "schema": "pastafari.update20.delta-manifest.v1",
+  "schema": "pastafari.update20.delta-manifest.v3",
   "update": 20,
   "purpose": "Final Release Closure, Version Bump and Series Seal",
   "releaseCandidateBaseCommit": "9b5ebf1d3e383a9345df8a5d8b12333df447f7ad",
@@ -11,13 +11,21 @@
   "versionRationale": "Minor release: backward-compatible normative capabilities were added and normative correctness was repaired; Update 19 found no public API breaking change.",
   "semanticProductionChangeAllowed": false,
   "releaseStatusBeforeCI": "RELEASE_BLOCKED",
-  "releaseStatusReason": "Required post-bump release and CI gates have not yet run on the release-candidate branch.",
-  "expectedFinalStatus": ["RELEASE_READY", "RELEASE_BLOCKED"],
+  "releaseStatusReason": "20C folds in the unapplied 20B canonical evidence refresh and fixes two CI harness defects exposed by the next run: node_modules is ignored so release:verify can enforce a genuinely clean tracked tree after npm ci, and the committed Update18 closure is verified before a fresh differential runner writes transient Update18 artifacts.",
+  "expectedFinalStatus": [
+    "RELEASE_READY",
+    "RELEASE_BLOCKED"
+  ],
   "requiredFinalArtifact": "artifacts/final-release/FINAL-RELEASE-CLOSURE.json",
   "notes": [
-    "The Update 19 evidence ZIP is archived byte-for-byte in artifacts/final-release/update19-final-evidence.zip.",
-    "The PWA verification baseline is synchronized to the already-current service worker cache generation; this is release metadata/baseline alignment, not an algorithmic change.",
-    "Standalone bundle changes are version-banner-only before canonical CI rebuild verification.",
+    "The Update 19 evidence ZIP remains archived byte-for-byte in artifacts/final-release/update19-final-evidence.zip.",
+    "Update17 canonical evidence is regenerated because packageVersion is embedded in its metadata. The scope gate requires all canonical JSON to be identical to the audited Update19 corpus after normalizing only packageVersion and deterministicRebuildHash fields.",
+    "The existing Update17 stale check is not weakened: it still requires byte-for-byte equality with a fresh deterministic rebuild.",
+    "A root .gitignore entry for node_modules/ prevents npm ci from making release:verify report dependency installation as untracked release drift; tracked-file cleanliness remains fully enforced.",
+    "The Update20 regression runner checks the committed Update18 closure before invoking the fresh differential command that transiently rewrites artifacts/update-18 in its isolated CI job. No Update18 assertion is weakened or removed.",
+    "The PWA verification baseline remains synchronized to the already-current service worker cache generation; this is release metadata/baseline alignment, not an algorithmic change.",
+    "Standalone bundle changes remain version-banner-only before canonical CI rebuild verification.",
     "No push, tag or release is performed by this delta."
-  ]
+  ],
+  "revision": "20C"
 }

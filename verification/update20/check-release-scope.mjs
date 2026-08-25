@@ -14,12 +14,25 @@ const EXPECTED_HASHES = Object.freeze({
   publicEntry: ["src/public-api.js", "ba1f123a85b7453cb1ad7d77f61a894880a588b60c1a2dd5863015dd29ef08ac"],
   authoritative: ["browser/pastafari-calendar-core.js", "e9ae270d05a6f0328ea9b814a48af2f0434e3e9a8f4c340f1ac6de1e1f5fced2"],
   fast: ["browser/pastafari-calendar-fast.js", "03de7a8125c1c4c63a9946b531b754c4828adc9f998ddd8b7a5ef4b5adcc4473"],
-  canonicalCorpus: ["verification/update17/generated/normative-evidence-manifest.json", "a7974864add317e85c7d0911a717bac820af35e3619c6ed5b61d713c74ad8ad4"],
-  canonicalFinalTuples: ["verification/update17/generated/normative-final-tuples.json", "4ccde5d6332ffe9105a2a970946d051c55fb7566a004b5dadb51f42ab191a69a"],
 });
+const CANONICAL_JSON = Object.freeze([
+  "coverage-report.json",
+  "external-calendar-vectors.json",
+  "foundation-evidence.json",
+  "hand-discriminators.json",
+  "month-weaving-small-domain.json",
+  "normative-evidence-manifest.json",
+  "normative-final-tuples.json",
+  "normative-gate-vectors.json",
+  "normative-sauce-vectors.json",
+  "normative-structure-vectors.json",
+  "normative-year-vectors.json",
+]);
+const CANONICAL_PREFIX = "verification/update17/generated/";
 
 const exactAllowed = new Set([
   ".github/workflows/update-20-release-closure.yml",
+  ".gitignore",
   "RELEASE-NOTES-1.4.0.md",
   "UPDATE20-DELTA-MANIFEST.json",
   "SHA256SUMS.txt",
@@ -35,7 +48,32 @@ const exactAllowed = new Set([
 function allowed(relativePath) {
   return exactAllowed.has(relativePath)
     || relativePath.startsWith("verification/update20/")
-    || relativePath.startsWith("artifacts/final-release/");
+    || relativePath.startsWith("artifacts/final-release/")
+    || relativePath.startsWith(CANONICAL_PREFIX);
+}
+function normalizeCanonical(value) {
+  if (Array.isArray(value)) return value.map(normalizeCanonical);
+  if (value && typeof value === "object") {
+    const out = {};
+    for (const key of Object.keys(value).sort()) {
+      if (key === "packageVersion") out[key] = "<PACKAGE_VERSION>";
+      else if (key === "deterministicRebuildHash") out[key] = "<DERIVED_HASH>";
+      else out[key] = normalizeCanonical(value[key]);
+    }
+    return out;
+  }
+  return value;
+}
+function collectPackageVersions(value, output = []) {
+  if (Array.isArray(value)) {
+    for (const item of value) collectPackageVersions(item, output);
+  } else if (value && typeof value === "object") {
+    for (const [key, item] of Object.entries(value)) {
+      if (key === "packageVersion") output.push(String(item));
+      collectPackageVersions(item, output);
+    }
+  }
+  return output;
 }
 
 const failures = [];
@@ -61,8 +99,31 @@ for (const [name, [relativePath, expected]] of Object.entries(EXPECTED_HASHES)) 
   if (actual !== expected) failures.push(`${name} changed since Update 19 audit`);
 }
 
+// Update 17 canonical evidence embeds packageVersion in every document. A release
+// version bump must therefore regenerate the byte-level corpus. That regeneration
+// is permitted only when the JSON is identical to the audited Update 19 corpus
+// after normalizing packageVersion and the deterministic hashes derived from those
+// version-bearing bytes. The ordinary Update 17 stale check still independently
+// requires the checked-in corpus to equal a fresh deterministic rebuild exactly.
+const canonicalMetadataOnly = [];
+for (const name of CANONICAL_JSON) {
+  const relativePath = `${CANONICAL_PREFIX}${name}`;
+  const current = JSON.parse(await readFile(path.join(ROOT, ...relativePath.split("/")), "utf8"));
+  const baseline = JSON.parse(requireRun("git", ["show", `${BASE_COMMIT}:${relativePath}`], { timeoutMs: 60_000, maxBuffer: 64 * 1024 * 1024 }).stdout);
+  const normalizedMatch = JSON.stringify(normalizeCanonical(current)) === JSON.stringify(normalizeCanonical(baseline));
+  const currentVersions = [...new Set(collectPackageVersions(current))].sort();
+  const baselineVersions = [...new Set(collectPackageVersions(baseline))].sort();
+  const versionsOk = currentVersions.length > 0
+    && currentVersions.every((version) => version === NEW_VERSION)
+    && baselineVersions.length > 0
+    && baselineVersions.every((version) => version === "1.3.0");
+  canonicalMetadataOnly.push({ path: relativePath, normalizedMatch, versionsOk, baselineVersions, currentVersions });
+  if (!normalizedMatch) failures.push(`${relativePath} changed beyond packageVersion/derived rebuild hashes`);
+  if (!versionsOk) failures.push(`${relativePath} packageVersion metadata did not propagate cleanly 1.3.0 -> ${NEW_VERSION}`);
+}
+
 const artifact = {
-  schema: "pastafari.update20.release-scope.v1",
+  schema: "pastafari.update20.release-scope.v2",
   generatedAt: new Date().toISOString(),
   status: failures.length ? "FAIL" : "PASS",
   releaseCandidateBaseCommit: BASE_COMMIT,
@@ -75,6 +136,8 @@ const artifact = {
   changedPaths: changed,
   unexpectedPaths: unexpected,
   semanticHashes: hashes,
+  canonicalCorpusPolicy: "Update17 corpus may change only by packageVersion metadata and deterministic hashes derived from version-bearing bytes; exact fresh-regeneration equality remains mandatory in the Update17 stale check.",
+  canonicalMetadataOnly,
   failures,
 };
 await writeJson("release-scope.json", artifact);

@@ -15,8 +15,10 @@ const commands = [
   ["npm", ["run", "evidence:update17:verify"]],
   ["npm", ["run", "test:update17"]],
   ["npm", ["run", "test:update17:matrix"]],
-  ["npm", ["run", "test:differential:final:node"]],
+  // Verify the committed Update 18 closure before the fresh differential runner
+  // writes its own transient artifacts/update-18 report in this isolated CI job.
   ["npm", ["run", "test:update18"]],
+  ["npm", ["run", "test:differential:final:node"]],
 ];
 
 const results = [];
