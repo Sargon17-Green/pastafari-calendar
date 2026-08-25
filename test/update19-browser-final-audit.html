@@ -10,8 +10,18 @@ function canonical(value) {
   const s = typeof value?.toJSON === "function" ? value.toJSON() : value;
   return { year:String(s.year), cutletName:String(s.cutletName), dayInCutlet:Number(s.dayInCutlet), monthName:String(s.monthName), dayInMonth:Number(s.dayInMonth) };
 }
-function stable(v){return JSON.stringify(v);}
+function serializable(v){
+  if(typeof v === "bigint") return v.toString();
+  if(Array.isArray(v)) return v.map(serializable);
+  if(v && typeof v === "object") {
+    const src=typeof v.toJSON === "function" ? v.toJSON() : v;
+    return Object.fromEntries(Object.keys(src).sort().map(k=>[k,serializable(src[k])]));
+  }
+  return v;
+}
+function stable(v){return JSON.stringify(serializable(v));}
 function same(a,b){return stable(a)===stable(b);}
+function chineseNormative(v){return {cycle:Number(v.cycle),yearInCycle:Number(v.yearInCycle),heavenlyStem:String(v.heavenlyStem),earthlyBranch:String(v.earthlyBranch),stem:Number(v.stem),branch:Number(v.branch),month:Number(v.month),leap:Boolean(v.leap),leapMonth:Boolean(v.leapMonth),day:Number(v.day)};}
 function finish(payload){globalThis.__PASTAFARI_UPDATE19_BROWSER_AUDIT__={...payload,complete:true};node.textContent=JSON.stringify(globalThis.__PASTAFARI_UPDATE19_BROWSER_AUDIT__,null,2);}
 function workerConvert(url,c,t){return new Promise((resolve,reject)=>{const w=new Worker(url,{type:"module"});const id=190019;const timer=setTimeout(()=>{w.terminate();reject(new Error(`worker timeout ${url}`));},300000);w.onmessage=e=>{const m=e.data;if(m?.kind==="ready"){w.postMessage({id,operation:"convert",payload:{calculationJdn:String(c),targetJdn:String(t)}});return;}if(m?.id!==id)return;clearTimeout(timer);w.terminate();m.ok?resolve(m.result):reject(new Error(m.error?.message||"worker error"));};w.onerror=e=>{clearTimeout(timer);w.terminate();reject(new Error(e.message||"worker failure"));};});}
 try{
@@ -40,14 +50,14 @@ try{
   }
   // Hostile Intl must not change structured Chinese semantics.
   const chineseJdns=[reference.FOUNDATION_JDN,reference.FOUNDATION_JDN+1n,1442903n,2461259n];
-  const chineseBaseline=chineseJdns.map(jdn=>({jdn:String(jdn),value:api.jdnToChinese(jdn)}));
+  const chineseBaseline=chineseJdns.map(jdn=>{const raw=api.jdnToChinese(jdn);return {jdn:String(jdn),value:chineseNormative(raw),relatedYearDiagnostic:raw.relatedYear===undefined?null:String(raw.relatedYear)};});
   const Real=Intl.DateTimeFormat;
   const intlProfiles=[];
   for(const profile of ["throws","plausible-wrong"]){
     let error=null,values=[];
     try{
       Intl.DateTimeFormat=profile==="throws"?function(){throw new Error("U19 Intl blocked");}:function(){return {format:()=>"1/1/9999",formatToParts:()=>[{type:"year",value:"9999"},{type:"month",value:"13"},{type:"day",value:"99"}],resolvedOptions:()=>({locale:"en-US",timeZone:"UTC"})};};
-      values=chineseJdns.map(jdn=>({jdn:String(jdn),value:api.jdnToChinese(jdn)}));
+      values=chineseJdns.map(jdn=>{const raw=api.jdnToChinese(jdn);return {jdn:String(jdn),value:chineseNormative(raw),relatedYearDiagnostic:raw.relatedYear===undefined?null:String(raw.relatedYear)};});
     }catch(e){error={name:e.name,message:e.message};}finally{Intl.DateTimeFormat=Real;}
     intlProfiles.push({profile,error,values,match:!error&&stable(values)===stable(chineseBaseline)});
   }

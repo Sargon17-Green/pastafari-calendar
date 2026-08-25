@@ -56,6 +56,20 @@ function serialize(v) {
   return v;
 }
 function stable(v) { return JSON.stringify(serialize(v)); }
+function chineseNormative(v) {
+  return {
+    cycle: Number(v.cycle),
+    yearInCycle: Number(v.yearInCycle),
+    heavenlyStem: String(v.heavenlyStem),
+    earthlyBranch: String(v.earthlyBranch),
+    stem: Number(v.stem),
+    branch: Number(v.branch),
+    month: Number(v.month),
+    leap: Boolean(v.leap),
+    leapMonth: Boolean(v.leapMonth),
+    day: Number(v.day),
+  };
+}
 function tuple(v) {
   const s = typeof v?.toJSON === "function" ? v.toJSON() : v;
   return { year: String(s.year), cutletName: String(s.cutletName), dayInCutlet: Number(s.dayInCutlet), monthName: String(s.monthName), dayInMonth: Number(s.dayInMonth) };
@@ -124,7 +138,7 @@ const scrollFacts = {
   tabletsContinuousIndex: scrollText.includes("$-278,522$"),
   max5778Proof: /5,?778/.test(scrollText) || scrollText.includes("5,778"),
   footnote13Binding: scrollText.includes("5778") || scrollText.includes("5,778"),
-  finalStir149: scrollText.includes("149") || scrollText.includes("מאה וארבעים ותשע"),
+  finalStir149: scrollText.includes("149") || scrollText.includes("מאה ותשעה וארבעים"),
   finalStirBowlSumPhrase: scrollText.includes("סכום") && scrollText.includes("קער"),
 };
 record("scroll-direct-facts", "scroll-traceability", Object.values(scrollFacts).every(Boolean), scrollFacts,
@@ -438,17 +452,17 @@ record("fresh-external-calendar-foundation-matrix", "external-calendars", extern
 
 // Arithmetic year-numbering -2..2, direct independent formulas vs public converters.
 const arithmeticFns={
-  hebrew:[negRef.hebrewToJdn,api.hebrewToJdn],
-  "islamic-civil":[negRef.islamicCivilToJdn,api.islamicCivilToJdn],
-  saka:[negRef.sakaToJdn,api.sakaToJdn],
-  ethiopic:[negRef.ethiopicToJdn,api.ethiopicToJdn],
-  coptic:[negRef.copticToJdn,api.copticToJdn],
-  "bahai-western":[negRef.bahaiWesternToJdn,api.bahaiToJdn],
+  hebrew:[negRef.hebrewToJdn,(year)=>api.hebrewToJdn(new api.HebrewDate(year,1,1))],
+  "islamic-civil":[negRef.islamicCivilToJdn,(year)=>api.islamicCivilToJdn(new api.IslamicCivilDate(year,1,1))],
+  saka:[negRef.sakaToJdn,(year)=>api.sakaToJdn(new api.SakaDate(year,1,1))],
+  ethiopic:[negRef.ethiopicToJdn,(year)=>api.ethiopicToJdn(new api.EthiopicDate(year,1,1))],
+  coptic:[negRef.copticToJdn,(year)=>api.copticToJdn(new api.CopticDate(year,1,1))],
+  "bahai-western":[negRef.bahaiWesternToJdn,(year)=>api.bahaiToJdn(new api.BahaiDate(year,1,1,{variant:"western-arithmetic"}))],
 };
 const yearNumberRows=[];
 for(const [calendar,[rf,pf]] of Object.entries(arithmeticFns)) for(const year of [-2n,-1n,0n,1n,2n]){
   const value={year,month:1,day:1}; let expected=null,actual=null,re=null,pe=null;
-  try{expected=BigInt(rf(value));}catch(e){re=errorInfo(e);} try{actual=BigInt(pf(value));}catch(e){pe=errorInfo(e);}
+  try{expected=BigInt(rf(value));}catch(e){re=errorInfo(e);} try{actual=BigInt(pf(year));}catch(e){pe=errorInfo(e);}
   yearNumberRows.push({calendar,year:String(year),referenceJdn:expected===null?null:String(expected),productionJdn:actual===null?null:String(actual),referenceError:re,productionError:pe,match:(expected===actual&&stable(re?.name??null)===stable(pe?.name??null))});
 }
 record("fresh-external-year-numbering", "external-calendars", yearNumberRows.every(r=>r.match), {rows:yearNumberRows});
@@ -460,7 +474,7 @@ for(const jdn of specializedJdns){
   const rc=referenceJdnToChinese(jdn), pc=api.jdnToChinese(jdn);
   const rv=referenceJdnToVikrama(jdn), pv=api.jdnToVikrama(jdn);
   const rk=referenceJdnToKoki(jdn), pk=api.jdnToKoki(jdn);
-  specialized.push({jdn:String(jdn),chinese:{reference:rc,production:pc,forwardMatch:stable(rc)===stable(pc),roundtripReference:String(referenceChineseToJdn(rc)),roundtripProduction:String(api.chineseStructuredDateToJdn(pc))},vikrama:{reference:rv,production:pv,forwardMatch:stable(rv)===stable(pv),roundtripReference:String(referenceVikramaToJdn(rv)),roundtripProduction:String(api.vikramaToJdn(pv))},koki:{reference:rk,production:pk,forwardMatch:stable(rk)===stable(pk),roundtripReference:String(referenceKokiToJdn(rk)),roundtripProduction:String(api.kokiToJdn(pk))}});
+  specialized.push({jdn:String(jdn),chinese:{reference:rc,production:pc,normativeReference:chineseNormative(rc),normativeProduction:chineseNormative(pc),relatedYearDiagnostic:{reference:rc.relatedYear===undefined?null:String(rc.relatedYear),production:pc.relatedYear===undefined?null:String(pc.relatedYear),normative:false},forwardMatch:stable(chineseNormative(rc))===stable(chineseNormative(pc)),roundtripReference:String(referenceChineseToJdn(rc)),roundtripProduction:String(api.chineseStructuredDateToJdn(pc))},vikrama:{reference:rv,production:pv,forwardMatch:stable(rv)===stable(pv),roundtripReference:String(referenceVikramaToJdn(rv)),roundtripProduction:String(api.vikramaToJdn(pv))},koki:{reference:rk,production:pk,forwardMatch:stable(rk)===stable(pk),roundtripReference:String(referenceKokiToJdn(rk)),roundtripProduction:String(api.kokiToJdn(pk))}});
 }
 record("fresh-specialized-calendar-reference", "external-calendars", specialized.every(r=>r.chinese.forwardMatch&&r.vikrama.forwardMatch&&r.koki.forwardMatch&&r.chinese.roundtripProduction===r.jdn&&r.vikrama.roundtripProduction===r.jdn&&r.koki.roundtripProduction===r.jdn),{rows:specialized});
 
@@ -473,7 +487,7 @@ for(const profile of ["constructor-throws","nonsense-instance"]){
     else Intl.DateTimeFormat=function(){return {format:()=>"WRONG",formatToParts:()=>[{type:"year",value:"999999"}],resolvedOptions:()=>({locale:"xx-WRONG",timeZone:"Mars/Olympus"})};};
     for(const jdn of specializedJdns.slice(0,5)){
       const expected=referenceJdnToChinese(jdn), actual=api.jdnToChinese(jdn);
-      rows.push({jdn:String(jdn),match:stable(expected)===stable(actual),expected,actual});
+      rows.push({jdn:String(jdn),match:stable(chineseNormative(expected))===stable(chineseNormative(actual)),expected,actual,normativeExpected:chineseNormative(expected),normativeActual:chineseNormative(actual)});
     }
   }catch(e){error=errorInfo(e);}finally{Intl.DateTimeFormat=RealDTF;}
   intlProfiles.push({profile,error,rows,match:!error&&rows.every(r=>r.match)});

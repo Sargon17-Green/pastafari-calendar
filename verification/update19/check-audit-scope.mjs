@@ -20,6 +20,7 @@ const allowedExact=new Set([
   "SHA256SUMS.txt",
   "scripts/run-update19-browser-audit.mjs",
   "test/update19-browser-final-audit.html",
+  "artifacts/update16/oracle-authority-audit.json",
 ]);
 const allowedPrefixes=["verification/update19/"];
 const forbidden=changed.filter(p=>!allowedExact.has(p)&&!allowedPrefixes.some(prefix=>p.startsWith(prefix)));

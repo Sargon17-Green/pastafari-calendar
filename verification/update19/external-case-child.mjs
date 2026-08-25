@@ -15,5 +15,18 @@ if(kind==='chinese'){
 }else if(kind==='koki'){
   const j=BigInt(process.argv[3]);const r=referenceJdnToKoki(j);const p=api.jdnToKoki(j);console.log(JSON.stringify(ser({kind,jdn:j,reference:r,production:p,referenceRoundtrip:referenceKokiToJdn(r),productionRoundtrip:api.kokiToJdn(p)})));
 }else if(kind==='arithmetic'){
-  const cal=process.argv[3],year=BigInt(process.argv[4]);const value={year,month:1,day:1};const map={hebrew:[neg.hebrewToJdn,api.hebrewToJdn],islamicCivil:[neg.islamicCivilToJdn,api.islamicCivilToJdn],saka:[neg.sakaToJdn,api.sakaToJdn],ethiopic:[neg.ethiopicToJdn,api.ethiopicToJdn],coptic:[neg.copticToJdn,api.copticToJdn],bahaiWestern:[neg.bahaiWesternToJdn,api.bahaiToJdn]};const [rf,pf]=map[cal];let r,p,re,pe;try{r=rf(value);}catch(e){re={name:e.name,message:e.message};}try{p=pf(value);}catch(e){pe={name:e.name,message:e.message};}console.log(JSON.stringify(ser({kind,calendar:cal,year,reference:r,production:p,referenceError:re,productionError:pe})));
+  const cal=process.argv[3],year=BigInt(process.argv[4]);
+  const value={year,month:1,day:1};
+  const map={
+    hebrew:[neg.hebrewToJdn,()=>api.hebrewToJdn(new api.HebrewDate(year,1,1))],
+    islamicCivil:[neg.islamicCivilToJdn,()=>api.islamicCivilToJdn(new api.IslamicCivilDate(year,1,1))],
+    saka:[neg.sakaToJdn,()=>api.sakaToJdn(new api.SakaDate(year,1,1))],
+    ethiopic:[neg.ethiopicToJdn,()=>api.ethiopicToJdn(new api.EthiopicDate(year,1,1))],
+    coptic:[neg.copticToJdn,()=>api.copticToJdn(new api.CopticDate(year,1,1))],
+    bahaiWestern:[neg.bahaiWesternToJdn,()=>api.bahaiToJdn(new api.BahaiDate(year,1,1,{variant:"western-arithmetic"}))],
+  };
+  const [rf,pf]=map[cal];let r,p,re,pe;
+  try{r=rf(value);}catch(e){re={name:e.name,message:e.message};}
+  try{p=pf();}catch(e){pe={name:e.name,message:e.message};}
+  console.log(JSON.stringify(ser({kind,calendar:cal,year,reference:r,production:p,referenceError:re,productionError:pe})));
 }else{throw new Error(`unknown kind ${kind}`);}

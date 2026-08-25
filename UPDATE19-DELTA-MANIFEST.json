@@ -1,66 +1,58 @@
 {
-  "schema": "pastafari-update19-audit-harness-delta-v1",
-  "createdAt": "2026-08-25T12:20:00+03:00",
+  "schema": "pastafari-update19-audit-harness-delta-v2",
+  "revision": "19B",
+  "createdAt": "2026-08-25T13:20:59+03:00",
   "base": {
     "repository": "Sargon17-Green/pastafari-calendar",
-    "branch": "main",
-    "commit": "01866e2b74823ca34639f226067d07ee15279249",
+    "branch": "Update-19",
+    "auditBaseCommit": "01866e2b74823ca34639f226067d07ee15279249",
+    "previousHarnessCommit": "5156031daa8620ad66d5ee973598d89b18400cc4",
     "packageVersion": "1.3.0"
   },
-  "purpose": "Update 19A audit harness only. No production semantics, package version, release tag, or generated production artifact is changed.",
-  "workflow": {
-    "recommendedBranch": "Update-19",
-    "finalStatusOwner": "verification/update19/finalize-audit.mjs",
-    "allowedFinalStatuses": [
-      "FINAL_AUDIT_PASS",
-      "FINAL_AUDIT_FAILED",
-      "FINAL_AUDIT_INCOMPLETE"
-    ],
-    "update20AllowedOnlyAfter": "FINAL_AUDIT_PASS"
-  },
+  "purpose": "Update 19B corrects audit-harness/evidence defects found by the first full Update 19 CI run. It changes no production semantics and does not reinterpret any production mismatch as a pass.",
+  "diagnosis": [
+    "Arithmetic negative-year probes used plain objects instead of the public date-class contract.",
+    "Chinese object comparison was property-order-sensitive and incorrectly treated non-normative relatedYear as part of the normative structured value.",
+    "Browser audit attempted JSON.stringify on BigInt before parity checks.",
+    "The direct scroll 149 phrase matcher used the wrong Hebrew wording.",
+    "Historical Update-8 Stage-6 compared absolute identity IDs across separately instrumented imports; Update19 now uses a fresh same-runtime 1/10/100/1000/5000 failure-state probe.",
+    "Adding Update19 oracle/corpus audit files legitimately changed the deterministic Update16 authority inventory, so its evidence artifact is regenerated before checksum verification.",
+    "Historical Update15 crypto SKIP is not accepted as final evidence; Update19 runs fresh math/crypto profiles and faults directly."
+  ],
   "policy": {
-    "noProductionSemanticChanges": true,
-    "noMajorityVote": true,
-    "referenceIsExpectedSource": true,
-    "timeoutIsNotPass": true,
-    "mismatchThreshold": 0,
-    "noVersionBump": true,
-    "noRemoteMutation": true
+    "productionSemanticsChanged": false,
+    "packageVersionChanged": false,
+    "referenceNormativeSemanticsChanged": false,
+    "expectedVectorsChanged": false,
+    "rerunWholeUpdate19Required": true,
+    "update20BlockedUntilFreshFinalAuditPass": true
   },
   "files": [
-    ".github/workflows/update-19-final-audit.yml",
-    "scripts/run-update19-browser-audit.mjs",
+    "artifacts/update16/oracle-authority-audit.json",
     "test/update19-browser-final-audit.html",
     "verification/update19/check-audit-scope.mjs",
     "verification/update19/external-case-child.mjs",
-    "verification/update19/finalize-audit.mjs",
-    "verification/update19/run-build-package-audit.mjs",
-    "verification/update19/run-ci-command-parity.mjs",
+    "verification/update19/failure-state-probe.mjs",
+    "verification/update19/random-witness-profile-probe.mjs",
     "verification/update19/run-deep-state-audit.mjs",
     "verification/update19/run-external-audit.mjs",
-    "verification/update19/run-final-tuple-region.mjs",
     "verification/update19/run-independent-node-audit.mjs",
-    "verification/update19/run-static-corpus-audit.mjs",
     "UPDATE19-DELTA-MANIFEST.json",
     "SHA256SUMS.txt"
   ],
   "sha256": {
-    ".github/workflows/update-19-final-audit.yml": "72efb4e171921b6433096b68c933aa2fdf81ac61229828ad3e41e3704c75e170",
-    "scripts/run-update19-browser-audit.mjs": "ef1eb8dbe381143376476e5e5328ff3466b905846af430209b6def3c32cb87ee",
-    "test/update19-browser-final-audit.html": "43e05ecd977a28ac358230d761801fa9f93876840156189a55c029bf3e3dae1c",
-    "verification/update19/check-audit-scope.mjs": "3a0daf92ae97e43e0d7ff88c489f7eb86ac0bb976eff7aa89a8378ed22ef9999",
-    "verification/update19/external-case-child.mjs": "73e15088e1db2f9328b75ca4e2c898cd19e6175523a20adcea3f23c71a682c4e",
-    "verification/update19/finalize-audit.mjs": "c6703b7474eed76913bb6c4e28dd368724bb7e14a72b5558a2199f7a228d0322",
-    "verification/update19/run-build-package-audit.mjs": "4003edd561bd312e1a8957078f713807b9a11aa2f8b0c3917c238e7d18989234",
-    "verification/update19/run-ci-command-parity.mjs": "fa5ade4de53c6c0be5217fb0df83812d424789f8a3ed39093ea4cfb9f10d96cb",
-    "verification/update19/run-deep-state-audit.mjs": "935421b2e234affc83dc9d4d91613491cd9231ce9c037aa5197c85acfcb29469",
-    "verification/update19/run-external-audit.mjs": "7ef33e594eabd489c1eb77debd61d1b4712b87e6b2df48e9def25a2d7baad71a",
-    "verification/update19/run-final-tuple-region.mjs": "09c9af5289b2b38173352ad8ad948d4b6c07589590adcc147003f1215eca87f3",
-    "verification/update19/run-independent-node-audit.mjs": "a756d344ac677eab6f437bd4fac63895223fb055f21815c6c2f85c1ef2ac6895",
-    "verification/update19/run-static-corpus-audit.mjs": "bac6236906b481e347e85b114590876a6d2c930c5fd28feb9d069fa65ffadccb"
+    "artifacts/update16/oracle-authority-audit.json": "d148a5b872db8b18fbc12f655781970154ea61cd85ef89ad786ea15f0aeddbde",
+    "test/update19-browser-final-audit.html": "96579979c59b0f882ac563e730c6184afdf3a771f99c46dd6adb7dd3ebe39a73",
+    "verification/update19/check-audit-scope.mjs": "7ab8992bcc53cc44e5034fe16762f730e31c004ac308d80928e0269720c2860b",
+    "verification/update19/external-case-child.mjs": "cef85f97630cdac37ee5e917ee596223744b53b657de8a23c5a2651ff71c06a5",
+    "verification/update19/failure-state-probe.mjs": "ea13768d1bdb88d36c7691762bf5227ee025e8c12c7814a001437c8610398b3c",
+    "verification/update19/random-witness-profile-probe.mjs": "a9eac50b530a50e848071bdb81b8bf977238a91276cbfcb0ac86ca22cf613b23",
+    "verification/update19/run-deep-state-audit.mjs": "bd09bad1898192e4d38ed79096a97e82759df6450a47076dbaee6c671f910ba7",
+    "verification/update19/run-external-audit.mjs": "f2defa1cc8b00b078ebac0a3dae04384235af42ca866ae8dfed2d294e14a925a",
+    "verification/update19/run-independent-node-audit.mjs": "9f1ba70a36fa68e92b5c98b1378d380a578384fabfcdcc2d0d5aa3d95ae28d6d"
   },
   "hashOmissions": {
     "UPDATE19-DELTA-MANIFEST.json": "self hash intentionally omitted",
-    "SHA256SUMS.txt": "omitted to avoid a manifest/checksum circular dependency; root SHA256SUMS hashes UPDATE19-DELTA-MANIFEST.json but never hashes itself"
+    "SHA256SUMS.txt": "omitted to avoid circular dependency; root SHA256SUMS hashes this manifest but never hashes itself"
   }
 }
