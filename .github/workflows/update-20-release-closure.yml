@@ -162,6 +162,11 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      - name: Exclude installed dependencies from release-tree cleanliness only
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf 'node_modules/\n' >> .git/info/exclude
       - run: npm ci
       - name: Install release browsers with retry
         shell: bash

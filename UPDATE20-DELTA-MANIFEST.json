@@ -1,5 +1,5 @@
 {
-  "schema": "pastafari.update20.delta-manifest.v3",
+  "schema": "pastafari.update20.delta-manifest.v4",
   "update": 20,
   "purpose": "Final Release Closure, Version Bump and Series Seal",
   "releaseCandidateBaseCommit": "9b5ebf1d3e383a9345df8a5d8b12333df447f7ad",
@@ -11,7 +11,7 @@
   "versionRationale": "Minor release: backward-compatible normative capabilities were added and normative correctness was repaired; Update 19 found no public API breaking change.",
   "semanticProductionChangeAllowed": false,
   "releaseStatusBeforeCI": "RELEASE_BLOCKED",
-  "releaseStatusReason": "20C folds in the unapplied 20B canonical evidence refresh and fixes two CI harness defects exposed by the next run: node_modules is ignored so release:verify can enforce a genuinely clean tracked tree after npm ci, and the committed Update18 closure is verified before a fresh differential runner writes transient Update18 artifacts.",
+  "releaseStatusReason": "20D fixes only release-evidence/checksum closure defects exposed by the 20C run: it refreshes deterministic Update13/16 evidence to the 1.4.0 release bytes, removes the unavailable .gitignore manifest entry, and teaches the dedicated release job to exclude npm-installed node_modules through .git/info/exclude while retaining the full tracked-tree cleanliness check.",
   "expectedFinalStatus": [
     "RELEASE_READY",
     "RELEASE_BLOCKED"
@@ -19,13 +19,13 @@
   "requiredFinalArtifact": "artifacts/final-release/FINAL-RELEASE-CLOSURE.json",
   "notes": [
     "The Update 19 evidence ZIP remains archived byte-for-byte in artifacts/final-release/update19-final-evidence.zip.",
-    "Update17 canonical evidence is regenerated because packageVersion is embedded in its metadata. The scope gate requires all canonical JSON to be identical to the audited Update19 corpus after normalizing only packageVersion and deterministicRebuildHash fields.",
-    "The existing Update17 stale check is not weakened: it still requires byte-for-byte equality with a fresh deterministic rebuild.",
-    "A root .gitignore entry for node_modules/ prevents npm ci from making release:verify report dependency installation as untracked release drift; tracked-file cleanliness remains fully enforced.",
-    "The Update20 regression runner checks the committed Update18 closure before invoking the fresh differential command that transiently rewrites artifacts/update-18 in its isolated CI job. No Update18 assertion is weakened or removed.",
+    "Update17 canonical evidence remains the 20C deterministic 1.4.0 regeneration; the unchanged stale check passed in the 20C CI run.",
+    "Update13 standalone firewall evidence is refreshed to the exact 1.4.0 standalone bytes produced by build:standalone; both required semantic firewall markers remain PASS.",
+    "Update16 authority-audit evidence is refreshed from the unchanged audit generator at packageVersion 1.4.0; authority/reference semantics remain unchanged.",
+    "The root SHA256 manifest no longer lists a .gitignore file because the upload path did not create that hidden file. Instead, only the dedicated release-verify job writes node_modules/ to .git/info/exclude locally before npm ci; release:verify still enforces a clean tracked tree and rejects all other untracked drift.",
+    "The Update20 regression runner ordering fix from 20C remains in place and passed all post-bump regression commands in the 20C CI run.",
     "The PWA verification baseline remains synchronized to the already-current service worker cache generation; this is release metadata/baseline alignment, not an algorithmic change.",
-    "Standalone bundle changes remain version-banner-only before canonical CI rebuild verification.",
-    "No push, tag or release is performed by this delta."
+    "No production engine, normative reference, Scroll, public API, tag or release is changed by 20D."
   ],
-  "revision": "20C"
+  "revision": "20D"
 }
