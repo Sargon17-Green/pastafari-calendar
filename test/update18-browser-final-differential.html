@@ -1,0 +1,71 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Update 18 browser differential final</title>
+<pre id="result">RUNNING</pre>
+<script src="../browser/standalone/pastafari-date.js"></script>
+<script type="module">
+const result = document.getElementById("result");
+function finish(payload) {
+  globalThis.__PASTAFARI_UPDATE18_BROWSER_DIFFERENTIAL__ = { ...payload, complete: true };
+  result.textContent = `UPDATE18_BROWSER_DIFFERENTIAL=${JSON.stringify(globalThis.__PASTAFARI_UPDATE18_BROWSER_DIFFERENTIAL__)}`;
+}
+function canonical(value) {
+  const source = typeof value?.toJSON === "function" ? value.toJSON() : value;
+  return { year: String(source.year), cutletName: String(source.cutletName), dayInCutlet: Number(source.dayInCutlet), monthName: String(source.monthName), dayInMonth: Number(source.dayInMonth) };
+}
+function same(a, b) { return JSON.stringify(a) === JSON.stringify(b); }
+function workerRequest(url, operation, payload) {
+  return new Promise((resolve, reject) => {
+    const worker = new Worker(url, { type: "module" });
+    const id = 1818;
+    const timeout = setTimeout(() => { worker.terminate(); reject(new Error(`worker timeout: ${url}`)); }, 120000);
+    worker.onmessage = (event) => {
+      const message = event.data;
+      if (message?.kind === "ready") {
+        worker.postMessage({ id, operation, payload });
+        return;
+      }
+      if (message?.id !== id) return;
+      clearTimeout(timeout);
+      worker.terminate();
+      if (message.ok) resolve(message.result);
+      else reject(new Error(message.error?.message || `worker error: ${url}`));
+    };
+    worker.onerror = (event) => { clearTimeout(timeout); worker.terminate(); reject(new Error(event.message || `worker failure: ${url}`)); };
+  });
+}
+try {
+  const [core, fast, reportResponse] = await Promise.all([
+    import("../browser/pastafari-calendar-core.js"),
+    import("../browser/pastafari-calendar-fast.js"),
+    fetch("../artifacts/update-18/final-differential-integration.json", { cache: "no-store" }),
+  ]);
+  if (!reportResponse.ok) throw new Error(`missing update18 node evidence: HTTP ${reportResponse.status}`);
+  const report = await reportResponse.json();
+  const calculationJdn = BigInt(core.FOUNDATION_JDN);
+  const targetJdn = calculationJdn + 2n;
+  const coreCalendar = new core.PastafariCalendar({ todayProvider: () => new core.GregorianDate(2000n, 1, 1) });
+  const fastCalendar = new fast.PastafariCalendar({ todayProvider: () => new fast.GregorianDate(2000n, 1, 1) });
+  const expected = canonical(coreCalendar.convertJdn(targetJdn, { calculationJdn }));
+  const fastActual = canonical(fastCalendar.convertJdn(targetJdn, { calculationJdn }));
+  const authoritativeWorker = canonical(await workerRequest("../browser/pastafari-authoritative-worker.js", "convert", { calculationJdn: String(calculationJdn), targetJdn: String(targetJdn) }));
+  const fastWorker = canonical(await workerRequest("../browser/pastafari-fast-worker.js", "convert", { calculationJdn: String(calculationJdn), targetJdn: String(targetJdn) }));
+  const modernJdn = core.gregorianToJdn(new core.GregorianDate(2000n, 1, 1));
+  const standaloneExpected = canonical(coreCalendar.convertJdn(modernJdn, { calculationJdn: modernJdn }));
+  const standaloneActual = canonical(await globalThis.PastafariCalendarStandalone.getPastafariDateAsync("2000-01-01", "2000-01-01"));
+  const checks = {
+    coreCalendar: typeof core.PastafariCalendar === "function",
+    fastCalendar: typeof fast.PastafariCalendar === "function",
+    coreFoundation: String(core.FOUNDATION_JDN) === "-13334246",
+    browserRuntime: same(expected, fastActual),
+    workerRuntime: same(expected, authoritativeWorker) && same(expected, fastWorker),
+    standaloneRuntime: same(standaloneExpected, standaloneActual),
+    nodeEvidenceHasZeroMismatches: report.totals?.mismatches === 0,
+    nodeEvidenceHasZeroErrors: report.totals?.errors === 0,
+  };
+  const failures = Object.entries(checks).filter(([, value]) => value !== true).map(([key]) => key);
+  finish({ schema: "pastafari-update18-browser-differential-final-v1", status: failures.length ? "FAIL" : "PASS", failures, checks, samples: { expected, fastActual, authoritativeWorker, fastWorker, standaloneExpected, standaloneActual } });
+} catch (error) {
+  finish({ schema: "pastafari-update18-browser-differential-final-v1", status: "ERROR", error: { name: error?.name || "Error", message: error?.message || String(error), stack: error?.stack || "" } });
+}
+</script>

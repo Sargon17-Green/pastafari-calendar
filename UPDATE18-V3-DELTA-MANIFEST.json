@@ -1,0 +1,61 @@
+{
+  "schema": "pastafari-update18-v3-browser-checksum-fix-delta-v1",
+  "createdAt": "2026-08-25T06:07:13.843Z",
+  "base": {
+    "repository": "Sargon17-Green/pastafari-calendar",
+    "workingBranch": "separate Update 18 branch",
+    "observedMainBaseline": "ae0b89e9016bbe875b2b6bcfb7f98c6edfa72157",
+    "packageVersion": "1.3.0"
+  },
+  "purpose": "Fix Update 18 v2 CI failures: browser smoke checked a non-exported fast.FOUNDATION_JDN constant; root checksum manifest did not match the updated docs/SHA256SUMS.txt after the delta.",
+  "fixes": [
+    "Browser smoke now verifies fast engine foundation support by performing a real fast conversion using the exported fast API, instead of expecting fast.FOUNDATION_JDN to be exported.",
+    "Regenerated docs/SHA256SUMS.txt and root SHA256SUMS.txt with scripts/checksums.mjs so sha256sum -c SHA256SUMS.txt accepts docs/SHA256SUMS.txt."
+  ],
+  "localVerification": [
+    "npm run test:update18 PASS",
+    "npm run checksums:verify PASS",
+    "npm run test:differential:final and node harness previously emitted 0 real mismatches; browser Playwright command could not be rerun locally because Playwright is not installed in this sandbox."
+  ],
+  "status": {
+    "harnessStatus": "INTEGRATION_INCOMPLETE_MISSING_PREREQUISITE",
+    "finalClosureStatus": "INTEGRATION_INCOMPLETE_MISSING_PREREQUISITE",
+    "records": 141,
+    "realMismatches": 0,
+    "authoritativeMismatches": 0,
+    "fastMismatches": 0,
+    "mutationDetections": 2
+  },
+  "files": [
+    ".github/workflows/test.yml",
+    "SHA256SUMS.txt",
+    "docs/SHA256SUMS.txt",
+    "package.json",
+    "scripts/run-update18-browser-final-differential.mjs",
+    "test/update18-browser-final-differential.html",
+    "test/update18-final-differential-integration.test.js",
+    "verification/update18/close-final-status.mjs",
+    "verification/update18/run-final-differential-integration.mjs",
+    "artifacts/update-18/final-differential-integration.json",
+    "artifacts/update-18/summary-matrix.json",
+    "artifacts/update-18/SHA256SUMS.txt",
+    "sources/מגילת העיתים.md",
+    "sources/chinese/农历规范算法.zh.md"
+  ],
+  "sha256": {
+    ".github/workflows/test.yml": "4545bb9298cd74b17754ef235f9873b4f5438365aba5fdc3dbbf3fcbdb6bb401",
+    "SHA256SUMS.txt": "79d95de9418c303ab3cbc6ea0195b5470145cc044a64312d6685b7bac529b8ae",
+    "docs/SHA256SUMS.txt": "ad4d22ceaa2082a87c21adf08c8b939549e7856eb70de729879a86c0dd5d27ec",
+    "package.json": "e5843e4e11b7036cf440b9be431d7139f332e31efcdd4f6baa4c706acdcab016",
+    "scripts/run-update18-browser-final-differential.mjs": "77bc5c7675f68b23fa7bbbf0fe011b56a059c3f5b20d3dff1e74d1678539e9df",
+    "test/update18-browser-final-differential.html": "9230f1c9a66099ab4e7df4c5d35963a7ae26bf30da759951d089604fd194f6ac",
+    "test/update18-final-differential-integration.test.js": "ed6104d1ecaccf92f643a630918d821907bea92e38caab536b29361087789f28",
+    "verification/update18/close-final-status.mjs": "e46a34dc1214bbb732f9d35b58fd5f3c35e3f06c7b5d36696cd4fe81086c6a8b",
+    "verification/update18/run-final-differential-integration.mjs": "5c0098c44e7d52f4e935cc0527056cafb3df0278ae459f678b55a84aef22c3d3",
+    "artifacts/update-18/final-differential-integration.json": "de62965daa90df2cf8a863e440c1b98313e38d959dc95870fa46de358c3d03d6",
+    "artifacts/update-18/summary-matrix.json": "c893299411966c521ef5276aee9aa0c36f838670e7d8d26865f3eb81d07138c4",
+    "artifacts/update-18/SHA256SUMS.txt": "a9183cb67efa72e793e67c64ee717c86d8014ed819e69e6dc5b8e49f46c0ca19",
+    "sources/מגילת העיתים.md": "d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96",
+    "sources/chinese/农历规范算法.zh.md": "20cb003532556bcccac5c3e5b5571d05107b445617f5331088f257171f460d5d"
+  }
+}

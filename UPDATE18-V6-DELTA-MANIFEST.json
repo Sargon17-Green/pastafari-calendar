@@ -1,0 +1,24 @@
+{
+  "schema": "pastafari-update18-v6-browser-closure-runtime-fix-delta-v1",
+  "createdAt": "2026-08-25T07:57:59.389Z",
+  "branch": "Update-18",
+  "purpose": "Fix Update 18 browser final closure runtime smoke: use GregorianDate for gregorianToJdn and promote browser evidence before close-final-status.",
+  "ciFailureObserved": {
+    "job": "browser-smoke",
+    "step": "npm run test:differential:final:browser",
+    "error": "TypeError: נדרש GregorianDate או Date",
+    "source": "test/update18-browser-final-differential.html line 53"
+  },
+  "semanticExpectedValuesChanged": false,
+  "productionChanged": false,
+  "files": [
+    "package.json",
+    "test/update18-browser-final-differential.html",
+    "verification/update18/promote-final-closure.mjs"
+  ],
+  "sha256": {
+    "package.json": "fe1407961e420d1fddcc23cd8ddefb09c26c76c8e29d055f7b3d50186071c972",
+    "test/update18-browser-final-differential.html": "d7b946f3472fc1cc1adc8d02aea37260ac5f19742cc5a8c2b04dec4423603b48",
+    "verification/update18/promote-final-closure.mjs": "5550a54935c3e807483045c82c73424fcba0d20f715e2f1903b43e3152f032cb"
+  }
+}

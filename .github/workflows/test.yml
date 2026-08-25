@@ -61,6 +61,8 @@ jobs:
         run: npm run evidence:update17:stale
       - name: Verify Update 17 authoritative/reference matrix
         run: npm run test:update17:matrix
+      - name: Verify Update 18 final differential integration tier
+        run: npm run test:update18
       - name: Verify legacy generated regression artifacts are reproducible, not authoritative
         shell: bash
         run: |
@@ -154,6 +156,8 @@ jobs:
       - run: npm run test:update11:vikrama:browser
       - run: npm run test:update12:koki:browser
       - run: npm run test:update13:intl:browser
+      - name: Verify Update 18 browser differential smoke
+        run: npm run test:differential:final:browser
       - name: Upload Update 13 browser/Worker evidence
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
