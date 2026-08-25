@@ -3,7 +3,7 @@
     "browserRuntime": "separate script/test:update18:browser required",
     "canonicalCorpusCases": 51,
     "canonicalCorpusComparedThroughUpdate17Matrices": true,
-    "externalCalendarRows": 90,
+    "externalCalendarRows": 45,
     "finalClosureMissing": [
       "fresh Update 18 final-tuple holdout executed against authoritative/fast production",
       "browser runtime differential",
@@ -17,9 +17,9 @@
     "holdoutSeed": 396434711,
     "importOrderMatrix": "not yet promoted to final closure evidence",
     "monthWeavingRows": 8,
-    "negativeGateRows": 7,
-    "positiveGateRows": 10,
-    "sauceRows": 6,
+    "negativeGateRows": 5,
+    "positiveGateRows": 8,
+    "sauceRows": 3,
     "soakMemoryTrend": "not yet promoted to final closure evidence",
     "standaloneRuntime": "not yet promoted to final closure evidence",
     "workerRuntime": "not yet promoted to final closure evidence",
@@ -33,12 +33,12 @@
     "timezone": "UTC"
   },
   "finalClosureStatus": "INTEGRATION_INCOMPLETE_MISSING_PREREQUISITE",
-  "generatedAt": "2026-08-25T05:48:31.047Z",
+  "generatedAt": "2026-08-25T06:06:15.211Z",
   "options": {
-    "externalLimit": 0,
-    "gateLimit": 26,
-    "sauceLimit": 6,
-    "tier": "extended",
+    "externalLimit": 3,
+    "gateLimit": 12,
+    "sauceLimit": 3,
+    "tier": "ci",
     "yearLimit": 1
   },
   "policy": {
@@ -2267,7 +2267,7 @@
       },
       "status": "PASS",
       "timing": {
-        "elapsedMs": 8.717
+        "elapsedMs": 25.612
       }
     },
     {
@@ -2348,7 +2348,7 @@
       },
       "status": "PASS",
       "timing": {
-        "elapsedMs": 3.465
+        "elapsedMs": 4.393
       }
     },
     {
@@ -2429,296 +2429,7 @@
       },
       "status": "PASS",
       "timing": {
-        "elapsedMs": 5.714
-      }
-    },
-    {
-      "authoritative": {
-        "finalBowls": [
-          "27551746618085462110165530208850932456",
-          "29095838947807851825760870660136395566",
-          "155034968134279715369074183488960036014",
-          "169205284599386944298892333072910214205",
-          "76092526182231000800130990386342150324",
-          "132248087772144984107537002703986428400"
-        ],
-        "gateChoice922": "702",
-        "lastDropPermutation": [
-          1,
-          2,
-          6,
-          4,
-          5,
-          3
-        ],
-        "wideChoice": "168753188277363752634566413958452390056"
-      },
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "component-sauce-final12-stirs",
-      "environment": "node-instrumented",
-      "expectedSource": "update17-reference-sauce-corpus",
-      "fast": {
-        "finalBowls": [
-          "27551746618085462110165530208850932456",
-          "29095838947807851825760870660136395566",
-          "155034968134279715369074183488960036014",
-          "169205284599386944298892333072910214205",
-          "76092526182231000800130990386342150324",
-          "132248087772144984107537002703986428400"
-        ],
-        "gateChoice922": "702",
-        "lastDropPermutation": [
-          1,
-          2,
-          6,
-          4,
-          5,
-          3
-        ],
-        "wideChoice": "168753188277363752634566413958452390056"
-      },
-      "fastComparison": {
-        "status": "PASS"
-      },
-      "firstMismatch": null,
-      "id": "sauce-sauce-negative-linear",
-      "input": {
-        "calculationJdn": "-20000000",
-        "targetJdn": "-19999137"
-      },
-      "reference": {
-        "finalBowls": [
-          "27551746618085462110165530208850932456",
-          "29095838947807851825760870660136395566",
-          "155034968134279715369074183488960036014",
-          "169205284599386944298892333072910214205",
-          "76092526182231000800130990386342150324",
-          "132248087772144984107537002703986428400"
-        ],
-        "gateChoice922": "702",
-        "lastDropPermutation": [
-          1,
-          2,
-          6,
-          4,
-          5,
-          3
-        ],
-        "wideChoice": "168753188277363752634566413958452390056"
-      },
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 3.272
-      }
-    },
-    {
-      "authoritative": {
-        "finalBowls": [
-          "86072696554284235990568576198629967494",
-          "3440920619668045550113334789747522913",
-          "8636757672721672000882626493004638618",
-          "74886764016513934175451387868067900806",
-          "127001894811446551401241887415898180106",
-          "23603258439035356225285203663627099960"
-        ],
-        "gateChoice922": "99",
-        "lastDropPermutation": [
-          6,
-          5,
-          1,
-          3,
-          2,
-          4
-        ],
-        "wideChoice": "112816887539833997537875025758585289266"
-      },
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "component-sauce-final12-stirs",
-      "environment": "node-instrumented",
-      "expectedSource": "update17-reference-sauce-corpus",
-      "fast": {
-        "finalBowls": [
-          "86072696554284235990568576198629967494",
-          "3440920619668045550113334789747522913",
-          "8636757672721672000882626493004638618",
-          "74886764016513934175451387868067900806",
-          "127001894811446551401241887415898180106",
-          "23603258439035356225285203663627099960"
-        ],
-        "gateChoice922": "99",
-        "lastDropPermutation": [
-          6,
-          5,
-          1,
-          3,
-          2,
-          4
-        ],
-        "wideChoice": "112816887539833997537875025758585289266"
-      },
-      "fastComparison": {
-        "status": "PASS"
-      },
-      "firstMismatch": null,
-      "id": "sauce-sauce-positive-linear",
-      "input": {
-        "calculationJdn": "2461259",
-        "targetJdn": "2462256"
-      },
-      "reference": {
-        "finalBowls": [
-          "86072696554284235990568576198629967494",
-          "3440920619668045550113334789747522913",
-          "8636757672721672000882626493004638618",
-          "74886764016513934175451387868067900806",
-          "127001894811446551401241887415898180106",
-          "23603258439035356225285203663627099960"
-        ],
-        "gateChoice922": "99",
-        "lastDropPermutation": [
-          6,
-          5,
-          1,
-          3,
-          2,
-          4
-        ],
-        "wideChoice": "112816887539833997537875025758585289266"
-      },
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 3.176
-      }
-    },
-    {
-      "authoritative": {
-        "finalBowls": [
-          "166803055417084275913960575194632628853",
-          "42332004483019158827417574620027153658",
-          "51009034908146409127334958002538596608",
-          "80503584818384643411021928059528442150",
-          "61906758516200831723465024453580552384",
-          "42415798804769241598362612669250092546"
-        ],
-        "gateChoice922": "344",
-        "lastDropPermutation": [
-          3,
-          6,
-          1,
-          2,
-          5,
-          4
-        ],
-        "wideChoice": "95206576404121110872944297005288500786"
-      },
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "component-sauce-final12-stirs",
-      "environment": "node-instrumented",
-      "expectedSource": "update17-reference-sauce-corpus",
-      "fast": {
-        "finalBowls": [
-          "166803055417084275913960575194632628853",
-          "42332004483019158827417574620027153658",
-          "51009034908146409127334958002538596608",
-          "80503584818384643411021928059528442150",
-          "61906758516200831723465024453580552384",
-          "42415798804769241598362612669250092546"
-        ],
-        "gateChoice922": "344",
-        "lastDropPermutation": [
-          3,
-          6,
-          1,
-          2,
-          5,
-          4
-        ],
-        "wideChoice": "95206576404121110872944297005288500786"
-      },
-      "fastComparison": {
-        "status": "PASS"
-      },
-      "firstMismatch": null,
-      "id": "sauce-sauce-cross-sign-sauce-only",
-      "input": {
-        "calculationJdn": "-123456",
-        "targetJdn": "987654"
-      },
-      "reference": {
-        "finalBowls": [
-          "166803055417084275913960575194632628853",
-          "42332004483019158827417574620027153658",
-          "51009034908146409127334958002538596608",
-          "80503584818384643411021928059528442150",
-          "61906758516200831723465024453580552384",
-          "42415798804769241598362612669250092546"
-        ],
-        "gateChoice922": "344",
-        "lastDropPermutation": [
-          3,
-          6,
-          1,
-          2,
-          5,
-          4
-        ],
-        "wideChoice": "95206576404121110872944297005288500786"
-      },
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 2.907
-      }
-    },
-    {
-      "authoritative": "-14345298",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "negative-gate-differential",
-      "environment": "node-instrumented",
-      "expectedSource": "update17-reference-gate-corpus",
-      "fast": "-14345298",
-      "fastComparison": {
-        "status": "PASS"
-      },
-      "firstMismatch": null,
-      "id": "gate-canonical-gate-n2048",
-      "input": {
-        "gateIndex": -2048
-      },
-      "reference": "-14345298",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 4697.907
-      }
-    },
-    {
-      "authoritative": "-13842051",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "negative-gate-differential",
-      "environment": "node-instrumented",
-      "expectedSource": "update17-reference-gate-corpus",
-      "fast": "-13842051",
-      "fastComparison": {
-        "status": "PASS"
-      },
-      "firstMismatch": null,
-      "id": "gate-canonical-gate-n1024",
-      "input": {
-        "gateIndex": -1024
-      },
-      "reference": "-13842051",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.188
+        "elapsedMs": 5.967
       }
     },
     {
@@ -2741,7 +2452,7 @@
       "reference": "-13335521",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 1.707
+        "elapsedMs": 15.653
       }
     },
     {
@@ -2764,7 +2475,7 @@
       "reference": "-13335008",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.031
+        "elapsedMs": 0.022
       }
     },
     {
@@ -2787,7 +2498,7 @@
       "reference": "-13334246",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.012
+        "elapsedMs": 0.013
       }
     },
     {
@@ -2810,7 +2521,7 @@
       "reference": "-13333869",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.662
+        "elapsedMs": 0.729
       }
     },
     {
@@ -2833,53 +2544,7 @@
       "reference": "-13333129",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.582
-      }
-    },
-    {
-      "authoritative": "-12818296",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "positive-gate-differential",
-      "environment": "node-instrumented",
-      "expectedSource": "update17-reference-gate-corpus",
-      "fast": "-12818296",
-      "fastComparison": {
-        "status": "PASS"
-      },
-      "firstMismatch": null,
-      "id": "gate-canonical-gate-p1024",
-      "input": {
-        "gateIndex": 1024
-      },
-      "reference": "-12818296",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.016
-      }
-    },
-    {
-      "authoritative": "-12306489",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "positive-gate-differential",
-      "environment": "node-instrumented",
-      "expectedSource": "update17-reference-gate-corpus",
-      "fast": "-12306489",
-      "fastComparison": {
-        "status": "PASS"
-      },
-      "firstMismatch": null,
-      "id": "gate-canonical-gate-p2048",
-      "input": {
-        "gateIndex": 2048
-      },
-      "reference": "-12306489",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.01
+        "elapsedMs": 0.662
       }
     },
     {
@@ -2902,7 +2567,7 @@
       "reference": "-13343010",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 11.101
+        "elapsedMs": 51.455
       }
     },
     {
@@ -2925,7 +2590,7 @@
       "reference": "-13337762",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.02
+        "elapsedMs": 0.04
       }
     },
     {
@@ -2948,7 +2613,7 @@
       "reference": "-13336105",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.008
+        "elapsedMs": 0.009
       }
     },
     {
@@ -2971,7 +2636,7 @@
       "reference": "-13332244",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.582
+        "elapsedMs": 2.526
       }
     },
     {
@@ -2994,7 +2659,7 @@
       "reference": "-13332044",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.564
+        "elapsedMs": 0.582
       }
     },
     {
@@ -3017,7 +2682,7 @@
       "reference": "-13324727",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 7.334
+        "elapsedMs": 11.997
       }
     },
     {
@@ -3040,7 +2705,7 @@
       "reference": "-13269418",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 54.447
+        "elapsedMs": 60.719
       }
     },
     {
@@ -3063,7 +2728,7 @@
       "reference": "-13074198",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 194.43
+        "elapsedMs": 188.564
       }
     },
     {
@@ -5220,7 +4885,7 @@
       },
       "status": "PASS",
       "timing": {
-        "elapsedMs": 59.832
+        "elapsedMs": 58.851
       }
     },
     {
@@ -5282,7 +4947,7 @@
       },
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.971
+        "elapsedMs": 1.099
       }
     },
     {
@@ -5351,7 +5016,7 @@
       },
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.212
+        "elapsedMs": 0.219
       }
     },
     {
@@ -5452,7 +5117,7 @@
       },
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.807
+        "elapsedMs": 0.82
       }
     },
     {
@@ -5583,7 +5248,7 @@
       },
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.359
+        "elapsedMs": 0.37
       }
     },
     {
@@ -5714,7 +5379,7 @@
       },
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.275
+        "elapsedMs": 0.343
       }
     },
     {
@@ -5856,7 +5521,7 @@
       },
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.325
+        "elapsedMs": 0.308
       }
     },
     {
@@ -6008,7 +5673,7 @@
       },
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.588
+        "elapsedMs": 0.7
       }
     },
     {
@@ -6169,7 +5834,7 @@
       },
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.453
+        "elapsedMs": 0.503
       }
     },
     {
@@ -6196,7 +5861,7 @@
       "reference": "-13334246",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.441
+        "elapsedMs": 0.42
       }
     },
     {
@@ -6223,7 +5888,7 @@
       "reference": "-13334246",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 2.465
+        "elapsedMs": 2.522
       }
     },
     {
@@ -6250,7 +5915,7 @@
       "reference": "-13334246",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.071
+        "elapsedMs": 0.076
       }
     },
     {
@@ -6277,7 +5942,7 @@
       "reference": "-13334246",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.014
+        "elapsedMs": 0.013
       }
     },
     {
@@ -6304,7 +5969,7 @@
       "reference": "-13334246",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.042
+        "elapsedMs": 0.071
       }
     },
     {
@@ -6331,7 +5996,7 @@
       "reference": "-13334246",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.207
+        "elapsedMs": 0.194
       }
     },
     {
@@ -6358,7 +6023,7 @@
       "reference": "-13334246",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.048
+        "elapsedMs": 0.046
       }
     },
     {
@@ -6385,7 +6050,7 @@
       "reference": "-13334246",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.027
+        "elapsedMs": 0.031
       }
     },
     {
@@ -6412,7 +6077,7 @@
       "reference": "-13334246",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.101
+        "elapsedMs": 0.109
       }
     },
     {
@@ -6439,7 +6104,7 @@
       "reference": "-13334246",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.015
+        "elapsedMs": 0.017
       }
     },
     {
@@ -6493,7 +6158,7 @@
       "reference": "-13334246",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.056
+        "elapsedMs": 0.051
       }
     },
     {
@@ -6520,7 +6185,7 @@
       "reference": "-13334246",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.117
+        "elapsedMs": 0.064
       }
     },
     {
@@ -6547,7 +6212,7 @@
       "reference": "-13334246",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.06
+        "elapsedMs": 0.083
       }
     },
     {
@@ -6574,7 +6239,7 @@
       "reference": "-13334246",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 1.837
+        "elapsedMs": 1.836
       }
     },
     {
@@ -6628,7 +6293,7 @@
       "reference": "-13334247",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.923
+        "elapsedMs": 1.032
       }
     },
     {
@@ -6655,7 +6320,7 @@
       "reference": "-13334247",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.008
+        "elapsedMs": 0.01
       }
     },
     {
@@ -6682,7 +6347,7 @@
       "reference": "-13334247",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.004
+        "elapsedMs": 0.005
       }
     },
     {
@@ -6709,7 +6374,7 @@
       "reference": "-13334247",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.006
+        "elapsedMs": 0.007
       }
     },
     {
@@ -6736,7 +6401,7 @@
       "reference": "-13334247",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.024
+        "elapsedMs": 0.025
       }
     },
     {
@@ -6790,7 +6455,7 @@
       "reference": "-13334247",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.008
+        "elapsedMs": 0.009
       }
     },
     {
@@ -6817,7 +6482,7 @@
       "reference": "-13334247",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.092
+        "elapsedMs": 0.104
       }
     },
     {
@@ -6871,7 +6536,7 @@
       "reference": "-13334247",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.006
+        "elapsedMs": 0.007
       }
     },
     {
@@ -6979,7 +6644,7 @@
       "reference": "-13334247",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.844
+        "elapsedMs": 0.818
       }
     },
     {
@@ -7006,7 +6671,7 @@
       "reference": "-13334245",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.017
+        "elapsedMs": 0.019
       }
     },
     {
@@ -7033,7 +6698,7 @@
       "reference": "-13334245",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.979
+        "elapsedMs": 0.944
       }
     },
     {
@@ -7060,7 +6725,7 @@
       "reference": "-13334245",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.008
+        "elapsedMs": 0.007
       }
     },
     {
@@ -7087,7 +6752,7 @@
       "reference": "-13334245",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.004
+        "elapsedMs": 0.003
       }
     },
     {
@@ -7114,7 +6779,7 @@
       "reference": "-13334245",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.005
+        "elapsedMs": 0.006
       }
     },
     {
@@ -7141,7 +6806,7 @@
       "reference": "-13334245",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.018
+        "elapsedMs": 0.02
       }
     },
     {
@@ -7222,7 +6887,7 @@
       "reference": "-13334245",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.023
+        "elapsedMs": 0.026
       }
     },
     {
@@ -7276,7 +6941,7 @@
       "reference": "-13334245",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.003
+        "elapsedMs": 0.004
       }
     },
     {
@@ -7330,7 +6995,7 @@
       "reference": "-13334245",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 0.005
+        "elapsedMs": 0.006
       }
     },
     {
@@ -7384,1222 +7049,7 @@
       "reference": "-13334245",
       "status": "PASS",
       "timing": {
-        "elapsedMs": 1.414
-      }
-    },
-    {
-      "authoritative": "-13000000",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-bahaiWestern-external-4b2723a08997",
-      "input": {
-        "calendar": "bahaiWestern",
-        "jdn": "-13000000"
-      },
-      "reference": "-13000000",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.014
-      }
-    },
-    {
-      "authoritative": "-13000000",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-chinese-external-4b2723a08997",
-      "input": {
-        "calendar": "chinese",
-        "jdn": "-13000000"
-      },
-      "reference": "-13000000",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 1.198
-      }
-    },
-    {
-      "authoritative": "-13000000",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-coptic-external-4b2723a08997",
-      "input": {
-        "calendar": "coptic",
-        "jdn": "-13000000"
-      },
-      "reference": "-13000000",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.007
-      }
-    },
-    {
-      "authoritative": "-13000000",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-ethiopic-external-4b2723a08997",
-      "input": {
-        "calendar": "ethiopic",
-        "jdn": "-13000000"
-      },
-      "reference": "-13000000",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.004
-      }
-    },
-    {
-      "authoritative": "-13000000",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-gregorian-external-4b2723a08997",
-      "input": {
-        "calendar": "gregorian",
-        "jdn": "-13000000"
-      },
-      "reference": "-13000000",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.004
-      }
-    },
-    {
-      "authoritative": "-13000000",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-hebrew-external-4b2723a08997",
-      "input": {
-        "calendar": "hebrew",
-        "jdn": "-13000000"
-      },
-      "reference": "-13000000",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.022
-      }
-    },
-    {
-      "authoritative": "-13000000",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-islamicCivil-external-4b2723a08997",
-      "input": {
-        "calendar": "islamicCivil",
-        "jdn": "-13000000"
-      },
-      "reference": "-13000000",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.004
-      }
-    },
-    {
-      "authoritative": "-13000000",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-julian-external-4b2723a08997",
-      "input": {
-        "calendar": "julian",
-        "jdn": "-13000000"
-      },
-      "reference": "-13000000",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.004
-      }
-    },
-    {
-      "authoritative": "-13000000",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-koki-external-4b2723a08997",
-      "input": {
-        "calendar": "koki",
-        "jdn": "-13000000"
-      },
-      "reference": "-13000000",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.022
-      }
-    },
-    {
-      "authoritative": "-13000000",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-mayaLongCount-external-4b2723a08997",
-      "input": {
-        "calendar": "mayaLongCount",
-        "jdn": "-13000000"
-      },
-      "reference": "-13000000",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.004
-      }
-    },
-    {
-      "authoritative": "-13000000",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-minguo-external-4b2723a08997",
-      "input": {
-        "calendar": "minguo",
-        "jdn": "-13000000"
-      },
-      "reference": "-13000000",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.035
-      }
-    },
-    {
-      "authoritative": "-13000000",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-saka-external-4b2723a08997",
-      "input": {
-        "calendar": "saka",
-        "jdn": "-13000000"
-      },
-      "reference": "-13000000",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.006
-      }
-    },
-    {
-      "authoritative": "-13000000",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-solarHijriArithmetic-external-4b2723a08997",
-      "input": {
-        "calendar": "solarHijriArithmetic",
-        "jdn": "-13000000"
-      },
-      "reference": "-13000000",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.005
-      }
-    },
-    {
-      "authoritative": "-13000000",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-thaiBuddhist-external-4b2723a08997",
-      "input": {
-        "calendar": "thaiBuddhist",
-        "jdn": "-13000000"
-      },
-      "reference": "-13000000",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.003
-      }
-    },
-    {
-      "authoritative": "-13000000",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-vikrama-external-4b2723a08997",
-      "input": {
-        "calendar": "vikrama",
-        "jdn": "-13000000"
-      },
-      "reference": "-13000000",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.939
-      }
-    },
-    {
-      "authoritative": "1442903",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-bahaiWestern-external-402cf2f0aec4",
-      "input": {
-        "calendar": "bahaiWestern",
-        "jdn": "1442903"
-      },
-      "reference": "1442903",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.012
-      }
-    },
-    {
-      "authoritative": "1442903",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-chinese-external-402cf2f0aec4",
-      "input": {
-        "calendar": "chinese",
-        "jdn": "1442903"
-      },
-      "reference": "1442903",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.488
-      }
-    },
-    {
-      "authoritative": "1442903",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-coptic-external-402cf2f0aec4",
-      "input": {
-        "calendar": "coptic",
-        "jdn": "1442903"
-      },
-      "reference": "1442903",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.008
-      }
-    },
-    {
-      "authoritative": "1442903",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-ethiopic-external-402cf2f0aec4",
-      "input": {
-        "calendar": "ethiopic",
-        "jdn": "1442903"
-      },
-      "reference": "1442903",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.005
-      }
-    },
-    {
-      "authoritative": "1442903",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-gregorian-external-402cf2f0aec4",
-      "input": {
-        "calendar": "gregorian",
-        "jdn": "1442903"
-      },
-      "reference": "1442903",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.003
-      }
-    },
-    {
-      "authoritative": "1442903",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-hebrew-external-402cf2f0aec4",
-      "input": {
-        "calendar": "hebrew",
-        "jdn": "1442903"
-      },
-      "reference": "1442903",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.016
-      }
-    },
-    {
-      "authoritative": "1442903",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-islamicCivil-external-402cf2f0aec4",
-      "input": {
-        "calendar": "islamicCivil",
-        "jdn": "1442903"
-      },
-      "reference": "1442903",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.004
-      }
-    },
-    {
-      "authoritative": "1442903",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-julian-external-402cf2f0aec4",
-      "input": {
-        "calendar": "julian",
-        "jdn": "1442903"
-      },
-      "reference": "1442903",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.003
-      }
-    },
-    {
-      "authoritative": "1442903",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-koki-external-402cf2f0aec4",
-      "input": {
-        "calendar": "koki",
-        "jdn": "1442903"
-      },
-      "reference": "1442903",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.02
-      }
-    },
-    {
-      "authoritative": "1442903",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-mayaLongCount-external-402cf2f0aec4",
-      "input": {
-        "calendar": "mayaLongCount",
-        "jdn": "1442903"
-      },
-      "reference": "1442903",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.004
-      }
-    },
-    {
-      "authoritative": "1442903",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-minguo-external-402cf2f0aec4",
-      "input": {
-        "calendar": "minguo",
-        "jdn": "1442903"
-      },
-      "reference": "1442903",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.003
-      }
-    },
-    {
-      "authoritative": "1442903",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-saka-external-402cf2f0aec4",
-      "input": {
-        "calendar": "saka",
-        "jdn": "1442903"
-      },
-      "reference": "1442903",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.006
-      }
-    },
-    {
-      "authoritative": "1442903",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-solarHijriArithmetic-external-402cf2f0aec4",
-      "input": {
-        "calendar": "solarHijriArithmetic",
-        "jdn": "1442903"
-      },
-      "reference": "1442903",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.006
-      }
-    },
-    {
-      "authoritative": "1442903",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-thaiBuddhist-external-402cf2f0aec4",
-      "input": {
-        "calendar": "thaiBuddhist",
-        "jdn": "1442903"
-      },
-      "reference": "1442903",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.004
-      }
-    },
-    {
-      "authoritative": "1442903",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-vikrama-external-402cf2f0aec4",
-      "input": {
-        "calendar": "vikrama",
-        "jdn": "1442903"
-      },
-      "reference": "1442903",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.319
-      }
-    },
-    {
-      "authoritative": "2461259",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-bahaiWestern-external-c7f0120c283c",
-      "input": {
-        "calendar": "bahaiWestern",
-        "jdn": "2461259"
-      },
-      "reference": "2461259",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.009
-      }
-    },
-    {
-      "authoritative": "2461259",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-chinese-external-c7f0120c283c",
-      "input": {
-        "calendar": "chinese",
-        "jdn": "2461259"
-      },
-      "reference": "2461259",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.534
-      }
-    },
-    {
-      "authoritative": "2461259",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-coptic-external-c7f0120c283c",
-      "input": {
-        "calendar": "coptic",
-        "jdn": "2461259"
-      },
-      "reference": "2461259",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.006
-      }
-    },
-    {
-      "authoritative": "2461259",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-ethiopic-external-c7f0120c283c",
-      "input": {
-        "calendar": "ethiopic",
-        "jdn": "2461259"
-      },
-      "reference": "2461259",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.003
-      }
-    },
-    {
-      "authoritative": "2461259",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-gregorian-external-c7f0120c283c",
-      "input": {
-        "calendar": "gregorian",
-        "jdn": "2461259"
-      },
-      "reference": "2461259",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.004
-      }
-    },
-    {
-      "authoritative": "2461259",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-hebrew-external-c7f0120c283c",
-      "input": {
-        "calendar": "hebrew",
-        "jdn": "2461259"
-      },
-      "reference": "2461259",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.015
-      }
-    },
-    {
-      "authoritative": "2461259",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-islamicCivil-external-c7f0120c283c",
-      "input": {
-        "calendar": "islamicCivil",
-        "jdn": "2461259"
-      },
-      "reference": "2461259",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.004
-      }
-    },
-    {
-      "authoritative": "2461259",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-julian-external-c7f0120c283c",
-      "input": {
-        "calendar": "julian",
-        "jdn": "2461259"
-      },
-      "reference": "2461259",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.003
-      }
-    },
-    {
-      "authoritative": "2461259",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-koki-external-c7f0120c283c",
-      "input": {
-        "calendar": "koki",
-        "jdn": "2461259"
-      },
-      "reference": "2461259",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.017
-      }
-    },
-    {
-      "authoritative": "2461259",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-mayaLongCount-external-c7f0120c283c",
-      "input": {
-        "calendar": "mayaLongCount",
-        "jdn": "2461259"
-      },
-      "reference": "2461259",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.004
-      }
-    },
-    {
-      "authoritative": "2461259",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-minguo-external-c7f0120c283c",
-      "input": {
-        "calendar": "minguo",
-        "jdn": "2461259"
-      },
-      "reference": "2461259",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.004
-      }
-    },
-    {
-      "authoritative": "2461259",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-saka-external-c7f0120c283c",
-      "input": {
-        "calendar": "saka",
-        "jdn": "2461259"
-      },
-      "reference": "2461259",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.004
-      }
-    },
-    {
-      "authoritative": "2461259",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-solarHijriArithmetic-external-c7f0120c283c",
-      "input": {
-        "calendar": "solarHijriArithmetic",
-        "jdn": "2461259"
-      },
-      "reference": "2461259",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.005
-      }
-    },
-    {
-      "authoritative": "2461259",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-thaiBuddhist-external-c7f0120c283c",
-      "input": {
-        "calendar": "thaiBuddhist",
-        "jdn": "2461259"
-      },
-      "reference": "2461259",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.003
-      }
-    },
-    {
-      "authoritative": "2461259",
-      "authoritativeComparison": {
-        "status": "PASS"
-      },
-      "category": "external-calendar-normative-roundtrip",
-      "environment": "docs-and-public-api",
-      "expectedSource": "update17-reference-external-calendar-corpus",
-      "fast": {
-        "reason": "fast engine does not advertise external calendar support",
-        "status": "NOT_APPLICABLE"
-      },
-      "fastComparison": {
-        "status": "NOT_APPLICABLE"
-      },
-      "firstMismatch": null,
-      "id": "external-vikrama-external-c7f0120c283c",
-      "input": {
-        "calendar": "vikrama",
-        "jdn": "2461259"
-      },
-      "reference": "2461259",
-      "status": "PASS",
-      "timing": {
-        "elapsedMs": 0.702
+        "elapsedMs": 1.224
       }
     },
     {
@@ -8780,28 +7230,28 @@
     },
     {
       "authoritativeMismatch": 0,
-      "authoritativePass": 6,
-      "cases": 6,
+      "authoritativePass": 3,
+      "cases": 3,
       "errors": 0,
       "fastMismatch": 0,
-      "fastPass": 6,
+      "fastPass": 3,
       "feature": "component-sauce-final12-stirs",
       "mismatchRows": 0,
       "notApplicable": 0,
-      "passRows": 6,
+      "passRows": 3,
       "timeouts": 0
     },
     {
       "authoritativeMismatch": 0,
-      "authoritativePass": 90,
-      "cases": 90,
+      "authoritativePass": 45,
+      "cases": 45,
       "errors": 0,
       "fastMismatch": 0,
       "fastPass": 0,
       "feature": "external-calendar-normative-roundtrip",
       "mismatchRows": 0,
       "notApplicable": 0,
-      "passRows": 90,
+      "passRows": 45,
       "timeouts": 0
     },
     {
@@ -8845,28 +7295,28 @@
     },
     {
       "authoritativeMismatch": 0,
-      "authoritativePass": 7,
-      "cases": 7,
+      "authoritativePass": 5,
+      "cases": 5,
       "errors": 0,
       "fastMismatch": 0,
-      "fastPass": 7,
+      "fastPass": 5,
       "feature": "negative-gate-differential",
       "mismatchRows": 0,
       "notApplicable": 0,
-      "passRows": 7,
+      "passRows": 5,
       "timeouts": 0
     },
     {
       "authoritativeMismatch": 0,
-      "authoritativePass": 10,
-      "cases": 10,
+      "authoritativePass": 8,
+      "cases": 8,
       "errors": 0,
       "fastMismatch": 0,
-      "fastPass": 10,
+      "fastPass": 8,
       "feature": "positive-gate-differential",
       "mismatchRows": 0,
       "notApplicable": 0,
-      "passRows": 10,
+      "passRows": 8,
       "timeouts": 0
     },
     {
@@ -8883,9 +7333,9 @@
       "timeouts": 0
     }
   ],
-  "tier": "extended",
+  "tier": "ci",
   "timing": {
-    "elapsedMs": 5528.316
+    "elapsedMs": 906.971
   },
   "totals": {
     "authoritativeMismatches": 0,
@@ -8893,8 +7343,8 @@
     "fastMismatches": 0,
     "mismatches": 0,
     "mutationDetections": 2,
-    "pass": 193,
-    "records": 193,
+    "pass": 141,
+    "records": 141,
     "timeouts": 0
   }
 }
