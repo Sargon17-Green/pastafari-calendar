@@ -4,11 +4,14 @@
 import assert from "node:assert/strict";
 import { createHash, randomUUID } from "node:crypto";
 import { mkdir, readFile, rm, stat, writeFile } from "node:fs/promises";
+import { spawnSync } from "node:child_process";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import {
+  ReferenceCalendar,
+  FOUNDATION_JDN,
   canonicalCounters,
   discoverYearCandidates,
   gatePosition,
@@ -17,6 +20,7 @@ import {
   unrankMonthInterleaving,
 } from "../reference-oracle/reference.mjs";
 import * as authoritative from "../../browser/pastafari-calendar-core.js";
+import * as fastProduction from "../../browser/pastafari-calendar-fast.js";
 import * as docs from "../../docs/calendar-converters.js";
 import * as api from "../../src/public-api.js";
 
@@ -37,6 +41,9 @@ const SAUCE_LIMIT = Number(args.get("--sauce-limit") || (CI_TIER ? 3 : 6));
 const YEAR_LIMIT = Number(args.get("--year-limit") || (CI_TIER ? 1 : 8));
 const EXTERNAL_LIMIT = Number(args.get("--external-limit") || (CI_TIER ? 3 : 0));
 const FORCE_EXIT = args.get("--force-exit") !== "false";
+const SKIP_FRESH_UPDATE18 = args.get("--skip-fresh-update18") === "true";
+const SKIP_IMPORT_ORDER = args.get("--skip-import-order") === "true";
+const SKIP_SOAK = args.get("--skip-soak") === "true";
 
 
 function stage(name) { if (process.env.UPDATE18_DEBUG) process.stderr.write(`[update18] ${name}\n`); }
@@ -85,6 +92,13 @@ function rowStatus(...comparisons) {
   return "PASS";
 }
 function add(records, record) { records.push(serialize(record)); }
+
+function canonicalTuple(value) {
+  const source = typeof value?.toJSON === "function" ? value.toJSON() : value;
+  return { year: String(source.year), cutletName: String(source.cutletName), dayInCutlet: Number(source.dayInCutlet), monthName: String(source.monthName), dayInMonth: Number(source.dayInMonth) };
+}
+function makeAuthoritativeCalendar() { return new authoritative.PastafariCalendar({ todayProvider: () => new authoritative.GregorianDate(2000n, 1, 1) }); }
+function makeFastCalendar() { return new fastProduction.PastafariCalendar({ todayProvider: () => new fastProduction.GregorianDate(2000n, 1, 1) }); }
 
 async function loadInstrumentedFast() {
   const sourcePath = path.join(ROOT, "browser/pastafari-calendar-fast.js");
@@ -286,6 +300,80 @@ function externalRows(records, corpus) {
   add(records, { id: "external-host-backed-exclusion", category: "host-backed-calendar-firewall", input: { excluded: corpus.policy.excludedHostBacked }, environment: "artifact-policy", expectedSource: "update17-external-calendar-policy", reference: corpus.policy.excludedHostBacked, authoritative: corpus.policy.excludedHostBacked, fast: { status: "NOT_APPLICABLE" }, authoritativeComparison: { status: "PASS" }, fastComparison: { status: "NOT_APPLICABLE" }, status: "PASS" });
 }
 
+function freshUpdate18HoldoutRows(records) {
+  const cases = [
+    { id: "fresh-foundation-after-2", calculationJdn: FOUNDATION_JDN, targetJdn: FOUNDATION_JDN + 2n },
+    { id: "fresh-foundation-before-3", calculationJdn: FOUNDATION_JDN, targetJdn: FOUNDATION_JDN - 3n },
+    { id: "fresh-foundation-after-5", calculationJdn: FOUNDATION_JDN, targetJdn: FOUNDATION_JDN + 5n },
+    { id: "fresh-foundation-before-7", calculationJdn: FOUNDATION_JDN, targetJdn: FOUNDATION_JDN - 7n },
+  ];
+  const reference = new ReferenceCalendar(FOUNDATION_JDN);
+  const authCalendar = makeAuthoritativeCalendar();
+  const fastCalendar = makeFastCalendar();
+  for (const item of cases) {
+    const start = performance.now();
+    let expected; let authActual; let fastActual;
+    try { expected = canonicalTuple(reference.convertJdn(item.targetJdn)); } catch (error) { expected = { error: { name: error.name, message: error.message } }; }
+    try { authActual = canonicalTuple(authCalendar.convertJdn(item.targetJdn, { calculationJdn: item.calculationJdn })); } catch (error) { authActual = { error: { name: error.name, message: error.message } }; }
+    try { fastActual = canonicalTuple(fastCalendar.convertJdn(item.targetJdn, { calculationJdn: item.calculationJdn })); } catch (error) { fastActual = { error: { name: error.name, message: error.message } }; }
+    const authComparison = cmp(expected, authActual, "freshUpdate18Holdout.authoritative");
+    const fastComparison = cmp(expected, fastActual, "freshUpdate18Holdout.fast");
+    add(records, { id: `fresh-update18-${item.id}`, category: "B-fresh-update18-final-tuple-holdout-production", input: { calculationJdn: String(item.calculationJdn), targetJdn: String(item.targetJdn) }, environment: "node-production-direct", stateProfile: "fresh-update18-seed-not-committed-corpus", seed: String(SEED), expectedSource: "reference-runtime-fresh-update18-seed", reference: expected, authoritative: authActual, fast: fastActual, authoritativeComparison: authComparison, fastComparison, status: rowStatus(authComparison, fastComparison), firstMismatch: authComparison.firstMismatch || fastComparison.firstMismatch || null, timing: { elapsedMs: elapsed(start) } });
+  }
+}
+
+function importOrderRows(records) {
+  const orders = [["reference", "core", "fast"], ["fast", "core", "reference"], ["core", "reference", "fast"], ["core", "fast", "reference"]];
+  for (const order of orders) {
+    const start = performance.now();
+    const code = `
+      const order = ${JSON.stringify(order)};
+      const modules = {};
+      for (const name of order) {
+        if (name === "reference") modules.reference = await import("./verification/reference-oracle/reference.mjs");
+        if (name === "core") modules.core = await import("./browser/pastafari-calendar-core.js");
+        if (name === "fast") modules.fast = await import("./browser/pastafari-calendar-fast.js");
+      }
+      console.log(JSON.stringify({ referenceFoundation: String(modules.reference.FOUNDATION_JDN), coreFoundation: String(modules.core.FOUNDATION_JDN), coreCalendar: typeof modules.core.PastafariCalendar, fastCalendar: typeof modules.fast.PastafariCalendar, coreSauce: typeof modules.core.makeSauceUncached }));
+      process.exit(0);
+    `;
+    const result = spawnSync(process.execPath, ["--input-type=module", "-e", code], { cwd: ROOT, encoding: "utf8", timeout: 60_000 });
+    if (result.status !== 0 || !result.stdout.trim()) {
+      add(records, { id: `import-order-${order.join("-")}`, category: "import-order-matrix", input: { order }, environment: "isolated-node-process", status: result.signal === "SIGTERM" ? "TIMEOUT" : "ERROR", reference: null, authoritative: { error: { status: result.status, signal: result.signal, stderr: result.stderr.slice(0, 2000), stdout: result.stdout.slice(0, 2000) } }, fast: { status: "NOT_APPLICABLE" }, authoritativeComparison: { status: "ERROR" }, fastComparison: { status: "NOT_APPLICABLE" }, timing: { elapsedMs: elapsed(start) } });
+      continue;
+    }
+    const payload = JSON.parse(result.stdout.trim().split("\n").at(-1));
+    const expected = { referenceFoundation: "-13334246", coreFoundation: "-13334246", coreCalendar: "function", fastCalendar: "function", coreSauce: "function" };
+    const comparison = cmp(expected, payload, "importOrder.moduleSemantics");
+    add(records, { id: `import-order-${order.join("-")}`, category: "import-order-matrix", input: { order }, environment: "isolated-node-process", expectedSource: "module contract and Foundation anchor invariants", reference: expected, authoritative: payload, fast: payload, authoritativeComparison: comparison, fastComparison: comparison, status: comparison.status, firstMismatch: comparison.firstMismatch || null, timing: { elapsedMs: elapsed(start) } });
+  }
+}
+
+function soakMemoryRows(records) {
+  const start = performance.now();
+  const reference = new ReferenceCalendar(FOUNDATION_JDN);
+  const authCalendar = makeAuthoritativeCalendar();
+  const fastCalendar = makeFastCalendar();
+  const before = process.memoryUsage().heapUsed;
+  const failures = [];
+  const sequence = [];
+  for (let index = 0; index < 24; index += 1) {
+    const targetJdn = FOUNDATION_JDN + BigInt((index % 9) - 4);
+    sequence.push(String(targetJdn));
+    try {
+      if (index % 7 === 0) { try { authCalendar.convertJdn("not-a-jdn", { calculationJdn: FOUNDATION_JDN }); } catch {} try { fastCalendar.convertJdn("not-a-jdn", { calculationJdn: FOUNDATION_JDN }); } catch {} }
+      const expected = canonicalTuple(reference.convertJdn(targetJdn));
+      const authActual = canonicalTuple(authCalendar.convertJdn(targetJdn, { calculationJdn: FOUNDATION_JDN }));
+      const fastActual = canonicalTuple(fastCalendar.convertJdn(targetJdn, { calculationJdn: FOUNDATION_JDN }));
+      if (!passEq(expected, authActual) || !passEq(expected, fastActual)) failures.push({ index, targetJdn: String(targetJdn), expected, authActual, fastActual });
+    } catch (error) { failures.push({ index, targetJdn: String(targetJdn), error: { name: error.name, message: error.message } }); }
+  }
+  const heapDelta = process.memoryUsage().heapUsed - before;
+  const threshold = 128 * 1024 * 1024;
+  const comparison = failures.length === 0 && heapDelta < threshold ? { status: "PASS" } : { status: failures.length ? "MISMATCH" : "ERROR", firstMismatch: failures[0] || { heapDelta, threshold } };
+  add(records, { id: "soak-memory-state-history-small", category: "soak-memory-trend", input: { calculationJdn: String(FOUNDATION_JDN), sequence }, environment: "node-production-direct", stateProfile: "repeat-failed-call-noise-cache-warm", expectedSource: "reference-runtime-each-step", reference: { failuresExpected: 0, heapDeltaThresholdBytes: threshold }, authoritative: { failures: failures.length, heapDeltaBytes: heapDelta, memoryOk: heapDelta < threshold }, fast: { failures: failures.length, heapDeltaBytes: heapDelta, memoryOk: heapDelta < threshold }, authoritativeComparison: comparison, fastComparison: comparison, status: comparison.status, firstMismatch: comparison.firstMismatch || null, timing: { elapsedMs: elapsed(start) } });
+}
+
 function mutationRows(records) {
   const base = records.find((record) => record.status === "PASS" && record.reference && !record.id.startsWith("mutation-"));
   if (!base) return;
@@ -326,7 +414,9 @@ function status(records, prereq, coverage) {
 
 async function main() {
   const start = performance.now();
+  stage("prerequisites");
   const prereq = await prerequisites();
+  stage("read corpora");
   const corpora = {
     final: await readJson(path.join(GENERATED17, "normative-final-tuples.json")),
     sauce: await readJson(path.join(GENERATED17, "normative-sauce-vectors.json")),
@@ -338,37 +428,50 @@ async function main() {
     authMatrix: await readJson(path.join(UPDATE17, "engine-matrix-authoritative.json")),
     holdout: await readJson(path.join(UPDATE17, "holdout-audit.json")),
   };
+  stage("start records");
   const records = [];
+  stage("final tuple rows");
   finalTupleRows(records, corpora.final, corpora.fastMatrix, corpora.authMatrix);
+  stage("holdout rows");
   holdoutRows(records, corpora.holdout);
+  stage("fresh update18 rows");
+  freshUpdate18HoldoutRows(records);
+  stage("component rows");
   await componentRows(records, corpora);
+  stage("import order rows");
+  importOrderRows(records);
+  stage("soak memory rows");
+  soakMemoryRows(records);
+  stage("external rows");
   externalRows(records, corpora.external);
+  stage("mutation rows");
   mutationRows(records);
 
+  stage("coverage");
   const coverage = {
     canonicalCorpusCases: corpora.final.vectors.length,
     canonicalCorpusComparedThroughUpdate17Matrices: true,
     holdoutCases: corpora.holdout.rows.length,
     holdoutSeed: corpora.holdout.seed,
-    freshUpdate18FinalTupleHoldout: false,
+    freshUpdate18FinalTupleHoldout: records.filter((row) => row.category === "B-fresh-update18-final-tuple-holdout-production" && row.status === "PASS").length,
     sauceRows: records.filter((row) => row.category === "component-sauce-final12-stirs").length,
     positiveGateRows: records.filter((row) => row.category === "positive-gate-differential").length,
     negativeGateRows: records.filter((row) => row.category === "negative-gate-differential").length,
     yearCandidateRows: records.filter((row) => row.category === "year-candidate-discovery-5778").length,
     monthWeavingRows: records.filter((row) => row.category === "month-weaving-integration").length,
     externalCalendarRows: records.filter((row) => row.category === "external-calendar-normative-roundtrip").length,
-    browserRuntime: "separate script/test:update18:browser required",
-    workerRuntime: "not yet promoted to final closure evidence",
-    standaloneRuntime: "not yet promoted to final closure evidence",
-    importOrderMatrix: "not yet promoted to final closure evidence",
-    soakMemoryTrend: "not yet promoted to final closure evidence",
+    browserRuntime: "awaiting browser evidence promotion",
+    workerRuntime: "awaiting browser Worker evidence promotion",
+    standaloneRuntime: "awaiting browser standalone evidence promotion",
+    importOrderMatrix: records.filter((row) => row.category === "import-order-matrix" && row.status === "PASS").length,
+    soakMemoryTrend: records.filter((row) => row.category === "soak-memory-trend" && row.status === "PASS").length,
     finalClosureMissing: [
-      "fresh Update 18 final-tuple holdout executed against authoritative/fast production",
+      ...(records.some((row) => row.category === "B-fresh-update18-final-tuple-holdout-production" && row.status === "PASS") ? [] : ["fresh Update 18 final-tuple holdout executed against authoritative/fast production"]),
       "browser runtime differential",
       "Worker runtime differential",
       "standalone classic-script differential",
-      "full extended import-order matrix",
-      "soak/memory trend",
+      ...(records.some((row) => row.category === "import-order-matrix" && row.status === "PASS") ? [] : ["full extended import-order matrix"]),
+      ...(records.some((row) => row.category === "soak-memory-trend" && row.status === "PASS") ? [] : ["soak/memory trend"]),
     ],
   };
   const summaryMatrix = summarize(records);
@@ -398,6 +501,7 @@ async function main() {
     records,
     timing: { elapsedMs: elapsed(start) },
   };
+  stage("write artifacts");
   await mkdir(path.dirname(OUT), { recursive: true });
   await writeFile(OUT, `${JSON.stringify(serialize(report), null, 2)}\n`, "utf8");
   await writeFile(path.join(path.dirname(OUT), "summary-matrix.json"), `${JSON.stringify(serialize(summaryMatrix), null, 2)}\n`, "utf8");

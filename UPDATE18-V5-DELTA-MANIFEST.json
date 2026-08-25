@@ -1,0 +1,69 @@
+{
+  "schema": "pastafari-update18-v5-delta-manifest-v1",
+  "createdAt": "2026-08-25T07:38:04.145Z",
+  "base": {
+    "repository": "Sargon17-Green/pastafari-calendar",
+    "branch": "Update-18",
+    "note": "apply on top of Update 18 v4 branch state"
+  },
+  "purpose": "Promote Update 18 from infrastructure fixes to final-closure preparation by adding fresh production holdout, import-order evidence, soak/memory sanity, and browser/Worker/standalone promotion machinery.",
+  "status": {
+    "currentStatus": "INTEGRATION_INCOMPLETE_MISSING_PREREQUISITE",
+    "finalClosureStatus": "INTEGRATION_INCOMPLETE_MISSING_PREREQUISITE",
+    "remainingBlockers": [
+      "browser runtime differential",
+      "Worker runtime differential",
+      "standalone classic-script differential"
+    ],
+    "totals": {
+      "authoritativeMismatches": 0,
+      "errors": 0,
+      "fastMismatches": 0,
+      "mismatches": 0,
+      "mutationDetections": 2,
+      "pass": 111,
+      "records": 111,
+      "timeouts": 0
+    }
+  },
+  "runLocally": [
+    "npm run test:update18",
+    "npm run checksums:verify"
+  ],
+  "expectedCiNextSteps": [
+    "npm run test:differential:final:browser",
+    "npm run test:differential:final:closure",
+    "npm run checksums:verify"
+  ],
+  "note": "This delta is intentionally not a final INTEGRATION_PASS artifact until browser, real Worker, and standalone classic-script evidence is produced by the browser job and promoted by verification/update18/promote-final-closure.mjs.",
+  "files": [
+    "package.json",
+    ".github/workflows/test.yml",
+    "verification/update18/run-final-differential-integration.mjs",
+    "verification/update18/close-final-status.mjs",
+    "verification/update18/promote-final-closure.mjs",
+    "scripts/run-update18-browser-final-differential.mjs",
+    "test/update18-final-differential-integration.test.js",
+    "test/update18-browser-final-differential.html",
+    "artifacts/update-18/final-differential-integration.json",
+    "artifacts/update-18/summary-matrix.json",
+    "artifacts/update-18/report.md",
+    "artifacts/update-18/SHA256SUMS.txt",
+    "artifacts/update-18/v5-node.json"
+  ],
+  "sha256": {
+    "package.json": "cc7bbc622babbcb63a1be354bc5f5936e2e188be181f61bd717ee75cc7e0043f",
+    ".github/workflows/test.yml": "4545bb9298cd74b17754ef235f9873b4f5438365aba5fdc3dbbf3fcbdb6bb401",
+    "verification/update18/run-final-differential-integration.mjs": "a22954cc208c089791fb10e395558def0532efe342b797c1606af43b24544aa6",
+    "verification/update18/close-final-status.mjs": "e46a34dc1214bbb732f9d35b58fd5f3c35e3f06c7b5d36696cd4fe81086c6a8b",
+    "verification/update18/promote-final-closure.mjs": "5550a54935c3e807483045c82c73424fcba0d20f715e2f1903b43e3152f032cb",
+    "scripts/run-update18-browser-final-differential.mjs": "40b7a4d33f50086d36445979c86ac37810050764583a6de4f667e6c6ef4dd75f",
+    "test/update18-final-differential-integration.test.js": "94204cb14da556f5c98183715b2891b1c161df1d055ec60903841cada620b21c",
+    "test/update18-browser-final-differential.html": "9d5dcfbd3977eca0db56d10dc3c6a342af74528df3f6afe745a8d6588b33fed4",
+    "artifacts/update-18/final-differential-integration.json": "1200e0ae659ea05d8ddab4d5dfc32ac3d00e1e66b2e91fb102c007d5c3a41f36",
+    "artifacts/update-18/summary-matrix.json": "ed7f81664aca906849b1b492a0915e1666f568781bb72160f39351a05cc25590",
+    "artifacts/update-18/report.md": "0ec97aa49cf048408e014292b6da451eb53546ea3e07226af76a1bd6776d5d38",
+    "artifacts/update-18/SHA256SUMS.txt": "bc57e6c0de851d33a5e7a3d0f55f9d19c24628f8862aa6ed3abe5385e5375b62",
+    "artifacts/update-18/v5-node.json": "1200e0ae659ea05d8ddab4d5dfc32ac3d00e1e66b2e91fb102c007d5c3a41f36"
+  }
+}

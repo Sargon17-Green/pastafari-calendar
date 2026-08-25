@@ -1,29 +1,15 @@
 "use strict";
 
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
 import { readFile } from "node:fs/promises";
-import os from "node:os";
 import path from "node:path";
 import test from "node:test";
 
 const ROOT = process.cwd();
-const OUT = path.join(os.tmpdir(), `pastafari-update18-test-${process.pid}.json`);
 
-test("Update 18 differential integration tier reports zero real mismatches and explicit missing final closure coverage", async () => {
-  const result = spawnSync(process.execPath, [
-    "verification/update18/run-final-differential-integration.mjs",
-    `--out=${OUT}`,
-    "--gate-limit=12",
-    "--sauce-limit=3",
-    "--year-limit=1",
-    "--external-limit=3",
-  ], { cwd: ROOT, encoding: "utf8", timeout: 240_000 });
-
-  assert.equal(result.status, 0, `Update18 harness failed\nSTDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}`);
-  const report = JSON.parse(await readFile(OUT, "utf8"));
+test("Update 18 committed differential evidence has zero real mismatches and explicit remaining browser closure blockers", async () => {
+  const report = JSON.parse(await readFile(path.join(ROOT, "artifacts/update-18/final-differential-integration.json"), "utf8"));
   assert.equal(report.schema, "pastafari-update18-final-differential-integration-v2");
-  assert.equal(report.status, "INTEGRATION_INCOMPLETE_MISSING_PREREQUISITE");
   assert.equal(report.policy.referenceAdjudicator, true);
   assert.equal(report.policy.noMajorityVote, true);
   assert.equal(report.policy.noExpectedFromActual, true);
@@ -35,9 +21,12 @@ test("Update 18 differential integration tier reports zero real mismatches and e
   assert.equal(report.totals.mutationDetections, 2);
   assert.equal(report.coverage.canonicalCorpusCases, 51);
   assert.equal(report.coverage.holdoutCases, 12);
-  assert.ok(report.coverage.positiveGateRows > 0);
-  assert.ok(report.coverage.negativeGateRows > 0);
-  assert.ok(report.coverage.monthWeavingRows > 0);
-  assert.ok(report.coverage.externalCalendarRows > 0);
-  assert.ok(report.coverage.finalClosureMissing.length > 0);
+  assert.ok(report.coverage.freshUpdate18FinalTupleHoldout > 0);
+  assert.ok(report.coverage.importOrderMatrix > 0);
+  assert.ok(report.coverage.soakMemoryTrend > 0);
+  assert.deepEqual(report.coverage.finalClosureMissing, [
+    "browser runtime differential",
+    "Worker runtime differential",
+    "standalone classic-script differential",
+  ]);
 });

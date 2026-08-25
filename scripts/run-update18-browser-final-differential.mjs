@@ -2,6 +2,7 @@
 "use strict";
 
 import { createReadStream } from "node:fs";
+import { spawnSync } from "node:child_process";
 import { mkdir, stat, writeFile } from "node:fs/promises";
 import { createServer } from "node:http";
 import path from "node:path";
