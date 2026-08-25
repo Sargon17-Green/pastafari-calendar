@@ -1,0 +1,66 @@
+{
+  "schema": "pastafari-update19-audit-harness-delta-v1",
+  "createdAt": "2026-08-25T12:20:00+03:00",
+  "base": {
+    "repository": "Sargon17-Green/pastafari-calendar",
+    "branch": "main",
+    "commit": "01866e2b74823ca34639f226067d07ee15279249",
+    "packageVersion": "1.3.0"
+  },
+  "purpose": "Update 19A audit harness only. No production semantics, package version, release tag, or generated production artifact is changed.",
+  "workflow": {
+    "recommendedBranch": "Update-19",
+    "finalStatusOwner": "verification/update19/finalize-audit.mjs",
+    "allowedFinalStatuses": [
+      "FINAL_AUDIT_PASS",
+      "FINAL_AUDIT_FAILED",
+      "FINAL_AUDIT_INCOMPLETE"
+    ],
+    "update20AllowedOnlyAfter": "FINAL_AUDIT_PASS"
+  },
+  "policy": {
+    "noProductionSemanticChanges": true,
+    "noMajorityVote": true,
+    "referenceIsExpectedSource": true,
+    "timeoutIsNotPass": true,
+    "mismatchThreshold": 0,
+    "noVersionBump": true,
+    "noRemoteMutation": true
+  },
+  "files": [
+    ".github/workflows/update-19-final-audit.yml",
+    "scripts/run-update19-browser-audit.mjs",
+    "test/update19-browser-final-audit.html",
+    "verification/update19/check-audit-scope.mjs",
+    "verification/update19/external-case-child.mjs",
+    "verification/update19/finalize-audit.mjs",
+    "verification/update19/run-build-package-audit.mjs",
+    "verification/update19/run-ci-command-parity.mjs",
+    "verification/update19/run-deep-state-audit.mjs",
+    "verification/update19/run-external-audit.mjs",
+    "verification/update19/run-final-tuple-region.mjs",
+    "verification/update19/run-independent-node-audit.mjs",
+    "verification/update19/run-static-corpus-audit.mjs",
+    "UPDATE19-DELTA-MANIFEST.json",
+    "SHA256SUMS.txt"
+  ],
+  "sha256": {
+    ".github/workflows/update-19-final-audit.yml": "72efb4e171921b6433096b68c933aa2fdf81ac61229828ad3e41e3704c75e170",
+    "scripts/run-update19-browser-audit.mjs": "ef1eb8dbe381143376476e5e5328ff3466b905846af430209b6def3c32cb87ee",
+    "test/update19-browser-final-audit.html": "43e05ecd977a28ac358230d761801fa9f93876840156189a55c029bf3e3dae1c",
+    "verification/update19/check-audit-scope.mjs": "3a0daf92ae97e43e0d7ff88c489f7eb86ac0bb976eff7aa89a8378ed22ef9999",
+    "verification/update19/external-case-child.mjs": "73e15088e1db2f9328b75ca4e2c898cd19e6175523a20adcea3f23c71a682c4e",
+    "verification/update19/finalize-audit.mjs": "c6703b7474eed76913bb6c4e28dd368724bb7e14a72b5558a2199f7a228d0322",
+    "verification/update19/run-build-package-audit.mjs": "4003edd561bd312e1a8957078f713807b9a11aa2f8b0c3917c238e7d18989234",
+    "verification/update19/run-ci-command-parity.mjs": "fa5ade4de53c6c0be5217fb0df83812d424789f8a3ed39093ea4cfb9f10d96cb",
+    "verification/update19/run-deep-state-audit.mjs": "935421b2e234affc83dc9d4d91613491cd9231ce9c037aa5197c85acfcb29469",
+    "verification/update19/run-external-audit.mjs": "7ef33e594eabd489c1eb77debd61d1b4712b87e6b2df48e9def25a2d7baad71a",
+    "verification/update19/run-final-tuple-region.mjs": "09c9af5289b2b38173352ad8ad948d4b6c07589590adcc147003f1215eca87f3",
+    "verification/update19/run-independent-node-audit.mjs": "a756d344ac677eab6f437bd4fac63895223fb055f21815c6c2f85c1ef2ac6895",
+    "verification/update19/run-static-corpus-audit.mjs": "bac6236906b481e347e85b114590876a6d2c930c5fd28feb9d069fa65ffadccb"
+  },
+  "hashOmissions": {
+    "UPDATE19-DELTA-MANIFEST.json": "self hash intentionally omitted",
+    "SHA256SUMS.txt": "omitted to avoid a manifest/checksum circular dependency; root SHA256SUMS hashes UPDATE19-DELTA-MANIFEST.json but never hashes itself"
+  }
+}

@@ -1,0 +1,273 @@
+name: Update 19 final independent normative audit
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - Update-19
+      - update-19
+      - update19
+      - 'Update-19-*'
+      - 'update-19-*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: update-19-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  UPDATE19_BASE_COMMIT: 01866e2b74823ca34639f226067d07ee15279249
+
+jobs:
+  scope:
+    name: audit-scope / semantic freeze
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+      - run: node verification/update19/check-audit-scope.mjs
+      - name: Upload scope evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: u19-scope-${{ github.sha }}
+          path: artifacts/update-19/audit-scope.json
+          if-no-files-found: warn
+          retention-days: 14
+
+  independent-node:
+    name: independent node / scroll-reference-production
+    needs: scope
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+      - run: node verification/update19/run-independent-node-audit.mjs --extended
+      - name: Upload independent Node evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: u19-node-${{ github.sha }}
+          path: artifacts/update-19/*.json
+          if-no-files-found: warn
+          retention-days: 14
+
+  static-corpus:
+    name: reference independence / corpus / corruption self-tests
+    needs: scope
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+      - run: node verification/update19/run-static-corpus-audit.mjs
+      - name: Upload static/corpus evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: u19-static-${{ github.sha }}
+          path: |
+            artifacts/update-19/static-corpus-ci-audit.json
+            artifacts/update-19/public-api-inventory.json
+          if-no-files-found: warn
+          retention-days: 14
+
+  final-tuple-regions:
+    name: final tuple / ${{ matrix.region }}
+    needs: scope
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        region:
+          - foundation
+          - tablets
+          - near-zero
+          - cross-zero
+          - modern
+          - far-negative
+          - far-positive
+          - large-distance
+          - cardinality-5778
+          - boundaries
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+      - run: node verification/update19/run-final-tuple-region.mjs --region=${{ matrix.region }}
+      - name: Upload region evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: u19-region-${{ matrix.region }}-${{ github.sha }}
+          path: artifacts/update-19/regions/${{ matrix.region }}.json
+          if-no-files-found: warn
+          retention-days: 14
+
+  external-calendars:
+    name: external calendars / Intl / locale / timezone
+    needs: scope
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+      - run: node verification/update19/run-external-audit.mjs
+      - name: Upload external-calendar evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: u19-external-${{ github.sha }}
+          path: artifacts/update-19/external-calendar-foundation-matrix.json
+          if-no-files-found: warn
+          retention-days: 14
+
+  deep-state:
+    name: reentrancy / failures / leaks / random-witness soak
+    needs: scope
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+      - run: node --expose-gc verification/update19/run-deep-state-audit.mjs
+      - name: Upload deep-state evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: u19-deep-state-${{ github.sha }}
+          path: artifacts/update-19/deep-state-leak-soak.json
+          if-no-files-found: warn
+          retention-days: 14
+
+  browser-worker-standalone:
+    name: browser / real Worker / standalone parity
+    needs: scope
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Install Chromium with retry
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in 1 2 3; do
+            set +e
+            ./node_modules/.bin/playwright install --with-deps chromium
+            status=$?
+            set -e
+            if (( status == 0 )); then exit 0; fi
+            if (( attempt == 3 )); then exit "$status"; fi
+            sleep $((attempt * 15))
+          done
+      - run: node scripts/run-update19-browser-audit.mjs
+      - name: Upload environment parity evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: u19-browser-worker-standalone-${{ github.sha }}
+          path: artifacts/update-19/browser-worker-standalone-parity.json
+          if-no-files-found: warn
+          retention-days: 14
+
+  build-package:
+    name: clean build / deterministic bundle / npm pack
+    needs: scope
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node verification/update19/run-build-package-audit.mjs
+      - name: Upload build/package evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: u19-build-package-${{ github.sha }}
+          path: artifacts/update-19/build-package-reproducibility.json
+          if-no-files-found: warn
+          retention-days: 14
+
+  ci-parity:
+    name: current mandatory CI commands / blocking semantics
+    needs: scope
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node verification/update19/run-ci-command-parity.mjs
+      - name: Upload CI parity evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: u19-ci-parity-${{ github.sha }}
+          path: artifacts/update-19/ci-command-parity.json
+          if-no-files-found: warn
+          retention-days: 14
+
+  finalize:
+    name: final Update 19 adjudication
+    if: always()
+    needs:
+      - scope
+      - independent-node
+      - static-corpus
+      - final-tuple-regions
+      - external-calendars
+      - deep-state
+      - browser-worker-standalone
+      - build-package
+      - ci-parity
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+      - name: Download all Update 19 shard artifacts
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          path: artifacts/update-19/collected
+      - name: Final adjudication
+        run: node verification/update19/finalize-audit.mjs
+      - name: Upload final evidence package
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: update-19-final-evidence-${{ github.sha }}
+          path: artifacts/update-19/final-evidence
+          if-no-files-found: warn
+          retention-days: 30
