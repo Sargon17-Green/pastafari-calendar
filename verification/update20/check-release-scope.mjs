@@ -32,7 +32,6 @@ const CANONICAL_PREFIX = "verification/update17/generated/";
 
 const exactAllowed = new Set([
   ".github/workflows/update-20-release-closure.yml",
-  ".gitignore",
   "RELEASE-NOTES-1.4.0.md",
   "UPDATE20-DELTA-MANIFEST.json",
   "SHA256SUMS.txt",
@@ -44,6 +43,8 @@ const exactAllowed = new Set([
   "browser/standalone/pastafari-date.min.js",
   "docs/DOCUMENTATION-CONSISTENCY.md",
   "verification/pwa-cache-state.json",
+  "artifacts/update-13-standalone-firewall.json",
+  "artifacts/update16/oracle-authority-audit.json",
 ]);
 function allowed(relativePath) {
   return exactAllowed.has(relativePath)
@@ -98,6 +99,28 @@ for (const [name, [relativePath, expected]] of Object.entries(EXPECTED_HASHES)) 
   hashes[name] = { path: relativePath, expected, actual, match: actual === expected };
   if (actual !== expected) failures.push(`${name} changed since Update 19 audit`);
 }
+
+// Update 20 refreshes two deterministic evidence files because the release bytes and
+// packageVersion changed. They are permitted only when they still describe the
+// current release candidate and retain PASS semantics.
+const update13Evidence = JSON.parse(await readFile(path.join(ROOT, "artifacts/update-13-standalone-firewall.json"), "utf8"));
+if (update13Evidence.schema !== "pastafari-update13-standalone-firewall-v1" || update13Evidence.status !== "PASS") {
+  failures.push("Update13 standalone firewall evidence is not PASS");
+}
+for (const row of update13Evidence.files ?? []) {
+  const actual = await sha256File(row.file);
+  if (actual !== row.sha256 || row.pass !== true || !Object.values(row.markers ?? {}).every(Boolean)) {
+    failures.push(`Update13 standalone evidence drift: ${row.file}`);
+  }
+}
+const update16Evidence = JSON.parse(await readFile(path.join(ROOT, "artifacts/update16/oracle-authority-audit.json"), "utf8"));
+if (update16Evidence.schema !== "pastafari-update16-authority-audit-result-v1" || update16Evidence.status !== "PASS") {
+  failures.push("Update16 authority evidence is not PASS");
+}
+if (update16Evidence.packageVersion !== NEW_VERSION) failures.push("Update16 authority evidence packageVersion is stale");
+if (update16Evidence.scrollSha256 !== EXPECTED_HASHES.scroll[1]) failures.push("Update16 authority evidence Scroll hash drift");
+if (update16Evidence.referenceSha256 !== EXPECTED_HASHES.reference[1]) failures.push("Update16 authority evidence reference hash drift");
+if ((update16Evidence.productionReferenceImportHits ?? []).length !== 0) failures.push("Update16 authority evidence reports production reference imports");
 
 // Update 17 canonical evidence embeds packageVersion in every document. A release
 // version bump must therefore regenerate the byte-level corpus. That regeneration
