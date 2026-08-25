@@ -50,7 +50,7 @@ try {
   const fastActual = canonical(fastCalendar.convertJdn(targetJdn, { calculationJdn }));
   const authoritativeWorker = canonical(await workerRequest("../browser/pastafari-authoritative-worker.js", "convert", { calculationJdn: String(calculationJdn), targetJdn: String(targetJdn) }));
   const fastWorker = canonical(await workerRequest("../browser/pastafari-fast-worker.js", "convert", { calculationJdn: String(calculationJdn), targetJdn: String(targetJdn) }));
-  const modernJdn = core.gregorianToJdn({ year: 2000n, month: 1, day: 1 });
+  const modernJdn = core.gregorianToJdn(new core.GregorianDate(2000n, 1, 1));
   const standaloneExpected = canonical(coreCalendar.convertJdn(modernJdn, { calculationJdn: modernJdn }));
   const standaloneActual = canonical(await globalThis.PastafariCalendarStandalone.getPastafariDateAsync("2000-01-01", "2000-01-01"));
   const checks = {
