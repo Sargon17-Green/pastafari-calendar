@@ -65,7 +65,14 @@ const activeOldVersionAllow = [
   "test/docs-consistency.test.js:",
   "test/release-infrastructure.test.js:",
 ];
-const suspicious = historicalOccurrences.filter((line) => !activeOldVersionAllow.some((prefix) => line.startsWith(prefix)));
+const historicalNarrativeOldVersionAllow = [
+  (line) => line.startsWith("docs/AUTHORITATIVE-ENGINE-ARCHITECTURE.md:")
+    && line.includes("Update 20 then merged the 1.3.0 -> 1.4.0 version/closure changes;"),
+];
+const suspicious = historicalOccurrences.filter((line) =>
+  !activeOldVersionAllow.some((prefix) => line.startsWith(prefix))
+  && !historicalNarrativeOldVersionAllow.some((allowed) => allowed(line))
+);
 if (suspicious.length) failures.push(`unclassified active 1.3.0 occurrences: ${suspicious.slice(0, 10).join(" | ")}`);
 
 const artifact = {
