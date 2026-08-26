@@ -32,6 +32,7 @@ const CANONICAL_JSON = Object.freeze([
 const CANONICAL_PREFIX = "verification/update17/generated/";
 
 const exactAllowed = new Set([
+  ".github/workflows/update-08-stage-04a.yml",
   ".github/workflows/update-20-release-closure.yml",
   "RELEASE-NOTES-1.4.0.md",
   "UPDATE20-DELTA-MANIFEST.json",
@@ -42,6 +43,7 @@ const exactAllowed = new Set([
   "browser/README.md",
   "browser/standalone/pastafari-date.js",
   "browser/standalone/pastafari-date.min.js",
+  "docs/AUTHORITATIVE-ENGINE-ARCHITECTURE.md",
   "docs/DOCUMENTATION-CONSISTENCY.md",
   "verification/pwa-cache-state.json",
   "scripts/release.mjs",
