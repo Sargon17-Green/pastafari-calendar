@@ -1,0 +1,233 @@
+name: Update 20 final release closure
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - Update-20
+      - update-20
+      - update20
+      - 'Update-20-*'
+      - 'update-20-*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: update-20-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  UPDATE20_BASE_COMMIT: 9b5ebf1d3e383a9345df8a5d8b12333df447f7ad
+  UPDATE20_VERSION: 1.4.0
+
+jobs:
+  scope:
+    name: Update 19 gate / release scope / version / API
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+      - run: node verification/update20/check-update19-evidence.mjs
+      - run: node verification/update20/check-release-scope.mjs
+      - run: node verification/update20/run-version-propagation.mjs
+      - run: node verification/update20/run-api-compatibility.mjs
+      - name: Upload scope evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: u20-scope-${{ github.sha }}
+          path: |
+            artifacts/final-release/update19-gate.json
+            artifacts/final-release/release-scope.json
+            artifacts/final-release/version-propagation.json
+            artifacts/final-release/api-compatibility.json
+          if-no-files-found: warn
+          retention-days: 30
+
+  seal-holdout:
+    name: fresh post-bump semantic seal holdout
+    needs: scope
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+      - run: node verification/update20/run-seal-holdout.mjs
+      - name: Upload seal evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: u20-seal-${{ github.sha }}
+          path: artifacts/final-release/seal-holdout.json
+          if-no-files-found: warn
+          retention-days: 30
+
+  post-bump-regression:
+    name: post-bump normative regression matrix
+    needs: scope
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node verification/update20/run-post-bump-regression.mjs
+      - name: Upload regression evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: u20-regression-${{ github.sha }}
+          path: artifacts/final-release/post-bump-regression.json
+          if-no-files-found: warn
+          retention-days: 30
+
+  ci-parity:
+    name: blocking CI command parity after bump
+    needs: scope
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node verification/update20/run-ci-release-parity.mjs
+      - name: Upload CI parity evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: u20-ci-parity-${{ github.sha }}
+          path: artifacts/final-release/ci-release-parity.json
+          if-no-files-found: warn
+          retention-days: 30
+
+  browser-worker-standalone:
+    name: browser / Worker / standalone post-bump seal
+    needs: scope
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Install Chromium with retry
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in 1 2 3; do
+            set +e
+            ./node_modules/.bin/playwright install --with-deps chromium
+            status=$?
+            set -e
+            if (( status == 0 )); then exit 0; fi
+            if (( attempt == 3 )); then exit "$status"; fi
+            sleep $((attempt * 15))
+          done
+      - run: node verification/update20/run-browser-seal.mjs
+      - name: Upload browser/Worker/standalone evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: u20-browser-${{ github.sha }}
+          path: artifacts/final-release/browser-worker-standalone-seal.json
+          if-no-files-found: warn
+          retention-days: 30
+
+  release-verify:
+    name: exact release build / package / install verification
+    needs: scope
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+      - name: Exclude installed dependencies from release-tree cleanliness only
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf 'node_modules/\n' >> .git/info/exclude
+      - run: npm ci
+      - name: Install release browsers with retry
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in 1 2 3; do
+            set +e
+            ./node_modules/.bin/playwright install --with-deps chromium firefox
+            status=$?
+            set -e
+            if (( status == 0 )); then exit 0; fi
+            if (( attempt == 3 )); then exit "$status"; fi
+            sleep $((attempt * 20))
+          done
+      - run: npm run release:verify -- --tag v1.4.0
+      - run: node verification/update20/run-package-seal.mjs
+      - name: Upload exact release/package evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: u20-release-verify-${{ github.sha }}
+          path: |
+            artifacts/release/report.json
+            artifacts/final-release/package-seal.json
+          if-no-files-found: warn
+          retention-days: 30
+
+  finalize:
+    name: final Update 20 adjudication
+    if: always()
+    needs:
+      - scope
+      - seal-holdout
+      - post-bump-regression
+      - ci-parity
+      - browser-worker-standalone
+      - release-verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+      - name: Download all Update 20 shard artifacts
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          path: artifacts/final-release/collected
+      - name: Final release adjudication
+        run: node verification/update20/finalize-release.mjs
+      - name: Upload final release closure evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: update-20-final-release-evidence-${{ github.sha }}
+          path: |
+            artifacts/final-release/FINAL-RELEASE-CLOSURE.json
+            artifacts/final-release/UPDATE-SERIES-CLOSED.json
+            artifacts/final-release/SHA256SUMS
+            artifacts/final-release/report.md
+          if-no-files-found: warn
+          retention-days: 90

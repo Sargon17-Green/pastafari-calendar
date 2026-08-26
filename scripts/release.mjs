@@ -507,6 +507,17 @@ export async function runRelease({ mode, tag = null }) {
       "npm run test:accessibility",
     );
 
+    // Accessibility reports/screenshots/traces are runtime diagnostics, not release
+    // inputs or committed artifacts. Preserve them automatically when the gate
+    // fails (the step above throws), but remove successful-run diagnostics before
+    // checksum-completeness and final working-tree cleanliness verification.
+    await step(
+      report,
+      "Remove successful accessibility runtime diagnostics",
+      () => rm(path.join(ROOT, "artifacts", "accessibility"), { recursive: true, force: true }),
+      "rm -rf artifacts/accessibility after PASS",
+    );
+
     await step(
       report,
       "Run benchmark/API smoke (not a full benchmark)",

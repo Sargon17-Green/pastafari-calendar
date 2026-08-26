@@ -22,7 +22,7 @@ The generator is deterministic. It does not write timestamps, hostnames, local p
 The block below is generated from repository sources of truth. Edit the surrounding explanation normally, but do not hand-edit the generated block.
 
 <!-- BEGIN GENERATED: project-facts -->
-- Current package version: `1.3.0`.
+- Current package version: `1.4.0`.
 - Minimum Node.js requirement: `>=18`.
 - Registered locale resources: **72**. Support status: complete **2**, partial **70**, experimental **0**. These are registry policy/status facts, not a linguistic-quality certification.
 - Package entry points: `.`, `./reverse`, `./constraints`, `./browser/*`, `./package.json`.
