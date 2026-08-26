@@ -1,0 +1,59 @@
+name: Post-series packed-package parity closure
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - post-series-package-parity
+      - 'post-series-package-parity-*'
+    paths:
+      - '.github/workflows/post-series-packed-package-parity.yml'
+      - 'verification/post-series/run-packed-package-parity.mjs'
+      - 'SHA256SUMS.txt'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: post-series-packed-package-parity-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  packed-package-parity:
+    name: independent packed package / clean install / reference parity
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+
+      - name: Verify repository checksum manifest before closure test
+        run: node scripts/checksums.mjs verify
+
+      - name: Run independent packed-package parity closure
+        run: node verification/post-series/run-packed-package-parity.mjs
+
+      - name: Publish closure summary
+        if: always()
+        shell: bash
+        run: |
+          if [[ -f artifacts/post-series/PACKED-PACKAGE-PARITY.md ]]; then
+            cat artifacts/post-series/PACKED-PACKAGE-PARITY.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload packed-package closure evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: post-series-packed-package-parity-${{ github.sha }}
+          path: |
+            artifacts/post-series/PACKED-PACKAGE-PARITY.json
+            artifacts/post-series/PACKED-PACKAGE-PARITY.md
+            artifacts/post-series/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 90
