@@ -1,81 +1,126 @@
 # Authoritative Engine Architecture — Exact Execution Specification
 
-> **Status:** implementation specification of the authoritative engine as executed by the repository snapshot verified on 2026-08-20.  
+> **Status:** implementation specification reconciled to the completed 20-update remediation series and release `1.4.0`.  
 > **Repository:** `Sargon17-Green/pastafari-calendar`  
-> **Verified `main` head:** `78cc29a12b8d16bf91fd54284851a0e6740aae36` (`2026-08-20T17:07:32Z`)  
-> **Purpose:** describe the authoritative implementation **as it executes**, not the intended calendar manuscript and not the fast/reference engine.
+> **Verified current `main` head:** `8465a7e83c1f540de75c84cc8efca2660f460ecd` (`Update 20`, GitHub commit timestamp `2026-08-26T05:55:24Z`).  
+> **Uploaded-tree basis:** `pastafari-calendar-main(2).zip`; the archive has no `.git`, so the Git commit binding above is verified separately against current GitHub `main`.  
+> **Normative Scroll:** `sources/מגילת העיתים.md`, SHA-256 `d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96`.  
+> **Independent normative reference:** `verification/reference-oracle/reference.mjs`, SHA-256 `40f08fab56b3f0e90b6ce43a24948856972ecdd26d2bbbeb84bda26905fdc379`.  
+> **Purpose:** describe the authoritative implementation **as it executes in 1.4.0**, including its deliberately tangled compensating detours. The normative source of truth is the Scroll, not the authoritative engine itself.
 
-> **Historical baseline note (2026-08-21):** treat this document as a frozen specification of the repository state at verified `main` head `78cc29a12b8d16bf91fd54284851a0e6740aae36` (`2026-08-20T17:07:32Z`). This point is **after the Update 2 final-stir `bowlSum` correction** described in this document, and **before the later remediation/hardening updates in the current 19-update series**. The document is intentionally **not being incrementally corrected during that series**; semantic and architectural corrections discovered in subsequent updates are to be reconciled into the specification only after the series is complete.
+> **Superseded baseline:** the previous edition described `main` at `78cc29a12b8d16bf91fd54284851a0e6740aae36` (`2026-08-20T17:07:32Z`), after the final-stir `bowlSum` correction but before the later remediation/hardening work. The 20-update series is now complete, so this edition incorporates those changes rather than retaining the temporary frozen-baseline disclaimer.
 
 ## 0. Reading contract: what “complete” means here
 
-This document is a no-skip architectural execution specification. It covers every execution layer that can participate in the authoritative conversion path: static carrier reconstruction, both runtime-generated programs, shared mutable state, randomness, proxy/witness machinery, all nine decoded semantic modules, all 91 public carriers, calendar conversion helpers, combinatorics, Sauce, embedded/dynamic gates, year discovery, year structure construction, output materialization, the external year-ceiling detour, public entry wrappers, and the authoritative Worker.
+This document is a no-skip architectural execution specification. It covers the sealed carrier reconstruction, generated programs, source-compilation detours, shared mutable state, randomness/witness machinery, all nine decoded semantic modules, the 91-carrier sealed namespace, the supported browser and Node authoritative doorways, the compensating gate/year/cache/month-weaving detours, deterministic external-calendar side routes, the package-level 108-name public surface, adjacent reverse/constraint clients, and the authoritative Worker.
 
-The following compression rules are used **without omitting operations**:
+The following compression rules are used **without omitting semantic operations**:
 
-1. A loop with identical body semantics is specified once with its exact bounds and body; the text does not repeat the same body thousands of times.
-2. Very large static payloads are bound by exact size/encoding/hash and by the exact algorithm that consumes them. Listing 1,171,456 generated words or 40,000 gap values verbatim would duplicate source data, not add an execution step.
-3. Fixed coefficient tables are listed when they affect branch/formula choice. Larger opaque static tables are bound to the exact decoded-module body hash and their consumption algorithm.
-4. “Semantically cancels” never means “does not execute”. When the engine performs `x + 12 - 12`, consumes randomness whose branch cannot succeed, writes a cell and restores it, or computes an astronomical state and erases it, this specification records the operation and its surviving side effects.
-5. The Dynamic 00 and Dynamic 01 descriptions cover every top-level statement range continuously (`0..503` and `0..1266` respectively); the decoded module layer explicitly covers every ENTER identifier `1009..1176`; the carrier table covers slots `0..90`.
-6. The document distinguishes three different truths:
-   - **hidden-core behavior** — the decoded sealed implementation;
-   - **public authoritative behavior** — hidden core plus the current doorway/detour;
-   - **normative intent** — mentioned only when the current implementation is known to diverge.
+1. A loop with identical body semantics is specified once with exact bounds/body instead of repeating every iteration.
+2. Very large static payloads are bound by exact size/encoding/hash and by the exact algorithm that consumes them. Listing 1,171,456 packed words or long astronomical coefficient tables verbatim would duplicate source data rather than add an execution step.
+3. Fixed coefficients are listed where they determine branches/formulas. Larger source-locked tables may instead be bound to a module hash and a precisely described consumption algorithm.
+4. “Semantically cancels” or “decorative” never means “does not execute”. Random draws, temporary writes, historical restores, dead-end calendar calls, and obsolete data construction are recorded when they execute.
+5. The decoded Dynamic 00/Dynamic 01 statement inventory and ENTER identifiers remain the forensic baseline of the sealed payload. Current 1.4.0 may wrap or transactionally repair those decoded operations at Function-construction time; the document says explicitly when it is describing decoded source versus compiled execution.
+6. Four distinct truths are kept separate:
+   - **decoded hidden-core behavior** — what the encrypted/generated payload says before current source transforms;
+   - **compiled hidden-core behavior** — decoded code after the current deterministic Function-source transforms (notably `bowlSum`, failure transactionality, and Update-15 arena guarding);
+   - **public authoritative behavior** — compiled hidden core plus the supported doorway detours and public calendar-routing layer;
+   - **normative semantics** — defined by `sources/מגילת העיתים.md` and independently implemented by `verification/reference-oracle/reference.mjs` for conformance work.
+7. A historical defect may remain physically present as a fossil if a compensating spaghetti detour prevents it from deciding supported public semantics. Such fossils are described as fossils, not as current public deviations.
 
 ## 1. Current repository bindings
 
-The current `main` manifest binds the public authoritative path to these files:
+The uploaded 1.4.0 tree and current `main` bind the authoritative path to the following files. Hashes below were recomputed from the uploaded archive.
 
-| file | SHA-256 |
-|---|---|
-| `browser/pastafari-calendar-core-1.js` | `90c700220253b86322130402f0fe5a5d3ba6c527a726cefef1f7c914514c695b` |
-| `browser/pastafari-calendar-core-2.js` | `11f68ded7bd366b17cf9d3d0769fbdc21bcf06e67ab10a85e52002a388fd2682` |
-| `browser/pastafari-calendar-core-chronicle.js` | `315f46a49f13db13b61d325915a6a5a32b7f043594c541c1886cfd8c0865db4a` |
-| `src/5efdcc3e6fb071cbaffdcb117507a169dd76.js` | `a7e01b505870a7a72ce0bde98dc5e4d19f39bd8d560fdf961a4d5f4d2dfdd30d` |
-| `browser/pastafari-calendar-core.js` | `3e2d0cb5925e1df577fbbac6cbc2caf14e38329090231e173120a51b19c8fe97` |
-| `browser/pastafari-calendar-fast.js` *(adjacent reference/fast engine; not sealed core)* | `2a503e6b5bd13e5399f5f68f6f3940fd959363b2c8c11631169be6f3a6e074fc` |
-| `browser/year-ceiling-detour.js` | `184f3f065cd59a119b1bee77ad56211b17ab73adc1f7aa856345b494a1e675a7` |
-| `browser/pastafari-authoritative-worker.js` | `02d7222dab128cc23b355f6048f4965368e1a74db4b2944a34e2401bdd434656` |
+| file | role | SHA-256 |
+|---|---|---|
+| `browser/pastafari-calendar-core-1.js` | sealed fragment carrier 1 | `90c700220253b86322130402f0fe5a5d3ba6c527a726cefef1f7c914514c695b` |
+| `browser/pastafari-calendar-core-2.js` | sealed fragment carrier 2 | `11f68ded7bd366b17cf9d3d0769fbdc21bcf06e67ab10a85e52002a388fd2682` |
+| `browser/pastafari-calendar-core-chronicle.js` | browser packed chronicle + current Function-source transforms | `2b217c6a06a6e91184adca46d15ab91cfb6b39481ffbc405470ec0307941d4fa` |
+| `src/5efdcc3e6fb071cbaffdcb117507a169dd76.js` | Node packed authoritative copy + same generated-runtime transforms | `b46fc5247a2fa4062da6d0a05a1b931888bba801e5322f3b52b284f1fad45eff` |
+| `browser/pastafari-calendar-core.js` | supported browser doorway | `e9ae270d05a6f0328ea9b814a48af2f0434e3e9a8f4c340f1ac6de1e1f5fced2` |
+| `src/public-api.js` | package-level Node public doorway | `ba1f123a85b7453cb1ad7d77f61a894880a588b60c1a2dd5863015dd29ef08ac` |
+| `browser/gate-data-detour.js` | canonical regenerated positive-gate shadow | `f9dc9e8157a805b5015c57872657333d7e650af8d71cb9860e5e190b9fa6116f` |
+| `browser/generated/pastafari-gate-shadow.js` | source-derived encoded positive-gate dataset | `801be60be5bea43ed14ffbd9eac5c5ebb96f60b48ce6a71d722233b2514d002f` |
+| `browser/generated/pastafari-gate-shadow.manifest.json` | gate-shadow provenance/seals | `7d3883c8b5dcc6dd88e53d5e8e89665c68ce6d4c0dc96bf9ca0490484b85e3d2` |
+| `browser/year-ceiling-detour.js` | historical 5,778 ceiling poison detour, now supervised | `0000d57e6d84c2cca64bafe221c9bd94fd23daa422a6c74ae3f1b9c0916391c1` |
+| `browser/year-ceiling-detour-detour.js` | anchor-matrix ceiling repair | `a13e9c378ec08df41a45aa01952aad88f4e63582fe7790b8dc6ad4144c54f344` |
+| `browser/year-ceiling-detour-detour-detour.js` | cached-year poison supervision | `1100b9ff18a6240bf3186ac99634ec3926f21479feb15d01bf8b7b6cb18561e2` |
+| `browser/runtime-patch-ledger.js` | reentrant/late-patch ownership supervisor | `05c4f1c78d80c95147ef8504d8281d0d8e551babc11f5a8f69c0a3454c7ee02b` |
+| `browser/cache-epoch-detour.js` | semantic cache fossil mask + transactions | `f3537f00723f69de31af2ac96b21b644ff64ca4e8703274cec6bd79c16e8e710` |
+| `browser/month-weaving-domain-detour.js` | public singleton-domain count/rank/unrank repair | `942e0fc1deab593f255e4cdd889c73ffb1280ec2420f98a4a40085378ef86873` |
+| `browser/proleptic-negative-year-detour.js` | deterministic nonpositive-year public routes | `e403e0ced523b4b128b7c096e3cee23aa831a836418ded30d71014d132c6768f` |
+| `browser/intl-calendar-semantic-firewall.js` | browser normative/host-Intl separation | `638739b8c56720d2ccf3496dc3fa8e50c9e5da37f6a5dc75cf82aac1e02c7d65` |
+| `src/chinese-calendrica-detour.js` | deterministic source-locked Chinese engine | `df4ffa0697c3d2cc979cb0062f7201b1cd0b1fd8c52664562fcc0e890f3f7937` |
+| `browser/vikrama-detour.js` | deterministic source-locked Vikrama correction path | `744e2f7dd605f3af17ca0d5417eba2ac27067e0fd53caa7ac9a8f5772d1a23a7` |
+| `browser/vikrama-api.js` | browser Vikrama API wrapper | `3bc8d95a1dde3eeb5f1b5f906652295f52b1b227486c568914dd88fcd053075c` |
+| `browser/koki-imperial-detour.js` | signed proleptic Kōki detour | `1359874a88415f626f7f62249171f582561acd389a28897393372cfdd007eadb` |
+| `browser/koki-api.js` | browser Kōki API wrapper | `15a197b6963df567b98e47e031858b048224a96e9196810af953d082d38604b5` |
+| `browser/pastafari-calendar-fast.js` | adjacent fast implementation, not oracle | `03de7a8125c1c4c63a9946b531b754c4828adc9f998ddd8b7a5ef4b5adcc4473` |
+| `browser/pastafari-authoritative-worker.js` | browser authoritative Worker transport | `02d7222dab128cc23b355f6048f4965368e1a74db4b2944a34e2401bdd434656` |
+| `docs/calendar-converters.js` | deterministic arithmetic/proleptic side-door converter | `0d25e6ddfd04ba0e8e691825ff7110fb463280114d2d5aaa381a20c9dc02b168` |
+| `verification/reference-oracle/reference.mjs` | independent Scroll-derived conformance reference; never a production runtime dependency | `40f08fab56b3f0e90b6ce43a24948856972ecdd26d2bbbeb84bda26905fdc379` |
 
-The browser doorway is intentionally tiny. It imports `GateIndex` and `PastafariCalendar` from the chronicle, imports `installYearCeilingDetour`, installs the detour, then re-exports the chronicle namespace. Therefore the public browser engine is **not** the chronicle alone.
+The current package version is `1.4.0`. Update 20 is a release-closure/version-bump step: its manifest explicitly forbids a new semantic production change at that stage. The semantic corrections described here therefore come from the preceding remediation updates and are merely carried into 1.4.0.
 
-The package-level Node entry uses a separately packed copy of the same authoritative chronicle, installs the same detour, and subclasses the monster `PastafariCalendar` only to inject the imported `localToday` when the caller omitted `todayProvider`. Reverse/constraint clients exported beside it are adjacent subsystems and are not part of the sealed 91-carrier engine described here.
+The uploaded source archive contains Update 20's **pre-CI** manifest (`releaseStatusBeforeCI: "RELEASE_BLOCKED"`) but not the generated Actions artifact `artifacts/final-release/FINAL-RELEASE-CLOSURE.json`. This specification therefore binds the merged 1.4.0 code/semantics and does **not** infer a `RELEASE_READY` CI artifact from the ZIP alone.
+
+The sealed dynamic namespace still contains **91 carrier slots** in the exact order in §7. The final Node package surface contains **108 exports**: the 91 sealed names (with selected bindings overridden by public detours), seven adjacent reverse/constraint exports, and ten added normative representation/API exports for Chinese structured dates, Vikrama, and Kōki.
 
 ## 2. End-to-end call graph
 
+The supported 1.4.0 authoritative path is layered; “authoritative engine” no longer means “call the chronicle directly”.
+
 ```text
-public API or authoritative Worker
-  -> thin authoritative doorway
-  -> install/use year-ceiling detour
-  -> core-chronicle
-      -> import 193 carrier fragments from core-1/core-2
-      -> reconstruct/decrypt Dynamic 00
-      -> compile Dynamic 00
-      -> install temporary Function / Function.prototype.constructor Proxy
-      -> execute Dynamic 00 under source-transform interception
-          -> build 137 frozen payload objects
-          -> run pi/12 ritual
-          -> run erased RK4 astronomy
-          -> run 450-route 1+1 ritual
-          -> establish random pool / WeakMap witness runtime / Array Proxy
-          -> reconstruct/execute Dynamic 01
-              -> reset shared Array
-              -> build 1,171,456-word packed table
-              -> decode/compile/evaluate nine modules M0..M8
-              -> install ENTER/ASSIGN/RETURN/THROW/LEAVE runtime
-              -> inner-wrap module functions/classes
-          -> resolve 91 carriers
-          -> outer-wrap 72 function/class carriers
+Node package public API
+  -> src/public-api.js
+      -> packed authoritative copy (91 sealed carriers)
+      -> install gate-data shadow on GateIndex
+      -> install ceiling detour #2
+      -> install ceiling detour #3
+      -> install historical ceiling detour
+      -> install cache-epoch fossil mask on PastafariCalendar
+      -> install MonthWeaving singleton-domain detour
+      -> bind nonpositive-year deterministic calendar detours
+      -> bind deterministic Kōki / Chinese structured+related / Vikrama routes
+      -> rebind friendly PastafariCalendar subclass (default localToday injection)
+      -> add reverse/constraint adjacent APIs
+
+Browser authoritative core
+  -> browser/pastafari-calendar-core.js
+      -> core-chronicle (91 sealed carriers)
+      -> same gate / ceiling / cache / MonthWeaving installations
+      -> nonpositive-year detours
+      -> Intl semantic firewall; normative Chinese uses deterministic source-locked engine
+      -> explicit detoured converter exports + remaining chronicle exports
+
+core-chronicle / packed copy
+  -> import/reconstruct 193 carrier fragments
+  -> decrypt decoded Dynamic 00
+  -> transform Dynamic 00 before compilation
+      -> Update-8 transactionality repairs
+      -> Update-15 outer arena guard
+  -> temporarily intercept Function and Function.prototype.constructor
+  -> execute compiled Dynamic 00
+      -> all decorative/random/witness bootstrap work
+      -> construct Dynamic 01 through the same source transformer
+          -> inner generated-arena exception rollback injection
+      -> compile nine modules
+          -> M6 also receives the bowlSum final-stir source correction
       -> return 91-carrier namespace
-  -> PastafariCalendar.convert / convertJdn
-      -> input calendar-to-JDN conversion
-      -> GateIndex / year 5000 anchor / year traversal
-      -> Sauce / combinatorics / month weaving
-      -> PastafariDate
-  -> outer witness result path
+  -> public PastafariCalendar.convert / convertJdn
+      -> cache-epoch transaction begins
+      -> ceiling detour stack installs nested GateIndex.gate costumes under runtime-patch ledger
+      -> hidden year/gate/structure code executes
+          -> first public gate read primes canonical regenerated positive gate shadow
+          -> hidden 5781 candidate machinery observes detour-adjusted gates and therefore enforces 5778
+      -> success commits semantic cache shadow; failure rolls it back
+      -> runtime-patch supervisor performs historical restore steps and repairs exact entry descriptors
+      -> output passes outer/inner generated Proxy machinery
   -> optional Worker canonicalization
 ```
+
+The independent normative reference is **not** on this runtime call graph. Update 16 explicitly forbids production from importing it. It is a conformance authority used by regeneration/audit/test infrastructure, not a self-correcting runtime oracle.
 
 ## 3. Static chronicle: 193 fragment reconstruction
 
@@ -496,64 +541,78 @@ result.length === 91
 
 or the chronicle throws `E5`. The state becomes zero, the outer loop exits, and the chronicle binds result slots `0..90` to its 91 named exports.
 
-There is no `E4` emission in the current chronicle. The static reconstruction error codes reachable in this layer are `E1`, `E2`, `E3`, `E5`, plus `E6` and `E7` from the current source-transform detour.
+There is no `E4` emission in the current chronicle. The loader/state-machine errors remain `E1`, `E2`, `E3`, and `E5`. Current source transformation can additionally throw `E6`, `E7`, `E8`, `E9`, `EA`, `EB`, `EC`, `U15D`, or `U15E` when an expected unique generated-source landmark is absent/duplicated. Those transform failures occur at Function-construction boundaries rather than as decoded state-machine cases.
 
-### 3.9 Current-head Function-constructor source-transform detour
+### 3.9 Current 1.4.0 Function-source transform pipeline
 
-At current `main` the chronicle performs one additional operation that did **not** exist in the frozen pre-2026-08-20-17:07 capture. This is part of the authoritative path and therefore precedes the Dynamic 00 execution description below.
+The current chronicle no longer performs only the final-stir substitution. It contains one deterministic source-transform function applied at every relevant `Function` construction boundary. The transform is itself part of the authoritative execution path.
 
-After reconstructing and compiling Dynamic 00, but before **executing** it, the chronicle installs a temporary interception around the JavaScript `Function` constructor. The wrapper executes these steps in this order:
+There are two delivery points:
 
-1. save `globalThis.Function` as the original Function constructor;
-2. save `OriginalFunction.prototype.constructor` separately;
-3. create `new Proxy(OriginalFunction,{apply,construct})`;
-4. the Proxy `apply` trap maps **every argument** through a source-transform function and then calls `Reflect.apply` on the original Function;
-5. the Proxy `construct` trap maps **every argument** through the same source-transform function and then calls `Reflect.construct` on the original Function, preserving the supplied `newTarget`;
-6. assign the Proxy to `globalThis.Function`;
-7. assign the same Proxy to `OriginalFunction.prototype.constructor`;
-8. invoke Dynamic 00 inside `try`;
-9. in `finally`, restore `OriginalFunction.prototype.constructor` to the separately saved original constructor property;
-10. restore `globalThis.Function` to the original Function object.
+1. when the reconstructed Dynamic 00 source is coerced from its one-use source carrier, the source is passed through the transform **before Dynamic 00 is first compiled**;
+2. while Dynamic 00 executes, the chronicle temporarily replaces both `globalThis.Function` and `OriginalFunction.prototype.constructor` by one Proxy. Its `apply` and `construct` traps map every Function-constructor argument through the same transform. This catches Dynamic 01 and the decoded module bodies. Restoration of both global bindings occurs in `finally` after Dynamic 00 returns.
 
-Consequently the temporary interceptor is active while Dynamic 00 constructs Dynamic 01 **and** while Dynamic 01 constructs all nine module functions. It is removed only after Dynamic 00 has returned its 91-value carrier. Existing generated functions survive restoration normally.
+The transform first applies exact-signature compensating patches to generated runtime source and finally invokes the M6-specific final-stir transform.
 
-The transform applied to each Function argument begins with `String(argument)`. It immediately returns that string unchanged unless **both** source signatures are present:
+#### 3.9.1 Update-8 identity transaction patch (`E8`, `E9`, `EA`)
+
+When the Dynamic 00 source contains the expected WeakMap/identity-counter and outer-Proxy-constructor signatures, the transform requires each target fragment to occur exactly once. Failure to locate an expected unique fragment throws the corresponding `E8`, `E9`, or `EA` error rather than silently compiling an unknown shape.
+
+The injected execution semantics are:
+
+- beside the existing persistent identity `WeakMap` and uint32 counter, allocate an identity-transaction stack, an identity journal, and capture `WeakMap.prototype.delete`;
+- whenever the limited scorer assigns an identity that was previously absent, append that object/function to the journal **if an identity transaction is active** before storing the WeakMap entry;
+- at entry to the outer public Proxy `construct` trap, push a frame containing the counter value and current journal length;
+- execute argument transfer and `Reflect.construct` inside `try`;
+- on success, preserve the generated object's ordinary semantics and keep committed WeakMap identities; when the successful transaction is outermost, truncate only the journal bookkeeping back to the frame start;
+- on failure, walk newly journaled keys backwards and delete them from the WeakMap, truncate the journal, restore the exact entry counter value, then rethrow the **same** exception object;
+- pop the transaction frame in `finally` so nested constructor ownership is preserved rather than globally reset.
+
+This is compensating transactionality. The WeakMap/counter machinery still exists and still executes on successful calls; failed construction is prevented from publishing state.
+
+#### 3.9.2 Update-15 outer-`apply` arena guard (`U15D`, `U15E`)
+
+For the outer generated Proxy `apply` path, the transform injects an additional invocation-entry `sharedArray.length` capture **before** the decorative push/random/full-transfer work. The pre-existing inner `try/catch/finally` is retained. A new outer `catch` restores the shared Array to that invocation-entry length if any host/random/witness exception occurs before or around the older cleanup path, then rethrows the original exception.
+
+Thus the historical pre-`try` leak window described by the decoded source still exists textually inside the payload, but not in current compiled execution.
+
+#### 3.9.3 Update-8 generated inner-arena rollback (`EB`, `EC`)
+
+When Dynamic 01 is constructed, the same transformer recognizes the inner executor's frame-reservation/normal-return pattern. It wraps the frame body in `try` and adds a `catch` that restores `array.length` to the invocation-entry base captured by the generated executor, then rethrows the same error.
+
+Consequently an exception from opcode 2 (`Reflect.apply` / `Reflect.construct`) no longer leaves the historical twelve-cell frame in current compiled execution. The original normal-success truncation remains in place and still executes.
+
+#### 3.9.4 M6 final-stir correction (`E6`, `E7`)
+
+After the generic generated-runtime patches above, every candidate source is passed through the M6 transform. It returns source unchanged unless both decoded M6 signatures are present:
 
 ```text
 ", 4483, [..."
 ", 4492, "
 ```
 
-Those signatures identify the decoded M6 final-stir region. When both are present the transform performs two textual edits:
+For M6 it:
 
-1. locate the first `", 4483, [..."` occurrence and the following newline; if the marker or newline cannot be found after the signature check, throw `Error("E6")`;
-2. immediately after that newline inject a new, uninstrumented raw reduction equivalent to:
+1. finds the unique site-4483 line and injects an uninstrumented raw six-bowl reduction `bowlSum = oldBowls.reduce((a,b)=>a+b,0n)` immediately after it; missing placement throws `E6`;
+2. finds exactly one old site-4492 two-line term whose operand is `orderNumber` followed by `BigInt(round)`; zero or multiple matches throw `E7`;
+3. substitutes only that operand with the injected raw `bowlSum`.
 
-   ```js
-   const bowlSum = oldBowls.reduce((a, b) => a + b, 0n);
-   ```
+The original ritualized summation remains. Therefore each final-stir round computes the six-bowl sum twice: raw `bowlSum` enters `u`, while `orderNumber = store(sum + 149*round)` selects the permutation.
 
-   The actual generated source uses the original long obfuscated identifiers; the operation above is an exact semantic normalization of the injected statement.
-3. locate the exact two-line source fragment in the existing site-4492 expression whose first term is the old `orderNumber` binding and whose next term is `BigInt(round)`;
-4. require this exact fragment to occur **exactly once**; zero occurrences or a second occurrence throw `Error("E7")`;
-5. replace only that old `orderNumber` term by the newly injected `bowlSum` binding, leaving the following `BigInt(round)` term unchanged;
-6. return the transformed source string to the intercepted Function constructor.
+#### 3.9.5 Source identity discipline
 
-Dynamic 00 and Dynamic 01 do not contain the two signatures and therefore pass through unchanged. Eight of the nine module bodies also pass through unchanged. M6/Dynamic 08 matches and is modified before compilation.
+The large recovered source hashes in this document bind **decoded pre-transform payloads**. They are not hashes of the current compiled generated programs. In 1.4.0:
 
-This produces an unusual but important distinction between three source identities:
+- Dynamic 00's decoded source is transformed before its initial compilation by the Update-8 and Update-15 generated-runtime patches;
+- Dynamic 01's decoded source is transformed at its Function-constructor boundary by the generated inner-arena rollback patch;
+- M6's decoded module body is transformed by the final-stir patch;
+- module bodies not matching any transform signature pass through byte-for-byte.
 
-- **decoded M6 body**: the body emitted by Dynamic 01 before Function interception; this is the historical 152,995-byte body whose SHA-256 was `3ae2870e...1205be0`;
-- **current compiled M6 body**: that decoded string after the chronicle's deterministic injection/substitution; its old pre-transform body hash must **not** be presented as the current compiled-body hash;
-- **current runtime M6 semantics**: `orderNumber` still selects the permutation, but the raw `bowlSum` enters the final `u` expression.
-
-The old Dynamic 00 and Dynamic 01 capture hashes remain useful because their source strings do not match the transform predicate. Any table below that lists M6's old body hash is explicitly a **pre-transform decoded-body baseline**, not a claim about the current compiled M6 function.
-
-The wrapper also changes the observable global environment during Dynamic 00 execution: reads of `globalThis.Function` and of ordinary functions' inherited `.constructor` see the Proxy until the `finally` restoration. This is a real temporary global mutation, not merely a build-time rewrite.
+The temporary Function Proxy is a real bootstrap-time global mutation. Ordinary calls after bootstrap do not traverse it.
 
 ## 4. Dynamic 00 — first generated program, statement-complete
 
-Dynamic 00 itself remains the pre-transform captured source: **7,420,147 bytes**, SHA-256 `de4ef2f1a6be8e002a2d304e933df67a64dc013344437775baa5babe22b259fc`. The current chronicle does not alter this source string; it executes Dynamic 00 while the Function-constructor interceptor from §3.9 is installed.
+The recovered **decoded** Dynamic 00 payload remains **7,420,147 bytes**, SHA-256 `de4ef2f1a6be8e002a2d304e933df67a64dc013344437775baa5babe22b259fc`. Current 1.4.0 does **not** compile those bytes verbatim: the one-use source carrier passes them through the §3.9 transformer before initial compilation, injecting Update-8 identity/arena transactionality and the Update-15 outer-`apply` guard. The statement map below describes the decoded program's original semantic skeleton; §§3.9 and 4.12 state the compensating operations that surround it in current compiled execution.
 
 Top-level statements are continuous from 0 through 503. There is no uncovered statement range:
 
@@ -865,44 +924,33 @@ Statement 308 sets a gate flag false. Statement 309 wraps the **same** shared Ar
 
 `set` always consumes one `Math.random()`. If gate true and property numeric it consumes a second one; only `<0` invokes short transfer before `Reflect.set`. Measured counts are therefore numeric get 1, numeric set 2, nonnumeric get 0, nonnumeric set 1. Under a temporary `Math.random=()=>-1`, both short-transfer branches fire yet the read/written semantic values remain unchanged.
 
-### 4.12 Statement 310 — outer function/class Proxy factory
+### 4.12 Statement 310 — outer function/class Proxy factory, current compiled execution
 
-A non-function is returned unchanged and consumes no creation random. A function/class receives a new Proxy; after Proxy creation the factory consumes one `Math.random()` and returns the Proxy.
+The decoded factory still returns non-functions unchanged and creates one Proxy for each function/class; 72 outer public Proxies are created during carrier resolution. The decoded `apply` and `construct` mechanics remain deliberately tangled, but current compilation adds the transaction guards in §3.9.
 
-#### `apply` trap — exact order
+#### `apply` trap
 
-For an ordinary public call the outer trap executes:
+On entry, current compiled code first records a **very outer** `arenaEntryLength = rawArray.length` and enters the Update-15 `try` guard. Inside that guard the historical decoded path executes:
 
-1. `base = rawArray.length`;
-2. through the **Array Proxy**, push `(target, noiseWord(), thisArg, args.length)`; Proxy `set` traps and their `Math.random` calls execute as part of this push;
-3. read the target through the Array Proxy;
-4. pass that target through the **full transfer** (§4.8), then replace the temporary target cell with the **full scorer** result;
-5. allocate `args.map(...)`; every argument goes through full transfer with its argument index as tag;
-6. **only after steps 1–5** enter `try`;
-7. consume noise modulo 3 and choose one call form:
-   - `Reflect.apply(target, fullTransfer(thisArg,17), args)`;
-   - `Function.prototype.apply.call(target, fullTransfer(thisArg,19), args)`;
-   - bind to `fullTransfer(thisArg,23)` and then `Reflect.apply(bound,undefined,args)`;
-8. pass the returned value through full transfer with tag 29 and write it at `base`;
-9. pass that stored value through full transfer again with tag 31 and return it;
-10. in `catch`, write the same error object, pass it through full transfer tag 37, and rethrow the same object;
-11. in `finally`, execute `rawArray.length = base`.
+1. save its own `base = rawArray.length`;
+2. Proxy-push target/noise/this/argument-count scratch cells;
+3. full-transfer the target and mapped arguments;
+4. enter the older inner `try`;
+5. choose one of the three equivalent call forms by decorative noise and invoke the underlying target;
+6. full-transfer/write/read the successful result, or store/retransfer/rethrow the same error;
+7. in the older inner `finally`, truncate `rawArray.length = base`.
 
-A measured ordinary apply consumed 15 `Math.random` calls and 40 pool words. Success, exception, and nested-call cases restored the Array to the saved base and can thereby remove a transient 12-cell inner frame leaked by the inner Proxy. However, operations before the `try` are not protected: when a monkey-patched `Math.random` threw during the third random call in the Proxy-driven push, one target function remained appended and the Array length increased by one until the harness repaired it.
+If an exception occurs anywhere that escapes that historical body — including a monkey-patched `Math.random`, crypto/witness fault, or failure before the older inner `try` is reached — the Update-15 outer `catch` attempts `rawArray.length = arenaEntryLength` and rethrows the same exception. Therefore the old measurable “one scratch cell left when the third random call throws” is a **pre-fix forensic fact**, not current 1.4.0 behavior.
 
-#### `construct` trap — exact order
+The ordinary successful route still performs the same random calls, transfers, allocations and call-form selection as the decoded source. The guard repairs persistent state; it does not remove the spaghetti work.
 
-The construct path allocates `args.map` and full-transfers every constructor argument with tag `index+41`. It then executes:
+#### `construct` trap
 
-```js
-Reflect.construct(
-  target,
-  mappedArgs,
-  newTarget === outerProxy ? target : newTarget
-)
-```
+Current compiled construction begins by pushing an Update-8 identity transaction frame `{ counter, journalStart }`. While that transaction is active, newly assigned limited-scorer WeakMap identities are journaled. Argument mapping and `Reflect.construct` then execute through the old outer constructor path.
 
-There is **no outer `try`, `catch`, or `finally` and no outer scratch push**. A direct construction substitutes the underlying target for the Proxy as `newTarget`; an explicitly supplied alternate `newTarget` is preserved. If the inner constructor throws after its 12-cell inner execution frame has been allocated, those 12 cells remain in the persistent shared Array. Repeated measured failures leaked +12 cells each.
+If construction succeeds, the object is returned unchanged, the transaction is popped, and committed WeakMap identities remain. If it throws, all identities first published by that failed transaction are deleted, the identity counter is restored to its invocation-entry value, bookkeeping is truncated, and the same error is rethrown. Nested successful/failing constructions preserve ownership boundaries instead of resetting global state.
+
+The generated inner executor invoked underneath `Reflect.construct` is independently protected by §5.4's twelve-cell arena rollback, so the historical `+12` failed-constructor accumulation no longer survives current compiled execution.
 
 ### 4.13 Statements 311–320 — Dynamic 01 Function hand-off under the current global Function interceptor
 
@@ -922,7 +970,7 @@ There are exactly 91 statement pairs: resolve one property from Dynamic 01's ret
 
 ## 5. Dynamic 01 — packed table, decoder, registry, shared runtime, statement-complete
 
-Dynamic 01 remains the captured 7,083,974-byte source, SHA-256 `3ae100735a87cff040c5b88140bd366ca0ad15d70a2ad036bc497e809ffaf612`. Its top-level statements are continuous 0..1266.
+The recovered **decoded** Dynamic 01 payload remains 7,083,974 bytes, SHA-256 `3ae100735a87cff040c5b88140bd366ca0ad15d70a2ad036bc497e809ffaf612`. Its decoded top-level statements are continuous 0..1266. Current compilation passes the source through the §3.9 transformer; the principal change here is the injected exception rollback around the inner twelve-cell executor frame. Thus the decoded statement inventory remains a forensic map, while §5.4 below gives the current compiled failure semantics.
 
 ### 5.1 Statements 0–5 — validation, internal seed, destructive reset
 
@@ -989,9 +1037,9 @@ The resolver has a special fixed ID that returns the shared runtime directly. Fo
 Error("Niedzwiedz pomylil ksiege z dynastia: " + id)
 ```
 
-### 5.4 Statement 1164 — inner function/class Proxy executor
+### 5.4 Statement 1164 — inner function/class Proxy executor, current compiled execution
 
-The executor appends exactly twelve cells:
+The decoded executor still appends exactly twelve frame cells with the same layout and executes its four opcode passes:
 
 | offset | initial role |
 |---:|---|
@@ -1002,23 +1050,14 @@ The executor appends exactly twelve cells:
 | 4 | program counter, starts 0 |
 | 5 | accumulator/seed |
 | 6 | `undefined`, later target/result |
-| 7 | numeric tag |
-| 8..11 | `seed^0`, `seed^1`, `seed^2`, `seed^3` encoded opcodes |
+| 7 | numeric tag/result scratch |
+| 8..11 | four encoded opcodes derived from `seed^0..3` |
 
-The seed is derived from `array[(tag*131 + 17) % 65537]`, XORed with tag and `args.length`, and masked to 16 bits. The executor verifies the push increased Array length by exactly 12; otherwise it throws exactly:
+The seed, frame-width assertion, opcode order and single real call are unchanged from the decoded body: opcode 0 copies the target, opcode 1 folds argument-count/tag data, opcode 2 performs the only `Reflect.apply` or `Reflect.construct`, and opcode 3 folds the result score. On normal success the historical `array.length = base` truncation executes and the result is returned.
 
-```text
-Error("Suma siedmiu i pieciu utracila pi")
-```
+Current 1.4.0 compilation additionally wraps the reservation/body/normal-return region in a compensating `try/catch` injected by markers `EB`/`EC`. If any operation after the frame base is established throws — in particular the underlying opcode-2 call — the injected catch attempts to restore `array.length` to that invocation-entry base and rethrows the **same** error object.
 
-A `while(frame[4] < 4)` loop decodes opcodes 0,1,2,3 in order:
-
-0. copy target into frame[6];
-1. XOR accumulator with `(args.length + tag) & 65535`;
-2. perform the **only real call**, `Reflect.apply` or `Reflect.construct`;
-3. XOR accumulator with `score(result)&65535`.
-
-On success, result/check fields are written, `array.length=base` truncates the frame, and result is returned. There is **no `try/finally`** around opcode 2; if the underlying function/constructor throws, the 12-cell inner frame remains until some outer mechanism happens to truncate it.
+Therefore the decoded source's lack of `try/finally` remains a historical textual property, but the old persistent twelve-cell exceptional frame is not part of current compiled behavior. This distinction is critical when reading old failure measurements or the decoded payload in isolation.
 
 ### 5.5 Statements 1165–1167 — module wrapper and five-operation shared runtime
 
@@ -1110,51 +1149,59 @@ Statements 1174–1265 resolve 91 named properties through a helper equivalent t
 
 ### 5.7 Dynamic-body identity under the current source transformer
 
-The historical capture before the 2026-08-20 final-stir detour recorded these **decoded** body hashes:
+The historical capture records exact **decoded pre-transform** module bodies. Those hashes remain useful as payload identities, not as universal compiled-body hashes:
 
-| module | dynamic | decoded bytes | pre-transform decoded-body SHA-256 | current compilation |
+| module | dynamic | decoded bytes | decoded-body SHA-256 | current compilation |
 |---:|---:|---:|---|---|
 | M0 | 02 | 21,731 | `21947a1e744ca182bf150f1ad660c22eda3a4b49569fc98826148fb09a0bc2d2` | unchanged |
 | M1 | 03 | 32,525 | `34285e83a1e9d237f53b740e63532aecdb08db6f4bcb79171d693667bbd5d115` | unchanged |
 | M2 | 04 | 32,254 | `d2409d00cf6d2316eda80301465cad803eb1c9f78c433645f499ee5abc8c8f2f` | unchanged |
 | M3 | 05 | 86,642 | `11a6e75113562be761dd1c1e443130a8565571027d5e21120cc25015b4aceaa1` | unchanged |
 | M4 | 06 | 374,323 | `174932102939afe58386177ba61102ceefb3814c5f4784f7b6d4ca8786f6ee83` | unchanged |
-| M5 | 07 | 161,102 | `49a09b10fff798ba7965eb3f40180c719e737293d07695a388b4c257a9a7d073` | unchanged |
-| M6 | 08 | 152,995 | `3ae2870ea230fe21e207dc390ccbdd2b8c9c8f8d1b03c8a9a276d779e1205be0` | **deterministically transformed before compilation** |
-| M7 | 09 | 130,888 | `a9d1cc8c102402c64441cab567177bf117aaaa6c89fef5c2a4fbae61f3bc67b0` | unchanged |
-| M8 | 10 | 181,770 | `ae17868eefa4eee20e526b307c1e0ed143b99de7536f00cd462a6a434ac09fb2` | unchanged |
+| M5 | 07 | 161,102 | `49a09b10fff798ba7965eb3f40180c719e737293d07695a388b4c257a9a7d073` | unchanged as module body; public MonthWeaving prototype is later detoured |
+| M6 | 08 | 152,995 | `3ae2870ea230fe21e207dc390ccbdd2b8c9c8f8d1b03c8a9a276d779e1205be0` | transformed: raw `bowlSum` enters final `u` |
+| M7 | 09 | 130,888 | `a9d1cc8c102402c64441cab567177bf117aaaa6c89fef5c2a4fbae61f3bc67b0` | unchanged fossil payload; public positive gates are shadowed |
+| M8 | 10 | 181,770 | `ae17868eefa4eee20e526b307c1e0ed143b99de7536f00cd462a6a434ac09fb2` | unchanged hidden body; public year/gate/cache behavior is externally detoured |
 
-Do not use the M6 baseline hash as the current compiled-body hash. The transform is runtime code, not a regenerated encrypted payload.
+Separately, Dynamic 00 and Dynamic 01 are themselves transformed generated programs as explained in §§3.9, 4 and 5. Their decoded-source hashes therefore must not be called current compiled-source hashes.
 
-## 6. Proxy/transfer topology and carrier wrapping
+## 6. Proxy/transfer topology, transactionality, and carrier wrapping
 
-The proxy architecture has multiple independent layers and must not be collapsed into a single “witness proxy”:
+The proxy architecture remains intentionally layered:
 
-1. the **vault Proxy** (§4.10);
-2. the **shared-Array Proxy** (§4.11);
-3. the current-head **Function-constructor Proxy** (§3.9), temporary during Dynamic 00 execution;
-4. **inner function/class Proxies** created by Dynamic 01 (§5.4–5.5);
-5. **outer public function/class Proxies** created by Dynamic 00 (§4.12, §4.14).
+1. the frozen numeric-vault Proxy (§4.10);
+2. the shared-Array Proxy (§4.11);
+3. the bootstrap-only Function-constructor Proxy (§3.9);
+4. inner function/class Proxies created by Dynamic 01 (§5.4–5.5);
+5. outer public function/class Proxies created by Dynamic 00 (§4.12);
+6. outside the sealed payload, the Update-13 Chinese firewall also contains a small Proxy-backed shadow desk, and the runtime-patch ledger supervises temporary prototype “costumes” used by the year-ceiling detours.
 
-Likewise there are two distinct transfer primitives:
+The two generated transfer primitives remain distinct:
 
-- **full transfer**: four cells, full scorer, type-specific reconstruction, used throughout outer public `apply`/`construct`;
-- **short transfer**: two cells, limited scorer/WeakMap, persistent counter, four layouts, used for the Function-constructor hand-off and impossible-normal Array-Proxy branch.
+- **full transfer:** four scratch cells, full scorer and type-specific reconstruction, used by ordinary outer public `apply`/`construct` paths;
+- **short transfer:** two cells, limited scorer/WeakMap identity mechanism, persistent counter and four routes, used by the Function hand-off and impossible-normal Array-Proxy branches.
 
-The 91-carrier census is 72 functions/classes and 19 non-functions. Therefore 72 outer public Proxies are created. Inner Proxy count depends on module-export functions/classes; the frozen baseline instrumentation counted 84 inner module function/class proxies. Baseline startup census was 158 persistent/created proxy objects when counting vault + Array + 84 inner + 72 outer; the temporary current-head Function Proxy adds a further creation during bootstrap but is restored after Dynamic 00 returns.
+The sealed carrier census remains 72 functions/classes and 19 non-functions, hence 72 outer carrier Proxies. The historical instrumentation count of 84 inner module function/class Proxies remains a decoded/bootstrap measurement; the temporary Function Proxy is an additional bootstrap object.
 
-A normal public call therefore traverses, in conceptual order:
+What changed in the remediation series is failure ownership, not the existence of the machinery:
+
+- Update 8 makes failed generated construction transactional for the shared arena and newly published WeakMap identities/counter;
+- Update 15 adds a very-outer `apply` arena guard for host/random failures that occur before the older inner cleanup can run;
+- the public year-ceiling prototype patches are separately owned by `runtime-patch-ledger.js`, which preserves nested/reentrant patch stacks and late external monkey patches.
+
+A normal post-bootstrap call still conceptually traverses:
 
 ```text
-outer public Proxy
-  -> full transfer/scorer/random machinery
-  -> inner module Proxy
-      -> four-pass executor
-          -> decoded function body
-              -> ENTER/ASSIGN/RETURN/THROW/LEAVE runtime as present in that body
+public doorway detours / cache transaction (where applicable)
+  -> outer generated Proxy
+      -> full transfer / decorative randomness
+      -> inner module Proxy
+          -> four-pass executor with exceptional arena rollback
+              -> decoded module body
+                  -> ENTER / ASSIGN / RETURN / THROW / LEAVE runtime
 ```
 
-The current Function Proxy is not on ordinary post-bootstrap calls; it exists only while generated source is being constructed/executed during bootstrap.
+The source-compilation Proxy is absent from ordinary calls after bootstrap. The spaghetti mechanisms are retained; state that used to leak from failed calls is now rolled back by compensating wrappers.
 
 ## 7. Public carrier map — all 91 slots
 
@@ -3280,86 +3327,54 @@ On a hit, site 4498 gets the cached object; the implementation then deletes the 
 
 On a miss, site 4499 calls `makeSauceUncached(calculation,target)`, stores it, and if `cache.size>1024` deletes `cache.keys().next().value`. `makeSauceUncached` never consults this Map.
 
-## 15. M7 — embedded positive gate-gap data
+## 15. M7 — embedded historical positive gate-gap data and its public fossil status
 
-M7 is decoded body `Dynamic 09`, SHA-256 `a9d1cc8c102402c64441cab567177bf117aaaa6c89fef5c2a4fbae61f3bc67b0`. It has no direct public carrier; M8 resolves its one export internally.
+M7 is decoded body `Dynamic 09`, SHA-256 `a9d1cc8c102402c64441cab567177bf117aaaa6c89fef5c2a4fbae61f3bc67b0`. It has no direct carrier and its decoded body is unchanged in 1.4.0.
 
-### 15.1 Base64 decoder — ENTER 1148
+### 15.1 Raw decoder — ENTER 1148
 
-The source contains one large Base64 string.
+The hidden source still contains its large Base64 blob. If `Buffer` exists it decodes with `Buffer.from(encoded,"base64")` and returns a `Uint8Array` view; otherwise it uses `atob`, allocates a `Uint8Array`, and copies every character code. If neither decoder exists it throws the preserved missing-decoder error.
 
-If global `Buffer` exists, site 4500 executes:
+### 15.2 Raw `loadForwardGaps` — ENTER 1149
 
-```js
-buffer = Buffer.from(encoded, "base64")
-```
+The hidden loader still decodes exactly 80,000 bytes as 40,000 little-endian uint16 values through a `DataView`. That raw payload is the **pre-final-stir historical sequence** described by the old specification; its decoded byte SHA-256 is `2321775cd22a1156751fe506320d4afc47b27f391092645921df4b54d9ab49bb` and values lie in 42..963.
 
-and returns a **new `Uint8Array` view** over `buffer.buffer`, `buffer.byteOffset`, and `buffer.byteLength`; the bytes are not copied into a separate backing store.
+After the `bowlSum` correction, the historical 40,000 values disagreed with freshly recomputed normative positive gaps at 39,956 ordinals. That mismatch remains a fact about the sealed fossil payload; 1.4.0 does **not** regenerate or rewrite M7.
 
-Otherwise, if global `atob` is a function:
+### 15.3 Supported public gate shadow
 
-1. site 4501 `binaryString=atob(encoded)`;
-2. site 4502 allocates `new Uint8Array(binaryString.length)`;
-3. ritualized loop sites 4503/4504 visits every code unit;
-4. site 4505 writes `bytes[i]=binaryString.charCodeAt(i)`.
-
-If neither decoder exists, throw `אין בסביבה מפענח Base64`.
-
-### 15.2 `loadForwardGaps` — ENTER 1149
-
-Site 4506 decodes the blob. Odd byte length throws `מטמון השערים פגום`.
-
-Site 4507 allocates:
-
-```js
-new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength)
-```
-
-Site 4508 allocates:
-
-```js
-new Uint16Array(bytes.byteLength / 2)
-```
-
-The ritualized loop is sites 4509/4510. Site 4511 writes each element using:
-
-```js
-gaps[i] = view.getUint16(i * 2, true)
-```
-
-so the encoded values are little-endian unsigned 16-bit integers.
-
-The current payload is exactly:
+The remediation series instead added `browser/generated/pastafari-gate-shadow.js` and `browser/gate-data-detour.js`. The shadow manifest binds the current values to:
 
 ```text
-40,000 uint16 values
-80,000 decoded bytes
-SHA-256 2321775cd22a1156751fe506320d4afc47b27f391092645921df4b54d9ab49bb
-minimum 42
-maximum 963
-all 922 values in 42..963 occur
+canonicalId               PASTAFARI-SCROLL-2026-08-16-D36B0C94
+format                    pastafari-gate-shadow-xor10-v1
+normative Scroll SHA-256  d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96
+reference SHA-256         40f08fab56b3f0e90b6ce43a24948856972ecdd26d2bbbeb84bda26905fdc379
+positiveEntryCount        40001
+positiveGapCount          40000
+foundationJdn             -13334246
+first positive gate       -13333869
+gate 40000                6842507
+gapDataset SHA-256        3d78c120dffd62aac0ededd72ee6ae412a3e9ee21700dcd25f475c48263b93b3
+encoded payload bytes     50000
+encoded payload SHA-256   412519fb98f17ffa4a7e45231df5b0b147baaa2b6e079685ea2906d1dc3c33f7
+decoded FNV32             4211294204
+fastCheckpointCount        65
+extendedCheckpointCount    75
+historicalGateDataUsedForValues  false
 ```
 
-M7 returns a frozen one-property export object containing `loadForwardGaps`.
+The public shadow is packed as ten-bit words. For 1-based gap index `i`, decoding XORs the stored ten-bit value with
 
-The engine itself does **not** verify the blob against the dynamic formula at runtime. In the frozen **pre-transform** baseline, independent reconstruction recalculated all 40,000 values as `42 + Number(makeSauceUncached(FOUNDATION,FOUNDATION+BigInt(p)).chooseIndex(1,1n,922n))`, `p=1..40000`, with zero mismatches. That historical equality no longer holds at current `main` after the M6 final-stir source transform.
-
-A post-transform exhaustive differential over all `p=1..40000` gives:
-
-```text
-embedded/pre-transform gaps: 40,000
-current dynamic matches:         44
-current dynamic mismatches:  39,956
-embedded/pre-transform sum:  20,067,200
-current dynamic sum:          20,176,753
-delta (current - embedded):      109,553
-embedded min/max:              42 / 963
-current dynamic min/max:       42 / 963
-first mismatch: p=1      345 -> 377
-last mismatch:  p=40000  109 -> 875
+```js
+((Math.imul(i, 613) + 149) ^ Math.imul(i >>> 3, 179)) & 1023
 ```
 
-The embedded payload identity and its raw statistics above remain exact; what changed is its **equivalence** to the current dynamic formula. These differential counts are validation evidence, not hidden runtime operations. Current M7 therefore supplies a historical pre-transform positive-gap table to M8, while current `GateIndex.forwardGap` computes post-transform gaps.
+and then adds 42. Every gap is range-checked in 42..963; an FNV-1a-style two-byte-per-gap checksum is verified; absolute positions are accumulated from Foundation and both first/last boundary seals are checked.
+
+The same regeneration manifest also binds 65 fast checkpoints and 75 extended checkpoints. Those checkpoint counts belong to adjacent fast/conformance surfaces; they do not create additional sealed carrier slots or an alternate `GateIndex` rule.
+
+The decoded canonical position Array is cached once at module scope and frozen. Each `GateIndex` instance retains the hidden constructor's obsolete positive Array initially. On the first supported call to `gate`, `indexAtOrBefore`, `indexAtOrAfter`, or `indicesBetween`, the detour replaces `instance.positive` with `canonicalPositive().slice()`, marks the instance in a WeakSet, and executes the intentionally pointless `historical[0] = historical[0]` on the detached fossil Array. Thus obsolete data still exists and executes, but cannot decide supported public positive-gate semantics.
 
 ## 16. M8 — names, `GateIndex`, and calendar orchestration
 
@@ -3442,76 +3457,47 @@ Before `GateIndex` itself, M8 defines two ritualized binary searches. ENTER 1150
 
 ENTER 1151 is upper-bound: first index whose value is `> target`. Sites 4517..4521 are analogous but use `array[mid] <= target` to advance low.
 
-### 16.4 `GateIndex` construction — ENTER 1152
+### 16.4 `GateIndex` construction — ENTER 1152, followed by public priming
 
-Two **module-scope**, shared Maps are allocated before any `GateIndex` instance:
+The hidden M8 constructor itself is unchanged: it creates `this.positive=[FOUNDATION_JDN]`, decodes M7's 40,000 historical gaps, cumulatively pushes 40,000 more positions, and creates `this.negative=[FOUNDATION_JDN]`. The two module-scope dynamic gap Maps likewise still exist.
 
-```text
-forwardGapCache
-backwardGapCache
-```
+That is **decoded hidden-core construction**, not the final supported positive sequence. In every supported browser/Node doorway, `installGateDataDetour(GateIndex)` has already wrapped the four public gate/boundary methods. The first such method call invokes `prime(this)` before the captured M8 method. Priming detaches `this.positive` from the historical 40,001-entry Array and replaces it with a fresh mutable slice of the separately decoded canonical gate shadow described in §15.3.
 
-They have no eviction and are shared by every `GateIndex` in the same module realm. They are **not per-instance caches**.
+Consequences:
 
-Constructor actions:
-
-1. site 4522 allocate `this.positive=[FOUNDATION_JDN]`;
-2. site 4523 initialize local `position=FOUNDATION_JDN`;
-3. call M7 `loadForwardGaps()`, decoding all 40,000 gaps anew for this constructor call;
-4. iterate every returned gap; site 4524 executes `position += BigInt(gap)` and pushes the absolute gate position; this yields 40,001 positive positions including gate 0;
-5. site 4525 allocate `this.negative=[FOUNDATION_JDN]`; no negative gaps are preloaded.
-
-The two position Arrays and the `GateIndex` instance are not frozen.
-
-At current `main`, steps 3–4 preload a **stale pre-transform positive sequence**: M7's 40,000-value blob was not rebuilt after the M6 `bowlSum` change. The split is observable immediately. The first embedded gap is `345`, so a fresh instance materializes gate `1` using `+345`; the current dynamic `GateIndex.forwardGap(1)` returns `377`. There is no constructor-time cross-check or reconciliation.
+- construction still pays the cost of unpacking the historical table;
+- no source cleanup removes that table;
+- a debugger can still observe the detached Array if it captured it earlier;
+- supported positive gate positions 0..40000 are nevertheless the regenerated Scroll/reference-derived sequence, with gate 40000 at `6842507`, not the historical stale endpoint.
 
 ### 16.5 Dynamic forward/backward gaps — ENTER 1153 and 1154
 
-Both static methods require a positive Number integer ordinal `p`.
+The hidden static methods are unchanged. Both require a positive integer ordinal `p` and share unbounded module-scope Maps.
 
-ENTER 1153 forward cache miss (site 4526):
-
-```js
-sauce = makeSauceUncached(
-  FOUNDATION_JDN,
-  FOUNDATION_JDN + BigInt(p)
-)
-
-forwardGapCache.set(
-  p,
-  42 + Number(sauce.chooseIndex(1, 1n, 922n))
-)
-```
-
-ENTER 1154 backward miss (site 4527) uses `FOUNDATION_JDN - BigInt(p)` and the same `42 + chooseIndex(1,1,922)` shape.
-
-An explicit call to `GateIndex.forwardGap(p)` uses this **current post-transform** dynamic formula even when `p<=40000`; the constructor's preloaded positive positions are a separate historical path. They are not currently equivalent: exhaustive comparison gives 39,956 mismatches and only 44 accidental matches across `p=1..40000`. No runtime mechanism reconciles the two paths. ENTER 1154 has no embedded negative-side table, so backward gaps are generated through the current dynamic formula from ordinal 1 onward.
-
-### 16.6 `gate(index)` — ENTER 1155
-
-The index must satisfy `Number.isSafeInteger(index)`.
-
-For a nonnegative index, while `this.positive.length <= index`, site 4528 sets `p=this.positive.length` and pushes:
+On a forward miss:
 
 ```js
-this.positive.at(-1) + BigInt(GateIndex.forwardGap(p))
+sauce = makeSauceUncached(FOUNDATION_JDN, FOUNDATION_JDN + BigInt(p));
+gap = 42 + Number(sauce.chooseIndex(1, 1n, 922n));
 ```
 
-A fresh instance therefore begins dynamic positive extension only beyond preloaded index 40000, **from the stale embedded endpoint**. The 40,000 embedded gaps sum to `20,067,200`, so the preloaded gate-40000 position is:
+The backward route uses `FOUNDATION_JDN - BigInt(p)` with the same selector. Because current compiled M6 uses raw `bowlSum` in the final stir, these are current dynamic Sauce semantics.
 
-```text
--13,334,246 + 20,067,200 = 6,732,954
-```
+For supported positive ordinals `1..40000`, ordinary instance traversal normally reads the canonical primed Array rather than needing `forwardGap`. Explicit `GateIndex.forwardGap(p)` remains available and computes dynamically. Update 17/18/19 evidence checks bind regenerated gate artifacts and dynamic/reference semantics so the old M7 split is no longer a public mismatch. The negative side has no embedded table and remains dynamically extended from Foundation.
 
-Recomputing the same 40,000 ordinals with the current post-transform formula sums to `20,176,753`, which would place a fully rebuilt gate 40000 at `6,842,507`. The current preloaded endpoint is therefore `109,553` days lower. Positive extension beyond 40000 adds current dynamic gaps to that stale endpoint, so relative to a hypothetical fully rebuilt current sequence it inherits that cumulative `-109,553` offset. Return `this.positive[index]`.
+### 16.6 `gate(index)` — ENTER 1155 under the gate shadow
 
-For a negative index, site 4529 sets `p=-index`. While `this.negative.length<=p`, site 4530 sets `gapNumber=this.negative.length` and pushes:
+The hidden method still requires a safe-integer gate index and extends `positive` or `negative` arrays exactly as decoded. In supported entry points its wrapper first primes the instance (§16.4).
 
-```js
-this.negative.at(-1) - BigInt(GateIndex.backwardGap(gapNumber))
-```
+For nonnegative indices:
 
-Return `this.negative[p]`; the negative Array is indexed by absolute negative gate number.
+- indices `0..40000` are already present in the canonical shadow slice;
+- if a larger index is requested, the hidden while-loop begins from that canonical gate-40000 endpoint and appends `GateIndex.forwardGap(p)` for each new ordinal;
+- therefore later dynamic extension no longer inherits the historical `-109,553`-day offset from the old M7 endpoint.
+
+For negative indices the hidden algorithm is unchanged: `negative[0]=FOUNDATION_JDN`; for successive absolute ordinal `p`, append `previous - BigInt(GateIndex.backwardGap(p))` and return `negative[-index]`.
+
+The gate-data detour does not replace `forwardGap`/`backwardGap`; it repairs only the preloaded positive history while preserving the original dynamic extension machinery.
 
 ### 16.7 `indexAtOrBefore` — ENTER 1156; map callback ENTER 1157
 
@@ -3874,638 +3860,411 @@ new YearStructure({
 The M1 constructor stores `year` by reference, clones each of the five Arrays, freezes each clone, then freezes the instance. M8 stores the completed object in `structureCache` and returns it.
 
 
-## 21. Public authoritative doorway, 98-name Node namespace, and adjacent APIs
+## 21. Public authoritative doorways and the 108-name Node namespace
 
-This section fixes the public-surface scope precisely. The sealed dynamic engine returns 91 carrier values. The browser doorway installs the public year-ceiling detour around that sealed namespace. The Node package entry additionally rebinds `PastafariCalendar` to a subclass that supplies `localToday` when omitted and exports seven adjacent reverse/constraint APIs. Those adjacent APIs are documented here because the requested architecture includes the full project-facing execution boundary, but they remain outside the sealed 91-carrier forward engine.
+The sealed 91-carrier object is no longer by itself the supported public authoritative semantics. Version 1.4.0 deliberately keeps the monster core and layers compensating detours outside it.
 
-### 21.1 Browser doorway
+### 21.1 Browser doorway installation order
 
-`browser/pastafari-calendar-core.js` performs exactly three architectural actions:
-
-1. import `GateIndex` and `PastafariCalendar` plus the remaining exports from `pastafari-calendar-core-chronicle.js`;
-2. import `installYearCeilingDetour` from `year-ceiling-detour.js` and call it with the imported `PastafariCalendar` and `GateIndex`;
-3. re-export the chronicle namespace.
-
-It does not rewrite the 91 carriers or create a second semantic engine. Its observable semantic modification is the externally installed detour specified in §22.
-
-This section fixes an important scope ambiguity. The **sealed dynamic engine** returns 91 carrier values. The package-level Node public entry exports those 91 names, replaces one of them (`PastafariCalendar`) with a public subclass, and adds seven adjacent reverse/constraint exports. Therefore:
-
-```text
-sealed dynamic carrier surface: 91 names
-package-level public namespace: 98 names
-```
-
-The extra seven names do not participate in an ordinary authoritative `PastafariCalendar.convert*` calculation, but they are part of the public package namespace and are documented here so that the execution boundary is explicit.
-
-### 21.2 Node/package `src/public-api.js` import-time execution and 98-name namespace
-
-At current `main` HEAD `78cc29a12b8d16bf91fd54284851a0e6740aae36`, `src/public-api.js` has Git blob SHA:
-
-```text
-35d85f3fa7fbef756e5d94074f8627b907bb17b0
-```
-
-The Node public-entry file and all reverse/constraint/diagnostics files named below are unchanged between the earlier `6c259bf6818533714aa6cc7bf43fe000585e80fa` snapshot and current head `78cc29a12b8d16bf91fd54284851a0e6740aae36`; the intervening authoritative change is the chronicle final-stir source transform documented in §§3.9 and 14.12.
-
-It executes, in source order:
-
-1. import `GateIndex`, the hidden/monster `PastafariCalendar`, and `localToday` from the separately packed Node copy of the authoritative chronicle;
-2. import `installYearCeilingDetour` from `browser/year-ceiling-detour.js`;
-3. immediately execute:
-
-   ```js
-   installYearCeilingDetour(
-     MonsterPastafariCalendar,
-     GateIndex
-   )
-   ```
-
-   before any friendly public subclass is constructed;
-4. star-re-export the 91 chronicle exports;
-5. re-export four reverse values from `browser/pastafari-reverse.js`;
-6. re-export three constraint values from `browser/pastafari-constraints-client.js`;
-7. define and export a new public class named `PastafariCalendar` that extends the hidden/monster class and therefore replaces the star-exported binding of that name in the package public namespace.
-
-The public subclass constructor has exactly three branches:
+`browser/pastafari-calendar-core.js` imports the raw chronicle values, then executes these installations in source order:
 
 ```js
-if (options === undefined) {
-  super({ todayProvider: localToday });
-  return;
-}
-
-if (
-  options !== null
-  && typeof options === "object"
-  && options.todayProvider === undefined
-) {
-  super({ ...options, todayProvider: localToday });
-  return;
-}
-
-super(options);
+installGateDataDetour(GateIndex);
+installYearCeilingDetourDetour(PastafariCalendar, GateIndex);
+installYearCeilingDetourDetourDetour(PastafariCalendar, GateIndex);
+installYearCeilingDetour(PastafariCalendar, GateIndex);
+installAuthoritativeCacheEpochDetour(PastafariCalendar);
+installMonthWeavingGhostDetour(MonthWeavingCounter, comb);
 ```
 
-Consequences:
-
-- omitted `options` allocates a fresh one-property options object;
-- an object that omits `todayProvider` is shallow-spread into a **new** object and receives `todayProvider: localToday`;
-- `null`, non-object values, and objects that explicitly contain a `todayProvider` value go directly to the hidden constructor;
-- this wrapper avoids the hidden constructor's unbound-default-binding defect only for the first two branches;
-- the public class object is not identical to carrier slot 38, even though it inherits its behavior.
-
-### 21.3 The seven additional package exports
-
-The package adds exactly these seven names:
+Because each `PastafariCalendar.convertJdn` installer captures the then-current method and replaces it, actual call nesting is the reverse of installation at the outer edge:
 
 ```text
-PastafariReverseClient
-findPastafariDate
-SAME_AS_TARGET
-sharedPastafariReverseClient
-PastafariConstraintClient
-sharedPastafariConstraintClient
-solvePastafariConstraints
+cache-epoch wrapper
+  -> historical year-ceiling wrapper
+      -> third-level ceiling supervisor
+          -> second-level anchor-matrix ceiling repair
+              -> hidden M8 convertJdn
 ```
 
-Their current implementation SHA-256 bindings, verified in the same repository snapshot, are:
+The gate shadow is a `GateIndex` prototype wrapper installed before those `convertJdn` layers. The MonthWeaving detour modifies the public M5 prototype separately.
+
+The browser doorway then creates deterministic nonpositive-year converter wrappers and an Intl semantic firewall. It explicitly exports the detoured `bahaiToJdn`, `calendarDateToJdn`, `chineseToJdn`, `copticToJdn`, `ethiopicToJdn`, `hebrewToJdn`, `islamicCivilToJdn`, `islamicToJdn`, and `sakaToJdn`; `export *` supplies the remaining chronicle bindings. Explicit exports win over same-named star exports.
+
+### 21.2 Node/package doorway and 108 exports
+
+`src/public-api.js` performs the same gate/ceiling/cache/MonthWeaving installations on its separately packed authoritative copy, constructs the same nonpositive-year detours, and then adds deterministic Kōki, Chinese, and Vikrama routes before star-re-exporting the 91 core names.
+
+The Update-19 API audit measured:
 
 ```text
-browser/pastafari-reverse.js
-  f093e4e59e3bb69450a8f52c82c76626389a78b5c47c7155bdc1f610d80a1556
-
-browser/pastafari-constraints-client.js
-  1caab6e0c5607ccd15fe265ccad50de44addb96d59475f15a4e5272da6c
-
-browser/pastafari-reverse-worker.js
-  d332138a68063ad5c721f5239d3f69b607fcfe3da207acd1699d69c25cfaa88b
-
-browser/pastafari-constraints.js
-  ae38cc2f5a8de405ad9387e773e5968389185f7ab3b9985b166b8a51779d0b61
-
-browser/pastafari-diagnostics.js
-  95571c0ee10a343417bf5e91eb2a7bf01b912b61810985d7e24391d4e641d24f
+sealed authoritative exports  91
+fast exports                  13
+public package exports       108
 ```
 
-`findPastafariDate(options)` delegates **at call time** to:
+The 108 public names consist of:
 
-```js
-sharedPastafariReverseClient.find(options)
-```
+- the 91 sealed carrier names, with same-named public converter bindings overriding selected raw exports;
+- the seven adjacent reverse/constraint names already documented by the earlier edition: `PastafariReverseClient`, `findPastafariDate`, `SAME_AS_TARGET`, `sharedPastafariReverseClient`, `PastafariConstraintClient`, `sharedPastafariConstraintClient`, `solvePastafariConstraints`;
+- ten added normative API names: `ChineseStructuredDate`, `chineseStructuredDateToJdn`, `jdnToChinese`, `KokiDate`, `kokiToJdn`, `jdnToKoki`, `VikramaDate`, `VIKRAMA_MONTH_NAMES`, `vikramaToJdn`, `jdnToVikrama`.
 
-rather than storing an earlier snapshot of the method.
+The package still rebinds `PastafariCalendar` to a friendly subclass of the monster class. Its constructor behavior is unchanged from the earlier edition: omitted options or an object lacking `todayProvider` cause a fresh options object with imported `localToday` to be passed to `super`; explicit `todayProvider`, `null`, or other values go directly to the hidden constructor path.
 
-`solvePastafariConstraints(options)` likewise delegates at call time to:
+### 21.3 Nonpositive-year deterministic detour
 
-```js
-sharedPastafariConstraintClient.solve(options)
-```
+`createProlepticNegativeYearDetours` preserves positive-year/raw behavior and diverts only supported nonpositive-year class instances for the normative arithmetic representations. The affected public routes are actual nonpositive-year instances of `HebrewDate`, `IslamicCivilDate`, `SakaDate`, `EthiopicDate`, `CopticDate`, and `BahaiDate` with variant `"western-arithmetic"`. A generic `IslamicDate` merely carrying `variant:"civil"` is **not** recognized by this side-door unless it is an `IslamicCivilDate` instance; unrecognized shapes fall through to the captured raw converter. The detour calls the deterministic converter layer in `docs/calendar-converters.js`; unsupported variants and positive years fall through to the raw converter.
 
-`SAME_AS_TARGET` is the marker value used by reverse dispatch to select the diagonal `calculationJdn === targetJdn` mode.
+This fixes public proleptic coverage without rewriting M4's historical positivity checks. Official/host-backed variants are not silently reclassified as normative.
 
-The two shared client instances are allocated at module import and preserve their Worker/startup/pending state across wrapper calls.
+### 21.4 Deterministic Chinese public route
 
-### 21.4 `PastafariReverseClient` state and request lifecycle
+`src/chinese-calendrica-detour.js` is a source-locked JavaScript port/derivative of CALENDRICA 4.0 plus the project's deep-antiquity Delta-T rule `PASTAFARI_CHINESE_DEEP_DELTA_T_V1`. It contains **no `Intl`/ICU dependency**. Large astronomical coefficient tables are bound here by the module SHA-256 in §1 rather than recopied.
 
-Construction reads:
-
-```js
-options.startupTimeoutMs ?? 45000
-```
-
-without additional validation, then initializes, in source order:
+Core fixed-coordinate constants are:
 
 ```text
-_worker  = null
-_inline  = null
-_ready   = null
-_pending = new Map()
-_nextId  = 1
+RD_JDN_OFFSET                 1721425
+J2000                         730120.5
+mean tropical year            365.242189
+mean synodic month            29.530588861
+winter longitude              270 degrees
+deep Delta-T threshold year   -1999
+deep Delta-T multiplier       26/25
+Chinese epoch                 fixedFromGregorian(-2636, 2, 15)
 ```
 
-`find(options)` executes:
+For years below `-1999`, the ordinary long-range ephemeris-correction polynomial is multiplied by `26/25`. Other year ranges follow the source-locked piecewise CALENDRICA correction functions implemented in the module.
 
-1. require a non-null object;
-2. if `signal` is already aborted, throw an `Error` whose:
-   - `name` is `AbortError`;
-   - `code` is `ERR_REVERSE_ABORTED`;
-3. when `timeoutMs` is present:
-   - evaluate `Number(options.timeoutMs)`;
-   - require a positive safe integer;
-4. compute transport state from `_ready` truthiness and open diagnostics;
-5. call and await `_ensureReady()`;
-6. only after readiness decide inline versus Worker, so **request timeout does not include startup time**;
-7. inline/no-timeout:
-   - perform the direct dynamic import;
-   - call direct reverse with the same options object;
-8. inline/timeout:
-   - allocate an `AbortController`;
-   - attach an abort listener to the original signal;
-   - allocate a timer;
-   - `Promise.race` direct reverse against timeout;
-   - clear timer/listener in `finally`;
-9. Worker mode:
-   - post-increment `_nextId`;
-   - allocate a Promise;
-   - allocate cleanup/cancel/onAbort closures;
-   - store the pending record in `_pending`;
-   - only then install abort listener and request timer;
-10. before `postMessage`:
-    - shallow-spread options into a new object;
-    - delete `signal`, `onProgress`, and `timeoutMs`;
-    - if `todayProvider` exists, require a function, call it **immediately on the caller side**, store the returned snapshot as `todaySnapshot`, and remove the provider function;
-11. send ID, kind, serialized options/date, and diagnostic transport configuration;
-12. synchronous structured-clone/post errors are routed through the pending rejection path;
-13. settle handlers run cleanup first, deleting the timer/listener and pending Map entry, then resolve or reject.
+`ChineseStructuredDate(cycle, yearInCycle, month, day, options)` stores `calendar="chinese"`, safe-integer cycle/year/month/day, normalizes `leap`/`leapMonth` by exact `=== true`, derives sexagesimal stem/branch names and indices from `yearInCycle`, aliases `leapMonth` to the same boolean, then freezes the instance.
 
-`_ensureReady()` memoizes one Promise in `_ready`. On startup rejection it calls `dispose()`. On fulfillment it leaves the fulfilled Promise in place.
+`fixedFromChinese` requires year-in-cycle 1..60, month 1..12 and day 1..30. It estimates the mid-year from the epoch, finds Chinese New Year on/before it, advances to the candidate new moon for the requested month, checks leap-month identity through the reverse conversion, and returns candidate new-moon fixed day + `day-1`.
 
-`_start()` chooses inline transport when `typeof globalThis.Worker !== "function"`. Otherwise it creates one module Worker and waits for `{kind:"ready"}`.
+`chineseFromFixed` computes solstices/new moons/major solar terms, determines leap-year/month status, derives cycle/year-in-cycle/month/day and sexagesimal names, then locates that Chinese year's non-leap month-1 day-1 to derive `relatedYear` from its Gregorian year. Returned records are frozen.
 
-`dispose()`:
-
-1. allocates one abort error;
-2. rejects every pending request with it;
-3. clears the pending Map again;
-4. attempts Worker termination;
-5. resets worker/inline/ready state.
-
-### 21.5 `PastafariConstraintClient`
-
-The constraint client uses the same Worker-or-inline skeleton and pending/timer/startup lifecycle. Its notable differences are:
-
-1. constructor uses `_inline=false` rather than `_inline=null`;
-2. `.solve` validates early that `onProgress`, when supplied, is a function;
-3. it does **not** snapshot a `todayProvider`;
-4. the serializable options copy deletes only `signal`, `onProgress`, and `timeoutMs`;
-5. other function-valued properties therefore remain and can fail structured cloning.
-
-### 21.6 Shared reverse/constraint Worker protocol
-
-The shared reverse Worker ignores a message unless it is truthy and has a safe-integer `id`.
-
-A cancel message:
-
-1. looks up the matching `AbortController` in `activeRequests`;
-2. aborts it when present;
-3. returns without a result response.
-
-Unknown operation kinds other than `find`/`solve` return without response.
-
-For `find` and `solve`, the Worker executes:
-
-1. apply transported diagnostic configuration;
-2. allocate an `AbortController`;
-3. `activeRequests.set(id,controller)`;
-4. open counters/diagnostic token;
-5. create operation hooks;
-6. await the direct handler;
-7. end diagnostic token;
-8. post the result;
-9. on error, serialize only `name`, `message`, `code`, and `stack`;
-10. in `finally`, delete the ID from `activeRequests` and increment settled counter.
-
-For reverse, `todaySnapshot` is removed from the copied options and replaced by a closure returning that snapshot. For solve there is no snapshot step. Worker hooks overwrite signal/progress properties used by the direct operation. Progress is sent as separate messages.
-
-Two observable protocol hazards are part of the current behavior:
-
-- a duplicate ID overwrites the older controller in `activeRequests`; two requests with the same ID can therefore later produce two responses carrying that same ID;
-- `9007199254740991` is accepted, while the next numeric value `9007199254740992` is rejected by the Worker safe-integer guard and can leave a client stuck because Number precision no longer advances the ID.
-
-### 21.7 Direct reverse dispatch
-
-The direct reverse implementation is an **adjacent subsystem**, not the definition of authoritative forward conversion. It uses its own fast/readable state machinery and invokes the authoritative side door only where required by its calendar-input routes. Its execution is recorded here because it is publicly exported beside the authoritative engine.
-
-Before dispatch it:
-
-1. opens a diagnostic token;
-2. validates options object;
-3. forbids supplying both `calculationDate` and `calculationJdn`;
-4. validates `todayProvider` and `onProgress` functions;
-5. converts `yieldEvery`, default 256, and requires a positive safe integer;
-6. normalizes the requested five-field Pastafarian date and freezes a new record;
-7. calls exactly once either `localToday()` or the supplied `todayProvider`, even when the later calculation mode is explicit;
-8. rejects a Pastafarian result from that today-provider path;
-9. converts that snapshot to JDN;
-10. allocates root context including search range, a new breadcrumb `Set`, signal, progress callback, and yield frequency.
-
-The main calculation modes are:
-
-- **known calculation day:** obtain/reuse calculation state, walk from year 5000 to wanted year, locate cutlet and target offset, then perform a full conversion and require all five fields to match before returning an inverse candidate;
-- **absolute side-door calculation:** local absolute calendars are converted directly; non-local calendar representations lazily import the packed authoritative core;
-- **`SAME_AS_TARGET`:** require a finite explicit search range, scan every JDN inclusive, build the cutlet-only sieve for each diagonal candidate, and run full conversion only for sieve matches;
-- **nested Pastafarian calculation date:** recurse while tracking object identity in the breadcrumb Set, fan out candidate calculation JDNs, call known-calculation inversion for each, then deduplicate target/calculation pairs in first-occurrence order.
-
-The direct reverse caches include bounded LRU structures for calculation states, results, Sauce, structures, gate distance and dynamic gate positions. `yearsByNumber` inside a calculation state is an unbounded Map. Cache hits promote by delete/reinsert. A cached result still materializes a fresh `PastafariDate` object.
-
-### 21.8 Constraint solver
-
-Constraint normalization accepts variables with JDN singleton/range domains and constraint types:
+Public conversions are:
 
 ```text
-pastafari
-equal
-order
-difference
+chineseStructuredDateToJdn(value) = fixedFromChinese(value) + 1721425
+jdnToChinese(jdn)                  = chineseFromFixed(jdn - 1721425)
 ```
 
-For each variable, the solver allocates a domain record with nullable bounds/candidate Set. Multiple restrictions intersect. Disjoint restrictions produce an empty domain rather than an immediate normalization throw.
+For the legacy public `ChineseDate(relatedYear,month,day,{leapMonth})` representation, `chineseRelatedDateToFixed` scans a bounded Gregorian neighborhood to locate the matching Chinese New Year, converts the requested month/day within the discovered cycle/year, reverse-checks `relatedYear/month/day/leap`, and rejects nonexistent representations. Node `chineseToJdn` routes structured shapes first, related-year shapes second, and only unknown/non-normative shapes to the sealed host-backed converter.
 
-Execution proceeds through:
+The browser core's Update-13 firewall performs the equivalent semantic separation with a Proxy-backed “shadow desk”: recognized Chinese normative shapes go directly to this deterministic engine; the old host-Intl Chinese path survives only behind a tainted diagnostic receipt and cannot cross the normative path.
 
-1. **Tarjan graph analysis** of only Pastafarian variable-calculation edges;
-2. **linear fixpoint propagation** in source constraint order for equality/order/difference constraints, including bidirectional bound/candidate updates;
-3. **Pastafarian relation materialization** into pair Maps plus scanned-calculation Sets;
-4. repeated propagation/relation shrinking until no relevant state changes;
-5. rejection of unresolved cyclic/non-finite relation requirements where the solver cannot prove an exhaustive finite relation;
-6. stable variable ordering by ascending domain cardinality, preserving insertion order on ties;
-7. ascending BigInt value Arrays;
-8. recursive DFS:
-   - set assignment;
-   - run partial consistency against linear constraints and exhaustive relations;
-   - recurse or count prune;
-   - delete assignment;
-   - periodically yield;
-9. at a leaf, run full verification:
-   - recheck linear constraints;
-   - for every Pastafarian constraint call:
+### 21.5 Kōki
 
-     ```js
-     calendar.convertJdn(
-       target,
-       { calculationJdn }
-     )
-     ```
-
-   - compare all five Pastafarian fields;
-10. materialize frozen solution records;
-11. finish with one of the current termination classes:
-    - complete;
-    - max-solutions;
-    - max-scanned.
-
-The solver's `scanned` counter covers relation-calculation work, diagonal days, and DFS leaves; it is not limited to final assignments.
-
-### 21.9 Shared diagnostics behavior used by adjacent APIs
-
-Default diagnostics state is:
+Kōki is a separate signed proleptic representation, **not** an alias inserted into M4's historical Japanese-era table.
 
 ```text
-schema = 1
-mode = disabled
-traceLimit = 512
-epoch = 1
+KOKI_GREGORIAN_YEAR_OFFSET = 660
+Kōki year = astronomical Gregorian year + 660
 ```
 
-Important fixed limits include:
+`KokiDate` accepts BigInt, safe-integer Number, or signed decimal integer String for the year; validates month 1..12 and day against the corresponding Gregorian year/month; stores both `calendar` and `system` as `"koki"`; then freezes the instance.
+
+Every forward conversion deliberately visits the old imperial machinery first with synthetic `era:"koki"`; the expected rejection is swallowed. Normative output then calls the old generic calendar doorway with a Gregorian object whose year is `koki.year - 660`. Reverse conversion uses a local exact BigInt JDN-to-Gregorian decomposition, constructs the Kōki date, deliberately visits the same dead-end imperial route, and returns a frozen plain Kōki record. The decorative dead end therefore still executes without being allowed to define Kōki semantics.
+
+### 21.6 Vikrama
+
+The Vikrama side route is a modified source-locked CALENDRICA 4.0 traditional Hindu lunisolar/new-moon implementation. Important constants include:
 
 ```text
-trace entries        10,000
-sanitize depth       5
-collection entries   512
-metric keys          512
-child snapshots      16
-operation records    50
-string length        2,048
+FIXED_TO_JDN       1721425
+HINDU_EPOCH       -1132959
+HINDU_LUNAR_ERA   3044
+UJJAIN_LATITUDE   23 + 9/60 degrees
+SEARCH_RADIUS     70 fixed days
 ```
 
-Counters accept finite integer Number or BigInt; overflow from safe Number is promoted to BigInt. Trace storage is a ring implemented by push then splice of excess. Operation storage keeps the 50 most recent records.
+`VikramaDate` stores a signed exact BigInt year, month 1..12, tithi 1..30, boolean `leapMonth` and `leapTithi`, calendar tag `"vikrama"`, then freezes. Month names are the frozen 12-name `VIKRAMA_MONTH_NAMES` Array.
 
-Sanitization converts:
+The implementation intentionally retains a legacy crooked witness. Forward conversion first constructs `OldHinduLunarDate(year + 3044, month, tithi, {leapMonth})` and calls the sealed `hinduToJdn`. It then independently computes the source-locked normative fixed day, using the legacy result only as a search hint, calculates `hiddenCorrection = normativeJdn - witnessJdn`, and returns `witnessJdn + hiddenCorrection`. Reverse conversion independently derives the source-locked Vikrama record, calls the same legacy witness, and verifies that `witnessJdn + (requestedJdn-witnessJdn)` reconstructs the requested JDN before returning the frozen structured record.
 
-- BigInt -> decimal string;
-- `undefined` -> `null`;
-- function -> `String(function)`;
-- long strings -> 2,048 chars plus ellipsis;
+Thus the old Hindu path executes but cannot override the source-locked Vikrama answer.
 
-and applies depth/collection limits through a shared `WeakSet`.
+### 21.7 MonthWeaving public-domain repair
 
-Transport configuration with a different epoch resets state; the same epoch does not. Configuration fields are mutated sequentially, so a later validation failure can leave earlier configuration mutations in place.
+`installMonthWeavingGhostDetour` captures the raw M5 `count` getter and `unrank` method. It preserves the raw implementation unchanged for domains with no month length `1`. For domains containing singleton months:
 
-### 21.10 Scope boundary
+1. it verifies the constructor's public shape (`lengths`, `monthCount`, `totalLength`, `prefix`);
+2. treats every singleton as a hard first/last-order separator;
+3. builds legacy `MonthWeavingCounter` instances for each maximal non-singleton run;
+4. multiplies those independent legacy counts to form the corrected public count;
+5. maps a global unrank rank through suffix products into each run, calls the legacy `unrank` locally, offsets labels, and inserts singleton labels between runs;
+6. provides a public `rank` that validates the weave, ranks each non-singleton run with the same legacy completion-count machinery, and combines local ranks in mixed-radix/product order.
 
-The architecture therefore has three distinct public/core layers that must not be conflated:
+The corrected ledger is cached per public counter instance in a WeakMap. The public `count` getter intentionally calls the legacy getter before substituting the corrected singleton-domain count, preserving the old census side effect.
+
+### 21.8 Reverse, constraint and diagnostics adjacent subsystems
+
+The seven reverse/constraint exports and their shared Worker/diagnostics infrastructure remain adjacent to the forward sealed 91-carrier engine exactly as in the prior architecture edition. They do not become carrier slots and do not become a normative oracle. They remain non-oracular clients. In particular, the constraint solver's leaf-level full verification calls the supported `calendar.convertJdn(target,{calculationJdn})` and therefore traverses the public detours above. The reverse engine retains its separately documented readable/search machinery and must not be described as an alternate normative authority merely because it is package-exported.
+
+## 22. Public 5,778-year ceiling stack and runtime-patch ownership
+
+The hidden M8 year-search loops still contain literal upper limit **5781**. Version 1.4.0 continues to enforce the Scroll's **5778** ceiling externally, but the original single prototype monkey patch has grown two compensating supervisors and a reentrancy/late-patch ledger.
+
+### 22.1 Historical ceiling detour retained
+
+`year-ceiling-detour.js` still derives `5778n` on every wrapped conversion by freezing `[1n,1n,1n]`, reducing it to `3n`, and subtracting from historical `5781n`. It separately computes `5782n = 5781n + 1n`. Hence lengths 5779, 5780 and 5781 are exactly the forbidden interval.
+
+Its temporary `GateIndex.prototype.gate` costume always calls the delegated/original gate reader first. For recognized forbidden candidates it returns an artificial gate observation producing length 5782, so the hidden `>5781` check rejects/breaks before the candidate can enter cardinality/selection. This deliberately preserves the old hidden algorithm rather than changing its literal constant.
+
+### 22.2 Second-level anchor-matrix repair
+
+`year-ceiling-detour-detour.js` was added because the historical pre-anchor ascending-scan state could miss a forbidden first row/turn. It tracks the ascending candidate run before a relevant year is cached and, when the first eligible `+1` scan identifies a candidate at least six gates from the opening, converts a true 5779..5781 length into the same 5782 poison observation. Once the active calculation day's year state is established it yields to the older/cached logic rather than defining a second year algorithm.
+
+### 22.3 Third-level cached-poison supervisor
+
+`year-ceiling-detour-detour-detour.js` supervises the historical detour after multi-year/cache traversal. It captures a canonical gate reader at installation and recognizes the historical poison pattern at a cached boundary (`boundary ± 5782`). It searches active calculation-day cached boundaries using canonical gate values. If the nearest active candidate truly has length 5779..5781 it preserves the poison; otherwise it repairs the returned gate back to the canonical day. This prevents a poison derived from an older/irrelevant cached year from changing a later legal candidate.
+
+### 22.4 `runtime-patch-ledger.js`
+
+All three ceiling layers use a shared runtime-patch ownership system rather than blindly assigning/restoring the prototype.
+
+The ledger maintains:
 
 ```text
-sealed dynamic carrier surface   -> 91 values, including M8 PastafariCalendar at slot 38
-public Node package namespace    -> those 91 names, PastafariCalendar rebound to a subclass, plus 7 adjacent reverse/constraint names = 98 names
-public authoritative semantics   -> sealed/subclass calendar behavior plus the installed year-ceiling detour
+WeakMap target/property wardrobes
+WeakMap installed-function -> owner frame
+invocation token stack
+trace-hook Set
+monotonic ticket counter
 ```
 
-The browser doorway does not add the Node subclass or the seven package-level reverse/constraint names; it installs the same year-ceiling detour and re-exports the chronicle namespace. The reverse client, direct reverse engine, constraint client/solver, their shared Worker protocol, and diagnostics are therefore **adjacent public subsystems**: they are part of the package architecture and are specified above, but they are not extra carrier slots and are not execution layers inside an ordinary sealed forward `PastafariCalendar.convert*` call.
+The historical outer ceiling detour borrows a **fresh** invocation token; nested supervisor layers normally reuse the current token. Installation captures the exact property descriptor visible at that layer's entry, peels known foreign/project costumes to the appropriate delegate, creates the new wrapper, and records descriptor/owner/delegate identity.
 
-## 22. Current public year-ceiling detour
+Restoration intentionally preserves the historical mistake as an observable step: `runHistoricalRestoreThenRepair` first attempts the old `Reflect.set(target,property,historicalValue)`. It then inspects whether the installed descriptor was externally modified while active. If untouched, it restores the exact descriptor that existed on layer entry; if a caller installed a late monkey patch, that later descriptor wins and is restored instead. Nested frames are removed from their wardrobe without clobbering sibling/outer ownership.
 
-### 22.1 Installation
+This is why reentrant depth, multiple calendar instances, exceptions and late user monkey patches no longer make normative results depend on restoration order even though temporary prototype mutation still executes.
 
-`installYearCeilingDetour(CalendarConstructor,GateIndex)` uses a `WeakSet` to make installation idempotent per constructor. It captures the then-current `CalendarConstructor.prototype.convertJdn` and `GateIndex.prototype.gate`, then replaces `convertJdn`.
+### 22.5 Effective candidate rule
 
-### 22.2 Effective ceiling values
-
-The replacement `convertJdn(...argumentsForTheChronicle)` uses a rest parameter, so JavaScript allocates the rest-arguments Array before the wrapper body executes. On **every** wrapped conversion, the helper that obtains the public ceiling executes these operations rather than reading a precomputed 5778 constant:
-
-1. bind `oldCeiling = 5781n`;
-2. allocate a fresh Array `[1n,1n,1n]`;
-3. freeze that Array with `Object.freeze`;
-4. execute `reduceRight((sum,day)=>sum+day,0n)`, invoking the callback three times;
-5. subtract that sum from `oldCeiling`, producing `5778n`.
-
-A separate helper binds `preservedOldCeiling=5781n` and adds `1n`, producing `5782n`. Therefore the predicate
-
-```js
-length > 5778n && length < 5782n
-```
-
-is true for exactly 5779, 5780, and 5781. The temporary Array allocation, freeze, three callback invocations, reduction, subtraction, and separate `5781n+1n` calculation all execute for every wrapped conversion.
-
-### 22.3 Per-conversion monkey patch
-
-At entry to public `convertJdn`, capture `calendar=this`, initialize local `opening=null` and `lastGateIndex=null`, and inspect `argumentsForTheChronicle[1]`. If the options object is absent/falsy, or `calculationJdn` is `undefined` or `null`, the detour-local calculation day is `null`; otherwise the wrapper executes `BigInt(options.calculationJdn)` **before** the hidden core performs its own M0 normalization. It then temporarily replaces `GateIndex.prototype.gate`.
-
-Every intercepted gate read **first calls the captured original gate**. Therefore any lazy gate extension, Sauce call, cache mutation, allocation, or other original-gate side effect occurs even when the detour later substitutes a returned day.
-
-### 22.4 Cached-year candidate recognition
-
-The temporary gate function scans `calendar.yearCache.entries()`. When an explicit calculation day exists, only keys beginning with `` `${calculationJdn}|` `` are eligible. For every cached year with at least two gate indices:
-
-- if candidate index lies at least six gates to the left, compute `year.openingGate - realGateDay`; when forbidden, candidate adjusted day is `year.openingGate - 5782`;
-- if candidate index lies at least six gates to the right, compute `realGateDay - year.closingGate`; when forbidden, adjusted day is `year.closingGate + 5782`.
-
-If multiple cached years match, choose the closest by gate-index distance. Return that adjusted value. The hidden year search then computes 5782 and executes its own `>5781` rejection/break.
-
-### 22.5 Pre-anchor fallback
-
-If no cached year belongs to the active calculation day, use local ascending-scan state. A new/non-increasing index resets `opening`. For increasing candidates compute `candidateLength=realGateDay-opening.gateDay`; when 5779..5781 return `opening.gateDay+5782`. Otherwise return the real gate.
-
-### 22.6 Restoration
-
-Call the captured original `convertJdn` inside `try`. In `finally`, restore `GateIndex.prototype.gate` to the function captured **at installation time**.
-
-### 22.7 Architectural consequences
-
-- The detour does not transform a forbidden year into 5778 days; it fabricates a 5782-day observation so the hidden 5781 logic rejects it.
-- Removing even an unselected forbidden candidate can change `candidateCount`; because `candidateCount` feeds `chooseIndex`, a different **legal** year can be selected and all downstream structure can change.
-- Many internal gate calls that are not forbidden still pay original-gate execution plus cache scans.
-- The patch is prototype-global within the realm during a conversion, not instance-local.
-- Restoration uses the installation-time captured function, so a later monkey patch can be overwritten by conversion cleanup.
-- Reentrant conversion can restore the original gate while an outer conversion is still running; this is an observable architecture hazard.
-- Importing/using the raw chronicle before installing the doorway can populate year/structure caches under hidden-5781 behavior. Installing the detour later does not clear those caches; import order can therefore preserve old cached structures in an existing instance.
-
-## 23. Authoritative Worker layer
-
-The Worker is outside the sealed 91-carrier core but is the normal browser operational boundary for authoritative requests.
-
-### 23.1 Singleton engine load
-
-Module state holds `enginePromise` and `preloadError`. `ensureEngine()` creates one promise once. `createEngine()` dynamically imports `pastafari-calendar-core.js`, verifies `PastafariCalendar` and `GregorianDate`, constructs a fixed provider returning Gregorian `2000-01-01`, and creates one calendar instance with it. The fixed provider avoids the hidden default-binding defect; every public Worker operation passes explicit `calculationJdn` anyway. The returned `{moduleNamespace,calendar}` wrapper is frozen; the calendar inside remains stateful.
-
-A failed import is stored in `preloadError`; later attempts observe the stored failure rather than silently creating a new engine.
-
-### 23.2 Worker input normalization and result canonicalization
-
-Worker `toBigInt` accepts only actual bigint or a decimal-integer string matching `/^[+-]?\d+$/`; other forms throw. This differs from internal M0 `asBigInt`, which accepts bigint or safe integer Number.
-
-`canonical` accepts a result/object or `.toJSON()` result and creates a plain object:
+For supported public conversions the effective invariant is now:
 
 ```text
-year          -> String
-cutletName    -> String
-dayInCutlet   -> Number
-monthName     -> String
-dayInMonth    -> Number
+candidate year length must satisfy 252 <= length <= 5778
+filtering occurs before candidate cardinality and sauce-based selection
+same rule applies while moving to next or previous years
 ```
 
-Thus Worker transport does not expose `PastafariDate` identity/prototype.
+The hidden 5781 code and 5782 poison mechanism remain architectural fossils/indirection. Update-18/19 differential evidence verifies the **effective** public result against the independent Scroll-derived reference rather than treating the poison mechanism itself as normative.
 
-### 23.3 `convert`
+## 23. Cache-epoch fossil mask and conversion transactions
 
-Normalize `targetJdn` and `calculationJdn`, call `calendar.convertJdn(target,{calculationJdn})`, canonicalize result.
+`browser/cache-epoch-detour.js` is installed outermost on `PastafariCalendar.convertJdn` after the ceiling stack. It exists because raw `anchorCache`, `yearCache`, and `structureCache` Maps may contain values computed under an older semantic epoch, including values created before detours were installed or before current gate/year semantics.
 
-### 23.4 `convertJdnRange`
+### 23.1 Semantic epoch
 
-Validate count as nonnegative safe integer and at most `6000*3 = 18000`. Allocate result Array and loop `index=0..count-1`, performing full authoritative conversion for every day.
+The epoch is deliberately semantic rather than package-version based:
 
-### 23.5 `getCutletView`
+```text
+id = scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778
+Scroll SHA-256 = d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96
+Sauce marker = final-stir-u-uses-bowlSum
+gate marker = pastafari-gate-shadow-v1:d36b0c94
+year ceiling = 5778
+```
 
-Convert selected target. Validate positive safe `dayInCutlet`. Compute cutlet start as `target-(dayInCutlet-1)`. Loop offsets from 0 to at most 5,999; convert each JDN (reuse selected result at its offset), stop when a later value has `dayInCutlet===1`, require every included day's `dayInCutlet===offset+1`, and collect `{jdn,...value}`. Empty view or reaching 6,000 without a next-cutlet boundary throws. Return selected/start/end/previous/next metadata and full day list.
+### 23.2 Dressing a cache
 
-### 23.6 DedicatedWorker protocol and diagnostics
+The original Map object is kept alive. The detour installs own `get`, `has`, `set`, `delete`, `clear`, `entries`, `keys`, `values`, `forEach`, iterator and `size` behavior on it and attaches hidden state containing:
 
-Only messages with safe-integer `id` are processed. Diagnostics transport config is applied; operations are wrapped in diagnostic tokens/counters outside the sealed core. Success posts `{id,ok:true,result,diagnostics?}`. Failure serializes `name,message,code,stack` and posts `{id,ok:false,error,diagnostics?}`.
+```text
+normative shadow Map
+per-key provenance Map
+foreign-overrides Set
+nested transaction stack
+semantic-read depth
+fossil-entry count / previous-epoch metadata
+```
 
-The Worker calls `ensureEngine()` before announcing readiness. Success posts `{kind:"ready"}`. Import failure still posts `{kind:"ready",degraded:true,error}` so a caller receives a concrete load error rather than only a startup timeout.
+During an authoritative conversion (`depth>0`), reads see **only** the semantic shadow. A raw historical entry with the same key is a masked fossil. Authoritative writes go only to the shadow and receive provenance `{algorithmMarker: epoch.id, writer:"PastafariCalendar.convertJdn"}`.
 
-## 24. Cache/state inventory
+Outside an authoritative conversion, the object remains observably Map-like: external writes go to the raw Map and are marked as foreign overrides; ordinary reads/iteration merge shadow and raw state with an explicit foreign override taking precedence outside the semantic read. This preserves public mutability/compatibility without allowing external or stale values to decide an in-progress normative conversion.
 
-| state | owner | eviction/reset |
+### 23.3 Nested success/failure transactions
+
+At each `convertJdn` entry all three available caches begin a transaction and increment depth. Before the first shadow mutation of a key, the transaction records whether shadow value/provenance existed and their prior values.
+
+On success, the transaction commits; a nested commit transfers its original-before snapshots to the parent only for keys the parent has not already recorded. On failure, snapshots are replayed in reverse, restoring/deleting shadow values and provenance exactly to invocation entry. Depth is decremented in reverse cache order in `finally`.
+
+Thus cold/warm history, failed calls, nested calls, instance age and pre-detour raw cache fossils are no longer semantic inputs, while the historical Maps physically survive.
+
+## 24. Proleptic and host-calendar semantic boundary
+
+The raw M4 converter inventory in §12 remains an execution specification of the sealed module, including its `Intl`/ICU calls and positive-year restrictions. Supported public semantics are narrower and differently routed.
+
+### 24.1 Normative deterministic routes
+
+The 1.4.0 public normative matrix treats the following calendar representations as deterministic and host-independent for their specified domain: Gregorian, Julian, Hebrew, Islamic civil, Solar-Hijri arithmetic, Saka, Thai Buddhist, Ethiopic, Coptic, Minguo, Bahá’í western arithmetic, Maya Long Count, source-locked Chinese, Vikrama, and Kōki. Nonpositive-year detours apply where the sealed converter's historical validator was narrower than the Scroll/public contract.
+
+### 24.2 Host-backed convenience routes
+
+The sealed/raw M4 paths for Umm al-Qura, official Persian, and legacy Chinese still use host `Intl`/ICU. The supported browser Chinese path is intercepted before that host route; Node recognizes structured/related Chinese shapes and sends them to the deterministic source-locked engine. Umm al-Qura and official Persian remain host-provided convenience representations rather than normative semantic authorities.
+
+Update-13 fault injection exercised normal, throwing, fake-parts, wrong-value and alien-name host behavior; normative routes remained independent of those injected Intl behaviors. Keeping the host code in the sealed payload is intentional compatibility/spaghetti preservation, not permission for it to decide a normative value.
+
+## 25. Authoritative Worker and distribution boundaries
+
+The authoritative Worker file itself is byte-identical to the earlier edition, but its dynamic import now resolves the **multi-detour** `browser/pastafari-calendar-core.js`. Therefore the Worker's singleton `PastafariCalendar` instance inherits the canonical gate shadow, three-level ceiling supervision, cache epoch and generated-runtime fixes without the Worker reimplementing them.
+
+Its transport behavior remains:
+
+- one `enginePromise` singleton and remembered preload failure;
+- `toBigInt` accepts bigint or signed decimal integer String, not arbitrary Number;
+- `convert` and `convertJdnRange` call the supported calendar with explicit `calculationJdn`;
+- `getCutletView` repeatedly performs supported authoritative conversion and validates consecutive `dayInCutlet` values;
+- canonical transport converts `year` to String and day fields to Number, so `PastafariDate` object identity/prototype does not cross the Worker boundary;
+- safe-integer message IDs and serialized success/error responses are unchanged.
+
+The standalone build embeds authoritative and fast Worker sources behind the router. Update 13/18/19/20 evidence treats Node, browser, real Worker and standalone parity as separate conformance surfaces rather than assuming bundling preserves semantics.
+
+## 26. Current state/cache inventory
+
+| state | owner | current persistence / repair rule |
 |---|---|---|
-| eight-word loader state / fragment temporaries | chronicle import | import-time only; buffers overwritten |
-| 137 payload objects | Dynamic 00 | removed when Dynamic 01 resets shared Array; objects may remain referenced by compiled source as applicable |
-| random `Uint32Array(1024)` + cursor | Dynamic 00 closure | refill; no semantic result role |
-| WeakMap identities + identity counter | Dynamic 00 closure | no explicit reset |
-| witness counter | Dynamic 00 closure | no explicit reset |
-| shared Array registry/scratch | Dynamic 00/01 | persistent; per-call frames truncate; construct failures can leak |
-| binomial `Map` | M5 module | no eviction |
-| Sauce LRU `Map` | M6 module | max 1024, delete/reinsert LRU |
-| forward/backward gap Maps | M8 module scope (shared across GateIndex instances in the realm) | no eviction |
-| positive/negative gate Arrays | each GateIndex | grow monotonically; positive indices 0..40000 are preloaded from stale M7 data, positive extension and all negative gaps use current dynamic Sauce |
-| anchorCache | each PastafariCalendar | no eviction |
-| yearCache | each PastafariCalendar | no eviction |
-| structureCache | each PastafariCalendar | no eviction |
-| required-boundary composition memo | one unrank call | call-local |
-| MonthWeaving DP | one counter instance | lifetime of instance; mutable internal rows |
-| authoritative Worker engine promise/calendar | Worker module | singleton until realm ends |
+| static loader state / decoded share buffers | chronicle import | import-time; reconstructed buffers overwritten after Function construction |
+| random pool + cursor | Dynamic 00 closure | persistent refill state; decorative, not normative selector |
+| limited-scorer WeakMap + identity counter | Dynamic 00 closure | persistent on success; Update-8 constructor transactions roll back newly published failed-call identities/counter |
+| generated shared Array | Dynamic 00/01 | persistent registry/scratch; normal frames truncate; Update-8 inner exception rollback + Update-15 outer-apply guard restore invocation-entry length on failures |
+| short-transfer counter | Dynamic 00 closure | persistent decorative state |
+| M5 binomial Map | M5 module | unbounded; no semantic-history dependence demonstrated in final audit |
+| raw MonthWeaving DP rows | counter instance | mutable historical state; public singleton-domain correction uses external WeakMap ledger |
+| corrected singleton MonthWeaving ledger | `month-weaving-domain-detour.js` | WeakMap per counter instance |
+| Sauce Map | M6 module | 1,024-entry LRU as decoded |
+| raw M7 40k positive gaps | hidden module / GateIndex construction | retained historical fossil; detached from supported instance on first public gate/boundary read |
+| canonical positive gate Array | `gate-data-detour.js` module | decoded once/frozen; each GateIndex gets a mutable slice on first public use |
+| forward/backward dynamic gap Maps | M8 module | shared/unbounded; dynamic current Sauce values |
+| positive/negative GateIndex Arrays | each GateIndex | positive starts historical then public-primes to canonical 0..40000 and extends dynamically; negative extends dynamically |
+| raw anchor/year/structure Maps | each PastafariCalendar | physically retained and externally observable; semantic reads mask them as fossils |
+| semantic cache shadows/provenance | cache-epoch hidden state | per dressed Map, current epoch only; nested transaction commit/rollback |
+| foreign cache overrides | cache-epoch hidden state + raw Map | observable outside conversion; excluded from semantic reads |
+| runtime-patch wardrobes/owners | `runtime-patch-ledger.js` | WeakMap-managed nested frames; cleaned on restoration |
+| runtime invocation pile | runtime-patch ledger | token stack; nested ceiling layers share token as designed; outer conversion returns token |
+| reverse/constraint client pending Maps | adjacent clients | request lifecycle state, not sealed forward semantics |
+| authoritative Worker calendar/promise | Worker module | singleton until Worker realm ends |
 
-## 25. Random vs deterministic work
+## 27. Randomness, history and determinism after remediation
 
-### 25.1 Random/non-semantic-path work
+Randomness/noise/witness machinery still genuinely executes. The astronomy ceremony, route ceremony, Array Proxy, transfer mechanisms, WeakMap identities and outer generated proxies still consume random/host values and can change allocations, branch forms and diagnostics. They are intentionally **not removed**.
 
-Randomness is genuinely consumed by erased astronomy, the 450-route ceremony, pool/witness routing, the Array Proxy, and public outer function proxies. It can change transient state, call form, identities, allocations, and performance. Under normal intended operation it does not choose the calendar's year/cutlet/month/date.
+The final 1.4.0 invariant for a legal semantic request is nevertheless:
 
-### 25.2 Deterministic semantic work
+```text
+same legal (calculationJdn, targetJdn)
+    -> same normative Pastafarian result
+```
 
-For fixed calculation and target JDNs, the semantic selectors are deterministic: `dayNumber`, Stones, Sauce, response cycles/`chooseIndex`, gap formula, candidate year selection, cutlet composition, name permutations, month count/lengths/weaving/names, and final date fields. Public deterministic semantics can nevertheless differ from raw hidden-core semantics because the external detour changes which candidates the hidden code observes.
+independent of random values/call count, witness contents, successful unrelated allocation history, failed-call history, instance age, import order, stale raw cache entries and diagnostics clocks. The mechanisms that enforce this are distributed: generated source transaction guards, gate regeneration/shadowing, ceiling patch ownership, cache epoch masking/rollback, and deterministic external-calendar routes.
 
-Determinism does **not** imply that every stored deterministic artifact is self-consistent with the current formula. Current `main` contains two deterministic positive-gap paths for ordinals `1..40000`: M7's unchanged pre-transform embedded table and ENTER 1153's post-transform dynamic computation. They disagree at 39,956 of 40,000 ordinals (§§15.2, 16.4–16.6).
+Random/host **exceptions** may still make the call fail when they occur in machinery that actually executes; the remediation rule is that such a failure cannot leave semantic state that changes a later legal call, and diagnostic-only host failures are prevented from replacing a semantic result/error. Update 15 plus Update 19's fresh random/crypto profiles are the controlling evidence for that distinction.
 
-## 26. Known current implementation deviations and hazards
+## 28. Current deviations, fossils, and intentional hazards
 
-This section describes **actual current behavior**, not proposed fixes.
+The following are current architectural facts, not unresolved normative mismatches:
 
-1. **Final Sauce stirs are now a runtime source detour:** the encrypted/decoded M6 body still contains the historical `orderNumber` operand, but current chronicle source interception injects raw `bowlSum` and substitutes it into `u` before M6 is compiled. `orderNumber` remains the permutation selector.
-2. **Stale embedded positive-gate table after the Sauce update:** M7's 40,000 embedded positive gaps remain the pre-transform sequence. Against the current post-transform dynamic formula, 39,956 of 40,000 ordinals differ; only 44 match. A fresh `GateIndex` therefore preloads the historical sequence on its positive side, while explicit `GateIndex.forwardGap(p)` and all backward gaps use current Sauce semantics. The embedded cumulative endpoint at gate 40000 is `109,553` days lower than a fully rebuilt current sequence, and later positive extension inherits that offset.
-3. **Hidden/public year ceiling split:** hidden M8 uses 5781; public path enforces 5778 indirectly by gate substitution to 5782 for forbidden candidates.
-4. **Default-provider defect:** hidden `PastafariCalendar` can reference an unbound `localToday`; public wrappers inject a provider.
-5. **Outer constructor exception leak:** throwing outer-wrapped construction can leave 12 shared-Array cells per failure.
-6. **Prototype-global detour/reentrancy:** temporary `GateIndex.prototype.gate` replacement can interact with nested calls and later monkey patches.
-7. **Import-order/cache dependence:** caches populated through the raw chronicle are not invalidated when the detour is installed later.
-8. **Unbounded caches:** binomial, gap, anchor/year/structure state can grow for long-lived/extreme usage (Sauce alone has a 1024-entry cap).
-9. **Host ICU dependence:** Umm-al-Qura, official Solar Hijri, and Chinese conversion paths depend on host `Intl`/ICU data and supported proleptic range.
-10. **MonthWeavingCounter raw-chronicle singleton inconsistency, publicly detoured:** the sealed counter still overcounts singleton-month ghost ranks, but the Node/browser public doorways translate that space through the Update 14 singleton-separator detour; the legal calendar domain remains 4..123.
-11. **Solar-Hijri arithmetic edge:** known year -1/0 anomaly in the arithmetic-2820 branch.
+1. The encrypted payload is not regenerated for several fixes. Current compiled semantics depend on deterministic source transformation (`E6`–`EC`, `U15D/U15E`). A future source-shape change that defeats one of the unique textual anchors is intentionally fatal rather than silently falling back.
+2. M7's embedded 40,000-gap table is still historically stale. Supported `GateIndex` instances detach from it on first public use and substitute the separately regenerated source-derived shadow. Direct raw-chronicle use without the doorway can still expose the fossil behavior and is not the supported authoritative contract.
+3. Hidden M8 still says 5781 while the public contract is 5778. The three-level ceiling detour plus runtime patch ledger creates the effective rule. Direct hidden-core calls that bypass installation do not represent 1.4.0 public semantics.
+4. Hidden `PastafariCalendar` still has its unbound default-provider defect; the package subclass/Worker inject a provider.
+5. Raw M4 still contains host-Intl Chinese/Umm-al-Qura/official-Persian paths. Normative Chinese is intercepted; the latter host-provided representations remain convenience paths rather than Scroll-defined authority.
+6. Raw M5 still contains the singleton ghost-rank behavior. Supported doorways install the product-space singleton detour and add public `rank`.
+7. Cache Maps, GateIndex arrays, MonthWeaving internals and multiple public objects remain mutable by design. Current semantic isolation relies on masking/ownership/transaction detours rather than immutability cleanup.
+8. Prototype mutation still occurs during year-ceiling conversion. The runtime-patch ledger makes reentrancy and late external patches ownership-safe, but the mutation remains observable while active.
+9. Several decorative dead ends deliberately execute: obsolete gate arrays are built then detached; Kōki asks the legacy imperial machinery to reject synthetic era `koki`; Vikrama computes a legacy Old-Hindu witness before applying the hidden source-locked correction.
+10. Some caches remain unbounded. Final audits found no normative history dependence, but memory growth is a resource characteristic, not erased by semantic correctness.
 
-## 27. Exact semantic distinction from the fast/reference engines
+Items that appeared as “known current deviations” in the old baseline but are **no longer current public defects** include the stale positive-gate semantics, constructor +12 leak, WeakMap identity publication after failed construction, reentrant year-ceiling restoration bug, import-order/cache semantic dependence, singleton MonthWeaving count/unrank disagreement, normative Chinese ICU dependence, and the missing proleptic Kōki/Vikrama/negative-year routes.
 
-The authoritative engine is the implementation specified here. The fast engine, differential/reference engines, router, reverse engine, and constraint solver are separate systems. They may call or compare against the authoritative engine, but their internal algorithms are **not** part of this document. Agreement between two implementations is not used here to overwrite an observed authoritative operation.
+## 29. Normative source-of-truth and conformance architecture
 
-In particular, this specification records the current two-level reality: the decoded payload still says `orderNumber`, while the current authoritative **compiled execution** says `bowlSum` because the chronicle rewrites the M6 source at the Function boundary.
+Update 16 established an explicit authority graph:
 
-As adjacent corroborating evidence only, the current fast-engine source explicitly labels its static gate checkpoints stale pending a dedicated rebuild. At positive gate 1024 its stored checkpoint remains `-12,809,003`, while recomputing ordinals `1..1024` with the current `bowlSum` Sauce gives `-12,818,296`, a 9,293-day discrepancy. This fast-engine observation is not used to define authoritative behavior; it independently exposes the same missing post-transform precomputation refresh.
+```text
+sources/מגילת העיתים.md
+  -> clear independent reference (verification/reference-oracle/reference.mjs)
+      -> canonical/conformance evidence generated from the reference
+          -> authoritative spaghetti engine under test
+          -> fast engine under test
+          -> other implementations under test
+```
 
-## Appendix A — exact decoded module bodies
+Forbidden edges include reference -> authoritative, reference -> fast, reference -> existing expected vectors/generators, authoritative -> reference at runtime, and fast -> reference at runtime. The reference has no production imports and no fixture fallback.
 
-The nine **pre-transform decoded-body** hashes in §5.7 are the compact identity of the decoded module stream. Eight are also the current compiled-body identities. M6 is different: the baseline decoded body is deterministically rewritten by the current chronicle before `Function` compilation (§3.9, §14.12), so its pre-transform hash must not be reported as the current compiled M6 hash. Any future change to a decoded body or to the source transformer must update this document rather than assuming semantic equivalence.
+Accordingly this document's word **authoritative** is architectural/historical: it identifies the deliberately tangled production engine whose exact execution is specified here. It does **not** mean “normative oracle”. When production and the Scroll-derived reference disagree, the reference/Scroll conformance analysis is the judge; production output is not promoted to expected data merely because it is current or because fast agrees with it.
 
-## Appendix B — static large-payload identity
+Update 17 regenerated the canonical evidence corpus from the independent reference. Update 18 performed broad differential integration with expected values always coming from that reference. Update 19 independently replayed the requirements and closed with `FINAL_AUDIT_PASS`, all 27 final requirements passing, Updates 1–18 all marked passed, no blockers, and release gate `UPDATE_20_ALLOWED`. Update 20 then merged the 1.3.0 -> 1.4.0 version/closure changes; its manifest sets `semanticProductionChangeAllowed:false`. The uploaded source ZIP contains the pre-CI closure manifest rather than the generated final Actions closure artifact, so this document does not manufacture a final CI status.
 
-| payload | exact identity |
+## Appendix A — current identity layers
+
+| artifact | identity / status |
 |---|---|
-| Dynamic 00 source | 7,420,147 bytes; SHA-256 `de4ef2f1a6be8e002a2d304e933df67a64dc013344437775baa5babe22b259fc` |
-| Dynamic 01 source | 7,083,974 bytes; SHA-256 `3ae100735a87cff040c5b88140bd366ca0ad15d70a2ad036bc497e809ffaf612` |
-| Dynamic 01 packed-word analysis serialization | 2,342,912 bytes; SHA-256 `18255111dbecdaa7be2c440e883351c1f96286594651be6fc0a9fc53d839844b` |
-| M7 decoded forward gaps | 80,000 bytes / 40,000 uint16 values; SHA-256 `2321775cd22a1156751fe506320d4afc47b27f391092645921df4b54d9ab49bb` |
+| decoded Dynamic 00 | 7,420,147 bytes; SHA-256 `de4ef2f1a6be8e002a2d304e933df67a64dc013344437775baa5babe22b259fc`; transformed before current compilation |
+| decoded Dynamic 01 | 7,083,974 bytes; SHA-256 `3ae100735a87cff040c5b88140bd366ca0ad15d70a2ad036bc497e809ffaf612`; inner executor transformed before current compilation |
+| M6 decoded body | 152,995 bytes; SHA-256 `3ae2870ea230fe21e207dc390ccbdd2b8c9c8f8d1b03c8a9a276d779e1205be0`; current final-stir compiled semantics differ |
+| raw M7 decoded forward gaps | 80,000 bytes / 40,000 uint16 values; SHA-256 `2321775cd22a1156751fe506320d4afc47b27f391092645921df4b54d9ab49bb`; historical fossil |
+| public regenerated positive-gap dataset | SHA-256 `3d78c120dffd62aac0ededd72ee6ae412a3e9ee21700dcd25f475c48263b93b3`; 40,000 current normative gaps |
+| Scroll | `sources/מגילת העיתים.md`; SHA-256 `d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96` |
+| independent reference | `verification/reference-oracle/reference.mjs`; SHA-256 `40f08fab56b3f0e90b6ce43a24948856972ecdd26d2bbbeb84bda26905fdc379` |
 
-The engine reads its own encoded/generated forms; the hashes bind the exact recovered values without pretending that a million-word literal listing is a separate execution step.
+A decoded payload hash is not automatically a compiled-source hash. A sealed-carrier hash is not automatically a supported-public-behavior hash. Those distinctions are deliberate and must survive future audits.
 
-## Appendix C — minimum implementation audit checklist
+## Appendix B — minimum 1.4.0 implementation audit checklist
 
-A revision still implements the architecture documented here only if an audit explicitly checks, at minimum:
+A future revision still matches this specification only if an audit explicitly checks at least:
 
-- the current authoritative-path file hashes in §1 (with adjacent fast/reference artifacts kept explicitly separate), or intentionally records their change;
-- 193 split fragments and static reconstruction stages;
-- Dynamic 00 and Dynamic 01 decoded identities/statement coverage;
-- 9 module body identities/dependency graph;
-- 91 carrier slots in exact order;
-- 72 outer function/class proxies and 19 non-functions;
-- erased RK4 astronomy still executes if bytes unchanged;
-- 450 route cardinality and all route families;
-- random-pool/WeakMap/witness restore behavior;
-- shared runtime ENTER/ASSIGN/RETURN/THROW/LEAVE;
-- inner proxy four-pass call path;
-- M6 actual 46+12 Sauce mixing formulas;
-- M7 40,000 embedded positive gaps, their payload identity, and the current measured dynamic **non-equivalence** after the M6 source transform;
-- hidden 5781 year search vs public detour behavior;
-- anchor/next/previous selection seals 10/11/12;
-- cutlet/month seals 20/21/22/30/31/32/33;
-- final materialization and month occurrence recount;
-- current Worker/public wrapper behavior;
-- 98-name Node package namespace, including the seven adjacent reverse/constraint exports and their Worker/diagnostics lifecycle in §21;
-- all persistent caches and known mutation/leak/reentrancy paths.
+- current binding hashes or intentional changes to them;
+- 193-fragment reconstruction and 91-carrier ordering;
+- decoded Dynamic 00/01 identities plus all current source-transform anchors `E6`–`EC`, `U15D`, `U15E`;
+- Update-8 arena/identity rollback on failed construction and Update-15 pre-inner-try `apply` rollback;
+- M6 final-stir distinction: raw `bowlSum` in `u`, kept `orderNumber` only for permutation selection;
+- source-derived gate shadow identity, 40,000 gaps, Foundation/first/last seals, and first-use priming;
+- dynamic positive extension from canonical gate 40000 and dynamic negative gates;
+- effective 252..5778 year candidate filtering before cardinality in anchor/next/previous traversal;
+- all three ceiling layers under runtime-patch-ledger ownership, including nested depth, exceptions and late external monkey patches;
+- cache epoch masking and nested transaction rollback/commit under cold/warm/import-order/instance-age/failed-history scenarios;
+- raw and public MonthWeaving domains, including singleton count/rank/unrank round-trip;
+- deterministic nonpositive-year routes;
+- Chinese structured/related deterministic route and zero normative dependence on Intl/ICU;
+- Vikrama and Kōki Foundation/negative/modern round-trips;
+- Node 108-export public surface and package-install smoke;
+- Browser, Worker and standalone parity;
+- independent reference authority with forbidden production/reference dependency edges;
+- canonical evidence regeneration from the reference, not from production output;
+- fresh holdouts capable of detecting shared production bugs.
 
-## Appendix D — merged forensic evidence and adjacent-subsystem boundary
+## Appendix C — remediation-series evidence binding
 
-This revision merges two independently organized reverse-engineering write-ups: the prior architecture specification and the v5 execution atlas. The following evidence classes were imported from the execution atlas because they add observable behavior that the prior architecture document had compressed or missed:
-
-- continuous Dynamic 00 statement coverage 0..503;
-- continuous Dynamic 01 statement coverage 0..1266;
-- full scorer versus limited scorer;
-- full four-cell transfer versus short two-cell transfer;
-- numeric vault Proxy;
-- exact Array-Proxy random-call behavior;
-- outer `apply` pre-`try` failure window and outer `construct` cleanup asymmetry;
-- exact packed-table lengths/peak length/permutation constants;
-- exact inner executor frame layout;
-- shared-runtime frame-open/record/result/error/close mechanics;
-- measured random/pool counts and selected pathological harness results.
-
-The v5 atlas also contains detailed reverse, constraint-solver, fast-engine, and diagnostics inventories. The current specification now incorporates the package-facing reverse/constraint/diagnostics execution details in §21 rather than reducing them to a boundary note. They remain **adjacent public subsystems**, not part of the sealed 91-carrier authoritative conversion core: they delegate to separate modules/Workers and do not become additional carrier slots.
-
-The authoritative Worker described in §23 **is** included separately because it is the operational transport around the authoritative forward conversion engine. The fast engine is never treated as an implementation layer of the authoritative core.
-
-### Snapshot discipline for imported measurements
-
-The forensic measurements imported from the v5 atlas were taken before the 2026-08-20 17:07 final-stir source transform. Measurements whose mechanism is unaffected by M6 final-stir semantics — bootstrap statement counts, full/short transfer behavior, Proxy trap counts, table sizes, frame layout, and the like — remain valid architectural evidence. Values that depend on the exact Sauce outputs, gate sequence, year candidates, or resulting calendar tuples are retained only as **pre-transform baseline evidence** unless separately re-run against current `main`.
-
-The current authoritative behavior is always defined by the current-head code path described in §§3.9 and 14.12, not by a stale baseline vector.
-
-### Post-transform exhaustive gate-gap rerun
-
-The Sauce-dependent positive-gap comparison was separately re-run for current `main` after the `bowlSum` transform. For every ordinal `p=1..40000`, the historical/embedded value was compared with the current dynamic value produced by the same gap selector under post-transform Sauce semantics.
+This edition is reconciled from the final code **and** the remediation evidence rather than blindly applying old measurements. Important controlling artifacts in the uploaded tree include:
 
 ```text
-range:                         1..40000
-embedded/pre-transform sum:   20,067,200
-current dynamic sum:           20,176,753
-sum delta:                        109,553
-matches:                               44
-mismatches:                        39,956
-first mismatch: p=1        345 -> 377
-last mismatch:  p=40000    109 -> 875
+artifacts/update-08-final-report.md
+artifacts/update-09-final-report.md
+artifacts/update-10-closure.json
+artifacts/update-11-vikrama-final-audit.json
+artifacts/update-12-koki-post-fix-evidence.json
+artifacts/update-13-normative-representation-matrix.json
+artifacts/month-weaving-domain-after.json
+artifacts/update-15-random-witness-isolation-report.md
+artifacts/update16/oracle-authority-audit.json
+verification/update17/generated/normative-evidence-manifest.json
+artifacts/update-18/final-differential-integration.json
+artifacts/final-release/update19-final-evidence.zip
+UPDATE20-DELTA-MANIFEST.json
+RELEASE-NOTES-1.4.0.md
 ```
 
-The historical side of this rerun is tied back to the embedded payload by the pre-transform exhaustive result: the historical formula reproduced all 40,000 embedded values, and its aggregate sum in this rerun is again exactly `20,067,200`, the decoded M7 payload sum. The current side uses the current `bowlSum` final-stir semantics described in §§3.9 and 14.12.
+Historical “before” evidence is retained only to explain why compensating detours exist. It is not allowed to override current code or the final independent audit.
 
-A concrete cumulative discriminator is positive gate 1024:
+## Appendix D — completeness boundary
 
-```text
-embedded/pre-transform position  -12,809,003
-current dynamic position          -12,818,296
-difference                              9,293 days
-```
+This specification is complete at the execution-semantics, state-transition, allocation-class, loop-family, dynamic-code-boundary, public-carrier, detour, cache/state-ownership and supported-public-routing level. It does not reproduce every AST ledger row or every astronomical coefficient literal when the exact production module is bound by hash and the consumption rule is stated.
 
-Accordingly, every unqualified statement elsewhere in this document about **current** dynamic equivalence of the 40,000 embedded gaps is superseded by this measured non-equivalence. The embedded bytes themselves remain unchanged and are still described exactly by §15.2 and Appendix B.
-
-## Appendix E — completeness boundary and forensic ledger status
-
-This document is intended to be complete at the **execution-semantics, state-transition, allocation-class, loop, call-graph, public-carrier, and architecture** level. This includes the package-facing adjacent reverse/constraint/diagnostics subsystems specified in §21 while keeping them explicitly outside the sealed 91-carrier forward core. In particular, the decoded ritualized function sequence from ENTER 1009 through ENTER 1176 is represented continuously, including private helpers and callbacks; the one import-time stone-table helper at ENTER 1141 is explicitly identified in §14.3.
-
-The reverse-engineering work also produced a static-code-site inventory reporting 257 functions, 642 allocation sites, 97 loops, and 444 mutation sites. The original row-by-row `static-code-site-ledger.json/.csv` is not currently part of the evidence bundle available to this document-generation pass. Consequently this Markdown file does **not** pretend to reproduce every AST-ledger row verbatim. That is an evidence-artifact availability limit, not a known missing semantic subsystem.
-
-The phrase “no-skip” in this document therefore means:
-
-- no known execution layer is replaced by a higher-level intended formula;
-- no known loop, allocation family, persistent state, mutation/restoration mechanism, error path, dynamic-code boundary, Proxy layer, cache, or semantic selector is intentionally omitted;
-- repeated identical loop iterations and enormous static payload values may be represented once by exact bounds/body and exact payload identity;
-- where a decoded implementation differs from a readable/reference implementation, the decoded authoritative operation is recorded rather than silently normalized.
-
-A literal source-code transcription or restoration of every row of the unavailable static AST ledger would be a different artifact from an architectural execution specification.
+“No-skip” therefore means no known execution layer is silently replaced by a cleaner intended formula. The historical/ugly operations are recorded when they still execute — even when a later compensating layer prevents them from deciding semantics. Conversely, a historical defect that has been shadowed/rolled back is not mislabeled as a current public defect merely because its original text still exists inside the sealed payload.
 
 ---
 
-**End of current authoritative-engine execution specification.**
+**End of the reconciled Pastafari Calendar 1.4.0 authoritative-engine execution specification.**
 
-## Update 13 semantic-boundary addendum
-
-The historical sections above describe the sealed chronicle itself and remain accurate: its Umm al-Qura, official Persian, and legacy Chinese converters consult host `Intl`/ICU. They must not be read as a statement that all supported public/browser routes are normative.
-
-As of Update 13, the supported `browser/pastafari-calendar-core.js` doorway places `browser/intl-calendar-semantic-firewall.js` in front of the chronicle's Chinese conversion route. Normative Chinese conversion is source-locked and deterministic; the old chronicle converter remains as a tainted host witness. Umm al-Qura and official Persian remain host-backed, non-normative convenience paths. See `INTL-ICU-SEMANTIC-BOUNDARY.md` and `artifacts/intl-icu-dependency-matrix.json`.
