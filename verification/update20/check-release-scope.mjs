@@ -8,6 +8,7 @@ import { gitText, requireRun, sha256File, writeJson, ROOT } from "./lib.mjs";
 const BASE_COMMIT = process.env.UPDATE20_BASE_COMMIT || "9b5ebf1d3e383a9345df8a5d8b12333df447f7ad";
 const AUDITED_TREE = "ea72ef27b786a41ad9683b4c30bbde8c3ea6078e";
 const NEW_VERSION = "1.4.0";
+const RELEASE_SCRIPT_SHA256 = "127b7115b2a9bffce4db45437d0530b419e2f7ee577ac298d3428041a1f6f8e5";
 const EXPECTED_HASHES = Object.freeze({
   scroll: ["sources/מגילת העיתים.md", "d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96"],
   reference: ["verification/reference-oracle/reference.mjs", "40f08fab56b3f0e90b6ce43a24948856972ecdd26d2bbbeb84bda26905fdc379"],
@@ -43,6 +44,7 @@ const exactAllowed = new Set([
   "browser/standalone/pastafari-date.min.js",
   "docs/DOCUMENTATION-CONSISTENCY.md",
   "verification/pwa-cache-state.json",
+  "scripts/release.mjs",
   "artifacts/update-13-standalone-firewall.json",
   "artifacts/update16/oracle-authority-audit.json",
 ]);
@@ -98,6 +100,11 @@ for (const [name, [relativePath, expected]] of Object.entries(EXPECTED_HASHES)) 
   const actual = await sha256File(relativePath);
   hashes[name] = { path: relativePath, expected, actual, match: actual === expected };
   if (actual !== expected) failures.push(`${name} changed since Update 19 audit`);
+}
+
+const releaseScriptSha256 = await sha256File("scripts/release.mjs");
+if (releaseScriptSha256 !== RELEASE_SCRIPT_SHA256) {
+  failures.push(`release infrastructure drift: scripts/release.mjs ${releaseScriptSha256} != ${RELEASE_SCRIPT_SHA256}`);
 }
 
 // Update 20 refreshes two deterministic evidence files because the release bytes and
@@ -159,6 +166,7 @@ const artifact = {
   changedPaths: changed,
   unexpectedPaths: unexpected,
   semanticHashes: hashes,
+  releaseInfrastructure: { path: "scripts/release.mjs", expectedSha256: RELEASE_SCRIPT_SHA256, actualSha256: releaseScriptSha256, match: releaseScriptSha256 === RELEASE_SCRIPT_SHA256 },
   canonicalCorpusPolicy: "Update17 corpus may change only by packageVersion metadata and deterministic hashes derived from version-bearing bytes; exact fresh-regeneration equality remains mandatory in the Update17 stale check.",
   canonicalMetadataOnly,
   failures,
