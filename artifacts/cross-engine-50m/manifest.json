@@ -1,0 +1,48 @@
+{
+  "schema": "pastafari-cross-engine-evidence-manifest-v1",
+  "derivedFrom": "full-run-console.log",
+  "repository": {
+    "requested": "https://github.com/bwtbdyqtmsprytgydym-cpu/pastafari-calendar",
+    "canonical": "Sargon17-Green/pastafari-calendar",
+    "ref": "main",
+    "commit": "8e155fa4198ea7bcfeb16138ac5d6662706f4d93"
+  },
+  "input": {
+    "cases": 50000000,
+    "bytes": 1387575225,
+    "sha256": "e0c5c1e2b2b1f3cb1aba55e4826ef0cf6f760ceb2c61eea5122603212c6d38c2",
+    "workloadFileNotIncluded": true
+  },
+  "engines": {
+    "cpp": {
+      "header": "implementations\\cpp\\include\\pastafari\\calendar.hpp",
+      "sources": [
+        "implementations\\cpp\\src\\calendar.cpp"
+      ],
+      "algorithmId": "PASTAFARI-SCROLL-2026-08-16-D36B0C94",
+      "completedCases": 50000000
+    },
+    "js": {
+      "engine": "browser\\pastafari-calendar-fast.js",
+      "algorithmId": "PASTAFARI-TABLETS-2026-08-06-V1",
+      "completedCases": 50000000
+    },
+    "python": {
+      "package": "implementations\\python\\pastafari_calendar",
+      "algorithmId": "PASTAFARI-SCROLL-2026-08-16-D36B0C94",
+      "completedCases": 50000000
+    }
+  },
+  "runner": {
+    "launcherVersion": "1.0.4-unicode-input-bridge",
+    "toolVersion": "PASTAFARI-AGNOSTIC-COMPARE-1.0.4",
+    "exitCode": 0,
+    "finishedLocal": "Sat 08/29/2026  4:21:51.58"
+  },
+  "excludedLargeFiles": [
+    "input workload",
+    "results-cpp.tsv",
+    "results-js.tsv",
+    "results-python.tsv"
+  ]
+}
