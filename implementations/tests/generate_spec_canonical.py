@@ -218,7 +218,7 @@ def sauce(calculation_jdn: int, target_jdn: int) -> SauceTrace:
             next_id = order[(place + 1) % 6]
             mixed = (
                 old[bowl_id] + 3 * old[previous_id] + 5 * old[next_id]
-                + bowl_sum + round_number + (place + 1) ** 2
+                + order_number + round_number + (place + 1) ** 2
             )
             bowls[bowl_id] = saved(
                 mixed * mixed + 7 * old[previous_id] * old[next_id]
@@ -296,7 +296,7 @@ def sauce_final(calculation_jdn: int, target_jdn: int) -> FinalSauce:
         for place, bowl_id in enumerate(order):
             previous_id = order[(place - 1) % 6]
             next_id = order[(place + 1) % 6]
-            mixed = old[bowl_id] + 3 * old[previous_id] + 5 * old[next_id] + bowl_sum + round_number + (place + 1) ** 2
+            mixed = old[bowl_id] + 3 * old[previous_id] + 5 * old[next_id] + order_number + round_number + (place + 1) ** 2
             bowls[bowl_id] = saved(mixed * mixed + 7 * old[previous_id] * old[next_id])
     return FinalSauce(tuple(bowls), last)
 

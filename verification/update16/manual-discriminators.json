@@ -3,10 +3,10 @@
   "update": 16,
   "cases": [
     {
-      "id": "final-stir-bowlSum-vs-orderNumber",
+      "id": "final-stir-savedSum-vs-rawSumMutant",
       "evidenceClass": 3,
-      "description": "The final stir must add bowlSum to u; orderNumber only selects the permutation. A deliberately old-like formula using orderNumber for u must disagree.",
-      "derivedBy": "hand/property from final-stir formula"
+      "description": "The final stir must add orderNumber = SAVE(bowlSum + 149*round) to u and also use it to select the permutation. A rawSumMutant that adds the unpreserved bowlSum directly to u must disagree.",
+      "derivedBy": "hand/property from canonical saved-sum final-stir formula"
     },
     {
       "id": "year-candidate-5778-exclusion",
@@ -29,8 +29,8 @@
     {
       "id": "historical-shared-bug-majority-reproduction",
       "evidenceClass": 3,
-      "description": "Three old-like witnesses can agree with one another and still lose to the independent reference.",
-      "derivedBy": "test-only old-like final-stir formula"
+      "description": "Three rawSumMutant witnesses can agree with one another and still lose to the independent canonical reference.",
+      "derivedBy": "test-only rawSumMutant final-stir formula"
     }
   ]
 }

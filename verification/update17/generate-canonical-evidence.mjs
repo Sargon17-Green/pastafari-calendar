@@ -240,7 +240,7 @@ async function main() {
           choice: wideChoice.choice,
         },
       },
-      traceNote: "Final 12 stirs retain both raw bowlSum and kept orderNumber. The current scroll/reference contains no cryptographic root/key stage, so none is fabricated here.",
+      traceNote: "Final 12 stirs record raw bowlSum for provenance, then use kept orderNumber = SAVE(bowlSum + 149*round) both for permutation selection and as the preserved sum added to u. The current scroll/reference contains no cryptographic root/key stage, so none is fabricated here.",
     });
   }
   await emit("normative-sauce-vectors.json", "A-normative-conformance", { vectors: sauceVectors }, "six fixed calculation/target pairs spanning same/before/after, negative, positive and cross-sign sauce inputs", sauceVectors.length);
@@ -483,14 +483,14 @@ async function main() {
   const bowl = order[place] - 1;
   const prev = order[(place + 5) % 6] - 1;
   const next = order[(place + 1) % 6] - 1;
-  const wrongU = old[bowl] + 3n * old[prev] + 5n * old[next] + stir1.orderNumber + 1n + 1n;
+  const rawSumMutantU = old[bowl] + 3n * old[prev] + 5n * old[next] + stir1.bowlSum + 1n + 1n;
   const handDiscriminators = [
     {
-      id: "final-stir-bowlSum-vs-orderNumber",
+      id: "final-stir-savedSum-vs-rawSumMutant",
       category: "B-independent-hand-property-discriminator",
       input: { calculationJdn: FOUNDATION_JDN, targetJdn: FOUNDATION_JDN, round: 1, place: 1 },
-      expected: { bowlSum: stir1.bowlSum, orderNumber: stir1.orderNumber, normativeU: firstStir.u, wrongOrderNumberU: wrongU, changesU: wrongU !== firstStir.u },
-      derivation: "direct substitution into scroll final-stir formula; orderNumber selects permutation only",
+      expected: { bowlSum: stir1.bowlSum, orderNumber: stir1.orderNumber, normativeU: firstStir.u, rawSumMutantU, changesU: rawSumMutantU !== firstStir.u },
+      derivation: "direct substitution into the Scroll final-stir formula; preserved orderNumber = SAVE(bowlSum + 149*round) selects the permutation and enters u, while the rawSumMutant substitutes unpreserved bowlSum into u",
     },
     ...ceilingRediscovery.filter((row) => row.status === "found").map((row) => ({
       id: `year-ceiling-reject-${row.yearLength}`,

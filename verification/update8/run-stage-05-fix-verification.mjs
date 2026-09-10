@@ -1,3 +1,8 @@
+// HISTORICAL / SUPERSEDED SEMANTIC EVIDENCE.
+// This Update 8 verifier predates the canonical saved-sum correction. Its
+// stage-05 conclusions must not be used to decide Tablet XIV semantics; the
+// current Scroll and verification/reference-oracle/reference.mjs govern.
+
 import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";

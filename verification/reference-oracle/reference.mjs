@@ -368,10 +368,11 @@ function computeVisibleDropsAndBowls(counters, stones, hiddenByDistance, detail)
   };
 }
 
-// Scroll, tablet 14.  Important provenance point: the sum of six old bowls is
-// retained as bowlSum for the stir.  orderNumber is separately keep(bowlSum +
-// 149*round).  The two quantities are not interchangeable (lines 562-579 and
-// the repeated clarification at lines 582-596 of the repository copy).
+// Scroll, tablet 14.  The raw sum of the six old bowls is first formed as
+// bowlSum, then 149*round is added and the result is preserved as orderNumber.
+// That preserved value is both the source of the permutation rank and the
+// "preserved sum of the bowls" added to every u.  The raw bowlSum is retained
+// only for trace/provenance; it is not the additive term in u.
 function postStirs(startBowls, detail) {
   let bowls = cloneBigints(startBowls);
   const rounds = detail === "summary" ? null : [];
@@ -395,7 +396,7 @@ function postStirs(startBowls, detail) {
       const u = oldBowls[bowlIndex]
         + 3n * oldBowls[previousIndex]
         + 5n * oldBowls[nextIndex]
-        + bowlSum
+        + orderNumber
         + roundBig
         + BigInt((place + 1) ** 2);
       const output = keep(

@@ -207,7 +207,7 @@ test("two identical reference executions return byte-for-byte equivalent trace d
 
 test("completed calendar reference produces the Foundation 5-tuple without production fallback", () => {
   const oracle = new ReferenceOracle();
-  assert.deepEqual(serializeBigInts(oracle.finalPastafarianTuple(FOUNDATION_JDN, FOUNDATION_JDN)), { year: "5000", cutletName: "לגש", dayInCutlet: 762, monthName: "לבונה", dayInMonth: 105 });
+  assert.deepEqual(serializeBigInts(oracle.finalPastafarianTuple(FOUNDATION_JDN, FOUNDATION_JDN)), { year: "5000", cutletName: "עקרב", dayInCutlet: 503, monthName: "באר", dayInMonth: 56 });
 });
 
 
@@ -245,35 +245,32 @@ test("year candidate reference filters above 5,778 before cardinality and select
     containingGateIndex,
     gateAt: (index) => anchorGates.gate(index),
   });
-  assert.equal(anchor.cardinality, 41);
+  assert.equal(anchor.cardinality, 22);
   assert.equal(anchor.afterFiltering.some((candidate) => candidate.yearLength > MAX_YEAR_DAYS), false);
   assert.equal(
-    anchor.beforeFiltering.some((candidate) => candidate.openGateIndex === 147 && candidate.closeGateIndex === 156 && candidate.yearLength === 5_779n),
+    anchor.beforeFiltering.some((candidate) => candidate.yearLength > MAX_YEAR_DAYS),
     true,
-    "fresh corrected-gate discriminator must expose the forbidden pair before normative filtering",
+    "fresh corrected-gate anchor must expose at least one over-ceiling candidate before normative filtering",
   );
   const selection = selectYearCandidate({ calculationJdn, discovery: anchor });
-  assert.equal(selection.selectedOneBased, 27);
+  assert.equal(selection.selectedOneBased, 13);
   assert.deepEqual(
     [selection.selectedCandidate.openGateIndex, selection.selectedCandidate.closeGateIndex, selection.selectedCandidate.yearLength],
-    [139, 149, 4_785n],
+    [137, 145, 4_866n],
   );
 });
 
-test("final-stir reference preserves the Scroll's two distinct sum/order roles and simultaneous snapshot", () => {
+test("final-stir reference uses the preserved saved sum in u and one simultaneous old-bowl snapshot", () => {
   const trace = sauce(2461273n, 2461273n, { detail: "full" });
   assert.equal(trace.postStirs.length, 12);
 
   for (let roundIndex = 0; roundIndex < trace.postStirs.length; roundIndex += 1) {
     const round = trace.postStirs[roundIndex];
-    const expectedSum = sum(round.bowlsBefore);
-    assert.equal(round.bowlSum, expectedSum, `round ${round.round}: bowlSum must be the raw pre-round sum`);
-    assert.equal(
-      round.orderNumber,
-      keep(expectedSum + 149n * BigInt(round.round)),
-      `round ${round.round}: orderNumber`,
-    );
-    assert.equal(round.permutationRank, 1n + ((round.orderNumber - 1n) % 720n));
+    const rawSum = sum(round.bowlsBefore);
+    const savedSum = keep(rawSum + 149n * BigInt(round.round));
+    assert.equal(round.bowlSum, rawSum, `round ${round.round}: bowlSum records the raw pre-round sum`);
+    assert.equal(round.orderNumber, savedSum, `round ${round.round}: orderNumber is the preserved sum`);
+    assert.equal(round.permutationRank, 1n + ((savedSum - 1n) % 720n));
     assert.deepEqual(round.permutation, bowlPermutation(round.permutationRank));
 
     const recomputedAfter = new Array(6).fill(null);
@@ -284,34 +281,43 @@ test("final-stir reference preserves the Scroll's two distinct sum/order roles a
       const expectedU = round.bowlsBefore[bowl]
         + 3n * round.bowlsBefore[previous]
         + 5n * round.bowlsBefore[next]
-        + round.bowlSum
+        + savedSum
         + BigInt(round.round)
         + BigInt(stir.place) ** 2n;
-      assert.equal(stir.u, expectedU, `round ${round.round}, place ${stir.place}: u must use bowlSum`);
+      assert.equal(stir.u, expectedU, `round ${round.round}, place ${stir.place}: u must use the preserved sum`);
       assert.equal(
         stir.output,
         keep(expectedU ** 2n + 7n * round.bowlsBefore[previous] * round.bowlsBefore[next]),
         `round ${round.round}, place ${stir.place}: kept output`,
       );
       recomputedAfter[bowl] = stir.output;
+
+      if (rawSum !== savedSum) {
+        const rawSumMutantU = expectedU - savedSum + rawSum;
+        assert.notEqual(stir.u, rawSumMutantU, `round ${round.round}, place ${stir.place}: rawSumMutant must discriminate`);
+      }
     }
     assert.deepEqual(recomputedAfter, round.bowlsAfter, `round ${round.round}: six outputs are applied together`);
 
-    // Replacing bowl 1 in a mutable copy demonstrates why the saved sum cannot
-    // be recomputed after any output has been produced in this round.
+    // A sequential implementation must not recompute any source value from a
+    // bowl already replaced in this round. Both rawSum and savedSum are fixed
+    // from the single pre-round snapshot.
     const mutated = [...round.bowlsBefore];
     mutated[0] = round.bowlsAfter[0];
-    assert.equal(round.bowlSum, expectedSum, `round ${round.round}: saved bowlSum is immutable for the round`);
-    assert.notEqual(sum(mutated), round.bowlSum, `round ${round.round}: a sequentially recomputed sum would differ`);
+    assert.equal(round.bowlSum, rawSum, `round ${round.round}: raw pre-round sum is trace-stable`);
+    assert.equal(round.orderNumber, savedSum, `round ${round.round}: preserved sum is immutable for the round`);
+    assert.notEqual(sum(mutated), round.bowlSum, `round ${round.round}: a sequentially recomputed raw sum would differ`);
 
     if (roundIndex + 1 < trace.postStirs.length) {
       const following = trace.postStirs[roundIndex + 1];
-      assert.equal(following.bowlSum, sum(round.bowlsAfter), `round ${following.round}: next round takes a fresh sum`);
+      assert.equal(following.bowlSum, sum(round.bowlsAfter), `round ${following.round}: next round takes a fresh raw sum`);
     }
   }
 
-  // Anti-regression: using raw bowlSum to choose the permutation is also wrong.
   const first = trace.postStirs[0];
+  assert.notEqual(first.bowlSum, first.orderNumber, "fixed witness must distinguish raw S from preserved R");
+
+  // The raw sum also cannot replace the preserved sum for permutation ranking.
   const wrongRawSumRank = 1n + ((first.bowlSum - 1n) % 720n);
   assert.notEqual(wrongRawSumRank, first.permutationRank);
   assert.notDeepEqual(bowlPermutation(wrongRawSumRank), first.permutation);
@@ -323,6 +329,7 @@ test("authoritative generated final-stir trace matches the independent reference
   const authoritative = authoritativeStirTrace(c, t);
   const reference = sauce(c, t, { detail: "full" });
   assert.equal(authoritative.rounds.length, 12);
+  assert.notEqual(reference.postStirs[0].bowlSum, reference.postStirs[0].orderNumber, "authoritative witness must discriminate saved sum from raw sum");
 
   for (let i = 0; i < 12; i += 1) {
     const actual = authoritative.rounds[i];

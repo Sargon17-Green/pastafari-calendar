@@ -2,13 +2,13 @@
 
 > **Status:** implementation specification reconciled to the completed 20-update remediation series and release `1.4.0`.  
 > **Repository:** `Sargon17-Green/pastafari-calendar`  
-> **Verified current `main` head:** `8465a7e83c1f540de75c84cc8efca2660f460ecd` (`Update 20`, GitHub commit timestamp `2026-08-26T05:55:24Z`).  
-> **Uploaded-tree basis:** `pastafari-calendar-main(2).zip`; the archive has no `.git`, so the Git commit binding above is verified separately against current GitHub `main`.  
+> **Base `main` head for this correction:** `d5cfe77ef7950a9a67ff0e6814833a3eedacae8a` (verified against GitHub and the uploaded archive checksums before applying this delta).  
+> **Uploaded-tree basis:** `pastafari-calendar-main(2).zip`; the archive has no `.git`, so the base-commit binding above was verified separately against GitHub and by matching checked-in SHA-256 entries for core files.  
 > **Normative Scroll:** `sources/מגילת העיתים.md`, SHA-256 `d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96`.  
-> **Independent normative reference:** `verification/reference-oracle/reference.mjs`, SHA-256 `40f08fab56b3f0e90b6ce43a24948856972ecdd26d2bbbeb84bda26905fdc379`.  
+> **Independent normative reference:** `verification/reference-oracle/reference.mjs`, SHA-256 `21c103d3540eb5481445a190cef98f2628de7eb90b7240879fede0d519cf4a95` (corrected saved-sum reference in this delta).  
 > **Purpose:** describe the authoritative implementation **as it executes in 1.4.0**, including its deliberately tangled compensating detours. The normative source of truth is the Scroll, not the authoritative engine itself.
 
-> **Superseded baseline:** the previous edition described `main` at `78cc29a12b8d16bf91fd54284851a0e6740aae36` (`2026-08-20T17:07:32Z`), after the final-stir `bowlSum` correction but before the later remediation/hardening work. The 20-update series is now complete, so this edition incorporates those changes rather than retaining the temporary frozen-baseline disclaimer.
+> **Superseded baseline:** the previous edition described `main` at `78cc29a12b8d16bf91fd54284851a0e6740aae36` (`2026-08-20T17:07:32Z`), after the now-superseded final-stir raw-`bowlSum` substitution but before the later remediation/hardening work. The 20-update series is now complete, so this edition incorporates those changes rather than retaining the temporary frozen-baseline disclaimer.
 
 ## 0. Reading contract: what “complete” means here
 
@@ -23,31 +23,31 @@ The following compression rules are used **without omitting semantic operations*
 5. The decoded Dynamic 00/Dynamic 01 statement inventory and ENTER identifiers remain the forensic baseline of the sealed payload. Current 1.4.0 may wrap or transactionally repair those decoded operations at Function-construction time; the document says explicitly when it is describing decoded source versus compiled execution.
 6. Four distinct truths are kept separate:
    - **decoded hidden-core behavior** — what the encrypted/generated payload says before current source transforms;
-   - **compiled hidden-core behavior** — decoded code after the current deterministic Function-source transforms (notably `bowlSum`, failure transactionality, and Update-15 arena guarding);
+   - **compiled hidden-core behavior** — decoded code after the current deterministic Function-source transforms (notably failure transactionality and Update-15 arena guarding; the former raw-`bowlSum` M6 substitution is now neutralized);
    - **public authoritative behavior** — compiled hidden core plus the supported doorway detours and public calendar-routing layer;
    - **normative semantics** — defined by `sources/מגילת העיתים.md` and independently implemented by `verification/reference-oracle/reference.mjs` for conformance work.
 7. A historical defect may remain physically present as a fossil if a compensating spaghetti detour prevents it from deciding supported public semantics. Such fossils are described as fossils, not as current public deviations.
 
 ## 1. Current repository bindings
 
-The uploaded 1.4.0 tree and current `main` bind the authoritative path to the following files. Hashes below were recomputed from the uploaded archive.
+The corrected 1.4.0 tree in this delta binds the authoritative path to the following files. Hashes below are post-correction SHA-256 values; the base-HEAD hashes are preserved in `DELTA_MANIFEST.json`.
 
 | file | role | SHA-256 |
 |---|---|---|
 | `browser/pastafari-calendar-core-1.js` | sealed fragment carrier 1 | `90c700220253b86322130402f0fe5a5d3ba6c527a726cefef1f7c914514c695b` |
 | `browser/pastafari-calendar-core-2.js` | sealed fragment carrier 2 | `11f68ded7bd366b17cf9d3d0769fbdc21bcf06e67ab10a85e52002a388fd2682` |
-| `browser/pastafari-calendar-core-chronicle.js` | browser packed chronicle + current Function-source transforms | `2b217c6a06a6e91184adca46d15ab91cfb6b39481ffbc405470ec0307941d4fa` |
-| `src/5efdcc3e6fb071cbaffdcb117507a169dd76.js` | Node packed authoritative copy + same generated-runtime transforms | `b46fc5247a2fa4062da6d0a05a1b931888bba801e5322f3b52b284f1fad45eff` |
+| `browser/pastafari-calendar-core-chronicle.js` | browser packed chronicle + current Function-source transforms | `61b5e8ddee93f910fddf0c488e33110cf3b63ecd9faf1acf900b373bf10ccfd5` |
+| `src/5efdcc3e6fb071cbaffdcb117507a169dd76.js` | Node packed authoritative copy + same generated-runtime transforms | `0eb462438c07aeed261930685a407a3ec9cceeae71ea2626b3345a080b5336a9` |
 | `browser/pastafari-calendar-core.js` | supported browser doorway | `e9ae270d05a6f0328ea9b814a48af2f0434e3e9a8f4c340f1ac6de1e1f5fced2` |
 | `src/public-api.js` | package-level Node public doorway | `ba1f123a85b7453cb1ad7d77f61a894880a588b60c1a2dd5863015dd29ef08ac` |
 | `browser/gate-data-detour.js` | canonical regenerated positive-gate shadow | `f9dc9e8157a805b5015c57872657333d7e650af8d71cb9860e5e190b9fa6116f` |
-| `browser/generated/pastafari-gate-shadow.js` | source-derived encoded positive-gate dataset | `801be60be5bea43ed14ffbd9eac5c5ebb96f60b48ce6a71d722233b2514d002f` |
-| `browser/generated/pastafari-gate-shadow.manifest.json` | gate-shadow provenance/seals | `7d3883c8b5dcc6dd88e53d5e8e89665c68ce6d4c0dc96bf9ca0490484b85e3d2` |
+| `browser/generated/pastafari-gate-shadow.js` | source-derived encoded positive-gate dataset | `8b51a20733b15cd881c76a15f41758306e3964795055f86c4811f04918e5c64a` |
+| `browser/generated/pastafari-gate-shadow.manifest.json` | gate-shadow provenance/seals | `799d5a98443e8d7d5cf05af09e41298efaad174b5c6bc1c4474581c895a9e577` |
 | `browser/year-ceiling-detour.js` | historical 5,778 ceiling poison detour, now supervised | `0000d57e6d84c2cca64bafe221c9bd94fd23daa422a6c74ae3f1b9c0916391c1` |
 | `browser/year-ceiling-detour-detour.js` | anchor-matrix ceiling repair | `a13e9c378ec08df41a45aa01952aad88f4e63582fe7790b8dc6ad4144c54f344` |
 | `browser/year-ceiling-detour-detour-detour.js` | cached-year poison supervision | `1100b9ff18a6240bf3186ac99634ec3926f21479feb15d01bf8b7b6cb18561e2` |
 | `browser/runtime-patch-ledger.js` | reentrant/late-patch ownership supervisor | `05c4f1c78d80c95147ef8504d8281d0d8e551babc11f5a8f69c0a3454c7ee02b` |
-| `browser/cache-epoch-detour.js` | semantic cache fossil mask + transactions | `f3537f00723f69de31af2ac96b21b644ff64ca4e8703274cec6bd79c16e8e710` |
+| `browser/cache-epoch-detour.js` | semantic cache fossil mask + transactions | `e92c817c76c8b9ce6a99224eec30ae4d181da96e16b533a685f2009645e68a9b` |
 | `browser/month-weaving-domain-detour.js` | public singleton-domain count/rank/unrank repair | `942e0fc1deab593f255e4cdd889c73ffb1280ec2420f98a4a40085378ef86873` |
 | `browser/proleptic-negative-year-detour.js` | deterministic nonpositive-year public routes | `e403e0ced523b4b128b7c096e3cee23aa831a836418ded30d71014d132c6768f` |
 | `browser/intl-calendar-semantic-firewall.js` | browser normative/host-Intl separation | `638739b8c56720d2ccf3496dc3fa8e50c9e5da37f6a5dc75cf82aac1e02c7d65` |
@@ -56,10 +56,10 @@ The uploaded 1.4.0 tree and current `main` bind the authoritative path to the fo
 | `browser/vikrama-api.js` | browser Vikrama API wrapper | `3bc8d95a1dde3eeb5f1b5f906652295f52b1b227486c568914dd88fcd053075c` |
 | `browser/koki-imperial-detour.js` | signed proleptic Kōki detour | `1359874a88415f626f7f62249171f582561acd389a28897393372cfdd007eadb` |
 | `browser/koki-api.js` | browser Kōki API wrapper | `15a197b6963df567b98e47e031858b048224a96e9196810af953d082d38604b5` |
-| `browser/pastafari-calendar-fast.js` | adjacent fast implementation, not oracle | `03de7a8125c1c4c63a9946b531b754c4828adc9f998ddd8b7a5ef4b5adcc4473` |
+| `browser/pastafari-calendar-fast.js` | adjacent fast implementation, not oracle | `9855be62ebe9e9e24d301f849dc010e8195fa8cf7857b45c492b60a2bb0c60ef` |
 | `browser/pastafari-authoritative-worker.js` | browser authoritative Worker transport | `02d7222dab128cc23b355f6048f4965368e1a74db4b2944a34e2401bdd434656` |
 | `docs/calendar-converters.js` | deterministic arithmetic/proleptic side-door converter | `0d25e6ddfd04ba0e8e691825ff7110fb463280114d2d5aaa381a20c9dc02b168` |
-| `verification/reference-oracle/reference.mjs` | independent Scroll-derived conformance reference; never a production runtime dependency | `40f08fab56b3f0e90b6ce43a24948856972ecdd26d2bbbeb84bda26905fdc379` |
+| `verification/reference-oracle/reference.mjs` | independent Scroll-derived conformance reference; never a production runtime dependency | `21c103d3540eb5481445a190cef98f2628de7eb90b7240879fede0d519cf4a95` |
 
 The current package version is `1.4.0`. Update 20 is a release-closure/version-bump step: its manifest explicitly forbids a new semantic production change at that stage. The semantic corrections described here therefore come from the preceding remediation updates and are merely carried into 1.4.0.
 
@@ -106,7 +106,7 @@ core-chronicle / packed copy
       -> construct Dynamic 01 through the same source transformer
           -> inner generated-arena exception rollback injection
       -> compile nine modules
-          -> M6 also receives the bowlSum final-stir source correction
+          -> M6 keeps its decoded saved-sum final-stir operand; the superseded raw-bowlSum source substitution is neutralized
       -> return 91-carrier namespace
   -> public PastafariCalendar.convert / convertJdn
       -> cache-epoch transaction begins
@@ -582,22 +582,13 @@ When Dynamic 01 is constructed, the same transformer recognizes the inner execut
 
 Consequently an exception from opcode 2 (`Reflect.apply` / `Reflect.construct`) no longer leaves the historical twelve-cell frame in current compiled execution. The original normal-success truncation remains in place and still executes.
 
-#### 3.9.4 M6 final-stir correction (`E6`, `E7`)
+#### 3.9.4 M6 final-stir saved-sum correction
 
-After the generic generated-runtime patches above, every candidate source is passed through the M6 transform. It returns source unchanged unless both decoded M6 signatures are present:
+After the generic generated-runtime patches above, the M6-specific Stage-5 transform is now deliberately a no-op. The decoded M6 body already implements Tablet XIV correctly at the decisive site: it forms the sum of the same six old bowls, adds `149*round`, preserves that result as `orderNumber`, uses `orderNumber` to select the permutation, and adds that same preserved value inside each bowl's `u`.
 
-```text
-", 4483, [..."
-", 4492, "
-```
+A superseded transform used to recognize the M6 source around sites 4483/4492, inject a second raw six-bowl reduction, and substitute that raw `bowlSum` for the decoded `orderNumber` operand at site 4492. That substitution contradicted the Scroll. The correction in this delta neutralizes only that semantic substitution; the unrelated transactionality/arena source patches in §3.9 remain active.
 
-For M6 it:
-
-1. finds the unique site-4483 line and injects an uninstrumented raw six-bowl reduction `bowlSum = oldBowls.reduce((a,b)=>a+b,0n)` immediately after it; missing placement throws `E6`;
-2. finds exactly one old site-4492 two-line term whose operand is `orderNumber` followed by `BigInt(round)`; zero or multiple matches throw `E7`;
-3. substitutes only that operand with the injected raw `bowlSum`.
-
-The original ritualized summation remains. Therefore each final-stir round computes the six-bowl sum twice: raw `bowlSum` enters `u`, while `orderNumber = store(sum + 149*round)` selects the permutation.
+Therefore current compiled M6 performs the canonical saved-sum rule. All six outputs read one `oldBowls` snapshot and are committed together only after all six new values are computed.
 
 #### 3.9.5 Source identity discipline
 
@@ -605,7 +596,7 @@ The large recovered source hashes in this document bind **decoded pre-transform 
 
 - Dynamic 00's decoded source is transformed before its initial compilation by the Update-8 and Update-15 generated-runtime patches;
 - Dynamic 01's decoded source is transformed at its Function-constructor boundary by the generated inner-arena rollback patch;
-- M6's decoded module body is transformed by the final-stir patch;
+- M6's decoded module body is left unchanged by the now-neutralized final-stir substitution stage;
 - module bodies not matching any transform signature pass through byte-for-byte.
 
 The temporary Function Proxy is a real bootstrap-time global mutation. Ordinary calls after bootstrap do not traverse it.
@@ -1134,7 +1125,7 @@ The shared runtime is also cloned/wrapped/frozen/registered as a registry pair, 
 
 For each of exactly nine modules, the loader reads ID length (16 bits), body length (two 16-bit reads), ID string, and body string. It then constructs a function equivalent to `new Function(resolverParameterName, body)`, invokes it with the resolver, and clone/wrap/freeze/registers the returned export object.
 
-Under current `main`, these Function constructions are intercepted by §3.9. Modules M0–M5, M7 and M8 pass through unchanged. M6 matches both source signatures; the Function arguments are rewritten so the compiled M6 body contains the injected raw `bowlSum` and uses it at the final-stir `u` site.
+Under the corrected execution, these Function constructions are intercepted by §3.9 for the still-active transactionality/arena patches. Modules M0–M5, M7 and M8 pass through unchanged at the M6-specific stage, and M6 also passes through unchanged there: its decoded `orderNumber` operand remains the final-stir `u` term.
 
 At the end of the nine-module stream the decoder cursor is 1,171,507. The code then loops across all 1,175,617 low cells and executes:
 
@@ -1159,7 +1150,7 @@ The historical capture records exact **decoded pre-transform** module bodies. Th
 | M3 | 05 | 86,642 | `11a6e75113562be761dd1c1e443130a8565571027d5e21120cc25015b4aceaa1` | unchanged |
 | M4 | 06 | 374,323 | `174932102939afe58386177ba61102ceefb3814c5f4784f7b6d4ca8786f6ee83` | unchanged |
 | M5 | 07 | 161,102 | `49a09b10fff798ba7965eb3f40180c719e737293d07695a388b4c257a9a7d073` | unchanged as module body; public MonthWeaving prototype is later detoured |
-| M6 | 08 | 152,995 | `3ae2870ea230fe21e207dc390ccbdd2b8c9c8f8d1b03c8a9a276d779e1205be0` | transformed: raw `bowlSum` enters final `u` |
+| M6 | 08 | 152,995 | `3ae2870ea230fe21e207dc390ccbdd2b8c9c8f8d1b03c8a9a276d779e1205be0` | decoded saved-`orderNumber` operand preserved; superseded raw-sum substitution neutralized |
 | M7 | 09 | 130,888 | `a9d1cc8c102402c64441cab567177bf117aaaa6c89fef5c2a4fbae61f3bc67b0` | unchanged fossil payload; public positive gates are shadowed |
 | M8 | 10 | 181,770 | `ae17868eefa4eee20e526b307c1e0ed143b99de7536f00cd462a6a434ac09fb2` | unchanged hidden body; public year/gate/cache behavior is externally detoured |
 
@@ -3259,22 +3250,21 @@ Site 4461 initializes `finalDropOrder=null`. The pour loop is `i=1..46` (sites 4
 
 After the loop, an explicit guard throws `לא נקבע סדר הטיפה האחרונה` if `finalDropOrder` is still null, even though the fixed loop bounds normally execute the assignment.
 
-### 14.12 Twelve final mixing rounds — current-head transformed execution
+### 14.12 Twelve final mixing rounds — canonical saved-sum execution
 
-The **decoded pre-transform body** still contains sites 4481..4494 exactly as captured, but current `main` compiles M6 only after applying the chronicle source transform in §3.9. Therefore execution has one extra raw reduction and one substituted operand.
+The decoded body at sites 4481..4494 already contains the canonical operand at
+site 4492: the preserved `orderNumber`.  The base tree also carried a later
+Function-source transform that injected a second raw reduction and substituted
+that raw `bowlSum` into site 4492.  That transform is a superseded semantic
+fault: Tablet XIV first forms the six-bowl sum, adds `149*round`, **preserves**
+the result, and then uses that preserved sum both to choose the order and as the
+additive sum term in `u`.
 
 For every `round=1..12`:
 
 1. sites 4481/4482 control the outer loop;
 2. site 4483 allocates `oldBowls=[...bowls]`;
-3. **current chronicle injection, immediately after the site-4483 source line:** execute a second, uninstrumented binding:
-
-   ```js
-   bowlSum = oldBowls.reduce((a,b) => a+b, 0n)
-   ```
-
-   This allocates/executes the native reduce callback six-bowl summation without going through ENTER 1146;
-4. site 4484 still executes the original ritualized reduction to derive `orderNumber`:
+3. site 4484 derives the preserved stirring-order value:
 
    ```js
    orderNumber = store(
@@ -3283,24 +3273,23 @@ For every `round=1..12`:
    )
    ```
 
-   Every callback of this **second summation of the same six bowls** opens ENTER 1146. Thus current authoritative execution computes the six-bowl sum twice per final-stir round: once by the injected raw callback and once by the original ritualized callback;
-5. site 4485 selects the precomputed permutation from `orderNumber`;
-6. site 4486 allocates `newBowls=new Array(6).fill(0n)`;
-7. sites 4487/4488 run `place=0..5`;
-8. sites 4489..4491 select `q`, circular `prev`, and circular `next` from the chosen permutation;
-9. site 4492 executes the **transformed** expression:
+4. site 4485 selects the precomputed permutation from `orderNumber`;
+5. site 4486 allocates `newBowls=new Array(6).fill(0n)`;
+6. sites 4487/4488 run `place=0..5`;
+7. sites 4489..4491 select `q`, circular `prev`, and circular `next` from the chosen permutation;
+8. site 4492 executes the canonical expression:
 
    ```js
    u = oldBowls[q]
        + 3n*oldBowls[prev]
        + 5n*oldBowls[next]
-       + bowlSum
+       + orderNumber
        + BigInt(round)
        + BigInt((place+1)**2)
    ```
 
    The final position square is Number exponentiation first and only then `BigInt(...)`;
-10. site 4493 writes:
+9. site 4493 writes:
 
    ```js
    newBowls[q] = store(
@@ -3309,11 +3298,14 @@ For every `round=1..12`:
    )
    ```
 
-11. site 4494 replaces `bowls=newBowls`.
+10. site 4494 replaces `bowls=newBowls`.
 
-After round 12, `makeSauceUncached` constructs a new `SauceResult`; its constructor clones/freezes `bowls` and the earlier `finalDropOrder`, then freezes the object.
+All six `u` values and neighbour products read the same `oldBowls` snapshot;
+`newBowls` is committed only after all six results are complete.
 
-**Current semantic rule:** `orderNumber = store(bowlSum + 149*round)` selects the permutation; **raw `bowlSum`**, not `orderNumber`, enters `u`. The prior direct decoded body used `orderNumber` in `u`; current `main` changes that behavior at Function-compilation time rather than regenerating the encrypted payload.
+The current source wrapper therefore leaves the decoded site-4492 operand
+unchanged.  The historical raw-sum substitution transform is neutralized rather
+than preserved as a semantic detour.
 
 ### 14.13 Cached `makeSauce` — ENTER 1147
 
@@ -3339,7 +3331,7 @@ The hidden source still contains its large Base64 blob. If `Buffer` exists it de
 
 The hidden loader still decodes exactly 80,000 bytes as 40,000 little-endian uint16 values through a `DataView`. That raw payload is the **pre-final-stir historical sequence** described by the old specification; its decoded byte SHA-256 is `2321775cd22a1156751fe506320d4afc47b27f391092645921df4b54d9ab49bb` and values lie in 42..963.
 
-After the `bowlSum` correction, the historical 40,000 values disagreed with freshly recomputed normative positive gaps at 39,956 ordinals. That mismatch remains a fact about the sealed fossil payload; 1.4.0 does **not** regenerate or rewrite M7.
+After the earlier raw-`bowlSum` substitution, the historical 40,000 values disagreed with the then-generated positive-gate shadow. That comparison is historical evidence about the superseded mutant, not normative evidence for Tablet XIV. The canonical saved-sum correction requires the supported shadow/checkpoints to be regenerated from the corrected independent reference; the sealed M7 payload itself remains a fossil and is not rewritten.
 
 ### 15.3 Supported public gate shadow
 
@@ -3349,7 +3341,7 @@ The remediation series instead added `browser/generated/pastafari-gate-shadow.js
 canonicalId               PASTAFARI-SCROLL-2026-08-16-D36B0C94
 format                    pastafari-gate-shadow-xor10-v1
 normative Scroll SHA-256  d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96
-reference SHA-256         40f08fab56b3f0e90b6ce43a24948856972ecdd26d2bbbeb84bda26905fdc379
+reference SHA-256         21c103d3540eb5481445a190cef98f2628de7eb90b7240879fede0d519cf4a95
 positiveEntryCount        40001
 positiveGapCount          40000
 foundationJdn             -13334246
@@ -3481,7 +3473,7 @@ sauce = makeSauceUncached(FOUNDATION_JDN, FOUNDATION_JDN + BigInt(p));
 gap = 42 + Number(sauce.chooseIndex(1, 1n, 922n));
 ```
 
-The backward route uses `FOUNDATION_JDN - BigInt(p)` with the same selector. Because current compiled M6 uses raw `bowlSum` in the final stir, these are current dynamic Sauce semantics.
+The backward route uses `FOUNDATION_JDN - BigInt(p)` with the same selector. Current compiled M6 uses the preserved `orderNumber = SAVE(bowlSum + 149*round)` in the final stir, so these dynamic Sauce computations follow the corrected saved-sum semantics.
 
 For supported positive ordinals `1..40000`, ordinary instance traversal normally reads the canonical primed Array rather than needing `forwardGap`. Explicit `GateIndex.forwardGap(p)` remains available and computes dynamically. Update 17/18/19 evidence checks bind regenerated gate artifacts and dynamic/reference semantics so the old M7 split is no longer a public mismatch. The negative side has no embedded table and remains dynamically extended from Foundation.
 
@@ -4060,9 +4052,9 @@ The hidden 5781 code and 5782 poison mechanism remain architectural fossils/indi
 The epoch is deliberately semantic rather than package-version based:
 
 ```text
-id = scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778
+id = scroll-d36b0c94+sauce-savedsum+gate-shadow-d36b0c94+year-ceiling-5778
 Scroll SHA-256 = d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96
-Sauce marker = final-stir-u-uses-bowlSum
+Sauce marker = final-stir-u-uses-savedSum
 gate marker = pastafari-gate-shadow-v1:d36b0c94
 year ceiling = 5778
 ```
@@ -4207,7 +4199,7 @@ Update 17 regenerated the canonical evidence corpus from the independent referen
 | raw M7 decoded forward gaps | 80,000 bytes / 40,000 uint16 values; SHA-256 `2321775cd22a1156751fe506320d4afc47b27f391092645921df4b54d9ab49bb`; historical fossil |
 | public regenerated positive-gap dataset | SHA-256 `3d78c120dffd62aac0ededd72ee6ae412a3e9ee21700dcd25f475c48263b93b3`; 40,000 current normative gaps |
 | Scroll | `sources/מגילת העיתים.md`; SHA-256 `d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96` |
-| independent reference | `verification/reference-oracle/reference.mjs`; SHA-256 `40f08fab56b3f0e90b6ce43a24948856972ecdd26d2bbbeb84bda26905fdc379` |
+| independent reference | `verification/reference-oracle/reference.mjs`; SHA-256 `21c103d3540eb5481445a190cef98f2628de7eb90b7240879fede0d519cf4a95` |
 
 A decoded payload hash is not automatically a compiled-source hash. A sealed-carrier hash is not automatically a supported-public-behavior hash. Those distinctions are deliberate and must survive future audits.
 
@@ -4219,7 +4211,7 @@ A future revision still matches this specification only if an audit explicitly c
 - 193-fragment reconstruction and 91-carrier ordering;
 - decoded Dynamic 00/01 identities plus all current source-transform anchors `E6`–`EC`, `U15D`, `U15E`;
 - Update-8 arena/identity rollback on failed construction and Update-15 pre-inner-try `apply` rollback;
-- M6 final-stir distinction: raw `bowlSum` in `u`, kept `orderNumber` only for permutation selection;
+- M6 final-stir distinction: preserved `orderNumber = SAVE(bowlSum + 149*round)` is used both for permutation selection and inside `u`; raw `bowlSum` is only the pre-preservation input;
 - source-derived gate shadow identity, 40,000 gaps, Foundation/first/last seals, and first-use priming;
 - dynamic positive extension from canonical gate 40000 and dynamic negative gates;
 - effective 252..5778 year candidate filtering before cardinality in anchor/next/previous traversal;

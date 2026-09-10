@@ -190,7 +190,7 @@ const refRounds = refSauce.postStirs.map(r => ({
 }));
 const firstRound = refSauce.postStirs[0];
 const firstStir = firstRound.stirs[0];
-const wrongUWithOrderNumber = BigInt(firstStir.u) - BigInt(firstRound.bowlSum) + BigInt(firstRound.orderNumber);
+const wrongUWithRawSum = BigInt(firstStir.u) - BigInt(firstRound.orderNumber) + BigInt(firstRound.bowlSum);
 const stirEvidence = {
   input: stirInput,
   freshAgainstCanonicalFinalInputs: isFreshStirInput,
@@ -199,8 +199,8 @@ const stirEvidence = {
     orderNumber: firstRound.orderNumber,
     recomputedOrderNumber: keep(firstRound.bowlSum + 149n * BigInt(firstRound.round)),
     firstU: firstStir.u,
-    wrongUIfOrderNumberWereUsed: wrongUWithOrderNumber,
-    discriminatorActuallyDiscriminates: wrongUWithOrderNumber !== firstStir.u,
+    wrongUIfRawSumWereUsed: wrongUWithRawSum,
+    discriminatorActuallyDiscriminates: wrongUWithRawSum !== firstStir.u,
   },
   referenceFinal: refSauce.final,
   authoritativeFinal: authTrace?.final ?? null,
@@ -213,7 +213,7 @@ await writeFile(path.join(OUT_DIR, "fresh-bowlsum-ordernumber-audit.json"), `${J
 record("fresh-bowlsum-vs-ordernumber", "sauce-final-stirs",
   isFreshStirInput && !traceError && stirEvidence.allTwelveRoundsMatch
     && firstRound.orderNumber === keep(firstRound.bowlSum + 149n * BigInt(firstRound.round))
-    && wrongUWithOrderNumber !== firstStir.u,
+    && wrongUWithRawSum !== firstStir.u,
   stirEvidence);
 
 // Gate audit: fresh direct calculations, including negative indices and both transition directions.
@@ -585,7 +585,7 @@ await writeFile(path.join(OUT_DIR,"NODE-NORMATIVE-COMPLIANCE-DRAFT.json"),`${JSO
 
 const updateGoals={
   1:"Establish an independent normative reference/oracle and baseline evidence.",
-  2:"Correct final-stir semantics so u uses bowlSum while orderNumber only determines permutation.",
+  2:"Correct final-stir semantics so u uses the preserved orderNumber = SAVE(bowlSum + 149*round); raw bowlSum is only the pre-preservation input.",
   3:"Regenerate/reconcile normative gate precomputed data after the sauce correction and ensure shipped copies are fresh.",
   4:"Apply binding 5778-day maximum before candidate cardinality/selection while preserving spaghetti internals.",
   5:"Complete the year-ceiling detour across both directions/cached boundary paths without holes.",

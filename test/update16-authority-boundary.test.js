@@ -24,7 +24,7 @@ const REFERENCE = path.join(ROOT, "verification/reference-oracle/reference.mjs")
 const VECTOR = path.join(ROOT, "implementations/tests/conformance-vectors.json");
 const FIXTURE = path.join(ROOT, "implementations/tests/spec-derived-canonical-vectors.json");
 
-function finalStirOneRound(bowls, roundNumber, useOrderNumberForU = false) {
+function finalStirOneRound(bowls, roundNumber, useRawSumForU = false) {
   const bowlSum = bowls.reduce((total, value) => total + value, 0n);
   const orderNumber = keep(bowlSum + 149n * BigInt(roundNumber));
   const order = bowlPermutation(1n + ((orderNumber - 1n) % 720n)).map((value) => value - 1);
@@ -34,7 +34,7 @@ function finalStirOneRound(bowls, roundNumber, useOrderNumberForU = false) {
     const bowlId = order[place];
     const previousId = order[(place + 5) % 6];
     const nextId = order[(place + 1) % 6];
-    const semanticSum = useOrderNumberForU ? orderNumber : bowlSum;
+    const semanticSum = useRawSumForU ? bowlSum : orderNumber;
     const u = old[bowlId] + 3n * old[previousId] + 5n * old[nextId] + semanticSum + BigInt(roundNumber) + BigInt((place + 1) ** 2);
     next[bowlId] = keep(u * u + 7n * old[previousId] * old[nextId]);
   }
@@ -63,25 +63,25 @@ test("legacy vectors and generator are explicitly witnesses, not normative autho
   assert.match(expanded.authority.authorityWarning, /not be used as the normative oracle/);
 });
 
-test("manual final-stir discriminator rejects the historical orderNumber-for-u fault", () => {
+test("manual final-stir discriminator rejects the rawSumMutant", () => {
   const initial = [17n, 19n, 23n, 29n, 31n, 37n];
   const normative = finalStirOneRound(initial, 1, false);
-  const oldLike = finalStirOneRound(initial, 1, true);
+  const rawSumMutant = finalStirOneRound(initial, 1, true);
   assert.notEqual(normative.bowlSum, normative.orderNumber);
-  assert.deepEqual(oldLike.order, normative.order, "orderNumber still selects the same order");
-  assert.notDeepEqual(oldLike.bowls, normative.bowls, "using orderNumber in u changes semantic output");
+  assert.deepEqual(rawSumMutant.order, normative.order, "the preserved sum still selects the same order");
+  assert.notDeepEqual(rawSumMutant.bowls, normative.bowls, "using raw bowlSum in u changes semantic output");
   const comparison = compareOrderedStages([
-    { stage: "final-stir", field: "authoritative_old_like", authoritative: oldLike.bowls, reference: normative.bowls },
-    { stage: "final-stir", field: "fast_old_like", authoritative: oldLike.bowls, reference: normative.bowls },
-    { stage: "final-stir", field: "generator_old_like", authoritative: oldLike.bowls, reference: normative.bowls },
+    { stage: "final-stir", field: "authoritative_raw_sum_mutant", authoritative: rawSumMutant.bowls, reference: normative.bowls },
+    { stage: "final-stir", field: "fast_raw_sum_mutant", authoritative: rawSumMutant.bowls, reference: normative.bowls },
+    { stage: "final-stir", field: "generator_raw_sum_mutant", authoritative: rawSumMutant.bowls, reference: normative.bowls },
   ]);
   assert.equal(comparison.fields.every((row) => row.status === "mismatch"), true);
-  assert.equal(comparison.firstMismatch.field, "authoritative_old_like");
+  assert.equal(comparison.firstMismatch.field, "authoritative_raw_sum_mutant");
 });
 
-test("majority agreement among old-like witnesses cannot override reference", () => {
-  const referenceValue = "bowlSum-derived";
-  const sharedWrong = "orderNumber-derived";
+test("majority agreement among raw-sum witnesses cannot override reference", () => {
+  const referenceValue = "saved-sum-derived";
+  const sharedWrong = "raw-sum-derived";
   const comparison = compareOrderedStages([
     { stage: "tie-break", field: "authoritative", authoritative: sharedWrong, reference: referenceValue },
     { stage: "tie-break", field: "fast", authoritative: sharedWrong, reference: referenceValue },
@@ -166,7 +166,7 @@ test("5778 candidate exclusion is an independent small discriminator", () => {
 
 test("Update17-completed reference final tuple remains independent from production", () => {
   const oracle = new ReferenceOracle();
-  assert.deepEqual(serializeBigInts(oracle.finalPastafarianTuple(FOUNDATION_JDN, FOUNDATION_JDN)), { year: "5000", cutletName: "לגש", dayInCutlet: 762, monthName: "לבונה", dayInMonth: 105 });
+  assert.deepEqual(serializeBigInts(oracle.finalPastafarianTuple(FOUNDATION_JDN, FOUNDATION_JDN)), { year: "5000", cutletName: "עקרב", dayInCutlet: 503, monthName: "באר", dayInMonth: 56 });
 });
 
 test("authoritative observation is random-call independent for comparable fields", () => {

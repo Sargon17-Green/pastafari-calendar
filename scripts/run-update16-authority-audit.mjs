@@ -101,9 +101,9 @@ async function main() {
   if (!generator.includes("normativeAuthority") || !generator.includes("historical-fixture-generator")) {
     fail("legacy generator lacks explicit non-authority metadata", {});
   }
-  if (!/bowl_sum \+ round_number/.test(generator)) fail("generator no longer visibly uses bowl_sum in final-stir u", {});
+  if (!/\+ order_number \+ round_number/.test(generator)) fail("generator no longer visibly uses saved order_number in final-stir u", {});
   if (!/order_number = saved\(bowl_sum \+ 149 \* round_number\)/.test(generator)) {
-    fail("generator no longer visibly keeps order_number limited to order selection", {});
+    fail("generator no longer visibly derives the saved final-stir sum/order_number", {});
   }
 
   for (const vectorPath of ["implementations/tests/conformance-vectors.json", "implementations/tests/spec-derived-canonical-vectors.json"]) {

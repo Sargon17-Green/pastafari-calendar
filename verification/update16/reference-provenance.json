@@ -40,7 +40,7 @@
     {
       "module": "direct pourings and final stirs",
       "scrollSection": "sauce tablets final stir rule",
-      "formula": "u=b_i+3b_prev+5b_next+bowlSum+r+i^2; orderNumber selects permutation only",
+      "formula": "R=keep(bowlSum+149*r); u=b_i+3b_prev+5b_next+R+r+i^2; R also selects the permutation; all six outputs read one old snapshot and commit together",
       "bounds": "six bowls; twelve final stirs",
       "floorMod": "keep() for orderNumber and stirred output",
       "status": "implemented"

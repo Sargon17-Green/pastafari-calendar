@@ -25,9 +25,9 @@ const RAW_SIZE = Object.getOwnPropertyDescriptor(Map.prototype, "size").get;
 // This is deliberately not package-version based.  It names the semantic
 // ingredients that make cached year/structure values normative in this tree.
 export const AUTHORITATIVE_CACHE_EPOCH = Object.freeze({
-  id: "scroll-d36b0c94+sauce-bowlsum+gate-shadow-d36b0c94+year-ceiling-5778",
+  id: "scroll-d36b0c94+sauce-savedsum+gate-shadow-d36b0c94+year-ceiling-5778",
   scrollSha256: "d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96",
-  sauceMarker: "final-stir-u-uses-bowlSum",
+  sauceMarker: "final-stir-u-uses-savedSum",
   gateMarker: "pastafari-gate-shadow-v1:d36b0c94",
   yearCeiling: 5_778,
 });

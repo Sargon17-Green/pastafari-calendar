@@ -412,7 +412,7 @@ static void sauce(
             wi_copy(&expression, &old_bowls[bowl]);
             add_scaled(&expression, &old_bowls[previous_bowl], 3, &temporary);
             add_scaled(&expression, &old_bowls[next_bowl], 5, &temporary);
-            wi_add(&expression, &expression, &bowl_sum);
+            wi_add(&expression, &expression, &value);
             wi_add_u32(
                 &expression,
                 &expression,

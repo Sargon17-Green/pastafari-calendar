@@ -1,0 +1,777 @@
+{
+  "schema": "pastafari-canonical-saved-sum-delta-v1",
+  "repository": "Sargon17-Green/pastafari-calendar",
+  "branch": "main",
+  "baseHeadExpected": "d5cfe77ef7950a9a67ff0e6814833a3eedacae8a",
+  "baseHeadObserved": "d5cfe77ef7950a9a67ff0e6814833a3eedacae8a",
+  "baseHeadVerification": "GitHub commit lookup plus uploaded-checkout content hashes matched the expected commit for audited core files",
+  "canonicalCorrection": {
+    "rounds": "1..12",
+    "oldSnapshot": "one old six-bowl snapshot per round",
+    "S": "sum(oldBowls)",
+    "R": "SAVE(S + 149*r)",
+    "permutationRank": "1 + ((R - 1) mod 720)",
+    "u": "old[B] + 3*old[P] + 5*old[N] + R + r + position^2",
+    "newBowl": "SAVE(u^2 + 7*old[P]*old[N])",
+    "commit": "all six new bowls committed simultaneously",
+    "rejectedMutant": "rawSumMutant uses S in u instead of R"
+  },
+  "payload": {
+    "modifiedCount": 64,
+    "addedCount": 0,
+    "deletedCount": 0,
+    "files": [
+      {
+        "path": "SHA256SUMS.txt",
+        "status": "modified",
+        "category": "checksum-manifest",
+        "baseSha256": "150982263aecb456131e0806f242685ebbcfdac1d67d6859278620cd80f4b22c",
+        "newSha256": "d1402af8e9c5e81480ddfcffae74a3609efb99dbe51692f44956ab48645a8268",
+        "baseBytes": 113263,
+        "newBytes": 113263
+      },
+      {
+        "path": "artifacts/update-18/SHA256SUMS.txt",
+        "status": "modified",
+        "category": "checksum-manifest",
+        "baseSha256": "3caadf7b105c2ca1a41f04711fc4e07dc2876727bed7a9fdc2b30148cdd076c4",
+        "newSha256": "83b2b371285eca951c1cdffc4413acbbfb775f6deb64c5085b117b85bf97ca9e",
+        "baseBytes": 442,
+        "newBytes": 228
+      },
+      {
+        "path": "artifacts/update-18/final-differential-integration.json",
+        "status": "modified",
+        "category": "verification-evidence-or-generator",
+        "baseSha256": "af50233f4e0fb40a164224f3b863218ca438633ad1840a6af88647f4e1c8adc3",
+        "newSha256": "81e997b75772e1cbba50e134a037fcb3e0c515b420d4d579b2b78f38db1e9004",
+        "baseBytes": 118759,
+        "newBytes": 225636
+      },
+      {
+        "path": "artifacts/update-18/summary-matrix.json",
+        "status": "modified",
+        "category": "verification-evidence-or-generator",
+        "baseSha256": "ed7f81664aca906849b1b492a0915e1666f568781bb72160f39351a05cc25590",
+        "newSha256": "2e442d7c14cc3c3618185cff1f9a3afbc9f8a6df7113904151a25291dbf0b515",
+        "baseBytes": 3315,
+        "newBytes": 3867
+      },
+      {
+        "path": "artifacts/update16/oracle-authority-audit.json",
+        "status": "modified",
+        "category": "verification-evidence-or-generator",
+        "baseSha256": "c21d98cd1a160828c1bbeaf9d74c8222001bfdd6e6f4894e8b2d1f5b602151bd",
+        "newSha256": "26d62939b38705d9f9021666220e802314f803020047732f8d41aee84895b330",
+        "baseBytes": 7152,
+        "newBytes": 7152
+      },
+      {
+        "path": "browser/cache-epoch-detour.js",
+        "status": "modified",
+        "category": "runtime-engine",
+        "baseSha256": "f3537f00723f69de31af2ac96b21b644ff64ca4e8703274cec6bd79c16e8e710",
+        "newSha256": "e92c817c76c8b9ce6a99224eec30ae4d181da96e16b533a685f2009645e68a9b",
+        "baseBytes": 13279,
+        "newBytes": 13281
+      },
+      {
+        "path": "browser/generated/pastafari-gate-shadow.js",
+        "status": "modified",
+        "category": "regenerated-derived-artifact",
+        "baseSha256": "801be60be5bea43ed14ffbd9eac5c5ebb96f60b48ce6a71d722233b2514d002f",
+        "newSha256": "8b51a20733b15cd881c76a15f41758306e3964795055f86c4811f04918e5c64a",
+        "baseBytes": 71794,
+        "newBytes": 71794
+      },
+      {
+        "path": "browser/generated/pastafari-gate-shadow.manifest.json",
+        "status": "modified",
+        "category": "regenerated-derived-artifact",
+        "baseSha256": "7d3883c8b5dcc6dd88e53d5e8e89665c68ce6d4c0dc96bf9ca0490484b85e3d2",
+        "newSha256": "799d5a98443e8d7d5cf05af09e41298efaad174b5c6bc1c4474581c895a9e577",
+        "baseBytes": 1003,
+        "newBytes": 1003
+      },
+      {
+        "path": "browser/pastafari-calendar-core-chronicle.js",
+        "status": "modified",
+        "category": "runtime-engine",
+        "baseSha256": "2b217c6a06a6e91184adca46d15ab91cfb6b39481ffbc405470ec0307941d4fa",
+        "newSha256": "61b5e8ddee93f910fddf0c488e33110cf3b63ecd9faf1acf900b373bf10ccfd5",
+        "baseBytes": 41249,
+        "newBytes": 39806
+      },
+      {
+        "path": "browser/pastafari-calendar-fast.js",
+        "status": "modified",
+        "category": "runtime-engine",
+        "baseSha256": "03de7a8125c1c4c63a9946b531b754c4828adc9f998ddd8b7a5ef4b5adcc4473",
+        "newSha256": "9855be62ebe9e9e24d301f849dc010e8195fa8cf7857b45c492b60a2bb0c60ef",
+        "baseBytes": 71951,
+        "newBytes": 71999
+      },
+      {
+        "path": "browser/standalone/pastafari-date.js",
+        "status": "modified",
+        "category": "standalone-generated-artifact",
+        "baseSha256": "ead8c913ada2c47a0653d7cd70236652fa4ab0537f12812b3ade83bc81f379e0",
+        "newSha256": "d897b51ce843e710aacd7ae7d6ea53b36afee92005f33bab5ded1d22c78d07e7",
+        "baseBytes": 29975600,
+        "newBytes": 29974596
+      },
+      {
+        "path": "browser/standalone/pastafari-date.min.js",
+        "status": "modified",
+        "category": "standalone-generated-artifact",
+        "baseSha256": "0de582ee2c066b2520b7ed43d374ac410cefd9f68fb0757f9eaef0c89fa9a4a6",
+        "newSha256": "82742482ab7bf001b62db2172cbe1ffe9b126ceeafcdb388c532678daaf58d0b",
+        "baseBytes": 29941824,
+        "newBytes": 29940820
+      },
+      {
+        "path": "docs/AUTHORITATIVE-ENGINE-ARCHITECTURE.md",
+        "status": "modified",
+        "category": "documentation-or-provenance",
+        "baseSha256": "c5d03e4d2565b25f476199825ccf74a6117df5a4e639e71cc936e916b06390eb",
+        "newSha256": "27973276e2a013a229db8cbe139fa5571b8913a1ddc8b6b6d9cf6d325aed4e9e",
+        "baseBytes": 195513,
+        "newBytes": 195917
+      },
+      {
+        "path": "docs/SHA256SUMS.txt",
+        "status": "modified",
+        "category": "checksum-manifest",
+        "baseSha256": "b45083ae220480fbc63d6fb5ae1e0b5c072297b9624929909a09149b8ab735af",
+        "newSha256": "f5e20fbad385bc6717711fcf1efd4b57ce42192328b10701a7ad3b15bd76ff3d",
+        "baseBytes": 9991,
+        "newBytes": 9991
+      },
+      {
+        "path": "docs/engine/pastafari-calendar-fast.js",
+        "status": "modified",
+        "category": "runtime-engine",
+        "baseSha256": "03de7a8125c1c4c63a9946b531b754c4828adc9f998ddd8b7a5ef4b5adcc4473",
+        "newSha256": "9855be62ebe9e9e24d301f849dc010e8195fa8cf7857b45c492b60a2bb0c60ef",
+        "baseBytes": 71951,
+        "newBytes": 71999
+      },
+      {
+        "path": "docs/sw.js",
+        "status": "modified",
+        "category": "documentation-or-provenance",
+        "baseSha256": "4ee42a6390d2e0a41087bb45ea1bb75cbcf77a21472bf741b902bd19ee9f07a2",
+        "newSha256": "d070f82c1ed6b310ec8fdc8a493c0d7ec361c9979a9e118bdaaf4c3ed20af48b",
+        "baseBytes": 10084,
+        "newBytes": 10079
+      },
+      {
+        "path": "implementations/c/src/calendar_core.c",
+        "status": "modified",
+        "category": "language-implementation-or-fixture",
+        "baseSha256": "6a7af52d0665460ee9463b5b0b76944239d6db009d7ec54e0ab4e1c50525a54a",
+        "newSha256": "41139730e0e3ef76c86443df7c631bb037dd6bcfe6fcf9902d5965b29db68090",
+        "baseBytes": 72275,
+        "newBytes": 72272
+      },
+      {
+        "path": "implementations/c/src/gate_checkpoints.h",
+        "status": "modified",
+        "category": "regenerated-derived-artifact",
+        "baseSha256": "2af6cf862a78532ab14ad635a969a6ea17da8b347514c5ed70def13c5291044b",
+        "newSha256": "18b59e3a1eb250cd36f72aff5a521c4ba45794853e1e6a4a746be96d1034a9b0",
+        "baseBytes": 1687,
+        "newBytes": 1686
+      },
+      {
+        "path": "implementations/c/tests/canonical.c",
+        "status": "modified",
+        "category": "language-implementation-or-fixture",
+        "baseSha256": "6f2cbefc1f137a16f6fdfec9238e8530bce262fbe1bc1530ac931bba6c87ddd4",
+        "newSha256": "3d5b3bb23b0ec6e7d9ce4a5c29988cb3e54a19eb11963df47e1d99bff34e4cae",
+        "baseBytes": 4919,
+        "newBytes": 4906
+      },
+      {
+        "path": "implementations/cobol/pastafari-engine.cob",
+        "status": "modified",
+        "category": "language-implementation-or-fixture",
+        "baseSha256": "1a94fb0c6194d3a00379c0675673561eea7c58abb6366b38b8acf8db7ee5de6f",
+        "newSha256": "a0af660776a5c713c44cdbe8d00d4f164e6b49581cd12fabe62975dcf5b0c2f3",
+        "baseBytes": 72321,
+        "newBytes": 72321
+      },
+      {
+        "path": "implementations/cobol/src/pastafari-engine.cob",
+        "status": "modified",
+        "category": "language-implementation-or-fixture",
+        "baseSha256": "1a94fb0c6194d3a00379c0675673561eea7c58abb6366b38b8acf8db7ee5de6f",
+        "newSha256": "a0af660776a5c713c44cdbe8d00d4f164e6b49581cd12fabe62975dcf5b0c2f3",
+        "baseBytes": 72321,
+        "newBytes": 72321
+      },
+      {
+        "path": "implementations/cpp/src/calendar.cpp",
+        "status": "modified",
+        "category": "language-implementation-or-fixture",
+        "baseSha256": "10ba82b8401d038ae50a05fa5ec190fada7e9c4e0a51d61955ce0c7cc22b7981",
+        "newSha256": "61def3bfe53e5a4ac56fb4690eb9f2850bfe0e3500fe6f8f6b74ea86bbe6763d",
+        "baseBytes": 54317,
+        "newBytes": 54320
+      },
+      {
+        "path": "implementations/cpp/tests/conformance.cpp",
+        "status": "modified",
+        "category": "language-implementation-or-fixture",
+        "baseSha256": "cb1677d0c65d02f8b529fe141c4434e101bbc890a71a996f883819827cf15531",
+        "newSha256": "54310a8464292627007218771648a8637f3cd6285a3ea90e212724aeee238f88",
+        "baseBytes": 2969,
+        "newBytes": 2956
+      },
+      {
+        "path": "implementations/java/src/main/java/org/appointedtimes/PastafariCalendar.java",
+        "status": "modified",
+        "category": "language-implementation-or-fixture",
+        "baseSha256": "b0c351e4e853010977d948da8cdd7e8b10f0eb92005c557c35ae023cf1faded0",
+        "newSha256": "6379efbee6c74f0c0050fb77b522b79157d9a1b2f0e1c04603b5e1927b20dee6",
+        "baseBytes": 69057,
+        "newBytes": 69047
+      },
+      {
+        "path": "implementations/python/pastafari_calendar/core.py",
+        "status": "modified",
+        "category": "language-implementation-or-fixture",
+        "baseSha256": "28201f90ee8a2cc83d32ffea1400fcdf8eedb8f576377a5d739f3c9f491a0aac",
+        "newSha256": "c0f5d18836dc3494affcb8122b863242e35958c7f90928608ccc0f779883a1ef",
+        "baseBytes": 42338,
+        "newBytes": 42341
+      },
+      {
+        "path": "implementations/ruby/pastafari_calendar.rb",
+        "status": "modified",
+        "category": "language-implementation-or-fixture",
+        "baseSha256": "ce2d7efc9693181e4a61f16d5ae47495c606a0864a772a0a1d9c3903d5ab54c9",
+        "newSha256": "167391c2d9923f2f5b9f8fd3d5509fb6732ec7a45d030a0694640a50ccfa8f9a",
+        "baseBytes": 34712,
+        "newBytes": 34715
+      },
+      {
+        "path": "implementations/tests/conformance-vectors.json",
+        "status": "modified",
+        "category": "language-implementation-or-fixture",
+        "baseSha256": "1aa607ef4e56083e6b13090fb4bb036a062a6088fd39ad386ead6a1c16a8008b",
+        "newSha256": "4258b4a2d4aa30c3023115ad04fef4ff699752dfcd284621e6b37aeb3f9ebd7d",
+        "baseBytes": 3003,
+        "newBytes": 2990
+      },
+      {
+        "path": "implementations/tests/generate_spec_canonical.py",
+        "status": "modified",
+        "category": "language-implementation-or-fixture",
+        "baseSha256": "5c88b7dea90054b22b6807d3176a2558f520fa73ad34bbbf19bcd04910d6cc52",
+        "newSha256": "78214ead588e9e8c34b1d526663d97f4083d19bb30ccfcad85880bcc0a091d59",
+        "baseBytes": 51480,
+        "newBytes": 51488
+      },
+      {
+        "path": "implementations/tests/spec-derived-binding-5778.json",
+        "status": "modified",
+        "category": "regenerated-derived-artifact",
+        "baseSha256": "d84230b4d4645d9ad4c088958b87e0baff0de3fbd6277776c8ff7196573b4fdd",
+        "newSha256": "8593f526ed93c6198b6ca467bc5e87ce7a100715dd78bd24d6b957851577aa0f",
+        "baseBytes": 588,
+        "newBytes": 583
+      },
+      {
+        "path": "implementations/tests/spec-derived-canonical-vectors.json",
+        "status": "modified",
+        "category": "regenerated-derived-artifact",
+        "baseSha256": "ec7fe6e05e820abde52ec361bbba7dfef9c7e61d3c3e36987634eb3f66d072e8",
+        "newSha256": "5955552dc3f09f3765cd1ad3e7571ed83c4481edef4bc034df714c21c0441ac1",
+        "baseBytes": 99286,
+        "newBytes": 101346
+      },
+      {
+        "path": "implementations/tests/spec-derived-gate-checkpoints.json",
+        "status": "modified",
+        "category": "regenerated-derived-artifact",
+        "baseSha256": "7006c461f44ddc4378d8e9c0b875ccd06bf02c9f28ac2e27746a19f76541a15b",
+        "newSha256": "02f6e5b232dce85a2ab2a2963bcdae16592d0a4c10974d86b21266802fb0040d",
+        "baseBytes": 5548,
+        "newBytes": 5547
+      },
+      {
+        "path": "scripts/regenerate-gate-artifacts.mjs",
+        "status": "modified",
+        "category": "generator-or-audit-script",
+        "baseSha256": "c75a3a34dad840e9870e7b471814d88948d58b8278148f651b0c030de851a328",
+        "newSha256": "76f623f861cd9f8b8df4439880cc2d76f8807231076724b97f6af5bd4a557cee",
+        "baseBytes": 15388,
+        "newBytes": 15464
+      },
+      {
+        "path": "scripts/run-update16-authority-audit.mjs",
+        "status": "modified",
+        "category": "generator-or-audit-script",
+        "baseSha256": "eb62efa881d7560e548636e6819994d66e05c3d9247db0bf1adba0608ae20226",
+        "newSha256": "ea8240c4c44a274127dd6b6cd2dd24f03e621f021c51fa1b03478a6cdcd44a99",
+        "baseBytes": 8286,
+        "newBytes": 8303
+      },
+      {
+        "path": "src/5efdcc3e6fb071cbaffdcb117507a169dd76.js",
+        "status": "modified",
+        "category": "runtime-engine",
+        "baseSha256": "b46fc5247a2fa4062da6d0a05a1b931888bba801e5322f3b52b284f1fad45eff",
+        "newSha256": "0eb462438c07aeed261930685a407a3ec9cceeae71ea2626b3345a080b5336a9",
+        "baseBytes": 51117,
+        "newBytes": 49674
+      },
+      {
+        "path": "test/fast-compatibility.test.js",
+        "status": "modified",
+        "category": "test",
+        "baseSha256": "68dd79a721ef0d6cc5e44a5abbe868d3f9d12c3b797b734ff54d45c35f19f350",
+        "newSha256": "7f421ac989a86f1ea11c48276cca3890323afe8b2dad103e3bdeb66c63a4476e",
+        "baseBytes": 9925,
+        "newBytes": 9924
+      },
+      {
+        "path": "test/reference-oracle.test.js",
+        "status": "modified",
+        "category": "test",
+        "baseSha256": "5fc64ba311475d1df6451c2b18fbc0b2c0a2211ebd334f84d88e2282b71469ed",
+        "newSha256": "d4716dd83e1fd50d37144584d0a1885b2462864d64e4613927cc820fa852e73e",
+        "baseBytes": 17073,
+        "newBytes": 17666
+      },
+      {
+        "path": "test/update16-authority-boundary.test.js",
+        "status": "modified",
+        "category": "test",
+        "baseSha256": "2b831b831918b95f78b10847547fe1721753e2d912a559e0752a38958198d231",
+        "newSha256": "a065ea7ce5984b2d91b61716ea85e06bed58c038aa47d7a5c0891f8fdd448caf",
+        "baseBytes": 8814,
+        "newBytes": 8836
+      },
+      {
+        "path": "test/update17-canonical-evidence.test.js",
+        "status": "modified",
+        "category": "test",
+        "baseSha256": "7e7b481ce0240f8bebcbe89237e26dd1f0781b041443269797d98c5f860f071e",
+        "newSha256": "53bf2240382408a08ee55cab0e0a60ab3e0370ff8c6e649b73404b2dac006401",
+        "baseBytes": 1875,
+        "newBytes": 1877
+      },
+      {
+        "path": "verification/reference-oracle/PROVENANCE.md",
+        "status": "modified",
+        "category": "documentation-or-provenance",
+        "baseSha256": "ae5a2b69a4fcb34f2e13eb012c910db27ec16c1410f2e13c6139f5e5b0741dd8",
+        "newSha256": "770ce548a32a291ea24221a6fadca8a86e3b75978722169db70fcf9668af2698",
+        "baseBytes": 5619,
+        "newBytes": 5660
+      },
+      {
+        "path": "verification/reference-oracle/diagnose-post-stir-substitution.mjs",
+        "status": "modified",
+        "category": "documentation-or-provenance",
+        "baseSha256": "494285745b3082131c372318bc00e7cce96bc0ae0dee17adba6c628129de6773",
+        "newSha256": "52ad1312887e7c193b85ed2c5240074a6b7237ec08f40b4b713e86e8b7c62e65",
+        "baseBytes": 3159,
+        "newBytes": 3308
+      },
+      {
+        "path": "verification/reference-oracle/reference.mjs",
+        "status": "modified",
+        "category": "documentation-or-provenance",
+        "baseSha256": "40f08fab56b3f0e90b6ce43a24948856972ecdd26d2bbbeb84bda26905fdc379",
+        "newSha256": "21c103d3540eb5481445a190cef98f2628de7eb90b7240879fede0d519cf4a95",
+        "baseBytes": 51767,
+        "newBytes": 51836
+      },
+      {
+        "path": "verification/update16/coverage-matrix.json",
+        "status": "modified",
+        "category": "verification-evidence-or-generator",
+        "baseSha256": "1fb99bf588cb71b5a293a4daaab442f38e9d575484966a841ef011232c02fd14",
+        "newSha256": "3cd95d56513092bcd89df1767897aeb6c2b12f05c1b4a1646cea07f244d691f1",
+        "baseBytes": 5180,
+        "newBytes": 5191
+      },
+      {
+        "path": "verification/update16/manual-discriminators.json",
+        "status": "modified",
+        "category": "verification-evidence-or-generator",
+        "baseSha256": "5b10c9d626fba351cd137c098b9ed264108f1d9bdf77e3da6483afa77d83c1f3",
+        "newSha256": "e0f3b2817fcf41412ea2c21f363f94ead2ce7de3079c56709ee50777cd7faf24",
+        "baseBytes": 1493,
+        "newBytes": 1572
+      },
+      {
+        "path": "verification/update16/reference-provenance.json",
+        "status": "modified",
+        "category": "verification-evidence-or-generator",
+        "baseSha256": "1f25af4f4730cdf55464c7e73a4ae9da9a3a44777da019aab3192e26d43c688c",
+        "newSha256": "915bfab9b502db7100efad49ce80161fcd7128bb86d065425017478155822cfc",
+        "baseBytes": 3080,
+        "newBytes": 3150
+      },
+      {
+        "path": "verification/update17/engine-matrix-authoritative.json",
+        "status": "modified",
+        "category": "verification-evidence-or-generator",
+        "baseSha256": "e5e0e2f502ba082bd3bddd768c96c1bc9c89fafe5ba21d4df8a11a9d5a679629",
+        "newSha256": "8908ac71757893267781d6722c917d627db9de97334aa2bc637857004907221f",
+        "baseBytes": 8760,
+        "newBytes": 8810
+      },
+      {
+        "path": "verification/update17/engine-matrix-fast.json",
+        "status": "modified",
+        "category": "verification-evidence-or-generator",
+        "baseSha256": "853a288863d32607effed68c92d864d35e4d3b600774691a68c95da5383d512f",
+        "newSha256": "93d7ad876fb7445d9134fe7baaffdad1e33c5c6097e8ec469d450713d3b97af9",
+        "baseBytes": 8417,
+        "newBytes": 8417
+      },
+      {
+        "path": "verification/update17/generate-canonical-evidence.mjs",
+        "status": "modified",
+        "category": "verification-evidence-or-generator",
+        "baseSha256": "faedb1c0d6ba40bf0243ebd0e2417ce29eb3124b03151da2f319b4bee1529f89",
+        "newSha256": "c747840b258fe3de2cc3b093476891a882ac0e78b9e8424c5f56e7f3440eefa1",
+        "baseBytes": 32933,
+        "newBytes": 33161
+      },
+      {
+        "path": "verification/update17/generated/SHA256SUMS.txt",
+        "status": "modified",
+        "category": "checksum-manifest",
+        "baseSha256": "e9ae9a439f6eea8b2bb52cd80308b9dc6be393f0936069dd5fa7cfc547778767",
+        "newSha256": "c3541318a1fbc4e8739b46cd8f36cd589141d49e88d2462a32f77b12fc7fd080",
+        "baseBytes": 1061,
+        "newBytes": 1061
+      },
+      {
+        "path": "verification/update17/generated/coverage-report.json",
+        "status": "modified",
+        "category": "regenerated-derived-artifact",
+        "baseSha256": "d50808f6befaebb173250839d9f19d89e14aa5a32554089e8b44d92cd0d60f49",
+        "newSha256": "5cb884f952704f249f14b7f888323a6d12e750a7adf15fa1ed7872e9d7ca954e",
+        "baseBytes": 4862,
+        "newBytes": 4862
+      },
+      {
+        "path": "verification/update17/generated/external-calendar-vectors.json",
+        "status": "modified",
+        "category": "regenerated-derived-artifact",
+        "baseSha256": "c4cb029f6e9394264b9acf3345945ffc886216ea960d72ab4748b3fd2402b486",
+        "newSha256": "6865e4674ad7457e14a36fb8d7fe26edf59b41da92002c68af19a0b2c0e97bb1",
+        "baseBytes": 16128,
+        "newBytes": 16128
+      },
+      {
+        "path": "verification/update17/generated/foundation-evidence.json",
+        "status": "modified",
+        "category": "regenerated-derived-artifact",
+        "baseSha256": "66912a00c52d61a0561c722142d956961f7dde48c6a751c6e04cb1f22fe016d7",
+        "newSha256": "04f6596511112fea83db724ea9e0019e4f14d10cfcba90851e3c94f36968bd33",
+        "baseBytes": 9721,
+        "newBytes": 9721
+      },
+      {
+        "path": "verification/update17/generated/hand-discriminators.json",
+        "status": "modified",
+        "category": "regenerated-derived-artifact",
+        "baseSha256": "55004a1080f57dddb866c42e89490ea5ea52d0eb86fba278d0f74be32453353e",
+        "newSha256": "21e263e92fc39807ceefd1e39fa75011fd3be83eff4968a7c0acfd0aea71fa5a",
+        "baseBytes": 4865,
+        "newBytes": 4980
+      },
+      {
+        "path": "verification/update17/generated/month-weaving-small-domain.json",
+        "status": "modified",
+        "category": "regenerated-derived-artifact",
+        "baseSha256": "97ac8b58aa1a5447083123f425d3c44f6aeecbdc5f175bdbc6ca58fbd34c519d",
+        "newSha256": "66d14e80e79e31f59e4b06f8724d0311273a8a051c10cc26c54b735590b2c76e",
+        "baseBytes": 10511,
+        "newBytes": 10511
+      },
+      {
+        "path": "verification/update17/generated/normative-evidence-manifest.json",
+        "status": "modified",
+        "category": "regenerated-derived-artifact",
+        "baseSha256": "289eac0c65cebfe2c7727f8d20cf627b4e202c460016811c295ad64ff710664d",
+        "newSha256": "05e5575a727355048a86a37f3e996972552ca353a9e9a8b4076816690c889acd",
+        "baseBytes": 9185,
+        "newBytes": 9185
+      },
+      {
+        "path": "verification/update17/generated/normative-final-tuples.json",
+        "status": "modified",
+        "category": "regenerated-derived-artifact",
+        "baseSha256": "72bcce671a9944262b788607501d9d6a646715cb4ebd43e8288cd79a614e262b",
+        "newSha256": "8afcfd000052428388b5332a9ef1d396a342958a528249c68a4906babf61b9cb",
+        "baseBytes": 27112,
+        "newBytes": 27021
+      },
+      {
+        "path": "verification/update17/generated/normative-gate-vectors.json",
+        "status": "modified",
+        "category": "regenerated-derived-artifact",
+        "baseSha256": "d1f26c211a49c8f0d7f48374b7cb6dcb091ea24012b1f3fde8bbd86601eb4742",
+        "newSha256": "b9143543ef45e73b9b49d52df8393aeb8ce7b4ee94f3fe7c87a8fa780a278d7a",
+        "baseBytes": 8804,
+        "newBytes": 8806
+      },
+      {
+        "path": "verification/update17/generated/normative-sauce-vectors.json",
+        "status": "modified",
+        "category": "regenerated-derived-artifact",
+        "baseSha256": "cc2004eebd4009ece7a97b9e60c98d00ae1d761f10e9f94a44a184e3bac34a6c",
+        "newSha256": "21a0e343ae71da488c365e61247df348908a7125882ce903c1b48aa62eca1cb5",
+        "baseBytes": 196869,
+        "newBytes": 197464
+      },
+      {
+        "path": "verification/update17/generated/normative-structure-vectors.json",
+        "status": "modified",
+        "category": "regenerated-derived-artifact",
+        "baseSha256": "5ca5c0b3d165c076571981f25dc92500890b99a570ccbcf379283268159d2fc4",
+        "newSha256": "62c048ca33d1ef3394f8f64509a392a46e3bbe3803ef000fa047bb8d07c53cca",
+        "baseBytes": 817975,
+        "newBytes": 747471
+      },
+      {
+        "path": "verification/update17/generated/normative-year-vectors.json",
+        "status": "modified",
+        "category": "regenerated-derived-artifact",
+        "baseSha256": "caff70904319f8f40e5f57c99b29057941dd3733187e88420c08da0c6f76a769",
+        "newSha256": "25e2e394c8359d715cd64c71d115abc079f59cc67040ddb05c1fc2f25bf674c7",
+        "baseBytes": 184750,
+        "newBytes": 208039
+      },
+      {
+        "path": "verification/update17/holdout-audit.json",
+        "status": "modified",
+        "category": "verification-evidence-or-generator",
+        "baseSha256": "bb2ed14729724b7aa5793a089962dd6ffc584bb7e26de4d7ac6c9def76a90f75",
+        "newSha256": "f69c190a6fa4fb90d00be242e34ec871926dba539f839aa45f719ec530f3be47",
+        "baseBytes": 5215,
+        "newBytes": 5206
+      },
+      {
+        "path": "verification/update17/vector-diff-summary.json",
+        "status": "modified",
+        "category": "verification-evidence-or-generator",
+        "baseSha256": "0d876e75521916ac38801c762c54e0afa9f05fa7d8806b79c431cf1fe59272da",
+        "newSha256": "3976ed7ad46f0a37275b7fce77017fed83240c8f754ff1a49d701e386d26195e",
+        "baseBytes": 151784,
+        "newBytes": 154411
+      },
+      {
+        "path": "verification/update19/finalize-audit.mjs",
+        "status": "modified",
+        "category": "other",
+        "baseSha256": "c6703b7474eed76913bb6c4e28dd368724bb7e14a72b5558a2199f7a228d0322",
+        "newSha256": "ecf43e9fe1bf36bd43a82cfecaffe2cda79857a88f6dddd6d7955951c7cf1395",
+        "baseBytes": 23800,
+        "newBytes": 23828
+      },
+      {
+        "path": "verification/update19/run-independent-node-audit.mjs",
+        "status": "modified",
+        "category": "other",
+        "baseSha256": "9f1ba70a36fa68e92b5c98b1378d380a578384fabfcdcc2d0d5aa3d95ae28d6d",
+        "newSha256": "8f51c129489fa09a353d96c71e4f184260a98385f7861af27bb1e1474cdb828d",
+        "baseBytes": 47387,
+        "newBytes": 47410
+      },
+      {
+        "path": "verification/update8/run-stage-05-fix-verification.mjs",
+        "status": "modified",
+        "category": "other",
+        "baseSha256": "1b14383026b7dada00abcb9b76a85f602e0c88c3863df2fdc5a6d5c81f8f769f",
+        "newSha256": "f4c3373f5801eef4328c72bc81ea3147ab2f15c0aff128456744e6eeb5101042",
+        "baseBytes": 56860,
+        "newBytes": 57133
+      }
+    ],
+    "deletePaths": []
+  },
+  "regeneratedArtifactsAndCaches": [
+    "browser/generated/pastafari-gate-shadow.js",
+    "browser/generated/pastafari-gate-shadow.manifest.json",
+    "implementations/c/src/gate_checkpoints.h",
+    "implementations/tests/conformance-vectors.json",
+    "implementations/tests/spec-derived-binding-5778.json",
+    "implementations/tests/spec-derived-canonical-vectors.json",
+    "implementations/tests/spec-derived-gate-checkpoints.json",
+    "verification/update17/generated/*",
+    "verification/update17/engine-matrix-fast.json",
+    "verification/update17/engine-matrix-authoritative.json",
+    "verification/update17/holdout-audit.json",
+    "verification/update17/vector-diff-summary.json",
+    "artifacts/update16/oracle-authority-audit.json",
+    "artifacts/update-18/final-differential-integration.json",
+    "artifacts/update-18/summary-matrix.json",
+    "artifacts/update-18/SHA256SUMS.txt",
+    "docs/SHA256SUMS.txt",
+    "SHA256SUMS.txt"
+  ],
+  "testsRun": [
+    {
+      "command": "node scripts/run-update16-authority-audit.mjs --write",
+      "status": "PASS",
+      "detail": "authority audit status PASS"
+    },
+    {
+      "command": "node --test test/update16-authority-boundary.test.js",
+      "status": "PASS",
+      "detail": "10/10 tests"
+    },
+    {
+      "command": "npm run test:reference-oracle",
+      "status": "PASS",
+      "detail": "19/19 tests; includes saved-R vs rawSumMutant discriminator, authoritative trace parity, fast direct sauce parity"
+    },
+    {
+      "command": "node --test test/standalone-build.test.js",
+      "status": "PASS",
+      "detail": "3/3 tests"
+    },
+    {
+      "command": "node --test test/update17-canonical-evidence.test.js",
+      "status": "PASS",
+      "detail": "4/4 tests"
+    },
+    {
+      "command": "node verification/update17/verify-canonical-evidence.mjs",
+      "status": "PASS",
+      "detail": "10 artifacts, 141 cases"
+    },
+    {
+      "command": "node verification/update17/check-canonical-stale.mjs",
+      "status": "PASS",
+      "detail": "canonical stale check PASS"
+    },
+    {
+      "command": "npm run gate-data:check",
+      "status": "PASS",
+      "detail": "72,768 gaps; drift=[]; positive=40,000 negative=32,768"
+    },
+    {
+      "command": "node verification/update17/run-engine-matrix.mjs --engine=fast",
+      "status": "PASS",
+      "detail": "51/51 matches, 0 mismatches"
+    },
+    {
+      "command": "Update17 authoritative matrix, five isolated calculation anchors",
+      "status": "PASS",
+      "detail": "51/51 matches, 0 mismatches; recorded in verification/update17/engine-matrix-authoritative.json"
+    },
+    {
+      "command": "Update17 deterministic holdout",
+      "status": "PASS",
+      "detail": "12/12 fast and 12/12 authoritative; recorded in verification/update17/holdout-audit.json"
+    },
+    {
+      "command": "node --test test/public-api.test.js test/runtime-patching.test.js test/router-cache-lifecycle.test.js test/standalone-build.test.js",
+      "status": "PASS",
+      "detail": "39/39 tests"
+    },
+    {
+      "command": "npm run package:verify",
+      "status": "PASS",
+      "detail": "npm pack/install dry verification PASS; 299 files; packed bytes 90,231,062"
+    },
+    {
+      "command": "make -C implementations/c test-canonical",
+      "status": "PASS",
+      "detail": "C17 canonical 6/6"
+    },
+    {
+      "command": "make -C implementations/cpp test-canonical",
+      "status": "PASS",
+      "detail": "C++ bigint semantics PASS; canonical 6/6"
+    },
+    {
+      "command": "make -C implementations/java test-canonical",
+      "status": "PASS",
+      "detail": "Java semantics 17/17; canonical 6/6; final rerun exit code 0"
+    },
+    {
+      "command": "make -C implementations/ruby test-canonical",
+      "status": "PASS",
+      "detail": "6/6 legacy regression/canonical fixture check"
+    },
+    {
+      "command": "PYTHONPATH=. python -m pytest -q tests/test_conformance.py (cwd implementations/python)",
+      "status": "PASS",
+      "detail": "4 tests, 13 subtests"
+    },
+    {
+      "command": "npm run checksums:verify",
+      "status": "PASS",
+      "detail": "docs=113, repository=1031 after cleanup and Unicode filename restoration"
+    },
+    {
+      "command": "node --test test/update18-final-differential-integration.test.js",
+      "status": "FAIL_EXPECTED_FROM_EVIDENCE_STATUS",
+      "detail": "committed regenerated Update18 status is INTEGRATION_INCOMPLETE_MISSING_PREREQUISITE rather than INTEGRATION_PASS"
+    },
+    {
+      "command": "Update18 regenerated Node differential integration",
+      "status": "INCOMPLETE",
+      "detail": "149/150 PASS, 0 semantic mismatches, 0 fast mismatches, 0 authoritative mismatches; one soak-memory-trend ERROR: heap delta 581,213,648 > threshold 134,217,728"
+    }
+  ],
+  "testsUnrunOrBlocked": [
+    {
+      "command": "npm run build:standalone",
+      "reason": "esbuild@0.28.2 unavailable in the provided checkout/environment and npm network install unavailable. The two standalone artifacts were updated deterministically and passed standalone structural tests plus embedded-worker behavioral checks performed during the session."
+    },
+    {
+      "command": "Playwright browser/Worker Update18 closure",
+      "reason": "Playwright/browser runtime unavailable in the execution environment; Update18 therefore remains incomplete rather than being falsely promoted."
+    },
+    {
+      "command": "COBOL compile/runtime test",
+      "reason": "cobc is not installed in the execution environment. COBOL source copies were corrected but not compiled here."
+    },
+    {
+      "command": "npm run test:full / npm run test:compatibility",
+      "reason": "long-running aggregate/compatibility paths exceed the execution window; focused semantic, public API, runtime, gate, matrix, holdout, packaging and language tests were run instead."
+    }
+  ],
+  "remainingUncertainty": [
+    "Official standalone rebuild was not run because esbuild@0.28.2 was unavailable; standalone artifacts were corrected without that builder and passed repository standalone tests and session behavioral checks.",
+    "Browser/Worker Playwright closure was not run in this environment.",
+    "Update18 remains explicitly incomplete because its memory-soak record exceeded the configured heap threshold; this run reported zero semantic mismatches.",
+    "COBOL source was corrected but not compiled because cobc was unavailable."
+  ],
+  "historicalEvidencePolicy": {
+    "oracleDifferential10000": "left byte-for-byte unchanged because repository documentation classifies it as historical/non-normative evidence rather than current canonical authority"
+  },
+  "packageNotes": [
+    "DELTA_README.md and DELTA_MANIFEST.json are package metadata, not repository payload.",
+    "Repository-root SHA256SUMS.txt is itself a modified payload file, so it is preserved verbatim as the repository checksum manifest. Per-delta-file hashes are recorded in this manifest to avoid replacing the repository checksum file with a package-only checksum ledger."
+  ],
+  "packageMetadata": {
+    "DELTA_README.md": {
+      "sha256": "7e01348c00a1e2de43121398d78d3f3e1ec5259126a4b8866abb6035c6278634",
+      "repositoryPayload": false
+    },
+    "DELTA_MANIFEST.json": {
+      "sha256": null,
+      "repositoryPayload": false,
+      "note": "self-hash intentionally omitted"
+    },
+    "SHA256SUMS.txt": {
+      "sha256": "d1402af8e9c5e81480ddfcffae74a3609efb99dbe51692f44956ab48645a8268",
+      "repositoryPayload": true,
+      "note": "repository checksum manifest; delta payload hashes are in payload.files"
+    }
+  }
+}

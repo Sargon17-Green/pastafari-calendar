@@ -261,8 +261,8 @@ async function expectedFiles(result) {
       renderFastBlock(result.fast),
       `${relative} checkpoint block`,
     ).replace(
-      "// Normative final-stir detour: orderNumber selects the permutation; raw bowlSum enters u. Gate checkpoints remain stale until their dedicated rebuild.",
-      "// Normative final-stir detour: orderNumber selects the permutation; raw bowlSum enters u. Gate checkpoints below are generated from the same normative source.",
+      "// Normative final-stir rule: the preserved orderNumber = SAVE(bowlSum + 149*round) selects the permutation and enters u. Gate checkpoints remain stale until their dedicated rebuild.",
+      "// Normative final-stir rule: orderNumber is SAVE(bowlSum + 149*round); it selects the permutation and is the preserved sum added to u. Gate checkpoints below are generated from the same normative source.",
     );
     outputs.set(relative, updated);
   }
