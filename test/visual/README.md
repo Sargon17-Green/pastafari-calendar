@@ -34,9 +34,9 @@ The core visual matrix covers:
 | Engine error | English | LTR | 1440×1000 | worker request deliberately failed | `engine-error-en-desktop` |
 | Script diversity | Bengali | LTR | 390×844 | fixed result loaded | `script-bn-mobile` |
 
-All application data used by the suite is deterministic. The primary target/calculation/comparison JDN values are fixed (`2487531`, `2461141`, `2461143`), language is explicit, the browser timezone is `Asia/Jerusalem`, and service workers are blocked for the visual HTTP suite. The astronomical current-day mechanism is not modified or mocked; fixed URL state simply prevents it from influencing the baselines.
+All application data used by the suite is deterministic. The primary target/calculation/comparison JDN values are fixed (`2487128`, `2461141`, `2461143`), language is explicit, the browser timezone is `Asia/Jerusalem`, and service workers are blocked for the visual HTTP suite. The astronomical current-day mechanism is not modified or mocked; fixed URL state simply prevents it from influencing the baselines.
 
-The calendar fixtures are fixed rather than rediscovered at runtime. JDN `2487531` is the first day of a 92-day cutlet in year 5,006 for calculation JDN `2461141`; JDN `2487576` is day 46 of that same cutlet, away from both edges. JDN `2488509` exercises year 5,007, whose year structure differs from year 5,006 (5,581 vs. 2,964 days, 6 vs. 7 cutlets, and 46 vs. 42 months). No synthetic calendar data is used, and the runner asserts the edge/middle and distinct-year invariants before accepting the corresponding snapshots.
+The calendar fixtures are fixed rather than rediscovered at runtime. JDN `2487128` is the first day of a 509-day cutlet in year 5,008 for calculation JDN `2461141`; JDN `2487382` is day 255 of that same cutlet, away from both edges. JDN `2490200` exercises year 5,009, whose year structure differs from year 5,008 (5,138 vs. 3,421 days, 7 vs. 6 cutlets, and 43 vs. 41 months). No synthetic calendar data is used, and the runner asserts the edge/middle and distinct-year invariants before accepting the corresponding snapshots.
 
 ## Responsive/layout checks
 
