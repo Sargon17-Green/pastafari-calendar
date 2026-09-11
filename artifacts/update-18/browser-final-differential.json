@@ -1,66 +1,62 @@
 {
   "schema": "pastafari-update18-browser-differential-final-v1",
-  "status": "STALE_REQUIRES_RERUN",
-  "failures": [
-    "saved-sum semantic correction invalidated the previously committed browser evidence"
-  ],
-  "checks": {},
-  "complete": false,
-  "reason": "The previous browser evidence was produced before the canonical saved-sum correction. The browser-smoke CI job regenerates this file before promote-final-closure.",
-  "supersededEvidence": {
-    "status": "PASS",
-    "samples": {
-      "expected": {
-        "year": "5000",
-        "cutletName": "כליה",
-        "dayInCutlet": 2,
-        "monthName": "בדיל",
-        "dayInMonth": 113
-      },
-      "fastActual": {
-        "year": "5000",
-        "cutletName": "כליה",
-        "dayInCutlet": 2,
-        "monthName": "בדיל",
-        "dayInMonth": 113
-      },
-      "authoritativeWorker": {
-        "year": "5000",
-        "cutletName": "כליה",
-        "dayInCutlet": 2,
-        "monthName": "בדיל",
-        "dayInMonth": 113
-      },
-      "fastWorker": {
-        "year": "5000",
-        "cutletName": "כליה",
-        "dayInCutlet": 2,
-        "monthName": "בדיל",
-        "dayInMonth": 113
-      },
-      "standaloneExpected": {
-        "year": "5000",
-        "cutletName": "כליה",
-        "dayInCutlet": 38,
-        "monthName": "תאנה",
-        "dayInMonth": 107
-      },
-      "standaloneActual": {
-        "year": "5000",
-        "cutletName": "כליה",
-        "dayInCutlet": 38,
-        "monthName": "תאנה",
-        "dayInMonth": 107
-      }
+  "status": "PASS",
+  "failures": [],
+  "checks": {
+    "coreCalendar": true,
+    "fastCalendar": true,
+    "coreFoundation": true,
+    "browserRuntime": true,
+    "workerRuntime": true,
+    "standaloneRuntime": true,
+    "nodeEvidenceHasZeroMismatches": true,
+    "nodeEvidenceHasZeroErrors": true
+  },
+  "samples": {
+    "expected": {
+      "year": "5000",
+      "cutletName": "צחוק",
+      "dayInCutlet": 2,
+      "monthName": "באר",
+      "dayInMonth": 57
     },
-    "ciEvidence": {
-      "repository": "Sargon17-Green/pastafari-calendar",
-      "branch": "Update-18",
-      "workflowRunId": 32824499590,
-      "jobId": 97729546428,
-      "headSha": "8e9f837180f3b252a3a5c8992ae9d10ac229b3f7",
-      "observedAt": "2026-08-25T08:10:08Z"
+    "fastActual": {
+      "year": "5000",
+      "cutletName": "צחוק",
+      "dayInCutlet": 2,
+      "monthName": "באר",
+      "dayInMonth": 57
     },
-    "browserVersion": "151.0.7922.34"
-  }
-}\n
+    "authoritativeWorker": {
+      "year": "5000",
+      "cutletName": "צחוק",
+      "dayInCutlet": 2,
+      "monthName": "באר",
+      "dayInMonth": 57
+    },
+    "fastWorker": {
+      "year": "5000",
+      "cutletName": "צחוק",
+      "dayInCutlet": 2,
+      "monthName": "באר",
+      "dayInMonth": 57
+    },
+    "standaloneExpected": {
+      "year": "5000",
+      "cutletName": "עקרב",
+      "dayInCutlet": 428,
+      "monthName": "מלח",
+      "dayInMonth": 48
+    },
+    "standaloneActual": {
+      "year": "5000",
+      "cutletName": "עקרב",
+      "dayInCutlet": 428,
+      "monthName": "מלח",
+      "dayInMonth": 48
+    }
+  },
+  "complete": true,
+  "browserVersion": "151.0.7922.34",
+  "pageErrors": []
+}
