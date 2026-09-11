@@ -44,12 +44,12 @@ test("generated gate shadow decodes to the declared 40,001 positive positions", 
   }
 });
 
-test("sealed historical positive table is stale but becomes semantically dead through the detour", () => {
+test("sealed historical positive table is semantically dead through the detour even when byte-aligned", () => {
   const normative = decodeGateShadowPayload();
   const gateIndex = new ChronicleGateIndex();
   const historical = gateIndex.positive;
   assert.equal(historical.length, 40_001);
-  assert.notEqual(historical[1], normative[1], "the sealed pre-Update-3 table must remain independently observable as stale");
+  assert.equal(historical[1], normative[1], "the sealed table is currently byte-aligned after canonical regeneration");
 
   historical[1] = 1234567890123456789n;
   const actual = gateIndex.gate(1);

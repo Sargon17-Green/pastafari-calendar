@@ -34,11 +34,11 @@ async function assertDeclaredAssetsExist(assets) {
 test("Pages uses the audited canonical fast engine bytes without a divergent build", async () => {
   assert.equal(
     await sha256("browser/pastafari-calendar-fast.js"),
-    "03de7a8125c1c4c63a9946b531b754c4828adc9f998ddd8b7a5ef4b5adcc4473",
+    "9855be62ebe9e9e24d301f849dc010e8195fa8cf7857b45c492b60a2bb0c60ef",
   );
   assert.equal(
     await sha256("docs/engine/pastafari-calendar-fast.js"),
-    "03de7a8125c1c4c63a9946b531b754c4828adc9f998ddd8b7a5ef4b5adcc4473",
+    "9855be62ebe9e9e24d301f849dc010e8195fa8cf7857b45c492b60a2bb0c60ef",
   );
   assert.equal(
     await sha256("docs/engine/pastafari-calendar-fast.js"),
@@ -105,7 +105,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   assert.equal(LOCALES.length, 72, "PWA accounting expects the current 72 registered locales");
   assert.equal(LOCALES.filter(({ code }) => code !== "en").length, 71, "Every non-English locale is optional/on-demand");
 
-  assert.match(source, /const VERSION = "pastafari-static-pwa-hardening-16-chinese-detour";/);
+  assert.match(source, /const VERSION = "pastafari-static-pwa-hardening-17-saved-sum";/);
   assert.match(source, /const RUNTIME_CACHE = "pastafari-runtime-assets";/);
   assert.match(source, /const OPTIONAL_LOCALE_PATH = \/\^\\\/i18n\\\/locales/);
   assert.match(source, /url\.search === LOCALE_REVISION_SEARCH/);

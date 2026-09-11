@@ -351,27 +351,112 @@ function importOrderRows(records) {
 
 function soakMemoryRows(records) {
   const start = performance.now();
-  const reference = new ReferenceCalendar(FOUNDATION_JDN);
-  const authCalendar = makeAuthoritativeCalendar();
-  const fastCalendar = makeFastCalendar();
-  const before = process.memoryUsage().heapUsed;
-  const failures = [];
-  const sequence = [];
-  for (let index = 0; index < 24; index += 1) {
-    const targetJdn = FOUNDATION_JDN + BigInt((index % 9) - 4);
-    sequence.push(String(targetJdn));
-    try {
-      if (index % 7 === 0) { try { authCalendar.convertJdn("not-a-jdn", { calculationJdn: FOUNDATION_JDN }); } catch {} try { fastCalendar.convertJdn("not-a-jdn", { calculationJdn: FOUNDATION_JDN }); } catch {} }
-      const expected = canonicalTuple(reference.convertJdn(targetJdn));
-      const authActual = canonicalTuple(authCalendar.convertJdn(targetJdn, { calculationJdn: FOUNDATION_JDN }));
-      const fastActual = canonicalTuple(fastCalendar.convertJdn(targetJdn, { calculationJdn: FOUNDATION_JDN }));
-      if (!passEq(expected, authActual) || !passEq(expected, fastActual)) failures.push({ index, targetJdn: String(targetJdn), expected, authActual, fastActual });
-    } catch (error) { failures.push({ index, targetJdn: String(targetJdn), error: { name: error.name, message: error.message } }); }
-  }
-  const heapDelta = process.memoryUsage().heapUsed - before;
   const threshold = 128 * 1024 * 1024;
-  const comparison = failures.length === 0 && heapDelta < threshold ? { status: "PASS" } : { status: failures.length ? "MISMATCH" : "ERROR", firstMismatch: failures[0] || { heapDelta, threshold } };
-  add(records, { id: "soak-memory-state-history-small", category: "soak-memory-trend", input: { calculationJdn: String(FOUNDATION_JDN), sequence }, environment: "node-production-direct", stateProfile: "repeat-failed-call-noise-cache-warm", expectedSource: "reference-runtime-each-step", reference: { failuresExpected: 0, heapDeltaThresholdBytes: threshold }, authoritative: { failures: failures.length, heapDeltaBytes: heapDelta, memoryOk: heapDelta < threshold }, fast: { failures: failures.length, heapDeltaBytes: heapDelta, memoryOk: heapDelta < threshold }, authoritativeComparison: comparison, fastComparison: comparison, status: comparison.status, firstMismatch: comparison.firstMismatch || null, timing: { elapsedMs: elapsed(start) } });
+  const referenceUrl = pathToFileURL(path.join(ROOT, "verification/reference-oracle/reference.mjs")).href;
+  const authoritativeUrl = pathToFileURL(path.join(ROOT, "browser/pastafari-calendar-core.js")).href;
+  const fastUrl = pathToFileURL(path.join(ROOT, "browser/pastafari-calendar-fast.js")).href;
+  const code = `
+    import { ReferenceCalendar, FOUNDATION_JDN } from ${JSON.stringify(referenceUrl)};
+    import * as authoritative from ${JSON.stringify(authoritativeUrl)};
+    import * as fastProduction from ${JSON.stringify(fastUrl)};
+    const canonical = (value) => {
+      const source = typeof value?.toJSON === "function" ? value.toJSON() : value;
+      return {
+        year: String(source.year),
+        cutletName: String(source.cutletName),
+        dayInCutlet: Number(source.dayInCutlet),
+        monthName: String(source.monthName),
+        dayInMonth: Number(source.dayInMonth),
+      };
+    };
+    const same = (left, right) => JSON.stringify(left) === JSON.stringify(right);
+    if (typeof globalThis.gc !== "function") throw new Error("isolated soak requires --expose-gc");
+    const reference = new ReferenceCalendar(FOUNDATION_JDN);
+    const authCalendar = new authoritative.PastafariCalendar({ todayProvider: () => new authoritative.GregorianDate(2000n, 1, 1) });
+    const fastCalendar = new fastProduction.PastafariCalendar({ todayProvider: () => new fastProduction.GregorianDate(2000n, 1, 1) });
+    globalThis.gc();
+    const before = process.memoryUsage().heapUsed;
+    const failures = [];
+    const sequence = [];
+    for (let index = 0; index < 24; index += 1) {
+      const targetJdn = FOUNDATION_JDN + BigInt((index % 9) - 4);
+      sequence.push(String(targetJdn));
+      try {
+        if (index % 7 === 0) {
+          try { authCalendar.convertJdn("not-a-jdn", { calculationJdn: FOUNDATION_JDN }); } catch {}
+          try { fastCalendar.convertJdn("not-a-jdn", { calculationJdn: FOUNDATION_JDN }); } catch {}
+        }
+        const expected = canonical(reference.convertJdn(targetJdn));
+        const authActual = canonical(authCalendar.convertJdn(targetJdn, { calculationJdn: FOUNDATION_JDN }));
+        const fastActual = canonical(fastCalendar.convertJdn(targetJdn, { calculationJdn: FOUNDATION_JDN }));
+        if (!same(expected, authActual) || !same(expected, fastActual)) failures.push({ index, targetJdn: String(targetJdn), expected, authActual, fastActual });
+      } catch (error) {
+        failures.push({ index, targetJdn: String(targetJdn), error: { name: error.name, message: error.message } });
+      }
+    }
+    const transientHeapDeltaBytes = process.memoryUsage().heapUsed - before;
+    globalThis.gc();
+    const retainedHeapDeltaBytes = process.memoryUsage().heapUsed - before;
+    console.log(JSON.stringify({ failures, sequence, transientHeapDeltaBytes, retainedHeapDeltaBytes }));
+  `;
+  const result = spawnSync(process.execPath, ["--expose-gc", "--input-type=module", "-e", code], {
+    cwd: ROOT,
+    encoding: "utf8",
+    timeout: 120_000,
+    maxBuffer: 8 * 1024 * 1024,
+  });
+  if (result.status !== 0 || !result.stdout.trim()) {
+    add(records, {
+      id: "soak-memory-state-history-small",
+      category: "soak-memory-trend",
+      input: { calculationJdn: String(FOUNDATION_JDN) },
+      environment: "isolated-node-process--expose-gc",
+      stateProfile: "repeat-failed-call-noise-cache-warm",
+      expectedSource: "isolated retained-heap measurement after explicit full GC",
+      reference: { failuresExpected: 0, retainedHeapDeltaThresholdBytes: threshold },
+      authoritative: { error: { status: result.status, signal: result.signal, stderr: result.stderr.slice(0, 2000), stdout: result.stdout.slice(0, 2000) } },
+      fast: { status: "NOT_APPLICABLE" },
+      authoritativeComparison: { status: "ERROR" },
+      fastComparison: { status: "NOT_APPLICABLE" },
+      status: result.signal === "SIGTERM" ? "TIMEOUT" : "ERROR",
+      timing: { elapsedMs: elapsed(start) },
+    });
+    return;
+  }
+  const payload = JSON.parse(result.stdout.trim().split("\\n").at(-1));
+  const memoryOk = payload.retainedHeapDeltaBytes < threshold;
+  const comparison = payload.failures.length === 0 && memoryOk
+    ? { status: "PASS" }
+    : {
+        status: payload.failures.length ? "MISMATCH" : "ERROR",
+        firstMismatch: payload.failures[0] || { retainedHeapDeltaBytes: payload.retainedHeapDeltaBytes, threshold },
+      };
+  add(records, {
+    id: "soak-memory-state-history-small",
+    category: "soak-memory-trend",
+    input: { calculationJdn: String(FOUNDATION_JDN), sequence: payload.sequence },
+    environment: "isolated-node-process--expose-gc",
+    stateProfile: "repeat-failed-call-noise-cache-warm",
+    expectedSource: "isolated retained-heap measurement after explicit full GC",
+    reference: { failuresExpected: 0, retainedHeapDeltaThresholdBytes: threshold },
+    authoritative: {
+      failures: payload.failures.length,
+      transientHeapDeltaBytes: payload.transientHeapDeltaBytes,
+      retainedHeapDeltaBytes: payload.retainedHeapDeltaBytes,
+      memoryOk,
+    },
+    fast: {
+      failures: payload.failures.length,
+      transientHeapDeltaBytes: payload.transientHeapDeltaBytes,
+      retainedHeapDeltaBytes: payload.retainedHeapDeltaBytes,
+      memoryOk,
+    },
+    authoritativeComparison: comparison,
+    fastComparison: comparison,
+    status: comparison.status,
+    firstMismatch: comparison.firstMismatch || null,
+    timing: { elapsedMs: elapsed(start) },
+  });
 }
 
 function mutationRows(records) {
