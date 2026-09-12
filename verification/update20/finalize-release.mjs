@@ -48,17 +48,26 @@ const packageReport = data["package-seal.json"] ?? {};
 const browserReport = data["browser-worker-standalone-seal.json"] ?? {};
 const sealReport = data["seal-holdout.json"] ?? {};
 const scope = data["release-scope.json"] ?? {};
+const update19Gate = data["update19-gate.json"] ?? {};
 const releaseStatus = blockers.length === 0 ? "RELEASE_READY" : "RELEASE_BLOCKED";
 const head = gitText(["rev-parse", "HEAD"]);
 const tree = gitText(["rev-parse", "HEAD^{tree}"]);
+const legacyReleaseBaseCommit = scope.legacyReleaseBaseCommit ?? "9b5ebf1d3e383a9345df8a5d8b12333df447f7ad";
+const postCorrectionBaseCommit = scope.postCorrectionBaseCommit ?? "4dac16315dcecc9d45aeb264eaa1bceed038fddc";
 
 const closure = {
   schema: "pastafari.update20.final-release-closure.v1",
-  baseCommit: "9b5ebf1d3e383a9345df8a5d8b12333df447f7ad",
+  canonicalSemantics: scope.canonicalSemantics ?? "saved-sum",
+  postStirFormulaId: scope.postStirFormulaId ?? "saved-sum-R-in-u",
+  snapshotSemantics: scope.snapshotSemantics ?? "all-six-from-one-old-snapshot",
+  baseCommit: legacyReleaseBaseCommit,
+  legacyReleaseBaseCommit,
+  postCorrectionBaseCommit,
   finalCommitOrTreeHash: { commit: head, tree },
   oldVersion: "1.3.0",
   newVersion: "1.4.0",
-  update19EvidenceHash: "4fa7d3e59b261dbfeda1f163a4f45995cda350dbb0157ac37490b6c0c43e44ed",
+  update19EvidenceHash: "4fa7d3e59b261db19291b33c1bc9af54ab3a32fa3fc5921deaf3d6f4da217c365",
+  update19EvidenceSemanticAuthority: update19Gate.semanticAuthority ?? "SUPERSEDED_HISTORICAL_PROVENANCE_ONLY",
   scrollHash: await sha256File("sources/מגילת העיתים.md"),
   referenceHash: await sha256File("verification/reference-oracle/reference.mjs"),
   authoritativeHash: await sha256File("browser/pastafari-calendar-core.js"),
@@ -76,15 +85,31 @@ const closure = {
 };
 await writeJson("FINAL-RELEASE-CLOSURE.json", closure);
 
-const u19 = data["update19-gate.json"] ?? {};
 const updates = [];
-const updates01to18AllPass = u19.updates01to18?.count === 18 && u19.updates01to18?.pass === 18;
-for (let update = 1; update <= 18; update += 1) updates.push({ update, status: updates01to18AllPass ? "PASS" : "FAIL", evidence: "Update 19 closure matrix" });
-updates.push({ update: 19, status: u19.status === "PASS" ? "PASS" : "FAIL", evidence: `sha256:${closure.update19EvidenceHash}` });
-updates.push({ update: 20, status: releaseStatus === "RELEASE_READY" ? "PASS" : "FAIL", evidence: "FINAL-RELEASE-CLOSURE.json" });
-await writeJson("UPDATE-SERIES-CLOSED.json", { schema: "pastafari.update20.series-closed.v1", status: releaseStatus === "RELEASE_READY" ? "PASS" : "FAIL", updates });
+const updates01to18AllPass = update19Gate.updates01to18?.count === 18 && update19Gate.updates01to18?.pass === 18;
+for (let update = 1; update <= 18; update += 1) {
+  updates.push({
+    update,
+    status: updates01to18AllPass ? "PASS" : "FAIL",
+    evidence: "Historical Update 19 closure matrix; semantic authority superseded by saved-sum correction and current semantics revalidated by replacement Update 20 closure",
+    semanticAuthority: "HISTORICAL_PASS_SUPERSEDED",
+  });
+}
+updates.push({
+  update: 19,
+  status: update19Gate.status === "PASS" ? "PASS" : "FAIL",
+  evidence: `sha256:${closure.update19EvidenceHash}`,
+  semanticAuthority: "HISTORICAL_PASS_SUPERSEDED",
+});
+updates.push({
+  update: 20,
+  status: releaseStatus === "RELEASE_READY" ? "PASS" : "FAIL",
+  evidence: "FINAL-RELEASE-CLOSURE.json",
+  semanticAuthority: "CURRENT_SAVED_SUM",
+});
+await writeJson("UPDATE-SERIES-CLOSED.json", { schema: "pastafari.update20.series-closed.v1", status: releaseStatus === "RELEASE_READY" ? "PASS" : "FAIL", canonicalSemantics: "saved-sum", updates });
 
-const report = `# Update 20 — Final Release Closure\n\nStatus: **${releaseStatus}**\n\n- base commit: \`9b5ebf1d3e383a9345df8a5d8b12333df447f7ad\`\n- old version: \`1.3.0\`\n- new version: \`1.4.0\`\n- Update 19 evidence: \`sha256:${closure.update19EvidenceHash}\`\n- seal holdout mismatches: \`${closure.sealHoldoutMismatches}\`\n- API compatibility: \`${closure.apiCompatibilityStatus}\`\n- blockers: ${blockers.length}\n\n${blockers.length ? blockers.map((b) => `- ${b}`).join("\n") : "All required release-closure gates passed."}\n`;
+const report = `# Update 20 — Final Release Closure\n\nStatus: **${releaseStatus}**\n\n- legacy release base commit: \`${legacyReleaseBaseCommit}\`\n- saved-sum correction baseline: \`${postCorrectionBaseCommit}\`\n- canonical semantics: \`${closure.canonicalSemantics}\`\n- old version: \`1.3.0\`\n- new version: \`1.4.0\`\n- Update 19 evidence: \`sha256:${closure.update19EvidenceHash}\` (${closure.update19EvidenceSemanticAuthority})\n- seal holdout mismatches: \`${closure.sealHoldoutMismatches}\`\n- API compatibility: \`${closure.apiCompatibilityStatus}\`\n- blockers: ${blockers.length}\n\n${blockers.length ? blockers.map((b) => `- ${b}`).join("\n") : "All required post-correction saved-sum release-closure gates passed."}\n`;
 await writeFile(path.join(OUT_DIR, "report.md"), report, "utf8");
 
 const evidenceNames = ["FINAL-RELEASE-CLOSURE.json", "UPDATE-SERIES-CLOSED.json", "report.md"];

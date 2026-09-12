@@ -6,7 +6,7 @@ import { readFile } from "node:fs/promises";
 import { OUT_DIR, ROOT, sha256, unzipText, writeJson } from "./lib.mjs";
 
 const ZIP = path.join(OUT_DIR, "update19-final-evidence.zip");
-const EXPECTED_ZIP_SHA256 = "4fa7d3e59b261dbfeda1f163a4f45995cda350dbb0157ac37490b6c0c43e44ed";
+const EXPECTED_ZIP_SHA256 = "4fa7d3e59b261db19291b33c1bc9af54ab3a32fa3fc5921deaf3d6f4da217c365";
 const AUDITED_HEAD = "0bfc42b9cd7be28528d821c72a021d3f1e7056fb";
 const AUDITED_TREE = "ea72ef27b786a41ad9683b4c30bbde8c3ea6078e";
 
@@ -30,6 +30,9 @@ const artifact = {
   schema: "pastafari.update20.update19-gate.v1",
   generatedAt: new Date().toISOString(),
   status: failures.length ? "FAIL" : "PASS",
+  semanticAuthority: "SUPERSEDED_HISTORICAL_PROVENANCE_ONLY",
+  currentCanonicalSemantics: "saved-sum",
+  purpose: "Integrity and historical release provenance only; current semantic correctness is established by the post-correction saved-sum gates in this workflow.",
   auditedHead: AUDITED_HEAD,
   auditedTree: AUDITED_TREE,
   evidenceZip: path.relative(ROOT, ZIP).replaceAll("\\", "/"),

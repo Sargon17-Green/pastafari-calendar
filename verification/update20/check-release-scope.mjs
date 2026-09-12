@@ -42,6 +42,9 @@ const exactAllowed = new Set([
   ".github/workflows/benchmark.yml",
   "SHA256SUMS.txt",
   "verification/update20/check-release-scope.mjs",
+  "verification/update20/check-update19-evidence.mjs",
+  "verification/update20/finalize-release.mjs",
+  "verification/update20/run-version-propagation.mjs",
 ]);
 
 const failures = [];
