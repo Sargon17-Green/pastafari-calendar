@@ -35,12 +35,14 @@ const CANONICAL_JSON = Object.freeze([
 ]);
 const CANONICAL_PREFIX = "verification/update17/generated/";
 
-// Only the CI baseline hardening, this scope-gate correction, and the root checksum
-// manifest are permitted after the pinned saved-sum correction baseline. Any later
-// parallel change must be reviewed explicitly before closure evidence is accepted.
+// Only the CI baseline hardening, the post-correction closure gates, the year-ceiling
+// regression-fixture alignment, and the root checksum manifest are permitted after
+// the pinned saved-sum correction baseline. Any later parallel change must be reviewed
+// explicitly before closure evidence is accepted.
 const exactAllowed = new Set([
   ".github/workflows/benchmark.yml",
   "SHA256SUMS.txt",
+  "test/year-ceiling-detour.test.js",
   "verification/update20/check-release-scope.mjs",
   "verification/update20/check-update19-evidence.mjs",
   "verification/update20/finalize-release.mjs",
