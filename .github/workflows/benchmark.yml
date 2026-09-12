@@ -81,11 +81,15 @@ jobs:
           else
             base_sha="${PUSH_BEFORE_SHA}"
           fi
-          if [[ -z "${base_sha}" || "${base_sha}" =~ ^0+$ ]]; then
+          if [[ -z "${base_sha}" || "${base_sha}" =~ ^0+$ ]] ||
+             ! git cat-file -e "${base_sha}^{commit}" 2>/dev/null; then
+            echo "Requested baseline commit is unavailable; falling back to HEAD^."
             base_sha="$(git rev-parse HEAD^)"
           fi
-          git cat-file -e "${base_sha}^{commit}"
-          git cat-file -e "${base_sha}:browser/pastafari-calendar-fast.js"
+          if ! git cat-file -e "${base_sha}:browser/pastafari-calendar-fast.js" 2>/dev/null; then
+            echo "Baseline ${base_sha} does not contain browser/pastafari-calendar-fast.js" >&2
+            exit 1
+          fi
           echo "sha=${base_sha}" >> "$GITHUB_OUTPUT"
           echo "Memory baseline commit: ${base_sha}" >> "$GITHUB_STEP_SUMMARY"
       - name: Materialize base-commit fast engine
@@ -217,4 +221,3 @@ jobs:
             artifacts/benchmarks/memory-browser-soak.md
           if-no-files-found: warn
           retention-days: 30
-
