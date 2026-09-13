@@ -66,6 +66,7 @@ const exactAllowed = new Set([
   "package-lock.json",
   "package.json",
   "scripts/check-package.mjs",
+  "scripts/check-update13-standalone-firewall.mjs",
   "scripts/docs-consistency.mjs",
   "scripts/release-lib.mjs",
   "scripts/release.mjs",

@@ -16,6 +16,13 @@ const REQUIRED_MARKERS = Object.freeze([
   "pastafari.update13.tablets-semantic-seal",
 ]);
 
+const cliArgs = process.argv.slice(2);
+const unknownArgs = cliArgs.filter((arg) => arg !== "--check");
+if (unknownArgs.length) {
+  throw new Error(`Usage: node scripts/check-update13-standalone-firewall.mjs [--check]; unknown argument(s): ${unknownArgs.join(", ")}`);
+}
+const checkOnly = cliArgs.includes("--check");
+
 const files = [];
 for (const relative of OUTPUTS) {
   const bytes = await readFile(path.join(ROOT, relative));
@@ -38,10 +45,12 @@ const report = {
   status: files.every((entry) => entry.pass) ? "PASS" : "FAIL",
 };
 
-await mkdir(path.join(ROOT, "artifacts"), { recursive: true });
-await writeFile(
-  path.join(ROOT, "artifacts", "update-13-standalone-firewall.json"),
-  `${JSON.stringify(report, null, 2)}\n`,
-);
-console.log(JSON.stringify(report, null, 2));
+if (!checkOnly) {
+  await mkdir(path.join(ROOT, "artifacts"), { recursive: true });
+  await writeFile(
+    path.join(ROOT, "artifacts", "update-13-standalone-firewall.json"),
+    `${JSON.stringify(report, null, 2)}\n`,
+  );
+}
+console.log(JSON.stringify({ ...report, mode: checkOnly ? "CHECK_ONLY" : "WRITE" }, null, 2));
 if (report.status !== "PASS") process.exitCode = 1;
