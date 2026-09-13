@@ -75,6 +75,9 @@ const exactAllowed = new Set([
   "verification/update20/run-browser-seal.mjs",
   "verification/update20/run-package-seal.mjs",
 ]);
+for (const name of [...CANONICAL_JSON, "SHA256SUMS.txt"]) {
+  exactAllowed.add(`${CANONICAL_PREFIX}${name}`);
+}
 
 const failures = [];
 const baseTree = gitText(["rev-parse", `${BASE_COMMIT}^{tree}`]);
@@ -142,19 +145,50 @@ if ((update16Evidence.productionReferenceImportHits ?? []).length !== 0) {
   failures.push("Update16 authority evidence reports production reference imports");
 }
 
-// After the saved-sum correction, the checked-in canonical corpus itself is the
-// corrected baseline. There must be no further byte-level drift before closure.
+// Package-version bumps refresh deterministic Update 17 provenance metadata.
+function normalizeCanonicalCorpusDocument(document, name) {
+  const copy = structuredClone(document);
+  const packageVersion = copy?.meta?.packageVersion ?? null;
+  if (copy?.meta && typeof copy.meta === "object") delete copy.meta.packageVersion;
+  if (name === "normative-evidence-manifest.json") {
+    for (const row of copy.artifacts ?? []) delete row.deterministicRebuildHash;
+  }
+  return { packageVersion, normalized: JSON.stringify(copy) };
+}
+
 const canonicalBaselineEquality = [];
 for (const name of CANONICAL_JSON) {
   const relativePath = `${CANONICAL_PREFIX}${name}`;
-  const current = await readFile(path.join(ROOT, ...relativePath.split("/")), "utf8");
-  const baseline = requireRun("git", ["show", `${BASE_COMMIT}:${relativePath}`], {
+  const currentText = await readFile(path.join(ROOT, ...relativePath.split("/")), "utf8");
+  const baselineText = requireRun("git", ["show", `${BASE_COMMIT}:${relativePath}`], {
     timeoutMs: 60_000,
     maxBuffer: 64 * 1024 * 1024,
   }).stdout;
-  const exactMatch = current === baseline;
-  canonicalBaselineEquality.push({ path: relativePath, exactMatch });
-  if (!exactMatch) failures.push(`${relativePath} changed since saved-sum correction baseline`);
+  let currentDocument;
+  let baselineDocument;
+  try {
+    currentDocument = JSON.parse(currentText);
+    baselineDocument = JSON.parse(baselineText);
+  } catch (error) {
+    failures.push(`${relativePath} is not valid JSON: ${error.message}`);
+    continue;
+  }
+  const current = normalizeCanonicalCorpusDocument(currentDocument, name);
+  const baseline = normalizeCanonicalCorpusDocument(baselineDocument, name);
+  const packageVersionRefresh = baseline.packageVersion === "1.4.0" && current.packageVersion === NEW_VERSION;
+  const semanticMatch = current.normalized === baseline.normalized;
+  const exactMatch = currentText === baselineText;
+  const accepted = packageVersionRefresh && semanticMatch;
+  canonicalBaselineEquality.push({
+    path: relativePath,
+    exactMatch,
+    baselinePackageVersion: baseline.packageVersion,
+    currentPackageVersion: current.packageVersion,
+    packageVersionRefresh,
+    semanticMatch,
+    accepted,
+  });
+  if (!accepted) failures.push(`${relativePath} changed beyond the permitted packageVersion provenance refresh`);
 }
 
 const artifact = {
@@ -181,7 +215,7 @@ const artifact = {
     actualSha256: releaseScriptSha256,
     match: releaseScriptSha256 === RELEASE_SCRIPT_SHA256,
   },
-  canonicalCorpusPolicy: "The checked-in Update 17 canonical JSON must remain byte-identical to the pinned saved-sum correction baseline before replacement closure evidence is accepted.",
+  canonicalCorpusPolicy: "Update 17 canonical JSON may refresh from packageVersion 1.4.0 to NEW_VERSION only when every semantic field remains identical after removing meta.packageVersion and the manifest deterministicRebuildHash values derived from that version metadata.",
   canonicalBaselineEquality,
   failures,
 };
