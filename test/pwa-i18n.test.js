@@ -65,11 +65,11 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   const requiredCore = [
     "./index.html",
     "./styles.css?v=13-reverse-i18n",
-    "./app.js?v=21-worker-api-sync",
-    "./reverse-ui.js?v=18-unified-i18n",
+    "./app.js?v=22-canonical-names",
+    "./reverse-ui.js?v=19-canonical-names",
     "./reverse-search-controller.js",
     "./calendar-input-conventions.js?v=9-calendar-input-conventions",
-    "./calendar-converters.js?v=8-year-structure",
+    "./calendar-converters.js?v=9-canonical-names",
     "./chinese-calendrica-detour.js",
     "./observer-location.js?v=10-venus-day-boundary",
     "./venus-day-boundary.js?v=10-venus-day-boundary",
@@ -79,17 +79,17 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
     "./engine/pastafari-constraints-client.js",
     "./engine/pastafari-constraints.js",
     "./engine/pastafari-reverse-worker.js",
-    "./i18n/calendar-identifiers.js?v=8-year-structure",
-    "./i18n/registry.js?v=17-unified-i18n",
-    "./i18n/runtime.js?v=17-unified-i18n",
-    "./i18n/locales/en.js?v=16-unified-i18n",
+    "./i18n/calendar-identifiers.js?v=9-canonical-names",
+    "./i18n/registry.js?v=18-canonical-names",
+    "./i18n/runtime.js?v=18-canonical-names",
+    "./i18n/locales/en.js?v=17-canonical-names",
   ];
   assert.deepEqual(coreAssets, requiredCore, "CORE_ASSETS must describe the complete deterministic offline application shell");
   assert.equal(coreAssets.length, 20);
 
   const requiredOptional = [
-    "./manifest.webmanifest?v=8-year-structure",
-    "./icons/icon.svg?v=8-year-structure",
+    "./manifest.webmanifest?v=9-canonical-names",
+    "./icons/icon.svg?v=9-canonical-names",
     "./icons/icon-192.png",
     "./icons/icon-512.png",
   ];
@@ -101,11 +101,11 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   await assertDeclaredAssetsExist(optionalAssets);
 
   const localeAssets = coreAssets.filter((entry) => entry.startsWith("./i18n/locales/"));
-  assert.deepEqual(localeAssets, ["./i18n/locales/en.js?v=16-unified-i18n"]);
+  assert.deepEqual(localeAssets, ["./i18n/locales/en.js?v=17-canonical-names"]);
   assert.equal(LOCALES.length, 72, "PWA accounting expects the current 72 registered locales");
   assert.equal(LOCALES.filter(({ code }) => code !== "en").length, 71, "Every non-English locale is optional/on-demand");
 
-  assert.match(source, /const VERSION = "pastafari-static-pwa-hardening-17-saved-sum";/);
+  assert.match(source, /const VERSION = "pastafari-static-pwa-hardening-18-canonical-names";/);
   assert.match(source, /const RUNTIME_CACHE = "pastafari-runtime-assets";/);
   assert.match(source, /const OPTIONAL_LOCALE_PATH = \/\^\\\/i18n\\\/locales/);
   assert.match(source, /url\.search === LOCALE_REVISION_SEARCH/);
@@ -131,9 +131,9 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   const html = await readFile(path.join(DOCS, "index.html"), "utf8");
   for (const entry of [
     "./styles.css?v=13-reverse-i18n",
-    "./app.js?v=21-worker-api-sync",
-    "./manifest.webmanifest?v=8-year-structure",
-    "./icons/icon.svg?v=8-year-structure",
+    "./app.js?v=22-canonical-names",
+    "./manifest.webmanifest?v=9-canonical-names",
+    "./icons/icon.svg?v=9-canonical-names",
   ]) {
     assert.ok(html.includes(entry), `index.html must request the revisioned asset ${entry}`);
   }
@@ -146,7 +146,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
 test("registry contains only dynamic locale imports", async () => {
   const source = await readFile(path.join(DOCS, "i18n", "registry.js"), "utf8");
   assert.doesNotMatch(source, /^import\s+\w+\s+from\s+["']\.\/locales\//m);
-  const dynamicImports = [...source.matchAll(/import\(["']\.\/locales\/([^"'?]+)\.js\?v=16-unified-i18n["']\)/g)].map((match) => match[1]);
+  const dynamicImports = [...source.matchAll(/import\(["']\.\/locales\/([^"'?]+)\.js\?v=17-canonical-names["']\)/g)].map((match) => match[1]);
   assert.deepEqual(dynamicImports, LOCALES.map(({ code }) => code));
 });
 

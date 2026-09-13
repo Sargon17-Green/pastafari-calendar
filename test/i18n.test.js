@@ -81,7 +81,7 @@ test("canonical English cutlet and month labels match the supplied Scroll termin
   ]);
   assert.deepEqual(MONTHS.map((_, index) => calendarLabel(en, "month", index)), [
     "Clay", "Pomegranate", "Elbow", "Envy", "Eridu", "Toothpaste", "Three Parts of Five",
-    "Karshumab", "Tiger", "Tin", "Mist", "Frankincense", "Spindle", "Rib", "Carob", "Uruk",
+    "Karshumav", "Leopard", "Tin", "Mist", "Frankincense", "Spindle", "Rib", "Carob", "Uruk",
     "Shame", "Camel", "Copper", "Well", "Yolk", "Star", "Honey", "Spleen", "Limestone", "Joy",
     "Fig", "Nineveh", "Frog", "Pitch", "Lamp", "The Closed Door", "Sesame", "Nape", "Silver",
     "Susa", "Storm", "Donkey", "Flour", "Regret", "Babylon", "Tongue", "Flax", "Salt", "Pear",

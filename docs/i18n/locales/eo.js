@@ -270,8 +270,8 @@ export default Object.freeze({
     }),
     months: Object.freeze({
       clay: "Argilo", pomegranate: "Granato", elbow: "Kubuto", envy: "Envio", eridu: "Eridu",
-      toothpaste: "Dentopasto", threePartsOfFive: "Tri partoj de kvin", karshumab: "Karshumab",
-      tiger: "Tigro", tin: "Stano", mist: "Nebulo", frankincense: "Olibano", spindle: "Ŝpinilo",
+      toothpaste: "Dentopasto", threePartsOfFive: "Tri partoj de kvin", karshumav: "Karshumav",
+      leopard: "Leopardo", tin: "Stano", mist: "Nebulo", frankincense: "Olibano", spindle: "Ŝpinilo",
       rib: "Ripo", carob: "Karobo", uruk: "Uruk", shame: "Honto", camel: "Kamelo", copper: "Kupro",
       well: "Puto", yolk: "Ovoflavo", star: "Stelo", honey: "Mielo", spleen: "Lieno", limestone: "Kalkŝtono",
       joy: "Ĝojo", fig: "Figo", nineveh: "Ninevo", frog: "Rano", pitch: "Peĉo", lamp: "Lampo",

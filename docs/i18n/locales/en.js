@@ -274,8 +274,8 @@ export default Object.freeze({
     }),
     months: Object.freeze({
       clay: "Clay", pomegranate: "Pomegranate", elbow: "Elbow", envy: "Envy", eridu: "Eridu",
-      toothpaste: "Toothpaste", threePartsOfFive: "Three Parts of Five", karshumab: "Karshumab",
-      tiger: "Tiger", tin: "Tin", mist: "Mist", frankincense: "Frankincense", spindle: "Spindle",
+      toothpaste: "Toothpaste", threePartsOfFive: "Three Parts of Five", karshumav: "Karshumav",
+      leopard: "Leopard", tin: "Tin", mist: "Mist", frankincense: "Frankincense", spindle: "Spindle",
       rib: "Rib", carob: "Carob", uruk: "Uruk", shame: "Shame", camel: "Camel", copper: "Copper",
       well: "Well", yolk: "Yolk", star: "Star", honey: "Honey", spleen: "Spleen", limestone: "Limestone",
       joy: "Joy", fig: "Fig", nineveh: "Nineveh", frog: "Frog", pitch: "Pitch", lamp: "Lamp",

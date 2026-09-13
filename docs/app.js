@@ -5,7 +5,7 @@ import {
   calendarDateToJdn,
   getCalendarDefinition,
   jdnToGregorian,
-} from "./calendar-converters.js?v=8-year-structure";
+} from "./calendar-converters.js?v=9-canonical-names";
 import {
   calendarMonthChoices,
   normalizeCalendarInputValues,
@@ -17,7 +17,7 @@ import {
   loadLocale,
   messageTemplate,
   translate,
-} from "./i18n/registry.js?v=17-unified-i18n";
+} from "./i18n/registry.js?v=18-canonical-names";
 import {
   KISURRA_OBSERVER,
   requestObserverLocation,
@@ -25,14 +25,14 @@ import {
   watchObserverPermission,
 } from "./observer-location.js?v=10-venus-day-boundary";
 import { currentDayAt } from "./venus-day-boundary.js?v=10-venus-day-boundary";
-import { createReverseSearchUi } from "./reverse-ui.js?v=18-unified-i18n";
+import { createReverseSearchUi } from "./reverse-ui.js?v=19-canonical-names";
 import {
   applyDocumentLocale,
   persistLanguage,
   populateLanguageSelector,
   resolveBrowserLocale,
   urlWithLanguage,
-} from "./i18n/runtime.js?v=17-unified-i18n";
+} from "./i18n/runtime.js?v=18-canonical-names";
 
 
 const ASSET_REVISION = "9-worker-api-sync";

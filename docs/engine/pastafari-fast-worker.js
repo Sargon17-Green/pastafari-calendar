@@ -11,7 +11,7 @@ import {
 import {
   cutletIndexFromInternalName,
   monthIndexFromInternalName,
-} from "../i18n/calendar-identifiers.js?v=8-year-structure";
+} from "../i18n/calendar-identifiers.js?v=9-canonical-names";
 
 const FAST_MODULE_URL = new URL("./pastafari-calendar-fast.js", import.meta.url);
 const MAX_RANGE_DAYS = 18_000;

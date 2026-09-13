@@ -1,6 +1,6 @@
 "use strict";
 
-const VERSION = "pastafari-static-pwa-hardening-17-saved-sum";
+const VERSION = "pastafari-static-pwa-hardening-18-canonical-names";
 const CORE_CACHE = `${VERSION}-core`;
 const RUNTIME_CACHE = "pastafari-runtime-assets";
 const CACHE_PREFIX = "pastafari-static-";
@@ -10,11 +10,11 @@ const CACHE_PREFIX = "pastafari-static-";
 const CORE_ASSETS = [
   "./index.html",
   "./styles.css?v=13-reverse-i18n",
-  "./app.js?v=21-worker-api-sync",
-  "./reverse-ui.js?v=18-unified-i18n",
+  "./app.js?v=22-canonical-names",
+  "./reverse-ui.js?v=19-canonical-names",
   "./reverse-search-controller.js",
   "./calendar-input-conventions.js?v=9-calendar-input-conventions",
-  "./calendar-converters.js?v=8-year-structure",
+  "./calendar-converters.js?v=9-canonical-names",
   "./chinese-calendrica-detour.js",
   "./observer-location.js?v=10-venus-day-boundary",
   "./venus-day-boundary.js?v=10-venus-day-boundary",
@@ -24,15 +24,15 @@ const CORE_ASSETS = [
   "./engine/pastafari-constraints-client.js",
   "./engine/pastafari-constraints.js",
   "./engine/pastafari-reverse-worker.js",
-  "./i18n/calendar-identifiers.js?v=8-year-structure",
-  "./i18n/registry.js?v=17-unified-i18n",
-  "./i18n/runtime.js?v=17-unified-i18n",
-  "./i18n/locales/en.js?v=16-unified-i18n"
+  "./i18n/calendar-identifiers.js?v=9-canonical-names",
+  "./i18n/registry.js?v=18-canonical-names",
+  "./i18n/runtime.js?v=18-canonical-names",
+  "./i18n/locales/en.js?v=17-canonical-names"
 ];
 
 const OPTIONAL_ASSETS = Object.freeze([
-  "./manifest.webmanifest?v=8-year-structure",
-  "./icons/icon.svg?v=8-year-structure",
+  "./manifest.webmanifest?v=9-canonical-names",
+  "./icons/icon.svg?v=9-canonical-names",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
 ]);

@@ -5,14 +5,14 @@ import {
   calendarDateToJdn,
   getCalendarDefinition,
   jdnToGregorian,
-} from "./calendar-converters.js?v=8-year-structure";
+} from "./calendar-converters.js?v=9-canonical-names";
 import {
   calendarMonthChoices,
   normalizeCalendarInputValues,
   usesTextualCalendarNumeral,
 } from "./calendar-input-conventions.js?v=9-calendar-input-conventions";
-import { CUTLETS, MONTHS } from "./i18n/calendar-identifiers.js?v=8-year-structure";
-import { calendarLabel, translate } from "./i18n/registry.js?v=17-unified-i18n";
+import { CUTLETS, MONTHS } from "./i18n/calendar-identifiers.js?v=9-canonical-names";
+import { calendarLabel, translate } from "./i18n/registry.js?v=18-canonical-names";
 import {
   ReverseSearchController,
   advancedReverseProblem,

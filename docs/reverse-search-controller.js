@@ -1,6 +1,6 @@
 "use strict";
 
-import { CUTLETS, MONTHS } from "./i18n/calendar-identifiers.js?v=8-year-structure";
+import { CUTLETS, MONTHS } from "./i18n/calendar-identifiers.js?v=9-canonical-names";
 import { PastafariConstraintClient, SAME_AS_TARGET } from "./engine/pastafari-constraints-client.js";
 
 const cutletById = new Map(CUTLETS.map((entry) => [entry.id, entry]));

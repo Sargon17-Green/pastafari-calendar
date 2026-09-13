@@ -4,7 +4,7 @@ import {
   calendarDateToJdn,
   gregorianToJdn,
   jdnToGregorian,
-} from "./calendar-converters.js?v=8-year-structure";
+} from "./calendar-converters.js?v=9-canonical-names";
 
 const HEBREW_VALUES = Object.freeze({
   "א": 1n,

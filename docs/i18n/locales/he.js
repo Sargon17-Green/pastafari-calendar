@@ -274,8 +274,8 @@ export default Object.freeze({
     }),
     months: Object.freeze({
       clay: "טין", pomegranate: "רימון", elbow: "מרפק", envy: "קנאה", eridu: "ארידו",
-      toothpaste: "משחת־שיניים", threePartsOfFive: "שלושה חלקים מחמישה", karshumab: "כַּרְשׁוּמַב",
-      tiger: "נמר", tin: "בדיל", mist: "ערפל", frankincense: "לבונה", spindle: "כישור",
+      toothpaste: "משחת־שיניים", threePartsOfFive: "שלושה חלקים מחמישה", karshumav: "כַּרְשׁוּמַב",
+      leopard: "נמר", tin: "בדיל", mist: "ערפל", frankincense: "לבונה", spindle: "כישור",
       rib: "צלע", carob: "חרוב", uruk: "אורוק", shame: "בושה", camel: "גמל", copper: "נחושת",
       well: "באר", yolk: "חלמון", star: "כוכב", honey: "דבש", spleen: "טחול", limestone: "אבן־גיר",
       joy: "שמחה", fig: "תאנה", nineveh: "נינוה", frog: "צפרדע", pitch: "זפת", lamp: "נר",
