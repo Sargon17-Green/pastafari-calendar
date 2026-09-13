@@ -14,6 +14,7 @@ const BASE_COMMIT = "4dac16315dcecc9d45aeb264eaa1bceed038fddc";
 const AUDITED_TREE = "26f7dd377dc9c123717cea247303199f3bc68e72";
 const NEW_VERSION = "1.4.1";
 const RELEASE_SCRIPT_SHA256 = "c805f84e803ac101a660cb6315a4d12c742a56937b2422515ad3dbea158f841c";
+const RELEASE_VERIFICATION_WORKFLOW_SHA256 = "1728af7335f058006c3eb896d16c69d20032f1e6b09f5190e1e8873dd94da425";
 const EXPECTED_HASHES = Object.freeze({
   scroll: ["sources/מגילת העיתים.md", "d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96"],
   reference: ["verification/reference-oracle/reference.mjs", "21c103d3540eb5481445a190cef98f2628de7eb90b7240879fede0d519cf4a95"],
@@ -42,6 +43,7 @@ const CANONICAL_PREFIX = "verification/update17/generated/";
 // explicitly before closure evidence is accepted.
 const exactAllowed = new Set([
   ".github/workflows/benchmark.yml",
+  ".github/workflows/release-verification.yml",
   "SHA256SUMS.txt",
   "test/year-ceiling-detour.test.js",
   "verification/update20/check-release-scope.mjs",
@@ -111,6 +113,10 @@ for (const [name, [relativePath, expected]] of Object.entries(EXPECTED_HASHES)) 
 const releaseScriptSha256 = await sha256File("scripts/release.mjs");
 if (releaseScriptSha256 !== RELEASE_SCRIPT_SHA256) {
   failures.push(`release infrastructure drift: scripts/release.mjs ${releaseScriptSha256} != ${RELEASE_SCRIPT_SHA256}`);
+}
+const releaseVerificationWorkflowSha256 = await sha256File(".github/workflows/release-verification.yml");
+if (releaseVerificationWorkflowSha256 !== RELEASE_VERIFICATION_WORKFLOW_SHA256) {
+  failures.push(`release verification workflow drift: ${releaseVerificationWorkflowSha256} != ${RELEASE_VERIFICATION_WORKFLOW_SHA256}`);
 }
 
 const update13Evidence = JSON.parse(await readFile(path.join(ROOT, "artifacts/update-13-standalone-firewall.json"), "utf8"));
@@ -215,6 +221,12 @@ const artifact = {
     expectedSha256: RELEASE_SCRIPT_SHA256,
     actualSha256: releaseScriptSha256,
     match: releaseScriptSha256 === RELEASE_SCRIPT_SHA256,
+  },
+  releaseVerificationWorkflow: {
+    path: ".github/workflows/release-verification.yml",
+    expectedSha256: RELEASE_VERIFICATION_WORKFLOW_SHA256,
+    actualSha256: releaseVerificationWorkflowSha256,
+    match: releaseVerificationWorkflowSha256 === RELEASE_VERIFICATION_WORKFLOW_SHA256,
   },
   canonicalCorpusPolicy: "Update 17 canonical JSON may refresh from packageVersion 1.4.0 to NEW_VERSION only when every semantic field remains identical after removing meta.packageVersion and the manifest deterministicRebuildHash values derived from that version metadata.",
   canonicalBaselineEquality,
