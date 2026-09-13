@@ -328,9 +328,9 @@ export function assertNodeEngineSupported(engine, nodeVersion = process.versions
 
 export function validateTagVersion(tag, version) {
   if (tag === undefined || tag === null || tag === "") return { checked: false };
-  const expected = `v${version}`;
-  if (tag !== expected) {
-    throw new Error(`Tag/package version mismatch: tag=${tag}, expected=${expected}.`);
+  const accepted = new Set([version, `v${version}`]);
+  if (!accepted.has(tag)) {
+    throw new Error(`Tag/package version mismatch: tag=${tag}, expected=${version} or v${version}.`);
   }
   return { checked: true, tag, version };
 }

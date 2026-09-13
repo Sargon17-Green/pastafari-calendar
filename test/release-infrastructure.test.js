@@ -122,7 +122,12 @@ test("reproducibility comparison rejects different bytes from two builds", () =>
   );
 });
 
-test("tag validation rejects a package version mismatch", () => {
+test("tag validation accepts repository and v-prefixed forms and rejects a version mismatch", () => {
+  assert.deepEqual(validateTagVersion("1.3.0", "1.3.0"), {
+    checked: true,
+    tag: "1.3.0",
+    version: "1.3.0",
+  });
   assert.deepEqual(validateTagVersion("v1.3.0", "1.3.0"), {
     checked: true,
     tag: "v1.3.0",

@@ -16,7 +16,7 @@ const artifact = {
   schema: "pastafari.update20.browser-worker-standalone-seal.v1",
   generatedAt: new Date().toISOString(),
   status: failures.length ? "FAIL" : "PASS",
-  packageVersion: "1.4.0",
+  packageVersion: "1.4.1",
   sourceAudit: source,
   hashes: {
     browserFast: await sha256File("browser/pastafari-calendar-fast.js"),

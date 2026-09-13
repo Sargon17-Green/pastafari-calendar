@@ -35,6 +35,7 @@ function runCapture(command, args, { cwd = ROOT, timeoutMs = DEFAULT_TIMEOUT_MS,
       env,
       stdio: ["ignore", "pipe", "pipe"],
       windowsHide: true,
+      shell: process.platform === "win32" && /(?:^|[\/])npm(?:\.cmd)?$/iu.test(command),
     });
     let stdout = "";
     let stderr = "";

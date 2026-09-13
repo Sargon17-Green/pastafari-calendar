@@ -211,7 +211,7 @@ async function checkFactClaims(root, facts, issues) {
 
   const browserReadme = await readOptional(root, "browser/README.md");
   if (browserReadme !== null) {
-    const versionMatch = browserReadme.match(/לדוגמה\s+`v([0-9]+\.[0-9]+\.[0-9]+)`/u);
+    const versionMatch = browserReadme.match(/לדוגמה\s+`v?([0-9]+\.[0-9]+\.[0-9]+)`/u);
     if (versionMatch && versionMatch[1] !== facts.packageVersion) {
       issues.push(issue("browser/README.md", `release example documents v${versionMatch[1]}; package.json version is ${facts.packageVersion}.`, "package.json (version)"));
     }

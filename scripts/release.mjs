@@ -86,6 +86,7 @@ function run(command, args, {
       env,
       windowsHide: true,
       stdio: capture ? ["ignore", "pipe", "pipe"] : "inherit",
+      shell: process.platform === "win32" && (command === "npm" || command === "npx"),
     });
     let stdout = "";
     let stderr = "";

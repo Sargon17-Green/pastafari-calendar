@@ -19,7 +19,7 @@ concurrency:
 
 env:
   UPDATE20_BASE_COMMIT: 9b5ebf1d3e383a9345df8a5d8b12333df447f7ad
-  UPDATE20_VERSION: 1.4.0
+  UPDATE20_VERSION: 1.4.1
 
 jobs:
   scope:
@@ -181,7 +181,7 @@ jobs:
             if (( attempt == 3 )); then exit "$status"; fi
             sleep $((attempt * 20))
           done
-      - run: npm run release:verify -- --tag v1.4.0
+      - run: npm run release:verify -- --tag 1.4.1
       - run: node verification/update20/run-package-seal.mjs
       - name: Upload exact release/package evidence
         if: always()

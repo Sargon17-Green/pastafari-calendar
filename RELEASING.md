@@ -20,7 +20,7 @@ This repository has one authoritative release-preparation path. It prepares and 
 5. Commit the reviewed release candidate.
 6. From the clean committed tree, run `npm run release:verify`.
 7. Ensure the repository's ordinary CI is green as well, including the separate visual, checkpoint, minimum-Node, performance-regression, and independent-implementation jobs that are intentionally not duplicated by the local release verifier.
-8. Create/push a tag or publish only as a separate deliberate operation. The optional release CLI tag check accepts `v<package.json version>`.
+8. Create/push a tag or publish only as a separate deliberate operation. The optional release CLI tag check accepts either `<package.json version>` or `v<package.json version>`.
 9. Perform npm/GitHub Release/Pages publication separately under the existing project policy.
 10. After publication, smoke-check the public npm package and deployed Pages site.
 

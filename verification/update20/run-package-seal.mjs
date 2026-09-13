@@ -49,7 +49,7 @@ const temp = await mkdtemp(path.join(tmpdir(), "pastafari-u20-pack-"));
 try {
   const a = await pack(path.join(temp, "a"));
   const b = await pack(path.join(temp, "b"));
-  const expectedFilename = "pastafari-calendar-1.4.0.tgz";
+  const expectedFilename = "pastafari-calendar-1.4.1.tgz";
   const inventoryMatches = JSON.stringify(a.contents) === JSON.stringify(expectedContents) && JSON.stringify(b.contents) === JSON.stringify(expectedContents);
   let payloadEqual = true;
   let payloadDifferenceCount = 0;
@@ -65,7 +65,7 @@ try {
     schema: "pastafari.update20.package-seal.v1",
     status,
     oldVersion: "1.3.0",
-    newVersion: "1.4.0",
+    newVersion: "1.4.1",
     oldPackageArtifactHash: oldAudit.package.packageHash,
     oldPackageFileCount: expectedContents.length,
     packageArtifactHash: a.sha256,

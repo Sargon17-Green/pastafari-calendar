@@ -28,7 +28,7 @@ const current = {
   fast: moduleInventory(fast),
 };
 const failures = [];
-if (packageJson.version !== "1.4.0") failures.push("package version is not 1.4.0");
+if (packageJson.version !== "1.4.1") failures.push("package version is not 1.4.1");
 for (const key of ["name", "exports", "bin", "scripts"]) {
   if (stable(current.package[key]) !== stable(expected.package[key])) failures.push(`package ${key} changed since Update 19`);
 }

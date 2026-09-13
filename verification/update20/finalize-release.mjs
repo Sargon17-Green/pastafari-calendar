@@ -65,8 +65,8 @@ const closure = {
   postCorrectionBaseCommit,
   finalCommitOrTreeHash: { commit: head, tree },
   oldVersion: "1.3.0",
-  newVersion: "1.4.0",
-  update19EvidenceHash: "4fa7d3e59b261db19291b33c1bc9af54ab3a32fa3fc5921deaf3d6f4da217c365",
+  newVersion: "1.4.1",
+  update19EvidenceHash: "4fa7d3e59b261dbfeda1f163a4f45995cda350dbb0157ac37490b6c0c43e44ed",
   update19EvidenceSemanticAuthority: update19Gate.semanticAuthority ?? "SUPERSEDED_HISTORICAL_PROVENANCE_ONLY",
   scrollHash: await sha256File("sources/מגילת העיתים.md"),
   referenceHash: await sha256File("verification/reference-oracle/reference.mjs"),
@@ -109,7 +109,7 @@ updates.push({
 });
 await writeJson("UPDATE-SERIES-CLOSED.json", { schema: "pastafari.update20.series-closed.v1", status: releaseStatus === "RELEASE_READY" ? "PASS" : "FAIL", canonicalSemantics: "saved-sum", updates });
 
-const report = `# Update 20 — Final Release Closure\n\nStatus: **${releaseStatus}**\n\n- legacy release base commit: \`${legacyReleaseBaseCommit}\`\n- saved-sum correction baseline: \`${postCorrectionBaseCommit}\`\n- canonical semantics: \`${closure.canonicalSemantics}\`\n- old version: \`1.3.0\`\n- new version: \`1.4.0\`\n- Update 19 evidence: \`sha256:${closure.update19EvidenceHash}\` (${closure.update19EvidenceSemanticAuthority})\n- seal holdout mismatches: \`${closure.sealHoldoutMismatches}\`\n- API compatibility: \`${closure.apiCompatibilityStatus}\`\n- blockers: ${blockers.length}\n\n${blockers.length ? blockers.map((b) => `- ${b}`).join("\n") : "All required post-correction saved-sum release-closure gates passed."}\n`;
+const report = `# Update 20 — Final Release Closure\n\nStatus: **${releaseStatus}**\n\n- legacy release base commit: \`${legacyReleaseBaseCommit}\`\n- saved-sum correction baseline: \`${postCorrectionBaseCommit}\`\n- canonical semantics: \`${closure.canonicalSemantics}\`\n- old version: \`1.3.0\`\n- new version: \`1.4.1\`\n- Update 19 evidence: \`sha256:${closure.update19EvidenceHash}\` (${closure.update19EvidenceSemanticAuthority})\n- seal holdout mismatches: \`${closure.sealHoldoutMismatches}\`\n- API compatibility: \`${closure.apiCompatibilityStatus}\`\n- blockers: ${blockers.length}\n\n${blockers.length ? blockers.map((b) => `- ${b}`).join("\n") : "All required post-correction saved-sum release-closure gates passed."}\n`;
 await writeFile(path.join(OUT_DIR, "report.md"), report, "utf8");
 
 const evidenceNames = ["FINAL-RELEASE-CLOSURE.json", "UPDATE-SERIES-CLOSED.json", "report.md"];

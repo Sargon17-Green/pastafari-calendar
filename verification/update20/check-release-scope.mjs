@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 "use strict";
 
+import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { gitText, requireRun, sha256File, writeJson, ROOT } from "./lib.mjs";
@@ -11,8 +12,8 @@ import { gitText, requireRun, sha256File, writeJson, ROOT } from "./lib.mjs";
 const LEGACY_RELEASE_BASE_COMMIT = process.env.UPDATE20_BASE_COMMIT || "9b5ebf1d3e383a9345df8a5d8b12333df447f7ad";
 const BASE_COMMIT = "4dac16315dcecc9d45aeb264eaa1bceed038fddc";
 const AUDITED_TREE = "26f7dd377dc9c123717cea247303199f3bc68e72";
-const NEW_VERSION = "1.4.0";
-const RELEASE_SCRIPT_SHA256 = "127b7115b2a9bffce4db45437d0530b419e2f7ee577ac298d3428041a1f6f8e5";
+const NEW_VERSION = "1.4.1";
+const RELEASE_SCRIPT_SHA256 = "c805f84e803ac101a660cb6315a4d12c742a56937b2422515ad3dbea158f841c";
 const EXPECTED_HASHES = Object.freeze({
   scroll: ["sources/מגילת העיתים.md", "d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96"],
   reference: ["verification/reference-oracle/reference.mjs", "21c103d3540eb5481445a190cef98f2628de7eb90b7240879fede0d519cf4a95"],
@@ -47,6 +48,32 @@ const exactAllowed = new Set([
   "verification/update20/check-update19-evidence.mjs",
   "verification/update20/finalize-release.mjs",
   "verification/update20/run-version-propagation.mjs",
+  "verification/update20/lib.mjs",
+  ".github/workflows/update-20-release-closure.yml",
+  "RELEASE-NOTES-1.4.1.md",
+  "artifacts/update16/oracle-authority-audit.json",
+  "RELEASING.md",
+  "browser/README.md",
+  "browser/standalone/pastafari-date.js",
+  "browser/standalone/pastafari-date.min.js",
+  "docs/DOCUMENTATION-CONSISTENCY.md",
+  "docs/SHA256SUMS.txt",
+  "docs/engine/pastafari-calendar-fast.js",
+  "docs/engine/pastafari-constraints-client.js",
+  "docs/engine/pastafari-constraints.js",
+  "docs/engine/pastafari-reverse-worker.js",
+  "docs/manifest.webmanifest",
+  "package-lock.json",
+  "package.json",
+  "scripts/check-package.mjs",
+  "scripts/docs-consistency.mjs",
+  "scripts/release-lib.mjs",
+  "scripts/release.mjs",
+  "test/release-infrastructure.test.js",
+  "verification/pwa-cache-state.json",
+  "verification/update20/run-api-compatibility.mjs",
+  "verification/update20/run-browser-seal.mjs",
+  "verification/update20/run-package-seal.mjs",
 ]);
 
 const failures = [];
@@ -67,7 +94,7 @@ const packageJson = JSON.parse(await readFile(path.join(ROOT, "package.json"), "
 const packageLock = JSON.parse(await readFile(path.join(ROOT, "package-lock.json"), "utf8"));
 if (packageJson.version !== NEW_VERSION) failures.push(`package.json version ${packageJson.version} != ${NEW_VERSION}`);
 if (packageLock.version !== NEW_VERSION || packageLock.packages?.[""]?.version !== NEW_VERSION) {
-  failures.push("package-lock root version does not match 1.4.0");
+  failures.push("package-lock root version does not match 1.4.1");
 }
 
 const hashes = {};
@@ -86,10 +113,21 @@ const update13Evidence = JSON.parse(await readFile(path.join(ROOT, "artifacts/up
 if (update13Evidence.schema !== "pastafari-update13-standalone-firewall-v1" || update13Evidence.status !== "PASS") {
   failures.push("Update13 standalone firewall evidence is not PASS");
 }
+function stripStandaloneReleaseBanner(source) {
+  return source.replace(/^\/\*![^\n]*\*\/\r?\n/u, "");
+}
 for (const row of update13Evidence.files ?? []) {
-  const actual = await sha256File(row.file);
-  if (actual !== row.sha256 || row.pass !== true || !Object.values(row.markers ?? {}).every(Boolean)) {
-    failures.push(`Update13 standalone evidence drift: ${row.file}`);
+  const current = await readFile(path.join(ROOT, row.file), "utf8");
+  const baseline = requireRun("git", ["show", `${BASE_COMMIT}:${row.file}`], {
+    timeoutMs: 60_000,
+    maxBuffer: 64 * 1024 * 1024,
+  }).stdout;
+  const baselineHash = createHash("sha256").update(Buffer.from(baseline)).digest("hex");
+  const evidenceHashMatchesBaseline = baselineHash === row.sha256;
+  const bodyMatchesBaseline = stripStandaloneReleaseBanner(current) === stripStandaloneReleaseBanner(baseline);
+  const markersPresent = (update13Evidence.requiredMarkers ?? []).every((marker) => current.includes(marker));
+  if (!evidenceHashMatchesBaseline || !bodyMatchesBaseline || !markersPresent || row.pass !== true || !Object.values(row.markers ?? {}).every(Boolean)) {
+    failures.push(`Update13 standalone evidence/body drift: ${row.file}`);
   }
 }
 
