@@ -14,7 +14,7 @@ const BASE_COMMIT = "4dac16315dcecc9d45aeb264eaa1bceed038fddc";
 const AUDITED_TREE = "26f7dd377dc9c123717cea247303199f3bc68e72";
 const NEW_VERSION = "1.4.1";
 const RELEASE_SCRIPT_SHA256 = "c805f84e803ac101a660cb6315a4d12c742a56937b2422515ad3dbea158f841c";
-const RELEASE_VERIFICATION_WORKFLOW_SHA256 = "1728af7335f058006c3eb896d16c69d20032f1e6b09f5190e1e8873dd94da425";
+const RELEASE_VERIFICATION_WORKFLOW_SHA256 = "cbd181462c0621c4ee5f8f18655582ddd2076f2ae8832b3c29f8efc5c79de07f";
 const EXPECTED_HASHES = Object.freeze({
   scroll: ["sources/מגילת העיתים.md", "d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96"],
   reference: ["verification/reference-oracle/reference.mjs", "21c103d3540eb5481445a190cef98f2628de7eb90b7240879fede0d519cf4a95"],

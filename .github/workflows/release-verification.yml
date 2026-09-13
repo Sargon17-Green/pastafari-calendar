@@ -20,7 +20,7 @@ jobs:
       - run: npm run security:supply-chain
       - name: Exclude installed dependencies from release-tree cleanliness
         shell: bash
-        run: printf 'node_modules/\\n' >> .git/info/exclude
+        run: printf 'node_modules/\n' >> .git/info/exclude
       - run: npm ci
       - run: ./node_modules/.bin/playwright install --with-deps chromium firefox
       - name: Verify release candidate without publishing
