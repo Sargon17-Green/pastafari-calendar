@@ -3,6 +3,8 @@ name: Update 8 Stage 7 Router Fix Rebuild
 on:
   workflow_dispatch:
   push:
+    branches:
+      - main
     paths:
       - browser/pastafari-calendar-router-core.js
       - test/router-concurrency.test.js
