@@ -9,7 +9,9 @@ import {
   HebrewDate,
   ChineseDate,
   IslamicCivilDate,
+  M,
   PastafariCalendar,
+  ResponseCycle,
   SakaDate,
   MonthWeavingCounter,
   comb,
@@ -31,7 +33,9 @@ import { installYearCeilingDetourDetour } from "./year-ceiling-detour-detour.js"
 import { installYearCeilingDetourDetourDetour } from "./year-ceiling-detour-detour-detour.js";
 import { installAuthoritativeCacheEpochDetour } from "./cache-epoch-detour.js";
 import { installMonthWeavingGhostDetour } from "./month-weaving-domain-detour.js";
+import { installMonsterShortSelectionInfeasibleWorkDetour } from "./short-selection-infeasible-work-detour.js";
 
+installMonsterShortSelectionInfeasibleWorkDetour(ResponseCycle, M);
 installGateDataDetour(GateIndex);
 installYearCeilingDetourDetour(PastafariCalendar, GateIndex);
 installYearCeilingDetourDetourDetour(PastafariCalendar, GateIndex);

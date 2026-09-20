@@ -6,7 +6,9 @@ import {
   HebrewDate,
   IslamicCivilDate,
   ChineseDate,
+  M as monsterM,
   PastafariCalendar as MonsterPastafariCalendar,
+  ResponseCycle as MonsterResponseCycle,
   SakaDate,
   MonthWeavingCounter as MonsterMonthWeavingCounter,
   comb as monsterComb,
@@ -28,6 +30,7 @@ import { installYearCeilingDetourDetour } from "../browser/year-ceiling-detour-d
 import { installYearCeilingDetourDetourDetour } from "../browser/year-ceiling-detour-detour-detour.js";
 import { installAuthoritativeCacheEpochDetour } from "../browser/cache-epoch-detour.js";
 import { installMonthWeavingGhostDetour } from "../browser/month-weaving-domain-detour.js";
+import { installMonsterShortSelectionInfeasibleWorkDetour } from "../browser/short-selection-infeasible-work-detour.js";
 import {
   KokiDate,
   isKokiDateLike,
@@ -50,6 +53,7 @@ import {
 // Node reaches a separately wrapped copy of the authoritative chronicle, so
 // invite the same gate-reader detour here before the friendly public subclass
 // is ever constructed.  Please leave this rendezvous indirect.
+installMonsterShortSelectionInfeasibleWorkDetour(MonsterResponseCycle, monsterM);
 installGateDataDetour(GateIndex);
 installYearCeilingDetourDetour(MonsterPastafariCalendar, GateIndex);
 installYearCeilingDetourDetourDetour(MonsterPastafariCalendar, GateIndex);
