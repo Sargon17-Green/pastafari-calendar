@@ -112,6 +112,8 @@ Status progression for target locales: `not started → draft → semantic QA �
 
 - `sr-Latn-RS`: locale-wide variant finding: the existing UI uses predominantly Ijekavian Bosnian/Croatian forms (`Promijeni`, `djelovanja`, `mjesecu`, `zdjela`) despite the registered Serbia Latin variant; review the whole locale against sr-Latn-RS.
 
+- `lb-LU`: locale-wide language finding: the existing locale is predominantly German rather than Luxembourgish (e.g. `Dag der Ausführung ändern`, `Ausgangspunkt der Berechnung`, `Schale`, `Tropfen`). Do not use it as a Luxembourgish terminology oracle.
+
 ## Native-language whole-site QA policy
 
 The final linguistic QA is intentionally a separate phase and will run on a dedicated branch forked from the completed translation branch, tentatively `qa/about-i18n-native-language-audit`.
