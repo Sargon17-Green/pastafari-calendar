@@ -1,0 +1,331 @@
+<!-- Lietuviška versija parašyta tiesiogiai pagal hebrajišką semantinį pagrindą, nenaudojant tarpinės kalbos. -->
+<!-- Skirsnių ID yra stabilios viešų giliųjų nuorodų sutarties dalis ir nėra kuriami iš išverstų antraščių. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>Šios svetainės pasakojime Pastafari kalendorius pateikiamas kaip kalendorius, kuriame buvo sukurtas pats laikas. Tačiau jo veikimo mechanizmas apibrėžtas tiksliai.</p>
+  <p>Šis kalendorius nepriskiria kiekvienai dienai vienos nekintamos Pastafari „etiketės“. Norint sužinoti datą, reikia dviejų dienų: <strong>veikimo dienos</strong>, nuo kurios pradedamas skaičiavimas, ir <strong>užklaustos dienos</strong>, kurios Pastafari datą norime nustatyti.</p>
+  <p>Jei veikimo dieną žymime <code>c</code>, o užklaustą dieną — <code>t</code>, data yra</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>o ne <code>F(t)</code>. Todėl ta pati užklausta diena gali turėti kitokią Pastafari datą, jei pakeičiama veikimo diena.</p>
+  <p>Tai ne klaida. Taip kalendorius ir apibrėžtas.</p><hr>
+</div>
+
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>Iš ko sudaryta Pastafari data?</h2>
+  <p>Ji turi <strong>tiksliai penkias dalis</strong>: metų numerį, kotleto pavadinimą, dieną kotlete, mėnesio pavadinimą ir dieną mėnesyje.</p>
+  <p>Bendras pavyzdys: <strong>5000 metai, kotletas A, 417 diena kotlete, mėnuo B, 83 diena mėnesyje.</strong></p>
+  <p>Veikimo diena, stebėtojo vieta, chronologinė dienos tapatybė ar kiti techniniai duomenys gali būti rodomi šalia datos, bet jie nėra šeštasis datos laukas.</p><hr>
+</section>
+
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>Kodėl reikalinga veikimo diena?</h2>
+  <p>Įprastuose kalendoriuose natūralu manyti, kad data tarsi „priklauso“ pačiai dienai. Pastafari kalendoriuje data priklauso nuo dviejų dienų santykio.</p>
+  <p>Pakeisti <code>t</code> reiškia paklausti apie kitą dieną. Pakeisti <code>c</code> gali reikšti daug daugiau: gali pasikeisti metų ribos, kotletai, mėnesiai, jų pavadinimai ir tai, kaip mėnesiai persipina tarpusavyje.</p>
+  <p>Todėl šiandien apskaičiuotas almanachas nebūtinai bus teisingas rytoj. Taip kartu išvengiame nemalonios padėties, kai atspausdintas kalendorius išlieka naudingas visus metus.</p><hr>
+</section>
+
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>Ta pati diena, kita data</h2>
+  <p>Reikia aiškiai atskirti <strong>dienos tapatybę</strong> nuo jos <strong>Pastafari pateikimo</strong>. Pirmoji yra pastovi konkrečios dienos vieta laiko ašyje; antrasis — penkių reikšmių rinkinys, gaunamas tą dieną pateikiant pagal tam tikrą veikimo dieną.</p>
+  <p>Produkte ir API pirmąją galima laikyti <code>day-id</code>: chronologine tapatybe, kuri nepasikeičia keičiant pateikimą. Tačiau</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre>
+  <p>ir</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>nebūtinai sutampa.</p>
+  <p>Taigi rankiniu būdu pakeitus veikimo dieną gali pasikeisti tai pačiai dienai rodoma Pastafari data, nors pati diena laiko ašyje niekur nepasislenka.</p>
+  <p>Tas pats principas galioja įvykiams. Susitikimas, gimimas ar istorinis įvykis turi likti susietas su pastovia chronologine tapatybe; jo Pastafari data gali būti perskaičiuojama pagal rodymo kontekstą.</p>
+  <p>Etiketė gali keistis. Įvykis — ne.</p><hr>
+</section>
+
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>5000 metai</h2>
+  <p>Kai veikimo diena ir užklausta diena sutampa,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>metų numeris visada yra</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>Kitaip tariant, dabartis, žiūrint iš jos pačios perspektyvos, visada yra 5000 metais. Tačiau 5000 metai nėra nekintamas istorinis laikotarpis; jie kaskart parenkami iš naujo veikimo dienos atžvilgiu.</p>
+  <p>Pati veikimo diena yra 5000 metais, kaip ir kitos tos pačios parinktos metų struktūros dienos. Todėl <strong>vien buvimas 5000 metais neįrodo, kad <code>t=c</code>.</strong></p>
+  <p>Vis dėlto metų numeris nurodo kryptį:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre>
+  <p>ir</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p>Taip pat yra <strong>0 metai</strong>; dar toliau į praeitį randami metai su neigiamais numeriais.</p><hr>
+</section>
+
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>Metai ir vartai</h2>
+  <p>Pastafari metai gali turėti nuo</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ iki }5778</code></pre>
+  <p>dienų. Tai kanoninės sistemos ribos, o ne empiriniai vidurkiai.</p>
+  <p>Taigi metai gali būti trumpesni už Saulės metus arba ilgesni nei penkiolika Saulės metų. Metų ribos sudaromos iš <strong>vartų</strong> sistemos; kotletų ribos kyla iš tos pačios sistemos.</p>
+  <p>Metų pabaiga neprivalo sutapti su sezonu, vienu Žemės apsisukimu aplink Saulę, Mėnulio ciklu ar praktiniu noru, kad metai pagaliau baigtųsi.</p><hr>
+</section>
+
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>Kotletai</h2>
+  <p>Kiekvieni metai skirstomi į <strong>6–17 kotletų</strong>. Kotletas yra chronologiškai ištisinis laiko segmentas.</p>
+  <p>Jei šiandien yra 250 kotleto diena, rytoj bus 251 tos pačios kotleto diena, nebent šiandien yra jo paskutinė diena. Kotletų ribos yra vartai, o viename kotlete yra mažiausiai</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
+  <p>dienos.</p>
+  <p>Sistema turi 17 kanoninių kotletų pavadinimų ir nė vienas pavadinimas tais pačiais metais nepasikartoja. Pavadinimas nenustato kotleto ilgio ar padėties.</p><hr>
+</section>
+
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>Mėnesiai ir pynimas</h2>
+  <p>Kiekvieni metai turi nuo</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ iki }47</code></pre>
+  <p>struktūrinių mėnesių, o kiekvienam mėnesiui priskiriama nuo</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ iki }123</code></pre>
+  <p>dienų.</p>
+  <p>Tačiau Pastafari mėnuo <strong>nebūtinai yra ištisinis laiko tarpas</strong>. Pavyzdžiui, chronologinė seka gali būti tokia:</p>
+  <blockquote><p>mėnuo A — 14 diena<br>mėnuo B — 9 diena<br>mėnuo A — 15 diena</p></blockquote>
+  <p>Tai visiškai teisėta struktūra. 15 mėnesio A diena yra kita diena <strong>tame mėnesyje</strong>, net jei tarp jų įsiterpia kito mėnesio diena.</p>
+  <p>Todėl „diena mėnesyje“ nėra chronologinių dienų skaičius nuo pirmojo mėnesio pasirodymo. Tai tos dienos eilės numeris tarp visų dienų, priskirtų tam mėnesiui per metus. 48 diena reiškia 48-ą dieną, priklausančią tam mėnesiui, o ne 47 dienas po jo pirmojo pasirodymo.</p><hr>
+</section>
+
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>Mėnesiai persipina</h2>
+  <p>Mėnesius galima įsivaizduoti kaip gijas, einančias per metus. Kiekviena diena priklauso tik vienam mėnesiui; rytoj ji gali priklausyti kitam mėnesiui, o pirmasis mėnuo vėliau gali grįžti ir tęsti numeraciją.</p>
+  <p>Šis pynimas turi taisykles, tarp jų ir ribojimus, susijusius su mėnesių pirmojo ir paskutinio pasirodymo tvarka. Tačiau nėra reikalavimo, kad vienas mėnuo baigtųsi prieš prasidedant kitam.</p>
+  <ul>
+    <li>Kotletas matuoja vietą ištisiniame laiko segmente.</li>
+    <li>Mėnuo reiškia priklausymą struktūrinei gijai, kuri gali išnykti ir vėliau vėl pasirodyti.</li>
+  </ul>
+  <p>Vienas mėnuo gali kirsti kelis kotletus, o viename kotlete gali pasirodyti daug skirtingų mėnesių. Abiejų sistemų pradžios ir pabaigos neprivalo sutapti.</p><hr>
+</section>
+
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>Kita mėnesio diena nebūtinai yra rytoj</h2>
+  <p>Jei šiandien yra 17 tam tikro mėnesio diena, 18 to paties mėnesio diena yra <strong>kitas to mėnesio pasirodymas</strong>. Jis gali būti rytoj, o gali būti ir daug vėliau.</p>
+  <p><strong>Rytoj</strong> reiškia kitą chronologinę dieną; <strong>kita mėnesio diena</strong> reiškia kitą to paties mėnesio pasirodymą.</p>
+  <p>Lygiai taip pat „mėnesio pabaiga“ nereiškia, kad ji chronologiškai arti. 120 dienų turintis mėnuo šiandien gali būti ties 119 diena, o 120 diena gali būti gerokai vėliau tais pačiais metais.</p><hr>
+</section>
+
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>Savaičių nėra</h2>
+  <p>Dabartinė kanoninė specifikacija <strong>neapibrėžia savaičių sistemos</strong>. Nėra kanoninio septynių dienų vieneto, nėra Pastafari savaitės dienų pavadinimų ir nėra taisyklės, kuri leistų dvi dienas laikyti „ta pačia savaitės diena“.</p>
+  <p>Žinoma, civilinę savaičių sistemą galima uždėti iš išorės; ji tiesiog nėra Pastafari datos dalis.</p><hr>
+</section>
+
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>Pavadinimai</h2>
+  <p>Yra 17 kanoninių kotletų pavadinimų ir 47 kanoniniai mėnesių pavadinimai. Tais pačiais metais kiekvienas pavadinimas savo grupėje pasirodo daugiausia vieną kartą.</p>
+  <p>Pavadinimo tapatybė yra kanoninė ir semantinė; ji nėra balsavimo tarp skirtingų rašybų, vertimų ar įgyvendinimų rezultatas. Pavadinimų reikšmės klausimu aukščiausią autoritetą turi hebrajiška Megillah; vertimai ir transliteracijos tėra pateikimo sluoksniai.</p>
+  <p>Pavadinimas taip pat nėra paslėptas ilgio kodas. Joks konkretus kotleto ar mėnesio pavadinimas savaime nepadaro to vieneto ilgesnio ar trumpesnio.</p><hr>
+</section>
+
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>Nedidelis faktas apie mėnesius</h2>
+  <p>Yra 47 mėnesių pavadinimai, o mėnuo gali siekti iki 123 dienos. Taigi sintaksiškai galimų porų „mėnesio pavadinimas + dienos mėnesyje numeris“ yra</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>Kiekviena metų diena realizuoja tiksliai vieną tokią porą. Jei metų ilgis yra <code>L</code>, pasirodo tiksliai <code>L</code> porų. Kadangi</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>kiekvienais metais būtinai trūksta bent</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre>
+  <p>galimų porų. Net ilgiausi metai neturi pakankamai dienų panaudoti visas.</p><hr>
+</section>
+
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>Kaip apskaičiuojamas kalendorius?</h2>
+  <p>Vidinį skaičiavimą čia vadiname <strong>padažu</strong>. Jo centre yra pirminis skaičius</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>Procesas apima penkis įvesties skaitiklius, 7 paslėptus lašus, 46 matomus lašus, 6 dubenis, kintančias dubenų eiles, 12 galutinių maišymų, skirtingų atsakymų antspaudus, kombinatorinius pasirinkimus, vartų sudarymą, metų parinkimą, kotletų skirstymą, pavadinimų parinkimą, mėnesių sudarymą ir mėnesio dienų supynimą.</p>
+  <p>Galutiniai atnaujinimai atliekami <strong>sinchroniškai</strong>: kiekvieno maišymo metu visos šešios naujos reikšmės apskaičiuojamos iš tos pačios senos būsenos, o tik tada visi šeši dubenys pakeičiami iš karto.</p>
+  <p>Per 12 galutinių maišymų yra viena ypač svarbi kanoninė detalė. Jei <code>S</code> yra šešių senų dubenų suma, o <code>r</code> — maišymo numeris, sistema apskaičiuoja</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p><code>R</code> yra <strong>išsaugota suma</strong>. Ir dubenų eiliškumo parinkimas, ir vidinis maišymo atnaujinimas naudoja <code>R</code>, o ne neapdorotą sumą <code>S</code>.</p>
+  <p>Senesnės versijos, kurios į šį atnaujinimą paduodavo neapdorotą sumą, nebeatitinka dabartinės kanoninės semantikos. Pagal senąją taisyklę sudaryti pavyzdžiai laikytini pasenusiais, kol nėra patikrinti iš naujo.</p>
+  <p>Po maišymų atsakymų žiedas taip pat tęsia seką, užrakintą ties 46 matomu lašu; jos negalima automatiškai pakeisti paskutinio maišymo seka.</p><hr>
+</section>
+
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice ir Wide Choice</h2>
+  <p>Santykinai mažose pasirinkimų erdvėse naudojamas <strong>Short Choice</strong>. Jis naudoja rejection sampling, kad išvengtų paprasto modulo šališkumo.</p>
+  <p>Labai didelėse erdvėse naudojamas <strong>Wide Choice</strong>. Jam negalima priskirti savybių, kurių specifikacija negarantuoja.</p>
+  <p>Wide Choice nėra tas pats, kas generuoti nepriklausomus ir tolygiai pasiskirsčiusius bazės <code>Q</code> skaitmenis, kol gaunamas indeksas. Todėl negalima daryti išvados, kad kiekvienas galiojantis pasirinkimas būtinai turi tokią pačią teigiamą tikimybę. Pakankamai didelėse erdvėse gali būti galiojančių pasirinkimų, kurių šis mechanizmas apskritai negali pasiekti.</p>
+  <p>Pats kalendorius išlieka visiškai deterministinis. „Choice“ yra algoritmo etapo pavadinimas, o ne atsitiktinis traukimas naudojimo metu.</p><hr>
+</section>
+
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>Struktūrinis atlasas</h2>
+  <p>Iki šiol kalbėjome apie kalendoriaus taisykles. Toliau pateikiami skaičiai yra kitokio pobūdžio: tai <strong>empiriniai rezultatai</strong> iš didelės kompiuterinės imties.</p>
+  <p>Atlasas sudarytas naudojant engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> ir apėmė 4,096 veikimo dienas; kiekvienai jų — 4990–5010 metus; 86,016 metų struktūrų; 625,437 kotletus; 3,535,422 struktūrinius mėnesius; daugiau kaip 356 milijonus ištisinių mėnesio segmentų; ir daugiau kaip 364 milijonus perėjimų nuo dienos <code>n</code> į dieną <code>n+1</code> tame pačiame mėnesyje.</p>
+  <p>Šie skaičiai aprašo tą corpus, o ne kanoninius dėsnius.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Struktūrinio atlaso išmatuoti duomenys">
+    <table class="about-table">
+      <thead><tr><th scope="col">Matuotas dydis</th><th scope="col">Rezultatas imtyje</th></tr></thead>
+      <tbody>
+        <tr><td>Vidutinis metų ilgis</td><td>4,275.182 dienos</td></tr>
+        <tr><td>Metų ilgio mediana</td><td>4,343</td></tr>
+        <tr><td>Mažiausia / didžiausia stebėta reikšmė</td><td>716 / 5,778</td></tr>
+        <tr><td>Vidutinis kotletų skaičius per metus</td><td>7.271</td></tr>
+        <tr><td>Metai su tiksliai 6 kotletais</td><td>42.00%</td></tr>
+        <tr><td>Metai su 6–8 kotletais</td><td>81.29%</td></tr>
+        <tr><td>Vidutinis kotleto ilgis</td><td>587.963 dienos</td></tr>
+        <tr><td>Kotleto ilgio mediana</td><td>560</td></tr>
+        <tr><td>Vidutinis mėnesių skaičius per metus</td><td>41.102</td></tr>
+        <tr><td>Mėnesių skaičiaus mediana</td><td>43</td></tr>
+        <tr><td>Metai su 47 mėnesiais</td><td>15.63%</td></tr>
+        <tr><td>Metai su bent 45 mėnesiais</td><td>36.81%</td></tr>
+        <tr><td>Vidutinis struktūrinio mėnesio ilgis</td><td>104.014 dienos</td></tr>
+        <tr><td>Mėnesio ilgio mediana</td><td>115</td></tr>
+        <tr><td>Vidutinis ištisinių segmentų skaičius viename mėnesyje</td><td>100.897</td></tr>
+        <tr><td>Vienos dienos mėnesio segmentų dalis</td><td>97.482%</td></tr>
+        <tr><td>Tikimybė, kad dvi gretimos dienos priklauso tam pačiam mėnesiui</td><td>2.9976%</td></tr>
+        <tr><td>Vidutinis kitų mėnesių dienų skaičius tarp <code>n</code> ir <code>n+1</code> tame pačiame mėnesyje</td><td>40.408</td></tr>
+        <tr><td>Vidutinis tarpas nuo pirmojo iki paskutinio mėnesio pasirodymo</td><td>4,266.653 dienos</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Praktiškai maždaug šimto dienų mėnuo gali būti išsklaidytas beveik per visus Pastafari metus.</p>
+  <p>Tas pats atlasas parodė ir natūralų ilgio šališkumą aplink 5000 metus. „Įprasti“ metai imtyje vidutiniškai truko apie 4,262 dienas. Kai metai sveriami pagal juose esančių dienų skaičių, vidurkis pakyla iki maždaug 4,466 dienų; patys 5000 metai vidutiniškai trunka apie 4,499 dienas.</p>
+  <p>Priežastis paprasta: 5000 metai privalo turėti veikimo dieną. Ilgesni metai turi daugiau dienų, kuriomis būtent jie gali būti veikimo dieną talpinantys metai.</p>
+  <p>Ryšys tarp vieneto pavadinimo ir jo ilgio imtyje taip pat labai silpnas. Tai neįrodo visiškos matematinės nepriklausomybės, tačiau atlasas nerodo praktinio signalo, kad pavadinimai skirti ilgiui koduoti.</p>
+  <p>Be to, 86,016 metų struktūrų nėra 86,016 visiškai nepriklausomų imčių: jose tėra 24,786 skirtingi intervalai tarp pradinių ir galinių vartų. Gretimos veikimo dienos gali parinkti tą patį metų intervalą, bet vis tiek sukurti kitokią vidinę struktūrą.</p>
+  <p>Taigi atlasas gerai aprašo išmatuotą įgyvendinimo elgseną, tačiau jo nereikėtų paversti tikimybių teorema apie visas įmanomas kalendoriaus struktūras.</p><hr>
+</section>
+
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>Gimtadieniai ir sukaktys</h2>
+  <p>Posakį „ta pati diena kiekvienais metais“ čia pirmiausia reikia apibrėžti. Natūralios pasikartojimo koordinatės yra <code>(mėnesio pavadinimas, diena mėnesyje)</code> ir <code>(kotleto pavadinimas, diena kotlete)</code>; sąlygas taip pat galima derinti.</p>
+  <p>Todėl Pastafari gimtadienis nėra vien <code>RRULE:FREQ=YEARLY</code>. Reikia rasti kitus metus, tenkinančius pasirinktą pasikartojimo sąlygą, o pradinis įvykis automatiškai nelaikomas savo paties „kitu pasirodymu“.</p>
+  <p>Veikimo dienos keitimas vien dėl rodymo negali pakeisti žmogaus tapatybės, gimimo momento ar amžiaus.</p>
+  <p>Tiksliame 4,096 savireferencinių datų skenavime kiekvieni tolesni Pastafari metai buvo tikrinami pirmyn ir atgal iki 250,000 metų kiekviena kryptimi:</p>
+  <ul>
+    <li><code>(mėnesio pavadinimas, diena mėnesyje)</code> atveju pirmojo sugrįžimo mediana buvo 1 Pastafari metai; 77.56% sugrįžo gretimais metais, 93.77% per dvejus metus, 99.44% per penkerius metus; didžiausia stebėta reikšmė buvo 21 metai.</li>
+    <li><code>(kotleto pavadinimas, diena kotlete)</code> atveju mediana buvo 3 metai; 88.89% rasti per 10 metų, tačiau skirstinys turi labai sunkią uodegą, o didžiausia stebėta reikšmė siekė 51,954 Pastafari metus.</li>
+  </ul>
+  <p>Tai yra <strong>empiriniai tirto corpus rezultatai</strong>, o ne įrodymas, kad kiekviena įmanoma sukaktis būtinai pasikartos, ir ne maksimalaus laukimo laiko garantija.</p><hr>
+</section>
+
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>Kaip susitarti dėl susitikimo?</h2>
+  <p>Jei du žmonės nori susitarti naudodami tik Pastafari datą, jie turi bent sutarti dėl visų penkių datos laukų ir skaičiavimui naudotos veikimo dienos. Geriau veikimo dieną saugoti kaip pastovią dienos tapatybę, o ne kaip žodį „šiandien“; kitaip abu žmonės gali apskaičiuoti skirtingus kalendorius.</p>
+  <ul>
+    <li>„rytoj“ yra kita chronologinė diena;</li>
+    <li>„kita mėnesio diena“ yra kitas to paties mėnesio pasirodymas;</li>
+    <li>„mėnesio pabaiga“ yra paskutinis to mėnesio pasirodymas;</li>
+    <li>„visas mėnuo“ gali reikšti tam mėnesiui priklausančių dienų rinkinį arba visą chronologinį tarpą nuo pirmojo iki paskutinio pasirodymo;</li>
+    <li>„kiti metai“ yra kiti metai kalendoriuje, sudarytame pagal pasirinktą veikimo dieną.</li>
+  </ul>
+  <p>Ypač svarbiam susitikimui galima papildomai išsaugoti absoliučią chronologinę dieną ar momentą. Kalendorius dėl to neįsižeis.</p><hr>
+</section>
+
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>Kelionės, įvykiai ir all-day</h2>
+  <p>Įvykis ir jam rodoma vietinė etiketė nėra tas pats. Konkrečiam laikui suplanuotas įvykis turi būti susietas su stabiliu chronologiniu momentu. Kelionė jo laike neperkelia, tačiau tai pačiai akimirkai rodoma vietinė Pastafari data gali pasikeisti, nes „vietinės dienos“ apibrėžimas priklauso nuo vietos.</p>
+  <p><strong>All-day</strong> įvykio atveju skirtumas dar didesnis. Civilinis visos dienos įvykis paprastai tęsiasi nuo civilinio vidurnakčio iki kito vidurnakčio; Pastafari visos dienos įvykis turėtų tęstis nuo vietinės Pastafari dienos ribos iki kitos tokios ribos. Paprastai tai nėra tie patys momentai.</p>
+  <p>Todėl aklai eksportuojant Pastafari įvykį kaip civilinį „visos dienos“ įvykį galima pakeisti jo reikšmę. Norint ją išsaugoti tiksliai, reikia saugoti chronologinį inkarą ir tinkamą vietos / dienos ribos kontekstą, o ne vien <code>all-day</code> žymą.</p><hr>
+</section>
+
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>Kada pasikeičia diena?</h2>
+  <p>Vietinė Pastafari diena nesikeičia vidurnaktį. Jos ribą nustato <strong>topocentrinis apatinis Veneros centro perėjimas per vietinį meridianą</strong>.</p>
+  <p>Taigi tai yra vietinis astronominis įvykis, priklausantis nuo vietos. Perėjimas neprivalo įvykti 00:00, jo nenustato civilinė laiko juosta, jis nepasislenka vien dėl vasaros laiko pradžios ar pabaigos ir nereikalauja, kad Venera būtų matoma plika akimi.</p>
+  <p>Tas pats fizinis momentas dviejose vietose gali būti skirtingose jų vietinių dienos ribų pusėse. Jei sistema neturi tinkamos naudotojo vietos, numatytoji atsarginė produkto vieta yra <strong>Kisurra</strong>.</p><hr>
+</section>
+
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>Spausdintas kalendorius ir skaičiavimas ranka</h2>
+  <p>Pastafari kalendorių galima spausdinti; tereikia nurodyti, kokiai veikimo dienai jis apskaičiuotas. Toks kalendorius rodo laiko struktūrą iš tos dienos perspektyvos; veikimo dienai pasikeitus gali prireikti naujo kalendoriaus. Taigi spausdintuvas vis dar turi ką veikti.</p>
+  <p>Viską galima apskaičiuoti ir ranka, nes specifikacija yra išsami ir deterministinė: apskaičiuokite įvesties skaitiklius, atlikite 7 paslėptus ir 46 matomus lašus, atnaujinkite šešis dubenis, atlikite 12 galutinių maišymų, sugeneruokite atsakymus, sudarykite vartus, parinkite metus ir kotletus, atlikite kombinatorinius pasirinkimus, parinkite pavadinimus, o tada supinkite mėnesius.</p>
+  <p>Mainais nereikia prisiminti, kad vasaris kartais turi 28, o kartais 29 dienas.</p><hr>
+</section>
+
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>O kas yra Seer?</h2>
+  <p>Šalia kanoninio įgyvendinimo yra greitas engine, vadinamas <strong>Pastafarian Calendar Seer</strong>. Seer nėra autoriteto šaltinis: teisingą datą nustato Megillah ir kanoninis skaičiavimas. Jei Seer su jais nesutampa, klysta Seer.</p>
+  <p>Jo paskirtis — greitai vykdyti tas pačias užklausas ir pateikti rezultatą forma, patogia integruoti į produktus.</p>
+  <p>Tiesioginės patikros, atliktos redaguojant šį puslapį, metu Seer, be kita ko, apėmė date ir „now“ užklausas, batch, dienų intervalus, reverse conversion iš Pastafari datos į tikslinę dieną, metų struktūros gavimą, aktyvios veikimo dienos nustatymą, Node API, browser/HTTP klientą, CLI, HTTP v1 paslaugą, OpenAPI 3.1 sutartį, native įgyvendinimus ir platinimo paketus bei patikrintą container deployment.</p>
+  <p>Senas teiginys, kad Seer neturi viešo API, nebėra teisingas. Dabar yra aiški ir stabili HTTP v1 sutartis su endpointais date, range, batch, year, reverse, veikimo dienai, metadata, locales ir status.</p>
+  <p>2026 m. rugsėjo 21 d. viešas HTTPS deployment Render platformoje buvo realiai išbandytas: gyvoje paslaugoje patikrintos exact užklausos, didelis range, restart, cold wake ir elgsena esant apkrovai.</p>
+  <p>Vis dėlto projekto dokumentacija ir toliau skiria viešą beta/evaluation deployment nuo nuolatinės hosted production paslaugos su SLA. Todėl konceptualiame paaiškinimo puslapyje nereikėtų įšaldyti serverio adreso, hostingo tiekėjo ar versijos numerio tarsi jie būtų paties kalendoriaus dalis.</p>
+  <p>Seer gali naudoti precomputation, specialias reprezentacijas, SIMD, algebrą ir kitus trumpinimus. Jam nereikia žingsnis po žingsnio atkartoti visos kanoninio įgyvendinimo skaičiavimo istorijos, jei tik atliekama ta pati semantinė operacija ir grąžinamas tas pats atsakymas.</p>
+  <p>Optimizacija nėra alternatyvus autoritetas.</p><hr>
+</section>
+
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>Kilmė, Įkūrimo diena ir Lentelių diena</h2>
+  <p>Čia ypač svarbu aiškiai atskirti kanoninius laiko inkarus nuo svetainės pasakojimo.</p>
+
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>Inkarai</h3>
+    <p>Sistema turi vieną nekintamą atskaitos dieną, vadinamą <strong>Įkūrimo diena</strong>. Proleptiniame Grigaliaus kalendoriuje tai yra <strong>41,222 m. pr. Kr. gruodžio 22 d.</strong></p>
+    <p>Įkūrimo diena nėra „laiko pradžia“; tai skaičiavimo inkaras.</p>
+    <p>Dienų numeravimas aplink ją naudoja teigiamus nelyginius / lyginius skaičius: Įkūrimo diena=1; vėlesnės dienos=3, 5, …; einant į praeitį, ankstesnė diena=2, tada 4, 6, … . Taip abi inkaro pusės koduojamos nenaudojant neigiamų dienos numerių šiame skaitiklyje.</p>
+    <p>Antrasis inkaras yra <strong>Lentelių diena</strong>: <strong>763 m. pr. Kr. birželio 15 d. proleptiniame Julijaus kalendoriuje</strong>, tai yra <strong>763 m. pr. Kr. birželio 7 d. proleptiniame Grigaliaus kalendoriuje</strong>.</p>
+    <p>Tikslus atstumas nuo Įkūrimo dienos iki Lentelių dienos yra</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
+    <p>dienų.</p>
+    <p>Tai nekintami inkarai laiko ašyje, tačiau jiems rodoma Pastafari data vis tiek priklauso nuo veikimo dienos, iš kurios apie juos klausiama.</p>
+  </section>
+
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>Svetainės pasakojimas</h3>
+    <p>Svetainės redakciniame pasakojime kalendorius pateikiamas kaip kūrimo dalis ir kaip sistema, kurią žmonija naudojo jos iki galo nesuvokdama, kol ši buvo vėl perduota moderniaisiais laikais.</p>
+    <p>Tai svetainės pasakojimas; ne kiekviena jo naratyvinė detalė turi būti pateikiama kaip aiškus techninis Megillah teiginys.</p>
+    <p>Pats pakartotinio perdavimo įvykis yra nekintamas istorinis įvykis. Jo <strong>Pastafari datą</strong> geriau dinamiškai rodyti pagal dabartinę veikimo dieną, o ne amžiams įšaldyti kaip vieną datą.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>Pažengusiems: reverse conversion</h2>
+  <p>Kai veikimo diena <code>c</code> žinoma, reverse conversion yra labai stipriai apribotas. Žinomuose Pastafari metuose,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{kotleto pavadinimas},\text{diena kotlete})</code></pre>
+  <p>identifikuoja daugiausia vieną dieną. Tas pats galioja</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{mėnesio pavadinimas},\text{diena mėnesyje})</code></pre>
+  <p>Todėl visa data su žinoma veikimo diena vienareikšmiškai identifikuoja tikslinę dieną.</p>
+
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Viršutinės kandidatų skaičiaus ribos atliekant reverse conversion">
+    <table class="about-table">
+      <thead><tr><th scope="col">Žinoma papildoma informacija</th><th scope="col">Didžiausias kandidatų skaičius</th></tr></thead>
+      <tbody>
+        <tr><td>Nežinomas nė vienas laukas, išskyrus metus</td><td>5,778</td></tr>
+        <tr><td>Tik kotleto pavadinimas</td><td>5,568</td></tr>
+        <tr><td>Tik diena kotlete</td><td>17</td></tr>
+        <tr><td>Tik mėnesio pavadinimas</td><td>123</td></tr>
+        <tr><td>Tik diena mėnesyje</td><td>47</td></tr>
+        <tr><td>Kotleto pavadinimas + diena kotlete</td><td>1</td></tr>
+        <tr><td>Mėnesio pavadinimas + diena mėnesyje</td><td>1</td></tr>
+        <tr><td>Bet kurie trys ne metų laukai</td><td>1</td></tr>
+        <tr><td>Visi keturi ne metų laukai</td><td>1</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Nežinant veikimo dienos situacija kitokia. Tas pats penkių reikšmių rinkinys gali pasirodyti pagal skirtingas veikimo dienas, ir yra tikslių pavyzdžių, kai ta pati visa data pasirodo skirtingais atstumais nuo <code>c</code>.</p>
+  <p>5000 metais net to atstumo ženklą ne visada lemia penkios reikšmės: ta pati visa data viename kontekste gali būti praeityje veikimo dienos atžvilgiu, o kitame — ateityje.</p>
+  <p>Todėl visa Pastafari data nėra absoliutus adresas laiko ašyje, jei nežinome, pagal kurį <code>c</code> ji buvo apskaičiuota.</p>
+
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>Struktūra labai tolimame laike</h3>
+    <p>Iš specifikacijos išvesti matematiniai tyrimai taip pat rado tikslią asimptotinę struktūrą. Esant <strong>fiksuotai veikimo dienai</strong> <code>c</code>, pakankamai toli praeities uodegoje atsiranda afininis periodiškumas.</p>
+    <p>Jei</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>tai tam pačiam <code>c</code> egzistuoja poslinkis <code>H_c</code>, metų pokytis <code>p_c</code> ir pakankamai tolima riba, po kurios</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>keturi ne metų laukai kartojasi, o metų numeris pasikeičia pastoviu dydžiu.</p>
+    <p>Tai rezultatas fiksuotam <code>c</code>; iš jo neplaukia visuotinė lygybė</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>Klausimas, ar galutiniai asimptotiniai nuolydžiai iš tikrųjų skiriasi tarp skirtingų veikimo dienų, tebėra atviras.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>Pažengusiems: kiek istorijos išsaugo padažas?</h2>
+  <p>Padažas atrodo kaip labai agresyvus maišymo mechanizmas, tačiau algebriniai tyrimai rodo, kad jis išsaugo kur kas daugiau informacijos, nei galima spręsti iš jo išvaizdos. Tai iš specifikacijos išvestas tyrimų rezultatas, o ne nauja kalendoriaus taisyklė.</p>
+  <p>Matomuose etapuose 3–46, atitinkamoje asimptotinėje šakoje, nustatyta generic injectivity: bendruoju atveju būsena išsaugo pakankamai informacijos atkurti svarbią įvesties istoriją ir dubenų eiliškumą.</p>
+  <p>Informacija iš karto neišnyksta ir per 12 galutinių maišymų. Pirmiems penkiems maišymams po 46 matomo lašo nustatyta generic invertibility atitinkamoje kanoninėje sąjungoje be papildomos šalutinės informacijos; likusiai daliai žinomos stiprios konstruktyvios viršutinės ribos, kiek šalutinės informacijos pakanka atkūrimui.</p>
+  <p>Vis dar atviras klausimas, ar <strong>vien paskutinių šešių dubenų</strong> bendruoju atveju visada pakanka.</p>
+  <p>Kai kurie rezultatai įrodyti simboliškai, kiti užbaigti baigtiniu ir tiksliu aritmetiniu patikrinimu. Simbolinis sustiprinimas smarkiai sumažino skaičiavimo branduolį, kuriuo reikia pasitikėti, bet jo visiškai nepašalino.</p>
+  <p>Erdvės, kurios iš pradžių atrodė reikalaujančios milžiniško kelių skaičiaus paieškos, buvo suspaustos iki daug mažesnių baigtinių struktūrų, įskaitant 180 ir 9 būsenų automatus bei šešių dubenų simetrijas.</p>
+  <p>Po maišymu slypi standi algebrinė struktūra. Norint sužinoti šiandienos datą, jos žinoti nereikia.</p><hr>
+</section>
+
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>Taigi kas iš tikrųjų yra Pastafari kalendorius?</h2>
+  <p>Deterministinis kalendorius, kuriame data yra ne vien tikslinės dienos funkcija, bet <strong>veikimo dienos ir užklaustos dienos funkcija kartu</strong>.</p>
+  <p>Kiekviena data turi tiksliai penkis laukus. Dabartis, žiūrint iš savęs, visada yra 5000 metais, bet patys 5000 metai juda kartu su veikimo diena. Metai gali būti labai ilgi, kotletai yra ištisiniai, mėnesiai nebūtinai, o kanoninės savaičių sistemos nėra.</p>
+  <p>Mėnesio diena <code>n+1</code> nebūtinai yra rytoj. Ta pati chronologinė diena rytoj gali gauti kitą Pastafari etiketę. Tas pats fizinis momentas dviejose vietose gali priklausyti dviem skirtingoms vietinėms Pastafari dienoms. Visos dienos įvykis nebūtinai trunka nuo vidurnakčio iki vidurnakčio. O kasmetinis gimtadienis pirmiausia yra paieškos uždavinys ir tik tada kalendoriaus klausimas.</p>
+  <p>Tačiau kai žinomos veikimo diena ir užklausta diena, dviprasmybės nėra: teisingas atsakymas yra vienas.</p>
+  <p>Galiausiai kalendoriui daugiau ir nereikia.</p>
+</section>
