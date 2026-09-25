@@ -38,7 +38,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | gu | gu-IN | ltr | partial | not started |
 | ha | ha-NG | ltr | partial | not started |
 | hi | hi-IN | ltr | partial | not started |
-| hr | hr-HR | ltr | partial | not started |
+| hr | hr-HR | ltr | partial | draft |
 | ht | ht-HT | ltr | partial | not started |
 | hu | hu-HU | ltr | partial | draft |
 | hy | hy-AM | ltr | partial | not started |
@@ -95,6 +95,8 @@ Status progression for target locales: `not started → draft → semantic QA �
 - `gl-ES`: locale-wide language finding: prominent existing UI strings contain Portuguese forms rather than idiomatic Galician (for example `día de trabalho`). Do not use those strings as a terminology oracle for the article; native Galician review must repair the whole locale.
 
 - `et-EE`: locale-wide language finding: prominent existing UI strings are Finnish rather than Estonian (for example `Vaihda työpäevä`, `Sivuston käyttö`). Do not use those strings as a terminology oracle for the article; native Estonian review must repair the whole locale.
+
+- `bg-BG`: locale-wide language finding: prominent existing UI strings are Russian or mixed Russian/Bulgarian rather than idiomatic Bulgarian (for example `Изменить ден на действието`, `Как пользоваться сайтом`). Do not use those strings as a terminology oracle for the article; native Bulgarian review must repair the whole locale.
 
 ## Native-language whole-site QA policy
 
