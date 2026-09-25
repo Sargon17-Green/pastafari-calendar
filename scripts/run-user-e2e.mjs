@@ -290,6 +290,12 @@ const desktopScenarios = [
       await aboutLink.click();
       await page.waitForURL(/\/about\/?\?lang=/);
       await page.locator("#summary").waitFor({ state: "visible" });
+      assert.equal(await page.locator("html").getAttribute("lang"), "en", "About-page controls must retain the selected UI locale");
+      assert.equal(await page.locator("#article-content").getAttribute("lang"), "he", "Untranslated article must identify itself as Hebrew");
+      assert.equal(await page.locator("#article-content").getAttribute("dir"), "rtl", "Hebrew article must retain RTL direction inside an LTR shell");
+      assert.equal(await page.locator("#about-language-notice").isVisible(), true, "Mixed-language view must explain that the article is currently Hebrew-only");
+      assert.equal(await page.locator('#about-toc-list a[href="#about-calendar"]').getAttribute("lang"), "he");
+      assert.equal(await page.locator('#about-toc-list a[href="#about-calendar"]').getAttribute("dir"), "rtl");
       assert.equal(await page.locator("#calendar-workspace").count(), 0, "About page must not carry the calculation workspace");
       assert.ok(await page.locator("#about-toc-list a").count() >= 30, "About page contents list must include the explanation and site-usage sections");
       await page.locator('#about-toc-list a[href="#day-boundary"]').click();

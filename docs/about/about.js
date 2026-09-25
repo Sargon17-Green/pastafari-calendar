@@ -98,6 +98,10 @@ function buildTableOfContents() {
     const link = document.createElement("a");
     link.href = `#${section.id}`;
     link.textContent = heading.textContent.trim();
+    if (elements["article-content"].contains(section)) {
+      link.lang = elements["article-content"].lang;
+      link.dir = elements["article-content"].dir;
+    }
     item.append(link);
     list.append(item);
   }
