@@ -1,0 +1,250 @@
+<!-- Versión en español redactada a partir del contenido semántico maestro en hebreo. -->
+<!-- Los ID de sección son un contrato público de enlaces profundos y no dependen de los títulos traducidos. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>En el relato del sitio, el calendario pastafari se presenta como el calendario en el que fue creado el tiempo. Su mecánica, en cambio, está definida con precisión.</p>
+  <p>El calendario no asigna a cada día una «etiqueta» fija. Para obtener una fecha hacen falta dos días: el <strong>día de trabajo</strong>, desde el que se realiza el cálculo, y el <strong>día consultado</strong>, cuya fecha queremos conocer.</p>
+  <p>Si los llamamos <code>c</code> y <code>t</code>, respectivamente, la fecha es</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>y no <code>F(t)</code>. Por eso un mismo día consultado puede tener otra fecha pastafari cuando cambia el día de trabajo.</p>
+  <p>No es un fallo. Es el calendario.</p><hr>
+</div>
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>¿Qué contiene una fecha pastafari?</h2>
+  <p>Contiene <strong>exactamente cinco partes</strong>: número de año, nombre de la croqueta, día dentro de la croqueta, nombre del mes y día dentro del mes.</p>
+  <p>Por ejemplo: <strong>año 5000, croqueta A, día 417 de la croqueta, mes B, día 83 del mes.</strong></p>
+  <p>El día de trabajo, la ubicación del observador, la identidad cronológica del día u otros datos técnicos pueden aparecer al lado, pero no son una sexta parte de la fecha.</p><hr>
+</section>
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>¿Por qué hace falta un día de trabajo?</h2>
+  <p>En los calendarios corrientes solemos pensar que la fecha «pertenece» al día. Aquí depende de la relación entre dos días.</p>
+  <p>Cambiar <code>t</code> es preguntar por otro día. Cambiar <code>c</code> puede reconstruir el calendario en el que se formula la pregunta: límites de años, croquetas, meses, sus nombres y su entrelazado.</p>
+  <p>Un almanaque calculado hoy, por tanto, no tiene por qué ser el correcto mañana. Así se evita la desagradable posibilidad de que un calendario impreso siga siendo útil durante todo un año.</p><hr>
+</section>
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>El mismo día, otra fecha</h2>
+  <p>Conviene separar la <strong>identidad del día</strong> —su posición estable en la línea temporal— de su <strong>representación pastafari</strong>, la quíntupla obtenida al mostrarlo bajo un día de trabajo concreto.</p>
+  <p>En el producto y la API, la primera puede verse como un <code>day-id</code>, una identidad cronológica que no cambia con la forma de presentación. En cambio,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre><p>y</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>no tienen por qué coincidir.</p>
+  <p>Modificar manualmente el día de trabajo puede cambiar la fecha que se muestra para un mismo día sin mover ese día en absoluto. Lo mismo vale para una reunión, un nacimiento o un hecho histórico: el evento debe quedar anclado a una identidad cronológica estable y su fecha pastafari puede volver a calcularse al mostrarlo.</p>
+  <p>La etiqueta puede cambiar. El evento no.</p><hr>
+</section>
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>El año 5000</h2>
+  <p>Cuando día de trabajo y día consultado son el mismo,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>el año siempre es</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>Así, el presente respecto de sí mismo siempre está en el año 5000. Pero ese año no es un período histórico fijo: se elige de nuevo en relación con el día de trabajo.</p>
+  <p>El propio día de trabajo está dentro del año 5000, y también otros días del mismo año. Por tanto, <strong>estar en el año 5000 no demuestra que <code>t=c</code>.</strong></p>
+  <p>El número de año sí informa de la dirección:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre><p>y</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p>Existe además el <strong>año 0</strong>; más allá de él hacia el pasado hay años con números negativos.</p><hr>
+</section>
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>Años y puertas</h2>
+  <p>Un año pastafari puede durar</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ a }5778</code></pre>
+  <p>días. Son límites canónicos del sistema, no promedios medidos experimentalmente.</p>
+  <p>Un año puede ser más corto que un año solar o durar más de quince años solares. Sus límites se construyen mediante un sistema de <strong>puertas</strong>, del que también proceden los límites de las croquetas.</p>
+  <p>No hay obligación de terminar el año con una estación, una órbita terrestre, un ciclo lunar ni con ninguna necesidad práctica de acabarlo de una vez.</p><hr>
+</section>
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>Croquetas</h2>
+  <p>Cada año se divide en <strong>6 a 17 croquetas</strong>. Una croqueta es un tramo cronológico continuo.</p>
+  <p>Si hoy es el día 250 de una croqueta, mañana será el 251, salvo que hoy sea su último día. Sus fronteras son puertas, y su longitud mínima es de</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
+  <p>días.</p>
+  <p>Hay 17 nombres canónicos de croqueta y, dentro de un año, ninguno se repite. El nombre no determina la longitud ni obliga a que una croqueta sea más larga, más corta, anterior o posterior.</p><hr>
+</section>
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>Meses y tejido</h2>
+  <p>Cada año contiene</p><pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ a }47</code></pre>
+  <p>meses estructurales, y cada mes tiene asignados</p><pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ a }123</code></pre><p>días.</p>
+  <p>Pero un mes pastafari <strong>no tiene por qué ser un intervalo continuo</strong>. Una secuencia cronológica puede ser:</p>
+  <blockquote><p>Mes A — día 14<br>Mes B — día 9<br>Mes A — día 15</p></blockquote>
+  <p>Es una estructura válida. El día 15 del mes A es el día siguiente <strong>de ese mes</strong>, aunque entre ambos haya transcurrido un día de otro mes.</p>
+  <p>«Día del mes» es, por tanto, el número ordinal de la aparición de ese mes dentro del año, no los días cronológicos transcurridos desde su primera aparición. Día 48 significa el 48.º día asignado al mes, no que hayan pasado 47 días desde que apareció por primera vez.</p><hr>
+</section>
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>Los meses se tejen unos con otros</h2>
+  <p>Puede imaginarse cada mes como un hilo a lo largo del año. Cada día pertenece exactamente a un mes; mañana puede pertenecer a otro, y después el primero puede reaparecer continuando por su siguiente número.</p>
+  <p>El tejido tiene reglas, en particular restricciones sobre el orden de las primeras y últimas apariciones. Lo que no exige es que un mes acabe antes de que empiece otro.</p>
+  <ul><li>La croqueta mide una posición dentro de un tramo cronológico continuo.</li><li>El mes expresa pertenencia a un hilo estructural que puede desaparecer y volver.</li></ul>
+  <p>Un mes puede atravesar varias croquetas y una croqueta puede contener apariciones de muchos meses. El principio o final de una croqueta no tiene que coincidir con el de un mes.</p><hr>
+</section>
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>El siguiente día del mes no tiene por qué ser mañana</h2>
+  <p>Si hoy es el día 17 de un mes, su día 18 es <strong>la siguiente aparición de ese mismo mes</strong>. Puede ser mañana o bastante más tarde.</p>
+  <p><strong>Mañana</strong> es el siguiente día cronológico; <strong>el siguiente día del mes</strong> es la próxima vez que aparece ese mes.</p>
+  <p>Por la misma razón, «fin de mes» no implica cercanía cronológica: un mes de 120 días puede ir por el 119 y tener el 120 muy lejos, más adelante en el año.</p><hr>
+</section>
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>No hay semanas</h2>
+  <p>La especificación canónica vigente <strong>no define un sistema de semanas</strong>: no hay una supraunidad canónica de siete días, nombres pastafari de días de la semana ni una regla que haga que dos días sean «el mismo día de la semana».</p>
+  <p>Se puede superponer desde fuera una semana civil; simplemente no forma parte de la fecha pastafari.</p><hr>
+</section>
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>Nombres</h2>
+  <p>El calendario tiene 17 nombres canónicos de croquetas y 47 de meses. Dentro de un año, cada nombre aparece como máximo una vez en su propia familia.</p>
+  <p>La identidad del nombre es canónica y semántica, no el resultado de votar entre grafías, traducciones o implementaciones. La Meguilá hebrea es la autoridad superior sobre el significado de esos nombres; traducción y transliteración son capas de presentación.</p>
+  <p>Tampoco son códigos secretos de longitud: ningún nombre obliga por sí mismo a una croqueta más larga o a un mes más corto.</p><hr>
+</section>
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>Un pequeño dato sobre los meses</h2>
+  <p>Con 47 nombres de mes y un máximo de 123 días por mes existen</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>pares sintácticamente posibles del tipo «nombre del mes + número de día del mes».</p>
+  <p>Cada día de un año realiza uno de esos pares. Si el año mide <code>L</code>, aparecen exactamente <code>L</code>; pero</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>de modo que en todo año faltan como mínimo</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre>
+  <p>pares posibles. Ni siquiera el año más largo tiene días suficientes para usarlos todos.</p><hr>
+</section>
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>¿Cómo se calcula?</h2>
+  <p>Al cálculo interno lo llamamos aquí <strong>la salsa</strong>. En su centro está</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>que es primo.</p>
+  <p>El proceso incluye cinco contadores de entrada, 7 gotas ocultas, 46 gotas visibles, 6 cuencos, órdenes variables de esos cuencos, 12 agitaciones finales, sellos que producen respuestas distintas, mecanismos de selección combinatoria, creación de puertas, selección de años, división en croquetas, elección de nombres, creación de meses y tejido de sus días.</p>
+  <p>Las actualizaciones finales son <strong>síncronas</strong>: en cada agitación las seis nuevas cantidades se calculan desde el mismo estado anterior y solo después se sustituyen los seis cuencos a la vez.</p>
+  <p>Hay un detalle canónico especialmente importante. Si <code>S</code> es la suma de los seis cuencos antiguos y <code>r</code> el número de agitación, se calcula</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p><code>R</code> es la <strong>suma guardada</strong>. Es <code>R</code>, y no la suma bruta <code>S</code>, lo que interviene tanto en la elección del orden de los cuencos como en la actualización interna.</p>
+  <p>Las versiones antiguas que introducían la suma bruta en esa actualización ya no describen la semántica canónica actual; cualquier ejemplo obtenido con la regla anterior queda obsoleto salvo que se haya vuelto a verificar.</p>
+  <p>Después de las agitaciones, el anillo de respuestas sigue asimismo el orden que quedó fijado en la gota visible 46; no debe sustituirse automáticamente por el orden de la última agitación.</p><hr>
+</section>
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice y Wide Choice</h2>
+  <p><strong>Short Choice</strong> se usa para espacios de opciones relativamente pequeños y aplica muestreo por rechazo para evitar el sesgo de un módulo simple.</p>
+  <p>En espacios muy grandes se usa <strong>Wide Choice</strong>. No debe atribuírsele lo que la especificación no garantiza: no equivale a generar dígitos independientes y uniformes en base <code>Q</code> hasta obtener un índice.</p>
+  <p>Por ello no se deduce que toda opción legal reciba necesariamente la misma probabilidad positiva. En espacios suficientemente grandes puede haber incluso opciones legales que este mecanismo concreto no alcance.</p>
+  <p>El calendario es, pese al nombre «Choice», totalmente determinista. «Elección» designa una fase del algoritmo, no un sorteo durante el uso.</p><hr>
+</section>
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>El Atlas estructural</h2>
+  <p>Lo anterior son reglas del calendario. Lo que sigue son <strong>resultados empíricos</strong> de una muestra computacional grande, no nuevas reglas canónicas.</p>
+  <p>El atlas se construyó con el commit del motor <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> e incluye 4,096 días de trabajo; los años 4990–5010 para cada uno; 86,016 estructuras de año; 625,437 croquetas; 3,535,422 meses estructurales; más de 356 millones de tramos mensuales continuos; y más de 364 millones de transiciones entre el día <code>n</code> y el <code>n+1</code> de un mismo mes.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Datos medidos del Atlas estructural"><table class="about-table">
+    <thead><tr><th scope="col">Magnitud medida</th><th scope="col">Resultado de la muestra</th></tr></thead><tbody>
+      <tr><td>Longitud media del año</td><td>4,275.182 días</td></tr><tr><td>Mediana</td><td>4,343</td></tr><tr><td>Mínimo / máximo observados</td><td>716 / 5,778</td></tr>
+      <tr><td>Croquetas medias por año</td><td>7.271</td></tr><tr><td>Años con exactamente 6 croquetas</td><td>42.00%</td></tr><tr><td>Años con 6–8 croquetas</td><td>81.29%</td></tr>
+      <tr><td>Longitud media de croqueta</td><td>587.963 días</td></tr><tr><td>Mediana de longitud de croqueta</td><td>560</td></tr>
+      <tr><td>Meses medios por año</td><td>41.102</td></tr><tr><td>Mediana de meses</td><td>43</td></tr><tr><td>Años con 47 meses</td><td>15.63%</td></tr><tr><td>Años con al menos 45 meses</td><td>36.81%</td></tr>
+      <tr><td>Longitud media de mes estructural</td><td>104.014 días</td></tr><tr><td>Mediana de longitud de mes</td><td>115</td></tr><tr><td>Tramos continuos medios por mes</td><td>100.897</td></tr>
+      <tr><td>Tramos mensuales de un solo día</td><td>97.482%</td></tr><tr><td>Probabilidad de que dos días adyacentes sean del mismo mes</td><td>2.9976%</td></tr>
+      <tr><td>Días ajenos medios entre <code>n</code> y <code>n+1</code> de un mes</td><td>40.408</td></tr><tr><td>Extensión media de la primera a la última aparición de un mes</td><td>4,266.653 días</td></tr>
+    </tbody></table></div>
+  <p>En términos prácticos, un mes de unos cien días puede quedar extendido por casi un año pastafari entero.</p>
+  <p>El atlas también mostró un sesgo natural de longitud alrededor del año 5000. Un año «normal» de la muestra promedió unos 4,262 días; ponderando cada año por el número de días que contiene, el promedio sube a unos 4,466; el año 5000 propio promedió unos 4,499 días. La razón es que el año 5000 tiene que contener el día de trabajo, y un año largo ofrece más días en los que puede ser el año que lo contiene.</p>
+  <p>La relación entre el nombre de una unidad y su longitud fue muy débil en la muestra. No demuestra independencia matemática total, pero tampoco aporta indicio práctico de que el nombre codifique la longitud.</p>
+  <p>Además, las 86,016 estructuras no son 86,016 muestras completamente independientes: solo contienen 24,786 intervalos distintos entre puertas inicial y final. Días de trabajo vecinos pueden elegir el mismo intervalo anual y aun así producir distinta estructura interna.</p>
+  <p>El atlas describe muy bien el comportamiento de la implementación medida; no es un teorema probabilístico sobre todos los calendarios posibles.</p><hr>
+</section>
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>Cumpleaños y aniversarios</h2>
+  <p>«El mismo día cada año» exige definir qué se repite. Dos coordenadas naturales son <code>(nombre del mes, día del mes)</code> y <code>(nombre de la croqueta, día de la croqueta)</code>; también pueden imponerse condiciones combinadas.</p>
+  <p>Por eso un cumpleaños pastafari no equivale sencillamente a <code>RRULE:FREQ=YEARLY</code>: hay que buscar el siguiente año que cumpla la condición elegida. El evento original no se cuenta automáticamente como su propia «siguiente aparición». Cambiar el día de trabajo para presentar la fecha tampoco debe alterar la identidad, el instante del nacimiento ni la edad de una persona.</p>
+  <p>En un barrido exacto de 4,096 fechas propias se comprobó cada año pastafari sucesivo, hacia delante y hacia atrás, hasta 250,000 años por dirección:</p>
+  <ul><li>con <code>(nombre del mes, día del mes)</code>, la mediana fue de 1 año pastafari; 77.56% reaparecieron en el año adyacente, 93.77% en dos años, 99.44% en cinco, y el máximo observado fue 21 años;</li>
+  <li>con <code>(nombre de la croqueta, día de la croqueta)</code>, la mediana fue 3 años y 88.89% aparecieron en diez; la distribución tuvo una cola muy pesada y el máximo observado alcanzó 51,954 años pastafari.</li></ul>
+  <p>Son <strong>resultados empíricos de ese corpus</strong>, no una prueba de que toda fecha de aniversario deba volver ni una garantía de espera máxima.</p><hr>
+</section>
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>¿Cómo se fija una cita?</h2>
+  <p>Para acordar una cita usando solo una fecha pastafari, dos personas deben compartir al menos la quíntupla y el día de trabajo con que se calculó. Conviene guardar ese día mediante una identidad estable y no mediante la palabra «hoy», para evitar que cada cual calcule otro calendario.</p>
+  <ul><li>«mañana» es el siguiente día cronológico;</li><li>«siguiente día del mes» es la próxima aparición de ese mes;</li><li>«fin de mes» es su última aparición;</li><li>«mes entero» puede referirse al conjunto de días del mes o al intervalo cronológico desde la primera aparición hasta la última;</li><li>«año siguiente» se refiere al calendario construido bajo el día de trabajo escogido.</li></ul>
+  <p>Si la cita es especialmente importante, también puede guardarse el día o instante cronológico absoluto. Al calendario no le molesta.</p><hr>
+</section>
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>Viajes, eventos y all-day</h2>
+  <p>Un evento y la etiqueta local que se muestra para él no son lo mismo. Un evento programado debe permanecer anclado a un instante cronológico estable. Viajar no lo mueve en el tiempo, aunque sí puede cambiar su fecha pastafari local porque el «día local» depende de la ubicación.</p>
+  <p>La diferencia es todavía mayor en un evento <strong>all-day</strong>. Un evento civil de día completo suele ir de una medianoche civil a la siguiente. Uno pastafari debe ir de un límite local de día pastafari al siguiente. Normalmente no son los mismos instantes.</p>
+  <p>Exportarlo ciegamente como «todo el día» a un calendario civil puede cambiar su significado. Para conservarlo con exactitud hay que guardar el anclaje cronológico y el contexto apropiado de ubicación/límite del día, no solo la marca <code>all-day</code>.</p><hr>
+</section>
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>¿Cuándo cambia el día?</h2>
+  <p>El día pastafari local no cambia a medianoche. Su límite lo determina el <strong>tránsito inferior topocéntrico del centro de Venus por el meridiano local</strong>.</p>
+  <p>Es, por tanto, un acontecimiento astronómico local que depende de la ubicación. No tiene por qué suceder a las 00:00, no lo fija el huso horario civil, no cambia solo por activar o desactivar el horario de verano y no requiere que Venus sea visible a simple vista.</p>
+  <p>En dos lugares distintos, un mismo instante físico puede caer a lados opuestos de sus respectivos límites del día. Si el sistema no dispone de una ubicación utilizable del usuario, la ubicación de reserva del producto es <strong>Kisurra</strong>.</p><hr>
+</section>
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>Calendario impreso y cálculo manual</h2>
+  <p>Se puede imprimir un calendario pastafari; basta indicar a qué día de trabajo corresponde. Describe el tiempo desde el punto de vista de ese día y, cuando cambia el día de trabajo, puede hacer falta otro calendario. La impresora sigue teniendo una función.</p>
+  <p>También puede calcularse todo a mano porque la especificación es completa y determinista: contadores de entrada, 7 gotas ocultas, 46 visibles, seis cuencos, 12 agitaciones finales, respuestas, puertas, selección de años y croquetas, elecciones combinatorias, nombres y tejido de meses.</p>
+  <p>Así se ahorra uno recordar que febrero unas veces tiene 28 días y otras 29.</p><hr>
+</section>
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>¿Y qué es Seer?</h2>
+  <p>Junto a la implementación canónica existe un motor rápido llamado <strong>Pastafarian Calendar Seer</strong>. No es una fuente de autoridad: la Meguilá y el cálculo canónico determinan la fecha correcta. Si Seer discrepa, Seer se equivoca.</p>
+  <p>Su función es responder las mismas consultas con rapidez y de forma cómoda para integrarlas en productos.</p>
+  <p>En la verificación en vivo realizada al editar esta página, Seer incluía consultas de fecha y de «ahora», batch, rangos de días, conversión inversa a un día objetivo, estructura de año, resolución del día de trabajo activo, API para Node, cliente de navegador/HTTP, CLI, servicio HTTP v1, contrato OpenAPI 3.1, implementaciones nativas y paquetes de distribución, además de despliegue verificado en contenedor.</p>
+  <p>Ya no es correcto decir que Seer carece de API pública. Existe un contrato HTTP v1 explícito y estable con endpoints de fecha, rango, batch, año, reverse, día de trabajo, metadata, locales y status.</p>
+  <p>El 21 de septiembre de 2026 se probó además un despliegue HTTPS público en Render: consultas exactas, rango grande, reinicio, cold wake y comportamiento bajo carga en el servicio real.</p>
+  <p>La documentación del proyecto sigue distinguiendo esa beta/evaluación pública activa de la declaración de un servicio hosted production permanente con SLA. Por ello esta explicación no debe convertir una dirección de servidor, proveedor de alojamiento o número de versión en parte del calendario.</p>
+  <p>Seer puede usar precálculo, representaciones especiales, SIMD, álgebra y otros atajos. No tiene que reproducir paso a paso toda la historia computacional canónica siempre que realice la misma operación semántica y devuelva la misma respuesta. Optimizar no crea una autoridad alternativa.</p><hr>
+</section>
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>Origen, Día de la Fundación y Día de las Tablillas</h2>
+  <p>Aquí hay que separar los anclajes canónicos del relato del sitio.</p>
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>Los anclajes</h3>
+    <p>El sistema tiene un día de referencia fijo, el <strong>Día de la Fundación</strong>. En la prolongación proléptica del calendario gregoriano es el <strong>22 de diciembre de 41,222 a. C.</strong> No es el «principio del tiempo», sino un anclaje de cálculo.</p>
+    <p>Su numeración usa enteros positivos pares e impares: Fundación = 1; los días posteriores son 3, 5, etc.; hacia el pasado, el día anterior es 2, luego 4, 6 y así sucesivamente. Se codifican ambos lados sin números de día negativos en este contador.</p>
+    <p>Otro anclaje es el <strong>Día de las Tablillas</strong>: <strong>15 de junio de 763 a. C. en el calendario juliano proléptico</strong>, equivalente al <strong>7 de junio de 763 a. C. en el calendario gregoriano proléptico</strong>.</p>
+    <p>La distancia exacta entre ambos es</p><pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre><p>días.</p>
+    <p>Son identidades fijas en la línea temporal; la fecha pastafari que se les muestre sigue dependiendo del día de trabajo desde el que se pregunte.</p>
+  </section>
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>El relato del sitio</h3>
+    <p>En la formulación editorial del sitio, el calendario se presenta como parte de la creación y como un sistema que la humanidad utilizó sin ser suficientemente consciente de él hasta su entrega moderna.</p>
+    <p>Eso es el relato del sitio; sus detalles narrativos no deben presentarse todos como proposiciones técnicas explícitas de la Meguilá.</p>
+    <p>El evento de la entrega moderna sí es un hecho histórico fijo. En el sitio conviene mostrar su <strong>fecha pastafari</strong> dinámicamente según el día de trabajo actual, no fijarle una sola fecha pastafari para siempre.</p><hr>
+  </section>
+</section>
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>Para usuarios avanzados: conversión inversa</h2>
+  <p>Conocido el día de trabajo <code>c</code>, la conversión inversa es muy fuerte. Dentro de un año pastafari conocido,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{nombre de croqueta},\text{día en croqueta})</code></pre>
+  <p>identifica como máximo un día; lo mismo ocurre con</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{nombre de mes},\text{día en mes})</code></pre>
+  <p>De ahí que una fecha completa, con <code>c</code> conocido, identifique unívocamente el día objetivo.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Cotas de candidatos de la conversión inversa"><table class="about-table">
+    <thead><tr><th scope="col">Información adicional conocida</th><th scope="col">Máximo de candidatos</th></tr></thead><tbody>
+      <tr><td>Ningún campo no anual</td><td>5,778</td></tr><tr><td>Solo nombre de croqueta</td><td>5,568</td></tr><tr><td>Solo día en croqueta</td><td>17</td></tr>
+      <tr><td>Solo nombre de mes</td><td>123</td></tr><tr><td>Solo día en mes</td><td>47</td></tr><tr><td>Nombre de croqueta + día en croqueta</td><td>1</td></tr>
+      <tr><td>Nombre de mes + día en mes</td><td>1</td></tr><tr><td>Cualesquiera tres campos no anuales</td><td>1</td></tr><tr><td>Los cuatro campos no anuales</td><td>1</td></tr>
+    </tbody></table></div>
+  <p>Sin conocer el día de trabajo, la misma quíntupla puede aparecer bajo días de trabajo distintos. Hay testigos exactos en los que la misma fecha completa se obtiene a distancias diferentes de <code>c</code>; incluso en el año 5000, el signo de esa distancia no siempre se deduce de la quíntupla: puede quedar en el pasado en un contexto y en el futuro en otro.</p>
+  <p>Una fecha pastafari completa no es, pues, una dirección absoluta de la línea temporal si se ignora bajo qué <code>c</code> se calculó.</p>
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>Estructura en tiempos remotos</h3>
+    <p>El análisis matemático derivado encontró además una estructura asintótica exacta. Para un <strong>día de trabajo fijo</strong> <code>c</code>, suficientemente lejos en la cola del pasado existe periodicidad afín.</p>
+    <p>Si</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>entonces, para ese mismo <code>c</code>, existen un desplazamiento <code>H_c</code>, un cambio anual <code>p_c</code> y un umbral suficientemente remoto tales que, pasado el umbral,</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>Los cuatro campos no anuales se repiten mientras el número de año cambia en una cantidad fija.</p>
+    <p>Es un teorema para <code>c</code> fijo. No implica una relación global como</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>y sigue abierta la cuestión de si la pendiente asintótica final varía realmente entre distintos días de trabajo.</p><hr>
+  </section>
+</section>
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>Para usuarios avanzados: ¿cuánta historia conserva la salsa?</h2>
+  <p>La salsa parece mezclar de manera muy agresiva, pero el estudio algebraico reveló que conserva mucha más información de lo que su apariencia sugiere. Es investigación derivada de la especificación, no una regla adicional del calendario.</p>
+  <p>En las etapas visibles 3 a 46 quedó establecida, en la rama asintótica relevante, la inyectividad genérica: de manera genérica el estado conserva información suficiente para reconstruir la historia relevante de las entradas y de los órdenes de los cuencos.</p>
+  <p>En las 12 agitaciones finales la información tampoco desaparece enseguida. Para las primeras cinco después de la gota visible 46 se estableció la invertibilidad genérica sobre la unión canónica relevante sin información lateral adicional. Para las restantes se conocen cotas constructivas fuertes de cuánta información lateral basta para reconstruir.</p>
+  <p>Permanece abierta la cuestión de si <strong>los seis cuencos finales por sí solos</strong> bastan siempre de manera genérica.</p>
+  <p>Parte de los resultados se demostró simbólicamente y parte se cerró mediante comprobaciones aritméticas finitas y exactas. El refuerzo simbólico redujo mucho el núcleo computacional del que hay que fiarse, pero no lo eliminó.</p>
+  <p>Espacios que al principio parecían exigir recorrer cantidades enormes de trayectorias acabaron reducidos a estructuras finitas mucho menores, entre ellas autómatas de 180 y 9 estados y simetrías de los seis cuencos. Bajo la mezcla hay, por tanto, una estructura algebraica rígida.</p>
+  <p>No hace falta saber nada de esto para consultar la fecha de hoy.</p><hr>
+</section>
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>Entonces, ¿qué es realmente el calendario pastafari?</h2>
+  <p>Es un calendario determinista en el que la fecha no depende solo del día objetivo, sino del <strong>día de trabajo y el día consultado conjuntamente</strong>.</p>
+  <p>Cada fecha tiene cinco campos exactos. El presente respecto de sí mismo siempre está en el año 5000, aunque ese año se mueve con el día de trabajo. Los años pueden ser larguísimos; las croquetas son continuas; los meses no tienen por qué serlo; no existe una semana canónica.</p>
+  <p>El día <code>n+1</code> de un mes puede no ser mañana. Un mismo día cronológico puede recibir otra etiqueta pastafari al día siguiente. Un mismo instante puede pertenecer a días pastafari locales diferentes en dos lugares. Un evento all-day no tiene por qué ir de medianoche a medianoche. Y un cumpleaños anual es un problema de búsqueda antes que de agenda.</p>
+  <p>Pero, dados el día de trabajo y el día consultado, no hay ambigüedad: existe una única respuesta exacta.</p>
+  <p>Al fin y al cabo, eso es todo lo que un calendario necesita hacer.</p>
+</section>
