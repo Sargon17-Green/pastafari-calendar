@@ -34,7 +34,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | fo | fo-FO | ltr | partial | draft |
 | fr | fr-FR | ltr | partial | draft |
 | fy | fy-NL | ltr | partial | draft |
-| gl | gl-ES | ltr | partial | not started |
+| gl | gl-ES | ltr | partial | draft |
 | gu | gu-IN | ltr | partial | draft |
 | ha | ha-NG | ltr | partial | draft |
 | hi | hi-IN | ltr | partial | draft |
