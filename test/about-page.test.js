@@ -52,9 +52,9 @@ function idsIn(html) {
 }
 
 function tableBodyRowCounts(html) {
-  return [...html.matchAll(/<table class="about-table">([\s\S]*?)<\/table>/g)].map((table) => {
+  return [...html.matchAll(/<table\\b(?=[^>]*\\bclass="[^"]*\\babout-table\\b[^"]*")[^>]*>([\\s\\S]*?)<\\/table>/g)].map((table) => {
     const body = table[1].match(/<tbody>([\s\S]*?)<\/tbody>/)?.[1] ?? "";
-    return (body.match(/<tr>/g) || []).length;
+    return (body.match(/<tr\\b/g) || []).length;
   });
 }
 
@@ -84,7 +84,7 @@ test("about page is a lightweight localized shell with a generic article fallbac
   assert.match(js, /resolveArticleLocale\(ARTICLE_FALLBACK_LOCALE\)/);
   assert.match(js, /buildTableOfContents\(\)/);
   assert.match(js, /focusHashTarget\(\)/);
-  assert.match(js, /matchMedia\("\(max-width: 760px\)"\)/);
+  assert.match(js, /matchMedia\("\(max-width: 860px\)"\)/);
   assert.match(js, /id === "site-usage"/);
   assert.doesNotMatch(js, /new Worker|pastafari-fast|calendar-converters|reverse-ui|reverse-search-controller/);
 });
@@ -133,7 +133,7 @@ test("every present locale article is structurally and semantically guarded", as
       assert.match(html, new RegExp(`id="${id}" data-toc-section data-toc-level="3"`), `${locale.code}: bad subsection level for ${id}`);
     }
     assert.deepEqual(tableBodyRowCounts(html), [19, 9], `${locale.code}: semantic table rows changed`);
-    assert.equal((html.match(/class="about-table"/g) || []).length, 2, `${locale.code}: table count changed`);
+    assert.equal((html.match(/<table\\b(?=[^>]*\\bclass="[^"]*\\babout-table\\b[^"]*")/g) || []).length, 2, `${locale.code}: table count changed`);
     assert.ok((html.match(/class="math-block"/g) || []).length >= 10, `${locale.code}: math blocks unexpectedly missing`);
     assert.equal(
       (html.match(/<pre class="math-block" dir="ltr" tabindex="0">/g) || []).length,
