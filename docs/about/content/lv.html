@@ -1,0 +1,331 @@
+<!-- Latviešu versija ir rakstīta tieši no ebreju semantiskā pamata, neizmantojot starpvalodu. -->
+<!-- Sadaļu ID ir stabila publisko dziļo saišu līguma daļa un netiek veidoti no tulkotajiem virsrakstiem. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>Šīs vietnes stāstā Pastafari kalendārs ir attēlots kā kalendārs, kurā tika radīts pats laiks. Taču tā darbības mehānisms ir definēts precīzi.</p>
+  <p>Šis kalendārs nepiešķir katrai dienai vienu nemainīgu Pastafari “etiķeti”. Lai noteiktu datumu, ir vajadzīgas divas dienas: <strong>darbības diena</strong>, no kuras sāk aprēķinu, un <strong>vaicātā diena</strong>, kuras Pastafari datumu vēlamies noskaidrot.</p>
+  <p>Ja darbības dienu apzīmējam ar <code>c</code>, bet vaicāto dienu ar <code>t</code>, tad datums ir</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>nevis <code>F(t)</code>. Tāpēc viena un tā pati vaicātā diena var saņemt citu Pastafari datumu, ja mainās darbības diena.</p>
+  <p>Tā nav kļūda. Tā kalendārs ir definēts.</p><hr>
+</div>
+
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>No kā sastāv Pastafari datums?</h2>
+  <p>Tam ir <strong>tieši piecas daļas</strong>: gada numurs, kotletes nosaukums, diena kotletē, mēneša nosaukums un diena mēnesī.</p>
+  <p>Vispārīgs piemērs: <strong>5000. gads, kotlete A, 417. diena kotletē, mēnesis B, 83. diena mēnesī.</strong></p>
+  <p>Darbības dienu, novērotāja atrašanās vietu, dienas hronoloģisko identitāti vai citus tehniskus datus var rādīt blakus datumam, taču tie nav sestais datuma lauks.</p><hr>
+</section>
+
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>Kāpēc vajadzīga darbības diena?</h2>
+  <p>Parastos kalendāros ir dabiski domāt, ka datums “pieder” pašai dienai. Pastafari kalendārā datums ir atkarīgs no attiecības starp divām dienām.</p>
+  <p>Mainīt <code>t</code> nozīmē jautāt par citu dienu. Mainīt <code>c</code> var nozīmēt daudz dziļāku pārmaiņu: var mainīties gadu robežas, kotletes, mēneši, to nosaukumi un tas, kā mēneši savijas.</p>
+  <p>Tāpēc šodien aprēķināts almanahs rīt var vairs nebūt pareizais. Tas reizē pasargā mūs no neveiklā stāvokļa, kurā drukāts kalendārs būtu lietojams veselu gadu.</p><hr>
+</section>
+
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>Tā pati diena, cits datums</h2>
+  <p>Ir jānošķir <strong>dienas identitāte</strong> no tās <strong>Pastafari attēlojuma</strong>. Pirmā ir stabila konkrētas dienas vieta laika līnijā; otrais ir piecu vērtību kopums, ko iegūst, šo dienu attēlojot zem noteiktas darbības dienas.</p>
+  <p>Produktā un API pirmo var uztvert kā <code>day-id</code>: hronoloģisku identitāti, kas nemainās, mainot attēlojumu. Turpretī</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre>
+  <p>un</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>nav obligāti vienādi.</p>
+  <p>Tātad darbības dienas manuāla maiņa var mainīt tai pašai dienai rādīto Pastafari datumu, pašai dienai nepārvietojoties laika līnijā.</p>
+  <p>Tas pats princips attiecas uz notikumiem. Tikšanās, dzimšana vai vēsturisks notikums ir jāpiesaista stabilai hronoloģiskai identitātei; tā Pastafari datumu var pārrēķināt atbilstoši attēlojuma kontekstam.</p>
+  <p>Etiķete var mainīties. Notikums nevar.</p><hr>
+</section>
+
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>5000. gads</h2>
+  <p>Ja darbības diena un vaicātā diena sakrīt,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>gada numurs vienmēr ir</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>Citiem vārdiem, tagadne, skatīta no pašas sevis, vienmēr atrodas 5000. gadā. Taču 5000. gads nav fiksēts vēsturisks periods; tas katru reizi tiek izvēlēts no jauna attiecībā pret darbības dienu.</p>
+  <p>Pati darbības diena atrodas 5000. gadā, tāpat kā citas tās pašas izvēlētās gada struktūras dienas. Tāpēc <strong>atrašanās 5000. gadā pati par sevi nepierāda, ka <code>t=c</code>.</strong></p>
+  <p>Tomēr gada numurs rāda virzienu:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre>
+  <p>un</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p>Pastāv arī <strong>0. gads</strong>; vēl tālāk pagātnē ir gadi ar negatīviem numuriem.</p><hr>
+</section>
+
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>Gadi un vārti</h2>
+  <p>Pastafari gadā var būt no</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ līdz }5778</code></pre>
+  <p>dienām. Tās ir sistēmas kanoniskās robežas, nevis empīriski vidējie lielumi.</p>
+  <p>Tāpēc gads var būt īsāks par Saules gadu vai garāks par piecpadsmit Saules gadiem. Gadu robežas veido <strong>vārti</strong>; kotlešu robežas rodas no tās pašas sistēmas.</p>
+  <p>Gada beigām nav jāsakrīt ar gadalaiku, vienu Zemes apriņķojumu ap Sauli, Mēness ciklu vai praktisku vēlmi, lai gads beidzot noslēgtos.</p><hr>
+</section>
+
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>Kotletes</h2>
+  <p>Katrs gads ir sadalīts <strong>6 līdz 17 kotletēs</strong>. Kotlete ir hronoloģiski nepārtraukts laika posms.</p>
+  <p>Ja šodien ir 250. diena kotletē, tad rīt ir 251. diena tajā pašā kotletē, ja vien šodiena nav tās pēdējā diena. Kotlešu robežas ir vārti, un kotletē ir vismaz</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
+  <p>dienas.</p>
+  <p>Sistēmā ir 17 kanoniski kotlešu nosaukumi, un viens nosaukums vienā gadā neatkārtojas. Nosaukums nenosaka kotletes garumu vai vietu.</p><hr>
+</section>
+
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>Mēneši un savijums</h2>
+  <p>Katram gadam ir no</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ līdz }47</code></pre>
+  <p>strukturāliem mēnešiem, un katram mēnesim piešķir no</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ līdz }123</code></pre>
+  <p>dienām.</p>
+  <p>Tomēr Pastafari mēnesim <strong>nav jābūt nepārtrauktam laika intervālam</strong>. Piemēram, hronoloģiskā secība var būt šāda:</p>
+  <blockquote><p>mēnesis A — 14. diena<br>mēnesis B — 9. diena<br>mēnesis A — 15. diena</p></blockquote>
+  <p>Tā ir pilnīgi derīga struktūra. Mēneša A 15. diena ir nākamā diena <strong>šajā mēnesī</strong>, pat ja starpā atrodas cita mēneša diena.</p>
+  <p>Tāpēc “diena mēnesī” nav hronoloģisko dienu skaits kopš mēneša pirmās parādīšanās. Tas ir tās dienas kārtas numurs starp dienām, kas attiecīgajā gadā piešķirtas šim mēnesim. 48. diena nozīmē 48. dienu, kas pieder šim mēnesim, nevis 47 dienas pēc tā pirmās parādīšanās.</p><hr>
+</section>
+
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>Mēneši savijas cits ar citu</h2>
+  <p>Mēnešus var iztēloties kā pavedienus, kas stiepjas cauri gadam. Katra diena pieder tieši vienam mēnesim; rītdiena var piederēt citam, bet pirmais mēnesis vēlāk var atgriezties un turpināt ar nākamo numuru.</p>
+  <p>Šim savijumam ir noteikumi, tostarp ierobežojumi mēnešu pirmās un pēdējās parādīšanās kārtībai. Taču nav prasības, lai viens mēnesis beigtos pirms cita mēneša sākuma.</p>
+  <ul>
+    <li>Kotlete mēra vietu nepārtrauktā laika posmā.</li>
+    <li>Mēnesis nozīmē piederību strukturālam pavedienam, kas var pazust un vēlāk atkal parādīties.</li>
+  </ul>
+  <p>Viens mēnesis var šķērsot vairākas kotletes, un vienā kotletē var parādīties daudzi mēneši. Abu sistēmu sākumiem un beigām nav jāsakrīt.</p><hr>
+</section>
+
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>Nākamā mēneša diena ne vienmēr ir rīt</h2>
+  <p>Ja šodien ir konkrēta mēneša 17. diena, tad tā paša mēneša 18. diena ir <strong>šī mēneša nākamā parādīšanās</strong>. Tā var būt rīt, bet var būt arī daudz vēlāk.</p>
+  <p><strong>Rīt</strong> nozīmē nākamo hronoloģisko dienu; <strong>nākamā diena mēnesī</strong> nozīmē nākamo tā paša mēneša parādīšanos.</p>
+  <p>Tāpat “mēneša beigas” nenozīmē, ka beigas hronoloģiski ir tuvu. Mēnesis ar 120 dienām šodien var atrasties pie 119. dienas, kamēr 120. diena atrodas daudz vēlāk tajā pašā gadā.</p><hr>
+</section>
+
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>Nedēļu nav</h2>
+  <p>Pašreizējā kanoniskā specifikācija <strong>nenosaka nedēļu sistēmu</strong>. Nav kanoniskas septiņu dienu vienības, nav Pastafari nedēļas dienu nosaukumu un nav noteikuma, pēc kura divas dienas būtu “viena un tā pati nedēļas diena”.</p>
+  <p>Protams, civilo nedēļu sistēmu var uzlikt no ārpuses; tā vienkārši nav Pastafari datuma daļa.</p><hr>
+</section>
+
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>Nosaukumi</h2>
+  <p>Pastāv 17 kanoniski kotlešu nosaukumi un 47 kanoniski mēnešu nosaukumi. Vienā gadā katrs nosaukums savā grupā parādās ne vairāk kā vienu reizi.</p>
+  <p>Nosaukuma identitāte ir kanoniska un semantiska; tā nav balsojuma rezultāts starp dažādiem rakstījumiem, tulkojumiem vai implementācijām. Nosaukumu nozīmes jautājumā augstākā autoritāte ir ebreju Megillah; tulkojumi un transliterācijas ir tikai attēlojuma slāņi.</p>
+  <p>Nosaukums nav arī slēpts garuma kods. Neviens konkrēts kotletes vai mēneša nosaukums pats par sevi nepadara šo vienību garāku vai īsāku.</p><hr>
+</section>
+
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>Neliels fakts par mēnešiem</h2>
+  <p>Ir 47 mēnešu nosaukumi, un mēnesis var sasniegt 123. dienu. Tāpēc sintaktiski iespējamo pāru “mēneša nosaukums + dienas numurs mēnesī” skaits ir</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>Katra gada diena realizē tieši vienu šādu pāri. Ja gada garums ir <code>L</code>, parādās tieši <code>L</code> pāri. Tā kā</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>katram gadam noteikti trūkst vismaz</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre>
+  <p>iespējamu pāru. Pat visgarākajā gadā nav pietiekami daudz dienu, lai izmantotu tos visus.</p><hr>
+</section>
+
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>Kā kalendāru aprēķina?</h2>
+  <p>Iekšējo aprēķinu šeit saucam par <strong>mērci</strong>. Tā centrā ir pirmskaitlis</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>Process ietver piecus ievades skaitītājus, 7 slēptus pilienus, 46 redzamus pilienus, 6 bļodas, mainīgas bļodu secības, 12 noslēdzošās maisīšanas, zīmogus dažādām atbildēm, kombinatoriskas izvēles, vārtu veidošanu, gadu izvēli, kotlešu sadalījumu, nosaukumu izvēli, mēnešu veidošanu un mēnešu dienu savīšanu.</p>
+  <p>Noslēdzošie atjauninājumi ir <strong>sinhroni</strong>: katrā maisīšanā visas sešas jaunās vērtības aprēķina no viena un tā paša vecā stāvokļa, un tikai pēc tam visas sešas bļodas nomaina vienlaikus.</p>
+  <p>12 noslēdzošajās maisīšanās ir viena īpaši svarīga kanoniska detaļa. Ja <code>S</code> ir sešu veco bļodu summa, bet <code>r</code> ir maisīšanas numurs, sistēma aprēķina</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p><code>R</code> ir <strong>saglabātā summa</strong>. Gan bļodu secības izvēle, gan maisīšanas iekšējais atjauninājums izmanto <code>R</code>, nevis neapstrādāto summu <code>S</code>.</p>
+  <p>Vecākas versijas, kas šajā atjauninājumā ievadīja neapstrādāto summu, vairs neatspoguļo pašreizējo kanonisko semantiku. Piemēri, kas izriet no vecā noteikuma, jāuzskata par novecojušiem, līdz tie ir pārbaudīti no jauna.</p>
+  <p>Pēc maisīšanām atbilžu gredzens arī turpina secību, kas fiksēta pie 46. redzamā piliena; šo secību nedrīkst automātiski aizstāt ar pēdējās maisīšanas secību.</p><hr>
+</section>
+
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice un Wide Choice</h2>
+  <p>Salīdzinoši mazām izvēļu telpām izmanto <strong>Short Choice</strong>. Tas izmanto rejection sampling, lai izvairītos no vienkāršas modulo novirzes.</p>
+  <p>Ļoti lielām telpām izmanto <strong>Wide Choice</strong>. Tam nedrīkst piedēvēt īpašības, ko specifikācija negarantē.</p>
+  <p>Wide Choice nav tas pats, kas ģenerēt neatkarīgus, vienmērīgi sadalītus bāzes <code>Q</code> ciparus, līdz iegūts indekss. Tāpēc nevar secināt, ka katrai derīgai izvēlei obligāti ir vienāda pozitīva varbūtība. Pietiekami lielās telpās var būt derīgas izvēles, kuras šis mehānisms vispār nevar sasniegt.</p>
+  <p>Pats kalendārs joprojām ir pilnībā deterministisks. “Choice” ir algoritma posma nosaukums, nevis nejauša izloze lietošanas laikā.</p><hr>
+</section>
+
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>Strukturālais atlants</h2>
+  <p>Līdz šim runājām par kalendāra noteikumiem. Tālāk minētie skaitļi ir cita veida informācija: tie ir <strong>empīriski rezultāti</strong> no liela skaitļošanas parauga.</p>
+  <p>Atlants tika veidots ar engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> un aptvēra 4,096 darbības dienas; katrai no tām 4990.–5010. gadu; 86,016 gadu struktūras; 625,437 kotletes; 3,535,422 strukturālos mēnešus; vairāk nekā 356 miljonus nepārtrauktu mēneša segmentu; un vairāk nekā 364 miljonus pāreju no dienas <code>n</code> uz dienu <code>n+1</code> tajā pašā mēnesī.</p>
+  <p>Šie skaitļi apraksta šo corpus, nevis kanoniskus likumus.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Strukturālā atlanta izmērītie dati">
+    <table class="about-table">
+      <thead><tr><th scope="col">Mērītais lielums</th><th scope="col">Rezultāts paraugā</th></tr></thead>
+      <tbody>
+        <tr><td>Vidējais gada garums</td><td>4,275.182 dienas</td></tr>
+        <tr><td>Gada garuma mediāna</td><td>4,343</td></tr>
+        <tr><td>Mazākā / lielākā novērotā vērtība</td><td>716 / 5,778</td></tr>
+        <tr><td>Vidējais kotlešu skaits gadā</td><td>7.271</td></tr>
+        <tr><td>Gadi ar tieši 6 kotletēm</td><td>42.00%</td></tr>
+        <tr><td>Gadi ar 6–8 kotletēm</td><td>81.29%</td></tr>
+        <tr><td>Vidējais kotletes garums</td><td>587.963 dienas</td></tr>
+        <tr><td>Kotletes garuma mediāna</td><td>560</td></tr>
+        <tr><td>Vidējais mēnešu skaits gadā</td><td>41.102</td></tr>
+        <tr><td>Mēnešu skaita mediāna</td><td>43</td></tr>
+        <tr><td>Gadi ar 47 mēnešiem</td><td>15.63%</td></tr>
+        <tr><td>Gadi ar vismaz 45 mēnešiem</td><td>36.81%</td></tr>
+        <tr><td>Vidējais strukturālā mēneša garums</td><td>104.014 dienas</td></tr>
+        <tr><td>Mēneša garuma mediāna</td><td>115</td></tr>
+        <tr><td>Vidējais nepārtraukto segmentu skaits mēnesī</td><td>100.897</td></tr>
+        <tr><td>Vienas dienas mēneša segmentu īpatsvars</td><td>97.482%</td></tr>
+        <tr><td>Varbūtība, ka divas blakus dienas pieder vienam mēnesim</td><td>2.9976%</td></tr>
+        <tr><td>Vidējais citu mēnešu dienu skaits starp <code>n</code> un <code>n+1</code> tajā pašā mēnesī</td><td>40.408</td></tr>
+        <tr><td>Vidējais intervāls no mēneša pirmās līdz pēdējai parādīšanās reizei</td><td>4,266.653 dienas</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Praksē mēnesis ar aptuveni simt dienām var būt izkaisīts gandrīz pa visu Pastafari gadu.</p>
+  <p>Tas pats atlants parādīja dabisku garuma novirzi ap 5000. gadu. “Parasts” gads paraugā vidēji bija aptuveni 4,262 dienas garš. Ja gadus sver pēc tajos esošo dienu skaita, vidējais pieaug līdz aptuveni 4,466 dienām; pats 5000. gads vidēji bija ap 4,499 dienām.</p>
+  <p>Iemesls ir vienkāršs: 5000. gadam jāietver darbības diena. Garākam gadam ir vairāk dienu, kurās tas var būt tieši tas gads, kas satur darbības dienu.</p>
+  <p>Arī saistība starp vienības nosaukumu un tās garumu paraugā ir ļoti vāja. Tas nepierāda pilnīgu matemātisku neatkarību, taču atlants nerāda praktisku signālu, ka nosaukumi būtu paredzēti garuma kodēšanai.</p>
+  <p>Turklāt 86,016 gadu struktūras nav 86,016 pilnīgi neatkarīgi paraugi: tajos ir tikai 24,786 atšķirīgi intervāli starp sākuma un beigu vārtiem. Blakus esošas darbības dienas var izvēlēties vienu un to pašu gada intervālu, bet tomēr radīt atšķirīgu iekšējo struktūru.</p>
+  <p>Tādēļ atlants labi raksturo izmērīto implementācijas uzvedību, bet to nevajadzētu pārvērst par varbūtību teorēmu par visām iespējamajām kalendāra struktūrām.</p><hr>
+</section>
+
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>Dzimšanas dienas un gadadienas</h2>
+  <p>Frāze “viena un tā pati diena katru gadu” šeit vispirms ir jādefinē. Dabiski atkārtošanās koordinātu pāri ir <code>(mēneša nosaukums, diena mēnesī)</code> un <code>(kotletes nosaukums, diena kotletē)</code>; nosacījumus var arī kombinēt.</p>
+  <p>Tāpēc Pastafari dzimšanas diena nav vienkārši <code>RRULE:FREQ=YEARLY</code>. Jāatrod nākamais gads, kas izpilda izvēlēto atkārtošanās nosacījumu, un sākotnējais notikums automātiski netiek skaitīts kā paša “nākamā parādīšanās”.</p>
+  <p>Darbības dienas maiņa tikai attēlojuma nolūkā nedrīkst mainīt personas identitāti, dzimšanas brīdi vai vecumu.</p>
+  <p>Precīzā 4,096 pašatsauces datumu skenēšanā katrs nākamais Pastafari gads tika pārbaudīts uz priekšu un atpakaļ līdz 250,000 gadiem katrā virzienā:</p>
+  <ul>
+    <li><code>(mēneša nosaukums, diena mēnesī)</code> gadījumā pirmās atgriešanās mediāna bija 1 Pastafari gads; 77.56% atgriezās blakus gadā, 93.77% divu gadu laikā, 99.44% piecu gadu laikā; lielākā novērotā vērtība bija 21 gads.</li>
+    <li><code>(kotletes nosaukums, diena kotletē)</code> gadījumā mediāna bija 3 gadi; 88.89% tika atrasti 10 gadu laikā, taču sadalījumam ir ļoti smaga aste, un lielākā novērotā vērtība sasniedza 51,954 Pastafari gadus.</li>
+  </ul>
+  <p>Tie ir <strong>empīriski pētītā corpus rezultāti</strong>, nevis pierādījums, ka katra iespējamā gadadiena noteikti atkārtosies, un ne garantija par maksimālo gaidīšanas laiku.</p><hr>
+</section>
+
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>Kā norunāt tikšanos?</h2>
+  <p>Ja divi cilvēki vēlas vienoties, izmantojot tikai Pastafari datumu, viņiem vismaz jāvienojas par visiem pieciem datuma laukiem un aprēķinā izmantoto darbības dienu. Labāk darbības dienu saglabāt kā stabilu dienas identitāti, nevis kā vārdu “šodien”; pretējā gadījumā abi cilvēki var aprēķināt atšķirīgus kalendārus.</p>
+  <ul>
+    <li>“rīt” ir nākamā hronoloģiskā diena;</li>
+    <li>“nākamā mēneša diena” ir tā paša mēneša nākamā parādīšanās;</li>
+    <li>“mēneša beigas” ir tā pēdējā parādīšanās;</li>
+    <li>“viss mēnesis” var nozīmēt šim mēnesim piederošo dienu kopu vai visu hronoloģisko intervālu no pirmās līdz pēdējai parādīšanās reizei;</li>
+    <li>“nākamais gads” ir nākamais gads kalendārā, kas izveidots zem izvēlētās darbības dienas.</li>
+  </ul>
+  <p>Īpaši svarīgai tikšanās reizei var papildus saglabāt absolūtu hronoloģisku dienu vai brīdi. Kalendārs par to neapvainosies.</p><hr>
+</section>
+
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>Ceļošana, notikumi un all-day</h2>
+  <p>Notikums un tam rādītā vietējā etiķete nav viens un tas pats. Notikums ar noteiktu laiku jāpiesaista stabilam hronoloģiskam brīdim. Ceļošana to laikā nepārvieto, taču tai pašai fiziskajai akimirkai rādītais vietējais Pastafari datums var mainīties, jo “vietējās dienas” definīcija ir atkarīga no atrašanās vietas.</p>
+  <p><strong>All-day</strong> notikumam atšķirība ir vēl lielāka. Civilais visas dienas notikums parasti ilgst no civilās pusnakts līdz nākamajai pusnaktij; Pastafari visas dienas notikumam būtu jāilgst no vietējās Pastafari dienas robežas līdz nākamajai tādai robežai. Parasti tie nav vieni un tie paši brīži.</p>
+  <p>Tāpēc Pastafari notikuma akla eksportēšana kā civilā “visas dienas” notikuma var mainīt tā nozīmi. Lai to saglabātu precīzi, jāglabā hronoloģiskais enkurs un atbilstošais atrašanās vietas / dienas robežas konteksts, nevis tikai <code>all-day</code> karodziņš.</p><hr>
+</section>
+
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>Kad mainās diena?</h2>
+  <p>Vietējā Pastafari diena nemainās pusnaktī. Tās robežu nosaka <strong>Venēras centra topocentriskais apakšējā meridiāna tranzīts pāri vietējam meridiānam</strong>.</p>
+  <p>Tātad tas ir vietējs astronomisks notikums, kas atkarīgs no atrašanās vietas. Tranzītam nav jānotiek 00:00, to nenosaka civilā laika josla, tas nepārbīdās tikai tādēļ, ka sākas vai beidzas vasaras laiks, un tam nav nepieciešams, lai Venēru varētu redzēt ar neapbruņotu aci.</p>
+  <p>Viena un tā pati fiziskā akimirklis divās vietās var atrasties dažādās to vietējo dienas robežu pusēs. Ja sistēmai nav izmantojamas lietotāja atrašanās vietas, produkta noklusējuma rezerves vieta ir <strong>Kisurra</strong>.</p><hr>
+</section>
+
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>Drukāts kalendārs un aprēķins ar roku</h2>
+  <p>Pastafari kalendāru var izdrukāt; tikai jānorāda, kurai darbības dienai tas aprēķināts. Šāds kalendārs rāda laika struktūru no šīs dienas skatpunkta; mainoties darbības dienai, var būt vajadzīgs jauns kalendārs. Tātad printerim joprojām ir darbs.</p>
+  <p>Visu var aprēķināt arī ar roku, jo specifikācija ir pilnīga un deterministiska: aprēķiniet ievades skaitītājus, izpildiet 7 slēptos un 46 redzamos pilienus, atjauniniet sešas bļodas, veiciet 12 noslēdzošās maisīšanas, izveidojiet atbildes, uzbūvējiet vārtus, izvēlieties gadus un kotletes, veiciet kombinatoriskās izvēles, izvēlieties nosaukumus un pēc tam savijiet mēnešus.</p>
+  <p>Toties nav jāatceras, ka februārī dažreiz ir 28, bet dažreiz 29 dienas.</p><hr>
+</section>
+
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>Kas tad ir Seer?</h2>
+  <p>Līdzās kanoniskajai implementācijai ir ātrs engine ar nosaukumu <strong>Pastafarian Calendar Seer</strong>. Seer nav autoritātes avots: pareizo datumu nosaka Megillah un kanoniskais aprēķins. Ja Seer ar tiem nesakrīt, kļūdās Seer.</p>
+  <p>Tā uzdevums ir ātri izpildīt tos pašus vaicājumus un darīt to formā, ko ērti integrēt produktos.</p>
+  <p>Tiešajā pārbaudē, kas veikta šīs lapas rediģēšanas laikā, Seer cita starpā ietvēra date un “now” vaicājumus, batch, dienu diapazonus, reverse conversion no Pastafari datuma uz mērķa dienu, gada struktūras iegūšanu, aktīvās darbības dienas noteikšanu, Node API, browser/HTTP klientu, CLI, HTTP v1 pakalpojumu, OpenAPI 3.1 līgumu, native implementācijas un izplatīšanas pakotnes, kā arī pārbaudītu container deployment.</p>
+  <p>Tāpēc vecais apgalvojums, ka Seer nav publiska API, vairs nav patiess. Tagad ir skaidrs un stabils HTTP v1 līgums ar endpointiem date, range, batch, year, reverse, darbības dienai, metadata, locales un status.</p>
+  <p>2026. gada 21. septembrī publisks HTTPS deployment Render platformā tika patiešām pārbaudīts: dzīvajā servisā tika testēti exact vaicājumi, liels range, restart, cold wake un uzvedība slodzes apstākļos.</p>
+  <p>Tomēr projekta dokumentācija joprojām nošķir publisku beta/evaluation deployment no pastāvīga hosted production servisa ar SLA. Tādēļ konceptuālajai skaidrojuma lapai nevajadzētu iesaldēt servera adresi, hostinga pakalpojuma sniedzēju vai versijas numuru tā, it kā tie būtu paša kalendāra sastāvdaļa.</p>
+  <p>Seer drīkst izmantot precomputation, īpašas reprezentācijas, SIMD, algebru un citus saīsinājumus. Tam nav soli pa solim jāatdarina visa kanoniskās implementācijas aprēķinu vēsture, ja vien tas veic to pašu semantisko darbību un atgriež to pašu atbildi.</p>
+  <p>Optimizācija nav alternatīva autoritāte.</p><hr>
+</section>
+
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>Izcelsme, Dibināšanas diena un Plākšņu diena</h2>
+  <p>Šeit īpaši svarīgi ir skaidri nošķirt kanoniskos laika enkurus no vietnes stāsta.</p>
+
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>Enkuri</h3>
+    <p>Sistēmai ir viena fiksēta atsauces diena ar nosaukumu <strong>Dibināšanas diena</strong>. Proleptiskajā Gregora kalendārā tā ir <strong>41,222. g. p.m.ē. 22. decembris</strong>.</p>
+    <p>Dibināšanas diena nav “laika sākums”; tā ir aprēķinu atskaites vieta.</p>
+    <p>Dienu numerācija ap to izmanto pozitīvus nepāra/pāra skaitļus: Dibināšanas diena=1; vēlākās dienas=3, 5, …; virzienā uz pagātni iepriekšējā diena=2, pēc tam 4, 6, … . Tādā veidā abas enkura puses tiek kodētas bez negatīviem dienu numuriem šajā skaitītājā.</p>
+    <p>Otrs enkurs ir <strong>Plākšņu diena</strong>: <strong>763. g. p.m.ē. 15. jūnijs proleptiskajā Jūlija kalendārā</strong>, tas ir <strong>763. g. p.m.ē. 7. jūnijs proleptiskajā Gregora kalendārā</strong>.</p>
+    <p>Precīzais attālums no Dibināšanas dienas līdz Plākšņu dienai ir</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
+    <p>dienas.</p>
+    <p>Tie ir fiksēti enkuri laika līnijā, taču tiem rādītais Pastafari datums joprojām ir atkarīgs no darbības dienas, no kuras par tiem vaicājam.</p>
+  </section>
+
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>Vietnes stāsts</h3>
+    <p>Vietnes redakcionālajā stāstā kalendārs ir aprakstīts kā radīšanas daļa un sistēma, ko cilvēce lietoja, pilnībā to neapzinoties, līdz tā mūsdienās tika nodota no jauna.</p>
+    <p>Tas ir vietnes stāsts; ne katra tā naratīvā detaļa jāpasniedz kā skaidrs Megillah tehnisks apgalvojums.</p>
+    <p>Pats atkārtotās nodošanas notikums ir fiksēts vēsturisks notikums. Tā <strong>Pastafari datumu</strong> labāk rādīt dinamiski zem pašreizējās darbības dienas, nevis uz mūžiem iesaldēt kā vienu datumu.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>Pieredzējušiem lietotājiem: reverse conversion</h2>
+  <p>Ja darbības diena <code>c</code> ir zināma, reverse conversion ir ļoti stingri ierobežots. Zināmā Pastafari gadā</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{kotletes nosaukums},\text{diena kotletē})</code></pre>
+  <p>identificē ne vairāk kā vienu dienu. Tas pats attiecas uz</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{mēneša nosaukums},\text{diena mēnesī})</code></pre>
+  <p>Tāpēc pilns datums ar zināmu darbības dienu viennozīmīgi identificē mērķa dienu.</p>
+
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Kandidātu skaita augšējās robežas reverse conversion laikā">
+    <table class="about-table">
+      <thead><tr><th scope="col">Papildu zināmā informācija</th><th scope="col">Lielākais kandidātu skaits</th></tr></thead>
+      <tbody>
+        <tr><td>Nav zināms neviens lauks, izņemot gadu</td><td>5,778</td></tr>
+        <tr><td>Tikai kotletes nosaukums</td><td>5,568</td></tr>
+        <tr><td>Tikai diena kotletē</td><td>17</td></tr>
+        <tr><td>Tikai mēneša nosaukums</td><td>123</td></tr>
+        <tr><td>Tikai diena mēnesī</td><td>47</td></tr>
+        <tr><td>Kotletes nosaukums + diena kotletē</td><td>1</td></tr>
+        <tr><td>Mēneša nosaukums + diena mēnesī</td><td>1</td></tr>
+        <tr><td>Jebkuri trīs lauki, kas nav gads</td><td>1</td></tr>
+        <tr><td>Visi četri lauki, kas nav gads</td><td>1</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Nezinot darbības dienu, situācija ir cita. Tas pats piecu vērtību kopums var parādīties zem dažādām darbības dienām, un ir precīzi piemēri, kuros tas pats pilnais datums parādās dažādos attālumos no <code>c</code>.</p>
+  <p>5000. gadā pat šī attāluma zīmi ne vienmēr nosaka piecas vērtības: tas pats pilnais datums vienā kontekstā var būt pagātnē attiecībā pret darbības dienu, bet citā — nākotnē.</p>
+  <p>Tāpēc pilns Pastafari datums nav absolūta adrese laika līnijā, ja nezinām, zem kura <code>c</code> tas aprēķināts.</p>
+
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>Struktūra ļoti tālā laikā</h3>
+    <p>No specifikācijas izsecinātie matemātiskie pētījumi ir atraduši arī precīzu asimptotisku struktūru. Pie <strong>fiksētas darbības dienas</strong> <code>c</code>, pietiekami tālu pagātnes astē parādās afīna periodiskums.</p>
+    <p>Ja</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>tad tam pašam <code>c</code> pastāv nobīde <code>H_c</code>, gada izmaiņa <code>p_c</code> un pietiekami tāls slieksnis, pēc kura</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>četri lauki, kas nav gads, atkārtojas, kamēr gada numurs mainās par fiksētu lielumu.</p>
+    <p>Tas ir rezultāts fiksētam <code>c</code>; no tā neizriet globālā sakarība</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>Jautājums, vai galējie asimptotiskie slīpumi patiešām atšķiras dažādām darbības dienām, joprojām ir atklāts.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>Pieredzējušiem lietotājiem: cik daudz vēstures saglabā mērce?</h2>
+  <p>Mērce izskatās kā ļoti agresīvs jaukšanas mehānisms, taču algebriskie pētījumi rāda, ka tā saglabā daudz vairāk informācijas, nekā šķiet pēc izskata. Tas ir no specifikācijas izsecināts pētījuma rezultāts, nevis jauns kalendāra noteikums.</p>
+  <p>Redzamajos 3.–46. posmos, attiecīgajā asimptotiskajā zarā, ir noteikta generic injectivity: vispārīgā gadījumā stāvoklis saglabā pietiekami daudz informācijas, lai rekonstruētu attiecīgo ievades vēsturi un bļodu secību.</p>
+  <p>Informācija nepazūd uzreiz arī 12 noslēdzošajās maisīšanās. Pirmajām piecām maisīšanām pēc 46. redzamā piliena attiecīgajā kanoniskajā kopā ir noteikta generic invertibility bez papildu sānu informācijas; pārējai daļai zināmas spēcīgas konstruktīvas augšējās robežas sānu informācijas daudzumam, kas pietiek rekonstrukcijai.</p>
+  <p>Joprojām atklāts ir jautājums, vai <strong>ar pēdējām sešām bļodām vien</strong> vispārīgā nozīmē vienmēr pietiek.</p>
+  <p>Daži rezultāti pierādīti simboliski, citi noslēgti ar galīgu un precīzu aritmētisku pārbaudi. Simboliskā pastiprināšana ievērojami samazināja skaitļošanas kodolu, kam jāuzticas, bet pilnībā to nenovērsa.</p>
+  <p>Telpas, kas sākotnēji izskatījās tā, it kā prasītu milzīga ceļu skaita izpēti, tika samazinātas līdz daudz mazākām galīgām struktūrām, tostarp automātiem ar 180 un 9 stāvokļiem un sešu bļodu simetrijām.</p>
+  <p>Zem sajaukšanas atrodas stingra algebriska struktūra. Lai uzzinātu šodienas datumu, tā nav jāzina.</p><hr>
+</section>
+
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>Kas tad īsti ir Pastafari kalendārs?</h2>
+  <p>Deterministisks kalendārs, kurā datums nav tikai mērķa dienas funkcija, bet gan <strong>darbības dienas un vaicātās dienas funkcija kopā</strong>.</p>
+  <p>Katram datumam ir tieši pieci lauki. Tagadne, skatīta pati no sevis, vienmēr ir 5000. gadā, bet pats 5000. gads pārvietojas līdzi darbības dienai. Gadi var būt ļoti gari, kotletes ir nepārtrauktas, mēneši — ne obligāti, un kanoniskas nedēļu sistēmas nav.</p>
+  <p>Mēneša diena <code>n+1</code> ne vienmēr ir rīt. Viena un tā pati hronoloģiskā diena rīt var saņemt citu Pastafari etiķeti. Viena un tā pati fiziskā akimirklis divās vietās var piederēt divām atšķirīgām vietējām Pastafari dienām. Visas dienas notikumam nav obligāti jāilgst no pusnakts līdz pusnaktij. Un ikgadēja dzimšanas diena vispirms ir meklēšanas problēma un tikai pēc tam kalendāra problēma.</p>
+  <p>Taču, ja zināma darbības diena un vaicātā diena, neskaidrības nav: pareizā atbilde ir tieši viena.</p>
+  <p>Galu galā kalendāram nekas vairāk nav jādara.</p>
+</section>
