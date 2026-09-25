@@ -779,7 +779,7 @@ try {
     hasCalendarWorkspace: Boolean(document.querySelector("#calendar-workspace")),
     tocLinks: document.querySelectorAll("#about-toc-list a").length,
   }));
-  assert.equal(aboutSnapshot.htmlLang, "he-IL");
+  assert.equal(aboutSnapshot.htmlLang, "he");
   assert.equal(aboutSnapshot.htmlDir, "rtl");
   assert.equal(aboutSnapshot.articleLang, "he-IL");
   assert.equal(aboutSnapshot.articleDir, "rtl");
