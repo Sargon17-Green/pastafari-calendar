@@ -94,6 +94,8 @@ Status progression for target locales: `not started → draft → semantic QA �
 
 - `gl-ES`: locale-wide language finding: prominent existing UI strings contain Portuguese forms rather than idiomatic Galician (for example `día de trabalho`). Do not use those strings as a terminology oracle for the article; native Galician review must repair the whole locale.
 
+- `et-EE`: locale-wide language finding: prominent existing UI strings are Finnish rather than Estonian (for example `Vaihda työpäevä`, `Sivuston käyttö`). Do not use those strings as a terminology oracle for the article; native Estonian review must repair the whole locale.
+
 ## Native-language whole-site QA policy
 
 The final linguistic QA is intentionally a separate phase and will run on a dedicated branch forked from the completed translation branch, tentatively `qa/about-i18n-native-language-audit`.
