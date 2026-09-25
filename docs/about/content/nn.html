@@ -1,0 +1,331 @@
+<!-- Nynorskversjonen er skriven direkte frå den hebraiske semantic master; inga pivotspråk er brukt. -->
+<!-- Section-ID-ane er del av ein stabil offentleg deep-link contract og blir ikkje laga frå omsette overskrifter. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>I forteljinga på denne nettstaden blir Pastafari-kalenderen framstilt som kalenderen der sjølve tida vart skapt. Korleis han verkar, er likevel fastsett med strenge og presise reglar.</p>
+  <p>Kalenderen festar ikkje éin uforanderleg Pastafari-“etikett” til kvar dag. For å få ein dato trengst to dagar: <strong>handlingsdagen</strong>, som utrekninga tek utgangspunkt i, og <strong>spørjedagen</strong>, dagen vi vil vite Pastafari-datoen til.</p>
+  <p>Viss vi skriv handlingsdagen som <code>c</code> og spørjedagen som <code>t</code>, er datoen</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>ikkje <code>F(t)</code>. Den same spørjedagen kan difor få ein annan Pastafari-dato når handlingsdagen endrar seg.</p>
+  <p>Dette er ikkje ein feil. Kalenderen er definert akkurat slik.</p><hr>
+</div>
+
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>Kva består ein Pastafari-dato av?</h2>
+  <p>Han har <strong>nøyaktig fem delar</strong>: årstal, namn på koteletten, dag i koteletten, namn på månaden og dag i månaden.</p>
+  <p>Eit generelt døme: <strong>år 5000, kotelett A, dag 417 i koteletten, månad B, dag 83 i månaden.</strong></p>
+  <p>Handlingsdagen, plasseringa til observatøren, den kronologiske identiteten til dagen eller annan teknisk informasjon kan visast ved sida av datoen, men er ikkje eit sjette datofelt.</p><hr>
+</section>
+
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>Kvifor trengst ein handlingsdag?</h2>
+  <p>I vanlege kalendrar er det naturleg å tenkje at datoen “høyrer til” sjølve dagen. I Pastafari-kalenderen er datoen avhengig av forholdet mellom to dagar.</p>
+  <p>Å endre <code>t</code> tyder at vi spør om ein annan dag. Å endre <code>c</code> kan ha langt djupare verknader: grensene mellom år, kotelettane, månadene, namna deira og måten månadene blir fletta saman på, kan alle endre seg.</p>
+  <p>Ein almanakk som er rekna ut i dag, treng difor ikkje vere rett i morgon. Det hindrar òg den litt upraktiske situasjonen at ein trykt kalender held fram med å vere nyttig eit heilt år.</p><hr>
+</section>
+
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>Same dag, annan dato</h2>
+  <p><strong>Identiteten til dagen</strong> må skiljast frå <strong>Pastafari-framstillinga</strong> av han. Det første er den faste plassen til ein konkret dag på tidslinja; det andre er dei fem verdiane som kjem fram når dagen blir vist under ein bestemt handlingsdag.</p>
+  <p>I produktet og API-et kan det første tenkjast som <code>day-id</code>: ein kronologisk identitet som ikkje endrar seg når framstillinga endrar seg. Derimot treng</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre>
+  <p>og</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>ikkje vere like.</p>
+  <p>Dermed kan ei manuell endring av handlingsdagen endre Pastafari-datoen som blir vist for same dag, utan at sjølve dagen flyttar seg nokon stad på tidslinja.</p>
+  <p>Det same prinsippet gjeld hendingar. Eit møte, ei fødsel eller ei historisk hending bør vere knytt til ein stabil kronologisk identitet; Pastafari-datoen kan reknast ut på nytt etter visingskonteksten.</p>
+  <p>Etiketten kan endre seg. Hendinga gjer det ikkje.</p><hr>
+</section>
+
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>År 5000</h2>
+  <p>Når handlingsdagen og spørjedagen er den same dagen,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>er årstalet alltid</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>Med andre ord: notida, sett frå sitt eige perspektiv, er alltid inne i år 5000. Men år 5000 er ikkje ein fast historisk periode; det blir valt på nytt kvar gong i høve til handlingsdagen.</p>
+  <p>Handlingsdagen sjølv ligg òg i år 5000, saman med andre dagar i det same valde året. Difor <strong>viser ikkje det å vere i år 5000 i seg sjølv at <code>t=c</code>.</strong></p>
+  <p>Årstalet viser likevel retninga:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre>
+  <p>og</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p>Det finst òg eit <strong>år 0</strong>; lenger bakover i fortida kjem år med negative tal.</p><hr>
+</section>
+
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>År og portar</h2>
+  <p>Eit Pastafari-år kan ha</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ til }5778</code></pre>
+  <p>dagar. Dette er dei canonical grensene i systemet, ikkje empiriske gjennomsnitt.</p>
+  <p>Eit år kan difor vere kortare enn eit solår eller lengre enn femten solår. Årsgrensene blir bygde frå systemet med <strong>portar</strong>; grensene mellom kotelettane kjem frå det same systemet.</p>
+  <p>Slutten på året treng ikkje falle saman med ei årstid, ein runde jorda går kring sola, ein månesyklus eller det praktiske ønsket om at året no endeleg bør ta slutt.</p><hr>
+</section>
+
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>Kotelettar</h2>
+  <p>Kvart år blir delt i <strong>6 til 17 kotelettar</strong>. Ein kotelett er eit kronologisk samanhengande tidsstykke.</p>
+  <p>Viss det i dag er dag 250 i ein kotelett, er det i morgon dag 251 i den same koteletten, med mindre i dag er den siste dagen. Grensene mellom kotelettane er portar, og ein kotelett varer minst</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
+  <p>dagar.</p>
+  <p>Systemet har 17 canonical kotelettnamn, og same namn blir ikkje brukt to gonger i eitt år. Namnet avgjer korkje lengda eller plasseringa til koteletten.</p><hr>
+</section>
+
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>Månader og fletting</h2>
+  <p>Kvart år har</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ til }47</code></pre>
+  <p>strukturelle månader, og kvar månad får tildelt</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ til }123</code></pre>
+  <p>dagar.</p>
+  <p>Men ein Pastafari-månad <strong>treng ikkje vere eit samanhengande tidsintervall</strong>. Til dømes kan den kronologiske rekkjefølgja vere:</p>
+  <blockquote><p>Månad A — dag 14<br>Månad B — dag 9<br>Månad A — dag 15</p></blockquote>
+  <p>Dette er heilt gyldig. Dag 15 i månad A er den neste dagen <strong>i den månaden</strong>, sjølv om ein dag frå ein annan månad ligg imellom.</p>
+  <p>“Dag i månaden” seier altså ikkje kor mange kronologiske dagar som har gått sidan månaden først dukka opp. Det er plasseringa blant dagane som er tildelte den månaden i året. Dag 48 tyder den 48. dagen som høyrer til månaden, ikkje 47 dagar etter den første framkomsten.</p><hr>
+</section>
+
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>Månadene blir fletta saman</h2>
+  <p>Månadene kan tenkjast som trådar som går gjennom året. Kvar dag høyrer til nøyaktig éin månad; i morgon kan høyre til ein annan, og seinare kan den første månaden kome att og halde fram med det neste nummeret sitt.</p>
+  <p>Denne flettinga har reglar, mellom anna grenser for rekkjefølgja av den første og siste framkomsten til månadene. Men det finst ikkje noko krav om at éin månad må vere ferdig før ein annan byrjar.</p>
+  <ul>
+    <li>Koteletten måler plassering innanfor eit samanhengande tidsstykke.</li>
+    <li>Månaden viser medlemskap i ein strukturell tråd som kan forsvinne og seinare dukke opp att.</li>
+  </ul>
+  <p>Ein månad kan gå gjennom fleire kotelettar, og fleire månader kan vise seg i éin kotelett. Start og slutt i dei to systema treng ikkje falle saman.</p><hr>
+</section>
+
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>Den neste dagen i månaden er ikkje nødvendigvis i morgon</h2>
+  <p>Viss det i dag er dag 17 i ein månad, er dag 18 i same månad <strong>den neste framkomsten av den månaden</strong>. Han kan vere i morgon eller mykje seinare.</p>
+  <p><strong>I morgon</strong> er den neste kronologiske dagen; <strong>den neste dagen i månaden</strong> er den neste framkomsten av same månad.</p>
+  <p>På same måte tyder ikkje “slutten av månaden” at slutten er kronologisk nær. Ein månad med 120 dagar kan vere på dag 119 i dag, medan dag 120 kjem mykje seinare i det same året.</p><hr>
+</section>
+
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>Det finst ingen veker</h2>
+  <p>Den noverande canonical specification <strong>definerer ikkje noko vekesystem</strong>. Det finst inga canonical sju-dagars eining, ingen Pastafari-namn på vekedagar og ingen regel som gjer to dagar til “same vekedag”.</p>
+  <p>Ein sivil vekestruktur kan sjølvsagt leggjast utanpå; han er berre ikkje ein del av Pastafari-datoen.</p><hr>
+</section>
+
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>Namn</h2>
+  <p>Det finst 17 canonical kotelettnamn og 47 canonical månadsnamn. I eitt år kjem kvart namn høgst éin gong i si eiga gruppe.</p>
+  <p>Identiteten til namnet er canonical og semantisk; han er ikkje resultatet av ei avrøysting mellom ulike skrivemåtar, omsetjingar eller implementations. Når det gjeld tydinga av namna, har den hebraiske Megillah høgast autoritet; omsetjingar og translitterasjonar er berre visingslag.</p>
+  <p>Namnet er heller ikkje ein skjult kode for lengd. Namnet på ein bestemt kotelett eller månad gjer ikkje i seg sjølv eininga lengre eller kortare.</p><hr>
+</section>
+
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>Eit lite faktum om månader</h2>
+  <p>Det finst 47 månadsnamn, og ein månad kan gå heilt til dag 123. Talet på syntaktisk moglege par av forma “månadsnamn + dagnummer i månaden” er difor</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>Kvar dag i året realiserer nøyaktig eitt slikt par. Viss årslengda er <code>L</code>, kjem nøyaktig <code>L</code> par fram. Sidan</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>må kvart år la minst</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre>
+  <p>moglege par vere ubrukte. Sjølv det lengste året har ikkje nok dagar til å bruke alle.</p><hr>
+</section>
+
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>Korleis blir kalenderen rekna ut?</h2>
+  <p>Den interne utrekninga kallar vi her <strong>sausen</strong>. I sentrum står primtalet</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>Prosessen omfattar fem input counter, 7 gøymde dropar, 46 synlege dropar, 6 skåler, skiftande skålrekkjer, 12 avsluttande blandingar, seal for ulike svar, combinatorial selection, bygging av portar, val av år, deling av kotelettar, val av namn, bygging av månader og fletting av månadsdagar.</p>
+  <p>Dei avsluttande update-ane er <strong>synkrone</strong>: i kvar blanding blir alle seks nye verdiar rekna ut frå den same gamle state, og først deretter blir alle seks skålene endra samtidig.</p>
+  <p>I dei 12 avsluttande blandingane finst det ein særleg viktig canonical detalj. Viss <code>S</code> er summen av dei seks gamle skålene og <code>r</code> er blandingsnummeret, reknar systemet ut</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p><code>R</code> er den <strong>lagra summen</strong>. Både valet av skålrekkje og den interne update-en i blandinga bruker <code>R</code>, ikkje den rå summen <code>S</code>.</p>
+  <p>Eldre versjonar som gav den rå summen til denne update-en, skildrar ikkje lenger den gjeldande canonical semantics. Døme som byggjer på den gamle regelen, bør reknast som utdaterte til dei er verifiserte på nytt.</p>
+  <p>Etter blandingane held answer ring òg fram med rekkja som vart lock ved den synlege dropen 46; ho skal ikkje automatisk bytast ut med rekkja frå den siste blandinga.</p><hr>
+</section>
+
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice og Wide Choice</h2>
+  <p>For relativt små selection space blir <strong>Short Choice</strong> brukt. Han bruker rejection sampling for å unngå enkel modulo bias.</p>
+  <p>For svært store space blir <strong>Wide Choice</strong> brukt. Ein skal ikkje leggje til eigenskapar som specification ikkje garanterer.</p>
+  <p>Wide Choice er ikkje det same som å lage uavhengige, jamt fordelte base-<code>Q</code>-siffer heilt til ein får ein index. Det følgjer difor ikkje at kvar valid choice nødvendigvis har same positive sannsyn. I store nok space kan det finnast valid choice som denne mechanism aldri kan nå.</p>
+  <p>Kalenderen sjølv er framleis fullstendig deterministic. “Choice” er namnet på ein algorithmic stage, ikkje eit random lottery når kalenderen blir brukt.</p><hr>
+</section>
+
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>Strukturelt atlas</h2>
+  <p>Så langt har vi snakka om reglane i kalenderen. Tala nedanfor er ein annan type informasjon: <strong>empiriske resultat</strong> frå ein stor computational sample.</p>
+  <p>Atlaset vart bygd med engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> og omfatta 4,096 handlingsdagar; for kvar av dei åra 4990–5010; 86,016 årsstrukturar; 625,437 kotelettar; 3,535,422 strukturelle månader; meir enn 356 millionar samanhengande månadssegment; og meir enn 364 millionar overgangar frå dag <code>n</code> til dag <code>n+1</code> i same månad.</p>
+  <p>Desse tala skildrar det corpus, ikkje canonical lover.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Målte data frå det strukturelle atlaset">
+    <table class="about-table">
+      <thead><tr><th scope="col">Målt storleik</th><th scope="col">Resultat i utvalet</th></tr></thead>
+      <tbody>
+        <tr><td>Gjennomsnittleg årslengd</td><td>4,275.182 dagar</td></tr>
+        <tr><td>Median for årslengd</td><td>4,343</td></tr>
+        <tr><td>Observert minimum / maksimum</td><td>716 / 5,778</td></tr>
+        <tr><td>Gjennomsnittleg tal på kotelettar per år</td><td>7.271</td></tr>
+        <tr><td>År med nøyaktig 6 kotelettar</td><td>42.00%</td></tr>
+        <tr><td>År med 6–8 kotelettar</td><td>81.29%</td></tr>
+        <tr><td>Gjennomsnittleg kotelettlengd</td><td>587.963 dagar</td></tr>
+        <tr><td>Median for kotelettlengd</td><td>560</td></tr>
+        <tr><td>Gjennomsnittleg tal på månader per år</td><td>41.102</td></tr>
+        <tr><td>Median for talet på månader</td><td>43</td></tr>
+        <tr><td>År med 47 månader</td><td>15.63%</td></tr>
+        <tr><td>År med minst 45 månader</td><td>36.81%</td></tr>
+        <tr><td>Gjennomsnittleg lengd på ein strukturell månad</td><td>104.014 dagar</td></tr>
+        <tr><td>Median for månadslengd</td><td>115</td></tr>
+        <tr><td>Gjennomsnittleg tal på samanhengande segment per månad</td><td>100.897</td></tr>
+        <tr><td>Del av månadssegment som varer éin dag</td><td>97.482%</td></tr>
+        <tr><td>Sannsyn for at to dagar ved sida av kvarandre ligg i same månad</td><td>2.9976%</td></tr>
+        <tr><td>Gjennomsnittleg tal på dagar frå andre månader mellom <code>n</code> og <code>n+1</code> i same månad</td><td>40.408</td></tr>
+        <tr><td>Gjennomsnittleg span frå første til siste framkomst av ein månad</td><td>4,266.653 dagar</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>I praksis kan ein månad på rundt hundre dagar vere spreidd utover nesten eit heilt Pastafari-år.</p>
+  <p>Det same atlaset viste òg ein naturleg lengde-bias rundt år 5000. I utvalet var eit “vanleg” år i gjennomsnitt om lag 4,262 dagar. Viss åra blir weight etter kor mange dagar dei inneheld, stig gjennomsnittet til om lag 4,466 dagar; år 5000 sjølv var i gjennomsnitt om lag 4,499 dagar.</p>
+  <p>Grunnen er enkel: år 5000 må innehalde handlingsdagen. Eit lengre år har fleire dagar der det kan vere året som inneheld handlingsdagen.</p>
+  <p>Samanhengen mellom namnet på ei eining og lengda hennar var òg svært svak i utvalet. Dette beviser ikkje full mathematical independence, men atlaset gir ikkje noko praktisk signal om at namna er laga for å encode lengd.</p>
+  <p>Dessutan er dei 86,016 årsstrukturane ikkje 86,016 heilt independent sample: mellom start- og sluttporten finst berre 24,786 ulike interval. Handlingsdagar nær kvarandre kan velje same year interval og likevel lage ulike interne structure.</p>
+  <p>Atlaset skildrar difor den målte åtferda til implementation godt, men bør ikkje gjerast om til ein probability theorem om alle moglege calendar structure.</p><hr>
+</section>
+
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>Fødselsdagar og årsdagar</h2>
+  <p>Her må “same dag kvart år” først definerast. Naturlege recurrence coordinate er <code>(månadsnamn, dag i månaden)</code> og <code>(kotelettnamn, dag i koteletten)</code>; vilkår kan òg kombinerast.</p>
+  <p>Ein Pastafari-fødselsdag er difor ikkje berre <code>RRULE:FREQ=YEARLY</code>. Ein må finne det neste året som oppfyller den valde recurrence condition, og den opphavlege hendinga tel ikkje automatisk som si eiga “neste framkomst”.</p>
+  <p>Å endre handlingsdagen berre for vising skal ikkje endre identiteten til ein person, fødselstidspunktet eller alderen.</p>
+  <p>I eit exact scan av 4,096 self-referential date vart kvart neste Pastafari-år kontrollert opptil 250,000 år i begge retningar:</p>
+  <ul>
+    <li>For <code>(månadsnamn, dag i månaden)</code> var medianen for første tilbakekomst 1 Pastafari-år; 77.56% kom tilbake i nabåret, 93.77% innan to år, 99.44% innan fem; observert maximum var 21 år.</li>
+    <li>For <code>(kotelettnamn, dag i koteletten)</code> var medianen 3 år; 88.89% vart funne innan 10 år, men distribution har ein svært tung heavy tail, og observert maximum nådde 51,954 Pastafari-år.</li>
+  </ul>
+  <p>Dette er <strong>empiriske resultat frå det undersøkte corpus</strong>; dei beviser ikkje at kvar mogleg årsdag nødvendigvis kjem tilbake, og gir ingen guarantee for maximum waiting time.</p><hr>
+</section>
+
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>Korleis avtalar ein eit møte?</h2>
+  <p>Viss to personar vil avtale eit møte berre med ein Pastafari-dato, må dei minst vere samde om dei fem datofelta og handlingsdagen som vart brukt i utrekninga. Det er betre å lagre handlingsdagen som ein stabil day identity enn som ordet “i dag”; elles kan to personar rekne ut to ulike kalendrar.</p>
+  <ul>
+    <li>“i morgon” er den neste kronologiske dagen;</li>
+    <li>“den neste dagen i månaden” er den neste framkomsten av den månaden;</li>
+    <li>“slutten av månaden” er den siste framkomsten av den månaden;</li>
+    <li>“heile månaden” kan tyde set av dagar som høyrer til månaden, eller heile det kronologiske span frå første til siste framkomst;</li>
+    <li>“neste år” er det neste året i kalenderen som er bygd under den valde handlingsdagen.</li>
+  </ul>
+  <p>For eit særleg viktig møte kan ein òg lagre ein absolute chronological day eller moment. Kalenderen blir ikkje fornærma.</p><hr>
+</section>
+
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>Reiser, hendingar og all-day</h2>
+  <p>Ei hending og den lokale etiketten som blir vist for henne, er ikkje det same. Ei hending med eit bestemt klokkeslett bør vere knytt til eit stabilt chronological moment. Ei reise flyttar henne ikkje i tid, men den lokale Pastafari-datoen for det same physical moment kan endre seg, fordi definisjonen av “lokal dag” avheng av stad.</p>
+  <p>For ei <strong>all-day</strong>-hending er skilnaden endå større. Ei sivil heildagshending går vanlegvis frå midnatt til neste midnatt; ei Pastafari-heildagshending bør gå frå den lokale Pastafari-dagsgrensa til den neste grensa. Vanlegvis er dette ikkje dei same moments.</p>
+  <p>Å export ei Pastafari-hending blindt som ei sivil “heildagshending” kan difor endre tydinga. For å ta vare på henne korrekt må ein lagre chronological anchor og rett location/day-boundary context, ikkje berre <code>all-day</code> flag.</p><hr>
+</section>
+
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>Når skiftar dagen?</h2>
+  <p>Den lokale Pastafari-dagen skiftar ikkje ved midnatt. Grensa blir bestemt av <strong>topocentric lower meridian transit til sentrum av Venus over den lokale meridianen</strong>.</p>
+  <p>Dette er altså ei lokal astronomisk hending som avheng av stad. Transit treng ikkje skje kl. 00:00, blir ikkje bestemt av sivil time zone, flyttar seg ikkje berre fordi daylight saving time byrjar eller sluttar, og Venus treng ikkje vere synleg med det blotte auget.</p>
+  <p>Det same physical moment kan på to stader liggje på kvar si side av den lokale dagsgrensa. Viss systemet ikkje har ei brukbar user location, er default fallback location for produktet <strong>Kisurra</strong>.</p><hr>
+</section>
+
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>Trykt kalender og manuell utrekning</h2>
+  <p>Pastafari-kalenderen kan skrivast ut; ein må berre opplyse kva handlingsdag han vart rekna for. Ein slik kalender viser tidsstrukturen frå perspektivet til den dagen; når handlingsdagen endrar seg, kan ein ny kalender vere nødvendig. Skrivaren har altså framleis arbeid.</p>
+  <p>Sidan specification er fullstendig og deterministic, kan alt òg reknast ut for hand: rekn ut input counter, køyr dei 7 gøymde og 46 synlege dropane, update dei seks skålene, gjer dei 12 avsluttande blandingane, produser svara, bygg portane, vel år og kotelettar, utfør combinatorial selection, vel namna og flett deretter månadene.</p>
+  <p>Til gjengjeld treng ein ikkje hugse når februar har 28 dagar og når han har 29.</p><hr>
+</section>
+
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>Kva er så Seer?</h2>
+  <p>Ved sida av canonical implementation finst ein rask engine som heiter <strong>Pastafarian Calendar Seer</strong>. Seer er ikkje ei autoritetskjelde: den rette datoen blir bestemt av Megillah og canonical calculation. Viss Seer ikkje stemmer med dei, ligg feilen i Seer.</p>
+  <p>Oppgåva hans er å køyre dei same query raskt og returnere resultatet i ei form som er lett å integrate i produkt.</p>
+  <p>I den direkte verification som vart gjort medan denne sida vart redigert, omfatta Seer mellom anna date- og “now”-query, batch, day range, reverse conversion frå ein Pastafari-dato til target day, year structure retrieval, fastsetjing av active working day, Node API, browser/HTTP client, CLI, HTTP v1 service, OpenAPI 3.1 contract, native implementations og distribution package, i tillegg til verified container deployment.</p>
+  <p>Den gamle påstanden om at Seer ikkje har public API, er ikkje lenger rett. No finst eit tydeleg og stabilt HTTP v1 contract med endpoint for date, range, batch, year, reverse, handlingsdag, metadata, locales og status.</p>
+  <p>21. september 2026 vart eit public HTTPS deployment på Render faktisk testa: på live service vart exact query, eit stort range, restart, cold wake og åtferd under load verifisert.</p>
+  <p>Project documentation skil likevel framleis mellom public beta/evaluation deployment og ei permanent hosted production service med SLA. Difor bør ei konseptuell forklaringsside ikkje freeze server address, hosting provider eller version number som om det var ein del av sjølve kalenderen.</p>
+  <p>Seer kan bruke precomputation, særskilde representation, SIMD, algebra og andre shortcut. Han treng ikkje gjenta heile computational history til canonical implementation steg for steg så lenge han utfører den same semantiske operasjonen og returnerer same svar.</p>
+  <p>Optimization er ikkje alternativ autoritet.</p><hr>
+</section>
+
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>Opphav, Grunnleggingsdagen og Tavledagen</h2>
+  <p>Her er det særleg viktig å halde canonical time anchor tydeleg fråskilde frå forteljinga på nettstaden.</p>
+
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>Ankerpunkt</h3>
+    <p>Systemet har éin fast reference day kalla <strong>Grunnleggingsdagen</strong>. I den proleptiske gregorianske kalenderen er det <strong>22. desember 41,222 f.Kr.</strong>.</p>
+    <p>Grunnleggingsdagen er ikkje “byrjinga på tida”; han er ein computational anchor.</p>
+    <p>Numbering av dagane rundt han bruker positive oddetal/partal: Grunnleggingsdagen=1; seinare dagar=3, 5, …; bakover mot fortida er dagen før=2, så 4, 6, … . Slik blir begge sidene av anchor encode i denne counter utan negative day number.</p>
+    <p>Den andre anchor er <strong>Tavledagen</strong>: <strong>15. juni 763 f.Kr. i den proleptiske julianske kalenderen</strong>, altså <strong>7. juni 763 f.Kr. i den proleptiske gregorianske kalenderen</strong>.</p>
+    <p>Den nøyaktige avstanden frå Grunnleggingsdagen til Tavledagen er</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
+    <p>dagar.</p>
+    <p>Dette er faste anchor på tidslinja, men Pastafari-datoen som blir vist for dei, avheng framleis av handlingsdagen som spørsmålet blir stilt frå.</p>
+  </section>
+
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>Forteljinga på nettstaden</h3>
+    <p>I den redaksjonelle forteljinga på nettstaden blir kalenderen skildra som ein del av skapinga og som eit system menneska brukte utan å forstå det fullt ut, heilt til det vart overlevert på nytt i moderne tid.</p>
+    <p>Dette er forteljinga på nettstaden; ikkje kvar narrative detail bør presenterast som om ho var ein eksplisitt technical claim frå Megillah.</p>
+    <p>Sjølve hendinga der kalenderen vart overlevert på nytt, er ei fast historisk hending. <strong>Pastafari-datoen</strong> hennar bør heller visast dynamic under den noverande handlingsdagen enn freeze for alltid som éin dato.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>For avanserte brukarar: reverse conversion</h2>
+  <p>Viss handlingsdagen <code>c</code> er kjend, er reverse conversion svært sterkt avgrensa. Innanfor eit kjent Pastafari-år identifiserer</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{kotelettnamn},\text{dag i koteletten})</code></pre>
+  <p>høgst éin dag. Det same gjeld</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{månadsnamn},\text{dag i månaden})</code></pre>
+  <p>Ein full dato med kjend handlingsdag identifiserer difor target day eintydig.</p>
+
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Øvre grenser for talet på candidate ved reverse conversion">
+    <table class="about-table">
+      <thead><tr><th scope="col">Kjend tilleggsinformasjon</th><th scope="col">Maksimalt tal candidate</th></tr></thead>
+      <tbody>
+        <tr><td>Ingen felt utanom året er kjende</td><td>5,778</td></tr>
+        <tr><td>Berre kotelettnamnet</td><td>5,568</td></tr>
+        <tr><td>Berre dagen i koteletten</td><td>17</td></tr>
+        <tr><td>Berre månadsnamnet</td><td>123</td></tr>
+        <tr><td>Berre dagen i månaden</td><td>47</td></tr>
+        <tr><td>Kotelettnamn + dag i koteletten</td><td>1</td></tr>
+        <tr><td>Månadsnamn + dag i månaden</td><td>1</td></tr>
+        <tr><td>Kva som helst tre felt utanom året</td><td>1</td></tr>
+        <tr><td>Alle fire felt utanom året</td><td>1</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Viss handlingsdagen ikkje er kjend, er situasjonen ein annan. Dei same fem verdiane kan dukke opp under ulike handlingsdagar, og det finst exact example der den same fulle datoen dukkar opp på ulike avstandar frå <code>c</code>.</p>
+  <p>I år 5000 blir ikkje eingong sign på denne avstanden alltid avgjord av dei fem verdiane: den same fulle datoen kan i éin context liggje før handlingsdagen og i ein annan etter han.</p>
+  <p>Ein full Pastafari-dato er difor ikkje ein absolute address på tidslinja dersom vi ikkje veit under kva <code>c</code> han vart rekna ut.</p>
+
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>Struktur svært langt i tid</h3>
+    <p>Matematisk forsking utleidd frå specification har òg funne ein nøyaktig asymptotic structure. For ein <strong>fast handlingsdag</strong> <code>c</code> kjem affine periodicity fram langt nok ute i tail av fortida.</p>
+    <p>Viss</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>finst det for den same <code>c</code> ein shift <code>H_c</code>, ein year change <code>p_c</code> og ein tilstrekkeleg fjern threshold, og etter denne gjeld</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>Dei fire felta utanom året gjentek seg, medan årstalet endrar seg med ei fast mengd.</p>
+    <p>Dette er eit resultat for fast <code>c</code>; det gir ikkje den globale relasjonen</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>Spørsmålet om dei endelege asymptotic slope faktisk er ulike mellom ulike handlingsdagar, er framleis ope.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>For avanserte brukarar: kor mykje historie tek sausen vare på?</h2>
+  <p>Sausen ser ut som ein svært aggressiv mixing mechanism, men algebraic research viser at han tek vare på mykje meir informasjon enn utsjånaden skulle tyde på. Dette er eit research result utleidd frå specification, ikkje ein ny kalenderregel.</p>
+  <p>I dei synlege stage 3–46, på den relevante asymptotic branch, er generic injectivity etablert: i generic case held state på nok informasjon til å rekonstruere den relevante input history og skålrekkja.</p>
+  <p>Informasjonen forsvinn heller ikkje med ein gong i dei 12 siste blandingane. For dei første fem blandingane etter den synlege dropen 46 er generic invertibility etablert på den relevante canonical union utan ekstra side information; for resten kjenner ein sterke constructive upper bound for kor mykje side information som er nok til reconstruction.</p>
+  <p>Spørsmålet om <strong>berre dei seks siste skålene</strong> alltid er nok i generic sense, er framleis ope.</p>
+  <p>Nokre resultat vart beviste symbolic, andre vart lukka med finite exact arithmetic check. Symbolic strengthening gjorde den computational core ein må stole på mykje mindre, men fjerna han ikkje heilt.</p>
+  <p>Space som først såg ut til å krevje søk gjennom eit enormt tal path, vart reduserte til mykje mindre finite structure, mellom anna automata med 180 og 9 state og symmetry for dei seks skålene.</p>
+  <p>Under blandinga ligg ein streng algebraic structure. Ein treng ikkje kjenne han for å vite datoen i dag.</p><hr>
+</section>
+
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>Kva er Pastafari-kalenderen eigentleg?</h2>
+  <p>Han er ein deterministic calendar der datoen ikkje berre er ein function av target day, men ein <strong>felles function av handlingsdagen og spørjedagen</strong>.</p>
+  <p>Kvar dato har nøyaktig fem felt. Notida er frå sitt eige perspektiv alltid i år 5000, men sjølve år 5000 flyttar seg saman med handlingsdagen. År kan vere svært lange, kotelettar er samanhengande, månader ikkje nødvendigvis, og det finst ikkje noko canonical week system.</p>
+  <p>Dag <code>n+1</code> i ein månad er ikkje nødvendigvis i morgon. Den same chronological day kan få ein annan Pastafarian label i morgon. Det same physical moment kan på to stader høyre til to ulike local Pastafari day. Eit all-day event treng ikkje gå frå midnatt til midnatt. Og ein annual birthday er først eit search problem og deretter eit calendar problem.</p>
+  <p>Men når handlingsdagen og spørjedagen er kjende, er det ingen ambiguity: det finst berre eitt rett svar.</p>
+  <p>Til slutt treng ikkje ein kalender gjere meir enn det.</p>
+</section>
