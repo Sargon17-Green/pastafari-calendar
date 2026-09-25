@@ -1,0 +1,331 @@
+<!-- ਪੰਜਾਬੀ ਸੰਸਕਰਣ ਹਿਬਰੂ semantic master ਤੋਂ ਸਿੱਧਾ ਲਿਖਿਆ ਗਿਆ ਹੈ; ਕੋਈ pivot ਭਾਸ਼ਾ ਨਹੀਂ ਵਰਤੀ ਗਈ। -->
+<!-- Section ID ਸਥਿਰ public deep-link contract ਦਾ ਹਿੱਸਾ ਹਨ; ਇਹ ਅਨੁਵਾਦਿਤ ਸਿਰਲੇਖਾਂ ਤੋਂ ਨਹੀਂ ਬਣਦੇ। -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>ਇਸ ਸਾਈਟ ਦੀ ਕਥਾ ਵਿੱਚ ਪਾਸਤਾਫਾਰੀ ਕੈਲੰਡਰ ਨੂੰ ਅਜਿਹੇ ਕੈਲੰਡਰ ਵਜੋਂ ਪੇਸ਼ ਕੀਤਾ ਜਾਂਦਾ ਹੈ ਜਿਸ ਵਿੱਚ ਸਮਾਂ ਆਪ ਬਣਿਆ। ਪਰ ਇਹ ਕਿਵੇਂ ਕੰਮ ਕਰਦਾ ਹੈ, ਇਸ ਦੀ ਵਿਵਸਥਾ ਸਖ਼ਤੀ ਨਾਲ ਪਰਿਭਾਸ਼ਿਤ ਹੈ।</p>
+  <p>ਇਹ ਕੈਲੰਡਰ ਹਰ ਦਿਨ ਨੂੰ ਇੱਕ ਅਟੱਲ ਪਾਸਤਾਫਾਰੀ “ਲੇਬਲ” ਨਹੀਂ ਦਿੰਦਾ। ਤਾਰੀਖ਼ ਲਈ ਦੋ ਦਿਨ ਲੋੜੀਂਦੇ ਹਨ: ਗਿਣਤੀ ਜਿੱਥੋਂ ਸ਼ੁਰੂ ਹੁੰਦੀ ਹੈ ਉਹ <strong>ਕਾਰਵਾਈ ਦਾ ਦਿਨ</strong>, ਅਤੇ ਜਿਸ ਦਿਨ ਦੀ ਪਾਸਤਾਫਾਰੀ ਤਾਰੀਖ਼ ਜਾਣਨੀ ਹੈ ਉਹ <strong>ਪੁੱਛਿਆ ਗਿਆ ਦਿਨ</strong>।</p>
+  <p>ਜੇ ਕਾਰਵਾਈ ਦੇ ਦਿਨ ਨੂੰ <code>c</code> ਅਤੇ ਪੁੱਛੇ ਗਏ ਦਿਨ ਨੂੰ <code>t</code> ਲਿਖੀਏ, ਤਾਂ ਤਾਰੀਖ਼ ਹੈ</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p><code>F(t)</code> ਨਹੀਂ। ਇਸ ਲਈ ਉਹੀ ਪੁੱਛਿਆ ਗਿਆ ਦਿਨ, ਕਾਰਵਾਈ ਦਾ ਦਿਨ ਬਦਲਣ ਤੇ, ਵੱਖਰੀ ਪਾਸਤਾਫਾਰੀ ਤਾਰੀਖ਼ ਲੈ ਸਕਦਾ ਹੈ।</p>
+  <p>ਇਹ ਗਲਤੀ ਨਹੀਂ। ਕੈਲੰਡਰ ਦੀ ਪਰਿਭਾਸ਼ਾ ਹੀ ਅਜਿਹੀ ਹੈ।</p><hr>
+</div>
+
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>ਪਾਸਤਾਫਾਰੀ ਤਾਰੀਖ਼ ਵਿੱਚ ਕੀ ਹੁੰਦਾ ਹੈ?</h2>
+  <p>ਇਸ ਦੇ <strong>ਬਿਲਕੁਲ ਪੰਜ ਹਿੱਸੇ</strong> ਹਨ: ਸਾਲ ਨੰਬਰ, ਕਟਲੈਟ ਦਾ ਨਾਮ, ਕਟਲੈਟ ਵਿੱਚ ਦਿਨ, ਮਹੀਨੇ ਦਾ ਨਾਮ ਅਤੇ ਮਹੀਨੇ ਵਿੱਚ ਦਿਨ।</p>
+  <p>ਆਮ ਉਦਾਹਰਨ: <strong>ਸਾਲ 5000, ਕਟਲੈਟ A, ਕਟਲੈਟ ਦਾ 417ਵਾਂ ਦਿਨ, ਮਹੀਨਾ B, ਮਹੀਨੇ ਦਾ 83ਵਾਂ ਦਿਨ।</strong></p>
+  <p>ਕਾਰਵਾਈ ਦਾ ਦਿਨ, ਨਿਰੀਖਕ ਦਾ ਸਥਾਨ, ਦਿਨ ਦੀ ਕਾਲਕ੍ਰਮਿਕ ਪਛਾਣ ਜਾਂ ਹੋਰ ਤਕਨੀਕੀ ਜਾਣਕਾਰੀ ਤਾਰੀਖ਼ ਦੇ ਕੋਲ ਦਿਖਾਈ ਜਾ ਸਕਦੀ ਹੈ, ਪਰ ਉਹ ਛੇਵਾਂ field ਨਹੀਂ।</p><hr>
+</section>
+
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>ਕਾਰਵਾਈ ਦਾ ਦਿਨ ਕਿਉਂ ਲੋੜੀਂਦਾ ਹੈ?</h2>
+  <p>ਆਮ ਕੈਲੰਡਰਾਂ ਵਿੱਚ ਲੱਗਦਾ ਹੈ ਕਿ ਤਾਰੀਖ਼ ਉਸ ਦਿਨ ਦੀ ਆਪਣੀ ਹੀ ਖਾਸੀਅਤ ਹੈ। ਪਾਸਤਾਫਾਰੀ ਕੈਲੰਡਰ ਵਿੱਚ ਤਾਰੀਖ਼ ਦੋ ਦਿਨਾਂ ਦੇ ਰਿਸ਼ਤੇ ਉੱਤੇ ਨਿਰਭਰ ਕਰਦੀ ਹੈ।</p>
+  <p><code>t</code> ਬਦਲਣਾ ਮਤਲਬ ਕਿਸੇ ਹੋਰ ਦਿਨ ਬਾਰੇ ਪੁੱਛਣਾ। <code>c</code> ਬਦਲਣਾ ਕਾਫ਼ੀ ਡੂੰਘਾ ਅਸਰ ਕਰ ਸਕਦਾ ਹੈ: ਸਾਲਾਂ ਦੀਆਂ ਹੱਦਾਂ, ਕਟਲੈਟ, ਮਹੀਨੇ, ਉਹਨਾਂ ਦੇ ਨਾਮ ਅਤੇ ਮਹੀਨੇ ਇੱਕ-ਦੂਜੇ ਵਿੱਚ ਕਿਵੇਂ ਬੁਣੇ ਹਨ—ਸਭ ਬਦਲ ਸਕਦੇ ਹਨ।</p>
+  <p>ਇਸ ਲਈ ਅੱਜ ਗਿਣਿਆ ਗਿਆ ਪੰਚਾਂਗ ਕੱਲ੍ਹ ਵੀ ਸਹੀ ਹੋਵੇ, ਇਹ ਲਾਜ਼ਮੀ ਨਹੀਂ। ਇਸ ਨਾਲ ਛਪਿਆ ਕੈਲੰਡਰ ਪੂਰਾ ਸਾਲ ਵਰਤੋਂਯੋਗ ਰਹਿਣ ਵਾਲੀ ਅਸੁਖਾਵੀਂ ਸਥਿਤੀ ਵੀ ਟਲਦੀ ਹੈ।</p><hr>
+</section>
+
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>ਉਹੀ ਦਿਨ, ਵੱਖਰੀ ਤਾਰੀਖ਼</h2>
+  <p><strong>ਦਿਨ ਦੀ ਪਛਾਣ</strong> ਅਤੇ ਉਸ ਦੀ <strong>ਪਾਸਤਾਫਾਰੀ ਪੇਸ਼ਕਾਰੀ</strong> ਵੱਖਰੀਆਂ ਚੀਜ਼ਾਂ ਹਨ। ਪਹਿਲੀ ਸਮੇਂ ਦੀ ਰੇਖਾ ਉੱਤੇ ਕਿਸੇ ਨਿਸ਼ਚਿਤ ਦਿਨ ਦੀ ਅਟੱਲ ਥਾਂ ਹੈ; ਦੂਜੀ ਉਹ ਪੰਜ ਮੁੱਲ ਹਨ ਜੋ ਉਸ ਦਿਨ ਨੂੰ ਕਿਸੇ ਨਿਸ਼ਚਿਤ ਕਾਰਵਾਈ ਦੇ ਦਿਨ ਹੇਠ ਦਿਖਾਉਣ ਤੇ ਮਿਲਦੇ ਹਨ।</p>
+  <p>ਉਤਪਾਦ ਅਤੇ API ਵਿੱਚ ਪਹਿਲੀ ਚੀਜ਼ ਨੂੰ <code>day-id</code> ਵਜੋਂ ਦੇਖਿਆ ਜਾ ਸਕਦਾ ਹੈ: ਪੇਸ਼ਕਾਰੀ ਬਦਲਣ ਨਾਲ ਵੀ ਨਾ ਬਦਲਣ ਵਾਲੀ ਕਾਲਕ੍ਰਮਿਕ ਪਛਾਣ। ਪਰ</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre>
+  <p>ਅਤੇ</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>ਬਰਾਬਰ ਹੋਣ ਲਾਜ਼ਮੀ ਨਹੀਂ।</p>
+  <p>ਇਸ ਲਈ ਕਾਰਵਾਈ ਦਾ ਦਿਨ ਹੱਥੋਂ ਬਦਲਣ ਨਾਲ ਉਹੀ ਦਿਨ ਵੱਖਰੀ ਪਾਸਤਾਫਾਰੀ ਤਾਰੀਖ਼ ਵਜੋਂ ਦਿਖ ਸਕਦਾ ਹੈ, ਜਦੋਂ ਕਿ ਦਿਨ ਆਪ ਸਮੇਂ ਦੀ ਰੇਖਾ ਉੱਤੇ ਕਿਤੇ ਨਹੀਂ ਖਿਸਕਦਾ।</p>
+  <p>ਘਟਨਾਵਾਂ ਲਈ ਵੀ ਇਹੀ ਨਿਯਮ ਹੈ। ਮੀਟਿੰਗ, ਜਨਮ ਜਾਂ ਇਤਿਹਾਸਕ ਘਟਨਾ ਕਿਸੇ ਅਟੱਲ ਕਾਲਕ੍ਰਮਿਕ ਪਛਾਣ ਨਾਲ ਜੁੜੀ ਰਹਿਣੀ ਚਾਹੀਦੀ ਹੈ; ਉਸ ਦੀ ਪਾਸਤਾਫਾਰੀ ਤਾਰੀਖ਼ ਦਿਖਾਵੇ ਦੇ ਸੰਦਰਭ ਅਨੁਸਾਰ ਮੁੜ ਗਿਣੀ ਜਾ ਸਕਦੀ ਹੈ।</p>
+  <p>ਲੇਬਲ ਬਦਲ ਸਕਦਾ ਹੈ। ਘਟਨਾ ਨਹੀਂ।</p><hr>
+</section>
+
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>ਸਾਲ 5000</h2>
+  <p>ਜਦੋਂ ਕਾਰਵਾਈ ਦਾ ਦਿਨ ਅਤੇ ਪੁੱਛਿਆ ਗਿਆ ਦਿਨ ਇੱਕੋ ਹੋਣ,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>ਤਾਂ ਸਾਲ ਨੰਬਰ ਹਮੇਸ਼ਾਂ</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>ਹੁੰਦਾ ਹੈ। ਹੋਰ ਸ਼ਬਦਾਂ ਵਿੱਚ, ਵਰਤਮਾਨ ਨੂੰ ਉਸ ਦੀ ਆਪਣੀ ਨਜ਼ਰ ਨਾਲ ਦੇਖਿਆ ਜਾਵੇ ਤਾਂ ਉਹ ਹਮੇਸ਼ਾਂ ਸਾਲ 5000 ਵਿੱਚ ਹੁੰਦਾ ਹੈ। ਪਰ ਸਾਲ 5000 ਕੋਈ ਅਟੱਲ ਇਤਿਹਾਸਕ ਯੁੱਗ ਨਹੀਂ; ਇਹ ਕਾਰਵਾਈ ਦੇ ਦਿਨ ਦੇ ਸਬੰਧ ਵਿੱਚ ਹਰ ਵਾਰ ਮੁੜ ਚੁਣਿਆ ਜਾਂਦਾ ਹੈ।</p>
+  <p>ਕਾਰਵਾਈ ਦਾ ਦਿਨ ਖੁਦ ਵੀ ਸਾਲ 5000 ਵਿੱਚ ਹੁੰਦਾ ਹੈ, ਅਤੇ ਉਸੇ ਚੁਣੇ ਸਾਲ ਦੇ ਹੋਰ ਦਿਨ ਵੀ। ਇਸ ਲਈ <strong>ਕੇਵਲ ਸਾਲ 5000 ਵਿੱਚ ਹੋਣਾ ਇਹ ਸਾਬਤ ਨਹੀਂ ਕਰਦਾ ਕਿ <code>t=c</code> ਹੈ।</strong></p>
+  <p>ਫਿਰ ਵੀ ਸਾਲ ਨੰਬਰ ਦਿਸ਼ਾ ਦੱਸਦਾ ਹੈ:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre>
+  <p>ਅਤੇ</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p><strong>ਸਾਲ 0</strong> ਵੀ ਹੈ; ਇਸ ਤੋਂ ਹੋਰ ਪਿੱਛੇ ਨਕਾਰਾਤਮਕ ਨੰਬਰ ਵਾਲੇ ਸਾਲ ਆਉਂਦੇ ਹਨ।</p><hr>
+</section>
+
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>ਸਾਲ ਅਤੇ ਦਰਵਾਜ਼ੇ</h2>
+  <p>ਇੱਕ ਪਾਸਤਾਫਾਰੀ ਸਾਲ ਵਿੱਚ</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ ਤੋਂ }5778</code></pre>
+  <p>ਦਿਨ ਹੋ ਸਕਦੇ ਹਨ। ਇਹ ਪ੍ਰਣਾਲੀ ਦੀਆਂ canonical ਹੱਦਾਂ ਹਨ, ਤਜਰਬਾਤੀ ਔਸਤ ਨਹੀਂ।</p>
+  <p>ਇਸ ਲਈ ਸਾਲ ਸੂਰਜੀ ਸਾਲ ਨਾਲੋਂ ਛੋਟਾ ਜਾਂ ਪੰਦਰਾਂ ਸੂਰਜੀ ਸਾਲਾਂ ਨਾਲੋਂ ਵੀ ਲੰਮਾ ਹੋ ਸਕਦਾ ਹੈ। ਸਾਲਾਂ ਦੀਆਂ ਹੱਦਾਂ <strong>ਦਰਵਾਜ਼ਿਆਂ</strong> ਦੀ ਪ੍ਰਣਾਲੀ ਤੋਂ ਬਣਦੀਆਂ ਹਨ; ਕਟਲੈਟਾਂ ਦੀਆਂ ਹੱਦਾਂ ਵੀ ਉੱਥੋਂ ਹੀ ਆਉਂਦੀਆਂ ਹਨ।</p>
+  <p>ਸਾਲ ਦਾ ਅੰਤ ਰੁੱਤ, ਧਰਤੀ ਦੀ ਸੂਰਜ ਗਿਰਦ ਇੱਕ ਪਰਿਕਰਮਾ, ਚੰਦਰ ਚੱਕਰ ਜਾਂ ਇਸ ਵਿਵਹਾਰਕ ਇੱਛਾ ਨਾਲ ਮਿਲਣਾ ਲਾਜ਼ਮੀ ਨਹੀਂ ਕਿ ਸਾਲ ਹੁਣ ਤਾਂ ਮੁੱਕੇ।</p><hr>
+</section>
+
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>ਕਟਲੈਟ</h2>
+  <p>ਹਰ ਸਾਲ <strong>6 ਤੋਂ 17 ਕਟਲੈਟਾਂ</strong> ਵਿੱਚ ਵੰਡਿਆ ਜਾਂਦਾ ਹੈ। ਕਟਲੈਟ ਕਾਲਕ੍ਰਮਿਕ ਤੌਰ ਤੇ ਲਗਾਤਾਰ ਸਮੇਂ ਦਾ ਹਿੱਸਾ ਹੈ।</p>
+  <p>ਜੇ ਅੱਜ ਕਿਸੇ ਕਟਲੈਟ ਦਾ 250ਵਾਂ ਦਿਨ ਹੈ, ਤਾਂ ਜੇ ਅੱਜ ਉਸ ਦਾ ਆਖ਼ਰੀ ਦਿਨ ਨਹੀਂ, ਕੱਲ੍ਹ ਉਸੇ ਕਟਲੈਟ ਦਾ 251ਵਾਂ ਦਿਨ ਹੋਵੇਗਾ। ਕਟਲੈਟ ਦੀਆਂ ਹੱਦਾਂ ਦਰਵਾਜ਼ੇ ਹਨ ਅਤੇ ਇੱਕ ਕਟਲੈਟ ਵਿੱਚ ਘੱਟੋ-ਘੱਟ</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
+  <p>ਦਿਨ ਹੁੰਦੇ ਹਨ।</p>
+  <p>ਪ੍ਰਣਾਲੀ ਵਿੱਚ 17 canonical ਕਟਲੈਟ ਨਾਮ ਹਨ ਅਤੇ ਇੱਕੋ ਸਾਲ ਵਿੱਚ ਕੋਈ ਨਾਮ ਮੁੜ ਨਹੀਂ ਆਉਂਦਾ। ਨਾਮ ਕਟਲੈਟ ਦੀ ਲੰਬਾਈ ਜਾਂ ਥਾਂ ਤੈਅ ਨਹੀਂ ਕਰਦਾ।</p><hr>
+</section>
+
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>ਮਹੀਨੇ ਅਤੇ ਬੁਣਾਈ</h2>
+  <p>ਹਰ ਸਾਲ ਵਿੱਚ</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ ਤੋਂ }47</code></pre>
+  <p>ਸੰਰਚਨਾਤਮਕ ਮਹੀਨੇ ਹੁੰਦੇ ਹਨ ਅਤੇ ਹਰ ਮਹੀਨੇ ਨੂੰ</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ ਤੋਂ }123</code></pre>
+  <p>ਦਿਨ ਦਿੱਤੇ ਜਾਂਦੇ ਹਨ।</p>
+  <p>ਪਰ ਪਾਸਤਾਫਾਰੀ ਮਹੀਨਾ <strong>ਲਗਾਤਾਰ ਸਮੇਂ ਦਾ ਅੰਤਰਾਲ ਹੋਣਾ ਲਾਜ਼ਮੀ ਨਹੀਂ</strong>। ਉਦਾਹਰਨ ਲਈ ਕਾਲਕ੍ਰਮਿਕ ਕ੍ਰਮ ਇਹ ਹੋ ਸਕਦਾ ਹੈ:</p>
+  <blockquote><p>ਮਹੀਨਾ A — ਦਿਨ 14<br>ਮਹੀਨਾ B — ਦਿਨ 9<br>ਮਹੀਨਾ A — ਦਿਨ 15</p></blockquote>
+  <p>ਇਹ ਪੂਰੀ ਤਰ੍ਹਾਂ ਵੈਧ ਹੈ। A ਮਹੀਨੇ ਦਾ 15ਵਾਂ ਦਿਨ <strong>ਉਸੇ ਮਹੀਨੇ ਦਾ</strong> ਅਗਲਾ ਦਿਨ ਹੈ, ਭਾਵੇਂ ਵਿਚਕਾਰ ਕਿਸੇ ਹੋਰ ਮਹੀਨੇ ਦਾ ਦਿਨ ਆ ਗਿਆ ਹੋਵੇ।</p>
+  <p>ਇਸ ਲਈ “ਮਹੀਨੇ ਵਿੱਚ ਦਿਨ” ਇਹ ਨਹੀਂ ਦੱਸਦਾ ਕਿ ਮਹੀਨਾ ਪਹਿਲੀ ਵਾਰ ਆਉਣ ਤੋਂ ਕਿੰਨੇ ਕਾਲਕ੍ਰਮਿਕ ਦਿਨ ਬੀਤ ਗਏ। ਇਹ ਉਸ ਸਾਲ ਵਿੱਚ ਉਸ ਮਹੀਨੇ ਨੂੰ ਦਿੱਤੇ ਦਿਨਾਂ ਵਿੱਚ ਉਸ ਦਾ ਕ੍ਰਮ ਨੰਬਰ ਹੈ। ਦਿਨ 48 ਦਾ ਮਤਲਬ ਉਸ ਮਹੀਨੇ ਨਾਲ ਜੁੜਿਆ 48ਵਾਂ ਦਿਨ ਹੈ, ਪਹਿਲੀ ਦਿਖਾਈ ਤੋਂ 47 ਦਿਨ ਬਾਅਦ ਨਹੀਂ।</p><hr>
+</section>
+
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>ਮਹੀਨੇ ਇਕ-ਦੂਜੇ ਵਿੱਚ ਬੁਣੇ ਹੁੰਦੇ ਹਨ</h2>
+  <p>ਮਹੀਨਿਆਂ ਨੂੰ ਸਾਲ ਵਿੱਚੋਂ ਲੰਘਦੇ ਧਾਗਿਆਂ ਵਾਂਗ ਸੋਚਿਆ ਜਾ ਸਕਦਾ ਹੈ। ਹਰ ਦਿਨ ਬਿਲਕੁਲ ਇੱਕ ਮਹੀਨੇ ਦਾ ਹੁੰਦਾ ਹੈ; ਕੱਲ੍ਹ ਕਿਸੇ ਹੋਰ ਮਹੀਨੇ ਦਾ ਹੋ ਸਕਦਾ ਹੈ, ਫਿਰ ਪਹਿਲਾ ਮਹੀਨਾ ਮੁੜ ਆ ਕੇ ਆਪਣੇ ਅਗਲੇ ਨੰਬਰ ਤੋਂ ਜਾਰੀ ਰਹਿ ਸਕਦਾ ਹੈ।</p>
+  <p>ਇਸ ਬੁਣਾਈ ਦੇ ਨਿਯਮ ਹਨ, ਜਿਨ੍ਹਾਂ ਵਿੱਚ ਮਹੀਨਿਆਂ ਦੀ ਪਹਿਲੀ ਅਤੇ ਆਖ਼ਰੀ ਦਿਖਾਈ ਦੇ ਕ੍ਰਮ ਦੀਆਂ ਹੱਦਾਂ ਵੀ ਹਨ। ਪਰ ਇੱਕ ਮਹੀਨਾ ਮੁੱਕੇ ਤਾਂ ਹੀ ਦੂਜਾ ਸ਼ੁਰੂ ਹੋਵੇ—ਇਹ ਨਿਯਮ ਨਹੀਂ।</p>
+  <ul>
+    <li>ਕਟਲੈਟ ਲਗਾਤਾਰ ਸਮੇਂ ਦੇ ਹਿੱਸੇ ਵਿੱਚ ਥਾਂ ਮਾਪਦਾ ਹੈ।</li>
+    <li>ਮਹੀਨਾ ਇੱਕ ਸੰਰਚਨਾਤਮਕ ਧਾਗੇ ਵਿੱਚ ਮੈਂਬਰਸ਼ਿਪ ਦੱਸਦਾ ਹੈ ਜੋ ਗਾਇਬ ਹੋ ਕੇ ਬਾਅਦ ਵਿੱਚ ਮੁੜ ਆ ਸਕਦਾ ਹੈ।</li>
+  </ul>
+  <p>ਇੱਕ ਮਹੀਨਾ ਕਈ ਕਟਲੈਟਾਂ ਵਿਚੋਂ ਲੰਘ ਸਕਦਾ ਹੈ, ਅਤੇ ਇੱਕ ਕਟਲੈਟ ਵਿੱਚ ਕਈ ਮਹੀਨੇ ਦਿਖ ਸਕਦੇ ਹਨ। ਦੋਹਾਂ ਪ੍ਰਣਾਲੀਆਂ ਦੀ ਸ਼ੁਰੂਆਤ ਅਤੇ ਅੰਤ ਇੱਕ ਹੋਣ ਲਾਜ਼ਮੀ ਨਹੀਂ।</p><hr>
+</section>
+
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>ਮਹੀਨੇ ਦਾ ਅਗਲਾ ਦਿਨ ਲਾਜ਼ਮੀ ਨਹੀਂ ਕਿ ਕੱਲ੍ਹ ਹੋਵੇ</h2>
+  <p>ਜੇ ਅੱਜ ਕਿਸੇ ਮਹੀਨੇ ਦਾ 17ਵਾਂ ਦਿਨ ਹੈ, ਤਾਂ ਉਸੇ ਮਹੀਨੇ ਦਾ 18ਵਾਂ ਦਿਨ <strong>ਉਸ ਮਹੀਨੇ ਦੀ ਅਗਲੀ ਦਿਖਾਈ</strong> ਹੈ। ਉਹ ਕੱਲ੍ਹ ਵੀ ਹੋ ਸਕਦਾ ਹੈ ਅਤੇ ਬਹੁਤ ਬਾਅਦ ਵੀ।</p>
+  <p><strong>ਕੱਲ੍ਹ</strong> ਅਗਲਾ ਕਾਲਕ੍ਰਮਿਕ ਦਿਨ ਹੈ; <strong>ਮਹੀਨੇ ਦਾ ਅਗਲਾ ਦਿਨ</strong> ਉਸੇ ਮਹੀਨੇ ਦੀ ਅਗਲੀ ਦਿਖਾਈ।</p>
+  <p>ਇਸੇ ਤਰ੍ਹਾਂ “ਮਹੀਨੇ ਦਾ ਅੰਤ” ਮਤਲਬ ਅੰਤ ਕਾਲਕ੍ਰਮਿਕ ਤੌਰ ਤੇ ਨੇੜੇ ਹੈ—ਇਹ ਨਹੀਂ। 120 ਦਿਨਾਂ ਦਾ ਮਹੀਨਾ ਅੱਜ 119ਵੇਂ ਦਿਨ ਉੱਤੇ ਹੋ ਸਕਦਾ ਹੈ, ਜਦੋਂ ਕਿ 120ਵਾਂ ਦਿਨ ਉਸੇ ਸਾਲ ਵਿੱਚ ਕਾਫ਼ੀ ਬਾਅਦ ਆਵੇ।</p><hr>
+</section>
+
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>ਹਫ਼ਤੇ ਨਹੀਂ ਹਨ</h2>
+  <p>ਮੌਜੂਦਾ canonical specification <strong>ਹਫ਼ਤੇ ਦੀ ਕੋਈ ਪ੍ਰਣਾਲੀ ਪਰਿਭਾਸ਼ਿਤ ਨਹੀਂ ਕਰਦੀ</strong>। ਸੱਤ ਦਿਨਾਂ ਦੀ canonical ਇਕਾਈ ਨਹੀਂ, ਪਾਸਤਾਫਾਰੀ ਹਫ਼ਤੇ ਦੇ ਦਿਨਾਂ ਦੇ ਨਾਮ ਨਹੀਂ, ਅਤੇ ਦੋ ਦਿਨਾਂ ਨੂੰ “ਹਫ਼ਤੇ ਦਾ ਉਹੀ ਦਿਨ” ਬਣਾਉਣ ਵਾਲਾ ਕੋਈ ਨਿਯਮ ਨਹੀਂ।</p>
+  <p>ਬੇਸ਼ੱਕ ਬਾਹਰੋਂ ਨਾਗਰਿਕ ਹਫ਼ਤਾ-ਪ੍ਰਣਾਲੀ ਜੋੜੀ ਜਾ ਸਕਦੀ ਹੈ; ਉਹ ਸਿਰਫ਼ ਪਾਸਤਾਫਾਰੀ ਤਾਰੀਖ਼ ਦਾ ਹਿੱਸਾ ਨਹੀਂ।</p><hr>
+</section>
+
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>ਨਾਮ</h2>
+  <p>17 canonical ਕਟਲੈਟ ਨਾਮ ਅਤੇ 47 canonical ਮਹੀਨਾ ਨਾਮ ਹਨ। ਇੱਕ ਸਾਲ ਵਿੱਚ ਹਰ ਨਾਮ ਆਪਣੇ ਸਮੂਹ ਵਿੱਚ ਵੱਧ ਤੋਂ ਵੱਧ ਇੱਕ ਵਾਰ ਆਉਂਦਾ ਹੈ।</p>
+  <p>ਨਾਮ ਦੀ ਪਛਾਣ canonical ਅਤੇ ਅਰਥਪੂਰਨ ਹੈ; ਇਹ ਵੱਖਰੀ spelling, ਅਨੁਵਾਦ ਜਾਂ implementation ਵਿਚਕਾਰ ਵੋਟਿੰਗ ਦਾ ਨਤੀਜਾ ਨਹੀਂ। ਨਾਮਾਂ ਦੇ ਅਰਥ ਲਈ ਹਿਬਰੂ Megillah ਸਭ ਤੋਂ ਉੱਚਾ ਅਧਿਕਾਰ ਹੈ; ਅਨੁਵਾਦ ਅਤੇ transliteration ਸਿਰਫ਼ ਦਿਖਾਵੇ ਦੀਆਂ ਪਰਤਾਂ ਹਨ।</p>
+  <p>ਨਾਮ ਲੰਬਾਈ ਦਾ ਲੁਕਿਆ code ਵੀ ਨਹੀਂ। ਕਿਸੇ ਖ਼ਾਸ ਕਟਲੈਟ ਜਾਂ ਮਹੀਨੇ ਦਾ ਨਾਮ ਆਪਣੇ ਆਪ ਉਸ ਇਕਾਈ ਨੂੰ ਲੰਮਾ ਜਾਂ ਛੋਟਾ ਨਹੀਂ ਕਰਦਾ।</p><hr>
+</section>
+
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>ਮਹੀਨਿਆਂ ਬਾਰੇ ਇੱਕ ਛੋਟੀ ਗੱਲ</h2>
+  <p>47 ਮਹੀਨਾ ਨਾਮ ਹਨ ਅਤੇ ਇੱਕ ਮਹੀਨਾ ਵੱਧ ਤੋਂ ਵੱਧ ਦਿਨ 123 ਤੱਕ ਜਾ ਸਕਦਾ ਹੈ। ਇਸ ਲਈ “ਮਹੀਨੇ ਦਾ ਨਾਮ + ਮਹੀਨੇ ਦੇ ਦਿਨ ਦਾ ਨੰਬਰ” ਰੂਪ ਵਿੱਚ syntactically ਸੰਭਵ ਜੋੜਿਆਂ ਦੀ ਗਿਣਤੀ ਹੈ</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>ਸਾਲ ਦਾ ਹਰ ਦਿਨ ਬਿਲਕੁਲ ਇੱਕ ਅਜਿਹਾ ਜੋੜਾ ਸਾਕਾਰ ਕਰਦਾ ਹੈ। ਜੇ ਸਾਲ ਦੀ ਲੰਬਾਈ <code>L</code> ਹੋਵੇ ਤਾਂ ਬਿਲਕੁਲ <code>L</code> ਜੋੜੇ ਆਉਂਦੇ ਹਨ। ਕਿਉਂਕਿ</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>ਹਰ ਸਾਲ ਘੱਟੋ-ਘੱਟ</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre>
+  <p>ਸੰਭਵ ਜੋੜੇ ਗੈਰਹਾਜ਼ਰ ਰਹਿੰਦੇ ਹੀ ਹਨ। ਸਭ ਤੋਂ ਲੰਮੇ ਸਾਲ ਵਿੱਚ ਵੀ ਸਾਰੇ ਵਰਤਣ ਲਈ ਕਾਫ਼ੀ ਦਿਨ ਨਹੀਂ।</p><hr>
+</section>
+
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>ਕੈਲੰਡਰ ਦੀ ਗਿਣਤੀ ਕਿਵੇਂ ਹੁੰਦੀ ਹੈ?</h2>
+  <p>ਅੰਦਰਲੀ ਗਿਣਤੀ ਨੂੰ ਇੱਥੇ ਅਸੀਂ <strong>ਸੌਸ</strong> ਕਹਿੰਦੇ ਹਾਂ। ਇਸ ਦੇ ਕੇਂਦਰ ਵਿੱਚ prime number</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>ਹੈ। ਪ੍ਰਕਿਰਿਆ ਵਿੱਚ ਪੰਜ input counter, 7 ਲੁਕੀਆਂ ਬੂੰਦਾਂ, 46 ਦਿਖਣ ਵਾਲੀਆਂ ਬੂੰਦਾਂ, 6 ਕਟੋਰੇ, ਬਦਲਦੇ ਕਟੋਰਾ-ਕ੍ਰਮ, 12 ਅੰਤਿਮ ਮਿਸ਼ਰਣ, ਵੱਖਰੇ ਜਵਾਬਾਂ ਲਈ seal, combinatorial selection, ਦਰਵਾਜ਼ੇ ਬਣਾਉਣਾ, ਸਾਲ ਚੁਣਨਾ, ਕਟਲੈਟ ਵੰਡਣਾ, ਨਾਮ ਚੁਣਨਾ, ਮਹੀਨੇ ਬਣਾਉਣਾ ਅਤੇ ਮਹੀਨੇ ਦੇ ਦਿਨ ਬੁਣਨਾ ਸ਼ਾਮਲ ਹੈ।</p>
+  <p>ਅੰਤਿਮ update <strong>ਇੱਕੋ ਸਮੇਂ</strong> ਹੁੰਦੇ ਹਨ: ਹਰ ਮਿਸ਼ਰਣ ਵਿੱਚ ਛੇਵੇਂ ਨਵੇਂ ਮੁੱਲ ਉਸੇ ਪੁਰਾਣੇ state ਤੋਂ ਗਿਣੇ ਜਾਂਦੇ ਹਨ, ਫਿਰ ਹੀ ਛੇਵੇਂ ਕਟੋਰੇ ਇਕੱਠੇ ਬਦਲੇ ਜਾਂਦੇ ਹਨ।</p>
+  <p>ਅੰਤਿਮ 12 ਮਿਸ਼ਰਣਾਂ ਵਿੱਚ ਇੱਕ ਖ਼ਾਸ ਮਹੱਤਵਪੂਰਨ canonical detail ਹੈ। ਜੇ <code>S</code> ਪੁਰਾਣੇ ਛੇ ਕਟੋਰਿਆਂ ਦਾ ਜੋੜ ਹੈ ਅਤੇ <code>r</code> ਮਿਸ਼ਰਣ ਨੰਬਰ, ਤਾਂ ਪ੍ਰਣਾਲੀ ਗਿਣਦੀ ਹੈ</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p><code>R</code> <strong>ਸੰਭਾਲਿਆ ਜੋੜ</strong> ਹੈ। ਕਟੋਰਾ-ਕ੍ਰਮ ਦੀ ਚੋਣ ਅਤੇ ਮਿਸ਼ਰਣ ਦਾ ਅੰਦਰੂਨੀ update—ਦੋਵੇਂ raw <code>S</code> ਨਹੀਂ, <code>R</code> ਵਰਤਦੇ ਹਨ।</p>
+  <p>ਜਿਹੜੀਆਂ ਪੁਰਾਣੀਆਂ versions ਇਸ update ਵਿੱਚ raw ਜੋੜ ਦਿੰਦੀਆਂ ਸਨ, ਉਹ ਹੁਣ ਮੌਜੂਦਾ canonical semantics ਨਹੀਂ ਦਰਸਾਉਂਦੀਆਂ। ਪੁਰਾਣੇ ਨਿਯਮ ਤੋਂ ਬਣੇ ਉਦਾਹਰਨ ਮੁੜ ਜਾਂਚੇ ਜਾਣ ਤੱਕ ਪੁਰਾਣੇ ਮੰਨੇ ਜਾਣੇ ਚਾਹੀਦੇ ਹਨ।</p>
+  <p>ਮਿਸ਼ਰਣ ਤੋਂ ਬਾਅਦ answer ring ਵੀ ਦਿਖਣ ਵਾਲੀ ਬੂੰਦ 46 ਉੱਤੇ lock ਕੀਤਾ ਕ੍ਰਮ ਹੀ ਜਾਰੀ ਰੱਖਦਾ ਹੈ; ਉਸ ਨੂੰ ਆਪਣੇ ਆਪ ਆਖ਼ਰੀ ਮਿਸ਼ਰਣ ਦੇ ਕ੍ਰਮ ਨਾਲ ਨਹੀਂ ਬਦਲਣਾ।</p><hr>
+</section>
+
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice ਅਤੇ Wide Choice</h2>
+  <p>ਤੁਲਨਾਤਮਕ ਤੌਰ ਤੇ ਛੋਟੀ selection space ਲਈ <strong>Short Choice</strong> ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ। ਇਹ ਸਧਾਰਨ modulo bias ਤੋਂ ਬਚਣ ਲਈ rejection sampling ਵਰਤਦਾ ਹੈ।</p>
+  <p>ਬਹੁਤ ਵੱਡੀ space ਲਈ <strong>Wide Choice</strong> ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ। Specification ਜਿਨ੍ਹਾਂ ਗੁਣਾਂ ਦੀ ਗਰੰਟੀ ਨਹੀਂ ਦਿੰਦੀ, ਉਹ ਇਸ ਨਾਲ ਨਾ ਜੋੜੇ ਜਾਣ।</p>
+  <p>Wide Choice ਦਾ ਅਰਥ index ਮਿਲਣ ਤੱਕ independent ਅਤੇ uniformly distributed base-<code>Q</code> digit ਬਣਾਉਂਦੇ ਰਹਿਣਾ ਨਹੀਂ। ਇਸ ਲਈ ਹਰ valid choice ਦੀ ਇੱਕੋ positive probability ਹੋਣੀ ਲਾਜ਼ਮੀ ਹੈ—ਇਹ ਨਤੀਜਾ ਨਹੀਂ ਨਿਕਲਦਾ। ਕਾਫ਼ੀ ਵੱਡੀ space ਵਿੱਚ ਅਜਿਹੇ valid choice ਹੋ ਸਕਦੇ ਹਨ ਜਿਨ੍ਹਾਂ ਤੱਕ ਇਹ mechanism ਕਦੇ ਨਹੀਂ ਪਹੁੰਚ ਸਕਦਾ।</p>
+  <p>ਕੈਲੰਡਰ ਆਪ ਪੂਰੀ ਤਰ੍ਹਾਂ deterministic ਰਹਿੰਦਾ ਹੈ। “Choice” algorithmic stage ਦਾ ਨਾਮ ਹੈ, ਵਰਤੋਂ ਵੇਲੇ ਹੋਣ ਵਾਲੀ random lottery ਨਹੀਂ।</p><hr>
+</section>
+
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>ਸੰਰਚਨਾਤਮਕ atlas</h2>
+  <p>ਹੁਣ ਤੱਕ ਅਸੀਂ ਕੈਲੰਡਰ ਦੇ ਨਿਯਮਾਂ ਦੀ ਗੱਲ ਕਰਦੇ ਰਹੇ ਹਾਂ। ਅੱਗੇ ਦੇ ਅੰਕ ਵੱਖਰੀ ਕਿਸਮ ਦੀ ਜਾਣਕਾਰੀ ਹਨ: ਵੱਡੇ computational sample ਤੋਂ ਮਿਲੇ <strong>empirical result</strong>।</p>
+  <p>Atlas engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> ਨਾਲ ਬਣਾਇਆ ਗਿਆ ਸੀ। ਇਸ ਵਿੱਚ 4,096 ਕਾਰਵਾਈ ਦੇ ਦਿਨ; ਹਰ ਇੱਕ ਲਈ ਸਾਲ 4990–5010; 86,016 year structure; 625,437 ਕਟਲੈਟ; 3,535,422 structural month; 356 million ਤੋਂ ਵੱਧ contiguous month segment; ਅਤੇ ਉਸੇ ਮਹੀਨੇ ਵਿੱਚ <code>n</code> ਤੋਂ <code>n+1</code> ਤੱਕ 364 million ਤੋਂ ਵੱਧ transition ਸ਼ਾਮਲ ਸਨ।</p>
+  <p>ਇਹ ਅੰਕ ਉਸ corpus ਨੂੰ ਦਰਸਾਉਂਦੇ ਹਨ, canonical ਕਾਨੂੰਨ ਨੂੰ ਨਹੀਂ।</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="ਸੰਰਚਨਾਤਮਕ atlas ਵਿੱਚ ਮਾਪੀ ਜਾਣਕਾਰੀ">
+    <table class="about-table">
+      <thead><tr><th scope="col">ਮਾਪ</th><th scope="col">ਨਮੂਨੇ ਦਾ ਨਤੀਜਾ</th></tr></thead>
+      <tbody>
+        <tr><td>ਸਾਲ ਦੀ ਔਸਤ ਲੰਬਾਈ</td><td>4,275.182 ਦਿਨ</td></tr>
+        <tr><td>ਸਾਲ ਲੰਬਾਈ ਦੀ median</td><td>4,343</td></tr>
+        <tr><td>ਵੇਖਿਆ minimum / maximum</td><td>716 / 5,778</td></tr>
+        <tr><td>ਪ੍ਰਤੀ ਸਾਲ ਔਸਤ ਕਟਲੈਟ</td><td>7.271</td></tr>
+        <tr><td>ਬਿਲਕੁਲ 6 ਕਟਲੈਟ ਵਾਲੇ ਸਾਲ</td><td>42.00%</td></tr>
+        <tr><td>6–8 ਕਟਲੈਟ ਵਾਲੇ ਸਾਲ</td><td>81.29%</td></tr>
+        <tr><td>ਕਟਲੈਟ ਦੀ ਔਸਤ ਲੰਬਾਈ</td><td>587.963 ਦਿਨ</td></tr>
+        <tr><td>ਕਟਲੈਟ ਲੰਬਾਈ ਦੀ median</td><td>560</td></tr>
+        <tr><td>ਪ੍ਰਤੀ ਸਾਲ ਔਸਤ ਮਹੀਨੇ</td><td>41.102</td></tr>
+        <tr><td>ਮਹੀਨਿਆਂ ਦੀ ਗਿਣਤੀ ਦੀ median</td><td>43</td></tr>
+        <tr><td>47 ਮਹੀਨੇ ਵਾਲੇ ਸਾਲ</td><td>15.63%</td></tr>
+        <tr><td>ਘੱਟੋ-ਘੱਟ 45 ਮਹੀਨੇ ਵਾਲੇ ਸਾਲ</td><td>36.81%</td></tr>
+        <tr><td>structural month ਦੀ ਔਸਤ ਲੰਬਾਈ</td><td>104.014 ਦਿਨ</td></tr>
+        <tr><td>ਮਹੀਨੇ ਦੀ ਲੰਬਾਈ ਦੀ median</td><td>115</td></tr>
+        <tr><td>ਪ੍ਰਤੀ ਮਹੀਨਾ ਔਸਤ contiguous segment</td><td>100.897</td></tr>
+        <tr><td>ਇੱਕ ਦਿਨ ਵਾਲੇ month segment ਦਾ ਹਿੱਸਾ</td><td>97.482%</td></tr>
+        <tr><td>ਦੋ ਲਗਾਤਾਰ ਦਿਨ ਇੱਕੋ ਮਹੀਨੇ ਵਿੱਚ ਹੋਣ ਦੀ ਸੰਭਾਵਨਾ</td><td>2.9976%</td></tr>
+        <tr><td>ਉਸੇ ਮਹੀਨੇ ਦੇ <code>n</code> ਅਤੇ <code>n+1</code> ਵਿਚਕਾਰ ਹੋਰ ਮਹੀਨਿਆਂ ਦੇ ਦਿਨਾਂ ਦੀ ਔਸਤ ਗਿਣਤੀ</td><td>40.408</td></tr>
+        <tr><td>ਮਹੀਨੇ ਦੀ ਪਹਿਲੀ ਤੋਂ ਆਖ਼ਰੀ ਦਿਖਾਈ ਤੱਕ ਔਸਤ span</td><td>4,266.653 ਦਿਨ</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>ਅਮਲ ਵਿੱਚ ਲਗਭਗ ਸੌ ਦਿਨਾਂ ਦਾ ਮਹੀਨਾ ਲਗਭਗ ਪੂਰੇ ਪਾਸਤਾਫਾਰੀ ਸਾਲ ਵਿੱਚ ਫੈਲ ਸਕਦਾ ਹੈ।</p>
+  <p>ਉਸੇ atlas ਨੇ ਸਾਲ 5000 ਦੇ ਆਲੇ-ਦੁਆਲੇ ਲੰਬਾਈ ਦਾ ਕੁਦਰਤੀ bias ਵੀ ਦਿਖਾਇਆ। ਨਮੂਨੇ ਵਿੱਚ ਇੱਕ “ਆਮ” ਸਾਲ ਔਸਤ ਲਗਭਗ 4,262 ਦਿਨ ਸੀ। ਸਾਲਾਂ ਨੂੰ ਉਨ੍ਹਾਂ ਦੇ ਦਿਨਾਂ ਦੀ ਗਿਣਤੀ ਨਾਲ weight ਕਰਨ ਤੇ ਔਸਤ ਲਗਭਗ 4,466 ਦਿਨ ਹੋ ਜਾਂਦੀ ਹੈ; ਸਾਲ 5000 ਆਪ ਔਸਤ ਲਗਭਗ 4,499 ਦਿਨ ਸੀ।</p>
+  <p>ਕਾਰਨ ਸਧਾਰਨ ਹੈ: ਸਾਲ 5000 ਵਿੱਚ ਕਾਰਵਾਈ ਦਾ ਦਿਨ ਹੋਣਾ ਹੀ ਹੈ। ਲੰਮੇ ਸਾਲ ਵਿੱਚ ਹੋਰ ਦਿਨ ਹੁੰਦੇ ਹਨ ਜਿਨ੍ਹਾਂ ਉੱਤੇ ਉਹ ਕਾਰਵਾਈ ਦਾ ਦਿਨ ਰੱਖਣ ਵਾਲਾ ਸਾਲ ਬਣ ਸਕਦਾ ਹੈ।</p>
+  <p>ਇਕਾਈ ਦੇ ਨਾਮ ਅਤੇ ਉਸ ਦੀ ਲੰਬਾਈ ਦਾ ਰਿਸ਼ਤਾ ਵੀ ਨਮੂਨੇ ਵਿੱਚ ਬਹੁਤ ਕਮਜ਼ੋਰ ਸੀ। ਇਹ ਪੂਰੀ mathematical independence ਸਾਬਤ ਨਹੀਂ ਕਰਦਾ, ਪਰ atlas ਇਹੋ ਜਿਹਾ ਕੋਈ practical signal ਨਹੀਂ ਦਿੰਦਾ ਕਿ ਨਾਮ ਲੰਬਾਈ encode ਕਰਨ ਲਈ ਬਣੇ ਹਨ।</p>
+  <p>ਇਸ ਤੋਂ ਇਲਾਵਾ, 86,016 year structure ਅਸਲ ਵਿੱਚ 86,016 ਪੂਰੀ ਤਰ੍ਹਾਂ independent sample ਨਹੀਂ: ਸ਼ੁਰੂ ਅਤੇ ਅੰਤ ਦੇ ਦਰਵਾਜ਼ਿਆਂ ਵਿਚਕਾਰ ਸਿਰਫ਼ 24,786 ਵੱਖਰੇ interval ਹਨ। ਨੇੜਲੇ ਕਾਰਵਾਈ ਦੇ ਦਿਨ ਉਹੀ year interval ਚੁਣ ਕੇ ਵੀ ਵੱਖਰੀ ਅੰਦਰੂਨੀ structure ਬਣਾ ਸਕਦੇ ਹਨ।</p>
+  <p>ਇਸ ਲਈ atlas implementation ਦੇ ਮਾਪੇ ਵਰਤਾਅ ਨੂੰ ਚੰਗੀ ਤਰ੍ਹਾਂ ਦਰਸਾਉਂਦਾ ਹੈ, ਪਰ ਸਾਰੀਆਂ ਸੰਭਵ calendar structure ਬਾਰੇ probability theorem ਨਹੀਂ ਬਣਾਉਂਦਾ।</p><hr>
+</section>
+
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>ਜਨਮਦਿਨ ਅਤੇ ਵਰ੍ਹੇਗੰਢ</h2>
+  <p>“ਹਰ ਸਾਲ ਉਹੀ ਦਿਨ” ਕਹਿਣ ਤੋਂ ਪਹਿਲਾਂ ਇੱਥੇ ਉਸ ਦਾ ਅਰਥ ਤੈਅ ਕਰਨਾ ਪੈਂਦਾ ਹੈ। ਕੁਦਰਤੀ recurrence coordinate ਹਨ <code>(ਮਹੀਨੇ ਦਾ ਨਾਮ, ਮਹੀਨੇ ਦਾ ਦਿਨ)</code> ਅਤੇ <code>(ਕਟਲੈਟ ਦਾ ਨਾਮ, ਕਟਲੈਟ ਦਾ ਦਿਨ)</code>; ਸ਼ਰਤਾਂ ਨੂੰ ਜੋੜ ਕੇ ਵੀ ਵਰਤਿਆ ਜਾ ਸਕਦਾ ਹੈ।</p>
+  <p>ਇਸ ਲਈ ਪਾਸਤਾਫਾਰੀ ਜਨਮਦਿਨ ਸਿਰਫ਼ <code>RRULE:FREQ=YEARLY</code> ਨਹੀਂ। ਚੁਣੀ recurrence condition ਪੂਰੀ ਕਰਨ ਵਾਲਾ ਅਗਲਾ ਸਾਲ ਲੱਭਣਾ ਪੈਂਦਾ ਹੈ, ਅਤੇ ਮੂਲ ਘਟਨਾ ਆਪਣੇ ਆਪ ਆਪਣੀ “ਅਗਲੀ ਦਿਖਾਈ” ਨਹੀਂ ਗਿਣੀ ਜਾਂਦੀ।</p>
+  <p>ਸਿਰਫ਼ ਦਿਖਾਵੇ ਲਈ ਕਾਰਵਾਈ ਦਾ ਦਿਨ ਬਦਲਣ ਨਾਲ ਕਿਸੇ ਵਿਅਕਤੀ ਦੀ ਪਛਾਣ, ਜਨਮ-ਪਲ ਜਾਂ ਉਮਰ ਨਹੀਂ ਬਦਲਣੀ ਚਾਹੀਦੀ।</p>
+  <p>4,096 self-referential date ਦੇ exact scan ਵਿੱਚ ਹਰ ਅਗਲਾ ਪਾਸਤਾਫਾਰੀ ਸਾਲ ਦੋਵੇਂ ਦਿਸ਼ਾਵਾਂ ਵਿੱਚ 250,000 ਸਾਲ ਤੱਕ ਜਾਂਚਿਆ ਗਿਆ:</p>
+  <ul>
+    <li><code>(ਮਹੀਨੇ ਦਾ ਨਾਮ, ਮਹੀਨੇ ਦਾ ਦਿਨ)</code> ਲਈ ਪਹਿਲੀ ਵਾਪਸੀ ਦੀ median 1 ਪਾਸਤਾਫਾਰੀ ਸਾਲ ਸੀ; 77.56% ਨੇੜਲੇ ਸਾਲ ਵਿੱਚ ਮੁੜੇ, 93.77% ਦੋ ਸਾਲਾਂ ਵਿੱਚ, 99.44% ਪੰਜ ਸਾਲਾਂ ਵਿੱਚ; ਵੇਖਿਆ maximum 21 ਸਾਲ ਸੀ।</li>
+    <li><code>(ਕਟਲੈਟ ਦਾ ਨਾਮ, ਕਟਲੈਟ ਦਾ ਦਿਨ)</code> ਲਈ median 3 ਸਾਲ ਸੀ; 88.89% 10 ਸਾਲਾਂ ਵਿੱਚ ਮਿਲੇ, ਪਰ distribution ਦਾ heavy tail ਬਹੁਤ ਭਾਰੀ ਹੈ ਅਤੇ ਵੇਖਿਆ maximum 51,954 ਪਾਸਤਾਫਾਰੀ ਸਾਲ ਤੱਕ ਗਿਆ।</li>
+  </ul>
+  <p>ਇਹ <strong>ਜਾਂਚੇ ਗਏ corpus ਦੇ empirical result</strong> ਹਨ; ਹਰ ਸੰਭਵ ਵਰ੍ਹੇਗੰਢ ਜ਼ਰੂਰ ਮੁੜੇਗੀ—ਇਸ ਦਾ ਸਬੂਤ ਨਹੀਂ, ਅਤੇ maximum waiting time ਦੀ guarantee ਵੀ ਨਹੀਂ।</p><hr>
+</section>
+
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>ਮੀਟਿੰਗ ਕਿਵੇਂ ਤੈਅ ਕਰੀਏ?</h2>
+  <p>ਜੇ ਦੋ ਲੋਕ ਸਿਰਫ਼ ਪਾਸਤਾਫਾਰੀ ਤਾਰੀਖ਼ ਨਾਲ ਮੀਟਿੰਗ ਤੈਅ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹਨ, ਤਾਂ ਘੱਟੋ-ਘੱਟ ਪੰਜ date field ਅਤੇ ਗਿਣਤੀ ਵਿੱਚ ਵਰਤੇ ਕਾਰਵਾਈ ਦੇ ਦਿਨ ਉੱਤੇ ਸਹਿਮਤੀ ਹੋਣੀ ਚਾਹੀਦੀ ਹੈ। ਕਾਰਵਾਈ ਦੇ ਦਿਨ ਨੂੰ “ਅੱਜ” ਸ਼ਬਦ ਵਾਂਗ ਨਹੀਂ, ਸਥਿਰ day identity ਵਾਂਗ ਸੰਭਾਲਣਾ ਵਧੀਆ ਹੈ; ਨਹੀਂ ਤਾਂ ਦੋਵੇਂ ਵੱਖਰੇ ਕੈਲੰਡਰ ਗਿਣ ਸਕਦੇ ਹਨ।</p>
+  <ul>
+    <li>“ਕੱਲ੍ਹ” ਅਗਲਾ ਕਾਲਕ੍ਰਮਿਕ ਦਿਨ ਹੈ;</li>
+    <li>“ਮਹੀਨੇ ਦਾ ਅਗਲਾ ਦਿਨ” ਉਸੇ ਮਹੀਨੇ ਦੀ ਅਗਲੀ ਦਿਖਾਈ ਹੈ;</li>
+    <li>“ਮਹੀਨੇ ਦਾ ਅੰਤ” ਉਸ ਮਹੀਨੇ ਦੀ ਆਖ਼ਰੀ ਦਿਖਾਈ ਹੈ;</li>
+    <li>“ਪੂਰਾ ਮਹੀਨਾ” ਉਸ ਮਹੀਨੇ ਦੇ ਦਿਨਾਂ ਦਾ set ਜਾਂ ਪਹਿਲੀ ਤੋਂ ਆਖ਼ਰੀ ਦਿਖਾਈ ਤੱਕ ਪੂਰਾ ਕਾਲਕ੍ਰਮਿਕ span ਹੋ ਸਕਦਾ ਹੈ;</li>
+    <li>“ਅਗਲਾ ਸਾਲ” ਚੁਣੇ ਕਾਰਵਾਈ ਦੇ ਦਿਨ ਹੇਠ ਬਣੇ ਕੈਲੰਡਰ ਦਾ ਅਗਲਾ ਸਾਲ ਹੈ।</li>
+  </ul>
+  <p>ਬਹੁਤ ਮਹੱਤਵਪੂਰਨ ਮੀਟਿੰਗ ਲਈ absolute chronological day ਜਾਂ moment ਵੀ ਸੰਭਾਲਿਆ ਜਾ ਸਕਦਾ ਹੈ। ਕੈਲੰਡਰ ਨਾਰਾਜ਼ ਨਹੀਂ ਹੋਵੇਗਾ।</p><hr>
+</section>
+
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>ਸਫ਼ਰ, ਘਟਨਾਵਾਂ ਅਤੇ all-day</h2>
+  <p>ਘਟਨਾ ਅਤੇ ਉਸ ਲਈ ਦਿਖਾਇਆ ਗਿਆ ਸਥਾਨਕ ਲੇਬਲ ਇੱਕੋ ਚੀਜ਼ ਨਹੀਂ। ਨਿਸ਼ਚਿਤ ਸਮੇਂ ਵਾਲੀ ਘਟਨਾ ਸਥਿਰ chronological moment ਨਾਲ ਜੁੜੀ ਹੋਣੀ ਚਾਹੀਦੀ ਹੈ। ਸਫ਼ਰ ਉਸ ਨੂੰ ਸਮੇਂ ਵਿੱਚ ਨਹੀਂ ਖਿਸਕਾਂਦਾ, ਪਰ ਉਹੀ physical moment ਦੀ ਸਥਾਨਕ ਪਾਸਤਾਫਾਰੀ ਤਾਰੀਖ਼ ਬਦਲ ਸਕਦੀ ਹੈ, ਕਿਉਂਕਿ “ਸਥਾਨਕ ਦਿਨ” ਦੀ ਪਰਿਭਾਸ਼ਾ ਸਥਾਨ ਉੱਤੇ ਨਿਰਭਰ ਹੈ।</p>
+  <p><strong>All-day</strong> ਘਟਨਾ ਵਿੱਚ ਅੰਤਰ ਹੋਰ ਵੱਡਾ ਹੈ। ਨਾਗਰਿਕ ਪੂਰੇ-ਦਿਨ ਦੀ ਘਟਨਾ ਆਮ ਤੌਰ ਤੇ ਅੱਧੀ ਰਾਤ ਤੋਂ ਅਗਲੀ ਅੱਧੀ ਰਾਤ ਤੱਕ ਹੁੰਦੀ ਹੈ; ਪਾਸਤਾਫਾਰੀ ਪੂਰੇ-ਦਿਨ ਦੀ ਘਟਨਾ ਸਥਾਨਕ ਪਾਸਤਾਫਾਰੀ ਦਿਨ-ਸੀਮਾ ਤੋਂ ਅਗਲੀ ਸੀਮਾ ਤੱਕ ਹੋਣੀ ਚਾਹੀਦੀ ਹੈ। ਆਮ ਤੌਰ ਤੇ ਇਹ moment ਇੱਕੋ ਨਹੀਂ।</p>
+  <p>ਇਸ ਲਈ ਪਾਸਤਾਫਾਰੀ ਘਟਨਾ ਨੂੰ ਅੰਨ੍ਹੇਵਾਹ ਨਾਗਰਿਕ “ਪੂਰੇ ਦਿਨ” ਦੀ ਘਟਨਾ ਵਜੋਂ export ਕਰਨਾ ਅਰਥ ਬਦਲ ਸਕਦਾ ਹੈ। ਠੀਕ ਸੰਭਾਲ ਲਈ chronological anchor ਅਤੇ ਢੁਕਵਾਂ location/day-boundary context ਰੱਖਣਾ ਚਾਹੀਦਾ ਹੈ, ਸਿਰਫ਼ <code>all-day</code> flag ਨਹੀਂ।</p><hr>
+</section>
+
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>ਦਿਨ ਕਦੋਂ ਬਦਲਦਾ ਹੈ?</h2>
+  <p>ਸਥਾਨਕ ਪਾਸਤਾਫਾਰੀ ਦਿਨ ਅੱਧੀ ਰਾਤ ਨੂੰ ਨਹੀਂ ਬਦਲਦਾ। ਇਸ ਦੀ ਸੀਮਾ <strong>ਸਥਾਨਕ meridian ਪਾਰ ਕਰਨ ਵਾਲੇ Venus ਦੇ ਕੇਂਦਰ ਦੇ topocentric lower meridian transit</strong> ਨਾਲ ਨਿਰਧਾਰਿਤ ਹੁੰਦੀ ਹੈ।</p>
+  <p>ਅਰਥਾਤ ਇਹ ਸਥਾਨ-ਆਧਾਰਿਤ ਸਥਾਨਕ ਖਗੋਲੀ ਘਟਨਾ ਹੈ। Transit ਦਾ 00:00 ਉੱਤੇ ਹੋਣਾ ਲਾਜ਼ਮੀ ਨਹੀਂ, ਨਾਗਰਿਕ time zone ਇਸ ਨੂੰ ਤੈਅ ਨਹੀਂ ਕਰਦਾ, daylight saving time ਸ਼ੁਰੂ ਜਾਂ ਖ਼ਤਮ ਹੋਣ ਨਾਲ ਹੀ ਇਹ ਨਹੀਂ ਖਿਸਕਦਾ, ਅਤੇ Venus ਦਾ ਨੰਗੀ ਅੱਖ ਨਾਲ ਦਿਖਣਾ ਲਾਜ਼ਮੀ ਨਹੀਂ।</p>
+  <p>ਉਹੀ physical moment ਦੋ ਥਾਵਾਂ ਉੱਤੇ ਉਨ੍ਹਾਂ ਦੀ ਸਥਾਨਕ ਦਿਨ-ਸੀਮਾ ਦੇ ਵੱਖਰੇ ਪਾਸਿਆਂ ਵਿੱਚ ਹੋ ਸਕਦਾ ਹੈ। ਜੇ ਪ੍ਰਣਾਲੀ ਕੋਲ ਵਰਤਣਯੋਗ user location ਨਾ ਹੋਵੇ, ਤਾਂ product ਦਾ default fallback location <strong>Kisurra</strong> ਹੈ।</p><hr>
+</section>
+
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>ਛਪਿਆ ਕੈਲੰਡਰ ਅਤੇ ਹੱਥੋਂ ਗਿਣਤੀ</h2>
+  <p>ਪਾਸਤਾਫਾਰੀ ਕੈਲੰਡਰ ਛਾਪਿਆ ਜਾ ਸਕਦਾ ਹੈ; ਸਿਰਫ਼ ਇਹ ਦੱਸਣਾ ਪਵੇਗਾ ਕਿ ਉਹ ਕਿਸ ਕਾਰਵਾਈ ਦੇ ਦਿਨ ਲਈ ਗਿਣਿਆ ਗਿਆ। ਅਜਿਹਾ ਕੈਲੰਡਰ ਉਸ ਦਿਨ ਦੇ ਦ੍ਰਿਸ਼ਟੀਕੋਣ ਤੋਂ ਸਮੇਂ ਦੀ structure ਦਿਖਾਉਂਦਾ ਹੈ; ਕਾਰਵਾਈ ਦਾ ਦਿਨ ਬਦਲਣ ਤੇ ਨਵਾਂ ਕੈਲੰਡਰ ਲੱਗ ਸਕਦਾ ਹੈ। ਇਸ ਲਈ printer ਕੋਲ ਅਜੇ ਵੀ ਕੰਮ ਹੈ।</p>
+  <p>Specification ਪੂਰੀ ਅਤੇ deterministic ਹੋਣ ਕਰਕੇ ਸਭ ਕੁਝ ਹੱਥੋਂ ਵੀ ਗਿਣਿਆ ਜਾ ਸਕਦਾ ਹੈ: input counter ਗਿਣੋ, 7 ਲੁਕੀਆਂ ਅਤੇ 46 ਦਿਖਣ ਵਾਲੀਆਂ ਬੂੰਦਾਂ ਚਲਾਓ, ਛੇ ਕਟੋਰੇ update ਕਰੋ, 12 ਅੰਤਿਮ ਮਿਸ਼ਰਣ ਕਰੋ, ਜਵਾਬ ਬਣਾਓ, ਦਰਵਾਜ਼ੇ ਬਣਾਓ, ਸਾਲ ਅਤੇ ਕਟਲੈਟ ਚੁਣੋ, combinatorial selection ਕਰੋ, ਨਾਮ ਚੁਣੋ ਅਤੇ ਫਿਰ ਮਹੀਨੇ ਬੁਣੋ।</p>
+  <p>ਬਦਲੇ ਵਿੱਚ ਫ਼ਰਵਰੀ ਕਦੋਂ 28 ਅਤੇ ਕਦੋਂ 29 ਦਿਨਾਂ ਦੀ ਹੁੰਦੀ ਹੈ, ਇਹ ਯਾਦ ਰੱਖਣ ਦੀ ਲੋੜ ਨਹੀਂ।</p><hr>
+</section>
+
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>ਫਿਰ Seer ਕੀ ਹੈ?</h2>
+  <p>Canonical implementation ਦੇ ਨਾਲ <strong>Pastafarian Calendar Seer</strong> ਨਾਮ ਦਾ ਤੇਜ਼ engine ਵੀ ਹੈ। Seer ਅਧਿਕਾਰ ਦਾ ਸਰੋਤ ਨਹੀਂ: ਸਹੀ ਤਾਰੀਖ਼ Megillah ਅਤੇ canonical calculation ਤੈਅ ਕਰਦੇ ਹਨ। ਜੇ Seer ਉਨ੍ਹਾਂ ਨਾਲ ਨਾ ਮਿਲੇ, ਗਲਤੀ Seer ਦੀ ਹੈ।</p>
+  <p>ਇਸ ਦਾ ਕੰਮ ਉਹੀ query ਤੇਜ਼ੀ ਨਾਲ ਚਲਾਉਣਾ ਅਤੇ result ਨੂੰ product ਵਿੱਚ ਅਸਾਨੀ ਨਾਲ integrate ਹੋਣ ਵਾਲੇ ਰੂਪ ਵਿੱਚ ਦੇਣਾ ਹੈ।</p>
+  <p>ਇਹ ਪੰਨਾ ਸੰਪਾਦਿਤ ਕਰਦੇ ਸਮੇਂ ਕੀਤੀ ਸਿੱਧੀ verification ਵਿੱਚ Seer ਵਿੱਚ date ਅਤੇ “now” query, batch, day range, ਪਾਸਤਾਫਾਰੀ ਤਾਰੀਖ਼ ਤੋਂ target day ਤੱਕ reverse conversion, year structure retrieval, active working day determination, Node API, browser/HTTP client, CLI, HTTP v1 service, OpenAPI 3.1 contract, native implementations ਅਤੇ distribution package, ਅਤੇ verified container deployment ਸ਼ਾਮਲ ਸਨ।</p>
+  <p>Seer ਕੋਲ public API ਨਹੀਂ—ਇਹ ਪੁਰਾਣਾ ਦਾਅਵਾ ਹੁਣ ਗਲਤ ਹੈ। ਹੁਣ date, range, batch, year, reverse, ਕਾਰਵਾਈ ਦਾ ਦਿਨ, metadata, locales ਅਤੇ status endpoint ਵਾਲਾ ਸਪਸ਼ਟ ਅਤੇ ਸਥਿਰ HTTP v1 contract ਹੈ।</p>
+  <p>21 ਸਤੰਬਰ 2026 ਨੂੰ Render ਉੱਤੇ public HTTPS deployment ਅਸਲ ਵਿੱਚ ਟੈਸਟ ਕੀਤਾ ਗਿਆ ਸੀ: live service ਉੱਤੇ exact query, ਵੱਡਾ range, restart, cold wake ਅਤੇ load ਹੇਠ ਵਰਤਾਅ verify ਕੀਤਾ ਗਿਆ।</p>
+  <p>ਫਿਰ ਵੀ project documentation public beta/evaluation deployment ਅਤੇ SLA ਵਾਲੀ ਸਥਾਈ hosted production service ਨੂੰ ਵੱਖਰਾ ਮੰਨਦੀ ਹੈ। ਇਸ ਲਈ conceptual explanation page ਨੂੰ server address, hosting provider ਜਾਂ version number ਇਸ ਤਰ੍ਹਾਂ freeze ਨਹੀਂ ਕਰਨੇ ਚਾਹੀਦੇ ਜਿਵੇਂ ਉਹ ਕੈਲੰਡਰ ਦਾ ਆਪਣਾ ਹਿੱਸਾ ਹੋਣ।</p>
+  <p>Seer precomputation, ਵਿਸ਼ੇਸ਼ representation, SIMD, algebra ਅਤੇ ਹੋਰ shortcut ਵਰਤ ਸਕਦਾ ਹੈ। ਜੇ ਉਹੀ semantic operation ਕਰਕੇ ਉਹੀ ਜਵਾਬ ਵਾਪਸ ਕਰਦਾ ਹੈ ਤਾਂ canonical implementation ਦੀ ਪੂਰੀ computational history ਕਦਮ-ਦਰ-ਕਦਮ ਨਕਲ ਕਰਨ ਦੀ ਲੋੜ ਨਹੀਂ।</p>
+  <p>Optimization ਵਿਕਲਪਿਕ ਅਧਿਕਾਰ ਨਹੀਂ।</p><hr>
+</section>
+
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>ਮੂਲ, ਸਥਾਪਨਾ ਦਿਨ ਅਤੇ ਤਖ਼ਤੀਆਂ ਦਾ ਦਿਨ</h2>
+  <p>ਇੱਥੇ canonical time anchor ਨੂੰ ਸਾਈਟ ਦੀ ਕਥਾ ਤੋਂ ਸਪਸ਼ਟ ਵੱਖਰਾ ਰੱਖਣਾ ਖ਼ਾਸ ਤੌਰ ਤੇ ਮਹੱਤਵਪੂਰਨ ਹੈ।</p>
+
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>ਆਧਾਰ ਬਿੰਦੂ</h3>
+    <p>ਪ੍ਰਣਾਲੀ ਵਿੱਚ <strong>ਸਥਾਪਨਾ ਦਿਨ</strong> ਨਾਮ ਦਾ ਇੱਕ ਸਥਿਰ reference day ਹੈ। Proleptic Gregorian calendar ਵਿੱਚ ਇਹ <strong>22 ਦਸੰਬਰ 41,222 ਈਸਾ ਪੂਰਵ</strong> ਹੈ।</p>
+    <p>ਸਥਾਪਨਾ ਦਿਨ “ਸਮੇਂ ਦੀ ਸ਼ੁਰੂਆਤ” ਨਹੀਂ; ਇਹ computational anchor ਹੈ।</p>
+    <p>ਇਸ ਦੇ ਆਲੇ-ਦੁਆਲੇ ਦਿਨ numbering ਵਿੱਚ ਧਨਾਤਮਕ ਵਿਸ਼ਮ/ਸਮ ਅੰਕ ਵਰਤੇ ਜਾਂਦੇ ਹਨ: ਸਥਾਪਨਾ ਦਿਨ=1; ਬਾਅਦ ਦੇ ਦਿਨ=3, 5, …; ਭੂਤਕਾਲ ਵੱਲ ਪਿਛਲਾ ਦਿਨ=2, ਫਿਰ 4, 6, … । ਇਸ ਤਰ੍ਹਾਂ anchor ਦੇ ਦੋਹਾਂ ਪਾਸਿਆਂ ਨੂੰ ਇਸ counter ਵਿੱਚ negative day number ਤੋਂ ਬਿਨਾਂ encode ਕੀਤਾ ਜਾਂਦਾ ਹੈ।</p>
+    <p>ਦੂਜਾ anchor ਹੈ <strong>ਤਖ਼ਤੀਆਂ ਦਾ ਦਿਨ</strong>: <strong>proleptic Julian calendar ਵਿੱਚ 15 ਜੂਨ 763 ਈਸਾ ਪੂਰਵ</strong>, ਅਰਥਾਤ <strong>proleptic Gregorian calendar ਵਿੱਚ 7 ਜੂਨ 763 ਈਸਾ ਪੂਰਵ</strong>।</p>
+    <p>ਸਥਾਪਨਾ ਦਿਨ ਤੋਂ ਤਖ਼ਤੀਆਂ ਦੇ ਦਿਨ ਤੱਕ ਸਹੀ ਦੂਰੀ</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
+    <p>ਦਿਨ ਹੈ।</p>
+    <p>ਇਹ ਸਮੇਂ ਦੀ ਰੇਖਾ ਉੱਤੇ ਸਥਿਰ anchor ਹਨ, ਪਰ ਇਨ੍ਹਾਂ ਲਈ ਦਿਖਾਈ ਜਾਣ ਵਾਲੀ ਪਾਸਤਾਫਾਰੀ ਤਾਰੀਖ਼ ਫਿਰ ਵੀ ਇਸ ਗੱਲ ਉੱਤੇ ਨਿਰਭਰ ਹੈ ਕਿ ਸਵਾਲ ਕਿਸ ਕਾਰਵਾਈ ਦੇ ਦਿਨ ਤੋਂ ਕੀਤਾ ਗਿਆ ਹੈ।</p>
+  </section>
+
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>ਸਾਈਟ ਦੀ ਕਥਾ</h3>
+    <p>ਸਾਈਟ ਦੀ editorial story ਵਿੱਚ ਕੈਲੰਡਰ ਨੂੰ ਸ੍ਰਿਸ਼ਟੀ ਦਾ ਇੱਕ ਹਿੱਸਾ ਅਤੇ ਅਜਿਹੀ ਪ੍ਰਣਾਲੀ ਵਜੋਂ ਦਰਸਾਇਆ ਜਾਂਦਾ ਹੈ ਜਿਸ ਨੂੰ ਮਨੁੱਖਤਾ ਪੂਰੀ ਤਰ੍ਹਾਂ ਜਾਣੇ ਬਿਨਾਂ ਵਰਤਦੀ ਰਹੀ, ਜਦੋਂ ਤੱਕ ਆਧੁਨਿਕ ਯੁੱਗ ਵਿੱਚ ਇਹ ਮੁੜ ਸੌਂਪਿਆ ਨਾ ਗਿਆ।</p>
+    <p>ਇਹ ਸਾਈਟ ਦੀ ਕਥਾ ਹੈ; ਇਸ ਦੀ ਹਰ narrative detail ਨੂੰ Megillah ਦਾ ਸਪਸ਼ਟ technical claim ਵਾਂਗ ਨਹੀਂ ਦਿਖਾਉਣਾ ਚਾਹੀਦਾ।</p>
+    <p>ਮੁੜ ਸੌਂਪੇ ਜਾਣ ਦੀ ਘਟਨਾ ਆਪ ਇੱਕ ਸਥਿਰ ਇਤਿਹਾਸਕ ਘਟਨਾ ਹੈ। ਇਸ ਦੀ <strong>ਪਾਸਤਾਫਾਰੀ ਤਾਰੀਖ਼</strong> ਨੂੰ ਇੱਕ ਤਾਰੀਖ਼ ਵਜੋਂ ਹਮੇਸ਼ਾਂ ਲਈ freeze ਕਰਨ ਦੀ ਥਾਂ ਮੌਜੂਦਾ ਕਾਰਵਾਈ ਦੇ ਦਿਨ ਹੇਠ dynamic ਤਰੀਕੇ ਨਾਲ ਦਿਖਾਉਣਾ ਵਧੀਆ ਹੈ।</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>ਉੱਨਤ ਵਰਤੋਂਕਾਰਾਂ ਲਈ: reverse conversion</h2>
+  <p>ਜੇ ਕਾਰਵਾਈ ਦਾ ਦਿਨ <code>c</code> ਪਤਾ ਹੋਵੇ ਤਾਂ reverse conversion ਬਹੁਤ ਕੜਾਈ ਨਾਲ ਸੀਮਿਤ ਹੈ। ਜਾਣੇ ਪਾਸਤਾਫਾਰੀ ਸਾਲ ਦੇ ਅੰਦਰ</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{ਕਟਲੈਟ ਦਾ ਨਾਮ},\text{ਕਟਲੈਟ ਦਾ ਦਿਨ})</code></pre>
+  <p>ਵੱਧ ਤੋਂ ਵੱਧ ਇੱਕ ਦਿਨ ਦੀ ਪਛਾਣ ਕਰਦਾ ਹੈ। ਉਸੇ ਤਰ੍ਹਾਂ</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{ਮਹੀਨੇ ਦਾ ਨਾਮ},\text{ਮਹੀਨੇ ਦਾ ਦਿਨ})</code></pre>
+  <p>ਵੀ। ਇਸ ਲਈ ਜਾਣੇ ਕਾਰਵਾਈ ਦੇ ਦਿਨ ਨਾਲ ਪੂਰੀ ਤਾਰੀਖ਼ target day ਨੂੰ ਇੱਕੋ ਤਰੀਕੇ ਨਾਲ ਪਛਾਣਦੀ ਹੈ।</p>
+
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Reverse conversion ਵਿੱਚ candidate ਗਿਣਤੀ ਦੀਆਂ ਉੱਪਰੀ ਹੱਦਾਂ">
+    <table class="about-table">
+      <thead><tr><th scope="col">ਜਾਣੀ ਹੋਰ ਜਾਣਕਾਰੀ</th><th scope="col">ਵੱਧ ਤੋਂ ਵੱਧ candidate</th></tr></thead>
+      <tbody>
+        <tr><td>ਸਾਲ ਤੋਂ ਇਲਾਵਾ ਕੋਈ field ਨਹੀਂ ਪਤਾ</td><td>5,778</td></tr>
+        <tr><td>ਸਿਰਫ਼ ਕਟਲੈਟ ਦਾ ਨਾਮ</td><td>5,568</td></tr>
+        <tr><td>ਸਿਰਫ਼ ਕਟਲੈਟ ਦਾ ਦਿਨ</td><td>17</td></tr>
+        <tr><td>ਸਿਰਫ਼ ਮਹੀਨੇ ਦਾ ਨਾਮ</td><td>123</td></tr>
+        <tr><td>ਸਿਰਫ਼ ਮਹੀਨੇ ਦਾ ਦਿਨ</td><td>47</td></tr>
+        <tr><td>ਕਟਲੈਟ ਦਾ ਨਾਮ + ਕਟਲੈਟ ਦਾ ਦਿਨ</td><td>1</td></tr>
+        <tr><td>ਮਹੀਨੇ ਦਾ ਨਾਮ + ਮਹੀਨੇ ਦਾ ਦਿਨ</td><td>1</td></tr>
+        <tr><td>ਸਾਲ ਤੋਂ ਇਲਾਵਾ ਕੋਈ ਵੀ ਤਿੰਨ field</td><td>1</td></tr>
+        <tr><td>ਸਾਲ ਤੋਂ ਇਲਾਵਾ ਚਾਰੇ field</td><td>1</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>ਕਾਰਵਾਈ ਦਾ ਦਿਨ ਪਤਾ ਨਾ ਹੋਵੇ ਤਾਂ ਹਾਲਤ ਵੱਖਰੀ ਹੈ। ਉਹੀ ਪੰਜ ਮੁੱਲ ਵੱਖਰੇ ਕਾਰਵਾਈ ਦੇ ਦਿਨਾਂ ਹੇਠ ਦਿਖ ਸਕਦੇ ਹਨ, ਅਤੇ ਅਜਿਹੇ exact example ਹਨ ਜਿੱਥੇ ਉਹੀ ਪੂਰੀ ਤਾਰੀਖ਼ <code>c</code> ਤੋਂ ਵੱਖਰੀ ਦੂਰੀ ਤੇ ਆਉਂਦੀ ਹੈ।</p>
+  <p>ਸਾਲ 5000 ਵਿੱਚ ਤਾਂ ਉਸ ਦੂਰੀ ਦਾ sign ਵੀ ਪੰਜ ਮੁੱਲਾਂ ਨਾਲ ਹਮੇਸ਼ਾਂ ਨਿਰਧਾਰਤ ਨਹੀਂ ਹੁੰਦਾ: ਉਹੀ ਪੂਰੀ ਤਾਰੀਖ਼ ਇੱਕ context ਵਿੱਚ ਕਾਰਵਾਈ ਦੇ ਦਿਨ ਤੋਂ ਪਹਿਲਾਂ ਅਤੇ ਦੂਜੇ ਵਿੱਚ ਬਾਅਦ ਹੋ ਸਕਦੀ ਹੈ।</p>
+  <p>ਇਸ ਲਈ ਇਹ ਜਾਣੇ ਬਿਨਾਂ ਕਿ ਮਿਤੀ ਕਿਸ <code>c</code> ਹੇਠ ਗਿਣੀ ਗਈ ਸੀ, ਪੂਰੀ ਪਾਸਤਾਫਾਰੀ ਤਾਰੀਖ਼ ਸਮੇਂ ਦੀ ਰੇਖਾ ਉੱਤੇ absolute address ਨਹੀਂ।</p>
+
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>ਬਹੁਤ ਦੂਰਲੇ ਸਮੇਂ ਦੀ ਸੰਰਚਨਾ</h3>
+    <p>Specification ਤੋਂ ਆਏ mathematical research ਨੇ exact asymptotic structure ਵੀ ਲੱਭੀ ਹੈ। <strong>ਸਥਿਰ ਕਾਰਵਾਈ ਦਾ ਦਿਨ</strong> <code>c</code> ਹੋਣ ਤੇ ਭੂਤਕਾਲ ਦੀ tail ਵਿੱਚ ਕਾਫ਼ੀ ਦੂਰ affine periodicity ਦਿਖਦੀ ਹੈ।</p>
+    <p>ਜੇ</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>ਹੋਵੇ, ਤਾਂ ਉਸੇ <code>c</code> ਲਈ shift <code>H_c</code>, year change <code>p_c</code> ਅਤੇ ਕਾਫ਼ੀ ਦੂਰ threshold ਹੁੰਦੀ ਹੈ, ਜਿਸ ਤੋਂ ਬਾਅਦ</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>ਸਾਲ ਤੋਂ ਇਲਾਵਾ ਚਾਰੇ field ਮੁੜ ਆਉਂਦੇ ਹਨ, ਜਦੋਂ ਕਿ ਸਾਲ ਨੰਬਰ ਇੱਕ ਸਥਿਰ ਮਾਤਰਾ ਨਾਲ ਬਦਲਦਾ ਹੈ।</p>
+    <p>ਇਹ ਸਥਿਰ <code>c</code> ਲਈ ਨਤੀਜਾ ਹੈ; ਇਸ ਤੋਂ global relation</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>ਨਹੀਂ ਨਿਕਲਦਾ। ਵੱਖਰੇ ਕਾਰਵਾਈ ਦੇ ਦਿਨਾਂ ਲਈ ਅੰਤਿਮ asymptotic slope ਸੱਚਮੁੱਚ ਵੱਖਰੇ ਹੁੰਦੇ ਹਨ ਜਾਂ ਨਹੀਂ—ਇਹ ਸਵਾਲ ਅਜੇ ਖੁੱਲ੍ਹਾ ਹੈ।</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>ਉੱਨਤ ਵਰਤੋਂਕਾਰਾਂ ਲਈ: ਸੌਸ ਕਿੰਨਾ ਇਤਿਹਾਸ ਸੰਭਾਲਦਾ ਹੈ?</h2>
+  <p>ਸੌਸ ਬਹੁਤ aggressive mixing mechanism ਵਾਂਗ ਦਿਖਦਾ ਹੈ, ਪਰ algebraic research ਦਿਖਾਉਂਦਾ ਹੈ ਕਿ ਇਹ ਦਿੱਖ ਤੋਂ ਅੰਦਾਜ਼ੇ ਨਾਲੋਂ ਕਾਫ਼ੀ ਵੱਧ ਜਾਣਕਾਰੀ ਸੰਭਾਲਦਾ ਹੈ। ਇਹ specification ਤੋਂ ਮਿਲਿਆ research result ਹੈ, ਨਵਾਂ calendar rule ਨਹੀਂ।</p>
+  <p>ਦਿਖਣ ਵਾਲੇ stage 3–46 ਵਿੱਚ, ਸੰਬੰਧਿਤ asymptotic branch ਉੱਤੇ generic injectivity ਸਥਾਪਿਤ ਹੈ: generic case ਵਿੱਚ state ਸੰਬੰਧਿਤ input history ਅਤੇ ਕਟੋਰਿਆਂ ਦਾ ਕ੍ਰਮ ਮੁੜ ਬਣਾਉਣ ਜਿੰਨੀ ਜਾਣਕਾਰੀ ਰੱਖਦਾ ਹੈ।</p>
+  <p>ਅੰਤਿਮ 12 ਮਿਸ਼ਰਣਾਂ ਵਿੱਚ ਵੀ ਜਾਣਕਾਰੀ ਤੁਰੰਤ ਗਾਇਬ ਨਹੀਂ ਹੁੰਦੀ। ਦਿਖਣ ਵਾਲੀ ਬੂੰਦ 46 ਤੋਂ ਬਾਅਦ ਪਹਿਲੇ ਪੰਜ ਮਿਸ਼ਰਣਾਂ ਲਈ ਸੰਬੰਧਿਤ canonical union ਉੱਤੇ ਵਾਧੂ side information ਤੋਂ ਬਿਨਾਂ generic invertibility ਸਥਾਪਿਤ ਹੈ; ਬਾਕੀ ਲਈ reconstruction ਲਈ ਕਿੰਨੀ side information ਕਾਫ਼ੀ ਹੈ, ਉਸ ਦੀ ਮਜ਼ਬੂਤ constructive upper bound ਪਤਾ ਹੈ।</p>
+  <p><strong>ਸਿਰਫ਼ ਅੰਤਿਮ ਛੇ ਕਟੋਰੇ</strong> generic sense ਵਿੱਚ ਹਮੇਸ਼ਾਂ ਕਾਫ਼ੀ ਹਨ ਜਾਂ ਨਹੀਂ—ਇਹ ਸਵਾਲ ਅਜੇ ਖੁੱਲ੍ਹਾ ਹੈ।</p>
+  <p>ਕੁਝ ਨਤੀਜੇ symbolic ਤੌਰ ਤੇ ਸਾਬਤ ਹੋਏ; ਹੋਰ finite exact arithmetic check ਨਾਲ ਬੰਦ ਹੋਏ। Symbolic strengthening ਨੇ ਭਰੋਸਾ ਕਰਨ ਵਾਲਾ computational core ਬਹੁਤ ਛੋਟਾ ਕੀਤਾ, ਪਰ ਪੂਰੀ ਤਰ੍ਹਾਂ ਨਹੀਂ ਹਟਾਇਆ।</p>
+  <p>ਜਿਹੜੀਆਂ space ਸ਼ੁਰੂ ਵਿੱਚ ਬਹੁਤ ਵੱਡੀ ਗਿਣਤੀ ਵਿੱਚ path ਲੱਭਣ ਦੀ ਲੋੜ ਵਰਗੀਆਂ ਲੱਗਦੀਆਂ ਸਨ, ਉਹਨਾਂ ਨੂੰ ਬਹੁਤ ਛੋਟੀਆਂ finite structure ਤੱਕ ਘਟਾਇਆ ਗਿਆ, ਜਿਨ੍ਹਾਂ ਵਿੱਚ 180 ਅਤੇ 9 state ਵਾਲੇ automata ਅਤੇ ਛੇ ਕਟੋਰਿਆਂ ਦੀ symmetry ਸ਼ਾਮਲ ਹੈ।</p>
+  <p>ਮਿਸ਼ਰਣ ਦੇ ਹੇਠ ਕੜੀ algebraic structure ਹੈ। ਅੱਜ ਦੀ ਤਾਰੀਖ਼ ਜਾਣਨ ਲਈ ਇਸ ਨੂੰ ਜਾਣਨਾ ਲਾਜ਼ਮੀ ਨਹੀਂ।</p><hr>
+</section>
+
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>ਤਾਂ ਪਾਸਤਾਫਾਰੀ ਕੈਲੰਡਰ ਅਸਲ ਵਿੱਚ ਕੀ ਹੈ?</h2>
+  <p>ਇਹ deterministic calendar ਹੈ ਜਿਸ ਵਿੱਚ ਤਾਰੀਖ਼ ਸਿਰਫ਼ target day ਦੀ function ਨਹੀਂ, ਸਗੋਂ <strong>ਕਾਰਵਾਈ ਦੇ ਦਿਨ ਅਤੇ ਪੁੱਛੇ ਗਏ ਦਿਨ ਦੀ ਸਾਂਝੀ function</strong> ਹੈ।</p>
+  <p>ਹਰ ਤਾਰੀਖ਼ ਵਿੱਚ ਬਿਲਕੁਲ ਪੰਜ field ਹਨ। ਵਰਤਮਾਨ ਆਪਣੇ ਦ੍ਰਿਸ਼ਟੀਕੋਣ ਤੋਂ ਹਮੇਸ਼ਾਂ ਸਾਲ 5000 ਵਿੱਚ ਹੈ, ਪਰ ਸਾਲ 5000 ਆਪ ਕਾਰਵਾਈ ਦੇ ਦਿਨ ਨਾਲ ਖਿਸਕਦਾ ਹੈ। ਸਾਲ ਬਹੁਤ ਲੰਮੇ ਹੋ ਸਕਦੇ ਹਨ, ਕਟਲੈਟ ਲਗਾਤਾਰ ਹੁੰਦੇ ਹਨ, ਮਹੀਨੇ ਹੋਣ ਲਾਜ਼ਮੀ ਨਹੀਂ, ਅਤੇ canonical week system ਨਹੀਂ।</p>
+  <p>ਮਹੀਨੇ ਦਾ <code>n+1</code> ਦਿਨ ਲਾਜ਼ਮੀ ਨਹੀਂ ਕਿ ਕੱਲ੍ਹ ਹੋਵੇ। ਉਹੀ chronological day ਕੱਲ੍ਹ ਵੱਖਰਾ ਪਾਸਤਾਫਾਰੀ label ਲੈ ਸਕਦਾ ਹੈ। ਉਹੀ physical moment ਦੋ ਥਾਵਾਂ ਤੇ ਦੋ ਵੱਖਰੇ local Pastafari day ਵਿੱਚ ਪੈ ਸਕਦਾ ਹੈ। All-day event ਦਾ ਅੱਧੀ ਰਾਤ ਤੋਂ ਅੱਧੀ ਰਾਤ ਤੱਕ ਹੋਣਾ ਲਾਜ਼ਮੀ ਨਹੀਂ। ਅਤੇ annual birthday ਪਹਿਲਾਂ search problem, ਫਿਰ calendar problem ਹੈ।</p>
+  <p>ਪਰ ਕਾਰਵਾਈ ਦਾ ਦਿਨ ਅਤੇ ਪੁੱਛਿਆ ਗਿਆ ਦਿਨ ਪਤਾ ਹੋਣ ਤਾਂ ambiguity ਨਹੀਂ: ਸਹੀ ਜਵਾਬ ਇੱਕੋ ਹੈ।</p>
+  <p>ਅੰਤ ਵਿੱਚ ਕੈਲੰਡਰ ਨੂੰ ਇਸ ਤੋਂ ਵੱਧ ਕੁਝ ਕਰਨ ਦੀ ਲੋੜ ਨਹੀਂ।</p>
+</section>

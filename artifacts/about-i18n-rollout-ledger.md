@@ -60,7 +60,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | ne | ne-NP | ltr | partial | draft |
 | nl | nl-NL | ltr | partial | draft |
 | nn | nn-NO | ltr | partial | not started |
-| pa | pa-IN | ltr | partial | not started |
+| pa | pa-IN | ltr | partial | draft |
 | pl | pl-PL | ltr | partial | draft |
 | pt | pt-BR | ltr | partial | draft |
 | ro | ro-RO | ltr | partial | draft |
