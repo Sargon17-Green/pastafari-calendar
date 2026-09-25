@@ -225,7 +225,7 @@ export default Object.freeze({
     "reverse.variable.label": "Naziv za prikaz",
     "reverse.variable.defaultName": "Datum {index}",
     "reverse.variable.domain": "Domena",
-    "reverse.variable.domain.unknown": "Nepoznato (mora biti ograničeno drugim uvjetima)",
+    "reverse.variable.domain.unknown": "Nepoznato (mora biti ograničeno drugim uslovima)",
     "reverse.variable.domain.exact": "Tačno poznat datum",
     "reverse.variable.domain.range": "Konačni raspon datuma",
     "reverse.constraint.heading": "Ograničenja",
