@@ -114,6 +114,8 @@ Status progression for target locales: `not started → draft → semantic QA �
 
 - `lb-LU`: locale-wide language finding: the existing locale is predominantly German rather than Luxembourgish (e.g. `Dag der Ausführung ändern`, `Ausgangspunkt der Berechnung`, `Schale`, `Tropfen`). Do not use it as a Luxembourgish terminology oracle.
 
+- `be-BY`: locale-wide language finding: the existing locale mixes Belarusian with Ukrainian forms (e.g. `Змінити дзень дії`, `котлеті`, `місяці`). It requires native Belarusian repair before serving as a terminology oracle.
+
 ## Native-language whole-site QA policy
 
 The final linguistic QA is intentionally a separate phase and will run on a dedicated branch forked from the completed translation branch, tentatively `qa/about-i18n-native-language-audit`.
