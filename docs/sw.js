@@ -1,6 +1,6 @@
 "use strict";
 
-const VERSION = "pastafari-static-pwa-hardening-21-about-i18n";
+const VERSION = "pastafari-static-pwa-hardening-22-about-i18n-polish";
 const CORE_CACHE = `${VERSION}-core`;
 const RUNTIME_CACHE = "pastafari-runtime-assets";
 const CACHE_PREFIX = "pastafari-static-";
@@ -10,10 +10,10 @@ const CACHE_PREFIX = "pastafari-static-";
 const CORE_ASSETS = [
   "./index.html",
   "./about/index.html",
-  "./about/about.js?v=3-about-i18n",
-  "./about/content/registry.js?v=3-about-i18n",
-  "./about/content/he.html?v=3-about-i18n",
-  "./styles.css?v=15-about-review",
+  "./about/about.js?v=5-about-i18n-polish",
+  "./about/content/registry.js?v=5-about-i18n-polish",
+  "./about/content/he.html?v=5-about-i18n-polish",
+  "./styles.css?v=16-about-polish",
   "./app.js?v=24-about-i18n",
   "./reverse-ui.js?v=21-about-i18n",
   "./reverse-search-controller.js",
