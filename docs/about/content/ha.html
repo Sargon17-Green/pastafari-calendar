@@ -1,0 +1,332 @@
+<!-- An rubuta sigar Hausa kai tsaye daga tushen ma'ana na Ibrananci, ba ta hanyar wani harshe na tsaka-tsaki ba. -->
+<!-- ID na sashe yarjejeniya ce ta jama'a mai dorewa don deep-link; ba a samar da su daga taken da aka fassara ba. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>A cikin labarin wannan shafi, Kalandar Pastafari ita ce kalandar da aka ce lokaci kansa ya samu halitta a cikinta. Amma tsarin aikinta an fayyace shi daidai.</p>
+  <p>Wannan kalanda ba ta makala wa kowace rana “alama” guda ta Pastafari da ba ta canzawa. Domin gano kwanan wata, ana bukatar ranaku biyu: <strong>ranar aiki</strong>, wadda ake fara lissafi daga gare ta, da <strong>ranar da ake tambaya</strong>, wadda ake son a san kwanan watanta.</p>
+  <p>Idan muka kira ranar aiki <code>c</code> kuma ranar da ake tambaya <code>t</code>, to kwanan watan shi ne</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>ba <code>F(t)</code> ba. Saboda haka rana ɗaya da ake tambaya na iya samun wani kwanan Pastafari idan an sauya ranar aiki.</p>
+  <p>Wannan ba kuskure ba ne. Haka tsarin kalandar yake.</p><hr>
+</div>
+
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>Me kwanan Pastafari ya ƙunsa?</h2>
+  <p>Yana da <strong>sassa biyar kacal</strong>: lambar shekara, sunan kotlet, rana a cikin kotlet, sunan wata, da rana a cikin wata.</p>
+  <p>Misali na gaba ɗaya: <strong>shekara 5000, kotlet A, rana 417 a kotlet, wata B, rana 83 a wata.</strong></p>
+  <p>Ranar aiki, wurin mai kallo, ainihin ranar a jerin lokaci, ko wasu bayanan fasaha za su iya bayyana a gefen kwanan watan, amma ba su zama fili na shida ba.</p><hr>
+</section>
+
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>Me ya sa ake bukatar ranar aiki?</h2>
+  <p>A kalandar yau da kullum, muna yawan ɗauka cewa kwanan wata “na” ranar da kanta ne. A Kalandar Pastafari kuwa, kwanan wata ya dogara da alaƙar ranaku biyu.</p>
+  <p>Canza <code>t</code> yana nufin tambaya game da wata rana. Canza <code>c</code> na iya canza abubuwa masu zurfi: iyakokin shekaru, kotlet, watanni, sunayensu, da yadda watanni ke cakuduwa da juna.</p>
+  <p>Saboda haka almanak da aka lissafo yau ba lallai ya zama daidai gobe ba. Hakan kuma yana hana mummunan yanayin da kalandar takarda za ta ci gaba da amfani har shekara guda.</p><hr>
+</section>
+
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>Rana ɗaya, kwanan wata dabam</h2>
+  <p>Dole ne a bambanta <strong>ainihin ranar</strong> da <strong>yadda ake wakiltar ta a Pastafari</strong>. Na farko shi ne matsayinta tabbatacce a kan layin lokaci; na biyu kuma shi ne jerin filaye biyar da ake samu idan aka nuna wannan rana ƙarƙashin wata ranar aiki.</p>
+  <p>A cikin samfur da API, na farko za a iya kallonsa a matsayin <code>day-id</code>: ainihin kronoloji wanda sauyin yadda ake nunawa ba ya canzawa. Amma</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre>
+  <p>da</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>ba lallai su zama ɗaya ba.</p>
+  <p>Don haka sauya ranar aiki da hannu na iya sauya kwanan watan da ake nunawa ga rana ɗaya ba tare da motsa ranar kanta a kan layin lokaci ba.</p>
+  <p>Haka kuma ga abubuwan da suka faru. Taro, haihuwa ko wani lamari na tarihi ya kamata ya ci gaba da ɗaure da ainihin kronoloji mai tabbas; ana iya sake lissafa kwanan Pastafari dinsa bisa yanayin nuni.</p>
+  <p>Alamar na iya canzawa. Lamarin ba ya canzawa.</p><hr>
+</section>
+
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>Shekara 5000</h2>
+  <p>Idan ranar aiki da ranar da ake tambaya su ne rana ɗaya,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>shekarar kullum ita ce</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>Wato halin yanzu idan aka duba shi daga kansa kullum yana cikin shekara 5000. Amma shekara 5000 ba wani lokaci tabbatacce a tarihi ba ne; ana sake zaɓenta dangane da ranar aiki.</p>
+  <p>Ranar aiki kanta tana cikin shekara 5000, haka ma sauran ranakun wannan shekarar da aka zaɓa. Saboda haka <strong>kasancewa cikin shekara 5000 kaɗai ba ya tabbatar da cewa <code>t=c</code>.</strong></p>
+  <p>Duk da haka lambar shekara tana nuna alkibla:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre>
+  <p>da</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p>Akwai kuma <strong>shekara 0</strong>; idan aka ci gaba da komawa baya akwai shekaru masu lambobi marasa kyau.</p><hr>
+</section>
+
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>Shekaru da ƙofofi</h2>
+  <p>Shekarar Pastafari na iya samun</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ zuwa }5778</code></pre>
+  <p>ranaku. Waɗannan iyakoki ne na kikanoni na tsarin, ba matsakaitan da aka gani a gwaji ba.</p>
+  <p>Shekara na iya zama ƙasa da shekarar rana, ko kuma ta fi shekaru goma sha biyar na rana tsawo. Iyakokin shekaru ana gina su daga tsarin <strong>ƙofofi</strong>; iyakokin kotlet ma daga wannan tsarin suke.</p>
+  <p>Ƙarshen shekara ba dole ya yi daidai da wani yanayi, zagayowar Duniya kewaye da Rana, zagayowar Wata, ko bukatar amfani ta cewa ya kamata shekarar ta ƙare yanzu ba.</p><hr>
+</section>
+
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>Kotlet</h2>
+  <p>Kowace shekara tana kasuwa zuwa <strong>kotlet 6 zuwa 17</strong>. Kotlet wani sashe ne na lokaci mai ci gaba a jere.</p>
+  <p>Idan yau rana ta 250 ce a kotlet, gobe rana ta 251 ce a wannan kotlet ɗin, sai dai idan yau ita ce ranar ƙarshe. Iyakokin kotlet ƙofofi ne, kuma kotlet yana da aƙalla</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
+  <p>ranaku.</p>
+  <p>Tsarin yana da sunayen kotlet na kikanoni 17, kuma suna guda ba ya maimaituwa cikin shekara ɗaya. Suna ba ya ƙayyade tsawon kotlet ko wurinsa.</p><hr>
+</section>
+
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>Watanni da saƙewa</h2>
+  <p>Kowace shekara tana da</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ zuwa }47</code></pre>
+  <p>watanni na tsari, kuma kowane wata yana samun</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ zuwa }123</code></pre>
+  <p>ranaku.</p>
+  <p>Amma watan Pastafari <strong>ba dole ya kasance wani zangon lokaci mai ci gaba ba</strong>. Misali jerin lokaci na iya zama:</p>
+  <blockquote><p>wata A — rana 14<br>wata B — rana 9<br>wata A — rana 15</p></blockquote>
+  <p>Wannan tsari cikakke ne. Rana ta 15 ta wata A ita ce ranar da ke biyo baya <strong>ta wannan wata</strong>, ko da kuwa ranar wani wata ta shiga tsakaninsu.</p>
+  <p>Saboda haka “rana a cikin wata” ba adadin ranakun kronoloji tun bayan bayyanar watan farko ba ne. Lambar jeri ce ta ranar da aka ware wa wannan watan cikin shekara. Rana ta 48 ita ce rana ta 48 da ta kasance ta wannan wata, ba kwanaki 47 bayan bayyanarsa ta farko ba.</p><hr>
+</section>
+
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>Watanni suna saƙe da juna</h2>
+  <p>Ana iya tunanin watanni a matsayin zaren da ke ratsawa cikin shekara. Kowace rana tana cikin wata guda ne; gobe na iya zama cikin wani wata, sannan watan farko ya dawo daga baya ya ci gaba da lambar da ta biyo baya.</p>
+  <p>Saƙewar tana da ƙa'idoji, ciki har da iyaka kan jerin bayyanar watanni na farko da na ƙarshe. Amma babu ƙa'idar cewa wata ɗaya dole ya ƙare kafin wani ya fara.</p>
+  <ul>
+    <li>Kotlet yana auna matsayi cikin wani zangon lokaci mai ci gaba.</li>
+    <li>Wata yana nuna kasancewa cikin wani zaren tsari da zai iya ɓacewa sannan ya sake bayyana.</li>
+  </ul>
+  <p>Wata guda na iya ratsa kotlet da yawa, kuma kotlet guda na iya ƙunsar bayyanar watanni da yawa. Farkon da ƙarshen tsarin biyun ba dole su yi daidai ba.</p><hr>
+</section>
+
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>Rana ta gaba ta wata ba lallai gobe ba ce</h2>
+  <p>Idan yau rana ta 17 ce ta wani wata, rana ta 18 ta wannan wata ita ce <strong>bayyanarsa ta gaba</strong>. Tana iya zama gobe, ko kuma bayan lokaci mai tsawo.</p>
+  <p><strong>Gobe</strong> ita ce ranar kronoloji ta gaba; <strong>rana ta gaba ta wata</strong> ita ce bayyanar wannan watan ta gaba.</p>
+  <p>Haka kuma “ƙarshen wata” ba ya nufin cewa ƙarshen yana kusa a lokaci. Wata mai ranaku 120 na iya kasancewa a rana ta 119 yau, amma rana ta 120 tana iya kasancewa can gaba cikin shekarar.</p><hr>
+</section>
+
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>Babu makonni</h2>
+  <p>Takardar ƙa'ida ta kikanoni ta yanzu <strong>ba ta fayyace tsarin mako ba</strong>. Babu babban sashe na kwanaki bakwai na kikanoni, babu sunayen ranakun mako na Pastafari, kuma babu ƙa'ida da ke cewa ranaku biyu “rana ɗaya ce ta mako”.</p>
+  <p>Tabbas ana iya ɗora tsarin makon farar hula daga waje; kawai ba sashe ne na kwanan Pastafari ba.</p><hr>
+</section>
+
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>Sunaye</h2>
+  <p>Akwai sunayen kotlet na kikanoni 17 da sunayen watanni na kikanoni 47. A cikin shekara ɗaya, kowane suna yana bayyana sau ɗaya kacal a mafi yawa cikin rukuninsa.</p>
+  <p>Ainihin suna na kikanoni ne kuma na ma'ana; ba sakamakon zaɓe tsakanin rubuce-rubuce, fassara ko aiwatarwa daban-daban ba ne. Game da ma'anar sunaye, Megillah na Ibrananci shi ne tushen iko mafi girma; fassara da transliteration suna cikin matakin nunawa ne.</p>
+  <p>Suna kuma ba ɓoyayyen lambar tsawo ba ne. Babu wani suna na kotlet ko wata da da kansa yake tilasta wa sashen ya fi tsawo ko ya fi gajarta.</p><hr>
+</section>
+
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>Ƙaramar gaskiya game da watanni</h2>
+  <p>Akwai sunayen watanni 47, kuma wata na iya kaiwa har rana ta 123. Saboda haka akwai</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>haɗuwa masu yiwuwa a tsarin rubutu na “sunan wata + lambar rana a wata”.</p>
+  <p>Kowace rana ta shekara tana wakiltar haɗuwa guda ɗaya. Idan tsawon shekara <code>L</code> ne, to haɗuwa <code>L</code> ne kawai za su bayyana. Saboda</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>kowace shekara dole ta rasa aƙalla</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre>
+  <p>haɗuwa masu yiwuwa. Ko shekara mafi tsawo ba ta da ranaku isassu don dukansu.</p><hr>
+</section>
+
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>Yaya ake lissafa kalandar?</h2>
+  <p>Muna kiran lissafin cikin gida a nan da <strong>miya</strong>. A tsakiyarsa akwai lambar farko</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>Tsarin ya ƙunshi masu ƙidaya biyar na shigarwa, ɗigo 7 na ɓoye, ɗigo 46 da ake gani, kwanuka 6, jerin kwanuka masu canzawa, juyawa 12 na ƙarshe, hatimai don amsoshi daban-daban, zaɓukan combinatorial, samar da ƙofofi, zaɓin shekaru, rarraba kotlet, zaɓin sunaye, gina watanni, da saƙe ranakun wata.</p>
+  <p>Sabuntawar ƙarshe <strong>na lokaci guda ne</strong>: a kowace juyawa, duk ƙimomi shida sababbi ana lissafta su daga tsohon hali ɗaya, sannan a maye gurbin kwanuka shida duka lokaci guda.</p>
+  <p>A cikin juyawa 12 na ƙarshe akwai wani muhimmin bayani na kikanoni. Idan <code>S</code> jimlar tsoffin kwanuka shida ce kuma <code>r</code> lambar juyawa ce, tsarin yana lissafa</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p><code>R</code> shi ne <strong>jimlar da aka adana</strong>. Duka zaɓin jerin kwanuka da sabuntawar cikin juyawa suna amfani da <code>R</code>, ba danyen jimla <code>S</code> ba.</p>
+  <p>Tsofaffin sigogi da suka shigar da danyen jimla cikin wannan sabuntawa ba sa bayanin semantiks na kikanoni na yanzu. Misalan da aka gina daga tsohuwar ƙa'ida sun tsufa har sai an sake tabbatar da su.</p>
+  <p>Bayan juyawa, zoben amsa ma yana ci gaba da jerin da aka kulle a ɗigo na 46 da ake gani; bai kamata a maye gurbinsa kai tsaye da jerin juyawa ta ƙarshe ba.</p><hr>
+</section>
+
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice da Wide Choice</h2>
+  <p>Ga sararin zaɓi da ba su da girma sosai ana amfani da <strong>Short Choice</strong>. Yana amfani da rejection sampling don guje wa modulo bias mai sauƙi.</p>
+  <p>Manyan sarari sosai suna amfani da <strong>Wide Choice</strong>. Kada a jingina masa siffofin da takardar ƙa'ida ba ta tabbatar ba.</p>
+  <p>Wide Choice ba daidai yake da samar da lambobin tushe-<code>Q</code> masu zaman kansu da rarrabuwar daidai har sai an sami index ba. Saboda haka ba ya biyo cewa kowane zaɓi halali dole ya sami yiwuwar daidai mai kyau. A manyan sarari isassu, za a iya samun zaɓi halali da tsarin ba zai taɓa kaiwa gare shi ba.</p>
+  <p>Kalandar kanta cikakkiyar deterministiki ce. “Choice” suna ne na wani mataki na algoritim, ba caca da ake yi yayin amfani ba.</p><hr>
+</section>
+
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>Atlas na tsari</h2>
+  <p>Har zuwa nan muna bayanin ƙa'idodin kalandar. Lambobin da ke bi yanzu wani nau'in bayani ne: <strong>sakamakon gwaji</strong> daga babban samfurin lissafi.</p>
+  <p>An gina atlas ɗin da engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> kuma ya ƙunshi ranakun aiki 4,096; shekaru 4990–5010 ga kowannensu; tsarin shekara 86,016; kotlet 625,437; watanni na tsari 3,535,422; fiye da sashe miliyan 356 na watanni masu ci gaba; da fiye da sauyawa miliyan 364 daga rana <code>n</code> zuwa rana <code>n+1</code> ta wata ɗaya.</p>
+  <p>Waɗannan bayanai ne game da wannan corpus, ba dokoki na kikanoni ba.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Bayanan da aka auna a atlas na tsari">
+    <table class="about-table">
+      <thead><tr><th scope="col">Abin da aka auna</th><th scope="col">Sakamako a samfurin</th></tr></thead>
+      <tbody>
+        <tr><td>Matsakaicin tsawon shekara</td><td>ranaku 4,275.182</td></tr>
+        <tr><td>Mediani na tsawon shekara</td><td>4,343</td></tr>
+        <tr><td>Mafi ƙanƙanta / mafi girma da aka gani</td><td>716 / 5,778</td></tr>
+        <tr><td>Matsakaicin kotlet a shekara</td><td>7.271</td></tr>
+        <tr><td>Shekaru masu kotlet 6 daidai</td><td>42.00%</td></tr>
+        <tr><td>Shekaru masu kotlet 6–8</td><td>81.29%</td></tr>
+        <tr><td>Matsakaicin tsawon kotlet</td><td>ranaku 587.963</td></tr>
+        <tr><td>Mediani na tsawon kotlet</td><td>560</td></tr>
+        <tr><td>Matsakaicin watanni a shekara</td><td>41.102</td></tr>
+        <tr><td>Mediani na yawan watanni</td><td>43</td></tr>
+        <tr><td>Shekaru masu watanni 47</td><td>15.63%</td></tr>
+        <tr><td>Shekaru masu aƙalla watanni 45</td><td>36.81%</td></tr>
+        <tr><td>Matsakaicin tsawon watan tsari</td><td>ranaku 104.014</td></tr>
+        <tr><td>Mediani na tsawon wata</td><td>115</td></tr>
+        <tr><td>Matsakaicin sassan ci gaba a wata</td><td>100.897</td></tr>
+        <tr><td>Yawan sassan wata na rana ɗaya</td><td>97.482%</td></tr>
+        <tr><td>Yiwuwar ranaku masu jere su kasance cikin wata ɗaya</td><td>2.9976%</td></tr>
+        <tr><td>Matsakaicin ranakun wasu watanni tsakanin <code>n</code> da <code>n+1</code> na wata</td><td>40.408</td></tr>
+        <tr><td>Matsakaicin tazara daga bayyanar wata ta farko zuwa ta ƙarshe</td><td>ranaku 4,266.653</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>A aikace, wata mai kusan ranaku ɗari na iya bazuwa a kusan duk tsawon shekarar Pastafari.</p>
+  <p>Wannan atlas ɗin ya kuma nuna karkatar tsawo ta dabi'a a kusa da shekara 5000. Shekara “ta al'ada” a samfurin tana da matsakaicin kusan ranaku 4,262. Idan an yi wa shekaru nauyi bisa yawan ranakun da suke da su, matsakaicin ya ƙaru zuwa kusan ranaku 4,466; shekara 5000 kanta tana da kusan ranaku 4,499 a matsakaici.</p>
+  <p>Dalili mai sauƙi ne: shekara 5000 dole ta ƙunshi ranar aiki. Shekara mai tsawo tana ba da ranaku da yawa da za ta iya kasancewa shekarar da ke ɗauke da ranar aiki.</p>
+  <p>Alaƙar sunan sashi da tsawonsa ma ta kasance mai rauni sosai a samfurin. Wannan ba hujja ce ta cikakkiyar 'yancin lissafi ba, amma atlas bai ba da alamar amfani cewa sunaye an tsara su don su ɓoye tsawo ba.</p>
+  <p>Bugu da ƙari, tsarin shekara 86,016 ba samfurori 86,016 ne masu cikakkiyar 'yanci ba: suna ƙunshe da tazarar ƙofa-farko zuwa ƙofa-ƙarshe 24,786 kawai. Ranakun aiki masu jere na iya zaɓar tazarar shekara ɗaya amma su samar da tsarin ciki daban.</p>
+  <p>Saboda haka atlas yana bayyana halin aiwatarwa da aka auna da kyau, amma bai kamata a juya shi ya zama ka'idar yiwuwa game da duk tsarin kalanda da zai iya yiwuwa ba.</p><hr>
+</section>
+
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>Ranakun haihuwa da tunawa</h2>
+  <p>Kalmar “rana ɗaya kowace shekara” sai an fara fayyace ta a nan. Haɗaɗɗun koordinat masu dacewa don maimaituwa su ne <code>(sunan wata, rana a wata)</code> da <code>(sunan kotlet, rana a kotlet)</code>; ana iya haɗa sharudda ma.</p>
+  <p>Saboda haka ranar haihuwar Pastafari ba kawai <code>RRULE:FREQ=YEARLY</code> ba ce. Dole ne a nemo shekarar gaba da ta cika sharadin dawowa da aka zaɓa, kuma ba a ƙirga abin da ya faru na farko kai tsaye a matsayin “bayyanarsa ta gaba” ba.</p>
+  <p>Sauya ranar aiki domin nuni kawai bai kamata ya sauya ainihin mutum, lokacin haihuwa ko shekaru ba.</p>
+  <p>A cikin cikakken bincike na kwanaki 4,096 da ke nufin kansu, an duba kowace shekara ta Pastafari mai biyo baya gaba da baya har zuwa shekaru 250,000 kowane ɓangare:</p>
+  <ul>
+    <li>Ga <code>(sunan wata, rana a wata)</code>, mediani na dawowar farko shekara 1 ce ta Pastafari; 77.56% sun dawo a shekarar maƙwabta, 93.77% cikin shekaru biyu, 99.44% cikin shekaru biyar; mafi girman da aka gani shekaru 21 ne.</li>
+    <li>Ga <code>(sunan kotlet, rana a kotlet)</code>, mediani shekaru 3 ne; 88.89% an same su cikin shekaru 10, amma rarrabuwar tana da wutsiya mai nauyi sosai kuma mafi girman da aka gani ya kai shekaru 51,954 na Pastafari.</li>
+  </ul>
+  <p>Waɗannan <strong>sakamakon gwaji ne na corpus da aka bincika</strong>, ba hujjar cewa kowace tunawa mai yiwuwa dole ta dawo ba, kuma ba tabbacin iyakar lokacin jira ba.</p><hr>
+</section>
+
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>Yaya ake tsara alƙawari?</h2>
+  <p>Idan mutane biyu suna son tsara alƙawari da kwanan Pastafari kawai, dole ne su yarda aƙalla kan filayen biyar da ranar aiki da aka yi amfani da ita wajen lissafi. Ya fi kyau a adana ranar aiki a matsayin tabbataccen ainihin rana maimakon kalmar “yau”; in ba haka ba mutanen biyu na iya lissafa kalanda daban.</p>
+  <ul>
+    <li>“gobe” ita ce ranar kronoloji ta gaba;</li>
+    <li>“rana ta gaba ta wata” ita ce bayyanar wannan watan ta gaba;</li>
+    <li>“ƙarshen wata” shi ne bayyanarsa ta ƙarshe;</li>
+    <li>“duk watan” na iya nufin tarin ranakun watan ko cikakken zangon kronoloji daga bayyanar farko zuwa ta ƙarshe;</li>
+    <li>“shekara ta gaba” ita ce shekarar gaba a kalandar da aka gina ƙarƙashin ranar aiki da aka zaɓa.</li>
+  </ul>
+  <p>Ga alƙawari mai matuƙar muhimmanci, ana iya adana cikakkiyar rana ko lokacin kronoloji. Kalandar ba za ta sami matsala ba.</p><hr>
+</section>
+
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>Tafiya, abubuwan da suka faru da all-day</h2>
+  <p>Abin da ya faru ba daidai yake da alamar wurin da ake nuna masa ba. Wani lamari mai lokaci ya kamata ya kasance daure da wani lokaci tabbatacce na kronoloji. Tafiya ba ta motsa lamarin a cikin lokaci, amma kwanan Pastafari na wurin da ake nunawa a wannan lokacin na iya canzawa domin ma'anar “ranar wurin” tana dogara da matsayi.</p>
+  <p>Ga abin da ya faru na <strong>all-day</strong>, bambancin ya fi girma. Lamarin farar hula na yini gaba ɗaya yawanci yana tafiya daga tsakar dare zuwa tsakar dare na gaba; lamarin Pastafari na yini gaba ɗaya ya kamata ya tafiya daga iyakar ranar Pastafari ta wurin zuwa iyakar ta gaba. Yawanci waɗannan ba lokaci ɗaya ba ne.</p>
+  <p>Saboda haka fitar da lamarin Pastafari kai tsaye a matsayin lamarin farar hula na “yini gaba ɗaya” na iya sauya ma'anarsa. Don kiyaye shi daidai, dole a adana nanga na kronoloji da muktadin wurin/iyakar rana da ya dace, ba alamar <code>all-day</code> kaɗai ba.</p><hr>
+</section>
+
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>Yaushe rana ke canzawa?</h2>
+  <p>Ranar Pastafari ta wurin ba ta canzawa da tsakar dare. Ana ƙayyade iyakarta da <strong>wucewar ƙasa ta meridiyan ta cibiyar Venus daga mahangar topocentric ta hanyar meridiyan wurin</strong>.</p>
+  <p>Saboda haka wannan lamari ne na taurari na wurin da ya dogara da matsayi. Ba lallai wucewar ta faru da 00:00 ba, ba yankin sa'a na farar hula ke ƙayyade ta ba, ba ta motsawa don kawai lokacin bazara ya fara ko ya ƙare ba, kuma ba ta bukatar Venus ya kasance ana iya gani da ido.</p>
+  <p>Lokaci guda na zahiri na iya, a wurare biyu, kasancewa a bangarori dabam na iyakokin ranakunsu na wurin. Idan tsarin ba shi da wurin mai amfani da za a iya amfani da shi, wurin ajiya na tsoho na samfur shi ne <strong>Kisurra</strong>.</p><hr>
+</section>
+
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>Kalandar da aka buga da lissafin hannu</h2>
+  <p>Ana iya buga Kalandar Pastafari; kawai a bayyana ranar aiki da aka lissafta ta. Irin wannan kalanda tana nuna tsarin lokaci daga mahangar wannan ranar; idan ranar aiki ta canza, za a iya bukatar sabuwar kalanda. Don haka firinta yana ci gaba da samun aiki.</p>
+  <p>Ana iya lissafa komai da hannu ma domin takardar ƙa'ida cikakkiya ce kuma deterministiki: lissafa masu ƙidaya na shigarwa, gudanar da ɗigo 7 na ɓoye da 46 da ake gani, sabunta kwanuka shida, yi juyawa 12 na ƙarshe, samar da amsoshi, gina ƙofofi, zaɓi shekaru da kotlet, yi zaɓukan combinatorial, zaɓi sunaye sannan saƙe watanni.</p>
+  <p>A madadin haka, ba sai ka tuna cewa Fabrairu wani lokaci yana da ranaku 28 wani lokaci 29 ba.</p><hr>
+</section>
+
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>To, menene Seer?</h2>
+  <p>A gefen aiwatarwar kikanoni akwai injin mai sauri mai suna <strong>Pastafarian Calendar Seer</strong>. Seer ba tushen iko ba ne: Megillah da lissafin kikanoni ne ke ƙayyade kwanan wata daidai. Idan Seer ya bambanta, Seer ne yake kuskure.</p>
+  <p>Aikinsa shi ne gudanar da tambayoyi iri ɗaya cikin sauri kuma a siffar da ta dace da haɗawa cikin samfura.</p>
+  <p>A lokacin duba kai tsaye yayin gyaran wannan shafi, Seer ya ƙunshi, da sauransu, tambayoyin date da “now”, batch, ranges na rana, reverse conversion daga kwanan Pastafari zuwa ranar da ake nufi, samun tsarin shekara, tantance ranar aiki mai aiki, Node API, browser/HTTP client, CLI, sabis na HTTP v1, yarjejeniyar OpenAPI 3.1, native implementations da fakitin rarrabawa, da container deployment da aka tabbatar.</p>
+  <p>Saboda haka tsohon bayanin cewa Seer ba shi da API na jama'a ba daidai ba ne yanzu. Akwai yarjejeniya bayyananna kuma tabbatacciya ta HTTP v1 mai endpoint don date, range, batch, year, reverse, ranar aiki, metadata, locales da status.</p>
+  <p>A ranar 21 Satumba 2026, an gwada deployment na HTTPS na jama'a a Render a aikace: exact queries, babban range, restart, cold wake da halayya ƙarƙashin nauyi duk an gwada su a sabis mai rai.</p>
+  <p>Duk da haka, takardun aikin suna ci gaba da bambanta deployment na jama'a na beta/evaluation da sabis na dindindin na hosted production mai SLA. Saboda haka shafin bayanin tunani bai kamata ya kulle adireshin uwar garke, mai ba da hosting ko lambar sigar a matsayin wani ɓangare na kalandar kanta ba.</p>
+  <p>Seer na iya amfani da lissafi na gaba, wakilci na musamman, SIMD, aljebra da wasu gajerun hanyoyi. Ba dole ya maimaita cikakken tarihin lissafin aiwatarwar kikanoni mataki-mataki ba, muddin yana yin aikin ma'ana ɗaya kuma yana dawo da amsa ɗaya.</p>
+  <p>Ingantawa ba wata madaidaiciyar hukuma ba ce.</p><hr>
+</section>
+
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>Asali, Ranar Kafa da Ranar Alluna</h2>
+  <p>A nan musamman dole ne a raba nanga na lokaci na kikanoni da labarin shafin.</p>
+
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>Nanga</h3>
+    <p>Tsarin yana da tabbatacciyar ranar nuni mai suna <strong>Ranar Kafa</strong>. A cikin kalandar Gregoriya ta proleptic, ita ce <strong>22 Disamba 41,222 KZ</strong>.</p>
+    <p>Ranar Kafa ba “farkon lokaci” ba ce, nanga ce ta lissafi.</p>
+    <p>Lambar ranaku kewaye da ita tana amfani da lambobi tabbatattu marasa ma'aurata/masu ma'aurata: Ranar Kafa=1; ranakun gaba=3, 5, …; wajen komawa baya, ranar da ta gabata=2, sai 4, 6, … . Hakan yana ba da damar sanya bangarorin biyu na nanga ba tare da lambobin rana marasa kyau a wannan mai ƙidaya ba.</p>
+    <p>Nanga ta biyu ita ce <strong>Ranar Alluna</strong>: <strong>15 Yuni 763 KZ a kalandar Juliani ta proleptic</strong>, wato <strong>7 Yuni 763 KZ a kalandar Gregoriya ta proleptic</strong>.</p>
+    <p>Daidaitaccen tazara daga Ranar Kafa zuwa Ranar Alluna shi ne</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
+    <p>ranaku.</p>
+    <p>Waɗannan nanga ne tabbatattu a layin lokaci, amma kwanan Pastafari da ake nuna musu har yanzu yana dogara da ranar aiki da ake tambaya daga gare ta.</p>
+  </section>
+
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>Labarin shafin</h3>
+    <p>A cikin labarin editan shafin, ana gabatar da kalandar a matsayin wani ɓangare na halitta da kuma tsarin da ɗan adam ya yi amfani da shi ba tare da cikakkiyar fahimta ba har sai aka sake miƙa shi a zamanin zamani.</p>
+    <p>Wannan labarin shafin ne; bai kamata kowane bayani na labarin ya zama kamar wata magana ta fasaha da Megillah ya bayyana kai tsaye ba.</p>
+    <p>Abin da ya faru na sake miƙawa kansa tabbataccen lamari ne na tarihi. <strong>Kwanan Pastafari</strong> nasa ya fi dacewa a nuna shi cikin canzawa bisa ranar aiki ta yanzu maimakon a daskare shi har abada a matsayin kwanan wata guda.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>Ga masu zurfin amfani: reverse conversion</h2>
+  <p>Idan ranar aiki <code>c</code> sananniya ce, reverse conversion yana da ƙuntatawa mai ƙarfi sosai. A cikin shekarar Pastafari da aka sani,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{sunan kotlet},\text{rana a kotlet})</code></pre>
+  <p>yana gano rana guda a mafi yawa. Haka kuma ga</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{sunan wata},\text{rana a wata})</code></pre>
+  <p>Saboda haka cikakken kwanan wata tare da ranar aiki da aka sani yana gano ranar da ake nufi ta musamman.</p>
+
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Iyakar sama ta 'yan takara a reverse conversion">
+    <table class="about-table">
+      <thead><tr><th scope="col">Ƙarin bayanin da aka sani</th><th scope="col">Mafi yawan 'yan takara</th></tr></thead>
+      <tbody>
+        <tr><td>Babu filin da ba shekara ba</td><td>5,778</td></tr>
+        <tr><td>Sunan kotlet kaɗai</td><td>5,568</td></tr>
+        <tr><td>Rana a kotlet kaɗai</td><td>17</td></tr>
+        <tr><td>Sunan wata kaɗai</td><td>123</td></tr>
+        <tr><td>Rana a wata kaɗai</td><td>47</td></tr>
+        <tr><td>Sunan kotlet + rana a kotlet</td><td>1</td></tr>
+        <tr><td>Sunan wata + rana a wata</td><td>1</td></tr>
+        <tr><td>Kowane filaye uku da ba shekara ba</td><td>1</td></tr>
+        <tr><td>Duk filaye huɗu da ba shekara ba</td><td>1</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Ba tare da sanin ranar aiki ba, halin ya bambanta. Haɗin filaye biyar ɗaya na iya bayyana ƙarƙashin ranakun aiki daban, kuma akwai takamaiman misalai inda cikakken kwanan wata ɗaya yake bayyana a tazara daban daga <code>c</code>.</p>
+  <p>A shekara 5000, ko alamar wannan tazara ba lallai a iya gane ta daga filaye biyar ba: cikakken kwanan wata ɗaya na iya zama a baya da ranar aiki a wani yanayi, kuma a gaba da ita a wani.</p>
+  <p>Saboda haka cikakken kwanan Pastafari ba cikakken adireshi ne a layin lokaci ba idan ba mu san ƙarƙashin wane <code>c</code> aka lissafta shi ba.</p>
+
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>Tsari a lokaci mai nisa</h3>
+    <p>Binciken lissafi da aka samo daga takardar ƙa'ida ya kuma gano takamaiman tsarin asymptotic. Ga <strong>ranar aiki tabbatacciya</strong> <code>c</code>, idan aka je can nesa a wutsiyar baya, akwai affine periodicity.</p>
+    <p>Idan</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>to ga wannan <code>c</code> ɗin akwai matsawa <code>H_c</code>, sauyin shekara <code>p_c</code>, da wani matakin nesa isasshe inda bayan shi</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>Filaye huɗu da ba shekara ba suna maimaituwa, yayin da lambar shekara take canzawa da ƙima tabbatacciya.</p>
+    <p>Wannan sakamako ne ga <code>c</code> tabbatacce; ba ya nufin dangantaka ta duniya</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>Tambayar ko gangaren asymptotic na ƙarshe da gaske yana bambanta tsakanin ranakun aiki daban har yanzu a buɗe take.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>Ga masu zurfin amfani: tarihin nawa miya ke riƙewa?</h2>
+  <p>Miya tana kama da wani mai gauraya mai tsanani, amma binciken aljebra ya nuna cewa tana riƙe bayanai fiye da yadda kamanninta ke nuna. Wannan bincike ne da aka samo daga takardar ƙa'ida, ba sabuwar doka ta kalanda ba.</p>
+  <p>A matakan da ake gani 3–46, a reshen asymptotic da ya dace, an tabbatar da generic injectivity: a yanayin gama gari, halin tsarin yana riƙe bayanai isassu don sake gina tarihin shigarwa da jerin kwanuka da suka dace.</p>
+  <p>Bayanin ba ya ɓacewa nan da nan a cikin juyawa 12 na ƙarshe ma. Ga juyawa biyar na farko bayan ɗigo na 46 da ake gani, an tabbatar da generic invertibility a kan haɗin kikanoni da ya dace ba tare da ƙarin bayanan gefe ba; ga sauran, an san iyakokin sama na gini masu ƙarfi na yawan bayanan gefe da suka isa don sake gini.</p>
+  <p>Har yanzu a buɗe yake ko <strong>kwanuka shida na ƙarshe su kaɗai</strong> kullum suna isa a yanayin gama gari.</p>
+  <p>Wasu sakamakon an tabbatar da su da alamu; wasu kuma an kammala su da ƙayyadaddun binciken lissafi masu daidaito. Ƙarfafa hujjar alama ya rage sosai yawan tushen lissafi da dole a amince da shi, amma bai kawar da shi gaba ɗaya ba.</p>
+  <p>Wuraren da da farko suka yi kama da za su bukaci bibiyar hanyoyi marasa adadi sun ragu zuwa ƙananan tsarin ƙayyadadde, ciki har da automata masu jihohi 180 da 9 da kuma daidaituwar kwanuka shida.</p>
+  <p>Saboda haka akwai ƙaƙƙarfan tsarin aljebra a ƙarƙashin gaurayawar. Ba sai ka san shi ba don sanin kwanan yau.</p><hr>
+</section>
+
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>To menene Kalandar Pastafari a zahiri?</h2>
+  <p>Kalanda ce deterministiki inda kwanan wata ba aikin ranar da ake nufi kaɗai ba ne, sai dai na <strong>ranar aiki da ranar da ake tambaya tare</strong>.</p>
+  <p>Kowane kwanan wata yana da filaye biyar kacal. Halin yanzu idan aka duba shi daga kansa kullum yana shekara 5000, amma shekara 5000 kanta tana motsawa tare da ranar aiki. Shekaru na iya yin tsawo sosai, kotlet suna ci gaba ba tare da yankewa ba, watanni ba lallai haka ba ne, kuma babu tsarin mako na kikanoni.</p>
+  <p>Rana <code>n+1</code> ta wata ba lallai gobe ba ce. Rana guda ta kronoloji na iya samun wata alamar Pastafari gobe. Lokaci guda na zahiri na iya kasancewa cikin ranakun Pastafari na wurare biyu daban. Lamarin yini gaba ɗaya ba lallai ya gudana daga tsakar dare zuwa tsakar dare ba. Kuma ranar haihuwa ta shekara da farko matsalar nema ce, sannan matsalar kalanda.</p>
+  <p>Amma idan ranar aiki da ranar da ake tambaya sanannu ne, babu shakku: akwai amsa ɗaya tak daidai.</p>
+  <p>A ƙarshe, kalanda ba ta bukatar yin fiye da haka.</p>
+</section>
