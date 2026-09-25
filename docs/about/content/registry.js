@@ -2,6 +2,10 @@
 
 export const ARTICLE_FALLBACK_LOCALE = "he";
 
+// Explicit rollout gate: keep false while translated article resources are being added.
+// Flip to true only when all registered locales have passed the article-coverage invariant.
+export const ARTICLE_ROLLOUT_COMPLETE = false;
+
 export const ARTICLE_LOCALES = Object.freeze({
   "he": Object.freeze({
     code: "he",

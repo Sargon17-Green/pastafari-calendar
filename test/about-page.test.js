@@ -1,10 +1,10 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
-import { ARTICLE_FALLBACK_LOCALE, ARTICLE_LOCALES, resolveArticleLocale } from "../docs/about/content/registry.js";
+import { ARTICLE_FALLBACK_LOCALE, ARTICLE_LOCALES, ARTICLE_ROLLOUT_COMPLETE, resolveArticleLocale } from "../docs/about/content/registry.js";
 import { LOCALES } from "../docs/i18n/registry.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -80,7 +80,7 @@ test("about page is a lightweight localized shell with a generic article fallbac
   assert.equal((html.match(/data-i18n="guide\.[1-7]\.body"/g) || []).length, 7);
   assert.match(html, /data-i18n="about\.fallbackNotice"/);
   assert.doesNotMatch(html, /about\.hebrewOnly/);
-  assert.match(js, /fetchArticle\(requestedArticle\)/);
+  assert.match(js, /html = await fetchArticle\(articleLocale\)/);
   assert.match(js, /resolveArticleLocale\(ARTICLE_FALLBACK_LOCALE\)/);
   assert.match(js, /buildTableOfContents\(\)/);
   assert.match(js, /focusHashTarget\(\)/);
@@ -108,9 +108,23 @@ test("article registry mirrors every supported locale without changing site supp
   );
 });
 
-test("every supported locale has a structurally and semantically guarded article", async () => {
-  for (const locale of LOCALES) {
-    const html = await readFile(path.join(CONTENT, `${locale.code}.html`), "utf8");
+test("every present locale article is structurally and semantically guarded", async () => {
+  const articleCodes = (await readdir(CONTENT))
+    .filter((name) => name.endsWith(".html"))
+    .map((name) => name.slice(0, -5))
+    .sort();
+  const supportedCodes = LOCALES.map(({ code }) => code).sort();
+  assert.ok(articleCodes.includes(ARTICLE_FALLBACK_LOCALE), "fallback article must always exist");
+  for (const code of articleCodes) assert.ok(supportedCodes.includes(code), `unregistered article locale ${code}`);
+  if (ARTICLE_ROLLOUT_COMPLETE) {
+    assert.deepEqual(articleCodes, supportedCodes, "completed article rollout must cover every registered locale");
+  } else {
+    assert.ok(articleCodes.length < supportedCodes.length, "all locale articles exist: flip ARTICLE_ROLLOUT_COMPLETE to true");
+  }
+
+  for (const code of articleCodes) {
+    const locale = LOCALES.find((entry) => entry.code === code);
+    const html = await readFile(path.join(CONTENT, `${code}.html`), "utf8");
     const ids = idsIn(html);
     assert.deepEqual(ids, EXPECTED_IDS, `${locale.code}: stable section ID contract changed`);
     assert.equal(new Set(ids).size, EXPECTED_IDS.length, `${locale.code}: duplicate stable ID`);
