@@ -74,7 +74,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | sw | sw-TZ | ltr | partial | draft |
 | ta | ta-IN | ltr | partial | not started |
 | te | te-IN | ltr | partial | not started |
-| th | th-TH | ltr | partial | not started |
+| th | th-TH | ltr | partial | draft |
 | tr | tr-TR | ltr | partial | draft |
 | uk | uk-UA | ltr | partial | draft |
 | ur | ur-PK | rtl | partial | draft |
