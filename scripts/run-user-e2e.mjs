@@ -109,7 +109,8 @@ async function startStaticServer() {
     try {
       const url = new URL(request.url || "/", "http://127.0.0.1");
       const decoded = decodeURIComponent(url.pathname);
-      let relative = decoded === "/" ? "index.html" : decoded.replace(/^\/+/, "");\n      if (relative.endsWith("/")) relative += "index.html";
+      let relative = decoded === "/" ? "index.html" : decoded.replace(/^\/+/, "");
+      if (relative.endsWith("/")) relative += "index.html";
       const filename = path.resolve(DOCS, relative);
       if (filename !== DOCS && !filename.startsWith(`${DOCS}${path.sep}`)) {
         response.writeHead(403); response.end("Forbidden"); return;
