@@ -1,0 +1,331 @@
+<!-- मराठी आवृत्ती हिब्रू semantic master वरून थेट लिहिली आहे; कोणतीही pivot भाषा वापरलेली नाही. -->
+<!-- Section ID हे स्थिर public deep-link contract चा भाग आहेत; भाषांतरित शीर्षकांपासून ते तयार होत नाहीत. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>या संकेतस्थळाच्या कथनात पास्ताफारी दिनदर्शक असा मांडला आहे की जणू काळाची निर्मितीच या दिनदर्शकात झाली. मात्र तो कसा चालतो याचे नियम काटेकोरपणे निश्चित आहेत.</p>
+  <p>हा दिनदर्शक प्रत्येक दिवसाला एक कायमस्वरूपी पास्ताफारी “लेबल” लावत नाही. तारीख शोधण्यासाठी दोन दिवस लागतात: गणना ज्या <strong>कृतीच्या दिवसा</strong>पासून सुरू होते तो दिवस, आणि ज्याची पास्ताफारी तारीख विचारायची आहे तो <strong>विचारलेला दिवस</strong>.</p>
+  <p>कृतीचा दिवस <code>c</code> आणि विचारलेला दिवस <code>t</code> मानला, तर तारीख आहे</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p><code>F(t)</code> नव्हे. म्हणून तोच विचारलेला दिवस, कृतीचा दिवस बदलल्यास, वेगळी पास्ताफारी तारीख घेऊ शकतो.</p>
+  <p>ही चूक नाही. दिनदर्शकाची व्याख्याच अशी आहे.</p><hr>
+</div>
+
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>पास्ताफारी तारीख कशाची बनलेली आहे?</h2>
+  <p>तिचे <strong>अगदी पाच भाग</strong> आहेत: वर्ष क्रमांक, कटलेटचे नाव, कटलेटमधील दिवस, महिन्याचे नाव आणि महिन्यातील दिवस.</p>
+  <p>सामान्य उदाहरण: <strong>वर्ष 5000, कटलेट A, कटलेटमधील 417वा दिवस, महिना B, महिन्यातील 83वा दिवस.</strong></p>
+  <p>कृतीचा दिवस, निरीक्षकाचे स्थान, दिवसाची कालानुक्रमिक ओळख किंवा इतर तांत्रिक माहिती तारीखेच्या शेजारी दाखवता येते, पण ती सहावी date field नाही.</p><hr>
+</section>
+
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>कृतीचा दिवस का आवश्यक आहे?</h2>
+  <p>सामान्य दिनदर्शकात तारीख जणू त्या दिवसाचीच अंगभूत खूण आहे असे वाटणे स्वाभाविक आहे. पास्ताफारी दिनदर्शकात तारीख दोन दिवसांच्या संबंधावर अवलंबून असते.</p>
+  <p><code>t</code> बदलणे म्हणजे दुसऱ्या दिवसाबद्दल विचारणे. <code>c</code> बदलल्याने परिणाम अधिक खोलवर होतो: वर्षांच्या सीमा, कटलेट, महिने, त्यांची नावे आणि महिने एकमेकांत कसे विणले जातात हे सर्व बदलू शकते.</p>
+  <p>म्हणून आज मोजलेले पंचांग उद्याही योग्यच असेल असे नाही. त्यामुळे छापलेला दिनदर्शक वर्षभर उपयोगी राहण्यासारखी अप्रिय परिस्थितीही टळते.</p><hr>
+</section>
+
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>तोच दिवस, वेगळी तारीख</h2>
+  <p><strong>दिवसाची ओळख</strong> आणि त्याचे <strong>पास्ताफारी सादरीकरण</strong> वेगवेगळे आहेत. पहिले म्हणजे वेळरेषेवरील त्या ठरावीक दिवसाचे स्थिर स्थान; दुसरे म्हणजे तो दिवस एखाद्या ठरावीक कृतीच्या दिवसाखाली दाखवल्यावर मिळणारी पाच मूल्ये.</p>
+  <p>उत्पादनात आणि API मध्ये पहिल्याला <code>day-id</code> म्हणून पाहता येते: सादरीकरण बदलले तरी न बदलणारी कालानुक्रमिक ओळख. पण</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre>
+  <p>आणि</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>समान असतीलच असे नाही.</p>
+  <p>म्हणून कृतीचा दिवस हाताने बदलल्यास त्याच दिवसासाठी दाखवली जाणारी पास्ताफारी तारीख बदलू शकते, पण दिवस स्वतः वेळरेषेवर कुठेही हलत नाही.</p>
+  <p>हीच गोष्ट घटनांनाही लागू होते. भेट, जन्म किंवा ऐतिहासिक घटना एखाद्या स्थिर कालानुक्रमिक ओळखीशी जोडलेली राहिली पाहिजे; तिची पास्ताफारी तारीख प्रदर्शनाच्या संदर्भानुसार पुन्हा मोजता येते.</p>
+  <p>लेबल बदलू शकते. घटना बदलत नाही.</p><hr>
+</section>
+
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>वर्ष 5000</h2>
+  <p>कृतीचा दिवस आणि विचारलेला दिवस एकच असतील,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>तर वर्ष क्रमांक नेहमी</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>असतो. म्हणजे वर्तमानाला त्याच्या स्वतःच्या दृष्टिकोनातून पाहिले तर ते नेहमी वर्ष 5000 मध्ये असते. पण वर्ष 5000 हा इतिहासातील एखादा स्थिर कालखंड नाही; कृतीच्या दिवसाच्या संदर्भात तो पुन्हा निवडला जातो.</p>
+  <p>कृतीचा दिवस स्वतः वर्ष 5000 मध्ये असतो, आणि त्या निवडलेल्या वर्षातील इतर दिवसही. म्हणून <strong>फक्त वर्ष 5000 मध्ये असणे म्हणजे <code>t=c</code> याचा पुरावा नाही.</strong></p>
+  <p>तरीही वर्ष क्रमांक दिशा दाखवतो:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre>
+  <p>आणि</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p><strong>वर्ष 0</strong> सुद्धा आहे; त्याहून मागे ऋण क्रमांकांची वर्षे आहेत.</p><hr>
+</section>
+
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>वर्षे आणि द्वारे</h2>
+  <p>एका पास्ताफारी वर्षात</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ ते }5778</code></pre>
+  <p>दिवस असू शकतात. या व्यवस्थेच्या canonical मर्यादा आहेत; प्रयोगांतून मिळालेली सरासरी नव्हे.</p>
+  <p>म्हणून वर्ष सौर वर्षापेक्षा लहान किंवा पंधरा सौर वर्षांपेक्षा मोठेही असू शकते. वर्षांच्या सीमा <strong>द्वारांच्या</strong> व्यवस्थेतून तयार होतात; कटलेटांच्या सीमाही त्याच व्यवस्थेतून येतात.</p>
+  <p>वर्षाचा शेवट ऋतू, पृथ्वीची सूर्याभोवतीची एक फेरी, चंद्रचक्र किंवा वर्ष आता तरी संपले पाहिजे या व्यवहार्य अपेक्षेशी जुळणे आवश्यक नाही.</p><hr>
+</section>
+
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>कटलेट</h2>
+  <p>प्रत्येक वर्ष <strong>6 ते 17 कटलेटांमध्ये</strong> विभागले जाते. कटलेट हा कालानुक्रमिकदृष्ट्या सलग वेळखंड आहे.</p>
+  <p>आज एखाद्या कटलेटचा 250वा दिवस असेल, तर आज त्याचा शेवटचा दिवस नसल्यास उद्या त्याच कटलेटचा 251वा दिवस असेल. कटलेटांच्या सीमा द्वारे आहेत आणि एका कटलेटमध्ये किमान</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
+  <p>दिवस असतात.</p>
+  <p>व्यवस्थेत 17 canonical कटलेट नावे आहेत आणि एका वर्षात कोणतेही नाव पुन्हा येत नाही. नाव कटलेटची लांबी किंवा स्थान ठरवत नाही.</p><hr>
+</section>
+
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>महिने आणि विणकाम</h2>
+  <p>प्रत्येक वर्षात</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ ते }47</code></pre>
+  <p>रचनात्मक महिने असतात, आणि प्रत्येक महिन्याला</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ ते }123</code></pre>
+  <p>दिवस दिले जातात.</p>
+  <p>पण पास्ताफारी महिना <strong>सलग वेळखंड असणे आवश्यक नाही</strong>. उदाहरणार्थ कालानुक्रमिक क्रम असा असू शकतो:</p>
+  <blockquote><p>महिना A — दिवस 14<br>महिना B — दिवस 9<br>महिना A — दिवस 15</p></blockquote>
+  <p>हे पूर्णपणे वैध आहे. A महिन्याचा 15वा दिवस हा <strong>त्याच महिन्याचा</strong> पुढचा दिवस आहे, मधे दुसऱ्या महिन्याचा दिवस आला तरी.</p>
+  <p>म्हणून “महिन्यातील दिवस” म्हणजे महिना प्रथम दिसल्यापासून किती कालानुक्रमिक दिवस गेले हे नाही. त्या वर्षात त्या महिन्याला दिलेल्या दिवसांमध्ये तो कितवा आहे हे त्यातून कळते. दिवस 48 म्हणजे त्या महिन्याचा 48वा दिवस; पहिल्या दर्शनानंतर 47 दिवसांनी असा अर्थ नाही.</p><hr>
+</section>
+
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>महिने एकमेकांत विणलेले असतात</h2>
+  <p>महिने म्हणजे वर्षातून जाणारे धागे असे समजू शकतो. प्रत्येक दिवस नेमक्या एका महिन्याचा असतो; उद्याचा दिवस दुसऱ्या महिन्याचा असू शकतो, आणि मग पहिला महिना परत येऊन पुढच्या क्रमांकापासून चालू राहू शकतो.</p>
+  <p>या विणकामाला नियम आहेत, त्यात महिन्यांच्या पहिल्या आणि शेवटच्या दर्शनाच्या क्रमावरही बंधने आहेत. पण एक महिना संपल्यानंतरच दुसरा सुरू व्हायला हवा असा नियम नाही.</p>
+  <ul>
+    <li>कटलेट सलग वेळखंडातील स्थान मोजतो.</li>
+    <li>महिना एखाद्या रचनात्मक धाग्यातील सदस्यत्व दाखवतो; तो धागा अदृश्य होऊन नंतर पुन्हा दिसू शकतो.</li>
+  </ul>
+  <p>एक महिना अनेक कटलेट ओलांडू शकतो आणि एका कटलेटमध्ये अनेक महिने दिसू शकतात. दोन्ही व्यवस्थांची सुरुवात आणि समाप्ती जुळणे आवश्यक नाही.</p><hr>
+</section>
+
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>महिन्याचा पुढचा दिवस म्हणजे उद्याच असे नाही</h2>
+  <p>आज एखाद्या महिन्याचा 17वा दिवस असेल तर त्याच महिन्याचा 18वा दिवस म्हणजे <strong>त्या महिन्याचे पुढचे दर्शन</strong>. तो उद्या असू शकतो किंवा बऱ्याच नंतरही.</p>
+  <p><strong>उद्या</strong> म्हणजे पुढचा कालानुक्रमिक दिवस; <strong>महिन्याचा पुढचा दिवस</strong> म्हणजे त्याच महिन्याचे पुढचे दर्शन.</p>
+  <p>त्याचप्रमाणे “महिन्याचा शेवट” म्हणजे शेवट कालानुक्रमिकदृष्ट्या जवळ आहे असे नाही. 120 दिवसांचा महिना आज 119व्या दिवशी असू शकतो, तर 120वा दिवस त्याच वर्षात खूप नंतर येऊ शकतो.</p><hr>
+</section>
+
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>आठवडे नाहीत</h2>
+  <p>सध्याची canonical specification <strong>आठवड्यांची कोणतीही व्यवस्था परिभाषित करत नाही</strong>. सात दिवसांची canonical एकक नाही, पास्ताफारी वारांची नावे नाहीत, आणि दोन दिवसांना “आठवड्यातील तोच दिवस” बनवणारा नियमही नाही.</p>
+  <p>अर्थात बाहेरून नागरी आठवड्यांची व्यवस्था लावता येते; ती फक्त पास्ताफारी तारखेचा भाग नाही.</p><hr>
+</section>
+
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>नावे</h2>
+  <p>17 canonical कटलेट नावे आणि 47 canonical महिन्यांची नावे आहेत. एका वर्षात प्रत्येक नाव आपल्या गटात जास्तीत जास्त एकदाच दिसते.</p>
+  <p>नावाची ओळख canonical आणि अर्थवाही आहे; भिन्न spelling, भाषांतर किंवा implementation यांच्यातील मतदानातून ती ठरत नाही. नावांच्या अर्थाच्या बाबतीत हिब्रू Megillah सर्वोच्च प्राधिकरण आहे; भाषांतर आणि transliteration हे फक्त प्रदर्शनाचे स्तर आहेत.</p>
+  <p>नाव लांबीचा गुप्त codeही नाही. कोणत्याही विशिष्ट कटलेट किंवा महिन्याचे नाव स्वतःहून त्या एककाला लांब किंवा लहान करत नाही.</p><hr>
+</section>
+
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>महिन्यांविषयी एक छोटी गोष्ट</h2>
+  <p>47 महिन्यांची नावे आहेत आणि महिना जास्तीत जास्त दिवस 123 पर्यंत जाऊ शकतो. म्हणून “महिन्याचे नाव + महिन्यातील दिवस क्रमांक” या स्वरूपातील syntactically शक्य जोड्यांची संख्या आहे</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>वर्षातील प्रत्येक दिवस नेमकी एक अशी जोडी साकारतो. वर्षाची लांबी <code>L</code> असेल तर नेमक्या <code>L</code> जोड्या दिसतात. कारण</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>प्रत्येक वर्षात किमान</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre>
+  <p>शक्य जोड्या अनुपस्थित राहतातच. सर्वात लांब वर्षातही सगळ्या वापरण्यास पुरेसे दिवस नाहीत.</p><hr>
+</section>
+
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>दिनदर्शकाची गणना कशी होते?</h2>
+  <p>आतील गणनेला येथे आपण <strong>सॉस</strong> म्हणतो. त्याच्या केंद्रस्थानी prime number</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>आहे. प्रक्रियेत पाच input counter, 7 लपलेले थेंब, 46 दिसणारे थेंब, 6 वाडगे, बदलणारे वाडगा-क्रम, 12 अंतिम मिश्रणे, वेगवेगळ्या उत्तरांसाठी seal, combinatorial selection, द्वारनिर्मिती, वर्षनिवड, कटलेट विभागणी, नावनिवड, महिन्यांची रचना आणि महिन्याच्या दिवसांचे विणकाम यांचा समावेश होतो.</p>
+  <p>अंतिम update <strong>एकाच वेळी</strong> होतात: प्रत्येक मिश्रणात सहाही नवीन मूल्ये त्याच जुन्या state मधून मोजली जातात, त्यानंतरच सहा वाडगे एकत्र बदलले जातात.</p>
+  <p>अंतिम 12 मिश्रणांमध्ये एक विशेष महत्त्वाचा canonical detail आहे. <code>S</code> हा सहा जुन्या वाडग्यांचा बेरिज आणि <code>r</code> मिश्रण क्रमांक असेल तर व्यवस्था मोजते</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p><code>R</code> हा <strong>साठवलेला बेरिज</strong> आहे. वाडग्यांचा क्रम निवडणे आणि मिश्रणाचा अंतर्गत update—दोन्ही raw <code>S</code>ऐवजी <code>R</code> वापरतात.</p>
+  <p>या update मध्ये raw बेरिज देणाऱ्या जुन्या आवृत्त्या आता सध्याची canonical semantics दर्शवत नाहीत. जुन्या नियमावरून तयार झालेले उदाहरणे पुन्हा तपासेपर्यंत कालबाह्य मानावीत.</p>
+  <p>मिश्रणानंतर answer ring सुद्धा दिसणाऱ्या थेंब 46 वर lock केलेलाच क्रम पुढे चालू ठेवतो; तो आपोआप शेवटच्या मिश्रणाच्या क्रमाने बदलायचा नाही.</p><hr>
+</section>
+
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice आणि Wide Choice</h2>
+  <p>तुलनेने लहान selection spaceसाठी <strong>Short Choice</strong> वापरला जातो. साधा modulo bias टाळण्यासाठी तो rejection sampling वापरतो.</p>
+  <p>खूप मोठ्या spaceसाठी <strong>Wide Choice</strong> वापरला जातो. Specification जी वैशिष्ट्ये हमी देत नाही ती त्याला देऊ नयेत.</p>
+  <p>Wide Choice म्हणजे index मिळेपर्यंत independent आणि uniformly distributed base-<code>Q</code> digit तयार करत राहणे नव्हे. त्यामुळे प्रत्येक valid choiceला सारखी positive probability असलीच पाहिजे असा निष्कर्ष येत नाही. पुरेशा मोठ्या spaceमध्ये या mechanismने कधीही गाठता न येणारे valid choice असू शकतात.</p>
+  <p>दिनदर्शक स्वतः पूर्ण deterministic राहतो. “Choice” हे algorithmic stageचे नाव आहे; वापरताना चालणारी random lottery नाही.</p><hr>
+</section>
+
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>रचनात्मक atlas</h2>
+  <p>आतापर्यंत आपण दिनदर्शकाच्या नियमांबद्दल बोललो. पुढील आकडे वेगळ्या प्रकारचे आहेत: मोठ्या computational sampleमधून मिळालेले <strong>empirical result</strong>.</p>
+  <p>Atlas engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> वापरून तयार झाला. त्यात 4,096 कृतीचे दिवस; प्रत्येकासाठी वर्ष 4990–5010; 86,016 year structure; 625,437 कटलेट; 3,535,422 structural month; 356 millionपेक्षा जास्त contiguous month segment; आणि त्याच महिन्यात <code>n</code> पासून <code>n+1</code> पर्यंत 364 millionपेक्षा जास्त transition होते.</p>
+  <p>हे आकडे त्या corpusचे वर्णन करतात; canonical नियमांचे नाही.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="रचनात्मक atlasमध्ये मोजलेली माहिती">
+    <table class="about-table">
+      <thead><tr><th scope="col">मोजलेली गोष्ट</th><th scope="col">नमुन्यातील निकाल</th></tr></thead>
+      <tbody>
+        <tr><td>वर्षाची सरासरी लांबी</td><td>4,275.182 दिवस</td></tr>
+        <tr><td>वर्षलांबीची median</td><td>4,343</td></tr>
+        <tr><td>दिसलेले minimum / maximum</td><td>716 / 5,778</td></tr>
+        <tr><td>दरवर्षी सरासरी कटलेट</td><td>7.271</td></tr>
+        <tr><td>नेमके 6 कटलेट असलेली वर्षे</td><td>42.00%</td></tr>
+        <tr><td>6–8 कटलेट असलेली वर्षे</td><td>81.29%</td></tr>
+        <tr><td>कटलेटची सरासरी लांबी</td><td>587.963 दिवस</td></tr>
+        <tr><td>कटलेटलांबीची median</td><td>560</td></tr>
+        <tr><td>दरवर्षी सरासरी महिने</td><td>41.102</td></tr>
+        <tr><td>महिन्यांच्या संख्येची median</td><td>43</td></tr>
+        <tr><td>47 महिने असलेली वर्षे</td><td>15.63%</td></tr>
+        <tr><td>किमान 45 महिने असलेली वर्षे</td><td>36.81%</td></tr>
+        <tr><td>structural monthची सरासरी लांबी</td><td>104.014 दिवस</td></tr>
+        <tr><td>महिन्याच्या लांबीची median</td><td>115</td></tr>
+        <tr><td>दरमहिना सरासरी contiguous segment</td><td>100.897</td></tr>
+        <tr><td>एकदिवसीय month segmentचा वाटा</td><td>97.482%</td></tr>
+        <tr><td>दोन लगतचे दिवस त्याच महिन्यात असण्याची शक्यता</td><td>2.9976%</td></tr>
+        <tr><td>त्याच महिन्यातील <code>n</code> आणि <code>n+1</code> यांच्या मधले इतर महिन्यांचे सरासरी दिवस</td><td>40.408</td></tr>
+        <tr><td>महिन्याच्या पहिल्या ते शेवटच्या दर्शनातील सरासरी span</td><td>4,266.653 दिवस</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>प्रत्यक्षात साधारण शंभर दिवसांचा महिना जवळजवळ संपूर्ण पास्ताफारी वर्षभर पसरू शकतो.</p>
+  <p>त्याच atlasमध्ये वर्ष 5000भोवती लांबीचा नैसर्गिक bias दिसला. नमुन्यात “सामान्य” वर्ष सरासरी सुमारे 4,262 दिवसांचे होते. वर्षांना त्यातील दिवसांच्या संख्येने weight केल्यास सरासरी सुमारे 4,466 दिवस होते; वर्ष 5000 स्वतः सरासरी सुमारे 4,499 दिवसांचे होते.</p>
+  <p>कारण सरळ आहे: वर्ष 5000मध्ये कृतीचा दिवस असलाच पाहिजे. लांब वर्षाकडे कृतीचा दिवस सामावणारे वर्ष होण्याची अधिक शक्य दिवसस्थिती असते.</p>
+  <p>एककाच्या नावाचा आणि त्याच्या लांबीचा संबंधही नमुन्यात अत्यंत कमकुवत होता. यावरून पूर्ण mathematical independence सिद्ध होत नाही; पण नावे लांबी encode करण्यासाठी बनवली आहेत असा व्यावहारिक signal atlas देत नाही.</p>
+  <p>याशिवाय, 86,016 year structure म्हणजे 86,016 पूर्ण independent sample नाहीत: आरंभ व शेवटच्या द्वारांमध्ये केवळ 24,786 वेगवेगळे interval आहेत. जवळचे कृतीचे दिवस तेच year interval निवडूनही वेगळी अंतर्गत structure तयार करू शकतात.</p>
+  <p>म्हणून atlas implementationचे मोजलेले वर्तन उत्तमरीत्या वर्णन करतो, पण सर्व शक्य calendar structureवर probability theorem बनवत नाही.</p><hr>
+</section>
+
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>वाढदिवस आणि वर्षगाठ</h2>
+  <p>“दरवर्षी तोच दिवस” याचा अर्थ येथे आधी ठरवावा लागतो. नैसर्गिक recurrence coordinate आहेत <code>(महिन्याचे नाव, महिन्यातील दिवस)</code> आणि <code>(कटलेटचे नाव, कटलेटमधील दिवस)</code>; अटी एकत्रही वापरता येतात.</p>
+  <p>म्हणून पास्ताफारी वाढदिवस फक्त <code>RRULE:FREQ=YEARLY</code> नाही. निवडलेली recurrence condition पूर्ण करणारे पुढचे वर्ष शोधावे लागते, आणि मूळ घटना आपोआप स्वतःचे “पुढचे दर्शन” मानली जात नाही.</p>
+  <p>फक्त प्रदर्शनासाठी कृतीचा दिवस बदलल्याने व्यक्तीची ओळख, जन्मक्षण किंवा वय बदलता कामा नये.</p>
+  <p>4,096 self-referential dateच्या exact scanमध्ये प्रत्येक पुढचे पास्ताफारी वर्ष दोन्ही दिशांना 250,000 वर्षांपर्यंत तपासले गेले:</p>
+  <ul>
+    <li><code>(महिन्याचे नाव, महिन्यातील दिवस)</code>साठी पहिल्या परतीची median 1 पास्ताफारी वर्ष होती; 77.56% शेजारच्या वर्षात परतले, 93.77% दोन वर्षांत, 99.44% पाच वर्षांत; दिसलेले maximum 21 वर्षे.</li>
+    <li><code>(कटलेटचे नाव, कटलेटमधील दिवस)</code>साठी median 3 वर्षे होती; 88.89% 10 वर्षांत सापडले, पण distributionचा heavy tail खूप जड आहे आणि दिसलेले maximum 51,954 पास्ताफारी वर्षांपर्यंत गेले.</li>
+  </ul>
+  <p>हे <strong>तपासलेल्या corpusचे empirical result</strong> आहेत; प्रत्येक शक्य वर्षगाठ नक्की परतेल याचा पुरावा नाही आणि maximum waiting timeची guaranteeही नाही.</p><hr>
+</section>
+
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>भेट कशी ठरवावी?</h2>
+  <p>दोन जणांना फक्त पास्ताफारी तारीख वापरून भेट ठरवायची असल्यास त्यांनी किमान पाच date field आणि गणनेत वापरलेला कृतीचा दिवस यांवर सहमती असावी. कृतीचा दिवस “आज” या शब्दासारखा न ठेवता स्थिर day identity म्हणून साठवणे योग्य; नाहीतर दोघे दोन वेगळे दिनदर्शक मोजू शकतात.</p>
+  <ul>
+    <li>“उद्या” हा पुढचा कालानुक्रमिक दिवस;</li>
+    <li>“महिन्याचा पुढचा दिवस” म्हणजे त्याच महिन्याचे पुढचे दर्शन;</li>
+    <li>“महिन्याचा शेवट” म्हणजे त्याचे शेवटचे दर्शन;</li>
+    <li>“संपूर्ण महिना” म्हणजे त्या महिन्याच्या दिवसांचा set किंवा पहिल्या ते शेवटच्या दर्शनातील पूर्ण कालानुक्रमिक span असू शकतो;</li>
+    <li>“पुढचे वर्ष” म्हणजे निवडलेल्या कृतीच्या दिवसाखाली बनवलेल्या दिनदर्शकाचे पुढचे वर्ष.</li>
+  </ul>
+  <p>खूप महत्त्वाच्या भेटीसाठी absolute chronological day किंवा momentही साठवता येतो. दिनदर्शक नाराज होणार नाही.</p><hr>
+</section>
+
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>प्रवास, घटना आणि all-day</h2>
+  <p>घटना आणि तिच्यासाठी दाखवलेले स्थानिक लेबल एक गोष्ट नाहीत. निश्चित वेळेची घटना स्थिर chronological momentशी बांधलेली असावी. प्रवास तिला वेळेत हलवत नाही, पण त्याच physical momentची स्थानिक पास्ताफारी तारीख बदलू शकते, कारण “स्थानिक दिवस” ही व्याख्या स्थानावर अवलंबून आहे.</p>
+  <p><strong>All-day</strong> घटनेत फरक आणखी मोठा आहे. नागरी पूर्ण-दिवसाची घटना साधारण मध्यरात्रीपासून पुढच्या मध्यरात्रीपर्यंत असते; पास्ताफारी पूर्ण-दिवसाची घटना स्थानिक पास्ताफारी दिवससीमेपासून पुढच्या दिवससीमेपर्यंत असावी. साधारण हे moment एक नसतात.</p>
+  <p>म्हणून पास्ताफारी घटनेला सरळ नागरी “पूर्ण दिवस” घटना म्हणून export केल्याने अर्थ बदलू शकतो. योग्य जतनासाठी chronological anchor आणि योग्य location/day-boundary context साठवणे आवश्यक; फक्त <code>all-day</code> flag पुरेसा नाही.</p><hr>
+</section>
+
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>दिवस कधी बदलतो?</h2>
+  <p>स्थानिक पास्ताफारी दिवस मध्यरात्री बदलत नाही. त्याची सीमा <strong>स्थानिक meridian पार करणाऱ्या Venusच्या केंद्राच्या topocentric lower meridian transit</strong>ने ठरते.</p>
+  <p>ही स्थानावर अवलंबून स्थानिक खगोलशास्त्रीय घटना आहे. Transit 00:00ला होणे आवश्यक नाही, नागरी time zone तो ठरवत नाही, daylight saving time सुरू किंवा संपल्यानेच तो सरकत नाही, आणि Venus उघड्या डोळ्यांना दिसणे आवश्यक नाही.</p>
+  <p>तोच physical moment दोन ठिकाणी त्यांच्या स्थानिक दिवससीमेच्या वेगवेगळ्या बाजूंना असू शकतो. व्यवस्थेकडे उपयोगी user location नसेल तर productचे default fallback location <strong>Kisurra</strong> आहे.</p><hr>
+</section>
+
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>छापील दिनदर्शक आणि हाताने गणना</h2>
+  <p>पास्ताफारी दिनदर्शक छापता येतो; तो कोणत्या कृतीच्या दिवसासाठी मोजला आहे ते सांगणे पुरेसे. असा दिनदर्शक त्या दिवसाच्या दृष्टिकोनातून वेळेची structure दाखवतो; कृतीचा दिवस बदलल्यावर नवा दिनदर्शक लागेल. म्हणून printerकडे अजून काम आहे.</p>
+  <p>Specification पूर्ण आणि deterministic असल्याने सर्वकाही हातानेही मोजता येते: input counter मोजा, 7 लपलेले व 46 दिसणारे थेंब चालवा, सहा वाडगे update करा, 12 अंतिम मिश्रणे करा, उत्तरे तयार करा, द्वारे बांधा, वर्षे व कटलेट निवडा, combinatorial selection करा, नावे निवडा, आणि मग महिने विणा.</p>
+  <p>बदल्यात फेब्रुवारी कधी 28 आणि कधी 29 दिवसांचा असतो हे लक्षात ठेवावे लागत नाही.</p><hr>
+</section>
+
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>मग Seer काय आहे?</h2>
+  <p>Canonical implementationसोबत <strong>Pastafarian Calendar Seer</strong> नावाचा वेगवान engineही आहे. Seer प्राधिकरणाचा स्रोत नाही: योग्य तारीख Megillah आणि canonical calculation ठरवतात. Seer त्यांच्याशी जुळला नाही तर चूक Seerची.</p>
+  <p>त्याचे काम तेच query वेगाने चालवणे आणि result productमध्ये सहज integrate करता येईल अशा रूपात देणे.</p>
+  <p>हे पान संपादित करताना केलेल्या थेट verificationमध्ये Seerमध्ये date आणि “now” query, batch, day range, पास्ताफारी तारखेवरून target dayकडे reverse conversion, year structure retrieval, active working day determination, Node API, browser/HTTP client, CLI, HTTP v1 service, OpenAPI 3.1 contract, native implementations आणि distribution package, तसेच verified container deployment होते.</p>
+  <p>Seerकडे public API नाही हा जुना दावा आता चुकीचा आहे. आता date, range, batch, year, reverse, कृतीचा दिवस, metadata, locales आणि status endpoint असलेला स्पष्ट व स्थिर HTTP v1 contract आहे.</p>
+  <p>21 सप्टेंबर 2026 रोजी Renderवरील public HTTPS deployment प्रत्यक्ष तपासला गेला: live serviceवर exact query, मोठा range, restart, cold wake आणि loadखालील वर्तन verify केले गेले.</p>
+  <p>तरीही project documentation public beta/evaluation deployment आणि SLA असलेली कायम hosted production service वेगळी धरते. म्हणून conceptual explanation pageने server address, hosting provider किंवा version numberला दिनदर्शकाचा भाग असल्याप्रमाणे freeze करू नये.</p>
+  <p>Seer precomputation, विशेष representation, SIMD, algebra आणि इतर shortcut वापरू शकतो. तोच semantic operation करून तेच उत्तर दिले तर canonical implementationची पूर्ण computational history पाऊलोपाऊल नक्कल करणे आवश्यक नाही.</p>
+  <p>Optimization हा पर्यायी प्राधिकरण नाही.</p><hr>
+</section>
+
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>उत्पत्ती, स्थापना दिवस आणि पट्टिका दिवस</h2>
+  <p>येथे canonical time anchor आणि संकेतस्थळाची कथा स्पष्टपणे वेगळी ठेवणे विशेष महत्त्वाचे आहे.</p>
+
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>आधारबिंदू</h3>
+    <p>व्यवस्थेत <strong>स्थापना दिवस</strong> नावाचा एक स्थिर reference day आहे. Proleptic Gregorian calendarमध्ये तो <strong>22 डिसेंबर 41,222 ईसापूर्व</strong> आहे.</p>
+    <p>स्थापना दिवस म्हणजे “काळाची सुरुवात” नाही; तो computational anchor आहे.</p>
+    <p>त्याच्या आसपासच्या दिवसांचे numbering धन विषम/सम संख्या वापरते: स्थापना दिवस=1; पुढचे दिवस=3, 5, …; भूतकाळाकडे मागचा दिवस=2, मग 4, 6, … . त्यामुळे anchorच्या दोन्ही बाजूंना या counterमध्ये ऋण day number न वापरता encode करता येते.</p>
+    <p>दुसरा anchor म्हणजे <strong>पट्टिका दिवस</strong>: <strong>proleptic Julian calendarमध्ये 15 जून 763 ईसापूर्व</strong>, म्हणजे <strong>proleptic Gregorian calendarमध्ये 7 जून 763 ईसापूर्व</strong>.</p>
+    <p>स्थापना दिवसापासून पट्टिका दिवसापर्यंत अचूक अंतर</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
+    <p>दिवस आहे.</p>
+    <p>हे वेळरेषेवरील स्थिर anchor आहेत, पण त्यांच्यासाठी दाखवली जाणारी पास्ताफारी तारीख तरीही कोणत्या कृतीच्या दिवसावरून प्रश्न विचारला जातो यावर अवलंबून असते.</p>
+  </section>
+
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>संकेतस्थळाची कथा</h3>
+    <p>संकेतस्थळाच्या editorial storyमध्ये दिनदर्शकाला सृष्टीचा भाग आणि मानवजात पूर्णपणे न कळत वापरत असलेली व्यवस्था म्हणून वर्णन केले जाते, जोपर्यंत आधुनिक काळात ती पुन्हा हस्तांतरित झाली नाही.</p>
+    <p>ही संकेतस्थळाची कथा आहे; तिच्या प्रत्येक narrative detailला Megillahचा स्पष्ट technical claim म्हणून दाखवू नये.</p>
+    <p>पुन्हा हस्तांतरित करण्याची घटना स्वतः स्थिर ऐतिहासिक घटना आहे. तिची <strong>पास्ताफारी तारीख</strong> एकच तारीख म्हणून कायम freeze करण्यापेक्षा सध्याच्या कृतीच्या दिवसाखाली dynamicपणे दाखवणे योग्य.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>प्रगत वापरकर्त्यांसाठी: reverse conversion</h2>
+  <p>कृतीचा दिवस <code>c</code> माहीत असेल तर reverse conversion खूप कडक मर्यादित आहे. माहीत असलेल्या पास्ताफारी वर्षात</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{कटलेटचे नाव},\text{कटलेटमधील दिवस})</code></pre>
+  <p>जास्तीत जास्त एका दिवसाची ओळख पटवतो. त्याचप्रमाणे</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{महिन्याचे नाव},\text{महिन्यातील दिवस})</code></pre>
+  <p>ही. म्हणून माहीत कृतीच्या दिवसासह पूर्ण तारीख target dayला एकमेव ओळखते.</p>
+
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Reverse conversionमधील candidate संख्येच्या वरच्या मर्यादा">
+    <table class="about-table">
+      <thead><tr><th scope="col">माहीत असलेली अतिरिक्त माहिती</th><th scope="col">जास्तीत जास्त candidate</th></tr></thead>
+      <tbody>
+        <tr><td>वर्षाशिवाय एकही field माहीत नाही</td><td>5,778</td></tr>
+        <tr><td>फक्त कटलेटचे नाव</td><td>5,568</td></tr>
+        <tr><td>फक्त कटलेटमधील दिवस</td><td>17</td></tr>
+        <tr><td>फक्त महिन्याचे नाव</td><td>123</td></tr>
+        <tr><td>फक्त महिन्यातील दिवस</td><td>47</td></tr>
+        <tr><td>कटलेटचे नाव + कटलेटमधील दिवस</td><td>1</td></tr>
+        <tr><td>महिन्याचे नाव + महिन्यातील दिवस</td><td>1</td></tr>
+        <tr><td>वर्षाशिवाय कोणतेही तीन field</td><td>1</td></tr>
+        <tr><td>वर्षाशिवाय चारही field</td><td>1</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>कृतीचा दिवस माहीत नसेल तर परिस्थिती बदलते. तीच पाच मूल्ये वेगवेगळ्या कृतीच्या दिवसांखाली दिसू शकतात आणि असे exact example आहेत जिथे तीच पूर्ण तारीख <code>c</code>पासून वेगवेगळ्या अंतरावर दिसते.</p>
+  <p>वर्ष 5000मध्ये त्या अंतराचे signही पाच मूल्यांनी नेहमी ठरत नाही: तीच पूर्ण तारीख एका contextमध्ये कृतीच्या दिवसाच्या आधी आणि दुसऱ्यात नंतर असू शकते.</p>
+  <p>म्हणून तारीख कोणत्या <code>c</code>खाली मोजली हे न कळल्यास पूर्ण पास्ताफारी तारीख वेळरेषेवरील absolute address नाही.</p>
+
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>अतिदूर काळातील रचना</h3>
+    <p>Specificationवरून आलेल्या mathematical researchमध्ये exact asymptotic structureही सापडली. <strong>स्थिर कृतीचा दिवस</strong> <code>c</code> असल्यास, भूतकाळाच्या tailमध्ये पुरेसे दूर affine periodicity दिसते.</p>
+    <p>जर</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>असेल, तर त्याच <code>c</code>साठी shift <code>H_c</code>, year change <code>p_c</code> आणि पुरेसा दूर threshold असतो, ज्याच्या पुढे</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>वर्षाशिवाय चारही field पुन्हा येतात, तर वर्ष क्रमांक स्थिर प्रमाणाने बदलतो.</p>
+    <p>हा स्थिर <code>c</code>चा निकाल आहे; यावरून global relation</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>निघत नाही. वेगवेगळ्या कृतीच्या दिवसांत अंतिम asymptotic slope खरोखर वेगळा आहे का हा प्रश्न अजून उघडा आहे.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>प्रगत वापरकर्त्यांसाठी: सॉस किती इतिहास जपतो?</h2>
+  <p>सॉस खूप aggressive mixing mechanismसारखा दिसतो, पण algebraic research दाखवते की तो दिसण्यावरून वाटते त्यापेक्षा बरीच अधिक माहिती जपतो. हा specificationवरून मिळालेला research result आहे, नवा calendar rule नाही.</p>
+  <p>दिसणाऱ्या stage 3–46मध्ये, संबंधित asymptotic branchवर generic injectivity स्थापित आहे: generic caseमध्ये state संबंधित input history आणि वाडग्यांचा क्रम पुन्हा तयार करण्याइतकी माहिती ठेवतो.</p>
+  <p>अंतिम 12 मिश्रणांतही माहिती लगेच नाहीशी होत नाही. दिसणाऱ्या थेंब 46नंतरच्या पहिल्या पाच मिश्रणांसाठी संबंधित canonical unionवर अतिरिक्त side informationशिवाय generic invertibility स्थापित आहे; उरलेल्या भागासाठी reconstructionसाठी पुरेशी side information किती लागते याची मजबूत constructive upper bound माहीत आहे.</p>
+  <p><strong>फक्त शेवटचे सहा वाडगे</strong> generic senseमध्ये नेहमी पुरेसे आहेत का हा प्रश्न अजून उघडा आहे.</p>
+  <p>काही निष्कर्ष symbolicरीत्या सिद्ध झाले; इतर finite exact arithmetic checkने बंद झाले. Symbolic strengtheningने विश्वास ठेवावा लागणारा computational core खूप लहान केला, पण पूर्ण काढून टाकला नाही.</p>
+  <p>सुरुवातीला प्रचंड path शोधावे लागतील असे वाटणारे space फारच लहान finite structureपर्यंत कमी झाले, त्यात 180 आणि 9 stateचे automata आणि सहा वाडग्यांची symmetryही आहे.</p>
+  <p>मिश्रणाखाली कडक algebraic structure आहे. आजची तारीख जाणून घेण्यासाठी ती माहीत असणे आवश्यक नाही.</p><hr>
+</section>
+
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>मग पास्ताफारी दिनदर्शक नेमका काय आहे?</h2>
+  <p>हा deterministic calendar आहे, ज्यात तारीख फक्त target dayचे function नसून <strong>कृतीचा दिवस आणि विचारलेला दिवस या दोघांचे संयुक्त function</strong> आहे.</p>
+  <p>प्रत्येक तारखेला नेमके पाच field आहेत. वर्तमान स्वतःच्या दृष्टिकोनातून नेहमी वर्ष 5000मध्ये आहे, पण वर्ष 5000 स्वतः कृतीच्या दिवसाबरोबर सरकते. वर्षे फार लांब असू शकतात, कटलेट सलग असतात, महिने असणे आवश्यक नाही, आणि canonical week system नाही.</p>
+  <p>महिन्याचा <code>n+1</code> दिवस म्हणजे उद्याच असे नाही. तोच chronological day उद्या वेगळे पास्ताफारी label घेऊ शकतो. तोच physical moment दोन ठिकाणी दोन वेगळ्या local Pastafari dayमध्ये पडू शकतो. All-day event मध्यरात्रीपासून मध्यरात्रीपर्यंत चालणे आवश्यक नाही. आणि annual birthday आधी search problem, मग calendar problem आहे.</p>
+  <p>पण कृतीचा दिवस आणि विचारलेला दिवस माहीत असतील तर ambiguity नाही: योग्य उत्तर एकच.</p>
+  <p>शेवटी दिनदर्शकाला यापेक्षा अधिक काही करायची गरज नाही.</p>
+</section>
