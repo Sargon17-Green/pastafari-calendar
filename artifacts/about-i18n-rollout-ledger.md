@@ -82,7 +82,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | vi | vi-VN | ltr | partial | draft |
 | yo | yo-NG | ltr | partial | not started |
 | zh | zh-CN | ltr | partial | draft |
-| zu | zu-ZA | ltr | partial | not started |
+| zu | zu-ZA | ltr | partial | draft |
 
 Status progression for target locales: `not started → draft → semantic QA → linguistic QA → integrated → rendered → PASS`.
 
