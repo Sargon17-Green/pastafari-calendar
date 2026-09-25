@@ -1,0 +1,240 @@
+<!-- 日本語版はヘブライ語の意味上の原本から直接構成している。 -->
+<!-- セクションIDは公開Deep Link契約であり、翻訳見出しから生成しない。 -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>このサイトの物語では、パスタファリ暦は「時間そのものが創造された暦」として描かれる。一方、その仕組みは厳密に定義されている。</p>
+  <p>この暦は、ある日を一つの固定された「ラベル」に変換するものではない。日付を知るには二つの日が必要だ。計算の基準となる<strong>作業日</strong>と、日付を知りたい<strong>照会日</strong>である。</p>
+  <p>作業日を <code>c</code>、照会日を <code>t</code> と書けば、日付は</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>であって <code>F(t)</code> ではない。同じ照会日でも、別の作業日から計算すれば別のパスタファリ日付になりうる。</p>
+  <p>不具合ではない。そういう暦である。</p><hr>
+</div>
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>パスタファリ日付を構成するもの</h2>
+  <p>日付は<strong>ちょうど5項目</strong>からなる。年番号、カツレツ名、カツレツ内の日番号、月名、月内の日番号である。</p>
+  <p>一般形の例なら、<strong>5000年、カツレツA、カツレツの417日目、月B、その月の83日目</strong>。</p>
+  <p>作業日、観測者の位置、日の時系列上の同一性、その他の技術情報が隣に表示されることはあるが、それらは第6の項目ではない。</p><hr>
+</section>
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>なぜ作業日が必要なのか</h2>
+  <p>普通の暦では、日付はその日に「属する」と考えがちだ。パスタファリ暦では、日付は二つの日の関係に依存する。</p>
+  <p><code>t</code> を変えるのは別の日について尋ねることだ。<code>c</code> を変えるとさらに深く、年境界、カツレツ、月、その名称、月の織り合わせ方まで、問いを立てる暦の構造自体が変わりうる。</p>
+  <p>したがって今日計算した暦表が明日も正しいとは限らない。印刷した暦が丸一年も役に立ってしまう、という望ましくない事態を防げる。</p><hr>
+</section>
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>同じ日でも、日付は変わる</h2>
+  <p><strong>日の同一性</strong>と<strong>パスタファリ表現</strong>は分けて考える必要がある。前者は時間軸上の安定した位置、後者は特定の作業日のもとで表示したときに得られる5項目である。</p>
+  <p>製品やAPIでは、前者を <code>day-id</code> と考えられる。表示方法を変えても動かない時系列上の識別子である。一方、</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre><p>と</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>は同じである必要がない。</p>
+  <p>作業日を手動で変更すれば、同じ日そのものを動かさずに、その表示日付だけを変えられる。</p>
+  <p>予定、誕生、歴史的事件も同様である。出来事は安定した時系列上の同一性に固定し、パスタファリ日付は見る文脈に応じて再表示すべきだ。</p>
+  <p>ラベルは変わる。出来事は変わらない。</p><hr>
+</section>
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>5000年</h2>
+  <p>作業日と照会日が同じなら、</p><pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>年は常に</p><pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>となる。つまり「今」をそれ自身から見れば、必ず5000年である。ただし5000年は固定された歴史時代ではなく、作業日に対して毎回選び直される。</p>
+  <p>作業日そのものが5000年に含まれるため、その年の別の日も5000年である。よって<strong>5000年であることは <code>t=c</code> の判定条件ではない。</strong></p>
+  <p>ただし年番号は方向を示す：</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre><p>および</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p><strong>0年</strong>も存在し、さらに過去へ進むと負の年番号になる。</p><hr>
+</section>
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>年と門</h2>
+  <p>パスタファリ年の長さは</p><pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ から }5778</code></pre><p>日。これは実験平均ではなく、仕様上の正規の上下限である。</p>
+  <p>太陽年より短い年も、15太陽年を超える年もありうる。年境界は<strong>門</strong>の仕組みで作られ、カツレツ境界も同じ門から取られる。</p>
+  <p>年末が季節、地球の公転、月周期、あるいは「そろそろ年を終えたい」という実用上の都合に一致する必要はない。</p><hr>
+</section>
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>カツレツ</h2>
+  <p>各年は<strong>6〜17個のカツレツ</strong>に分かれる。カツレツは時間的に連続した区間である。</p>
+  <p>今日がカツレツの250日目なら、今日が最終日でない限り明日は251日目。境界は門で、長さは最低</p><pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre><p>日である。</p>
+  <p>正規のカツレツ名は17個あり、一つの年の中で同じ名は繰り返されない。名称だけで長さや順序が決まることもない。</p><hr>
+</section>
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>月と織り合わせ</h2>
+  <p>各年には</p><pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ から }47</code></pre><p>個の構造月があり、各月に割り当てられる日は</p><pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ から }123</code></pre><p>日である。</p>
+  <p>ただしパスタファリの月は<strong>時間上の連続区間とは限らない</strong>。例えば時系列が</p>
+  <blockquote><p>月A — 14日目<br>月B — 9日目<br>月A — 15日目</p></blockquote>
+  <p>となっても正しい。月Aの15日目は<strong>その月の次の日</strong>であり、その間に別の月の日が一日入っていても構わない。</p>
+  <p>したがって「月内の日番号」は月の最初の出現から何日経ったかではなく、その年で当該月に割り当てられた何回目の日かを表す。48日目なら、その月に属する48番目の日という意味で、初出から47暦日後という意味ではない。</p><hr>
+</section>
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>月どうしは互いに織り込まれる</h2>
+  <p>月を一年を貫く糸だと考えるとよい。各日は必ず一つの月に属するが、明日は別の月でもよく、その後に最初の月が戻って次の番号を続けられる。</p>
+  <p>織り方には規則があり、とりわけ各月の初出・最終出現の順序には制約がある。しかし、一つの月が終わってから別の月が始まる必要はない。</p>
+  <ul><li>カツレツは連続した時間区間内の位置を測る。</li><li>月は消えて再登場できる構造上の糸への所属を測る。</li></ul>
+  <p>一つの月が複数カツレツを横切ることも、一つのカツレツに多数の月が現れることもある。両者の開始・終了は一致しなくてよい。</p><hr>
+</section>
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>月の「次の日」は明日とは限らない</h2>
+  <p>今日がある月の17日目なら、その月の18日目は<strong>その月が次に現れる日</strong>である。明日かもしれないし、ずっと先かもしれない。</p>
+  <p><strong>明日</strong>は次の時系列上の日、<strong>月の次の日</strong>は同じ月の次回出現を指す。</p>
+  <p>「月末」も時間的に近いとは限らない。120日ある月の119日目にいても、120日目が年のずっと後ろにあることがある。</p><hr>
+</section>
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>週はない</h2>
+  <p>現行の正規仕様は<strong>週の体系を定義していない</strong>。正規の7日単位も、パスタファリ曜日名も、二つの日を「同じ曜日」とする規則もない。</p>
+  <p>外部から民間の週を重ねることはできるが、それはパスタファリ日付の一部ではない。</p><hr>
+</section>
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>名称</h2>
+  <p>正規のカツレツ名は17個、月名は47個。一年の中で各名称はそれぞれの系統内に最大1回しか現れない。</p>
+  <p>名称の同一性は正規かつ意味論的であり、綴り、翻訳、実装の多数決で決まるものではない。名称の意味についてはヘブライ語のメギラーが最高位の典拠で、翻訳と音写は表示層である。</p>
+  <p>名称は長さの隠しコードでもない。特定のカツレツ名が長さを増やしたり、月名が短さを強制したりする規則はない。</p><hr>
+</section>
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>月についての小さな事実</h2>
+  <p>月名は47個、各月は最大123日なので、構文上可能な「月名＋月内日番号」は</p><pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre><p>通りある。</p>
+  <p>一年の各日はそのうち一つを実現する。年の長さを <code>L</code> とすれば、現れる組はちょうど <code>L</code> 個。しかし</p><pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>なので、どの年にも少なくとも</p><pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre><p>個の可能な組が欠ける。最長年でも全部を使うには日数が足りない。</p><hr>
+</section>
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>計算はどう行われるか</h2>
+  <p>ここでは内部計算を<strong>ソース</strong>と呼ぶ。中心にあるのは素数</p><pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre><p>である。</p>
+  <p>処理には5個の入力カウンタ、7個の隠し滴、46個の可視滴、6個の鉢、変化する鉢順序、12回の最終攪拌、異なる答えを作る封印、組合せ選択、門生成、年選択、カツレツ分割、名称選択、月生成、月日の織り合わせが含まれる。</p>
+  <p>最終更新は<strong>同期的</strong>である。各攪拌で6個すべての新しい鉢値を同一の旧状態から計算し、その後で6個をまとめて置き換える。</p>
+  <p>12回の最終攪拌には重要な正規規則がある。旧6鉢の合計を <code>S</code>、攪拌番号を <code>r</code> とすると</p><pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p>を計算する。<code>R</code> が<strong>保存済み合計</strong>で、鉢順序の選択にも攪拌内部の更新にも、生の <code>S</code> ではなく <code>R</code> を使う。</p>
+  <p>生の合計を更新に入れていた旧版は現行の正規意味論を表さない。その旧規則から導いた例は、再検証されていない限り古いものとして扱う。</p>
+  <p>攪拌後の回答リングも、可視滴46で固定された順序を引き継ぐ。最終攪拌の順序へ自動置換してはならない。</p><hr>
+</section>
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice と Wide Choice</h2>
+  <p>比較的小さい選択空間では <strong>Short Choice</strong> を使い、単純な modulo bias を避けるため棄却サンプリングを行う。</p>
+  <p>非常に大きな空間では <strong>Wide Choice</strong> を使う。ただし仕様にない性質を仮定してはいけない。</p>
+  <p>Wide Choice は、独立で一様な基数 <code>Q</code> の桁をインデックスが得られるまで生成する処理とは同値ではない。したがって、すべての合法な選択肢が必ず同じ正の確率を持つとは言えない。空間が十分大きければ、この選択機構から到達不能な合法候補もありうる。</p>
+  <p>暦そのものは完全に決定論的である。「Choice」はアルゴリズム段階の名称であって、利用時の抽選ではない。</p><hr>
+</section>
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>構造アトラス</h2>
+  <p>ここまでの内容は暦の規則だった。次の数値は別種のもの、すなわち大規模計算標本から得た<strong>経験的結果</strong>である。</p>
+  <p>アトラスは engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> で作成され、4,096個の作業日、それぞれについて4990–5010年、86,016個の年構造、625,437個のカツレツ、3,535,422個の構造月、3億5600万を超える連続月区間、同じ月の <code>n</code> 日目から <code>n+1</code> 日目への3億6400万を超える遷移を含む。</p>
+  <p>これはそのコーパスの記述であり、正規規則ではない。</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="構造アトラスの測定値"><table class="about-table">
+    <thead><tr><th scope="col">測定量</th><th scope="col">標本での結果</th></tr></thead><tbody>
+      <tr><td>年長の平均</td><td>4,275.182 日</td></tr><tr><td>年長の中央値</td><td>4,343</td></tr><tr><td>観測最小 / 最大</td><td>716 / 5,778</td></tr>
+      <tr><td>年あたり平均カツレツ数</td><td>7.271</td></tr><tr><td>ちょうど6カツレツの年</td><td>42.00%</td></tr><tr><td>6–8カツレツの年</td><td>81.29%</td></tr>
+      <tr><td>カツレツ長の平均</td><td>587.963 日</td></tr><tr><td>カツレツ長の中央値</td><td>560</td></tr><tr><td>年あたり平均月数</td><td>41.102</td></tr>
+      <tr><td>月数の中央値</td><td>43</td></tr><tr><td>47月の年</td><td>15.63%</td></tr><tr><td>45月以上の年</td><td>36.81%</td></tr>
+      <tr><td>構造月長の平均</td><td>104.014 日</td></tr><tr><td>月長の中央値</td><td>115</td></tr><tr><td>月あたり平均連続区間数</td><td>100.897</td></tr>
+      <tr><td>1日だけの月区間</td><td>97.482%</td></tr><tr><td>隣接2日が同じ月である確率</td><td>2.9976%</td></tr>
+      <tr><td>月の <code>n</code> と <code>n+1</code> の間に入る他月日の平均</td><td>40.408</td></tr><tr><td>月の初出から最終出現までの平均跨度</td><td>4,266.653 日</td></tr>
+    </tbody></table></div>
+  <p>実務的には、約100日を含む月がほぼパスタファリ一年全体に散らばることがある。</p>
+  <p>同じアトラスでは5000年周辺に自然な長さの偏りも見つかった。「通常」の年は平均約4,262日、各年を含有日数で重み付けすると約4,466日、自己年5000は平均約4,499日だった。</p>
+  <p>理由は単純で、5000年は作業日を含まなければならない。長い年ほど、その年が作業日を含む年になる機会が多い。</p>
+  <p>名称と長さの関連は標本内で非常に弱かった。これは完全な数学的独立性の証明ではないが、名称が長さを符号化するという実用上の兆候もない。</p>
+  <p>また86,016個の年構造は完全に独立な86,016標本ではなく、開始・終了の門区間は24,786種類だけだった。隣接する作業日が同じ年区間を選びつつ、内部構造だけ違うこともある。</p>
+  <p>よってアトラスは測定された実装の挙動をよく表すが、すべての可能な暦に関する確率定理ではない。</p><hr>
+</section>
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>誕生日と記念日</h2>
+  <p>「毎年同じ日」には定義が要る。自然な構造座標として <code>(月名, 月内日)</code> と <code>(カツレツ名, カツレツ内日)</code> があり、条件を組み合わせることもできる。</p>
+  <p>したがってパスタファリの誕生日は単純な <code>RRULE:FREQ=YEARLY</code> ではない。選んだ再来条件を満たす次の年を検索する必要があり、元の出来事自体を自動的に「次回」と数えない。</p>
+  <p>表示のため作業日を変えても、人の同一性、出生時点、年齢を変えてはならない。</p>
+  <p>4,096個の自己日付について、前後それぞれ最大250,000年まで連続する各パスタファリ年を厳密に走査した結果：</p>
+  <ul><li><code>(月名, 月内日)</code> の再来は中央値1年。77.56%が隣接年、93.77%が2年以内、99.44%が5年以内で、観測最大は21年。</li>
+  <li><code>(カツレツ名, カツレツ内日)</code> は中央値3年、88.89%が10年以内。ただし非常に重い裾を持ち、観測最大は51,954パスタファリ年だった。</li></ul>
+  <p>これは<strong>調べたコーパスの経験的結果</strong>であり、すべての記念日が必ず戻るという証明でも、最大待ち時間の保証でもない。</p><hr>
+</section>
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>約束をどう決めるか</h2>
+  <p>パスタファリ日付だけで二人が約束するなら、少なくとも5項目の値と、それを計算した作業日を共有しなければならない。作業日は「今日」という語ではなく安定した日の識別子で保存するほうがよい。さもないと二人が別の暦を計算しうる。</p>
+  <ul><li>「明日」＝次の時系列上の日。</li><li>「月の次の日」＝同じ月の次回出現。</li><li>「月末」＝その月の最終出現。</li><li>「一か月全部」＝月に属する日の集合、または初出から最終出現までの全時系列跨度、のどちらもありうる。</li><li>「翌年」＝選ばれた作業日のもとで構築された暦の翌年。</li></ul>
+  <p>重要な予定なら、絶対的な時系列の日または時刻も併記してよい。暦は傷つかない。</p><hr>
+</section>
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>旅行、予定、all-day</h2>
+  <p>出来事と、その場所で表示されるラベルは別物である。時刻のある予定は安定した時点に固定すべきで、旅行しても出来事自体は時間軸上を動かない。ただし「現地の日」の定義が場所に依存するため、その瞬間に表示される現地パスタファリ日付は変わりうる。</p>
+  <p><strong>all-day</strong> では差がさらに大きい。民間暦の終日予定は通常、民間時の午前0時から次の午前0時まで。パスタファリ終日予定は、現地のパスタファリ日境界から次の境界までである。通常、この二組の時点は一致しない。</p>
+  <p>したがってパスタファリ予定を民間暦へ無条件に「終日」として輸出すると意味が変わることがある。正確に保存するなら、時系列上のアンカーと場所・日境界の文脈を保存し、単なる <code>all-day</code> フラグだけにしてはいけない。</p><hr>
+</section>
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>日はいつ切り替わるか</h2>
+  <p>現地パスタファリ日は午前0時には変わらない。境界は<strong>金星中心のトポセントリックな下方子午線通過（現地子午線）</strong>で定める。</p>
+  <p>つまり位置依存の局地的な天文現象である。00:00である必要はなく、民間のタイムゾーンで決まらず、夏時間の開始・終了だけで移動せず、金星が肉眼で見える必要もない。</p>
+  <p>同一の物理的瞬間が、二地点ではそれぞれの現地日境界の反対側に入ることがある。利用可能な位置情報がない場合、製品は<strong>キスラ</strong>を既定の観測地点とする。</p><hr>
+</section>
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>印刷暦と手計算</h2>
+  <p>パスタファリ暦は印刷できる。ただし、どの作業日に対する暦かを明記する必要がある。その作業日から見た時間構造を印刷するもので、作業日が変われば新しい暦が必要になることもある。プリンターの出番はなくならない。</p>
+  <p>仕様は完全かつ決定論的なので、全部を手計算することもできる。入力カウンタを計算し、7隠し滴、46可視滴、6鉢の更新、12最終攪拌、回答生成、門構築、年・カツレツ選択、組合せ選択、名称選択、月の織り合わせを順に行えばよい。</p>
+  <p>その代わり、2月が28日だったり29日だったりすることを覚えなくて済む。</p><hr>
+</section>
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>Seerとは何か</h2>
+  <p>正規実装の横には高速エンジン <strong>Pastafarian Calendar Seer</strong> がある。ただしSeerは権威の源ではない。正しい日付を決めるのはメギラーと正規計算で、食い違えば誤っているのはSeerである。</p>
+  <p>目的は、同じ照会を高速に、製品へ組み込みやすい形で処理すること。</p>
+  <p>このページ編集時の実サービス検証では、日付照会、「現在」の計算、batch、日範囲、パスタファリ日付から対象日へのreverse変換、年構造取得、現在の作業日解決、Node API、ブラウザ/HTTPクライアント、CLI、HTTP v1サービス、OpenAPI 3.1契約、native実装と配布パッケージ、検証済みcontainer配備などが含まれていた。</p>
+  <p>したがって「Seerには公開APIがない」という古い説明は現在は誤りである。date、range、batch、year、reverse、作業日、metadata、locales、status用endpointを持つ明示的で安定したHTTP v1契約がある。</p>
+  <p>2026年9月21日にはRender上の公開HTTPS配備を実地に検証し、exact照会、大きなrange、restart、cold wake、負荷時挙動を生きたサービスで確認した。</p>
+  <p>ただしプロジェクト文書は、公開中のbeta/evaluation配備と、SLA付きの恒久的hosted productionサービスの宣言を区別している。原理説明ページでサーバーURL、ホスティング業者、版番号を暦の一部として固定すべきではない。</p>
+  <p>Seerは事前計算、特殊表現、SIMD、代数その他の近道を使ってよい。正規実装の計算履歴を一歩ずつ再現する必要はなく、同じ意味論的操作を行い同じ答えを返せばよい。</p>
+  <p>最適化は別の権威ではない。</p><hr>
+</section>
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>起源、創設日、石板の日</h2>
+  <p>ここでは正規のアンカーとサイトの物語を明確に分ける。</p>
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>アンカー</h3>
+    <p>固定基準日<strong>創設日</strong>は、先発グレゴリオ暦で<strong>紀元前41,222年12月22日</strong>。</p>
+    <p>創設日は「時間の始まり」ではなく計算上のアンカーである。</p>
+    <p>周辺日の番号は正の奇数・偶数で符号化する。創設日=1、その後=3, 5,…。過去方向では直前=2、その前=4、次=6,…。このカウンタでは負の番号を使わず両側を表せる。</p>
+    <p>もう一つは<strong>石板の日</strong>で、<strong>先発ユリウス暦 紀元前763年6月15日</strong>、すなわち<strong>先発グレゴリオ暦 紀元前763年6月7日</strong>。</p>
+    <p>創設日から石板の日までの正確な距離は</p><pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre><p>日。</p>
+    <p>どちらも時間軸上の固定アンカーだが、表示されるパスタファリ日付は照会時の作業日に依存する。</p>
+  </section>
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>サイトの物語</h3>
+    <p>サイトの編集上の語りでは、この暦は創造の一部であり、人類は十分に自覚しないまま利用し、現代に再伝達されたとされる。</p>
+    <p>これはサイトの物語であって、そのすべての叙述をメギラーの明示的な技術命題として扱ってはいけない。</p>
+    <p>再伝達の出来事自体は固定された歴史的出来事である。サイト上の<strong>パスタファリ日付</strong>は一つを永久固定するより、現在の作業日に応じて動的に表示するほうが適切だ。</p><hr>
+  </section>
+</section>
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>上級：逆変換</h2>
+  <p>作業日 <code>c</code> が既知なら逆変換は非常に強い。既知のパスタファリ年内では</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{カツレツ名},\text{カツレツ内日})</code></pre>
+  <p>が識別する日は最大1日。同様に</p><pre class="math-block" dir="ltr" tabindex="0"><code>(\text{月名},\text{月内日})</code></pre><p>も最大1日である。したがって作業日が既知なら完全な日付は対象日を一意に特定する。</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="逆変換の候補数上限"><table class="about-table">
+    <thead><tr><th scope="col">追加で既知の情報</th><th scope="col">候補の最大数</th></tr></thead><tbody>
+      <tr><td>年以外なし</td><td>5,778</td></tr><tr><td>カツレツ名のみ</td><td>5,568</td></tr><tr><td>カツレツ内日のみ</td><td>17</td></tr>
+      <tr><td>月名のみ</td><td>123</td></tr><tr><td>月内日のみ</td><td>47</td></tr><tr><td>カツレツ名 + カツレツ内日</td><td>1</td></tr>
+      <tr><td>月名 + 月内日</td><td>1</td></tr><tr><td>年以外の任意3項目</td><td>1</td></tr><tr><td>年以外の4項目全部</td><td>1</td></tr>
+    </tbody></table></div>
+  <p>作業日が不明なら状況は違う。同じ5項目が異なる作業日のもとで現れうるし、同じ完全日付が作業日から異なる距離で生じる厳密な例も存在する。</p>
+  <p>5000年では距離の符号すら5項目だけでは常に決まらない。同じ完全日付が、ある文脈では作業日の過去、別の文脈では未来に現れうる。</p>
+  <p>よって完全なパスタファリ日付も、どの <code>c</code> で計算したか不明なら時間軸上の絶対住所ではない。</p>
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>遠い時間での構造</h3>
+    <p>仕様から導いた数学研究では厳密な漸近構造も得られている。<strong>固定した作業日</strong> <code>c</code> について、過去側へ十分遠く進むとアフィン周期性がある。</p>
+    <p>もし</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>なら、その <code>c</code> に対してシフト量 <code>H_c</code>、年変化 <code>p_c</code>、十分遠い閾値が存在し、閾値以降は</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>となる。年以外の4項目が繰り返され、年番号だけが一定量ずつ変化する。</p>
+    <p>これは固定 <code>c</code> の定理であり、</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>という全体的な関係を意味しない。最終的な漸近傾きが作業日ごとに本当に異なるかどうかは未解決である。</p><hr>
+  </section>
+</section>
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>上級：ソースはどれだけ履歴を保持するか</h2>
+  <p>ソースは非常に激しいミキサーのように見えるが、代数研究から、見かけよりはるかに多くの情報を保持することが分かった。これは仕様から導いた研究成果であり、暦の追加規則ではない。</p>
+  <p>可視段階3〜46では、関係する漸近枝上でジェネリック単射性が確立している。一般位置では、状態から入力と鉢順序の関係する履歴を再構成できるだけの情報が残る。</p>
+  <p>12回の最終攪拌でも情報は直ちには消えない。可視滴46後の最初の5攪拌については、追加の側情報なしに関係する正規和集合上でジェネリック可逆性が確立している。残りについても再構成に十分な側情報量の強い構成的上界が知られている。</p>
+  <p><strong>最終6鉢だけ</strong>で常に一般的に十分かどうかは、なお未解決である。</p>
+  <p>結果の一部は記号的に証明され、一部は有限で厳密な算術検査によって閉じられた。記号的強化で信頼すべき計算核は大幅に縮小したが、完全には消えていない。</p>
+  <p>当初は膨大な経路を探索しそうに見えた空間が、180状態・9状態のオートマトンや6鉢の対称性を含む、はるかに小さな有限構造へ縮約したのも驚きの一つだった。</p>
+  <p>混合の下には硬い代数構造がある。今日の日付を知るだけなら知らなくてもよい。</p><hr>
+</section>
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>結局、パスタファリ暦とは何か</h2>
+  <p>対象日だけでなく、<strong>作業日と照会日の組</strong>によって日付が決まる決定論的な暦である。</p>
+  <p>日付は必ず5項目。現在は自身から見れば常に5000年だが、その5000年自体は作業日とともに動く。年は非常に長くなりうる。カツレツは連続する。月は連続しなくてよい。正規の週はない。</p>
+  <p>月の <code>n+1</code> 日目は明日とは限らない。同じ時系列上の日が明日は別のパスタファリラベルを持ちうる。同じ物理的瞬間が二地点で別々の現地パスタファリ日に入ることもある。終日予定も午前0時から午前0時とは限らない。年次の誕生日は、予定表の問題になる前に検索問題である。</p>
+  <p>それでも作業日と照会日が与えられれば曖昧さはない。正確な答えは一つだけ。</p>
+  <p>暦に必要なのは、結局それだけである。</p>
+</section>

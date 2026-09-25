@@ -1,187 +1,246 @@
-<!-- Versão pt-BR redigida diretamente a partir do conteúdo semântico mestre em hebraico. -->
-<!-- Os IDs de seção são estáveis e públicos; não devem ser derivados dos títulos traduzidos. -->
+<!-- Versão em português do Brasil, redigida diretamente a partir do conteúdo semântico hebraico. -->
+<!-- Os IDs das seções são estáveis e públicos; não dependem dos títulos traduzidos. -->
 <div class="about-section about-lead" id="about-calendar">
-  <p>Na narrativa do site, o Calendário Pastafari é apresentado como o calendário no qual o próprio tempo foi criado. A mecânica, porém, é definida com exatidão.</p>
-  <p>Um dia não recebe uma única “etiqueta” pastafari permanente. Para calcular a data são necessários dois dias: o <strong>dia de trabalho</strong>, a partir do qual se faz o cálculo, e o <strong>dia consultado</strong>, cuja data se quer saber.</p>
-  <p>Chamando-os de <code>c</code> e <code>t</code>, a data é</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre><p>e não <code>F(t)</code>. Assim, o mesmo dia consultado pode ter outra data pastafari quando o dia de trabalho muda.</p>
-  <p>Isso não é defeito; é o calendário.</p><hr>
+  <p>Na narrativa do site, o Calendário Pastafari é apresentado como o calendário em que o próprio tempo foi criado. A mecânica, por outro lado, é definida com precisão.</p>
+  <p>Um dia não recebe uma única “etiqueta” pastafari fixa. Para obter uma data são necessários dois dias: o <strong>dia de trabalho</strong>, a partir do qual o cálculo é feito, e o <strong>dia consultado</strong>, cuja data queremos saber.</p>
+  <p>Chamando o primeiro de <code>c</code> e o segundo de <code>t</code>, a data é</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>e não <code>F(t)</code>. Assim, o mesmo dia consultado pode receber outra data pastafari quando o dia de trabalho muda.</p>
+  <p>Isso não é defeito. É o calendário.</p><hr>
 </div>
-<section class="about-section" id="date-parts" data-toc-section data-toc-level="2"><h2>O que forma uma data pastafari?</h2>
-  <p>Ela tem <strong>exatamente cinco partes</strong>: número do ano, nome da almôndega, dia na almôndega, nome do mês e dia no mês.</p>
-  <p>Um exemplo abstrato: <strong>ano 5000, almôndega A, dia 417 da almôndega, mês B, dia 83 do mês.</strong></p>
-  <p>Dia de trabalho, localização do observador, identidade cronológica do dia e outros dados técnicos podem aparecer ao lado, mas não são um sexto campo da data.</p><hr>
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>O que há numa data pastafari?</h2>
+  <p>Há <strong>exatamente cinco partes</strong>: número do ano, nome da almôndega, dia dentro da almôndega, nome do mês e dia dentro do mês.</p>
+  <p>Por exemplo: <strong>ano 5000, almôndega A, dia 417 na almôndega, mês B, dia 83 no mês.</strong></p>
+  <p>O dia de trabalho, a posição do observador, a identidade cronológica do dia e outros dados técnicos podem aparecer ao lado da data, mas não formam um sexto campo.</p><hr>
 </section>
-<section class="about-section" id="working-day" data-toc-section data-toc-level="2"><h2>Por que existe um dia de trabalho?</h2>
-  <p>Num calendário comum, tendemos a achar que a data simplesmente “pertence” ao dia. Aqui ela pertence à relação entre dois dias.</p>
-  <p>Mudar <code>t</code> é perguntar por outro dia. Mudar <code>c</code> pode reconstruir o próprio calendário em que a pergunta é feita: limites de anos, almôndegas, meses, seus nomes e o entrelaçamento dos meses.</p>
-  <p>Por isso, um almanaque calculado hoje não precisa continuar correto amanhã. Evita-se, assim, a situação indesejável em que um calendário impresso ainda serve durante um ano inteiro.</p><hr>
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>Por que existe um dia de trabalho?</h2>
+  <p>Nos calendários comuns, parece natural dizer que a data “pertence” ao dia. Aqui ela depende da relação entre dois dias.</p>
+  <p>Mudar <code>t</code> significa perguntar por outro dia. Mudar <code>c</code> é mais profundo: pode reconstruir os limites dos anos, as almôndegas, os meses, seus nomes e a maneira como os meses são entrelaçados.</p>
+  <p>Por isso, um almanaque calculado hoje não é necessariamente o correto amanhã. Evita-se, assim, a situação indesejável em que um calendário impresso continue útil por um ano inteiro.</p><hr>
 </section>
-<section class="about-section" id="day-identity" data-toc-section data-toc-level="2"><h2>O mesmo dia, outra data</h2>
-  <p>É preciso separar a <strong>identidade do dia</strong> — sua posição estável na linha do tempo — da <strong>representação pastafari</strong>, a quíntupla calculada para esse dia sob determinado dia de trabalho.</p>
-  <p>No produto e na API, a primeira pode ser vista como um <code>day-id</code>, uma identidade cronológica que não muda com o contexto de exibição. Já</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre><p>e</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre><p>não precisam ser iguais.</p>
-  <p>Alterar manualmente o dia de trabalho pode mudar a data mostrada para o mesmo dia sem deslocá-lo na linha do tempo. Reuniões, nascimentos e fatos históricos seguem a mesma regra: o evento fica ancorado a uma identidade cronológica estável, enquanto a representação pastafari pode ser recalculada para o contexto de quem o vê.</p>
-  <p>A etiqueta pode mudar. O evento não.</p><hr>
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>Mesmo dia, outra data</h2>
+  <p>É importante separar <strong>identidade do dia</strong> de <strong>representação pastafari</strong>. A primeira é a posição estável do dia na linha do tempo; a segunda é a quíntupla produzida ao mostrar esse dia sob determinado dia de trabalho.</p>
+  <p>No produto e na API, a identidade estável pode ser pensada como <code>day-id</code>. Já</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre><p>e</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>não precisam ser iguais.</p>
+  <p>Alterar manualmente o dia de trabalho pode, portanto, mudar a data exibida para o mesmo dia sem deslocar esse dia em lugar algum.</p>
+  <p>O mesmo vale para eventos. Reuniões, nascimentos e fatos históricos devem continuar ancorados numa identidade cronológica estável; sua representação pastafari pode ser recalculada conforme o contexto em que são vistos.</p>
+  <p>A etiqueta muda. O evento não.</p><hr>
 </section>
-<section class="about-section" id="year-5000" data-toc-section data-toc-level="2"><h2>Ano 5000</h2>
-  <p>Quando o dia de trabalho e o dia consultado coincidem,</p><pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre><p>o ano é sempre</p><pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
-  <p>Portanto, o presente visto a partir de si mesmo está sempre no ano 5000. Mas esse ano não é um período histórico fixo: ele é escolhido novamente em relação ao dia de trabalho.</p>
-  <p>O dia de trabalho está dentro do ano 5000, e outros dias daquele mesmo ano também. Logo, <strong>estar no ano 5000 não demonstra que <code>t=c</code>.</strong></p>
-  <p>O número do ano, contudo, indica a direção:</p><pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre><p>e</p><pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
-  <p>Existe ainda o <strong>ano 0</strong>; mais para trás no tempo há anos de número negativo.</p><hr>
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>Ano 5000</h2>
+  <p>Quando o dia de trabalho e o dia consultado são o mesmo,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>o ano é sempre</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>Ou seja, o presente visto a partir de si mesmo está sempre no ano 5000. Mas o ano 5000 não é um período histórico fixo; ele é escolhido de novo em relação ao dia de trabalho.</p>
+  <p>O próprio dia de trabalho fica no ano 5000, e outros dias desse mesmo ano também. Portanto, <strong>estar no ano 5000 não prova que <code>t=c</code>.</strong></p>
+  <p>O número do ano informa a direção:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre><p>e</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p>Também existe o <strong>ano 0</strong>; para além dele, em direção ao passado, há anos com números negativos.</p><hr>
 </section>
-<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2"><h2>Anos e portões</h2>
-  <p>Um ano pastafari pode ter</p><pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ a }5778</code></pre><p>dias. São limites canônicos, não médias empíricas.</p>
-  <p>Assim, um ano pode ser menor que um ano solar ou durar mais de quinze anos solares. Os limites dos anos são construídos por um sistema de <strong>portões</strong>, que também fornece os limites das almôndegas.</p>
-  <p>Nada obriga o fim de um ano a coincidir com uma estação, uma órbita da Terra, um ciclo lunar ou a simples vontade prática de que o ano acabe.</p><hr>
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>Anos e portões</h2>
+  <p>Um ano pastafari pode ter</p><pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ a }5778</code></pre><p>dias. Esses são limites canônicos, não médias observadas experimentalmente.</p>
+  <p>Assim, um ano pode ser mais curto que um ano solar ou passar de quinze anos solares. Seus limites são construídos por um sistema de <strong>portões</strong>; os limites das almôndegas também vêm desse sistema.</p>
+  <p>Não existe obrigação de terminar um ano junto com uma estação, uma volta da Terra ao redor do Sol, um ciclo lunar ou qualquer necessidade prática de finalmente encerrar o ano.</p><hr>
 </section>
-<section class="about-section" id="cutlets" data-toc-section data-toc-level="2"><h2>Almôndegas</h2>
-  <p>Cada ano é dividido em <strong>6 a 17 almôndegas</strong>. Uma almôndega forma um trecho cronológico contínuo.</p>
-  <p>Se hoje é o dia 250 de uma almôndega, amanhã é o 251 — a menos que hoje seja seu último dia. Seus limites são portões e sua duração mínima é</p><pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre><p>dias.</p>
-  <p>Há 17 nomes canônicos de almôndegas, sem repetição do mesmo nome dentro de um ano. O nome não determina comprimento nem posição e não torna, por si só, a almôndega mais longa, mais curta, mais cedo ou mais tarde.</p><hr>
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>Almôndegas</h2>
+  <p>Cada ano é dividido em <strong>6 a 17 almôndegas</strong>. Uma almôndega é um trecho cronológico contínuo.</p>
+  <p>Se hoje é o dia 250 da almôndega, amanhã será o dia 251 nela, salvo se hoje for seu último dia. Os limites das almôndegas são portões, e uma almôndega tem pelo menos</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre><p>dias.</p>
+  <p>O sistema possui 17 nomes canônicos de almôndegas; nenhum nome se repete no mesmo ano. O nome não determina comprimento nem posição.</p><hr>
 </section>
-<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2"><h2>Meses e entrelaçamento</h2>
-  <p>Um ano contém</p><pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ a }47</code></pre><p>meses estruturais, e cada mês recebe</p><pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ a }123</code></pre><p>dias.</p>
-  <p>Mas um mês pastafari <strong>não precisa ser um intervalo cronológico contínuo</strong>. Pode acontecer, por exemplo:</p><blockquote><p>Mês A — dia 14<br>Mês B — dia 9<br>Mês A — dia 15</p></blockquote>
-  <p>Isso é perfeitamente válido. O dia 15 do mês A é o próximo dia <strong>desse mês</strong>, mesmo que um dia de outro mês tenha aparecido no meio.</p>
-  <p>“Dia no mês” não conta o tempo transcorrido desde a primeira aparição do mês. É a ordem da ocorrência daquele mês dentro do ano. Dia 48 significa o 48º dia atribuído ao mês, não que 47 dias cronológicos tenham se passado desde a primeira ocorrência.</p><hr>
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>Meses e entrelaçamento</h2>
+  <p>Cada ano contém</p><pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ a }47</code></pre><p>meses estruturais, e cada mês recebe</p><pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ a }123</code></pre><p>dias.</p>
+  <p>Um mês pastafari, porém, <strong>não precisa ser um intervalo contínuo</strong>. A ordem cronológica pode ser:</p>
+  <blockquote><p>Mês A — dia 14<br>Mês B — dia 9<br>Mês A — dia 15</p></blockquote>
+  <p>Isso é perfeitamente válido. O dia 15 do mês A é o próximo dia <strong>daquele mês</strong>, embora um dia de outro mês tenha ocorrido no meio.</p>
+  <p>“Dia no mês” não conta dias decorridos desde a primeira aparição do mês; é o número ordinal da participação daquele mês no ano. Dia 48 significa o 48º dia atribuído ao mês, não que 47 dias cronológicos tenham transcorrido desde a primeira ocorrência.</p><hr>
 </section>
-<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2"><h2>Os meses se entrelaçam</h2>
-  <p>Uma boa imagem é a de fios tecidos ao longo do ano. Cada dia pertence a um único mês; amanhã pode pertencer a outro, e depois o primeiro pode reaparecer continuando com seu número seguinte.</p>
-  <p>O tecido tem regras, sobretudo sobre a ordem das primeiras e últimas aparições, mas nenhuma regra exige que um mês termine antes do começo de outro.</p>
-  <ul><li>A almôndega mede posição num trecho cronológico contínuo.</li><li>O mês mede pertencimento a um fio estrutural que pode desaparecer e voltar.</li></ul>
-  <p>Um mês pode atravessar várias almôndegas e uma almôndega pode conter ocorrências de vários meses. Os limites de uma coisa não precisam coincidir com os da outra.</p><hr>
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>Os meses são tecidos uns através dos outros</h2>
+  <p>Pense nos meses como fios atravessando o ano. Cada dia pertence a exatamente um mês; amanhã pode pertencer a outro, e depois o primeiro pode voltar e continuar com seu próximo número.</p>
+  <p>Esse tecido tem regras, inclusive restrições sobre a ordem das primeiras e últimas aparições dos meses. O que ele não exige é que um mês termine antes de outro começar.</p>
+  <ul><li>A almôndega mede posição num trecho cronológico contínuo.</li><li>O mês mede pertença a um fio estrutural que pode desaparecer e reaparecer.</li></ul>
+  <p>Um mês pode atravessar várias almôndegas; uma almôndega pode conter ocorrências de muitos meses. Início e fim de almôndega não precisam coincidir com início e fim de mês.</p><hr>
 </section>
-<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2"><h2>O próximo dia do mês não é necessariamente amanhã</h2>
-  <p>Se hoje é o dia 17 de um mês, o dia 18 será <strong>a próxima ocorrência daquele mês</strong>. Pode ser amanhã; pode ser bem depois.</p>
-  <p><strong>Amanhã</strong> é o próximo dia cronológico. <strong>O próximo dia do mês</strong> é a próxima vez que aquele mês aparece.</p>
-  <p>Da mesma forma, “fim do mês” pode estar cronologicamente longe: num mês de 120 dias, o dia 120 pode aparecer muito depois do dia 119.</p><hr>
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>O próximo dia do mês talvez não seja amanhã</h2>
+  <p>Se hoje é o dia 17 de certo mês, o dia 18 desse mês é <strong>a próxima ocorrência daquele mês</strong>. Pode ser amanhã ou muito mais tarde.</p>
+  <p><strong>Amanhã</strong> é o próximo dia cronológico; <strong>o próximo dia do mês</strong> é a próxima vez em que o mês aparece.</p>
+  <p>Da mesma forma, “fim do mês” não implica proximidade cronológica. Um mês de 120 dias pode estar no dia 119 e ter o dia 120 bem adiante no ano.</p><hr>
 </section>
-<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2"><h2>Não há semanas</h2>
-  <p>A especificação canônica atual <strong>não define um sistema de semanas</strong>. Não existe uma supraunidade canônica de sete dias, nomes pastafari para dias da semana nem uma regra segundo a qual dois dias tenham o “mesmo dia da semana”.</p>
-  <p>É claro que uma semana civil pode ser sobreposta externamente; ela apenas não faz parte da data pastafari.</p><hr>
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>Não há semanas</h2>
+  <p>A especificação canônica atual <strong>não define um sistema de semanas</strong>. Não há unidade canônica de sete dias, nomes pastafari para dias da semana nem regra dizendo que dois dias sejam “o mesmo dia da semana”.</p>
+  <p>É possível sobrepor uma semana civil de fora; ela simplesmente não faz parte da data pastafari.</p><hr>
 </section>
-<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2"><h2>Nomes</h2>
-  <p>O calendário tem 17 nomes canônicos de almôndegas e 47 nomes canônicos de meses. Dentro de um ano, cada nome aparece no máximo uma vez em sua própria família.</p>
-  <p>A identidade de um nome é canônica e semântica; não é decidida por votação entre grafias, traduções ou implementações. A Megillah hebraica é a autoridade máxima para o significado dos nomes; tradução e transliteração pertencem à camada de apresentação.</p>
-  <p>O nome também não é um código oculto de duração. Nenhum nome determina que uma almôndega seja mais longa ou um mês, mais curto.</p><hr>
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>Nomes</h2>
+  <p>O calendário tem 17 nomes canônicos de almôndegas e 47 nomes canônicos de meses. Dentro de um ano, cada nome aparece no máximo uma vez em sua família.</p>
+  <p>A identidade do nome é canônica e semântica, não o resultado de uma votação entre grafias, traduções ou implementações. A Meguilá hebraica é a autoridade superior para o significado dos nomes; tradução e transliteração são camadas de apresentação.</p>
+  <p>O nome também não é um código secreto de comprimento: nenhum nome de almôndega força uma almôndega maior, e nenhum nome de mês força um mês menor.</p><hr>
 </section>
-<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2"><h2>Um pequeno fato sobre os meses</h2>
-  <p>Com 47 nomes de meses e no máximo 123 dias por mês, existem</p><pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre><p>pares sintaticamente possíveis “nome do mês + número do dia no mês”.</p>
-  <p>Cada dia do ano realiza exatamente um desses pares. Num ano de comprimento <code>L</code>, aparecem exatamente <code>L</code> pares. Como</p><pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre><p>todo ano necessariamente deixa de fora pelo menos</p><pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre><p>pares possíveis. Nem o ano mais longo tem dias suficientes para todos.</p><hr>
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>Um pequeno fato sobre os meses</h2>
+  <p>Há 47 nomes de meses, e cada mês pode chegar no máximo ao dia 123. Portanto existem</p><pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>pares sintaticamente possíveis do tipo “nome do mês + número do dia no mês”.</p>
+  <p>Cada dia do ano realiza exatamente um par. Se o ano tem comprimento <code>L</code>, aparecem exatamente <code>L</code> pares. Como</p><pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>faltam em todo ano pelo menos</p><pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre>
+  <p>pares possíveis. Nem o ano mais longo tem dias suficientes para usar todos.</p><hr>
 </section>
-<section class="about-section" id="calculation" data-toc-section data-toc-level="2"><h2>Como o calendário é calculado?</h2>
-  <p>Chamamos aqui o cálculo interno de <strong>molho</strong>. No centro está</p><pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre><p>que é primo.</p>
-  <p>O processo inclui cinco contadores de entrada, 7 gotas ocultas, 46 gotas visíveis, 6 tigelas, ordens variáveis das tigelas, 12 mexidas finais, selos que produzem respostas distintas, mecanismos de escolha combinatória, geração de portões, seleção de anos, partição em almôndegas, seleção de nomes, criação de meses e o entrelaçamento dos dias dos meses.</p>
-  <p>As atualizações finais são <strong>síncronas</strong>: em cada mexida, os seis novos valores são calculados a partir do mesmo estado antigo e só depois as seis tigelas são substituídas juntas.</p>
-  <p>Nas 12 mexidas finais há um detalhe canônico decisivo. Se <code>S</code> é a soma das seis tigelas antigas e <code>r</code> o número da mexida, calcula-se</p><pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
-  <p><code>R</code> é a <strong>soma salva</strong>. É <code>R</code>, e não a soma bruta <code>S</code>, que participa tanto da escolha da ordem das tigelas quanto da atualização interna.</p>
-  <p>Versões antigas que usavam a soma bruta nessa atualização não descrevem a semântica canônica atual. Exemplos derivados da regra antiga são obsoletos a menos que tenham sido verificados novamente.</p>
-  <p>Depois das mexidas, o anel de respostas também continua na ordem travada na gota visível 46; essa ordem não deve ser substituída automaticamente pela da última mexida.</p><hr>
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>Como o calendário é calculado?</h2>
+  <p>Chamamos aqui o cálculo interno de <strong>molho</strong>. No centro está</p><pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre><p>um número primo.</p>
+  <p>O processo inclui cinco contadores de entrada, 7 gotas ocultas, 46 gotas visíveis, 6 tigelas, ordens variáveis das tigelas, 12 mexidas finais, selos para produzir respostas diferentes, mecanismos de escolha combinatória, criação de portões, seleção de anos, divisão das almôndegas, escolha de nomes, criação de meses e tecido dos dias mensais.</p>
+  <p>As atualizações finais são <strong>síncronas</strong>: em cada mexida, os seis novos valores são calculados a partir da mesma fotografia do estado antigo; somente depois as seis tigelas são substituídas juntas.</p>
+  <p>Há um detalhe canônico especialmente importante nas 12 mexidas finais. Se <code>S</code> é a soma das seis tigelas antigas e <code>r</code> é o número da mexida, calcula-se</p><pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p><code>R</code> é a <strong>soma salva</strong>. Tanto a escolha da ordem das tigelas quanto a atualização interna usam <code>R</code>, e não a soma bruta <code>S</code>.</p>
+  <p>Versões antigas que inseriam a soma bruta nessa atualização não descrevem a semântica canônica atual; exemplos derivados da regra antiga devem ser tratados como obsoletos até nova verificação.</p>
+  <p>Depois das mexidas, o anel de respostas continua na ordem travada na 46ª gota visível; ela não deve ser trocada automaticamente pela ordem da última mexida.</p><hr>
 </section>
-<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2"><h2>Short Choice e Wide Choice</h2>
-  <p><strong>Short Choice</strong> é usado quando o espaço de opções é relativamente pequeno. Ele aplica amostragem por rejeição para evitar o viés de uma operação simples de módulo.</p>
-  <p>Espaços muito grandes usam <strong>Wide Choice</strong>. Ele não equivale a gerar dígitos independentes e uniformes em base <code>Q</code> até sair um índice.</p>
-  <p>Portanto, não se pode concluir que toda opção válida tenha necessariamente a mesma probabilidade positiva. Em espaços suficientemente grandes podem existir até opções válidas inalcançáveis por esse mecanismo específico.</p>
-  <p>O calendário continua inteiramente determinístico. “Choice” é nome de uma etapa algorítmica, não de um sorteio executado durante o uso.</p><hr>
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice e Wide Choice</h2>
+  <p><strong>Short Choice</strong> é usada em espaços de opções relativamente pequenos. Ela emprega amostragem por rejeição para evitar o viés de uma operação de módulo simples.</p>
+  <p>Espaços muito grandes usam <strong>Wide Choice</strong>. Não se deve atribuir a ela propriedades que a especificação não garante.</p>
+  <p>Wide Choice não equivale a gerar dígitos independentes e uniformes em base <code>Q</code> até obter um índice. Portanto, não se segue que toda opção válida tenha necessariamente a mesma probabilidade positiva; em espaços suficientemente grandes, pode haver opções legais que esse mecanismo nem sequer alcança.</p>
+  <p>O calendário continua totalmente determinístico. “Choice” é o nome de uma etapa do algoritmo, não de um sorteio feito durante o uso.</p><hr>
 </section>
-<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2"><h2>O Atlas estrutural</h2>
-  <p>As regras acima pertencem ao calendário. Os números a seguir são outra coisa: <strong>achados empíricos</strong> de uma grande amostra computacional.</p>
-  <p>O atlas foi construído com o commit do motor <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code>. O corpus contém 4,096 dias de trabalho; os anos 4990–5010 para cada um; 86,016 estruturas de ano; 625,437 almôndegas; 3,535,422 meses estruturais; mais de 356 milhões de trechos mensais contínuos; e mais de 364 milhões de transições do dia <code>n</code> para o dia <code>n+1</code> do mesmo mês.</p>
-  <p>Isso descreve o corpus, não estabelece leis canônicas.</p>
-  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Dados medidos do Atlas estrutural"><table class="about-table"><thead><tr><th scope="col">Grandeza medida</th><th scope="col">Resultado na amostra</th></tr></thead><tbody>
-    <tr><td>Duração média do ano</td><td>4,275.182 dias</td></tr><tr><td>Mediana da duração do ano</td><td>4,343</td></tr><tr><td>Mínimo / máximo observados</td><td>716 / 5,778</td></tr>
-    <tr><td>Média de almôndegas por ano</td><td>7.271</td></tr><tr><td>Anos com exatamente 6 almôndegas</td><td>42.00%</td></tr><tr><td>Anos com 6–8 almôndegas</td><td>81.29%</td></tr>
-    <tr><td>Duração média da almôndega</td><td>587.963 dias</td></tr><tr><td>Mediana da duração da almôndega</td><td>560</td></tr>
-    <tr><td>Média de meses por ano</td><td>41.102</td></tr><tr><td>Mediana do número de meses</td><td>43</td></tr><tr><td>Anos com 47 meses</td><td>15.63%</td></tr><tr><td>Anos com pelo menos 45 meses</td><td>36.81%</td></tr>
-    <tr><td>Duração média do mês estrutural</td><td>104.014 dias</td></tr><tr><td>Mediana da duração do mês</td><td>115</td></tr><tr><td>Média de trechos contínuos por mês</td><td>100.897</td></tr>
-    <tr><td>Trechos mensais de um único dia</td><td>97.482%</td></tr><tr><td>Probabilidade de dois dias adjacentes estarem no mesmo mês</td><td>2.9976%</td></tr>
-    <tr><td>Média de dias de outros meses entre <code>n</code> e <code>n+1</code></td><td>40.408</td></tr><tr><td>Extensão média da primeira à última ocorrência de um mês</td><td>4,266.653 dias</td></tr>
-  </tbody></table></div>
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>O Atlas Estrutural</h2>
+  <p>Até aqui tratamos das regras do calendário. Os números a seguir são outra coisa: <strong>resultados empíricos</strong> de uma grande amostra computacional.</p>
+  <p>O atlas foi construído com o commit do motor <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> e contém 4,096 dias de trabalho; os anos 4990–5010 para cada um; 86,016 estruturas de ano; 625,437 almôndegas; 3,535,422 meses estruturais; mais de 356 milhões de trechos mensais contínuos; e mais de 364 milhões de transições do dia <code>n</code> para <code>n+1</code> do mesmo mês.</p>
+  <p>São descrições desse corpus, não leis canônicas.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Dados medidos do Atlas Estrutural"><table class="about-table">
+    <thead><tr><th scope="col">Grandeza medida</th><th scope="col">Resultado na amostra</th></tr></thead><tbody>
+      <tr><td>Comprimento médio do ano</td><td>4,275.182 dias</td></tr><tr><td>Mediana do comprimento do ano</td><td>4,343</td></tr><tr><td>Mínimo / máximo observado</td><td>716 / 5,778</td></tr>
+      <tr><td>Média de almôndegas por ano</td><td>7.271</td></tr><tr><td>Anos com exatamente 6 almôndegas</td><td>42.00%</td></tr><tr><td>Anos com 6–8 almôndegas</td><td>81.29%</td></tr>
+      <tr><td>Comprimento médio de almôndega</td><td>587.963 dias</td></tr><tr><td>Mediana do comprimento de almôndega</td><td>560</td></tr><tr><td>Média de meses por ano</td><td>41.102</td></tr>
+      <tr><td>Mediana da quantidade de meses</td><td>43</td></tr><tr><td>Anos com 47 meses</td><td>15.63%</td></tr><tr><td>Anos com pelo menos 45 meses</td><td>36.81%</td></tr>
+      <tr><td>Comprimento médio de mês estrutural</td><td>104.014 dias</td></tr><tr><td>Mediana do comprimento de mês</td><td>115</td></tr><tr><td>Média de trechos contínuos por mês</td><td>100.897</td></tr>
+      <tr><td>Trechos mensais de um único dia</td><td>97.482%</td></tr><tr><td>Probabilidade de dias adjacentes pertencerem ao mesmo mês</td><td>2.9976%</td></tr>
+      <tr><td>Média de dias de outros meses entre <code>n</code> e <code>n+1</code></td><td>40.408</td></tr><tr><td>Extensão média da primeira à última ocorrência do mês</td><td>4,266.653 dias</td></tr>
+    </tbody></table></div>
   <p>Na prática, um mês com cerca de cem dias pode ficar espalhado por quase um ano pastafari inteiro.</p>
-  <p>O mesmo atlas revelou um viés natural de duração em torno do ano 5000. Um ano “normal” da amostra tinha cerca de 4,262 dias em média; ponderando pelo número de dias do ano, a média sobe para cerca de 4,466; o próprio ano 5000 chegou a cerca de 4,499. O motivo é simples: o ano 5000 precisa conter o dia de trabalho, e um ano longo oferece mais dias nos quais pode ser esse ano.</p>
-  <p>A associação entre nome da unidade e duração também foi muito fraca na amostra. Isso não prova independência matemática completa, mas o atlas não mostra sinal prático de que os nomes tenham sido feitos para codificar duração.</p>
-  <p>Além disso, as 86,016 estruturas não são 86,016 amostras totalmente independentes: nelas há apenas 24,786 intervalos distintos entre portão inicial e final. Dias de trabalho vizinhos podem escolher o mesmo intervalo anual e ainda produzir estruturas internas diferentes.</p>
-  <p>O atlas é excelente para descrever o comportamento da implementação medida; não deve ser tratado como teorema probabilístico sobre todo universo possível do calendário.</p><hr>
+  <p>O mesmo atlas revelou um viés natural de comprimento em torno do ano 5000. Um ano “normal” da amostra teve em média cerca de 4,262 dias; ponderando os anos pelo número de dias que contêm, a média sobe para cerca de 4,466; o ano 5000 próprio ficou em cerca de 4,499 dias.</p>
+  <p>A razão é simples: o ano 5000 precisa conter o dia de trabalho. Um ano comprido oferece mais dias em que pode ser o ano que contém esse dia.</p>
+  <p>A relação entre o nome da unidade e seu comprimento também foi muito fraca na amostra. Isso não prova independência matemática total, mas o atlas não dá sinal prático de que os nomes tenham sido feitos para codificar comprimento.</p>
+  <p>E as 86,016 estruturas de ano não são 86,016 amostras totalmente independentes: há apenas 24,786 intervalos distintos entre portões de início e fim. Dias de trabalho vizinhos podem escolher o mesmo intervalo anual e ainda gerar estrutura interna diferente.</p>
+  <p>O atlas é excelente para descrever o comportamento medido, não para fingir um teorema probabilístico sobre todas as estruturas possíveis.</p><hr>
 </section>
-<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2"><h2>Aniversários</h2>
-  <p>“O mesmo dia todo ano” precisa ser definido. Coordenadas naturais são <code>(nome do mês, dia no mês)</code>, <code>(nome da almôndega, dia na almôndega)</code> ou condições combinadas.</p>
-  <p>Um aniversário pastafari não é simplesmente <code>RRULE:FREQ=YEARLY</code>: é preciso procurar o próximo ano que satisfaça a condição escolhida. O evento original não é contado automaticamente como sua própria “próxima ocorrência”, e alterar o dia de trabalho apenas para exibição não deve mudar identidade, instante de nascimento ou idade.</p>
-  <p>Numa varredura exata de 4,096 datas de si mesmas, cada ano pastafari sucessivo foi examinado para frente e para trás até 250,000 anos em cada direção:</p>
-  <ul><li>para <code>(nome do mês, dia no mês)</code>, a mediana foi 1 ano pastafari; 77.56% reapareceram no ano adjacente, 93.77% em até dois anos, 99.44% em até cinco, e o máximo observado foi 21 anos;</li>
-  <li>para <code>(nome da almôndega, dia na almôndega)</code>, a mediana foi 3 anos; 88.89% foram encontrados em até dez, mas a distribuição tinha uma cauda muito pesada e o máximo observado chegou a 51,954 anos pastafari.</li></ul>
-  <p>São <strong>resultados empíricos do corpus testado</strong>, não prova de que todo aniversário possível precise voltar nem garantia de espera máxima.</p><hr>
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>Aniversários</h2>
+  <p>“O mesmo dia todo ano” precisa de uma definição. Duas coordenadas naturais de recorrência são <code>(nome do mês, dia no mês)</code> e <code>(nome da almôndega, dia na almôndega)</code>; também é possível combinar condições.</p>
+  <p>Um aniversário pastafari não equivale simplesmente a <code>RRULE:FREQ=YEARLY</code>. É preciso procurar o próximo ano que satisfaça a condição escolhida, e o evento original não é contado automaticamente como sua própria “próxima ocorrência”.</p>
+  <p>Mudar o dia de trabalho apenas para exibição não deve mudar a identidade da pessoa, o instante do nascimento ou sua idade.</p>
+  <p>Numa varredura exata de 4,096 datas próprias, cada ano pastafari sucessivo foi testado para a frente e para trás até 250,000 anos em cada direção:</p>
+  <ul><li>para <code>(nome do mês, dia no mês)</code>, a mediana foi 1 ano pastafari; 77.56% das primeiras recorrências ocorreram já no ano adjacente, 93.77% em até dois anos, 99.44% em até cinco; o máximo observado foi 21 anos;</li>
+  <li>para <code>(nome da almôndega, dia na almôndega)</code>, a mediana foi 3 anos; 88.89% apareceram em até 10, mas a distribuição teve cauda muito pesada, com máximo observado de 51,954 anos pastafari.</li></ul>
+  <p>São <strong>resultados empíricos do corpus testado</strong>, não prova de que toda recorrência possível tenha de voltar nem garantia de tempo máximo de espera.</p><hr>
 </section>
-<section class="about-section" id="appointments" data-toc-section data-toc-level="2"><h2>Como marcar um encontro?</h2>
-  <p>Duas pessoas que marquem um encontro apenas por uma data pastafari precisam concordar pelo menos com a quíntupla e com o dia de trabalho usado no cálculo. É melhor guardar esse dia por uma identidade estável, e não pela palavra “hoje”; caso contrário, cada uma pode calcular um calendário diferente.</p>
-  <ul><li>“amanhã” é o próximo dia cronológico;</li><li>“próximo dia do mês” é a próxima ocorrência daquele mês;</li><li>“fim do mês” é sua última ocorrência;</li><li>“mês inteiro” pode significar o conjunto dos dias do mês ou todo o intervalo da primeira à última ocorrência;</li><li>“próximo ano” se refere ao calendário construído sob o dia de trabalho escolhido.</li></ul>
-  <p>Se o encontro for especialmente importante, também se pode guardar o dia ou instante cronológico absoluto. O calendário não será prejudicado por isso.</p><hr>
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>Como marcar um compromisso?</h2>
+  <p>Para marcar um encontro usando somente uma data pastafari, duas pessoas precisam concordar pelo menos com a quíntupla e com o dia de trabalho usado no cálculo. É melhor guardar esse dia como uma identidade estável, e não como a palavra “hoje”; caso contrário, cada pessoa pode calcular um calendário diferente.</p>
+  <ul><li>“amanhã” é o próximo dia cronológico;</li><li>“próximo dia no mês” é a próxima ocorrência daquele mês;</li><li>“fim do mês” é a última ocorrência;</li><li>“mês inteiro” pode significar o conjunto dos dias do mês ou toda a extensão cronológica da primeira à última ocorrência;</li><li>“ano seguinte” se refere ao calendário construído sob o dia de trabalho escolhido.</li></ul>
+  <p>Para um compromisso especialmente importante, pode-se guardar também o dia ou instante cronológico absoluto. O calendário não se ofende.</p><hr>
 </section>
-<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2"><h2>Viagens, eventos e all-day</h2>
-  <p>Um evento não é a mesma coisa que a etiqueta local exibida para ele. Eventos agendados devem ficar ancorados a um instante cronológico estável. Viajar não move o evento no tempo, mas pode mudar a data pastafari local mostrada naquele instante, pois a definição do “dia local” depende da localização.</p>
-  <p>A diferença é ainda maior num evento <strong>all-day</strong>. Um evento civil de dia inteiro geralmente vai de uma meia-noite civil à seguinte. O equivalente pastafari deve ir de um limite local de dia pastafari ao limite seguinte. Em geral não são os mesmos instantes.</p>
-  <p>Exportar cegamente um evento pastafari como “dia inteiro” num calendário civil pode alterar seu significado. Para preservá-lo com exatidão é preciso guardar a âncora cronológica e o contexto de localização/limite do dia, não apenas marcar <code>all-day</code>.</p><hr>
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>Viagens, eventos e all-day</h2>
+  <p>Um evento não é a mesma coisa que a etiqueta local mostrada para ele. Um evento agendado deve ficar ancorado a um instante cronológico estável. Viajar não move o evento no tempo, mas pode mudar a data pastafari local exibida naquele instante, porque a definição de “dia local” depende do lugar.</p>
+  <p>Num evento <strong>all-day</strong>, a diferença é ainda maior. Um evento civil de dia inteiro normalmente vai de uma meia-noite civil à seguinte; um evento pastafari de dia inteiro deve ir de um limite local de dia pastafari ao próximo. Em geral, não são os mesmos instantes.</p>
+  <p>Exportar cegamente um evento pastafari como “dia inteiro” num calendário civil pode mudar seu sentido. Para preservá-lo, é preciso guardar a âncora cronológica e o contexto apropriado de local/limite do dia, não apenas marcar <code>all-day</code>.</p><hr>
 </section>
-<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2"><h2>Quando o dia muda?</h2>
-  <p>O dia pastafari local não muda à meia-noite. Seu limite é o <strong>trânsito meridiano inferior topocêntrico do centro de Vênus pelo meridiano local</strong>.</p>
-  <p>É um evento astronômico local, dependente da posição. Portanto, não precisa ocorrer às 00:00; não é determinado pelo fuso horário civil; não se desloca simplesmente porque o horário de verão começou ou terminou; e não exige que Vênus esteja visível a olho nu.</p>
-  <p>O mesmo instante físico pode ficar em lados diferentes do limite local em duas localidades. Se o sistema não tiver uma localização utilizável do usuário, o local de fallback do produto é <strong>Kisurra</strong>.</p><hr>
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>Quando o dia muda?</h2>
+  <p>O dia pastafari local não muda à meia-noite. O limite é definido pela <strong>passagem meridiana inferior topocêntrica do centro de Vênus pelo meridiano local</strong>.</p>
+  <p>Trata-se de um evento astronômico local dependente da posição. A troca de dia não precisa acontecer às 00:00, não é definida pelo fuso horário civil, não muda só porque o horário de verão começou ou terminou e não exige que Vênus esteja visível a olho nu.</p>
+  <p>No mesmo instante físico, dois lugares podem estar em lados diferentes de seus limites locais do dia. Se o sistema não dispõe de uma localização utilizável do usuário, o produto adota <strong>Kisurra</strong> como localização de reserva.</p><hr>
 </section>
-<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2"><h2>Calendário impresso e cálculo à mão</h2>
-  <p>É possível imprimir um calendário pastafari; basta dizer para qual dia de trabalho ele foi calculado. Ele mostra a estrutura do tempo vista daquele dia e pode precisar ser substituído quando o dia de trabalho muda. A impressora continua relevante.</p>
-  <p>Também é possível calcular tudo à mão, porque a especificação é completa e determinística: contadores de entrada, 7 gotas ocultas, 46 visíveis, seis tigelas, 12 mexidas finais, respostas, portões, anos e almôndegas, escolhas combinatórias, nomes e entrelaçamento dos meses.</p>
-  <p>Isso poupa o trabalho de lembrar que fevereiro às vezes tem 28 dias e às vezes 29.</p><hr>
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>Calendário impresso e cálculo à mão</h2>
+  <p>É possível imprimir um calendário pastafari; basta indicar para qual dia de trabalho ele foi calculado. Esse calendário mostra a estrutura do tempo a partir da perspectiva daquele dia. Quando o dia de trabalho muda, pode ser preciso um novo calendário. A impressora continua relevante.</p>
+  <p>Também dá para calcular tudo à mão, pois a especificação é completa e determinística: calcular os contadores de entrada, executar 7 gotas ocultas e 46 visíveis, atualizar seis tigelas, fazer 12 mexidas finais, produzir respostas, construir portões, escolher anos e almôndegas, executar escolhas combinatórias, selecionar nomes e tecer os meses.</p>
+  <p>Assim evita-se a necessidade de lembrar que fevereiro às vezes tem 28 dias e às vezes 29.</p><hr>
 </section>
-<section class="about-section" id="seer" data-toc-section data-toc-level="2"><h2>O que é Seer?</h2>
-  <p>Ao lado da implementação canônica existe um motor rápido chamado <strong>Pastafarian Calendar Seer</strong>. Seer não é fonte de autoridade: a Megillah e o cálculo canônico determinam a data correta. Se houver divergência, Seer está errado.</p>
-  <p>Sua função é responder às mesmas perguntas rapidamente e de forma conveniente para integração em produtos.</p>
-  <p>Na verificação ao vivo feita durante a edição desta página, Seer incluía consultas de data e “agora”, batch, intervalos, conversão reversa para um dia-alvo, estrutura anual, resolução do dia de trabalho ativo, API Node, cliente browser/HTTP, CLI, serviço HTTP v1, contrato OpenAPI 3.1, implementações nativas e pacotes de distribuição, além de deployment de contêiner verificado.</p>
-  <p>A antiga afirmação de que Seer não tem API pública deixou de ser verdadeira. Existe um contrato HTTP v1 explícito e estável, com endpoints para data, range, batch, year, reverse, dia de trabalho, metadata, locales e status.</p>
-  <p>Em 21 de setembro de 2026, um deployment HTTPS público no Render também foi testado na prática: consultas exatas, intervalo grande, reinício, cold wake e comportamento sob carga foram exercitados no serviço em produção de teste.</p>
-  <p>A documentação do projeto ainda distingue esse deployment público de beta/avaliação de um serviço hospedado de produção permanente com SLA. Por isso, uma explicação conceitual não deve transformar endereço de servidor, provedor ou número de versão em doutrina do calendário.</p>
-  <p>Seer pode usar pré-cálculo, representações especiais, SIMD, álgebra e outros atalhos, desde que realize a mesma operação semântica e produza a mesma resposta. Otimização não cria outra autoridade.</p><hr>
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>E o Seer?</h2>
+  <p>Ao lado da implementação canônica existe um motor rápido chamado <strong>Pastafarian Calendar Seer</strong>. Seer não é fonte de autoridade: a Meguilá e o cálculo canônico determinam a data correta. Se houver divergência, Seer está errado.</p>
+  <p>Seu objetivo é responder às mesmas consultas rapidamente e de forma conveniente para integração em produtos.</p>
+  <p>Na verificação ao vivo feita durante a edição desta página, Seer incluía consultas de data e de “agora”, batch, intervalos de dias, conversão reversa para um dia-alvo, recuperação da estrutura do ano, resolução do dia de trabalho ativo, API para Node, cliente de navegador/HTTP, CLI, serviço HTTP v1, contrato OpenAPI 3.1, implementações native e pacotes de distribuição, além de implantação verificada em container.</p>
+  <p>A antiga afirmação de que Seer não tinha API pública deixou de ser verdadeira. Há um contrato HTTP v1 explícito e estável, com endpoints para data, range, batch, year, reverse, dia de trabalho, metadata, locales e status.</p>
+  <p>Em 21 de setembro de 2026, uma implantação HTTPS pública no Render foi testada de fato: consultas exact, intervalo grande, restart, cold wake e comportamento sob carga foram exercitados no serviço ao vivo.</p>
+  <p>A documentação do projeto ainda distingue essa implantação pública de beta/avaliação de um serviço hosted production permanente com SLA. Por isso, uma página conceitual não deve fixar endereço de servidor, provedor de hospedagem ou número de versão como se fossem parte do calendário.</p>
+  <p>Seer pode usar pré-cálculo, representações especiais, SIMD, álgebra e outros atalhos. Não precisa repetir passo a passo toda a história computacional da implementação canônica, contanto que realize a mesma operação semântica e devolva a mesma resposta.</p>
+  <p>Otimização não é uma autoridade alternativa.</p><hr>
 </section>
-<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2"><h2>Origem, Dia da Fundação e Dia das Tábuas</h2>
-  <p>Aqui é importante separar âncoras canônicas da narrativa do site.</p>
-  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3"><h3>As âncoras</h3>
-    <p>O sistema tem um dia de referência fixo chamado <strong>Dia da Fundação</strong>. No calendário gregoriano proléptico ele é <strong>22 de dezembro de 41,222 a.C.</strong>. Não é “o começo do tempo”; é uma âncora computacional.</p>
-    <p>Os dias ao redor usam uma codificação positiva ímpar/par: Fundação = 1; depois vêm 3, 5 e assim por diante; indo para o passado, o dia imediatamente anterior é 2, depois 4, 6 etc. Assim ambos os lados da âncora são representados sem números negativos nesse contador.</p>
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>Origem, Dia da Fundação e Dia das Tábuas</h2>
+  <p>Aqui é essencial separar âncoras canônicas da narrativa do site.</p>
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>As âncoras</h3>
+    <p>O sistema tem um dia de referência fixo chamado <strong>Dia da Fundação</strong>. No calendário gregoriano proléptico, é <strong>22 de dezembro de 41,222 a.C.</strong></p>
+    <p>O Dia da Fundação não é o “início do tempo”; é uma âncora de cálculo.</p>
+    <p>A numeração ao redor dele usa inteiros positivos ímpares e pares: Fundação = 1; os dias seguintes = 3, 5 etc. Em direção ao passado, o dia anterior = 2; depois 4, 6 e assim por diante. Assim os dois lados da âncora são codificados sem números de dia negativos nesse contador.</p>
     <p>Outra âncora é o <strong>Dia das Tábuas</strong>: <strong>15 de junho de 763 a.C. no calendário juliano proléptico</strong>, equivalente a <strong>7 de junho de 763 a.C. no calendário gregoriano proléptico</strong>.</p>
-    <p>A distância exata entre Fundação e Tábuas é</p><pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre><p>dias.</p>
-    <p>As duas são identidades cronológicas fixas; a data pastafari exibida para cada uma ainda depende do dia de trabalho usado na consulta.</p>
+    <p>A distância exata entre o Dia da Fundação e o Dia das Tábuas é</p><pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre><p>dias.</p>
+    <p>São âncoras fixas na linha do tempo. A data pastafari exibida para elas continua dependendo do dia de trabalho usado na consulta.</p>
   </section>
-  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3"><h3>A narrativa do site</h3>
-    <p>Na moldura editorial do site, o calendário é apresentado como parte da criação e como um sistema que a humanidade usou sem ter consciência suficiente dele até sua reentrega moderna.</p>
-    <p>Isso é a narrativa do site. Seus detalhes narrativos não devem ser todos promovidos a proposições técnicas explícitas da Megillah.</p>
-    <p>O evento da reentrega em si é um evento histórico fixo. No site, é melhor mostrar sua <strong>data pastafari</strong> dinamicamente sob o dia de trabalho atual do que congelar para sempre uma única data ao lado dele.</p><hr>
-  </section>
-</section>
-<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2"><h2>Avançado: conversão reversa</h2>
-  <p>Quando o dia de trabalho <code>c</code> é conhecido, a conversão reversa é muito restritiva. Dentro de um ano pastafari conhecido,</p><pre class="math-block" dir="ltr" tabindex="0"><code>(\text{nome da almôndega},\text{dia na almôndega})</code></pre><p>identifica no máximo um dia. O mesmo vale para</p><pre class="math-block" dir="ltr" tabindex="0"><code>(\text{nome do mês},\text{dia no mês})</code></pre><p>Logo, uma data completa com <code>c</code> conhecido identifica unicamente o dia-alvo.</p>
-  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Limites de candidatos na conversão reversa"><table class="about-table"><thead><tr><th scope="col">Informação adicional conhecida</th><th scope="col">Máximo de candidatos</th></tr></thead><tbody>
-    <tr><td>Nenhum campo além do ano</td><td>5,778</td></tr><tr><td>Somente nome da almôndega</td><td>5,568</td></tr><tr><td>Somente dia na almôndega</td><td>17</td></tr><tr><td>Somente nome do mês</td><td>123</td></tr><tr><td>Somente dia no mês</td><td>47</td></tr><tr><td>Nome da almôndega + dia nela</td><td>1</td></tr><tr><td>Nome do mês + dia nele</td><td>1</td></tr><tr><td>Quaisquer três campos não anuais</td><td>1</td></tr><tr><td>Todos os quatro campos não anuais</td><td>1</td></tr>
-  </tbody></table></div>
-  <p>Sem conhecer <code>c</code>, a mesma quíntupla pode aparecer sob dias de trabalho diferentes e a distâncias diferentes. Há testemunhos exatos disso. Mesmo no ano 5000, o sinal da distância não é sempre determinado pela quíntupla: a mesma data completa pode estar no passado em um contexto e no futuro em outro.</p>
-  <p>Portanto, uma data pastafari completa não é um endereço absoluto na linha do tempo se não soubermos qual <code>c</code> foi usado.</p>
-  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3"><h3>Estrutura em tempos muito distantes</h3>
-    <p>Trabalho matemático derivado também estabeleceu uma estrutura assintótica exata. Para um <strong>dia de trabalho fixo</strong> <code>c</code>, suficientemente longe na cauda do passado há periodicidade afim.</p>
-    <p>Se</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre><p>então, para esse mesmo <code>c</code>, existem um deslocamento <code>H_c</code>, um decremento anual <code>p_c</code> e um limiar suficientemente remoto tais que além dele</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
-    <p>Os quatro campos não anuais se repetem enquanto o número do ano muda por uma quantidade fixa.</p>
-    <p>Esse é um teorema para <code>c</code> fixo. Ele não estabelece uma relação global do tipo</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre><p>e continua em aberto se a inclinação assintótica final realmente varia entre dias de trabalho distintos.</p><hr>
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>A narrativa do site</h3>
+    <p>Na formulação editorial do site, o calendário aparece como parte da criação e como um sistema que a humanidade teria usado sem consciência suficiente até sua reentrega moderna.</p>
+    <p>Isso é a narrativa do site; seus detalhes não devem ser apresentados todos como proposições técnicas explícitas da Meguilá.</p>
+    <p>O evento da reentrega em si é um acontecimento histórico fixo. No site, sua <strong>data pastafari</strong> deve de preferência ser mostrada dinamicamente sob o dia de trabalho atual, e não congelada para sempre como uma única data.</p><hr>
   </section>
 </section>
-<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2"><h2>Avançado: quanta história o molho preserva?</h2>
-  <p>O molho parece misturar agressivamente, mas a pesquisa algébrica mostrou que ele retém muito mais informação do que sua aparência sugere. Isso é pesquisa derivada da especificação, não uma regra adicional do calendário.</p>
-  <p>Nas etapas visíveis 3–46, a injetividade genérica foi estabelecida no ramo assintótico relevante: genericamente, o estado conserva informação suficiente para reconstruir a história pertinente das entradas e das ordens das tigelas.</p>
-  <p>A informação também não desaparece de imediato nas 12 mexidas finais. Para as primeiras cinco depois da gota visível 46, a invertibilidade genérica foi estabelecida na união canônica relevante sem informação lateral extra. Para as demais, conhecem-se fortes limites construtivos da informação lateral suficiente para reconstrução.</p>
-  <p>Ainda está aberta a questão de se <strong>as seis tigelas finais, sozinhas</strong>, são sempre genericamente suficientes.</p>
-  <p>Alguns resultados foram demonstrados simbolicamente; outros foram fechados por verificações aritméticas finitas e exatas. O reforço simbólico reduziu muito o núcleo computacional que precisa ser confiado, mas não o eliminou.</p>
-  <p>Espaços que pareciam exigir percorrer enormes quantidades de caminhos se reduziram a estruturas finitas bem menores, incluindo autômatos de 180 e 9 estados e simetrias das seis tigelas. Sob a mistura há uma estrutura algébrica rígida.</p>
-  <p>Nada disso é necessário para descobrir a data de hoje.</p><hr>
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>Avançado: conversão reversa</h2>
+  <p>Quando o dia de trabalho <code>c</code> é conhecido, a conversão reversa é muito forte. Dentro de um ano pastafari conhecido,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{nome da almôndega},\text{dia na almôndega})</code></pre>
+  <p>identifica no máximo um dia. O mesmo vale para</p><pre class="math-block" dir="ltr" tabindex="0"><code>(\text{nome do mês},\text{dia no mês})</code></pre>
+  <p>Logo, uma data completa com dia de trabalho conhecido identifica unicamente o dia-alvo.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Limites de candidatos na conversão reversa"><table class="about-table">
+    <thead><tr><th scope="col">Informação adicional conhecida</th><th scope="col">Máximo de candidatos</th></tr></thead><tbody>
+      <tr><td>Nenhum campo não anual</td><td>5,778</td></tr><tr><td>Apenas nome da almôndega</td><td>5,568</td></tr><tr><td>Apenas dia na almôndega</td><td>17</td></tr>
+      <tr><td>Apenas nome do mês</td><td>123</td></tr><tr><td>Apenas dia no mês</td><td>47</td></tr><tr><td>Nome da almôndega + dia na almôndega</td><td>1</td></tr>
+      <tr><td>Nome do mês + dia no mês</td><td>1</td></tr><tr><td>Quaisquer três campos não anuais</td><td>1</td></tr><tr><td>Todos os quatro campos não anuais</td><td>1</td></tr>
+    </tbody></table></div>
+  <p>Sem conhecer o dia de trabalho, a situação muda. A mesma quíntupla pode surgir sob dias de trabalho distintos; há testemunhas exatas em que a mesma data completa aparece a distâncias diferentes de <code>c</code>.</p>
+  <p>No ano 5000, nem sequer o sinal dessa distância é sempre determinado pela quíntupla: a mesma data completa pode estar no passado do dia de trabalho num contexto e no futuro em outro.</p>
+  <p>Uma data pastafari completa não é, portanto, um endereço absoluto na linha do tempo sem sabermos qual <code>c</code> foi usado.</p>
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>Estrutura em tempos remotos</h3>
+    <p>O trabalho matemático derivado também encontrou uma estrutura assintótica exata. Para um <strong>dia de trabalho fixo</strong> <code>c</code>, suficientemente longe na cauda do passado existe periodicidade afim.</p>
+    <p>Se</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>então, para esse mesmo <code>c</code>, existem um deslocamento <code>H_c</code>, uma variação de ano <code>p_c</code> e um limiar suficientemente distante tais que, depois dele,</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>Os quatro campos não anuais se repetem, enquanto o número do ano muda por uma quantidade fixa.</p>
+    <p>É um teorema para <code>c</code> fixo. Ele não implica uma identidade global como</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>e continua em aberto se a inclinação assintótica final realmente varia entre dias de trabalho diferentes.</p><hr>
+  </section>
 </section>
-<section class="about-section" id="summary" data-toc-section data-toc-level="2"><h2>Afinal, o que é o Calendário Pastafari?</h2>
-  <p>É um calendário determinístico no qual a data não é função apenas do dia-alvo, mas do <strong>dia de trabalho e do dia consultado em conjunto</strong>.</p>
-  <p>Cada data tem cinco campos exatos. O presente visto de si mesmo está sempre no ano 5000, embora esse ano se mova com o dia de trabalho. Anos podem ser imensos; almôndegas são contínuas; meses não precisam ser; não há semana canônica.</p>
-  <p>O dia <code>n+1</code> de um mês pode não ser amanhã. O mesmo dia cronológico pode receber outra etiqueta pastafari amanhã. O mesmo instante físico pode cair em dias pastafari locais distintos em dois lugares. Um evento all-day não precisa ir de meia-noite a meia-noite. E um aniversário anual é um problema de busca antes de ser um problema de agenda.</p>
-  <p>Mas, dados o dia de trabalho e o dia consultado, não há ambiguidade: existe uma resposta exata.</p>
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>Avançado: quanta história o molho conserva?</h2>
+  <p>O molho parece um misturador muito agressivo, mas a pesquisa algébrica mostrou que ele preserva muito mais informação do que sua aparência sugere. Isso é pesquisa derivada da especificação, não uma nova regra do calendário.</p>
+  <p>Nas etapas visíveis 3 a 46, foi estabelecida, no ramo assintótico relevante, a injetividade genérica: genericamente, o estado conserva informação suficiente para reconstruir a história relevante das entradas e das ordens das tigelas.</p>
+  <p>Nas 12 mexidas finais, a informação também não desaparece de imediato. Para as cinco primeiras depois da gota visível 46, a invertibilidade genérica foi estabelecida na união canônica relevante sem informação lateral adicional. Para as restantes, conhecem-se limites construtivos fortes sobre quanta informação lateral basta para a reconstrução.</p>
+  <p>Ainda está em aberto se <strong>as seis tigelas finais sozinhas</strong> são sempre genericamente suficientes.</p>
+  <p>Parte dos resultados foi provada simbolicamente; parte foi fechada por verificações aritméticas finitas e exatas. O reforço simbólico reduziu muito o núcleo computacional em que é preciso confiar, mas não o eliminou.</p>
+  <p>Espaços que a princípio pareciam exigir quantidades enormes de trajetórias encolheram para estruturas finitas bem menores, incluindo autômatos de 180 e 9 estados e simetrias das seis tigelas.</p>
+  <p>Por baixo da mistura há uma estrutura algébrica rígida. Nada disso é necessário para descobrir a data de hoje.</p><hr>
+</section>
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>Então, o que é o Calendário Pastafari?</h2>
+  <p>É um calendário determinístico em que a data não é função apenas do dia-alvo, mas do <strong>dia de trabalho e do dia consultado juntos</strong>.</p>
+  <p>Cada data tem exatamente cinco campos. O presente visto a partir de si mesmo está sempre no ano 5000, embora o próprio ano 5000 mude com o dia de trabalho. Anos podem ser muito longos; almôndegas são contínuas; meses não precisam ser; e não há sistema canônico de semanas.</p>
+  <p>O dia <code>n+1</code> de um mês pode não ser amanhã. O mesmo dia cronológico pode receber amanhã outra etiqueta pastafari. O mesmo instante pode cair em dias pastafari locais diferentes em dois lugares. Um evento de dia inteiro não precisa ir de meia-noite a meia-noite. E um aniversário anual é um problema de busca antes de ser um problema de agenda.</p>
+  <p>Mas, dados o dia de trabalho e o dia consultado, não existe ambiguidade: há uma única resposta exata.</p>
   <p>No fim, é só isso que um calendário precisa fazer.</p>
 </section>

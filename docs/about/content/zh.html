@@ -1,0 +1,240 @@
+<!-- 简体中文版本直接依据希伯来文的语义主稿撰写，不经过其他语言转译。 -->
+<!-- 章节 ID 是公开的深链接契约，不由译文标题生成。 -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>按本站的叙事，Pastafari 历被描述为“时间在其中被创造”的历法；但它的运算机制本身有严格定义。</p>
+  <p>这套历法并不是给每一天贴上一个永久不变的 Pastafari “标签”。要得到某一天的日期，必须同时知道两个日子：作为计算出发点的<strong>作业日</strong>，以及我们正在询问的<strong>目标日</strong>。</p>
+  <p>若把作业日记作 <code>c</code>，目标日记作 <code>t</code>，日期就是</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>而不是 <code>F(t)</code>。因此，同一个目标日在不同作业日下可能得到不同的 Pastafari 日期。</p>
+  <p>这不是故障。这就是这套历法。</p><hr>
+</div>
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>Pastafari 日期由什么组成？</h2>
+  <p>它<strong>恰好有五个字段</strong>：年份编号、肉排名称、肉排内日序、月份名称、月份内日序。</p>
+  <p>抽象地说，例如：<strong>5000年、肉排A、肉排内第417天、月份B、月内第83天。</strong></p>
+  <p>作业日、观察者位置、该日的时间轴身份或其他技术信息可以显示在日期旁边，但它们都不是第六个日期字段。</p><hr>
+</section>
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>为什么需要作业日？</h2>
+  <p>在普通历法里，人们往往认为日期“属于”某一天；Pastafari 历的日期则取决于两个日子的关系。</p>
+  <p>改变 <code>t</code>，只是改问另一天。改变 <code>c</code> 更深一层：它可能重建提问所处的整个历法结构，包括年份边界、肉排、月份、名称以及月份彼此交织的方式。</p>
+  <p>所以今天算出的年历明天未必仍然适用。这样也避免了纸质日历竟然能整整一年都保持有用的尴尬局面。</p><hr>
+</section>
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>同一天，不同日期</h2>
+  <p>需要区分<strong>日的身份</strong>和<strong>Pastafari 表示</strong>。前者是某一天在时间轴上的稳定位置；后者是在某个作业日之下显示该日时得到的五元组。</p>
+  <p>在产品和 API 中，前者可以看成 <code>day-id</code>：改变显示上下文也不会改变的时间身份。相反，</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre><p>与</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>并不要求相等。</p>
+  <p>因此手动改变作业日，可以改变同一天显示出来的日期，却不会把那一天在时间轴上移动分毫。</p>
+  <p>事件也是如此。会议、出生或历史事件应锚定在稳定的时间身份上，再根据查看它的上下文重新生成 Pastafari 日期。</p>
+  <p>标签可以变，事件不能。</p><hr>
+</section>
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>5000年</h2>
+  <p>当作业日就是目标日时，</p><pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>年份总是</p><pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>也就是说，“现在”从自身视角看永远位于5000年。但5000年并不是固定的历史时期，而是相对于作业日重新选出的年份。</p>
+  <p>作业日本身在5000年内，同一年里的其他日子当然也在5000年内。因此，<strong>年份为5000并不能证明 <code>t=c</code>。</strong></p>
+  <p>年份编号却能给出方向：</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre><p>以及</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p>此外还存在<strong>0年</strong>；继续向过去走，年份编号会变成负数。</p><hr>
+</section>
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>年份与门</h2>
+  <p>Pastafari 年的长度可以在</p><pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ 到 }5778</code></pre><p>天之间。这是系统的规范边界，不是实验测得的平均值。</p>
+  <p>所以一年既可能比太阳年短，也可能超过十五个太阳年。年份边界由<strong>门</strong>系统构造，肉排边界也取自同一系统。</p>
+  <p>年末不需要与季节、地球绕太阳一周、月相周期，甚至任何“该结束这一年了”的实际需要相吻合。</p><hr>
+</section>
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>肉排</h2>
+  <p>每年分成<strong>6到17个肉排</strong>。肉排是时间上连续的一段。</p>
+  <p>如果今天是某肉排的第250天，只要今天不是最后一天，明天就是第251天。肉排边界是门，肉排至少有</p><pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre><p>天。</p>
+  <p>系统有17个规范肉排名；同一年中不重复。名称不会决定长度，也不会仅凭名字让一个肉排更长、更短、更早或更晚。</p><hr>
+</section>
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>月份与编织</h2>
+  <p>每年有</p><pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ 到 }47</code></pre><p>个结构月份，每个月被分配</p><pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ 到 }123</code></pre><p>天。</p>
+  <p>但 Pastafari 月份<strong>不一定在时间上连续</strong>。例如时间顺序完全可能是：</p>
+  <blockquote><p>月份A — 第14天<br>月份B — 第9天<br>月份A — 第15天</p></blockquote>
+  <p>这完全合法。月份A的第15天是<strong>该月份自己的下一天</strong>，即使中间经过了属于另一个月的一天。</p>
+  <p>因此“月内第几天”不是从月份第一次出现以后经过了多少个自然日，而是本年度中属于这个月份的第几次出现。第48天意味着这是分配给该月的第48天，不意味着自首次出现后过了47个连续日。</p><hr>
+</section>
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>月份彼此交织</h2>
+  <p>可以把月份想成贯穿一年的线。每一天恰好属于一个月；明天可以换成另一个月，之后原来的月又可以回来，从自己的下一个编号继续。</p>
+  <p>这种编织不是无规则的，尤其对各月第一次和最后一次出现的顺序存在约束。但并没有“一个月必须结束后另一个月才能开始”的要求。</p>
+  <ul><li>肉排描述连续时间段中的位置。</li><li>月份描述对一条可暂时消失再出现的结构线的归属。</li></ul>
+  <p>一个月可以跨过多个肉排，一个肉排也可以包含许多月份的出现。肉排的开头或结尾不必是月份的开头或结尾。</p><hr>
+</section>
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>月份的下一天未必是明天</h2>
+  <p>如果今天是某月的第17天，那么该月的第18天就是<strong>这个月下一次出现</strong>的那一天。可能是明天，也可能晚得多。</p>
+  <p><strong>明天</strong>是时间轴上的下一天；<strong>月内下一天</strong>是同一个月的下一次出现。</p>
+  <p>同样，“月底”也不意味着时间上马上就到。一个有120天的月份可以已经到第119天，而第120天还在一年很远的后面。</p><hr>
+</section>
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>没有星期</h2>
+  <p>当前规范<strong>没有定义星期体系</strong>：没有规范的七日上级单位，没有 Pastafari 星期名，也没有规则规定两天是“同一星期几”。</p>
+  <p>当然可以从外部叠加民用星期体系；它只是不属于 Pastafari 日期本身。</p><hr>
+</section>
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>名称</h2>
+  <p>共有17个规范肉排名和47个规范月份名。在同一年内，每个名称在自己的类别中最多出现一次。</p>
+  <p>名称身份是规范的、语义性的，不由不同拼写、译名或实现之间“投票”产生。关于名称意义，以希伯来文 Megillah 为最高权威；翻译和转写属于显示层。</p>
+  <p>名称也不是长度的隐藏编码。没有规则要求某个肉排名必然更长，或某个月名必然更短。</p><hr>
+</section>
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>关于月份的一个小事实</h2>
+  <p>47个月名，每个月最多到第123天，所以“月份名 + 月内日号”在语法上共有</p><pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre><p>种可能组合。</p>
+  <p>一年中的每一天恰好实现一个组合。若年长为 <code>L</code>，正好出现 <code>L</code> 个组合。但</p><pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>所以每一年至少缺少</p><pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre><p>种可能组合。即使最长的年份，天数也不够把全部组合用完。</p><hr>
+</section>
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>这套历法怎样计算？</h2>
+  <p>本文把内部计算称为<strong>酱汁</strong>。核心是素数</p><pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>。流程包括5个输入计数器、7滴隐藏滴、46滴可见滴、6只碗、变化的碗顺序、12次最终搅拌、产生不同答案的封印、组合选择机制、门生成、年份选择、肉排划分、名称选择、月份生成以及月份日的编织。</p>
+  <p>最终更新是<strong>同步</strong>的：每次搅拌都从同一份旧状态计算出6个新碗值，然后才一次性替换全部6只碗。</p>
+  <p>12次最终搅拌还有一条特别重要的规范细节。若 <code>S</code> 是6只旧碗之和，<code>r</code> 是搅拌编号，则计算</p><pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p><code>R</code> 是<strong>保存后的和</strong>。选碗顺序和搅拌内部更新都使用 <code>R</code>，不是原始的 <code>S</code>。</p>
+  <p>旧版本若把原始和直接送入更新，就不再描述当前规范语义；依旧规则生成的示例除非重新验证，否则应视为过时。</p>
+  <p>搅拌结束后，答案环也继续使用可见滴46时锁定的顺序；不能自动换成最后一次搅拌的顺序。</p><hr>
+</section>
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice 与 Wide Choice</h2>
+  <p>选项空间较小时使用 <strong>Short Choice</strong>，它用拒绝采样避免简单取模带来的偏差。</p>
+  <p>非常大的空间使用 <strong>Wide Choice</strong>。不能把规范没有保证的性质强加给它。</p>
+  <p>Wide Choice 并不等价于不断生成相互独立且均匀的 <code>Q</code> 进制数字直到形成索引。因此不能推出每个合法选项一定拥有相同的正概率；当空间足够大时，甚至可能存在合法却由该机制完全到达不了的选项。</p>
+  <p>历法本身仍然完全确定。“Choice”只是算法阶段的名称，不是使用时进行的抽签。</p><hr>
+</section>
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>结构图谱</h2>
+  <p>上面是历法规则。下面这些数字则是另一类信息：大型计算样本得到的<strong>经验结果</strong>。</p>
+  <p>图谱使用 engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> 构建，包括4,096个作业日；每个作业日的4990–5010年；86,016个年份结构；625,437个肉排；3,535,422个结构月份；超过3.56亿个连续月份片段；以及超过3.64亿次同一月份从 <code>n</code> 日到 <code>n+1</code> 日的转换。</p>
+  <p>这些只是该样本集的描述，不是规范律。</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="结构图谱测量数据"><table class="about-table">
+    <thead><tr><th scope="col">测量量</th><th scope="col">样本结果</th></tr></thead><tbody>
+      <tr><td>平均年长</td><td>4,275.182 天</td></tr><tr><td>年长中位数</td><td>4,343</td></tr><tr><td>观察到的最小 / 最大值</td><td>716 / 5,778</td></tr>
+      <tr><td>每年平均肉排数</td><td>7.271</td></tr><tr><td>恰有6个肉排的年份</td><td>42.00%</td></tr><tr><td>有6–8个肉排的年份</td><td>81.29%</td></tr>
+      <tr><td>平均肉排长度</td><td>587.963 天</td></tr><tr><td>肉排长度中位数</td><td>560</td></tr><tr><td>每年平均月份数</td><td>41.102</td></tr>
+      <tr><td>月份数中位数</td><td>43</td></tr><tr><td>有47个月的年份</td><td>15.63%</td></tr><tr><td>至少有45个月的年份</td><td>36.81%</td></tr>
+      <tr><td>平均结构月长度</td><td>104.014 天</td></tr><tr><td>月长中位数</td><td>115</td></tr><tr><td>每月平均连续片段数</td><td>100.897</td></tr>
+      <tr><td>只有一天的月份片段比例</td><td>97.482%</td></tr><tr><td>相邻两天属于同一月的概率</td><td>2.9976%</td></tr>
+      <tr><td>同一月 <code>n</code> 与 <code>n+1</code> 之间平均夹入的他月天数</td><td>40.408</td></tr><tr><td>月份首末出现之间平均跨度</td><td>4,266.653 天</td></tr>
+    </tbody></table></div>
+  <p>实际效果是：一个约有100天的月份，可能铺展到几乎整个 Pastafari 年。</p>
+  <p>同一图谱还发现5000年附近存在自然的长度偏倚。样本中“普通”年份平均约4,262天；若按每年包含的天数加权，均值升至约4,466天；自身5000年平均约4,499天。</p>
+  <p>原因很简单：5000年必须包含作业日。年份越长，可让作业日落在其中的位置就越多。</p>
+  <p>单位名称与长度之间的关联在样本中也非常弱。这不是完全独立性的数学证明，但图谱没有给出名称用于编码长度的实际迹象。</p>
+  <p>此外，86,016个年份结构并不是86,016个完全独立样本；其中只有24,786种不同的起止门区间。相邻作业日可能选到同一年度区间，却产生不同内部结构。</p>
+  <p>因此这份图谱很适合描述被测实现的行为，却不应被包装成关于所有可能历法世界的概率定理。</p><hr>
+</section>
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>生日与周年日</h2>
+  <p>“每年同一天”在这里必须先定义。两种自然结构坐标是 <code>(月份名, 月内日)</code> 与 <code>(肉排名, 肉排内日)</code>，也可以要求组合条件。</p>
+  <p>因此 Pastafari 生日并不简单等同于 <code>RRULE:FREQ=YEARLY</code>。需要搜索下一个满足所选重现条件的年份，原事件本身也不会自动算作自己的“下一次出现”。</p>
+  <p>只为显示而改变作业日，不应改变人的身份、出生时刻或年龄。</p>
+  <p>对4,096个自身日期进行精确扫描时，向前和向后逐年检查，每个方向最多250,000个 Pastafari 年：</p>
+  <ul><li><code>(月份名, 月内日)</code> 的首次重现中位数为1年；77.56%就在相邻年份，93.77%在两年内，99.44%在五年内；观察到的最大值为21年。</li>
+  <li><code>(肉排名, 肉排内日)</code> 的中位数为3年；88.89%在10年内找到，但分布具有非常重的尾部，观察到的最大值达到51,954个 Pastafari 年。</li></ul>
+  <p>这些是<strong>所测样本集的经验结果</strong>，不是“所有可能周年日必然重现”的证明，也不是最大等待时间保证。</p><hr>
+</section>
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>怎样约定一个时间？</h2>
+  <p>如果两个人只用 Pastafari 日期约定见面，至少要共同确定五元组和计算它时所用的作业日。最好把作业日本身保存成稳定的日身份，而不是“今天”这个词；否则双方可能算出不同历法。</p>
+  <ul><li>“明天”是时间轴上的下一天；</li><li>“月内下一天”是同一月下一次出现；</li><li>“月底”是该月最后一次出现；</li><li>“整个月”既可指该月全部天的集合，也可指从首次到末次出现的整个时间跨度；</li><li>“下一年”是按选定作业日构造的历法中的下一年。</li></ul>
+  <p>特别重要的约会还可以额外保存绝对的时间轴日期或时刻。历法不会因此受伤。</p><hr>
+</section>
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>旅行、事件与 all-day</h2>
+  <p>事件本身与当地为它显示的日期标签不是一回事。定时事件应锚定在稳定的时间点。旅行不会把事件在时间上移动，但由于“当地的一天”依赖位置，同一时刻显示的当地 Pastafari 日期可能改变。</p>
+  <p>对于 <strong>all-day</strong> 事件，差别更明显。民用全天事件通常从一个民用午夜延续到下一个；Pastafari 全天事件应从当地 Pastafari 日边界延续到下一个边界。两者通常不是相同的时刻。</p>
+  <p>所以把 Pastafari 事件盲目导出成民用“全天事件”可能改变其含义。若要精确保留，应保存时间锚点和相应的位置/日边界上下文，而不只是一个 <code>all-day</code> 标记。</p><hr>
+</section>
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>一天什么时候切换？</h2>
+  <p>当地 Pastafari 日并不在午夜切换。边界由<strong>金星中心的站心下中天（通过当地子午线）</strong>确定。</p>
+  <p>换言之，这是一个依赖位置的当地天文事件。因此它不必发生在00:00，不由民用时区规定，不会只因夏令时启用或取消而移动，也不要求肉眼能看见金星。</p>
+  <p>同一个物理时刻，在两个地点可能分别落在各自当地日边界的两侧。如果系统没有可用的用户位置，产品默认使用<strong>基苏拉（Kisurra）</strong>。</p><hr>
+</section>
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>纸质日历与手算</h2>
+  <p>Pastafari 历当然可以打印，只需注明它对应哪个作业日。它展示的是从那个作业日看出的时间结构；作业日变化以后，也许就得换一份新日历。打印机因此仍有用武之地。</p>
+  <p>规范完整且确定，所以也可以全部手算：计算输入计数器，执行7滴隐藏滴、46滴可见滴，更新6只碗，进行12次最终搅拌，生成答案，构造门，选择年份与肉排，执行组合选择，选名称并编织月份。</p>
+  <p>这样就不用记二月有时28天、有时29天了。</p><hr>
+</section>
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>Seer 是什么？</h2>
+  <p>规范实现之外还有高速引擎 <strong>Pastafarian Calendar Seer</strong>。Seer 不是权威来源；正确日期由 Megillah 和规范计算决定。两者若冲突，错的是 Seer。</p>
+  <p>它的任务是快速执行同一类查询，并方便集成进产品。</p>
+  <p>在编辑本页时做的实时验证中，Seer 已包括日期查询、“现在”计算、batch、日范围、从 Pastafari 日期到目标日的 reverse 转换、年份结构获取、活动作业日解析、Node API、浏览器/HTTP客户端、CLI、HTTP v1服务、OpenAPI 3.1契约、native实现与发布包，以及经过验证的container部署。</p>
+  <p>所以“Seer 没有公开 API”的旧说法已经不正确。它有明确、稳定的 HTTP v1 契约，包含 date、range、batch、year、reverse、作业日、metadata、locales、status 等 endpoints。</p>
+  <p>2026年9月21日还实际测试了 Render 上的公开 HTTPS 部署：exact 查询、大范围、restart、cold wake 和负载下行为都在活服务上验证过。</p>
+  <p>不过项目文档仍区分公开的 beta/evaluation 部署与具有 SLA 的永久 hosted production 服务声明。因此原理性说明不应把某个服务器地址、托管商或版本号固定成历法本身的一部分。</p>
+  <p>Seer 可以使用预计算、特殊表示、SIMD、代数和其他捷径。只要执行同一语义操作并返回同一答案，就不必逐步重演规范实现的全部计算历史。</p>
+  <p>优化不是另一套权威。</p><hr>
+</section>
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>起源、奠基日与泥板日</h2>
+  <p>这里尤其要把规范时间锚点与本站叙事分开。</p>
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>锚点</h3>
+    <p>系统有一个固定参考日，称为<strong>奠基日</strong>。在前推格里高利历中，它是<strong>公元前41,222年12月22日</strong>。</p>
+    <p>奠基日不是“时间的开始”，只是计算锚点。</p>
+    <p>它周围的日编号使用正奇数/偶数编码：奠基日=1；之后是3、5……；往过去则前一天=2，再前一天=4，然后6……。这样可在该计数器中不用负日号就编码锚点两侧。</p>
+    <p>另一个锚点是<strong>泥板日</strong>：<strong>前推儒略历公元前763年6月15日</strong>，即<strong>前推格里高利历公元前763年6月7日</strong>。</p>
+    <p>奠基日到泥板日的精确距离为</p><pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre><p>天。</p>
+    <p>这些是时间轴上的固定锚点；为它们显示的 Pastafari 日期仍取决于查询所用作业日。</p>
+  </section>
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>本站叙事</h3>
+    <p>本站的编辑叙事把这套历法说成创世的一部分，并说人类曾在缺乏充分自觉的情况下使用它，直到现代再次传授。</p>
+    <p>这属于本站叙事；不能把每个叙事情节都当成 Megillah 中明确的技术命题。</p>
+    <p>再次传授本身是固定的历史事件。网站上最好根据当前作业日动态显示它的<strong>Pastafari 日期</strong>，而不是永远给它钉死一个 Pastafari 日期。</p><hr>
+  </section>
+</section>
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>进阶：反向转换</h2>
+  <p>作业日 <code>c</code> 已知时，反向转换的约束非常强。在一个已知 Pastafari 年中，</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{肉排名},\text{肉排内日})</code></pre>
+  <p>最多识别一天；</p><pre class="math-block" dir="ltr" tabindex="0"><code>(\text{月份名},\text{月内日})</code></pre><p>也是如此。因此作业日已知时，完整日期唯一确定目标日。</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="反向转换候选数上界"><table class="about-table">
+    <thead><tr><th scope="col">额外已知信息</th><th scope="col">最大候选数</th></tr></thead><tbody>
+      <tr><td>没有非年份字段</td><td>5,778</td></tr><tr><td>只有肉排名</td><td>5,568</td></tr><tr><td>只有肉排内日</td><td>17</td></tr>
+      <tr><td>只有月份名</td><td>123</td></tr><tr><td>只有月内日</td><td>47</td></tr><tr><td>肉排名 + 肉排内日</td><td>1</td></tr>
+      <tr><td>月份名 + 月内日</td><td>1</td></tr><tr><td>任意三个非年份字段</td><td>1</td></tr><tr><td>全部四个非年份字段</td><td>1</td></tr>
+    </tbody></table></div>
+  <p>若作业日未知，情况就不同。同一个五元组可出现在不同作业日下；已有精确见证表明，同一个完整日期可以位于距作业日不同距离的位置。</p>
+  <p>甚至在5000年中，距离的正负也不总能从五元组决定：同一完整日期在一个上下文中可位于作业日过去，在另一个上下文中位于未来。</p>
+  <p>所以，不知道用哪个 <code>c</code> 计算时，完整 Pastafari 日期也不是时间轴上的绝对地址。</p>
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>遥远时间中的结构</h3>
+    <p>由规范推导出的数学研究还找到了精确的渐近结构。对<strong>固定作业日</strong> <code>c</code>，在过去方向足够远以后存在仿射周期性。</p>
+    <p>若</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>则对同一 <code>c</code>，存在位移 <code>H_c</code>、年份变化 <code>p_c</code> 以及足够遥远的阈值，使得阈值之后</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>成立：四个非年份字段重复，而年份编号按固定量改变。</p>
+    <p>这是固定 <code>c</code> 的定理，不能推出全局关系</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>。不同作业日之间最终渐近斜率是否真的不同，仍是开放问题。</p><hr>
+  </section>
+</section>
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>进阶：酱汁保留了多少历史？</h2>
+  <p>酱汁看起来像一个非常猛烈的混合器，但代数研究发现，它保留的信息远比外观暗示的多。这是由规范推导出的研究，不是额外的历法规则。</p>
+  <p>在可见阶段3到46，相关渐近分支上的泛型单射性已经确立：一般情形下，状态保留足够信息，可重构相关的输入历史和碗顺序。</p>
+  <p>12次最终搅拌中，信息也不会立刻消失。可见滴46之后的前5次搅拌，在相关规范并集上已经证明无需额外旁信息即可泛型可逆；对剩余搅拌，也已知足以重构的旁信息量的强构造上界。</p>
+  <p><strong>仅凭最终6只碗</strong>是否总能在泛型意义下做到这一点，仍然开放。</p>
+  <p>部分结果是符号证明，部分通过有限且精确的算术检查闭合。符号强化大幅缩小了必须信赖的计算核心，但尚未完全消除它。</p>
+  <p>研究中的一个意外，是原本似乎需要遍历海量路径的空间缩减成小得多的有限结构，其中包括180状态与9状态自动机以及6只碗的对称性。</p>
+  <p>混合之下存在刚性的代数结构。仅仅查询今天日期并不需要知道这些。</p><hr>
+</section>
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>那么，Pastafari 历究竟是什么？</h2>
+  <p>它是一套确定性历法：日期不是目标日单独的函数，而是<strong>作业日与目标日共同</strong>决定的。</p>
+  <p>每个日期恰有五个字段。现在从自身看永远是5000年，但5000年本身随作业日移动。年份可以极长；肉排连续；月份可以完全不连续；没有规范星期体系。</p>
+  <p>月份的 <code>n+1</code> 日不一定是明天。同一个时间轴上的日子明天可能得到另一 Pastafari 标签。同一个物理时刻在两个地点可能属于不同的当地 Pastafari 日。全天事件也不一定从午夜到午夜。年度生日在成为日程问题之前，先是一个搜索问题。</p>
+  <p>但只要给定作业日和目标日，就没有歧义：精确答案只有一个。</p>
+  <p>归根结底，历法做到这一点就够了。</p>
+</section>

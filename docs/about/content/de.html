@@ -1,234 +1,246 @@
-<!-- Deutsche Fassung, unmittelbar aus dem hebräischen semantischen Mastertext erarbeitet. -->
-<!-- Stabile Abschnitts-IDs sind Teil des öffentlichen Deep-Link-Vertrags und werden nicht übersetzt. -->
+<!-- Deutsche Fassung, direkt aus dem hebräischen Bedeutungsstand abgeleitet. -->
+<!-- Abschnitts-IDs sind ein öffentlicher Deep-Link-Vertrag und werden nicht aus Überschriften erzeugt. -->
 <div class="about-section about-lead" id="about-calendar">
-  <p>In der Erzählwelt der Website erscheint der Pastafari-Kalender als der Kalender, in dem die Zeit erschaffen wurde. Seine Mechanik ist dagegen präzise festgelegt.</p>
-  <p>Ein Tag wird nicht in genau ein dauerhaftes Pastafari-„Etikett“ umgerechnet. Für eine Datumsangabe braucht man zwei Tage: den <strong>Tag der Ausführung</strong>, von dem aus gerechnet wird, und den <strong>abgefragten Tag</strong>, dessen Datum gesucht ist.</p>
-  <p>Bezeichnen wir sie mit <code>c</code> und <code>t</code>, dann lautet das Datum</p>
+  <p>In der Erzählung der Website ist der Pastafari-Kalender der Kalender, in dem die Zeit erschaffen wurde. Seine Mechanik ist dagegen exakt festgelegt.</p>
+  <p>Ein Tag wird nicht auf genau ein dauerhaftes Pastafari-Etikett abgebildet. Für ein Datum braucht man zwei Tage: den <strong>Tag der Ausführung</strong>, von dem aus gerechnet wird, und den <strong>abgefragten Tag</strong>, dessen Datum gesucht ist.</p>
+  <p>Mit <code>c</code> für den Tag der Ausführung und <code>t</code> für den abgefragten Tag lautet die Abbildung:</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
-  <p>und nicht <code>F(t)</code>. Derselbe abgefragte Tag kann also unter einem anderen Tag der Ausführung ein anderes Pastafari-Datum erhalten.</p>
-  <p>Das ist kein Fehler, sondern gehört zum Kalender.</p><hr>
+  <p>und nicht <code>F(t)</code>. Derselbe abgefragte Tag kann daher unter einem anderen Tag der Ausführung ein anderes Pastafari-Datum erhalten.</p>
+  <p>Das ist kein Fehler. So funktioniert dieser Kalender.</p><hr>
 </div>
 <section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
   <h2>Woraus besteht ein Pastafari-Datum?</h2>
   <p>Es hat <strong>genau fünf Bestandteile</strong>: Jahreszahl, Schnitzelname, Tag im Schnitzel, Monatsname und Tag im Monat.</p>
-  <p>Abstrakt etwa: <strong>Jahr 5000, Schnitzel A, Tag 417 im Schnitzel, Monat B, Tag 83 im Monat.</strong></p>
-  <p>Tag der Ausführung, Beobachterstandort, chronologische Tagesidentität oder andere technische Angaben können daneben stehen; sie sind kein sechstes Datumsfeld.</p><hr>
+  <p>Als abstraktes Beispiel: <strong>Jahr 5000, Schnitzel A, Tag 417 im Schnitzel, Monat B, Tag 83 im Monat.</strong></p>
+  <p>Tag der Ausführung, Beobachterstandort, chronologische Tagesidentität oder technische Zusatzangaben dürfen daneben stehen; sie sind kein sechstes Datumsfeld.</p><hr>
 </section>
 <section class="about-section" id="working-day" data-toc-section data-toc-level="2">
-  <h2>Wozu braucht man einen Tag der Ausführung?</h2>
-  <p>Bei gewöhnlichen Kalendern denkt man meist, ein Datum „gehöre“ einfach zu einem Tag. Im Pastafari-Kalender hängt es vom Verhältnis zweier Tage ab.</p>
-  <p>Wer <code>t</code> ändert, fragt nach einem anderen Tag. Eine Änderung von <code>c</code> kann tiefer eingreifen: Jahresgrenzen, Schnitzel, Monate, deren Namen und die Verflechtung der Monate können sich ändern.</p>
-  <p>Ein heute berechneter Almanach muss deshalb morgen nicht mehr der richtige sein. So wird der unerfreuliche Zustand vermieden, dass ein gedruckter Kalender ein ganzes Jahr lang brauchbar bleibt.</p><hr>
+  <h2>Wozu braucht man den Tag der Ausführung?</h2>
+  <p>Bei gewöhnlichen Kalendern wirkt es selbstverständlich, dass ein Datum einem Tag »gehört«. Im Pastafari-Kalender hängt es von der Beziehung zweier Tage ab.</p>
+  <p>Ändert man <code>t</code>, fragt man nach einem anderen Tag. Eine Änderung von <code>c</code> kann dagegen die Struktur des Kalenders selbst verändern: Jahresgrenzen, Schnitzel, Monate, ihre Namen und ihre Verflechtung.</p>
+  <p>Ein heute berechneter Almanach ist deshalb morgen nicht zwingend der richtige. So wird der unerfreuliche Zustand vermieden, dass ein gedruckter Kalender ein ganzes Jahr lang brauchbar bleibt.</p><hr>
 </section>
 <section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
   <h2>Gleicher Tag, anderes Datum</h2>
-  <p>Zwei Dinge sind auseinanderzuhalten: die <strong>Tagesidentität</strong>, also die stabile Position eines Tages auf der Zeitachse, und seine <strong>Pastafari-Darstellung</strong>, das unter einem bestimmten Tag der Ausführung erhaltene Fünfertupel.</p>
-  <p>Im Produkt und in der API lässt sich Ersteres als <code>day-id</code> auffassen: eine chronologische Identität, die sich durch eine andere Darstellung nicht ändert. Dagegen müssen</p>
+  <p><strong>Tagesidentität</strong> und <strong>Pastafari-Darstellung</strong> sind verschiedene Dinge. Die erste ist die stabile Position eines Tages auf der Zeitachse; die zweite ist das Fünfer-Tupel, das für diesen Tag unter einem bestimmten Tag der Ausführung angezeigt wird.</p>
+  <p>Im Produkt und in der API kann man die stabile Identität als <code>day-id</code> auffassen. Dagegen müssen</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre><p>und</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
   <p>nicht gleich sein.</p>
-  <p>Wird der Tag der Ausführung manuell geändert, kann sich daher das angezeigte Datum desselben Tages ändern, ohne dass der Tag auf der Zeitachse verschoben wird. Das gilt ebenso für Termine, Geburten und historische Ereignisse: Sie bleiben an eine stabile chronologische Identität gebunden; ihre Pastafari-Darstellung kann für den jeweiligen Betrachtungskontext neu berechnet werden.</p>
-  <p>Das Etikett darf wechseln. Das Ereignis nicht.</p><hr>
+  <p>Wer den Tag der Ausführung manuell ändert, kann also das angezeigte Datum desselben Tages ändern, ohne den Tag auf der Zeitachse zu verschieben.</p>
+  <p>Dasselbe gilt für Ereignisse. Treffen, Geburten und historische Ereignisse sollten an einer stabilen chronologischen Identität verankert bleiben; die Pastafari-Darstellung kann je nach Betrachtungskontext neu berechnet werden.</p>
+  <p>Das Etikett kann wechseln. Das Ereignis nicht.</p><hr>
 </section>
 <section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
   <h2>Jahr 5000</h2>
-  <p>Sind Tag der Ausführung und abgefragter Tag identisch,</p><pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
-  <p>dann ist das Jahr immer</p><pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
-  <p>Die Gegenwart aus ihrer eigenen Perspektive liegt also stets im Jahr 5000. Dieses Jahr ist jedoch kein festes historisches Intervall; es wird relativ zum Tag der Ausführung jeweils neu bestimmt.</p>
-  <p>Der Tag der Ausführung liegt in Jahr 5000, ebenso andere Tage desselben Jahres. Daher gilt: <strong>Jahr 5000 beweist nicht, dass <code>t=c</code>.</strong></p>
-  <p>Die Jahreszahl verrät aber die Richtung:</p><pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre><p>und</p><pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
-  <p>Auch ein <strong>Jahr 0</strong> existiert; noch weiter in der Vergangenheit folgen negativ nummerierte Jahre.</p><hr>
+  <p>Ist der Tag der Ausführung zugleich der abgefragte Tag,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>dann lautet die Jahreszahl immer</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>Die Gegenwart aus ihrer eigenen Perspektive liegt also stets im Jahr 5000. Dieses Jahr ist aber kein festes historisches Intervall; es wird relativ zum Tag der Ausführung jeweils neu ausgewählt.</p>
+  <p>Der Tag der Ausführung liegt im Jahr 5000, andere Tage desselben Jahres ebenfalls. <strong>Jahr 5000 beweist daher nicht <code>t=c</code>.</strong></p>
+  <p>Die Richtung lässt sich dagegen an der Jahreszahl erkennen:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre><p>und</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p>Es gibt außerdem ein <strong>Jahr 0</strong>; weiter in der Vergangenheit folgen negativ nummerierte Jahre.</p><hr>
 </section>
 <section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
   <h2>Jahre und Tore</h2>
-  <p>Ein Pastafari-Jahr kann</p><pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ bis }5778</code></pre><p>Tage lang sein. Das sind kanonische Systemgrenzen, keine experimentell gemessenen Mittelwerte.</p>
-  <p>Ein Jahr kann damit kürzer als ein Sonnenjahr sein oder über fünfzehn Sonnenjahre dauern. Jahresgrenzen entstehen durch ein System von <strong>Toren</strong>; auch Schnitzelgrenzen stammen daraus.</p>
-  <p>Ein Jahresende muss weder zu einer Jahreszeit noch zu einem Erdumlauf, Mondzyklus oder irgendeinem praktischen Wunsch passen, das Jahr nun endlich abzuschließen.</p><hr>
+  <p>Ein Pastafari-Jahr kann</p><pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ bis }5778</code></pre><p>Tage lang sein. Das sind kanonische Systemgrenzen, keine experimentellen Mittelwerte.</p>
+  <p>Ein Jahr kann damit kürzer als ein Sonnenjahr oder länger als fünfzehn Sonnenjahre sein. Jahresgrenzen werden aus einem System von <strong>Toren</strong> aufgebaut; auch Schnitzelgrenzen stammen aus diesem Torsystem.</p>
+  <p>Ein Jahresende muss weder zu einer Jahreszeit noch zu einem Erdumlauf, einem Mondzyklus oder irgendeinem praktischen Wunsch passen, das Jahr nun endlich zu beenden.</p><hr>
 </section>
 <section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
   <h2>Schnitzel</h2>
-  <p>Jedes Jahr wird in <strong>6 bis 17 Schnitzel</strong> geteilt. Ein Schnitzel ist ein zusammenhängender chronologischer Abschnitt.</p>
-  <p>Ist heute Tag 250 eines Schnitzels, folgt morgen Tag 251 desselben Schnitzels — es sei denn, heute ist dessen letzter Tag. Schnitzelgrenzen sind Tore; ein Schnitzel ist mindestens</p><pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre><p>Tage lang.</p>
-  <p>Es gibt 17 kanonische Schnitzelnamen; innerhalb eines Jahres wiederholt sich kein Name. Der Name bestimmt weder Länge noch Stellung und macht ein Schnitzel nicht von sich aus länger, kürzer, früher oder später.</p><hr>
+  <p>Jedes Jahr ist in <strong>6 bis 17 Schnitzel</strong> gegliedert. Ein Schnitzel ist ein chronologisch zusammenhängender Abschnitt.</p>
+  <p>Ist heute Tag 250 eines Schnitzels, folgt morgen Tag 251 desselben Schnitzels, sofern heute nicht dessen letzter Tag ist. Schnitzelgrenzen sind Tore; ein Schnitzel ist mindestens</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre><p>Tage lang.</p>
+  <p>Es gibt 17 kanonische Schnitzelnamen; innerhalb eines Jahres wiederholt sich kein Name. Der Name legt weder Länge noch Position fest.</p><hr>
 </section>
 <section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
   <h2>Monate und Verflechtung</h2>
-  <p>Ein Jahr besitzt</p><pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ bis }47</code></pre><p>strukturelle Monate. Jedem Monat sind</p><pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ bis }123</code></pre><p>Tage zugeordnet.</p>
-  <p>Ein Pastafari-Monat ist aber <strong>nicht zwingend ein zusammenhängender Zeitraum</strong>. Chronologisch kann etwa Folgendes auftreten:</p>
+  <p>Ein Jahr enthält</p><pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ bis }47</code></pre><p>strukturelle Monate. Jedem Monat sind</p><pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ bis }123</code></pre><p>Tage zugeordnet.</p>
+  <p>Ein Pastafari-Monat ist jedoch <strong>nicht zwingend ein zusammenhängender Zeitraum</strong>. Eine chronologische Folge kann beispielsweise so aussehen:</p>
   <blockquote><p>Monat A — Tag 14<br>Monat B — Tag 9<br>Monat A — Tag 15</p></blockquote>
-  <p>Das ist gültig. Tag 15 von Monat A ist der nächste Tag <strong>dieses Monats</strong>, obwohl dazwischen ein Tag eines anderen Monats lag.</p>
-  <p>„Tag im Monat“ zählt deshalb nicht die verstrichenen Tage seit dem ersten Auftreten. Er bezeichnet die laufende Nummer der Vorkommen dieses Monats im Jahr. Tag 48 ist der 48. dem Monat zugeordnete Tag, nicht unbedingt 47 chronologische Tage nach seinem ersten Auftreten.</p><hr>
+  <p>Das ist vollkommen gültig. Tag 15 von Monat A ist der nächste Tag <strong>dieses Monats</strong>, obwohl dazwischen ein Tag eines anderen Monats liegt.</p>
+  <p>»Tag im Monat« misst deshalb nicht die seit dem ersten Auftreten verstrichene Zeit, sondern die laufende Nummer der Zugehörigkeit zu diesem Monat. Tag 48 ist der 48. diesem Monat zugewiesene Tag; daraus folgt nicht, dass seit seinem ersten Auftreten 47 chronologische Tage vergangen sind.</p><hr>
 </section>
 <section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
-  <h2>Monate sind ineinander verwoben</h2>
-  <p>Man kann sich Monate als Fäden vorstellen, die sich durch das Jahr ziehen. Jeder Tag gehört genau zu einem Monat; morgen kann ein anderer Monat an der Reihe sein, später kehrt der erste zurück und setzt seine Nummerierung fort.</p>
-  <p>Diese Verflechtung ist nicht regellos. Insbesondere gelten Bedingungen für die Reihenfolge des ersten und letzten Auftretens. Es gibt aber keine Forderung, dass ein Monat beendet sein muss, bevor ein anderer beginnt.</p>
-  <ul><li>Das Schnitzel misst die Lage in einem chronologisch zusammenhängenden Abschnitt.</li><li>Der Monat misst die Zugehörigkeit zu einem strukturellen Faden, der verschwinden und wiederkehren kann.</li></ul>
-  <p>Ein Monat kann mehrere Schnitzel durchlaufen, ein Schnitzel Vorkommen vieler Monate enthalten. Schnitzelanfang und -ende müssen keine Monatsgrenzen sein.</p><hr>
+  <h2>Die Monate sind ineinander verwoben</h2>
+  <p>Man kann sich die Monate als Fäden vorstellen, die durch das Jahr laufen. Jeder Tag gehört genau einem Monat; morgen kann es ein anderer sein, später kann der erste Monat zurückkehren und mit seiner nächsten Nummer fortsetzen.</p>
+  <p>Die Verflechtung ist geregelt, unter anderem durch Bedingungen für die Reihenfolge der ersten und letzten Monatsvorkommen. Es gibt aber keine Pflicht, dass ein Monat enden muss, bevor ein anderer beginnt.</p>
+  <ul><li>Das Schnitzel misst die Position in einem zusammenhängenden Zeitabschnitt.</li><li>Der Monat misst die Zugehörigkeit zu einem strukturellen Faden, der verschwinden und wiederkehren kann.</li></ul>
+  <p>Ein Monat kann mehrere Schnitzel durchqueren; ein Schnitzel kann Vorkommen vieler Monate enthalten. Schnitzel- und Monatsanfänge oder -enden müssen nicht zusammenfallen.</p><hr>
 </section>
 <section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
-  <h2>Der nächste Tag im Monat ist nicht unbedingt morgen</h2>
-  <p>Ist heute Tag 17 eines Monats, dann ist Tag 18 <strong>das nächste Auftreten desselben Monats</strong>. Das kann morgen sein — oder viel später.</p>
-  <p><strong>Morgen</strong> bedeutet den nächsten chronologischen Tag; <strong>der nächste Tag im Monat</strong> die nächste Stelle, an der dieser Monat erscheint.</p>
-  <p>Auch „Monatsende“ heißt nicht, dass das chronologische Ende nahe ist. Ein 120 Tage langer Monat kann bei Tag 119 stehen, während Tag 120 erst weit später im Jahr folgt.</p><hr>
+  <h2>Der nächste Monatstag ist nicht unbedingt morgen</h2>
+  <p>Ist heute Tag 17 eines Monats, so ist Tag 18 desselben Monats <strong>dessen nächstes Auftreten</strong>. Das kann morgen sein oder erheblich später.</p>
+  <p><strong>Morgen</strong> bezeichnet den nächsten chronologischen Tag; <strong>der nächste Tag im Monat</strong> bezeichnet das nächste Auftreten dieses Monats.</p>
+  <p>Auch »Monatsende« bedeutet nicht, dass das chronologische Ende nahe ist. Ein 120-Tage-Monat kann bei Tag 119 stehen, während Tag 120 weit hinten im Jahr liegt.</p><hr>
 </section>
 <section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
   <h2>Keine Wochen</h2>
-  <p>Die derzeitige kanonische Spezifikation <strong>definiert kein Wochensystem</strong>. Es gibt weder eine kanonische Sieben-Tage-Oberstruktur noch Pastafari-Wochentagsnamen oder eine Regel, nach der zwei Tage denselben „Wochentag“ hätten.</p>
-  <p>Eine zivile Woche kann selbstverständlich von außen darübergelegt werden. Sie ist nur kein Bestandteil des Pastafari-Datums.</p><hr>
+  <p>Die derzeitige kanonische Spezifikation <strong>definiert kein Wochensystem</strong>. Es gibt weder eine kanonische Siebentage-Einheit noch Pastafari-Wochentagsnamen noch eine Regel, nach der zwei Tage denselben Wochentag hätten.</p>
+  <p>Ein ziviles Wochensystem kann natürlich von außen darübergelegt werden; es ist nur kein Teil des Pastafari-Datums.</p><hr>
 </section>
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
   <h2>Namen</h2>
-  <p>Der Kalender hat 17 kanonische Schnitzelnamen und 47 kanonische Monatsnamen. Innerhalb eines Jahres kommt jeder Name in seiner jeweiligen Familie höchstens einmal vor.</p>
-  <p>Die Identität des Namens ist kanonisch-semantisch und entsteht nicht durch Abstimmung zwischen Schreibweisen, Übersetzungen oder Implementierungen. Für die Bedeutung der Namen ist die hebräische Megillah die höchste Autorität; Übersetzung und Transliteration sind Darstellungsschichten.</p>
-  <p>Der Name ist auch kein versteckter Längencode. Kein Schnitzel- oder Monatsname schreibt eine längere oder kürzere Einheit vor.</p><hr>
+  <p>Der Kalender besitzt 17 kanonische Schnitzelnamen und 47 kanonische Monatsnamen. Innerhalb eines Jahres erscheint jeder Name höchstens einmal in seiner jeweiligen Familie.</p>
+  <p>Die Identität eines Namens ist kanonisch und semantisch; sie entsteht nicht durch Abstimmung zwischen Schreibweisen, Übersetzungen oder Implementierungen. Für die Bedeutung der Namen ist die hebräische Megillah die oberste Autorität. Übersetzung und Transliteration sind Darstellungsschichten.</p>
+  <p>Ein Name ist auch kein versteckter Längencode. Kein bestimmter Schnitzelname erzwingt ein längeres Schnitzel, kein Monatsname einen kürzeren Monat.</p><hr>
 </section>
 <section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
   <h2>Eine kleine Tatsache über Monate</h2>
-  <p>47 Monatsnamen und höchstens 123 Tage je Monat ergeben</p><pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
-  <p>syntaktisch mögliche Paare „Monatsname + Tag im Monat“.</p>
-  <p>Jeder Jahrestag realisiert genau ein solches Paar. Bei einer Jahreslänge <code>L</code> treten genau <code>L</code> davon auf. Weil</p><pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
-  <p>gilt, fehlen in jedem Jahr mindestens</p><pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre><p>mögliche Paare. Selbst das längste Jahr hat nicht genug Tage für alle.</p><hr>
+  <p>Bei 47 Monatsnamen und höchstens 123 Tagen je Monat gibt es</p><pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>syntaktisch mögliche Paare aus Monatsname und Tag-im-Monat.</p>
+  <p>Jeder Tag eines Jahres verwirklicht genau ein solches Paar. Ist die Jahreslänge <code>L</code>, treten genau <code>L</code> Paare auf. Da</p><pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>fehlen in jedem Jahr mindestens</p><pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre>
+  <p>mögliche Paare. Selbst das längste Jahr hat nicht genug Tage für alle.</p><hr>
 </section>
 <section class="about-section" id="calculation" data-toc-section data-toc-level="2">
   <h2>Wie wird der Kalender berechnet?</h2>
-  <p>Die interne Berechnung heißt hier <strong>die Sauce</strong>. Im Zentrum steht</p><pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre><p>— eine Primzahl.</p>
-  <p>Zum Ablauf gehören fünf Eingangszähler, 7 verborgene Tropfen, 46 sichtbare Tropfen, 6 Schalen, wechselnde Schalenreihenfolgen, 12 abschließende Rührvorgänge, Siegel zur Erzeugung verschiedener Antworten, kombinatorische Auswahlmechanismen, Torerzeugung, Jahresauswahl, Schnitzelaufteilung, Namensauswahl, Monatserzeugung und das Verweben der Monatstage.</p>
-  <p>Die abschließenden Aktualisierungen sind <strong>synchron</strong>: Bei jedem Rühren werden alle sechs neuen Schalenwerte aus demselben alten Zustand berechnet; erst danach werden alle Schalen gemeinsam ersetzt.</p>
-  <p>Für die 12 Schlussrührungen gilt ein besonders wichtiger kanonischer Punkt. Ist <code>S</code> die Summe der sechs alten Schalen und <code>r</code> die Rührnummer, wird</p><pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
-  <p>berechnet. <code>R</code> ist die <strong>gespeicherte Summe</strong>. Sowohl die Wahl der Schalenreihenfolge als auch die interne Rühraktualisierung verwenden <code>R</code>, nicht die rohe Summe <code>S</code>.</p>
-  <p>Ältere Fassungen, die dort <code>S</code> einsetzten, geben die aktuelle kanonische Semantik nicht wieder. Daraus abgeleitete Beispiele sind veraltet, sofern sie nicht neu verifiziert wurden.</p>
-  <p>Nach den Rührungen läuft auch der Antwortring in der beim 46. sichtbaren Tropfen festgelegten Reihenfolge weiter; sie darf nicht automatisch durch die Reihenfolge der letzten Rührung ersetzt werden.</p><hr>
+  <p>Die interne Berechnung heißt hier <strong>die Sauce</strong>. In ihrem Zentrum steht</p><pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre><p>eine Primzahl.</p>
+  <p>Zum Ablauf gehören fünf Eingabezähler, 7 verborgene Tropfen, 46 sichtbare Tropfen, 6 Schalen, wechselnde Schalenreihenfolgen, 12 abschließende Rührvorgänge, Siegel für unterschiedliche Antworten, kombinatorische Auswahlmechanismen, Torerzeugung, Jahresauswahl, Schnitzelteilung, Namensauswahl, Monatserzeugung und das Verweben der Monatstage.</p>
+  <p>Die letzten Aktualisierungen sind <strong>synchron</strong>: In jedem Rührvorgang werden alle sechs neuen Schalenwerte aus demselben alten Zustand berechnet; erst danach werden alle Schalen gemeinsam ersetzt.</p>
+  <p>Für die 12 Schlussrührungen gilt ein besonders wichtiger kanonischer Punkt. Ist <code>S</code> die Summe der sechs alten Schalen und <code>r</code> die Nummer des Rührvorgangs, wird</p><pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p>berechnet. <code>R</code> ist die <strong>gespeicherte Summe</strong>. Sowohl die Wahl der Schalenreihenfolge als auch die interne Aktualisierung verwenden <code>R</code>, nicht die rohe Summe <code>S</code>.</p>
+  <p>Ältere Fassungen, die die rohe Summe in die Aktualisierung einspeisten, beschreiben nicht die heutige kanonische Semantik; darauf beruhende Beispiele gelten als veraltet, sofern sie nicht neu verifiziert wurden.</p>
+  <p>Nach den Rührungen läuft auch der Antwortring in der Reihenfolge weiter, die beim 46. sichtbaren Tropfen festgeschrieben wurde; sie darf nicht automatisch durch die Reihenfolge der letzten Rührung ersetzt werden.</p><hr>
 </section>
 <section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
   <h2>Short Choice und Wide Choice</h2>
-  <p><strong>Short Choice</strong> wird bei relativ kleinen Auswahlräumen eingesetzt und verwendet Rejection Sampling, um den Bias einer einfachen Modulo-Operation zu vermeiden.</p>
-  <p>Sehr große Räume nutzen <strong>Wide Choice</strong>. Wide Choice ist nicht gleichbedeutend damit, unabhängige und gleichverteilte Basis-<code>Q</code>-Ziffern zu erzeugen, bis ein Index entsteht.</p>
-  <p>Daraus folgt insbesondere nicht, dass jede erlaubte Möglichkeit zwingend dieselbe positive Wahrscheinlichkeit hat. In hinreichend großen Räumen können sogar erlaubte Möglichkeiten existieren, die dieser konkrete Auswahlmechanismus überhaupt nicht erreicht.</p>
-  <p>Der Kalender ist dennoch vollständig deterministisch. „Choice“ bezeichnet einen Algorithmusschritt, keine während der Benutzung stattfindende Lotterie.</p><hr>
+  <p>Für relativ kleine Auswahlräume wird <strong>Short Choice</strong> verwendet. Sie nutzt Rejection Sampling (Zurückweisungsstichprobe), um einfachen Modulo-Bias zu vermeiden.</p>
+  <p>Sehr große Räume verwenden <strong>Wide Choice</strong>. Dabei darf man keine Eigenschaften hineinlesen, die die Spezifikation nicht zusichert.</p>
+  <p>Wide Choice ist nicht dasselbe wie das Ziehen unabhängiger, gleichverteilter Basis-<code>Q</code>-Ziffern bis zu einem Index. Folglich muss nicht jede zulässige Möglichkeit dieselbe positive Wahrscheinlichkeit haben; in hinreichend großen Räumen können zulässige Möglichkeiten sogar unerreichbar sein.</p>
+  <p>Der Kalender selbst ist vollständig deterministisch. »Choice« bezeichnet einen Algorithmusschritt, keine Lotterie bei der Benutzung.</p><hr>
 </section>
 <section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
   <h2>Der Strukturatlas</h2>
-  <p>Bis hierher ging es um Kalenderregeln. Die folgenden Zahlen sind etwas anderes: <strong>empirische Befunde</strong> aus einer großen Rechenstichprobe.</p>
-  <p>Der Atlas wurde mit Engine-Commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> erstellt. Er umfasst 4,096 Tage der Ausführung, jeweils die Jahre 4990–5010, 86,016 Jahresstrukturen, 625,437 Schnitzel, 3,535,422 strukturelle Monate, über 356 Millionen zusammenhängende Monatsabschnitte und über 364 Millionen Übergänge von Monatstag <code>n</code> zu <code>n+1</code>.</p>
-  <p>Das sind Aussagen über diesen Korpus, keine kanonischen Gesetze.</p>
+  <p>Bis hierhin ging es um Regeln des Kalenders. Die folgenden Zahlen sind etwas anderes: <strong>empirische Befunde</strong> aus einer großen Berechnungsstichprobe.</p>
+  <p>Der Atlas wurde mit Engine-Commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> erstellt und umfasst 4,096 Tage der Ausführung, die Jahre 4990–5010 für jeden davon, 86,016 Jahresstrukturen, 625,437 Schnitzel, 3,535,422 strukturelle Monate, mehr als 356 Millionen zusammenhängende Monatsabschnitte und mehr als 364 Millionen Übergänge von Monatstag <code>n</code> zu <code>n+1</code>.</p>
+  <p>Das sind Beschreibungen dieses Korpus, keine kanonischen Gesetze.</p>
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Messdaten des Strukturatlas"><table class="about-table">
-    <thead><tr><th scope="col">Gemessene Größe</th><th scope="col">Ergebnis der Stichprobe</th></tr></thead><tbody>
+    <thead><tr><th scope="col">Gemessene Größe</th><th scope="col">Ergebnis in der Stichprobe</th></tr></thead><tbody>
       <tr><td>Mittlere Jahreslänge</td><td>4,275.182 Tage</td></tr><tr><td>Median der Jahreslänge</td><td>4,343</td></tr><tr><td>Beobachtetes Minimum / Maximum</td><td>716 / 5,778</td></tr>
       <tr><td>Mittlere Schnitzelzahl pro Jahr</td><td>7.271</td></tr><tr><td>Jahre mit genau 6 Schnitzeln</td><td>42.00%</td></tr><tr><td>Jahre mit 6–8 Schnitzeln</td><td>81.29%</td></tr>
-      <tr><td>Mittlere Schnitzellänge</td><td>587.963 Tage</td></tr><tr><td>Median der Schnitzellänge</td><td>560</td></tr>
-      <tr><td>Mittlere Monatszahl pro Jahr</td><td>41.102</td></tr><tr><td>Median der Monatszahl</td><td>43</td></tr><tr><td>Jahre mit 47 Monaten</td><td>15.63%</td></tr><tr><td>Jahre mit mindestens 45 Monaten</td><td>36.81%</td></tr>
-      <tr><td>Mittlere Länge eines strukturellen Monats</td><td>104.014 Tage</td></tr><tr><td>Median der Monatslänge</td><td>115</td></tr><tr><td>Mittlere zusammenhängende Abschnitte je Monat</td><td>100.897</td></tr>
-      <tr><td>Anteil eintägiger Monatsabschnitte</td><td>97.482%</td></tr><tr><td>Wahrscheinlichkeit, dass benachbarte Tage zum selben Monat gehören</td><td>2.9976%</td></tr>
+      <tr><td>Mittlere Schnitzellänge</td><td>587.963 Tage</td></tr><tr><td>Median der Schnitzellänge</td><td>560</td></tr><tr><td>Mittlere Monatszahl pro Jahr</td><td>41.102</td></tr>
+      <tr><td>Median der Monatszahl</td><td>43</td></tr><tr><td>Jahre mit 47 Monaten</td><td>15.63%</td></tr><tr><td>Jahre mit mindestens 45 Monaten</td><td>36.81%</td></tr>
+      <tr><td>Mittlere strukturelle Monatslänge</td><td>104.014 Tage</td></tr><tr><td>Median der Monatslänge</td><td>115</td></tr><tr><td>Mittlere zusammenhängende Abschnitte pro Monat</td><td>100.897</td></tr>
+      <tr><td>Anteil eintägiger Monatsabschnitte</td><td>97.482%</td></tr><tr><td>Wahrscheinlichkeit, dass benachbarte Tage im selben Monat liegen</td><td>2.9976%</td></tr>
       <tr><td>Mittlere fremde Tage zwischen <code>n</code> und <code>n+1</code> eines Monats</td><td>40.408</td></tr><tr><td>Mittlere Spanne vom ersten bis zum letzten Monatsvorkommen</td><td>4,266.653 Tage</td></tr>
     </tbody></table></div>
-  <p>Praktisch kann sich damit ein Monat von etwa hundert Tagen fast über ein ganzes Pastafari-Jahr erstrecken.</p>
-  <p>Der Atlas zeigte außerdem einen natürlichen Längenbias rund um Jahr 5000. Ein „normales“ Jahr der Stichprobe war im Mittel etwa 4,262 Tage lang; bei Gewichtung nach der Zahl enthaltener Tage steigt der Mittelwert auf etwa 4,466 Tage, beim eigenen Jahr 5000 auf etwa 4,499 Tage. Der Grund: Jahr 5000 muss den Tag der Ausführung enthalten, und lange Jahre bieten dafür mehr mögliche Tage.</p>
-  <p>Der Zusammenhang zwischen Einheitsname und Länge war in der Stichprobe sehr schwach. Das beweist keine vollständige mathematische Unabhängigkeit, liefert aber keinen praktischen Hinweis auf eine beabsichtigte Längencodierung.</p>
-  <p>Die 86,016 Jahresstrukturen sind außerdem keine 86,016 völlig unabhängigen Stichproben. Darin stecken nur 24,786 verschiedene Start-End-Torintervalle; benachbarte Tage der Ausführung können dasselbe Jahresintervall wählen und dennoch unterschiedliche innere Strukturen erzeugen.</p>
-  <p>Der Atlas beschreibt also das gemessene Implementierungsverhalten sehr gut; er ist kein Wahrscheinlichkeitslehrsatz über alle denkbaren Kalenderwelten.</p><hr>
+  <p>Ein Monat mit ungefähr hundert Tagen kann sich praktisch über fast ein ganzes Pastafari-Jahr verteilen.</p>
+  <p>Im selben Atlas zeigte sich eine natürliche Längenverzerrung um Jahr 5000. Ein »gewöhnliches« Jahr der Stichprobe war im Mittel etwa 4,262 Tage lang. Gewichtet man Jahre nach ihrer Tageszahl, steigt der Mittelwert auf etwa 4,466 Tage; das jeweilige Selbst-Jahr 5000 lag im Mittel bei rund 4,499 Tagen.</p>
+  <p>Der Grund: Jahr 5000 muss den Tag der Ausführung enthalten. Ein längeres Jahr bietet mehr Tage, an denen es das ihn enthaltende Jahr sein kann.</p>
+  <p>Auch der Zusammenhang zwischen Einheitsname und Länge war in der Stichprobe sehr schwach. Das beweist keine vollständige mathematische Unabhängigkeit, liefert aber keinen praktischen Hinweis darauf, dass Namen Länge codieren sollen.</p>
+  <p>Die 86,016 Jahresstrukturen sind außerdem nicht 86,016 völlig unabhängige Stichproben. Darin stecken nur 24,786 verschiedene Start-End-Torintervalle; benachbarte Tage der Ausführung können dasselbe Jahresintervall wählen und dennoch eine andere innere Struktur erzeugen.</p>
+  <p>Der Atlas beschreibt das gemessene Verhalten sehr gut, ist aber kein Wahrscheinlichkeitssatz über alle denkbaren Kalenderwelten.</p><hr>
 </section>
 <section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
   <h2>Geburtstage und Jahrestage</h2>
-  <p>„Jedes Jahr derselbe Tag“ braucht im Pastafari-Kalender eine Definition. Natürliche Möglichkeiten sind derselbe <code>(Monatsname, Tag im Monat)</code>, derselbe <code>(Schnitzelname, Tag im Schnitzel)</code> oder kombinierte Bedingungen.</p>
-  <p>Ein Pastafari-Geburtstag ist deshalb nicht einfach <code>RRULE:FREQ=YEARLY</code>. Gesucht werden muss das nächste Jahr, das die gewählte Wiederholungsbedingung erfüllt. Das ursprüngliche Ereignis zählt nicht automatisch als sein eigenes „nächstes Vorkommen“. Ein Wechsel des Tags der Ausführung zur Anzeige darf Identität, Geburtszeitpunkt und Alter einer Person nicht verändern.</p>
-  <p>Eine exakte Suche über 4,096 Selbstdaten prüfte jedes folgende Pastafari-Jahr vorwärts und rückwärts bis zu 250,000 Jahren je Richtung:</p>
-  <ul><li>Bei <code>(Monatsname, Tag im Monat)</code> lag der Median bei 1 Pastafari-Jahr; 77.56% der ersten Wiederholungen lagen schon im Nachbarjahr, 93.77% binnen zwei Jahren, 99.44% binnen fünf; beobachtetes Maximum: 21 Jahre.</li>
-  <li>Bei <code>(Schnitzelname, Tag im Schnitzel)</code> lag der Median bei 3 Jahren, 88.89% binnen zehn; die Verteilung hatte jedoch einen sehr schweren Schwanz, das beobachtete Maximum betrug 51,954 Pastafari-Jahre.</li></ul>
-  <p>Das sind <strong>empirische Ergebnisse des untersuchten Korpus</strong>. Sie beweisen weder, dass jeder mögliche Jahrestag wiederkehren muss, noch garantieren sie eine maximale Wartezeit.</p><hr>
+  <p>»Derselbe Tag jedes Jahr« muss im Pastafari-Kalender erst definiert werden. Natürliche Wiederholungskoordinaten sind <code>(Monatsname, Tag im Monat)</code> oder <code>(Schnitzelname, Tag im Schnitzel)</code>; auch kombinierte Bedingungen sind möglich.</p>
+  <p>Ein Pastafari-Geburtstag entspricht deshalb nicht einfach <code>RRULE:FREQ=YEARLY</code>. Man muss das nächste Jahr suchen, das die gewählte Wiederholungsbedingung erfüllt. Das Ursprungsereignis zählt nicht automatisch als seine eigene »nächste Wiederkehr«.</p>
+  <p>Eine Änderung des Tags der Ausführung zur Darstellung darf weder Identität noch Geburtszeitpunkt noch Alter einer Person verändern.</p>
+  <p>In einer exakten Suche über 4,096 Selbst-Daten wurde jedes aufeinanderfolgende Pastafari-Jahr vorwärts und rückwärts bis zu 250,000 Jahren je Richtung geprüft:</p>
+  <ul><li>Für <code>(Monatsname, Tag im Monat)</code> lag der Median bei 1 Pastafari-Jahr; 77.56% der ersten Wiederholungen lagen schon im Nachbarjahr, 93.77% innerhalb von zwei, 99.44% innerhalb von fünf Jahren; das beobachtete Maximum war 21 Jahre.</li>
+  <li>Für <code>(Schnitzelname, Tag im Schnitzel)</code> lag der Median bei 3 Jahren; 88.89% wurden innerhalb von 10 Jahren gefunden, die Verteilung war jedoch stark langschwänzig, mit einem beobachteten Maximum von 51,954 Pastafari-Jahren.</li></ul>
+  <p>Das sind <strong>empirische Ergebnisse des untersuchten Korpus</strong>, kein Beweis dafür, dass jeder mögliche Jahrestag wiederkehrt, und keine Garantie für eine maximale Wartezeit.</p><hr>
 </section>
 <section class="about-section" id="appointments" data-toc-section data-toc-level="2">
   <h2>Wie verabredet man sich?</h2>
-  <p>Wer einen Termin allein durch ein Pastafari-Datum vereinbaren will, muss sich mindestens über das Fünfertupel und den verwendeten Tag der Ausführung einigen. Dieser sollte besser als stabile Tagesidentität statt als Wort „heute“ gespeichert werden, sonst könnten beide Seiten verschiedene Kalender berechnen.</p>
-  <ul><li>„morgen“ ist der nächste chronologische Tag;</li><li>„der nächste Tag im Monat“ ist das nächste Auftreten dieses Monats;</li><li>„Monatsende“ ist sein letztes Auftreten;</li><li>„ein ganzer Monat“ kann die Menge der Monatstage oder die gesamte chronologische Spanne vom ersten bis zum letzten Auftreten meinen;</li><li>„nächstes Jahr“ bezieht sich auf den unter dem gewählten Tag der Ausführung konstruierten Kalender.</li></ul>
-  <p>Bei besonders wichtigen Terminen kann zusätzlich der absolute chronologische Tag oder Zeitpunkt gespeichert werden. Dem Kalender schadet das nicht.</p><hr>
+  <p>Wer eine Verabredung nur mit einem Pastafari-Datum festlegen will, muss sich mindestens über das Fünfer-Tupel und den zur Berechnung verwendeten Tag der Ausführung einigen. Besser wird dieser Tag selbst als stabile Tagesidentität gespeichert statt als Wort »heute«; sonst können zwei Personen verschiedene Kalender berechnen.</p>
+  <ul><li>»morgen« ist der nächste chronologische Tag;</li><li>»nächster Tag im Monat« ist das nächste Auftreten dieses Monats;</li><li>»Monatsende« ist sein letztes Auftreten;</li><li>»ganzer Monat« kann entweder die Menge der Monatstage oder die volle chronologische Spanne vom ersten bis zum letzten Auftreten meinen;</li><li>»nächstes Jahr« bezieht sich auf den unter dem gewählten Tag der Ausführung aufgebauten Kalender.</li></ul>
+  <p>Bei besonders wichtigen Terminen kann zusätzlich der absolute chronologische Tag oder Zeitpunkt gespeichert werden. Der Kalender nimmt keinen Schaden daran.</p><hr>
 </section>
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
   <h2>Reisen, Ereignisse und all-day</h2>
-  <p>Ein Ereignis ist nicht dasselbe wie seine angezeigte lokale Bezeichnung. Ein terminierter Vorgang sollte an einem stabilen chronologischen Zeitpunkt verankert sein. Wer reist, verschiebt das Ereignis nicht in der Zeit; die dort angezeigte lokale Pastafari-Datumsangabe kann sich aber ändern, weil der „lokale Tag“ vom Ort abhängt.</p>
-  <p>Bei einem <strong>all-day</strong>-Ereignis ist der Unterschied besonders deutlich. Ein ziviles Ganztagsereignis läuft gewöhnlich von Mitternacht bis Mitternacht. Ein Pastafari-Ganztagsereignis sollte von einer lokalen Pastafari-Tagesgrenze bis zur nächsten reichen. Das sind im Allgemeinen nicht dieselben Zeitpunkte.</p>
-  <p>Blindes Exportieren als ziviles „Ganztagsereignis“ kann daher die Bedeutung verändern. Zur exakten Erhaltung braucht man den chronologischen Anker und den passenden Orts-/Tagesgrenzenkontext, nicht nur ein <code>all-day</code>-Häkchen.</p><hr>
+  <p>Ein Ereignis ist nicht dasselbe wie sein örtlich angezeigtes Etikett. Ein terminiertes Ereignis sollte an einem stabilen chronologischen Zeitpunkt verankert sein. Eine Reise verschiebt es nicht in der Zeit; die lokal angezeigte Pastafari-Datumsangabe kann sich aber ändern, weil der »lokale Tag« vom Standort abhängt.</p>
+  <p>Bei einem <strong>all-day</strong>-Ereignis ist der Unterschied noch größer. Ein ziviles Ganztagsereignis läuft gewöhnlich von Mitternacht bis Mitternacht. Ein Pastafari-Ganztagsereignis sollte von einer lokalen Pastafari-Tagesgrenze bis zur nächsten reichen. Das sind üblicherweise nicht dieselben Zeitpunkte.</p>
+  <p>Wer ein Pastafari-Ereignis blind als ziviles »Ganztagsereignis« exportiert, kann seine Bedeutung verändern. Für eine genaue Bewahrung braucht man die chronologische Verankerung sowie den passenden Standort-/Tagesgrenzen-Kontext, nicht nur ein <code>all-day</code>-Häkchen.</p><hr>
 </section>
 <section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
   <h2>Wann wechselt der Tag?</h2>
-  <p>Der lokale Pastafari-Tag wechselt nicht um Mitternacht. Die Grenze ist der <strong>topozentrische untere Meridiandurchgang des Venuszentrums am lokalen Meridian</strong>.</p>
-  <p>Der Tageswechsel ist also ein ortsabhängiges lokales astronomisches Ereignis. Er muss nicht um 00:00 stattfinden, wird nicht durch die zivile Zeitzone bestimmt, verschiebt sich nicht allein wegen Beginn oder Ende der Sommerzeit und setzt keine Sichtbarkeit der Venus mit bloßem Auge voraus.</p>
-  <p>Am selben physikalischen Zeitpunkt können zwei Orte auf unterschiedlichen Seiten ihrer jeweiligen lokalen Tagesgrenze liegen. Hat das System keinen brauchbaren Benutzerstandort, verwendet das Produkt <strong>Kisurra</strong> als Fallback.</p><hr>
+  <p>Der lokale Pastafari-Tag wechselt nicht um Mitternacht. Seine Grenze ist durch den <strong>topozentrischen unteren Meridiandurchgang des Venuszentrums am lokalen Meridian</strong> festgelegt.</p>
+  <p>Der Tageswechsel ist damit ein standortabhängiges astronomisches Ereignis. Er muss nicht um 00:00 stattfinden, wird nicht durch die zivile Zeitzone bestimmt, verschiebt sich nicht bloß wegen Beginn oder Ende der Sommerzeit und setzt keine Sichtbarkeit der Venus mit bloßem Auge voraus.</p>
+  <p>Ein und derselbe physikalische Zeitpunkt kann an zwei Orten auf verschiedenen Seiten ihrer jeweiligen lokalen Tagesgrenze liegen. Fehlt ein brauchbarer Nutzerstandort, verwendet das Produkt <strong>Kisurra</strong> als Rückfallstandort.</p><hr>
 </section>
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
-  <h2>Gedruckter Kalender und Handrechnung</h2>
-  <p>Ein Pastafari-Kalender lässt sich ausdrucken; anzugeben ist lediglich der Tag der Ausführung. Er zeigt die Zeitstruktur aus dessen Perspektive. Ändert sich dieser Tag, kann ein neuer Ausdruck nötig werden. Der Drucker bleibt also relevant.</p>
-  <p>Auch Handrechnung ist möglich, denn die Spezifikation ist vollständig und deterministisch: Eingangszähler berechnen, 7 verborgene und 46 sichtbare Tropfen ausführen, sechs Schalen aktualisieren, 12 Schlussrührungen durchführen, Antworten gewinnen, Tore bauen, Jahre und Schnitzel auswählen, kombinatorische Auswahlen durchführen, Namen bestimmen und Monate verweben.</p>
-  <p>Dafür muss man sich nicht merken, dass der Februar manchmal 28 und manchmal 29 Tage hat.</p><hr>
+  <h2>Druckkalender und Handrechnung</h2>
+  <p>Einen Pastafari-Kalender kann man drucken. Man muss nur angeben, auf welchen Tag der Ausführung er sich bezieht. Ein solcher Kalender zeigt die Zeitstruktur aus der Perspektive dieses Tages; ändert sich der Tag der Ausführung, kann ein neuer Kalender nötig werden. Der Drucker bleibt also relevant.</p>
+  <p>Auch Handrechnung ist möglich, weil die Spezifikation vollständig und deterministisch ist: Eingabezähler berechnen, 7 verborgene und 46 sichtbare Tropfen durchführen, sechs Schalen aktualisieren, 12 Schlussrührungen ausführen, Antworten erzeugen, Tore bauen, Jahre und Schnitzel wählen, kombinatorische Auswahlen durchführen, Namen wählen und Monate verweben.</p>
+  <p>So spart man sich, zu merken, dass der Februar manchmal 28 und manchmal 29 Tage hat.</p><hr>
 </section>
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Und was ist Seer?</h2>
-  <p>Neben der kanonischen Implementierung gibt es die schnelle Engine <strong>Pastafarian Calendar Seer</strong>. Seer ist keine Autoritätsquelle. Megillah und kanonische Berechnung legen das richtige Datum fest; widerspricht Seer ihnen, liegt Seer falsch.</p>
-  <p>Seer soll dieselben Abfragen schnell und produktfreundlich beantworten.</p>
-  <p>Bei der Live-Verifikation während der Überarbeitung dieser Seite umfasste Seer unter anderem Datums- und „Jetzt“-Abfragen, Batch-Abfragen, Tagesbereiche, Rückkonvertierung zu einem Zieltag, Jahresstruktur, Bestimmung des aktiven Tags der Ausführung, Node-API, Browser/HTTP-Client, CLI, HTTP-v1-Dienst, OpenAPI-3.1-Vertrag, native Implementierungen und Distributionspakete sowie ein verifiziertes Container-Deployment.</p>
-  <p>Die frühere Aussage, Seer habe keine öffentliche API, ist damit überholt. Ein ausdrücklicher stabiler HTTP-v1-Vertrag bietet Endpoints für Datum, Bereich, Batch, Jahr, reverse, Tag der Ausführung, Metadaten, Locales und Status.</p>
-  <p>Am 21. September 2026 wurde zudem ein öffentliches HTTPS-Deployment auf Render praktisch geprüft: exakte Abfragen, großer Bereich, Neustart, Cold Wake und Verhalten unter Last liefen gegen den Live-Dienst.</p>
-  <p>Die Projektdokumentation unterscheidet weiterhin zwischen dieser lebenden öffentlichen Beta-/Evaluierungsbereitstellung und einem dauerhaft gehosteten Produktionsdienst mit SLA. Serveradresse, Hostinganbieter oder Versionsnummer gehören daher nicht als unveränderliche Kalenderlehre in eine grundsätzliche Erklärung.</p>
-  <p>Seer darf Vorberechnung, besondere Darstellungen, SIMD, Algebra und andere Abkürzungen nutzen. Es muss nicht jeden Rechenschritt der kanonischen Implementierung historisch nachspielen, solange semantisch dieselbe Operation und dieselbe Antwort herauskommen. Optimierung ist keine zweite Autorität.</p><hr>
+  <p>Neben der kanonischen Implementierung gibt es eine schnelle Engine namens <strong>Pastafarian Calendar Seer</strong>. Seer ist keine Autoritätsquelle. Megillah und kanonische Berechnung bestimmen das richtige Datum; widerspricht Seer ihnen, liegt Seer falsch.</p>
+  <p>Sein Zweck ist, dieselben Anfragen schnell und produktfreundlich zu beantworten.</p>
+  <p>Bei der während der Bearbeitung dieser Seite durchgeführten Live-Prüfung umfasste Seer unter anderem Datums- und »Jetzt«-Abfragen, Batch-Abfragen, Tagesbereiche, Rückumrechnung in einen Zieltag, Abruf der Jahresstruktur, Auflösung des aktiven Tags der Ausführung, Node-API, Browser-/HTTP-Client, CLI, HTTP-v1-Dienst, OpenAPI-3.1-Vertrag, native Implementierungen und Distributionspakete sowie ein verifiziertes Container-Deployment.</p>
+  <p>Die alte Aussage, Seer habe keine öffentliche API, ist damit überholt. Es gibt einen ausdrücklichen stabilen HTTP-v1-Vertrag mit Endpoints für Datum, Bereich, batch, Jahr, reverse, Tag der Ausführung, metadata, locales und status.</p>
+  <p>Am 21. September 2026 wurde außerdem ein öffentliches HTTPS-Deployment auf Render praktisch geprüft: exact-Abfragen, ein großer Bereich, restart, cold wake und Verhalten unter Last wurden am laufenden Dienst getestet.</p>
+  <p>Die Projektdokumentation unterscheidet weiterhin zwischen diesem öffentlichen Live-Beta-/Evaluationsdeployment und einem dauerhaft zugesagten hosted-production-Dienst mit SLA. Daher sollte eine Grundlagenseite weder Serveradresse noch Hostinganbieter oder Versionsnummer zum Bestandteil des Kalenders erklären.</p>
+  <p>Seer darf Vorberechnung, Spezialdarstellungen, SIMD, Algebra und andere Abkürzungen einsetzen. Es muss die Rechengeschichte der kanonischen Implementierung nicht Schritt für Schritt nachspielen, solange es dieselbe semantische Operation ausführt und dieselbe Antwort liefert.</p>
+  <p>Optimierung ist keine alternative Autorität.</p><hr>
 </section>
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
   <h2>Ursprung, Gründungstag und Tag der Tafeln</h2>
   <p>Hier müssen kanonische Anker und Website-Erzählung sauber getrennt werden.</p>
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>Die Anker</h3>
-    <p>Das System besitzt einen festen Referenztag, den <strong>Gründungstag</strong>. Im proleptischen gregorianischen Kalender ist das der <strong>22. Dezember 41,222 v. Chr.</strong> Er ist nicht der „Beginn der Zeit“, sondern ein Rechenanker.</p>
-    <p>Die Tageszählung um ihn herum verwendet positive ungerade und gerade Zahlen: Gründungstag = 1; danach 3, 5 usw.; in die Vergangenheit unmittelbar davor 2, dann 4, 6 usw. Beide Seiten des Ankers kommen in dieser Zählung ohne negative Tagesnummern aus.</p>
-    <p>Ein zweiter Anker ist der <strong>Tag der Tafeln</strong>: <strong>15. Juni 763 v. Chr. im proleptischen julianischen Kalender</strong>, entsprechend <strong>7. Juni 763 v. Chr. im proleptischen gregorianischen Kalender</strong>.</p>
-    <p>Der exakte Abstand vom Gründungstag bis zum Tag der Tafeln beträgt</p><pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre><p>Tage.</p>
-    <p>Diese Anker liegen fest auf der Zeitachse. Ihr jeweils angezeigtes Pastafari-Datum hängt trotzdem vom Tag der Ausführung ab, unter dem nach ihnen gefragt wird.</p>
+    <p>Das System besitzt einen festen Referenztag, den <strong>Gründungstag</strong>. Im proleptischen gregorianischen Kalender ist das der <strong>22. Dezember 41,222 v. Chr.</strong></p>
+    <p>Der Gründungstag ist nicht der »Anfang der Zeit«, sondern ein Rechenanker.</p>
+    <p>Die Tagesnummerierung um ihn verwendet positive ungerade und gerade Zahlen: Gründungstag = 1; die folgenden Tage = 3, 5 usw. In Richtung Vergangenheit: der Vortag = 2, davor = 4, dann 6 usw. So werden beide Seiten des Ankers ohne negative Tagesnummern in diesem Zähler codiert.</p>
+    <p>Ein weiterer Anker ist der <strong>Tag der Tafeln</strong>: <strong>15. Juni 763 v. Chr. im proleptischen julianischen Kalender</strong>, entsprechend <strong>7. Juni 763 v. Chr. im proleptischen gregorianischen Kalender</strong>.</p>
+    <p>Der genaue Abstand vom Gründungstag bis zum Tag der Tafeln beträgt</p><pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre><p>Tage.</p>
+    <p>Beide sind feste Anker auf der Zeitachse. Das angezeigte Pastafari-Datum für sie hängt trotzdem vom Tag der Ausführung ab.</p>
   </section>
   <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
     <h3>Die Erzählung der Website</h3>
-    <p>Die redaktionelle Erzählung stellt den Kalender als Teil der Schöpfung dar, den die Menschheit lange nutzte, ohne sich seiner hinreichend bewusst zu sein, bis er in der Moderne erneut übermittelt wurde.</p>
-    <p>Das ist die Website-Erzählung; ihre narrativen Einzelheiten sind nicht sämtlich als ausdrückliche technische Aussagen der Megillah auszugeben.</p>
-    <p>Das Ereignis der erneuten Übermittlung ist selbst ein festes historisches Ereignis. Sein <strong>Pastafari-Datum</strong> sollte auf der Website dynamisch unter dem aktuellen Tag der Ausführung angezeigt und nicht für alle Zeiten festgeschrieben werden.</p><hr>
+    <p>In der redaktionellen Darstellung der Website ist der Kalender Teil der Schöpfung und ein System, das die Menschheit benutzt habe, ohne sich dessen ausreichend bewusst zu sein, bis zur modernen erneuten Übergabe.</p>
+    <p>Das ist die Erzählung der Website; nicht jedes narrative Detail darin darf als ausdrücklicher technischer Satz der Megillah dargestellt werden.</p>
+    <p>Das Ereignis der erneuten Übergabe selbst ist chronologisch fest. Sein <strong>Pastafari-Datum</strong> sollte auf der Website dynamisch unter dem aktuellen Tag der Ausführung gezeigt werden, statt ihm für immer ein einziges Pastafari-Datum anzuhängen.</p><hr>
   </section>
 </section>
 <section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
-  <h2>Für Fortgeschrittene: Rückkonvertierung</h2>
-  <p>Bei bekanntem Tag der Ausführung <code>c</code> ist die Rückkonvertierung sehr stark. Innerhalb eines bekannten Pastafari-Jahres identifiziert</p>
-  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{Schnitzelname},\text{Tag im Schnitzel})</code></pre><p>höchstens einen Tag. Dasselbe gilt für</p>
-  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{Monatsname},\text{Tag im Monat})</code></pre>
-  <p>Ein vollständiges Datum mit bekanntem <code>c</code> bestimmt den Zieltag daher eindeutig.</p>
-  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Kandidatenobergrenzen bei der Rückkonvertierung"><table class="about-table">
+  <h2>Für Fortgeschrittene: Rückumrechnung</h2>
+  <p>Ist der Tag der Ausführung <code>c</code> bekannt, ist die Rückumrechnung sehr stark. Innerhalb eines bekannten Pastafari-Jahres identifiziert</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{Schnitzelname},\text{Tag im Schnitzel})</code></pre>
+  <p>höchstens einen Tag. Dasselbe gilt für</p><pre class="math-block" dir="ltr" tabindex="0"><code>(\text{Monatsname},\text{Tag im Monat})</code></pre>
+  <p>Damit identifiziert ein vollständiges Datum bei bekanntem Tag der Ausführung den Zieltag eindeutig.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Obergrenzen für Kandidaten der Rückumrechnung"><table class="about-table">
     <thead><tr><th scope="col">Zusätzlich bekannte Information</th><th scope="col">Höchstens Kandidaten</th></tr></thead><tbody>
       <tr><td>Kein Nicht-Jahresfeld</td><td>5,778</td></tr><tr><td>Nur Schnitzelname</td><td>5,568</td></tr><tr><td>Nur Tag im Schnitzel</td><td>17</td></tr>
       <tr><td>Nur Monatsname</td><td>123</td></tr><tr><td>Nur Tag im Monat</td><td>47</td></tr><tr><td>Schnitzelname + Tag im Schnitzel</td><td>1</td></tr>
       <tr><td>Monatsname + Tag im Monat</td><td>1</td></tr><tr><td>Beliebige drei Nicht-Jahresfelder</td><td>1</td></tr><tr><td>Alle vier Nicht-Jahresfelder</td><td>1</td></tr>
     </tbody></table></div>
-  <p>Ohne bekannten Tag der Ausführung ist die Lage anders. Dasselbe Fünfertupel kann unter verschiedenen Tagen der Ausführung auftreten; es gibt exakte Zeugen, bei denen dasselbe vollständige Datum in unterschiedlichen Abständen von <code>c</code> erscheint. Selbst im Jahr 5000 ist das Vorzeichen dieses Abstands nicht immer aus dem Tupel bestimmbar: einmal kann das Datum in der Vergangenheit, ein anderes Mal in der Zukunft des Tags der Ausführung liegen.</p>
-  <p>Ein vollständiges Pastafari-Datum ist deshalb ohne Kenntnis des verwendeten <code>c</code> keine absolute Adresse auf der Zeitachse.</p>
+  <p>Ohne Kenntnis des Tags der Ausführung sieht es anders aus. Dasselbe Fünfer-Tupel kann unter verschiedenen Tagen der Ausführung auftreten; es gibt exakte Zeugen, bei denen dasselbe vollständige Datum in verschiedenen Abständen zu <code>c</code> entsteht.</p>
+  <p>Selbst in Jahr 5000 ist das Vorzeichen dieses Abstands nicht immer aus dem Tupel bestimmt: dasselbe vollständige Datum kann in einem Kontext vor und in einem anderen nach dem Tag der Ausführung liegen.</p>
+  <p>Ein vollständiges Pastafari-Datum ist also ohne Kenntnis des verwendeten <code>c</code> keine absolute Adresse auf der Zeitachse.</p>
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
-    <h3>Struktur in großer zeitlicher Entfernung</h3>
-    <p>Abgeleitete mathematische Untersuchungen haben zudem eine exakte asymptotische Struktur ergeben. Für einen <strong>festen Tag der Ausführung</strong> <code>c</code> herrscht hinreichend weit im Vergangenheitsast affine Periodizität.</p>
-    <p>Wenn</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
-    <p>gilt, dann existieren für dieses <code>c</code> eine Verschiebung <code>H_c</code>, eine Jahresänderung <code>p_c</code> und eine hinreichend ferne Schwelle, sodass jenseits der Schwelle</p>
+    <h3>Struktur in ferner Zeit</h3>
+    <p>Aus der Spezifikation abgeleitete Mathematik hat außerdem eine exakte asymptotische Struktur gefunden. Für einen <strong>festen Tag der Ausführung</strong> <code>c</code> besteht hinreichend weit im Vergangenheitsende affine Periodizität.</p>
+    <p>Gilt</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>dann existieren für dieses <code>c</code> eine Verschiebung <code>H_c</code>, eine Jahresänderung <code>p_c</code> und eine hinreichend ferne Schwelle, sodass danach</p>
     <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
-    <p>gilt. Die vier Nicht-Jahresfelder wiederholen sich, während sich die Jahreszahl regelmäßig ändert.</p>
-    <p>Das ist ein Satz für festes <code>c</code>. Er liefert keinen globalen Satz der Form</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
-    <p>Ob sich die endgültige asymptotische Steigung zwischen verschiedenen Tagen der Ausführung tatsächlich unterscheidet, ist weiterhin offen.</p><hr>
+    <p>gilt. Die vier Nicht-Jahresfelder wiederholen sich, während sich die Jahreszahl um einen festen Betrag ändert.</p>
+    <p>Das ist ein Satz für festes <code>c</code>. Daraus folgt kein globaler Satz der Form</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>Ob die endgültige asymptotische Steigung zwischen verschiedenen Tagen der Ausführung tatsächlich variiert, ist weiterhin offen.</p><hr>
   </section>
 </section>
 <section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
-  <h2>Für Fortgeschrittene: Wie viel Geschichte bewahrt die Sauce?</h2>
-  <p>Die Sauce wirkt wie ein äußerst aggressiver Mischer. Algebraische Forschung zeigt jedoch, dass sie erheblich mehr Information erhält, als der äußere Eindruck vermuten lässt. Das ist aus der Spezifikation abgeleitete Forschung, keine zusätzliche Kalenderregel.</p>
-  <p>Für die sichtbaren Stufen 3 bis 46 wurde auf dem relevanten asymptotischen Ast generische Injektivität nachgewiesen: Generisch bewahrt der Zustand genügend Information, um die relevante Geschichte von Eingaben und Schalenreihenfolgen zu rekonstruieren.</p>
-  <p>Auch in den 12 Schlussrührungen verschwindet die Information nicht sofort. Für die ersten fünf Rührungen nach sichtbarem Tropfen 46 ist generische Invertierbarkeit auf der relevanten kanonischen Vereinigung ohne zusätzliche Seiteninformation geschlossen. Für die übrigen Rührungen kennt man starke konstruktive Obergrenzen dafür, wie viel Seiteninformation zur Rekonstruktion genügt.</p>
-  <p>Offen bleibt, ob <strong>die sechs Endschalen allein</strong> immer generisch ausreichen.</p>
-  <p>Ein Teil der Ergebnisse ist symbolisch bewiesen, ein anderer durch exakte endliche arithmetische Prüfungen geschlossen. Die symbolische Verstärkung hat den rechnerischen Vertrauenskern stark verkleinert, aber nicht vollständig beseitigt.</p>
-  <p>Bemerkenswert ist auch, dass zunächst riesig wirkende Pfadräume auf viel kleinere endliche Strukturen schrumpften, darunter Automaten mit 180 bzw. 9 Zuständen und Symmetrien der sechs Schalen. Unter dem Mischen liegt also eine starre algebraische Struktur.</p>
-  <p>Für die Frage nach dem heutigen Datum muss man davon nichts wissen.</p><hr>
+  <h2>Für Fortgeschrittene: Wie viel Vergangenheit behält die Sauce?</h2>
+  <p>Die Sauce wirkt wie ein sehr aggressiver Mischer. Algebraische Untersuchungen zeigen jedoch, dass sie weit mehr Information bewahrt, als der äußere Eindruck vermuten lässt. Das ist aus der Spezifikation abgeleitete Forschung, keine neue Kalenderregel.</p>
+  <p>Für die sichtbaren Stufen 3 bis 46 wurde auf dem relevanten asymptotischen Ast generische Injektivität geschlossen: Generisch enthält der Zustand genug Information, um die relevante Geschichte der Eingaben und Schalenreihenfolgen zu rekonstruieren.</p>
+  <p>Auch in den 12 Schlussrührungen verschwindet die Information nicht sofort. Für die ersten fünf Rührungen nach dem 46. sichtbaren Tropfen ist generische Invertierbarkeit auf der relevanten kanonischen Vereinigung ohne zusätzliche Seiteninformation geschlossen; für die übrigen Rührungen sind starke konstruktive Obergrenzen für ausreichende Seiteninformation bekannt.</p>
+  <p>Offen bleibt, ob <strong>die sechs endgültigen Schalen allein</strong> generisch immer genügen.</p>
+  <p>Ein Teil der Ergebnisse ist symbolisch bewiesen, ein Teil durch endliche exakte arithmetische Prüfungen geschlossen. Die symbolische Verstärkung verkleinerte den Rechenkern, dem man vertrauen muss, erheblich, beseitigte ihn aber nicht vollständig.</p>
+  <p>Überraschend schrumpften Räume, die zunächst enorm viele Pfade zu verlangen schienen, auf viel kleinere endliche Strukturen zusammen, darunter Automaten mit 180 und 9 Zuständen sowie Symmetrien der sechs Schalen.</p>
+  <p>Unter dem Durcheinander steckt also starre algebraische Struktur. Für das heutige Datum muss man davon nichts wissen.</p><hr>
 </section>
 <section class="about-section" id="summary" data-toc-section data-toc-level="2">
   <h2>Was ist der Pastafari-Kalender also eigentlich?</h2>
-  <p>Ein deterministischer Kalender, in dem ein Datum nicht nur vom Zieltag, sondern <strong>gemeinsam vom Tag der Ausführung und vom abgefragten Tag</strong> abhängt.</p>
-  <p>Jedes Datum hat genau fünf Felder. Die Gegenwart aus ihrer eigenen Perspektive liegt immer in Jahr 5000, doch Jahr 5000 verschiebt sich mit dem Tag der Ausführung. Jahre können sehr lang sein. Schnitzel sind zusammenhängend, Monate müssen es überhaupt nicht sein, und ein kanonisches Wochensystem gibt es nicht.</p>
-  <p>Monatstag <code>n+1</code> muss nicht morgen sein. Derselbe chronologische Tag kann morgen ein anderes Pastafari-Etikett tragen. Derselbe physikalische Zeitpunkt kann an zwei Orten in unterschiedlichen lokalen Pastafari-Tagen liegen. Ein Ganztagsereignis muss nicht von Mitternacht bis Mitternacht reichen. Und ein jährlicher Geburtstag ist zunächst ein Suchproblem, bevor er ein Kalenderproblem ist.</p>
-  <p>Sind Tag der Ausführung und abgefragter Tag gegeben, bleibt jedoch keine Mehrdeutigkeit: Es gibt genau eine Antwort.</p>
-  <p>Mehr muss ein Kalender letztlich nicht leisten.</p>
+  <p>Ein deterministischer Kalender, in dem das Datum nicht nur vom Zieltag abhängt, sondern von <strong>Tag der Ausführung und abgefragtem Tag gemeinsam</strong>.</p>
+  <p>Jedes Datum hat genau fünf Felder. Die Gegenwart aus eigener Sicht liegt immer im Jahr 5000, doch Jahr 5000 verschiebt sich mit dem Tag der Ausführung. Jahre können sehr lang sein, Schnitzel sind zusammenhängend, Monate müssen es nicht sein, und es gibt kein kanonisches Wochensystem.</p>
+  <p>Monatstag <code>n+1</code> ist nicht zwingend morgen. Derselbe chronologische Tag kann morgen ein anderes Pastafari-Etikett tragen. Derselbe physikalische Zeitpunkt kann an zwei Orten in verschiedene lokale Pastafari-Tage fallen. Ein Ganztagsereignis muss nicht von Mitternacht bis Mitternacht reichen. Und ein jährlicher Geburtstag ist zunächst ein Suchproblem, bevor er ein Kalenderproblem ist.</p>
+  <p>Sind aber Tag der Ausführung und abgefragter Tag gegeben, gibt es keine Mehrdeutigkeit: Es gibt genau eine richtige Antwort.</p>
+  <p>Mehr muss ein Kalender am Ende nicht leisten.</p>
 </section>
