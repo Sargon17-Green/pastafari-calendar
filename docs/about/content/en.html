@@ -1,0 +1,393 @@
+<!-- English explanation translated from the Hebrew semantic master. -->
+<!-- Stable section IDs are a public deep-link contract; do not derive them from translated headings. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>In the site's story, the Pastafari Calendar is presented as the calendar in which time itself was created. Its mechanics, however, are specified exactly.</p>
+  <p>A day does not map to one permanent Pastafari “label”. To determine a date, two days are required: the <strong>day of working</strong>, from which the calculation is performed, and the <strong>queried day</strong>, whose date is being asked for.</p>
+  <p>Write the day of working as <code>c</code> and the queried day as <code>t</code>. The date is therefore</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>not <code>F(t)</code>. The same queried day can consequently have a different Pastafari date when it is calculated from another day of working.</p>
+  <p>That is not a bug. It is the calendar.</p>
+  <hr>
+</div>
+
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>What makes up a Pastafari date?</h2>
+  <p>Every Pastafari date has <strong>exactly five parts</strong>:</p>
+  <ol>
+    <li>the year number;</li>
+    <li>the cutlet name;</li>
+    <li>the day in that cutlet;</li>
+    <li>the month name;</li>
+    <li>the day in that month.</li>
+  </ol>
+  <p>A generic example would be: <strong>year 5000, cutlet A, day 417 in the cutlet, month B, day 83 in the month.</strong></p>
+  <p>The day of working, observer location, chronological day identity, and other technical information may be displayed alongside the date. None of them is a sixth date field.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>Why is a day of working needed?</h2>
+  <p>In an ordinary calendar we tend to think that a date simply “belongs” to a day. Here it belongs to a relationship between two days.</p>
+  <p>Changing <code>t</code> means asking about a different day. Changing <code>c</code> goes deeper: it can alter the calendar structure in which the question is asked—year boundaries, cutlets, months, their names, and the way the months are woven together.</p>
+  <p>An almanac calculated today is therefore not guaranteed to be the right almanac tomorrow. This neatly avoids the undesirable situation in which a printed calendar remains useful for an entire year.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>Same day, different date</h2>
+  <p>Two ideas need to be kept separate. <strong>Day identity</strong> is a day's stable position on the timeline. Its <strong>Pastafari representation</strong> is the five-field result obtained when that same day is viewed under a particular day of working.</p>
+  <p>In the product and API, the first can be thought of as a <code>day-id</code>: a chronological identity that does not change when the display context changes. By contrast,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre>
+  <p>and</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>need not be equal.</p>
+  <p>Manually changing the day of working can therefore change the displayed date of the same day without moving that day anywhere on the timeline.</p>
+  <p>The same principle applies to events. A meeting, a birth, or a historical event should remain anchored to a stable chronological identity; its Pastafari date can then be rendered again for the context in which somebody is viewing it.</p>
+  <p>The label may change. The event does not.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>Year 5000</h2>
+  <p>Whenever the day of working and the queried day are the same,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>the year is always</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>So the self-present is always in year 5000. But year 5000 is not one fixed historical period: it is selected afresh relative to the day of working.</p>
+  <p>The day of working lies inside year 5000, and other days in that same year do too. Hence <strong>being in year 5000 is not a test that <code>t=c</code>.</strong></p>
+  <p>The year number does, however, determine direction:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre>
+  <p>and</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p>Year <strong>0</strong> also exists, and years farther into the past have negative numbers.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>Years and gates</h2>
+  <p>A Pastafari year can contain anywhere from</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ to }5778</code></pre>
+  <p>days. These are canonical limits of the system, not averages observed in an experiment.</p>
+  <p>A year may therefore be shorter than a solar year or last for more than fifteen solar years.</p>
+  <p>Year boundaries are built from a system of <strong>gates</strong>; cutlet boundaries also come from that gate system. A year does not have to end with a season, an orbit of Earth around the Sun, a lunar cycle, or any practical desire to get the year over with.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>Cutlets</h2>
+  <p>Every year is divided into <strong>6 to 17 cutlets</strong>. A cutlet is one continuous chronological segment.</p>
+  <p>If today is day 250 of a cutlet, tomorrow is day 251 of that cutlet—unless today is its final day.</p>
+  <p>Cutlet boundaries are gates, and a cutlet is at least</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
+  <p>days long.</p>
+  <p>The system has 17 canonical cutlet names, with no repeated cutlet name inside one year. A name does not determine length: a particular name does not make its cutlet inherently longer, shorter, earlier, or later.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>Months and weaving</h2>
+  <p>A year contains</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ to }47</code></pre>
+  <p>structural months, and each month has</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ to }123</code></pre>
+  <p>days assigned to it.</p>
+  <p>A Pastafari month, however, <strong>need not occupy one continuous stretch of time</strong>. A chronological run can look like this:</p>
+  <blockquote><p>Month A — day 14<br>Month B — day 9<br>Month A — day 15</p></blockquote>
+  <p>That is a perfectly valid structure. Day 15 of month A is the next day <strong>of that month</strong>, even though a day belonging to another month occurred in between.</p>
+  <p>“Day in month” therefore does not count elapsed days since the month first appeared. It is the ordinal occurrence of that month within the year. If a date says day 48 of a month, it means the forty-eighth day assigned to that month—not that 47 chronological days have passed since its first appearance.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>The months are woven through one another</h2>
+  <p>It helps to picture the months as threads woven along the year. Every day belongs to exactly one month, but tomorrow may belong to another; later the first month can return and continue with its next number.</p>
+  <p>The weave is not ruleless. In particular, there are constraints on the orders in which months first and last appear. There is nevertheless no requirement that one month finish before another begins.</p>
+  <p>Cutlets and months are thus two different coordinate systems over the same days:</p>
+  <ul>
+    <li>a cutlet measures position inside a continuous chronological segment;</li>
+    <li>a month measures membership in a structural thread that can disappear and return.</li>
+  </ul>
+  <p>A month can pass through several cutlets, and a cutlet can contain occurrences from many months. The beginning or end of a cutlet need not coincide with the beginning or end of a month.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>The next day in a month is not necessarily tomorrow</h2>
+  <p>If today is day 17 of some month, day 18 of that month is <strong>that month's next occurrence</strong>. It might be tomorrow; it might be much later.</p>
+  <p>So <strong>tomorrow</strong> means the next chronological day, while <strong>the next day in the month</strong> means the next time that month appears.</p>
+  <p>Likewise, “the end of the month” need not be chronologically close. A 120-day month can be at day 119 while its day 120 lies far ahead in the year.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>There are no weeks</h2>
+  <p>The current canonical specification <strong>does not define a week system</strong>. There is no canonical seven-day super-unit, no Pastafari weekday names, and no rule making one day the “same weekday” as another.</p>
+  <p>A civil week system can of course be overlaid from outside. It simply is not part of the Pastafari date.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>Names</h2>
+  <p>The calendar has 17 canonical cutlet names and 47 canonical month names. Within a year, each name occurs at most once within its own family.</p>
+  <p>A name's identity is canonical and semantic; it is not decided by a vote among spellings, translations, or implementations. The Hebrew Scroll is the highest authority for the names' meanings. Translation and transliteration are display layers.</p>
+  <p>Nor is a name a concealed code for unit length. No rule says that one cutlet name implies a longer cutlet or one month name a shorter month.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>A small fact about months</h2>
+  <p>There are 47 month names, and a month can reach at most day 123. That gives</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>syntactically possible pairs of the form:</p>
+  <blockquote><p>month name + day number in that month.</p></blockquote>
+  <p>Every day in a year realizes exactly one such pair. If the year's length is <code>L</code>, exactly <code>L</code> pairs occur. But</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>so every year must omit at least</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre>
+  <p>possible month-name/day-number pairs. Even the longest year does not contain enough days to use all of them.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>How is the calendar calculated?</h2>
+  <p>The article calls the internal calculation <strong>the sauce</strong>. At its center is</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>which is prime.</p>
+  <p>The process includes five input counters, 7 hidden drops, 46 visible drops, 6 bowls, changing bowl orders, 12 final stirs, seals that produce different answers, combinatorial selection mechanisms, gate generation, year selection, cutlet partitioning, name selection, month creation, and the weaving of month days.</p>
+  <p>The final updates are <strong>synchronous</strong>: on every stir, all six new bowl values are computed from the same old state, and only then are the six bowls replaced together.</p>
+  <p>The 12 final stirs contain one especially important canonical detail. If <code>S</code> is the sum of the six old bowls and the stir number is <code>r</code>, the system computes</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p>This is the <strong>saved sum</strong>. It is <code>R</code>, not raw <code>S</code>, that participates both in choosing the bowl order and in the stir's internal update.</p>
+  <p>Older versions that fed the raw sum into that update do not describe the current canonical semantics. Any example derived from the old rule is obsolete unless it has been verified again.</p>
+  <p>After the stirs, the answer ring also continues in the order locked at visible drop 46; it must not automatically be replaced by the order of the last stir.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice and Wide Choice</h2>
+  <p><strong>Short Choice</strong> is used when the system must select from a relatively small option space. It uses rejection sampling to avoid the bias of a simple modulo operation.</p>
+  <p>Very large choice spaces use <strong>Wide Choice</strong>. It is important not to give Wide Choice properties that the specification does not give it.</p>
+  <p>Wide Choice is not equivalent to generating independent, uniform base-<code>Q</code> digits until an index appears. It therefore does not follow that every legal option necessarily receives the same positive probability. In sufficiently large spaces, legal options can even exist that this particular selection mechanism cannot reach at all.</p>
+  <p>The calendar itself is completely deterministic. “Choice” names a stage of the algorithm, not a lottery held while the calendar is being used.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>The Structural Atlas</h2>
+  <p>The rules above are rules of the calendar. The numbers in this box are something else: <strong>empirical findings</strong> from a large computational sample.</p>
+  <p>The atlas was built with engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code>. It contains:</p>
+  <ul>
+    <li>4,096 days of working;</li>
+    <li>years 4990–5010 for every day of working;</li>
+    <li>86,016 year structures;</li>
+    <li>625,437 cutlets;</li>
+    <li>3,535,422 structural months;</li>
+    <li>more than 356 million contiguous month runs;</li>
+    <li>more than 364 million transitions from day <code>n</code> to day <code>n+1</code> of the same month.</li>
+  </ul>
+  <p>These describe that corpus. They are not canonical laws.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Measured structural-atlas data">
+    <table class="about-table">
+      <thead><tr><th scope="col">Measured quantity</th><th scope="col">Result in the sample</th></tr></thead>
+      <tbody>
+        <tr><td>Mean year length</td><td>4,275.182 days</td></tr>
+        <tr><td>Median year length</td><td>4,343</td></tr>
+        <tr><td>Observed minimum / maximum</td><td>716 / 5,778</td></tr>
+        <tr><td>Mean cutlets per year</td><td>7.271</td></tr>
+        <tr><td>Years with exactly 6 cutlets</td><td>42.00%</td></tr>
+        <tr><td>Years with 6–8 cutlets</td><td>81.29%</td></tr>
+        <tr><td>Mean cutlet length</td><td>587.963 days</td></tr>
+        <tr><td>Median cutlet length</td><td>560</td></tr>
+        <tr><td>Mean months per year</td><td>41.102</td></tr>
+        <tr><td>Median month count</td><td>43</td></tr>
+        <tr><td>Years with 47 months</td><td>15.63%</td></tr>
+        <tr><td>Years with at least 45 months</td><td>36.81%</td></tr>
+        <tr><td>Mean structural-month length</td><td>104.014 days</td></tr>
+        <tr><td>Median month length</td><td>115</td></tr>
+        <tr><td>Mean contiguous runs per month</td><td>100.897</td></tr>
+        <tr><td>Share of month runs one day long</td><td>97.482%</td></tr>
+        <tr><td>Probability that adjacent days are in the same month</td><td>2.9976%</td></tr>
+        <tr><td>Mean foreign days between month day <code>n</code> and <code>n+1</code></td><td>40.408</td></tr>
+        <tr><td>Mean span from a month's first to last occurrence</td><td>4,266.653 days</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>In practical terms, a month containing roughly a hundred days can be spread across nearly an entire Pastafari year.</p>
+  <p>The same atlas also showed a natural length bias around year 5000. A “regular” year in the sample averaged about 4,262 days. Weight years by the number of days they contain and the mean rises to about 4,466 days. The self year 5000 averaged about 4,499 days.</p>
+  <p>The reason is straightforward: year 5000 must contain the day of working. A longer year has more days on which it can be the year containing that day.</p>
+  <p>The association between a unit's name and its length was also extremely weak in the sample. That is not a mathematical proof of complete independence, but the atlas gives no practical sign that names were intended to encode length.</p>
+  <p>Finally, the 86,016 year structures are not 86,016 wholly independent samples. They contain only 24,786 distinct start-to-end gate intervals; neighboring days of working can select the same year interval while still producing a different internal structure.</p>
+  <p>The atlas is therefore very good evidence about the measured implementation's behavior, not a probability theorem about every possible calendar universe.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>Birthdays and anniversaries</h2>
+  <p>“The same day every year” needs a more careful definition in a Pastafari calendar. At least two natural structural coordinates can be held fixed: a <strong>month anniversary</strong>, meaning the same month name and day in month, or a <strong>cutlet anniversary</strong>, meaning the same cutlet name and day in cutlet. Combined conditions are possible too.</p>
+  <p>A Pastafari birthday is therefore not simply equivalent to <code>RRULE:FREQ=YEARLY</code>. One must search for the next year in which the chosen recurrence condition is satisfied. The original event itself is not automatically counted as its own “next occurrence”.</p>
+  <p>Again, keep the event separate from its representation: changing the day of working for display must not change a person's identity, birth instant, or age.</p>
+  <p>There are useful empirical results as well. In an exact scan of 4,096 self-dates, every successive Pastafari year was checked forward and backward for up to 250,000 years in each direction:</p>
+  <ul>
+    <li>For recurrence by <code>(month name, day in month)</code>, the median first recurrence was 1 Pastafari year; 77.56% were already in the adjacent year, 93.77% within two years, 99.44% within five, and the observed maximum was 21 years.</li>
+    <li>For recurrence by <code>(cutlet name, day in cutlet)</code>, the median was 3 years; 88.89% were found within 10 years, but the distribution had a very heavy tail and the observed maximum reached 51,954 Pastafari years.</li>
+  </ul>
+  <p>Those are <strong>empirical results for the corpus that was tested</strong>. They neither prove that every possible anniversary must recur nor promise a maximum waiting time. They do show why an “annual birthday” needs a definition before it becomes a calendar rule.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>How do you arrange a meeting?</h2>
+  <p>If two people want to schedule a meeting using only a Pastafari date, they must at least agree on the five-field Pastafari tuple and on the day of working used to calculate it. Preferably, that day of working should itself be stored as a stable day identity rather than as the word “today”; otherwise the two people may calculate different calendars.</p>
+  <p>Ordinary phrases also need precision:</p>
+  <ul>
+    <li>“tomorrow” is the next chronological day;</li>
+    <li>“the next day in the month” is that month's next occurrence;</li>
+    <li>“the end of the month” is its final occurrence;</li>
+    <li>“a whole month” can mean either the set of the month's days or the entire chronological span from its first occurrence to its last;</li>
+    <li>“next year” refers to the calendar built under the chosen day of working.</li>
+  </ul>
+  <p>For an especially important meeting, the absolute chronological day or instant can be stored as well. The calendar will not take offence.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>Travel, events, and all-day</h2>
+  <p>An event is not the same thing as the local label displayed for it. A scheduled event should be anchored to a stable chronological instant. Travel does not move the event in time, but it can change the local Pastafari date shown at that instant, because the definition of the “local day” depends on location.</p>
+  <p>The difference is even more important for an <strong>all-day</strong> event. A civil all-day event normally runs from one civil midnight to the next. A Pastafari all-day event should run from one local Pastafari day boundary to the next. Those are generally not the same instants.</p>
+  <p>Blindly exporting a Pastafari event as a civil “all-day event” can therefore change its meaning. To preserve it exactly, keep the chronological anchor and the relevant location/day-boundary context, not merely an <code>all-day</code> checkbox.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>When does the day change?</h2>
+  <p>The local Pastafari day does not change at midnight. Its boundary is defined by the <strong>topocentric lower meridian transit of the center of Venus across the local meridian</strong>.</p>
+  <p>In other words, the transition from one Pastafari day to the next is a local astronomical event and depends on location. Accordingly, the change of day:</p>
+  <ul>
+    <li>need not occur at 00:00;</li>
+    <li>is not set by the civil time zone;</li>
+    <li>does not move merely because daylight-saving time begins or ends;</li>
+    <li>does not require Venus to be visible to the naked eye.</li>
+  </ul>
+  <p>Location can thus affect the answer to “which Pastafari day is it now?”. At the same physical instant, two places can lie on opposite sides of their respective local day boundaries.</p>
+  <p>If the system has no usable location for the user, the product's fallback location is <strong>Kisurra</strong>.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>Printed calendars and hand calculation</h2>
+  <p>You can print a Pastafari calendar. Just state which day of working it is for. A calendar prepared under one day of working shows the structure of time from that day's point of view; when the day of working changes, a new calendar may be needed. The printer thus remains relevant.</p>
+  <p>Everything can also be calculated by hand. The specification is deterministic and complete. Calculate the input counters, perform 7 hidden drops and 46 visible ones, update six bowls, carry out 12 final stirs, produce the answers, build gates, choose years and cutlets, perform the combinatorial choices, select names, and weave the months.</p>
+  <p>This saves you the trouble of remembering that February sometimes has 28 days and sometimes 29.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>What is Seer?</h2>
+  <p>Alongside the canonical implementation there is a fast engine called <strong>Pastafarian Calendar Seer</strong>. Seer is not a source of authority: the Scroll and the canonical calculation determine the correct date. If Seer disagrees with them, Seer is wrong.</p>
+  <p>Its purpose is to answer the same questions quickly and in a form that is easy to integrate into products.</p>
+  <p>At the live verification performed while this page was being edited, Seer included, among other things:</p>
+  <ul>
+    <li>date queries and a “now” calculation;</li>
+    <li>batch queries and day ranges;</li>
+    <li>reverse conversion from a Pastafari date to a target day;</li>
+    <li>year-structure retrieval and active-day-of-working resolution;</li>
+    <li>a Node API, a browser/HTTP client, and a CLI;</li>
+    <li>an HTTP v1 service and an OpenAPI 3.1 contract;</li>
+    <li>native implementations, distribution packages, and a verified container deployment.</li>
+  </ul>
+  <p>The old statement that Seer has no public API is therefore no longer true. There is an explicit, stable HTTP v1 contract with endpoints for date, range, batch, year, reverse, day of working, metadata, locales, and status.</p>
+  <p>On 21 September 2026, a public HTTPS deployment on Render was also tested in practice: exact queries, a large range, restart, cold wake, and behavior under load were exercised against the live service.</p>
+  <p>The project documentation still distinguishes that live public beta/evaluation deployment from a declared permanent hosted production service with an SLA. A conceptual explanation page should therefore not freeze a server address, hosting provider, or version number as if any of them were part of the calendar.</p>
+  <p>Seer may use precomputation, specialized representations, SIMD, algebra, and other shortcuts. It need not replay every computational step of the canonical implementation so long as it performs the same semantic operation and returns the same answer.</p>
+  <p>Optimization is not an alternative source of authority.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>Origin, Foundation Day, and Tablets Day</h2>
+  <p>Here it is especially important to separate canonical anchors from the site's story.</p>
+
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>The anchors</h3>
+    <p>The system has a fixed reference day called <strong>Foundation Day</strong>. In the proleptic Gregorian calendar it is <strong>22 December 41,222 BCE</strong>.</p>
+    <p>Foundation Day is not “the beginning of time”. It is a computational anchor.</p>
+    <p>Days around it use a positive odd/even encoding. Foundation Day is 1; the following days are 3, 5, and so on. Going into the past, the day immediately before Foundation Day is 2, then 4, then 6, and so on. Both sides of the anchor can thus be encoded without negative day numbers in this count.</p>
+    <p>A second anchor is <strong>Tablets Day</strong>: <strong>15 June 763 BCE in the proleptic Julian calendar</strong>, which is <strong>7 June 763 BCE in the proleptic Gregorian calendar</strong>.</p>
+    <p>The exact distance from Foundation Day to Tablets Day is</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
+    <p>days.</p>
+    <p>These are fixed anchors on the timeline. The Pastafari date displayed for either one still depends on the day of working from which it is queried.</p>
+  </section>
+
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>The site's story</h3>
+    <p>In the site's editorial framing, the calendar is presented as part of creation and as a system humanity used without being sufficiently aware of it until its modern re-delivery.</p>
+    <p>That is the site's story. Its narrative details must not all be presented as though they were explicit technical propositions in the Scroll.</p>
+    <p>The re-delivery event itself is a fixed historical event. On the site, its <strong>Pastafari date</strong> is best shown dynamically under the current day of working rather than frozen forever beside it. That way even the re-delivery continues to receive the date appropriate to the day on which the reader asks.</p>
+    <hr>
+  </section>
+</section>
+
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>Advanced: reverse conversion</h2>
+  <p>When the day of working <code>c</code> is known, reverse conversion is very strong. Inside a known Pastafari year,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{cutlet name},\text{day in cutlet})</code></pre>
+  <p>identifies at most one day. So does</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{month name},\text{day in month})</code></pre>
+  <p>A full date therefore identifies the target day uniquely when the day of working is known.</p>
+  <p>Some coarse upper bounds on the number of candidates within a known year are:</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Reverse-conversion candidate bounds">
+    <table class="about-table">
+      <thead><tr><th scope="col">Additional information known about the day</th><th scope="col">Maximum candidates</th></tr></thead>
+      <tbody>
+        <tr><td>No non-year field</td><td>5,778</td></tr>
+        <tr><td>Cutlet name only</td><td>5,568</td></tr>
+        <tr><td>Day in cutlet only</td><td>17</td></tr>
+        <tr><td>Month name only</td><td>123</td></tr>
+        <tr><td>Day in month only</td><td>47</td></tr>
+        <tr><td>Cutlet name + day in cutlet</td><td>1</td></tr>
+        <tr><td>Month name + day in month</td><td>1</td></tr>
+        <tr><td>Any three non-year fields</td><td>1</td></tr>
+        <tr><td>All four non-year fields</td><td>1</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Without the day of working, the situation changes. The same five-field tuple can occur under different working days, and exact witnesses exist in which the same full date occurs at different distances from the day of working.</p>
+  <p>Even in year 5000 the sign of that distance is not always determined by the tuple: the same full date can occur in one context in the past of the day of working and in another context in its future.</p>
+  <p>A full Pastafari date is therefore not an absolute address on the timeline unless we also know which calendar—in other words, which <code>c</code>—was used to calculate it.</p>
+
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>Structure far out in time</h3>
+    <p>Derived mathematical work has also established an exact asymptotic structure. For a <strong>fixed day of working</strong> <code>c</code>, sufficiently far down the past tail there is affine periodicity.</p>
+    <p>If</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>then, for that same <code>c</code>, there are a shift size <code>H_c</code>, a year decrement <code>p_c</code>, and a sufficiently remote threshold such that beyond that threshold</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>The four non-year fields repeat while the year number changes by a fixed amount.</p>
+    <p>This theorem is about fixed <code>c</code>. It does not imply a global statement of the form</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>and whether the eventual asymptotic slope actually differs between different days of working remains an open question.</p>
+    <hr>
+  </section>
+</section>
+
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>Advanced: how much history does the sauce retain?</h2>
+  <p>The sauce looks like a very aggressive mixer, but algebraic research found that it preserves considerably more information than its outward appearance suggests. This is research derived from the specification, not an additional calendar rule.</p>
+  <p>On visible stages 3 through 46, generic injectivity has been established on the relevant asymptotic branch: generically, the state retains enough information to recover the relevant history of the inputs and bowl orders.</p>
+  <p>The information does not immediately disappear during the 12 final stirs either. For the first five stirs after visible drop 46, generic invertibility has been established on the relevant canonical union without additional side information. For the remaining stirs, strong constructive bounds are known on how much side information is sufficient for reconstruction.</p>
+  <p>Whether <strong>the final six bowls alone</strong> are always generically sufficient remains open.</p>
+  <p>Some results were proved symbolically; others were closed by exact finite arithmetic checks. Symbolic strengthening greatly reduced the computational kernel that must be trusted, but did not eliminate it completely.</p>
+  <p>One surprise was that spaces that initially looked as if they would require traversing enormous numbers of paths collapsed to much smaller finite structures, including 180-state and 9-state automata and symmetries of the six bowls.</p>
+  <p>Beneath the mixing lies a rigid algebraic structure. None of this is required just to find today's date.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>So what is the Pastafari Calendar, really?</h2>
+  <p>It is a deterministic calendar in which a date is not a function of a target day alone, but of the <strong>day of working and the queried day together</strong>.</p>
+  <p>A date has exactly five fields. The self-present is always in year 5000, although year 5000 itself changes with the day of working. Years can be extremely long; cutlets are continuous; months need not be continuous at all; and there is no canonical week system.</p>
+  <p>Day <code>n+1</code> in a month is not necessarily tomorrow. The same chronological day may have a different Pastafari label tomorrow. The same physical instant may fall in different local Pastafari days at two different locations. An all-day event need not run from midnight to midnight. And an annual birthday is a search problem before it is a calendar problem.</p>
+  <p>But once the day of working and the queried day are both given, there is no ambiguity: there is one exact answer.</p>
+  <p>In the end, that is all a calendar needs to do.</p>
+</section>
