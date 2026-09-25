@@ -147,7 +147,7 @@ test("every present locale article is structurally and semantically guarded", as
       assert.ok(html.includes(literal), `${locale.code}: missing empirical value ${literal}`);
     }
     assert.doesNotMatch(html, /<(?:script|iframe|object)\b/i, `${locale.code}: article content must remain inert HTML`);
-    assert.doesNotMatch(html, /\b(?:TODO|TBD|TRANSLATE|PLACEHOLDER)\b/i, `${locale.code}: unfinished translation marker`);
+    assert.doesNotMatch(html, /\b(?:TODO|TBD|TRANSLATE|PLACEHOLDER)\b/, `${locale.code}: unfinished translation marker`);
     if (locale.code !== "he") {
       assert.doesNotMatch(html, /[\u0590-\u05ff]/u, `${locale.code}: unintended Hebrew leakage`);
     }

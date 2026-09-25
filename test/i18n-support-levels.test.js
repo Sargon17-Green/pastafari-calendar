@@ -204,12 +204,15 @@ test("runtime notices are ordinary message resources in every current locale", a
   }
 });
 
-test("current partial locales use English fallback for the intentionally untranslated about-page UI plus existing fallback keys", async () => {
-  const report = auditLocaleResources(await loadAllLocaleSources());
+test("current partial locales use English fallback only for message keys they still omit", async () => {
+  const sources = await loadAllLocaleSources();
+  const report = auditLocaleResources(sources);
   assert.equal(report.length, LOCALES.length);
-  const expectedMissingMessages = [
+
+  const sourceByCode = new Map(sources.map((locale) => [locale.code, locale]));
+  const aboutKeys = [
     "about.back",
-    "about.hebrewOnly",
+    "about.fallbackNotice",
     "about.intro",
     "about.loadError",
     "about.metaDescription",
@@ -219,18 +222,27 @@ test("current partial locales use English fallback for the intentionally untrans
     "about.title",
     "about.toc",
     "about.tocKicker",
+  ];
+  const alwaysFallbackKeys = [
     "app.brand",
     "reverse.error.absoluteDateField",
     "reverse.error.limitPositive",
     "reverse.error.limitSafeInteger",
-  ].sort();
+  ];
+
   const partial = report.filter(({ status }) => status === "partial");
   assert.equal(partial.length, 70);
   for (const locale of partial) {
+    const source = sourceByCode.get(locale.code);
+    const expectedMissingMessages = [
+      ...alwaysFallbackKeys,
+      ...aboutKeys.filter((key) => typeof source.messages?.[key] !== "string"),
+    ].sort();
     assert.deepEqual(locale.resourceGroups.messages.missingKeys, expectedMissingMessages, `${locale.code} fallback set changed`);
     assert.equal(locale.fallbackKeys, expectedMissingMessages.length);
     assert.equal(locale.proposedStructuralStatus, "partial");
   }
+
   for (const locale of report.filter(({ status }) => status === "complete")) {
     assert.equal(locale.fallbackKeys, 0, `${locale.code} complete locale must not use fallback`);
     assert.equal(locale.proposedStructuralStatus, "complete-candidate");
