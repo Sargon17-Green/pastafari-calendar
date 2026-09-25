@@ -69,7 +69,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | sl | sl-SI | ltr | partial | draft |
 | so | so-SO | ltr | partial | draft |
 | sq | sq-AL | ltr | partial | draft |
-| sr | sr-Latn-RS | ltr | partial | not started |
+| sr | sr-Latn-RS | ltr | partial | draft |
 | sv | sv-SE | ltr | partial | draft |
 | sw | sw-TZ | ltr | partial | draft |
 | ta | ta-IN | ltr | partial | draft |
