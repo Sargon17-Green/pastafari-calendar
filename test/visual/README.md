@@ -95,15 +95,17 @@ When Playwright or its browser revision is upgraded intentionally, rebuild the s
 
 ### Baseline provenance
 
-The current committed snapshots were captured on 2026-08-18 by the dedicated `capture-baselines` GitHub Actions job on the canonical Ubuntu 24.04 environment, using Node 22, Playwright 1.62.1 and Chromium 151.0.7922.34. All 23 snapshots were captured three times and produced zero changed pixels above the comparator's 16/255 channel threshold before review. The resulting candidate set was reviewed before being committed.
+The current committed snapshots were regenerated on 2026-09-25 in the canonical Ubuntu 24.04 / Node 22 environment with Playwright 1.62.1 and Chromium 151.0.7922.34. The regeneration was required by the intentional public-UI change that replaces the main-page “How do I use this site?” entry points with “About the calendar” links and moves the existing site-usage guide out of the main calculator page.
 
-These canonical snapshots replace the initial Debian 13 / Chromium 144 validation baselines. The environment transition preserved the dimensions of 22 snapshots; the Bengali mobile script-diversity snapshot changed height from 1068px to 1001px because of canonical font/rendering metrics, with its content and controls remaining visible and unclipped. Future browser or runner upgrades must be handled the same way: generate candidates with the explicit workflow-dispatch path, review the images, and commit the accepted PNGs, metadata and checksums together.
+All 23 pixel baselines were captured three times. The canonical capture reported zero changed pixels between repeated captures for every snapshot, so every stored `maxDiffPixelRatio` remains zero. The complete candidate set was reviewed before being accepted. The responsive/layout suite also exercised the new `/about/` page at desktop and mobile sizes with a stable `#day-boundary` deep link and reported PASS in both cases.
 
-### Post-capture source alignment
+These snapshots supersede the 2026-08-18 canonical set. The rendering environment itself did not change; the baseline update records an intentional product/UI change, not a browser or font-stack migration. Future browser or runner upgrades must still be handled by generating candidates in the canonical environment, reviewing the images, and committing the accepted PNGs, metadata and checksums together.
 
-The canonical PNGs were captured before a later accessibility/PWA repair changed `docs/index.html`, `docs/app.js`, `docs/reverse-ui.js`, and `docs/sw.js`. That later change set was reviewed before retaining the baselines. Its browser-visible changes are semantic rather than visual: ARIA roles and relationships, keyboard-focusability of existing scroll regions, an `id` on the existing reverse-search heading, focus restoration after asynchronous locale switching, service-worker registration timing, and cache-busting revisions. The outer application shell changed from a `main` element to a `div` containing a `main`; both relevant boxes retain block layout and the existing `.app-shell` styling.
+### About-page visual coverage
 
-For the source state checked on 2026-08-18, `docs/styles.css` and the English, Hebrew, German, and Bengali locale resources used by the pixel matrix are byte-identical to the canonical capture state. None of the 23 snapshot selectors, visible strings captured by those scenarios, or layout-affecting style rules changed in the later repair. The canonical PNGs were therefore deliberately retained rather than regenerated. If a future rebase changes visible strings, stylesheet rules, snapshot selectors, or DOM structure with a layout effect, generate new candidates in the canonical environment and review them instead of relying on this compatibility review.
+The existing 23-image pixel matrix remains focused on the calculator and its established states. The explanation page is protected separately by responsive geometry checks in the same visual runner, accessibility checks, end-to-end navigation/deep-link checks, and offline-PWA checks. This avoids adding enormous long-document screenshots merely to duplicate structural coverage.
+
+The main-page pixel baselines were regenerated rather than retained because visible strings changed and the inline guide was deliberately removed from `docs/index.html`. This is exactly the class of intentional visible change for which the baseline-update path is required. No masks were introduced.
 
 ## Mask policy
 

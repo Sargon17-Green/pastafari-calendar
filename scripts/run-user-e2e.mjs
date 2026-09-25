@@ -109,7 +109,8 @@ async function startStaticServer() {
     try {
       const url = new URL(request.url || "/", "http://127.0.0.1");
       const decoded = decodeURIComponent(url.pathname);
-      const relative = decoded === "/" ? "index.html" : decoded.replace(/^\/+/, "");
+      let relative = decoded === "/" ? "index.html" : decoded.replace(/^\/+/, "");
+      if (relative.endsWith("/")) relative += "index.html";
       const filename = path.resolve(DOCS, relative);
       if (filename !== DOCS && !filename.startsWith(`${DOCS}${path.sep}`)) {
         response.writeHead(403); response.end("Forbidden"); return;
@@ -278,6 +279,36 @@ const desktopScenarios = [
       const selected = page.locator('#calendar-grid .day-card[data-target="true"]');
       assert.equal(await selected.count(), 1, "Exactly one target day should be marked in the visible cutlet");
       assertions.push("current Pastafari date rendered", "cutlet rendered", "one target day marked");
+    },
+  },
+  {
+    id: "about", name: "Open the calendar explanation and return", screenshot: "01b-about-page.png",
+    async run({ page, baseURL, assertions }) {
+      await openClean(page, baseURL);
+      const aboutLink = page.locator(".guide-link[data-about-link]");
+      await page.waitForFunction(() => document.querySelector(".guide-link[data-about-link]")?.href.includes("/about/?lang="));
+      await aboutLink.click();
+      await page.waitForURL(/\/about\/?\?lang=/);
+      await page.locator("#summary").waitFor({ state: "visible" });
+      assert.equal(await page.locator("html").getAttribute("lang"), "en", "About-page controls must retain the selected UI locale");
+      assert.equal(await page.locator("#article-content").getAttribute("lang"), "he", "Untranslated article must identify itself as Hebrew");
+      assert.equal(await page.locator("#article-content").getAttribute("dir"), "rtl", "Hebrew article must retain RTL direction inside an LTR shell");
+      assert.equal(await page.locator("#about-language-notice").isVisible(), true, "Mixed-language view must explain that the article is currently Hebrew-only");
+      assert.equal(await page.locator('#about-toc-list a[href="#about-calendar"]').getAttribute("lang"), "he");
+      assert.equal(await page.locator('#about-toc-list a[href="#about-calendar"]').getAttribute("dir"), "rtl");
+      assert.equal(await page.locator("#calendar-workspace").count(), 0, "About page must not carry the calculation workspace");
+      assert.ok(await page.locator("#about-toc-list a").count() >= 29, "About page contents list must include the explanation and site-usage sections");
+      const toc = page.locator("#about-toc");
+      if (!(await toc.evaluate((element) => element.open))) await toc.locator("summary").click();
+      await page.locator('#about-toc-list a[href="#day-boundary"]').click();
+      assert.match(page.url(), /#day-boundary$/);
+      assert.equal(await page.locator("#day-boundary").isVisible(), true);
+      await page.locator('#about-toc-list a[href="#site-usage"]').click();
+      assert.equal(await page.locator("#site-usage-details").evaluate((element) => element.open), true);
+      await page.locator('[data-back-to-calendar]').first().click();
+      await waitForWorkspace(page);
+      assert.match(page.url(), /\?lang=/);
+      assertions.push("main-page explanation link opens clean /about/ URL", "Hebrew explanation content loaded", "stable deep link works", "return link restores calendar");
     },
   },
   {
@@ -677,7 +708,7 @@ const fileScenario = {
   },
 };
 
-const mobileIds = new Set(["initial", "search", "calculation", "cutlets", "language"]);
+const mobileIds = new Set(["initial", "about", "search", "calculation", "cutlets", "language"]);
 
 async function runOneScenario({ browser, config, baseURL, scenario, profile }) {
   const phaseRef = { value: "setup" };

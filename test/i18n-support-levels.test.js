@@ -204,10 +204,21 @@ test("runtime notices are ordinary message resources in every current locale", a
   }
 });
 
-test("current partial locales use the normal English fallback only for newly untranslated UI errors and brand text", async () => {
+test("current partial locales use English fallback for the intentionally untranslated about-page UI plus existing fallback keys", async () => {
   const report = auditLocaleResources(await loadAllLocaleSources());
   assert.equal(report.length, LOCALES.length);
   const expectedMissingMessages = [
+    "about.back",
+    "about.hebrewOnly",
+    "about.intro",
+    "about.loadError",
+    "about.metaDescription",
+    "about.open",
+    "about.openShort",
+    "about.skip",
+    "about.title",
+    "about.toc",
+    "about.tocKicker",
     "app.brand",
     "reverse.error.absoluteDateField",
     "reverse.error.limitPositive",

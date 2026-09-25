@@ -17,7 +17,7 @@ import {
   loadLocale,
   messageTemplate,
   translate,
-} from "./i18n/registry.js?v=18-canonical-names";
+} from "./i18n/registry.js?v=19-about-page";
 import {
   KISURRA_OBSERVER,
   requestObserverLocation,
@@ -25,14 +25,14 @@ import {
   watchObserverPermission,
 } from "./observer-location.js?v=10-venus-day-boundary";
 import { currentDayAt } from "./venus-day-boundary.js?v=10-venus-day-boundary";
-import { createReverseSearchUi } from "./reverse-ui.js?v=19-canonical-names";
+import { createReverseSearchUi } from "./reverse-ui.js?v=20-about-page";
 import {
   applyDocumentLocale,
   persistLanguage,
   populateLanguageSelector,
   resolveBrowserLocale,
   urlWithLanguage,
-} from "./i18n/runtime.js?v=18-canonical-names";
+} from "./i18n/runtime.js?v=19-about-page";
 
 
 const ASSET_REVISION = "9-worker-api-sync";
@@ -866,6 +866,12 @@ function loadFromUrl() {
   return loadCutlet({ replaceHistory: true });
 }
 
+function syncAboutLinks() {
+  for (const link of document.querySelectorAll("[data-about-link]")) {
+    link.href = urlWithLanguage(new URL("./about/", location.href), activeLocale.code);
+  }
+}
+
 function applyActiveLocale({ rerender = true } = {}) {
   const formSnapshots = Object.fromEntries(
     Object.entries(formConfigurations).map(([kind, configuration]) => [kind, {
@@ -876,6 +882,7 @@ function applyActiveLocale({ rerender = true } = {}) {
   rebuildFormatters();
   applyDocumentLocale(activeLocale);
   populateLanguageSelector(elements["language-selector"], activeLocale.code);
+  syncAboutLinks();
   for (const [kind, snapshot] of Object.entries(formSnapshots)) {
     fillSelectOptions(formConfigurations[kind].select);
     formConfigurations[kind].select.value = snapshot.calendarId;
@@ -947,16 +954,7 @@ function initializeReverseSearch() {
   });
 }
 
-function installGuideNavigation() {
-  for (const link of document.querySelectorAll("[data-guide-link]")) {
-    link.addEventListener("click", () => {
-      requestAnimationFrame(() => elements["guide-heading"].focus({ preventScroll: true }));
-    });
-  }
-}
-
 applyActiveLocale({ rerender: false });
-installGuideNavigation();
 
 elements["language-selector"].addEventListener("change", (event) => {
   const select = event.currentTarget;

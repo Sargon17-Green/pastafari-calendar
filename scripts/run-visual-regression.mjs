@@ -130,7 +130,8 @@ async function startStaticServer() {
     try {
       const url = new URL(request.url || "/", "http://127.0.0.1");
       const decoded = decodeURIComponent(url.pathname);
-      const relative = decoded === "/" ? "index.html" : decoded.replace(/^\/+/, "");
+      let relative = decoded === "/" ? "index.html" : decoded.replace(/^\/+/, "");
+      if (relative.endsWith("/")) relative += "index.html";
       const filename = path.resolve(DOCS, relative);
       if (filename !== DOCS && !filename.startsWith(`${DOCS}${path.sep}`)) {
         response.writeHead(403); response.end("Forbidden"); return;
@@ -847,6 +848,25 @@ async function extremeWidths(browser, baseURL, state) {
   }
 }
 
+async function aboutPageSmoke(browser, baseURL, state) {
+  for (const [name, viewport] of [["desktop", VIEWPORTS.desktop], ["mobile", VIEWPORTS.mobile]]) {
+    await withTracedContext(browser, viewport, `about-${name}`, async (page) => {
+      const url = new URL("about/?lang=he#day-boundary", baseURL);
+      await page.goto(url.href, { waitUntil: "domcontentloaded" });
+      await page.locator("#day-boundary").waitFor({ state: "visible", timeout: 30_000 });
+      assert.equal(await page.locator("html").getAttribute("dir"), "rtl");
+      assert.equal(await page.locator("#article-content").getAttribute("lang"), "he");
+      assert.equal(await page.locator("#calendar-workspace").count(), 0, "About page must not load calendar UI");
+      assert.ok(await page.locator("#about-toc-list a").count() >= 29, "About page TOC is incomplete");
+      const tocOpen = await page.locator("#about-toc").evaluate((element) => element.open);
+      assert.equal(tocOpen, name === "desktop", `About-page TOC default state is wrong for ${name}`);
+      await assertNoPageOverflow(page, `about page ${name}`);
+      await assertVisibleAndSized(page, [".about-toc", "#article-content", "#site-usage"]);
+      state.layoutChecks.push({ page: "about", viewport: name, deepLink: "#day-boundary", result: "PASS" });
+    }, state);
+  }
+}
+
 async function textZoomSmoke(browser, baseURL, state) {
   await withTracedContext(browser, VIEWPORTS.mobile, "text-zoom", async (page) => {
     await openFixed(page, baseURL, { locale: "en" });
@@ -982,6 +1002,7 @@ async function main() {
     if (!options.regressionSelfTest) {
       await breakpointChecks(browser, server.baseURL, state);
       await extremeWidths(browser, server.baseURL, state);
+      await aboutPageSmoke(browser, server.baseURL, state);
       await textZoomSmoke(browser, server.baseURL, state);
       await forcedColorsSmoke(browser, server.baseURL, state);
       await scriptDiversitySmoke(browser, server.baseURL, state);

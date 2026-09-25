@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#672013">
+    <meta name="description" content="An explanation of the Pastafari Calendar." data-i18n-attr="content:about.metaDescription">
+    <meta name="color-scheme" content="light">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; worker-src 'self'; manifest-src 'self'">
+    <title data-i18n="about.title">About the Pastafari Calendar</title>
+    <link rel="manifest" href="../manifest.webmanifest?v=9-canonical-names">
+    <link rel="icon" href="../icons/icon.svg?v=9-canonical-names" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="../icons/icon-192.png">
+    <link rel="stylesheet" href="../styles.css?v=15-about-review">
+    <script type="module" src="./about.js?v=2-about-review"></script>
+  </head>
+  <body class="about-page">
+    <a class="skip-link" href="#article-content" data-i18n="about.skip">Skip to the calendar explanation</a>
+    <div class="app-shell about-shell">
+      <header class="masthead about-masthead">
+        <div class="masthead-copy">
+          <p class="eyebrow" data-i18n="app.brand">PASTAFARI</p>
+          <h1 data-i18n="about.title">About the Pastafari Calendar</h1>
+          <p class="intro" data-i18n="about.intro">How the calendar represents days, years, cutlets, woven months, and the day of working.</p>
+          <a class="guide-link" href="../" data-back-to-calendar data-i18n="about.back">Back to the calendar</a>
+        </div>
+        <div class="language-control">
+          <label for="language-selector" data-i18n="language.label">Language</label>
+          <select id="language-selector" autocomplete="off"></select>
+        </div>
+      </header>
+
+      <p class="about-language-notice" id="about-language-notice" hidden data-i18n="about.hebrewOnly">The explanation itself is currently available in Hebrew only. The site controls can still use your selected language.</p>
+
+      <details class="about-toc" id="about-toc" open>
+        <summary>
+          <span class="eyebrow" data-i18n="about.tocKicker">On this page</span>
+          <span class="about-toc-title" data-i18n="about.toc">Contents</span>
+        </summary>
+        <nav data-i18n-attr="aria-label:about.toc">
+          <ol id="about-toc-list"></ol>
+        </nav>
+      </details>
+
+      <main>
+        <article id="article-content" class="about-article" aria-busy="true" tabindex="-1"></article>
+        <p class="about-load-error" id="about-load-error" role="alert" hidden data-i18n="about.loadError">The calendar explanation could not be loaded.</p>
+
+        <section class="about-site-usage" id="site-usage" aria-labelledby="guide-heading" data-toc-section data-toc-level="2">
+          <p class="eyebrow" data-i18n="guide.eyebrow">User guide</p>
+          <h2 id="guide-heading" data-i18n="guide.heading">What can you do here, and how?</h2>
+          <p class="guide-intro" data-i18n="guide.intro">Search, read, browse, change the day of working, and compare calculations.</p>
+          <details class="about-site-usage-details" id="site-usage-details">
+            <summary data-i18n="guide.open">How do I use this site?</summary>
+            <div class="guide-grid">
+              <article><span class="guide-number">01</span><h3 data-i18n="guide.1.heading">Open the site and get today</h3><p data-i18n="guide.1.body">The site immediately determines the current Pastafari day for the active observer location.</p></article>
+              <article><span class="guide-number">02</span><h3 data-i18n="guide.2.heading">Search in any available calendar</h3><p data-i18n="guide.2.body">Choose a calendar, fill its fields, and show the date.</p></article>
+              <article><span class="guide-number">03</span><h3 data-i18n="guide.3.heading">Read the date</h3><p data-i18n="guide.3.body">Each tile shows the year, cutlet, and month in three lines.</p></article>
+              <article><span class="guide-number">04</span><h3 data-i18n="guide.4.heading">Browse without selecting by accident</h3><p data-i18n="guide.4.body">Use the cutlet navigation buttons.</p></article>
+              <article><span class="guide-number">05</span><h3 data-i18n="guide.5.heading">Change the day of working</h3><p data-i18n="guide.5.body">Open the calculation options to change it.</p></article>
+              <article><span class="guide-number">06</span><h3 data-i18n="guide.6.heading">Compare the same days twice</h3><p data-i18n="guide.6.body">On desktop, align each target day under two calculations.</p></article>
+              <article><span class="guide-number">07</span><h3 data-i18n="guide.7.heading">Explore the whole year</h3><p data-i18n="guide.7.body">Below the cutlet, inspect the year's length, cutlets, and woven months.</p></article>
+            </div>
+            <p class="guide-note" data-i18n="guide.note">Grid rows are visual only; comparison-table rows deliberately align the same day.</p>
+          </details>
+          <a class="back-to-calendar" href="../" data-back-to-calendar data-i18n="guide.back">Back to search and calendar</a>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <p data-i18n="footer.local">Calculation happens on your device; this site has no user account and no tracking code.</p>
+        <p data-i18n="footer.open">The link is public and loads directly, including in a private-browsing window.</p>
+      </footer>
+    </div>
+    <noscript>
+      <div class="noscript">
+        <p lang="en" dir="ltr">JavaScript is required to load the explanation and select its language.</p>
+        <p lang="he" dir="rtl">נדרש JavaScript כדי לטעון את ההסבר ולבחור את שפתו.</p>
+      </div>
+    </noscript>
+  </body>
+</html>

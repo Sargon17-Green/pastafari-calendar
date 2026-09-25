@@ -18,14 +18,14 @@ test("Pages markup exposes one reverse-search mount point", async () => {
   const html = await read("docs/index.html");
   assert.equal((html.match(/id="reverse-app"/g) || []).length, 1);
   assert.match(html, /id="reverse-panel"[^>]*aria-labelledby="reverse-heading"/);
-  assert.match(html, /styles\.css\?v=13-reverse-i18n/);
-  assert.match(html, /app\.js\?v=22-canonical-names/);
+  assert.match(html, /styles\.css\?v=15-about-review/);
+  assert.match(html, /app\.js\?v=23-about-page/);
 });
 
 test("app wires reverse results back into the canonical calendar state", async () => {
   const source = await read("docs/app.js");
   assert.match(source, /createReverseSearchUi/);
-  assert.match(source, /reverse-ui\.js\?v=19-canonical-names/);
+  assert.match(source, /reverse-ui\.js\?v=20-about-page/);
   assert.match(source, /function openReversePair\(targetJdn, calculationJdn\)/);
   assert.match(source, /state\.targetJdn = target/);
   assert.match(source, /state\.calculationJdn = calculation/);
@@ -35,7 +35,7 @@ test("app wires reverse results back into the canonical calendar state", async (
 test("service worker precaches every module required by offline reverse search", async () => {
   const source = await read("docs/sw.js");
   for (const asset of [
-    "./reverse-ui.js?v=19-canonical-names",
+    "./reverse-ui.js?v=20-about-page",
     "./reverse-search-controller.js",
     "./engine/pastafari-calendar-fast.js",
     "./engine/pastafari-constraints-client.js",
