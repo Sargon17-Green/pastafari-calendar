@@ -1,0 +1,331 @@
+<!-- Déi lëtzebuergesch Versioun ass direkt aus dem hebräesche semantic master geschriwwen; keng Pivot-Sprooch gouf benotzt. -->
+<!-- D'Section-IDe gehéieren zu engem stabile public deep-link contract a ginn net aus iwwersate Rubriken ofgeleet. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>An der Erzielung vun dëser Säit gëtt de Pastafari-Kalenner als dee Kalenner duergestallt, an deem d'Zäit selwer erschaf gouf. Wéi en funktionéiert, ass awer duerch strikt a präzis Reegelen definéiert.</p>
+  <p>De Kalenner pecht net op all Dag een onverännerlecht Pastafari-“Etikett”. Fir en Datum ze kréien, brauche mir zwee Deeg: den <strong>Aktiounsdag</strong>, vun deem aus d'Berechnung ufänkt, an den <strong>gefroten Dag</strong>, fir deen de Pastafari-Datum gesicht gëtt.</p>
+  <p>Wa mir den Aktiounsdag als <code>c</code> an de gefroten Dag als <code>t</code> schreiwen, ass den Datum</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>an net <code>F(t)</code>. Dee selwechte gefroten Dag kann also en anere Pastafari-Datum hunn, wann den Aktiounsdag ännert.</p>
+  <p>Dat ass kee Feeler. De Kalenner ass genee esou definéiert.</p><hr>
+</div>
+
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>Aus wat besteet e Pastafari-Datum?</h2>
+  <p>En huet <strong>genee fënnef Deeler</strong>: Joeresnummer, Numm vun der Kotelett, Dag an der Kotelett, Numm vum Mount an Dag am Mount.</p>
+  <p>Allgemengt Beispill: <strong>Joer 5000, Kotelett A, Dag 417 vun der Kotelett, Mount B, Dag 83 vum Mount.</strong></p>
+  <p>Den Aktiounsdag, d'Positioun vum Observateur, d'chronologesch Identitéit vum Dag oder aner technesch Donnéeë kënnen nieft dem Datum ugewise ginn, mä si sinn net e sechste Feld vum Datum.</p><hr>
+</section>
+
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>Firwat brauche mir en Aktiounsdag?</h2>
+  <p>Bei gewéinleche Kalenneren ass et natierlech ze mengen, den Datum géif dem Dag selwer “gehéieren”. Am Pastafari-Kalenner hänkt den Datum vun der Relatioun tëscht zwee Deeg of.</p>
+  <p><code>t</code> z'änneren heescht no engem aneren Dag ze froen. <code>c</code> z'änneren kann vill méi déif gräifen: Joeresgrenzen, Koteletten, Méint, hir Nimm an d'Art a Weis, wéi d'Méint matenee verflochten sinn, kënnen all änneren.</p>
+  <p>En Almanach, deen haut berechent gouf, muss also muer net méi richteg sinn. Dat verhënnert och déi onbequem Situatioun, datt e gedréckte Kalenner e ganzt Joer laang nëtzlech bleift.</p><hr>
+</section>
+
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>Deeselwechten Dag, en aneren Datum</h2>
+  <p>D'<strong>Identitéit vum Dag</strong> muss vun der <strong>Pastafari-Duerstellung</strong> getrennt ginn. Dat éischt ass déi stabil Plaz vun engem konkrete Dag op der Zäitlinn; dat zweet sinn déi fënnef Wäerter, déi erauskommen, wann dee selwechten Dag ënner engem bestëmmten Aktiounsdag ugewise gëtt.</p>
+  <p>Am Produkt an an der API kann dat éischt als <code>day-id</code> verstan ginn: eng chronologesch Identitéit, déi net ännert, wann d'Duerstellung ännert. Dogéint mussen</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre>
+  <p>an</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>net gläich sinn.</p>
+  <p>Wann den Aktiounsdag manuell geännert gëtt, kann also de Pastafari-Datum, dee fir dee selwechten Dag ugewise gëtt, änneren, ouni datt de Dag selwer sech op der Zäitlinn beweegt.</p>
+  <p>Dee selwechte Prinzip gëllt fir Evenementer. Eng Reunioun, eng Gebuert oder en historescht Evenement soll mat enger stabiler chronologescher Identitéit verbonne bleiwen; säi Pastafari-Datum kann no dem Duerstellungskontext nei berechent ginn.</p>
+  <p>D'Etikett kann änneren. D'Evenement net.</p><hr>
+</section>
+
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>Joer 5000</h2>
+  <p>Wann den Aktiounsdag an de gefroten Dag deeselwechten Dag sinn,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>ass d'Joeresnummer ëmmer</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>Anescht gesot: d'Géigewaart läit aus hirer eegener Siicht ëmmer am Joer 5000. Mä Joer 5000 ass keng fix historesch Period; et gëtt all Kéier nei relativ zum Aktiounsdag ausgewielt.</p>
+  <p>Den Aktiounsdag selwer läit och am Joer 5000, grad wéi aner Deeg am selwechten ausgewielte Joer. Dofir <strong>beweist eleng de Fait, datt en Dag am Joer 5000 läit, net datt <code>t=c</code>.</strong></p>
+  <p>D'Joeresnummer weist awer d'Richtung:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre>
+  <p>an</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p>Et gëtt och e <strong>Joer 0</strong>; méi wäit an der Vergaangenheet kommen Jore mat negativen Zuelen.</p><hr>
+</section>
+
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>Joren a Paarten</h2>
+  <p>E Pastafari-Joer kann</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ bis }5778</code></pre>
+  <p>Deeg hunn. Dat sinn déi canonical Grenze vum System, keng empiresch Moyennen.</p>
+  <p>E Joer kann also méi kuerz si wéi e Sonnenjoer oder méi laang wéi fofzéng Sonnenjoren. D'Joeresgrenze ginn aus dem System vun de <strong>Paarten</strong> gebaut; och d'Grenze vun de Koteletten kommen aus deem System.</p>
+  <p>D'Enn vum Joer muss net mat enger Joreszäit, engem Ëmlaf vun der Äerd ëm d'Sonn, engem Moundzyklus oder dem praktesche Wonsch zesummefalen, datt d'Joer elo endlech eriwwer soll sinn.</p><hr>
+</section>
+
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>Koteletten</h2>
+  <p>All Joer gëtt an <strong>6 bis 17 Koteletten</strong> gedeelt. Eng Kotelett ass en chronologesch zesummenhängenden Zäitofschnëtt.</p>
+  <p>Wann haut den Dag 250 vun enger Kotelett ass, ass muer den Dag 251 vun där selwechter Kotelett, ausser haut ass hire leschten Dag. D'Grenze vun de Koteletten si Paarten, an eng Kotelett dauert op d'mannst</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
+  <p>Deeg.</p>
+  <p>De System huet 17 canonical Kotelettennimm, an dee selwechten Numm kënnt bannent engem Joer net zweemol vir. Den Numm bestëmmt weder d'Längt nach d'Positioun vun der Kotelett.</p><hr>
+</section>
+
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>Méint a Verflechtung</h2>
+  <p>All Joer huet</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ bis }47</code></pre>
+  <p>strukturell Méint, an all Mount kritt</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ bis }123</code></pre>
+  <p>Deeg zougedeelt.</p>
+  <p>E Pastafari-Mount muss awer <strong>net e kontinuéierlecht Zäitintervall sinn</strong>. Zum Beispill kéint d'chronologesch Reiefolleg esou ausgesinn:</p>
+  <blockquote><p>Mount A — Dag 14<br>Mount B — Dag 9<br>Mount A — Dag 15</p></blockquote>
+  <p>Dat ass komplett valabel. Dag 15 vum Mount A ass den nächsten Dag <strong>vun deem Mount</strong>, och wann tëschendran en Dag vun engem anere Mount läit.</p>
+  <p>“Dag am Mount” seet also net, wéi vill chronologesch Deeg zanter dem éischten Optriede vum Mount vergaange sinn. Et ass d'Reiefolleg ënnert den Deeg, déi deem Mount am Joer zougedeelt sinn. Dag 48 bedeit den 48. Dag, deen zu deem Mount gehéiert, net 47 Deeg no sengem éischten Optrieden.</p><hr>
+</section>
+
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>D'Méint si matenee verflochten</h2>
+  <p>Et kann een d'Méint als Fiedem denken, déi duerch d'Joer lafen. All Dag gehéiert zu genee engem Mount; muer kann en zu engem anere Mount gehéieren, an duerno kann den éischte Mount erëmkommen a mat senger nächster Nummer virufueren.</p>
+  <p>Dës Verflechtung huet Reegelen, ënner anerem Aschränkunge fir d'Reiefolleg vun den éischten a leschten Optriede vun de Méint. Mä et gëtt keng Fuerderung, datt ee Mount muss fäerdeg sinn, ier en aneren ufänkt.</p>
+  <ul>
+    <li>D'Kotelett moosst d'Positioun an engem kontinuéierlechen Zäitofschnëtt.</li>
+    <li>De Mount weist d'Zougehéieregkeet zu engem strukturelle Fuedem, deen verschwannen a méi spéit nees opdauche kann.</li>
+  </ul>
+  <p>Ee Mount kann duerch verschidde Koteletten goen, an an enger Kotelett kënne verschidde Méint opdauchen. Ufank an Enn vun deenen zwou Systemer mussen net zesummefalen.</p><hr>
+</section>
+
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>Den nächsten Dag vum Mount ass net onbedéngt muer</h2>
+  <p>Wann haut den Dag 17 vun engem Mount ass, ass den Dag 18 vun deem selwechte Mount <strong>dat nächst Optriede vun deem Mount</strong>. Dat kann muer sinn oder vill méi spéit.</p>
+  <p><strong>Muer</strong> ass den nächste chronologeschen Dag; <strong>den nächsten Dag vum Mount</strong> ass dat nächst Optriede vum selwechte Mount.</p>
+  <p>Genee esou heescht “Enn vum Mount” net, datt d'Enn chronologesch no ass. E Mount mat 120 Deeg kann haut um Dag 119 sinn, an den Dag 120 kënnt vill méi spéit am selwechte Joer.</p><hr>
+</section>
+
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>Et gi keng Wochen</h2>
+  <p>Déi aktuell canonical specification <strong>definéiert kee Wochesystem</strong>. Et gëtt keng canonical Eenheet vu siwen Deeg, keng Pastafari-Nimm fir Wochendeeg a keng Reegel, déi zwee Deeg zum “selwechte Wochendag” mécht.</p>
+  <p>Natierlech kann ee vu baussen e biergerlecht Wochesystem driwwer leeën; et ass just keen Deel vum Pastafari-Datum.</p><hr>
+</section>
+
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>Nimm</h2>
+  <p>Et ginn 17 canonical Kotelettennimm a 47 canonical Mountsnimm. Bannent engem Joer kënnt all Numm a senger Grupp héchstens eng Kéier vir.</p>
+  <p>D'Identitéit vum Numm ass canonical a semantesch; si ass net d'Resultat vun enger Ofstëmmung tëscht verschiddene Schreifweisen, Iwwersetzungen oder implementations. Fir d'Bedeitung vun den Nimm huet déi hebräesch Megillah déi héchst Autoritéit; Iwwersetzungen an Translitteratioune sinn nëmme Schichte vun der Duerstellung.</p>
+  <p>Den Numm ass och kee verstoppten Code fir d'Längt. Den Numm vun enger bestëmmter Kotelett oder engem Mount mécht déi Eenheet net vu sech aus méi laang oder méi kuerz.</p><hr>
+</section>
+
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>Eng kleng Tatsaach iwwer Méint</h2>
+  <p>Et ginn 47 Mountsnimm, an e Mount kann héchstens bis Dag 123 goen. D'Zuel vun de syntaktesch méigleche Puerer an der Form “Mountsnumm + Dagsnummer am Mount” ass also</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>All Dag vum Joer realiséiert genee esou ee Paar. Wann d'Joerlängt <code>L</code> ass, kommen genee <code>L</code> Puerer vir. Well</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>muss all Joer op d'mannst</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre>
+  <p>méiglech Puerer onbenotzt loossen. Och dat längste Joer huet net genuch Deeg, fir se all ze benotzen.</p><hr>
+</section>
+
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>Wéi gëtt de Kalenner berechent?</h2>
+  <p>Déi intern Berechnung nenne mir hei d'<strong>Zooss</strong>. An hirem Mëttelpunkt steet d'Primzuel</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>De Prozess ëmfaasst fënnef input counter, 7 verstoppt Drëpsen, 46 sichtbar Drëpsen, 6 Schosselen, verännerlech Reiefollege vun de Schosselen, 12 Schlussmëschungen, seal fir verschidden Äntwerten, combinatorial selection, d'Baue vu Paarten, d'Auswiele vu Joren, d'Opdeele vu Koteletten, d'Auswiele vun Nimm, d'Baue vu Méint an d'Verflechte vun de Mountsdeeg.</p>
+  <p>D'Schluss-update si <strong>synchron</strong>: bei all Mëschung ginn déi sechs nei Wäerter aus deem selwechten ale state berechent, an eréischt duerno ginn all sechs Schosselen zesumme geännert.</p>
+  <p>An den 12 Schlussmëschunge gëtt et ee besonnesch wichtegt canonical Detail. Wann <code>S</code> d'Zomm vun de sechs ale Schosselen ass an <code>r</code> d'Nummer vun der Mëschung, berechent de System</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p><code>R</code> ass déi <strong>gespäichert Zomm</strong>. Souwuel d'Auswiel vun der Schosselreiefolleg wéi den interne update vun der Mëschung benotzen <code>R</code>, net déi réi Zomm <code>S</code>.</p>
+  <p>Eeler Versiounen, déi déi réi Zomm an dësen update ginn hunn, beschreiwen déi aktuell canonical semantics net méi. Beispiller, déi aus der aler Reegel ofgeleet goufen, sollte bis zu enger neier verification als veralt gëllen.</p>
+  <p>No de Mëschunge setzt den answer ring och d'Reiefolleg fort, déi bei der siichtbarer Drëps 46 lock gouf; se soll net automatesch duerch d'Reiefolleg vun der leschter Mëschung ersat ginn.</p><hr>
+</section>
+
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice a Wide Choice</h2>
+  <p>Fir relativ kleng selection space gëtt <strong>Short Choice</strong> benotzt. Et benotzt rejection sampling, fir en einfache modulo bias ze vermeiden.</p>
+  <p>Fir ganz grouss space gëtt <strong>Wide Choice</strong> benotzt. Et däerfen him keng Eegeschafte zougeschriwwe ginn, déi d'Specification net garantéiert.</p>
+  <p>Wide Choice ass net datselwecht wéi onofhängeg a gläichméisseg verdeelt base-<code>Q</code>-Zifferen ze generéieren, bis en index erauskënnt. Dofir follegt net, datt all valid choice onbedéngt déiselwecht positiv Warscheinlechkeet huet. A genuch grousse space kënne valid choice existéieren, déi dëse mechanism ni erreecht.</p>
+  <p>De Kalenner selwer bleift komplett deterministic. “Choice” ass den Numm vun enger algorithmic stage, keng random lottery wärend der Benotzung.</p><hr>
+</section>
+
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>Strukturellen Atlas</h2>
+  <p>Bis elo hu mir iwwer d'Reegele vum Kalenner geschwat. Déi folgend Zuele sinn eng aner Zort Informatioun: <strong>empiresch Resultater</strong> aus enger grousser computational sample.</p>
+  <p>Den Atlas gouf mam engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> gebaut an huet 4,096 Aktiounsdeeg ëmfaasst; fir all dovun d'Joren 4990–5010; 86,016 Joeresstrukturen; 625,437 Koteletten; 3,535,422 strukturell Méint; méi wéi 356 Millioune kontinuéierlech Mountssegmenter; a méi wéi 364 Milliounen Iwwergäng vum Dag <code>n</code> op den Dag <code>n+1</code> am selwechte Mount.</p>
+  <p>Dës Zuele beschreiwen dee corpus, net canonical Gesetzer.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Gemoossen Donnéeën aus dem strukturellen Atlas">
+    <table class="about-table">
+      <thead><tr><th scope="col">Gemoosse Gréisst</th><th scope="col">Resultat an der Prouf</th></tr></thead>
+      <tbody>
+        <tr><td>Duerchschnëttlech Joerlängt</td><td>4,275.182 Deeg</td></tr>
+        <tr><td>Median vun der Joerlängt</td><td>4,343</td></tr>
+        <tr><td>Observéierte Minimum / Maximum</td><td>716 / 5,778</td></tr>
+        <tr><td>Duerchschnëttlech Zuel vu Koteletten pro Joer</td><td>7.271</td></tr>
+        <tr><td>Jore mat genee 6 Koteletten</td><td>42.00%</td></tr>
+        <tr><td>Jore mat 6–8 Koteletten</td><td>81.29%</td></tr>
+        <tr><td>Duerchschnëttlech Längt vun enger Kotelett</td><td>587.963 Deeg</td></tr>
+        <tr><td>Median vun der Kotelettelängt</td><td>560</td></tr>
+        <tr><td>Duerchschnëttlech Zuel vu Méint pro Joer</td><td>41.102</td></tr>
+        <tr><td>Median vun der Zuel vu Méint</td><td>43</td></tr>
+        <tr><td>Jore mat 47 Méint</td><td>15.63%</td></tr>
+        <tr><td>Jore mat op d'mannst 45 Méint</td><td>36.81%</td></tr>
+        <tr><td>Duerchschnëttlech Längt vun engem strukturelle Mount</td><td>104.014 Deeg</td></tr>
+        <tr><td>Median vun der Mountslängt</td><td>115</td></tr>
+        <tr><td>Duerchschnëttlech Zuel vu kontinuéierleche Segmenter pro Mount</td><td>100.897</td></tr>
+        <tr><td>Undeel vu Mountssegmenter vun engem Dag</td><td>97.482%</td></tr>
+        <tr><td>Warscheinlechkeet, datt zwee Nopeschdeeg am selwechte Mount sinn</td><td>2.9976%</td></tr>
+        <tr><td>Duerchschnëttlech Zuel vun Deeg aus anere Méint tëscht <code>n</code> an <code>n+1</code> vum selwechte Mount</td><td>40.408</td></tr>
+        <tr><td>Duerchschnëttleche span tëscht dem éischten a leschten Optriede vun engem Mount</td><td>4,266.653 Deeg</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>An der Praxis kann e Mount mat ongeféier honnert Deeg iwwer bal e ganzt Pastafari-Joer verdeelt sinn.</p>
+  <p>Deeselwechten Atlas huet och en natierleche Längte-bias ronderëm Joer 5000 gewisen. An der Prouf war e “gewéinlecht” Joer am Duerchschnëtt ongeféier 4,262 Deeg. Wann d'Joren no der Zuel vun hiren Deeg weight ginn, klëmmt d'Moyenne op ongeféier 4,466 Deeg; Joer 5000 selwer hat am Duerchschnëtt ongeféier 4,499 Deeg.</p>
+  <p>De Grond ass einfach: Joer 5000 muss den Aktiounsdag enthalen. E méi laangt Joer huet méi Deeg, op deenen et dat Joer ka sinn, dat den Aktiounsdag enthält.</p>
+  <p>D'Bezéiung tëscht dem Numm vun enger Eenheet an hirer Längt war an der Prouf och ganz schwaach. Dat beweist keng vollstänneg mathematical independence, mä den Atlas gëtt kee praktesche signal, datt d'Nimm entworf goufen, fir Längt ze encode.</p>
+  <p>Ausserdeem sinn déi 86,016 Joeresstrukturen net 86,016 komplett independent sample: tëscht Start- an Ennpaart ginn et nëmmen 24,786 verschidden interval. Aktiounsdeeg, déi no beienee leien, kënnen dee selwechte year interval auswielen an trotzdeem verschidden intern structure bilden.</p>
+  <p>Den Atlas beschreift also dat gemoossent Verhalen vun der implementation gutt, mä soll net zu enger probability theorem iwwer all méiglech calendar structure gemaach ginn.</p><hr>
+</section>
+
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>Gebuertsdeeg an Anniversairen</h2>
+  <p>“Deeselwechten Dag all Joer” muss hei fir d'éischt definéiert ginn. Natierlech recurrence coordinate sinn <code>(Mountsnumm, Dag am Mount)</code> an <code>(Kotelettennumm, Dag an der Kotelett)</code>; Konditioune kënnen och kombinéiert ginn.</p>
+  <p>E Pastafari-Gebuertsdag ass also net einfach <code>RRULE:FREQ=YEARLY</code>. Et muss dat nächst Joer gesicht ginn, dat der gewielter recurrence condition entsprécht, an d'Ursprungsevenement zielt net automatesch als seng eege “nächst Optriede”.</p>
+  <p>Den Aktiounsdag just fir d'Duerstellung z'änneren, soll weder d'Identitéit vun enger Persoun nach de Gebuertsmoment oder den Alter änneren.</p>
+  <p>An engem exact scan vu 4,096 self-referential date gouf all nächst Pastafari-Joer bis 250,000 Joer a béid Richtunge kontrolléiert:</p>
+  <ul>
+    <li>Fir <code>(Mountsnumm, Dag am Mount)</code> war de Median vum éischte Retour 1 Pastafari-Joer; 77.56% koumen am Nopeschjoer zréck, 93.77% bannent zwee Joer, 99.44% bannent fënnef; den observéierte maximum war 21 Joer.</li>
+    <li>Fir <code>(Kotelettennumm, Dag an der Kotelett)</code> war de Median 3 Joer; 88.89% goufen bannent 10 Joer fonnt, mä d'distribution huet eng ganz schwéier heavy tail, an den observéierte maximum huet 51,954 Pastafari-Joren erreecht.</li>
+  </ul>
+  <p>Dat sinn <strong>empiresch Resultater aus dem iwwerpréifte corpus</strong>; si beweisen net, datt all méiglechen Anniversaire sécher erëm kënnt, a ginn och keng guarantee fir e maximum waiting time.</p><hr>
+</section>
+
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>Wéi mécht een e Rendez-vous?</h2>
+  <p>Wann zwou Persounen nëmme mat engem Pastafari-Datum wëlle festleeën, wéini se sech treffen, musse se op d'mannst iwwer déi fënnef Datumsfelder an den Aktiounsdag, deen an der Berechnung benotzt gouf, eens sinn. Et ass besser, den Aktiounsdag als stabil day identity ze späicheren an net als d'Wuert “haut”; soss kënnen zwou Persounen zwee verschidde Kalennere berechnen.</p>
+  <ul>
+    <li>“muer” ass den nächste chronologeschen Dag;</li>
+    <li>“den nächsten Dag vum Mount” ass dat nächst Optriede vun deem Mount;</li>
+    <li>“Enn vum Mount” ass dat lescht Optriede vun deem Mount;</li>
+    <li>“de ganze Mount” kann de set vun Deeg mengen, déi zu deem Mount gehéieren, oder de ganze chronologesche span vum éischten bis zum leschten Optrieden;</li>
+    <li>“dat nächst Joer” ass dat nächst Joer am Kalenner, deen ënner dem gewielten Aktiounsdag gebaut gouf.</li>
+  </ul>
+  <p>Fir e besonnesch wichtege Rendez-vous kann och en absolute chronological day oder moment gespäichert ginn. De Kalenner wäert net beleidegt sinn.</p><hr>
+</section>
+
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>Reesen, Evenementer an all-day</h2>
+  <p>En Evenement an dat lokalt Etikett, dat dofir ugewise gëtt, sinn net datselwecht. En Evenement mat enger fester Zäit soll un e stabile chronological moment gebonne sinn. Reesen verréckelt et net an der Zäit, mä de lokale Pastafari-Datum fir dee selwechte physical moment kann änneren, well d'Definitioun vum “lokalen Dag” vun der Plaz ofhänkt.</p>
+  <p>Bei engem <strong>all-day</strong>-Evenement ass den Ënnerscheed nach méi grouss. E biergerlecht Ganztags-Evenement leeft normalerweis vu Mëtternuecht bis déi nächst Mëtternuecht; e Pastafari-Ganztags-Evenement soll vun der lokaler Pastafari-Dagsgrenz bis bei déi nächst Grenz lafen. Normalerweis sinn dat net déiselwecht moments.</p>
+  <p>Dofir kann en Pastafari-Evenement blann als biergerlecht “Ganztags”-Evenement ze export den Inhalt veränneren. Fir en exakt ze erhalen, musse chronological anchor an de passende location/day-boundary context gespäichert ginn, net nëmmen de <code>all-day</code> flag.</p><hr>
+</section>
+
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>Wéini wiesselt den Dag?</h2>
+  <p>De lokale Pastafari-Dag wiesselt net um Mëtternuecht. Seng Grenz gëtt vum <strong>topocentric lower meridian transit vum Zentrum vun der Venus iwwer de lokale Meridian</strong> bestëmmt.</p>
+  <p>Et ass also e lokalt astronomescht Evenement, dat vun der Positioun ofhänkt. De Transit muss net um 00:00 geschéien, gëtt net vun der biergerlecher time zone bestëmmt, verréckelt sech net einfach well daylight saving time ufänkt oder ophält, an d'Venus muss net mat bloussem A siichtbar sinn.</p>
+  <p>Dee selwechte physical moment kann op zwou Plazen op verschiddene Säite vun hire lokale Dagsgrenze leien. Wann de System keng benotzbar user location huet, ass de default fallback location vum Produkt <strong>Kisurra</strong>.</p><hr>
+</section>
+
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>Gedréckte Kalenner an Handberechnung</h2>
+  <p>De Pastafari-Kalenner kann gedréckt ginn; et muss just dobäi stoen, fir wéi en Aktiounsdag en berechent gouf. Esou e Kalenner weist d'Struktur vun der Zäit aus der Siicht vun deem Dag; wann den Aktiounsdag ännert, kann en neie Kalenner néideg sinn. De Printer huet also nach ëmmer Aarbecht.</p>
+  <p>Well d'Specification komplett an deterministic ass, kann alles och mat der Hand berechent ginn: input counter berechnen, déi 7 verstoppt an 46 sichtbar Drëpsen duerchlafen, déi sechs Schosselen update, déi 12 Schlussmëschunge maachen, Äntwerte produzéieren, Paarten bauen, Joren a Koteletten auswielen, combinatorial selection maachen, Nimm auswielen an duerno d'Méint verflichten.</p>
+  <p>Am Géigenzuch muss ee sech net mierken, wéini de Februar 28 an wéini 29 Deeg huet.</p><hr>
+</section>
+
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>A wat ass dann de Seer?</h2>
+  <p>Niewent der canonical implementation gëtt et e schnelle engine mam Numm <strong>Pastafarian Calendar Seer</strong>. De Seer ass keng Autoritéitsquell: de richtegen Datum gëtt vun der Megillah an der canonical calculation bestëmmt. Wann de Seer net domat iwwereneestëmmt, läit de Feeler beim Seer.</p>
+  <p>Seng Aufgab ass et, déi selwecht query séier auszeféieren an d'Resultat an enger Form zeréckzeginn, déi einfach an Produkter integrate ka ginn.</p>
+  <p>An der direkter verification beim Redigéiere vun dëser Säit huet de Seer ënner anerem date an “now” query, batch, day range, reverse conversion vun engem Pastafari-Datum op target day, year structure retrieval, Bestëmmung vum active working day, Node API, browser/HTTP client, CLI, HTTP v1 service, OpenAPI 3.1 contract, native implementations an distribution package, souwéi verified container deployment ëmfaasst.</p>
+  <p>Déi al Ausso, de Seer hätt keng public API, ass net méi richteg. Elo gëtt et e kloert a stabillt HTTP v1 contract mat endpoint fir date, range, batch, year, reverse, Aktiounsdag, metadata, locales a status.</p>
+  <p>Den 21. September 2026 gouf e public HTTPS deployment op Render wierklech getest: um live service goufen exact query, e grousst range, restart, cold wake an d'Verhalen ënner load verifizéiert.</p>
+  <p>Project documentation ënnerscheet awer nach ëmmer tëscht public beta/evaluation deployment an enger permanenter hosted production service mat SLA. Dofir soll eng konzeptuell Erklärungssäit keen server address, hosting provider oder version number freeze, wéi wann dat Deel vum Kalenner selwer wier.</p>
+  <p>De Seer kann precomputation, speziell representation, SIMD, algebra an aner shortcut benotzen. Hie muss net déi ganz computational history vun der canonical implementation Schrëtt fir Schrëtt nokopéieren, soulaang hien déiselwecht semantesch Operatioun mécht an déiselwecht Äntwert zeréckgëtt.</p>
+  <p>Optimization ass keng alternativ Autoritéit.</p><hr>
+</section>
+
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>Ursprong, Grënnungsdag an Dag vun den Tafelen</h2>
+  <p>Hei ass et besonnesch wichteg, canonical time anchor kloer vun der Geschicht vum Site ze trennen.</p>
+
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>Ankerpunkten</h3>
+    <p>De System huet ee feste reference day mam Numm <strong>Grënnungsdag</strong>. Am proleptesche gregorianesche Kalenner ass dat den <strong>22. Dezember 41,222 v. Chr.</strong>.</p>
+    <p>De Grënnungsdag ass net “den Ufank vun der Zäit”; en ass e computational anchor.</p>
+    <p>D'numbering vun den Deeg ronderëm benotzt positiv ongerued/gerued Zuelen: Grënnungsdag=1; spéider Deeg=3, 5, …; a Richtung Vergaangenheet ass den Dag virdrun=2, dono 4, 6, … . Esou ginn déi zwou Säite vum anchor an dësem counter encode ouni negativ day number.</p>
+    <p>Den zweeten anchor ass den <strong>Dag vun den Tafelen</strong>: <strong>15. Juni 763 v. Chr. am proleptesche julianesche Kalenner</strong>, also <strong>7. Juni 763 v. Chr. am proleptesche gregorianesche Kalenner</strong>.</p>
+    <p>Déi exakt Distanz vum Grënnungsdag bis zum Dag vun den Tafelen ass</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
+    <p>Deeg.</p>
+    <p>Dat si fix anchor op der Zäitlinn, mä de Pastafari-Datum, deen dofir ugewise gëtt, hänkt nach ëmmer vum Aktiounsdag of, vun deem aus d'Fro gestallt gëtt.</p>
+  </section>
+
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>D'Geschicht vum Site</h3>
+    <p>An der redaktioneller Geschicht vum Site gëtt de Kalenner als Deel vun der Schëpfung beschriwwen an als System, deen d'Mënschheet benotzt huet, ouni en ganz ze verstoen, bis en an der moderner Zäit erëm iwwerreecht gouf.</p>
+    <p>Dat ass d'Geschicht vum Site; net all narrative detail soll duergestallt ginn, wéi wann et en explizitte technical claim vun der Megillah wier.</p>
+    <p>D'Evenement vun der erneierter Iwwerreechung selwer ass e fix historescht Evenement. Säi <strong>Pastafari-Datum</strong> soll besser dynamic ënner dem aktuellen Aktiounsdag ugewise ginn, amplaz fir ëmmer als een Datum freeze ze ginn.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>Fir fortgeschratt Benotzer: reverse conversion</h2>
+  <p>Wann den Aktiounsdag <code>c</code> bekannt ass, ass reverse conversion staark limitéiert. Bannent engem bekannte Pastafari-Joer identifizéiert</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{Kotelettennumm},\text{Dag an der Kotelett})</code></pre>
+  <p>héchstens een Dag. Dat selwecht gëllt fir</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{Mountsnumm},\text{Dag am Mount})</code></pre>
+  <p>E kompletten Datum mat bekanntem Aktiounsdag identifizéiert den target day also eendeiteg.</p>
+
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Iewescht Grenze fir d'Zuel vu candidate bei reverse conversion">
+    <table class="about-table">
+      <thead><tr><th scope="col">Bekannt zousätzlech Informatioun</th><th scope="col">Maximal Zuel vu candidate</th></tr></thead>
+      <tbody>
+        <tr><td>Kee Feld ausser dem Joer ass bekannt</td><td>5,778</td></tr>
+        <tr><td>Nëmmen de Kotelettennumm</td><td>5,568</td></tr>
+        <tr><td>Nëmmen den Dag an der Kotelett</td><td>17</td></tr>
+        <tr><td>Nëmmen de Mountsnumm</td><td>123</td></tr>
+        <tr><td>Nëmmen den Dag am Mount</td><td>47</td></tr>
+        <tr><td>Kotelettennumm + Dag an der Kotelett</td><td>1</td></tr>
+        <tr><td>Mountsnumm + Dag am Mount</td><td>1</td></tr>
+        <tr><td>Beliebeg dräi Felder ausser dem Joer</td><td>1</td></tr>
+        <tr><td>All véier Felder ausser dem Joer</td><td>1</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Wann den Aktiounsdag net bekannt ass, ass d'Situatioun anescht. Déi selwecht fënnef Wäerter kënnen ënner verschiddenen Aktiounsdeeg optrieden, an et gëtt exact example, wou dee selwechte komplette Datum op ënnerschiddlechen Distanze vu <code>c</code> opdaucht.</p>
+  <p>Am Joer 5000 gëtt souguer de sign vun där Distanz net ëmmer vun de fënnef Wäerter bestëmmt: dee selwechte komplette Datum kann an engem context virum Aktiounsdag leien an an engem aneren dono.</p>
+  <p>E komplette Pastafari-Datum ass also keen absolute address op der Zäitlinn, wann net bekannt ass, ënner wéi engem <code>c</code> en berechent gouf.</p>
+
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>Struktur a ganz wäiter Zäit</h3>
+    <p>Mathematesch Fuerschung, déi aus der specification ofgeleet gouf, huet och eng exakt asymptotic structure fonnt. Fir e <strong>fixen Aktiounsdag</strong> <code>c</code> erschéngt, wäit genuch am tail vun der Vergaangenheet, affine periodicity.</p>
+    <p>Wann</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>da ginn et fir dee selwechte <code>c</code> e shift <code>H_c</code>, e year change <code>p_c</code> an e wäit genuch threshold, no deem</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>déi véier Net-Joeresfelder sech widderhuelen, wärend d'Joeresnummer ëm eng fix Quantitéit ännert.</p>
+    <p>Dat ass e Resultat fir fixe <code>c</code>; dovun follegt net déi global Relatioun</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>D'Fro, ob déi definitiv asymptotic slope wierklech tëscht verschiddenen Aktiounsdeeg ënnerscheeden, bleift op.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>Fir fortgeschratt Benotzer: wéi vill Geschicht späichert d'Zooss?</h2>
+  <p>D'Zooss gesäit aus wéi e ganz aggressiven mixing mechanism, mä algebraic research weist, datt si vill méi Informatioun späichert, wéi d'Erscheinung vermudde léisst. Dat ass e research result, deen aus der specification ofgeleet gouf, keng nei Kalennerreegel.</p>
+  <p>An de siichtbare stage 3–46, um entspriechenden asymptotic branch, ass generic injectivity festgestallt: am generic case späichert de state genuch Informatioun, fir déi relevant input history an d'Schosselreiefolleg ze rekonstruéieren.</p>
+  <p>D'Informatioun verschwënnt och net direkt an den 12 Schlussmëschungen. Fir déi éischt fënnef Mëschunge no der siichtbarer Drëps 46 ass generic invertibility um entspriechenden canonical union ouni zousätzlech side information festgestallt; fir de Rescht si staark constructive upper bound bekannt, wéi vill side information fir reconstruction genuch ass.</p>
+  <p>D'Fro, ob <strong>nëmmen déi lescht sechs Schosselen</strong> am generic sense ëmmer genuch sinn, bleift op.</p>
+  <p>E puer Resultater goufen symbolic bewisen, aner mat finite exact arithmetic check ofgeschloss. Symbolic strengthening huet de computational core, deem vertraut muss ginn, staark verkleinert, awer net komplett eliminéiert.</p>
+  <p>Space, déi am Ufank ausgesinn hunn, wéi wann eng immens Zuel vu path duerchsicht misst ginn, goufen op vill méi kleng finite structure reduzéiert, dorënner automata mat 180 an 9 state an symmetry vun de sechs Schosselen.</p>
+  <p>Ënner dem Mëschen läit eng streng algebraic structure. Et ass net néideg, se ze kennen, fir den Datum vun haut ze wëssen.</p><hr>
+</section>
+
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>Wat ass de Pastafari-Kalenner dann eigentlech?</h2>
+  <p>Et ass en deterministic calendar, an deem den Datum net nëmmen eng function vum target day ass, mä eng <strong>gemeinsam function vum Aktiounsdag an dem gefroten Dag</strong>.</p>
+  <p>All Datum huet genee fënnef Felder. D'Géigewaart ass aus hirer eegener Siicht ëmmer am Joer 5000, mä Joer 5000 selwer verréckelt sech mam Aktiounsdag. Jore kënne ganz laang sinn, Kotelette si kontinuéierlech, Méint net onbedéngt, an et gëtt kee canonical week system.</p>
+  <p>Dag <code>n+1</code> vun engem Mount muss net muer sinn. Dee selwechte chronological day kann muer en anere Pastafarian label kréien. Dee selwechte physical moment kann op zwou Plazen zu zwee verschiddene local Pastafari day gehéieren. En all-day event muss net vu Mëtternuecht bis Mëtternuecht daueren. An en annual birthday ass fir d'éischt e search problem an dono e calendar problem.</p>
+  <p>Wann awer den Aktiounsdag an de gefroten Dag bekannt sinn, gëtt et keng ambiguity: et gëtt genee eng richteg Äntwert.</p>
+  <p>Um Enn brauch e Kalenner och net méi ze maachen.</p>
+</section>

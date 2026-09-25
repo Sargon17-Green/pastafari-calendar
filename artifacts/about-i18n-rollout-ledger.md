@@ -50,7 +50,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | ka | ka-GE | ltr | partial | draft |
 | kk | kk-KZ | ltr | partial | draft |
 | ko | ko-KR | ltr | partial | draft |
-| lb | lb-LU | ltr | partial | not started |
+| lb | lb-LU | ltr | partial | draft |
 | lt | lt-LT | ltr | partial | draft |
 | lv | lv-LV | ltr | partial | draft |
 | mk | mk-MK | ltr | partial | not started |
