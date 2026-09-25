@@ -54,6 +54,11 @@ test("Hebrew explanation preserves the full stable deep-link contract", async ()
   }
   assert.equal((html.match(/class="about-table"/g) || []).length, 2);
   assert.ok((html.match(/class="math-block"/g) || []).length >= 10);
+  assert.equal(
+    (html.match(/<pre class="math-block" dir="ltr" tabindex="0">/g) || []).length,
+    (html.match(/class="math-block"/g) || []).length,
+    "Every horizontally scrollable math block must be keyboard-focusable",
+  );
   assert.match(html, /המכניקה שלו, לעומת זאת, מוגדרת במדויק/);
   assert.match(html, /יש תשובה אחת מדויקת/);
 });
