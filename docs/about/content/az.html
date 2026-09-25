@@ -1,0 +1,331 @@
+<!-- Azərbaycan dili versiyası ivrit semantic master-dan birbaşa yazılıb; aralıq dil istifadə edilməyib. -->
+<!-- Bölmə ID-ləri sabit public deep-link contract-ın hissəsidir; tərcümə edilmiş başlıqlardan yaradılmır. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>Bu saytın hekayəsində Pastafari təqvimi zamanın özünün içində yaradıldığı təqvim kimi təqdim olunur. Amma onun necə işlədiyi sərt və dəqiq qaydalarla müəyyən edilir.</p>
+  <p>Bu təqvim hər günə dəyişməz bir Pastafari “etiketi” yapışdırmır. Tarixi hesablamaq üçün iki gün lazımdır: hesablamanın başladığı <strong>əməl günü</strong> və Pastafari tarixi soruşulan <strong>soruşulan gün</strong>.</p>
+  <p>Əməl gününü <code>c</code>, soruşulan günü isə <code>t</code> ilə işarə etsək, tarix</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>olur, <code>F(t)</code> yox. Buna görə eyni soruşulan günün Pastafari tarixi əməl günü dəyişəndə dəyişə bilər.</p>
+  <p>Bu, səhv deyil. Təqvim məhz belə tərif edilib.</p><hr>
+</div>
+
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>Pastafari tarixi nədən ibarətdir?</h2>
+  <p>Onun <strong>dəqiq beş hissəsi</strong> var: il nömrəsi, kotletin adı, kotlet daxilində gün, ayın adı və ay daxilində gün.</p>
+  <p>Ümumi nümunə: <strong>5000-ci il, A kotleti, kotletin 417-ci günü, B ayı, ayın 83-cü günü.</strong></p>
+  <p>Əməl günü, müşahidəçinin yeri, günün xronoloji kimliyi və ya başqa texniki məlumat tarixlə yanaşı göstərilə bilər, amma bunlar tarixin altıncı sahəsi deyil.</p><hr>
+</section>
+
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>Əməl günü niyə lazımdır?</h2>
+  <p>Adi təqvimlərdə tarixin sanki həmin günün özünə aid sabit xüsusiyyət olduğunu düşünmək təbiidir. Pastafari təqvimində isə tarix iki günün münasibətindən asılıdır.</p>
+  <p><code>t</code>-ni dəyişmək başqa gün haqqında soruşmaq deməkdir. <code>c</code>-ni dəyişməyin təsiri daha dərindir: illərin sərhədləri, kotletlər, aylar, onların adları və ayların bir-biri ilə necə hörüldüyü dəyişə bilər.</p>
+  <p>Ona görə bu gün hesablanmış almanaxın sabah da düzgün qalacağına zəmanət yoxdur. Bu, çap olunmuş təqvimin bütöv il boyu yararlı qalması kimi xoşagəlməz vəziyyətdən də qaçmağa imkan verir.</p><hr>
+</section>
+
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>Eyni gün, fərqli tarix</h2>
+  <p><strong>Günün kimliyi</strong> ilə onun <strong>Pastafari təqdimatı</strong> eyni şey deyil. Birincisi konkret günün zaman xəttində sabit yeridir; ikincisi həmin gün müəyyən əməl günü altında göstəriləndə alınan beş dəyərdir.</p>
+  <p>Məhsulda və API-də birincini <code>day-id</code> kimi düşünmək olar: təqdimat dəyişəndə dəyişməyən xronoloji kimlik. Amma</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre>
+  <p>və</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>mütləq eyni olmur.</p>
+  <p>Beləliklə, əməl gününü əl ilə dəyişmək eyni gün üçün göstərilən Pastafari tarixini dəyişə bilər, halbuki günün özü zaman xəttində heç yerə tərpənmir.</p>
+  <p>Eyni prinsip hadisələrə də aiddir. Görüş, doğum və ya tarixi hadisə sabit xronoloji kimliyə bağlanmalıdır; onun Pastafari tarixi isə göstərilmə kontekstinə uyğun yenidən hesablana bilər.</p>
+  <p>Etiket dəyişə bilər. Hadisə dəyişmir.</p><hr>
+</section>
+
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>5000-ci il</h2>
+  <p>Əməl günü ilə soruşulan gün eyni olanda,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>ilin nömrəsi həmişə</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>olur. Başqa sözlə, indiki an öz baxış bucağından həmişə 5000-ci ilin içindədir. Amma 5000-ci il sabit tarixi dövr deyil; o, hər dəfə əməl gününə nəzərən yenidən seçilir.</p>
+  <p>Əməl gününün özü də 5000-ci ilin içindədir və həmin seçilmiş ilin başqa günləri də elədir. Buna görə <strong>sadəcə 5000-ci ildə olmaq <code>t=c</code> olduğunu sübut etmir.</strong></p>
+  <p>Bununla belə, il nömrəsi istiqaməti göstərir:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre>
+  <p>və</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p><strong>0-cı il</strong> də var; daha uzaq keçmişdə mənfi nömrəli illər gəlir.</p><hr>
+</section>
+
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>İllər və qapılar</h2>
+  <p>Bir Pastafari ili</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{-dən }5778\text{-ə qədər}</code></pre>
+  <p>gün çəkə bilər. Bunlar sistemin canonical sərhədləridir, empirik orta göstəricilər deyil.</p>
+  <p>Deməli, bir il Günəş ilindən qısa da ola bilər, on beş Günəş ilindən uzun da. İl sərhədləri <strong>qapılar</strong> sistemi ilə qurulur; kotlet sərhədləri də həmin sistemdən gəlir.</p>
+  <p>İlin sonu fəsillə, Yerin Günəş ətrafında bir dövrü ilə, Ay dövrü ilə və ya ilin nəhayət bitməli olduğu barədə praktik istəklə üst-üstə düşməli deyil.</p><hr>
+</section>
+
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>Kotletlər</h2>
+  <p>Hər il <strong>6-dan 17-yə qədər kotletə</strong> bölünür. Kotlet xronoloji baxımdan fasiləsiz zaman hissəsidir.</p>
+  <p>Bu gün kotletin 250-ci günüdürsə və bu gün onun son günü deyilsə, sabah eyni kotletin 251-ci günü olacaq. Kotletlərin sərhədləri qapılardır və hər kotlet ən azı</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
+  <p>gün davam edir.</p>
+  <p>Sistemdə 17 canonical kotlet adı var və eyni il ərzində heç bir ad təkrarlanmır. Ad kotletin nə uzunluğunu, nə də yerini müəyyən edir.</p><hr>
+</section>
+
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>Aylar və hörgü</h2>
+  <p>Hər ildə</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>3\text{-dən }47\text{-yə qədər}</code></pre>
+  <p>struktur ay olur və hər aya</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>4\text{-dən }123\text{-ə qədər}</code></pre>
+  <p>gün ayrılır.</p>
+  <p>Amma Pastafari ayı <strong>mütləq fasiləsiz zaman intervalı deyil</strong>. Məsələn, xronoloji sıra belə ola bilər:</p>
+  <blockquote><p>A ayı — 14-cü gün<br>B ayı — 9-cu gün<br>A ayı — 15-ci gün</p></blockquote>
+  <p>Bu tamamilə düzgündür. A ayının 15-ci günü, arada başqa aya aid gün gəlsə belə, <strong>həmin ayın</strong> növbəti günüdür.</p>
+  <p>Deməli, “ay daxilində gün” ay ilk dəfə görünəndən bəri neçə xronoloji gün keçdiyini göstərmir. Bu, həmin il ərzində o aya təyin edilmiş günlərin sıra nömrəsidir. 48-ci gün o aya aid 48-ci gündür; ilk görünüşdən 47 gün sonra demək deyil.</p><hr>
+</section>
+
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>Aylar bir-biri ilə hörülür</h2>
+  <p>Ayları il boyu uzanan saplar kimi təsəvvür etmək olar. Hər gün yalnız bir aya aiddir; sabah başqa aya aid ola bilər, daha sonra birinci ay geri qayıdıb növbəti nömrəsi ilə davam edə bilər.</p>
+  <p>Bu hörgünün qaydaları var, o cümlədən ayların ilk və son görünüşlərinin sırasına dair məhdudiyyətlər. Amma bir ay bitmədən digərinin başlaya bilməyəcəyinə dair qayda yoxdur.</p>
+  <ul>
+    <li>Kotlet fasiləsiz zaman hissəsində mövqeni ölçür.</li>
+    <li>Ay yox olub sonra yenidən görünə bilən struktur sapına mənsubiyyəti bildirir.</li>
+  </ul>
+  <p>Bir ay bir neçə kotletdən keçə bilər, bir kotletdə isə bir neçə ay görünə bilər. İki sistemin başlanğıcı və sonu üst-üstə düşməli deyil.</p><hr>
+</section>
+
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>Ayın növbəti günü mütləq sabah deyil</h2>
+  <p>Bu gün müəyyən ayın 17-ci günüdürsə, həmin ayın 18-ci günü <strong>o ayın növbəti görünüşüdür</strong>. Bu, sabah da ola bilər, çox sonra da.</p>
+  <p><strong>Sabah</strong> növbəti xronoloji gündür; <strong>ayın növbəti günü</strong> isə həmin ayın növbəti görünüşüdür.</p>
+  <p>Eyni qayda ilə, “ayın sonu” onun xronoloji cəhətdən yaxın olduğunu göstərmir. 120 günlük ay bu gün 119-cu günündə ola bilər, 120-ci gün isə həmin ilin xeyli sonrakı hissəsində gələ bilər.</p><hr>
+</section>
+
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>Həftələr yoxdur</h2>
+  <p>Mövcud canonical specification <strong>həftə sistemi müəyyən etmir</strong>. Yeddi günlük canonical vahid yoxdur, Pastafari həftə günlərinin adları yoxdur və iki günü “həftənin eyni günü” edən qayda da yoxdur.</p>
+  <p>Əlbəttə, mülki həftə sistemi kənardan əlavə edilə bilər; sadəcə Pastafari tarixinin hissəsi deyil.</p><hr>
+</section>
+
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>Adlar</h2>
+  <p>17 canonical kotlet adı və 47 canonical ay adı var. Bir il ərzində hər ad öz qrupunda ən çox bir dəfə görünür.</p>
+  <p>Adın kimliyi canonical və semantikdir; müxtəlif yazılışlar, tərcümələr və ya implementation-lar arasında səsvermənin nəticəsi deyil. Adların mənası barədə ivrit dilindəki Megillah ən yüksək səlahiyyətə malikdir; tərcümə və transliterasiya sadəcə göstərim qatlarıdır.</p>
+  <p>Ad uzunluğun gizli kodu da deyil. Müəyyən kotlet və ya ay adı öz-özlüyündə həmin vahidi uzun və ya qısa etmir.</p><hr>
+</section>
+
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>Aylar barədə kiçik bir fakt</h2>
+  <p>47 ay adı var və bir ay ən çox 123-cü günə çata bilər. Buna görə “ay adı + ay daxilində gün nömrəsi” formasında sintaktik baxımdan mümkün cütlərin sayı</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>olur. İlin hər günü məhz bir belə cütü reallaşdırır. İlin uzunluğu <code>L</code> olarsa, məhz <code>L</code> cüt görünür. Çünki</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>hər il ən azı</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre>
+  <p>mümkün cüt istifadə olunmadan qalmalıdır. Ən uzun ilin belə hamısını işlətməyə kifayət qədər günü yoxdur.</p><hr>
+</section>
+
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>Təqvim necə hesablanır?</h2>
+  <p>Daxili hesablamanı burada <strong>sous</strong> adlandırırıq. Onun mərkəzində sadə ədəd</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>dayanır. Proses beş input counter, 7 gizli damcı, 46 görünən damcı, 6 kasa, dəyişən kasa sıraları, 12 son qarışdırma, fərqli cavablar üçün seal, combinatorial selection, qapıların qurulması, illərin seçilməsi, kotletlərin bölünməsi, adların seçilməsi, ayların qurulması və ay günlərinin hörülməsini əhatə edir.</p>
+  <p>Son update-lər <strong>sinxrondur</strong>: hər qarışdırmada altı yeni dəyərin hamısı eyni köhnə state-dən hesablanır və yalnız bundan sonra altı kasa birlikdə dəyişdirilir.</p>
+  <p>12 son qarışdırmada xüsusilə vacib bir canonical detal var. <code>S</code> köhnə altı kasanın cəmidirsə, <code>r</code> isə qarışdırma nömrəsidirsə, sistem</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p>hesablayır. <code>R</code> <strong>saxlanmış cəmdir</strong>. Həm kasa sırasının seçimi, həm də qarışdırmanın daxili update-i xam <code>S</code> deyil, <code>R</code> istifadə edir.</p>
+  <p>Bu update-ə xam cəmi verən köhnə versiyalar artıq mövcud canonical semantics-i təsvir etmir. Köhnə qaydadan alınmış nümunələr yenidən yoxlanana qədər köhnəlmiş sayılmalıdır.</p>
+  <p>Qarışdırmalardan sonra answer ring də görünən 46-cı damcıda lock edilmiş sıranı davam etdirir; bu sıra avtomatik olaraq son qarışdırmanın sırası ilə əvəz olunmamalıdır.</p><hr>
+</section>
+
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice və Wide Choice</h2>
+  <p>Nisbətən kiçik selection space üçün <strong>Short Choice</strong> istifadə edilir. Sadə modulo bias-dan qaçmaq üçün rejection sampling tətbiq olunur.</p>
+  <p>Çox böyük space üçün <strong>Wide Choice</strong> istifadə edilir. Specification-in təmin etmədiyi xüsusiyyətlər ona aid edilməməlidir.</p>
+  <p>Wide Choice, index alınana qədər müstəqil və bərabər paylanmış base-<code>Q</code> rəqəmlərinin yaradılması ilə eyni deyil. Buna görə hər valid choice-un mütləq eyni müsbət ehtimala malik olduğu nəticəsi çıxmır. Kifayət qədər böyük space-də bu mechanism-in heç vaxt çata bilməyəcəyi valid choice-lar ola bilər.</p>
+  <p>Təqvimin özü tam deterministic qalır. “Choice” bir algorithmic stage-in adıdır, istifadə zamanı baş verən random lottery deyil.</p><hr>
+</section>
+
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>Struktur atlas</h2>
+  <p>Buraya qədər təqvim qaydalarından danışdıq. Növbəti rəqəmlər başqa tip məlumatdır: böyük computational sample-dan alınmış <strong>empirik nəticələr</strong>.</p>
+  <p>Atlas engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> əsasında hazırlanıb və 4,096 əməl gününü; hər biri üçün 4990–5010 illərini; 86,016 il strukturunu; 625,437 kotleti; 3,535,422 struktur ayını; 356 milyondan çox fasiləsiz ay segmentini; və eyni ayda <code>n</code>-dən <code>n+1</code>-ə 364 milyondan çox keçidi əhatə edib.</p>
+  <p>Bu rəqəmlər həmin corpus-u təsvir edir, canonical qanunları yox.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Struktur atlasda ölçülmüş məlumatlar">
+    <table class="about-table">
+      <thead><tr><th scope="col">Ölçülən göstərici</th><th scope="col">Nümunədə nəticə</th></tr></thead>
+      <tbody>
+        <tr><td>İlin orta uzunluğu</td><td>4,275.182 gün</td></tr>
+        <tr><td>İl uzunluğunun medianı</td><td>4,343</td></tr>
+        <tr><td>Müşahidə olunan minimum / maksimum</td><td>716 / 5,778</td></tr>
+        <tr><td>İldə orta kotlet sayı</td><td>7.271</td></tr>
+        <tr><td>Dəqiq 6 kotletli illər</td><td>42.00%</td></tr>
+        <tr><td>6–8 kotletli illər</td><td>81.29%</td></tr>
+        <tr><td>Kotletin orta uzunluğu</td><td>587.963 gün</td></tr>
+        <tr><td>Kotlet uzunluğunun medianı</td><td>560</td></tr>
+        <tr><td>İldə orta ay sayı</td><td>41.102</td></tr>
+        <tr><td>Ay sayının medianı</td><td>43</td></tr>
+        <tr><td>47 aylı illər</td><td>15.63%</td></tr>
+        <tr><td>Ən azı 45 aylı illər</td><td>36.81%</td></tr>
+        <tr><td>Struktur ayın orta uzunluğu</td><td>104.014 gün</td></tr>
+        <tr><td>Ay uzunluğunun medianı</td><td>115</td></tr>
+        <tr><td>Ay başına orta fasiləsiz segment sayı</td><td>100.897</td></tr>
+        <tr><td>Birgünlük ay segmentlərinin payı</td><td>97.482%</td></tr>
+        <tr><td>İki qonşu günün eyni ayda olma ehtimalı</td><td>2.9976%</td></tr>
+        <tr><td>Eyni ayın <code>n</code> və <code>n+1</code> günləri arasında başqa aylara aid günlərin orta sayı</td><td>40.408</td></tr>
+        <tr><td>Ayın ilk və son görünüşü arasındakı orta məsafə</td><td>4,266.653 gün</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Praktikada təxminən yüz günlük bir ay demək olar ki, bütün Pastafari ili boyunca səpələnə bilər.</p>
+  <p>Eyni atlas 5000-ci il ətrafında uzunluğun təbii bias-ını da göstərdi. Nümunədə “adi” il orta hesabla təxminən 4,262 gün idi. İlləri daxilindəki günlərin sayına görə weight etdikdə orta təxminən 4,466 günə qalxır; 5000-ci ilin özü isə orta hesabla təxminən 4,499 gün idi.</p>
+  <p>Səbəb sadədir: 5000-ci il əməl gününü daxil etməlidir. Daha uzun ilin əməl gününü ehtiva edən il olmaq üçün daha çox mümkün günü var.</p>
+  <p>Vahidin adı ilə uzunluğu arasındakı əlaqə də nümunədə çox zəif idi. Bu, tam mathematical independence sübut etmir, amma atlas adların uzunluğu encode etmək üçün yaradıldığına dair praktik signal vermir.</p>
+  <p>Bundan əlavə, 86,016 il strukturu əslində 86,016 tam independent sample deyil: başlanğıc və son qapılar arasında cəmi 24,786 fərqli interval var. Bir-birinə yaxın əməl günləri eyni year interval-ı seçib yenə də fərqli daxili structure yarada bilər.</p>
+  <p>Buna görə atlas implementation-un ölçülmüş davranışını yaxşı təsvir edir, amma bütün mümkün calendar structure-lar barədə probability theorem kimi işlədilməməlidir.</p><hr>
+</section>
+
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>Ad günləri və ildönümləri</h2>
+  <p>“Hər il eyni gün” ifadəsinin burada əvvəlcə mənası müəyyən edilməlidir. Təbii recurrence coordinate-lər <code>(ayın adı, ay daxilində gün)</code> və <code>(kotletin adı, kotlet daxilində gün)</code>-dür; şərtləri birləşdirmək də olar.</p>
+  <p>Buna görə Pastafari ad günü sadəcə <code>RRULE:FREQ=YEARLY</code> deyil. Seçilmiş recurrence condition-a uyğun gələn növbəti il tapılmalıdır və ilkin hadisə avtomatik olaraq özünün “növbəti görünüşü” sayılmır.</p>
+  <p>Sadəcə göstərim məqsədilə əməl gününü dəyişmək şəxsin kimliyini, doğum anını və ya yaşını dəyişməməlidir.</p>
+  <p>4,096 self-referential date üzrə exact scan-da hər növbəti Pastafari ili hər iki istiqamətdə 250,000 ilə qədər yoxlanıb:</p>
+  <ul>
+    <li><code>(ayın adı, ay daxilində gün)</code> üçün ilk qayıdışın medianı 1 Pastafari ili olub; 77.56% qonşu ildə, 93.77% iki il ərzində, 99.44% beş il ərzində qayıdıb; müşahidə olunan maksimum 21 il olub.</li>
+    <li><code>(kotletin adı, kotlet daxilində gün)</code> üçün median 3 il olub; 88.89% 10 il ərzində tapılıb, amma distribution-un heavy tail hissəsi çox ağırdır və müşahidə olunan maksimum 51,954 Pastafari ilinə çatıb.</li>
+  </ul>
+  <p>Bunlar <strong>yoxlanmış corpus-un empirik nəticələridir</strong>; hər mümkün ildönümünün mütləq qayıdacağını sübut etmir və maximum waiting time üçün guarantee vermir.</p><hr>
+</section>
+
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>Görüşü necə təyin etmək olar?</h2>
+  <p>İki nəfər yalnız Pastafari tarixi ilə razılaşmaq istəyirsə, heç olmasa tarixin beş sahəsi və hesablamada istifadə olunan əməl günü barədə razılaşmalıdır. Əməl gününü “bu gün” sözü kimi deyil, sabit day identity kimi saxlamaq daha düzgündür; əks halda iki nəfər iki fərqli təqvim hesablaya bilər.</p>
+  <ul>
+    <li>“sabah” növbəti xronoloji gündür;</li>
+    <li>“ayın növbəti günü” həmin ayın növbəti görünüşüdür;</li>
+    <li>“ayın sonu” həmin ayın son görünüşüdür;</li>
+    <li>“bütün ay” həmin aya aid günlərin set-i və ya ilk görünüşdən son görünüşə qədər bütün xronoloji span ola bilər;</li>
+    <li>“növbəti il” seçilmiş əməl günü altında qurulan təqvimin növbəti ilidir.</li>
+  </ul>
+  <p>Xüsusilə vacib görüş üçün absolute chronological day və ya moment də saxlamaq olar. Təqvim inciməz.</p><hr>
+</section>
+
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>Səyahət, hadisələr və all-day</h2>
+  <p>Hadisə ilə ona göstərilən yerli etiket eyni şey deyil. Müəyyən vaxtlı hadisə sabit chronological moment-a bağlanmalıdır. Səyahət onu zaman daxilində hərəkət etdirmir, amma eyni physical moment üçün göstərilən yerli Pastafari tarixi dəyişə bilər, çünki “yerli gün” anlayışı yerə bağlıdır.</p>
+  <p><strong>All-day</strong> hadisədə fərq daha da böyükdür. Mülki tam-günlük hadisə adətən gecəyarısından növbəti gecəyarısına qədər davam edir; Pastafari tam-günlük hadisəsi isə yerli Pastafari gün sərhədindən növbəti sərhədə qədər davam etməlidir. Adətən bunlar eyni moment-lar deyil.</p>
+  <p>Buna görə Pastafari hadisəsini düşünmədən mülki “tam gün” hadisəsi kimi export etmək onun mənasını dəyişə bilər. Mənanı dəqiq qorumaq üçün chronological anchor və uyğun location/day-boundary context saxlanmalıdır, təkcə <code>all-day</code> flag yox.</p><hr>
+</section>
+
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>Gün nə vaxt dəyişir?</h2>
+  <p>Yerli Pastafari günü gecəyarısında dəyişmir. Onun sərhədini <strong>Veneranın mərkəzinin yerli meridiandan topocentric lower meridian transit-i</strong> müəyyən edir.</p>
+  <p>Yəni bu, yerə bağlı yerli astronomik hadisədir. Transit 00:00-da baş verməli deyil, mülki time zone onu müəyyən etmir, daylight saving time başlayıb bitdiyi üçün avtomatik yerini dəyişmir və Veneranın çılpaq gözlə görünməsi tələb olunmur.</p>
+  <p>Eyni physical moment iki yerdə onların yerli gün sərhədlərinin fərqli tərəflərində qala bilər. Sistemdə istifadə edilə bilən user location yoxdursa, məhsulun default fallback location-u <strong>Kisurra</strong>-dır.</p><hr>
+</section>
+
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>Çap edilmiş təqvim və əl ilə hesablama</h2>
+  <p>Pastafari təqvimini çap etmək olar; sadəcə onun hansı əməl günü üçün hesablandığını qeyd etmək lazımdır. Belə təqvim zamanı həmin günün baxış bucağından göstərir; əməl günü dəyişəndə yeni təqvim lazım ola bilər. Deməli, printer hələ işsiz qalmır.</p>
+  <p>Specification tam və deterministic olduğuna görə hər şeyi əl ilə də hesablamaq olar: input counter-ları hesablayın, 7 gizli və 46 görünən damcını işlədin, altı kasanı update edin, 12 son qarışdırmanı yerinə yetirin, cavabları çıxarın, qapıları qurun, illəri və kotletləri seçin, combinatorial selection edin, adları seçin və sonra ayları hörün.</p>
+  <p>Əvəzində fevralın nə vaxt 28, nə vaxt 29 gün olduğunu yadda saxlamağa ehtiyac yoxdur.</p><hr>
+</section>
+
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>Bəs Seer nədir?</h2>
+  <p>Canonical implementation ilə yanaşı <strong>Pastafarian Calendar Seer</strong> adlı sürətli engine də var. Seer səlahiyyət mənbəyi deyil: düzgün tarixi Megillah və canonical calculation müəyyən edir. Seer onlarla uyğun gəlmirsə, səhv Seer-dədir.</p>
+  <p>Onun işi eyni query-ləri sürətlə yerinə yetirmək və nəticəni məhsullara asanlıqla integrate edilə bilən formada qaytarmaqdır.</p>
+  <p>Bu səhifə redaktə edilərkən aparılmış birbaşa verification zamanı Seer, başqa imkanlarla yanaşı, date və “now” query, batch, day range, Pastafari tarixindən target day-ə reverse conversion, year structure retrieval, active working day determination, Node API, browser/HTTP client, CLI, HTTP v1 service, OpenAPI 3.1 contract, native implementations və distribution package-ları, eləcə də verified container deployment-i əhatə edirdi.</p>
+  <p>Seer-in public API-si yoxdur barədə köhnə iddia artıq doğru deyil. İndi date, range, batch, year, reverse, əməl günü, metadata, locales və status endpoint-ləri olan aydın və sabit HTTP v1 contract var.</p>
+  <p>2026-cı il sentyabrın 21-də Render-də public HTTPS deployment real olaraq sınaqdan keçirildi: live service-də exact query-lər, böyük range, restart, cold wake və load altındakı davranış yoxlandı.</p>
+  <p>Bununla belə, project documentation hələ də public beta/evaluation deployment ilə SLA-li sabit hosted production service arasında fərq qoyur. Buna görə conceptual explanation page server address, hosting provider və ya version number-u təqvimin öz hissəsi kimi freeze etməməlidir.</p>
+  <p>Seer precomputation, xüsusi representation, SIMD, algebra və başqa shortcut-lardan istifadə edə bilər. Eyni semantic operation-u yerinə yetirib eyni cavabı qaytarırsa, canonical implementation-un bütün computational history-sini addım-addım təkrarlamalı deyil.</p>
+  <p>Optimization alternativ səlahiyyət deyil.</p><hr>
+</section>
+
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>Mənşə, Təməl Günü və Lövhələr Günü</h2>
+  <p>Burada canonical time anchor-ları saytın hekayəsindən aydın şəkildə ayırmaq xüsusilə vacibdir.</p>
+
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>İstinad nöqtələri</h3>
+    <p>Sistemdə <strong>Təməl Günü</strong> adlı bir sabit reference day var. Proleptic Gregorian calendar-da bu, <strong>e.ə. 41,222-ci il dekabrın 22-si</strong>dir.</p>
+    <p>Təməl Günü “zamanın başlanğıcı” deyil; o, computational anchor-dır.</p>
+    <p>Onun ətrafındakı günlərin numbering-i müsbət tək/cüt ədədlərdən istifadə edir: Təməl Günü=1; sonrakı günlər=3, 5, …; keçmişə doğru əvvəlki gün=2, sonra 4, 6, … . Beləcə anchor-un hər iki tərəfi bu counter-də mənfi day number olmadan encode edilir.</p>
+    <p>İkinci anchor <strong>Lövhələr Günü</strong>dür: <strong>proleptic Julian calendar-da e.ə. 763-cü il iyunun 15-i</strong>, yəni <strong>proleptic Gregorian calendar-da e.ə. 763-cü il iyunun 7-si</strong>.</p>
+    <p>Təməl Günündən Lövhələr Gününə qədər dəqiq məsafə</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
+    <p>gündür.</p>
+    <p>Bunlar zaman xəttində sabit anchor-lardır, amma onlar üçün göstərilən Pastafari tarixi yenə də hansı əməl günündən soruşulduğuna bağlıdır.</p>
+  </section>
+
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>Saytın hekayəsi</h3>
+    <p>Saytın editorial story-sində təqvim yaradılışın bir hissəsi və insanlığın onu tam anlamadan istifadə etdiyi, sonradan müasir dövrdə yenidən təqdim edilmiş bir sistem kimi təsvir olunur.</p>
+    <p>Bu, saytın hekayəsidir; oradakı hər narrative detail Megillah-ın açıq technical claim-i kimi təqdim edilməməlidir.</p>
+    <p>Yenidən təqdim edilmə hadisəsinin özü sabit tarixi hadisədir. Onun <strong>Pastafari tarixini</strong> bir tarix kimi həmişəlik freeze etməkdənsə, cari əməl günü altında dynamic göstərmək daha düzgündür.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>İrəli səviyyə istifadəçilər üçün: reverse conversion</h2>
+  <p>Əməl günü <code>c</code> məlumdursa, reverse conversion çox sərt məhdudlaşır. Məlum Pastafari ili daxilində</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{kotletin adı},\text{kotlet daxilində gün})</code></pre>
+  <p>ən çox bir günü müəyyən edir. Eyni qayda</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{ayın adı},\text{ay daxilində gün})</code></pre>
+  <p>üçün də keçərlidir. Buna görə məlum əməl günü ilə tam tarix target day-i birmənalı müəyyən edir.</p>
+
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Reverse conversion zamanı candidate sayının yuxarı hədləri">
+    <table class="about-table">
+      <thead><tr><th scope="col">Məlum əlavə məlumat</th><th scope="col">Maksimum candidate sayı</th></tr></thead>
+      <tbody>
+        <tr><td>İldən başqa heç bir sahə məlum deyil</td><td>5,778</td></tr>
+        <tr><td>Yalnız kotletin adı</td><td>5,568</td></tr>
+        <tr><td>Yalnız kotlet daxilində gün</td><td>17</td></tr>
+        <tr><td>Yalnız ayın adı</td><td>123</td></tr>
+        <tr><td>Yalnız ay daxilində gün</td><td>47</td></tr>
+        <tr><td>Kotletin adı + kotlet daxilində gün</td><td>1</td></tr>
+        <tr><td>Ayın adı + ay daxilində gün</td><td>1</td></tr>
+        <tr><td>İldən başqa istənilən üç sahə</td><td>1</td></tr>
+        <tr><td>İldən başqa bütün dörd sahə</td><td>1</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Əməl günü məlum deyilsə, vəziyyət fərqlidir. Eyni beş dəyər müxtəlif əməl günləri altında görünə bilər və eyni tam tarixin <code>c</code>-dən müxtəlif məsafələrdə göründüyü exact example-lar mövcuddur.</p>
+  <p>5000-ci ildə hətta həmin məsafənin sign-ı da beş dəyərlə həmişə müəyyən edilmir: eyni tam tarix bir context-də əməl günündən əvvəl, başqa context-də sonra ola bilər.</p>
+  <p>Buna görə hansı <code>c</code> altında hesablandığı bilinmirsə, tam Pastafari tarixi zaman xəttində absolute address deyil.</p>
+
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>Çox uzaq zamandakı struktur</h3>
+    <p>Specification-dan çıxarılan mathematical research dəqiq asymptotic structure də tapıb. <strong>Sabit əməl günü</strong> <code>c</code> üçün keçmişin tail hissəsində kifayət qədər uzaqda affine periodicity yaranır.</p>
+    <p>Əgər</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>olarsa, eyni <code>c</code> üçün shift <code>H_c</code>, year change <code>p_c</code> və kifayət qədər uzaq threshold mövcuddur; ondan sonra</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>ildən başqa dörd sahə təkrarlanır, il nömrəsi isə sabit kəmiyyət qədər dəyişir.</p>
+    <p>Bu, sabit <code>c</code> üçün nəticədir; buradan qlobal</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>münasibəti çıxmır. Müxtəlif əməl günləri üçün son asymptotic slope-ların doğrudan da fərqli olub-olmadığı hələ açıq sualdır.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>İrəli səviyyə istifadəçilər üçün: sous nə qədər tarix saxlayır?</h2>
+  <p>Sous çox aqressiv mixing mechanism kimi görünür, amma algebraic research göstərir ki, o, zahiri görünüşün düşündürdüyündən xeyli çox məlumat saxlayır. Bu, specification-dan çıxarılan research result-dır, yeni calendar rule deyil.</p>
+  <p>Görünən 3–46 stage-lərdə, uyğun asymptotic branch-də generic injectivity müəyyən edilib: generic case-də state uyğun input history-ni və kasa sırasını bərpa etmək üçün kifayət qədər məlumat saxlayır.</p>
+  <p>12 son qarışdırmada da məlumat dərhal itmır. Görünən 46-cı damcıdan sonrakı ilk beş qarışdırma üçün uyğun canonical union-da əlavə side information olmadan generic invertibility müəyyən edilib; qalan hissə üçün reconstruction-a kifayət edən side information miqdarının güclü constructive upper bound-ları məlumdur.</p>
+  <p><strong>Yalnız son altı kasa</strong> generic sense-də həmişə kifayət edirmi — bu sual hələ açıqdır.</p>
+  <p>Bəzi nəticələr symbolic şəkildə sübut olunub, digərləri finite exact arithmetic check ilə bağlanıb. Symbolic strengthening etibar edilməli computational core-u xeyli kiçildib, amma tam aradan qaldırmayıb.</p>
+  <p>Əvvəlcə nəhəng sayda path axtarışı tələb edirmiş kimi görünən space-lər xeyli kiçik finite structure-lara, o cümlədən 180 və 9 state-li automata-lara və altı kasanın symmetry-sinə qədər azaldılıb.</p>
+  <p>Qarışdırmanın altında sərt algebraic structure var. Bu günün tarixini bilmək üçün onu bilmək lazım deyil.</p><hr>
+</section>
+
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>Beləliklə, Pastafari təqvimi əslində nədir?</h2>
+  <p>Bu, tarixin sadəcə target day-in function-u deyil, <strong>əməl günü ilə soruşulan günün birgə function-u</strong> olduğu deterministic calendar-dır.</p>
+  <p>Hər tarixdə dəqiq beş field var. İndiki an öz baxış bucağından həmişə 5000-ci ildədir, amma 5000-ci il özü əməl günü ilə birlikdə hərəkət edir. İllər çox uzun ola bilər, kotletlər fasiləsizdir, aylar mütləq deyil və canonical week system yoxdur.</p>
+  <p>Ayın <code>n+1</code>-ci günü mütləq sabah deyil. Eyni chronological day sabah başqa Pastafari label ala bilər. Eyni physical moment iki yerdə iki fərqli local Pastafari day-ə aid ola bilər. All-day event gecəyarısından gecəyarısına davam etməli deyil. Annual birthday isə əvvəlcə search problem, sonra calendar problem-dir.</p>
+  <p>Amma əməl günü ilə soruşulan gün məlumdursa, ambiguity yoxdur: düzgün cavab yalnız birdir.</p>
+  <p>Nəticədə təqvimdən bundan artıq heç nə tələb olunmur.</p>
+</section>
