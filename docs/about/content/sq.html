@@ -1,0 +1,331 @@
+<!-- Versioni shqip është shkruar drejtpërdrejt nga semantic master në hebraisht; pa gjuhë ndërmjetëse. -->
+<!-- ID-të e seksioneve janë pjesë e një kontrate publike të qëndrueshme deep-link; ato nuk nxirren nga titujt e përkthyer. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>Në rrëfimin e kësaj faqeje, Kalendari Pastafarian paraqitet si kalendari brenda të cilit u krijua vetë koha. Megjithatë, mënyra si funksionon përcaktohet me rregulla të rrepta dhe të sakta.</p>
+  <p>Ky kalendar nuk i ngjit çdo dite një “etiketë” të vetme dhe të pandryshueshme pastafariane. Për të marrë një datë duhen dy ditë: <strong>dita e veprimit</strong>, nga e cila nis llogaritja, dhe <strong>dita e pyetur</strong>, për të cilën kërkohet data pastafariane.</p>
+  <p>Nëse ditën e veprimit e shënojmë me <code>c</code> dhe ditën e pyetur me <code>t</code>, data është</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>dhe jo <code>F(t)</code>. Prandaj e njëjta ditë e pyetur mund të ketë një datë tjetër pastafariane kur ndryshon dita e veprimit.</p>
+  <p>Kjo nuk është gabim. Kalendari është përcaktuar pikërisht kështu.</p><hr>
+</div>
+
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>Nga çfarë përbëhet një datë pastafariane?</h2>
+  <p>Ajo ka <strong>saktësisht pesë pjesë</strong>: numrin e vitit, emrin e kotletës, ditën brenda kotletës, emrin e muajit dhe ditën brenda muajit.</p>
+  <p>Shembull i përgjithshëm: <strong>viti 5000, kotleta A, dita 417 e kotletës, muaji B, dita 83 e muajit.</strong></p>
+  <p>Dita e veprimit, vendndodhja e vëzhguesit, identiteti kronologjik i ditës ose të dhëna të tjera teknike mund të shfaqen pranë datës, por nuk janë një fushë e gjashtë e saj.</p><hr>
+</section>
+
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>Pse nevojitet dita e veprimit?</h2>
+  <p>Në kalendarët e zakonshëm është e natyrshme të mendohet se data “i përket” vetë ditës. Në Kalendarin Pastafarian, data varet nga marrëdhënia mes dy ditëve.</p>
+  <p>Ndryshimi i <code>t</code> do të thotë se po pyesim për një ditë tjetër. Ndryshimi i <code>c</code> ka pasoja shumë më të thella: mund të ndryshojnë kufijtë e viteve, kotletat, muajt, emrat e tyre dhe mënyra si muajt ndërthuren me njëri-tjetrin.</p>
+  <p>Prandaj një almanak i llogaritur sot nuk është domosdoshmërisht i saktë nesër. Kjo shmang edhe situatën e pakëndshme ku një kalendar i shtypur mbetet i dobishëm për gjithë vitin.</p><hr>
+</section>
+
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>E njëjta ditë, datë tjetër</h2>
+  <p>Duhet dalluar <strong>identiteti i ditës</strong> nga <strong>paraqitja e saj pastafariane</strong>. I pari është vendi i qëndrueshëm i një dite konkrete në vijën kohore; e dyta është bashkësia e pesë vlerave që merret kur ajo ditë paraqitet nën një ditë të caktuar veprimi.</p>
+  <p>Në produkt dhe në API, të parin mund ta mendojmë si <code>day-id</code>: një identitet kronologjik që nuk ndryshon kur ndryshon paraqitja. Ndërsa</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre>
+  <p>dhe</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>nuk janë domosdoshmërisht të barabarta.</p>
+  <p>Kështu, ndryshimi manual i ditës së veprimit mund ta ndryshojë datën pastafariane të shfaqur për të njëjtën ditë, pa e lëvizur vetë ditën askund në vijën kohore.</p>
+  <p>I njëjti parim vlen edhe për ngjarjet. Një takim, lindje ose ngjarje historike duhet të lidhet me një identitet kronologjik të qëndrueshëm; data e saj pastafariane mund të rillogaritet sipas kontekstit të paraqitjes.</p>
+  <p>Etiketa mund të ndryshojë. Ngjarja jo.</p><hr>
+</section>
+
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>Viti 5000</h2>
+  <p>Kur dita e veprimit dhe dita e pyetur janë e njëjta ditë,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>numri i vitit është gjithmonë</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>Me fjalë të tjera, e tashmja, parë nga vetvetja, gjendet gjithmonë brenda vitit 5000. Por viti 5000 nuk është një periudhë historike fikse; ai zgjidhet rishtas çdo herë në raport me ditën e veprimit.</p>
+  <p>Vetë dita e veprimit ndodhet gjithashtu në vitin 5000, ashtu si edhe ditë të tjera të të njëjtit vit të zgjedhur. Prandaj <strong>vetëm fakti që një ditë është në vitin 5000 nuk provon se <code>t=c</code>.</strong></p>
+  <p>Megjithatë, numri i vitit tregon drejtimin:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre>
+  <p>dhe</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p>Ekziston edhe <strong>viti 0</strong>; më tej në të kaluarën ka vite me numra negativë.</p><hr>
+</section>
+
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>Vitet dhe portat</h2>
+  <p>Një vit pastafarian mund të ketë</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ deri në }5778</code></pre>
+  <p>ditë. Këta janë kufij canonical të sistemit, jo mesatare empirike.</p>
+  <p>Prandaj një vit mund të jetë më i shkurtër se viti diellor ose më i gjatë se pesëmbëdhjetë vite diellore. Kufijtë e viteve ndërtohen nga sistemi i <strong>portave</strong>; edhe kufijtë e kotletave vijnë nga i njëjti sistem.</p>
+  <p>Fundi i vitit nuk ka pse të përkojë me stinën, me një rrotullim të Tokës rreth Diellit, me një cikël hënor apo me dëshirën praktike që viti më në fund të mbarojë.</p><hr>
+</section>
+
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>Kotletat</h2>
+  <p>Çdo vit ndahet në <strong>6 deri në 17 kotleta</strong>. Kotleta është një segment kohe kronologjikisht i pandërprerë.</p>
+  <p>Nëse sot është dita 250 e një kotlete, nesër do të jetë dita 251 e po asaj kotlete, përveçse nëse sot është dita e saj e fundit. Kufijtë e kotletës janë porta dhe një kotletë zgjat të paktën</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
+  <p>ditë.</p>
+  <p>Sistemi ka 17 emra canonical të kotletave dhe i njëjti emër nuk përsëritet brenda të njëjtit vit. Emri nuk përcakton as gjatësinë dhe as pozicionin e kotletës.</p><hr>
+</section>
+
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>Muajt dhe ndërthurja</h2>
+  <p>Çdo vit ka</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ deri në }47</code></pre>
+  <p>muaj strukturorë dhe secilit muaj i caktohen</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ deri në }123</code></pre>
+  <p>ditë.</p>
+  <p>Por një muaj pastafarian <strong>nuk ka pse të jetë një interval i pandërprerë kohe</strong>. Për shembull, rendi kronologjik mund të jetë:</p>
+  <blockquote><p>Muaji A — dita 14<br>Muaji B — dita 9<br>Muaji A — dita 15</p></blockquote>
+  <p>Kjo është plotësisht e vlefshme. Dita 15 e muajit A është dita e ardhshme <strong>e atij muaji</strong>, edhe nëse në mes qëndron një ditë e një muaji tjetër.</p>
+  <p>Pra “dita brenda muajit” nuk është numri i ditëve kronologjike që kanë kaluar që nga paraqitja e parë e muajit. Është rendi i ditëve që i janë caktuar atij muaji brenda vitit. Dita 48 do të thotë dita e 48-të që i përket atij muaji, jo 47 ditë pas paraqitjes së parë.</p><hr>
+</section>
+
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>Muajt ndërthuren me njëri-tjetrin</h2>
+  <p>Muajt mund të mendohen si fije që kalojnë përgjatë vitit. Çdo ditë i përket saktësisht një muaji; nesër mund t’i përkasë një muaji tjetër, e më vonë muaji i parë mund të rikthehet dhe të vazhdojë me numrin e tij vijues.</p>
+  <p>Kjo ndërthurje ka rregulla, përfshirë kufizime mbi rendin e paraqitjeve të para dhe të fundit të muajve. Por nuk ka kërkesë që një muaj të përfundojë para se të nisë një tjetër.</p>
+  <ul>
+    <li>Kotleta mat pozicionin brenda një segmenti kohe të pandërprerë.</li>
+    <li>Muaji shënon përkatësinë në një fije strukturore që mund të zhduket dhe të shfaqet sërish.</li>
+  </ul>
+  <p>Një muaj mund të kalojë nëpër disa kotleta, dhe brenda një kotlete mund të shfaqen disa muaj. Fillimet dhe mbarimet e dy sistemeve nuk kanë pse të përputhen.</p><hr>
+</section>
+
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>Dita e ardhshme e muajit nuk është domosdoshmërisht nesër</h2>
+  <p>Nëse sot është dita 17 e një muaji, dita 18 e po atij muaji është <strong>paraqitja e tij e ardhshme</strong>. Mund të jetë nesër ose shumë më vonë.</p>
+  <p><strong>Nesër</strong> është dita e ardhshme kronologjike; <strong>dita e ardhshme e muajit</strong> është paraqitja e ardhshme e po atij muaji.</p>
+  <p>Po kështu, “fundi i muajit” nuk do të thotë se fundi është kronologjikisht afër. Një muaj me 120 ditë mund të jetë sot në ditën 119 dhe dita 120 të vijë shumë më vonë në të njëjtin vit.</p><hr>
+</section>
+
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>Nuk ka javë</h2>
+  <p>Specifikimi canonical aktual <strong>nuk përcakton një sistem javësh</strong>. Nuk ka njësi canonical shtatëditore, nuk ka emra pastafarianë për ditët e javës dhe nuk ka rregull që dy ditë t’i bëjë “të njëjtën ditë të javës”.</p>
+  <p>Sigurisht, një sistem civil javësh mund të vendoset nga jashtë; thjesht nuk është pjesë e datës pastafariane.</p><hr>
+</section>
+
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>Emrat</h2>
+  <p>Ka 17 emra canonical kotletash dhe 47 emra canonical muajsh. Brenda një viti, çdo emër shfaqet në grupin e vet jo më shumë se një herë.</p>
+  <p>Identiteti i emrit është canonical dhe semantik; nuk është rezultat votimi mes drejtshkrimeve, përkthimeve ose implementation-eve të ndryshme. Për kuptimin e emrave, Megillah në hebraisht ka autoritetin më të lartë; përkthimet dhe transliterimet janë vetëm shtresa paraqitjeje.</p>
+  <p>Emri nuk është as kod i fshehur i gjatësisë. Emri i një kotlete ose muaji të caktuar nuk e bën vetvetiu njësinë më të gjatë apo më të shkurtër.</p><hr>
+</section>
+
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>Një fakt i vogël për muajt</h2>
+  <p>Ka 47 emra muajsh dhe një muaj mund të arrijë deri te dita 123. Prandaj numri i çifteve sintaksisht të mundshme të formës “emri i muajit + numri i ditës në muaj” është</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>Çdo ditë e vitit realizon saktësisht një çift të tillë. Nëse gjatësia e vitit është <code>L</code>, shfaqen saktësisht <code>L</code> çifte. Meqë</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>çdo vit duhet të lërë të papërdorura të paktën</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre>
+  <p>çifte të mundshme. Edhe viti më i gjatë nuk ka mjaft ditë për t’i përdorur të gjitha.</p><hr>
+</section>
+
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>Si llogaritet kalendari?</h2>
+  <p>Llogaritjen e brendshme këtu e quajmë <strong>salcë</strong>. Në qendër të saj është numri i thjeshtë</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>Procesi përfshin pesë input counter, 7 pika të fshehura, 46 pika të dukshme, 6 tasa, rende të ndryshueshme të tasave, 12 përzierje përfundimtare, seal për përgjigje të ndryshme, combinatorial selection, ndërtimin e portave, zgjedhjen e viteve, ndarjen e kotletave, zgjedhjen e emrave, ndërtimin e muajve dhe ndërthurjen e ditëve të muajit.</p>
+  <p>Update-et përfundimtare janë <strong>sinkrone</strong>: në çdo përzierje, të gjashtë vlerat e reja llogariten nga e njëjta gjendje e vjetër dhe vetëm pastaj ndryshohen së bashku të gjashtë tasat.</p>
+  <p>Në 12 përzierjet përfundimtare ka një hollësi canonical veçanërisht të rëndësishme. Nëse <code>S</code> është shuma e gjashtë tasave të vjetër dhe <code>r</code> është numri i përzierjes, sistemi llogarit</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p><code>R</code> është <strong>shuma e ruajtur</strong>. Si zgjedhja e rendit të tasave, ashtu edhe update-i i brendshëm i përzierjes përdorin <code>R</code>, jo shumën e papërpunuar <code>S</code>.</p>
+  <p>Versionet e vjetra që furnizonin shumën e papërpunuar në këtë update nuk përshkruajnë më semantikën canonical aktuale. Shembujt e nxjerrë nga rregulli i vjetër duhet të trajtohen si të vjetruar derisa të riverifikohen.</p>
+  <p>Pas përzierjeve, answer ring vazhdon gjithashtu rendin e kyçur në pikën e dukshme 46; ky rend nuk duhet zëvendësuar automatikisht me rendin e përzierjes së fundit.</p><hr>
+</section>
+
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice dhe Wide Choice</h2>
+  <p>Për hapësira relativisht të vogla zgjedhjeje përdoret <strong>Short Choice</strong>. Ai përdor rejection sampling për të shmangur modulo bias të thjeshtë.</p>
+  <p>Për hapësira shumë të mëdha përdoret <strong>Wide Choice</strong>. Nuk duhet t’i atribuohen veti që specifikimi nuk i garanton.</p>
+  <p>Wide Choice nuk është e barasvlershme me prodhimin e shifrave base-<code>Q</code> të pavarura dhe të shpërndara njëtrajtshëm derisa të merret një index. Prandaj nuk del përfundimi se çdo choice i vlefshëm ka domosdoshmërisht të njëjtën probabilitet pozitiv. Në hapësira mjaft të mëdha mund të ketë choice të vlefshme që ky mechanism nuk i arrin kurrë.</p>
+  <p>Vetë kalendari mbetet plotësisht deterministic. “Choice” është emri i një faze algoritmike, jo një short random gjatë përdorimit.</p><hr>
+</section>
+
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>Atlasi strukturor</h2>
+  <p>Deri këtu folëm për rregullat e kalendarit. Numrat vijues janë një lloj tjetër informacioni: <strong>rezultate empirike</strong> nga një mostër e madhe llogaritëse.</p>
+  <p>Atlasi u ndërtua me engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> dhe përfshiu 4,096 ditë veprimi; vitet 4990–5010 për secilën; 86,016 struktura viti; 625,437 kotleta; 3,535,422 muaj strukturorë; mbi 356 milionë segmente të pandërprera mujore; dhe mbi 364 milionë kalime nga dita <code>n</code> në ditën <code>n+1</code> të të njëjtit muaj.</p>
+  <p>Këta numra përshkruajnë atë corpus, jo ligje canonical.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Të dhëna të matura në atlasin strukturor">
+    <table class="about-table">
+      <thead><tr><th scope="col">Madhësia e matur</th><th scope="col">Rezultati në mostër</th></tr></thead>
+      <tbody>
+        <tr><td>Gjatësia mesatare e vitit</td><td>4,275.182 ditë</td></tr>
+        <tr><td>Mediana e gjatësisë së vitit</td><td>4,343</td></tr>
+        <tr><td>Minimumi / maksimumi i vëzhguar</td><td>716 / 5,778</td></tr>
+        <tr><td>Numri mesatar i kotletave për vit</td><td>7.271</td></tr>
+        <tr><td>Vite me saktësisht 6 kotleta</td><td>42.00%</td></tr>
+        <tr><td>Vite me 6–8 kotleta</td><td>81.29%</td></tr>
+        <tr><td>Gjatësia mesatare e kotletës</td><td>587.963 ditë</td></tr>
+        <tr><td>Mediana e gjatësisë së kotletës</td><td>560</td></tr>
+        <tr><td>Numri mesatar i muajve për vit</td><td>41.102</td></tr>
+        <tr><td>Mediana e numrit të muajve</td><td>43</td></tr>
+        <tr><td>Vite me 47 muaj</td><td>15.63%</td></tr>
+        <tr><td>Vite me të paktën 45 muaj</td><td>36.81%</td></tr>
+        <tr><td>Gjatësia mesatare e muajit strukturor</td><td>104.014 ditë</td></tr>
+        <tr><td>Mediana e gjatësisë së muajit</td><td>115</td></tr>
+        <tr><td>Numri mesatar i segmenteve të pandërprera për muaj</td><td>100.897</td></tr>
+        <tr><td>Pjesa e segmenteve mujore njëditore</td><td>97.482%</td></tr>
+        <tr><td>Probabiliteti që dy ditë fqinje të jenë në të njëjtin muaj</td><td>2.9976%</td></tr>
+        <tr><td>Numri mesatar i ditëve të muajve të tjerë mes <code>n</code> dhe <code>n+1</code> të të njëjtit muaj</td><td>40.408</td></tr>
+        <tr><td>Hapësira mesatare mes paraqitjes së parë dhe të fundit të muajit</td><td>4,266.653 ditë</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Në praktikë, një muaj prej rreth njëqind ditësh mund të jetë i shpërndarë pothuajse në gjithë vitin pastafarian.</p>
+  <p>I njëjti atlas tregoi edhe një prirje natyrore të gjatësisë rreth vitit 5000. Në mostër, një vit “i zakonshëm” ishte mesatarisht rreth 4,262 ditë. Kur vitet peshohen sipas numrit të ditëve që përmbajnë, mesatarja rritet në rreth 4,466 ditë; vetë viti 5000 ishte mesatarisht rreth 4,499 ditë.</p>
+  <p>Arsyeja është e thjeshtë: viti 5000 duhet të përmbajë ditën e veprimit. Një vit më i gjatë ka më shumë ditë në të cilat mund të jetë viti që përmban ditën e veprimit.</p>
+  <p>Edhe lidhja mes emrit të njësisë dhe gjatësisë së saj ishte shumë e dobët në mostër. Kjo nuk provon pavarësi matematikore të plotë, por atlasi nuk jep ndonjë sinjal praktik se emrat janë ndërtuar për të koduar gjatësinë.</p>
+  <p>Për më tepër, 86,016 strukturat e viteve nuk janë 86,016 mostra plotësisht të pavarura: midis portës fillestare dhe asaj përfundimtare ka vetëm 24,786 intervale të ndryshme. Ditë veprimi pranë njëra-tjetrës mund të zgjedhin të njëjtin interval viti dhe megjithatë të prodhojnë struktura të brendshme të ndryshme.</p>
+  <p>Prandaj atlasi përshkruan mirë sjelljen e matur të implementation-it, por nuk duhet kthyer në teoremë probabiliteti për të gjitha strukturat e mundshme kalendarike.</p><hr>
+</section>
+
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>Ditëlindjet dhe përvjetorët</h2>
+  <p>Këtu shprehja “e njëjta ditë çdo vit” duhet së pari të përkufizohet. Koordinatat natyrore të recurrence janë <code>(emri i muajit, dita në muaj)</code> dhe <code>(emri i kotletës, dita në kotletë)</code>; kushtet mund edhe të kombinohen.</p>
+  <p>Prandaj një ditëlindje pastafariane nuk është thjesht <code>RRULE:FREQ=YEARLY</code>. Duhet gjetur viti i ardhshëm që plotëson kushtin e zgjedhur të recurrence, dhe ngjarja fillestare nuk llogaritet automatikisht si “paraqitja e ardhshme” e vetvetes.</p>
+  <p>Ndryshimi i ditës së veprimit vetëm për paraqitje nuk duhet të ndryshojë identitetin e personit, çastin e lindjes apo moshën.</p>
+  <p>Në një skanim exact të 4,096 datave self-referential, çdo vit i ardhshëm pastafarian u kontrollua deri në 250,000 vite në secilin drejtim:</p>
+  <ul>
+    <li>Për <code>(emri i muajit, dita në muaj)</code>, mediana e rikthimit të parë ishte 1 vit pastafarian; 77.56% u kthyen në vitin fqinj, 93.77% brenda dy viteve, 99.44% brenda pesë viteve; maksimumi i vëzhguar ishte 21 vite.</li>
+    <li>Për <code>(emri i kotletës, dita në kotletë)</code>, mediana ishte 3 vite; 88.89% u gjetën brenda 10 viteve, por distribution ka një heavy tail shumë të rëndë, dhe maksimumi i vëzhguar arriti 51,954 vite pastafariane.</li>
+  </ul>
+  <p>Këto janë <strong>rezultate empirike të corpus-it të kontrolluar</strong>; nuk provojnë se çdo përvjetor i mundshëm do të rikthehet patjetër dhe nuk japin një guarantee për kohën maksimale të pritjes.</p><hr>
+</section>
+
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>Si caktohet një takim?</h2>
+  <p>Nëse dy persona duan të bien dakord vetëm përmes një date pastafariane, duhet të bien dakord të paktën për pesë fushat e datës dhe për ditën e veprimit të përdorur në llogaritje. Është më mirë që dita e veprimit të ruhet si identitet i qëndrueshëm dite dhe jo si fjala “sot”; përndryshe dy persona mund të llogarisin dy kalendarë të ndryshëm.</p>
+  <ul>
+    <li>“nesër” është dita e ardhshme kronologjike;</li>
+    <li>“dita e ardhshme e muajit” është paraqitja e ardhshme e atij muaji;</li>
+    <li>“fundi i muajit” është paraqitja e fundit e atij muaji;</li>
+    <li>“i gjithë muaji” mund të nënkuptojë bashkësinë e ditëve që i përkasin atij muaji ose gjithë intervalin kronologjik nga paraqitja e parë deri te e fundit;</li>
+    <li>“viti i ardhshëm” është viti i ardhshëm në kalendarin e ndërtuar nën ditën e zgjedhur të veprimit.</li>
+  </ul>
+  <p>Për një takim veçanërisht të rëndësishëm mund të ruhet edhe një ditë ose çast absolut kronologjik. Kalendari nuk do të zemërohet.</p><hr>
+</section>
+
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>Udhëtimi, ngjarjet dhe all-day</h2>
+  <p>Një ngjarje dhe etiketa lokale që i shfaqet nuk janë e njëjta gjë. Një ngjarje me kohë të caktuar duhet të lidhet me një çast kronologjik të qëndrueshëm. Udhëtimi nuk e lëviz në kohë, por data lokale pastafariane e të njëjtit çast fizik mund të ndryshojë, sepse përkufizimi i “ditës lokale” varet nga vendndodhja.</p>
+  <p>Te një ngjarje <strong>all-day</strong> ndryshimi është edhe më i madh. Një ngjarje civile gjithëditore zakonisht zgjat nga mesnata në mesnatën tjetër; një ngjarje gjithëditore pastafariane duhet të zgjasë nga kufiri lokal i ditës pastafariane deri në kufirin tjetër. Zakonisht këto nuk janë të njëjtat çaste.</p>
+  <p>Prandaj eksportimi pa menduar i një ngjarjeje pastafariane si ngjarje civile “gjithëditore” mund t’ia ndryshojë kuptimin. Për ta ruajtur saktë duhet ruajtur ankora kronologjike dhe konteksti përkatës i location/day-boundary, jo vetëm flag-u <code>all-day</code>.</p><hr>
+</section>
+
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>Kur ndryshon dita?</h2>
+  <p>Dita lokale pastafariane nuk ndryshon në mesnatë. Kufiri i saj përcaktohet nga <strong>topocentric lower meridian transit i qendrës së Venusit përmes meridianit lokal</strong>.</p>
+  <p>Pra kjo është një ngjarje astronomike lokale që varet nga vendndodhja. Transit nuk ka pse të ndodhë në 00:00, nuk përcaktohet nga zona civile e orës, nuk zhvendoset thjesht sepse nis ose mbaron daylight saving time dhe nuk kërkon që Venusi të jetë i dukshëm me sy të lirë.</p>
+  <p>I njëjti çast fizik mund të jetë në anë të ndryshme të kufirit lokal të ditës në dy vende të ndryshme. Nëse sistemi nuk ka një user location të përdorshme, default fallback location i produktit është <strong>Kisurra</strong>.</p><hr>
+</section>
+
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>Kalendari i shtypur dhe llogaritja me dorë</h2>
+  <p>Kalendari Pastafarian mund të shtypet; thjesht duhet treguar për cilën ditë veprimi është llogaritur. Një kalendar i tillë paraqet strukturën e kohës nga këndvështrimi i asaj dite; kur ndryshon dita e veprimit, mund të duhet një kalendar i ri. Pra printeri ende ka punë.</p>
+  <p>Meqë specifikimi është i plotë dhe deterministic, gjithçka mund të llogaritet edhe me dorë: llogaritni input counter-at, kaloni 7 pikat e fshehura dhe 46 pikat e dukshme, përditësoni gjashtë tasat, kryeni 12 përzierjet përfundimtare, nxirrni përgjigjet, ndërtoni portat, zgjidhni vitet dhe kotletat, kryeni combinatorial selection, zgjidhni emrat dhe më pas ndërthurni muajt.</p>
+  <p>Në këmbim nuk keni nevojë të mbani mend se shkurti ka herë 28 e herë 29 ditë.</p><hr>
+</section>
+
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>Po Seer çfarë është?</h2>
+  <p>Krahas implementation-it canonical ekziston një engine i shpejtë me emrin <strong>Pastafarian Calendar Seer</strong>. Seer nuk është burim autoriteti: datën e saktë e përcaktojnë Megillah dhe llogaritja canonical. Nëse Seer nuk përputhet me to, gabimi është te Seer.</p>
+  <p>Detyra e tij është të kryejë shpejt të njëjtat query dhe ta japë rezultatin në formë që integrohet lehtë në produkte.</p>
+  <p>Në verifikimin e drejtpërdrejtë të bërë gjatë redaktimit të kësaj faqeje, Seer mbulonte ndër të tjera date dhe “now” query, batch, day range, reverse conversion nga një datë pastafariane te target day, marrjen e year structure, përcaktimin e active working day, Node API, browser/HTTP client, CLI, shërbim HTTP v1, kontratë OpenAPI 3.1, native implementations dhe distribution package, si dhe verified container deployment.</p>
+  <p>Pretendimi i vjetër se Seer nuk ka public API nuk është më i saktë. Tani ekziston një kontratë e qartë dhe e qëndrueshme HTTP v1 me endpoint-e për date, range, batch, year, reverse, ditën e veprimit, metadata, locales dhe status.</p>
+  <p>Më 21 shtator 2026 u testua realisht një public HTTPS deployment në Render: në shërbimin live u verifikuan exact query, range i madh, restart, cold wake dhe sjellja nën load.</p>
+  <p>Megjithatë, dokumentacioni i projektit vazhdon ta dallojë public beta/evaluation deployment nga një hosted production service e qëndrueshme me SLA. Prandaj faqja konceptuale e shpjegimit nuk duhet të ngrijë server address, hosting provider ose version number sikur të ishin pjesë e vetë kalendarit.</p>
+  <p>Seer mund të përdorë precomputation, paraqitje të posaçme, SIMD, algjebër dhe shortcut të tjera. Nuk ka nevojë të kopjojë hap pas hapi të gjithë computational history të implementation-it canonical, për sa kohë kryen të njëjtin operacion semantik dhe kthen të njëjtën përgjigje.</p>
+  <p>Optimization nuk është autoritet alternativ.</p><hr>
+</section>
+
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>Origjina, Dita e Themelimit dhe Dita e Tabelave</h2>
+  <p>Këtu është veçanërisht e rëndësishme të dallohen qartë ankorat canonical të kohës nga rrëfimi i faqes.</p>
+
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>Ankorat</h3>
+    <p>Sistemi ka një ditë reference fikse të quajtur <strong>Dita e Themelimit</strong>. Në kalendarin gregorian proleptik ajo është <strong>22 dhjetor 41,222 p.e.s.</strong>.</p>
+    <p>Dita e Themelimit nuk është “fillimi i kohës”; është një ankorë llogaritëse.</p>
+    <p>Numërimi i ditëve rreth saj përdor numra pozitivë tek/çift: Dita e Themelimit=1; ditët pas saj=3, 5, …; drejt së kaluarës, dita pararendëse=2, pastaj 4, 6, … . Kështu të dyja anët e ankorës kodohen në këtë counter pa numra negativë ditësh.</p>
+    <p>Ankora e dytë është <strong>Dita e Tabelave</strong>: <strong>15 qershor 763 p.e.s. në kalendarin julian proleptik</strong>, domethënë <strong>7 qershor 763 p.e.s. në kalendarin gregorian proleptik</strong>.</p>
+    <p>Distanca e saktë nga Dita e Themelimit deri te Dita e Tabelave është</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
+    <p>ditë.</p>
+    <p>Këto janë ankora fikse në vijën kohore, por data pastafariane që u shfaqet varet prapë nga dita e veprimit prej së cilës pyeten.</p>
+  </section>
+
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>Rrëfimi i faqes</h3>
+    <p>Në rrëfimin editorial të faqes, kalendari përshkruhet si pjesë e krijimit dhe si një sistem që njerëzimi e përdori pa e kuptuar plotësisht, derisa iu dorëzua përsëri në epokën moderne.</p>
+    <p>Ky është rrëfimi i faqes; jo çdo hollësi narrative duhet paraqitur sikur të ishte një pohim teknik i drejtpërdrejtë i Megillah.</p>
+    <p>Vetë ngjarja e ridorëzimit është një ngjarje historike fikse. <strong>Data e saj pastafariane</strong> është më mirë të shfaqet dinamikisht nën ditën aktuale të veprimit sesa të ngrihet përgjithmonë si një datë e vetme.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>Për përdorues të avancuar: reverse conversion</h2>
+  <p>Nëse dita e veprimit <code>c</code> dihet, reverse conversion kufizohet shumë fort. Brenda një viti të njohur pastafarian,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{emri i kotletës},\text{dita në kotletë})</code></pre>
+  <p>identifikon jo më shumë se një ditë. E njëjta gjë vlen për</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{emri i muajit},\text{dita në muaj})</code></pre>
+  <p>Prandaj një datë e plotë me ditën e veprimit të njohur përcakton target day në mënyrë unike.</p>
+
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Kufijtë e sipërm të numrit të kandidatëve në reverse conversion">
+    <table class="about-table">
+      <thead><tr><th scope="col">Informacioni shtesë i njohur</th><th scope="col">Maksimumi i kandidatëve</th></tr></thead>
+      <tbody>
+        <tr><td>Asnjë fushë tjetër përveç vitit</td><td>5,778</td></tr>
+        <tr><td>Vetëm emri i kotletës</td><td>5,568</td></tr>
+        <tr><td>Vetëm dita në kotletë</td><td>17</td></tr>
+        <tr><td>Vetëm emri i muajit</td><td>123</td></tr>
+        <tr><td>Vetëm dita në muaj</td><td>47</td></tr>
+        <tr><td>Emri i kotletës + dita në kotletë</td><td>1</td></tr>
+        <tr><td>Emri i muajit + dita në muaj</td><td>1</td></tr>
+        <tr><td>Çdo tri fusha përveç vitit</td><td>1</td></tr>
+        <tr><td>Të katër fushat përveç vitit</td><td>1</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Nëse dita e veprimit nuk dihet, pamja është tjetër. Të njëjtat pesë vlera mund të shfaqen nën ditë të ndryshme veprimi dhe ka exact example ku e njëjta datë e plotë shfaqet në largësi të ndryshme nga <code>c</code>.</p>
+  <p>Në vitin 5000, edhe sign i asaj largësie nuk përcaktohet gjithmonë nga pesë vlerat: e njëjta datë e plotë mund të jetë para ditës së veprimit në një context dhe pas saj në një tjetër.</p>
+  <p>Prandaj një datë e plotë pastafariane nuk është absolute address në vijën kohore nëse nuk dimë nën cilin <code>c</code> është llogaritur.</p>
+
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>Struktura në kohë shumë të largët</h3>
+    <p>Kërkimi matematikor i nxjerrë nga specifikimi ka gjetur edhe një strukturë asimptotike exact. Për një <strong>ditë veprimi të fiksuar</strong> <code>c</code>, mjaft larg në bishtin e së kaluarës shfaqet affine periodicity.</p>
+    <p>Nëse</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>atëherë, për po atë <code>c</code>, ekzistojnë një zhvendosje <code>H_c</code>, një ndryshim viti <code>p_c</code> dhe një prag mjaft i largët, pas të cilit</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>katër fushat jo-vjetore përsëriten, ndërsa numri i vitit ndryshon me një sasi fikse.</p>
+    <p>Ky është rezultat për <code>c</code> të fiksuar; prej tij nuk del marrëdhënia globale</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>Pyetja nëse pjerrësitë përfundimtare asimptotike ndryshojnë vërtet ndërmjet ditëve të ndryshme të veprimit mbetet e hapur.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>Për përdorues të avancuar: sa histori ruan salca?</h2>
+  <p>Salca duket si një mechanism shumë agresiv përzierjeje, por kërkimi algjebrik tregon se ajo ruan shumë më tepër informacion sesa sugjeron pamja. Ky është rezultat kërkimor i nxjerrë nga specifikimi, jo rregull i ri i kalendarit.</p>
+  <p>Në fazat e dukshme 3–46, në degën përkatëse asimptotike, është vendosur generic injectivity: në rastin generic, state ruan informacion të mjaftueshëm për të rindërtuar input history përkatëse dhe rendin e tasave.</p>
+  <p>As në 12 përzierjet përfundimtare informacioni nuk humbet menjëherë. Për pesë përzierjet e para pas pikës së dukshme 46, në unionin canonical përkatës është vendosur generic invertibility pa side information shtesë; për pjesën e mbetur njihen kufij të sipërm konstruktivë të fortë për sasinë e side information që mjafton për rindërtim.</p>
+  <p>Mbetet e hapur pyetja nëse <strong>vetëm gjashtë tasat përfundimtarë</strong> mjaftojnë gjithmonë në kuptimin generic.</p>
+  <p>Disa rezultate u provuan simbolikisht, të tjera u mbyllën me kontrolle finite exact arithmetic. Symbolic strengthening e zvogëloi ndjeshëm computational core ku duhet mbështetur besimi, por nuk e hoqi plotësisht.</p>
+  <p>Hapësira që në fillim dukeshin sikur kërkonin kërkim në një numër të jashtëzakonshëm path-ësh u reduktuan në struktura finite shumë më të vogla, përfshirë automata me 180 dhe 9 state dhe simetri të gjashtë tasave.</p>
+  <p>Nën përzierje ka një strukturë të rreptë algjebrike. Nuk duhet ta dini për të ditur datën e sotme.</p><hr>
+</section>
+
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>Pra, çfarë është në të vërtetë Kalendari Pastafarian?</h2>
+  <p>Është një kalendar deterministic ku data nuk është vetëm function e target day, por <strong>function e përbashkët e ditës së veprimit dhe ditës së pyetur</strong>.</p>
+  <p>Çdo datë ka saktësisht pesë fusha. E tashmja, parë nga vetvetja, është gjithmonë në vitin 5000, por vetë viti 5000 lëviz bashkë me ditën e veprimit. Vitet mund të jenë shumë të gjata, kotletat janë të pandërprera, muajt jo domosdoshmërisht, dhe nuk ka sistem canonical javësh.</p>
+  <p>Dita <code>n+1</code> e muajit nuk është domosdoshmërisht nesër. E njëjta chronological day mund të marrë nesër një label tjetër pastafarian. I njëjti physical moment mund t’u përkasë dy local Pastafari day të ndryshme në dy vende. Një all-day event nuk ka pse të zgjasë nga mesnata në mesnatë. Dhe një annual birthday është fillimisht search problem, pastaj calendar problem.</p>
+  <p>Por kur dita e veprimit dhe dita e pyetur dihen, nuk ka ambiguity: përgjigjja e saktë është vetëm një.</p>
+  <p>Në fund të fundit, nuk kërkohet më shumë nga një kalendar.</p>
+</section>
