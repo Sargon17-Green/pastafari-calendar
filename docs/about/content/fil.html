@@ -1,0 +1,331 @@
+<!-- Ang bersiyong Filipino ay isinulat nang direkta mula sa Hebrew semantic master; walang ginamit na pivot language. -->
+<!-- Ang mga section ID ay bahagi ng isang matatag na pampublikong deep-link contract at hindi hinango mula sa mga isinaling pamagat. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>Sa salaysay ng site na ito, inilalarawan ang Kalendaryong Pastafari bilang kalendaryong kinasasaklawan ng mismong paglikha ng panahon. Gayunman, mahigpit at tiyak ang mga patakarang nagtatakda kung paano ito gumagana.</p>
+  <p>Hindi naglalagay ang kalendaryong ito ng iisang hindi nagbabagong Pastafari na “etiketa” sa bawat araw. Dalawang araw ang kailangan upang makuha ang petsa: ang <strong>araw ng pagkilos</strong>, kung saan nagsisimula ang pagkalkula, at ang <strong>araw na tinatanong</strong>, na siyang gustong alamin ang Pastafari nitong petsa.</p>
+  <p>Kung isusulat ang araw ng pagkilos bilang <code>c</code> at ang araw na tinatanong bilang <code>t</code>, ang petsa ay</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>at hindi <code>F(t)</code>. Kaya maaaring magkaroon ng ibang Pastafari na petsa ang parehong araw na tinatanong kapag nagbago ang araw ng pagkilos.</p>
+  <p>Hindi ito bug. Ganito talaga nakatakda ang kalendaryo.</p><hr>
+</div>
+
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>Ano ang laman ng isang Pastafari na petsa?</h2>
+  <p>Mayroon itong <strong>eksaktong limang bahagi</strong>: numero ng taon, pangalan ng cutlet, araw sa loob ng cutlet, pangalan ng buwan, at araw sa loob ng buwan.</p>
+  <p>Pangkalahatang halimbawa: <strong>taon 5000, cutlet A, ika-417 araw ng cutlet, buwan B, ika-83 araw ng buwan.</strong></p>
+  <p>Maaaring ipakita katabi ng petsa ang araw ng pagkilos, lokasyon ng tagamasid, kronolohikal na pagkakakilanlan ng araw, o iba pang teknikal na datos, ngunit hindi ang mga iyon ikaanim na field ng petsa.</p><hr>
+</section>
+
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>Bakit kailangan ang araw ng pagkilos?</h2>
+  <p>Sa karaniwang kalendaryo, natural isipin na ang petsa ay basta “pag-aari” ng mismong araw. Sa Kalendaryong Pastafari, nakasalalay ang petsa sa ugnayan ng dalawang araw.</p>
+  <p>Ang pagbabago sa <code>t</code> ay nangangahulugang ibang araw na ang tinatanong. Mas malalim ang maaaring epekto ng pagbabago sa <code>c</code>: maaaring magbago ang mga hangganan ng taon, mga cutlet, mga buwan, mga pangalan ng mga ito, at ang paraan ng pagkakapilipit-pilipit ng mga buwan sa isa't isa.</p>
+  <p>Kaya ang almanac na kinalkula ngayon ay hindi kailangang manatiling tama bukas. Naiiwasan din nito ang medyo nakakailang na sitwasyong nananatiling kapaki-pakinabang ang isang nakalimbag na kalendaryo sa buong taon.</p><hr>
+</section>
+
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>Parehong araw, ibang petsa</h2>
+  <p>Dapat pag-ibahin ang <strong>pagkakakilanlan ng araw</strong> at ang <strong>Pastafari na representasyon nito</strong>. Ang una ay ang matatag na puwesto ng isang partikular na araw sa timeline; ang ikalawa ay ang limang value na nakukuha kapag ipinakita ang araw na iyon sa ilalim ng isang partikular na araw ng pagkilos.</p>
+  <p>Sa produkto at API, maaaring isipin ang una bilang <code>day-id</code>: isang kronolohikal na pagkakakilanlan na hindi nagbabago kapag nagbabago ang presentasyon. Samantala, ang</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre>
+  <p>at</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>ay hindi kailangang magkapareho.</p>
+  <p>Samakatuwid, maaaring baguhin ng mano-manong pagpapalit ng araw ng pagkilos ang ipinapakitang Pastafari na petsa para sa parehong araw nang hindi gumagalaw ang mismong araw sa timeline.</p>
+  <p>Ganoon din sa mga pangyayari. Ang isang pulong, kapanganakan, o makasaysayang pangyayari ay dapat manatiling nakatali sa isang matatag na kronolohikal na pagkakakilanlan; ang Pastafari nitong petsa ay maaaring kalkulahin muli ayon sa konteksto ng pagpapakita.</p>
+  <p>Maaaring magbago ang etiketa. Hindi ang pangyayari.</p><hr>
+</section>
+
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>Taon 5000</h2>
+  <p>Kapag iisa ang araw ng pagkilos at ang araw na tinatanong,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>palaging</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>ang numero ng taon. Sa madaling salita, ang kasalukuyan, mula sa sarili nitong pananaw, ay laging nasa loob ng taon 5000. Ngunit hindi nakapirming makasaysayang yugto ang taon 5000; pinipili itong muli sa bawat pagkakataon kaugnay ng araw ng pagkilos.</p>
+  <p>Ang mismong araw ng pagkilos ay nasa taon 5000 din, gayundin ang ibang mga araw sa parehong napiling taon. Kaya <strong>ang pagiging nasa taon 5000 lamang ay hindi nagpapatunay na <code>t=c</code>.</strong></p>
+  <p>Gayunman, ipinapakita ng numero ng taon ang direksiyon:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre>
+  <p>at</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p>Mayroon ding <strong>taon 0</strong>; sa mas malayong nakaraan ay sumusunod ang mga taong may negatibong numero.</p><hr>
+</section>
+
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>Mga taon at tarangkahan</h2>
+  <p>Ang isang Pastafari na taon ay maaaring magkaroon ng</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ hanggang }5778</code></pre>
+  <p>araw. Canonical na mga hangganan ito ng sistema, hindi empirical na average.</p>
+  <p>Kaya maaaring mas maikli sa isang solar year ang isang taon o mas mahaba sa labinlimang solar year. Binubuo ang mga hangganan ng taon mula sa sistema ng <strong>mga tarangkahan</strong>; mula rin sa parehong sistema ang mga hangganan ng cutlet.</p>
+  <p>Hindi kailangang tumapat ang katapusan ng taon sa isang season, isang pag-ikot ng Daigdig sa Araw, isang lunar cycle, o sa praktikal na pagnanais na matapos na sana ang taon.</p><hr>
+</section>
+
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>Mga cutlet</h2>
+  <p>Hinahati ang bawat taon sa <strong>6 hanggang 17 cutlet</strong>. Ang cutlet ay isang kronolohikal na tuloy-tuloy na bahagi ng panahon.</p>
+  <p>Kung ngayon ang ika-250 araw ng isang cutlet, bukas ay ika-251 araw ng parehong cutlet, maliban kung ngayon ang huling araw nito. Mga tarangkahan ang hangganan ng mga cutlet, at ang isang cutlet ay tumatagal nang hindi bababa sa</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
+  <p>araw.</p>
+  <p>May 17 canonical na pangalan ng cutlet ang sistema at hindi nauulit ang iisang pangalan sa loob ng isang taon. Hindi tinutukoy ng pangalan ang haba o posisyon ng cutlet.</p><hr>
+</section>
+
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>Mga buwan at paghahabi</h2>
+  <p>May</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ hanggang }47</code></pre>
+  <p>structural month ang bawat taon, at ang bawat buwan ay binibigyan ng</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ hanggang }123</code></pre>
+  <p>araw.</p>
+  <p>Ngunit ang isang Pastafari na buwan ay <strong>hindi kailangang maging tuloy-tuloy na interval ng panahon</strong>. Halimbawa, maaaring ganito ang kronolohikal na ayos:</p>
+  <blockquote><p>Buwan A — araw 14<br>Buwan B — araw 9<br>Buwan A — araw 15</p></blockquote>
+  <p>Ganap itong valid. Ang araw 15 ng buwan A ang susunod na araw <strong>ng buwang iyon</strong>, kahit may araw ng ibang buwan sa pagitan.</p>
+  <p>Kaya ang “araw sa buwan” ay hindi bilang ng mga kronolohikal na araw mula nang unang lumitaw ang buwan. Ito ang ordinal na posisyon sa mga araw na itinalaga sa buwang iyon sa loob ng taon. Ang araw 48 ay ang ika-48 araw na kabilang sa buwang iyon, hindi 47 araw pagkaraan ng unang paglitaw nito.</p><hr>
+</section>
+
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>Nagkakawing-kawing ang mga buwan</h2>
+  <p>Maaaring isipin ang mga buwan bilang mga sinulid na tumatawid sa taon. Bawat araw ay kabilang sa eksaktong isang buwan; maaaring sa ibang buwan mapabilang ang bukas, at kalaunan ay bumalik ang unang buwan at magpatuloy sa susunod nitong numero.</p>
+  <p>May mga tuntunin ang paghahabing ito, kabilang ang mga limitasyon sa pagkakasunod ng una at huling paglitaw ng mga buwan. Ngunit walang tuntuning nagsasabing kailangang matapos muna ang isang buwan bago magsimula ang isa.</p>
+  <ul>
+    <li>Sinusukat ng cutlet ang posisyon sa loob ng tuloy-tuloy na bahagi ng panahon.</li>
+    <li>Ipinapakita ng buwan ang pagiging kabilang sa isang structural thread na maaaring mawala at muling lumitaw.</li>
+  </ul>
+  <p>Maaaring tumawid ang isang buwan sa maraming cutlet, at maaaring lumitaw ang maraming buwan sa loob ng iisang cutlet. Hindi kailangang magkapareho ang mga simula at wakas ng dalawang sistemang ito.</p><hr>
+</section>
+
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>Hindi kailangang bukas ang susunod na araw ng buwan</h2>
+  <p>Kung ngayon ang ika-17 araw ng isang buwan, ang ika-18 araw ng parehong buwan ay <strong>ang susunod na paglitaw ng buwang iyon</strong>. Maaari itong bukas, o mas matagal pa.</p>
+  <p>Ang <strong>bukas</strong> ay ang susunod na kronolohikal na araw; ang <strong>susunod na araw ng buwan</strong> ay ang susunod na paglitaw ng parehong buwan.</p>
+  <p>Gayundin, ang “katapusan ng buwan” ay hindi nangangahulugang malapit na iyon sa kronolohiya. Maaaring nasa araw 119 ngayon ang isang 120-araw na buwan, habang darating ang araw 120 nang malayo pa sa parehong taon.</p><hr>
+</section>
+
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>Walang mga linggo</h2>
+  <p>Ang kasalukuyang canonical specification ay <strong>hindi nagtatakda ng week system</strong>. Walang canonical na pitong-araw na unit, walang Pastafari na pangalan para sa mga araw ng linggo, at walang tuntuning gumagawa sa dalawang araw bilang “parehong araw ng linggo”.</p>
+  <p>Siyempre, maaaring magpatong mula sa labas ng civil week system; hindi lamang ito bahagi ng Pastafari na petsa.</p><hr>
+</section>
+
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>Mga pangalan</h2>
+  <p>May 17 canonical na pangalan ng cutlet at 47 canonical na pangalan ng buwan. Sa loob ng isang taon, bawat pangalan ay lumilitaw nang hindi hihigit sa isang beses sa sarili nitong grupo.</p>
+  <p>Canonical at semantiko ang pagkakakilanlan ng pangalan; hindi ito bunga ng pagbobotohan sa iba't ibang spelling, salin, o implementations. Sa kahulugan ng mga pangalan, ang Hebrew na Megillah ang may pinakamataas na awtoridad; presentation layer lamang ang mga salin at transliteration.</p>
+  <p>Hindi rin lihim na code para sa haba ang pangalan. Hindi awtomatikong humahaba o umiikli ang isang partikular na cutlet o buwan dahil lamang sa pangalan nito.</p><hr>
+</section>
+
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>Isang maliit na katotohanan tungkol sa mga buwan</h2>
+  <p>May 47 pangalan ng buwan, at maaaring umabot ang isang buwan hanggang araw 123. Kaya ang bilang ng syntactically possible na pares na “pangalan ng buwan + numero ng araw sa buwan” ay</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>Bawat araw ng taon ay tumutugma sa eksaktong isang ganoong pares. Kung <code>L</code> ang haba ng taon, eksaktong <code>L</code> pares ang lilitaw. Dahil</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>kailangang mag-iwan ang bawat taon ng hindi bababa sa</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre>
+  <p>posibleng pares na hindi nagamit. Kahit ang pinakamahabang taon ay kulang sa araw upang magamit ang lahat.</p><hr>
+</section>
+
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>Paano kinakalkula ang kalendaryo?</h2>
+  <p>Ang panloob na pagkalkula ay tinatawag nating <strong>sarsa</strong> rito. Nasa gitna nito ang prime number na</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>Kabilang sa proseso ang limang input counter, 7 nakatagong patak, 46 nakikitang patak, 6 mangkok, nagbabagong pagkakasunod ng mga mangkok, 12 panghuling paghahalo, seal para sa magkakaibang sagot, combinatorial selection, pagbuo ng mga tarangkahan, pagpili ng mga taon, paghahati ng mga cutlet, pagpili ng mga pangalan, pagbuo ng mga buwan, at paghahabi ng mga araw ng buwan.</p>
+  <p>Ang mga panghuling update ay <strong>sabay-sabay</strong>: sa bawat paghahalo, kinakalkula ang lahat ng anim na bagong value mula sa iisang lumang state, at saka pa lamang sabay na pinapalitan ang anim na mangkok.</p>
+  <p>May isang partikular na mahalagang canonical detail sa 12 panghuling paghahalo. Kung <code>S</code> ang kabuuan ng anim na lumang mangkok at <code>r</code> ang numero ng paghahalo, kinakalkula ng sistema ang</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p>Ang <code>R</code> ang <strong>naka-save na kabuuan</strong>. Parehong gumagamit ng <code>R</code>, hindi ng raw na <code>S</code>, ang pagpili ng order ng mga mangkok at ang panloob na update ng paghahalo.</p>
+  <p>Ang mga lumang bersiyong nagpapasa ng raw na kabuuan sa update na ito ay hindi na naglalarawan sa kasalukuyang canonical semantics. Ang mga halimbawang hinango sa lumang tuntunin ay dapat ituring na luma hangga't hindi muling nasusuri.</p>
+  <p>Pagkatapos ng mga paghahalo, ipinagpapatuloy din ng answer ring ang order na na-lock sa nakikitang patak 46; hindi ito dapat awtomatikong palitan ng order ng huling paghahalo.</p><hr>
+</section>
+
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice at Wide Choice</h2>
+  <p>Para sa medyo maliliit na selection space, ginagamit ang <strong>Short Choice</strong>. Gumagamit ito ng rejection sampling upang maiwasan ang simpleng modulo bias.</p>
+  <p>Para sa napakalalaking space, ginagamit ang <strong>Wide Choice</strong>. Hindi dapat iugnay rito ang mga katangiang hindi ginagarantiya ng specification.</p>
+  <p>Ang Wide Choice ay hindi katumbas ng paggawa ng independent at uniformly distributed na base-<code>Q</code> digit hanggang makakuha ng index. Kaya hindi nito ipinahihiwatig na kailangang may parehong positive probability ang bawat valid choice. Sa sapat na malaking space, maaaring may valid choice na hindi kailanman naaabot ng mechanism na ito.</p>
+  <p>Ang mismong kalendaryo ay nananatiling ganap na deterministic. Pangalan ng algorithmic stage ang “Choice”, hindi random lottery habang ginagamit ang kalendaryo.</p><hr>
+</section>
+
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>Structural atlas</h2>
+  <p>Hanggang dito, mga tuntunin ng kalendaryo ang pinag-usapan natin. Ibang uri ng impormasyon ang mga numerong susunod: <strong>empirical na resulta</strong> mula sa malaking computational sample.</p>
+  <p>Ginawa ang atlas gamit ang engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> at saklaw nito ang 4,096 araw ng pagkilos; mga taong 4990–5010 para sa bawat isa; 86,016 year structure; 625,437 cutlet; 3,535,422 structural month; mahigit 356 milyong tuloy-tuloy na segment ng buwan; at mahigit 364 milyong transition mula araw <code>n</code> patungong araw <code>n+1</code> ng parehong buwan.</p>
+  <p>Inilalarawan ng mga numerong ito ang corpus na iyon, hindi canonical na batas.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Mga sinukat na datos mula sa structural atlas">
+    <table class="about-table">
+      <thead><tr><th scope="col">Sinukat na halaga</th><th scope="col">Resulta sa sample</th></tr></thead>
+      <tbody>
+        <tr><td>Average na haba ng taon</td><td>4,275.182 araw</td></tr>
+        <tr><td>Median ng haba ng taon</td><td>4,343</td></tr>
+        <tr><td>Naobserbahang minimum / maximum</td><td>716 / 5,778</td></tr>
+        <tr><td>Average na bilang ng cutlet bawat taon</td><td>7.271</td></tr>
+        <tr><td>Mga taong may eksaktong 6 cutlet</td><td>42.00%</td></tr>
+        <tr><td>Mga taong may 6–8 cutlet</td><td>81.29%</td></tr>
+        <tr><td>Average na haba ng cutlet</td><td>587.963 araw</td></tr>
+        <tr><td>Median ng haba ng cutlet</td><td>560</td></tr>
+        <tr><td>Average na bilang ng buwan bawat taon</td><td>41.102</td></tr>
+        <tr><td>Median ng bilang ng buwan</td><td>43</td></tr>
+        <tr><td>Mga taong may 47 buwan</td><td>15.63%</td></tr>
+        <tr><td>Mga taong may hindi bababa sa 45 buwan</td><td>36.81%</td></tr>
+        <tr><td>Average na haba ng structural month</td><td>104.014 araw</td></tr>
+        <tr><td>Median ng haba ng buwan</td><td>115</td></tr>
+        <tr><td>Average na tuloy-tuloy na segment bawat buwan</td><td>100.897</td></tr>
+        <tr><td>Bahagi ng one-day month segment</td><td>97.482%</td></tr>
+        <tr><td>Probability na magkapareho ang buwan ng dalawang magkatabing araw</td><td>2.9976%</td></tr>
+        <tr><td>Average na bilang ng mga araw ng ibang buwan sa pagitan ng <code>n</code> at <code>n+1</code> ng parehong buwan</td><td>40.408</td></tr>
+        <tr><td>Average na span mula una hanggang huling paglitaw ng buwan</td><td>4,266.653 araw</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Sa praktika, ang isang buwang may humigit-kumulang isang daang araw ay maaaring nakakalat sa halos buong Pastafari na taon.</p>
+  <p>Ipinakita rin ng parehong atlas ang natural na length bias sa paligid ng taon 5000. Sa sample, ang isang “karaniwang” taon ay may average na humigit-kumulang 4,262 araw. Kapag ang mga taon ay bina-weight ayon sa bilang ng araw na nilalaman nito, tumataas ang average sa humigit-kumulang 4,466 araw; ang mismong taon 5000 ay may average na humigit-kumulang 4,499 araw.</p>
+  <p>Simple ang dahilan: kailangang lamanin ng taon 5000 ang araw ng pagkilos. Mas maraming araw ang mas mahabang taon kung saan maaari itong maging taon na naglalaman sa araw ng pagkilos.</p>
+  <p>Napakahina rin sa sample ng ugnayan sa pagitan ng pangalan ng isang unit at haba nito. Hindi nito pinatutunayan ang ganap na mathematical independence, ngunit walang ibinibigay na praktikal na signal ang atlas na dinisenyo ang mga pangalan upang encode ang haba.</p>
+  <p>Bukod dito, ang 86,016 year structure ay hindi 86,016 ganap na independent sample: 24,786 lamang ang magkakaibang interval sa pagitan ng panimulang tarangkahan at pangwakas na tarangkahan. Maaaring piliin ng magkalapit na araw ng pagkilos ang parehong year interval ngunit makabuo pa rin ng magkakaibang internal structure.</p>
+  <p>Kaya mahusay na inilalarawan ng atlas ang sinukat na pag-uugali ng implementation, ngunit hindi ito dapat gawing probability theorem tungkol sa lahat ng posibleng calendar structure.</p><hr>
+</section>
+
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>Mga kaarawan at anibersaryo</h2>
+  <p>Dito, kailangang tukuyin muna kung ano ang ibig sabihin ng “parehong araw bawat taon”. Ang natural na recurrence coordinate ay <code>(pangalan ng buwan, araw sa buwan)</code> at <code>(pangalan ng cutlet, araw sa cutlet)</code>; maaari ring pagsamahin ang mga kondisyon.</p>
+  <p>Kaya ang Pastafari na kaarawan ay hindi simpleng <code>RRULE:FREQ=YEARLY</code>. Kailangang hanapin ang susunod na taon na tumutupad sa napiling recurrence condition, at ang orihinal na pangyayari ay hindi awtomatikong binibilang bilang sarili nitong “susunod na paglitaw”.</p>
+  <p>Ang pagpapalit ng araw ng pagkilos para lamang sa presentasyon ay hindi dapat magbago sa pagkakakilanlan ng tao, sandali ng kapanganakan, o edad.</p>
+  <p>Sa exact scan ng 4,096 self-referential date, sinuri ang bawat susunod na Pastafari na taon hanggang 250,000 taon sa magkabilang direksiyon:</p>
+  <ul>
+    <li>Para sa <code>(pangalan ng buwan, araw sa buwan)</code>, 1 Pastafari na taon ang median ng unang pagbalik; 77.56% ang bumalik sa katabing taon, 93.77% sa loob ng dalawang taon, 99.44% sa loob ng limang taon; 21 taon ang naobserbahang maximum.</li>
+    <li>Para sa <code>(pangalan ng cutlet, araw sa cutlet)</code>, 3 taon ang median; 88.89% ang natagpuan sa loob ng 10 taon, ngunit napakabigat ng heavy tail ng distribution, at umabot sa 51,954 Pastafari na taon ang naobserbahang maximum.</li>
+  </ul>
+  <p>Mga <strong>empirical na resulta ito ng sinuring corpus</strong>; hindi nito pinatutunayang tiyak na babalik ang bawat posibleng anibersaryo at hindi rin ito nagbibigay ng guarantee para sa maximum waiting time.</p><hr>
+</section>
+
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>Paano magtakda ng pagkikita?</h2>
+  <p>Kung dalawang tao ang gustong magkasundo gamit lamang ang isang Pastafari na petsa, kailangang magkasundo sila kahit sa limang field ng petsa at sa araw ng pagkilos na ginamit sa pagkalkula. Mas mabuting i-save ang araw ng pagkilos bilang isang matatag na day identity, hindi bilang salitang “ngayon”; kung hindi, maaaring magkompyut ang dalawang tao ng dalawang magkaibang kalendaryo.</p>
+  <ul>
+    <li>ang “bukas” ay ang susunod na kronolohikal na araw;</li>
+    <li>ang “susunod na araw ng buwan” ay ang susunod na paglitaw ng buwang iyon;</li>
+    <li>ang “katapusan ng buwan” ay ang huling paglitaw ng buwang iyon;</li>
+    <li>ang “buong buwan” ay maaaring mangahulugan ng set ng mga araw na kabilang sa buwang iyon o ng buong kronolohikal na span mula una hanggang huling paglitaw;</li>
+    <li>ang “susunod na taon” ay ang susunod na taon sa kalendaryong binuo sa ilalim ng napiling araw ng pagkilos.</li>
+  </ul>
+  <p>Para sa talagang mahalagang pagkikita, maaari ring i-save ang absolute chronological day o moment. Hindi magtatampo ang kalendaryo.</p><hr>
+</section>
+
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>Paglalakbay, mga pangyayari, at all-day</h2>
+  <p>Hindi iisa ang isang pangyayari at ang lokal na etiketang ipinapakita para rito. Ang pangyayaring may tiyak na oras ay dapat nakatali sa isang matatag na chronological moment. Hindi ito inililipat ng paglalakbay sa oras, ngunit maaaring magbago ang lokal na Pastafari na petsa para sa parehong physical moment dahil nakasalalay sa lokasyon ang kahulugan ng “lokal na araw”.</p>
+  <p>Mas malaki pa ang pagkakaiba para sa <strong>all-day</strong> event. Ang civil na whole-day event ay karaniwang mula hatinggabi hanggang sa susunod na hatinggabi; ang Pastafari na whole-day event ay dapat mula sa lokal na hangganan ng Pastafari na araw hanggang sa susunod na hangganan. Karaniwan, hindi pareho ang mga moment na iyon.</p>
+  <p>Kaya maaaring mabago ang kahulugan kung basta ie-export ang isang Pastafari event bilang civil na “whole-day” event. Para mapanatili nang tama, kailangang i-save ang chronological anchor at ang angkop na location/day-boundary context, hindi lamang ang <code>all-day</code> flag.</p><hr>
+</section>
+
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>Kailan nagpapalit ang araw?</h2>
+  <p>Hindi nagpapalit sa hatinggabi ang lokal na Pastafari na araw. Itinatakda ang hangganan nito ng <strong>topocentric lower meridian transit ng sentro ng Venus sa lokal na meridian</strong>.</p>
+  <p>Ibig sabihin, isa itong lokal na astronomical event na nakadepende sa lokasyon. Hindi kailangang mangyari ang transit nang 00:00, hindi ito itinatakda ng civil time zone, hindi ito gumagalaw dahil lamang nagsimula o natapos ang daylight saving time, at hindi kailangang nakikita sa mata ang Venus.</p>
+  <p>Maaaring nasa magkaibang panig ng kani-kanilang lokal na hangganan ng araw ang parehong physical moment sa dalawang lugar. Kung walang magamit na user location ang sistema, ang default fallback location ng produkto ay <strong>Kisurra</strong>.</p><hr>
+</section>
+
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>Nakalimbag na kalendaryo at manwal na pagkalkula</h2>
+  <p>Maaaring ilimbag ang Kalendaryong Pastafari; kailangan lamang sabihin kung para sa aling araw ng pagkilos ito kinalkula. Ipinapakita ng ganoong kalendaryo ang estruktura ng panahon mula sa pananaw ng araw na iyon; kapag nagbago ang araw ng pagkilos, maaaring kailanganin ang bagong kalendaryo. Kaya may trabaho pa rin ang printer.</p>
+  <p>Dahil kumpleto at deterministic ang specification, maaari ring kalkulahin ang lahat nang mano-mano: kalkulahin ang input counter, patakbuhin ang 7 nakatagong at 46 nakikitang patak, i-update ang anim na mangkok, gawin ang 12 panghuling paghahalo, buuin ang mga sagot, itayo ang mga tarangkahan, piliin ang mga taon at cutlet, gawin ang combinatorial selection, piliin ang mga pangalan, at saka ihabi ang mga buwan.</p>
+  <p>Kapalit nito, hindi na kailangang tandaan kung kailan may 28 at kailan may 29 araw ang Pebrero.</p><hr>
+</section>
+
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>Kung gayon, ano ang Seer?</h2>
+  <p>Katabi ng canonical implementation ay may mabilis na engine na tinatawag na <strong>Pastafarian Calendar Seer</strong>. Hindi awtoridad ang Seer: ang tamang petsa ay tinutukoy ng Megillah at canonical calculation. Kung hindi tugma ang Seer sa mga iyon, nasa Seer ang mali.</p>
+  <p>Trabaho nitong patakbuhin nang mabilis ang parehong query at ibalik ang resulta sa anyong madaling i-integrate sa mga produkto.</p>
+  <p>Sa direktang verification habang ine-edit ang pahinang ito, saklaw ng Seer, bukod sa iba pa, ang date at “now” query, batch, day range, reverse conversion mula sa Pastafari na petsa patungong target day, year structure retrieval, pagtukoy ng active working day, Node API, browser/HTTP client, CLI, HTTP v1 service, OpenAPI 3.1 contract, native implementations at distribution package, at verified container deployment.</p>
+  <p>Hindi na tama ang lumang pahayag na walang public API ang Seer. Mayroon na ngayong malinaw at matatag na HTTP v1 contract na may endpoint para sa date, range, batch, year, reverse, araw ng pagkilos, metadata, locales, at status.</p>
+  <p>Noong Setyembre 21, 2026, aktuwal na sinubukan ang public HTTPS deployment sa Render: na-verify sa live service ang exact query, malaking range, restart, cold wake, at pag-uugali sa ilalim ng load.</p>
+  <p>Gayunman, patuloy na pinag-iiba ng project documentation ang public beta/evaluation deployment at ang permanenteng hosted production service na may SLA. Kaya hindi dapat i-freeze ng conceptual explanation page ang server address, hosting provider, o version number na para bang bahagi ang mga iyon ng mismong kalendaryo.</p>
+  <p>Maaaring gumamit ang Seer ng precomputation, espesyal na representation, SIMD, algebra, at iba pang shortcut. Hindi nito kailangang gayahin nang hakbang-hakbang ang buong computational history ng canonical implementation hangga't ginagawa nito ang parehong semantikong operation at ibinabalik ang parehong sagot.</p>
+  <p>Hindi alternatibong awtoridad ang optimization.</p><hr>
+</section>
+
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>Pinagmulan, Araw ng Pagtatatag, at Araw ng mga Tablet</h2>
+  <p>Dito, lalong mahalagang malinaw na paghiwalayin ang canonical time anchor at ang kuwento ng site.</p>
+
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>Mga anchor</h3>
+    <p>May isang fixed reference day ang sistema na tinatawag na <strong>Araw ng Pagtatatag</strong>. Sa proleptic Gregorian calendar, ito ay <strong>Disyembre 22, 41,222 BCE</strong>.</p>
+    <p>Ang Araw ng Pagtatatag ay hindi “simula ng panahon”; isa itong computational anchor.</p>
+    <p>Gumagamit ang numbering ng mga araw sa paligid nito ng positive odd/even numbers: Araw ng Pagtatatag=1; mga susunod na araw=3, 5, …; patungo sa nakaraan, ang naunang araw=2, saka 4, 6, … . Sa ganitong paraan, na-e-encode sa counter na ito ang magkabilang panig ng anchor nang walang negative day number.</p>
+    <p>Ang ikalawang anchor ay ang <strong>Araw ng mga Tablet</strong>: <strong>Hunyo 15, 763 BCE sa proleptic Julian calendar</strong>, ibig sabihin <strong>Hunyo 7, 763 BCE sa proleptic Gregorian calendar</strong>.</p>
+    <p>Ang eksaktong distansiya mula Araw ng Pagtatatag hanggang Araw ng mga Tablet ay</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
+    <p>araw.</p>
+    <p>Mga fixed anchor ito sa timeline, ngunit ang Pastafari na petsang ipinapakita para sa mga ito ay nakadepende pa rin sa araw ng pagkilos kung saan sila tinatanong.</p>
+  </section>
+
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>Kuwento ng site</h3>
+    <p>Sa editorial story ng site, inilalarawan ang kalendaryo bilang bahagi ng paglikha at bilang sistemang ginamit ng sangkatauhan nang hindi lubos na nauunawaan, hanggang sa muli itong maipasa sa makabagong panahon.</p>
+    <p>Kuwento ito ng site; hindi dapat ilahad ang bawat narrative detail na para bang tahasang technical claim ito ng Megillah.</p>
+    <p>Ang mismong muling pagpasa ay isang fixed historical event. Mas mainam na ipakita nang dynamic ang <strong>Pastafari nitong petsa</strong> sa ilalim ng kasalukuyang araw ng pagkilos kaysa i-freeze magpakailanman bilang iisang petsa.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>Para sa advanced user: reverse conversion</h2>
+  <p>Kung alam ang araw ng pagkilos na <code>c</code>, napakahigpit ng hangganan ng reverse conversion. Sa loob ng kilalang Pastafari na taon, ang</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{pangalan ng cutlet},\text{araw sa cutlet})</code></pre>
+  <p>ay kumikilala sa hindi hihigit sa isang araw. Ganoon din ang</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{pangalan ng buwan},\text{araw sa buwan})</code></pre>
+  <p>Kaya ang buong petsa na may kilalang araw ng pagkilos ay natatanging kumikilala sa target day.</p>
+
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Mga upper bound sa bilang ng candidate sa reverse conversion">
+    <table class="about-table">
+      <thead><tr><th scope="col">Dagdag na impormasyong alam</th><th scope="col">Pinakamaraming candidate</th></tr></thead>
+      <tbody>
+        <tr><td>Walang ibang field na alam maliban sa taon</td><td>5,778</td></tr>
+        <tr><td>Pangalan lamang ng cutlet</td><td>5,568</td></tr>
+        <tr><td>Araw lamang sa cutlet</td><td>17</td></tr>
+        <tr><td>Pangalan lamang ng buwan</td><td>123</td></tr>
+        <tr><td>Araw lamang sa buwan</td><td>47</td></tr>
+        <tr><td>Pangalan ng cutlet + araw sa cutlet</td><td>1</td></tr>
+        <tr><td>Pangalan ng buwan + araw sa buwan</td><td>1</td></tr>
+        <tr><td>Alinmang tatlong field maliban sa taon</td><td>1</td></tr>
+        <tr><td>Lahat ng apat na field maliban sa taon</td><td>1</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Kung hindi alam ang araw ng pagkilos, iba ang sitwasyon. Maaaring lumitaw ang parehong limang value sa ilalim ng magkakaibang araw ng pagkilos, at may exact example kung saan lumilitaw ang parehong buong petsa sa magkakaibang distansiya mula sa <code>c</code>.</p>
+  <p>Sa taon 5000, kahit ang sign ng distansiyang iyon ay hindi laging natutukoy ng limang value: maaaring bago ang araw ng pagkilos ang parehong buong petsa sa isang context at pagkatapos nito sa ibang context.</p>
+  <p>Kaya hindi absolute address sa timeline ang isang buong Pastafari na petsa kung hindi alam kung sa ilalim ng aling <code>c</code> ito kinalkula.</p>
+
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>Estruktura sa napakalayong panahon</h3>
+    <p>Nakahanap din ang mathematical research na hinango sa specification ng eksaktong asymptotic structure. Para sa isang <strong>fixed na araw ng pagkilos</strong> na <code>c</code>, lumilitaw ang affine periodicity kapag sapat nang malayo sa tail ng nakaraan.</p>
+    <p>Kung</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>mayroong shift <code>H_c</code>, year change <code>p_c</code>, at sapat na malayong threshold para sa parehong <code>c</code>, na lampas dito ay</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>umuulit ang apat na field na hindi taon, habang nagbabago ang numero ng taon nang fixed na halaga.</p>
+    <p>Resulta ito para sa fixed na <code>c</code>; hindi nito ipinahihiwatig ang global relation na</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>Bukas pa rin ang tanong kung tunay na magkakaiba ang mga panghuling asymptotic slope sa iba't ibang araw ng pagkilos.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>Para sa advanced user: gaano karaming history ang iniingatan ng sarsa?</h2>
+  <p>Mukhang napakaagresibong mixing mechanism ang sarsa, ngunit ipinapakita ng algebraic research na mas marami itong iniingatang impormasyon kaysa sa ipinahihiwatig ng itsura nito. Research result itong hinango sa specification, hindi bagong calendar rule.</p>
+  <p>Sa nakikitang stage 3–46, sa kaukulang asymptotic branch, naitatag ang generic injectivity: sa generic case, sapat ang impormasyong iniingatan ng state upang ma-reconstruct ang kaukulang input history at order ng mga mangkok.</p>
+  <p>Hindi rin agad nawawala ang impormasyon sa 12 panghuling paghahalo. Para sa unang limang paghahalo pagkatapos ng nakikitang patak 46, naitatag sa kaukulang canonical union ang generic invertibility nang walang dagdag na side information; para sa natitirang bahagi, may malalakas na constructive upper bound sa dami ng side information na sapat para sa reconstruction.</p>
+  <p>Bukas pa rin ang tanong kung <strong>ang huling anim na mangkok lamang</strong> ay laging sapat sa generic sense.</p>
+  <p>May ilang resultang napatunayan nang symbolic, at ang iba ay isinara sa pamamagitan ng finite exact arithmetic check. Malaki ang ibinawas ng symbolic strengthening sa computational core na kailangang pagkatiwalaan, ngunit hindi nito iyon tuluyang inalis.</p>
+  <p>Ang mga space na noong una ay mukhang nangangailangan ng paghahanap sa napakaraming path ay napaliit tungo sa mas maliliit na finite structure, kabilang ang automata na may 180 at 9 state at ang symmetry ng anim na mangkok.</p>
+  <p>May mahigpit na algebraic structure sa ilalim ng paghahalo. Hindi kailangang alam iyon upang malaman ang petsa ngayon.</p><hr>
+</section>
+
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>Kung gayon, ano talaga ang Kalendaryong Pastafari?</h2>
+  <p>Isa itong deterministic calendar kung saan ang petsa ay hindi lamang function ng target day kundi <strong>pinagsamang function ng araw ng pagkilos at araw na tinatanong</strong>.</p>
+  <p>May eksaktong limang field ang bawat petsa. Ang kasalukuyan, mula sa sarili nitong pananaw, ay laging nasa taon 5000, ngunit gumagalaw ang mismong taon 5000 kasama ng araw ng pagkilos. Maaaring napakahaba ng mga taon, tuloy-tuloy ang mga cutlet, hindi kinakailangang tuloy-tuloy ang mga buwan, at walang canonical week system.</p>
+  <p>Hindi kailangang bukas ang araw <code>n+1</code> ng isang buwan. Maaaring magkaroon bukas ng ibang Pastafari label ang parehong chronological day. Maaaring mapabilang sa dalawang magkaibang local Pastafari day ang parehong physical moment sa dalawang lugar. Hindi kailangang mula hatinggabi hanggang hatinggabi ang all-day event. At ang annual birthday ay una munang search problem, saka calendar problem.</p>
+  <p>Ngunit kapag alam ang araw ng pagkilos at araw na tinatanong, walang ambiguity: iisa lamang ang tamang sagot.</p>
+  <p>Sa huli, wala namang kailangang hingin pa sa isang kalendaryo.</p>
+</section>
