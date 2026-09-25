@@ -128,7 +128,7 @@ export default Object.freeze({
     "year.rangeLabel": "Qriqorian aralığı",
     "year.daysValue": "{count} gün",
     "year.rangeValue": "{startDate}–{endDate}",
-    "year.displayedCutletPosition": "Görüntülenen kotlet ilın {start}–{end}. günlerini kaplar.",
+    "year.displayedCutletPosition": "Göstərilən kotlet ilin {start}–{end}-ci günlərini əhatə edir.",
     "year.targetPosition": "Axtarılan tarix bu ilin {length} günü arasında {day}-ci gündür.",
     "year.monthExplainer": "Aylar il boyu kotletlərdən müstəqil şəkildə bir-birinə hörülür: ay kotletin alt bölməsi deyil və onun günləri bir neçə ayrı ardıcıllıqda görünə bilər. Buna görə ayın uzunluğu ona təyin edilmiş günlərin ümumi sayıdır; bu, mütləq bir fasiləsiz dövr demək deyil.",
     "year.cutletsSummary": "Bu ildəki kotletlər ({count})",
@@ -346,6 +346,6 @@ export default Object.freeze({
     "bowl": "Kasa",
     "drop": "Damcı",
     "gate": "Qapı",
-    "yearFiveThousand": "Dünyanın Yaratılışından Beri Beş Bin İlı"
+    "yearFiveThousand": "Dünyanın Yaradılışından bəri beş mininci il"
   }
 });
