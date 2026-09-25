@@ -124,6 +124,8 @@ Status progression for target locales: `not started → draft → semantic QA �
 
 - `nn-NO`: locale-wide variant finding: the existing locale substantially mixes Bokmål with Nynorsk (e.g. `Endre arbeidsdagen`, `Grunnleggelsesdagen`, alongside `brukar`). It requires native Nynorsk repair before serving as a terminology oracle.
 
+- `sr-RS`: locale-wide language finding: the existing locale is Croatian-leaning rather than standard Serbian (e.g. `Promijeni`, `djelovanja`, `Zdjela`). It requires native Serbian repair before serving as a terminology oracle.
+
 ## Native-language whole-site QA policy
 
 The final linguistic QA is intentionally a separate phase and will run on a dedicated branch forked from the completed translation branch, tentatively `qa/about-i18n-native-language-audit`.
