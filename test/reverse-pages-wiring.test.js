@@ -35,7 +35,7 @@ test("app wires reverse results back into the canonical calendar state", async (
 test("service worker precaches every module required by offline reverse search", async () => {
   const source = await read("docs/sw.js");
   for (const asset of [
-    "./reverse-ui.js?v=19-canonical-names",
+    "./reverse-ui.js?v=20-about-page",
     "./reverse-search-controller.js",
     "./engine/pastafari-calendar-fast.js",
     "./engine/pastafari-constraints-client.js",

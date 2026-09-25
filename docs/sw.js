@@ -15,7 +15,7 @@ const CORE_ASSETS = [
   "./about/content/he.html?v=1-hebrew-baseline",
   "./styles.css?v=14-about-page",
   "./app.js?v=23-about-page",
-  "./reverse-ui.js?v=19-canonical-names",
+  "./reverse-ui.js?v=20-about-page",
   "./reverse-search-controller.js",
   "./calendar-input-conventions.js?v=9-calendar-input-conventions",
   "./calendar-converters.js?v=9-canonical-names",
