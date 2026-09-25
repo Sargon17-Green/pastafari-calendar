@@ -3,18 +3,18 @@
 import {
   loadLocale,
   translate,
-} from "../i18n/registry.js?v=19-about-page";
+} from "../i18n/registry.js?v=20-about-i18n";
 import {
   applyDocumentLocale,
   persistLanguage,
   populateLanguageSelector,
   resolveBrowserLocale,
   urlWithLanguage,
-} from "../i18n/runtime.js?v=19-about-page";
+} from "../i18n/runtime.js?v=20-about-i18n";
 import {
   ARTICLE_FALLBACK_LOCALE,
   resolveArticleLocale,
-} from "./content/registry.js?v=2-about-review";
+} from "./content/registry.js?v=3-about-i18n";
 
 const elements = Object.fromEntries(
   [...document.querySelectorAll("[id]")].map((element) => [element.id, element]),
@@ -39,10 +39,27 @@ function applyActiveLocale() {
   syncCalendarLinks();
 }
 
+async function fetchArticle(articleLocale) {
+  const url = new URL(articleLocale.asset, import.meta.url);
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`HTTP ${response.status} while loading ${articleLocale.code}`);
+  return response.text();
+}
+
+function renderArticle(articleLocale, html) {
+  elements["article-content"].innerHTML = html;
+  elements["article-content"].lang = articleLocale.lang;
+  elements["article-content"].dir = articleLocale.dir;
+  activeArticleCode = articleLocale.code;
+  updateLanguageNotice(articleLocale.code);
+  buildTableOfContents();
+  focusHashTarget();
+}
+
 async function loadArticleForLocale(localeCode) {
-  const articleLocale = resolveArticleLocale(localeCode);
-  if (articleLocale.code === activeArticleCode && elements["article-content"].childElementCount > 0) {
-    updateLanguageNotice(articleLocale.code);
+  const requestedArticle = resolveArticleLocale(localeCode);
+  if (requestedArticle.code === activeArticleCode && elements["article-content"].childElementCount > 0) {
+    updateLanguageNotice(requestedArticle.code);
     buildTableOfContents();
     return;
   }
@@ -51,20 +68,22 @@ async function loadArticleForLocale(localeCode) {
   elements["about-load-error"].hidden = true;
 
   try {
-    const url = new URL(articleLocale.asset, import.meta.url);
-    const response = await fetch(url);
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const html = await response.text();
-    elements["article-content"].innerHTML = html;
-    elements["article-content"].lang = articleLocale.code;
-    elements["article-content"].dir = articleLocale.dir;
-    activeArticleCode = articleLocale.code;
-    updateLanguageNotice(articleLocale.code);
-    buildTableOfContents();
-    focusHashTarget();
+    let articleLocale = requestedArticle;
+    let html;
+    try {
+      html = await fetchArticle(articleLocale);
+    } catch (selectedError) {
+      if (articleLocale.code === ARTICLE_FALLBACK_LOCALE) throw selectedError;
+      console.warn(`Falling back from article locale ${articleLocale.code} to ${ARTICLE_FALLBACK_LOCALE}.`, selectedError);
+      articleLocale = resolveArticleLocale(ARTICLE_FALLBACK_LOCALE);
+      html = await fetchArticle(articleLocale);
+    }
+    renderArticle(articleLocale, html);
   } catch (error) {
     console.error(error);
     elements["article-content"].replaceChildren();
+    activeArticleCode = null;
+    elements["about-language-notice"].hidden = true;
     elements["about-load-error"].hidden = false;
     elements["about-load-error"].textContent = t("about.loadError");
     elements["about-toc-list"].replaceChildren();
