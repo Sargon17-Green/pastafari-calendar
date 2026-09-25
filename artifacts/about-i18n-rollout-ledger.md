@@ -80,7 +80,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | ur | ur-PK | rtl | partial | draft |
 | uz | uz-UZ | ltr | partial | not started |
 | vi | vi-VN | ltr | partial | draft |
-| yo | yo-NG | ltr | partial | not started |
+| yo | yo-NG | ltr | partial | draft |
 | zh | zh-CN | ltr | partial | draft |
 | zu | zu-ZA | ltr | partial | draft |
 
