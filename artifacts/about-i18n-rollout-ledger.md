@@ -126,6 +126,15 @@ Status progression for target locales: `not started → draft → semantic QA �
 
 - `sr-RS`: locale-wide language finding: the existing locale is Croatian-leaning rather than standard Serbian (e.g. `Promijeni`, `djelovanja`, `Zdjela`). It requires native Serbian repair before serving as a terminology oracle.
 
+## Draft-completion mechanical checkpoint — 2026-09-25
+
+- `LOCALES` at this branch contains **72 locales**: Hebrew plus 71 target locales.
+- `docs/about/content/` now contains **72 locale articles**, exactly one for every registered locale.
+- All 71 target-locale rows are at `draft`; none has been promoted to semantic QA / linguistic QA yet.
+- Full mechanical audit was run in batches across every target locale. Each article has exactly the canonical 29 stable IDs, no duplicate IDs, both semantic tables with 19 and 9 body rows respectively, all required hard literals/formulas/hashes, no unintended Hebrew leakage, and its locale module has exactly 11 `about.*` shell keys.
+- During closure, the first audit helper exposed a real test bug: it matched only two-letter locale codes and therefore missed `fil`. The audit was corrected to accept 2–3 letter registry codes, `fil` was added and verified, and the final audit covered all 72 locales.
+- Native-language whole-site LLM QA remains pending by design. The required next phase is one locale at a time, with the reviewing conversation itself conducted in that locale and explicitly searching the whole site for unnatural language, foreign-language leakage, terminology drift, BiDi/layout issues where relevant, and semantic discrepancies.
+
 ## Native-language whole-site QA policy
 
 The final linguistic QA is intentionally a separate phase and will run on a dedicated branch forked from the completed translation branch, tentatively `qa/about-i18n-native-language-audit`.
