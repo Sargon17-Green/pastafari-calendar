@@ -44,7 +44,10 @@ const SCOPE_URL = new URL(self.registration.scope);
 const scoped = (path) => new URL(path, SCOPE_URL).href;
 const ENGLISH_LOCALE_ASSET = CORE_ASSETS.find((path) => path.startsWith("./i18n/locales/en.js?"));
 if (!ENGLISH_LOCALE_ASSET) throw new Error("English fallback locale is missing from CORE_ASSETS.");
-const LOCALE_REVISION_SEARCH = new URL(scoped(ENGLISH_LOCALE_ASSET)).search;\nconst HEBREW_ARTICLE_ASSET = CORE_ASSETS.find((path) => path.startsWith("./about/content/he.html?"));\nif (!HEBREW_ARTICLE_ASSET) throw new Error("Hebrew fallback article is missing from CORE_ASSETS.");\nconst ARTICLE_REVISION_SEARCH = new URL(scoped(HEBREW_ARTICLE_ASSET)).search;
+const LOCALE_REVISION_SEARCH = new URL(scoped(ENGLISH_LOCALE_ASSET)).search;
+const FALLBACK_ARTICLE_ASSET = CORE_ASSETS.find((path) => path.startsWith("./about/content/he.html?"));
+if (!FALLBACK_ARTICLE_ASSET) throw new Error("Fallback article is missing from CORE_ASSETS.");
+const ARTICLE_REVISION_SEARCH = new URL(scoped(FALLBACK_ARTICLE_ASSET)).search;\nconst HEBREW_ARTICLE_ASSET = CORE_ASSETS.find((path) => path.startsWith("./about/content/he.html?"));\nif (!HEBREW_ARTICLE_ASSET) throw new Error("Hebrew fallback article is missing from CORE_ASSETS.");\nconst ARTICLE_REVISION_SEARCH = new URL(scoped(HEBREW_ARTICLE_ASSET)).search;
 
 // Core cache entries intentionally use private synthetic keys rather than the
 // public request URLs. This prevents an older active Service Worker that uses
@@ -101,6 +104,19 @@ function isOptionalLocaleRequest(url) {
   return relativePath !== null
     && OPTIONAL_LOCALE_PATH.test(relativePath)
     && url.search === LOCALE_REVISION_SEARCH;
+}
+
+function isOptionalArticleRequest(url) {
+  const relativePath = scopeRelativePath(url);
+  return relativePath !== null
+    && OPTIONAL_ARTICLE_PATH.test(relativePath)
+    && url.search === ARTICLE_REVISION_SEARCH;
+}
+
+function isRuntimeCacheableRequest(url) {
+  return OPTIONAL_BY_URL.has(url.href)
+    || isOptionalLocaleRequest(url)
+    || isOptionalArticleRequest(url);
 }
 
 function isOptionalArticleRequest(url) {
@@ -255,7 +271,7 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  if (isOptionalLocaleRequest(url)) {
+  if (isOptionalLocaleRequest(url) || isOptionalArticleRequest(url)) {
     event.respondWith(runtimeResponse(event.request, url, url.pathname));
     return;
   }
