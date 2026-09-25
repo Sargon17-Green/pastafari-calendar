@@ -90,6 +90,10 @@ Status progression for target locales: `not started → draft → semantic QA �
 
 - `af-ZA`: locale-wide language finding discovered during terminology audit: prominent existing UI strings are Dutch rather than Afrikaans (for example `Werkdag wijzigen`, `Deze site gebruiken`). Treat as a whole-site locale defect for the native-language QA phase; do not silently normalize canonical terminology from those strings while drafting the article.
 
+- `ca-ES`: locale-wide language finding: prominent existing UI strings contain Spanish/mixed Catalan rather than idiomatic Catalan (for example `Cambiar el dia de trabajo`, `Cómo usar este lloc`). Do not use those strings as a terminology oracle for the article; native Catalan review must repair the whole locale.
+
+- `gl-ES`: locale-wide language finding: prominent existing UI strings contain Portuguese forms rather than idiomatic Galician (for example `día de trabalho`). Do not use those strings as a terminology oracle for the article; native Galician review must repair the whole locale.
+
 ## Native-language whole-site QA policy
 
 The final linguistic QA is intentionally a separate phase and will run on a dedicated branch forked from the completed translation branch, tentatively `qa/about-i18n-native-language-audit`.
