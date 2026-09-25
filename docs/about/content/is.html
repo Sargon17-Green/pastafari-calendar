@@ -1,0 +1,331 @@
+<!-- Íslenska útgáfan er skrifuð beint út frá hebreska semantic master; ekkert millimál er notað. -->
+<!-- Section-ID eru hluti af stöðugum opinberum deep-link contract og eru ekki leidd af þýddum fyrirsögnum. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>Í frásögn þessa vefs er Pastafari-dagatalið sett fram sem dagatalið þar sem tíminn sjálfur varð til. Hvernig það virkar er þó skilgreint með ströngum og nákvæmum reglum.</p>
+  <p>Dagatalið festir ekki einn óbreytanlegan Pastafari-“miða” á hvern dag. Til að fá dagsetningu þarf tvo daga: <strong>aðgerðardaginn</strong>, sem útreikningurinn hefst frá, og <strong>fyrirspurnardaginn</strong>, þann dag sem spurt er um Pastafari-dagsetningu fyrir.</p>
+  <p>Ef við táknum aðgerðardaginn með <code>c</code> og fyrirspurnardaginn með <code>t</code>, er dagsetningin</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>en ekki <code>F(t)</code>. Sami fyrirspurnardagur getur því fengið aðra Pastafari-dagsetningu þegar aðgerðardagurinn breytist.</p>
+  <p>Þetta er ekki villa. Dagatalið er skilgreint einmitt svona.</p><hr>
+</div>
+
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>Úr hverju samanstendur Pastafari-dagsetning?</h2>
+  <p>Hún hefur <strong>nákvæmlega fimm hluta</strong>: árnúmer, nafn kótelettu, dag innan kótelettu, nafn mánaðar og dag innan mánaðar.</p>
+  <p>Almennt dæmi: <strong>ár 5000, kóteletta A, dagur 417 í kótelettunni, mánuður B, dagur 83 í mánuðinum.</strong></p>
+  <p>Aðgerðardagurinn, staðsetning áhorfandans, tímaröðuauðkenni dagsins eða aðrar tæknilegar upplýsingar mega birtast við hlið dagsetningarinnar, en þær eru ekki sjötta dagsetningarreiturinn.</p><hr>
+</section>
+
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>Af hverju þarf aðgerðardag?</h2>
+  <p>Í venjulegum dagatölum er eðlilegt að hugsa sér að dagsetningin “tilheyri” sjálfum deginum. Í Pastafari-dagatalinu ræðst dagsetningin af sambandi tveggja daga.</p>
+  <p>Að breyta <code>t</code> þýðir að spyrja um annan dag. Að breyta <code>c</code> getur haft miklu dýpri áhrif: mörk ára, kótelettur, mánuðir, nöfn þeirra og það hvernig mánuðirnir fléttast saman geta allt breyst.</p>
+  <p>Almanak sem reiknað er í dag þarf því ekki að vera rétt á morgun. Þetta forðar líka þeirri óþægilegu stöðu að prentað dagatal haldist gagnlegt heilt ár.</p><hr>
+</section>
+
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>Sami dagur, önnur dagsetning</h2>
+  <p>Greina þarf á milli <strong>auðkennis dagsins</strong> og <strong>Pastafari-framsetningar hans</strong>. Hið fyrra er fastur staður tiltekins dags á tímalínunni; hið síðara eru þau fimm gildi sem fást þegar dagurinn er sýndur undir tilteknum aðgerðardegi.</p>
+  <p>Í vörunni og API má líta á hið fyrra sem <code>day-id</code>: tímaröðuauðkenni sem breytist ekki þótt framsetningin breytist. Hins vegar þurfa</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre>
+  <p>og</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>ekki að vera jöfn.</p>
+  <p>Því getur handvirk breyting á aðgerðardegi breytt Pastafari-dagsetningunni sem sýnd er fyrir sama dag, án þess að dagurinn sjálfur færist nokkuð á tímalínunni.</p>
+  <p>Sama regla gildir um atburði. Fundur, fæðing eða sögulegur atburður ætti að vera tengdur föstu tímaröðuauðkenni; Pastafari-dagsetningu hans má endurreikna eftir birtingarsamhengi.</p>
+  <p>Merkingin getur breyst. Atburðurinn ekki.</p><hr>
+</section>
+
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>Ár 5000</h2>
+  <p>Þegar aðgerðardagurinn og fyrirspurnardagurinn eru sami dagur,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>er árnúmerið alltaf</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>Með öðrum orðum: núið er, séð frá sjálfu sér, alltaf innan árs 5000. En ár 5000 er ekki fast sögulegt tímabil; það er valið upp á nýtt í hvert sinn miðað við aðgerðardaginn.</p>
+  <p>Aðgerðardagurinn sjálfur er einnig innan árs 5000, eins og aðrir dagar sama valda árs. Því <strong>sannar það eitt að dagur sé í ári 5000 ekki að <code>t=c</code>.</strong></p>
+  <p>Árnúmerið sýnir þó stefnuna:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre>
+  <p>og</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p>Það er líka til <strong>ár 0</strong>; lengra aftur í fortíðinni koma ár með neikvæðum númerum.</p><hr>
+</section>
+
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>Ár og hlið</h2>
+  <p>Pastafari-ár getur haft</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ til }5778</code></pre>
+  <p>daga. Þetta eru canonical mörk kerfisins, ekki reynslumeðaltöl.</p>
+  <p>Ár getur því verið styttra en sólarár eða lengra en fimmtán sólarár. Ársmörkin eru byggð úr kerfi <strong>hliða</strong>; mörk kótelettna koma úr sama kerfi.</p>
+  <p>Árslok þurfa ekki að falla saman við árstíð, eina umferð Jarðar um Sól, tunglhring eða praktíska ósk um að árið fari nú loksins að klárast.</p><hr>
+</section>
+
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>Kótelettur</h2>
+  <p>Hvert ár skiptist í <strong>6 til 17 kótelettur</strong>. Kóteletta er samfellt tímabil í tímaröð.</p>
+  <p>Ef dagur 250 í kótelettu er í dag, verður dagur 251 í sömu kótelettu á morgun, nema í dag sé síðasti dagur hennar. Mörk kótelettna eru hlið og kóteletta varir að minnsta kosti</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
+  <p>daga.</p>
+  <p>Kerfið hefur 17 canonical kótelettunöfn og sama nafn endurtekur sig ekki innan sama árs. Nafnið ákvarðar hvorki lengd né staðsetningu kótelettunnar.</p><hr>
+</section>
+
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>Mánuðir og fléttun</h2>
+  <p>Hvert ár hefur</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ til }47</code></pre>
+  <p>byggingarmánuði og hverjum mánuði er úthlutað</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ til }123</code></pre>
+  <p>dögum.</p>
+  <p>En Pastafari-mánuður <strong>þarf ekki að vera samfellt tímabil</strong>. Tímaröðin gæti til dæmis verið:</p>
+  <blockquote><p>Mánuður A — dagur 14<br>Mánuður B — dagur 9<br>Mánuður A — dagur 15</p></blockquote>
+  <p>Þetta er fullkomlega gilt. Dagur 15 í mánuði A er næsti dagur <strong>þess mánaðar</strong>, jafnvel þótt dagur úr öðrum mánuði sé á milli.</p>
+  <p>“Dagur í mánuði” segir því ekki hversu margir tímaröðudagar hafa liðið frá fyrstu birtingu mánaðarins. Þetta er raðnúmer meðal þeirra daga sem úthlutað er mánuðinum á árinu. Dagur 48 merkir 48. daginn sem tilheyrir mánuðinum, ekki 47 dögum eftir fyrstu birtingu hans.</p><hr>
+</section>
+
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>Mánuðir fléttast saman</h2>
+  <p>Hugsa má mánuðina sem þræði sem liggja í gegnum árið. Hver dagur tilheyrir nákvæmlega einum mánuði; morgundagurinn getur tilheyrt öðrum mánuði, og síðar getur fyrri mánuðurinn komið aftur og haldið áfram með næsta númeri.</p>
+  <p>Fléttunin hefur reglur, þar á meðal takmarkanir á röð fyrstu og síðustu birtinga mánaða. En engin krafa er um að einn mánuður ljúki áður en annar byrjar.</p>
+  <ul>
+    <li>Kótelettan mælir staðsetningu innan samfellds tímabils.</li>
+    <li>Mánuðurinn segir til um aðild að byggingarþræði sem getur horfið og síðar birst aftur.</li>
+  </ul>
+  <p>Einn mánuður getur farið í gegnum margar kótelettur, og innan einnar kótelettu geta margir mánuðir birst. Upphaf og endir kerfanna tveggja þurfa ekki að falla saman.</p><hr>
+</section>
+
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>Næsti dagur mánaðarins er ekki endilega á morgun</h2>
+  <p>Ef í dag er dagur 17 í tilteknum mánuði, þá er dagur 18 í sama mánuði <strong>næsta birting þess mánaðar</strong>. Hún getur verið á morgun eða miklu síðar.</p>
+  <p><strong>Á morgun</strong> er næsti tímaröðudagur; <strong>næsti dagur mánaðarins</strong> er næsta birting sama mánaðar.</p>
+  <p>Sömuleiðis þýðir “lok mánaðar” ekki að lokin séu tímaröðulega nálægt. Mánuður með 120 daga getur verið á degi 119 í dag og dagur 120 komið miklu síðar innan sama árs.</p><hr>
+</section>
+
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>Engar vikur eru</h2>
+  <p>Núverandi canonical specification <strong>skilgreinir ekkert vikukerfi</strong>. Engin canonical sjö daga eining er til, engin Pastafari-nöfn á vikudögum og engin regla sem gerir tvo daga að “sama vikudegi”.</p>
+  <p>Auðvitað má leggja borgaralegt vikukerfi utan á; það er einfaldlega ekki hluti af Pastafari-dagsetningunni.</p><hr>
+</section>
+
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>Nöfn</h2>
+  <p>Það eru 17 canonical kótelettunöfn og 47 canonical mánaðarnöfn. Innan eins árs birtist hvert nafn í sínum flokki í mesta lagi einu sinni.</p>
+  <p>Auðkenni nafnsins er canonical og merkingarbært; það er ekki niðurstaða atkvæðagreiðslu milli mismunandi stafsetninga, þýðinga eða implementations. Um merkingu nafnanna hefur hebreska Megillah hæsta vald; þýðingar og umritanir eru aðeins birtingarlög.</p>
+  <p>Nafnið er heldur ekki falinn lengdarkóði. Nafn tiltekinnar kótelettu eða mánaðar gerir eininguna ekki sjálfkrafa lengri eða styttri.</p><hr>
+</section>
+
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>Lítil staðreynd um mánuði</h2>
+  <p>Það eru 47 mánaðarnöfn og mánuður getur mest náð degi 123. Fjöldi setningafræðilega mögulegra para af gerðinni “mánaðarnafn + dagnúmer í mánuði” er því</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>Hver dagur ársins gerir nákvæmlega eitt slíkt par raunverulegt. Ef lengd ársins er <code>L</code>, birtast nákvæmlega <code>L</code> pör. Þar sem</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>verður hvert ár að skilja eftir að minnsta kosti</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre>
+  <p>möguleg pör ónotuð. Jafnvel lengsta árið hefur ekki nógu marga daga til að nota þau öll.</p><hr>
+</section>
+
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>Hvernig er dagatalið reiknað?</h2>
+  <p>Innri útreikninginn köllum við hér <strong>sósuna</strong>. Í miðju hans er frumtalan</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>Ferlið felur í sér fimm input counter, 7 faldar dropar, 46 sýnilega dropa, 6 skálar, breytilegar skálaröð, 12 lokablöndur, seal fyrir mismunandi svör, combinatorial selection, smíði hliða, val ára, skiptingu kótelettna, val nafna, smíði mánaða og fléttun mánaðardaga.</p>
+  <p>Loka-update eru <strong>samhliða</strong>: í hverri blöndu eru öll sex nýju gildin reiknuð úr sama gamla state og aðeins síðan eru allar sex skálarnar uppfærðar í einu.</p>
+  <p>Í 12 lokablöndunum er eitt sérstaklega mikilvægt canonical smáatriði. Ef <code>S</code> er summa sex gömlu skálanna og <code>r</code> er númer blöndunnar, reiknar kerfið</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p><code>R</code> er <strong>vistaða summan</strong>. Bæði val á skálaröð og innri update blöndunnar nota <code>R</code>, ekki hráu summuna <code>S</code>.</p>
+  <p>Eldri útgáfur sem sendu hráu summuna inn í þetta update lýsa ekki lengur núverandi canonical semantics. Dæmi sem byggja á gömlu reglunni ætti að telja úrelt þar til þau hafa verið staðfest aftur.</p>
+  <p>Eftir blöndurnar heldur answer ring einnig áfram röðinni sem var lock við sýnilega dropa 46; hún á ekki sjálfkrafa að vera skipt út fyrir röð síðustu blöndunnar.</p><hr>
+</section>
+
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice og Wide Choice</h2>
+  <p>Fyrir tiltölulega lítil selection space er <strong>Short Choice</strong> notað. Það notar rejection sampling til að forðast einfalt modulo bias.</p>
+  <p>Fyrir mjög stór space er <strong>Wide Choice</strong> notað. Ekki má eigna því eiginleika sem specification tryggir ekki.</p>
+  <p>Wide Choice jafngildir ekki því að mynda óháða og jafnt dreifða base-<code>Q</code> tölustafi þar til index fæst. Því leiðir ekki af þessu að hvert valid choice verði endilega að hafa sömu jákvæðu líkur. Í nógu stórum space geta verið valid choice sem þessi mechanism nær aldrei til.</p>
+  <p>Dagatalið sjálft er áfram fullkomlega deterministic. “Choice” er heiti algorithmic stage, ekki random lottery við notkun.</p><hr>
+</section>
+
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>Byggingaratlas</h2>
+  <p>Hingað til höfum við talað um reglur dagatalsins. Næstu tölur eru annars konar upplýsingar: <strong>reynsluniðurstöður</strong> úr stórri computational sample.</p>
+  <p>Atlasinn var byggður með engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> og innihélt 4,096 aðgerðardaga; árin 4990–5010 fyrir hvern þeirra; 86,016 ársbyggingar; 625,437 kótelettur; 3,535,422 byggingarmánuði; meira en 356 milljón samfelld mánaðarsegmint; og meira en 364 milljón færslur frá degi <code>n</code> í dag <code>n+1</code> í sama mánuði.</p>
+  <p>Þessar tölur lýsa þessu corpus, ekki canonical lögmálum.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Mæld gögn úr byggingaratlasnum">
+    <table class="about-table">
+      <thead><tr><th scope="col">Mæld stærð</th><th scope="col">Niðurstaða í úrtaki</th></tr></thead>
+      <tbody>
+        <tr><td>Meðallengd árs</td><td>4,275.182 dagar</td></tr>
+        <tr><td>Miðgildi árslengdar</td><td>4,343</td></tr>
+        <tr><td>Mælt lágmark / hámark</td><td>716 / 5,778</td></tr>
+        <tr><td>Meðalfjöldi kótelettna á ári</td><td>7.271</td></tr>
+        <tr><td>Ár með nákvæmlega 6 kótelettur</td><td>42.00%</td></tr>
+        <tr><td>Ár með 6–8 kótelettur</td><td>81.29%</td></tr>
+        <tr><td>Meðallengd kótelettu</td><td>587.963 dagar</td></tr>
+        <tr><td>Miðgildi kótelettulengdar</td><td>560</td></tr>
+        <tr><td>Meðalfjöldi mánaða á ári</td><td>41.102</td></tr>
+        <tr><td>Miðgildi fjölda mánaða</td><td>43</td></tr>
+        <tr><td>Ár með 47 mánuði</td><td>15.63%</td></tr>
+        <tr><td>Ár með að minnsta kosti 45 mánuði</td><td>36.81%</td></tr>
+        <tr><td>Meðallengd byggingarmánaðar</td><td>104.014 dagar</td></tr>
+        <tr><td>Miðgildi mánaðarlengdar</td><td>115</td></tr>
+        <tr><td>Meðalfjöldi samfelldra segminta á mánuð</td><td>100.897</td></tr>
+        <tr><td>Hlutfall eins dags mánaðarsegminta</td><td>97.482%</td></tr>
+        <tr><td>Líkur á að tveir aðliggjandi dagar séu í sama mánuði</td><td>2.9976%</td></tr>
+        <tr><td>Meðalfjöldi daga úr öðrum mánuðum milli <code>n</code> og <code>n+1</code> í sama mánuði</td><td>40.408</td></tr>
+        <tr><td>Meðal-span milli fyrstu og síðustu birtingar mánaðar</td><td>4,266.653 dagar</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Í reynd getur mánuður með um hundrað dögum verið dreifður yfir nær heilt Pastafari-ár.</p>
+  <p>Sami atlas sýndi einnig náttúrulegt lengdar-bias í kringum ár 5000. Í úrtakinu var “venjulegt” ár að meðaltali um 4,262 dagar. Ef ár eru weight eftir fjölda daga í þeim hækkar meðaltalið í um 4,466 daga; ár 5000 sjálft var að meðaltali um 4,499 dagar.</p>
+  <p>Ástæðan er einföld: ár 5000 verður að innihalda aðgerðardaginn. Lengra ár hefur fleiri daga þar sem það getur verið árið sem inniheldur aðgerðardaginn.</p>
+  <p>Samband milli nafns einingar og lengdar hennar var einnig mjög veikt í úrtakinu. Þetta sannar ekki fullkomna mathematical independence, en atlasinn gefur ekkert hagnýtt signal um að nöfnin hafi verið hönnuð til að encode lengd.</p>
+  <p>Auk þess eru 86,016 ársbyggingarnar ekki 86,016 fullkomlega independent sample: milli upphafs- og endahliðs eru aðeins 24,786 mismunandi interval. Aðgerðardagar sem liggja nálægt geta valið sama year interval og samt myndað ólíka innri structure.</p>
+  <p>Atlasinn lýsir því mældri hegðun implementation vel, en ekki má breyta honum í probability theorem um allar mögulegar calendar structure.</p><hr>
+</section>
+
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>Afmæli og árstíðarbundnar endurkomur</h2>
+  <p>Hér þarf fyrst að skilgreina hvað “sami dagur á hverju ári” merkir. Eðlilegar recurrence coordinate eru <code>(mánaðarnafn, dagur í mánuði)</code> og <code>(kótelettunafn, dagur í kótelettu)</code>; skilyrði má einnig sameina.</p>
+  <p>Pastafari-afmæli er því ekki einfaldlega <code>RRULE:FREQ=YEARLY</code>. Finna þarf næsta ár sem uppfyllir valda recurrence condition, og upprunalegi atburðurinn telst ekki sjálfkrafa vera eigin “næsta birting”.</p>
+  <p>Að breyta aðgerðardeginum aðeins fyrir birtingu ætti ekki að breyta auðkenni manns, fæðingarstund eða aldri.</p>
+  <p>Í exact scan af 4,096 self-referential date var hvert næsta Pastafari-ár prófað allt að 250,000 ár í hvora átt:</p>
+  <ul>
+    <li>Fyrir <code>(mánaðarnafn, dagur í mánuði)</code> var miðgildi fyrstu endurkomu 1 Pastafari-ár; 77.56% komu aftur í næsta ári, 93.77% innan tveggja ára, 99.44% innan fimm; mælt maximum var 21 ár.</li>
+    <li>Fyrir <code>(kótelettunafn, dagur í kótelettu)</code> var miðgildið 3 ár; 88.89% fundust innan 10 ára, en distribution hefur mjög þungan heavy tail og mælt maximum náði 51,954 Pastafari-árum.</li>
+  </ul>
+  <p>Þetta eru <strong>reynsluniðurstöður úr prófuðu corpus</strong>; þær sanna ekki að sérhver möguleg endurkoma hljóti að gerast og gefa ekki guarantee um maximum waiting time.</p><hr>
+</section>
+
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>Hvernig er fundur ákveðinn?</h2>
+  <p>Ef tveir vilja semja um fund með Pastafari-dagsetningu einni saman verða þeir að minnsta kosti að vera sammála um fimm dagsetningarreiti og aðgerðardaginn sem notaður var í útreikningnum. Betra er að vista aðgerðardaginn sem fast day identity en sem orðið “í dag”; annars geta tveir reiknað tvö mismunandi dagatöl.</p>
+  <ul>
+    <li>“á morgun” er næsti tímaröðudagur;</li>
+    <li>“næsti dagur mánaðarins” er næsta birting þess mánaðar;</li>
+    <li>“lok mánaðarins” eru síðasta birting þess mánaðar;</li>
+    <li>“allur mánuðurinn” getur þýtt set daga sem tilheyra mánuðinum eða allt tímaröðu-span frá fyrstu til síðustu birtingar;</li>
+    <li>“næsta ár” er næsta árið í dagatalinu sem byggt er undir valda aðgerðardeginum.</li>
+  </ul>
+  <p>Fyrir sérstaklega mikilvægan fund má einnig vista absolute chronological day eða moment. Dagatalið móðgast ekki.</p><hr>
+</section>
+
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>Ferðalög, atburðir og all-day</h2>
+  <p>Atburður og staðbundna merkið sem honum er sýnt eru ekki það sama. Atburður með ákveðinni klukkustund ætti að vera tengdur við fast chronological moment. Ferðalag færir hann ekki í tíma, en staðbundna Pastafari-dagsetningin fyrir sama physical moment getur breyst, því skilgreiningin á “staðbundnum degi” ræðst af staðsetningu.</p>
+  <p>Við <strong>all-day</strong>-atburð er munurinn enn meiri. Borgaralegur heilsdagsatburður gengur venjulega frá miðnætti til næsta miðnættis; Pastafari-heilsdagsatburður ætti að ganga frá staðbundnum mörkum Pastafari-dags til næstu marka. Yfirleitt eru þetta ekki sömu moments.</p>
+  <p>Því getur blindur export á Pastafari-atburði sem borgaralegum “heilsdags”-atburði breytt merkingu hans. Til að varðveita hana rétt þarf að vista chronological anchor og viðeigandi location/day-boundary context, ekki aðeins <code>all-day</code> flag.</p><hr>
+</section>
+
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>Hvenær skiptir dagurinn um?</h2>
+  <p>Staðbundni Pastafari-dagurinn skiptir ekki um á miðnætti. Mörk hans ráðast af <strong>topocentric lower meridian transit miðju Venusar yfir staðbundinn hádegisbaug</strong>.</p>
+  <p>Þetta er staðbundinn stjarnfræðilegur atburður sem ræðst af staðsetningu. Transit þarf ekki að gerast kl. 00:00, borgaralegt time zone ákvarðar það ekki, það færist ekki bara vegna þess að daylight saving time byrjar eða endar, og Venus þarf ekki að vera sýnileg berum augum.</p>
+  <p>Sama physical moment getur á tveimur stöðum verið sitthvorum megin við staðbundin dagamörk. Ef kerfið hefur enga nothæfa user location er default fallback location vörunnar <strong>Kisurra</strong>.</p><hr>
+</section>
+
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>Prentað dagatal og handútreikningur</h2>
+  <p>Það má prenta Pastafari-dagatalið; aðeins þarf að taka fram fyrir hvaða aðgerðardag það var reiknað. Slíkt dagatal sýnir byggingu tímans frá sjónarhorni þess dags; ef aðgerðardagurinn breytist getur þurft nýtt dagatal. Prentarinn hefur því enn starf.</p>
+  <p>Þar sem specification er fullkomin og deterministic má reikna allt með höndunum líka: reiknið input counter, farið í gegnum 7 falda og 46 sýnilega dropa, update sex skálar, gerið 12 lokablöndurnar, myndið svörin, byggið hliðin, veljið ár og kótelettur, framkvæmið combinatorial selection, veljið nöfnin og fléttið síðan mánuðina.</p>
+  <p>Í staðinn þarf enginn að muna hvenær febrúar hefur 28 daga og hvenær 29.</p><hr>
+</section>
+
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>Hvað er Seer þá?</h2>
+  <p>Við hlið canonical implementation er hraður engine sem heitir <strong>Pastafarian Calendar Seer</strong>. Seer er ekki uppspretta valds: rétta dagsetningin ræðst af Megillah og canonical calculation. Ef Seer passar ekki við þau er villan í Seer.</p>
+  <p>Hlutverk hans er að keyra sömu query hratt og skila niðurstöðu á formi sem auðvelt er að integrate í vörur.</p>
+  <p>Í beinni verification við ritun þessarar síðu náði Seer meðal annars yfir date og “now” query, batch, day range, reverse conversion frá Pastafari-dagsetningu til target day, year structure retrieval, ákvörðun active working day, Node API, browser/HTTP client, CLI, HTTP v1 service, OpenAPI 3.1 contract, native implementations og distribution package, auk verified container deployment.</p>
+  <p>Gamla fullyrðingin um að Seer hafi ekkert public API er ekki lengur rétt. Nú er til skýrt og stöðugt HTTP v1 contract með endpoint fyrir date, range, batch, year, reverse, aðgerðardag, metadata, locales og status.</p>
+  <p>21. september 2026 var public HTTPS deployment á Render prófað í raun: á live service voru exact query, stórt range, restart, cold wake og hegðun undir load staðfest.</p>
+  <p>Project documentation greinir þó enn á milli public beta/evaluation deployment og varanlegrar hosted production service með SLA. Þess vegna ætti hugtaksskýringarsíða ekki að freeze server address, hosting provider eða version number eins og það væri hluti af dagatalinu sjálfu.</p>
+  <p>Seer má nota precomputation, sérstaka representation, SIMD, algebra og aðrar shortcut. Hann þarf ekki að líkja eftir allri computational history canonical implementation skref fyrir skref svo lengi sem hann framkvæmir sömu merkingarlegu aðgerð og skilar sama svari.</p>
+  <p>Optimization er ekki annað vald.</p><hr>
+</section>
+
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>Uppruni, Stofndagur og Dagur taflnanna</h2>
+  <p>Hér er sérstaklega mikilvægt að aðgreina canonical time anchor skýrt frá frásögn vefsins.</p>
+
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>Festipunktar</h3>
+    <p>Kerfið hefur einn fastan reference day sem kallast <strong>Stofndagur</strong>. Í proleptíska gregoríska dagatalinu er hann <strong>22. desember 41,222 f.Kr.</strong>.</p>
+    <p>Stofndagur er ekki “upphaf tímans”; hann er computational anchor.</p>
+    <p>Numbering daga kringum hann notar jákvæð oddatölur/sléttar tölur: Stofndagur=1; síðari dagar=3, 5, …; aftur í fortíðina er fyrri dagurinn=2, síðan 4, 6, … . Þannig eru báðar hliðar anchor encode í þessum counter án neikvæðra day number.</p>
+    <p>Seinni anchor er <strong>Dagur taflnanna</strong>: <strong>15. júní 763 f.Kr. í proleptíska júlíanska dagatalinu</strong>, það er <strong>7. júní 763 f.Kr. í proleptíska gregoríska dagatalinu</strong>.</p>
+    <p>Nákvæm fjarlægð frá Stofndegi að Degi taflnanna er</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
+    <p>dagar.</p>
+    <p>Þetta eru fastir anchor á tímalínunni, en Pastafari-dagsetningin sem þeim er sýnd ræðst samt af aðgerðardeginum sem spurt er frá.</p>
+  </section>
+
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>Frásögn vefsins</h3>
+    <p>Í ritstjórnarfrásögn vefsins er dagatalinu lýst sem hluta sköpunarinnar og sem kerfi sem mannkynið notaði án þess að skilja það að fullu, þar til því var komið aftur á framfæri á nútímaöld.</p>
+    <p>Þetta er frásögn vefsins; ekki ætti að setja hvert narrative detail fram eins og það væri bein technical claim úr Megillah.</p>
+    <p>Atburðurinn þegar kerfið var afhent aftur er sjálfur fastur sögulegur atburður. Betra er að sýna <strong>Pastafari-dagsetningu</strong> hans dynamic undir núverandi aðgerðardegi en freeze hana að eilífu sem eina dagsetningu.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>Fyrir lengra komna: reverse conversion</h2>
+  <p>Ef aðgerðardagurinn <code>c</code> er þekktur er reverse conversion mjög stranglega takmarkað. Innan þekkts Pastafari-árs auðkennir</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{kótelettunafn},\text{dagur í kótelettu})</code></pre>
+  <p>í mesta lagi einn dag. Sama gildir um</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{mánaðarnafn},\text{dagur í mánuði})</code></pre>
+  <p>Full dagsetning með þekktum aðgerðardegi auðkennir því target day ótvírætt.</p>
+
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Efri mörk á fjölda candidate í reverse conversion">
+    <table class="about-table">
+      <thead><tr><th scope="col">Aðrar þekktar upplýsingar</th><th scope="col">Hámarksfjöldi candidate</th></tr></thead>
+      <tbody>
+        <tr><td>Enginn reitur þekktur nema árið</td><td>5,778</td></tr>
+        <tr><td>Aðeins kótelettunafnið</td><td>5,568</td></tr>
+        <tr><td>Aðeins dagur í kótelettu</td><td>17</td></tr>
+        <tr><td>Aðeins mánaðarnafnið</td><td>123</td></tr>
+        <tr><td>Aðeins dagur í mánuði</td><td>47</td></tr>
+        <tr><td>Kótelettunafn + dagur í kótelettu</td><td>1</td></tr>
+        <tr><td>Mánaðarnafn + dagur í mánuði</td><td>1</td></tr>
+        <tr><td>Hvaða þrír reitir sem er nema árið</td><td>1</td></tr>
+        <tr><td>Allir fjórir reitir nema árið</td><td>1</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Ef aðgerðardagurinn er óþekktur er staðan önnur. Sömu fimm gildi geta birst undir mismunandi aðgerðardögum og til eru exact example þar sem sama fulla dagsetning kemur fram í mismunandi fjarlægð frá <code>c</code>.</p>
+  <p>Í ári 5000 er jafnvel sign þessarar fjarlægðar ekki alltaf ákvarðað af fimm gildunum: sama fulla dagsetning getur í einu context verið fyrir aðgerðardaginn en í öðru eftir hann.</p>
+  <p>Full Pastafari-dagsetning er því ekki absolute address á tímalínunni ef ekki er vitað undir hvaða <code>c</code> hún var reiknuð.</p>
+
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>Bygging mjög fjarlægs tíma</h3>
+    <p>Stærðfræðirannsóknir leiddar af specification hafa einnig fundið nákvæma asymptotic structure. Fyrir <strong>fastan aðgerðardag</strong> <code>c</code> birtist affine periodicity nógu langt út í tail fortíðarinnar.</p>
+    <p>Ef</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>þá eru til fyrir sama <code>c</code> shift <code>H_c</code>, year change <code>p_c</code> og nægilega fjarlægt threshold, eftir sem</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>hinir fjórir reitirnir endurtaka sig en árnúmerið breytist um fasta stærð.</p>
+    <p>Þetta er niðurstaða fyrir fast <code>c</code>; af henni leiðir ekki alþjóðlega sambandið</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>Spurningin hvort endanlegir asymptotic slope séu raunverulega ólíkir milli mismunandi aðgerðardaga er enn opin.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>Fyrir lengra komna: hversu mikla sögu varðveitir sósan?</h2>
+  <p>Sósan lítur út eins og mjög árásargjarn mixing mechanism, en algebraic research sýnir að hún varðveitir miklu meiri upplýsingar en útlitið gefur til kynna. Þetta er research result leitt af specification, ekki ný dagatalsregla.</p>
+  <p>Í sýnilegu stage 3–46, á viðeigandi asymptotic branch, hefur generic injectivity verið staðfest: í generic case varðveitir state nægar upplýsingar til að endurgera viðeigandi input history og skálaröðina.</p>
+  <p>Upplýsingarnar hverfa heldur ekki samstundis í 12 lokablöndunum. Fyrir fyrstu fimm blöndurnar eftir sýnilega dropa 46 hefur generic invertibility verið staðfest á viðeigandi canonical union án viðbótar side information; fyrir afganginn eru þekkt sterk constructive upper bound á því magni side information sem nægir fyrir reconstruction.</p>
+  <p>Spurningin hvort <strong>aðeins síðustu sex skálarnar</strong> séu alltaf nægjanlegar í generic sense er enn opin.</p>
+  <p>Sumar niðurstöður voru sannaðar symbolic, aðrar lokaðar með finite exact arithmetic check. Symbolic strengthening minnkaði computational core sem þarf að treysta verulega, en eyddi honum ekki alveg.</p>
+  <p>Space sem virtust í fyrstu krefjast leitar yfir gífurlegan fjölda path voru minnkuð niður í miklu minni finite structure, þar á meðal automata með 180 og 9 state og symmetry sex skálanna.</p>
+  <p>Undir blönduninni liggur ströng algebraic structure. Það þarf ekki að þekkja hana til að vita dagsetningu dagsins í dag.</p><hr>
+</section>
+
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>Hvað er Pastafari-dagatalið þá í raun?</h2>
+  <p>Það er deterministic calendar þar sem dagsetningin er ekki bara function af target day heldur <strong>sameiginleg function aðgerðardagsins og fyrirspurnardagsins</strong>.</p>
+  <p>Hver dagsetning hefur nákvæmlega fimm reiti. Núið er frá sínu eigin sjónarhorni alltaf í ári 5000, en ár 5000 sjálft færist með aðgerðardeginum. Ár geta verið mjög löng, kótelettur eru samfelldar, mánuðir ekki endilega, og ekkert canonical week system er til.</p>
+  <p>Dagur <code>n+1</code> í mánuði þarf ekki að vera á morgun. Sami chronological day getur fengið annað Pastafarian label á morgun. Sama physical moment getur á tveimur stöðum tilheyrt tveimur mismunandi local Pastafari day. All-day event þarf ekki að standa frá miðnætti til miðnættis. Og annual birthday er fyrst search problem og síðan calendar problem.</p>
+  <p>En ef aðgerðardagurinn og fyrirspurnardagurinn eru þekktir er engin ambiguity: rétt svar er aðeins eitt.</p>
+  <p>Þegar allt kemur til alls þarf dagatal ekki að gera meira en þetta.</p>
+</section>
