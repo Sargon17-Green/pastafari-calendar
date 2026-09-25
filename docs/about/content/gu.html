@@ -1,0 +1,331 @@
+<!-- ગુજરાતી આવૃત્તિ હિબ્રુ semantic master પરથી સીધી લખાઈ છે; કોઈ pivot ભાષાનો ઉપયોગ થયો નથી. -->
+<!-- Section ID સ્થિર public deep-link contract નો ભાગ છે; તે અનુવાદિત શીર્ષકોમાંથી બનાવાતા નથી. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>આ સાઇટની વાર્તામાં પાસ્તાફારી કેલેન્ડરને એવો કેલેન્ડર તરીકે રજૂ કરવામાં આવે છે જેમાં સમય પોતે રચાયો હતો. પરંતુ તે કેવી રીતે કામ કરે છે તેની વ્યવસ્થા કડક અને સ્પષ્ટ રીતે નિર્ધારિત છે.</p>
+  <p>આ કેલેન્ડર દરેક દિવસે એક અચળ પાસ્તાફારી “લેબલ” ચોંટાડતું નથી. તારીખ મેળવવા માટે બે દિવસ જોઈએ: ગણતરી જ્યાંથી શરૂ થાય તે <strong>ક્રિયા દિવસ</strong> અને જે દિવસની પાસ્તાફારી તારીખ પૂછવામાં આવે તે <strong>પૂછાયેલો દિવસ</strong>.</p>
+  <p>ક્રિયા દિવસને <code>c</code> અને પૂછાયેલા દિવસને <code>t</code> તરીકે લખીએ તો તારીખ છે</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p><code>F(t)</code> નહીં. તેથી એક જ પૂછાયેલો દિવસ, ક્રિયા દિવસ બદલાતાં, જુદી પાસ્તાફારી તારીખ મેળવી શકે છે.</p>
+  <p>આ ભૂલ નથી. કેલેન્ડરની વ્યાખ્યા જ એવી છે.</p><hr>
+</div>
+
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>પાસ્તાફારી તારીખમાં શું હોય છે?</h2>
+  <p>તેના <strong>ચોક્કસ પાંચ ભાગ</strong> છે: વર્ષ નંબર, કટલેટનું નામ, કટલેટમાં દિવસ, મહિનાનું નામ અને મહિનામાં દિવસ.</p>
+  <p>સામાન્ય ઉદાહરણ: <strong>વર્ષ 5000, કટલેટ A, કટલેટનો 417મો દિવસ, મહિનો B, મહિનાનો 83મો દિવસ.</strong></p>
+  <p>ક્રિયા દિવસ, નિરીક્ષકનું સ્થાન, દિવસની સમયક્રમિક ઓળખ અથવા બીજી તકનીકી માહિતી તારીખની બાજુમાં બતાવી શકાય છે, પરંતુ તે તારીખનું છઠ્ઠું ક્ષેત્ર નથી.</p><hr>
+</section>
+
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>ક્રિયા દિવસની જરૂર શા માટે?</h2>
+  <p>સામાન્ય કેલેન્ડરમાં તારીખ જાણે તે દિવસની પોતાની વિશેષતા હોય એમ માનવું સ્વાભાવિક છે. પાસ્તાફારી કેલેન્ડરમાં તારીખ બે દિવસોના સંબંધ પર આધાર રાખે છે.</p>
+  <p><code>t</code> બદલવું એટલે બીજા દિવસ વિશે પૂછવું. <code>c</code> બદલવાથી વધુ ઊંડો ફેરફાર થાય છે: વર્ષોની સીમાઓ, કટલેટ, મહિના, તેમના નામ અને મહિના કેવી રીતે પરસ્પર વણાય છે તે બધું બદલાઈ શકે છે.</p>
+  <p>એટલે આજે ગણાયેલું પંચાંગ કાલે પણ સાચું જ રહેશે એવું જરૂરી નથી. આ રીતે છાપેલું કેલેન્ડર આખું વર્ષ ઉપયોગી રહી જાય તેવી અસુવિધાજનક સ્થિતિ પણ ટાળી શકાય છે.</p><hr>
+</section>
+
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>એ જ દિવસ, જુદી તારીખ</h2>
+  <p><strong>દિવસની ઓળખ</strong> અને તેનું <strong>પાસ્તાફારી પ્રસ્તુતીકરણ</strong> અલગ બાબતો છે. પહેલી બાબત સમયરેખા પરના ચોક્કસ દિવસનું સ્થિર સ્થાન છે; બીજી એ પાંચ મૂલ્યો છે જે તે દિવસને કોઈ ચોક્કસ ક્રિયા દિવસ હેઠળ બતાવતાં મળે છે.</p>
+  <p>ઉત્પાદન અને APIમાં પહેલી વસ્તુને <code>day-id</code> તરીકે વિચારવી શકાય: પ્રસ્તુતીકરણ બદલાય છતાં ન બદલાતી સમયક્રમિક ઓળખ. પરંતુ</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre>
+  <p>અને</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>સમાન હોવા જરૂરી નથી.</p>
+  <p>અટલે ક્રિયા દિવસ હાથથી બદલવાથી એ જ દિવસ માટે દેખાતી પાસ્તાફારી તારીખ બદલાઈ શકે છે, છતાં દિવસ પોતે સમયરેખા પર ક્યાંય ખસતો નથી.</p>
+  <p>ઘટનાઓ માટે પણ એ જ સિદ્ધાંત લાગુ પડે છે. મુલાકાત, જન્મ અથવા ઐતિહાસિક ઘટના સ્થિર સમયક્રમિક ઓળખ સાથે બંધાયેલી રહેવી જોઈએ; તેની પાસ્તાફારી તારીખ પ્રસ્તુતિના સંદર્ભ અનુસાર ફરી ગણાઈ શકે છે.</p>
+  <p>લેબલ બદલાઈ શકે. ઘટના નહીં.</p><hr>
+</section>
+
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>વર્ષ 5000</h2>
+  <p>જ્યારે ક્રિયા દિવસ અને પૂછાયેલો દિવસ એક જ હોય,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>ત્યારે વર્ષ નંબર હંમેશા</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>હોય છે. એટલે વર્તમાનને તેના પોતાના દૃષ્ટિકોણથી જોવામાં આવે ત્યારે તે હંમેશા વર્ષ 5000માં છે. પરંતુ વર્ષ 5000 કોઈ સ્થિર ઐતિહાસિક યુગ નથી; તે ક્રિયા દિવસની સરખામણીએ દર વખતે ફરી પસંદ થાય છે.</p>
+  <p>ક્રિયા દિવસ પોતે પણ વર્ષ 5000માં આવે છે, અને એ જ પસંદ કરેલા વર્ષના બીજા દિવસો પણ. એટલે <strong>ફક્ત વર્ષ 5000માં હોવું એ <code>t=c</code> હોવાનું સાબિત કરતું નથી.</strong></p>
+  <p>તેમ છતાં વર્ષ નંબર દિશા બતાવે છે:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre>
+  <p>અને</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p><strong>વર્ષ 0</strong> પણ છે; તેથી વધુ ભૂતકાળમાં ઋણ સંખ્યાવાળા વર્ષો આવે છે.</p><hr>
+</section>
+
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>વર્ષો અને દ્વાર</h2>
+  <p>એક પાસ્તાફારી વર્ષમાં</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ થી }5778</code></pre>
+  <p>દિવસ હોઈ શકે છે. આ વ્યવસ્થાની canonical મર્યાદાઓ છે, પ્રયોગાત્મક સરેરાશ નહીં.</p>
+  <p>અટલે વર્ષ સૌર વર્ષ કરતાં નાનું પણ હોઈ શકે અને પંદર સૌર વર્ષ કરતાં લાંબું પણ. વર્ષની સીમાઓ <strong>દ્વાર</strong> વ્યવસ્થાથી બને છે; કટલેટની સીમાઓ પણ એ જ વ્યવસ્થામાંથી આવે છે.</p>
+  <p>વર્ષનો અંત ઋતુ, પૃથ્વીની સૂર્યની એક પરિક્રમા, ચંદ્રચક્ર અથવા વર્ષ હવે તો પૂરું થવું જોઈએ એવી વ્યવહારિક ઇચ્છા સાથે મળવો જરૂરી નથી.</p><hr>
+</section>
+
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>કટલેટ</h2>
+  <p>દરેક વર્ષ <strong>6થી 17 કટલેટ</strong>માં વહેંચાય છે. કટલેટ સમયક્રમિક રીતે સતત સમયખંડ છે.</p>
+  <p>આજે જો કોઈ કટલેટનો 250મો દિવસ હોય તો, જો આજે તેનો છેલ્લો દિવસ ન હોય, કાલે એ જ કટલેટનો 251મો દિવસ હશે. કટલેટની સીમાઓ દ્વાર છે, અને એક કટલેટમાં ઓછામાં ઓછા</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
+  <p>દિવસ હોય છે.</p>
+  <p>વ્યવસ્થામાં 17 canonical કટલેટ નામ છે અને એક જ વર્ષમાં કોઈ નામ ફરી આવતું નથી. નામ કટલેટની લંબાઈ કે સ્થાન નક્કી કરતું નથી.</p><hr>
+</section>
+
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>મહિના અને વણાટ</h2>
+  <p>દરેક વર્ષમાં</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ થી }47</code></pre>
+  <p>રચનાત્મક મહિના હોય છે અને દરેક મહિનાને</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ થી }123</code></pre>
+  <p>દિવસ ફાળવવામાં આવે છે.</p>
+  <p>પરંતુ પાસ્તાફારી મહિનો <strong>સતત સમયગાળો હોવો જરૂરી નથી</strong>. ઉદાહરણ તરીકે સમયક્રમ આ રીતે હોઈ શકે:</p>
+  <blockquote><p>મહિનો A — દિવસ 14<br>મહિનો B — દિવસ 9<br>મહિનો A — દિવસ 15</p></blockquote>
+  <p>આ સંપૂર્ણ માન્ય રચના છે. A મહિનાનો 15મો દિવસ <strong>એ જ મહિનાનો</strong> આગળનો દિવસ છે, ભલે વચ્ચે બીજા મહિનાનો દિવસ આવ્યો હોય.</p>
+  <p>તેથી “મહિનામાં દિવસ” એટલે મહિનો પ્રથમ વખત દેખાયો ત્યારથી કેટલા સમયક્રમિક દિવસ વીત્યા તેનો આંકડો નથી. તે વર્ષ દરમ્યાન તે મહિનાને ફાળવાયેલા દિવસોમાં ક્રમ સંખ્યા છે. દિવસ 48 એટલે તે મહિનાનો 48મો દિવસ, પ્રથમ દેખાવ પછી 47 દિવસ નહીં.</p><hr>
+</section>
+
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>મહિના એકબીજા સાથે વણાયેલા હોય છે</h2>
+  <p>મહિનાઓને વર્ષમાંથી પસાર થતાં તાર તરીકે કલ્પી શકાય. દરેક દિવસ ચોક્કસ એક મહિનાનો હોય છે; કાલે તે બીજા મહિનાનો હોઈ શકે, પછી પહેલો મહિનો પાછો આવી પોતાની આગળની સંખ્યાથી ચાલુ રહી શકે.</p>
+  <p>આ વણાટના નિયમો છે, જેમાં મહિનાઓના પ્રથમ અને છેલ્લાં દેખાવના ક્રમ પરની મર્યાદાઓ પણ છે. પરંતુ એક મહિનો પૂરું થાય પછી જ બીજો શરૂ થવો જોઈએ એવો નિયમ નથી.</p>
+  <ul>
+    <li>કટલેટ સતત સમયખંડમાં સ્થાન માપે છે.</li>
+    <li>મહિનો એવી રચનાત્મક દોરીમાં સભ્યતા બતાવે છે જે ગાયબ થઈને પછી ફરી દેખાઈ શકે છે.</li>
+  </ul>
+  <p>એક મહિનો અનેક કટલેટ પાર કરી શકે છે, અને એક કટલેટમાં અનેક મહિના દેખાઈ શકે છે. બંને વ્યવસ્થાનો આરંભ અને અંત એક હોવો જરૂરી નથી.</p><hr>
+</section>
+
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>મહિનાનો આગળનો દિવસ એટલે કાલ નહીં જ હોય</h2>
+  <p>આજે જો કોઈ મહિનાનો 17મો દિવસ હોય, તો એ જ મહિનાનો 18મો દિવસ <strong>તે મહિનાનો આગળનો દેખાવ</strong> છે. તે કાલે પણ હોઈ શકે અને ઘણો મોડો પણ.</p>
+  <p><strong>કાલ</strong> આગળનો સમયક્રમિક દિવસ છે; <strong>મહિનાનો આગળનો દિવસ</strong> એ જ મહિનાનો આગળનો દેખાવ છે.</p>
+  <p>એ જ રીતે “મહિનાનો અંત” એટલે અંત સમયક્રમિક રીતે નજીક છે એવું નહીં. 120 દિવસનો મહિનો આજે 119મા દિવસે હોઈ શકે, જ્યારે 120મો દિવસ એ જ વર્ષમાં ઘણો પછી આવે.</p><hr>
+</section>
+
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>અઠવાડિયા નથી</h2>
+  <p>હાલની canonical specification <strong>અઠવાડિયાની કોઈ વ્યવસ્થા નક્કી કરતી નથી</strong>. સાત દિવસની canonical એકમ નથી, પાસ્તાફારી અઠવાડિયાના દિવસોના નામ નથી, અને બે દિવસને “અઠવાડિયાનો એ જ દિવસ” બનાવતો કોઈ નિયમ નથી.</p>
+  <p>અવશ્ય, નાગરિક અઠવાડિયા વ્યવસ્થા બહારથી લગાડી શકાય; તે ફક્ત પાસ્તાફારી તારીખનો ભાગ નથી.</p><hr>
+</section>
+
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>નામો</h2>
+  <p>17 canonical કટલેટ નામ અને 47 canonical મહિના નામ છે. એક જ વર્ષમાં દરેક નામ તેના જૂથમાં વધુમાં વધુ એક વાર આવે છે.</p>
+  <p>નામની ઓળખ canonical અને અર્થસભર છે; તે જુદા spelling, અનુવાદ અથવા implementation વચ્ચેના મતદાનનું પરિણામ નથી. નામોના અર્થ અંગે હિબ્રુ Megillah સર્વોચ્ચ સત્તા છે; અનુવાદ અને transliteration ફક્ત પ્રસ્તુતિના સ્તરો છે.</p>
+  <p>નામ લંબાઈનો છુપો code પણ નથી. કોઈ ખાસ કટલેટ અથવા મહિના નામ પોતે એ એકમને લાંબું કે ટૂંકું બનાવતું નથી.</p><hr>
+</section>
+
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>મહિના વિશે નાની વાત</h2>
+  <p>47 મહિના નામ છે અને એક મહિનો વધુમાં વધુ દિવસ 123 સુધી જઈ શકે છે. તેથી “મહિનાનું નામ + મહિનાના દિવસની સંખ્યા” પ્રકારના syntactically શક્ય જોડાંની સંખ્યા છે</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>વર્ષનો દરેક દિવસ ચોક્કસ એક એવું જોડું સાકાર કરે છે. જો વર્ષની લંબાઈ <code>L</code> હોય તો ચોક્કસ <code>L</code> જોડાં આવે છે. કારણ કે</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>દર વર્ષે ઓછામાં ઓછાં</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre>
+  <p>શક્ય જોડાં ગેરહાજર રહેવા જ પડે. સૌથી લાંબા વર્ષમાં પણ બધા માટે પૂરતા દિવસ નથી.</p><hr>
+</section>
+
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>કેલેન્ડરની ગણતરી કેવી રીતે થાય?</h2>
+  <p>અંદરની ગણતરીને અહીં અમે <strong>સૉસ</strong> કહીએ છીએ. તેના કેન્દ્રમાં prime number</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>છે. પ્રક્રિયામાં પાંચ input counter, 7 છુપાયેલા ટીપાં, 46 દેખાતા ટીપાં, 6 વાટકા, બદલાતી વાટકા ક્રમવ્યવસ્થા, 12 અંતિમ મિશ્રણ, જુદા જવાબો માટે seal, combinatorial selection, દ્વાર બનાવવું, વર્ષ પસંદ કરવું, કટલેટ વહેંચવું, નામ પસંદ કરવું, મહિના બનાવવું અને મહિનાના દિવસો વણવા—બધું આવે છે.</p>
+  <p>અંતિમ update <strong>એકસાથે</strong> થાય છે: દરેક મિશ્રણમાં નવા છ મૂલ્યો એ જ જૂના state પરથી ગણાય છે, પછી જ છ વાટકા એકસાથે બદલાય છે.</p>
+  <p>અંતિમ 12 મિશ્રણમાં એક ખૂબ મહત્વની canonical detail છે. જો <code>S</code> જૂના છ વાટકાનો સરવાળો હોય અને <code>r</code> મિશ્રણ નંબર હોય, તો વ્યવસ્થા ગણે છે</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p><code>R</code> <strong>સાચવેલો સરવાળો</strong> છે. વાટકાનો ક્રમ પસંદ કરવો અને મિશ્રણનો આંતરિક update—બન્ને raw <code>S</code> નહીં, <code>R</code> વાપરે છે.</p>
+  <p>જૂના version જે આ updateમાં raw સરવાળો આપતા હતા તે હવે હાલની canonical semantics વર્ણવતા નથી. જૂના નિયમ પરથી બનેલા ઉદાહરણો ફરી ચકાસાયા વગર જૂના માનવા જોઈએ.</p>
+  <p>મિશ્રણ પછી answer ring પણ દેખાતા ટીપા 46 પર lock થયેલો ક્રમ જ આગળ ચલાવે છે; તેને આપોઆપ છેલ્લા મિશ્રણના ક્રમથી બદલી શકાય નહીં.</p><hr>
+</section>
+
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice અને Wide Choice</h2>
+  <p>તુલનાત્મક રીતે નાની selection spaceમાં <strong>Short Choice</strong> વપરાય છે. સરળ modulo bias ટાળવા તે rejection sampling વાપરે છે.</p>
+  <p>ખૂબ મોટી spaceમાં <strong>Wide Choice</strong> વપરાય છે. Specification જે ગુણધર્મની ખાતરી નથી આપતી તે તેની સાથે માનવા નહીં.</p>
+  <p>Wide Choice એ independent અને uniformly distributed base-<code>Q</code> digit index મળે ત્યાં સુધી બનાવવાની પ્રક્રિયા સમાન નથી. તેથી દરેક valid choice પાસે સમાન positive probability હોવી જ જોઈએ એવો નિષ્કર્ષ નથી નીકળતો. પૂરતી મોટી spaceમાં એવા valid choice હોઈ શકે કે જ્યાં આ mechanism ક્યારેય પહોંચી ન શકે.</p>
+  <p>કેલેન્ડર પોતે સંપૂર્ણ deterministic જ રહે છે. “Choice” algorithmic stageનું નામ છે, ઉપયોગ સમયે થતી random lottery નહીં.</p><hr>
+</section>
+
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>રચનાત્મક atlas</h2>
+  <p>અત્યારે સુધી અમે કેલેન્ડરના નિયમોની વાત કરી. આગળના આંકડા અલગ પ્રકારની માહિતી છે: મોટા computational sampleમાંથી મળેલા <strong>empirical result</strong>.</p>
+  <p>Atlas engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> વડે બનાવાયો હતો. તેમાં 4,096 ક્રિયા દિવસ; દરેક માટે વર્ષ 4990–5010; 86,016 year structure; 625,437 કટલેટ; 3,535,422 structural month; 356 millionથી વધુ contiguous month segment; અને એ જ મહિનામાં <code>n</code>થી <code>n+1</code> સુધી 364 millionથી વધુ transition સામેલ હતાં.</p>
+  <p>આ આંકડા એ corpusને વર્ણવે છે, canonical કાયદાને નહીં.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="રચનાત્મક atlasમાં માપેલા આંકડા">
+    <table class="about-table">
+      <thead><tr><th scope="col">માપ</th><th scope="col">નમૂનામાં પરિણામ</th></tr></thead>
+      <tbody>
+        <tr><td>વર્ષની સરેરાશ લંબાઈ</td><td>4,275.182 દિવસ</td></tr>
+        <tr><td>વર્ષ લંબાઈની median</td><td>4,343</td></tr>
+        <tr><td>જોવાયેલ minimum / maximum</td><td>716 / 5,778</td></tr>
+        <tr><td>દર વર્ષે સરેરાશ કટલેટ</td><td>7.271</td></tr>
+        <tr><td>ચોક્કસ 6 કટલેટવાળા વર્ષ</td><td>42.00%</td></tr>
+        <tr><td>6–8 કટલેટવાળા વર્ષ</td><td>81.29%</td></tr>
+        <tr><td>કટલેટની સરેરાશ લંબાઈ</td><td>587.963 દિવસ</td></tr>
+        <tr><td>કટલેટ લંબાઈની median</td><td>560</td></tr>
+        <tr><td>દર વર્ષે સરેરાશ મહિના</td><td>41.102</td></tr>
+        <tr><td>મહિના સંખ્યાની median</td><td>43</td></tr>
+        <tr><td>47 મહિના ધરાવતા વર્ષ</td><td>15.63%</td></tr>
+        <tr><td>ઓછામાં ઓછા 45 મહિના ધરાવતા વર્ષ</td><td>36.81%</td></tr>
+        <tr><td>structural monthની સરેરાશ લંબાઈ</td><td>104.014 દિવસ</td></tr>
+        <tr><td>મહિના લંબાઈની median</td><td>115</td></tr>
+        <tr><td>દર મહિને સરેરાશ contiguous segment</td><td>100.897</td></tr>
+        <tr><td>એક દિવસના month segmentનો ભાગ</td><td>97.482%</td></tr>
+        <tr><td>બે પડોશી દિવસ એ જ મહિનામાં હોવાની સંભાવના</td><td>2.9976%</td></tr>
+        <tr><td>એ જ મહિનાના <code>n</code> અને <code>n+1</code> વચ્ચે બીજા મહિનાના દિવસોની સરેરાશ સંખ્યા</td><td>40.408</td></tr>
+        <tr><td>મહિનાના પ્રથમથી છેલ્લાં દેખાવ વચ્ચેનો સરેરાશ span</td><td>4,266.653 દિવસ</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>વ્યવહારમાં લગભગ સો દિવસનો મહિનો લગભગ આખા પાસ્તાફારી વર્ષમાં ફેલાઈ શકે છે.</p>
+  <p>એ જ atlasએ વર્ષ 5000ની આસપાસ લંબાઈનો સ્વાભાવિક bias પણ બતાવ્યો. નમૂનામાં “સામાન્ય” વર્ષ સરેરાશ લગભગ 4,262 દિવસનું હતું. વર્ષોને તેમાંના દિવસોની સંખ્યાથી weight કરતાં સરેરાશ લગભગ 4,466 દિવસ થાય છે; વર્ષ 5000 પોતે સરેરાશ લગભગ 4,499 દિવસનું હતું.</p>
+  <p>કારણ સરળ છે: વર્ષ 5000એ ક્રિયા દિવસ ધરાવવો જ પડે. લાંબા વર્ષમાં વધુ એવા દિવસો હોય છે જ્યાં તે ક્રિયા દિવસ ધરાવતું વર્ષ બની શકે.</p>
+  <p>નમૂનામાં એકમના નામ અને તેની લંબાઈનો સંબંધ પણ ખૂબ નબળો હતો. આ સંપૂર્ણ mathematical independence સાબિત કરતું નથી, પરંતુ atlas કોઈ ઉપયોગી signal આપતું નથી કે નામો લંબાઈ encode કરવા બનાવાયા છે.</p>
+  <p>વધુમાં, 86,016 year structure ખરેખર 86,016 સંપૂર્ણ independent sample નથી: આરંભ અને અંતના દ્વાર વચ્ચે માત્ર 24,786 જુદા interval છે. નજીકના ક્રિયા દિવસ એ જ year interval પસંદ કરીને પણ જુદી અંદરની structure બનાવી શકે છે.</p>
+  <p>એટલે atlas implementationનું માપેલું વર્તન સારી રીતે વર્ણવે છે, પરંતુ તેને બધા શક્ય calendar structure વિષે probability theoremમાં ફેરવવું નહીં.</p><hr>
+</section>
+
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>જન્મદિવસ અને વર્ષગાંઠ</h2>
+  <p>“દર વર્ષે એ જ દિવસ” કહેતાં પહેલાં અહીં તેનું અર્થઘટન કરવું પડે છે. સ્વાભાવિક recurrence coordinate છે <code>(મહિનાનું નામ, મહિનામાં દિવસ)</code> અને <code>(કટલેટનું નામ, કટલેટમાં દિવસ)</code>; શરતો જોડીને પણ વાપરી શકાય છે.</p>
+  <p>એટલે પાસ્તાફારી જન્મદિવસ માત્ર <code>RRULE:FREQ=YEARLY</code> નથી. પસંદ કરેલી recurrence condition સંતોષતું આગળનું વર્ષ શોધવું પડે છે, અને મૂળ ઘટના આપોઆપ પોતાના “આગળના દેખાવ” તરીકે ગણાતી નથી.</p>
+  <p>ફક્ત પ્રસ્તુતિ માટે ક્રિયા દિવસ બદલવાથી વ્યક્તિની ઓળખ, જન્મ ક્ષણ અથવા ઉંમર બદલાઈ શકે નહીં.</p>
+  <p>4,096 self-referential dateના exact scanમાં દરેક આગળનું પાસ્તાફારી વર્ષ બંને દિશામાં 250,000 વર્ષ સુધી તપાસાયું:</p>
+  <ul>
+    <li><code>(મહિનાનું નામ, મહિનામાં દિવસ)</code> માટે પ્રથમ વાપસીની median 1 પાસ્તાફારી વર્ષ હતી; 77.56% પડોશી વર્ષમાં પાછાં આવ્યા, 93.77% બે વર્ષમાં, 99.44% પાંચ વર્ષમાં; જોવાયેલ maximum 21 વર્ષ હતું.</li>
+    <li><code>(કટલેટનું નામ, કટલેટમાં દિવસ)</code> માટે median 3 વર્ષ હતી; 88.89% 10 વર્ષમાં મળ્યાં, પરંતુ distributionનો heavy tail બહુ ભારે છે અને જોવાયેલ maximum 51,954 પાસ્તાફારી વર્ષ સુધી પહોંચ્યું.</li>
+  </ul>
+  <p>આ <strong>તપાસાયેલા corpusના empirical result</strong> છે; દરેક શક્ય વર્ષગાંઠ જરૂર પાછી આવશે તેનો પુરાવો નથી, અને maximum waiting timeની guarantee પણ નથી.</p><hr>
+</section>
+
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>મુલાકાત કેવી રીતે નક્કી કરવી?</h2>
+  <p>જો બે લોકો ફક્ત પાસ્તાફારી તારીખથી મુલાકાત નક્કી કરવા માંગે, તો ઓછામાં ઓછાં તારીખના પાંચેય field અને ગણતરીમાં વપરાયેલા ક્રિયા દિવસ પર સહમત થવું જોઈએ. ક્રિયા દિવસને “આજે” શબ્દ તરીકે નહીં પરંતુ સ્થિર day identity તરીકે સાચવવો વધુ યોગ્ય છે; નહીં તો બંને જુદા કેલેન્ડર ગણી શકે.</p>
+  <ul>
+    <li>“કાલ” આગળનો સમયક્રમિક દિવસ છે;</li>
+    <li>“મહિનાનો આગળનો દિવસ” એ જ મહિનાનો આગળનો દેખાવ છે;</li>
+    <li>“મહિનાનો અંત” તેનો છેલ્લો દેખાવ છે;</li>
+    <li>“આખો મહિનો” તે મહિનાના દિવસોનો set અથવા પ્રથમથી છેલ્લાં દેખાવ સુધીનો પૂર્ણ સમયક્રમિક span હોઈ શકે;</li>
+    <li>“આગળનું વર્ષ” પસંદ કરેલા ક્રિયા દિવસ હેઠળ બનેલા કેલેન્ડરનું આગળનું વર્ષ છે.</li>
+  </ul>
+  <p>ખૂબ મહત્વની મુલાકાત માટે absolute chronological day અથવા moment પણ સાચવી શકાય. કેલેન્ડર નારાજ નહીં થાય.</p><hr>
+</section>
+
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>પ્રવાસ, ઘટનાઓ અને all-day</h2>
+  <p>ઘટના અને તેના માટે દેખાતું સ્થાનિક લેબલ એક જ વસ્તુ નથી. ચોક્કસ સમયવાળી ઘટના સ્થિર chronological moment સાથે બંધાયેલી હોવી જોઈએ. પ્રવાસ તેને સમયમાં ખસેડતો નથી, પરંતુ એ જ physical momentની સ્થાનિક પાસ્તાફારી તારીખ બદલાઈ શકે, કારણ કે “સ્થાનિક દિવસ”ની વ્યાખ્યા સ્થાન પર આધારિત છે.</p>
+  <p><strong>All-day</strong> ઘટનામાં તફાવત વધુ મોટો છે. નાગરિક પૂર્ણ-દિવસ ઘટના સામાન્ય રીતે મધરાતથી આગળની મધરાત સુધી ચાલે છે; પાસ્તાફારી પૂર્ણ-દિવસ ઘટના સ્થાનિક પાસ્તાફારી દિવસની સીમાથી આગળની સીમા સુધી ચાલવી જોઈએ. સામાન્ય રીતે આ moment એક જ નથી.</p>
+  <p>એટલે પાસ્તાફારી ઘટનાને આંખ મીંચીને નાગરિક “પૂર્ણ દિવસ” ઘટના તરીકે export કરવાથી તેનો અર્થ બદલાઈ શકે. સાચવવા માટે chronological anchor અને યોગ્ય location/day-boundary context રાખવો જોઈએ, માત્ર <code>all-day</code> flag નહીં.</p><hr>
+</section>
+
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>દિવસ ક્યારે બદલાય?</h2>
+  <p>સ્થાનિક પાસ્તાફારી દિવસ મધરાતે બદલાતો નથી. તેની સીમા <strong>સ્થાનિક meridian પરથી પસાર થતા Venusના કેન્દ્રના topocentric lower meridian transit</strong>થી નક્કી થાય છે.</p>
+  <p>એટલે આ સ્થાન આધારિત સ્થાનિક ખગોળીય ઘટના છે. Transit 00:00 વાગ્યે થવો જરૂરી નથી, નાગરિક time zone તેને નક્કી કરતું નથી, daylight saving time શરૂ કે પૂરું થવાથી જ તે ખસતો નથી, અને Venus નંગી આંખે દેખાય તે જરૂરી નથી.</p>
+  <p>એક જ physical moment બે સ્થળે તેમની સ્થાનિક દિવસ સીમાના જુદા પક્ષે હોઈ શકે છે. વ્યવસ્થાને ઉપયોગી user location ન મળે તો productનું default fallback location <strong>Kisurra</strong> છે.</p><hr>
+</section>
+
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>છાપેલું કેલેન્ડર અને હાથથી ગણતરી</h2>
+  <p>પાસ્તાફારી કેલેન્ડર છાપી શકાય; ફક્ત બતાવવું જોઈએ કે તે કયા ક્રિયા દિવસ માટે ગણાયું હતું. એવું કેલેન્ડર તે દિવસના દૃષ્ટિકોણથી સમયની structure બતાવે છે; ક્રિયા દિવસ બદલાય ત્યારે નવું કેલેન્ડર જોઈએ. એટલે printer પાસે કામ હજુ છે.</p>
+  <p>Specification સંપૂર્ણ અને deterministic હોવાથી બધું હાથથી પણ ગણી શકાય: input counter ગણો, 7 છુપાયેલા અને 46 દેખાતા ટીપાં ચલાવો, છ વાટકા update કરો, 12 અંતિમ મિશ્રણ કરો, જવાબો બનાવો, દ્વાર બનાવો, વર્ષ અને કટલેટ પસંદ કરો, combinatorial selection કરો, નામ પસંદ કરો, પછી મહિના વણો.</p>
+  <p>બદલામાં ફેબ્રુઆરી ક્યારે 28 અને ક્યારે 29 દિવસનો હોય તે યાદ રાખવું પડતું નથી.</p><hr>
+</section>
+
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>તો Seer શું છે?</h2>
+  <p>Canonical implementation સાથે <strong>Pastafarian Calendar Seer</strong> નામનું ઝડપી engine પણ છે. Seer સત્તાનો સ્રોત નથી: સાચી તારીખ Megillah અને canonical calculation નક્કી કરે છે. Seer તેમની સાથે ન મળે તો ભૂલ Seerની છે.</p>
+  <p>તેનું કામ એ જ query ઝડપથી ચલાવવું અને resultને productમાં સરળતાથી integrate કરી શકાય તે રીતે આપવું છે.</p>
+  <p>આ પાનું સંપાદિત કરતી વખતે કરેલા સીધા verificationમાં Seerમાં date અને “now” query, batch, day range, પાસ્તાફારી તારીખથી target day સુધી reverse conversion, year structure retrieval, active working day determination, Node API, browser/HTTP client, CLI, HTTP v1 service, OpenAPI 3.1 contract, native implementations અને distribution package, તથા verified container deployment હતા.</p>
+  <p>Seer પાસે public API નથી—આ જૂનો દાવો હવે સાચો નથી. હવે date, range, batch, year, reverse, ક્રિયા દિવસ, metadata, locales અને status endpoint સાથે સ્પષ્ટ અને સ્થિર HTTP v1 contract છે.</p>
+  <p>21 સપ્ટેમ્બર 2026ના રોજ Render પર public HTTPS deployment વાસ્તવમાં ચકાસાયું હતું: live service પર exact query, મોટું range, restart, cold wake અને load હેઠળનું વર્તન verify થયું.</p>
+  <p>તેમ છતાં project documentation public beta/evaluation deployment અને SLA ધરાવતી સ્થિર hosted production serviceને જુદી ગણે છે. તેથી conceptual explanation pageએ server address, hosting provider અથવા version numberને કેલેન્ડરનો જ ભાગ હોય એમ freeze ન કરવું જોઈએ.</p>
+  <p>Seer precomputation, વિશિષ્ટ representation, SIMD, algebra અને બીજા shortcut વાપરી શકે છે. એ જ semantic operation કરીને એ જ જવાબ આપે તો canonical implementationની આખી computational history પગલું-દર-પગલું નકલ કરવાની જરૂર નથી.</p>
+  <p>Optimization વિકલ્પી સત્તા નથી.</p><hr>
+</section>
+
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>ઉદ્ભવ, સ્થાપના દિવસ અને પટ્ટિકા દિવસ</h2>
+  <p>અહીં canonical time anchorને સાઇટની વાર્તાથી સ્પષ્ટ અલગ રાખવું ખાસ મહત્વનું છે.</p>
+
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>આધારબિંદુ</h3>
+    <p>વ્યવસ્થામાં <strong>સ્થાપના દિવસ</strong> નામનો એક સ્થિર reference day છે. Proleptic Gregorian calendarમાં તે <strong>ઈસાપૂર્વ 41,222ના 22 ડિસેમ્બર</strong> છે.</p>
+    <p>સ્થાપના દિવસ “સમયની શરૂઆત” નથી; તે computational anchor છે.</p>
+    <p>તેની આસપાસ દિવસ નંબરિંગમાં ધન વિસમ/સમ સંખ્યા વપરાય છે: સ્થાપના દિવસ=1; આગળના દિવસ=3, 5, …; ભૂતકાળ તરફ પહેલાનો દિવસ=2, પછી 4, 6, … . આ રીતે anchorની બન્ને બાજુને આ counterમાં ઋણ day number વગર encode કરી શકાય છે.</p>
+    <p>બીજું anchor છે <strong>પટ્ટિકા દિવસ</strong>: <strong>proleptic Julian calendarમાં ઈસાપૂર્વ 763ના 15 જૂન</strong>, એટલે <strong>proleptic Gregorian calendarમાં ઈસાપૂર્વ 763ના 7 જૂન</strong>.</p>
+    <p>સ્થાપના દિવસથી પટ્ટિકા દિવસ સુધીનું ચોક્કસ અંતર</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
+    <p>દિવસ છે.</p>
+    <p>આ સમયરેખાના સ્થિર anchor છે, પરંતુ તેમની માટે દેખાતી પાસ્તાફારી તારીખ હજુ પણ એ પર આધારિત છે કે કયા ક્રિયા દિવસથી પ્રશ્ન થાય છે.</p>
+  </section>
+
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>સાઇટની વાર્તા</h3>
+    <p>સાઇટની editorial storyમાં કેલેન્ડરને સર્જનનો એક ભાગ અને એવી વ્યવસ્થા તરીકે વર્ણવાય છે જેને માનવજાત સંપૂર્ણ રીતે જાણ્યા વગર વાપરતી હતી, જ્યાં સુધી આધુનિક યુગમાં તે ફરી સોંપવામાં ન આવી.</p>
+    <p>આ સાઇટની વાર્તા છે; તેની દરેક narrative detailને Megillahનું સ્પષ્ટ technical claim તરીકે રજૂ ન કરવી જોઈએ.</p>
+    <p>ફરી સોંપવાની ઘટના પોતે એક સ્થિર ઐતિહાસિક ઘટના છે. તેની <strong>પાસ્તાફારી તારીખ</strong>ને એક જ તારીખ તરીકે હંમેશા માટે freeze કરતાં વર્તમાન ક્રિયા દિવસ હેઠળ dynamic રીતે બતાવવી વધુ સારી.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>અગ્રગણ્ય વપરાશકર્તાઓ માટે: reverse conversion</h2>
+  <p>જો ક્રિયા દિવસ <code>c</code> જાણીતો હોય તો reverse conversion ખૂબ કડક રીતે મર્યાદિત છે. જાણીતા પાસ્તાફારી વર્ષમાં</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{કટલેટનું નામ},\text{કટલેટમાં દિવસ})</code></pre>
+  <p>વધુમાં વધુ એક દિવસ ઓળખે છે. એ જ રીતે</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{મહિનાનું નામ},\text{મહિનામાં દિવસ})</code></pre>
+  <p>પણ. એટલે જાણીતા ક્રિયા દિવસ સાથે પૂર્ણ તારીખ target dayને એકમાત્ર રીતે ઓળખે છે.</p>
+
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Reverse conversionમાં candidate સંખ્યાની ઉપરની મર્યાદા">
+    <table class="about-table">
+      <thead><tr><th scope="col">જાણીતી વધારાની માહિતી</th><th scope="col">વધુમાં વધુ candidate</th></tr></thead>
+      <tbody>
+        <tr><td>વર્ષ સિવાય કોઈ field જાણીતું નથી</td><td>5,778</td></tr>
+        <tr><td>ફક્ત કટલેટનું નામ</td><td>5,568</td></tr>
+        <tr><td>ફક્ત કટલેટમાં દિવસ</td><td>17</td></tr>
+        <tr><td>ફક્ત મહિનાનું નામ</td><td>123</td></tr>
+        <tr><td>ફક્ત મહિનામાં દિવસ</td><td>47</td></tr>
+        <tr><td>કટલેટનું નામ + કટલેટમાં દિવસ</td><td>1</td></tr>
+        <tr><td>મહિનાનું નામ + મહિનામાં દિવસ</td><td>1</td></tr>
+        <tr><td>વર્ષ સિવાય કોઈપણ ત્રણ field</td><td>1</td></tr>
+        <tr><td>વર્ષ સિવાય ચારેય field</td><td>1</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>ક્રિયા દિવસ અજાણ્યો હોય તો પરિસ્થિતિ જુદી છે. એ જ પાંચ મૂલ્યો જુદા ક્રિયા દિવસ હેઠળ દેખાઈ શકે છે, અને એવા exact example છે જ્યાં એ જ પૂર્ણ તારીખ <code>c</code>થી જુદા અંતરે દેખાય છે.</p>
+  <p>વર્ષ 5000માં તો એ અંતરના sign પણ પાંચ મૂલ્યોથી હંમેશા નક્કી થતા નથી: એ જ પૂર્ણ તારીખ એક contextમાં ક્રિયા દિવસ પહેલાં અને બીજા contextમાં પછી હોઈ શકે.</p>
+  <p>એટલે કયા <code>c</code> હેઠળ તારીખ ગણી હતી તે જાણ્યા વગર પૂર્ણ પાસ્તાફારી તારીખ સમયરેખામાં absolute address નથી.</p>
+
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>ખૂબ દૂરના સમયની રચના</h3>
+    <p>Specification પરથી આવેલ mathematical researchએ exact asymptotic structure પણ શોધી છે. <strong>સ્થિર ક્રિયા દિવસ</strong> <code>c</code> માટે ભૂતકાળની tailમાં પૂરતું દૂર affine periodicity દેખાય છે.</p>
+    <p>જો</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>તો એ જ <code>c</code> માટે shift <code>H_c</code>, year change <code>p_c</code> અને પૂરતું દૂર threshold હોય છે, પછી</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>વર્ષ સિવાય ચારેય field ફરી આવે છે, જ્યારે વર્ષ નંબર સ્થિર માત્રાથી બદલાય છે.</p>
+    <p>આ સ્થિર <code>c</code>નું પરિણામ છે; અહીંથી global relation</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>નથી મળતું. જુદા ક્રિયા દિવસ માટે અંતિમ asymptotic slope ખરેખર જુદા પડે છે કે નહીં એ પ્રશ્ન હજુ ખુલ્લો છે.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>અગ્રગણ્ય વપરાશકર્તાઓ માટે: સૉસ કેટલો ઇતિહાસ સાચવે છે?</h2>
+  <p>સૉસ બહુ aggressive mixing mechanism જેવો લાગે છે, પરંતુ algebraic research બતાવે છે કે તે દેખાવથી ધાર્યા કરતાં ઘણું વધુ માહિતી સાચવે છે. આ specification પરથી મળેલું research result છે, નવો calendar rule નથી.</p>
+  <p>દેખાતા stage 3–46માં, સંબંધિત asymptotic branch પર generic injectivity સ્થાપિત છે: generic caseમાં state સંબંધિત input history અને વાટકાનો ક્રમ ફરી રચી શકાય એટલી માહિતી રાખે છે.</p>
+  <p>અંતિમ 12 મિશ્રણમાં પણ માહિતી તરત ગાયબ થતી નથી. દેખાતા ટીપા 46 પછીનાં પ્રથમ પાંચ મિશ્રણ માટે સંબંધિત canonical union પર વધારાની side information વગર generic invertibility સ્થાપિત છે; બાકીના માટે reconstruction માટે પૂરતી side informationની મજબૂત constructive upper bound જાણીતી છે.</p>
+  <p><strong>ફક્ત છેલ્લાં છ વાટકા</strong> generic senseમાં હંમેશા પૂરતા છે કે નહીં એ પ્રશ્ન હજુ ખુલ્લો છે.</p>
+  <p>કેટલાક પરિણામ symbolic રીતે સાબિત થયા; બીજા finite exact arithmetic checkથી બંધ થયા. Symbolic strengtheningએ વિશ્વાસ કરવો પડે તે computational core ઘણો નાનો કર્યો છે, પણ સંપૂર્ણ દૂર કર્યો નથી.</p>
+  <p>શરૂઆતમાં બહુ મોટી સંખ્યામાં path શોધવા પડે એવી લાગતી spaceને ઘણાં નાનાં finite structure સુધી ઘટાડવામાં આવી, જેમાં 180 અને 9 stateવાળા automata અને છ વાટકાની symmetry સામેલ છે.</p>
+  <p>મિશ્રણની નીચે કડક algebraic structure છે. આજની તારીખ જાણવા તે જાણવું જરૂરી નથી.</p><hr>
+</section>
+
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>તો પાસ્તાફારી કેલેન્ડર ખરેખર શું છે?</h2>
+  <p>આ deterministic calendar છે જેમાં તારીખ ફક્ત target dayનું function નહીં પરંતુ <strong>ક્રિયા દિવસ અને પૂછાયેલા દિવસનું સંયુક્ત function</strong> છે.</p>
+  <p>દરેક તારીખમાં ચોક્કસ પાંચ field છે. વર્તમાન પોતાના દૃષ્ટિકોણથી હંમેશા વર્ષ 5000માં છે, પરંતુ વર્ષ 5000 પોતે ક્રિયા દિવસ સાથે ખસે છે. વર્ષ બહુ લાંબા હોઈ શકે, કટલેટ સતત હોય છે, મહિના જરૂરી નથી, અને canonical week system નથી.</p>
+  <p>મહિનાનો <code>n+1</code> દિવસ એટલે કાલ જ નહીં. એ જ chronological day કાલે જુદું પાસ્તાફારી label મેળવી શકે. એ જ physical moment બે સ્થળે બે જુદા local Pastafari dayમાં હોઈ શકે. All-day event મધરાતથી મધરાત સુધી ચાલવો જરૂરી નથી. અને annual birthday પહેલા search problem છે, પછી calendar problem.</p>
+  <p>પણ ક્રિયા દિવસ અને પૂછાયેલો દિવસ જાણીતાં હોય તો ambiguity નથી: સાચો જવાબ એક જ છે.</p>
+  <p>અંતે કેલેન્ડરને આથી વધુ કશું કરવાની જરૂર નથી.</p>
+</section>
