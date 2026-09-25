@@ -1,0 +1,263 @@
+<!-- Versiunea română este redactată direct din sursa semantică ebraică, fără limbă-pivot. -->
+<!-- ID-urile secțiunilor sunt un contract public stabil de deep-link și nu se deduc din titlurile traduse. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>În narațiunea site-ului, Calendarul Pastafarian este prezentat drept calendarul în care a fost creat timpul însuși. Mecanica lui, însă, este definită precis.</p>
+  <p>Calendarul nu transformă fiecare zi într-o singură „etichetă” pastafariană permanentă. Pentru a afla data unei zile sunt necesare două zile: <strong>ziua de lucru</strong>, de la care pornește calculul, și <strong>ziua interogată</strong>, a cărei dată vrem s-o aflăm.</p>
+  <p>Dacă notăm ziua de lucru cu <code>c</code> și ziua interogată cu <code>t</code>, data este</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>nu <code>F(t)</code>. Aceeași zi interogată poate primi, deci, o altă dată pastafariană sub o altă zi de lucru.</p>
+  <p>Nu este un defect. Așa funcționează calendarul.</p><hr>
+</div>
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>Din ce este alcătuită o dată pastafariană?</h2>
+  <p>Are <strong>exact cinci componente</strong>: numărul anului, numele șnițelului, ziua în șnițel, numele lunii și ziua în lună.</p>
+  <p>Ca exemplu generic: <strong>anul 5000, șnițelul A, ziua 417 în șnițel, luna B, ziua 83 în lună.</strong></p>
+  <p>Ziua de lucru, locul observatorului, identitatea cronologică a zilei ori alte date tehnice pot apărea alături, dar nu formează un al șaselea câmp al datei.</p><hr>
+</section>
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>De ce este necesară ziua de lucru?</h2>
+  <p>În calendarele obișnuite ni se pare firesc că data „aparține” zilei. În Calendarul Pastafarian, data depinde de relația dintre două zile.</p>
+  <p>Schimbarea lui <code>t</code> înseamnă că întrebăm despre altă zi. Schimbarea lui <code>c</code> este mai profundă: poate schimba limitele anilor, șnițelele, lunile, numele lor și felul în care lunile se întrețes.</p>
+  <p>De aceea, un almanah calculat astăzi nu este neapărat cel corect mâine. Astfel se evită situația nefericită în care un calendar tipărit ar rămâne util un an întreg.</p><hr>
+</section>
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>Aceeași zi, altă dată</h2>
+  <p>Trebuie separate <strong>identitatea zilei</strong> și <strong>reprezentarea ei pastafariană</strong>. Prima este poziția stabilă a unei zile pe axa timpului; a doua este cvintuplul rezultat când acea zi este afișată sub o anumită zi de lucru.</p>
+  <p>În produs și în API, prima poate fi privită drept <code>day-id</code>: o identitate cronologică ce nu se schimbă odată cu modul de afișare. În schimb,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre><p>și</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>nu trebuie să fie egale.</p>
+  <p>Schimbarea manuală a zilei de lucru poate modifica data afișată pentru aceeași zi fără să mute ziua însăși pe axa timpului.</p>
+  <p>Același principiu se aplică evenimentelor. O întâlnire, o naștere sau un fapt istoric trebuie să rămână ancorate într-o identitate cronologică stabilă, iar data pastafariană poate fi recalculată pentru contextul de afișare.</p>
+  <p>Eticheta se poate schimba. Evenimentul nu.</p><hr>
+</section>
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>Anul 5000</h2>
+  <p>Când ziua de lucru este chiar ziua interogată,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>anul este întotdeauna</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>Adică prezentul, privit din el însuși, se află întotdeauna în anul 5000. Dar anul 5000 nu este o epocă istorică fixă; este ales din nou în raport cu ziua de lucru.</p>
+  <p>Ziua de lucru însăși se află în anul 5000, iar alte zile din același an se află și ele acolo. Prin urmare, <strong>faptul că suntem în anul 5000 nu dovedește că <code>t=c</code>.</strong></p>
+  <p>Numărul anului indică totuși direcția:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre><p>și</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p>Există și <strong>anul 0</strong>; mai departe în trecut apar ani cu numere negative.</p><hr>
+</section>
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>Ani și porți</h2>
+  <p>Un an pastafarian poate avea între</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ și }5778</code></pre>
+  <p>de zile. Acestea sunt limite canonice ale sistemului, nu medii empirice.</p>
+  <p>Un an poate fi mai scurt decât anul solar sau mai lung de cincisprezece ani solari. Limitele anilor sunt construite printr-un sistem de <strong>porți</strong>; și limitele șnițelelor provin din același sistem.</p>
+  <p>Sfârșitul anului nu trebuie să coincidă cu un anotimp, cu o orbită a Pământului, cu un ciclu lunar ori cu vreo nevoie practică de a termina în sfârșit anul.</p><hr>
+</section>
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>Șnițele</h2>
+  <p>Fiecare an este împărțit în <strong>6–17 șnițele</strong>. Un șnițel este un segment cronologic continuu.</p>
+  <p>Dacă astăzi este ziua 250 a șnițelului, mâine este ziua 251 a aceluiași șnițel, cu excepția cazului în care astăzi este ultima lui zi. Limitele șnițelelor sunt porți, iar lungimea minimă a unui șnițel este de</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
+  <p>de zile.</p>
+  <p>Sistemul are 17 nume canonice de șnițele, iar într-un an niciun nume nu se repetă. Numele nu stabilește lungimea sau poziția.</p><hr>
+</section>
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>Luni și întrețesere</h2>
+  <p>Fiecare an are între</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ și }47</code></pre>
+  <p>de luni structurale, iar fiecărei luni îi sunt atribuite între</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ și }123</code></pre>
+  <p>de zile.</p>
+  <p>O lună pastafariană <strong>nu trebuie să fie un interval de timp continuu</strong>. De exemplu, ordinea cronologică poate fi:</p>
+  <blockquote><p>luna A — ziua 14<br>luna B — ziua 9<br>luna A — ziua 15</p></blockquote>
+  <p>Este o structură perfect validă. Ziua 15 din luna A este ziua următoare <strong>a acelei luni</strong>, deși între ele s-a aflat o zi din altă lună.</p>
+  <p>Prin urmare, „ziua în lună” nu înseamnă câte zile cronologice au trecut de la prima apariție a lunii, ci numărul ordinal al zilei atribuite acelei luni în an. Ziua 48 este a 48-a zi a lunii respective, nu la 47 de zile cronologice după prima ei apariție.</p><hr>
+</section>
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>Lunile sunt întrețesute între ele</h2>
+  <p>Lunile pot fi imaginate ca fire întinse prin an. Fiecare zi aparține exact unei luni; mâine poate aparține alteia, iar apoi prima lună poate reveni și continua cu numărul următor.</p>
+  <p>Întrețeserea are reguli, inclusiv restricții asupra ordinii primei și ultimei apariții a lunilor. Nu există însă regula că o lună trebuie să se încheie înainte să înceapă alta.</p>
+  <ul><li>Șnițelul măsoară poziția într-un segment cronologic continuu.</li><li>Luna măsoară apartenența la un fir structural care poate dispărea și reapărea.</li></ul>
+  <p>O lună poate traversa mai multe șnițele, iar un șnițel poate conține apariții ale mai multor luni. Începuturile și sfârșiturile acestor două sisteme nu trebuie să coincidă.</p><hr>
+</section>
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>Următoarea zi a lunii nu este neapărat mâine</h2>
+  <p>Dacă astăzi este ziua 17 a unei anumite luni, ziua 18 a acelei luni este <strong>următoarea apariție a acelei luni</strong>. Poate fi mâine sau mult mai târziu.</p>
+  <p><strong>Mâine</strong> este următoarea zi cronologică; <strong>următoarea zi a lunii</strong> este următoarea apariție a aceleiași luni.</p>
+  <p>La fel, „sfârșitul lunii” nu înseamnă că finalul este aproape în timp. O lună de 120 de zile poate fi astăzi la ziua 119, iar ziua 120 să apară mult mai târziu în an.</p><hr>
+</section>
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>Nu există săptămâni</h2>
+  <p>Specificația canonică actuală <strong>nu definește un sistem de săptămâni</strong>. Nu există o unitate canonică de șapte zile, nume pastafariene pentru zilele săptămânii sau o regulă care să spună că două zile sunt „aceeași zi a săptămânii”.</p>
+  <p>Desigur, un sistem civil de săptămâni poate fi suprapus din exterior; doar că nu face parte din data pastafariană.</p><hr>
+</section>
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>Nume</h2>
+  <p>Există 17 nume canonice de șnițele și 47 de nume canonice de luni. Într-un an, fiecare nume apare cel mult o dată în familia sa.</p>
+  <p>Identitatea numelui este canonică și semantică, nu rezultatul unui vot între ortografii, traduceri sau implementări. Pentru sensul numelor, Megillah în ebraică este autoritatea supremă; traducerea și transliterarea țin de stratul de prezentare.</p>
+  <p>Numele nu este nici un cod ascuns al lungimii: niciun nume de șnițel sau de lună nu impune, prin el însuși, o lungime anume.</p><hr>
+</section>
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>Un mic fapt despre luni</h2>
+  <p>Avem 47 de nume de luni, iar o lună poate ajunge cel mult la ziua 123. Există deci</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>de combinații sintactic posibile „nume de lună + număr de zi în lună”.</p>
+  <p>Fiecare zi din an realizează exact o astfel de combinație. Dacă anul are lungimea <code>L</code>, apar exact <code>L</code> combinații. Dar</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>deci în fiecare an lipsesc cel puțin</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre>
+  <p>combinații posibile. Nici măcar cel mai lung an nu are suficiente zile pentru toate.</p><hr>
+</section>
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>Cum se calculează calendarul?</h2>
+  <p>Numim aici calculul intern <strong>sosul</strong>. În centrul lui se află numărul prim</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>Procesul include cinci contoare de intrare, 7 picături ascunse, 46 de picături vizibile, 6 boluri, ordini schimbătoare ale bolurilor, 12 amestecări finale, sigilii pentru răspunsuri diferite, mecanisme de alegere combinatorie, generarea porților, alegerea anilor, împărțirea șnițelelor, alegerea numelor, crearea lunilor și întrețeserea zilelor lunare.</p>
+  <p>Actualizările finale sunt <strong>sincrone</strong>: la fiecare amestecare, toate cele șase valori noi se calculează din aceeași stare veche, iar abia apoi toate cele șase boluri sunt înlocuite împreună.</p>
+  <p>În cele 12 amestecări finale există un detaliu canonic foarte important. Dacă <code>S</code> este suma celor șase boluri vechi, iar <code>r</code> este numărul amestecării, se calculează</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p><code>R</code> este <strong>suma salvată</strong>. Atât alegerea ordinii bolurilor, cât și actualizarea internă folosesc <code>R</code>, nu suma brută <code>S</code>.</p>
+  <p>Versiunile mai vechi care introduceau suma brută în acea actualizare nu mai descriu semantica canonică actuală. Exemplele derivate din regula veche sunt depășite până la reverificare.</p>
+  <p>După amestecări, inelul răspunsurilor continuă ordinea fixată la picătura vizibilă 46; nu trebuie înlocuit automat cu ordinea ultimei amestecări.</p><hr>
+</section>
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice și Wide Choice</h2>
+  <p>Pentru spații de opțiuni relativ mici se folosește <strong>Short Choice</strong>. Ea utilizează eșantionarea prin respingere (rejection sampling) pentru a evita bias-ul simplu de modulo.</p>
+  <p>Spațiile foarte mari folosesc <strong>Wide Choice</strong>. Nu trebuie să-i atribuim proprietăți pe care specificația nu le garantează.</p>
+  <p>Wide Choice nu este echivalentă cu generarea unor cifre independente și uniforme în baza <code>Q</code> până la obținerea unui indice. Prin urmare, nu rezultă că fiecare opțiune legală are neapărat aceeași probabilitate pozitivă; în spații suficient de mari pot exista opțiuni legale la care mecanismul nu ajunge deloc.</p>
+  <p>Calendarul însuși este complet determinist. „Choice” este numele unei etape de algoritm, nu o loterie făcută în timpul utilizării.</p><hr>
+</section>
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>Atlasul structural</h2>
+  <p>Până aici am descris reguli ale calendarului. Numerele următoare sunt altceva: <strong>rezultate empirice</strong> dintr-un eșantion computațional mare.</p>
+  <p>Atlasul a fost construit cu commitul motorului <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> și cuprinde 4,096 zile de lucru; anii 4990–5010 pentru fiecare; 86,016 structuri de an; 625,437 șnițele; 3,535,422 luni structurale; peste 356 de milioane de segmente lunare continue; și peste 364 de milioane de tranziții de la ziua <code>n</code> la ziua <code>n+1</code> a aceleiași luni.</p>
+  <p>Sunt descrieri ale acestui corpus, nu legi canonice.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Date măsurate din atlasul structural"><table class="about-table">
+    <thead><tr><th scope="col">Mărimea măsurată</th><th scope="col">Rezultatul în eșantion</th></tr></thead><tbody>
+      <tr><td>Lungimea medie a anului</td><td>4,275.182 zile</td></tr><tr><td>Mediana lungimii anului</td><td>4,343</td></tr><tr><td>Minim / maxim observat</td><td>716 / 5,778</td></tr>
+      <tr><td>Număr mediu de șnițele pe an</td><td>7.271</td></tr><tr><td>Ani cu exact 6 șnițele</td><td>42.00%</td></tr><tr><td>Ani cu 6–8 șnițele</td><td>81.29%</td></tr>
+      <tr><td>Lungimea medie a șnițelului</td><td>587.963 zile</td></tr><tr><td>Mediana lungimii șnițelului</td><td>560</td></tr><tr><td>Număr mediu de luni pe an</td><td>41.102</td></tr>
+      <tr><td>Mediana numărului de luni</td><td>43</td></tr><tr><td>Ani cu 47 de luni</td><td>15.63%</td></tr><tr><td>Ani cu cel puțin 45 de luni</td><td>36.81%</td></tr>
+      <tr><td>Lungimea medie a lunii structurale</td><td>104.014 zile</td></tr><tr><td>Mediana lungimii lunii</td><td>115</td></tr><tr><td>Număr mediu de segmente continue pe lună</td><td>100.897</td></tr>
+      <tr><td>Ponderea segmentelor lunare de o zi</td><td>97.482%</td></tr><tr><td>Probabilitatea ca două zile adiacente să fie în aceeași lună</td><td>2.9976%</td></tr>
+      <tr><td>Numărul mediu de zile străine între <code>n</code> și <code>n+1</code> ale lunii</td><td>40.408</td></tr><tr><td>Întinderea medie de la prima la ultima apariție a lunii</td><td>4,266.653 zile</td></tr>
+    </tbody></table></div>
+  <p>Practic, o lună cu aproximativ o sută de zile poate fi răspândită pe aproape întregul an pastafarian.</p>
+  <p>Același atlas a arătat și un bias natural de lungime în jurul anului 5000. Anul „obișnuit” din eșantion avea în medie aproximativ 4,262 de zile. Dacă anii sunt ponderați după numărul de zile pe care le conțin, media urcă la aproximativ 4,466 de zile; propriul an 5000 avea în medie aproximativ 4,499 de zile.</p>
+  <p>Motivul este simplu: anul 5000 trebuie să conțină ziua de lucru. Un an mai lung oferă mai multe zile în care poate fi tocmai anul ce conține ziua de lucru.</p>
+  <p>Legătura dintre numele unității și lungimea ei a fost de asemenea foarte slabă în eșantion. Asta nu dovedește independență matematică totală, dar atlasul nu oferă un indiciu practic că numele ar fi menit să codifice lungimea.</p>
+  <p>În plus, cele 86,016 structuri de an nu sunt 86,016 eșantioane complet independente: există doar 24,786 de intervale distincte între poarta de început și cea de sfârșit. Zile de lucru vecine pot alege același interval anual și totuși produce o structură internă diferită.</p>
+  <p>Atlasul descrie bine comportamentul măsurat al implementării, dar nu trebuie transformat într-o teoremă probabilistică despre toate structurile posibile ale calendarului.</p><hr>
+</section>
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>Zile de naștere și aniversări</h2>
+  <p>Expresia „aceeași zi în fiecare an” trebuie mai întâi definită. Două coordonate structurale firești pentru recurență sunt <code>(numele lunii, ziua în lună)</code> și <code>(numele șnițelului, ziua în șnițel)</code>; se pot combina și mai multe condiții.</p>
+  <p>De aceea, o zi de naștere pastafariană nu este pur și simplu <code>RRULE:FREQ=YEARLY</code>. Trebuie căutat următorul an care satisface condiția aleasă, iar evenimentul inițial nu este socotit automat drept „următoarea lui apariție”.</p>
+  <p>Schimbarea zilei de lucru doar pentru afișare nu trebuie să schimbe identitatea persoanei, momentul nașterii ori vârsta.</p>
+  <p>Într-o scanare exactă a 4,096 de date proprii, fiecare an pastafarian succesiv a fost verificat înainte și înapoi până la 250,000 de ani în fiecare direcție:</p>
+  <ul><li>Pentru <code>(numele lunii, ziua în lună)</code>, mediana primei recurențe a fost de 1 an pastafarian; 77.56% au reapărut chiar în anul vecin, 93.77% în cel mult doi ani și 99.44% în cel mult cinci; maximul observat a fost 21 de ani.</li>
+  <li>Pentru <code>(numele șnițelului, ziua în șnițel)</code>, mediana a fost de 3 ani; 88.89% au fost găsite în cel mult 10 ani, însă distribuția a avut o coadă foarte grea, iar maximul observat a ajuns la 51,954 de ani pastafarieni.</li></ul>
+  <p>Acestea sunt <strong>rezultate empirice ale corpusului testat</strong>, nu dovada că orice aniversare posibilă trebuie să revină și nici o garanție privind timpul maxim de așteptare.</p><hr>
+</section>
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>Cum stabilim o întâlnire?</h2>
+  <p>Dacă două persoane vor să stabilească o întâlnire doar cu o dată pastafariană, trebuie să cadă de acord cel puțin asupra celor cinci câmpuri și asupra zilei de lucru folosite la calcul. Este mai bine ca ziua de lucru să fie păstrată ca identitate stabilă a zilei, nu prin cuvântul „astăzi”, altfel fiecare poate calcula alt calendar.</p>
+  <ul><li>„mâine” este următoarea zi cronologică;</li><li>„următoarea zi a lunii” este următoarea apariție a aceleiași luni;</li><li>„sfârșitul lunii” este ultima ei apariție;</li><li>„o lună întreagă” poate însemna mulțimea zilelor lunii sau întreaga întindere cronologică de la prima la ultima apariție;</li><li>„anul următor” înseamnă anul următor în calendarul construit sub ziua de lucru aleasă.</li></ul>
+  <p>Pentru o întâlnire deosebit de importantă se poate păstra și ziua sau clipa cronologică absolută. Calendarul nu va avea nimic împotrivă.</p><hr>
+</section>
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>Călătorii, evenimente și all-day</h2>
+  <p>Evenimentul nu este același lucru cu eticheta locală afișată pentru el. Un eveniment programat trebuie ancorat într-un moment cronologic stabil. Călătoria nu mută evenimentul în timp, dar data pastafariană locală afișată pentru același moment se poate schimba, fiindcă definiția „zilei locale” depinde de loc.</p>
+  <p>Pentru un eveniment <strong>all-day</strong> diferența este și mai mare. Un eveniment civil de o zi întreagă durează de regulă de la o miez de noapte civil la următorul; un eveniment pastafarian all-day ar trebui să dureze de la limita locală a zilei pastafariene la următoarea limită. De obicei, acestea nu sunt aceleași momente.</p>
+  <p>Exportarea oarbă a unui eveniment pastafarian drept „toată ziua” într-un calendar civil îi poate schimba sensul. Pentru păstrare exactă trebuie salvate ancora cronologică și contextul corect al locului/limitei zilei, nu doar indicatorul <code>all-day</code>.</p><hr>
+</section>
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>Când se schimbă ziua?</h2>
+  <p>Ziua pastafariană locală nu se schimbă la miezul nopții. Limita este determinată de <strong>tranzitul meridian inferior topocentric al centrului planetei Venus peste meridianul local</strong>.</p>
+  <p>Este, așadar, un eveniment astronomic local dependent de poziție. Tranziția nu trebuie să aibă loc la 00:00, nu este stabilită de fusul orar civil, nu se mută doar pentru că începe ori se termină ora de vară și nu cere ca Venus să fie vizibilă cu ochiul liber.</p>
+  <p>Același moment fizic poate, în două locuri, să se afle de părți diferite ale limitelor locale de zi. Dacă sistemul nu are o locație utilizabilă a utilizatorului, locația de rezervă a produsului este <strong>Kisurra</strong>.</p><hr>
+</section>
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>Calendar tipărit și calcul manual</h2>
+  <p>Un calendar pastafarian poate fi tipărit, cu condiția să se indice ziua de lucru pentru care a fost calculat. El arată structura timpului din perspectiva acelei zile; când ziua de lucru se schimbă, poate fi nevoie de un calendar nou. Imprimanta își păstrează astfel utilitatea.</p>
+  <p>Totul se poate calcula și manual, fiindcă specificația este completă și deterministă: se calculează contoarele de intrare, se execută 7 picături ascunse și 46 vizibile, se actualizează șase boluri, se fac 12 amestecări finale, se generează răspunsurile, se construiesc porțile, se aleg anii și șnițelele, se execută selecțiile combinatorii, se aleg numele și se întrețes lunile.</p>
+  <p>În schimb, nu mai trebuie ținut minte că februarie are uneori 28 de zile și alteori 29.</p><hr>
+</section>
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>Și ce este Seer?</h2>
+  <p>Pe lângă implementarea canonică există un motor rapid numit <strong>Pastafarian Calendar Seer</strong>. Seer nu este o sursă de autoritate: Megillah și calculul canonic stabilesc data corectă. Dacă Seer le contrazice, Seer greșește.</p>
+  <p>Rolul lui este să execute aceleași interogări rapid și într-o formă ușor de integrat în produse.</p>
+  <p>În verificarea live făcută în timpul redactării acestei pagini, Seer includea, printre altele, interogări de dată și „acum”, batch, intervale de zile, conversie inversă din dată pastafariană în zi-țintă, obținerea structurii anului, rezolvarea zilei de lucru active, Node API, client de browser/HTTP, CLI, serviciu HTTP v1, contract OpenAPI 3.1, implementări native și pachete de distribuție, precum și deployment container verificat.</p>
+  <p>Prin urmare, vechea afirmație că Seer nu are API public nu mai este adevărată. Există un contract HTTP v1 explicit și stabil, cu endpointuri pentru date, range, batch, year, reverse, ziua de lucru, metadata, locales și status.</p>
+  <p>La 21 septembrie 2026 a fost testat efectiv și un deployment HTTPS public pe Render: pe serviciul live au fost verificate interogări exact, un range mare, restart, cold wake și comportamentul sub sarcină.</p>
+  <p>Documentația proiectului continuă totuși să distingă deploymentul public beta/evaluation de declararea unui serviciu hosted production permanent, cu SLA. De aceea, o pagină conceptuală nu trebuie să fixeze o adresă de server, un furnizor de hosting sau un număr de versiune ca parte a calendarului.</p>
+  <p>Seer poate folosi precalcul, reprezentări speciale, SIMD, algebră și alte scurtături. Nu trebuie să repete pas cu pas întreaga istorie computațională a implementării canonice, atâta vreme cât execută aceeași operație semantică și întoarce același răspuns.</p>
+  <p>Optimizarea nu este o autoritate alternativă.</p><hr>
+</section>
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>Originea, Ziua Întemeierii și Ziua Tablelor</h2>
+  <p>Aici trebuie separate limpede ancorele canonice de narațiunea site-ului.</p>
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>Ancorele</h3>
+    <p>Sistemul are o zi de referință fixă numită <strong>Ziua Întemeierii</strong>. În calendarul gregorian proleptic, aceasta este <strong>22 decembrie 41,222 î.Hr.</strong></p>
+    <p>Ziua Întemeierii nu este „începutul timpului”, ci o ancoră de calcul.</p>
+    <p>Numerotarea zilelor din jurul ei folosește numere pozitive impare/pare: Ziua Întemeierii=1; zilele următoare=3, 5, …; spre trecut, ziua precedentă=2, apoi 4, 6, … . Astfel sunt codificate ambele părți ale ancorei fără numere negative ale zilelor în acest contor.</p>
+    <p>Cealaltă ancoră este <strong>Ziua Tablelor</strong>: <strong>15 iunie 763 î.Hr. în calendarul iulian proleptic</strong>, adică <strong>7 iunie 763 î.Hr. în calendarul gregorian proleptic</strong>.</p>
+    <p>Distanța exactă dintre Ziua Întemeierii și Ziua Tablelor este de</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
+    <p>de zile.</p>
+    <p>Acestea sunt ancore fixe pe axa timpului, însă data pastafariană afișată pentru ele depinde în continuare de ziua de lucru din care sunt interogate.</p>
+  </section>
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>Narațiunea site-ului</h3>
+    <p>În formularea editorială a site-ului, calendarul este prezentat ca parte a creației și ca un sistem folosit de omenire fără o conștientizare deplină până la retransmiterea sa în epoca modernă.</p>
+    <p>Aceasta este narațiunea site-ului; nu trebuie ca fiecare detaliu narativ să fie prezentat ca afirmație tehnică explicită a Megillah.</p>
+    <p>Evenimentul retransmiterii în sine este un eveniment istoric fix. <strong>Data pastafariană</strong> a lui este mai bine afișată dinamic sub ziua de lucru curentă decât înghețată pentru totdeauna într-o singură dată.</p><hr>
+  </section>
+</section>
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>Pentru avansați: conversia inversă</h2>
+  <p>Când ziua de lucru <code>c</code> este cunoscută, conversia inversă este foarte puternică. Într-un an pastafarian cunoscut,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{numele șnițelului},\text{ziua în șnițel})</code></pre>
+  <p>identifică cel mult o zi. Același lucru este valabil pentru</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{numele lunii},\text{ziua în lună})</code></pre>
+  <p>Prin urmare, o dată completă, cu ziua de lucru cunoscută, identifică unic ziua-țintă.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Limite superioare ale numărului de candidați în conversia inversă"><table class="about-table">
+    <thead><tr><th scope="col">Informație suplimentară cunoscută</th><th scope="col">Număr maxim de candidați</th></tr></thead><tbody>
+      <tr><td>Niciun câmp non-anual</td><td>5,778</td></tr><tr><td>Doar numele șnițelului</td><td>5,568</td></tr><tr><td>Doar ziua în șnițel</td><td>17</td></tr>
+      <tr><td>Doar numele lunii</td><td>123</td></tr><tr><td>Doar ziua în lună</td><td>47</td></tr><tr><td>Numele șnițelului + ziua în șnițel</td><td>1</td></tr>
+      <tr><td>Numele lunii + ziua în lună</td><td>1</td></tr><tr><td>Oricare trei câmpuri non-anuale</td><td>1</td></tr><tr><td>Toate cele patru câmpuri non-anuale</td><td>1</td></tr>
+    </tbody></table></div>
+  <p>Fără ziua de lucru, situația este alta. Același cvintuplu poate apărea sub zile de lucru diferite, iar există martori exacți în care aceeași dată completă apare la distanțe diferite față de <code>c</code>.</p>
+  <p>În anul 5000 nici semnul distanței nu este întotdeauna determinat de cvintuplu: aceeași dată completă poate fi în trecutul zilei de lucru într-un context și în viitorul ei în altul.</p>
+  <p>Prin urmare, data pastafariană completă nu este o adresă absolută pe axa timpului dacă nu știm sub ce <code>c</code> a fost calculată.</p>
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>Structura în timp îndepărtat</h3>
+    <p>Cercetarea matematică derivată din specificație a găsit și o structură asimptotică exactă. Pentru o <strong>zi de lucru fixă</strong> <code>c</code>, suficient de departe în coada trecutului apare periodicitate afină.</p>
+    <p>Dacă</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>atunci, pentru acel <code>c</code>, există un deplasament <code>H_c</code>, o schimbare de an <code>p_c</code> și un prag suficient de îndepărtat astfel încât, după prag,</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>Cele patru câmpuri non-anuale se repetă, iar numărul anului se schimbă cu o valoare fixă.</p>
+    <p>Este un rezultat pentru <code>c</code> fix; nu implică o relație globală de forma</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>Iar întrebarea dacă panta asimptotică finală diferă cu adevărat între zile de lucru diferite rămâne deschisă.</p><hr>
+  </section>
+</section>
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>Pentru avansați: câtă istorie păstrează sosul?</h2>
+  <p>Sosul arată ca un amestec foarte agresiv, dar cercetarea algebrică a arătat că păstrează mult mai multă informație decât sugerează aparența lui. Este cercetare derivată din specificație, nu o regulă nouă a calendarului.</p>
+  <p>În etapele vizibile 3–46, pe ramura asimptotică relevantă, a fost stabilită generic injectivity: în cazul generic, starea păstrează suficientă informație pentru a reconstrui istoricul relevant al intrărilor și ordinii bolurilor.</p>
+  <p>Nici în cele 12 amestecări finale informația nu dispare imediat. Pentru primele cinci după picătura vizibilă 46 s-a stabilit generic invertibility pe reuniunea canonică relevantă fără informație laterală suplimentară; pentru restul se cunosc limite constructive superioare puternice pentru cantitatea de informație laterală suficientă reconstrucției.</p>
+  <p>Rămâne deschis dacă <strong>doar cele șase boluri finale</strong> sunt întotdeauna suficiente în sens generic.</p>
+  <p>Unele rezultate au fost demonstrate simbolic, iar altele închise prin verificări aritmetice finite și exacte. Consolidarea simbolică a redus mult nucleul computațional în care trebuie să avem încredere, dar nu l-a eliminat complet.</p>
+  <p>Spații care la început păreau să ceară explorarea unui număr enorm de trasee s-au redus la structuri finite mult mai mici, inclusiv automate cu 180 și 9 stări și simetriile celor șase boluri.</p>
+  <p>Sub amestec se află o structură algebrică rigidă. Pentru a afla data de astăzi nu este nevoie s-o cunoaștem.</p><hr>
+</section>
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>Așadar, ce este Calendarul Pastafarian?</h2>
+  <p>Un calendar determinist în care data nu este o funcție doar a zilei-țintă, ci a <strong>zilei de lucru și a zilei interogate împreună</strong>.</p>
+  <p>Fiecare dată are exact cinci câmpuri. Prezentul față de el însuși se află întotdeauna în anul 5000, dar anul 5000 însuși se mută odată cu ziua de lucru. Anii pot fi foarte lungi, șnițelele sunt continue, lunile nu trebuie să fie, iar un sistem canonic de săptămâni nu există.</p>
+  <p>Ziua <code>n+1</code> a unei luni nu este neapărat mâine. Aceeași zi cronologică poate primi mâine o altă etichetă pastafariană. Același moment fizic poate aparține unor zile pastafariene locale diferite în două locuri. Un eveniment all-day nu trebuie să dureze de la miezul nopții la miezul nopții. Iar o zi de naștere anuală este mai întâi o problemă de căutare și abia apoi una de calendar.</p>
+  <p>Dar când ziua de lucru și ziua interogată sunt cunoscute, nu există ambiguitate: există un singur răspuns exact.</p>
+  <p>În fond, mai mult de atât nu trebuie să facă un calendar.</p>
+</section>

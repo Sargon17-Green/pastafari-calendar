@@ -1,0 +1,263 @@
+<!-- Polska wersja została napisana bezpośrednio na podstawie hebrajskiego wzorca semantycznego, bez języka pośredniego. -->
+<!-- ID sekcji są stałym publicznym kontraktem deep-linków; nie powstają z tłumaczonych nagłówków. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>W narracji tej witryny Kalendarz Pastafariański jest kalendarzem, w którym stworzono sam czas. Jego mechanika jest jednak zdefiniowana ściśle.</p>
+  <p>Ten kalendarz nie przypisuje każdemu dniowi jednej niezmiennej pastafariańskiej „etykiety”. Aby poznać datę, potrzebne są dwa dni: <strong>dzień działania</strong>, od którego prowadzimy obliczenie, oraz <strong>dzień pytany</strong>, którego datę chcemy ustalić.</p>
+  <p>Jeżeli dzień działania oznaczymy przez <code>c</code>, a dzień pytany przez <code>t</code>, data ma postać</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>a nie <code>F(t)</code>. Ten sam dzień pytany może więc otrzymać inną datę pastafariańską, gdy zmieni się dzień działania.</p>
+  <p>To nie błąd. Tak działa ten kalendarz.</p><hr>
+</div>
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>Z czego składa się data pastafariańska?</h2>
+  <p>Ma <strong>dokładnie pięć części</strong>: numer roku, nazwę kotleta, dzień w kotlecie, nazwę miesiąca i dzień w miesiącu.</p>
+  <p>Przykład ogólny: <strong>rok 5000, kotlet A, dzień 417 w kotlecie, miesiąc B, dzień 83 w miesiącu.</strong></p>
+  <p>Dzień działania, położenie obserwatora, chronologiczna tożsamość dnia i inne dane techniczne mogą być wyświetlane obok, ale nie są szóstym polem daty.</p><hr>
+</section>
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>Po co jest dzień działania?</h2>
+  <p>W zwykłych kalendarzach łatwo uznać, że data „należy” do samego dnia. W kalendarzu pastafariańskim data zależy od relacji między dwoma dniami.</p>
+  <p>Zmiana <code>t</code> oznacza pytanie o inny dzień. Zmiana <code>c</code> sięga głębiej: może przebudować granice lat, kotlety, miesiące, ich nazwy oraz sposób, w jaki miesiące przeplatają się ze sobą.</p>
+  <p>Dlatego almanach obliczony dzisiaj nie musi być właściwy jutro. Pozwala to uniknąć niepożądanej sytuacji, w której drukowany kalendarz pozostaje użyteczny przez cały rok.</p><hr>
+</section>
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>Ten sam dzień, inna data</h2>
+  <p>Należy rozróżnić <strong>tożsamość dnia</strong> i jego <strong>reprezentację pastafariańską</strong>. Pierwsza to stałe położenie konkretnego dnia na osi czasu; druga to pięcioelementowa reprezentacja uzyskana przy wyświetleniu tego dnia pod określonym dniem działania.</p>
+  <p>W produkcie i API pierwszą można traktować jako <code>day-id</code>: chronologiczną tożsamość, której zmiana sposobu prezentacji nie narusza. Natomiast</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre><p>oraz</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>nie muszą być równe.</p>
+  <p>Ręczna zmiana dnia działania może więc zmienić pokazywaną datę tego samego dnia bez przesuwania samego dnia na osi czasu.</p>
+  <p>To samo dotyczy wydarzeń. Spotkanie, narodziny czy wydarzenie historyczne powinny pozostać zakotwiczone w stabilnej tożsamości chronologicznej, a ich data pastafariańska może być ponownie wyświetlana zależnie od kontekstu.</p>
+  <p>Etykieta może się zmienić. Wydarzenie nie.</p><hr>
+</section>
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>Rok 5000</h2>
+  <p>Gdy dzień działania i dzień pytany są tym samym dniem,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>numer roku wynosi zawsze</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>Innymi słowy teraźniejszość, oglądana z własnej perspektywy, zawsze znajduje się w roku 5000. Rok 5000 nie jest jednak stałym okresem historycznym; jest wybierany na nowo względem dnia działania.</p>
+  <p>Sam dzień działania leży w roku 5000, a pozostałe dni tego wybranego roku również mają numer 5000. <strong>Samo znalezienie się w roku 5000 nie dowodzi więc, że <code>t=c</code>.</strong></p>
+  <p>Numer roku wskazuje za to kierunek:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre><p>oraz</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p>Istnieje też <strong>rok 0</strong>; dalej w przeszłość pojawiają się lata o numerach ujemnych.</p><hr>
+</section>
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>Lata i bramy</h2>
+  <p>Rok pastafariański może liczyć od</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ do }5778</code></pre>
+  <p>dni. Są to kanoniczne granice systemu, a nie średnie eksperymentalne.</p>
+  <p>Rok może być zatem krótszy od roku słonecznego albo dłuższy niż piętnaście lat słonecznych. Granice lat powstają z systemu <strong>bram</strong>; z tego samego systemu pochodzą też granice kotletów.</p>
+  <p>Koniec roku nie musi pokrywać się z porą roku, pełnym obiegiem Ziemi wokół Słońca, cyklem Księżyca ani z praktyczną potrzebą, by wreszcie zakończyć rok.</p><hr>
+</section>
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>Kotlety</h2>
+  <p>Każdy rok dzieli się na <strong>6–17 kotletów</strong>. Kotlet jest chronologicznie ciągłym odcinkiem.</p>
+  <p>Jeżeli dziś jest dzień 250 w kotlecie, jutro będzie dzień 251 w tym samym kotlecie, chyba że dziś jest jego ostatnim dniem. Granice kotletów są bramami, a kotlet ma co najmniej</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
+  <p>dni.</p>
+  <p>System ma 17 kanonicznych nazw kotletów i żadna z nich nie powtarza się w jednym roku. Nazwa nie wyznacza długości ani położenia kotleta.</p><hr>
+</section>
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>Miesiące i przeplatanie</h2>
+  <p>W każdym roku występuje od</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ do }47</code></pre>
+  <p>miesięcy strukturalnych, a do każdego miesiąca przypisuje się od</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ do }123</code></pre>
+  <p>dni.</p>
+  <p>Miesiąc pastafariański <strong>nie musi jednak być ciągłym odcinkiem czasu</strong>. Chronologiczny układ może wyglądać na przykład tak:</p>
+  <blockquote><p>miesiąc A — dzień 14<br>miesiąc B — dzień 9<br>miesiąc A — dzień 15</p></blockquote>
+  <p>To w pełni poprawna struktura. Dzień 15 miesiąca A jest następnym dniem <strong>tego miesiąca</strong>, mimo że między nimi wystąpił dzień innego miesiąca.</p>
+  <p>„Dzień w miesiącu” nie oznacza więc liczby dni chronologicznych od pierwszego pojawienia się miesiąca, lecz numer kolejnego dnia przypisanego do tego miesiąca w roku. Dzień 48 to czterdziesty ósmy dzień należący do miesiąca, a nie 47 dni po jego pierwszym pojawieniu się.</p><hr>
+</section>
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>Miesiące są wplecione jeden w drugi</h2>
+  <p>Miesiące można wyobrazić sobie jako nici biegnące przez rok. Każdy dzień należy do dokładnie jednego miesiąca; jutro może należeć do innego, a potem pierwszy miesiąc może wrócić i kontynuować od kolejnego numeru.</p>
+  <p>Przeplatanie ma zasady, między innymi ograniczenia dotyczące kolejności pierwszych i ostatnich wystąpień miesięcy. Nie ma jednak wymogu, by jeden miesiąc skończył się, zanim zacznie się inny.</p>
+  <ul><li>Kotlet mierzy położenie w ciągłym odcinku czasu.</li><li>Miesiąc mierzy przynależność do strukturalnej nici, która może zniknąć i pojawić się ponownie.</li></ul>
+  <p>Jeden miesiąc może przecinać kilka kotletów, a jeden kotlet może zawierać wystąpienia wielu miesięcy. Początki i końce tych dwóch układów nie muszą się pokrywać.</p><hr>
+</section>
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>Następny dzień miesiąca nie musi być jutro</h2>
+  <p>Jeżeli dziś jest dzień 17 pewnego miesiąca, dzień 18 tego miesiąca to <strong>następne wystąpienie tego samego miesiąca</strong>. Może być jutro albo znacznie później.</p>
+  <p><strong>Jutro</strong> oznacza następny dzień chronologiczny, a <strong>następny dzień miesiąca</strong> — następne pojawienie się tego miesiąca.</p>
+  <p>Także „koniec miesiąca” nie musi być blisko w czasie. W 120-dniowym miesiącu dziś może być dzień 119, podczas gdy dzień 120 leży daleko dalej w tym samym roku.</p><hr>
+</section>
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>Nie ma tygodni</h2>
+  <p>Obecna specyfikacja kanoniczna <strong>nie definiuje systemu tygodni</strong>. Nie istnieje kanoniczna siedmiodniowa jednostka, pastafariańskie nazwy dni tygodnia ani reguła, według której dwa dni byłyby „tym samym dniem tygodnia”.</p>
+  <p>Cywilny tydzień można oczywiście nałożyć z zewnątrz; po prostu nie jest częścią daty pastafariańskiej.</p><hr>
+</section>
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>Nazwy</h2>
+  <p>Istnieje 17 kanonicznych nazw kotletów i 47 kanonicznych nazw miesięcy. W obrębie jednego roku każda nazwa pojawia się w swojej rodzinie najwyżej raz.</p>
+  <p>Tożsamość nazwy jest kanoniczna i semantyczna; nie wynika z głosowania między różnymi pisowniami, tłumaczeniami czy implementacjami. W kwestii znaczenia nazw najwyższym źródłem jest hebrajska Megillah; tłumaczenie i transliteracja należą do warstwy prezentacji.</p>
+  <p>Nazwa nie jest też ukrytym kodem długości. Żaden konkretny kotlet ani miesiąc nie staje się dłuższy czy krótszy wyłącznie z powodu nazwy.</p><hr>
+</section>
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>Drobny fakt o miesiącach</h2>
+  <p>Mamy 47 nazw miesięcy, a miesiąc może sięgać maksymalnie dnia 123. Istnieje zatem</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>syntaktycznie możliwych par „nazwa miesiąca + numer dnia w miesiącu”.</p>
+  <p>Każdy dzień roku realizuje dokładnie jedną taką parę. Jeśli długość roku wynosi <code>L</code>, występuje dokładnie <code>L</code> par. Ponieważ</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>w każdym roku musi zabraknąć co najmniej</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre>
+  <p>możliwych par. Nawet najdłuższy rok nie ma dość dni, by użyć wszystkich.</p><hr>
+</section>
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>Jak oblicza się kalendarz?</h2>
+  <p>Wewnętrzne obliczenie nazywamy tu <strong>sosem</strong>. W jego centrum znajduje się liczba pierwsza</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>Proces obejmuje pięć liczników wejściowych, 7 ukrytych kropli, 46 widocznych kropli, 6 mis, zmienne kolejności mis, 12 końcowych mieszań, pieczęcie dające różne odpowiedzi, mechanizmy wyboru kombinatorycznego, generowanie bram, wybór lat, podział na kotlety, wybór nazw, tworzenie miesięcy i przeplatanie dni miesięcznych.</p>
+  <p>Końcowe aktualizacje są <strong>synchroniczne</strong>: podczas każdego mieszania wszystkie sześć nowych wartości mis oblicza się z tego samego starego stanu, a dopiero potem wszystkie sześć zostaje naraz zastąpionych.</p>
+  <p>W 12 końcowych mieszaniach obowiązuje szczególnie ważny szczegół kanoniczny. Jeżeli <code>S</code> oznacza sumę sześciu starych mis, a <code>r</code> numer mieszania, system oblicza</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p><code>R</code> jest <strong>zapisaną sumą</strong>. Zarówno wybór kolejności mis, jak i wewnętrzna aktualizacja mieszania używają <code>R</code>, a nie surowej sumy <code>S</code>.</p>
+  <p>Starsze wersje, które podawały do tej aktualizacji surową sumę, nie opisują obecnej semantyki kanonicznej. Przykłady pochodzące z dawnej reguły są nieaktualne, dopóki nie zostaną ponownie zweryfikowane.</p>
+  <p>Po mieszaniach pierścień odpowiedzi kontynuuje również kolejność zablokowaną przy widocznej kropli 46; nie wolno automatycznie zastępować jej kolejnością ostatniego mieszania.</p><hr>
+</section>
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice i Wide Choice</h2>
+  <p>Dla stosunkowo małych przestrzeni wyboru używa się <strong>Short Choice</strong>. Wykorzystuje ona losowanie z odrzucaniem (rejection sampling), aby uniknąć prostego obciążenia modulo.</p>
+  <p>Bardzo duże przestrzenie używają <strong>Wide Choice</strong>. Nie wolno przypisywać jej własności, których specyfikacja nie gwarantuje.</p>
+  <p>Wide Choice nie jest równoważna generowaniu niezależnych, jednostajnych cyfr w podstawie <code>Q</code> aż do uzyskania indeksu. Nie wynika więc z niej, że każda dozwolona możliwość ma koniecznie tę samą dodatnią szansę. W dostatecznie dużych przestrzeniach mogą istnieć legalne opcje całkowicie nieosiągalne dla tego mechanizmu.</p>
+  <p>Sam kalendarz pozostaje w pełni deterministyczny. „Choice” to nazwa etapu algorytmu, a nie losowanie wykonywane podczas użycia.</p><hr>
+</section>
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>Atlas strukturalny</h2>
+  <p>Do tej pory mówiliśmy o regułach kalendarza. Poniższe liczby są czymś innym: <strong>wynikami empirycznymi</strong> dużej próby obliczeniowej.</p>
+  <p>Atlas zbudowano przy użyciu commitu silnika <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code>. Obejmuje on 4,096 dni działania; lata 4990–5010 dla każdego z nich; 86,016 struktur roku; 625,437 kotletów; 3,535,422 miesiące strukturalne; ponad 356 milionów ciągłych odcinków miesięcznych; oraz ponad 364 miliony przejść z dnia <code>n</code> do dnia <code>n+1</code> tego samego miesiąca.</p>
+  <p>Są to opisy tego korpusu, a nie prawa kanoniczne.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Zmierzona charakterystyka atlasu strukturalnego"><table class="about-table">
+    <thead><tr><th scope="col">Mierzona wielkość</th><th scope="col">Wynik w próbie</th></tr></thead><tbody>
+      <tr><td>Średnia długość roku</td><td>4,275.182 dnia</td></tr><tr><td>Mediana długości roku</td><td>4,343</td></tr><tr><td>Zaobserwowane minimum / maksimum</td><td>716 / 5,778</td></tr>
+      <tr><td>Średnia liczba kotletów na rok</td><td>7.271</td></tr><tr><td>Lata z dokładnie 6 kotletami</td><td>42.00%</td></tr><tr><td>Lata z 6–8 kotletami</td><td>81.29%</td></tr>
+      <tr><td>Średnia długość kotleta</td><td>587.963 dnia</td></tr><tr><td>Mediana długości kotleta</td><td>560</td></tr><tr><td>Średnia liczba miesięcy na rok</td><td>41.102</td></tr>
+      <tr><td>Mediana liczby miesięcy</td><td>43</td></tr><tr><td>Lata z 47 miesiącami</td><td>15.63%</td></tr><tr><td>Lata z co najmniej 45 miesiącami</td><td>36.81%</td></tr>
+      <tr><td>Średnia długość miesiąca strukturalnego</td><td>104.014 dnia</td></tr><tr><td>Mediana długości miesiąca</td><td>115</td></tr><tr><td>Średnia liczba ciągłych odcinków na miesiąc</td><td>100.897</td></tr>
+      <tr><td>Udział jednodniowych odcinków miesięcznych</td><td>97.482%</td></tr><tr><td>Prawdopodobieństwo, że sąsiednie dni należą do tego samego miesiąca</td><td>2.9976%</td></tr>
+      <tr><td>Średnia liczba obcych dni między <code>n</code> i <code>n+1</code> miesiąca</td><td>40.408</td></tr><tr><td>Średni odstęp od pierwszego do ostatniego wystąpienia miesiąca</td><td>4,266.653 dnia</td></tr>
+    </tbody></table></div>
+  <p>W praktyce miesiąc liczący około stu dni może rozciągać się niemal przez cały rok pastafariański.</p>
+  <p>Ten sam atlas ujawnił naturalne przesunięcie długości wokół roku 5000. „Zwykły” rok w próbie miał średnio około 4,262 dni. Po zważeniu lat liczbą dni, które zawierają, średnia wzrosła do około 4,466 dni, a sam rok 5000 miał średnio około 4,499 dni.</p>
+  <p>Powód jest prosty: rok 5000 musi zawierać dzień działania. Dłuższy rok daje więcej dni, dla których może być właśnie rokiem zawierającym dzień działania.</p>
+  <p>Związek między nazwą jednostki a jej długością był w próbie bardzo słaby. Nie dowodzi to pełnej niezależności matematycznej, ale atlas nie daje praktycznego sygnału, że nazwa ma kodować długość.</p>
+  <p>Ponadto 86,016 struktur roku nie stanowi 86,016 całkowicie niezależnych próbek: zawierają tylko 24,786 różnych przedziałów między bramą początkową i końcową. Sąsiednie dni działania mogą wybrać ten sam przedział roku, a mimo to wytworzyć inną strukturę wewnętrzną.</p>
+  <p>Atlas dobrze opisuje zmierzone zachowanie implementacji, ale nie należy zamieniać go w twierdzenie probabilistyczne o wszystkich możliwych strukturach kalendarza.</p><hr>
+</section>
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>Urodziny i rocznice</h2>
+  <p>Zwrot „ten sam dzień każdego roku” wymaga tu najpierw definicji. Naturalne współrzędne powrotu to <code>(nazwa miesiąca, dzień w miesiącu)</code> oraz <code>(nazwa kotleta, dzień w kotlecie)</code>; warunki można też łączyć.</p>
+  <p>Dlatego pastafariańskie urodziny nie są po prostu <code>RRULE:FREQ=YEARLY</code>. Trzeba znaleźć następny rok spełniający wybrany warunek powrotu, a zdarzenie początkowe nie jest automatycznie liczone jako własne „następne wystąpienie”.</p>
+  <p>Zmiana dnia działania wyłącznie do celów wyświetlania nie może zmieniać tożsamości osoby, chwili urodzenia ani wieku.</p>
+  <p>W dokładnym skanowaniu 4,096 dat własnych sprawdzono każdy kolejny rok pastafariański w przód i w tył, do 250,000 lat w każdym kierunku:</p>
+  <ul><li>Dla <code>(nazwa miesiąca, dzień w miesiącu)</code> mediana pierwszego powrotu wyniosła 1 rok pastafariański; 77.56% przypadków wróciło już w roku sąsiednim, 93.77% w ciągu dwóch lat, 99.44% w ciągu pięciu; zaobserwowane maksimum wyniosło 21 lat.</li>
+  <li>Dla <code>(nazwa kotleta, dzień w kotlecie)</code> mediana wyniosła 3 lata; 88.89% znaleziono w ciągu 10 lat, ale rozkład miał bardzo ciężki ogon, a zaobserwowane maksimum sięgnęło 51,954 lat pastafariańskich.</li></ul>
+  <p>Są to <strong>wyniki empiryczne badanego korpusu</strong>, a nie dowód, że każda możliwa rocznica musi kiedyś powrócić, ani gwarancja maksymalnego czasu oczekiwania.</p><hr>
+</section>
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>Jak umówić spotkanie?</h2>
+  <p>Jeżeli dwie osoby chcą umówić się wyłącznie za pomocą daty pastafariańskiej, muszą uzgodnić co najmniej pięć pól oraz dzień działania użyty do obliczenia. Lepiej zapisać ten dzień jako stabilną tożsamość dnia niż słowo „dzisiaj”, bo inaczej obie osoby mogą wyliczyć różne kalendarze.</p>
+  <ul><li>„jutro” to następny dzień chronologiczny;</li><li>„następny dzień miesiąca” to kolejne pojawienie się tego miesiąca;</li><li>„koniec miesiąca” to jego ostatnie pojawienie się;</li><li>„cały miesiąc” może oznaczać zbiór dni należących do miesiąca albo pełny chronologiczny zakres od pierwszego do ostatniego pojawienia się;</li><li>„następny rok” oznacza następny rok w kalendarzu zbudowanym pod wybranym dniem działania.</li></ul>
+  <p>Dla szczególnie ważnego spotkania można dodatkowo zapisać absolutny dzień lub moment chronologiczny. Kalendarz od tego nie ucierpi.</p><hr>
+</section>
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>Podróże, wydarzenia i all-day</h2>
+  <p>Wydarzenie i lokalna etykieta pokazywana przy nim to nie to samo. Wydarzenie zaplanowane na konkretną chwilę powinno być zakotwiczone w stabilnym momencie chronologicznym. Podróż nie przesuwa go w czasie, ale lokalna data pastafariańska pokazana w tej samej chwili może się zmienić, ponieważ definicja „lokalnego dnia” zależy od miejsca.</p>
+  <p>W przypadku wydarzenia <strong>all-day</strong> różnica jest jeszcze większa. Cywilne wydarzenie całodniowe zwykle trwa od cywilnej północy do następnej; pastafariańskie wydarzenie całodniowe powinno trwać od lokalnej granicy dnia pastafariańskiego do kolejnej granicy. Zwykle nie są to te same chwile.</p>
+  <p>Ślepy eksport wydarzenia pastafariańskiego jako cywilnego „całego dnia” może więc zmienić jego znaczenie. Dla wiernego zachowania trzeba przechować kotwicę chronologiczną i odpowiedni kontekst miejsca/granicy dnia, a nie tylko znacznik <code>all-day</code>.</p><hr>
+</section>
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>Kiedy zmienia się dzień?</h2>
+  <p>Lokalny dzień pastafariański nie zmienia się o północy. Jego granicę wyznacza <strong>topocentryczne dolne przejście środka Wenus przez lokalny południk</strong>.</p>
+  <p>Jest to zatem lokalne zjawisko astronomiczne zależne od położenia. Przejście nie musi następować o 00:00, nie wyznacza go cywilna strefa czasowa, nie przesuwa się tylko dlatego, że zaczyna się lub kończy czas letni, i nie wymaga widoczności Wenus gołym okiem.</p>
+  <p>Ten sam fizyczny moment może w dwóch miejscach wypaść po przeciwnych stronach ich lokalnej granicy dnia. Jeżeli system nie ma użytecznej lokalizacji użytkownika, domyślną lokalizacją produktu jest <strong>Kisurra</strong>.</p><hr>
+</section>
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>Kalendarz drukowany i obliczenia ręczne</h2>
+  <p>Kalendarz pastafariański można wydrukować; trzeba tylko podać, dla jakiego dnia działania został obliczony. Taki kalendarz pokazuje strukturę czasu z perspektywy tego dnia, a po zmianie dnia działania może być potrzebny nowy kalendarz. Drukarka zachowuje więc swoją rolę.</p>
+  <p>Całość można też obliczyć ręcznie, bo specyfikacja jest kompletna i deterministyczna: obliczyć liczniki wejściowe, wykonać 7 ukrytych i 46 widocznych kropli, aktualizować sześć mis, przeprowadzić 12 końcowych mieszań, uzyskać odpowiedzi, zbudować bramy, wybrać lata i kotlety, wykonać wybory kombinatoryczne, wybrać nazwy i przepleść miesiące.</p>
+  <p>W zamian nie trzeba pamiętać, że luty ma czasem 28, a czasem 29 dni.</p><hr>
+</section>
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>A czym jest Seer?</h2>
+  <p>Obok implementacji kanonicznej istnieje szybki silnik <strong>Pastafarian Calendar Seer</strong>. Seer nie jest źródłem autorytetu: poprawną datę określają Megillah i obliczenie kanoniczne. Jeśli Seer się z nimi nie zgadza, błędny jest Seer.</p>
+  <p>Jego zadaniem jest szybkie wykonywanie tych samych zapytań w formie wygodnej do integracji z produktami.</p>
+  <p>Podczas żywej weryfikacji prowadzonej przy redagowaniu tej strony Seer obejmował między innymi zapytania o datę i „teraz”, batch, zakresy dni, odwrotne przekształcenie daty pastafariańskiej na dzień docelowy, pobieranie struktury roku, ustalanie aktywnego dnia działania, Node API, klienta przeglądarkowego/HTTP, CLI, usługę HTTP v1, kontrakt OpenAPI 3.1, implementacje native i pakiety dystrybucyjne oraz zweryfikowane wdrożenie container.</p>
+  <p>Stare stwierdzenie, że Seer nie ma publicznego API, jest już nieprawdziwe. Istnieje jawny i stabilny kontrakt HTTP v1 z endpointami dla date, range, batch, year, reverse, dnia działania, metadata, locales i status.</p>
+  <p>21 września 2026 roku publiczne wdrożenie HTTPS na Render zostało rzeczywiście przetestowane: na żywej usłudze sprawdzono zapytania exact, duży range, restart, cold wake oraz zachowanie pod obciążeniem.</p>
+  <p>Dokumentacja projektu nadal odróżnia publiczne wdrożenie beta/evaluation od trwałej usługi hosted production z SLA. Dlatego strona objaśniająca zasady nie powinna utrwalać adresu serwera, dostawcy hostingu czy numeru wersji jako części samego kalendarza.</p>
+  <p>Seer może korzystać z obliczeń wstępnych, specjalnych reprezentacji, SIMD, algebry i innych skrótów. Nie musi krok po kroku odtwarzać historii obliczeń implementacji kanonicznej, jeżeli wykonuje tę samą operację semantyczną i zwraca tę samą odpowiedź.</p>
+  <p>Optymalizacja nie jest alternatywnym źródłem autorytetu.</p><hr>
+</section>
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>Pochodzenie, Dzień Założenia i Dzień Tablic</h2>
+  <p>Tu szczególnie trzeba oddzielić kanoniczne kotwice czasu od opowieści witryny.</p>
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>Kotwice</h3>
+    <p>System ma stały dzień odniesienia nazwany <strong>Dniem Założenia</strong>. W proleptycznym kalendarzu gregoriańskim jest to <strong>22 grudnia 41,222 r. p.n.e.</strong></p>
+    <p>Dzień Założenia nie jest „początkiem czasu”, lecz kotwicą obliczeniową.</p>
+    <p>Numeracja dni wokół niego używa dodatnich liczb nieparzystych i parzystych: Dzień Założenia=1; kolejne dni=3, 5, …; w stronę przeszłości dzień poprzedni=2, dalej 4, 6, … . Pozwala to kodować obie strony kotwicy bez ujemnych numerów dni w tym liczniku.</p>
+    <p>Drugą kotwicą jest <strong>Dzień Tablic</strong>: <strong>15 czerwca 763 r. p.n.e. w proleptycznym kalendarzu juliańskim</strong>, czyli <strong>7 czerwca 763 r. p.n.e. w proleptycznym kalendarzu gregoriańskim</strong>.</p>
+    <p>Dokładna odległość od Dnia Założenia do Dnia Tablic wynosi</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
+    <p>dni.</p>
+    <p>Są to stałe kotwice na osi czasu, ale wyświetlana dla nich data pastafariańska nadal zależy od dnia działania, z którego o nie pytamy.</p>
+  </section>
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>Opowieść witryny</h3>
+    <p>W redakcyjnej narracji witryny kalendarz jest przedstawiany jako część stworzenia i jako system używany przez ludzkość bez wystarczającej świadomości, aż został ponownie przekazany w epoce nowożytnej.</p>
+    <p>To opowieść witryny; nie należy przedstawiać każdego jej elementu fabularnego jako jawnego technicznego stwierdzenia Megillah.</p>
+    <p>Samo wydarzenie ponownego przekazania jest stałym wydarzeniem historycznym. Jego <strong>datę pastafariańską</strong> lepiej na stronie wyświetlać dynamicznie pod bieżącym dniem działania niż na zawsze przypisywać mu jedną datę.</p><hr>
+  </section>
+</section>
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>Dla zaawansowanych: konwersja odwrotna</h2>
+  <p>Gdy dzień działania <code>c</code> jest znany, konwersja odwrotna jest bardzo silnie określona. W obrębie znanego roku pastafariańskiego</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{nazwa kotleta},\text{dzień w kotlecie})</code></pre>
+  <p>wskazuje najwyżej jeden dzień. To samo dotyczy</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{nazwa miesiąca},\text{dzień w miesiącu})</code></pre>
+  <p>Pełna data przy znanym dniu działania identyfikuje więc dzień docelowy jednoznacznie.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Górne granice liczby kandydatów w konwersji odwrotnej"><table class="about-table">
+    <thead><tr><th scope="col">Dodatkowo znana informacja</th><th scope="col">Maksymalna liczba kandydatów</th></tr></thead><tbody>
+      <tr><td>Brak pól innych niż rok</td><td>5,778</td></tr><tr><td>Tylko nazwa kotleta</td><td>5,568</td></tr><tr><td>Tylko dzień w kotlecie</td><td>17</td></tr>
+      <tr><td>Tylko nazwa miesiąca</td><td>123</td></tr><tr><td>Tylko dzień w miesiącu</td><td>47</td></tr><tr><td>Nazwa kotleta + dzień w kotlecie</td><td>1</td></tr>
+      <tr><td>Nazwa miesiąca + dzień w miesiącu</td><td>1</td></tr><tr><td>Dowolne trzy pola nieroczne</td><td>1</td></tr><tr><td>Wszystkie cztery pola nieroczne</td><td>1</td></tr>
+    </tbody></table></div>
+  <p>Bez znajomości dnia działania sytuacja jest inna. Ta sama piątka może pojawiać się pod różnymi dniami działania; istnieją dokładne przykłady, w których ta sama pełna data wypada w różnych odległościach od <code>c</code>.</p>
+  <p>W roku 5000 nawet znak tej odległości nie zawsze wynika z pięciu pól: ta sama pełna data może w jednym kontekście leżeć w przeszłości względem dnia działania, a w innym w przyszłości.</p>
+  <p>Pełna data pastafariańska nie jest więc absolutnym adresem na osi czasu, jeśli nie wiadomo, pod jakim <code>c</code> ją obliczono.</p>
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>Struktura w dalekim czasie</h3>
+    <p>Matematyka wyprowadzona ze specyfikacji wykryła również dokładną strukturę asymptotyczną. Dla <strong>ustalonego dnia działania</strong> <code>c</code>, dostatecznie daleko w ogonie przeszłości, występuje periodyczność afiniczna.</p>
+    <p>Jeżeli</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>to dla tego samego <code>c</code> istnieją przesunięcie <code>H_c</code>, zmiana roku <code>p_c</code> i dostatecznie odległy próg, po którym</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>Cztery pola nieroczne się powtarzają, a numer roku zmienia się o stałą wartość.</p>
+    <p>To twierdzenie dla ustalonego <code>c</code>; nie wynika z niego globalna zależność</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>Otwarte pozostaje pytanie, czy końcowe nachylenie asymptotyczne rzeczywiście różni się między różnymi dniami działania.</p><hr>
+  </section>
+</section>
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>Dla zaawansowanych: ile historii zachowuje sos?</h2>
+  <p>Sos wygląda jak bardzo agresywne mieszanie, ale badania algebraiczne wykazały, że zachowuje znacznie więcej informacji, niż sugeruje wygląd zewnętrzny. Jest to wynik badań wyprowadzonych ze specyfikacji, a nie nowa reguła kalendarza.</p>
+  <p>Na widocznych etapach 3–46, na odpowiedniej gałęzi asymptotycznej, ustalono generic injectivity: w typowym położeniu stan zachowuje dość informacji, by odtworzyć istotną historię wejść i kolejności mis.</p>
+  <p>W 12 końcowych mieszaniach informacja również nie znika od razu. Dla pierwszych pięciu po widocznej kropli 46 ustalono generic invertibility na odpowiedniej kanonicznej sumie bez dodatkowych informacji bocznych; dla pozostałych znane są silne konstruktywne górne granice ilości informacji bocznej wystarczającej do odtworzenia.</p>
+  <p>Nadal otwarte jest pytanie, czy <strong>same sześć końcowych mis</strong> zawsze wystarcza w sensie ogólnym.</p>
+  <p>Część wyników udowodniono symbolicznie, a część zamknięto skończonymi dokładnymi sprawdzeniami arytmetycznymi. Wzmocnienie symboliczne znacznie zmniejszyło rdzeń obliczeniowy, któremu trzeba ufać, lecz nie usunęło go całkowicie.</p>
+  <p>Przestrzenie, które początkowo zdawały się wymagać przejścia ogromnej liczby ścieżek, skurczyły się do znacznie mniejszych struktur skończonych, w tym automatów o 180 i 9 stanach oraz symetrii sześciu mis.</p>
+  <p>Pod mieszaniem kryje się sztywna struktura algebraiczna. Do poznania dzisiejszej daty nie trzeba jej znać.</p><hr>
+</section>
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>Czym więc właściwie jest Kalendarz Pastafariański?</h2>
+  <p>Deterministycznym kalendarzem, w którym data jest funkcją nie tylko dnia docelowego, lecz <strong>dnia działania i dnia pytanego razem</strong>.</p>
+  <p>Każda data ma dokładnie pięć pól. Teraźniejszość względem samej siebie zawsze znajduje się w roku 5000, ale sam rok 5000 przesuwa się wraz z dniem działania. Lata mogą być bardzo długie, kotlety są ciągłe, miesiące nie muszą być, a kanonicznego systemu tygodni nie ma.</p>
+  <p>Dzień <code>n+1</code> miesiąca nie musi być jutrem. Ten sam dzień chronologiczny może jutro otrzymać inną pastafariańską etykietę. Ten sam fizyczny moment w dwóch miejscach może należeć do dwóch różnych lokalnych dni pastafariańskich. Wydarzenie całodniowe nie musi trwać od północy do północy. A coroczne urodziny są najpierw problemem wyszukiwania, dopiero potem problemem kalendarza.</p>
+  <p>Jeżeli jednak znamy dzień działania i dzień pytany, nie ma niejednoznaczności: istnieje dokładnie jedna poprawna odpowiedź.</p>
+  <p>Ostatecznie więcej od kalendarza nie trzeba.</p>
+</section>
