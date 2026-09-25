@@ -89,6 +89,7 @@ async function startStaticServer(state) {
 
     let relativePath = decodeURIComponent(requestUrl.pathname.slice(BASE_PATH.length));
     if (relativePath === "") relativePath = "index.html";
+    if (relativePath.endsWith("/")) relativePath += "index.html";
     const resolved = path.resolve(DOCS_ROOT, relativePath);
     const relativeToDocs = path.relative(DOCS_ROOT, resolved);
     if (relativeToDocs.startsWith("..") || path.isAbsolute(relativeToDocs)) {
@@ -710,7 +711,7 @@ try {
   assert.equal(failedLocale.workspaceHidden, false, "Failed optional locale hid the application");
   assert.equal(failedLocale.loadingHidden, true, "Failed optional locale left the application loading");
   assert.equal(failedLocale.errorHidden, true, "Failed optional locale displayed the engine error panel");
-  assert.equal((await assertRuntimePresence(page, "./i18n/locales/fr.js?v=17-canonical-names", false)).present, false);
+  assert.equal((await assertRuntimePresence(page, "./i18n/locales/fr.js?v=18-about-page", false)).present, false);
   const newFrBad = diagnostics.badResponses.slice(expectedFr.badResponses);
   assert(newFrBad.every((entry) => entry.status === 503 && entry.url.includes("/i18n/locales/fr.js")), `Unexpected HTTP diagnostics during failed optional locale: ${JSON.stringify(newFrBad)}`);
   const newFrFailures = diagnostics.requestFailures.slice(expectedFr.requestFailures);
@@ -728,7 +729,7 @@ try {
   const hebrew = await selectLocale(page, "he", "he");
   const heAfter = serverState.requests.filter((entry) => entry.url.includes("/i18n/locales/he.js")).length;
   assert.equal(heAfter - heBefore, 1, "Hebrew locale should be fetched once on first successful use");
-  const cachedHebrew = await assertRuntimePresence(page, "./i18n/locales/he.js?v=17-canonical-names", true);
+  const cachedHebrew = await assertRuntimePresence(page, "./i18n/locales/he.js?v=18-about-page", true);
   assert.equal(hebrew.lang, "he");
   console.log(`[PASS] successful on-demand locale cached: ${JSON.stringify(cachedHebrew)}`);
 
@@ -763,6 +764,30 @@ try {
   await offlineReverseSmoke(page);
   assertOfflineResponsesCameFromServiceWorker(diagnostics, "offline-root", "offline root subresources");
 
+  diagnostics.phase = "offline-about";
+  const offlineAbout = await page.goto(`${origin}${BASE_PATH}about/?lang=he#day-boundary`, { waitUntil: "load", timeout: UI_TIMEOUT_MS });
+  const offlineAboutNav = assertSuccessfulNavigation(offlineAbout, "offline about-page navigation");
+  diagnostics.successfulOfflineNavigationPhases.add("offline-about");
+  assert.equal(offlineAboutNav.fromServiceWorker, true, "Offline about-page navigation did not come from the Service Worker");
+  await page.locator("#day-boundary").waitFor({ state: "visible", timeout: UI_TIMEOUT_MS });
+  const aboutSnapshot = await page.evaluate(() => ({
+    htmlLang: document.documentElement.lang,
+    htmlDir: document.documentElement.dir,
+    articleLang: document.querySelector("#article-content")?.lang ?? null,
+    articleDir: document.querySelector("#article-content")?.dir ?? null,
+    hasTarget: Boolean(document.querySelector("#day-boundary")),
+    hasCalendarWorkspace: Boolean(document.querySelector("#calendar-workspace")),
+    tocLinks: document.querySelectorAll("#about-toc-list a").length,
+  }));
+  assert.equal(aboutSnapshot.htmlLang, "he");
+  assert.equal(aboutSnapshot.htmlDir, "rtl");
+  assert.equal(aboutSnapshot.articleLang, "he");
+  assert.equal(aboutSnapshot.articleDir, "rtl");
+  assert.equal(aboutSnapshot.hasTarget, true, "Deep-linked explanation section was not loaded offline");
+  assert.equal(aboutSnapshot.hasCalendarWorkspace, false, "About page must not instantiate the calendar workspace");
+  assert.ok(aboutSnapshot.tocLinks >= 30, "About page contents list is incomplete offline");
+  assertOfflineResponsesCameFromServiceWorker(diagnostics, "offline-about", "offline about-page subresources");
+
   diagnostics.phase = "offline-query";
   const queryUrl = `${origin}${BASE_PATH}?lang=he&offline-state=1`;
   const offlineQuery = await page.goto(queryUrl, { waitUntil: "load", timeout: UI_TIMEOUT_MS });
@@ -792,7 +817,7 @@ try {
   assert.equal(neverLoaded.workspaceHidden, false, "Never-loaded offline locale broke the application");
   assert.equal(neverLoaded.loadingHidden, true, "Never-loaded offline locale left loading state active");
   assert.equal(neverLoaded.errorHidden, true, "Never-loaded offline locale displayed the engine error panel");
-  assert.equal((await assertRuntimePresence(page, "./i18n/locales/de.js?v=17-canonical-names", false)).present, false);
+  assert.equal((await assertRuntimePresence(page, "./i18n/locales/de.js?v=18-about-page", false)).present, false);
   const newDeFailures = diagnostics.requestFailures.slice(expectedDe.requestFailures);
   assert(newDeFailures.every((entry) => entry.url.includes("/i18n/locales/de.js")), `Unexpected request failure during never-loaded offline locale: ${JSON.stringify(newDeFailures)}`);
   const newDeBad = diagnostics.badResponses.slice(expectedDe.badResponses);
@@ -822,7 +847,7 @@ try {
   const cachesAfterFailedUpgrade = await cacheSnapshot(page);
   assert.deepEqual(currentCoreCaches(cachesAfterFailedUpgrade), aCore, "Failed upgrade replaced or removed the previous core cache");
   assert(!cachesAfterFailedUpgrade.names.some((name) => name.includes("test-B")), "Failed B core cache residue remains");
-  await assertRuntimePresence(page, "./i18n/locales/he.js?v=17-canonical-names", true);
+  await assertRuntimePresence(page, "./i18n/locales/he.js?v=18-about-page", true);
   const newBBad = diagnostics.badResponses.slice(expectedB.badResponses);
   assert(newBBad.every((entry) => entry.status === 503 && entry.url.includes("/styles.css")), `Unexpected HTTP diagnostic during failed core upgrade: ${JSON.stringify(newBBad)}`);
   const newBFailures = diagnostics.requestFailures.slice(expectedB.requestFailures);
@@ -847,7 +872,7 @@ try {
   diagnostics.phase = "legacy-runtime-migration";
   const legacyMigration = await page.evaluate(async ({ runtimeCache }) => {
     const registration = await navigator.serviceWorker.ready;
-    const localeUrl = new URL("./i18n/locales/fr.js?v=17-canonical-names", registration.scope).href;
+    const localeUrl = new URL("./i18n/locales/fr.js?v=18-about-page", registration.scope).href;
     const response = await fetch(localeUrl);
     if (!response.ok) throw new Error(`Could not seed legacy locale fixture: HTTP ${response.status}`);
     const legacyName = "pastafari-static-reverse-search-lazy-i18n-10-unified-i18n";
@@ -857,7 +882,7 @@ try {
     await runtime.delete(localeUrl);
     return { legacyName, localeUrl };
   }, { runtimeCache: RUNTIME_CACHE });
-  assert.equal((await assertRuntimePresence(page, "./i18n/locales/fr.js?v=17-canonical-names", false)).present, false);
+  assert.equal((await assertRuntimePresence(page, "./i18n/locales/fr.js?v=18-about-page", false)).present, false);
   console.log(`[PASS] seeded legacy static-cache locale for migration test: ${JSON.stringify(legacyMigration)}`);
 
   diagnostics.phase = "successful-core-upgrade";
@@ -872,8 +897,8 @@ try {
   assert(cCore[0].includes("test-C"), `Current core cache is not version C: ${cCore[0]}`);
   assert(!cachesC.names.includes(aCore[0]), "Old version A core cache was not cleaned up");
   assert(cachesC.names.includes(RUNTIME_CACHE), "Runtime cache was removed during successful upgrade");
-  await assertRuntimePresence(page, "./i18n/locales/he.js?v=17-canonical-names", true);
-  await assertRuntimePresence(page, "./i18n/locales/fr.js?v=17-canonical-names", true);
+  await assertRuntimePresence(page, "./i18n/locales/he.js?v=18-about-page", true);
+  await assertRuntimePresence(page, "./i18n/locales/fr.js?v=18-about-page", true);
   assert(!cachesC.names.includes(legacyMigration.legacyName), "Legacy static cache was not removed after compatible locale migration");
   console.log("[PASS] successful activation cleans old static caches and preserves/migrates compatible runtime locale entries");
 

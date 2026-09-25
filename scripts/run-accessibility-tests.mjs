@@ -86,7 +86,7 @@ async function startStaticServer() {
     try {
       const url = new URL(request.url || "/", "http://127.0.0.1");
       const decoded = decodeURIComponent(url.pathname);
-      const relative = decoded === "/" ? "index.html" : decoded.replace(/^\/+/, "");
+      let relative = decoded === "/" ? "index.html" : decoded.replace(/^\/+/, "");\n      if (relative.endsWith("/")) relative += "index.html";
       const filename = path.resolve(DOCS, relative);
       if (filename !== DOCS && !filename.startsWith(`${DOCS}${path.sep}`)) {
         response.writeHead(403);
@@ -900,6 +900,26 @@ async function main() {
 
     await page.setViewportSize(DESKTOP);
     await chooseLocale(page, "en");
+
+    await check("about-page-hebrew-deep-link-and-reflow", async () => {
+      const aboutUrl = new URL("about/?lang=he#day-boundary", server.baseURL).href;
+      await page.goto(aboutUrl, { waitUntil: "domcontentloaded" });
+      await page.locator("#day-boundary").waitFor({ state: "visible", timeout: 30_000 });
+      assert.equal(await page.locator("html").getAttribute("lang"), "he");
+      assert.equal(await page.locator("html").getAttribute("dir"), "rtl");
+      assert.equal(await page.locator("#article-content").getAttribute("lang"), "he");
+      assert.equal(await page.locator("#article-content").getAttribute("dir"), "rtl");
+      assert.equal(await page.getByRole("heading", { level: 1 }).count(), 1);
+      assert.equal(await page.locator("#calendar-workspace").count(), 0, "About page must not load the calculation workspace");
+      assert.ok(await page.locator("#about-toc-list a").count() >= 30, "About page must expose its stable sections in the contents list");
+      assert.equal(await page.locator("#day-boundary").isVisible(), true, "Deep-link target must be present and visible");
+      await assertNoGlobalHorizontalOverflow(page, "about page desktop");
+      await page.setViewportSize(MOBILE);
+      await assertNoGlobalHorizontalOverflow(page, "about page mobile");
+      assert.equal(await page.locator(".about-toc").isVisible(), true);
+      assert.equal(await page.locator("#site-usage").isVisible(), true);
+      await axeScan(page, report, "about-page-hebrew", { locale: "he" });
+    });
   } catch (error) {
     fatalSuiteError = error;
     report.failures += 1;

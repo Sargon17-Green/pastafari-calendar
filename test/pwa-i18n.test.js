@@ -64,8 +64,12 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
 
   const requiredCore = [
     "./index.html",
-    "./styles.css?v=13-reverse-i18n",
-    "./app.js?v=22-canonical-names",
+    "./about/index.html",
+    "./about/about.js?v=1-about-page",
+    "./about/content/registry.js?v=1-about-page",
+    "./about/content/he.html?v=1-hebrew-baseline",
+    "./styles.css?v=14-about-page",
+    "./app.js?v=23-about-page",
     "./reverse-ui.js?v=19-canonical-names",
     "./reverse-search-controller.js",
     "./calendar-input-conventions.js?v=9-calendar-input-conventions",
@@ -80,12 +84,12 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
     "./engine/pastafari-constraints.js",
     "./engine/pastafari-reverse-worker.js",
     "./i18n/calendar-identifiers.js?v=9-canonical-names",
-    "./i18n/registry.js?v=18-canonical-names",
-    "./i18n/runtime.js?v=18-canonical-names",
-    "./i18n/locales/en.js?v=17-canonical-names",
+    "./i18n/registry.js?v=19-about-page",
+    "./i18n/runtime.js?v=19-about-page",
+    "./i18n/locales/en.js?v=18-about-page",
   ];
   assert.deepEqual(coreAssets, requiredCore, "CORE_ASSETS must describe the complete deterministic offline application shell");
-  assert.equal(coreAssets.length, 20);
+  assert.equal(coreAssets.length, 24);
 
   const requiredOptional = [
     "./manifest.webmanifest?v=9-canonical-names",
@@ -101,11 +105,11 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   await assertDeclaredAssetsExist(optionalAssets);
 
   const localeAssets = coreAssets.filter((entry) => entry.startsWith("./i18n/locales/"));
-  assert.deepEqual(localeAssets, ["./i18n/locales/en.js?v=17-canonical-names"]);
+  assert.deepEqual(localeAssets, ["./i18n/locales/en.js?v=18-about-page"]);
   assert.equal(LOCALES.length, 72, "PWA accounting expects the current 72 registered locales");
   assert.equal(LOCALES.filter(({ code }) => code !== "en").length, 71, "Every non-English locale is optional/on-demand");
 
-  assert.match(source, /const VERSION = "pastafari-static-pwa-hardening-18-canonical-names";/);
+  assert.match(source, /const VERSION = "pastafari-static-pwa-hardening-19-about-page";/);
   assert.match(source, /const RUNTIME_CACHE = "pastafari-runtime-assets";/);
   assert.match(source, /const OPTIONAL_LOCALE_PATH = \/\^\\\/i18n\\\/locales/);
   assert.match(source, /url\.search === LOCALE_REVISION_SEARCH/);
@@ -125,13 +129,15 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   assert.match(source, /await Promise\.all\(oldStaticCaches\.map\(\(name\) => caches\.delete\(name\)\)\);/);
   assert.match(source, /if \(url\.origin !== SCOPE_URL\.origin\) return;/);
   assert.match(source, /if \(isOptionalLocaleRequest\(url\)\)/);
+  assert.match(source, /function navigationFallbackEntry\(url\)/);
+  assert.match(source, /CORE_BY_URL\.get\(scoped\("\.\/about\/index\.html"\)\)/);
   assert.match(source, /event\.respondWith\(fetch\(event\.request\)\);/);
   assert.doesNotMatch(source, /if \(response\.ok\)\s*\{[\s\S]{0,250}cache\.put\(event\.request/s, "generic same-origin GET caching must not return");
 
   const html = await readFile(path.join(DOCS, "index.html"), "utf8");
   for (const entry of [
-    "./styles.css?v=13-reverse-i18n",
-    "./app.js?v=22-canonical-names",
+    "./styles.css?v=14-about-page",
+    "./app.js?v=23-about-page",
     "./manifest.webmanifest?v=9-canonical-names",
     "./icons/icon.svg?v=9-canonical-names",
   ]) {
@@ -146,21 +152,27 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
 test("registry contains only dynamic locale imports", async () => {
   const source = await readFile(path.join(DOCS, "i18n", "registry.js"), "utf8");
   assert.doesNotMatch(source, /^import\s+\w+\s+from\s+["']\.\/locales\//m);
-  const dynamicImports = [...source.matchAll(/import\(["']\.\/locales\/([^"'?]+)\.js\?v=17-canonical-names["']\)/g)].map((match) => match[1]);
+  const dynamicImports = [...source.matchAll(/import\(["']\.\/locales\/([^"'?]+)\.js\?v=18-about-page["']\)/g)].map((match) => match[1]);
   assert.deepEqual(dynamicImports, LOCALES.map(({ code }) => code));
 });
 
 test("every static HTML translation binding exists in every locale", async () => {
-  const html = await readFile(path.join(DOCS, "index.html"), "utf8");
-  const keys = new Set([...html.matchAll(/\bdata-i18n="([^"]+)"/g)].map((match) => match[1]));
-  for (const match of html.matchAll(/\bdata-i18n-attr="([^"]+)"/g)) {
-    for (const binding of match[1].split(";").map((part) => part.trim()).filter(Boolean)) {
-      const separator = binding.indexOf(":");
-      assert.ok(separator > 0, `invalid data-i18n-attr binding: ${binding}`);
-      keys.add(binding.slice(separator + 1).trim());
+  const htmlSources = await Promise.all([
+    readFile(path.join(DOCS, "index.html"), "utf8"),
+    readFile(path.join(DOCS, "about", "index.html"), "utf8"),
+  ]);
+  const keys = new Set();
+  for (const html of htmlSources) {
+    for (const match of html.matchAll(/\bdata-i18n="([^"]+)"/g)) keys.add(match[1]);
+    for (const match of html.matchAll(/\bdata-i18n-attr="([^"]+)"/g)) {
+      for (const binding of match[1].split(";").map((part) => part.trim()).filter(Boolean)) {
+        const separator = binding.indexOf(":");
+        assert.ok(separator > 0, `invalid data-i18n-attr binding: ${binding}`);
+        keys.add(binding.slice(separator + 1).trim());
+      }
     }
   }
-  assert.ok(keys.size > 20, "the audit should cover the public UI, not a token sample");
+  assert.ok(keys.size > 30, "the audit should cover both public pages, not a token sample");
   const locales = await loadAllLocales();
   for (const locale of locales) {
     for (const key of keys) {
@@ -202,7 +214,8 @@ test("the public UI searches dates, keeps ordinary days non-interactive, and ali
   assert.match(html, /<form id="target-search-form"/);
   assert.match(html, /<details class="advanced-settings"/);
   assert.match(html, /<table class="comparison-table"/);
-  assert.match(html, /href="#user-guide" data-guide-link/);
+  assert.match(html, /href="\.\/about\/" data-about-link data-i18n="about\.open"/);
+  assert.doesNotMatch(html, /href="#user-guide"|id="user-guide"|data-guide-link/);
   assert.doesNotMatch(app, /createElement\("button"\).*day-card/s);
   assert.match(app, /createElement\("article"\);\n\s*card\.className = "day-card"/);
   assert.match(app, /secondary\.jdn !== primary\.jdn/);

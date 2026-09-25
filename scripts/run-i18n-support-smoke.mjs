@@ -100,7 +100,7 @@ try {
     await openLocale(page, server.baseUrl, metadata);
 
     const probe = await page.evaluate(async (code) => {
-      const i18n = await import("./i18n/registry.js?v=18-canonical-names");
+      const i18n = await import("./i18n/registry.js?v=19-about-page");
       const locale = await i18n.loadLocale(code);
       return {
         support: i18n.getLocale(code).support,
