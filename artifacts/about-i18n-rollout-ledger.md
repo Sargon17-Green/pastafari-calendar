@@ -116,6 +116,14 @@ Status progression for target locales: `not started → draft → semantic QA �
 
 - `be-BY`: locale-wide language finding: the existing locale mixes Belarusian with Ukrainian forms (e.g. `Змінити дзень дії`, `котлеті`, `місяці`). It requires native Belarusian repair before serving as a terminology oracle.
 
+- `ht-HT`: locale-wide language finding: the existing locale is French rather than Haitian Creole (e.g. `Changer le jou de travail`, `Comment utiliser ce site`, `Goutte`, `Porte`). Do not use it as a Haitian Creole terminology oracle.
+
+- `jv-ID`: locale-wide language finding: the existing locale is predominantly Indonesian rather than Javanese (e.g. `Ubah dina kerja`, `Cara menggunakan situs ini`, `Hari/Dina Pendirian`, `Tetes`, `Gerbang`). Do not use it as a Javanese terminology oracle.
+
+- `mk-MK`: locale-wide language finding: the existing locale mixes Macedonian with Russian (e.g. `Изменить`, `Как пользоваться сайтом`, `День Основания`, `Капля`). It requires native Macedonian repair.
+
+- `nn-NO`: locale-wide variant finding: the existing locale substantially mixes Bokmål with Nynorsk (e.g. `Endre arbeidsdagen`, `Grunnleggelsesdagen`, alongside `brukar`). It requires native Nynorsk repair before serving as a terminology oracle.
+
 ## Native-language whole-site QA policy
 
 The final linguistic QA is intentionally a separate phase and will run on a dedicated branch forked from the completed translation branch, tentatively `qa/about-i18n-native-language-audit`.
