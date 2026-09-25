@@ -98,6 +98,8 @@ Status progression for target locales: `not started → draft → semantic QA �
 
 - `bg-BG`: locale-wide language finding: prominent existing UI strings are Russian or mixed Russian/Bulgarian rather than idiomatic Bulgarian (for example `Изменить ден на действието`, `Как пользоваться сайтом`). Do not use those strings as a terminology oracle for the article; native Bulgarian review must repair the whole locale.
 
+- `ms-MY`: locale-wide language finding: the existing locale mixes Malay and Indonesian rather than being consistently idiomatic Malay (for example Malay `tarikh`/`mesej` alongside Indonesian `situs`, `perhitungan`, `Terapkan`, `coba lagi`). Do not use it as a terminology oracle for the Malay article; native Malay review must repair the whole locale.
+
 ## Native-language whole-site QA policy
 
 The final linguistic QA is intentionally a separate phase and will run on a dedicated branch forked from the completed translation branch, tentatively `qa/about-i18n-native-language-audit`.
