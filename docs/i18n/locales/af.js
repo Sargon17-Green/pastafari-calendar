@@ -60,8 +60,8 @@ export default Object.freeze({
     "field.day": "Dag",
     "field.relatedYear": "Ooreenstemmende Gregoriaanse jaar",
     "field.leapMonth": "Skrikkelmaand",
-    "field.era": "Tijdperk",
-    "field.eraYear": "Jaar in tijdperk",
+    "field.era": "Tydperk",
+    "field.eraYear": "Jaar in tydperk",
     "field.ayyamiHa": "Ayyám-i-Há",
     "field.baktun": "Baktun",
     "field.katun": "Katun",
@@ -130,8 +130,8 @@ export default Object.freeze({
     "year.displayedCutletPosition": "Die vertoonde kotelet beslaan dae {start}–{end} van die jaar.",
     "year.targetPosition": "Die gesoekte datum is dag {day} van {length} in hierdie jaar.",
     "year.monthExplainer": "Maande is onafhanklik van kotelette deur die jaar verweef: 'n maand is nie 'n onderverdeling van 'n kotelet nie, en sy dae kan in verskeie afsonderlike reekse voorkom. Die lengte van 'n maand is dus die totale aantal toegewese dae, nie noodwendig een aaneenlopende tydperk nie.",
-    "year.cutletsSummary": "Koteletten in dit jaar ({count})",
-    "year.monthsSummary": "Maanden in dit jaar ({count})",
+    "year.cutletsSummary": "Kotelette in hierdie jaar ({count})",
+    "year.monthsSummary": "Maande in hierdie jaar ({count})",
     "year.numberedName": "{number}. {name}",
     "year.cutletMeta": "Lengte: {length} dae · posisie in die jaar: dae {start}–{end}",
     "year.monthMeta": "Dae: {length} · aaneenlopende reekse: {runs} · eerste verskyning: dag {first} · laaste: dag {last}",
@@ -141,8 +141,8 @@ export default Object.freeze({
     "target.notInView": "Jou gesoekte datum bly bewaar; die kotelet wat nou vertoon word, is 'n ander een.",
     "date.aria": "Jaar {year} sedert die Skepping van die Wêreld, dag {dayInCutlet} in die kotelet {cutletName}, dag {dayInMonth} in die maand {monthName}",
     "date.yearLine": "Jaar {year} sedert die Skepping van die Wêreld",
-    "date.cutletLine": "Dag {dayInCutlet} in de kotelet {cutletName}",
-    "date.monthLine": "Dag {dayInMonth} in de maand {monthName}",
+    "date.cutletLine": "Dag {dayInCutlet} in die kotelet {cutletName}",
+    "date.monthLine": "Dag {dayInMonth} in die maand {monthName}",
     "guide.eyebrow": "Gebruikersgids",
     "guide.heading": "Wat kan jy hier doen, en hoe?",
     "guide.intro": "Die webwerf toon vir elke dag 'n volledige Pastafariese datum, ondersteun soektogte in baie kalenders en kan op 'n breë skerm die uitwerking van die aksiedag vergelyk.",
@@ -329,7 +329,7 @@ export default Object.freeze({
       "salt": "Sout",
       "pear": "Peer",
       "bow": "Boog",
-      "sand": "Zand"
+      "sand": "Sand"
     }
   },
   "terminology": {
