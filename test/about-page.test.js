@@ -42,7 +42,7 @@ test("about page is a lightweight document shell and keeps site usage secondary"
   assert.match(js, /fetch\(url\)/);
   assert.match(js, /buildTableOfContents\(\)/);
   assert.match(js, /focusHashTarget\(\)/);
-  assert.match(js, /matchMedia\("\(max-width: 760px\)"\)/);
+  assert.match(js, /matchMedia\("\(max-width: 860px\)"\)/);
   assert.match(js, /id === "site-usage"/);
   assert.doesNotMatch(js, /new Worker|pastafari-fast|calendar-converters|reverse-ui|reverse-search-controller/);
 });
