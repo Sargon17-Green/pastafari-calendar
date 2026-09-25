@@ -57,7 +57,12 @@ test("Hebrew explanation preserves the full stable deep-link contract", async ()
   for (const id of ["anchors", "site-story", "far-time-structure"]) {
     assert.match(html, new RegExp(`id="${id}" data-toc-section data-toc-level="3"`));
   }
-  assert.equal((html.match(/class="about-table"/g) || []).length, 2);
+  assert.equal((html.match(/class="about-table about-kv-table"/g) || []).length, 2);
+  assert.equal((html.match(/class="about-table-scroll about-kv-table-wrap"/g) || []).length, 2);
+  assert.match(html, /<th scope="col">גודל שנמדד<\/th><th scope="col">תוצאה במדגם<\/th>/);
+  assert.match(html, /<th scope="col">מידע ידוע נוסף על היום<\/th><th scope="col">מספר מועמדים מרבי<\/th>/);
+  assert.doesNotMatch(html, /נמדדתוצאה|היוםמספר/);
+  assert.ok((html.match(/<bdi dir="ltr">/g) || []).length >= 20, "numeric table values should be isolated from RTL");
   assert.ok((html.match(/class="math-block"/g) || []).length >= 10);
   assert.equal(
     (html.match(/<pre class="math-block" dir="ltr" tabindex="0">/g) || []).length,
