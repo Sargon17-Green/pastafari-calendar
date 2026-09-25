@@ -1,0 +1,334 @@
+<!-- Toleo la Kiswahili limeandikwa moja kwa moja kutoka msingi wa maana wa Kiebrania, bila lugha ya kati. -->
+<!-- Vitambulisho vya sehemu ni mkataba thabiti wa viungo vya moja kwa moja na havitokani na vichwa vilivyotafsiriwa. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>Katika simulizi ya tovuti hii, Kalenda ya Pastafari inaelezwa kuwa kalenda ambamo wakati wenyewe uliumbwa. Hata hivyo, utaratibu wake umefafanuliwa kwa usahihi kabisa.</p>
+  <p>Kalenda hii haipachiki kila siku “lebo” moja ya Pastafari isiyobadilika. Ili kujua tarehe, tunahitaji siku mbili: <strong>siku ya utendaji</strong>, ambayo ndiyo msingi wa hesabu, na <strong>siku inayoulizwa</strong>, ambayo tarehe yake tunataka kujua.</p>
+  <p>Tukiita siku ya utendaji <code>c</code> na siku inayoulizwa <code>t</code>, tarehe ni</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>wala si <code>F(t)</code>. Kwa hiyo siku ileile inayoulizwa inaweza kupata tarehe tofauti ya Pastafari ikiwa siku ya utendaji imebadilika.</p>
+  <p>Hilo si kosa. Ndivyo kalenda hii ilivyo.</p><hr>
+</div>
+
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>Tarehe ya Pastafari ina sehemu gani?</h2>
+  <p>Ina <strong>sehemu tano kamili</strong>: nambari ya mwaka, jina la kotleti, siku ndani ya kotleti, jina la mwezi, na siku ndani ya mwezi.</p>
+  <p>Mfano wa jumla: <strong>mwaka 5000, kotleti A, siku ya 417 katika kotleti, mwezi B, siku ya 83 katika mwezi.</strong></p>
+  <p>Siku ya utendaji, mahali alipo mtazamaji, utambulisho wa kihistoria wa siku, au taarifa nyingine za kiufundi zinaweza kuonyeshwa pembeni, lakini si sehemu ya sita ya tarehe.</p><hr>
+</section>
+
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>Kwa nini tunahitaji siku ya utendaji?</h2>
+  <p>Katika kalenda za kawaida, ni rahisi kufikiri kwamba tarehe “ni ya” siku yenyewe. Katika Kalenda ya Pastafari, tarehe hutegemea uhusiano kati ya siku mbili.</p>
+  <p>Kubadilisha <code>t</code> ni kuuliza kuhusu siku nyingine. Kubadilisha <code>c</code> kunaweza kubadilisha mengi zaidi: mipaka ya miaka, kotleti, miezi, majina yake, na namna miezi inavyofumwa pamoja.</p>
+  <p>Kwa hiyo almanaki iliyohesabiwa leo si lazima iwe sahihi kesho. Hivyo pia tunaepuka hali isiyofaa ambapo kalenda iliyochapishwa ingebaki na matumizi kwa mwaka mzima.</p><hr>
+</section>
+
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>Siku ileile, tarehe tofauti</h2>
+  <p>Lazima tutofautishe <strong>utambulisho wa siku</strong> na <strong>uwakilishi wake wa Pastafari</strong>. Wa kwanza ni nafasi thabiti ya siku fulani kwenye mstari wa wakati; wa pili ni seti ya sehemu tano inayopatikana siku hiyo inapoonyeshwa chini ya siku fulani ya utendaji.</p>
+  <p>Katika bidhaa na API, wa kwanza unaweza kufikiriwa kama <code>day-id</code>: utambulisho wa kihistoria ambao haubadiliki kwa kubadilisha namna ya kuonyesha. Lakini</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre>
+  <p>na</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>si lazima zilingane.</p>
+  <p>Kwa hiyo kubadilisha siku ya utendaji kwa mkono kunaweza kubadilisha tarehe inayoonyeshwa kwa siku ileile bila kuihamisha siku hiyo kwenye mstari wa wakati.</p>
+  <p>Kanuni hiyo hiyo inatumika kwa matukio. Miadi, kuzaliwa, au tukio la kihistoria linapaswa kubaki limefungwa kwenye utambulisho thabiti wa kihistoria; tarehe yake ya Pastafari inaweza kuhesabiwa tena kulingana na muktadha wa kuonyesha.</p>
+  <p>Lebo inaweza kubadilika. Tukio halibadiliki.</p><hr>
+</section>
+
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>Mwaka 5000</h2>
+  <p>Siku ya utendaji inapokuwa sawa na siku inayoulizwa,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>mwaka huwa daima</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>Kwa maneno mengine, wakati wa sasa ukitazamwa kutoka kwake mwenyewe huwa daima katika mwaka 5000. Lakini mwaka 5000 si kipindi maalumu kisichosogea katika historia; huchaguliwa upya kwa kulinganisha na siku ya utendaji.</p>
+  <p>Siku ya utendaji yenyewe iko katika mwaka 5000, na siku nyingine za mwaka huohuo uliochaguliwa pia ziko humo. Kwa hiyo <strong>kuwa katika mwaka 5000 pekee hakuthibitishi kwamba <code>t=c</code>.</strong></p>
+  <p>Hata hivyo nambari ya mwaka huonyesha mwelekeo:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre>
+  <p>na</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p>Pia kuna <strong>mwaka 0</strong>; ukiendelea nyuma zaidi kuna miaka yenye nambari hasi.</p><hr>
+</section>
+
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>Miaka na malango</h2>
+  <p>Mwaka wa Pastafari unaweza kuwa na</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ hadi }5778</code></pre>
+  <p>siku. Hii ni mipaka ya kikanoni ya mfumo, si wastani uliopatikana kwa majaribio.</p>
+  <p>Mwaka unaweza kuwa mfupi kuliko mwaka wa jua au mrefu kuliko miaka kumi na tano ya jua. Mipaka ya miaka hutengenezwa na mfumo wa <strong>malango</strong>; mipaka ya kotleti pia hutokana na mfumo huo.</p>
+  <p>Mwisho wa mwaka si lazima ulingane na msimu, mzunguko wa Dunia kuzunguka Jua, mzunguko wa Mwezi, au hitaji la kiutendaji kwamba mwaka hatimaye uishe.</p><hr>
+</section>
+
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>Kotleti</h2>
+  <p>Kila mwaka hugawanywa katika <strong>kotleti 6 hadi 17</strong>. Kotleti ni sehemu ya wakati iliyo mfululizo kihistoria.</p>
+  <p>Ikiwa leo ni siku ya 250 katika kotleti, kesho ni siku ya 251 ya kotleti hiyo hiyo, isipokuwa leo ndiyo siku yake ya mwisho. Mipaka ya kotleti ni malango, na kotleti ina angalau</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
+  <p>siku.</p>
+  <p>Mfumo una majina 17 ya kikanoni ya kotleti, na jina halijirudii ndani ya mwaka mmoja. Jina halionyeshi urefu wala nafasi ya kotleti.</p><hr>
+</section>
+
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>Miezi na kufumwa</h2>
+  <p>Kila mwaka una</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ hadi }47</code></pre>
+  <p>miezi ya kimuundo, na kila mwezi hupewa</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ hadi }123</code></pre>
+  <p>siku.</p>
+  <p>Lakini mwezi wa Pastafari <strong>si lazima uwe kipindi cha wakati kilicho mfululizo</strong>. Kwa mfano mpangilio wa wakati unaweza kuwa:</p>
+  <blockquote><p>mwezi A — siku 14<br>mwezi B — siku 9<br>mwezi A — siku 15</p></blockquote>
+  <p>Huo ni muundo halali kabisa. Siku ya 15 ya mwezi A ndiyo siku inayofuata <strong>ya mwezi huo</strong>, hata kama kati yake kumetokea siku ya mwezi mwingine.</p>
+  <p>Kwa hiyo “siku ndani ya mwezi” si idadi ya siku za kihistoria tangu mwezi ulipoonekana kwa mara ya kwanza. Ni nambari ya mpangilio ya siku iliyopangiwa mwezi huo ndani ya mwaka. Siku ya 48 ni siku ya 48 inayomilikiwa na mwezi huo, si siku 47 baada ya kuonekana kwake kwa kwanza.</p><hr>
+</section>
+
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>Miezi imefumwa pamoja</h2>
+  <p>Unaweza kuifikiria miezi kama nyuzi zinazopita ndani ya mwaka. Kila siku ni ya mwezi mmoja tu; kesho inaweza kuwa ya mwezi mwingine, halafu mwezi wa kwanza ukarudi baadaye na kuendelea na nambari yake inayofuata.</p>
+  <p>Kufumwa huku kuna sheria, ikiwemo mipaka kuhusu mpangilio wa kuonekana kwa mara ya kwanza na ya mwisho kwa miezi. Lakini hakuna sharti kwamba mwezi mmoja lazima umalizike kabla mwingine haujaanza.</p>
+  <ul>
+    <li>Kotleti hupima nafasi ndani ya sehemu mfululizo ya wakati.</li>
+    <li>Mwezi huonyesha kuwa siku ni sehemu ya uzi wa kimuundo ambao unaweza kutoweka kisha kurudi.</li>
+  </ul>
+  <p>Mwezi mmoja unaweza kuvuka kotleti kadhaa, na kotleti moja inaweza kuwa na kuonekana kwa miezi mingi. Mwanzo na mwisho wa mifumo hii miwili si lazima ulingane.</p><hr>
+</section>
+
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>Siku inayofuata ya mwezi si lazima iwe kesho</h2>
+  <p>Ikiwa leo ni siku ya 17 ya mwezi fulani, siku ya 18 ya mwezi huo ni <strong>kuonekana kwake kunakofuata</strong>. Inaweza kuwa kesho au baadaye sana.</p>
+  <p><strong>Kesho</strong> ni siku inayofuata kihistoria; <strong>siku inayofuata ya mwezi</strong> ni kuonekana kunakofuata kwa mwezi huo.</p>
+  <p>Vivyo hivyo, “mwisho wa mwezi” haumaanishi kwamba mwisho huo uko karibu kwa wakati. Mwezi wenye siku 120 unaweza kuwa leo katika siku ya 119, huku siku ya 120 ikiwa mbali zaidi ndani ya mwaka huo.</p><hr>
+</section>
+
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>Hakuna wiki</h2>
+  <p>Ufafanuzi wa sasa wa kikanoni <strong>haufafanui mfumo wa wiki</strong>. Hakuna kitengo cha juu cha siku saba kilicho kikanoni, hakuna majina ya siku za wiki ya Pastafari, na hakuna sheria inayofanya siku mbili kuwa “siku ileile ya wiki”.</p>
+  <p>Bila shaka mfumo wa wiki wa kiraia unaweza kuongezwa kutoka nje; hauwi tu sehemu ya tarehe ya Pastafari.</p><hr>
+</section>
+
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>Majina</h2>
+  <p>Kuna majina 17 ya kikanoni ya kotleti na majina 47 ya kikanoni ya miezi. Ndani ya mwaka mmoja, kila jina huonekana mara moja tu kwa kiwango cha juu katika familia yake.</p>
+  <p>Utambulisho wa jina ni wa kikanoni na wa maana; si matokeo ya kupiga kura kati ya tahajia, tafsiri, au utekelezaji mbalimbali. Kuhusu maana ya majina, Megillah ya Kiebrania ndiyo mamlaka ya juu; tafsiri na unukuzi wa herufi ni tabaka za uwasilishaji.</p>
+  <p>Jina pia si msimbo uliofichwa wa urefu. Hakuna jina fulani la kotleti au mwezi ambalo lenyewe hufanya kitengo hicho kuwa kirefu au kifupi zaidi.</p><hr>
+</section>
+
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>Jambo dogo kuhusu miezi</h2>
+  <p>Kuna majina 47 ya miezi, na mwezi unaweza kufikia hadi siku ya 123. Kwa hiyo kuna</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>jozi zinazowezekana kisintaksia za “jina la mwezi + nambari ya siku ndani ya mwezi”.</p>
+  <p>Kila siku ya mwaka hutimiza jozi moja hasa. Ikiwa urefu wa mwaka ni <code>L</code>, basi jozi <code>L</code> hasa huonekana. Kwa kuwa</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>kila mwaka lazima ukose angalau</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre>
+  <p>jozi zinazowezekana. Hata mwaka mrefu zaidi hauna siku za kutosha kwa zote.</p><hr>
+</section>
+
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>Kalenda huhesabiwaje?</h2>
+  <p>Hesabu ya ndani tunaiita hapa <strong>mchuzi</strong>. Katikati yake kuna nambari msingi</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>Mchakato unajumuisha vihesabu vitano vya pembejeo, matone 7 yaliyofichwa, matone 46 yanayoonekana, bakuli 6, mipangilio inayobadilika ya bakuli, mikorogo 12 ya mwisho, mihuri kwa majibu tofauti, chaguo za kikombinatoriki, uundaji wa malango, uchaguzi wa miaka, mgawanyo wa kotleti, uchaguzi wa majina, uundaji wa miezi, na kufumwa kwa siku za miezi.</p>
+  <p>Masasisho ya mwisho ni <strong>ya wakati mmoja</strong>: katika kila korogo, thamani zote sita mpya huhesabiwa kutoka hali ileile ya zamani, kisha bakuli zote sita hubadilishwa pamoja.</p>
+  <p>Katika mikorogo 12 ya mwisho kuna maelezo muhimu sana ya kikanoni. Ikiwa <code>S</code> ni jumla ya bakuli sita za zamani na <code>r</code> ni nambari ya korogo, mfumo huhesabu</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p><code>R</code> ndiyo <strong>jumla iliyohifadhiwa</strong>. Uchaguzi wa mpangilio wa bakuli na sasisho la ndani la korogo hutumia <code>R</code>, si jumla ghafi <code>S</code>.</p>
+  <p>Matoleo ya zamani yaliyotumia jumla ghafi katika sasisho hilo hayafafanui tena semantiki ya sasa ya kikanoni. Mifano iliyotokana na sheria ya zamani ni ya kizamani mpaka ithibitishwe tena.</p>
+  <p>Baada ya mikorogo, duara la majibu pia huendelea kwa mpangilio uliofungwa katika tone linaloonekana la 46; mpangilio huo haupaswi kubadilishwa moja kwa moja na mpangilio wa korogo ya mwisho.</p><hr>
+</section>
+
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice na Wide Choice</h2>
+  <p>Kwa nafasi ndogo kiasi za machaguo, mfumo hutumia <strong>Short Choice</strong>. Hutumia rejection sampling ili kuepuka modulo bias rahisi.</p>
+  <p>Nafasi kubwa sana hutumia <strong>Wide Choice</strong>. Haisaidii kuihusisha na sifa ambazo ufafanuzi hauzihakikishi.</p>
+  <p>Wide Choice si sawa na kuzalisha tarakimu huru zilizosambazwa sawasawa katika msingi <code>Q</code> mpaka ipatikane indeksi. Kwa hiyo haifuati kwamba kila chaguo halali lazima liwe na uwezekano chanya ulio sawa. Katika nafasi kubwa vya kutosha, kunaweza kuwa na machaguo halali ambayo utaratibu huu hauwezi kuyafikia kabisa.</p>
+  <p>Kalenda yenyewe ni deterministiki kikamilifu. “Choice” ni jina la hatua ya algoriti, si bahati nasibu inayofanywa wakati wa matumizi.</p><hr>
+</section>
+
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>Atlasi ya muundo</h2>
+  <p>Mpaka hapa tumekuwa tukizungumzia sheria za kalenda. Nambari zinazofuata ni aina nyingine ya taarifa: ni <strong>matokeo ya kimajaribio</strong> kutoka sampuli kubwa ya kihesabu.</p>
+  <p>Atlasi iliundwa kwa engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> na ilijumuisha siku 4,096 za utendaji; miaka 4990–5010 kwa kila moja; miundo 86,016 ya mwaka; kotleti 625,437; miezi 3,535,422 ya kimuundo; zaidi ya sehemu milioni 356 za miezi zilizo mfululizo; na zaidi ya mabadiliko milioni 364 kutoka siku <code>n</code> kwenda siku <code>n+1</code> ya mwezi uleule.</p>
+  <p>Haya ni maelezo ya corpus hiyo, si sheria za kikanoni.</p>
+
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Data zilizopimwa katika atlasi ya muundo">
+    <table class="about-table">
+      <thead><tr><th scope="col">Kipimo</th><th scope="col">Matokeo katika sampuli</th></tr></thead>
+      <tbody>
+        <tr><td>Wastani wa urefu wa mwaka</td><td>siku 4,275.182</td></tr>
+        <tr><td>Mediani ya urefu wa mwaka</td><td>4,343</td></tr>
+        <tr><td>Kiwango cha chini / juu kilichoonekana</td><td>716 / 5,778</td></tr>
+        <tr><td>Wastani wa kotleti kwa mwaka</td><td>7.271</td></tr>
+        <tr><td>Miaka yenye kotleti 6 hasa</td><td>42.00%</td></tr>
+        <tr><td>Miaka yenye kotleti 6–8</td><td>81.29%</td></tr>
+        <tr><td>Wastani wa urefu wa kotleti</td><td>siku 587.963</td></tr>
+        <tr><td>Mediani ya urefu wa kotleti</td><td>560</td></tr>
+        <tr><td>Wastani wa miezi kwa mwaka</td><td>41.102</td></tr>
+        <tr><td>Mediani ya idadi ya miezi</td><td>43</td></tr>
+        <tr><td>Miaka yenye miezi 47</td><td>15.63%</td></tr>
+        <tr><td>Miaka yenye angalau miezi 45</td><td>36.81%</td></tr>
+        <tr><td>Wastani wa urefu wa mwezi wa kimuundo</td><td>siku 104.014</td></tr>
+        <tr><td>Mediani ya urefu wa mwezi</td><td>115</td></tr>
+        <tr><td>Wastani wa sehemu mfululizo kwa mwezi</td><td>100.897</td></tr>
+        <tr><td>Uwiano wa sehemu za mwezi za siku moja</td><td>97.482%</td></tr>
+        <tr><td>Uwezekano wa siku mbili zinazofuatana kuwa mwezi mmoja</td><td>2.9976%</td></tr>
+        <tr><td>Wastani wa siku za miezi mingine kati ya <code>n</code> na <code>n+1</code> ya mwezi</td><td>40.408</td></tr>
+        <tr><td>Wastani wa upana kutoka kuonekana kwa kwanza hadi kwa mwisho kwa mwezi</td><td>siku 4,266.653</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Kwa vitendo, mwezi wenye karibu siku mia moja unaweza kutawanyika katika karibu mwaka mzima wa Pastafari.</p>
+  <p>Atlasi hiyo hiyo ilionyesha pia upendeleo wa asili wa urefu karibu na mwaka 5000. Mwaka “wa kawaida” katika sampuli ulikuwa na wastani wa takribani siku 4,262. Miaka ilipopimwa kwa uzito kulingana na idadi ya siku ilizokuwa nazo, wastani ulipanda hadi karibu siku 4,466; mwaka 5000 wenyewe ulikuwa na wastani wa karibu siku 4,499.</p>
+  <p>Sababu ni rahisi: mwaka 5000 lazima uwe na siku ya utendaji. Mwaka mrefu una siku nyingi zaidi ambazo unaweza kuwa mwaka unaoibeba siku hiyo ya utendaji.</p>
+  <p>Uhusiano kati ya jina la kitengo na urefu wake pia ulikuwa dhaifu sana katika sampuli. Hilo halithibitishi uhuru kamili wa kihisabati, lakini atlasi haitoi ishara ya kiutendaji kwamba majina yamekusudiwa kusimba urefu.</p>
+  <p>Zaidi ya hayo, miundo 86,016 ya mwaka si sampuli 86,016 huru kabisa: ina vipindi 24,786 tu tofauti kati ya lango la mwanzo na lango la mwisho. Siku za utendaji zinazofuatana zinaweza kuchagua kipindi kilekile cha mwaka na bado zikazalisha muundo tofauti wa ndani.</p>
+  <p>Kwa hiyo atlasi inaeleza vizuri tabia iliyopimwa ya utekelezaji, lakini haipaswi kugeuzwa kuwa nadharia ya uwezekano kuhusu miundo yote inayowezekana ya kalenda.</p><hr>
+</section>
+
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>Siku za kuzaliwa na maadhimisho</h2>
+  <p>Kauli “siku ileile kila mwaka” lazima kwanza ifafanuliwe hapa. Kuratibu asilia za kurudia ni <code>(jina la mwezi, siku ndani ya mwezi)</code> na <code>(jina la kotleti, siku ndani ya kotleti)</code>; masharti yanaweza pia kuunganishwa.</p>
+  <p>Kwa hiyo siku ya kuzaliwa ya Pastafari si tu <code>RRULE:FREQ=YEARLY</code>. Ni lazima kutafuta mwaka unaofuata unaotimiza sharti la kurudia lililochaguliwa, na tukio la awali halihesabiwi moja kwa moja kuwa “kuonekana kwake kunakofuata”.</p>
+  <p>Kubadilisha siku ya utendaji kwa madhumuni ya kuonyesha tu hakupaswi kubadilisha utambulisho wa mtu, wakati wa kuzaliwa, au umri.</p>
+  <p>Katika uchunguzi sahihi wa tarehe 4,096 za kujirejelea, kila mwaka unaofuata wa Pastafari ulikaguliwa mbele na nyuma hadi miaka 250,000 kila upande:</p>
+  <ul>
+    <li>Kwa <code>(jina la mwezi, siku ndani ya mwezi)</code>, mediani ya kurejea kwa kwanza ilikuwa mwaka 1 wa Pastafari; 77.56% zilirejea katika mwaka jirani, 93.77% ndani ya miaka miwili, 99.44% ndani ya miaka mitano; kiwango cha juu kilichoonekana kilikuwa miaka 21.</li>
+    <li>Kwa <code>(jina la kotleti, siku ndani ya kotleti)</code>, mediani ilikuwa miaka 3; 88.89% zilipatikana ndani ya miaka 10, lakini usambazaji ulikuwa na mkia mzito sana na kiwango cha juu kilichoonekana kilifika miaka 51,954 ya Pastafari.</li>
+  </ul>
+  <p>Haya ni <strong>matokeo ya kimajaribio ya corpus iliyochunguzwa</strong>, si uthibitisho kwamba kila maadhimisho yanayowezekana lazima yarudi, wala si hakikisho la muda wa juu wa kusubiri.</p><hr>
+</section>
+
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>Tunawekaje miadi?</h2>
+  <p>Ikiwa watu wawili wanataka kupanga miadi kwa kutumia tarehe ya Pastafari pekee, lazima wakubaliane angalau kuhusu sehemu tano za tarehe na siku ya utendaji iliyotumiwa katika hesabu. Ni bora kuhifadhi siku ya utendaji kama utambulisho thabiti wa siku kuliko kama neno “leo”; vinginevyo watu hao wawili wanaweza kuhesabu kalenda tofauti.</p>
+  <ul>
+    <li>“kesho” ni siku inayofuata kihistoria;</li>
+    <li>“siku inayofuata ya mwezi” ni kuonekana kunakofuata kwa mwezi huo;</li>
+    <li>“mwisho wa mwezi” ni kuonekana kwake kwa mwisho;</li>
+    <li>“mwezi mzima” unaweza kumaanisha seti ya siku za mwezi au kipindi chote cha kihistoria kutoka kuonekana kwa kwanza hadi kwa mwisho;</li>
+    <li>“mwaka unaofuata” ni mwaka unaofuata katika kalenda iliyojengwa chini ya siku ya utendaji iliyochaguliwa.</li>
+  </ul>
+  <p>Kwa miadi muhimu sana, siku au wakati kamili wa kihistoria unaweza pia kuhifadhiwa. Kalenda haitadhurika.</p><hr>
+</section>
+
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>Safari, matukio na all-day</h2>
+  <p>Tukio si sawa na lebo ya mahali inayoonyeshwa kwa ajili yake. Tukio lenye wakati maalumu linapaswa kufungwa kwenye wakati thabiti wa kihistoria. Kusafiri hakulisogezi tukio katika wakati, lakini tarehe ya Pastafari ya mahali inayoonyeshwa kwa wakati uleule inaweza kubadilika kwa sababu maana ya “siku ya mahali” hutegemea eneo.</p>
+  <p>Kwa tukio la <strong>all-day</strong>, tofauti ni kubwa zaidi. Tukio la kiraia la siku nzima kwa kawaida huanzia usiku wa manane mmoja hadi usiku wa manane unaofuata; tukio la Pastafari la siku nzima linapaswa kuanzia mpaka wa siku ya Pastafari wa eneo hadi mpaka unaofuata. Kwa kawaida hizi si nyakati zilezile.</p>
+  <p>Kwa hiyo kusafirisha tukio la Pastafari moja kwa moja kama tukio la kiraia la “siku nzima” kunaweza kubadilisha maana yake. Ili kulihifadhi kwa usahihi, lazima kuhifadhi nanga ya kihistoria na muktadha sahihi wa eneo/mpaka wa siku, si alama ya <code>all-day</code> pekee.</p><hr>
+</section>
+
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>Siku hubadilika lini?</h2>
+  <p>Siku ya Pastafari ya eneo haibadiliki usiku wa manane. Mpaka wake unaamuliwa na <strong>upitaji wa chini wa meridiani wa kitovu cha Zuhura, kwa mtazamo wa topocentric, kupitia meridiani ya eneo</strong>.</p>
+  <p>Hili ni tukio la kienyeji la kiastronomia linalotegemea mahali. Upitaji huo si lazima utokee saa 00:00, hauamuliwi na ukanda wa saa wa kiraia, hausogei kwa sababu tu muda wa kiangazi umeanza au umeisha, na hauhitaji Zuhura ionekane kwa macho.</p>
+  <p>Wakati uleule wa kifizikia unaweza, katika maeneo mawili, kuwa pande tofauti za mipaka ya siku ya kila eneo. Mfumo usipokuwa na eneo linaloweza kutumika la mtumiaji, eneo la akiba la bidhaa ni <strong>Kisurra</strong>.</p><hr>
+</section>
+
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>Kalenda iliyochapishwa na hesabu ya mkono</h2>
+  <p>Kalenda ya Pastafari inaweza kuchapishwa; kinachohitajika ni kutaja ni kwa siku gani ya utendaji ilihesabiwa. Kalenda hiyo huonyesha muundo wa wakati kutoka mtazamo wa siku hiyo; siku ya utendaji ikibadilika, kalenda mpya inaweza kuhitajika. Hivyo kichapishi bado kina kazi.</p>
+  <p>Kila kitu kinaweza pia kuhesabiwa kwa mkono kwa sababu ufafanuzi ni kamili na deterministiki: hesabu vihesabu vya pembejeo, fanya matone 7 yaliyofichwa na 46 yanayoonekana, sasisha bakuli sita, fanya mikorogo 12 ya mwisho, pata majibu, jenga malango, chagua miaka na kotleti, fanya chaguo za kikombinatoriki, chagua majina, kisha fuma miezi.</p>
+  <p>Kwa kubadilishana, huhitaji kukumbuka kwamba Februari wakati mwingine ina siku 28 na wakati mwingine 29.</p><hr>
+</section>
+
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>Na Seer ni nini?</h2>
+  <p>Kando ya utekelezaji wa kikanoni kuna injini ya haraka inayoitwa <strong>Pastafarian Calendar Seer</strong>. Seer si chanzo cha mamlaka: tarehe sahihi huamuliwa na Megillah na hesabu ya kikanoni. Seer ikitofautiana navyo, Seer ndiyo yenye kosa.</p>
+  <p>Kazi yake ni kutekeleza maswali yale yale kwa haraka na katika umbo rahisi kuunganisha kwenye bidhaa.</p>
+  <p>Katika uthibitishaji wa moja kwa moja uliofanywa wakati wa kuhariri ukurasa huu, Seer ilijumuisha, miongoni mwa mambo mengine, maswali ya tarehe na “sasa”, batch, vipindi vya siku, ubadilishaji reverse kutoka tarehe ya Pastafari hadi siku lengwa, upataji wa muundo wa mwaka, utambuzi wa siku hai ya utendaji, Node API, mteja wa kivinjari/HTTP, CLI, huduma ya HTTP v1, mkataba wa OpenAPI 3.1, utekelezaji native na vifurushi vya usambazaji, pamoja na container deployment iliyothibitishwa.</p>
+  <p>Kwa hiyo kauli ya zamani kwamba Seer haina API ya umma si sahihi tena. Kuna mkataba wazi na thabiti wa HTTP v1 wenye endpoint za date, range, batch, year, reverse, siku ya utendaji, metadata, locales na status.</p>
+  <p>Tarehe 21 Septemba 2026, deployment ya umma ya HTTPS kwenye Render ilijaribiwa kwa vitendo: exact queries, range kubwa, restart, cold wake na tabia chini ya mzigo vilikaguliwa kwenye huduma hai.</p>
+  <p>Hata hivyo nyaraka za mradi bado zinatofautisha deployment ya umma ya beta/evaluation na huduma ya kudumu ya hosted production yenye SLA. Kwa hiyo ukurasa wa maelezo ya kimsingi haupaswi kufunga anwani ya seva, mtoa hosting, au nambari ya toleo kana kwamba ni sehemu ya kalenda yenyewe.</p>
+  <p>Seer inaweza kutumia hesabu za mapema, uwakilishi maalumu, SIMD, aljebra na njia nyingine za mkato. Haihitaji kuiga historia yote ya hesabu ya utekelezaji wa kikanoni hatua kwa hatua mradi itekeleze operesheni ileile ya maana na irudishe jibu lilelile.</p>
+  <p>Uboreshaji si mamlaka mbadala.</p><hr>
+</section>
+
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>Asili, Siku ya Msingi na Siku ya Vibao</h2>
+  <p>Hapa hasa lazima tutenganishe kwa uwazi nanga za wakati za kikanoni na simulizi ya tovuti.</p>
+
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>Nanga</h3>
+    <p>Mfumo una siku ya marejeo isiyobadilika inayoitwa <strong>Siku ya Msingi</strong>. Katika kalenda ya Gregori iliyopanuliwa kurudi nyuma, ni <strong>22 Desemba 41,222 KK</strong>.</p>
+    <p>Siku ya Msingi si “mwanzo wa wakati”, bali ni nanga ya kihesabu.</p>
+    <p>Nambari za siku kuizunguka hutumia nambari chanya witiri/shufwa: Siku ya Msingi=1; siku zinazofuata=3, 5, …; kuelekea nyuma, siku iliyotangulia=2, kisha 4, 6, … . Kwa njia hii pande zote mbili za nanga zinasimbwa bila nambari hasi za siku katika kihesabu hiki.</p>
+    <p>Nanga nyingine ni <strong>Siku ya Vibao</strong>: <strong>15 Juni 763 KK katika kalenda ya Juliani iliyopanuliwa kurudi nyuma</strong>, yaani <strong>7 Juni 763 KK katika kalenda ya Gregori iliyopanuliwa kurudi nyuma</strong>.</p>
+    <p>Umbali sahihi kutoka Siku ya Msingi hadi Siku ya Vibao ni</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
+    <p>siku.</p>
+    <p>Hizi ni nanga zisizobadilika kwenye mstari wa wakati, lakini tarehe ya Pastafari inayoonyeshwa kwa ajili yake bado hutegemea siku ya utendaji ambayo tunaitumia kuuliza.</p>
+  </section>
+
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>Simulizi ya tovuti</h3>
+    <p>Katika simulizi ya uhariri ya tovuti, kalenda inaelezwa kuwa sehemu ya uumbaji na mfumo ambao wanadamu waliutumia bila kuutambua kikamilifu mpaka ulipokabidhiwa tena katika zama za kisasa.</p>
+    <p>Hiyo ni simulizi ya tovuti; si sahihi kuwasilisha kila undani wa simulizi hiyo kana kwamba ni dai la kiufundi lililotamkwa wazi na Megillah.</p>
+    <p>Tukio la kukabidhiwa tena lenyewe ni tukio la kihistoria lisilobadilika. <strong>Tarehe yake ya Pastafari</strong> ni bora kuonyeshwa kwa njia inayobadilika kulingana na siku ya sasa ya utendaji kuliko kufungwa milele kuwa tarehe moja tu.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>Kwa wanaotaka zaidi: ubadilishaji wa kurudi nyuma</h2>
+  <p>Siku ya utendaji <code>c</code> inapojulikana, ubadilishaji wa kurudi nyuma una vikwazo vikali sana. Ndani ya mwaka wa Pastafari unaojulikana,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{jina la kotleti},\text{siku katika kotleti})</code></pre>
+  <p>hutambua siku moja kwa kiwango cha juu. Hali hiyo hiyo ni kweli kwa</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{jina la mwezi},\text{siku katika mwezi})</code></pre>
+  <p>Kwa hiyo tarehe kamili pamoja na siku ya utendaji inayojulikana hutambua siku lengwa kwa namna ya kipekee.</p>
+
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Mipaka ya juu ya idadi ya wagombea katika ubadilishaji wa kurudi nyuma">
+    <table class="about-table">
+      <thead><tr><th scope="col">Taarifa nyingine inayojulikana</th><th scope="col">Wagombea wengi zaidi</th></tr></thead>
+      <tbody>
+        <tr><td>Hakuna sehemu isiyo ya mwaka</td><td>5,778</td></tr>
+        <tr><td>Jina la kotleti pekee</td><td>5,568</td></tr>
+        <tr><td>Siku katika kotleti pekee</td><td>17</td></tr>
+        <tr><td>Jina la mwezi pekee</td><td>123</td></tr>
+        <tr><td>Siku katika mwezi pekee</td><td>47</td></tr>
+        <tr><td>Jina la kotleti + siku katika kotleti</td><td>1</td></tr>
+        <tr><td>Jina la mwezi + siku katika mwezi</td><td>1</td></tr>
+        <tr><td>Sehemu zozote tatu zisizo za mwaka</td><td>1</td></tr>
+        <tr><td>Sehemu zote nne zisizo za mwaka</td><td>1</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Bila kujua siku ya utendaji, hali ni tofauti. Seti ileile ya sehemu tano inaweza kuonekana chini ya siku tofauti za utendaji, na kuna mifano sahihi ambapo tarehe kamili ileile inaonekana katika umbali tofauti kutoka <code>c</code>.</p>
+  <p>Katika mwaka 5000, hata alama ya umbali huo haibainishwi kila mara na seti ya sehemu tano: tarehe kamili ileile inaweza kuwa nyuma ya siku ya utendaji katika muktadha mmoja na mbele yake katika mwingine.</p>
+  <p>Kwa hiyo tarehe kamili ya Pastafari si anwani kamili kwenye mstari wa wakati ikiwa hatujui ilihesabiwa chini ya <code>c</code> gani.</p>
+
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>Muundo katika wakati wa mbali</h3>
+    <p>Utafiti wa kihisabati uliotokana na ufafanuzi umepata pia muundo sahihi wa ki-asymptotiki. Kwa <strong>siku ya utendaji isiyobadilika</strong> <code>c</code>, ukienda mbali vya kutosha kwenye mkia wa zamani, hutokea periodicity ya affine.</p>
+    <p>Ikiwa</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>basi kwa <code>c</code> hiyo hiyo kuna usogezaji <code>H_c</code>, mabadiliko ya mwaka <code>p_c</code>, na kizingiti cha mbali vya kutosha ambapo baada yake</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>Sehemu nne zisizo za mwaka hurudiwa, huku nambari ya mwaka ikibadilika kwa kiasi kisichobadilika.</p>
+    <p>Hili ni tokeo kwa <code>c</code> isiyobadilika; halitoi uhusiano wa jumla</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>Bado ni swali wazi ikiwa mteremko wa mwisho wa ki-asymptotiki kweli hutofautiana kati ya siku tofauti za utendaji.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>Kwa wanaotaka zaidi: mchuzi huhifadhi historia kiasi gani?</h2>
+  <p>Mchuzi unaonekana kama mchanganyiko mkali sana, lakini utafiti wa aljebra umeonyesha kwamba huhifadhi taarifa nyingi zaidi kuliko mwonekano wake unavyodokeza. Huu ni utafiti unaotokana na ufafanuzi, si sheria mpya ya kalenda.</p>
+  <p>Katika hatua zinazoonekana 3–46, kwenye tawi husika la ki-asymptotiki, generic injectivity imeanzishwa: katika hali ya jumla, hali ya mfumo huhifadhi taarifa za kutosha kujenga upya historia husika ya pembejeo na mipangilio ya bakuli.</p>
+  <p>Hata katika mikorogo 12 ya mwisho, taarifa haitoweki mara moja. Kwa mikorogo mitano ya kwanza baada ya tone linaloonekana 46, generic invertibility imeanzishwa kwenye muungano husika wa kikanoni bila taarifa za ziada; kwa iliyobaki, tunajua mipaka ya juu ya kujenga yenye nguvu kuhusu kiasi cha taarifa za ziada kinachotosha kwa ujenzi upya.</p>
+  <p>Bado haijafungwa ikiwa <strong>bakuli sita za mwisho peke yake</strong> zinatosha kila mara katika hali ya jumla.</p>
+  <p>Baadhi ya matokeo yamethibitishwa kwa njia ya alama, na mengine yamefungwa kwa ukaguzi wa kihesabu uliokamilika na sahihi. Uimarishaji wa kimaumbo umepunguza sana kiini cha hesabu kinachohitaji kuaminiwa, lakini haujakiondoa kabisa.</p>
+  <p>Nafasi ambazo mwanzoni zilionekana kuhitaji kuchunguza idadi kubwa mno ya njia zimepunguzwa kuwa miundo midogo zaidi ya kikomo, ikiwemo automata zenye hali 180 na 9 pamoja na ulinganifu wa bakuli sita.</p>
+  <p>Kwa hiyo chini ya kuchanganywa kuna muundo thabiti wa aljebra. Huhitaji kuujua ili kujua tarehe ya leo.</p><hr>
+</section>
+
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>Kwa hiyo Kalenda ya Pastafari ni nini hasa?</h2>
+  <p>Ni kalenda deterministiki ambamo tarehe si kazi ya siku lengwa pekee, bali ya <strong>siku ya utendaji na siku inayoulizwa kwa pamoja</strong>.</p>
+  <p>Kila tarehe ina sehemu tano hasa. Wakati wa sasa ukitazamwa kutoka kwake mwenyewe huwa daima katika mwaka 5000, lakini mwaka 5000 wenyewe husogea pamoja na siku ya utendaji. Miaka inaweza kuwa mirefu sana, kotleti ni mfululizo, miezi si lazima iwe mfululizo, na hakuna mfumo wa wiki wa kikanoni.</p>
+  <p>Siku <code>n+1</code> ya mwezi si lazima iwe kesho. Siku ileile kihistoria inaweza kesho kupata lebo nyingine ya Pastafari. Wakati uleule wa kifizikia unaweza katika maeneo mawili kuwa ndani ya siku mbili tofauti za Pastafari za eneo. Tukio la siku nzima si lazima liende kutoka usiku wa manane hadi usiku wa manane. Na siku ya kuzaliwa ya kila mwaka kwanza ni tatizo la kutafuta, kisha ndiyo tatizo la kalenda.</p>
+  <p>Lakini siku ya utendaji na siku inayoulizwa zinapojulikana, hakuna utata: kuna jibu sahihi moja tu.</p>
+  <p>Na hatimaye, kalenda haihitaji kufanya zaidi ya hapo.</p>
+</section>
