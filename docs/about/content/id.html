@@ -1,0 +1,332 @@
+<!-- Versi bahasa Indonesia ditulis langsung dari dasar semantik Ibrani, tanpa bahasa perantara. -->
+<!-- ID bagian adalah kontrak deep-link publik yang stabil dan tidak diturunkan dari judul terjemahan. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>Dalam narasi situs ini, Kalender Pastafari digambarkan sebagai kalender tempat waktu itu sendiri diciptakan. Namun mekanismenya didefinisikan secara ketat.</p>
+  <p>Kalender ini tidak menempelkan satu “label” Pastafari yang tetap pada setiap hari. Untuk mengetahui suatu tanggal, kita memerlukan dua hari: <strong>hari kerja</strong>, yang menjadi titik awal perhitungan, dan <strong>hari yang ditanyakan</strong>, yaitu hari yang tanggalnya ingin kita ketahui.</p>
+  <p>Jika hari kerja kita lambangkan dengan <code>c</code> dan hari yang ditanyakan dengan <code>t</code>, maka tanggalnya adalah</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>bukan <code>F(t)</code>. Karena itu, hari yang sama dapat memperoleh tanggal Pastafari yang berbeda bila hari kerjanya berbeda.</p>
+  <p>Itu bukan kesalahan. Memang begitulah kalender ini bekerja.</p><hr>
+</div>
+
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>Apa saja bagian dari tanggal Pastafari?</h2>
+  <p>Tanggal Pastafari memiliki <strong>tepat lima bagian</strong>: nomor tahun, nama kotlet, hari dalam kotlet, nama bulan, dan hari dalam bulan.</p>
+  <p>Contoh umum: <strong>tahun 5000, kotlet A, hari 417 dalam kotlet, bulan B, hari 83 dalam bulan.</strong></p>
+  <p>Hari kerja, lokasi pengamat, identitas kronologis hari, dan data teknis lain dapat ditampilkan di samping tanggal, tetapi semuanya bukan bidang keenam dari tanggal itu.</p><hr>
+</section>
+
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>Mengapa perlu hari kerja?</h2>
+  <p>Pada kalender biasa, kita cenderung menganggap tanggal “milik” hari itu sendiri. Dalam Kalender Pastafari, tanggal bergantung pada hubungan antara dua hari.</p>
+  <p>Mengubah <code>t</code> berarti kita menanyakan hari lain. Mengubah <code>c</code> jauh lebih mendasar: batas tahun, kotlet, bulan, nama-namanya, dan cara bulan saling terjalin dapat berubah.</p>
+  <p>Karena itu, almanak yang dihitung hari ini belum tentu menjadi almanak yang benar besok. Dengan begitu kita juga menghindari keadaan tidak menyenangkan ketika kalender cetak tetap berguna selama setahun penuh.</p><hr>
+</section>
+
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>Hari yang sama, tanggal yang berbeda</h2>
+  <p>Kita perlu membedakan <strong>identitas hari</strong> dari <strong>representasi Pastafari-nya</strong>. Yang pertama adalah posisi stabil suatu hari tertentu pada garis waktu; yang kedua adalah lima nilai yang diperoleh ketika hari itu ditampilkan di bawah hari kerja tertentu.</p>
+  <p>Dalam produk dan API, yang pertama dapat dianggap sebagai <code>day-id</code>: identitas kronologis yang tidak berubah ketika cara tampilnya berubah. Sebaliknya,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre>
+  <p>dan</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>tidak harus sama.</p>
+  <p>Jadi, mengubah hari kerja secara manual dapat mengubah tanggal yang ditampilkan untuk hari yang sama tanpa memindahkan harinya sendiri di garis waktu.</p>
+  <p>Prinsip yang sama berlaku untuk peristiwa. Pertemuan, kelahiran, atau peristiwa sejarah harus tetap tertambat pada identitas kronologis yang stabil; tanggal Pastafari-nya dapat dihitung ulang sesuai konteks tampilan.</p>
+  <p>Labelnya boleh berubah. Peristiwanya tidak.</p><hr>
+</section>
+
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>Tahun 5000</h2>
+  <p>Ketika hari kerja dan hari yang ditanyakan adalah hari yang sama,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>nomor tahunnya selalu</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>Dengan kata lain, masa kini, bila dilihat dari sudut pandangnya sendiri, selalu berada dalam tahun 5000. Namun tahun 5000 bukan periode sejarah yang tetap; tahun itu dipilih ulang relatif terhadap hari kerja.</p>
+  <p>Hari kerja sendiri berada dalam tahun 5000, demikian pula hari-hari lain dalam tahun terpilih yang sama. Karena itu, <strong>berada dalam tahun 5000 saja tidak membuktikan bahwa <code>t=c</code>.</strong></p>
+  <p>Nomor tahun tetap memberi tahu arahnya:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre>
+  <p>dan</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p>Ada juga <strong>tahun 0</strong>; lebih jauh ke masa lalu terdapat tahun-tahun bernomor negatif.</p><hr>
+</section>
+
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>Tahun dan gerbang</h2>
+  <p>Satu tahun Pastafari dapat berisi antara</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ hingga }5778</code></pre>
+  <p>hari. Itu adalah batas kanonis sistem, bukan rata-rata empiris.</p>
+  <p>Karena itu satu tahun bisa lebih pendek dari tahun matahari atau lebih panjang dari lima belas tahun matahari. Batas tahun dibentuk oleh sistem <strong>gerbang</strong>; batas kotlet juga berasal dari sistem yang sama.</p>
+  <p>Akhir tahun tidak harus bertepatan dengan musim, satu putaran Bumi mengelilingi Matahari, siklus Bulan, atau kebutuhan praktis agar tahun itu akhirnya selesai.</p><hr>
+</section>
+
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>Kotlet</h2>
+  <p>Setiap tahun dibagi menjadi <strong>6 sampai 17 kotlet</strong>. Kotlet adalah segmen waktu yang kronologis dan berkesinambungan.</p>
+  <p>Jika hari ini adalah hari 250 dalam kotlet, besok adalah hari 251 dalam kotlet yang sama, kecuali hari ini merupakan hari terakhirnya. Batas kotlet adalah gerbang, dan satu kotlet memiliki setidaknya</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
+  <p>hari.</p>
+  <p>Sistem memiliki 17 nama kotlet kanonis, dan tidak ada nama yang berulang dalam satu tahun. Nama tidak menentukan panjang atau posisi kotlet.</p><hr>
+</section>
+
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>Bulan dan anyaman</h2>
+  <p>Setiap tahun memiliki antara</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ hingga }47</code></pre>
+  <p>bulan struktural, dan tiap bulan diberi antara</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ hingga }123</code></pre>
+  <p>hari.</p>
+  <p>Namun bulan Pastafari <strong>tidak harus berupa rentang waktu yang berkesinambungan</strong>. Misalnya urutan kronologis dapat berbentuk:</p>
+  <blockquote><p>bulan A — hari 14<br>bulan B — hari 9<br>bulan A — hari 15</p></blockquote>
+  <p>Itu sepenuhnya sah. Hari 15 bulan A adalah hari berikutnya <strong>dalam bulan itu</strong>, walaupun di antaranya terdapat hari milik bulan lain.</p>
+  <p>Jadi “hari dalam bulan” bukan jumlah hari kronologis sejak kemunculan pertama bulan tersebut, melainkan nomor urut hari yang ditetapkan pada bulan itu sepanjang tahun. Hari 48 berarti hari ke-48 yang termasuk dalam bulan tersebut, bukan 47 hari setelah kemunculan pertamanya.</p><hr>
+</section>
+
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>Bulan-bulan saling terjalin</h2>
+  <p>Bulan dapat dibayangkan sebagai benang-benang yang membentang sepanjang tahun. Setiap hari termasuk tepat dalam satu bulan; besok dapat termasuk bulan lain, lalu bulan pertama dapat kembali dan melanjutkan nomor berikutnya.</p>
+  <p>Anyaman ini mempunyai aturan, termasuk batasan atas urutan kemunculan pertama dan terakhir suatu bulan. Namun tidak ada syarat bahwa satu bulan harus berakhir sebelum bulan lain dimulai.</p>
+  <ul>
+    <li>Kotlet mengukur posisi di dalam segmen waktu yang berkesinambungan.</li>
+    <li>Bulan mengukur keanggotaan pada benang struktural yang dapat menghilang lalu muncul kembali.</li>
+  </ul>
+  <p>Satu bulan dapat melintasi beberapa kotlet, dan satu kotlet dapat memuat kemunculan banyak bulan. Awal dan akhir kedua sistem itu tidak harus bertepatan.</p><hr>
+</section>
+
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>Hari berikutnya dalam bulan tidak harus besok</h2>
+  <p>Jika hari ini adalah hari 17 suatu bulan, hari 18 bulan yang sama adalah <strong>kemunculan berikutnya dari bulan tersebut</strong>. Bisa besok, bisa juga jauh lebih kemudian.</p>
+  <p><strong>Besok</strong> berarti hari kronologis berikutnya; <strong>hari berikutnya dalam bulan</strong> berarti kemunculan berikutnya dari bulan yang sama.</p>
+  <p>Begitu pula “akhir bulan” tidak berarti akhirnya dekat secara kronologis. Bulan yang memiliki 120 hari bisa berada pada hari 119 sekarang, sementara hari 120-nya berada jauh lebih kemudian pada tahun yang sama.</p><hr>
+</section>
+
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>Tidak ada pekan</h2>
+  <p>Spesifikasi kanonis saat ini <strong>tidak mendefinisikan sistem pekan</strong>. Tidak ada unit kanonis tujuh hari, tidak ada nama hari pekan Pastafari, dan tidak ada aturan yang membuat dua hari menjadi “hari pekan yang sama”.</p>
+  <p>Tentu saja sistem pekan sipil dapat ditambahkan dari luar; hanya saja itu bukan bagian dari tanggal Pastafari.</p><hr>
+</section>
+
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>Nama</h2>
+  <p>Ada 17 nama kotlet kanonis dan 47 nama bulan kanonis. Dalam satu tahun, setiap nama muncul paling banyak sekali di keluarganya.</p>
+  <p>Identitas nama bersifat kanonis dan semantis; bukan hasil pemungutan suara antara ejaan, terjemahan, atau implementasi yang berbeda. Untuk makna nama, Megillah bahasa Ibrani adalah sumber tertinggi; terjemahan dan transliterasi hanyalah lapisan penyajian.</p>
+  <p>Nama juga bukan kode tersembunyi untuk panjang. Tidak ada nama kotlet atau bulan tertentu yang dengan sendirinya membuat unit itu lebih panjang atau lebih pendek.</p><hr>
+</section>
+
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>Satu fakta kecil tentang bulan</h2>
+  <p>Ada 47 nama bulan, dan sebuah bulan dapat mencapai paling jauh hari 123. Jadi terdapat</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>pasangan yang secara sintaksis mungkin dalam bentuk “nama bulan + nomor hari dalam bulan”.</p>
+  <p>Setiap hari dalam setahun mewujudkan tepat satu pasangan. Jika panjang tahun adalah <code>L</code>, maka tepat <code>L</code> pasangan muncul. Karena</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>setiap tahun harus kehilangan setidaknya</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre>
+  <p>pasangan yang mungkin. Bahkan tahun terpanjang tidak memiliki cukup hari untuk memakai semuanya.</p><hr>
+</section>
+
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>Bagaimana kalender dihitung?</h2>
+  <p>Perhitungan internal kita sebut di sini <strong>saus</strong>. Di pusatnya terdapat bilangan prima</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>Prosesnya mencakup lima penghitung masukan, 7 tetes tersembunyi, 46 tetes terlihat, 6 mangkuk, urutan mangkuk yang berubah, 12 pengadukan akhir, segel untuk jawaban berbeda, mekanisme pilihan kombinatorial, pembentukan gerbang, pemilihan tahun, pembagian kotlet, pemilihan nama, pembentukan bulan, dan penganyaman hari-hari bulan.</p>
+  <p>Pembaruan akhir bersifat <strong>sinkron</strong>: pada setiap pengadukan, keenam nilai baru dihitung dari keadaan lama yang sama, dan baru setelah itu keenam mangkuk diganti sekaligus.</p>
+  <p>Pada 12 pengadukan akhir ada satu detail kanonis yang sangat penting. Jika <code>S</code> adalah jumlah enam mangkuk lama dan <code>r</code> adalah nomor pengadukan, sistem menghitung</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p><code>R</code> adalah <strong>jumlah tersimpan</strong>. Baik pemilihan urutan mangkuk maupun pembaruan internal pengadukan menggunakan <code>R</code>, bukan jumlah mentah <code>S</code>.</p>
+  <p>Versi lama yang memasukkan jumlah mentah ke pembaruan itu tidak lagi menggambarkan semantik kanonis saat ini. Contoh yang berasal dari aturan lama harus dianggap usang sampai diverifikasi kembali.</p>
+  <p>Setelah pengadukan, cincin jawaban juga melanjutkan urutan yang dikunci pada tetes terlihat 46; urutan itu tidak boleh otomatis diganti dengan urutan pengadukan terakhir.</p><hr>
+</section>
+
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice dan Wide Choice</h2>
+  <p>Untuk ruang pilihan yang relatif kecil digunakan <strong>Short Choice</strong>. Mekanisme ini memakai rejection sampling untuk menghindari bias modulo sederhana.</p>
+  <p>Ruang yang sangat besar menggunakan <strong>Wide Choice</strong>. Jangan memberinya sifat yang tidak dijamin oleh spesifikasi.</p>
+  <p>Wide Choice tidak setara dengan menghasilkan digit basis-<code>Q</code> yang independen dan seragam sampai diperoleh sebuah indeks. Jadi tidak dapat disimpulkan bahwa setiap pilihan yang sah pasti mempunyai peluang positif yang sama. Dalam ruang yang cukup besar, bisa ada pilihan sah yang sama sekali tidak dapat dicapai oleh mekanisme itu.</p>
+  <p>Kalender itu sendiri tetap sepenuhnya deterministik. “Choice” adalah nama tahap algoritme, bukan undian yang dilakukan saat penggunaan.</p><hr>
+</section>
+
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>Atlas struktural</h2>
+  <p>Sampai di sini kita membahas aturan kalender. Angka berikut berbeda sifatnya: ini adalah <strong>hasil empiris</strong> dari sampel komputasi yang besar.</p>
+  <p>Atlas dibangun dengan commit engine <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> dan mencakup 4,096 hari kerja; tahun 4990–5010 untuk masing-masingnya; 86,016 struktur tahun; 625,437 kotlet; 3,535,422 bulan struktural; lebih dari 356 juta segmen bulan berkesinambungan; dan lebih dari 364 juta transisi dari hari <code>n</code> ke hari <code>n+1</code> dalam bulan yang sama.</p>
+  <p>Angka-angka itu menggambarkan corpus tersebut, bukan hukum kanonis.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Data terukur atlas struktural">
+    <table class="about-table">
+      <thead><tr><th scope="col">Besaran yang diukur</th><th scope="col">Hasil dalam sampel</th></tr></thead>
+      <tbody>
+        <tr><td>Rata-rata panjang tahun</td><td>4,275.182 hari</td></tr>
+        <tr><td>Median panjang tahun</td><td>4,343</td></tr>
+        <tr><td>Minimum / maksimum yang diamati</td><td>716 / 5,778</td></tr>
+        <tr><td>Rata-rata jumlah kotlet per tahun</td><td>7.271</td></tr>
+        <tr><td>Tahun dengan tepat 6 kotlet</td><td>42.00%</td></tr>
+        <tr><td>Tahun dengan 6–8 kotlet</td><td>81.29%</td></tr>
+        <tr><td>Rata-rata panjang kotlet</td><td>587.963 hari</td></tr>
+        <tr><td>Median panjang kotlet</td><td>560</td></tr>
+        <tr><td>Rata-rata jumlah bulan per tahun</td><td>41.102</td></tr>
+        <tr><td>Median jumlah bulan</td><td>43</td></tr>
+        <tr><td>Tahun dengan 47 bulan</td><td>15.63%</td></tr>
+        <tr><td>Tahun dengan setidaknya 45 bulan</td><td>36.81%</td></tr>
+        <tr><td>Rata-rata panjang bulan struktural</td><td>104.014 hari</td></tr>
+        <tr><td>Median panjang bulan</td><td>115</td></tr>
+        <tr><td>Rata-rata jumlah segmen berkesinambungan per bulan</td><td>100.897</td></tr>
+        <tr><td>Proporsi segmen bulan satu hari</td><td>97.482%</td></tr>
+        <tr><td>Peluang dua hari bersebelahan berada dalam bulan yang sama</td><td>2.9976%</td></tr>
+        <tr><td>Rata-rata hari asing antara <code>n</code> dan <code>n+1</code> bulan yang sama</td><td>40.408</td></tr>
+        <tr><td>Rata-rata rentang dari kemunculan pertama hingga terakhir suatu bulan</td><td>4,266.653 hari</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Dalam praktiknya, bulan yang berisi kira-kira seratus hari dapat tersebar hampir sepanjang satu tahun Pastafari.</p>
+  <p>Atlas yang sama juga memperlihatkan bias panjang alami di sekitar tahun 5000. Tahun “biasa” dalam sampel rata-rata sekitar 4,262 hari. Bila tahun ditimbang menurut jumlah hari yang dikandungnya, rata-ratanya naik menjadi sekitar 4,466 hari; tahun 5000 sendiri rata-rata sekitar 4,499 hari.</p>
+  <p>Alasannya sederhana: tahun 5000 harus memuat hari kerja. Tahun yang lebih panjang menyediakan lebih banyak hari yang memungkinkan tahun itu menjadi tahun yang memuat hari kerja.</p>
+  <p>Hubungan antara nama unit dan panjangnya juga sangat lemah dalam sampel. Ini tidak membuktikan independensi matematis sepenuhnya, tetapi atlas tidak memberi sinyal praktis bahwa nama dimaksudkan untuk mengodekan panjang.</p>
+  <p>Selain itu, 86,016 struktur tahun bukan 86,016 sampel yang sepenuhnya independen: semuanya hanya mencakup 24,786 interval berbeda antara gerbang awal dan akhir. Hari kerja yang berdekatan dapat memilih interval tahun yang sama tetapi tetap menghasilkan struktur internal yang berbeda.</p>
+  <p>Jadi atlas cukup baik menggambarkan perilaku implementasi yang terukur, tetapi jangan mengubahnya menjadi teorema probabilistik tentang semua struktur kalender yang mungkin.</p><hr>
+</section>
+
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>Ulang tahun dan hari jadi</h2>
+  <p>Ungkapan “hari yang sama setiap tahun” di sini harus didefinisikan lebih dahulu. Koordinat pengulangan yang wajar adalah <code>(nama bulan, hari dalam bulan)</code> dan <code>(nama kotlet, hari dalam kotlet)</code>; syarat-syarat juga dapat digabungkan.</p>
+  <p>Karena itu ulang tahun Pastafari bukan sekadar <code>RRULE:FREQ=YEARLY</code>. Kita harus mencari tahun berikutnya yang memenuhi syarat pengulangan yang dipilih, dan peristiwa awal tidak otomatis dihitung sebagai “kemunculan berikutnya” dari dirinya sendiri.</p>
+  <p>Mengubah hari kerja hanya untuk keperluan tampilan tidak boleh mengubah identitas orang, saat kelahiran, atau usia.</p>
+  <p>Dalam pemindaian tepat atas 4,096 tanggal-diri, setiap tahun Pastafari berikutnya diperiksa maju dan mundur hingga 250,000 tahun ke masing-masing arah:</p>
+  <ul>
+    <li>Untuk <code>(nama bulan, hari dalam bulan)</code>, median kemunculan kembali pertama adalah 1 tahun Pastafari; 77.56% kembali di tahun tetangga, 93.77% dalam dua tahun, 99.44% dalam lima tahun; maksimum yang diamati adalah 21 tahun.</li>
+    <li>Untuk <code>(nama kotlet, hari dalam kotlet)</code>, median adalah 3 tahun; 88.89% ditemukan dalam 10 tahun, tetapi distribusinya memiliki ekor yang sangat berat dan maksimum yang diamati mencapai 51,954 tahun Pastafari.</li>
+  </ul>
+  <p>Ini adalah <strong>hasil empiris dari corpus yang diuji</strong>, bukan bukti bahwa setiap hari jadi yang mungkin pasti akan kembali dan bukan jaminan atas waktu tunggu maksimum.</p><hr>
+</section>
+
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>Bagaimana membuat janji?</h2>
+  <p>Jika dua orang hendak membuat janji hanya dengan tanggal Pastafari, mereka setidaknya harus menyepakati lima bidang tanggal dan hari kerja yang digunakan dalam perhitungan. Sebaiknya hari kerja disimpan sebagai identitas hari yang stabil, bukan sebagai kata “hari ini”, karena jika tidak, kedua orang dapat menghitung kalender yang berbeda.</p>
+  <ul>
+    <li>“besok” adalah hari kronologis berikutnya;</li>
+    <li>“hari berikutnya dalam bulan” adalah kemunculan berikutnya dari bulan yang sama;</li>
+    <li>“akhir bulan” adalah kemunculan terakhir bulan tersebut;</li>
+    <li>“satu bulan penuh” dapat berarti himpunan hari milik bulan itu atau seluruh rentang kronologis dari kemunculan pertama hingga terakhir;</li>
+    <li>“tahun berikutnya” berarti tahun berikutnya dalam kalender yang dibangun di bawah hari kerja yang dipilih.</li>
+  </ul>
+  <p>Untuk janji yang sangat penting, hari atau momen kronologis absolut juga dapat disimpan. Kalender tidak akan keberatan.</p><hr>
+</section>
+
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>Perjalanan, peristiwa, dan all-day</h2>
+  <p>Peristiwa dan label lokal yang ditampilkan untuknya bukan hal yang sama. Peristiwa yang dijadwalkan pada saat tertentu harus ditambatkan pada momen kronologis yang stabil. Perjalanan tidak memindahkannya dalam waktu, tetapi tanggal Pastafari lokal yang ditampilkan pada momen yang sama dapat berubah karena definisi “hari lokal” bergantung pada lokasi.</p>
+  <p>Pada peristiwa <strong>all-day</strong>, perbedaannya bahkan lebih besar. Peristiwa sipil seharian biasanya berlangsung dari tengah malam sipil sampai tengah malam berikutnya; peristiwa Pastafari seharian seharusnya berlangsung dari batas hari Pastafari lokal sampai batas berikutnya. Biasanya itu bukan momen yang sama.</p>
+  <p>Karena itu mengekspor peristiwa Pastafari secara buta sebagai peristiwa sipil “seharian” dapat mengubah maknanya. Untuk mempertahankannya dengan tepat, kita perlu menyimpan tambatan kronologis dan konteks lokasi/batas hari yang sesuai, bukan hanya penanda <code>all-day</code>.</p><hr>
+</section>
+
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>Kapan hari berganti?</h2>
+  <p>Hari Pastafari lokal tidak berganti pada tengah malam. Batasnya ditentukan oleh <strong>transit meridian bawah topocentric dari pusat Venus melewati meridian lokal</strong>.</p>
+  <p>Jadi ini adalah peristiwa astronomis lokal yang bergantung pada posisi. Transit tidak harus terjadi pukul 00:00, tidak ditentukan oleh zona waktu sipil, tidak bergeser hanya karena waktu musim panas mulai atau berakhir, dan tidak memerlukan Venus terlihat dengan mata telanjang.</p>
+  <p>Momen fisik yang sama dapat, di dua lokasi, berada pada sisi yang berbeda dari batas hari lokal masing-masing. Jika sistem tidak memiliki lokasi pengguna yang dapat digunakan, lokasi cadangan bawaan produk adalah <strong>Kisurra</strong>.</p><hr>
+</section>
+
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>Kalender cetak dan perhitungan manual</h2>
+  <p>Kalender Pastafari dapat dicetak; kita hanya perlu menyatakan untuk hari kerja mana kalender itu dihitung. Kalender seperti itu menunjukkan struktur waktu dari sudut pandang hari tersebut; ketika hari kerja berubah, kalender baru mungkin diperlukan. Jadi printer tetap punya peran.</p>
+  <p>Semuanya juga dapat dihitung dengan tangan karena spesifikasinya lengkap dan deterministik: hitung penghitung masukan, jalankan 7 tetes tersembunyi dan 46 tetes terlihat, perbarui enam mangkuk, lakukan 12 pengadukan akhir, hasilkan jawaban, bangun gerbang, pilih tahun dan kotlet, lakukan pilihan kombinatorial, pilih nama, lalu anyam bulan-bulannya.</p>
+  <p>Sebagai gantinya, Anda tidak perlu mengingat bahwa Februari kadang memiliki 28 hari dan kadang 29.</p><hr>
+</section>
+
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>Lalu apa itu Seer?</h2>
+  <p>Di samping implementasi kanonis ada mesin cepat bernama <strong>Pastafarian Calendar Seer</strong>. Seer bukan sumber otoritas: tanggal yang benar ditentukan oleh Megillah dan perhitungan kanonis. Jika Seer tidak cocok dengan keduanya, Seer-lah yang salah.</p>
+  <p>Tugasnya adalah menjalankan pertanyaan yang sama dengan cepat dan dalam bentuk yang mudah diintegrasikan ke produk.</p>
+  <p>Dalam verifikasi langsung yang dilakukan saat menyunting halaman ini, Seer antara lain mencakup kueri tanggal dan “sekarang”, batch, rentang hari, konversi reverse dari tanggal Pastafari ke hari target, pengambilan struktur tahun, penentuan hari kerja aktif, Node API, klien browser/HTTP, CLI, layanan HTTP v1, kontrak OpenAPI 3.1, implementasi native dan paket distribusi, serta container deployment yang telah diverifikasi.</p>
+  <p>Pernyataan lama bahwa Seer tidak memiliki API publik sudah tidak benar. Kini ada kontrak HTTP v1 yang eksplisit dan stabil dengan endpoint untuk date, range, batch, year, reverse, hari kerja, metadata, locales, dan status.</p>
+  <p>Pada 21 September 2026, deployment HTTPS publik di Render benar-benar diuji: kueri exact, range besar, restart, cold wake, dan perilaku di bawah beban diuji pada layanan yang hidup.</p>
+  <p>Dokumentasi proyek tetap membedakan deployment publik beta/evaluation dari layanan hosted production permanen dengan SLA. Karena itu, halaman penjelasan konseptual tidak seharusnya membekukan alamat server, penyedia hosting, atau nomor versi seolah-olah semuanya adalah bagian dari kalender itu sendiri.</p>
+  <p>Seer boleh menggunakan prakomputasi, representasi khusus, SIMD, aljabar, dan jalan pintas lain. Ia tidak harus meniru seluruh riwayat komputasi implementasi kanonis langkah demi langkah selama menjalankan operasi semantis yang sama dan mengembalikan jawaban yang sama.</p>
+  <p>Optimisasi bukan otoritas alternatif.</p><hr>
+</section>
+
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>Asal-usul, Hari Pendirian, dan Hari Loh</h2>
+  <p>Di sini kita terutama perlu memisahkan dengan jelas tambatan waktu kanonis dari cerita situs.</p>
+
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>Tambatan</h3>
+    <p>Sistem memiliki satu hari acuan tetap yang disebut <strong>Hari Pendirian</strong>. Dalam kalender Gregorian proleptik, hari itu adalah <strong>22 Desember 41,222 SM</strong>.</p>
+    <p>Hari Pendirian bukan “awal waktu”, melainkan tambatan komputasi.</p>
+    <p>Penomoran hari di sekitarnya memakai bilangan positif ganjil/genap: Hari Pendirian=1; hari-hari sesudahnya=3, 5, …; ke arah masa lalu, hari sebelumnya=2, lalu 4, 6, … . Dengan begitu kedua sisi tambatan dapat dikodekan tanpa nomor hari negatif pada penghitung ini.</p>
+    <p>Tambatan kedua adalah <strong>Hari Loh</strong>: <strong>15 Juni 763 SM dalam kalender Julian proleptik</strong>, yaitu <strong>7 Juni 763 SM dalam kalender Gregorian proleptik</strong>.</p>
+    <p>Jarak tepat dari Hari Pendirian ke Hari Loh adalah</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
+    <p>hari.</p>
+    <p>Keduanya merupakan tambatan tetap pada garis waktu, tetapi tanggal Pastafari yang ditampilkan untuk keduanya tetap bergantung pada hari kerja dari mana kita menanyakannya.</p>
+  </section>
+
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>Cerita situs</h3>
+    <p>Dalam narasi editorial situs, kalender digambarkan sebagai bagian dari penciptaan dan sebagai sistem yang digunakan umat manusia tanpa kesadaran penuh sampai disampaikan kembali pada zaman modern.</p>
+    <p>Itu adalah cerita situs; tidak setiap rincian naratifnya harus dipresentasikan sebagai pernyataan teknis eksplisit dari Megillah.</p>
+    <p>Peristiwa penyampaian kembali itu sendiri adalah peristiwa sejarah yang tetap. <strong>Tanggal Pastafari</strong>-nya lebih baik ditampilkan secara dinamis di bawah hari kerja saat ini daripada dibekukan selamanya sebagai satu tanggal saja.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>Untuk tingkat lanjut: konversi balik</h2>
+  <p>Jika hari kerja <code>c</code> diketahui, konversi balik sangat kuat terbatasi. Di dalam tahun Pastafari yang diketahui,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{nama kotlet},\text{hari dalam kotlet})</code></pre>
+  <p>mengidentifikasi paling banyak satu hari. Hal yang sama berlaku untuk</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{nama bulan},\text{hari dalam bulan})</code></pre>
+  <p>Jadi tanggal lengkap dengan hari kerja yang diketahui mengidentifikasi hari target secara unik.</p>
+
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Batas atas jumlah kandidat dalam konversi balik">
+    <table class="about-table">
+      <thead><tr><th scope="col">Informasi tambahan yang diketahui</th><th scope="col">Jumlah kandidat maksimum</th></tr></thead>
+      <tbody>
+        <tr><td>Tidak ada bidang selain tahun</td><td>5,778</td></tr>
+        <tr><td>Hanya nama kotlet</td><td>5,568</td></tr>
+        <tr><td>Hanya hari dalam kotlet</td><td>17</td></tr>
+        <tr><td>Hanya nama bulan</td><td>123</td></tr>
+        <tr><td>Hanya hari dalam bulan</td><td>47</td></tr>
+        <tr><td>Nama kotlet + hari dalam kotlet</td><td>1</td></tr>
+        <tr><td>Nama bulan + hari dalam bulan</td><td>1</td></tr>
+        <tr><td>Tiga bidang non-tahun mana pun</td><td>1</td></tr>
+        <tr><td>Keempat bidang non-tahun</td><td>1</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Tanpa mengetahui hari kerja, situasinya berbeda. Lima nilai yang sama dapat muncul di bawah hari kerja yang berbeda, dan terdapat contoh pasti ketika tanggal lengkap yang sama muncul pada jarak berbeda dari <code>c</code>.</p>
+  <p>Dalam tahun 5000, bahkan tanda jarak itu tidak selalu ditentukan oleh lima nilai tadi: tanggal lengkap yang sama dapat berada di masa lalu relatif terhadap hari kerja dalam satu konteks, dan di masa depan dalam konteks lain.</p>
+  <p>Jadi tanggal Pastafari lengkap bukan alamat absolut di garis waktu jika kita tidak mengetahui di bawah <code>c</code> mana tanggal itu dihitung.</p>
+
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>Struktur pada waktu yang jauh</h3>
+    <p>Penelitian matematis yang diturunkan dari spesifikasi juga menemukan struktur asimtotik yang tepat. Untuk <strong>hari kerja tetap</strong> <code>c</code>, cukup jauh di ekor masa lalu muncul periodisitas afin.</p>
+    <p>Jika</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>maka untuk <code>c</code> yang sama terdapat pergeseran <code>H_c</code>, perubahan tahun <code>p_c</code>, dan ambang yang cukup jauh sehingga setelah ambang itu</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>Keempat bidang non-tahun berulang sementara nomor tahun berubah dengan jumlah tetap.</p>
+    <p>Itu adalah hasil untuk <code>c</code> yang tetap; hasil tersebut tidak menyiratkan hubungan global</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>Pertanyaan apakah kemiringan asimtotik akhirnya benar-benar berbeda antar hari kerja masih terbuka.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>Untuk tingkat lanjut: berapa banyak sejarah yang disimpan saus?</h2>
+  <p>Saus tampak seperti mekanisme pencampuran yang sangat agresif, tetapi penelitian aljabar menunjukkan bahwa ia menyimpan jauh lebih banyak informasi daripada yang disiratkan tampilannya. Ini adalah hasil penelitian yang diturunkan dari spesifikasi, bukan aturan baru kalender.</p>
+  <p>Pada tahap terlihat 3–46, di cabang asimtotik yang relevan, generic injectivity telah ditetapkan: dalam kasus generik, keadaan menyimpan cukup informasi untuk merekonstruksi riwayat masukan dan urutan mangkuk yang relevan.</p>
+  <p>Dalam 12 pengadukan akhir pun informasi tidak langsung hilang. Untuk lima pengadukan pertama setelah tetes terlihat 46, generic invertibility telah ditetapkan pada gabungan kanonis yang relevan tanpa informasi samping tambahan; untuk sisanya diketahui batas atas konstruktif yang kuat atas jumlah informasi samping yang cukup untuk rekonstruksi.</p>
+  <p>Masih terbuka apakah <strong>enam mangkuk akhir saja</strong> selalu cukup dalam pengertian generik.</p>
+  <p>Sebagian hasil dibuktikan secara simbolis, sedangkan yang lain ditutup dengan pemeriksaan aritmetika hingga dan tepat. Penguatan simbolis sangat mengurangi inti komputasi yang harus dipercaya, tetapi tidak menghapusnya sepenuhnya.</p>
+  <p>Ruang yang mula-mula tampak memerlukan penelusuran jumlah jalur yang sangat besar telah menyusut menjadi struktur hingga yang jauh lebih kecil, termasuk automata dengan 180 dan 9 keadaan serta simetri enam mangkuk.</p>
+  <p>Di balik pencampuran itu terdapat struktur aljabar yang kaku. Untuk mengetahui tanggal hari ini, Anda tidak perlu mengetahuinya.</p><hr>
+</section>
+
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>Jadi sebenarnya apa itu Kalender Pastafari?</h2>
+  <p>Kalender deterministik yang tanggalnya bukan fungsi dari hari target saja, melainkan dari <strong>hari kerja dan hari yang ditanyakan bersama-sama</strong>.</p>
+  <p>Setiap tanggal memiliki tepat lima bidang. Masa kini relatif terhadap dirinya sendiri selalu berada di tahun 5000, tetapi tahun 5000 itu sendiri bergerak bersama hari kerja. Tahun dapat sangat panjang, kotlet berkesinambungan, bulan tidak harus demikian, dan tidak ada sistem pekan kanonis.</p>
+  <p>Hari <code>n+1</code> suatu bulan tidak harus besok. Hari kronologis yang sama besok dapat menerima label Pastafari berbeda. Momen fisik yang sama di dua tempat dapat termasuk dalam dua hari Pastafari lokal yang berbeda. Peristiwa seharian tidak harus berlangsung dari tengah malam ke tengah malam. Dan ulang tahun tahunan pertama-tama adalah masalah pencarian, baru kemudian masalah kalender.</p>
+  <p>Namun jika hari kerja dan hari yang ditanyakan diketahui, tidak ada ambiguitas: ada tepat satu jawaban yang benar.</p>
+  <p>Pada akhirnya, kalender tidak perlu berbuat lebih dari itu.</p>
+</section>
