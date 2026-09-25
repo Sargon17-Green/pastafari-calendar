@@ -1,0 +1,331 @@
+<!-- O‘zbekcha versiya ibroniycha semantik asosdan bevosita yozildi, oraliq til ishlatilmadi. -->
+<!-- Bo‘lim ID-lari barqaror ommaviy deep-link shartnomasining qismi bo‘lib, tarjima qilingan sarlavhalardan hosil qilinmaydi. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>Ushbu sayt hikoyasida Pastafari taqvimi vaqtning o‘zi yaratilgan taqvim sifatida tasvirlanadi. Biroq uning ishlash mexanizmi qat’iy va aniq belgilangan.</p>
+  <p>Bu taqvim har bir kunga bitta o‘zgarmas Pastafari “yorlig‘i” yopishtirmaydi. Sanani aniqlash uchun ikki kun kerak: hisoblash boshlanadigan <strong>amal kuni</strong> va Pastafari sanasi so‘ralayotgan <strong>so‘ralgan kun</strong>.</p>
+  <p>Agar amal kunini <code>c</code>, so‘ralgan kunni esa <code>t</code> deb belgilasak, sana</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>bo‘ladi, <code>F(t)</code> emas. Shuning uchun bir xil so‘ralgan kun amal kuni o‘zgarsa boshqa Pastafari sanasini olishi mumkin.</p>
+  <p>Bu xato emas. Taqvim aynan shunday ta’riflangan.</p><hr>
+</div>
+
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>Pastafari sanasi nimalardan iborat?</h2>
+  <p>Unda <strong>aniq beshta qism</strong> bor: yil raqami, kotlet nomi, kotlet ichidagi kun, oy nomi va oy ichidagi kun.</p>
+  <p>Umumiy misol: <strong>5000-yil, A kotleti, kotletdagi 417-kun, B oyi, oydagi 83-kun.</strong></p>
+  <p>Amal kuni, kuzatuvchining joyi, kunning xronologik identifikatori yoki boshqa texnik ma’lumotlar sana yonida ko‘rsatilishi mumkin, ammo ular sananing oltinchi maydoni emas.</p><hr>
+</section>
+
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>Nega amal kuni kerak?</h2>
+  <p>Oddiy taqvimlarda sana go‘yo kunning o‘ziga “tegishli” deb o‘ylash tabiiy. Pastafari taqvimida esa sana ikki kun o‘rtasidagi munosabatga bog‘liq.</p>
+  <p><code>t</code> ni o‘zgartirish boshqa kun haqida so‘rash demakdir. <code>c</code> ni o‘zgartirish esa ancha chuqur ta’sir qiladi: yillar chegaralari, kotletlar, oylar, ularning nomlari va oylarning qanday o‘rilishi o‘zgarishi mumkin.</p>
+  <p>Shu sababli bugun hisoblangan almanax ertaga ham to‘g‘ri bo‘lishi shart emas. Bu, qolaversa, chop etilgan taqvim butun yil davomida foydali bo‘lib qoladigan noqulay holatning oldini oladi.</p><hr>
+</section>
+
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>Bir kun, turli sana</h2>
+  <p><strong>Kunning identifikatori</strong> bilan uning <strong>Pastafari ko‘rinishi</strong>ni ajratish kerak. Birinchisi muayyan kunning vaqt chizig‘idagi barqaror o‘rni; ikkinchisi esa shu kun ma’lum bir amal kuni ostida ko‘rsatilganda olinadigan beshta qiymatdir.</p>
+  <p>Mahsulot va API’da birinchisini <code>day-id</code> deb qarash mumkin: ko‘rsatish usuli o‘zgarsa ham o‘zgarmaydigan xronologik identifikator. Biroq</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre>
+  <p>va</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>bir xil bo‘lishi shart emas.</p>
+  <p>Demak, amal kunini qo‘lda o‘zgartirish bir kun uchun ko‘rsatiladigan Pastafari sanasini o‘zgartirishi mumkin, lekin kunning o‘zi vaqt chizig‘ida joyidan siljimaydi.</p>
+  <p>Xuddi shu tamoyil voqealarga ham tegishli. Uchrashuv, tug‘ilish yoki tarixiy voqea barqaror xronologik identifikatorga bog‘langan bo‘lishi kerak; uning Pastafari sanasi ko‘rsatish kontekstiga qarab qayta hisoblanishi mumkin.</p>
+  <p>Yorliq o‘zgarishi mumkin. Voqeaning o‘zi — yo‘q.</p><hr>
+</section>
+
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>5000-yil</h2>
+  <p>Amal kuni bilan so‘ralgan kun bir kun bo‘lsa,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>yil raqami har doim</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>bo‘ladi. Boshqacha aytganda, hozirgi vaqt o‘z nuqtai nazaridan qaralganda doimo 5000-yilda. Ammo 5000-yil tarixdagi o‘zgarmas davr emas; u amal kuniga nisbatan har safar qayta tanlanadi.</p>
+  <p>Amal kunining o‘zi 5000-yilda bo‘ladi, xuddi tanlangan shu yilning boshqa kunlari kabi. Shuning uchun <strong>faqat 5000-yilda bo‘lishning o‘zi <code>t=c</code> ekanini isbotlamaydi.</strong></p>
+  <p>Biroq yil raqami yo‘nalishni ko‘rsatadi:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre>
+  <p>va</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p><strong>0-yil</strong> ham mavjud; undan ham uzoq o‘tmishda manfiy raqamli yillar bor.</p><hr>
+</section>
+
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>Yillar va darvozalar</h2>
+  <p>Pastafari yilida</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ dan }5778\text{ gacha}</code></pre>
+  <p>kun bo‘lishi mumkin. Bular tizimning kanonik chegaralari, tajribaviy o‘rtacha qiymatlar emas.</p>
+  <p>Shunday qilib, bir yil Quyosh yilidan qisqaroq yoki o‘n besh Quyosh yilidan ham uzunroq bo‘lishi mumkin. Yil chegaralari <strong>darvozalar</strong> tizimidan quriladi; kotlet chegaralari ham shu tizimdan keladi.</p>
+  <p>Yil oxiri faslga, Yerning Quyosh atrofida bir marta aylanishiga, Oy sikliga yoki yil nihoyat tugashi haqidagi amaliy istakka mos kelishi shart emas.</p><hr>
+</section>
+
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>Kotletlar</h2>
+  <p>Har bir yil <strong>6 dan 17 gacha kotlet</strong>ga bo‘linadi. Kotlet xronologik jihatdan uzluksiz vaqt bo‘lagidir.</p>
+  <p>Agar bugun kotletning 250-kuni bo‘lsa, ertaga shu kotletning 251-kuni bo‘ladi, agar bugun uning oxirgi kuni bo‘lmasa. Kotletlarning chegaralari darvozalardir va kotlet kamida</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
+  <p>kun davom etadi.</p>
+  <p>Tizimda 17 ta kanonik kotlet nomi bor va bitta yil ichida bir nom takrorlanmaydi. Nom kotletning uzunligi yoki joyini belgilamaydi.</p><hr>
+</section>
+
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>Oylar va o‘rilish</h2>
+  <p>Har bir yilda</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ dan }47\text{ gacha}</code></pre>
+  <p>strukturaviy oy bo‘ladi va har bir oyga</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ dan }123\text{ gacha}</code></pre>
+  <p>kun biriktiriladi.</p>
+  <p>Ammo Pastafari oyi <strong>uzluksiz vaqt oralig‘i bo‘lishi shart emas</strong>. Masalan, xronologik ketma-ketlik quyidagicha bo‘lishi mumkin:</p>
+  <blockquote><p>A oyi — 14-kun<br>B oyi — 9-kun<br>A oyi — 15-kun</p></blockquote>
+  <p>Bu to‘liq yaroqli tuzilma. A oyining 15-kuni <strong>shu oyning</strong> keyingi kunidir, garchi orada boshqa oyga tegishli kun bo‘lsa ham.</p>
+  <p>Demak, “oy ichidagi kun” oyning birinchi paydo bo‘lishidan beri o‘tgan xronologik kunlar soni emas. Bu yil davomida shu oyga biriktirilgan kunlarning tartib raqami. 48-kun — shu oyga tegishli 48-kun, birinchi paydo bo‘lishidan 47 kun keyin degani emas.</p><hr>
+</section>
+
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>Oylar bir-biriga o‘riladi</h2>
+  <p>Oylarni yil bo‘ylab cho‘zilgan iplar deb tasavvur qilish mumkin. Har bir kun aynan bitta oyga tegishli; ertangi kun boshqa oyga tegishli bo‘lishi mumkin, keyin birinchi oy yana qaytib, o‘zining keyingi raqami bilan davom etadi.</p>
+  <p>Bu o‘rilishning qoidalari bor, jumladan oylarning birinchi va oxirgi paydo bo‘lish tartibiga cheklovlar. Ammo bir oy boshqasi boshlanishidan oldin albatta tugashi kerak degan talab yo‘q.</p>
+  <ul>
+    <li>Kotlet uzluksiz vaqt bo‘lagidagi o‘rinni o‘lchaydi.</li>
+    <li>Oy yo‘qolib, keyin yana paydo bo‘lishi mumkin bo‘lgan strukturaviy ipga mansublikni bildiradi.</li>
+  </ul>
+  <p>Bir oy bir nechta kotletni kesib o‘tishi mumkin, bir kotletda esa ko‘plab oylar paydo bo‘lishi mumkin. Ikki tizimning boshlanishi va tugashi mos kelishi shart emas.</p><hr>
+</section>
+
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>Oyning keyingi kuni ertaga bo‘lishi shart emas</h2>
+  <p>Agar bugun ma’lum bir oyning 17-kuni bo‘lsa, shu oyning 18-kuni — <strong>o‘sha oyning keyingi paydo bo‘lishi</strong>. Bu ertaga bo‘lishi ham, ancha keyin bo‘lishi ham mumkin.</p>
+  <p><strong>Ertaga</strong> — keyingi xronologik kun; <strong>oyning keyingi kuni</strong> — shu oyning keyingi paydo bo‘lishi.</p>
+  <p>Xuddi shuningdek, “oy oxiri” uning xronologik jihatdan yaqin ekanini anglatmaydi. 120 kunlik oy bugun 119-kunda bo‘lishi, 120-kuni esa shu yilning ancha keyingi qismida kelishi mumkin.</p><hr>
+</section>
+
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>Hafta yo‘q</h2>
+  <p>Amaldagi kanonik spetsifikatsiya <strong>hafta tizimini belgilamaydi</strong>. Yetti kunlik kanonik birlik yo‘q, Pastafari hafta kunlari nomlari yo‘q va ikki kunni “haftaning bir xil kuni” qiladigan qoida ham yo‘q.</p>
+  <p>Albatta, fuqarolik hafta tizimini tashqaridan qo‘shish mumkin; u shunchaki Pastafari sanasining bir qismi emas.</p><hr>
+</section>
+
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>Nomlar</h2>
+  <p>17 ta kanonik kotlet nomi va 47 ta kanonik oy nomi mavjud. Bir yil ichida har bir nom o‘z toifasida ko‘pi bilan bir marta paydo bo‘ladi.</p>
+  <p>Nomning identifikatori kanonik va semantikdir; u turli yozilishlar, tarjimalar yoki implementatsiyalar orasidagi “ovoz berish” natijasi emas. Nomlar ma’nosi bo‘yicha ibroniycha Megillah eng yuqori vakolatga ega; tarjima va transliteratsiya esa faqat ko‘rsatish qatlamlaridir.</p>
+  <p>Nom uzunlikning yashirin kodi ham emas. Muayyan kotlet yoki oy nomi o‘z-o‘zidan bu birlikni uzunroq yoki qisqaroq qilmaydi.</p><hr>
+</section>
+
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>Oylar haqidagi kichik bir fakt</h2>
+  <p>47 ta oy nomi bor va oy eng ko‘pi bilan 123-kungacha yetishi mumkin. Demak, “oy nomi + oy ichidagi kun raqami” shaklida sintaktik jihatdan mumkin bo‘lgan juftliklar soni</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>Har bir yil kuni aynan bitta juftlikni ro‘yobga chiqaradi. Agar yil uzunligi <code>L</code> bo‘lsa, aynan <code>L</code> ta juftlik paydo bo‘ladi. Chunki</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>har bir yilda kamida</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre>
+  <p>ta mumkin bo‘lgan juftlik ishlatilmay qolishi shart. Hatto eng uzun yilning ham barchasini ishlatishga kuni yetmaydi.</p><hr>
+</section>
+
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>Taqvim qanday hisoblanadi?</h2>
+  <p>Ichki hisobni bu yerda <strong>sous</strong> deb ataymiz. Uning markazida tub son turadi:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>Jarayon beshta kirish hisoblagichi, 7 ta yashirin tomchi, 46 ta ko‘rinadigan tomchi, 6 ta kosa, o‘zgaruvchan kosa tartiblari, 12 ta yakuniy aralashtirish, turli javoblar uchun muhrlar, kombinatorik tanlovlar, darvozalarni qurish, yillarni tanlash, kotletlarni bo‘lish, nomlarni tanlash, oylarni qurish va oy kunlarini o‘rishni o‘z ichiga oladi.</p>
+  <p>Yakuniy yangilanishlar <strong>sinxron</strong>: har bir aralashtirishda barcha olti yangi qiymat bir xil eski holatdan hisoblanadi, shundan keyingina olti kosa bir vaqtda almashtiriladi.</p>
+  <p>12 ta yakuniy aralashtirishda ayniqsa muhim kanonik tafsilot bor. Agar <code>S</code> olti eski kosaning yig‘indisi, <code>r</code> esa aralashtirish raqami bo‘lsa, tizim</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p>ni hisoblaydi. <code>R</code> — <strong>saqlangan yig‘indi</strong>. Kosa tartibini tanlash ham, aralashtirishning ichki yangilanishi ham xom <code>S</code> yig‘indisini emas, <code>R</code> ni ishlatadi.</p>
+  <p>Bu yangilanishga xom yig‘indini bergan eski versiyalar endi hozirgi kanonik semantikani ifodalamaydi. Eski qoidadan olingan misollar qayta tekshirilmaguncha eskirgan hisoblanishi kerak.</p>
+  <p>Aralashtirishlardan keyin javob halqasi ham 46-ko‘rinadigan tomchida qulflangan tartibni davom ettiradi; bu tartib avtomatik ravishda oxirgi aralashtirish tartibiga almashtirilmasligi kerak.</p><hr>
+</section>
+
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice va Wide Choice</h2>
+  <p>Nisbatan kichik tanlov fazolari uchun <strong>Short Choice</strong> ishlatiladi. U oddiy modulo bias’ni oldini olish uchun rejection sampling’dan foydalanadi.</p>
+  <p>Juda katta fazolarda <strong>Wide Choice</strong> ishlatiladi. Unga spetsifikatsiya kafolatlamaydigan xususiyatlarni yuklash mumkin emas.</p>
+  <p>Wide Choice mustaqil va bir tekis taqsimlangan base-<code>Q</code> raqamlarini indeks hosil bo‘lguncha generatsiya qilishga teng emas. Shuning uchun har bir yaroqli tanlov albatta bir xil musbat ehtimolga ega degan xulosa kelib chiqmaydi. Yetarlicha katta fazoda mexanizm umuman yetib bora olmaydigan yaroqli tanlovlar bo‘lishi mumkin.</p>
+  <p>Taqvimning o‘zi to‘liq deterministik bo‘lib qoladi. “Choice” — algoritmik bosqich nomi, foydalanish paytidagi tasodifiy lotereya emas.</p><hr>
+</section>
+
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>Strukturaviy atlas</h2>
+  <p>Shu paytgacha taqvim qoidalari haqida gapirdik. Keyingi raqamlar boshqa turdagi ma’lumot: ular katta hisoblash namunasidan olingan <strong>empirik natijalar</strong>.</p>
+  <p>Atlas engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> bilan qurilgan va 4,096 amal kunini; ularning har biri uchun 4990–5010-yillarni; 86,016 yil tuzilmasini; 625,437 kotletni; 3,535,422 strukturaviy oyni; 356 milliondan ortiq uzluksiz oy segmentini; hamda bir oy ichida <code>n</code> kundan <code>n+1</code> kunga 364 milliondan ortiq o‘tishni qamrab olgan.</p>
+  <p>Bu raqamlar shu corpus’ni tavsiflaydi, kanonik qonunlarni emas.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Strukturaviy atlasning o‘lchangan ma’lumotlari">
+    <table class="about-table">
+      <thead><tr><th scope="col">O‘lchangan kattalik</th><th scope="col">Namunadagi natija</th></tr></thead>
+      <tbody>
+        <tr><td>Yilning o‘rtacha uzunligi</td><td>4,275.182 kun</td></tr>
+        <tr><td>Yil uzunligi medianasi</td><td>4,343</td></tr>
+        <tr><td>Kuzatilgan minimum / maksimum</td><td>716 / 5,778</td></tr>
+        <tr><td>Bir yildagi kotletlarning o‘rtacha soni</td><td>7.271</td></tr>
+        <tr><td>Aynan 6 kotletli yillar</td><td>42.00%</td></tr>
+        <tr><td>6–8 kotletli yillar</td><td>81.29%</td></tr>
+        <tr><td>Kotletning o‘rtacha uzunligi</td><td>587.963 kun</td></tr>
+        <tr><td>Kotlet uzunligi medianasi</td><td>560</td></tr>
+        <tr><td>Bir yildagi oylarning o‘rtacha soni</td><td>41.102</td></tr>
+        <tr><td>Oylar soni medianasi</td><td>43</td></tr>
+        <tr><td>47 oylik yillar</td><td>15.63%</td></tr>
+        <tr><td>Kamida 45 oylik yillar</td><td>36.81%</td></tr>
+        <tr><td>Strukturaviy oyning o‘rtacha uzunligi</td><td>104.014 kun</td></tr>
+        <tr><td>Oy uzunligi medianasi</td><td>115</td></tr>
+        <tr><td>Har oyga to‘g‘ri keladigan uzluksiz segmentlar o‘rtachasi</td><td>100.897</td></tr>
+        <tr><td>Bir kunlik oy segmentlarining ulushi</td><td>97.482%</td></tr>
+        <tr><td>Ikki qo‘shni kunning bir oyga tegishli bo‘lish ehtimoli</td><td>2.9976%</td></tr>
+        <tr><td>Bir oy ichidagi <code>n</code> va <code>n+1</code> orasidagi boshqa oy kunlarining o‘rtacha soni</td><td>40.408</td></tr>
+        <tr><td>Oyning birinchi va oxirgi paydo bo‘lishlari orasidagi o‘rtacha oraliq</td><td>4,266.653 kun</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Amalda qariyb yuz kunlik oy deyarli butun Pastafari yili bo‘ylab yoyilishi mumkin.</p>
+  <p>Xuddi shu atlas 5000-yil atrofida tabiiy uzunlik og‘ishini ham ko‘rsatdi. Namunadagi “odatdagi” yil o‘rtacha qariyb 4,262 kun edi. Yillar o‘z ichidagi kunlar soniga qarab vaznlansa, o‘rtacha qariyb 4,466 kungacha ko‘tariladi; 5000-yilning o‘zi esa o‘rtacha qariyb 4,499 kun.</p>
+  <p>Sabab oddiy: 5000-yil amal kunini o‘z ichiga olishi kerak. Uzunroq yil uning amal kunini o‘z ichiga olgan yil bo‘lishi mumkin bo‘lgan ko‘proq kunlarni beradi.</p>
+  <p>Birlik nomi va uning uzunligi o‘rtasidagi bog‘liqlik ham namunada juda zaif. Bu to‘liq matematik mustaqillikni isbotlamaydi, biroq atlas nomlar uzunlikni kodlash uchun yaratilgan degan amaliy signal bermaydi.</p>
+  <p>Bundan tashqari, 86,016 yil tuzilmasi 86,016 mutlaqo mustaqil namuna emas: ularda boshlang‘ich va yakuniy darvozalar orasidagi faqat 24,786 xil interval bor. Yaqin amal kunlari bir xil yil intervalini tanlab, baribir boshqa ichki tuzilma hosil qilishi mumkin.</p>
+  <p>Shuning uchun atlas implementatsiyaning o‘lchangan xatti-harakatini yaxshi tavsiflaydi, ammo uni barcha mumkin bo‘lgan taqvim tuzilmalari haqidagi ehtimollik teoremasiga aylantirish kerak emas.</p><hr>
+</section>
+
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>Tug‘ilgan kunlar va yilliklar</h2>
+  <p>Bu yerda “har yili bir kun” iborasini avval aniqlash kerak. Tabiiy takrorlanish koordinatalari <code>(oy nomi, oy ichidagi kun)</code> va <code>(kotlet nomi, kotlet ichidagi kun)</code>; shartlarni birlashtirish ham mumkin.</p>
+  <p>Demak, Pastafari tug‘ilgan kuni shunchaki <code>RRULE:FREQ=YEARLY</code> emas. Tanlangan takrorlanish shartini qanoatlantiradigan keyingi yilni topish kerak va dastlabki voqea avtomatik ravishda o‘zining “keyingi paydo bo‘lishi” deb hisoblanmaydi.</p>
+  <p>Amal kunini faqat ko‘rsatish uchun o‘zgartirish odamning identifikatorini, tug‘ilish lahzasini yoki yoshini o‘zgartirmasligi kerak.</p>
+  <p>4,096 o‘z-o‘ziga murojaat qiluvchi sanani aniq skanerlashda har bir keyingi Pastafari yili oldinga va orqaga har yo‘nalishda 250,000 yilgacha tekshirilgan:</p>
+  <ul>
+    <li><code>(oy nomi, oy ichidagi kun)</code> uchun birinchi qaytish medianasi 1 Pastafari yili bo‘lgan; 77.56% qo‘shni yilda, 93.77% ikki yil ichida, 99.44% besh yil ichida qaytgan; kuzatilgan maksimum 21 yil.</li>
+    <li><code>(kotlet nomi, kotlet ichidagi kun)</code> uchun mediana 3 yil bo‘lgan; 88.89% 10 yil ichida topilgan, ammo taqsimot juda og‘ir dumga ega va kuzatilgan maksimum 51,954 Pastafari yiliga yetgan.</li>
+  </ul>
+  <p>Bular <strong>tekshirilgan corpus’ning empirik natijalari</strong>, har bir mumkin bo‘lgan yillik albatta qaytishini isbotlamaydi va maksimal kutish vaqti uchun kafolat ham bermaydi.</p><hr>
+</section>
+
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>Uchrashuvni qanday belgilash mumkin?</h2>
+  <p>Agar ikki kishi faqat Pastafari sanasi yordamida uchrashuv belgilamoqchi bo‘lsa, ular kamida sananing besh maydoni va hisoblashda ishlatilgan amal kuni haqida kelishib olishlari kerak. Amal kunini “bugun” so‘zi sifatida emas, barqaror kun identifikatori sifatida saqlash yaxshiroq; aks holda ular ikki xil taqvimni hisoblab chiqishi mumkin.</p>
+  <ul>
+    <li>“ertaga” — keyingi xronologik kun;</li>
+    <li>“oyning keyingi kuni” — shu oyning keyingi paydo bo‘lishi;</li>
+    <li>“oy oxiri” — shu oyning oxirgi paydo bo‘lishi;</li>
+    <li>“butun oy” — shu oyga tegishli kunlar to‘plami yoki uning birinchi paydo bo‘lishidan oxirgisigacha bo‘lgan to‘liq xronologik oraliqni anglatishi mumkin;</li>
+    <li>“keyingi yil” — tanlangan amal kuni ostida qurilgan taqvimdagi keyingi yil.</li>
+  </ul>
+  <p>Juda muhim uchrashuv uchun mutlaq xronologik kun yoki lahzani ham saqlash mumkin. Taqvim bundan ranjimaydi.</p><hr>
+</section>
+
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>Sayohat, voqealar va all-day</h2>
+  <p>Voqea va unga ko‘rsatiladigan mahalliy yorliq bir narsa emas. Muayyan vaqtda belgilangan voqea barqaror xronologik lahzaga bog‘lanishi kerak. Sayohat voqeani vaqt ichida ko‘chirmaydi, biroq ayni jismoniy lahza uchun ko‘rsatiladigan mahalliy Pastafari sanasi o‘zgarishi mumkin, chunki “mahalliy kun” ta’rifi joyga bog‘liq.</p>
+  <p><strong>All-day</strong> voqeada farq yanada kattaroq. Fuqarolik taqvimidagi butun kunlik voqea odatda fuqarolik yarim tunidan keyingi yarim tungacha davom etadi; Pastafari butun kunlik voqeasi esa mahalliy Pastafari kun chegarasidan keyingi chegaragacha davom etishi kerak. Odatda bu bir xil lahzalar emas.</p>
+  <p>Shu sababli Pastafari voqeasini ko‘r-ko‘rona fuqarolik “butun kunlik” voqeasi sifatida eksport qilish uning ma’nosini o‘zgartirishi mumkin. Uni aniq saqlash uchun xronologik tayanch va mos joy/kun chegarasi kontekstini saqlash kerak, faqat <code>all-day</code> bayrog‘ini emas.</p><hr>
+</section>
+
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>Kun qachon o‘zgaradi?</h2>
+  <p>Mahalliy Pastafari kuni yarim tunda o‘zgarmaydi. Uning chegarasi <strong>Venera markazining mahalliy meridian orqali topocentric lower meridian transit’i</strong> bilan belgilanadi.</p>
+  <p>Demak, bu joyga bog‘liq mahalliy astronomik voqea. Transit 00:00 da bo‘lishi shart emas, uni fuqarolik vaqt zonasi belgilamaydi, yozgi vaqt boshlanishi yoki tugashi bilan o‘z-o‘zidan surilmaydi va Veneraning yalang‘och ko‘z bilan ko‘rinishini talab qilmaydi.</p>
+  <p>Bir xil jismoniy lahza ikki joyda ularning mahalliy kun chegaralarining turli tomonlarida bo‘lishi mumkin. Agar tizim foydalanuvchining ishlatishga yaroqli joylashuviga ega bo‘lmasa, mahsulotning standart zaxira joyi <strong>Kisurra</strong>.</p><hr>
+</section>
+
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>Chop etilgan taqvim va qo‘lda hisoblash</h2>
+  <p>Pastafari taqvimini chop etish mumkin; faqat u qaysi amal kuni uchun hisoblanganini ko‘rsatish kerak. Bunday taqvim vaqt tuzilishini shu kun nuqtai nazaridan ko‘rsatadi; amal kuni o‘zgarsa, yangi taqvim kerak bo‘lishi mumkin. Demak, printer hali ham ishli.</p>
+  <p>Spetsifikatsiya to‘liq va deterministik bo‘lgani uchun hammasini qo‘lda ham hisoblash mumkin: kirish hisoblagichlarini hisoblang, 7 yashirin va 46 ko‘rinadigan tomchini bajaring, olti kosani yangilang, 12 yakuniy aralashtirishni bajaring, javoblarni yarating, darvozalarni quring, yillar va kotletlarni tanlang, kombinatorik tanlovlarni bajaring, nomlarni tanlang va keyin oylarni o‘ring.</p>
+  <p>Buning evaziga fevral ba’zan 28, ba’zan 29 kun bo‘lishini eslab yurish shart emas.</p><hr>
+</section>
+
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>Unda Seer nima?</h2>
+  <p>Kanonik implementatsiya yonida <strong>Pastafarian Calendar Seer</strong> deb ataladigan tezkor engine bor. Seer vakolat manbai emas: to‘g‘ri sanani Megillah va kanonik hisob belgilaydi. Agar Seer ularga mos kelmasa, xato Seer’da.</p>
+  <p>Uning vazifasi xuddi shu savollarni tez bajarish va mahsulotlarga qo‘shish uchun qulay shaklda javob berish.</p>
+  <p>Ushbu sahifani tahrirlash paytida o‘tkazilgan bevosita tekshiruvda Seer, jumladan, date va “now” so‘rovlarini, batch, kun range’larini, Pastafari sanasidan maqsad kunga reverse conversion’ni, yil tuzilmasini olishni, faol amal kunini aniqlashni, Node API’ni, browser/HTTP client’ni, CLI’ni, HTTP v1 xizmatini, OpenAPI 3.1 shartnomasini, native implementations va tarqatish paketlarini hamda tekshirilgan container deployment’ni qamrab olgan.</p>
+  <p>Seer’da ommaviy API yo‘q degan eski da’vo endi to‘g‘ri emas. Hozir date, range, batch, year, reverse, amal kuni, metadata, locales va status endpoint’lariga ega aniq va barqaror HTTP v1 shartnomasi bor.</p>
+  <p>2026-yil 21-sentabrda Render’dagi ommaviy HTTPS deployment amalda sinovdan o‘tkazilgan: jonli xizmatda exact so‘rovlar, katta range, restart, cold wake va yuklama ostidagi xatti-harakat tekshirilgan.</p>
+  <p>Shunga qaramay, loyiha hujjatlari ommaviy beta/evaluation deployment bilan SLA’li doimiy hosted production xizmatini farqlashda davom etadi. Shuning uchun konseptual tushuntirish sahifasi server manzili, hosting provayderi yoki versiya raqamini go‘yo taqvimning o‘z qismi kabi qotirib qo‘ymasligi kerak.</p>
+  <p>Seer precomputation, maxsus ifodalar, SIMD, algebra va boshqa qisqa yo‘llardan foydalanishi mumkin. U kanonik implementatsiyaning butun hisoblash tarixini qadam-baqadam takrorlashi shart emas, agar aynan bir xil semantik operatsiyani bajarib, bir xil javobni qaytarsa.</p>
+  <p>Optimallashtirish muqobil vakolat emas.</p><hr>
+</section>
+
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>Kelib chiqish, Asos solingan kun va Lavhalar kuni</h2>
+  <p>Bu yerda kanonik vaqt tayanchlarini sayt hikoyasidan aniq ajratish ayniqsa muhim.</p>
+
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>Tayanchlar</h3>
+    <p>Tizimda <strong>Asos solingan kun</strong> deb ataladigan bitta o‘zgarmas tayanch kun bor. Proleptik Gregorian taqvimida bu <strong>miloddan avvalgi 41,222-yil 22-dekabr</strong>.</p>
+    <p>Asos solingan kun “vaqtning boshlanishi” emas, hisoblash tayanchidir.</p>
+    <p>Uning atrofidagi kunlarni raqamlashda musbat toq/juft sonlar ishlatiladi: Asos solingan kun=1; undan keyingi kunlar=3, 5, …; o‘tmish tomonga esa oldingi kun=2, keyin 4, 6, … . Shu tariqa tayanchning ikki tomoni ham bu hisoblagichda manfiy kun raqamlarisiz kodlanadi.</p>
+    <p>Ikkinchi tayanch — <strong>Lavhalar kuni</strong>: <strong>proleptik Yulian taqvimida miloddan avvalgi 763-yil 15-iyun</strong>, ya’ni <strong>proleptik Gregorian taqvimida miloddan avvalgi 763-yil 7-iyun</strong>.</p>
+    <p>Asos solingan kundan Lavhalar kunigacha aniq masofa</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
+    <p>kun.</p>
+    <p>Bular vaqt chizig‘idagi o‘zgarmas tayanchlar, ammo ular uchun ko‘rsatiladigan Pastafari sanasi baribir qaysi amal kunidan turib so‘ralayotganiga bog‘liq.</p>
+  </section>
+
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>Sayt hikoyasi</h3>
+    <p>Saytning tahririy hikoyasida taqvim yaratilishning bir qismi va insoniyat uni to‘liq anglamagan holda ishlatib kelgan, keyin zamonaviy davrda yana topshirilgan tizim sifatida tasvirlanadi.</p>
+    <p>Bu sayt hikoyasi; undagi har bir narrativ tafsilot Megillah’ning ochiq texnik da’vosi sifatida taqdim etilmasligi kerak.</p>
+    <p>Qayta topshirish voqeasining o‘zi o‘zgarmas tarixiy voqea. Uning <strong>Pastafari sanasini</strong> bitta sana qilib abadiy qotirib qo‘yishdan ko‘ra, joriy amal kuni ostida dinamik ko‘rsatish ma’qul.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>Ilg‘or foydalanuvchilar uchun: reverse conversion</h2>
+  <p>Agar amal kuni <code>c</code> ma’lum bo‘lsa, reverse conversion juda kuchli cheklangan. Ma’lum Pastafari yilining ichida</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{kotlet nomi},\text{kotlet ichidagi kun})</code></pre>
+  <p>ko‘pi bilan bitta kunni aniqlaydi. Xuddi shu narsa</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{oy nomi},\text{oy ichidagi kun})</code></pre>
+  <p>uchun ham to‘g‘ri. Demak, amal kuni ma’lum bo‘lgan to‘liq sana maqsad kunni yagona tarzda aniqlaydi.</p>
+
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Reverse conversion paytidagi nomzodlar sonining yuqori chegaralari">
+    <table class="about-table">
+      <thead><tr><th scope="col">Ma’lum qo‘shimcha ma’lumot</th><th scope="col">Nomzodlarning eng ko‘p soni</th></tr></thead>
+      <tbody>
+        <tr><td>Yildan boshqa hech bir maydon ma’lum emas</td><td>5,778</td></tr>
+        <tr><td>Faqat kotlet nomi</td><td>5,568</td></tr>
+        <tr><td>Faqat kotlet ichidagi kun</td><td>17</td></tr>
+        <tr><td>Faqat oy nomi</td><td>123</td></tr>
+        <tr><td>Faqat oy ichidagi kun</td><td>47</td></tr>
+        <tr><td>Kotlet nomi + kotlet ichidagi kun</td><td>1</td></tr>
+        <tr><td>Oy nomi + oy ichidagi kun</td><td>1</td></tr>
+        <tr><td>Yildan boshqa istalgan uch maydon</td><td>1</td></tr>
+        <tr><td>Yildan boshqa barcha to‘rt maydon</td><td>1</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Amal kunini bilmasak, holat boshqacha. Bir xil beshta qiymat turli amal kunlari ostida paydo bo‘lishi mumkin va aynan bir xil to‘liq sana <code>c</code> dan turli masofalarda chiqadigan aniq misollar mavjud.</p>
+  <p>5000-yilda hatto shu masofaning ishorasi ham beshta qiymatdan doim aniqlanmaydi: aynan bir xil to‘liq sana bir kontekstda amal kuniga nisbatan o‘tmishda, boshqasida esa kelajakda bo‘lishi mumkin.</p>
+  <p>Shuning uchun qaysi <code>c</code> ostida hisoblanganini bilmasak, to‘liq Pastafari sanasi vaqt chizig‘idagi mutlaq manzil emas.</p>
+
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>Juda uzoq vaqtdagi tuzilma</h3>
+    <p>Spetsifikatsiyadan kelib chiqqan matematik tadqiqot aniq asimptotik tuzilmani ham topgan. <strong>Fiksatsiyalangan amal kuni</strong> <code>c</code> uchun, o‘tmish dumining yetarlicha uzoq qismida affine periodicity paydo bo‘ladi.</p>
+    <p>Agar</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>bo‘lsa, ayni <code>c</code> uchun siljish <code>H_c</code>, yil o‘zgarishi <code>p_c</code> va yetarlicha uzoq chegara mavjud bo‘lib, undan keyin</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>yildan boshqa to‘rtta maydon takrorlanadi, yil raqami esa qat’iy miqdorga o‘zgaradi.</p>
+    <p>Bu fiksatsiyalangan <code>c</code> uchun natija; bundan global munosabat</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>kelib chiqmaydi. Turli amal kunlarida yakuniy asimptotik nishablar haqiqatan ham farqlanadimi — bu hali ochiq savol.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>Ilg‘or foydalanuvchilar uchun: sous qancha tarixni saqlaydi?</h2>
+  <p>Sous juda agressiv aralashtirish mexanizmidek ko‘rinadi, ammo algebraik tadqiqot u tashqi ko‘rinishidan kutilganidan ancha ko‘p ma’lumot saqlashini ko‘rsatadi. Bu spetsifikatsiyadan kelib chiqqan tadqiqot natijasi, taqvimning yangi qoidasi emas.</p>
+  <p>3–46 ko‘rinadigan bosqichlarda, tegishli asimptotik shoxda generic injectivity o‘rnatilgan: umumiy holatda state tegishli kirish tarixini va kosa tartibini qayta tiklash uchun yetarli ma’lumotni saqlaydi.</p>
+  <p>12 yakuniy aralashtirishda ham ma’lumot darhol yo‘qolmaydi. 46-ko‘rinadigan tomchidan keyingi dastlabki besh aralashtirish uchun tegishli kanonik birlashmada qo‘shimcha yon ma’lumotsiz generic invertibility o‘rnatilgan; qolgan qismi uchun qayta tiklashga yetadigan yon ma’lumot miqdorining kuchli konstruktiv yuqori chegaralari ma’lum.</p>
+  <p><strong>Faqat oxirgi olti kosa</strong> umumiy ma’noda har doim yetarlimi — bu savol hanuz ochiq.</p>
+  <p>Ba’zi natijalar ramziy tarzda isbotlangan, boshqalari esa chekli va aniq arifmetik tekshiruv bilan yopilgan. Ramziy kuchaytirish ishonish kerak bo‘lgan hisoblash yadrosini ancha kichraytirdi, lekin uni butunlay yo‘q qilmadi.</p>
+  <p>Dastlab ulkan sondagi yo‘llarni qidirishni talab qiladigandek ko‘ringan fazolar ancha kichik chekli tuzilmalarga, jumladan 180 va 9 holatli automata’lar va olti kosaning simmetriyalariga qisqartirildi.</p>
+  <p>Aralashtirish ostida qat’iy algebraik tuzilma bor. Bugungi sanani bilish uchun uni bilishingiz shart emas.</p><hr>
+</section>
+
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>Xo‘sh, Pastafari taqvimi aslida nima?</h2>
+  <p>Bu deterministik taqvim bo‘lib, undagi sana faqat maqsad kunning funksiyasi emas, balki <strong>amal kuni va so‘ralgan kunning birgalikdagi funksiyasi</strong>.</p>
+  <p>Har bir sana aniq beshta maydonga ega. Hozirgi vaqt o‘z nuqtai nazaridan doimo 5000-yilda, ammo 5000-yilning o‘zi amal kuni bilan birga siljiydi. Yillar juda uzun bo‘lishi mumkin, kotletlar uzluksiz, oylar esa shart emas, kanonik hafta tizimi esa yo‘q.</p>
+  <p>Oyning <code>n+1</code>-kuni ertaga bo‘lishi shart emas. Bir xil xronologik kun ertaga boshqa Pastafari yorlig‘ini olishi mumkin. Bir xil jismoniy lahza ikki joyda ikki xil mahalliy Pastafari kuniga tegishli bo‘lishi mumkin. Butun kunlik voqea yarim tundan yarim tungacha davom etishi shart emas. Har yillik tug‘ilgan kun esa avvalo qidiruv masalasi, undan keyingina taqvim masalasi.</p>
+  <p>Ammo amal kuni va so‘ralgan kun ma’lum bo‘lsa, noaniqlik yo‘q: to‘g‘ri javob aynan bitta.</p>
+  <p>Oxir-oqibat taqvimdan bundan ortig‘i talab qilinmaydi.</p>
+</section>
