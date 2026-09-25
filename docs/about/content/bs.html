@@ -1,203 +1,332 @@
-<!-- Bosanska verzija napisana je neposredno iz hebrejske semantičke osnove, bez posrednog jezika. -->
-<!-- ID-jevi odjeljaka stabilan su javni deep-link ugovor i ne izvode se iz prevedenih naslova. -->
+<!-- Bosanska verzija napisana je direktno iz hebrejske semantičke osnove, bez posrednog jezika. -->
+<!-- ID-jevi odjeljaka stabilan su javni ugovor za duboke poveznice i ne izvode se iz prevedenih naslova. -->
 <div class="about-section about-lead" id="about-calendar">
-<p>U priči ove stranice Pastafarijanski kalendar je kalendar u kojem je stvoreno samo vrijeme. Njegova pravila su, međutim, precizno određena.</p>
-<p>Datum nije trajna oznaka jednog dana. Za računanje trebaju dva dana: <strong>dan djelovanja</strong>, iz kojeg se računa, i <strong>pitani dan</strong>, čiji datum tražimo.</p>
-<p>Ako ih označimo sa <code>c</code> i <code>t</code>, datum je</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
-<p>a ne <code>F(t)</code>. Isti pitani dan zato može pod drugim danom djelovanja dobiti drugi pastafarijanski datum. To je dio definicije, ne greška.</p><hr>
+  <p>U priči ove stranice, Pastafarijanski kalendar predstavljen je kao kalendar u kojem je samo vrijeme stvoreno. Njegov mehanizam, međutim, definiran je precizno.</p>
+  <p>Ovaj kalendar svakom danu ne pridružuje jednu nepromjenjivu pastafarijansku „oznaku“. Za datum su potrebna dva dana: <strong>dan djelovanja</strong>, od kojeg račun počinje, i <strong>upitani dan</strong>, dan čiji datum želimo saznati.</p>
+  <p>Ako dan djelovanja označimo sa <code>c</code>, a upitani dan sa <code>t</code>, datum je</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>a ne <code>F(t)</code>. Zato isti upitani dan može imati različit pastafarijanski datum kada se promijeni dan djelovanja.</p>
+  <p>To nije greška. Tako je kalendar definiran.</p><hr>
 </div>
+
 <section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
-<h2>Od čega se sastoji datum?</h2>
-<p>Pastafarijanski datum ima <strong>tačno pet polja</strong>: broj godine, naziv kotleta, dan u kotletu, naziv mjeseca i dan u mjesecu.</p>
-<p>Primjer: <strong>godina 5000, kotlet A, 417. dan kotleta, mjesec B, 83. dan mjeseca.</strong></p>
-<p>Dan djelovanja, lokacija, hronološki identitet dana i tehnički podaci mogu stajati uz datum, ali nisu šesto polje.</p><hr>
+  <h2>Od čega se sastoji pastafarijanski datum?</h2>
+  <p>Ima <strong>tačno pet dijelova</strong>: broj godine, naziv kotleta, dan u kotletu, naziv mjeseca i dan u mjesecu.</p>
+  <p>Opći primjer: <strong>godina 5000, kotlet A, 417. dan u kotletu, mjesec B, 83. dan u mjesecu.</strong></p>
+  <p>Dan djelovanja, položaj posmatrača, hronološki identitet dana ili drugi tehnički podaci mogu se prikazati uz datum, ali nisu njegovo šesto polje.</p><hr>
 </section>
+
 <section class="about-section" id="working-day" data-toc-section data-toc-level="2">
-<h2>Zašto postoji dan djelovanja?</h2>
-<p>U običnom kalendaru datum izgleda kao osobina samog dana. Ovdje zavisi od odnosa dvaju dana.</p>
-<p>Promjena <code>t</code> znači drugo pitanje; promjena <code>c</code> može promijeniti granice godina, kotlete, mjesece, njihove nazive i način preplitanja mjeseci.</p>
-<p>Zato almanah izračunat danas ne mora važiti sutra — što zgodno sprečava da štampani kalendar bude koristan čitavu godinu.</p><hr>
+  <h2>Zašto je potreban dan djelovanja?</h2>
+  <p>Kod običnih kalendara prirodno je misliti da datum „pripada“ samom danu. U Pastafarijanskom kalendaru datum zavisi od odnosa između dva dana.</p>
+  <p>Promjena <code>t</code> znači da pitamo za drugi dan. Promjena <code>c</code> ide mnogo dublje: mogu se promijeniti granice godina, kotleti, mjeseci, njihovi nazivi i način na koji su mjeseci isprepleteni.</p>
+  <p>Zato almanah izračunat danas ne mora biti ispravan sutra. Time se ujedno izbjegava nezgodna situacija u kojoj bi štampani kalendar ostao koristan čitavu godinu.</p><hr>
 </section>
+
 <section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
-<h2>Isti dan, drugi datum</h2>
-<p><strong>Identitet dana</strong> nije isto što i njegov <strong>pastafarijanski prikaz</strong>. Identitet je stabilno mjesto na vremenskoj osi; prikaz je petorka dobijena za određeni dan djelovanja.</p>
-<p>U proizvodu i API-ju stabilni identitet možemo posmatrati kao <code>day-id</code>. Zato</p>
-<pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre><p>i</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
-<p>ne moraju biti jednaki, iako je <code>t</code> isti.</p>
-<p>I događaji ostaju vezani za stabilni hronološki trenutak; njihov pastafarijanski prikaz može se preračunati. Oznaka se mijenja, događaj ne.</p><hr>
+  <h2>Isti dan, različit datum</h2>
+  <p>Treba razlikovati <strong>identitet dana</strong> od njegove <strong>pastafarijanske reprezentacije</strong>. Prvo je stabilan položaj određenog dana na vremenskoj osi; drugo je skup od pet vrijednosti koji se dobije kada se taj dan prikaže pod određenim danom djelovanja.</p>
+  <p>U proizvodu i API-ju prvo se može posmatrati kao <code>day-id</code>: hronološki identitet koji se ne mijenja s načinom prikaza. Nasuprot tome,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre>
+  <p>i</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>ne moraju biti jednaki.</p>
+  <p>Ručno mijenjanje dana djelovanja zato može promijeniti prikazani pastafarijanski datum istog dana, a da se sam dan uopće ne pomjeri na vremenskoj osi.</p>
+  <p>Isto vrijedi za događaje. Sastanak, rođenje ili historijski događaj treba ostati vezan za stabilan hronološki identitet; njegov se pastafarijanski datum može ponovo izračunati prema kontekstu prikaza.</p>
+  <p>Oznaka se može promijeniti. Događaj ne može.</p><hr>
 </section>
+
 <section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
-<h2>Godina 5000</h2>
-<p>Kada je</p><pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre><p>godina je uvijek</p><pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
-<p>Sadašnjost je, prema samoj sebi, uvijek u godini 5000. Ali godina 5000 nije fiksna historijska epoha: pomjera se s danom djelovanja.</p>
-<p>I drugi dani iz iste odabrane godine mogu biti u godini 5000, pa <strong>godina 5000 sama ne dokazuje <code>t=c</code></strong>.</p>
-<pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre><p>a</p><pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
-<p>Postoji i <strong>godina 0</strong>, a iza nje prema prošlosti slijede negativno numerisane godine.</p><hr>
+  <h2>Godina 5000</h2>
+  <p>Kada su dan djelovanja i upitani dan isti,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>broj godine uvijek je</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>Drugim riječima, sadašnjost gledana iz vlastite perspektive uvijek je u godini 5000. Ali godina 5000 nije fiksno historijsko razdoblje; iznova se bira u odnosu na dan djelovanja.</p>
+  <p>Sam dan djelovanja nalazi se u godini 5000, kao i drugi dani iste odabrane godine. Zato <strong>sama činjenica da je nešto u godini 5000 ne dokazuje da je <code>t=c</code>.</strong></p>
+  <p>Broj godine ipak pokazuje smjer:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre>
+  <p>i</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p>Postoji i <strong>godina 0</strong>; dalje u prošlosti nalaze se godine s negativnim brojevima.</p><hr>
 </section>
+
 <section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
-<h2>Godine i vrata</h2>
-<p>Godina može trajati</p><pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ do }5778</code></pre><p>dana. To su kanonske granice, ne empirijski prosjeci.</p>
-<p>Granice godina i kotleta dolaze iz sistema <strong>vrata</strong>. Kraj godine ne mora pratiti godišnje doba, orbitu Zemlje, lunarni ciklus niti praktičnu potrebu da se godina konačno završi.</p><hr>
+  <h2>Godine i vrata</h2>
+  <p>Pastafarijanska godina može imati između</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ i }5778</code></pre>
+  <p>dana. To su kanonske granice sistema, a ne empirijski prosjek.</p>
+  <p>Godina zato može biti kraća od solarne godine ili duža od petnaest solarnih godina. Granice godina nastaju iz sistema <strong>vrata</strong>; granice kotleta dolaze iz istog sistema.</p>
+  <p>Kraj godine ne mora se poklapati s godišnjim dobom, jednim obilaskom Zemlje oko Sunca, mjesečevim ciklusom niti praktičnom potrebom da se godina već jednom završi.</p><hr>
 </section>
+
 <section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
-<h2>Kotleti</h2>
-<p>Svaka godina ima <strong>6 do 17 kotleta</strong>. Kotlet je hronološki neprekinut odsječak. Ako danas nije posljednji dan kotleta, poslije 250. dana slijedi 251.</p>
-<p>Granice kotleta su vrata, a minimalna dužina je</p><pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre><p>dana.</p>
-<p>Postoji 17 kanonskih naziva kotleta; unutar jedne godine naziv se ne ponavlja i sam naziv ne određuje dužinu ni položaj.</p><hr>
+  <h2>Kotleti</h2>
+  <p>Svaka godina dijeli se na <strong>6 do 17 kotleta</strong>. Kotlet je hronološki neprekinut vremenski segment.</p>
+  <p>Ako je danas 250. dan u kotletu, sutra je 251. dan istog kotleta, osim ako je danas njegov posljednji dan. Granice kotleta su vrata, a kotlet ima najmanje</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
+  <p>dana.</p>
+  <p>Sistem ima 17 kanonskih naziva kotleta i nijedan se naziv ne ponavlja unutar iste godine. Naziv ne određuje dužinu ni položaj kotleta.</p><hr>
 </section>
+
 <section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
-<h2>Mjeseci i preplitanje</h2>
-<p>Godina ima</p><pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ do }47</code></pre><p>strukturnih mjeseci, a svakom pripada</p><pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ do }123</code></pre><p>dana.</p>
-<p>Mjesec <strong>ne mora biti neprekinut vremenski interval</strong>. Moguće je, recimo:</p>
-<blockquote><p>mjesec A — dan 14<br>mjesec B — dan 9<br>mjesec A — dan 15</p></blockquote>
-<p>Dan 15 mjeseca A jeste naredni dan <strong>tog mjeseca</strong>, iako je između bio dan drugog mjeseca. “Dan u mjesecu” zato je redni broj dana dodijeljenih tom mjesecu, a ne broj hronoloških dana od prvog pojavljivanja.</p><hr>
+  <h2>Mjeseci i preplitanje</h2>
+  <p>Svaka godina ima između</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ i }47</code></pre>
+  <p>strukturnih mjeseci, a svaki mjesec dobija između</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ i }123</code></pre>
+  <p>dana.</p>
+  <p>Međutim, pastafarijanski mjesec <strong>ne mora biti neprekinut vremenski interval</strong>. Hronološki slijed, recimo, može izgledati ovako:</p>
+  <blockquote><p>mjesec A — dan 14<br>mjesec B — dan 9<br>mjesec A — dan 15</p></blockquote>
+  <p>To je potpuno valjano. Dan 15 mjeseca A sljedeći je dan <strong>tog mjeseca</strong>, iako se između pojavio dan nekog drugog mjeseca.</p>
+  <p>Zato „dan u mjesecu“ nije broj hronoloških dana od prvog pojavljivanja mjeseca. To je redni broj dana koji je tom mjesecu dodijeljen tokom godine. Dan 48 znači 48. dan koji pripada tom mjesecu, a ne 47 dana nakon njegovog prvog pojavljivanja.</p><hr>
 </section>
+
 <section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
-<h2>Mjeseci se međusobno prepliću</h2>
-<p>Mjeseci liče na niti provučene kroz godinu. Svaki dan pripada jednom mjesecu; sutra može drugom, a prvi se mjesec kasnije vratiti i nastaviti sljedećim brojem.</p>
-<p>Preplitanje ima ograničenja, među njima red prvih i posljednjih pojavljivanja, ali jedan mjesec ne mora završiti prije početka drugog.</p>
-<ul><li>Kotlet označava položaj u neprekinutom vremenskom odsječku.</li><li>Mjesec označava pripadnost strukturnoj niti koja može nestati pa se vratiti.</li></ul>
-<p>Mjesec može prelaziti preko više kotleta, a kotlet može sadržavati pojave više mjeseci.</p><hr>
+  <h2>Mjeseci se međusobno prepliću</h2>
+  <p>Mjeseci se mogu zamisliti kao niti koje prolaze kroz godinu. Svaki dan pripada tačno jednom mjesecu; sutra može pripadati drugom, a prvi se mjesec može kasnije vratiti i nastaviti svojim sljedećim brojem.</p>
+  <p>Preplitanje ima pravila, uključujući ograničenja reda prvog i posljednjeg pojavljivanja mjeseci. Ali ne postoji zahtjev da jedan mjesec završi prije nego što drugi počne.</p>
+  <ul>
+    <li>Kotlet mjeri položaj unutar neprekinutog vremenskog segmenta.</li>
+    <li>Mjesec označava pripadnost strukturnoj niti koja može nestati pa se ponovo pojaviti.</li>
+  </ul>
+  <p>Jedan mjesec može presijecati više kotleta, a jedan kotlet može sadržavati pojavljivanja više mjeseci. Početak i kraj ta dva sistema ne moraju se poklopiti.</p><hr>
 </section>
+
 <section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
-<h2>Naredni dan mjeseca nije nužno sutra</h2>
-<p>Ako je danas 17. dan nekog mjeseca, njegov 18. dan je <strong>sljedeće pojavljivanje tog mjeseca</strong>. Može doći sutra ili mnogo kasnije.</p>
-<p>“Sutra” je sljedeći hronološki dan; “naredni dan mjeseca” sljedeće je pojavljivanje iste mjesečne niti. Ni “kraj mjeseca” zato ne mora biti vremenski blizu.</p><hr>
+  <h2>Sljedeći dan u mjesecu ne mora biti sutra</h2>
+  <p>Ako je danas 17. dan nekog mjeseca, 18. dan istog mjeseca jeste <strong>sljedeće pojavljivanje tog mjeseca</strong>. Može biti sutra, a može i mnogo kasnije.</p>
+  <p><strong>Sutra</strong> znači sljedeći hronološki dan; <strong>sljedeći dan u mjesecu</strong> znači sljedeće pojavljivanje istog mjeseca.</p>
+  <p>Isto tako, „kraj mjeseca“ ne znači da je kraj hronološki blizu. Mjesec od 120 dana može danas biti na danu 119, dok se dan 120 nalazi mnogo dalje u istoj godini.</p><hr>
 </section>
+
 <section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
-<h2>Nema sedmica</h2>
-<p>Trenutna kanonska specifikacija <strong>ne definiše sistem sedmica</strong>: nema kanonske sedmodnevne jedinice, pastafarijanskih naziva dana sedmice ni pravila “istog dana u sedmici”.</p>
-<p>Građanska sedmica može se dodati spolja, ali nije dio pastafarijanskog datuma.</p><hr>
+  <h2>Nema sedmica</h2>
+  <p>Trenutna kanonska specifikacija <strong>ne definiše sistem sedmica</strong>. Ne postoji kanonska jedinica od sedam dana, nema pastafarijanskih naziva dana u sedmici i nema pravila po kojem su dva dana „isti dan u sedmici“.</p>
+  <p>Naravno, civilni sistem sedmica može se dodati izvana; samo nije dio pastafarijanskog datuma.</p><hr>
 </section>
+
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
-<h2>Nazivi</h2>
-<p>Postoji 17 kanonskih naziva kotleta i 47 kanonskih naziva mjeseci; svaki se unutar svoje grupe u jednoj godini pojavljuje najviše jednom.</p>
-<p>Identitet naziva je kanonski i semantički. Za značenje naziva najviši izvor je hebrejska Megillah; prijevod i transliteracija pripadaju prikazu.</p>
-<p>Naziv nije kod za dužinu: sam po sebi ne nalaže koliko jedinica traje.</p><hr>
+  <h2>Nazivi</h2>
+  <p>Postoji 17 kanonskih naziva kotleta i 47 kanonskih naziva mjeseci. Unutar jedne godine svaki se naziv u svojoj porodici pojavljuje najviše jednom.</p>
+  <p>Identitet naziva kanonski je i semantički; nije rezultat glasanja između različitih pravopisa, prijevoda ili implementacija. Za značenje naziva hebrejska Megillah ima najviši autoritet; prijevodi i transliteracije samo su slojevi prikaza.</p>
+  <p>Naziv nije ni skriveni kod za dužinu. Nijedan određeni naziv kotleta ili mjeseca sam po sebi ne čini tu jedinicu dužom ili kraćom.</p><hr>
 </section>
+
 <section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
-<h2>Mala činjenica o mjesecima</h2>
-<p>Sa 47 naziva mjeseci i najviše 123 dana po mjesecu postoji</p><pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre><p>sintaktički mogućih parova “naziv mjeseca + dan”.</p>
-<p>Godina dužine <code>L</code> ostvaruje tačno <code>L</code> parova, a</p><pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
-<p>pa svake godine izostanu najmanje</p><pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre><p>moguća para.</p><hr>
+  <h2>Jedna mala činjenica o mjesecima</h2>
+  <p>Postoji 47 naziva mjeseci, a mjesec može doseći najviše dan 123. Zato postoji</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>sintaktički mogućih parova oblika „naziv mjeseca + broj dana u mjesecu“.</p>
+  <p>Svaki dan godine ostvaruje tačno jedan takav par. Ako je dužina godine <code>L</code>, pojavljuje se tačno <code>L</code> parova. Pošto vrijedi</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>svakoj godini mora nedostajati najmanje</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre>
+  <p>moguća para. Čak ni najduža godina nema dovoljno dana da iskoristi sve.</p><hr>
 </section>
+
 <section class="about-section" id="calculation" data-toc-section data-toc-level="2">
-<h2>Kako se kalendar računa?</h2>
-<p>Unutrašnji račun ovdje zovemo <strong>umakom</strong>. U njegovom središtu je prost broj</p><pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
-<p>Postupak uključuje pet ulaznih brojača, 7 skrivenih i 46 vidljivih kapi, 6 zdjela, promjenjive poretke zdjela, 12 završnih miješanja, pečate, kombinatorne izbore, vrata, izbor godina, podjelu kotleta, nazive, mjesece i njihovo preplitanje.</p>
-<p>Završna ažuriranja su <strong>sinhrona</strong>: svih šest novih vrijednosti računa se iz istog starog stanja, pa se tek zatim zamijene zajedno.</p>
-<p>Ako je <code>S</code> zbir šest starih zdjela, a <code>r</code> broj završnog miješanja, računa se</p><pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
-<p><code>R</code> je <strong>sačuvani zbir</strong>. I izbor poretka i unutrašnje ažuriranje koriste <code>R</code>, ne sirovi <code>S</code>. Starije verzije koje su koristile sirovi zbir više nisu kanonske.</p>
-<p>Krug odgovora nakon miješanja nastavlja poredak zaključan kod vidljive kapi 46, a ne poredak posljednjeg miješanja.</p><hr>
+  <h2>Kako se kalendar računa?</h2>
+  <p>Unutrašnji račun ovdje zovemo <strong>sos</strong>. U njegovom središtu nalazi se prost broj</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>Postupak obuhvata pet ulaznih brojača, 7 skrivenih kapi, 46 vidljivih kapi, 6 zdjela, promjenjive redoslijede zdjela, 12 završnih miješanja, pečate za različite odgovore, kombinatorne izbore, gradnju vrata, izbor godina, podjelu kotleta, izbor naziva, izgradnju mjeseci i preplitanje dana mjeseca.</p>
+  <p>Završna ažuriranja su <strong>sinhrona</strong>: pri svakom miješanju svih šest novih vrijednosti računa se iz istog starog stanja, a tek se zatim svih šest zdjela zamijeni odjednom.</p>
+  <p>U 12 završnih miješanja postoji jedan posebno važan kanonski detalj. Ako je <code>S</code> zbir šest starih zdjela, a <code>r</code> broj miješanja, sistem računa</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p><code>R</code> je <strong>sačuvani zbir</strong>. I izbor redoslijeda zdjela i unutrašnje ažuriranje miješanja koriste <code>R</code>, a ne sirovi zbir <code>S</code>.</p>
+  <p>Starije verzije koje su u to ažuriranje stavljale sirovi zbir više ne opisuju današnju kanonsku semantiku. Primjeri izvedeni iz starog pravila smatraju se zastarjelim dok se ponovo ne provjere.</p>
+  <p>Nakon miješanja, prsten odgovora također nastavlja redoslijed zaključan na vidljivoj kapi 46; taj se redoslijed ne smije automatski zamijeniti redoslijedom posljednjeg miješanja.</p><hr>
 </section>
+
 <section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
-<h2>Short Choice i Wide Choice</h2>
-<p><strong>Short Choice</strong> koristi rejection sampling za relativno male prostore mogućnosti kako bi izbjegao jednostavni modulo bias.</p>
-<p><strong>Wide Choice</strong> služi velikim prostorima, ali mu se ne smiju pripisivati garancije kojih nema u specifikaciji. Nije isto što i generisanje nezavisnih uniformnih cifara baze <code>Q</code>; zato nisu sve dopuštene mogućnosti nužno jednako vjerovatne niti čak nužno dosegljive u dovoljno velikom prostoru.</p>
-<p>Kalendar je ipak potpuno deterministički: “Choice” je ime algoritamskog koraka, ne nasumično izvlačenje pri korištenju.</p><hr>
+  <h2>Short Choice i Wide Choice</h2>
+  <p>Za relativno male prostore izbora koristi se <strong>Short Choice</strong>. On koristi rejection sampling kako bi izbjegao jednostavnu modulo pristranost.</p>
+  <p>Vrlo veliki prostori koriste <strong>Wide Choice</strong>. Ne treba mu pripisivati svojstva koja specifikacija ne garantuje.</p>
+  <p>Wide Choice nije isto što i generisanje nezavisnih, ravnomjerno raspoređenih cifara u bazi <code>Q</code> dok se ne dobije indeks. Zato se ne može zaključiti da svaki valjan izbor nužno ima istu pozitivnu vjerovatnoću. U dovoljno velikim prostorima mogu postojati valjani izbori do kojih taj mehanizam uopće ne može doći.</p>
+  <p>Sam kalendar i dalje je potpuno determinističan. „Choice“ je naziv algoritamske faze, a ne izvlačenje nasumičnog rezultata pri upotrebi.</p><hr>
 </section>
+
 <section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
-<h2>Strukturni atlas</h2>
-<p>Sljedeći brojevi nisu pravila kalendara, nego <strong>empirijski rezultati</strong> velikog računarskog uzorka.</p>
-<p>Atlas je napravljen s engine commitom <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code>: 4,096 dana djelovanja; godine 4990–5010 za svaki; 86,016 struktura godine; 625,437 kotleta; 3,535,422 strukturna mjeseca; preko 356 miliona neprekinutih mjesečnih odsječaka i preko 364 miliona prijelaza <code>n</code>→<code>n+1</code> unutar istog mjeseca.</p>
-<div class="about-table-scroll" role="region" tabindex="0" aria-label="Izmjereni podaci strukturnog atlasa"><table class="about-table"><thead><tr><th scope="col">Mjera</th><th scope="col">Rezultat u uzorku</th></tr></thead><tbody>
-<tr><td>Prosječna dužina godine</td><td>4,275.182 dana</td></tr><tr><td>Medijan dužine godine</td><td>4,343</td></tr><tr><td>Uočeni minimum / maksimum</td><td>716 / 5,778</td></tr>
-<tr><td>Prosječan broj kotleta godišnje</td><td>7.271</td></tr><tr><td>Godine s tačno 6 kotleta</td><td>42.00%</td></tr><tr><td>Godine sa 6–8 kotleta</td><td>81.29%</td></tr>
-<tr><td>Prosječna dužina kotleta</td><td>587.963 dana</td></tr><tr><td>Medijan dužine kotleta</td><td>560</td></tr><tr><td>Prosječan broj mjeseci godišnje</td><td>41.102</td></tr>
-<tr><td>Medijan broja mjeseci</td><td>43</td></tr><tr><td>Godine sa 47 mjeseci</td><td>15.63%</td></tr><tr><td>Godine s najmanje 45 mjeseci</td><td>36.81%</td></tr>
-<tr><td>Prosječna dužina strukturnog mjeseca</td><td>104.014 dana</td></tr><tr><td>Medijan dužine mjeseca</td><td>115</td></tr><tr><td>Prosječan broj neprekinutih odsječaka po mjesecu</td><td>100.897</td></tr>
-<tr><td>Udio jednodnevnih mjesečnih odsječaka</td><td>97.482%</td></tr><tr><td>Vjerovatnoća da susjedni dani pripadaju istom mjesecu</td><td>2.9976%</td></tr>
-<tr><td>Prosječan broj tuđih dana između <code>n</code> i <code>n+1</code></td><td>40.408</td></tr><tr><td>Prosječan raspon od prvog do posljednjeg pojavljivanja mjeseca</td><td>4,266.653 dana</td></tr>
-</tbody></table></div>
-<p>Mjesec od otprilike stotinu dana može se tako protezati gotovo cijelom pastafarijanskom godinom.</p>
-<p>“Obična” godina u uzorku imala je prosjek oko 4,262 dana; ponderisanje godinama po broju njihovih dana daje oko 4,466, a sama godina 5000 oko 4,499. Razlog je dužinska pristranost: godina 5000 mora sadržavati dan djelovanja.</p>
-<p>Veza naziva i dužine bila je vrlo slaba, ali to nije dokaz potpune matematičke nezavisnosti. Ni 86,016 struktura nije 86,016 nezavisnih uzoraka: postoji samo 24,786 različitih intervala početnih/završnih vrata. Atlas opisuje izmjereni korpus, ne teorem o svim mogućim strukturama.</p><hr>
+  <h2>Strukturni atlas</h2>
+  <p>Do sada smo govorili o pravilima kalendara. Brojevi koji slijede drugačije su prirode: to su <strong>empirijski rezultati</strong> iz velikog računarskog uzorka.</p>
+  <p>Atlas je izgrađen pomoću engine commita <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> i obuhvatio je 4,096 dana djelovanja; godine 4990–5010 za svaki od njih; 86,016 struktura godina; 625,437 kotleta; 3,535,422 strukturna mjeseca; više od 356 miliona neprekinutih mjesečnih segmenata; i više od 364 miliona prijelaza s dana <code>n</code> na dan <code>n+1</code> u istom mjesecu.</p>
+  <p>Ti brojevi opisuju taj corpus, a ne kanonske zakone.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Izmjereni podaci strukturnog atlasa">
+    <table class="about-table">
+      <thead><tr><th scope="col">Mjerena veličina</th><th scope="col">Rezultat u uzorku</th></tr></thead>
+      <tbody>
+        <tr><td>Prosječna dužina godine</td><td>4,275.182 dana</td></tr>
+        <tr><td>Medijan dužine godine</td><td>4,343</td></tr>
+        <tr><td>Najmanje / najveće opaženo</td><td>716 / 5,778</td></tr>
+        <tr><td>Prosječan broj kotleta po godini</td><td>7.271</td></tr>
+        <tr><td>Godine s tačno 6 kotleta</td><td>42.00%</td></tr>
+        <tr><td>Godine sa 6–8 kotleta</td><td>81.29%</td></tr>
+        <tr><td>Prosječna dužina kotleta</td><td>587.963 dana</td></tr>
+        <tr><td>Medijan dužine kotleta</td><td>560</td></tr>
+        <tr><td>Prosječan broj mjeseci po godini</td><td>41.102</td></tr>
+        <tr><td>Medijan broja mjeseci</td><td>43</td></tr>
+        <tr><td>Godine sa 47 mjeseci</td><td>15.63%</td></tr>
+        <tr><td>Godine s najmanje 45 mjeseci</td><td>36.81%</td></tr>
+        <tr><td>Prosječna dužina strukturnog mjeseca</td><td>104.014 dana</td></tr>
+        <tr><td>Medijan dužine mjeseca</td><td>115</td></tr>
+        <tr><td>Prosječan broj neprekinutih segmenata po mjesecu</td><td>100.897</td></tr>
+        <tr><td>Udio jednodnevnih mjesečnih segmenata</td><td>97.482%</td></tr>
+        <tr><td>Vjerovatnoća da su dva susjedna dana u istom mjesecu</td><td>2.9976%</td></tr>
+        <tr><td>Prosječan broj stranih dana između <code>n</code> i <code>n+1</code> istog mjeseca</td><td>40.408</td></tr>
+        <tr><td>Prosječan raspon od prvog do posljednjeg pojavljivanja mjeseca</td><td>4,266.653 dana</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>U praksi se mjesec od otprilike stotinu dana može razvući preko gotovo cijele pastafarijanske godine.</p>
+  <p>Isti atlas pokazao je i prirodnu pristranost prema dužini oko godine 5000. „Obična“ godina u uzorku u prosjeku ima oko 4,262 dana. Kada se godine ponderišu prema broju dana koje sadrže, prosjek raste na oko 4,466 dana; sama godina 5000 u prosjeku ima oko 4,499 dana.</p>
+  <p>Razlog je jednostavan: godina 5000 mora sadržavati dan djelovanja. Duža godina pruža više dana na kojima može biti upravo godina koja sadrži dan djelovanja.</p>
+  <p>Veza između naziva jedinice i njene dužine također je vrlo slaba u uzorku. To ne dokazuje potpunu matematičku nezavisnost, ali atlas ne pokazuje praktičan signal da su nazivi namijenjeni kodiranju dužine.</p>
+  <p>Osim toga, 86,016 struktura godina nisu 86,016 potpuno nezavisnih uzoraka: sadrže samo 24,786 različitih intervala između početnih i završnih vrata. Susjedni dani djelovanja mogu izabrati isti godišnji interval, a ipak proizvesti različitu unutrašnju strukturu.</p>
+  <p>Atlas zato dobro opisuje izmjereno ponašanje implementacije, ali ga ne treba pretvarati u teoriju vjerovatnoće o svim mogućim strukturama kalendara.</p><hr>
 </section>
+
 <section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
-<h2>Rođendani i godišnjice</h2>
-<p>“Isti dan svake godine” prvo treba definisati. Prirodne koordinate su <code>(naziv mjeseca, dan u mjesecu)</code> ili <code>(naziv kotleta, dan u kotletu)</code>, a uslovi se mogu kombinovati.</p>
-<p>Zato pastafarijanski rođendan nije samo <code>RRULE:FREQ=YEARLY</code>; traži se sljedeća godina koja ispunjava uslov, pri čemu početni događaj nije vlastito “sljedeće pojavljivanje”.</p>
-<p>Promjena dana djelovanja radi prikaza ne smije mijenjati identitet osobe, trenutak rođenja ni dob.</p>
-<p>U tačnom skeniranju 4,096 vlastitih datuma, uz pretragu do 250,000 godina u oba smjera, za <code>(naziv mjeseca, dan u mjesecu)</code> medijan prvog povratka bio je 1 godina; 77.56% u susjednoj godini, 93.77% u dvije, 99.44% u pet, maksimum 21. Za <code>(naziv kotleta, dan u kotletu)</code> medijan je bio 3; 88.89% u deset godina, ali s vrlo teškim repom i maksimumom 51,954.</p>
-<p>To su <strong>empirijski rezultati ispitanog korpusa</strong>, ne dokaz obaveznog povratka niti maksimalnog vremena čekanja.</p><hr>
+  <h2>Rođendani i godišnjice</h2>
+  <p>Izraz „isti dan svake godine“ ovdje najprije treba definisati. Prirodne koordinate ponavljanja su <code>(naziv mjeseca, dan u mjesecu)</code> i <code>(naziv kotleta, dan u kotletu)</code>; uslovi se mogu i kombinovati.</p>
+  <p>Zato pastafarijanski rođendan nije samo <code>RRULE:FREQ=YEARLY</code>. Treba pronaći sljedeću godinu koja zadovoljava odabrani uslov ponavljanja, a početni događaj ne broji se automatski kao vlastito „sljedeće pojavljivanje“.</p>
+  <p>Promjena dana djelovanja samo radi prikaza ne smije promijeniti identitet osobe, trenutak rođenja niti starost.</p>
+  <p>U tačnom skeniranju 4,096 samoreferentnih datuma provjeravana je svaka naredna pastafarijanska godina unaprijed i unazad do 250,000 godina u svakom smjeru:</p>
+  <ul>
+    <li>Za <code>(naziv mjeseca, dan u mjesecu)</code> medijan prvog povratka bio je 1 pastafarijanska godina; 77.56% vratilo se u susjednoj godini, 93.77% unutar dvije godine, 99.44% unutar pet godina; najveće opaženo bilo je 21 godina.</li>
+    <li>Za <code>(naziv kotleta, dan u kotletu)</code> medijan je bio 3 godine; 88.89% pronađeno je unutar 10 godina, ali raspodjela ima izrazito težak rep i najveće opaženo dostiglo je 51,954 pastafarijanske godine.</li>
+  </ul>
+  <p>To su <strong>empirijski rezultati ispitivanog corpusa</strong>, a ne dokaz da će se svaka moguća godišnjica sigurno vratiti niti garancija najvećeg vremena čekanja.</p><hr>
 </section>
+
 <section class="about-section" id="appointments" data-toc-section data-toc-level="2">
-<h2>Kako dogovoriti sastanak?</h2>
-<p>Za dogovor samo pastafarijanskim datumom treba sačuvati pet polja i dan djelovanja — bolje kao stabilni identitet dana nego riječ “danas”.</p>
-<ul><li>“sutra” je sljedeći hronološki dan;</li><li>“sljedeći dan mjeseca” je sljedeće pojavljivanje tog mjeseca;</li><li>“kraj mjeseca” je njegovo posljednje pojavljivanje;</li><li>“cijeli mjesec” može značiti skup njegovih dana ili raspon od prvog do posljednjeg pojavljivanja;</li><li>“sljedeća godina” je sljedeća godina kalendara izgrađenog pod izabranim danom djelovanja.</li></ul>
-<p>Za važan događaj može se dodatno sačuvati apsolutni hronološki dan ili trenutak.</p><hr>
+  <h2>Kako dogovoriti sastanak?</h2>
+  <p>Ako se dvije osobe žele dogovoriti samo pomoću pastafarijanskog datuma, moraju se barem usaglasiti oko svih pet polja datuma i dana djelovanja korištenog u računu. Bolje je dan djelovanja sačuvati kao stabilan identitet dana nego kao riječ „danas“; inače dvije osobe mogu izračunati različite kalendare.</p>
+  <ul>
+    <li>„sutra“ je sljedeći hronološki dan;</li>
+    <li>„sljedeći dan u mjesecu“ je sljedeće pojavljivanje istog mjeseca;</li>
+    <li>„kraj mjeseca“ je njegovo posljednje pojavljivanje;</li>
+    <li>„cijeli mjesec“ može značiti skup dana koji pripadaju tom mjesecu ili puni hronološki raspon od prvog do posljednjeg pojavljivanja;</li>
+    <li>„sljedeća godina“ je sljedeća godina u kalendaru izgrađenom pod izabranim danom djelovanja.</li>
+  </ul>
+  <p>Za posebno važan sastanak može se sačuvati i apsolutni hronološki dan ili trenutak. Kalendar se neće uvrijediti.</p><hr>
 </section>
+
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
-<h2>Putovanja, događaji i all-day</h2>
-<p>Događaj nije isto što i lokalna oznaka prikazana uz njega. Događaj s vremenom treba vezati za stabilni hronološki trenutak; putovanje ne pomjera događaj, ali može promijeniti lokalni pastafarijanski datum prikaza.</p>
-<p><strong>all-day</strong> u građanskom kalendaru obično znači ponoć–ponoć. Pastafarijanski cjelodnevni događaj treba pratiti lokalnu granicu pastafarijanskog dana, što obično nisu isti trenuci.</p>
-<p>Zato slijepi izvoz kao građanski all-day može promijeniti značenje; treba čuvati hronološko sidro i kontekst lokacije/granice dana.</p><hr>
+  <h2>Putovanja, događaji i all-day</h2>
+  <p>Događaj i lokalna oznaka prikazana za njega nisu ista stvar. Događaj zakazan za određeni trenutak treba biti vezan za stabilan hronološki trenutak. Putovanje ga ne pomjera kroz vrijeme, ali se lokalni pastafarijanski datum prikazan za isti trenutak može promijeniti jer definicija „lokalnog dana“ zavisi od položaja.</p>
+  <p>Kod događaja <strong>all-day</strong> razlika je još veća. Cjelodnevni civilni događaj obično traje od civilne ponoći do sljedeće ponoći; cjelodnevni pastafarijanski događaj treba trajati od lokalne granice pastafarijanskog dana do sljedeće takve granice. To obično nisu isti trenuci.</p>
+  <p>Zato slijepo izvoziti pastafarijanski događaj kao civilni događaj „cijelog dana“ može promijeniti njegovo značenje. Za tačno očuvanje treba sačuvati hronološko sidro i odgovarajući kontekst lokacije/granice dana, a ne samo oznaku <code>all-day</code>.</p><hr>
 </section>
+
 <section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
-<h2>Kada se mijenja dan?</h2>
-<p>Lokalni pastafarijanski dan ne mijenja se u ponoć. Granicu određuje <strong>topocentrični donji meridijanski prolaz središta Venere preko lokalnog meridijana</strong>.</p>
-<p>To je lokalni astronomski događaj: ne mora biti u 00:00, ne određuje ga građanska vremenska zona ni samo ljetno računanje vremena, a Venera ne mora biti vidljiva golim okom.</p>
-<p>Isti fizički trenutak na dvije lokacije može pasti na različite strane njihovih lokalnih granica. Ako nema upotrebljive lokacije korisnika, rezervna lokacija proizvoda je <strong>Kisurra</strong>.</p><hr>
+  <h2>Kada se dan mijenja?</h2>
+  <p>Lokalni pastafarijanski dan ne mijenja se u ponoć. Njegovu granicu određuje <strong>topocentrični donji meridijanski prolaz središta Venere preko lokalnog meridijana</strong>.</p>
+  <p>To je, dakle, lokalni astronomski događaj koji zavisi od položaja. Prolaz se ne mora dogoditi u 00:00, ne određuje ga civilna vremenska zona, ne pomjera se samo zato što počinje ili završava ljetno računanje vremena i ne zahtijeva da Venera bude vidljiva golim okom.</p>
+  <p>Isti fizički trenutak može na dvije lokacije biti na različitim stranama njihovih lokalnih granica dana. Ako sistem nema upotrebljivu lokaciju korisnika, zadana rezervna lokacija proizvoda je <strong>Kisurra</strong>.</p><hr>
 </section>
+
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
-<h2>Štampani kalendar i računanje rukom</h2>
-<p>Kalendar se može štampati ako se navede dan djelovanja za koji je izračunat. Kada se taj dan promijeni, možda treba novi primjerak.</p>
-<p>I ručni račun je moguć jer je specifikacija potpuna i deterministička: brojači, 7 skrivenih i 46 vidljivih kapi, šest zdjela, 12 završnih miješanja, odgovori, vrata, godine, kotleti, kombinatorni izbori, nazivi i preplitanje mjeseci.</p>
-<p>Zauzvrat ne morate pamtiti da februar nekad ima 28, a nekad 29 dana.</p><hr>
+  <h2>Štampani kalendar i ručni račun</h2>
+  <p>Pastafarijanski kalendar može se štampati; samo treba navesti za koji je dan djelovanja izračunat. Takav kalendar prikazuje strukturu vremena iz perspektive tog dana; kada se dan djelovanja promijeni, možda će trebati novi kalendar. Dakle, štampač ipak ostaje koristan.</p>
+  <p>Sve se može izračunati i ručno jer je specifikacija potpuna i deterministična: izračunajte ulazne brojače, provedite 7 skrivenih i 46 vidljivih kapi, ažurirajte šest zdjela, izvedite 12 završnih miješanja, proizvedite odgovore, izgradite vrata, izaberite godine i kotlete, izvršite kombinatorne izbore, odaberite nazive, a zatim isprepletite mjesece.</p>
+  <p>Zauzvrat ne morate pamtiti da februar ponekad ima 28, a ponekad 29 dana.</p><hr>
 </section>
+
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
-<h2>Šta je Seer?</h2>
-<p><strong>Pastafarian Calendar Seer</strong> je brzi engine uz kanonsku implementaciju. Nije izvor autoriteta: Megillah i kanonski račun određuju tačan datum; ako postoji neslaganje, Seer griješi.</p>
-<p>Tokom provjere ove stranice Seer je podržavao date/now, batch, range, reverse, strukturu godine, aktivni dan djelovanja, Node API, browser/HTTP klijent, CLI, HTTP v1 servis, OpenAPI 3.1, native implementacije, distribucijske pakete i provjeren container deployment.</p>
-<p>Stara tvrdnja da nema javni API više nije tačna: postoji stabilni HTTP v1 ugovor za date, range, batch, year, reverse, dan djelovanja, metadata, locales i status.</p>
-<p>21. septembra 2026. javni HTTPS deployment na Renderu testiran je s exact upitima, velikim rangeom, restartom, cold wakeom i opterećenjem. Dokumentacija ipak razlikuje beta/evaluation deployment od trajnog hosted production servisa sa SLA-om, pa server, hosting i verzija nisu dio same definicije kalendara.</p>
-<p>Seer smije koristiti prekomputaciju, posebne reprezentacije, SIMD, algebru i druge prečice, sve dok izvodi istu semantičku operaciju i daje isti odgovor. Optimizacija nije alternativni autoritet.</p><hr>
+  <h2>A šta je onda Seer?</h2>
+  <p>Uz kanonsku implementaciju postoji brz engine pod nazivom <strong>Pastafarian Calendar Seer</strong>. Seer nije izvor autoriteta: ispravan datum određuju Megillah i kanonski račun. Ako se Seer s njima ne slaže, Seer je taj koji griješi.</p>
+  <p>Njegov zadatak je izvršavati iste upite brzo i u obliku pogodnom za integraciju u proizvode.</p>
+  <p>U direktnoj provjeri obavljenoj tokom uređivanja ove stranice, Seer je, između ostalog, uključivao date i „now“ upite, batch, raspon dana, reverse conversion iz pastafarijanskog datuma u ciljni dan, dohvat strukture godine, određivanje aktivnog dana djelovanja, Node API, browser/HTTP klijent, CLI, HTTP v1 servis, OpenAPI 3.1 ugovor, native implementacije i distribucijske pakete, kao i verifikovan container deployment.</p>
+  <p>Stara tvrdnja da Seer nema javni API više nije tačna. Sada postoji eksplicitan i stabilan HTTP v1 ugovor s endpointima za date, range, batch, year, reverse, dan djelovanja, metadata, locales i status.</p>
+  <p>21. septembra 2026. stvarno je testiran javni HTTPS deployment na Renderu: exact upiti, veliki range, restart, cold wake i ponašanje pod opterećenjem provjereni su na živom servisu.</p>
+  <p>Projektna dokumentacija ipak i dalje razlikuje javni beta/evaluation deployment od trajnog hosted production servisa sa SLA-om. Zato konceptualna stranica objašnjenja ne treba zaključavati adresu servera, hosting provajdera ili broj verzije kao da su dio samog kalendara.</p>
+  <p>Seer smije koristiti precomputation, posebne reprezentacije, SIMD, algebru i druge prečice. Ne mora korak po korak imitirati cijelu historiju računanja kanonske implementacije sve dok izvršava istu semantičku operaciju i vraća isti odgovor.</p>
+  <p>Optimizacija nije alternativni autoritet.</p><hr>
 </section>
+
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
-<h2>Porijeklo, Dan utemeljenja i Dan ploča</h2>
-<p>Kanonska vremenska sidra treba odvojiti od priče stranice.</p>
-<section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
-<h3>Sidra</h3>
-<p><strong>Dan utemeljenja</strong> je fiksno računsko sidro: <strong>22. decembar 41,222. p. n. e.</strong> u proleptičkom gregorijanskom kalendaru. Nije “početak vremena”.</p>
-<p>Brojanje koristi pozitivne neparne/parne brojeve: Dan utemeljenja=1; naprijed 3, 5, …; unazad prethodni dan=2, pa 4, 6, … .</p>
-<p>Drugo sidro, <strong>Dan ploča</strong>, jeste <strong>15. juni 763. p. n. e. u proleptičkom julijanskom</strong>, odnosno <strong>7. juni 763. p. n. e. u proleptičkom gregorijanskom kalendaru</strong>.</p>
-<p>Tačna udaljenost je</p><pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre><p>dana.</p>
-<p>Sidra su fiksna, ali njihov prikazani pastafarijanski datum i dalje zavisi od dana djelovanja.</p>
+  <h2>Porijeklo, Dan utemeljenja i Dan ploča</h2>
+  <p>Ovdje je posebno važno jasno odvojiti kanonska vremenska sidra od priče stranice.</p>
+
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>Sidra</h3>
+    <p>Sistem ima jedan fiksni referentni dan pod nazivom <strong>Dan utemeljenja</strong>. U proleptičkom gregorijanskom kalendaru to je <strong>22. decembar 41,222. p. n. e.</strong></p>
+    <p>Dan utemeljenja nije „početak vremena“, nego računarsko sidro.</p>
+    <p>Numeracija dana oko njega koristi pozitivne neparne/parne brojeve: Dan utemeljenja=1; dani nakon njega=3, 5, …; prema prošlosti, prethodni dan=2, zatim 4, 6, … . Tako se obje strane sidra mogu kodirati bez negativnog broja dana u ovom brojaču.</p>
+    <p>Drugo sidro je <strong>Dan ploča</strong>: <strong>15. juni 763. p. n. e. u proleptičkom julijanskom kalendaru</strong>, odnosno <strong>7. juni 763. p. n. e. u proleptičkom gregorijanskom kalendaru</strong>.</p>
+    <p>Tačna udaljenost od Dana utemeljenja do Dana ploča iznosi</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
+    <p>dana.</p>
+    <p>To su fiksna sidra na vremenskoj osi, ali pastafarijanski datum prikazan za njih i dalje zavisi od dana djelovanja iz kojeg ih pitamo.</p>
+  </section>
+
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>Priča stranice</h3>
+    <p>U uredničkoj priči stranice kalendar se opisuje kao dio stvaranja i kao sistem koji je čovječanstvo koristilo bez pune svijesti o njemu sve dok nije ponovo predan u moderno doba.</p>
+    <p>To je priča stranice; ne treba svaki njen narativni detalj predstavljati kao eksplicitnu tehničku tvrdnju Megillah-e.</p>
+    <p>Sam događaj ponovne predaje fiksan je historijski događaj. Njegov <strong>pastafarijanski datum</strong> bolje je prikazivati dinamički pod trenutnim danom djelovanja nego zauvijek zamrznuti kao jedan jedini datum.</p><hr>
+  </section>
 </section>
-<section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
-<h3>Priča stranice</h3>
-<p>U uredničkoj priči kalendar je dio stvaranja i sistem koji je čovječanstvo koristilo bez pune svijesti dok nije ponovo predan u moderno doba. To je narativ stranice, ne nužno izričita tehnička tvrdnja Megillah.</p>
-<p>Sama ponovna predaja je fiksni historijski događaj; njen <strong>pastafarijanski datum</strong> bolje je prikazivati dinamički prema trenutnom danu djelovanja nego zauvijek zamrznuti.</p><hr>
-</section>
-</section>
+
 <section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
-<h2>Za napredne: obrnuta konverzija</h2>
-<p>Uz poznat <code>c</code>, unutar poznate godine par</p><pre class="math-block" dir="ltr" tabindex="0"><code>(\text{naziv kotleta},\text{dan u kotletu})</code></pre><p>određuje najviše jedan dan, kao i</p><pre class="math-block" dir="ltr" tabindex="0"><code>(\text{naziv mjeseca},\text{dan u mjesecu})</code></pre>
-<p>Zato puni datum i poznat dan djelovanja jednoznačno određuju ciljni dan.</p>
-<div class="about-table-scroll" role="region" tabindex="0" aria-label="Gornje granice kandidata pri obrnutoj konverziji"><table class="about-table"><thead><tr><th scope="col">Dodatno poznato</th><th scope="col">Najviše kandidata</th></tr></thead><tbody>
-<tr><td>Nijedno polje osim godine</td><td>5,778</td></tr><tr><td>Samo naziv kotleta</td><td>5,568</td></tr><tr><td>Samo dan u kotletu</td><td>17</td></tr><tr><td>Samo naziv mjeseca</td><td>123</td></tr><tr><td>Samo dan u mjesecu</td><td>47</td></tr><tr><td>Naziv kotleta + dan</td><td>1</td></tr><tr><td>Naziv mjeseca + dan</td><td>1</td></tr><tr><td>Bilo koja tri negodišnja polja</td><td>1</td></tr><tr><td>Sva četiri negodišnja polja</td><td>1</td></tr>
-</tbody></table></div>
-<p>Bez poznatog <code>c</code>, ista petorka može nastati pod različitim danima djelovanja i na različitim udaljenostima od njih. U godini 5000 čak ni predznak udaljenosti nije uvijek određen. Puni pastafarijanski datum zato nije apsolutna adresa bez konteksta <code>c</code>.</p>
-<section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
-<h3>Struktura u dalekom vremenu</h3>
-<p>Za <strong>fiksni dan djelovanja</strong> <code>c</code>, dovoljno daleko u prošloj asimptotskoj grani postoji afina periodičnost. Ako</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre><p>onda postoje <code>H_c</code> i <code>p_c</code> tako da, iza odgovarajućeg praga,</p>
-<pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
-<p>Četiri negodišnja polja se ponavljaju, a godina se mijenja za fiksnu vrijednost. To ne daje globalni zakon</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
-<p>i još je otvoreno razlikuje li se konačni asimptotski nagib između različitih dana djelovanja.</p><hr>
+  <h2>Za napredne korisnike: reverse conversion</h2>
+  <p>Kada je dan djelovanja <code>c</code> poznat, reverse conversion vrlo je snažno ograničen. Unutar poznate pastafarijanske godine,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{naziv kotleta},\text{dan u kotletu})</code></pre>
+  <p>identificira najviše jedan dan. Isto vrijedi za</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{naziv mjeseca},\text{dan u mjesecu})</code></pre>
+  <p>Zato puni datum s poznatim danom djelovanja jedinstveno identificira ciljni dan.</p>
+
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Gornje granice broja kandidata pri reverse conversion">
+    <table class="about-table">
+      <thead><tr><th scope="col">Dodatna poznata informacija</th><th scope="col">Najveći broj kandidata</th></tr></thead>
+      <tbody>
+        <tr><td>Nijedno polje osim godine</td><td>5,778</td></tr>
+        <tr><td>Samo naziv kotleta</td><td>5,568</td></tr>
+        <tr><td>Samo dan u kotletu</td><td>17</td></tr>
+        <tr><td>Samo naziv mjeseca</td><td>123</td></tr>
+        <tr><td>Samo dan u mjesecu</td><td>47</td></tr>
+        <tr><td>Naziv kotleta + dan u kotletu</td><td>1</td></tr>
+        <tr><td>Naziv mjeseca + dan u mjesecu</td><td>1</td></tr>
+        <tr><td>Bilo koja tri negodišnja polja</td><td>1</td></tr>
+        <tr><td>Sva četiri negodišnja polja</td><td>1</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Bez poznatog dana djelovanja situacija je drugačija. Isti skup od pet vrijednosti može se pojaviti pod različitim danima djelovanja, a postoje tačni primjeri u kojima se isti puni datum javlja na različitim udaljenostima od <code>c</code>.</p>
+  <p>U godini 5000 čak ni znak te udaljenosti nije uvijek određen tih pet vrijednosti: isti puni datum može u jednom kontekstu biti u prošlosti u odnosu na dan djelovanja, a u drugom u budućnosti.</p>
+  <p>Puni pastafarijanski datum zato nije apsolutna adresa na vremenskoj osi ako ne znamo pod kojim je <code>c</code> izračunat.</p>
+
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>Struktura u vrlo dalekom vremenu</h3>
+    <p>Matematičko istraživanje izvedeno iz specifikacije pronašlo je i tačnu asimptotsku strukturu. Za <strong>fiksni dan djelovanja</strong> <code>c</code>, dovoljno daleko u repu prošlosti pojavljuje se afina periodičnost.</p>
+    <p>Ako je</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>onda za isti <code>c</code> postoje pomak <code>H_c</code>, promjena godine <code>p_c</code> i dovoljno dalek prag takav da poslije njega vrijedi</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>Četiri negodišnja polja ponavljaju se, dok se broj godine mijenja za fiksnu količinu.</p>
+    <p>To je rezultat za fiksni <code>c</code>; iz njega ne slijedi globalna relacija</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>Pitanje razlikuju li se krajnji asimptotski nagibi zaista između različitih dana djelovanja i dalje je otvoreno.</p><hr>
+  </section>
 </section>
-</section>
+
 <section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
-<h2>Za napredne: koliko historije umak čuva?</h2>
-<p>Algebarska analiza pokazuje da umak čuva mnogo više informacija nego što izgled sugeriše; to je rezultat izveden iz specifikacije, ne novo pravilo kalendara.</p>
-<p>U vidljivim fazama 3–46 uspostavljena je generic injectivity na relevantnoj asimptotskoj grani. U prvih pet završnih miješanja nakon vidljive kapi 46 uspostavljena je generic invertibility na relevantnoj kanonskoj uniji bez dodatnih bočnih podataka; za ostala postoje snažne konstruktivne gornje granice potrebne bočne informacije.</p>
-<p>Ostaje otvoreno jesu li <strong>samo završnih šest zdjela</strong> generički uvijek dovoljne.</p>
-<p>Dio rezultata dokazan je simbolički, dio zatvoren konačnim tačnim aritmetičkim provjerama. Veliki prostori puteva svedeni su na manje konačne strukture, uključujući automate sa 180 i 9 stanja i simetrije šest zdjela.</p>
-<p>Ispod miješanja postoji čvrsta algebarska struktura, ali za današnji datum ne morate je poznavati.</p><hr>
+  <h2>Za napredne korisnike: koliko historije sos zadržava?</h2>
+  <p>Sos izgleda kao vrlo agresivan mehanizam miješanja, ali algebarska istraživanja pokazuju da zadržava mnogo više informacija nego što njegov izgled sugeriše. To je istraživački rezultat izveden iz specifikacije, a ne novo pravilo kalendara.</p>
+  <p>U vidljivim fazama 3–46, na relevantnoj asimptotskoj grani, ustanovljena je generic injectivity: u generičkom slučaju stanje zadržava dovoljno informacija da se rekonstruišu relevantna historija ulaza i redoslijed zdjela.</p>
+  <p>Informacije ne nestaju odmah ni u 12 završnih miješanja. Za prvih pet miješanja nakon vidljive kapi 46 ustanovljena je generic invertibility na relevantnoj kanonskoj uniji bez dodatnih pomoćnih informacija; za ostatak su poznate snažne konstruktivne gornje granice količine pomoćnih informacija dovoljne za rekonstrukciju.</p>
+  <p>I dalje je otvoreno pitanje da li je <strong>samo šest završnih zdjela</strong> uvijek dovoljno u generičkom smislu.</p>
+  <p>Neki rezultati dokazani su simbolički, a drugi zatvoreni konačnom i egzaktnom aritmetičkom provjerom. Simboličko ojačavanje snažno je smanjilo računarsko jezgro kojem treba vjerovati, ali ga nije potpuno uklonilo.</p>
+  <p>Prostori koji su u početku izgledali kao da zahtijevaju pretraživanje golemog broja puteva svedeni su na mnogo manje konačne strukture, uključujući automate sa 180 i 9 stanja te simetrije šest zdjela.</p>
+  <p>Ispod miješanja nalazi se kruta algebarska struktura. Ne morate je znati da biste saznali današnji datum.</p><hr>
 </section>
+
 <section class="about-section" id="summary" data-toc-section data-toc-level="2">
-<h2>Šta je, dakle, Pastafarijanski kalendar?</h2>
-<p>Deterministički kalendar u kojem datum nije funkcija ciljnog dana samog, nego <strong>dana djelovanja i pitanog dana zajedno</strong>.</p>
-<p>Datum ima tačno pet polja. Sadašnjost prema sebi uvijek je u godini 5000, ali sama godina 5000 se pomjera; godine mogu biti veoma duge, kotleti su neprekinuti, mjeseci ne moraju biti, a kanonskih sedmica nema.</p>
-<p>Dan <code>n+1</code> mjeseca ne mora biti sutra; isti hronološki dan sutra može imati drugi pastafarijanski prikaz; isti fizički trenutak može na dvije lokacije pripadati različitim lokalnim pastafarijanskim danima; all-day ne mora značiti ponoć–ponoć; godišnjica je prvo problem pretrage.</p>
-<p>Kada su <code>c</code> i <code>t</code> poznati, međutim, postoji tačno jedan ispravan odgovor.</p>
+  <h2>Šta je onda Pastafarijanski kalendar, zapravo?</h2>
+  <p>Deterministički kalendar u kojem datum nije funkcija samo ciljnog dana, nego <strong>dana djelovanja i upitanog dana zajedno</strong>.</p>
+  <p>Svaki datum ima tačno pet polja. Sadašnjost gledana iz vlastite perspektive uvijek je u godini 5000, ali sama godina 5000 pomjera se s danom djelovanja. Godine mogu biti vrlo duge, kotleti su neprekinuti, mjeseci to ne moraju biti, a kanonski sistem sedmica ne postoji.</p>
+  <p>Dan <code>n+1</code> nekog mjeseca ne mora biti sutra. Isti hronološki dan sutra može dobiti drugačiju pastafarijansku oznaku. Isti fizički trenutak na dvije lokacije može pripadati različitim lokalnim pastafarijanskim danima. Cjelodnevni događaj ne mora trajati od ponoći do ponoći. A godišnji rođendan prvo je problem pretrage, pa tek onda problem kalendara.</p>
+  <p>Ali kada su dan djelovanja i upitani dan poznati, nema dvosmislenosti: postoji tačno jedan ispravan odgovor.</p>
+  <p>Na kraju, kalendar i ne mora raditi više od toga.</p>
 </section>
