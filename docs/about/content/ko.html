@@ -1,0 +1,240 @@
+<!-- 한국어판은 히브리어 의미 원본에서 직접 작성했으며 영어를 피벗으로 삼지 않았다. -->
+<!-- 섹션 ID는 공개 딥링크 계약이므로 번역된 제목에서 만들지 않는다. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>이 사이트의 이야기에서는 파스타파리 달력을 시간이 창조된 달력으로 묘사한다. 하지만 그 계산 규칙 자체는 엄밀하게 정의되어 있다.</p>
+  <p>이 달력은 한 날에 하나의 고정된 “라벨”을 붙이지 않는다. 날짜를 알려면 두 날이 필요하다. 계산의 기준이 되는 <strong>작업일</strong>과, 날짜를 알고 싶은 <strong>조회일</strong>이다.</p>
+  <p>작업일을 <code>c</code>, 조회일을 <code>t</code>라 하면 날짜는</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>이지 <code>F(t)</code>가 아니다. 따라서 같은 조회일도 다른 작업일에서 계산하면 다른 파스타파리 날짜를 받을 수 있다.</p>
+  <p>오류가 아니다. 이 달력의 정의가 그렇다.</p><hr>
+</div>
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>파스타파리 날짜에는 무엇이 들어 있나?</h2>
+  <p>날짜는 <strong>정확히 다섯 부분</strong>으로 이루어진다. 연도 번호, 커틀릿 이름, 커틀릿 안의 날짜 번호, 월 이름, 월 안의 날짜 번호다.</p>
+  <p>일반적인 예를 들면 <strong>5000년, 커틀릿 A, 커틀릿의 417일째, 월 B, 그 달의 83일째</strong>와 같다.</p>
+  <p>작업일, 관측자 위치, 날의 시간축상 정체성이나 다른 기술 정보가 날짜 옆에 표시될 수는 있지만 여섯 번째 날짜 필드는 아니다.</p><hr>
+</section>
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>왜 작업일이 필요한가?</h2>
+  <p>보통 달력에서는 날짜가 그 날 자체에 “붙어 있다”고 생각하기 쉽다. 파스타파리 달력에서는 두 날 사이의 관계가 날짜를 결정한다.</p>
+  <p><code>t</code>를 바꾸는 것은 다른 날을 묻는 것이다. <code>c</code>를 바꾸는 일은 더 근본적이다. 연도의 경계, 커틀릿, 월, 그 이름과 월이 서로 짜이는 방식까지 질문이 놓인 달력 구조 자체가 달라질 수 있다.</p>
+  <p>따라서 오늘 계산한 역서가 내일도 맞는 역서라는 보장은 없다. 덕분에 인쇄 달력이 무려 일 년 내내 쓸모 있는 상태로 남는 불상사를 피할 수 있다.</p><hr>
+</section>
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>같은 날, 다른 날짜</h2>
+  <p><strong>날의 정체성</strong>과 <strong>파스타파리 표현</strong>은 다른 개념이다. 전자는 시간축 위에서 변하지 않는 위치이고, 후자는 특정 작업일 아래에서 그 날을 표시했을 때 얻는 다섯 값이다.</p>
+  <p>제품과 API에서 전자는 <code>day-id</code>라고 생각할 수 있다. 표시 방식을 바꾸어도 달라지지 않는 시간적 정체성이다. 반면</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre><p>와</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>는 같을 필요가 없다.</p>
+  <p>작업일을 수동으로 바꾸면 같은 날 자체는 시간축에 그대로 둔 채 화면에 보이는 날짜만 바꿀 수 있다.</p>
+  <p>회의, 출생, 역사적 사건에도 같은 원칙이 적용된다. 사건은 안정된 시간적 정체성에 고정하고, 파스타파리 날짜는 보는 맥락에 맞추어 다시 계산해 표시해야 한다.</p>
+  <p>라벨은 변할 수 있다. 사건은 변하지 않는다.</p><hr>
+</section>
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>5000년</h2>
+  <p>작업일과 조회일이 같은 날이면</p><pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>연도는 언제나</p><pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>이다. 즉 현재를 현재 자신에서 보면 늘 5000년이다. 그러나 5000년은 고정된 역사 시대가 아니라 작업일을 기준으로 매번 새로 선택되는 연도다.</p>
+  <p>작업일 자체가 5000년에 들어 있고, 같은 연도의 다른 날들도 5000년에 들어 있다. 그러므로 <strong>5000년이라는 사실은 <code>t=c</code>의 판정법이 아니다.</strong></p>
+  <p>연도 번호는 방향에 대해서는 정보를 준다:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre><p>그리고</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p><strong>0년</strong>도 존재하며, 그보다 더 과거에는 음수 연도가 있다.</p><hr>
+</section>
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>연도와 문</h2>
+  <p>파스타파리 연도의 길이는</p><pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ 에서 }5778</code></pre><p>일이다. 이는 실험에서 얻은 평균이 아니라 시스템의 정규 경계다.</p>
+  <p>따라서 태양년보다 짧은 해도, 태양년 열다섯 개보다 긴 해도 가능하다. 연도 경계는 <strong>문</strong> 체계로 만들고 커틀릿 경계도 같은 문 체계에서 가져온다.</p>
+  <p>연말은 계절, 지구의 공전, 달의 주기, 또는 이제 그만 한 해를 끝내고 싶다는 실용적 필요와 맞아야 할 이유가 없다.</p><hr>
+</section>
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>커틀릿</h2>
+  <p>각 연도는 <strong>6개에서 17개의 커틀릿</strong>으로 나뉜다. 커틀릿은 시간상 연속인 구간이다.</p>
+  <p>오늘이 커틀릿의 250일째라면, 오늘이 마지막 날이 아닌 한 내일은 같은 커틀릿의 251일째다. 커틀릿 경계는 문이며 길이는 최소</p><pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre><p>일이다.</p>
+  <p>정규 커틀릿 이름은 17개이고 한 연도 안에서는 같은 이름이 반복되지 않는다. 이름만으로 커틀릿의 길이나 순서가 정해지지 않는다.</p><hr>
+</section>
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>월과 짜임</h2>
+  <p>한 연도에는</p><pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ 에서 }47</code></pre><p>개의 구조적 월이 있고, 각 월에는</p><pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ 에서 }123</code></pre><p>일이 배정된다.</p>
+  <p>하지만 파스타파리 월은 <strong>시간상 연속 구간일 필요가 없다</strong>. 예를 들어 연대순이</p>
+  <blockquote><p>월 A — 14일째<br>월 B — 9일째<br>월 A — 15일째</p></blockquote>
+  <p>여도 정상이다. 월 A의 15일째는 <strong>그 월에서 다음 날</strong>이고, 그 사이에 다른 월의 하루가 끼어도 문제없다.</p>
+  <p>따라서 “월 안의 날짜 번호”는 그 월의 첫 출현 뒤로 지난 연속 일수를 뜻하지 않는다. 그 해에서 그 월에 속한 날의 순번이다. 48일째는 그 월에 배정된 48번째 날이라는 뜻이지 첫 출현 뒤 47일이 지났다는 뜻이 아니다.</p><hr>
+</section>
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>월은 서로 얽혀 있다</h2>
+  <p>월들을 한 해를 가로질러 짜이는 실처럼 생각할 수 있다. 모든 날은 정확히 한 월에 속하지만 내일은 다른 월일 수 있고, 그 뒤 첫 번째 월이 돌아와 다음 번호부터 이어질 수 있다.</p>
+  <p>짜임에는 규칙이 있다. 특히 각 월의 첫 출현과 마지막 출현 순서에 제약이 있다. 그러나 한 월이 끝난 뒤에야 다른 월이 시작해야 한다는 조건은 없다.</p>
+  <ul><li>커틀릿은 연속 시간 구간 안의 위치를 잰다.</li><li>월은 사라졌다가 다시 나타날 수 있는 구조적 실에 속하는지를 나타낸다.</li></ul>
+  <p>한 월이 여러 커틀릿을 지나갈 수 있고, 하나의 커틀릿 안에 여러 월이 나타날 수도 있다. 커틀릿의 시작·끝과 월의 시작·끝은 일치할 필요가 없다.</p><hr>
+</section>
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>월의 다음 날은 내일이 아닐 수도 있다</h2>
+  <p>오늘이 어떤 월의 17일째라면 그 월의 18일째는 <strong>그 월의 다음 출현</strong>이다. 내일일 수도 있고 훨씬 뒤일 수도 있다.</p>
+  <p><strong>내일</strong>은 시간축의 다음 날이고, <strong>월의 다음 날</strong>은 같은 월이 다음에 나타나는 때다.</p>
+  <p>“월말”도 시간상 가까움을 뜻하지 않는다. 120일짜리 월이 119일째까지 왔는데도 120일째가 연도 훨씬 뒤에 놓일 수 있다.</p><hr>
+</section>
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>주는 없다</h2>
+  <p>현재 정규 명세에는 <strong>주 체계가 정의되어 있지 않다</strong>. 정규 7일 상위 단위도, 파스타파리 요일명도, 두 날이 “같은 요일”이라고 정하는 규칙도 없다.</p>
+  <p>물론 외부에서 민간 주 체계를 덧씌울 수는 있다. 다만 파스타파리 날짜의 일부가 아닐 뿐이다.</p><hr>
+</section>
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>이름</h2>
+  <p>정규 커틀릿 이름은 17개, 정규 월 이름은 47개다. 한 연도 안에서 각 이름은 자기 계열에 최대 한 번만 나타난다.</p>
+  <p>이름의 정체성은 정규적이고 의미론적이다. 철자, 번역, 구현끼리 투표해서 정하는 것이 아니다. 이름의 의미에 관해서는 히브리어 Megillah가 최상위 권위이며 번역과 음역은 표시 층이다.</p>
+  <p>이름이 단위 길이를 숨겨 놓은 코드인 것도 아니다. 특정 커틀릿 이름이 더 긴 커틀릿을, 특정 월 이름이 더 짧은 월을 강제하는 규칙은 없다.</p><hr>
+</section>
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>월에 관한 작은 사실 하나</h2>
+  <p>월 이름은 47개이고 한 월은 최대 123일까지 있으므로 “월 이름 + 월 안의 날짜 번호”라는 문법적 조합은</p><pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre><p>개다.</p>
+  <p>연도의 각 날은 이 가운데 정확히 하나를 구현한다. 연도 길이가 <code>L</code>이면 정확히 <code>L</code>개의 조합이 나타난다. 그런데</p><pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>이므로 모든 연도에서 최소</p><pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre><p>개의 가능한 조합은 빠진다. 가장 긴 해도 전부 쓰기에는 날이 모자란다.</p><hr>
+</section>
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>계산은 어떻게 이루어지나?</h2>
+  <p>이 글에서는 내부 계산을 <strong>소스</strong>라고 부른다. 중심에는 소수</p><pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre><p>가 있다.</p>
+  <p>과정에는 다섯 입력 카운터, 7개의 숨은 방울, 46개의 드러난 방울, 6개의 그릇, 변하는 그릇 순서, 12번의 마지막 젓기, 서로 다른 답을 만드는 봉인, 조합적 선택 장치, 문 생성, 연도 선택, 커틀릿 분할, 이름 선택, 월 생성, 월 날짜 짜기가 포함된다.</p>
+  <p>마지막 업데이트는 <strong>동기식</strong>이다. 한 번 젓는 동안 6개의 새 그릇 값을 모두 같은 옛 상태에서 계산한 다음에야 여섯 값을 한꺼번에 교체한다.</p>
+  <p>12번의 마지막 젓기에는 특히 중요한 정규 세부사항이 있다. 여섯 옛 그릇의 합을 <code>S</code>, 젓기 번호를 <code>r</code>라 하면 시스템은</p><pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p>을 계산한다. <code>R</code>이 <strong>저장된 합</strong>이다. 그릇 순서를 고를 때도 내부 업데이트를 할 때도 원래 합 <code>S</code>가 아니라 <code>R</code>을 쓴다.</p>
+  <p>원래 합을 업데이트에 직접 넣던 오래된 버전은 현재 정규 의미론을 나타내지 않는다. 그 옛 규칙에서 나온 예시는 다시 검증되지 않았다면 낡은 것으로 취급해야 한다.</p>
+  <p>젓기가 끝난 뒤 답의 링도 드러난 46번째 방울에서 잠긴 순서를 계속 쓴다. 마지막 젓기의 순서로 자동 교체하면 안 된다.</p><hr>
+</section>
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice와 Wide Choice</h2>
+  <p>선택 공간이 비교적 작을 때는 <strong>Short Choice</strong>를 사용한다. 단순한 modulo 편향을 피하기 위해 <strong>거절 표본추출(rejection sampling)</strong>을 쓴다.</p>
+  <p>아주 큰 공간에서는 <strong>Wide Choice</strong>를 사용한다. 명세에 없는 성질을 있다고 가정해서는 안 된다.</p>
+  <p>Wide Choice는 독립적이고 균등한 밑 <code>Q</code> 자리수를 인덱스가 나올 때까지 만드는 것과 동치가 아니다. 따라서 모든 합법적 선택지가 반드시 똑같은 양의 확률을 갖는다고 결론낼 수 없다. 공간이 충분히 크면 이 특정 선택 메커니즘으로는 아예 도달할 수 없는 합법적 선택지도 있을 수 있다.</p>
+  <p>달력 자체는 완전히 결정론적이다. “Choice”는 알고리즘 단계의 이름이지 사용할 때마다 하는 추첨이 아니다.</p><hr>
+</section>
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>구조 아틀라스</h2>
+  <p>지금까지는 달력의 규칙이었다. 다음 수치는 다른 종류의 정보, 즉 큰 계산 표본에서 나온 <strong>경험적 결과</strong>다.</p>
+  <p>아틀라스는 engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code>으로 만들었고, 작업일 4,096개, 각 작업일의 4990–5010년, 연도 구조 86,016개, 커틀릿 625,437개, 구조적 월 3,535,422개, 연속 월 구간 3억5600만 개 이상, 같은 월의 <code>n</code>에서 <code>n+1</code>로 가는 전이 3억6400만 개 이상을 포함한다.</p>
+  <p>이는 그 코퍼스를 설명하는 수치이지 정규 법칙이 아니다.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="구조 아틀라스 측정값"><table class="about-table">
+    <thead><tr><th scope="col">측정량</th><th scope="col">표본 결과</th></tr></thead><tbody>
+      <tr><td>평균 연도 길이</td><td>4,275.182 일</td></tr><tr><td>연도 길이 중앙값</td><td>4,343</td></tr><tr><td>관측 최소 / 최대</td><td>716 / 5,778</td></tr>
+      <tr><td>연도당 평균 커틀릿 수</td><td>7.271</td></tr><tr><td>커틀릿이 정확히 6개인 연도</td><td>42.00%</td></tr><tr><td>커틀릿이 6–8개인 연도</td><td>81.29%</td></tr>
+      <tr><td>평균 커틀릿 길이</td><td>587.963 일</td></tr><tr><td>커틀릿 길이 중앙값</td><td>560</td></tr><tr><td>연도당 평균 월 수</td><td>41.102</td></tr>
+      <tr><td>월 수 중앙값</td><td>43</td></tr><tr><td>47개월인 연도</td><td>15.63%</td></tr><tr><td>45개월 이상인 연도</td><td>36.81%</td></tr>
+      <tr><td>평균 구조월 길이</td><td>104.014 일</td></tr><tr><td>월 길이 중앙값</td><td>115</td></tr><tr><td>월당 평균 연속 구간 수</td><td>100.897</td></tr>
+      <tr><td>하루짜리 월 구간 비율</td><td>97.482%</td></tr><tr><td>인접한 두 날이 같은 월일 확률</td><td>2.9976%</td></tr>
+      <tr><td>월의 <code>n</code>과 <code>n+1</code> 사이 평균 다른 월의 날 수</td><td>40.408</td></tr><tr><td>월의 첫 출현부터 마지막 출현까지 평균 범위</td><td>4,266.653 일</td></tr>
+    </tbody></table></div>
+  <p>실제로는 약 100일을 가진 월이 거의 한 파스타파리 연도 전체에 걸쳐 흩어질 수 있다.</p>
+  <p>같은 아틀라스에서는 5000년 주변에 자연스러운 길이 편향도 보였다. 표본의 “보통” 연도는 평균 약 4,262일, 포함한 일수로 연도를 가중하면 약 4,466일, 자기 5000년은 평균 약 4,499일이었다.</p>
+  <p>이유는 단순하다. 5000년은 작업일을 반드시 포함해야 한다. 긴 연도일수록 그 연도가 작업일을 포함하는 연도가 될 수 있는 날이 많다.</p>
+  <p>단위 이름과 길이의 관계도 표본에서는 매우 약했다. 완전한 수학적 독립성을 증명하는 것은 아니지만 이름이 길이를 부호화하도록 설계됐다는 실질적 신호도 없다.</p>
+  <p>또 86,016개 연도 구조가 86,016개의 완전 독립 표본인 것은 아니다. 서로 다른 시작-끝 문 구간은 24,786개뿐이었다. 이웃한 작업일들이 같은 연도 구간을 선택하면서 내부 구조는 다르게 만들 수도 있다.</p>
+  <p>따라서 아틀라스는 측정된 구현의 행동을 설명하는 데 훌륭하지만 가능한 모든 달력 세계의 확률 정리는 아니다.</p><hr>
+</section>
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>생일과 기념일</h2>
+  <p>“매년 같은 날”은 먼저 무엇을 반복할지 정의해야 한다. 자연스러운 구조 좌표로 <code>(월 이름, 월 안의 날짜)</code>와 <code>(커틀릿 이름, 커틀릿 안의 날짜)</code>가 있고 조건을 결합할 수도 있다.</p>
+  <p>따라서 파스타파리 생일은 단순히 <code>RRULE:FREQ=YEARLY</code>가 아니다. 선택한 재현 조건을 만족하는 다음 연도를 찾아야 하고 원래 사건 자체를 자동으로 자신의 “다음 출현”으로 세지 않는다.</p>
+  <p>표시 때문에 작업일을 바꾸어도 사람의 정체성, 출생 시각, 나이는 바뀌어서는 안 된다.</p>
+  <p>자기 날짜 4,096개를 정확히 스캔하여 앞뒤 각 방향으로 최대 250,000년까지 모든 연속 파스타파리 연도를 검사한 결과:</p>
+  <ul><li><code>(월 이름, 월 안의 날짜)</code> 재현의 중앙값은 1년이었다. 77.56%는 바로 인접한 연도, 93.77%는 2년 이내, 99.44%는 5년 이내였으며 관측 최대는 21년.</li>
+  <li><code>(커틀릿 이름, 커틀릿 안의 날짜)</code>는 중앙값 3년, 88.89%가 10년 이내였지만 분포 꼬리가 매우 무거웠고 관측 최대는 51,954 파스타파리 년이었다.</li></ul>
+  <p>이는 <strong>검사한 코퍼스의 경험적 결과</strong>이지 모든 가능한 기념일이 반드시 돌아온다는 증명도, 최대 대기시간 보장도 아니다.</p><hr>
+</section>
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>약속은 어떻게 잡나?</h2>
+  <p>두 사람이 파스타파리 날짜만으로 만남을 정하려면 최소한 다섯 값과 그 날짜를 계산한 작업일에 합의해야 한다. 작업일은 “오늘”이라는 말보다 안정된 날 정체성으로 저장하는 편이 낫다. 아니면 두 사람이 서로 다른 달력을 계산할 수 있다.</p>
+  <ul><li>“내일”은 시간축의 다음 날.</li><li>“월의 다음 날”은 그 월의 다음 출현.</li><li>“월말”은 그 월의 마지막 출현.</li><li>“한 달 전체”는 그 월에 속한 날들의 집합이나 첫 출현부터 마지막 출현까지의 전체 시간 범위 둘 다를 뜻할 수 있다.</li><li>“다음 해”는 선택한 작업일 아래에서 만든 달력의 다음 해다.</li></ul>
+  <p>특히 중요한 약속이라면 절대적인 시간축 날짜나 시각도 함께 저장할 수 있다. 달력은 그 때문에 망가지지 않는다.</p><hr>
+</section>
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>여행, 이벤트, all-day</h2>
+  <p>이벤트 자체와 그 이벤트에 붙여 표시하는 현지 라벨은 다르다. 시각이 정해진 이벤트는 안정된 시간적 순간에 고정해야 한다. 이동한다고 이벤트가 시간에서 움직이지는 않지만 “현지의 하루” 정의가 위치에 의존하므로 같은 순간의 현지 파스타파리 날짜는 바뀔 수 있다.</p>
+  <p><strong>all-day</strong> 이벤트에서는 차이가 더 크다. 민간 달력의 종일 이벤트는 보통 한 자정에서 다음 자정까지지만, 파스타파리 종일 이벤트는 현지 파스타파리 하루 경계에서 다음 경계까지여야 한다. 대개 같은 순간들이 아니다.</p>
+  <p>그러므로 파스타파리 이벤트를 민간 달력의 “종일”로 무조건 내보내면 의미가 바뀔 수 있다. 정확히 보존하려면 시간적 앵커와 알맞은 위치/하루 경계 맥락을 함께 저장해야지 <code>all-day</code> 체크 하나만 저장해서는 안 된다.</p><hr>
+</section>
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>하루는 언제 바뀌나?</h2>
+  <p>현지 파스타파리 하루는 자정에 바뀌지 않는다. 경계는 <strong>현지 자오선에서 금성 중심이 관측지 기준으로 만드는 하부 자오선 통과(topocentric lower meridian transit)</strong>로 정한다.</p>
+  <p>즉 위치에 의존하는 현지 천문 현상이다. 00:00일 필요가 없고, 민간 시간대가 정하지 않으며, 서머타임 시작·종료만으로 바뀌지 않고, 금성이 맨눈에 보여야 할 필요도 없다.</p>
+  <p>같은 물리적 순간이 두 장소에서 각각의 현지 하루 경계 서로 다른 쪽에 놓일 수 있다. 시스템에 쓸 만한 사용자 위치가 없으면 제품의 기본 위치는 <strong>키수라(Kisurra)</strong>다.</p><hr>
+</section>
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>인쇄 달력과 손계산</h2>
+  <p>파스타파리 달력도 인쇄할 수 있다. 어느 작업일을 기준으로 한 것인지 표시하면 된다. 그 달력은 해당 작업일의 관점에서 시간 구조를 보여 주며, 작업일이 바뀌면 새 달력이 필요할 수 있다. 프린터의 역할은 여전히 남는다.</p>
+  <p>명세는 완전하고 결정론적이므로 전부 손으로 계산하는 것도 가능하다. 입력 카운터를 계산하고, 7개의 숨은 방울과 46개의 드러난 방울, 여섯 그릇 업데이트, 12번 최종 젓기, 답 생성, 문 구축, 연도와 커틀릿 선택, 조합 선택, 이름 선택, 월 짜기를 모두 수행하면 된다.</p>
+  <p>대신 2월이 어떤 해에는 28일, 어떤 해에는 29일이라는 사실을 외울 필요가 없다.</p><hr>
+</section>
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>Seer는 무엇인가?</h2>
+  <p>정규 구현 옆에는 <strong>Pastafarian Calendar Seer</strong>라는 빠른 엔진이 있다. Seer는 권위의 원천이 아니다. 올바른 날짜를 정하는 것은 Megillah와 정규 계산이며, 서로 다르면 틀린 쪽은 Seer다.</p>
+  <p>목적은 같은 질의를 빠르고 제품에 통합하기 쉬운 방식으로 처리하는 것이다.</p>
+  <p>이 페이지를 편집하면서 실시한 라이브 검증 당시 Seer에는 날짜 조회, “현재” 계산, batch, 날짜 범위, 파스타파리 날짜에서 목표일로의 reverse 변환, 연도 구조 조회, 활성 작업일 해석, Node API, 브라우저/HTTP 클라이언트, CLI, HTTP v1 서비스, OpenAPI 3.1 계약, native 구현과 배포 패키지, 검증된 container 배포 등이 있었다.</p>
+  <p>따라서 “Seer에는 공개 API가 없다”는 옛 설명은 더 이상 맞지 않는다. date, range, batch, year, reverse, 작업일, metadata, locales, status endpoint를 가진 명시적이고 안정적인 HTTP v1 계약이 존재한다.</p>
+  <p>2026년 9월 21일에는 Render의 공개 HTTPS 배포도 실제로 시험했다. exact 질의, 큰 range, restart, cold wake, 부하 상황 동작을 살아 있는 서비스에서 확인했다.</p>
+  <p>다만 프로젝트 문서는 현재의 공개 beta/evaluation 배포와 SLA가 붙은 영구 hosted production 서비스 선언을 구분한다. 따라서 개념 설명 페이지가 서버 주소, 호스팅 사업자, 버전 번호를 달력 자체의 교리처럼 고정해서는 안 된다.</p>
+  <p>Seer는 사전 계산, 특수 표현, SIMD, 대수와 다른 지름길을 사용해도 된다. 정규 구현의 계산 역사를 한 단계씩 재연할 필요는 없고, 같은 의미론적 연산을 수행해 같은 답을 내면 된다.</p>
+  <p>최적화는 별개의 권위가 아니다.</p><hr>
+</section>
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>기원, 창건일, 서판의 날</h2>
+  <p>여기서는 정규 시간 앵커와 사이트의 이야기를 분명히 나누어야 한다.</p>
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>앵커</h3>
+    <p>시스템에는 <strong>창건일</strong>이라는 고정 기준일이 있다. 전향적 그레고리력으로 <strong>기원전 41,222년 12월 22일</strong>이다.</p>
+    <p>창건일은 “시간의 시작”이 아니라 계산용 앵커다.</p>
+    <p>그 주변의 날 번호는 양의 홀수/짝수 방식으로 부호화한다. 창건일=1, 그 다음 날들은 3, 5, …; 과거 쪽으로는 직전 날=2, 그 전=4, 그 다음=6, … . 이 카운터에서는 음수 날짜 번호 없이 앵커 양쪽을 표현한다.</p>
+    <p>다른 앵커는 <strong>서판의 날</strong>이다. <strong>전향적 율리우스력 기원전 763년 6월 15일</strong>, 즉 <strong>전향적 그레고리력 기원전 763년 6월 7일</strong>이다.</p>
+    <p>창건일에서 서판의 날까지 정확한 거리는</p><pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre><p>일이다.</p>
+    <p>둘 다 시간축의 고정 앵커다. 그러나 화면에 표시되는 파스타파리 날짜는 여전히 어느 작업일에서 묻느냐에 따라 달라진다.</p>
+  </section>
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>사이트의 이야기</h3>
+    <p>사이트의 편집 서사에서는 이 달력을 창조의 일부이자, 인류가 충분히 의식하지 못한 채 사용하다가 현대에 다시 전달받은 체계로 설명한다.</p>
+    <p>이는 사이트의 이야기다. 그 모든 서사적 세부를 Megillah에 명시된 기술 명제로 취급해서는 안 된다.</p>
+    <p>재전달 사건 자체는 고정된 역사적 사건이다. 사이트에서는 그 사건의 <strong>파스타파리 날짜</strong>를 하나로 영구 고정하기보다 현재 작업일에 따라 동적으로 표시하는 편이 적절하다.</p><hr>
+  </section>
+</section>
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>고급: 역변환</h2>
+  <p>작업일 <code>c</code>가 알려져 있으면 역변환 제약은 매우 강하다. 알려진 파스타파리 연도 안에서</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{커틀릿 이름},\text{커틀릿 안의 날})</code></pre>
+  <p>은 최대 한 날만 가리킨다. 마찬가지로</p><pre class="math-block" dir="ltr" tabindex="0"><code>(\text{월 이름},\text{월 안의 날})</code></pre><p>도 최대 한 날이다. 따라서 작업일이 알려져 있으면 완전한 날짜는 목표일을 유일하게 식별한다.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="역변환 후보 수의 상한"><table class="about-table">
+    <thead><tr><th scope="col">추가로 알려진 정보</th><th scope="col">최대 후보 수</th></tr></thead><tbody>
+      <tr><td>연도 외 필드 없음</td><td>5,778</td></tr><tr><td>커틀릿 이름만</td><td>5,568</td></tr><tr><td>커틀릿 안의 날만</td><td>17</td></tr>
+      <tr><td>월 이름만</td><td>123</td></tr><tr><td>월 안의 날만</td><td>47</td></tr><tr><td>커틀릿 이름 + 커틀릿 안의 날</td><td>1</td></tr>
+      <tr><td>월 이름 + 월 안의 날</td><td>1</td></tr><tr><td>연도 외 필드 임의의 세 개</td><td>1</td></tr><tr><td>연도 외 네 필드 전부</td><td>1</td></tr>
+    </tbody></table></div>
+  <p>작업일이 알려져 있지 않으면 사정이 다르다. 같은 다섯 값이 서로 다른 작업일 아래에서 나타날 수 있고, 같은 완전 날짜가 <code>c</code>에서 서로 다른 거리에서 나타나는 정확한 예도 있다.</p>
+  <p>5000년에서는 그 거리의 부호조차 다섯 값만으로 항상 정해지지 않는다. 같은 완전 날짜가 한 맥락에서는 작업일의 과거, 다른 맥락에서는 미래에 있을 수 있다.</p>
+  <p>따라서 어느 <code>c</code>로 계산했는지 모르면 완전한 파스타파리 날짜도 시간축의 절대 주소가 아니다.</p>
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>먼 시간대의 구조</h3>
+    <p>명세에서 유도한 수학 연구는 정확한 점근 구조도 찾아냈다. <strong>고정된 작업일</strong> <code>c</code>에 대해 과거 꼬리로 충분히 멀리 가면 아핀 주기성이 나타난다.</p>
+    <p>만약</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>라면 그 <code>c</code>에 대해 이동량 <code>H_c</code>, 연도 변화량 <code>p_c</code>, 충분히 먼 임계값이 존재하여 그 이후에는</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>가 성립한다. 연도 외 네 필드는 반복되고 연도 번호만 일정한 양만큼 변한다.</p>
+    <p>이는 고정 <code>c</code>에 대한 정리이며, 전역적인</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>관계를 뜻하지 않는다. 최종 점근 기울기가 서로 다른 작업일 사이에서 실제로 달라지는지는 아직 열린 문제다.</p><hr>
+  </section>
+</section>
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>고급: 소스는 과거를 얼마나 보존하나?</h2>
+  <p>소스는 겉으로 보면 매우 강하게 섞는 장치처럼 보이지만, 대수 연구에서는 겉모습보다 훨씬 많은 정보가 남는다는 결과가 나왔다. 이는 명세에서 유도한 연구 결과이지 새 달력 규칙은 아니다.</p>
+  <p>드러난 단계 3–46에서는 관련 점근 분기에서 일반적 단사성(generic injectivity)이 확립되었다. 일반적 경우 상태에는 관련 입력과 그릇 순서의 역사를 재구성할 만큼 정보가 남는다.</p>
+  <p>12번의 마지막 젓기에서도 정보가 즉시 사라지지 않는다. 드러난 46번째 방울 뒤 첫 다섯 번의 젓기는 관련 정규 합집합에서 추가 부가 정보 없이도 일반적으로 가역적이라는 것이 확립되었다. 나머지 젓기에 대해서도 재구성에 충분한 부가 정보량의 강한 구성적 상한이 알려져 있다.</p>
+  <p><strong>최종 여섯 그릇만</strong>으로 언제나 일반적으로 충분한지는 아직 열린 문제다.</p>
+  <p>일부 결과는 기호적으로 증명했고, 일부는 유한하고 정확한 산술 검사로 닫았다. 기호적 강화가 신뢰해야 할 계산 핵심을 크게 줄였지만 완전히 없애지는 못했다.</p>
+  <p>처음에는 엄청난 경로를 훑어야 할 듯했던 공간이 훨씬 작은 유한 구조로 축소되었는데, 여기에는 180상태 및 9상태 오토마톤과 여섯 그릇의 대칭성이 포함된다.</p>
+  <p>혼합 아래에는 단단한 대수 구조가 있다. 오늘 날짜를 알려고 이 사실까지 알 필요는 없다.</p><hr>
+</section>
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>결국 파스타파리 달력이란 무엇인가?</h2>
+  <p>날짜가 목표일 하나의 함수가 아니라 <strong>작업일과 조회일 둘의 함수</strong>인 결정론적 달력이다.</p>
+  <p>모든 날짜는 정확히 다섯 필드다. 현재를 그 자체에서 보면 언제나 5000년이지만 5000년 자체가 작업일과 함께 움직인다. 연도는 매우 길어질 수 있고, 커틀릿은 연속이며, 월은 연속일 필요가 없고, 정규 주 체계는 없다.</p>
+  <p>월의 <code>n+1</code>일째가 내일일 필요는 없다. 같은 시간축상 날이 내일은 다른 파스타파리 라벨을 받을 수도 있다. 같은 물리적 순간이 서로 다른 두 장소에서는 각기 다른 현지 파스타파리 날에 들어갈 수도 있다. 종일 이벤트는 자정부터 자정까지일 필요가 없다. 매년 돌아오는 생일은 일정 문제가 되기 전에 검색 문제다.</p>
+  <p>그래도 작업일과 조회일이 주어지면 애매함은 없다. 정확한 답은 하나뿐이다.</p>
+  <p>달력이 결국 해야 할 일은 그것이면 충분하다.</p>
+</section>

@@ -1,0 +1,240 @@
+<!-- Suomenkielinen versio on laadittu suoraan hepreankielisestä semanttisesta lähteestä, ei välikielen kautta. -->
+<!-- Osioiden ID:t ovat pysyvä julkinen syvälinkkisopimus, eivätkä ne synny käännetyistä otsikoista. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>Sivuston kertomuksessa pastafarikalenteri esitetään kalenterina, jossa aika luotiin. Sen mekaniikka on kuitenkin määritelty täsmällisesti.</p>
+  <p>Kalenteri ei liitä jokaiseen päivään yhtä pysyvää pastafarietikettiä. Päivämäärän laskemiseen tarvitaan kaksi päivää: <strong>työpäivä</strong>, josta laskenta lähtee, ja <strong>kysytty päivä</strong>, jonka päivämäärä halutaan tietää.</p>
+  <p>Kun työpäivää merkitään <code>c</code>:llä ja kysyttyä päivää <code>t</code>:llä, päivämäärä on</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>eikä <code>F(t)</code>. Sama kysytty päivä voi siis saada toisen pastafaripäivämäärän, jos työpäivä vaihtuu.</p>
+  <p>Se ei ole virhe. Se on tämän kalenterin ominaisuus.</p><hr>
+</div>
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>Mistä pastafaripäivämäärä koostuu?</h2>
+  <p>Siinä on <strong>täsmälleen viisi osaa</strong>: vuosiluku, leikkeen nimi, päivä leikkeessä, kuukauden nimi ja päivä kuukaudessa.</p>
+  <p>Yleinen esimerkki: <strong>vuosi 5000, leike A, leikkeen päivä 417, kuukausi B, kuukauden päivä 83.</strong></p>
+  <p>Työpäivä, havaitsijan sijainti, päivän kronologinen identiteetti tai muut tekniset tiedot voidaan näyttää päivämäärän vieressä, mutta ne eivät muodosta kuudetta kenttää.</p><hr>
+</section>
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>Miksi työpäivää tarvitaan?</h2>
+  <p>Tavallisissa kalentereissa päivämäärän ajatellaan helposti kuuluvan itse päivälle. Pastafarikalenterissa päivämäärä riippuu kahden päivän suhteesta.</p>
+  <p>Kun <code>t</code> muuttuu, kysytään toisesta päivästä. Kun <code>c</code> muuttuu, muutos voi olla syvempi: vuosien rajat, leikkeet, kuukaudet, niiden nimet ja kuukausien lomittuminen voivat kaikki muuttua.</p>
+  <p>Siksi tänään laskettu almanakka ei välttämättä ole oikea huomenna. Näin vältetään ikävä tilanne, jossa painettu kalenteri pysyisi käyttökelpoisena kokonaisen vuoden.</p><hr>
+</section>
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>Sama päivä, eri päivämäärä</h2>
+  <p><strong>Päivän identiteetti</strong> ja sen <strong>pastafariesitys</strong> ovat eri asioita. Ensimmäinen on päivän pysyvä paikka aikajanalla; toinen on viiden kentän esitys, joka saadaan näyttämällä päivä tietyn työpäivän alaisessa kalenterissa.</p>
+  <p>Tuotteessa ja API:ssa ensimmäistä voidaan ajatella tunnisteena <code>day-id</code>: se ei muutu esitystapaa vaihtamalla. Sen sijaan</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre><p>ja</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>eivät välttämättä ole samat.</p>
+  <p>Työpäivän käsin vaihtaminen voi siis muuttaa saman päivän näytettyä päivämäärää siirtämättä itse päivää aikajanalla.</p>
+  <p>Sama koskee tapahtumia: tapaaminen, syntymä tai historiallinen tapahtuma kannattaa ankkuroida pysyvään kronologiseen identiteettiin, ja sen pastafaripäivämäärä voidaan muodostaa uudelleen katselukontekstin mukaan.</p>
+  <p>Etiketti voi vaihtua. Tapahtuma ei.</p><hr>
+</section>
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>Vuosi 5000</h2>
+  <p>Kun työpäivä ja kysytty päivä ovat sama päivä,</p><pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>vuosiluku on aina</p><pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>Nykyhetki omasta näkökulmastaan on siis aina vuodessa 5000. Vuosi 5000 ei kuitenkaan ole kiinteä historiallinen ajanjakso, vaan se valitaan uudelleen suhteessa työpäivään.</p>
+  <p>Työpäivä itse kuuluu vuoteen 5000, samoin muut saman vuoden päivät. Siksi <strong>vuosiluku 5000 ei tarkoita, että <code>t=c</code>.</strong></p>
+  <p>Vuosiluvusta saa kuitenkin suunnan:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre><p>ja</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p>Myös <strong>vuosi 0</strong> on olemassa; sitä kauempana menneisyydessä vuosiluvut ovat negatiivisia.</p><hr>
+</section>
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>Vuodet ja portit</h2>
+  <p>Pastafarivuoden pituus voi olla</p><pre class="math-block" dir="ltr" tabindex="0"><code>252\text{–}5778</code></pre><p>päivää. Nämä ovat järjestelmän kanoniset rajat, eivät kokeellisia keskiarvoja.</p>
+  <p>Vuosi voi siis olla aurinkovuotta lyhyempi tai yli viidentoista aurinkovuoden mittainen. Vuosirajat rakennetaan <strong>porteista</strong>, ja myös leikkeiden rajat tulevat samasta porttijärjestelmästä.</p>
+  <p>Vuoden lopun ei tarvitse osua vuodenaikaan, Maan kierrokseen Auringon ympäri, kuunkiertoon tai mihinkään käytännön tarpeeseen saada vuosi jo päätökseen.</p><hr>
+</section>
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>Leikkeet</h2>
+  <p>Jokainen vuosi jakautuu <strong>6–17 leikkeeseen</strong>. Leike on kronologisesti yhtenäinen jakso.</p>
+  <p>Jos tänään on leikkeen päivä 250, huomenna on saman leikkeen päivä 251, ellei tämä ole leikkeen viimeinen päivä. Leikkeiden rajat ovat portteja, ja leikkeen vähimmäispituus on</p><pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre><p>päivää.</p>
+  <p>Kanonisia leikenimiä on 17, eikä sama nimi toistu saman vuoden aikana. Nimi ei määrää pituutta eikä sijaintia.</p><hr>
+</section>
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>Kuukaudet ja lomitus</h2>
+  <p>Vuodessa on</p><pre class="math-block" dir="ltr" tabindex="0"><code>3\text{–}47</code></pre><p>rakenteellista kuukautta, ja kuhunkin kuukauteen kuuluu</p><pre class="math-block" dir="ltr" tabindex="0"><code>4\text{–}123</code></pre><p>päivää.</p>
+  <p>Pastafarikuukausi ei kuitenkaan <strong>välttämättä ole yhtenäinen aikajakso</strong>. Kronologinen järjestys voi olla esimerkiksi:</p>
+  <blockquote><p>kuukausi A — päivä 14<br>kuukausi B — päivä 9<br>kuukausi A — päivä 15</p></blockquote>
+  <p>Tämä on täysin kelvollinen rakenne. Kuukauden A päivä 15 on <strong>sen kuukauden seuraava päivä</strong>, vaikka välissä olisi ollut toisen kuukauden päivä.</p>
+  <p>“Päivä kuukaudessa” ei siis tarkoita ensimmäisestä esiintymästä kuluneita kronologisia päiviä, vaan sitä, monesko kyseiseen kuukauteen kuuluva päivä on kyseessä. Päivä 48 tarkoittaa kuukauteen kuuluvaa 48. päivää, ei 47 vuorokautta ensimmäisen esiintymän jälkeen.</p><hr>
+</section>
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>Kuukaudet punoutuvat toistensa lomaan</h2>
+  <p>Kuukausia voi ajatella vuoden läpi kulkevina lankoina. Jokainen päivä kuuluu täsmälleen yhteen kuukauteen; huominen voi kuulua toiseen, ja myöhemmin ensimmäinen kuukausi voi palata jatkamaan seuraavasta numerostaan.</p>
+  <p>Lomitus ei ole säännötöntä. Esimerkiksi kuukausien ensimmäisten ja viimeisten esiintymien järjestykselle on rajoitteita. Silti yhden kuukauden ei tarvitse päättyä ennen toisen alkamista.</p>
+  <ul><li>Leike mittaa sijaintia yhtenäisessä aikajaksossa.</li><li>Kuukausi mittaa kuulumista rakenteelliseen lankaan, joka voi kadota ja palata.</li></ul>
+  <p>Yksi kuukausi voi ylittää useita leikkeitä, ja yhdessä leikkeessä voi esiintyä monta kuukautta. Leikkeiden ja kuukausien alkujen tai loppujen ei tarvitse osua yhteen.</p><hr>
+</section>
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>Kuukauden seuraava päivä ei välttämättä ole huominen</h2>
+  <p>Jos tänään on tietyn kuukauden päivä 17, saman kuukauden päivä 18 on <strong>sen kuukauden seuraava esiintymä</strong>. Se voi olla huomenna tai paljon myöhemmin.</p>
+  <p><strong>Huominen</strong> tarkoittaa seuraavaa kronologista päivää; <strong>kuukauden seuraava päivä</strong> saman kuukauden seuraavaa esiintymää.</p>
+  <p>Samoin “kuukauden loppu” ei tarkoita, että kronologinen loppu olisi lähellä. 120-päiväinen kuukausi voi olla päivässä 119, vaikka päivä 120 sijaitsisi kaukana loppuvuodessa.</p><hr>
+</section>
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>Viikkoja ei ole</h2>
+  <p>Nykyinen kanoninen määrittely <strong>ei määrittele viikkojärjestelmää</strong>. Ei ole kanonista seitsemän päivän ylempää yksikköä, pastafariviikonpäivien nimiä eikä sääntöä, jonka mukaan kaksi päivää olisivat “sama viikonpäivä”.</p>
+  <p>Siviiliviikon voi tietenkin liittää kalenteriin ulkopuolelta; se ei vain kuulu pastafaripäivämäärään.</p><hr>
+</section>
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>Nimet</h2>
+  <p>Kanonisia leikenimiä on 17 ja kuukausinimiä 47. Saman vuoden sisällä kukin nimi esiintyy omassa ryhmässään korkeintaan kerran.</p>
+  <p>Nimen identiteetti on kanoninen ja semanttinen, ei äänestystulos eri kirjoitusasujen, käännösten tai toteutusten välillä. Nimen merkityksessä hepreankielinen Megillah on ylin auktoriteetti; käännös ja translitterointi ovat esitystasoja.</p>
+  <p>Nimi ei myöskään ole pituuden piilokoodi. Mikään nimi ei yksin pakota leikettä pidemmäksi tai kuukautta lyhyemmäksi.</p><hr>
+</section>
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>Pieni tosiasia kuukausista</h2>
+  <p>Kuukausinimiä on 47, ja kuukausi voi yltää päivään 123. Siksi syntaktisesti mahdollisia “kuukauden nimi + päivä kuukaudessa” -pareja on</p><pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>Jokainen vuoden päivä toteuttaa täsmälleen yhden parin. Jos vuoden pituus on <code>L</code>, esiintyy täsmälleen <code>L</code> paria. Mutta</p><pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>joten joka vuodesta puuttuu ainakin</p><pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre><p>mahdollista paria. Edes pisimmässä vuodessa ei ole tarpeeksi päiviä kaikkiin.</p><hr>
+</section>
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>Miten kalenteri lasketaan?</h2>
+  <p>Sisäistä laskentaa kutsutaan tässä <strong>kastikkeeksi</strong>. Sen ytimessä on alkuluku</p><pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>Prosessiin kuuluu viisi syöttölaskuria, 7 piilopisaraa, 46 näkyvää pisaraa, 6 kulhoa, vaihtuvia kulhojärjestyksiä, 12 lopullista sekoitusta, eri vastauksia tuottavia sinettejä, kombinatorisia valintoja, porttien muodostus, vuosien valinta, leikkeiden ositus, nimien valinta, kuukausien muodostus ja kuukausipäivien lomitus.</p>
+  <p>Lopulliset päivitykset ovat <strong>samanaikaisia</strong>: jokaisessa sekoituksessa kaikki kuusi uutta kulhoarvoa lasketaan samasta vanhasta tilasta, ja vasta sitten kaikki kuusi korvataan yhdessä.</p>
+  <p>12 lopullisessa sekoituksessa on erityisen tärkeä kanoninen yksityiskohta. Jos <code>S</code> on kuuden vanhan kulhon summa ja <code>r</code> sekoituksen numero, lasketaan</p><pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p><code>R</code> on <strong>tallennettu summa</strong>. Sekä kulhojärjestyksen valinta että sekoituksen sisäinen päivitys käyttävät <code>R</code>:ää, eivät raakaa summaa <code>S</code>.</p>
+  <p>Vanhemmat versiot, jotka syöttivät raakasumman päivitykseen, eivät kuvaa nykyistä kanonista semantiikkaa. Niihin perustuvat esimerkit ovat vanhentuneita, ellei niitä ole tarkistettu uudelleen.</p>
+  <p>Sekoitusten jälkeen vastausrengas jatkaa myös näkyvän pisaran 46 kohdalla lukitussa järjestyksessä; sitä ei saa huomaamatta vaihtaa viimeisen sekoituksen järjestykseen.</p><hr>
+</section>
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice ja Wide Choice</h2>
+  <p>Kun vaihtoehtoavaruus on suhteellisen pieni, käytetään <strong>Short Choice</strong> -menetelmää. Se käyttää hylkäysotantaa (rejection sampling) yksinkertaisen modulo-harhan välttämiseksi.</p>
+  <p>Hyvin suuret avaruudet käyttävät <strong>Wide Choice</strong> -menetelmää. Sille ei pidä olettaa ominaisuuksia, joita määrittely ei takaa.</p>
+  <p>Wide Choice ei vastaa riippumattomien, tasaisesti jakautuneiden kantaluvun <code>Q</code> numeroiden tuottamista, kunnes saadaan indeksi. Siksi ei seuraa, että jokaisella sallitulla vaihtoehdolla olisi välttämättä sama positiivinen todennäköisyys. Riittävän suurissa avaruuksissa voi olla sallittuja vaihtoehtoja, joihin tämä valintamekanismi ei lainkaan yllä.</p>
+  <p>Kalenteri itse on täysin deterministinen. “Choice” on algoritmivaiheen nimi, ei käytön aikana suoritettava arvonta.</p><hr>
+</section>
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>Rakenteellinen atlas</h2>
+  <p>Tähän asti käsiteltiin kalenterin sääntöjä. Seuraavat luvut ovat toisenlaista tietoa: suuren laskennallisen otoksen <strong>empiirisiä tuloksia</strong>.</p>
+  <p>Atlas rakennettiin moottorin commitilla <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code>. Se sisälsi 4,096 työpäivää, vuodet 4990–5010 jokaiselle työpäivälle, 86,016 vuosirakennetta, 625,437 leikettä, 3,535,422 rakenteellista kuukautta, yli 356 miljoonaa yhtenäistä kuukausijaksoa ja yli 364 miljoonaa siirtymää saman kuukauden päivästä <code>n</code> päivään <code>n+1</code>.</p>
+  <p>Nämä kuvaavat kyseistä aineistoa, eivät kanonista lakia.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Rakenteellisen atlaksen mittaustiedot"><table class="about-table">
+    <thead><tr><th scope="col">Mitattu suure</th><th scope="col">Tulos otoksessa</th></tr></thead><tbody>
+      <tr><td>Vuoden keskipituus</td><td>4,275.182 päivää</td></tr><tr><td>Vuoden pituuden mediaani</td><td>4,343</td></tr><tr><td>Havaittu minimi / maksimi</td><td>716 / 5,778</td></tr>
+      <tr><td>Leikkeitä keskimäärin vuodessa</td><td>7.271</td></tr><tr><td>Vuodet, joissa täsmälleen 6 leikettä</td><td>42.00%</td></tr><tr><td>Vuodet, joissa 6–8 leikettä</td><td>81.29%</td></tr>
+      <tr><td>Leikkeen keskipituus</td><td>587.963 päivää</td></tr><tr><td>Leikkeen pituuden mediaani</td><td>560</td></tr><tr><td>Kuukausia keskimäärin vuodessa</td><td>41.102</td></tr>
+      <tr><td>Kuukausimäärän mediaani</td><td>43</td></tr><tr><td>47 kuukauden vuodet</td><td>15.63%</td></tr><tr><td>Vähintään 45 kuukauden vuodet</td><td>36.81%</td></tr>
+      <tr><td>Rakenteellisen kuukauden keskipituus</td><td>104.014 päivää</td></tr><tr><td>Kuukauden pituuden mediaani</td><td>115</td></tr><tr><td>Yhtenäisiä jaksoja keskimäärin kuukaudessa</td><td>100.897</td></tr>
+      <tr><td>Yhden päivän kuukausijaksojen osuus</td><td>97.482%</td></tr><tr><td>Todennäköisyys, että vierekkäiset päivät ovat samassa kuukaudessa</td><td>2.9976%</td></tr>
+      <tr><td>Muiden kuukausien päiviä keskimäärin <code>n</code>:n ja <code>n+1</code>:n välissä</td><td>40.408</td></tr><tr><td>Keskimääräinen väli kuukauden ensimmäisestä viimeiseen esiintymään</td><td>4,266.653 päivää</td></tr>
+    </tbody></table></div>
+  <p>Käytännössä noin sadan päivän kuukausi voi levitä lähes koko pastafarivuoden mittaiselle ajalle.</p>
+  <p>Sama atlas osoitti luonnollisen pituusharhan vuoden 5000 ympärillä. Otoksen “tavallinen” vuosi oli keskimäärin noin 4,262 päivää. Kun vuosia painotettiin niiden sisältämien päivien määrällä, keskiarvo nousi noin 4,466 päivään; itseä sisältävä vuosi 5000 oli keskimäärin noin 4,499 päivää.</p>
+  <p>Syy on yksinkertainen: vuoden 5000 täytyy sisältää työpäivä. Pitkä vuosi tarjoaa enemmän päiviä, joina se voi olla juuri työpäivän sisältävä vuosi.</p>
+  <p>Myös yksikön nimen ja pituuden yhteys oli otoksessa hyvin heikko. Tämä ei todista täydellistä matemaattista riippumattomuutta, mutta atlas ei anna käytännön merkkiä siitä, että nimien olisi tarkoitus koodata pituutta.</p>
+  <p>Lisäksi 86,016 vuosirakennetta eivät ole 86,016 täysin riippumatonta otosta: niissä oli vain 24,786 erilaista alku- ja loppuportin väliä. Vierekkäiset työpäivät voivat valita saman vuosivälin ja silti tuottaa eri sisärakenteen.</p>
+  <p>Atlas kuvaa mitattua toteutusta hyvin, mutta sitä ei pidä muuttaa todennäköisyysteoreemaksi kaikista mahdollisista kalenterirakenteista.</p><hr>
+</section>
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>Syntymäpäivät ja vuosipäivät</h2>
+  <p>Ilmaus “sama päivä joka vuosi” vaatii tässä ensin määritelmän. Luontevia toistokoordinaatteja ovat <code>(kuukauden nimi, päivä kuukaudessa)</code> ja <code>(leikkeen nimi, päivä leikkeessä)</code>; ehtoja voi myös yhdistää.</p>
+  <p>Pastafarisyntymäpäivä ei siksi ole yksinkertaisesti <code>RRULE:FREQ=YEARLY</code>. On etsittävä seuraava vuosi, joka täyttää valitun toistoehdon, eikä alkuperäistä tapahtumaa lasketa automaattisesti omaksi “seuraavaksi esiintymäkseen”.</p>
+  <p>Työpäivän vaihtaminen näyttämistä varten ei saa muuttaa henkilön identiteettiä, syntymähetkeä tai ikää.</p>
+  <p>Tarkassa 4,096 itse-päivämäärän läpikäynnissä jokainen peräkkäinen pastafarivuosi tarkistettiin kumpaankin suuntaan enintään 250,000 vuoden päähän:</p>
+  <ul><li><code>(kuukauden nimi, päivä kuukaudessa)</code>: ensimmäisen toiston mediaani 1 pastafarivuosi; 77.56% viereisessä vuodessa, 93.77% kahden vuoden sisällä, 99.44% viiden sisällä; havaittu maksimi 21 vuotta.</li>
+  <li><code>(leikkeen nimi, päivä leikkeessä)</code>: mediaani 3 vuotta; 88.89% löytyi 10 vuoden sisällä, mutta jakaumalla oli hyvin raskas häntä; havaittu maksimi 51,954 pastafarivuotta.</li></ul>
+  <p>Nämä ovat <strong>tutkitun aineiston empiirisiä tuloksia</strong>, eivät todiste siitä, että jokainen mahdollinen vuosipäivä palaa, eivätkä takuu enimmäisodotusajasta.</p><hr>
+</section>
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>Miten tapaaminen sovitaan?</h2>
+  <p>Jos kaksi ihmistä sopii tapaamisen pelkällä pastafaripäivämäärällä, heidän on sovittava ainakin viiden kentän päivämäärästä ja sen laskennassa käytetystä työpäivästä. Työpäivä kannattaa tallentaa pysyvänä päivän identiteettinä eikä sanana “tänään”, muuten osapuolet voivat laskea eri kalenterin.</p>
+  <ul><li>“huominen” on seuraava kronologinen päivä;</li><li>“seuraava päivä kuukaudessa” on saman kuukauden seuraava esiintymä;</li><li>“kuukauden loppu” on sen viimeinen esiintymä;</li><li>“koko kuukausi” voi tarkoittaa kuukauden päivien joukkoa tai koko kronologista väliä ensimmäisestä viimeiseen esiintymään;</li><li>“seuraava vuosi” tarkoittaa valitun työpäivän alaisessa kalenterissa seuraavaa vuotta.</li></ul>
+  <p>Erittäin tärkeää tapaamista varten voidaan lisäksi tallentaa absoluuttinen kronologinen päivä tai hetki. Kalenteri kestää sen kyllä.</p><hr>
+</section>
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>Matkustaminen, tapahtumat ja all-day</h2>
+  <p>Tapahtuma ja sille paikallisesti näytetty etiketti eivät ole sama asia. Ajastettu tapahtuma pitää ankkuroida pysyvään kronologiseen hetkeen. Matkustaminen ei siirrä tapahtumaa ajassa, mutta sama hetki voi saada eri paikallisen pastafaripäivämäärän, koska “paikallinen päivä” riippuu sijainnista.</p>
+  <p><strong>all-day</strong>-tapahtumassa ero on vielä suurempi. Siviilikalenterin koko päivän tapahtuma kestää yleensä siviilikeskiyöstä seuraavaan. Pastafarin koko päivän tapahtuman pitäisi kestää paikalliselta pastafaripäivän rajalta seuraavalle. Nämä eivät yleensä ole samat hetket.</p>
+  <p>Pastafaritapahtuman sokea vienti siviilikalenterin “koko päivän tapahtumaksi” voi siis muuttaa sen merkitystä. Tarkkaan säilyttämiseen tarvitaan kronologinen ankkuri sekä oikea sijainti-/päivärajakonteksti, ei vain <code>all-day</code>-valintaa.</p><hr>
+</section>
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>Milloin päivä vaihtuu?</h2>
+  <p>Paikallinen pastafaripäivä ei vaihdu keskiyöllä. Raja määritellään <strong>Venuksen keskuksen topokeskisen alemman meridiaanikulun mukaan paikallisella meridiaanilla</strong>.</p>
+  <p>Kyse on siis paikallisesta ja sijainnista riippuvasta tähtitieteellisestä tapahtumasta. Vaihdon ei tarvitse tapahtua klo 00.00, siviiliaikavyöhyke ei sitä määrää, kesäajan alkaminen tai päättyminen ei yksin siirrä sitä, eikä Venuksen tarvitse näkyä paljain silmin.</p>
+  <p>Sama fysikaalinen hetki voi kahdessa paikassa osua paikallisen päivän rajan eri puolille. Jos järjestelmällä ei ole käyttökelpoista käyttäjän sijaintia, tuotteen oletussijainti on <strong>Kisurra</strong>.</p><hr>
+</section>
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>Painettu kalenteri ja käsinlasku</h2>
+  <p>Pastafarikalenterin voi painaa, kunhan ilmoitetaan, minkä työpäivän suhteen se on laskettu. Se näyttää ajan rakenteen tuon päivän näkökulmasta, ja työpäivän vaihtuessa uusi kalenteri voi olla tarpeen. Tulostimelle jää siis tehtävää.</p>
+  <p>Kaiken voi laskea myös käsin, koska määrittely on täydellinen ja deterministinen: laske syöttölaskurit, suorita 7 piilopisaraa ja 46 näkyvää pisaraa, päivitä kuusi kulhoa, suorita 12 lopullista sekoitusta, muodosta vastaukset, rakenna portit, valitse vuodet ja leikkeet, tee kombinatoriset valinnat, valitse nimet ja puno kuukaudet.</p>
+  <p>Vastineeksi ei tarvitse muistaa, että helmikuussa on joskus 28 ja joskus 29 päivää.</p><hr>
+</section>
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>Entä Seer?</h2>
+  <p>Kanonisen toteutuksen rinnalla on nopea moottori nimeltä <strong>Pastafarian Calendar Seer</strong>. Seer ei ole auktoriteetin lähde. Oikean päivämäärän määräävät Megillah ja kanoninen laskenta; jos Seer on niiden kanssa eri mieltä, Seer on väärässä.</p>
+  <p>Sen tehtävä on vastata samoihin kyselyihin nopeasti ja tuotteisiin helposti liitettävässä muodossa.</p>
+  <p>Tämän sivun muokkauksen yhteydessä tehdyssä reaaliaikaisessa tarkistuksessa Seer sisälsi muun muassa päivämäärä- ja “nyt”-kyselyt, batch-kyselyt, päiväalueet, käänteisen muunnoksen pastafaripäivämäärästä kohdepäiväksi, vuosirakenteen noudon, aktiivisen työpäivän ratkaisun, Node API:n, selain-/HTTP-asiakkaan, CLI:n, HTTP v1 -palvelun, OpenAPI 3.1 -sopimuksen, native-toteutuksia ja jakelupaketteja sekä varmennetun container-julkaisun.</p>
+  <p>Vanha väite, ettei Seerillä ole julkista API:a, ei siis enää pidä paikkaansa. Sillä on nimenomainen ja vakaa HTTP v1 -sopimus, jossa on endpointit päivämäärälle, alueelle, batchille, vuodelle, reverse-haulle, työpäivälle, metadatalle, localeille ja statukselle.</p>
+  <p>21. syyskuuta 2026 Renderissä oleva julkinen HTTPS-julkaisu testattiin käytännössä: exact-kyselyt, suuri alue, restart, cold wake ja kuormituskäyttäytyminen tarkistettiin elävässä palvelussa.</p>
+  <p>Projektin dokumentaatio erottaa silti julkisen beta/evaluation-julkaisun pysyvästä hosted production -palvelusta, jolla olisi SLA. Siksi periaatesivu ei saa jäädyttää palvelinosoitetta, hosting-palvelua tai versionumeroa osaksi kalenterin oppia.</p>
+  <p>Seer saa käyttää esilaskentaa, erikoisesityksiä, SIMD:tä, algebraa ja muita oikoteitä. Sen ei tarvitse toistaa kanonisen toteutuksen laskentahistoriaa askel askeleelta, kunhan se toteuttaa saman semanttisen operaation ja palauttaa saman vastauksen.</p>
+  <p>Optimointi ei ole vaihtoehtoinen auktoriteetti.</p><hr>
+</section>
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>Alkuperä, Perustamispäivä ja Taulujen päivä</h2>
+  <p>Tässä on pidettävä erillään kanoniset ankkurit ja sivuston kertomus.</p>
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>Ankkurit</h3>
+    <p>Järjestelmällä on kiinteä vertailupäivä, <strong>Perustamispäivä</strong>. Proleptisessa gregoriaanisessa kalenterissa se on <strong>22. joulukuuta 41,222 eaa.</strong></p>
+    <p>Perustamispäivä ei ole “ajan alku”, vaan laskennallinen ankkuri.</p>
+    <p>Päivät sen ympärillä koodataan positiivisilla parittomilla ja parillisilla luvuilla: Perustamispäivä=1; seuraavat päivät 3, 5, …; menneisyyteen päin edellinen päivä=2, sitä edellinen=4, sitten 6, … . Näin ankkurin molemmat puolet esitetään ilman negatiivisia päivänumeroita tässä laskurissa.</p>
+    <p>Toinen ankkuri on <strong>Taulujen päivä</strong>: <strong>15. kesäkuuta 763 eaa. proleptisessa juliaanisessa kalenterissa</strong>, eli <strong>7. kesäkuuta 763 eaa. proleptisessa gregoriaanisessa kalenterissa</strong>.</p>
+    <p>Tarkka etäisyys Perustamispäivästä Taulujen päivään on</p><pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre><p>päivää.</p>
+    <p>Nämä ovat kiinteitä ankkureita aikajanalla. Niille näytettävä pastafaripäivämäärä riippuu silti siitä työpäivästä, jonka alla niitä kysytään.</p>
+  </section>
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>Sivuston kertomus</h3>
+    <p>Sivuston toimituksellisessa kertomuksessa kalenteri esitetään osana luomista ja järjestelmänä, jota ihmiskunta käytti ymmärtämättä sitä riittävästi, kunnes se annettiin uudelleen nykyaikana.</p>
+    <p>Tämä on sivuston kertomus; jokaista tarinallista yksityiskohtaa ei pidä esittää Megillahin nimenomaisena teknisenä väitteenä.</p>
+    <p>Uudelleenannon tapahtuma itsessään on kiinteä historiallinen tapahtuma. Sen <strong>pastafaripäivämäärä</strong> kannattaa sivustolla näyttää dynaamisesti nykyisen työpäivän mukaan sen sijaan, että vierelle jäädytettäisiin yksi ikuinen pastafaripäivämäärä.</p><hr>
+  </section>
+</section>
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>Edistyneet: käänteinen muunnos</h2>
+  <p>Kun työpäivä <code>c</code> tunnetaan, käänteinen muunnos on hyvin vahva. Tunnetun pastafarivuoden sisällä</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{leikkeen nimi},\text{päivä leikkeessä})</code></pre>
+  <p>tunnistaa korkeintaan yhden päivän. Samoin</p><pre class="math-block" dir="ltr" tabindex="0"><code>(\text{kuukauden nimi},\text{päivä kuukaudessa})</code></pre><p>tunnistaa korkeintaan yhden. Täydellinen päivämäärä ja tunnettu työpäivä määräävät siis kohdepäivän yksikäsitteisesti.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Käänteisen muunnoksen ehdokasmäärien ylärajat"><table class="about-table">
+    <thead><tr><th scope="col">Lisäksi tunnettu tieto</th><th scope="col">Ehdokkaita enintään</th></tr></thead><tbody>
+      <tr><td>Ei yhtään ei-vuosikenttää</td><td>5,778</td></tr><tr><td>Vain leikkeen nimi</td><td>5,568</td></tr><tr><td>Vain päivä leikkeessä</td><td>17</td></tr>
+      <tr><td>Vain kuukauden nimi</td><td>123</td></tr><tr><td>Vain päivä kuukaudessa</td><td>47</td></tr><tr><td>Leikkeen nimi + päivä leikkeessä</td><td>1</td></tr>
+      <tr><td>Kuukauden nimi + päivä kuukaudessa</td><td>1</td></tr><tr><td>Mitkä tahansa kolme ei-vuosikenttää</td><td>1</td></tr><tr><td>Kaikki neljä ei-vuosikenttää</td><td>1</td></tr>
+    </tbody></table></div>
+  <p>Ilman tunnettua työpäivää tilanne muuttuu. Sama viiden kentän päivämäärä voi esiintyä eri työpäivien alla, ja on olemassa täsmällisiä esimerkkejä, joissa sama täydellinen päivämäärä sijaitsee eri etäisyyksillä <code>c</code>:stä.</p>
+  <p>Vuodessa 5000 edes etäisyyden etumerkki ei aina määräydy viisikosta: sama täydellinen päivämäärä voi yhdessä kontekstissa olla työpäivän menneisyydessä ja toisessa tulevaisuudessa.</p>
+  <p>Täydellinen pastafaripäivämäärä ei siis ole absoluuttinen osoite aikajanalla, ellei tiedetä millä <code>c</code>:llä se laskettiin.</p>
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>Rakenne kaukaisessa ajassa</h3>
+    <p>Määrittelystä johdettu matematiikka on löytänyt myös tarkan asymptoottisen rakenteen. <strong>Kiinteälle työpäivälle</strong> <code>c</code> riittävän kaukana menneisyyden hännässä vallitsee affiini jaksollisuus.</p>
+    <p>Jos</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>niin tälle samalle <code>c</code>:lle on olemassa siirtymä <code>H_c</code>, vuosimuutos <code>p_c</code> ja riittävän etäinen kynnys siten, että kynnyksen jälkeen</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>Neljä ei-vuosikenttää toistuu, kun taas vuosiluku muuttuu vakiosummalla.</p>
+    <p>Tämä on kiinteää <code>c</code>:tä koskeva tulos. Se ei osoita globaalia suhdetta</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>. On edelleen avoin kysymys, vaihteleeko lopullinen asymptoottinen kulmakerroin todella eri työpäivien välillä.</p><hr>
+  </section>
+</section>
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>Edistyneet: kuinka paljon historiaa kastike säilyttää?</h2>
+  <p>Kastike näyttää hyvin aggressiiviselta sekoittimelta, mutta algebrallinen tutkimus on osoittanut sen säilyttävän paljon enemmän tietoa kuin ulkoinen vaikutelma antaa ymmärtää. Tämä on määrittelystä johdettua tutkimusta, ei uusi kalenterisääntö.</p>
+  <p>Näkyvissä vaiheissa 3–46 on relevantilla asymptoottisella haaralla osoitettu geneerinen injektiivisuus: yleisessä tapauksessa tila säilyttää riittävästi tietoa syötteiden ja kulhojärjestysten olennaisen historian rekonstruointiin.</p>
+  <p>Myöskään 12 lopullisessa sekoituksessa tieto ei katoa heti. Näkyvän pisaran 46 jälkeisissä viidessä ensimmäisessä sekoituksessa geneerinen kääntyvyys on osoitettu relevantilla kanonisella unionilla ilman ylimääräistä sivutietoa. Loppusekoituksille tunnetaan vahvat konstruktiiviset ylärajat riittävän sivutiedon määrälle.</p>
+  <p>On yhä avoinna, riittävätkö <strong>kuusi lopullista kulhoa yksinään</strong> aina geneerisessä tapauksessa.</p>
+  <p>Osa tuloksista on symbolisia todistuksia, osa on suljettu täsmällisillä äärellisillä aritmeettisilla tarkistuksilla. Symbolinen vahvistus pienensi luotettavaksi oletettavaa laskennallista ydintä huomattavasti, mutta ei poistanut sitä kokonaan.</p>
+  <p>Yksi yllätyksistä oli, että aluksi valtavilta näyttäneet polkuavaruudet kutistuivat paljon pienemmiksi äärellisiksi rakenteiksi, kuten 180- ja 9-tilaisiksi automaateiksi sekä kuuden kulhon symmetrioiksi.</p>
+  <p>Sekoituksen alla on siis jäykkä algebrallinen rakenne. Tämän päivän päivämäärän selvittämiseen sitä ei tarvitse tuntea.</p><hr>
+</section>
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>Mikä pastafarikalenteri siis on?</h2>
+  <p>Deterministinen kalenteri, jossa päivämäärä ei riipu vain kohdepäivästä vaan <strong>työpäivästä ja kysytystä päivästä yhdessä</strong>.</p>
+  <p>Jokaisessa päivämäärässä on täsmälleen viisi kenttää. Nykyhetki on omasta näkökulmastaan aina vuodessa 5000, mutta itse vuosi 5000 liikkuu työpäivän mukana. Vuodet voivat olla hyvin pitkiä, leikkeet ovat yhtenäisiä, kuukaudet eivät välttämättä ole, eikä kanonista viikkojärjestelmää ole.</p>
+  <p>Kuukauden päivä <code>n+1</code> ei välttämättä ole huominen. Sama kronologinen päivä voi huomenna saada toisen pastafarietiketin. Sama fysikaalinen hetki voi kahdessa paikassa kuulua eri paikallisiin pastafaripäiviin. Koko päivän tapahtuman ei tarvitse kestää keskiyöstä keskiyöhön. Ja vuosittainen syntymäpäivä on hakutehtävä ennen kuin se on kalenterimerkintä.</p>
+  <p>Kun työpäivä ja kysytty päivä kuitenkin tunnetaan, epäselvyyttä ei ole: oikeita vastauksia on täsmälleen yksi.</p>
+  <p>Lopulta kalenterilta ei tarvita enempää.</p>
+</section>
