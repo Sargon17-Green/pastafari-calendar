@@ -17,7 +17,7 @@ import {
   loadLocale,
   messageTemplate,
   translate,
-} from "./i18n/registry.js?v=19-about-page";
+} from "./i18n/registry.js?v=20-about-i18n";
 import {
   KISURRA_OBSERVER,
   requestObserverLocation,
@@ -25,14 +25,14 @@ import {
   watchObserverPermission,
 } from "./observer-location.js?v=10-venus-day-boundary";
 import { currentDayAt } from "./venus-day-boundary.js?v=10-venus-day-boundary";
-import { createReverseSearchUi } from "./reverse-ui.js?v=20-about-page";
+import { createReverseSearchUi } from "./reverse-ui.js?v=21-about-i18n";
 import {
   applyDocumentLocale,
   persistLanguage,
   populateLanguageSelector,
   resolveBrowserLocale,
   urlWithLanguage,
-} from "./i18n/runtime.js?v=19-about-page";
+} from "./i18n/runtime.js?v=20-about-i18n";
 
 
 const ASSET_REVISION = "9-worker-api-sync";
