@@ -1,0 +1,263 @@
+<!-- Slovenská verzia vznikla priamo z hebrejského sémantického zdroja, nie cez sprostredkujúci preklad. -->
+<!-- ID sekcií sú stabilným verejným deep-link kontraktom a nevytvárajú sa z preložených nadpisov. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>V príbehu stránky je pastafariánsky kalendár kalendárom, v ktorom bol stvorený čas. Jeho mechanika je však definovaná presne.</p>
+  <p>Nepriraďuje každému dňu jednu nemennú pastafariánsku „nálepku“. Na zistenie dátumu potrebujeme dva dni: <strong>deň činnosti</strong>, od ktorého sa počíta, a <strong>opytovaný deň</strong>, ktorého dátum chceme poznať.</p>
+  <p>Ak označíme deň činnosti ako <code>c</code> a opytovaný deň ako <code>t</code>, dátum je</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>nie <code>F(t)</code>. Ten istý opytovaný deň preto môže mať pri inom dni činnosti iný pastafariánsky dátum.</p>
+  <p>Nie je to chyba. Taký je tento kalendár.</p><hr>
+</div>
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>Z čoho sa skladá pastafariánsky dátum?</h2>
+  <p>Má <strong>presne päť častí</strong>: číslo roka, názov rezňa, deň v rezni, názov mesiaca a deň v mesiaci.</p>
+  <p>Všeobecný príklad: <strong>rok 5000, rezeň A, deň 417 v rezni, mesiac B, deň 83 v mesiaci.</strong></p>
+  <p>Deň činnosti, poloha pozorovateľa, chronologická identita dňa alebo iné technické údaje sa môžu zobraziť vedľa dátumu, ale netvoria šieste pole.</p><hr>
+</section>
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>Načo potrebujeme deň činnosti?</h2>
+  <p>Pri bežných kalendároch máme sklon myslieť si, že dátum „patrí“ samotnému dňu. V pastafariánskom kalendári závisí od vzťahu medzi dvoma dňami.</p>
+  <p>Zmena <code>t</code> znamená otázku na iný deň. Zmena <code>c</code> môže zasiahnuť hlbšie: môžu sa zmeniť hranice rokov, rezne, mesiace, ich názvy aj spôsob, akým sa mesiace medzi sebou prepletajú.</p>
+  <p>Almanach vypočítaný dnes teda nemusí byť správny zajtra. Vyhneme sa tak nepríjemnej predstave, že tlačený kalendár by zostal užitočný celý rok.</p><hr>
+</section>
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>Ten istý deň, iný dátum</h2>
+  <p>Treba odlíšiť <strong>identitu dňa</strong> od jeho <strong>pastafariánskeho zobrazenia</strong>. Prvá je stabilná poloha konkrétneho dňa na časovej osi; druhé je päť údajov získaných pri zobrazení tohto dňa pod určitým dňom činnosti.</p>
+  <p>V produkte a API možno prvé chápať ako <code>day-id</code>: chronologickú identitu, ktorú zmena zobrazenia nemení. Naproti tomu</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre><p>a</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>nemusia byť rovnaké.</p>
+  <p>Ručná zmena dňa činnosti teda môže zmeniť zobrazený dátum toho istého dňa bez toho, aby sa samotný deň na časovej osi pohol.</p>
+  <p>To isté platí pre udalosti. Stretnutie, narodenie alebo historická udalosť majú zostať ukotvené v stabilnej chronologickej identite; ich pastafariánsky dátum sa môže prepočítať podľa kontextu zobrazenia.</p>
+  <p>Nálepka sa môže zmeniť. Udalosť nie.</p><hr>
+</section>
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>Rok 5000</h2>
+  <p>Keď je deň činnosti zároveň opytovaným dňom,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>rok je vždy</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>Prítomnosť voči sebe samej je teda vždy v roku 5000. Rok 5000 však nie je pevné historické obdobie; zakaždým sa vyberie nanovo vzhľadom na deň činnosti.</p>
+  <p>Samotný deň činnosti leží v roku 5000 a rovnako aj ďalšie dni toho istého vybraného roka. <strong>Rok 5000 preto sám osebe neznamená, že <code>t=c</code>.</strong></p>
+  <p>Číslo roka však určuje smer:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre><p>a</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p>Existuje aj <strong>rok 0</strong>; ďalej do minulosti sú roky so zápornými číslami.</p><hr>
+</section>
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>Roky a brány</h2>
+  <p>Pastafariánsky rok môže mať</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ až }5778</code></pre>
+  <p>dní. Sú to kanonické hranice systému, nie experimentálne priemery.</p>
+  <p>Rok môže byť kratší než slnečný rok alebo dlhší než pätnásť slnečných rokov. Hranice rokov vznikajú zo systému <strong>brán</strong>; z toho istého systému pochádzajú aj hranice rezňov.</p>
+  <p>Koniec roka nemusí zodpovedať ročnému obdobiu, obehu Zeme okolo Slnka, lunárnemu cyklu ani praktickej potrebe už rok konečne ukončiť.</p><hr>
+</section>
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>Rezne</h2>
+  <p>Každý rok sa delí na <strong>6 až 17 rezňov</strong>. Rezeň je chronologicky súvislý úsek.</p>
+  <p>Ak je dnes deň 250 v rezni, zajtra je deň 251 toho istého rezňa, pokiaľ dnešok nie je jeho posledný deň. Hranice rezňov sú brány a rezeň má najmenej</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
+  <p>dní.</p>
+  <p>Systém má 17 kanonických názvov rezňov a v jednom roku sa názov neopakuje. Názov neurčuje dĺžku ani polohu.</p><hr>
+</section>
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>Mesiace a prepletanie</h2>
+  <p>Každý rok obsahuje</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ až }47</code></pre>
+  <p>štrukturálnych mesiacov a každému mesiacu je priradených</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ až }123</code></pre>
+  <p>dní.</p>
+  <p>Pastafariánsky mesiac však <strong>nemusí byť súvislý časový úsek</strong>. Chronologické poradie môže vyzerať napríklad takto:</p>
+  <blockquote><p>mesiac A — deň 14<br>mesiac B — deň 9<br>mesiac A — deň 15</p></blockquote>
+  <p>Je to úplne platná štruktúra. Deň 15 mesiaca A je nasledujúci deň <strong>toho mesiaca</strong>, hoci medzi nimi bol deň iného mesiaca.</p>
+  <p>„Deň v mesiaci“ teda nevyjadruje počet chronologických dní od prvého výskytu mesiaca, ale poradové číslo dňa priradeného tomuto mesiacu v rámci roka. Deň 48 znamená 48. deň patriaci tomuto mesiacu, nie 47 dní po jeho prvom výskyte.</p><hr>
+</section>
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>Mesiace sú navzájom poprepletané</h2>
+  <p>Mesiace si možno predstaviť ako nite prechádzajúce rokom. Každý deň patrí práve jednému mesiacu; zajtra môže patriť inému a neskôr sa prvý mesiac môže vrátiť a pokračovať ďalším číslom.</p>
+  <p>Prepletanie má pravidlá, vrátane obmedzení poradia prvého a posledného výskytu mesiacov. Neplatí však podmienka, že jeden mesiac musí skončiť skôr, než začne ďalší.</p>
+  <ul><li>Rezeň meria polohu v súvislom časovom úseku.</li><li>Mesiac vyjadruje príslušnosť k štrukturálnej niti, ktorá môže zmiznúť a neskôr sa vrátiť.</li></ul>
+  <p>Jeden mesiac môže prechádzať viacerými rezňami a jeden rezeň môže obsahovať výskyty mnohých mesiacov. Začiatky ani konce týchto dvoch systémov sa nemusia zhodovať.</p><hr>
+</section>
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>Nasledujúci deň mesiaca nemusí byť zajtra</h2>
+  <p>Ak je dnes deň 17 určitého mesiaca, deň 18 toho istého mesiaca je <strong>nasledujúci výskyt tohto mesiaca</strong>. Môže byť zajtra alebo omnoho neskôr.</p>
+  <p><strong>Zajtra</strong> je nasledujúci chronologický deň; <strong>nasledujúci deň mesiaca</strong> je najbližší ďalší výskyt toho istého mesiaca.</p>
+  <p>Ani „koniec mesiaca“ nemusí byť chronologicky blízko. Mesiac so 120 dňami môže byť práve na dni 119, no deň 120 môže ležať ďaleko v zvyšku roka.</p><hr>
+</section>
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>Týždne neexistujú</h2>
+  <p>Súčasná kanonická špecifikácia <strong>nedefinuje systém týždňov</strong>. Neexistuje kanonická sedemdňová jednotka, pastafariánske názvy dní v týždni ani pravidlo, podľa ktorého by dva dni boli „ten istý deň týždňa“.</p>
+  <p>Občiansky týždeň možno samozrejme pridať zvonka; len nie je súčasťou pastafariánskeho dátumu.</p><hr>
+</section>
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>Názvy</h2>
+  <p>Existuje 17 kanonických názvov rezňov a 47 kanonických názvov mesiacov. V jednom roku sa každý názov vo svojej rodine objaví najviac raz.</p>
+  <p>Identita názvu je kanonická a sémantická, nie výsledok hlasovania medzi pravopismi, prekladmi alebo implementáciami. Pre význam názvov je najvyššou autoritou hebrejská Megillah; preklad a transliterácia sú prezentačné vrstvy.</p>
+  <p>Názov nie je skrytý kód dĺžky. Žiadny konkrétny názov sám osebe neurčuje, že rezeň má byť dlhší alebo mesiac kratší.</p><hr>
+</section>
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>Malá zaujímavosť o mesiacoch</h2>
+  <p>Máme 47 názvov mesiacov a mesiac môže dosiahnuť najviac deň 123. Syntakticky teda existuje</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>možných dvojíc „názov mesiaca + číslo dňa v mesiaci“.</p>
+  <p>Každý deň roka realizuje presne jednu takú dvojicu. Ak je dĺžka roka <code>L</code>, objaví sa presne <code>L</code> dvojíc. Keďže</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>v každom roku musí chýbať aspoň</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre>
+  <p>možných dvojíc. Ani najdlhší rok nemá dosť dní na všetky.</p><hr>
+</section>
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>Ako sa kalendár počíta?</h2>
+  <p>Vnútorný výpočet tu nazývame <strong>omáčkou</strong>. V jeho strede je prvočíslo</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>Postup zahŕňa päť vstupných počítadiel, 7 skrytých kvapiek, 46 viditeľných kvapiek, 6 mís, meniace sa poradia mís, 12 záverečných miešaní, pečate na rôzne odpovede, kombinatorické voľby, vytváranie brán, výber rokov, delenie rezňov, výber názvov, tvorbu mesiacov a prepletanie mesačných dní.</p>
+  <p>Záverečné aktualizácie sú <strong>synchrónne</strong>: pri každom miešaní sa všetkých šesť nových hodnôt vypočíta z toho istého starého stavu a až potom sa všetkých šesť mís naraz nahradí.</p>
+  <p>Pri 12 záverečných miešaniach platí mimoriadne dôležitý kanonický detail. Ak je <code>S</code> súčet šiestich starých mís a <code>r</code> číslo miešania, systém vypočíta</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p><code>R</code> je <strong>uložený súčet</strong>. Výber poradia mís aj vnútorná aktualizácia používajú <code>R</code>, nie surový súčet <code>S</code>.</p>
+  <p>Staršie verzie, ktoré do tejto aktualizácie vkladali surový súčet, už neopisujú súčasnú kanonickú sémantiku. Príklady odvodené zo starého pravidla sú zastarané, kým sa znovu neoveria.</p>
+  <p>Po miešaniach pokračuje kruh odpovedí v poradí uzamknutom pri viditeľnej kvapke 46; nesmie sa automaticky nahradiť poradím posledného miešania.</p><hr>
+</section>
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice a Wide Choice</h2>
+  <p>Pri pomerne malých priestoroch možností sa používa <strong>Short Choice</strong>. Na odstránenie jednoduchého modulo bias používa rejection sampling.</p>
+  <p>Veľmi veľké priestory používajú <strong>Wide Choice</strong>. Nemožno jej pripisovať vlastnosti, ktoré špecifikácia nezaručuje.</p>
+  <p>Wide Choice nie je ekvivalent generovania nezávislých rovnomerných číslic v základe <code>Q</code>, až kým nevznikne index. Preto z nej nevyplýva, že každá povolená možnosť musí mať rovnakú kladnú pravdepodobnosť. V dostatočne veľkých priestoroch môžu existovať povolené možnosti, ktoré tento mechanizmus vôbec nedosiahne.</p>
+  <p>Samotný kalendár je úplne deterministický. „Choice“ je názov kroku algoritmu, nie žrebovanie pri používaní.</p><hr>
+</section>
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>Štrukturálny atlas</h2>
+  <p>Doteraz sme opisovali pravidlá kalendára. Nasledujúce čísla sú niečo iné: <strong>empirické výsledky</strong> veľkej výpočtovej vzorky.</p>
+  <p>Atlas vznikol s engine commitom <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> a zahŕňal 4,096 dní činnosti; roky 4990–5010 pre každý z nich; 86,016 štruktúr roka; 625,437 rezňov; 3,535,422 štrukturálnych mesiacov; vyše 356 miliónov súvislých mesačných úsekov; a vyše 364 miliónov prechodov z dňa <code>n</code> na deň <code>n+1</code> toho istého mesiaca.</p>
+  <p>Sú to opisy daného korpusu, nie kanonické zákony.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Namerané údaje štrukturálneho atlasu"><table class="about-table">
+    <thead><tr><th scope="col">Meraná veličina</th><th scope="col">Výsledok vo vzorke</th></tr></thead><tbody>
+      <tr><td>Priemerná dĺžka roka</td><td>4,275.182 dňa</td></tr><tr><td>Medián dĺžky roka</td><td>4,343</td></tr><tr><td>Pozorované minimum / maximum</td><td>716 / 5,778</td></tr>
+      <tr><td>Priemerný počet rezňov na rok</td><td>7.271</td></tr><tr><td>Roky s presne 6 rezňami</td><td>42.00%</td></tr><tr><td>Roky so 6–8 rezňami</td><td>81.29%</td></tr>
+      <tr><td>Priemerná dĺžka rezňa</td><td>587.963 dňa</td></tr><tr><td>Medián dĺžky rezňa</td><td>560</td></tr><tr><td>Priemerný počet mesiacov na rok</td><td>41.102</td></tr>
+      <tr><td>Medián počtu mesiacov</td><td>43</td></tr><tr><td>Roky so 47 mesiacmi</td><td>15.63%</td></tr><tr><td>Roky s aspoň 45 mesiacmi</td><td>36.81%</td></tr>
+      <tr><td>Priemerná dĺžka štrukturálneho mesiaca</td><td>104.014 dňa</td></tr><tr><td>Medián dĺžky mesiaca</td><td>115</td></tr><tr><td>Priemerný počet súvislých úsekov na mesiac</td><td>100.897</td></tr>
+      <tr><td>Podiel jednodňových mesačných úsekov</td><td>97.482%</td></tr><tr><td>Pravdepodobnosť, že susedné dni patria do toho istého mesiaca</td><td>2.9976%</td></tr>
+      <tr><td>Priemerný počet cudzích dní medzi <code>n</code> a <code>n+1</code> mesiaca</td><td>40.408</td></tr><tr><td>Priemerné rozpätie od prvého po posledný výskyt mesiaca</td><td>4,266.653 dňa</td></tr>
+    </tbody></table></div>
+  <p>Prakticky to znamená, že mesiac s približne sto dňami sa môže rozprestierať takmer cez celý pastafariánsky rok.</p>
+  <p>Ten istý atlas ukázal prirodzené skreslenie dĺžky okolo roka 5000. „Bežný“ rok vo vzorke mal priemer asi 4,262 dní. Keď sa roky vážia počtom dní, ktoré obsahujú, priemer stúpne približne na 4,466 dní; vlastný rok 5000 mal priemer asi 4,499 dní.</p>
+  <p>Dôvod je jednoduchý: rok 5000 musí obsahovať deň činnosti. Dlhší rok ponúka viac dní, v ktorých môže byť práve rokom obsahujúcim deň činnosti.</p>
+  <p>Súvislosť názvu jednotky s jej dĺžkou bola vo vzorke takisto veľmi slabá. Nie je to dôkaz úplnej matematickej nezávislosti, ale atlas nedáva praktický signál, že názvy majú dĺžku kódovať.</p>
+  <p>Okrem toho 86,016 štruktúr roka nie je 86,016 úplne nezávislých vzoriek: obsahujú iba 24,786 rôznych intervalov medzi počiatočnou a koncovou bránou. Susedné dni činnosti môžu vybrať ten istý ročný interval a pritom vytvoriť inú vnútornú štruktúru.</p>
+  <p>Atlas preto dobre opisuje namerané správanie implementácie, ale nemá sa meniť na pravdepodobnostnú teóriu o všetkých možných štruktúrach kalendára.</p><hr>
+</section>
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>Narodeniny a výročia</h2>
+  <p>Výraz „ten istý deň každý rok“ tu najprv potrebuje definíciu. Prirodzené súradnice návratu sú <code>(názov mesiaca, deň v mesiaci)</code> a <code>(názov rezňa, deň v rezni)</code>; podmienky možno aj kombinovať.</p>
+  <p>Pastafariánske narodeniny preto nie sú jednoducho <code>RRULE:FREQ=YEARLY</code>. Treba vyhľadať nasledujúci rok spĺňajúci zvolenú podmienku návratu a pôvodná udalosť sa automaticky nepočíta ako svoj vlastný „ďalší výskyt“.</p>
+  <p>Zmena dňa činnosti len kvôli zobrazeniu nesmie meniť identitu osoby, okamih narodenia ani vek.</p>
+  <p>V presnom skene 4,096 vlastných dátumov bol každý nasledujúci pastafariánsky rok kontrolovaný dopredu aj dozadu až do 250,000 rokov v každom smere:</p>
+  <ul><li>Pre <code>(názov mesiaca, deň v mesiaci)</code> bol medián prvého návratu 1 pastafariánsky rok; 77.56% návratov bolo už v susednom roku, 93.77% do dvoch rokov, 99.44% do piatich; pozorované maximum bolo 21 rokov.</li>
+  <li>Pre <code>(názov rezňa, deň v rezni)</code> bol medián 3 roky; 88.89% návratov sa našlo do 10 rokov, no rozdelenie malo veľmi ťažký chvost a pozorované maximum dosiahlo 51,954 pastafariánskych rokov.</li></ul>
+  <p>Ide o <strong>empirické výsledky skúmaného korpusu</strong>, nie o dôkaz, že každé možné výročie sa musí vrátiť, ani o záruku maximálnej čakacej doby.</p><hr>
+</section>
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>Ako si dohodnúť stretnutie?</h2>
+  <p>Ak sa dvaja ľudia dohodnú len pomocou pastafariánskeho dátumu, musia si zhodne určiť aspoň päť polí a deň činnosti použitý pri výpočte. Lepšie je uložiť deň činnosti ako stabilnú identitu dňa než ako slovo „dnes“, inak môže každý vypočítať iný kalendár.</p>
+  <ul><li>„zajtra“ je nasledujúci chronologický deň;</li><li>„nasledujúci deň mesiaca“ je ďalší výskyt toho istého mesiaca;</li><li>„koniec mesiaca“ je jeho posledný výskyt;</li><li>„celý mesiac“ môže znamenať množinu dní mesiaca alebo celý chronologický rozsah od prvého po posledný výskyt;</li><li>„nasledujúci rok“ znamená ďalší rok v kalendári vytvorenom pod zvoleným dňom činnosti.</li></ul>
+  <p>Pri mimoriadne dôležitom stretnutí možno navyše uložiť absolútny chronologický deň alebo okamih. Kalendár to bez ujmy znesie.</p><hr>
+</section>
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>Cestovanie, udalosti a all-day</h2>
+  <p>Udalosť nie je to isté ako miestna nálepka zobrazená pri nej. Časovaná udalosť má zostať ukotvená v stabilnom chronologickom okamihu. Cestovanie ju v čase neposúva, no miestny pastafariánsky dátum zobrazený pre ten istý okamih sa môže zmeniť, pretože definícia „miestneho dňa“ závisí od polohy.</p>
+  <p>Pri udalosti <strong>all-day</strong> je rozdiel ešte väčší. Občianska celodenná udalosť zvyčajne trvá od občianskej polnoci do ďalšej; pastafariánska celodenná udalosť by mala trvať od miestnej hranice pastafariánskeho dňa k nasledujúcej hranici. Zvyčajne nejde o tie isté okamihy.</p>
+  <p>Slepý export pastafariánskej udalosti ako občianskej udalosti „na celý deň“ tak môže zmeniť jej význam. Na presné zachovanie treba uložiť chronologickú kotvu a správny kontext polohy/hranice dňa, nie iba príznak <code>all-day</code>.</p><hr>
+</section>
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>Kedy sa mení deň?</h2>
+  <p>Miestny pastafariánsky deň sa nemení o polnoci. Hranicu určuje <strong>topocentrický dolný prechod stredu Venuše cez miestny poludník</strong>.</p>
+  <p>Ide teda o miestnu astronomickú udalosť závislú od polohy. Prechod nemusí nastať o 00:00, neurčuje ho občianske časové pásmo, neposunie sa len preto, že sa začne alebo skončí letný čas, a nevyžaduje viditeľnosť Venuše voľným okom.</p>
+  <p>Ten istý fyzikálny okamih môže na dvoch miestach ležať na opačných stranách ich miestnych hraníc dňa. Ak systém nemá použiteľnú polohu používateľa, záložnou polohou produktu je <strong>Kisurra</strong>.</p><hr>
+</section>
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>Tlačený kalendár a ručný výpočet</h2>
+  <p>Pastafariánsky kalendár sa dá vytlačiť, ak sa uvedie, pre ktorý deň činnosti bol vypočítaný. Ukazuje štruktúru času z pohľadu tohto dňa; po zmene dňa činnosti môže byť potrebný nový kalendár. Tlačiareň teda zostáva dôležitá.</p>
+  <p>Všetko možno vypočítať aj ručne, keďže špecifikácia je úplná a deterministická: spočítať vstupné počítadlá, vykonať 7 skrytých a 46 viditeľných kvapiek, aktualizovať šesť mís, urobiť 12 záverečných miešaní, získať odpovede, postaviť brány, vybrať roky a rezne, vykonať kombinatorické voľby, vybrať názvy a prepliesť mesiace.</p>
+  <p>Na oplátku si netreba pamätať, že február má niekedy 28 a inokedy 29 dní.</p><hr>
+</section>
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>A čo je Seer?</h2>
+  <p>Popri kanonickej implementácii existuje rýchly engine <strong>Pastafarian Calendar Seer</strong>. Seer nie je zdrojom autority: správny dátum určujú Megillah a kanonický výpočet. Ak sa Seer nezhoduje, mýli sa Seer.</p>
+  <p>Jeho účelom je vykonávať tie isté dotazy rýchlo a vo forme vhodnej na integráciu do produktov.</p>
+  <p>Pri živom overení počas úprav tejto stránky Seer zahŕňal okrem iného dotazy na dátum a „teraz“, batch, rozsahy dní, spätnú konverziu pastafariánskeho dátumu na cieľový deň, získanie štruktúry roka, určenie aktívneho dňa činnosti, Node API, prehliadačový/HTTP klient, CLI, službu HTTP v1, kontrakt OpenAPI 3.1, native implementácie a distribučné balíky a overené container nasadenie.</p>
+  <p>Staré tvrdenie, že Seer nemá verejné API, už nie je správne. Existuje výslovný stabilný kontrakt HTTP v1 s endpointmi pre date, range, batch, year, reverse, deň činnosti, metadata, locales a status.</p>
+  <p>Dňa 21. septembra 2026 bolo prakticky otestované aj verejné HTTPS nasadenie na Render: na živej službe sa overili exact dotazy, veľký range, restart, cold wake a správanie pod záťažou.</p>
+  <p>Projektová dokumentácia však naďalej odlišuje verejné beta/evaluation nasadenie od trvalej hosted production služby so SLA. Preto základná vysvetľujúca stránka nemá zafixovať adresu servera, poskytovateľa hostingu či číslo verzie ako súčasť samotného kalendára.</p>
+  <p>Seer môže používať predvýpočty, špeciálne reprezentácie, SIMD, algebru a ďalšie skratky. Nemusí krok za krokom opakovať výpočtovú históriu kanonickej implementácie, ak vykonáva tú istú sémantickú operáciu a vracia tú istú odpoveď.</p>
+  <p>Optimalizácia nie je alternatívna autorita.</p><hr>
+</section>
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>Pôvod, Deň založenia a Deň tabúľ</h2>
+  <p>Tu treba jasne oddeliť kanonické časové kotvy od príbehu stránky.</p>
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>Kotvy</h3>
+    <p>Systém má pevný referenčný deň nazvaný <strong>Deň založenia</strong>. V proleptickom gregoriánskom kalendári je to <strong>22. december 41,222 pred n. l.</strong></p>
+    <p>Deň založenia nie je „začiatok času“, ale výpočtová kotva.</p>
+    <p>Číslovanie dní okolo neho používa kladné nepárne/párne čísla: Deň založenia=1; nasledujúce dni=3, 5, …; smerom do minulosti predchádzajúci deň=2, potom 4, 6, … . Obe strany kotvy sa tak v tomto počítadle kódujú bez záporných čísel dní.</p>
+    <p>Druhou kotvou je <strong>Deň tabúľ</strong>: <strong>15. jún 763 pred n. l. v proleptickom juliánskom kalendári</strong>, teda <strong>7. jún 763 pred n. l. v proleptickom gregoriánskom kalendári</strong>.</p>
+    <p>Presná vzdialenosť od Dňa založenia po Deň tabúľ je</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
+    <p>dní.</p>
+    <p>Sú to pevné kotvy na časovej osi. Zobrazený pastafariánsky dátum pre ne však stále závisí od dňa činnosti, z ktorého sa na ne pýtame.</p>
+  </section>
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>Príbeh stránky</h3>
+    <p>V redakčnom podaní stránky je kalendár súčasťou stvorenia a systémom, ktorý ľudstvo používalo bez dostatočného uvedomenia, kým nebol v modernej dobe znovu odovzdaný.</p>
+    <p>Je to príbeh stránky; každý jeho naratívny detail sa nemá vydávať za výslovné technické tvrdenie Megillah.</p>
+    <p>Samotná udalosť znovuodovzdania je pevná historická udalosť. Jej <strong>pastafariánsky dátum</strong> je vhodnejšie na stránke zobrazovať dynamicky podľa aktuálneho dňa činnosti než navždy fixovať jednu jedinú hodnotu.</p><hr>
+  </section>
+</section>
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>Pre pokročilých: spätná konverzia</h2>
+  <p>Keď poznáme deň činnosti <code>c</code>, spätná konverzia je veľmi silno určená. V známom pastafariánskom roku</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{názov rezňa},\text{deň v rezni})</code></pre>
+  <p>určuje najviac jeden deň. To isté platí pre</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{názov mesiaca},\text{deň v mesiaci})</code></pre>
+  <p>Úplný dátum pri známom dni činnosti preto jednoznačne určuje cieľový deň.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Horné hranice počtu kandidátov spätnej konverzie"><table class="about-table">
+    <thead><tr><th scope="col">Ďalšia známa informácia</th><th scope="col">Najviac kandidátov</th></tr></thead><tbody>
+      <tr><td>Žiadne ne-ročné pole</td><td>5,778</td></tr><tr><td>Iba názov rezňa</td><td>5,568</td></tr><tr><td>Iba deň v rezni</td><td>17</td></tr>
+      <tr><td>Iba názov mesiaca</td><td>123</td></tr><tr><td>Iba deň v mesiaci</td><td>47</td></tr><tr><td>Názov rezňa + deň v rezni</td><td>1</td></tr>
+      <tr><td>Názov mesiaca + deň v mesiaci</td><td>1</td></tr><tr><td>Ľubovoľné tri ne-ročné polia</td><td>1</td></tr><tr><td>Všetky štyri ne-ročné polia</td><td>1</td></tr>
+    </tbody></table></div>
+  <p>Bez známeho dňa činnosti je situácia iná. Rovnaká päťica sa môže objaviť pod rôznymi dňami činnosti a existujú presné príklady, kde sa ten istý úplný dátum nachádza v rôznych vzdialenostiach od <code>c</code>.</p>
+  <p>V roku 5000 dokonca ani znamienko tejto vzdialenosti nie je vždy určené päťicou: ten istý úplný dátum môže byť v jednom kontexte v minulosti dňa činnosti a v inom v budúcnosti.</p>
+  <p>Úplný pastafariánsky dátum teda nie je absolútnou adresou na časovej osi, ak nevieme, pod ktorým <code>c</code> bol vypočítaný.</p>
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>Štruktúra vo vzdialenom čase</h3>
+    <p>Matematický výskum odvodený zo špecifikácie našiel aj presnú asymptotickú štruktúru. Pre <strong>pevný deň činnosti</strong> <code>c</code> sa dostatočne ďaleko v minulom chvoste objavuje afinná periodicita.</p>
+    <p>Ak</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>potom pre toto <code>c</code> existujú posun <code>H_c</code>, zmena roka <code>p_c</code> a dostatočne vzdialený prah tak, že po jeho prekročení</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>Štyri ne-ročné polia sa opakujú a číslo roka sa mení o pevnú hodnotu.</p>
+    <p>Je to výsledok pre pevné <code>c</code>; nevyplýva z neho globálny vzťah</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>Otázka, či sa konečný asymptotický sklon skutočne mení medzi rôznymi dňami činnosti, zostáva otvorená.</p><hr>
+  </section>
+</section>
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>Pre pokročilých: koľko histórie si omáčka pamätá?</h2>
+  <p>Omáčka pôsobí ako veľmi agresívne miešanie, no algebraický výskum ukázal, že zachováva omnoho viac informácií, než naznačuje jej vonkajší vzhľad. Je to výskum odvodený zo špecifikácie, nie nové pravidlo kalendára.</p>
+  <p>Vo viditeľných etapách 3–46 bola na príslušnej asymptotickej vetve stanovená generic injectivity: v generickom prípade stav zachováva dosť informácií na rekonštrukciu relevantnej histórie vstupov a poradí mís.</p>
+  <p>Ani v 12 záverečných miešaniach informácia nezmizne okamžite. Pre prvých päť po viditeľnej kvapke 46 bola na príslušnom kanonickom zjednotení stanovená generic invertibility bez dodatočných vedľajších informácií; pre zvyšok poznáme silné konštruktívne horné hranice množstva vedľajších informácií postačujúcich na rekonštrukciu.</p>
+  <p>Otvorené zostáva, či <strong>samotných šesť finálnych mís</strong> vždy genericky stačí.</p>
+  <p>Niektoré výsledky boli dokázané symbolicky, iné uzavreté konečnými presnými aritmetickými kontrolami. Symbolické posilnenie výrazne zmenšilo výpočtové jadro, ktorému treba dôverovať, no úplne ho neodstránilo.</p>
+  <p>Priestory, ktoré spočiatku vyzerali ako obrovské množiny ciest, sa zmenšili na omnoho menšie konečné štruktúry vrátane automatov so 180 a 9 stavmi a symetrií šiestich mís.</p>
+  <p>Pod miešaním je teda pevná algebraická štruktúra. Na zistenie dnešného dátumu ju poznať netreba.</p><hr>
+</section>
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>Čo teda pastafariánsky kalendár vlastne je?</h2>
+  <p>Deterministický kalendár, v ktorom dátum nie je funkciou samotného cieľového dňa, ale <strong>dňa činnosti a opytovaného dňa spolu</strong>.</p>
+  <p>Každý dátum má presne päť polí. Prítomnosť voči sebe samej je vždy v roku 5000, no samotný rok 5000 sa posúva spolu s dňom činnosti. Roky môžu byť veľmi dlhé, rezne sú súvislé, mesiace súvislé byť nemusia a kanonický systém týždňov neexistuje.</p>
+  <p>Deň <code>n+1</code> mesiaca nemusí byť zajtra. Ten istý chronologický deň môže zajtra dostať inú pastafariánsku nálepku. Ten istý fyzikálny okamih môže na dvoch miestach patriť do dvoch rôznych miestnych pastafariánskych dní. Celodenná udalosť nemusí trvať od polnoci do polnoci. A každoročné narodeniny sú najprv úlohou vyhľadávania a až potom kalendárnym problémom.</p>
+  <p>Ak však poznáme deň činnosti a opytovaný deň, nejednoznačnosť neexistuje: správna odpoveď je presne jedna.</p>
+  <p>A napokon, viac kalendár ani robiť nemusí.</p>
+</section>
