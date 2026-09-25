@@ -1,0 +1,334 @@
+<!-- Bản tiếng Việt được viết trực tiếp từ nền tảng ngữ nghĩa tiếng Hebrew, không qua ngôn ngữ trung gian. -->
+<!-- ID của các mục là hợp đồng deep-link công khai ổn định và không được tạo từ tiêu đề đã dịch. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>Trong câu chuyện của trang này, Lịch Pastafari được trình bày như cuốn lịch mà trong đó chính thời gian đã được tạo ra. Tuy vậy, cơ chế của nó được xác định rất chặt chẽ.</p>
+  <p>Lịch này không gắn cho mỗi ngày một “nhãn” Pastafari cố định. Muốn biết ngày Pastafari của một ngày, cần hai ngày: <strong>ngày thao tác</strong>, là điểm xuất phát của phép tính, và <strong>ngày được hỏi</strong>, là ngày ta muốn biết ngày Pastafari của nó.</p>
+  <p>Nếu ký hiệu ngày thao tác là <code>c</code> và ngày được hỏi là <code>t</code>, thì ngày Pastafari là</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>chứ không phải <code>F(t)</code>. Vì thế cùng một ngày được hỏi có thể nhận một ngày Pastafari khác nếu ngày thao tác thay đổi.</p>
+  <p>Đó không phải lỗi. Lịch được thiết kế như vậy.</p><hr>
+</div>
+
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>Một ngày Pastafari gồm những gì?</h2>
+  <p>Nó có <strong>đúng năm phần</strong>: số năm, tên cốt-lết, ngày trong cốt-lết, tên tháng và ngày trong tháng.</p>
+  <p>Một ví dụ chung: <strong>năm 5000, cốt-lết A, ngày 417 trong cốt-lết, tháng B, ngày 83 trong tháng.</strong></p>
+  <p>Ngày thao tác, vị trí người quan sát, định danh theo thời gian của ngày, hay các dữ liệu kỹ thuật khác có thể được hiển thị bên cạnh, nhưng chúng không phải trường thứ sáu của ngày Pastafari.</p><hr>
+</section>
+
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>Vì sao cần ngày thao tác?</h2>
+  <p>Trong các loại lịch quen thuộc, ta dễ nghĩ rằng ngày tháng “thuộc về” chính ngày đó. Trong Lịch Pastafari, ngày tháng phụ thuộc vào quan hệ giữa hai ngày.</p>
+  <p>Đổi <code>t</code> nghĩa là hỏi về một ngày khác. Đổi <code>c</code> có thể sâu hơn nhiều: ranh giới năm, các cốt-lết, các tháng, tên của chúng và cách các tháng đan xen với nhau đều có thể thay đổi.</p>
+  <p>Vì thế một niên lịch được tính hôm nay không nhất thiết vẫn đúng vào ngày mai. Nhờ đó ta tránh được tình huống khó chịu khi một cuốn lịch in vẫn hữu dụng suốt cả năm.</p><hr>
+</section>
+
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>Cùng một ngày, ngày tháng khác</h2>
+  <p>Cần phân biệt <strong>định danh của ngày</strong> với <strong>cách biểu diễn Pastafari của ngày đó</strong>. Cái thứ nhất là vị trí ổn định của một ngày cụ thể trên trục thời gian; cái thứ hai là bộ năm giá trị nhận được khi ngày đó được hiển thị dưới một ngày thao tác nhất định.</p>
+  <p>Trong sản phẩm và API, cái thứ nhất có thể được xem là <code>day-id</code>: một định danh theo thời gian không thay đổi theo cách hiển thị. Ngược lại,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre>
+  <p>và</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>không nhất thiết bằng nhau.</p>
+  <p>Do đó, đổi ngày thao tác bằng tay có thể thay đổi ngày Pastafari hiển thị của cùng một ngày mà không hề di chuyển chính ngày đó trên trục thời gian.</p>
+  <p>Điều tương tự áp dụng cho sự kiện. Một cuộc hẹn, một lần sinh hay một sự kiện lịch sử phải giữ nguyên điểm neo thời gian ổn định; ngày Pastafari của nó có thể được tính lại tùy theo ngữ cảnh hiển thị.</p>
+  <p>Nhãn có thể đổi. Sự kiện thì không.</p><hr>
+</section>
+
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>Năm 5000</h2>
+  <p>Khi ngày thao tác chính là ngày được hỏi,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>số năm luôn là</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>Nói cách khác, hiện tại nhìn từ chính nó luôn nằm trong năm 5000. Nhưng năm 5000 không phải một giai đoạn lịch sử cố định; nó được chọn lại theo ngày thao tác.</p>
+  <p>Bản thân ngày thao tác nằm trong năm 5000, và các ngày khác của cùng năm được chọn đó cũng vậy. Vì thế <strong>chỉ riêng việc nằm trong năm 5000 không chứng minh rằng <code>t=c</code>.</strong></p>
+  <p>Tuy vậy, số năm cho biết hướng:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre>
+  <p>và</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p>Cũng có <strong>năm 0</strong>; xa hơn về quá khứ là các năm mang số âm.</p><hr>
+</section>
+
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>Năm và cổng</h2>
+  <p>Một năm Pastafari có thể dài từ</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ đến }5778</code></pre>
+  <p>ngày. Đây là các giới hạn chính tắc của hệ thống, không phải trung bình thực nghiệm.</p>
+  <p>Một năm vì thế có thể ngắn hơn một năm Mặt Trời hoặc dài hơn mười lăm năm Mặt Trời. Ranh giới năm được dựng từ hệ thống <strong>cổng</strong>; ranh giới cốt-lết cũng xuất phát từ cùng hệ thống đó.</p>
+  <p>Cuối năm không cần trùng với mùa, một vòng Trái Đất quanh Mặt Trời, chu kỳ Mặt Trăng, hay nhu cầu thực tế rằng năm này cuối cùng cũng nên kết thúc.</p><hr>
+</section>
+
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>Cốt-lết</h2>
+  <p>Mỗi năm được chia thành <strong>6 đến 17 cốt-lết</strong>. Một cốt-lết là một đoạn thời gian liên tục theo thứ tự thời gian.</p>
+  <p>Nếu hôm nay là ngày 250 trong cốt-lết thì ngày mai là ngày 251 của cùng cốt-lết, trừ khi hôm nay là ngày cuối cùng của nó. Ranh giới cốt-lết là các cổng, và một cốt-lết có ít nhất</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
+  <p>ngày.</p>
+  <p>Hệ thống có 17 tên cốt-lết chính tắc và không tên nào lặp lại trong cùng một năm. Tên không quyết định độ dài hay vị trí của cốt-lết.</p><hr>
+</section>
+
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>Tháng và sự đan xen</h2>
+  <p>Mỗi năm có từ</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ đến }47</code></pre>
+  <p>tháng cấu trúc, và mỗi tháng được gán từ</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ đến }123</code></pre>
+  <p>ngày.</p>
+  <p>Tuy nhiên, một tháng Pastafari <strong>không nhất thiết là một khoảng thời gian liên tục</strong>. Thứ tự thời gian chẳng hạn có thể là:</p>
+  <blockquote><p>tháng A — ngày 14<br>tháng B — ngày 9<br>tháng A — ngày 15</p></blockquote>
+  <p>Đó là cấu trúc hoàn toàn hợp lệ. Ngày 15 của tháng A là ngày kế tiếp <strong>của tháng đó</strong>, dù ở giữa có một ngày thuộc tháng khác.</p>
+  <p>Vì vậy, “ngày trong tháng” không có nghĩa là số ngày theo thời gian kể từ lần xuất hiện đầu tiên của tháng, mà là số thứ tự của ngày được gán cho tháng đó trong năm. Ngày 48 là ngày thứ 48 thuộc tháng đó, không phải 47 ngày sau lần xuất hiện đầu tiên của nó.</p><hr>
+</section>
+
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>Các tháng đan vào nhau</h2>
+  <p>Có thể hình dung các tháng như những sợi chỉ chạy qua năm. Mỗi ngày thuộc đúng một tháng; ngày mai có thể thuộc tháng khác, rồi tháng đầu tiên có thể trở lại và tiếp tục với số kế tiếp của nó.</p>
+  <p>Sự đan xen có quy tắc, trong đó có các hạn chế về thứ tự xuất hiện lần đầu và lần cuối của các tháng. Nhưng không có quy tắc rằng một tháng phải kết thúc trước khi tháng khác bắt đầu.</p>
+  <ul>
+    <li>Cốt-lết đo vị trí trong một đoạn thời gian liên tục.</li>
+    <li>Tháng biểu thị việc thuộc về một sợi cấu trúc có thể biến mất rồi xuất hiện lại.</li>
+  </ul>
+  <p>Một tháng có thể đi qua nhiều cốt-lết, và một cốt-lết có thể chứa các lần xuất hiện của nhiều tháng. Điểm đầu và điểm cuối của hai hệ thống này không cần trùng nhau.</p><hr>
+</section>
+
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>Ngày kế tiếp của tháng không nhất thiết là ngày mai</h2>
+  <p>Nếu hôm nay là ngày 17 của một tháng, ngày 18 của cùng tháng là <strong>lần xuất hiện kế tiếp của tháng đó</strong>. Nó có thể là ngày mai, hoặc muộn hơn rất nhiều.</p>
+  <p><strong>Ngày mai</strong> là ngày kế tiếp theo thứ tự thời gian; <strong>ngày kế tiếp của tháng</strong> là lần xuất hiện kế tiếp của chính tháng đó.</p>
+  <p>Tương tự, “cuối tháng” không có nghĩa là điểm cuối gần về mặt thời gian. Một tháng dài 120 ngày có thể đang ở ngày 119 hôm nay, trong khi ngày 120 nằm rất xa về sau trong cùng năm.</p><hr>
+</section>
+
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>Không có tuần</h2>
+  <p>Đặc tả chính tắc hiện tại <strong>không định nghĩa hệ thống tuần</strong>. Không có một đơn vị bảy ngày chính tắc, không có tên ngày trong tuần Pastafari và không có quy tắc khiến hai ngày trở thành “cùng một ngày trong tuần”.</p>
+  <p>Tất nhiên có thể phủ hệ thống tuần dân sự từ bên ngoài lên trên; chỉ là nó không phải một phần của ngày Pastafari.</p><hr>
+</section>
+
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>Tên</h2>
+  <p>Có 17 tên cốt-lết chính tắc và 47 tên tháng chính tắc. Trong một năm, mỗi tên xuất hiện nhiều nhất một lần trong họ của nó.</p>
+  <p>Định danh của tên là chính tắc và mang tính ngữ nghĩa; nó không phải kết quả bỏ phiếu giữa các cách viết, bản dịch hay cách triển khai khác nhau. Về ý nghĩa của tên, Megillah tiếng Hebrew là nguồn có thẩm quyền cao nhất; dịch thuật và chuyển tự chỉ thuộc lớp trình bày.</p>
+  <p>Tên cũng không phải mã ẩn cho độ dài. Không tên cốt-lết hay tháng cụ thể nào tự nó buộc đơn vị đó dài hơn hay ngắn hơn.</p><hr>
+</section>
+
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>Một sự thật nhỏ về tháng</h2>
+  <p>Có 47 tên tháng, và một tháng có thể đi xa nhất đến ngày 123. Vì vậy có</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>cặp cú pháp khả dĩ dạng “tên tháng + số ngày trong tháng”.</p>
+  <p>Mỗi ngày của năm hiện thực hóa đúng một cặp như vậy. Nếu độ dài năm là <code>L</code>, thì đúng <code>L</code> cặp xuất hiện. Nhưng vì</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>mỗi năm phải thiếu ít nhất</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre>
+  <p>cặp khả dĩ. Ngay cả năm dài nhất cũng không có đủ ngày để dùng hết.</p><hr>
+</section>
+
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>Lịch được tính như thế nào?</h2>
+  <p>Ta gọi phép tính nội bộ ở đây là <strong>nước sốt</strong>. Ở trung tâm của nó là số nguyên tố</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>Quy trình gồm năm bộ đếm đầu vào, 7 giọt ẩn, 46 giọt thấy được, 6 bát, thứ tự bát thay đổi, 12 lần khuấy cuối, các con dấu cho những câu trả lời khác nhau, cơ chế chọn tổ hợp, sinh cổng, chọn năm, chia cốt-lết, chọn tên, tạo tháng và đan các ngày của tháng.</p>
+  <p>Các cập nhật cuối là <strong>đồng bộ</strong>: ở mỗi lần khuấy, cả sáu giá trị mới đều được tính từ cùng một trạng thái cũ, rồi chỉ sau đó cả sáu bát mới được thay cùng lúc.</p>
+  <p>Trong 12 lần khuấy cuối có một chi tiết chính tắc đặc biệt quan trọng. Nếu <code>S</code> là tổng của sáu bát cũ và <code>r</code> là số thứ tự lần khuấy, hệ thống tính</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p><code>R</code> là <strong>tổng đã lưu</strong>. Cả việc chọn thứ tự bát lẫn cập nhật nội bộ của lần khuấy đều dùng <code>R</code>, không dùng tổng thô <code>S</code>.</p>
+  <p>Các phiên bản cũ từng đưa tổng thô vào phép cập nhật đó không còn mô tả ngữ nghĩa chính tắc hiện nay. Các ví dụ suy ra từ quy tắc cũ phải được xem là lỗi thời cho đến khi được kiểm chứng lại.</p>
+  <p>Sau các lần khuấy, vòng câu trả lời cũng tiếp tục dùng thứ tự đã khóa ở giọt thấy được 46; không được tự động thay nó bằng thứ tự của lần khuấy cuối.</p><hr>
+</section>
+
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice và Wide Choice</h2>
+  <p>Với không gian lựa chọn tương đối nhỏ, hệ thống dùng <strong>Short Choice</strong>. Nó dùng rejection sampling để tránh sai lệch modulo đơn giản.</p>
+  <p>Không gian rất lớn dùng <strong>Wide Choice</strong>. Không nên gán cho nó những tính chất mà đặc tả không bảo đảm.</p>
+  <p>Wide Choice không tương đương với việc sinh các chữ số độc lập, phân bố đều trong cơ số <code>Q</code> cho đến khi có một chỉ số. Do đó không thể suy ra rằng mọi lựa chọn hợp lệ nhất thiết có cùng xác suất dương. Trong không gian đủ lớn có thể tồn tại những lựa chọn hợp lệ mà cơ chế này hoàn toàn không thể đạt tới.</p>
+  <p>Bản thân lịch vẫn hoàn toàn xác định. “Choice” là tên của một bước thuật toán, không phải rút thăm ngẫu nhiên khi sử dụng.</p><hr>
+</section>
+
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>Atlas cấu trúc</h2>
+  <p>Đến đây chúng ta đã nói về các quy tắc của lịch. Những con số tiếp theo thuộc loại khác: chúng là <strong>kết quả thực nghiệm</strong> từ một mẫu tính toán lớn.</p>
+  <p>Atlas được xây dựng bằng commit engine <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> và gồm 4,096 ngày thao tác; các năm 4990–5010 cho mỗi ngày đó; 86,016 cấu trúc năm; 625,437 cốt-lết; 3,535,422 tháng cấu trúc; hơn 356 triệu đoạn tháng liên tục; và hơn 364 triệu chuyển tiếp từ ngày <code>n</code> sang ngày <code>n+1</code> của cùng một tháng.</p>
+  <p>Đó là mô tả về corpus này, không phải luật chính tắc.</p>
+
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Dữ liệu đo được của atlas cấu trúc">
+    <table class="about-table">
+      <thead><tr><th scope="col">Đại lượng đo</th><th scope="col">Kết quả trong mẫu</th></tr></thead>
+      <tbody>
+        <tr><td>Độ dài năm trung bình</td><td>4,275.182 ngày</td></tr>
+        <tr><td>Trung vị độ dài năm</td><td>4,343</td></tr>
+        <tr><td>Tối thiểu / tối đa quan sát được</td><td>716 / 5,778</td></tr>
+        <tr><td>Số cốt-lết trung bình mỗi năm</td><td>7.271</td></tr>
+        <tr><td>Năm có đúng 6 cốt-lết</td><td>42.00%</td></tr>
+        <tr><td>Năm có 6–8 cốt-lết</td><td>81.29%</td></tr>
+        <tr><td>Độ dài cốt-lết trung bình</td><td>587.963 ngày</td></tr>
+        <tr><td>Trung vị độ dài cốt-lết</td><td>560</td></tr>
+        <tr><td>Số tháng trung bình mỗi năm</td><td>41.102</td></tr>
+        <tr><td>Trung vị số tháng</td><td>43</td></tr>
+        <tr><td>Năm có 47 tháng</td><td>15.63%</td></tr>
+        <tr><td>Năm có ít nhất 45 tháng</td><td>36.81%</td></tr>
+        <tr><td>Độ dài trung bình của tháng cấu trúc</td><td>104.014 ngày</td></tr>
+        <tr><td>Trung vị độ dài tháng</td><td>115</td></tr>
+        <tr><td>Số đoạn liên tục trung bình mỗi tháng</td><td>100.897</td></tr>
+        <tr><td>Tỷ lệ đoạn tháng dài một ngày</td><td>97.482%</td></tr>
+        <tr><td>Xác suất hai ngày kề nhau thuộc cùng một tháng</td><td>2.9976%</td></tr>
+        <tr><td>Số ngày thuộc tháng khác trung bình giữa <code>n</code> và <code>n+1</code> của một tháng</td><td>40.408</td></tr>
+        <tr><td>Khoảng trung bình từ lần xuất hiện đầu đến lần cuối của một tháng</td><td>4,266.653 ngày</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Trong thực tế, một tháng có khoảng một trăm ngày có thể trải gần như suốt một năm Pastafari.</p>
+  <p>Cùng atlas đó cũng cho thấy một thiên lệch độ dài tự nhiên quanh năm 5000. Năm “thông thường” trong mẫu có trung bình khoảng 4,262 ngày. Khi các năm được lấy trọng số theo số ngày chúng chứa, trung bình tăng lên khoảng 4,466 ngày; riêng năm 5000 có trung bình khoảng 4,499 ngày.</p>
+  <p>Lý do đơn giản: năm 5000 phải chứa ngày thao tác. Năm càng dài thì càng có nhiều ngày mà tại đó nó có thể chính là năm chứa ngày thao tác.</p>
+  <p>Mối liên hệ giữa tên đơn vị và độ dài của nó cũng rất yếu trong mẫu. Điều này không chứng minh sự độc lập toán học hoàn toàn, nhưng atlas không cho thấy tín hiệu thực tế rằng tên được dùng để mã hóa độ dài.</p>
+  <p>Ngoài ra, 86,016 cấu trúc năm không phải 86,016 mẫu hoàn toàn độc lập: chúng chỉ chứa 24,786 khoảng khác nhau giữa cổng đầu và cổng cuối. Hai ngày thao tác kề nhau có thể chọn cùng một khoảng năm nhưng vẫn tạo ra cấu trúc bên trong khác nhau.</p>
+  <p>Vì thế atlas mô tả tốt hành vi đo được của cách triển khai, nhưng không nên biến nó thành định lý xác suất về mọi cấu trúc lịch có thể tồn tại.</p><hr>
+</section>
+
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>Sinh nhật và ngày kỷ niệm</h2>
+  <p>Cụm “cùng ngày mỗi năm” ở đây phải được định nghĩa trước. Hai tọa độ lặp lại tự nhiên là <code>(tên tháng, ngày trong tháng)</code> và <code>(tên cốt-lết, ngày trong cốt-lết)</code>; các điều kiện cũng có thể được kết hợp.</p>
+  <p>Vì vậy sinh nhật Pastafari không đơn giản là <code>RRULE:FREQ=YEARLY</code>. Cần tìm năm kế tiếp thỏa điều kiện lặp lại đã chọn, và sự kiện ban đầu không tự động được tính là “lần xuất hiện kế tiếp” của chính nó.</p>
+  <p>Đổi ngày thao tác chỉ để hiển thị không được làm thay đổi định danh của người, thời điểm sinh hay tuổi.</p>
+  <p>Trong lần quét chính xác 4,096 ngày-tự-thân, mỗi năm Pastafari kế tiếp được kiểm tra cả tiến và lùi, đến 250,000 năm theo mỗi hướng:</p>
+  <ul>
+    <li>Với <code>(tên tháng, ngày trong tháng)</code>, trung vị lần trở lại đầu tiên là 1 năm Pastafari; 77.56% trở lại ngay trong năm kề bên, 93.77% trong vòng hai năm, 99.44% trong vòng năm năm; mức tối đa quan sát được là 21 năm.</li>
+    <li>Với <code>(tên cốt-lết, ngày trong cốt-lết)</code>, trung vị là 3 năm; 88.89% được tìm thấy trong vòng 10 năm, nhưng phân bố có đuôi rất nặng và mức tối đa quan sát được đạt 51,954 năm Pastafari.</li>
+  </ul>
+  <p>Đó là <strong>kết quả thực nghiệm của corpus đã khảo sát</strong>, không phải bằng chứng rằng mọi ngày kỷ niệm có thể có đều chắc chắn lặp lại, cũng không phải bảo đảm về thời gian chờ tối đa.</p><hr>
+</section>
+
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>Làm thế nào để hẹn gặp?</h2>
+  <p>Nếu hai người muốn hẹn nhau chỉ bằng ngày Pastafari, họ phải thống nhất ít nhất năm trường của ngày và ngày thao tác dùng trong phép tính. Tốt hơn nên lưu ngày thao tác dưới dạng định danh ngày ổn định thay vì từ “hôm nay”, nếu không hai người có thể tính ra hai lịch khác nhau.</p>
+  <ul>
+    <li>“ngày mai” là ngày kế tiếp theo thứ tự thời gian;</li>
+    <li>“ngày kế tiếp của tháng” là lần xuất hiện kế tiếp của tháng đó;</li>
+    <li>“cuối tháng” là lần xuất hiện cuối cùng của tháng;</li>
+    <li>“cả tháng” có thể nghĩa là tập các ngày thuộc tháng đó, hoặc toàn bộ khoảng thời gian từ lần xuất hiện đầu đến lần cuối;</li>
+    <li>“năm kế tiếp” là năm kế tiếp trong lịch được dựng dưới ngày thao tác đã chọn.</li>
+  </ul>
+  <p>Với một cuộc hẹn đặc biệt quan trọng, có thể lưu thêm ngày hoặc thời điểm tuyệt đối theo thời gian. Lịch sẽ không bị tổn thương vì điều đó.</p><hr>
+</section>
+
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>Đi lại, sự kiện và all-day</h2>
+  <p>Một sự kiện không phải là cùng một thứ với nhãn địa phương được hiển thị cho nó. Sự kiện đã định giờ phải được neo vào một thời điểm ổn định theo thời gian. Đi lại không chuyển nó sang thời điểm khác, nhưng ngày Pastafari địa phương hiển thị cho cùng thời điểm có thể đổi vì định nghĩa “ngày địa phương” phụ thuộc vào vị trí.</p>
+  <p>Với sự kiện <strong>all-day</strong>, khác biệt còn lớn hơn. Sự kiện dân sự kéo dài cả ngày thường chạy từ nửa đêm dân sự này đến nửa đêm kế tiếp; sự kiện Pastafari cả ngày nên chạy từ ranh giới ngày Pastafari địa phương đến ranh giới kế tiếp. Thông thường đó không phải cùng các thời điểm.</p>
+  <p>Do đó, xuất mù quáng một sự kiện Pastafari thành sự kiện dân sự “cả ngày” có thể làm đổi ý nghĩa của nó. Muốn giữ chính xác cần lưu điểm neo thời gian và ngữ cảnh vị trí/ranh giới ngày phù hợp, không chỉ một cờ <code>all-day</code>.</p><hr>
+</section>
+
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>Khi nào ngày đổi?</h2>
+  <p>Ngày Pastafari địa phương không đổi vào nửa đêm. Ranh giới được xác định bởi <strong>lần đi qua kinh tuyến dưới theo hệ topocentric của tâm Sao Kim qua kinh tuyến địa phương</strong>.</p>
+  <p>Vì thế đây là một hiện tượng thiên văn địa phương phụ thuộc vào vị trí. Lần đi qua không nhất thiết xảy ra lúc 00:00, không do múi giờ dân sự quyết định, không tự dịch chỉ vì bắt đầu hoặc kết thúc giờ mùa hè, và không đòi hỏi Sao Kim phải nhìn thấy bằng mắt thường.</p>
+  <p>Cùng một thời điểm vật lý có thể, ở hai nơi khác nhau, nằm ở hai phía khác nhau của ranh giới ngày địa phương tương ứng. Nếu hệ thống không có vị trí người dùng đủ dùng, vị trí dự phòng mặc định của sản phẩm là <strong>Kisurra</strong>.</p><hr>
+</section>
+
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>Lịch in và tính bằng tay</h2>
+  <p>Lịch Pastafari có thể được in; chỉ cần ghi rõ nó được tính cho ngày thao tác nào. Một lịch như vậy biểu diễn cấu trúc thời gian từ góc nhìn của ngày đó; khi ngày thao tác đổi, có thể cần một cuốn lịch mới. Vì thế máy in vẫn giữ vai trò của mình.</p>
+  <p>Mọi thứ cũng có thể tính bằng tay vì đặc tả đầy đủ và xác định: tính các bộ đếm đầu vào, chạy 7 giọt ẩn và 46 giọt thấy được, cập nhật sáu bát, thực hiện 12 lần khuấy cuối, tạo các câu trả lời, dựng các cổng, chọn năm và cốt-lết, thực hiện các lựa chọn tổ hợp, chọn tên và đan các tháng.</p>
+  <p>Đổi lại, không cần nhớ rằng tháng Hai khi thì có 28 ngày, khi thì có 29.</p><hr>
+</section>
+
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>Vậy Seer là gì?</h2>
+  <p>Bên cạnh cách triển khai chính tắc có một engine nhanh tên là <strong>Pastafarian Calendar Seer</strong>. Seer không phải nguồn thẩm quyền: ngày đúng được xác định bởi Megillah và phép tính chính tắc. Nếu Seer không khớp với chúng, Seer là bên sai.</p>
+  <p>Nhiệm vụ của nó là thực hiện cùng các truy vấn thật nhanh và dưới dạng thuận tiện để tích hợp vào sản phẩm.</p>
+  <p>Trong lần xác minh trực tiếp khi biên tập trang này, Seer bao gồm, trong số những thứ khác, truy vấn ngày và “bây giờ”, batch, khoảng ngày, chuyển đổi reverse từ ngày Pastafari sang ngày đích, lấy cấu trúc năm, xác định ngày thao tác đang hoạt động, Node API, client trình duyệt/HTTP, CLI, dịch vụ HTTP v1, hợp đồng OpenAPI 3.1, các triển khai native và gói phân phối, cùng container deployment đã được xác minh.</p>
+  <p>Vì vậy tuyên bố cũ rằng Seer không có API công khai không còn đúng. Hiện có một hợp đồng HTTP v1 rõ ràng và ổn định với endpoint cho date, range, batch, year, reverse, ngày thao tác, metadata, locales và status.</p>
+  <p>Ngày 21 tháng 9 năm 2026, deployment HTTPS công khai trên Render cũng đã được thử thật: truy vấn exact, range lớn, restart, cold wake và hành vi dưới tải đều được kiểm tra trên dịch vụ đang chạy.</p>
+  <p>Tuy vậy tài liệu dự án vẫn phân biệt deployment công khai beta/evaluation với một dịch vụ hosted production lâu dài có SLA. Do đó trang giải thích khái niệm không nên đóng cứng địa chỉ máy chủ, nhà cung cấp hosting hay số phiên bản như thể chúng là một phần của chính lịch.</p>
+  <p>Seer có thể dùng tiền tính toán, biểu diễn đặc biệt, SIMD, đại số và các đường tắt khác. Nó không cần lặp lại từng bước toàn bộ lịch sử tính toán của cách triển khai chính tắc miễn là thực hiện cùng phép toán ngữ nghĩa và trả cùng câu trả lời.</p>
+  <p>Tối ưu hóa không phải một nguồn thẩm quyền thay thế.</p><hr>
+</section>
+
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>Nguồn gốc, Ngày Thành lập và Ngày các Tấm Bảng</h2>
+  <p>Ở đây đặc biệt cần tách rõ các mốc thời gian chính tắc khỏi câu chuyện của trang web.</p>
+
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>Các mốc neo</h3>
+    <p>Hệ thống có một ngày tham chiếu cố định gọi là <strong>Ngày Thành lập</strong>. Trong lịch Gregory mở rộng về quá khứ, đó là <strong>22 tháng 12 năm 41,222 TCN</strong>.</p>
+    <p>Ngày Thành lập không phải “khởi đầu của thời gian”, mà là mốc neo tính toán.</p>
+    <p>Cách đánh số ngày quanh nó dùng số dương lẻ/chẵn: Ngày Thành lập=1; các ngày sau=3, 5, …; về phía quá khứ, ngày liền trước=2, rồi 4, 6, … . Nhờ vậy hai phía của mốc neo được mã hóa mà không cần số ngày âm trong bộ đếm này.</p>
+    <p>Mốc neo còn lại là <strong>Ngày các Tấm Bảng</strong>: <strong>15 tháng 6 năm 763 TCN trong lịch Julius mở rộng về quá khứ</strong>, tức <strong>7 tháng 6 năm 763 TCN trong lịch Gregory mở rộng về quá khứ</strong>.</p>
+    <p>Khoảng cách chính xác từ Ngày Thành lập đến Ngày các Tấm Bảng là</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
+    <p>ngày.</p>
+    <p>Đây là các mốc neo cố định trên trục thời gian, nhưng ngày Pastafari hiển thị cho chúng vẫn phụ thuộc vào ngày thao tác mà từ đó ta hỏi về chúng.</p>
+  </section>
+
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>Câu chuyện của trang web</h3>
+    <p>Trong cách kể biên tập của trang, lịch được trình bày như một phần của sự sáng tạo và như một hệ thống mà loài người đã sử dụng nhưng không thật sự nhận thức đầy đủ, cho tới khi nó được truyền lại trong thời hiện đại.</p>
+    <p>Đó là câu chuyện của trang web; không nên trình bày mọi chi tiết tự sự trong đó như một mệnh đề kỹ thuật được Megillah nói rõ.</p>
+    <p>Bản thân sự kiện truyền lại là một sự kiện lịch sử cố định. <strong>Ngày Pastafari</strong> của nó nên được hiển thị động theo ngày thao tác hiện tại hơn là bị đóng băng vĩnh viễn thành một ngày duy nhất.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>Dành cho người dùng nâng cao: chuyển đổi ngược</h2>
+  <p>Khi biết ngày thao tác <code>c</code>, chuyển đổi ngược được xác định rất mạnh. Trong một năm Pastafari đã biết,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{tên cốt-lết},\text{ngày trong cốt-lết})</code></pre>
+  <p>xác định nhiều nhất một ngày. Điều tương tự đúng với</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{tên tháng},\text{ngày trong tháng})</code></pre>
+  <p>Do đó, ngày Pastafari đầy đủ với ngày thao tác đã biết xác định duy nhất ngày đích.</p>
+
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Giới hạn trên của số ứng viên khi chuyển đổi ngược">
+    <table class="about-table">
+      <thead><tr><th scope="col">Thông tin thêm đã biết</th><th scope="col">Số ứng viên tối đa</th></tr></thead>
+      <tbody>
+        <tr><td>Không có trường ngoài năm</td><td>5,778</td></tr>
+        <tr><td>Chỉ tên cốt-lết</td><td>5,568</td></tr>
+        <tr><td>Chỉ ngày trong cốt-lết</td><td>17</td></tr>
+        <tr><td>Chỉ tên tháng</td><td>123</td></tr>
+        <tr><td>Chỉ ngày trong tháng</td><td>47</td></tr>
+        <tr><td>Tên cốt-lết + ngày trong cốt-lết</td><td>1</td></tr>
+        <tr><td>Tên tháng + ngày trong tháng</td><td>1</td></tr>
+        <tr><td>Bất kỳ ba trường ngoài năm</td><td>1</td></tr>
+        <tr><td>Cả bốn trường ngoài năm</td><td>1</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Nếu không biết ngày thao tác thì tình hình khác. Cùng một bộ năm giá trị có thể xuất hiện dưới các ngày thao tác khác nhau, và có những ví dụ chính xác trong đó cùng một ngày Pastafari đầy đủ nằm ở các khoảng cách khác nhau so với <code>c</code>.</p>
+  <p>Trong năm 5000, ngay cả dấu của khoảng cách đó cũng không phải lúc nào được xác định bởi bộ năm: cùng một ngày Pastafari đầy đủ có thể nằm trong quá khứ so với ngày thao tác ở một ngữ cảnh, nhưng ở tương lai trong ngữ cảnh khác.</p>
+  <p>Vì thế một ngày Pastafari đầy đủ không phải địa chỉ tuyệt đối trên trục thời gian nếu ta không biết nó được tính dưới <code>c</code> nào.</p>
+
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>Cấu trúc ở thời gian rất xa</h3>
+    <p>Nghiên cứu toán học suy ra từ đặc tả còn tìm được một cấu trúc tiệm cận chính xác. Với <strong>ngày thao tác cố định</strong> <code>c</code>, đủ xa ở đuôi quá khứ xuất hiện tính tuần hoàn afin.</p>
+    <p>Nếu</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>thì với cùng <code>c</code> tồn tại một độ dịch <code>H_c</code>, một thay đổi năm <code>p_c</code> và một ngưỡng đủ xa sao cho sau ngưỡng đó</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>Bốn trường ngoài năm lặp lại, còn số năm thay đổi một lượng cố định.</p>
+    <p>Đây là kết quả cho <code>c</code> cố định; nó không kéo theo quan hệ toàn cục</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>Câu hỏi liệu độ dốc tiệm cận cuối cùng có thực sự khác nhau giữa các ngày thao tác khác nhau vẫn còn bỏ ngỏ.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>Dành cho người dùng nâng cao: nước sốt giữ lại bao nhiêu lịch sử?</h2>
+  <p>Nước sốt trông như một cơ chế trộn rất mạnh, nhưng nghiên cứu đại số cho thấy nó giữ lại nhiều thông tin hơn rất nhiều so với vẻ ngoài gợi ý. Đây là kết quả nghiên cứu suy ra từ đặc tả, không phải một quy tắc lịch mới.</p>
+  <p>Ở các giai đoạn thấy được 3–46, trên nhánh tiệm cận liên quan, generic injectivity đã được xác lập: trong trường hợp tổng quát, trạng thái giữ đủ thông tin để tái dựng lịch sử đầu vào và thứ tự bát có liên quan.</p>
+  <p>Thông tin cũng không biến mất ngay trong 12 lần khuấy cuối. Với năm lần đầu sau giọt thấy được 46, generic invertibility đã được xác lập trên hợp chính tắc liên quan mà không cần thông tin phụ thêm; với phần còn lại, ta biết các giới hạn trên mang tính xây dựng mạnh về lượng thông tin phụ đủ để tái dựng.</p>
+  <p>Vẫn còn bỏ ngỏ liệu <strong>chỉ sáu bát cuối</strong> có luôn đủ theo nghĩa tổng quát hay không.</p>
+  <p>Một số kết quả được chứng minh bằng ký hiệu, những kết quả khác được khép lại bằng kiểm tra số học hữu hạn và chính xác. Việc tăng cường chứng minh ký hiệu đã làm nhỏ đi đáng kể lõi tính toán cần phải tin cậy, nhưng chưa loại bỏ nó hoàn toàn.</p>
+  <p>Những không gian ban đầu tưởng như đòi hỏi duyệt số lượng đường đi khổng lồ đã thu nhỏ thành các cấu trúc hữu hạn nhỏ hơn nhiều, trong đó có automata 180 và 9 trạng thái cùng các đối xứng của sáu bát.</p>
+  <p>Dưới sự trộn lẫn ấy là một cấu trúc đại số cứng. Muốn biết ngày hôm nay, bạn không cần biết nó.</p><hr>
+</section>
+
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>Vậy rốt cuộc Lịch Pastafari là gì?</h2>
+  <p>Một lịch xác định trong đó ngày tháng không chỉ là hàm của ngày đích, mà của <strong>ngày thao tác và ngày được hỏi cùng nhau</strong>.</p>
+  <p>Mỗi ngày Pastafari có đúng năm trường. Hiện tại nhìn từ chính nó luôn ở năm 5000, nhưng bản thân năm 5000 di chuyển cùng ngày thao tác. Năm có thể rất dài, cốt-lết luôn liên tục, tháng thì không nhất thiết, và không có hệ thống tuần chính tắc.</p>
+  <p>Ngày <code>n+1</code> của một tháng không nhất thiết là ngày mai. Cùng một ngày theo thời gian có thể ngày mai nhận nhãn Pastafari khác. Cùng một thời điểm vật lý có thể ở hai nơi thuộc hai ngày Pastafari địa phương khác nhau. Một sự kiện cả ngày không nhất thiết kéo dài từ nửa đêm đến nửa đêm. Và sinh nhật hằng năm trước hết là bài toán tìm kiếm, rồi mới là bài toán lịch.</p>
+  <p>Nhưng khi biết ngày thao tác và ngày được hỏi, không có mơ hồ: chỉ có đúng một câu trả lời.</p>
+  <p>Cuối cùng, một cuốn lịch cũng không cần làm nhiều hơn thế.</p>
+</section>
