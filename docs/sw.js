@@ -1,21 +1,20 @@
 "use strict";
 
-const VERSION = "pastafari-static-pwa-hardening-20-about-review";
+const VERSION = "pastafari-static-pwa-hardening-21-about-i18n";
 const CORE_CACHE = `${VERSION}-core`;
 const RUNTIME_CACHE = "pastafari-runtime-assets";
 const CACHE_PREFIX = "pastafari-static-";
 
-// Core application shell. English is the only locale resource installed eagerly,
-// because it is the runtime fallback when no supported preference is selected.
+// Core application shell. English UI resources and the Hebrew article fallback are installed eagerly.\n// Other locale resources and translated articles are cached on demand.
 const CORE_ASSETS = [
   "./index.html",
   "./about/index.html",
-  "./about/about.js?v=2-about-review",
-  "./about/content/registry.js?v=2-about-review",
-  "./about/content/he.html?v=2-about-review",
+  "./about/about.js?v=3-about-i18n",
+  "./about/content/registry.js?v=3-about-i18n",
+  "./about/content/he.html?v=3-about-i18n",
   "./styles.css?v=15-about-review",
-  "./app.js?v=23-about-page",
-  "./reverse-ui.js?v=20-about-page",
+  "./app.js?v=24-about-i18n",
+  "./reverse-ui.js?v=21-about-i18n",
   "./reverse-search-controller.js",
   "./calendar-input-conventions.js?v=9-calendar-input-conventions",
   "./calendar-converters.js?v=9-canonical-names",
@@ -29,9 +28,9 @@ const CORE_ASSETS = [
   "./engine/pastafari-constraints.js",
   "./engine/pastafari-reverse-worker.js",
   "./i18n/calendar-identifiers.js?v=9-canonical-names",
-  "./i18n/registry.js?v=19-about-page",
-  "./i18n/runtime.js?v=19-about-page",
-  "./i18n/locales/en.js?v=18-about-page"
+  "./i18n/registry.js?v=20-about-i18n",
+  "./i18n/runtime.js?v=20-about-i18n",
+  "./i18n/locales/en.js?v=19-about-i18n"
 ];
 
 const OPTIONAL_ASSETS = Object.freeze([
@@ -40,12 +39,12 @@ const OPTIONAL_ASSETS = Object.freeze([
   "./icons/icon-192.png",
   "./icons/icon-512.png",
 ]);
-const OPTIONAL_LOCALE_PATH = /^\/i18n\/locales\/[A-Za-z0-9-]+\.js$/;
+const OPTIONAL_LOCALE_PATH = /^\/i18n\/locales\/[A-Za-z0-9-]+\.js$/;\nconst OPTIONAL_ARTICLE_PATH = /^\/about\/content\/[A-Za-z0-9-]+\.html$/;
 const SCOPE_URL = new URL(self.registration.scope);
 const scoped = (path) => new URL(path, SCOPE_URL).href;
 const ENGLISH_LOCALE_ASSET = CORE_ASSETS.find((path) => path.startsWith("./i18n/locales/en.js?"));
 if (!ENGLISH_LOCALE_ASSET) throw new Error("English fallback locale is missing from CORE_ASSETS.");
-const LOCALE_REVISION_SEARCH = new URL(scoped(ENGLISH_LOCALE_ASSET)).search;
+const LOCALE_REVISION_SEARCH = new URL(scoped(ENGLISH_LOCALE_ASSET)).search;\nconst HEBREW_ARTICLE_ASSET = CORE_ASSETS.find((path) => path.startsWith("./about/content/he.html?"));\nif (!HEBREW_ARTICLE_ASSET) throw new Error("Hebrew fallback article is missing from CORE_ASSETS.");\nconst ARTICLE_REVISION_SEARCH = new URL(scoped(HEBREW_ARTICLE_ASSET)).search;
 
 // Core cache entries intentionally use private synthetic keys rather than the
 // public request URLs. This prevents an older active Service Worker that uses
@@ -102,6 +101,13 @@ function isOptionalLocaleRequest(url) {
   return relativePath !== null
     && OPTIONAL_LOCALE_PATH.test(relativePath)
     && url.search === LOCALE_REVISION_SEARCH;
+}
+
+function isOptionalArticleRequest(url) {
+  const relativePath = scopeRelativePath(url);
+  return relativePath !== null
+    && OPTIONAL_ARTICLE_PATH.test(relativePath)
+    && url.search === ARTICLE_REVISION_SEARCH;
 }
 
 async function coreResponse(entry, request = null) {
@@ -178,7 +184,7 @@ async function migrateCompatibleRuntimeEntries(cacheNames) {
     for (const request of await cache.keys()) {
       const url = new URL(request.url);
       if (CORE_BY_URL.has(url.href)) continue;
-      if (!OPTIONAL_BY_URL.has(url.href) && !isOptionalLocaleRequest(url)) continue;
+      if (!OPTIONAL_BY_URL.has(url.href) && !isOptionalLocaleRequest(url) && !isOptionalArticleRequest(url)) continue;
       const response = await cache.match(request);
       if (!response) continue;
       try {
@@ -195,7 +201,7 @@ async function pruneRuntimeCache() {
   const runtime = await caches.open(RUNTIME_CACHE);
   for (const request of await runtime.keys()) {
     const url = new URL(request.url);
-    const currentOptional = OPTIONAL_BY_URL.has(url.href) || isOptionalLocaleRequest(url);
+    const currentOptional = OPTIONAL_BY_URL.has(url.href) || isOptionalLocaleRequest(url) || isOptionalArticleRequest(url);
     if (!currentOptional || CORE_BY_URL.has(url.href)) await runtime.delete(request);
   }
 }
@@ -250,6 +256,11 @@ self.addEventListener("fetch", (event) => {
   }
 
   if (isOptionalLocaleRequest(url)) {
+    event.respondWith(runtimeResponse(event.request, url, url.pathname));
+    return;
+  }
+
+  if (isOptionalArticleRequest(url)) {
     event.respondWith(runtimeResponse(event.request, url, url.pathname));
     return;
   }
