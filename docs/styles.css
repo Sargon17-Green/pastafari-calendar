@@ -1306,11 +1306,16 @@ h1 {
 .about-kv-table th:first-child,
 .about-kv-table td:first-child {
   width: 64%;
+  padding-inline-end: 1.15rem;
+  border-inline-end: 1px solid var(--line);
+  text-align: end;
 }
 
 .about-kv-table th:last-child,
 .about-kv-table td:last-child {
   width: 36%;
+  padding-inline-start: 1.15rem;
+  text-align: start;
 }
 
 .about-kv-table tbody td:first-child {
@@ -1318,7 +1323,6 @@ h1 {
 }
 
 .about-kv-table tbody td:last-child {
-  text-align: start;
   white-space: normal;
 }
 
@@ -1503,14 +1507,17 @@ h1 {
   }
 
   .about-kv-table td {
-    padding: 0.1rem 0;
+    padding: 0.1rem 0.25rem;
     border: 0;
+    text-align: start;
   }
 
   .about-kv-table tbody td:first-child {
+    border: 0;
     color: var(--muted);
     font-size: 0.9rem;
     font-weight: 700;
+    text-align: start;
   }
 
   .about-kv-table tbody td:last-child {
@@ -1518,6 +1525,7 @@ h1 {
     color: var(--ink);
     font-size: 1rem;
     font-weight: 750;
+    text-align: start;
   }
 }
 
