@@ -25,7 +25,7 @@ test("Pages markup exposes one reverse-search mount point", async () => {
 test("app wires reverse results back into the canonical calendar state", async () => {
   const source = await read("docs/app.js");
   assert.match(source, /createReverseSearchUi/);
-  assert.match(source, /reverse-ui\.js\?v=19-canonical-names/);
+  assert.match(source, /reverse-ui\.js\?v=20-about-page/);
   assert.match(source, /function openReversePair\(targetJdn, calculationJdn\)/);
   assert.match(source, /state\.targetJdn = target/);
   assert.match(source, /state\.calculationJdn = calculation/);
