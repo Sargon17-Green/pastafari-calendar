@@ -12,9 +12,9 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | code | Intl locale | dir | site support | article status |
 |---|---|---|---|---|
 | he | he-IL | rtl | complete | semantic master / existing |
-| en | en-US | ltr | complete | not started |
+| en | en-US | ltr | complete | draft |
 | af | af-ZA | ltr | partial | not started |
-| ar | ar | rtl | partial | not started |
+| ar | ar | rtl | partial | draft |
 | az | az-AZ | ltr | partial | not started |
 | be | be-BY | ltr | partial | not started |
 | bg | bg-BG | ltr | partial | not started |
@@ -22,17 +22,17 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | bs | bs-BA | ltr | partial | not started |
 | ca | ca-ES | ltr | partial | not started |
 | cs | cs-CZ | ltr | partial | not started |
-| da | da-DK | ltr | partial | not started |
-| de | de-DE | ltr | partial | not started |
+| da | da-DK | ltr | partial | draft |
+| de | de-DE | ltr | partial | draft |
 | el | el-GR | ltr | partial | not started |
 | eo | eo | ltr | partial | not started |
-| es | es-ES | ltr | partial | not started |
+| es | es-ES | ltr | partial | draft |
 | et | et-EE | ltr | partial | not started |
-| fa | fa-IR | rtl | partial | not started |
+| fa | fa-IR | rtl | partial | draft |
 | fi | fi-FI | ltr | partial | not started |
 | fil | fil-PH | ltr | partial | not started |
 | fo | fo-FO | ltr | partial | not started |
-| fr | fr-FR | ltr | partial | not started |
+| fr | fr-FR | ltr | partial | draft |
 | fy | fy-NL | ltr | partial | not started |
 | gl | gl-ES | ltr | partial | not started |
 | gu | gu-IN | ltr | partial | not started |
@@ -44,8 +44,8 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | hy | hy-AM | ltr | partial | not started |
 | id | id-ID | ltr | partial | not started |
 | is | is-IS | ltr | partial | not started |
-| it | it-IT | ltr | partial | not started |
-| ja | ja-JP | ltr | partial | not started |
+| it | it-IT | ltr | partial | draft |
+| ja | ja-JP | ltr | partial | draft |
 | jv | jv-ID | ltr | partial | not started |
 | ka | ka-GE | ltr | partial | not started |
 | kk | kk-KZ | ltr | partial | not started |
@@ -56,13 +56,13 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | mk | mk-MK | ltr | partial | not started |
 | mr | mr-IN | ltr | partial | not started |
 | ms | ms-MY | ltr | partial | not started |
-| nb | nb-NO | ltr | partial | not started |
+| nb | nb-NO | ltr | partial | draft |
 | ne | ne-NP | ltr | partial | not started |
-| nl | nl-NL | ltr | partial | not started |
+| nl | nl-NL | ltr | partial | draft |
 | nn | nn-NO | ltr | partial | not started |
 | pa | pa-IN | ltr | partial | not started |
 | pl | pl-PL | ltr | partial | not started |
-| pt | pt-BR | ltr | partial | not started |
+| pt | pt-BR | ltr | partial | draft |
 | ro | ro-RO | ltr | partial | not started |
 | ru | ru-RU | ltr | partial | not started |
 | sk | sk-SK | ltr | partial | not started |
@@ -70,21 +70,40 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | so | so-SO | ltr | partial | not started |
 | sq | sq-AL | ltr | partial | not started |
 | sr | sr-Latn-RS | ltr | partial | not started |
-| sv | sv-SE | ltr | partial | not started |
+| sv | sv-SE | ltr | partial | draft |
 | sw | sw-TZ | ltr | partial | not started |
 | ta | ta-IN | ltr | partial | not started |
 | te | te-IN | ltr | partial | not started |
 | th | th-TH | ltr | partial | not started |
 | tr | tr-TR | ltr | partial | not started |
 | uk | uk-UA | ltr | partial | not started |
-| ur | ur-PK | rtl | partial | not started |
+| ur | ur-PK | rtl | partial | draft |
 | uz | uz-UZ | ltr | partial | not started |
 | vi | vi-VN | ltr | partial | not started |
 | yo | yo-NG | ltr | partial | not started |
-| zh | zh-CN | ltr | partial | not started |
+| zh | zh-CN | ltr | partial | draft |
 | zu | zu-ZA | ltr | partial | not started |
 
 Status progression for target locales: `not started → draft → semantic QA → linguistic QA → integrated → rendered → PASS`.
+
+## Native-language whole-site QA policy
+
+The final linguistic QA is intentionally a separate phase and will run on a dedicated branch forked from the completed translation branch, tentatively `qa/about-i18n-native-language-audit`.
+
+For every one of the 72 supported locales, run a separate QA conversation/session whose working language, instructions, findings and proposed edits are written in the locale being audited. The reviewer must inspect the **whole rendered site in that locale**, not only `/about/`.
+
+Each locale review must actively look for:
+- text that is wholly or partly in another language, including English fallback leakage;
+- grammatical, idiomatic or stylistic text that sounds translated, stiff, unnatural or locally non-native;
+- inconsistent terminology between the article, controls, calendar labels, errors, reverse-search UI and metadata;
+- wrong script, punctuation, quotation conventions, capitalization, spacing, plural behavior, numerals or date-expression conventions;
+- RTL/BiDi defects around formulas, Latin identifiers, numbers and inline code where relevant;
+- truncation, overflow, awkward wrapping, broken tables or controls caused by the localized text;
+- untranslated accessibility text, ARIA labels, title/meta text, manifest strings, noscript text and error/fallback states.
+
+The per-locale session must not approve a locale merely because all strings are technically translated. Approval requires natural prose and a coherent single-language experience across the site. Canonical identifiers, formulas, hashes, API names and intentionally untranslated technical literals remain exempt.
+
+A locale can move from `semantic QA` to `linguistic QA` only after the structural/semantic invariant suite passes; it can move to `PASS` only after its native-language whole-site review and rendered smoke check are clean.
 
 ## Stable deep-link contract
 
