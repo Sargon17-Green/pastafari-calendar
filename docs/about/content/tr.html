@@ -1,0 +1,264 @@
+<!-- Türkçe sürüm doğrudan İbranice anlamsal kaynaktan yazılmıştır; arada başka bir dil kullanılmamıştır. -->
+<!-- Bölüm ID'leri kalıcı, herkese açık deep-link sözleşmesidir ve çevrilmiş başlıklardan türetilmez. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>Sitenin anlatısında Pastafari Takvimi, zamanın yaratıldığı takvim olarak sunulur. Hesaplama mekanizması ise kesin kurallarla tanımlanmıştır.</p>
+  <p>Bu takvim her güne tek ve değişmez bir Pastafari “etiketi” yapıştırmaz. Bir günün tarihini bulmak için iki gün gerekir: hesabın başladığı <strong>işlem günü</strong> ve tarihini sorduğumuz <strong>sorgulanan gün</strong>.</p>
+  <p>İşlem gününe <code>c</code>, sorgulanan güne <code>t</code> dersek tarih</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>olur; <code>F(t)</code> değildir. Bu yüzden aynı sorgulanan gün, başka bir işlem günü altında farklı bir Pastafari tarihi alabilir.</p>
+  <p>Bu bir hata değildir. Takvimin doğası budur.</p><hr>
+</div>
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>Bir Pastafari tarihi nelerden oluşur?</h2>
+  <p>Bir Pastafari tarihinin <strong>tam olarak beş parçası</strong> vardır: yıl numarası, köfte adı, köfte içindeki gün, ay adı ve ay içindeki gün.</p>
+  <p>Genel bir örnek: <strong>5000 yılı, A köftesi, köftede 417. gün, B ayı, ayda 83. gün.</strong></p>
+  <p>İşlem günü, gözlemcinin konumu, günün kronolojik kimliği veya başka teknik bilgiler tarihin yanında gösterilebilir; ancak bunlar altıncı bir tarih alanı değildir.</p><hr>
+</section>
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>Neden bir işlem günü gerekiyor?</h2>
+  <p>Alışılmış takvimlerde tarihin doğrudan güne “ait” olduğunu düşünürüz. Pastafari Takvimi'nde tarih, iki gün arasındaki ilişkiye bağlıdır.</p>
+  <p><code>t</code>'yi değiştirmek başka bir günü sormaktır. <code>c</code>'yi değiştirmek ise daha köklü olabilir: yıl sınırları, köfteler, aylar, adları ve ayların birbirine nasıl örüldüğü değişebilir.</p>
+  <p>Bu yüzden bugün hesaplanan bir almanak yarın mutlaka doğru almanak değildir. Böylece basılı bir takvimin koca bir yıl boyunca işe yaraması gibi istenmeyen bir durum da önlenmiş olur.</p><hr>
+</section>
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>Aynı gün, başka tarih</h2>
+  <p><strong>Günün kimliği</strong> ile <strong>Pastafari gösterimi</strong> birbirinden ayrılmalıdır. İlki, belirli bir günün zaman eksenindeki sabit yeridir; ikincisi ise o gün belirli bir işlem günü altında gösterildiğinde elde edilen beşli yapıdır.</p>
+  <p>Üründe ve API'de ilkini <code>day-id</code> olarak düşünebiliriz: gösterim bağlamı değişse de değişmeyen kronolojik kimlik. Buna karşılık</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre><p>ile</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>eşit olmak zorunda değildir.</p>
+  <p>Dolayısıyla işlem gününü elle değiştirmek, aynı günü zaman ekseninde hiç oynatmadan ekranda görünen tarihi değiştirebilir.</p>
+  <p>Aynı ilke olaylar için de geçerlidir. Bir buluşma, doğum veya tarihsel olay sabit bir kronolojik kimliğe bağlanmalı; Pastafari tarihi ise görüntüleme bağlamına göre yeniden hesaplanmalıdır.</p>
+  <p>Etiket değişebilir. Olay değişmez.</p><hr>
+</section>
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>5000 yılı</h2>
+  <p>İşlem günü ile sorgulanan gün aynıysa</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>yıl her zaman</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>olur. Başka bir deyişle, şimdi kendi açısından bakıldığında daima 5000 yılındadır. Fakat 5000 yılı sabit bir tarihsel dönem değildir; işlem gününe göre yeniden seçilir.</p>
+  <p>İşlem günü 5000 yılının içindedir, aynı seçilmiş yılın diğer günleri de öyle. Bu nedenle <strong>5000 yılında olmak <code>t=c</code> olduğunu kanıtlamaz.</strong></p>
+  <p>Yıl numarası yön konusunda ise bilgi verir:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre><p>ve</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p><strong>0 yılı</strong> da vardır; daha eski tarihlere gidildikçe negatif numaralı yıllar gelir.</p><hr>
+</section>
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>Yıllar ve kapılar</h2>
+  <p>Bir Pastafari yılı</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ ile }5778</code></pre>
+  <p>gün arasında olabilir. Bunlar deneysel ortalamalar değil, sistemin kanonik sınırlarıdır.</p>
+  <p>Dolayısıyla bir yıl güneş yılından kısa da olabilir, on beş güneş yılından uzun da. Yıl sınırları <strong>kapı</strong> sistemiyle kurulur; köfte sınırları da aynı sistemden gelir.</p>
+  <p>Yıl sonunun mevsimlerle, Dünya'nın Güneş çevresindeki dolanımıyla, Ay'ın döngüsüyle veya yılı artık bitirme yönündeki pratik bir ihtiyaçla çakışması gerekmez.</p><hr>
+</section>
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>Köfteler</h2>
+  <p>Her yıl <strong>6 ile 17 köfte</strong> arasında bölünür. Köfte kronolojik olarak kesintisiz bir bölümdür.</p>
+  <p>Bugün bir köftenin 250. günü ise ve bugün son gün değilse, yarın aynı köftenin 251. günüdür. Köfte sınırları kapıdır ve bir köftenin uzunluğu en az</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
+  <p>gündür.</p>
+  <p>Sistemde 17 kanonik köfte adı vardır ve aynı yıl içinde bir ad tekrarlanmaz. Ad, köftenin uzunluğunu veya yerini belirlemez.</p><hr>
+</section>
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>Aylar ve örülme</h2>
+  <p>Her yılda</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ ile }47</code></pre>
+  <p>yapısal ay bulunur ve her aya</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ ile }123</code></pre>
+  <p>gün atanır.</p>
+  <p>Ancak bir Pastafari ayı <strong>kronolojik olarak kesintisiz olmak zorunda değildir</strong>. Örneğin sıralama şöyle olabilir:</p>
+  <blockquote><p>A ayı — 14. gün<br>B ayı — 9. gün<br>A ayı — 15. gün</p></blockquote>
+  <p>Bu tamamen geçerlidir. A ayının 15. günü, araya başka bir aya ait gün girmiş olsa bile <strong>o ayın sıradaki günüdür</strong>.</p>
+  <p>Dolayısıyla “ay içindeki gün”, ayın ilk görünüşünden bu yana geçen kronolojik gün sayısını değil, yıl boyunca o aya atanmış günlerin sıra numarasını gösterir. 48. gün, o aya ait 48. gündür; ilk görünüşten 47 gün sonra demek değildir.</p><hr>
+</section>
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>Aylar birbirinin içine örülür</h2>
+  <p>Ayları yıl boyunca uzanan iplikler gibi düşünebiliriz. Her gün tam bir aya aittir; yarın başka bir ay olabilir, sonra ilk ay geri dönüp kendi sıradaki numarasından devam edebilir.</p>
+  <p>Bu örülme kuralsız değildir; ayların ilk ve son görünüş sıraları için kısıtlar vardır. Buna rağmen bir ayın bitmeden başka bir ayın başlayamayacağına dair bir kural yoktur.</p>
+  <ul><li>Köfte, kesintisiz bir zaman parçası içindeki konumu ölçer.</li><li>Ay, kaybolup sonra yeniden görünebilen yapısal bir ipliğe ait olmayı ifade eder.</li></ul>
+  <p>Bir ay birkaç köfteden geçebilir; bir köfte birçok ayın görünüşlerini içerebilir. Bu iki sistemin başlangıç ve bitişlerinin çakışması gerekmez.</p><hr>
+</section>
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>Ayın sonraki günü yarın olmayabilir</h2>
+  <p>Bugün belirli bir ayın 17. günü ise, aynı ayın 18. günü <strong>o ayın bir sonraki görünüşüdür</strong>. Yarın olabilir, çok daha sonra da olabilir.</p>
+  <p><strong>Yarın</strong> bir sonraki kronolojik gündür; <strong>ayın sonraki günü</strong> ise aynı ayın bir sonraki görünüşüdür.</p>
+  <p>“Ay sonu” da zaman bakımından yakın demek değildir. 120 günlük bir ayın 119. gününde olunabilir ama 120. gün yılın çok daha ilerisinde bulunabilir.</p><hr>
+</section>
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>Hafta yoktur</h2>
+  <p>Mevcut kanonik spesifikasyon <strong>bir hafta sistemi tanımlamaz</strong>. Kanonik yedi günlük bir üst birim, Pastafari hafta günü adları veya iki günü “haftanın aynı günü” sayan bir kural yoktur.</p>
+  <p>Elbette dışarıdan sivil hafta sistemi eklenebilir; yalnızca Pastafari tarihinin bir parçası değildir.</p><hr>
+</section>
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>Adlar</h2>
+  <p>17 kanonik köfte adı ve 47 kanonik ay adı vardır. Bir yıl içinde her ad kendi ailesinde en fazla bir kez görünür.</p>
+  <p>Adın kimliği kanonik ve anlamsaldır; farklı yazımlar, çeviriler veya uygulamalar arasında oylamayla oluşmaz. Adların anlamı konusunda en üst kaynak İbranice Megillah'dır; çeviri ve transliterasyon yalnızca sunum katmanlarıdır.</p>
+  <p>Ad, uzunluğun gizli kodu da değildir. Belirli bir köfte ya da ay adı tek başına o birimi daha uzun veya daha kısa yapmaz.</p><hr>
+</section>
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>Aylarla ilgili küçük bir gerçek</h2>
+  <p>47 ay adı vardır ve bir ay en fazla 123. güne kadar ulaşabilir. Dolayısıyla “ay adı + ay içindeki gün numarası” biçiminde</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>sözdizimsel olarak mümkün çift vardır.</p>
+  <p>Yılın her günü tam bir çift gerçekleştirir. Yıl uzunluğu <code>L</code> ise tam <code>L</code> çift görünür. Fakat</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>olduğuna göre her yılda en az</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre>
+  <p>mümkün çift eksik kalır. En uzun yılda bile hepsine yetecek kadar gün yoktur.</p><hr>
+</section>
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>Takvim nasıl hesaplanır?</h2>
+  <p>İç hesaplamaya burada <strong>sos</strong> diyoruz. Merkezinde asal sayı</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>yer alır.</p>
+  <p>Süreç beş giriş sayacı, 7 gizli damla, 46 görünür damla, 6 kâse, değişen kâse sıraları, 12 son karıştırma, farklı cevaplar için mühürler, kombinatorik seçim mekanizmaları, kapı üretimi, yıl seçimi, köfte bölme, ad seçimi, ay oluşturma ve ay günlerini örmeyi içerir.</p>
+  <p>Son güncellemeler <strong>eşzamanlıdır</strong>: her karıştırmada altı yeni değer de aynı eski durumdan hesaplanır ve ancak sonra altı kâse birlikte değiştirilir.</p>
+  <p>12 son karıştırmada özellikle önemli bir kanonik ayrıntı vardır. <code>S</code> altı eski kâsenin toplamı, <code>r</code> karıştırma numarası ise sistem</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p>değerini hesaplar. <code>R</code> <strong>kaydedilmiş toplamdır</strong>. Hem kâse sırasının seçimi hem de karıştırmanın iç güncellemesi ham <code>S</code> yerine <code>R</code>'yi kullanır.</p>
+  <p>Bu güncellemeye ham toplamı veren eski sürümler güncel kanonik anlambilimi tanımlamaz. Eski kurala dayanan örnekler yeniden doğrulanmadıkça güncelliğini yitirmiş kabul edilmelidir.</p>
+  <p>Karıştırmalardan sonra cevap halkası da görünür damla 46'da kilitlenen sırayla devam eder; son karıştırmanın sırasıyla otomatik olarak değiştirilmemelidir.</p><hr>
+</section>
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice ve Wide Choice</h2>
+  <p>Nispeten küçük seçenek uzaylarında <strong>Short Choice</strong> kullanılır. Basit modulo yanlılığından kaçınmak için rejection sampling kullanır.</p>
+  <p>Çok büyük uzaylarda <strong>Wide Choice</strong> kullanılır. Spesifikasyonun garanti etmediği özellikler ona atfedilmemelidir.</p>
+  <p>Wide Choice, bir indeks elde edilene kadar bağımsız ve eşit dağılımlı taban-<code>Q</code> rakamları üretmekle eşdeğer değildir. Bu nedenle her yasal seçeneğin zorunlu olarak aynı pozitif olasılığa sahip olduğu sonucu çıkmaz. Yeterince büyük uzaylarda, bu mekanizmanın hiç ulaşamadığı yasal seçenekler bulunabilir.</p>
+  <p>Takvimin kendisi bütünüyle deterministiktir. “Choice”, çalışma sırasında yapılan bir çekiliş değil, algoritmanın bir aşamasının adıdır.</p><hr>
+</section>
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>Yapısal Atlas</h2>
+  <p>Buraya kadar takvimin kurallarını anlattık. Şimdi gelecek sayılar başka tür bilgidir: büyük bir hesaplama örneğinden elde edilmiş <strong>ampirik bulgular</strong>.</p>
+  <p>Atlas, engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> ile oluşturuldu ve 4,096 işlem günü; her biri için 4990–5010 yılları; 86,016 yıl yapısı; 625,437 köfte; 3,535,422 yapısal ay; 356 milyondan fazla kesintisiz ay parçası; aynı ayın <code>n</code> gününden <code>n+1</code> gününe 364 milyondan fazla geçiş içeriyordu.</p>
+  <p>Bunlar bu corpus'un özellikleridir; kanonik yasa değildir.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Yapısal Atlas ölçüm verileri"><table class="about-table">
+    <thead><tr><th scope="col">Ölçülen büyüklük</th><th scope="col">Örnek sonucu</th></tr></thead><tbody>
+      <tr><td>Ortalama yıl uzunluğu</td><td>4,275.182 gün</td></tr><tr><td>Yıl uzunluğu medyanı</td><td>4,343</td></tr><tr><td>Gözlenen minimum / maksimum</td><td>716 / 5,778</td></tr>
+      <tr><td>Yılda ortalama köfte sayısı</td><td>7.271</td></tr><tr><td>Tam 6 köfteli yıllar</td><td>42.00%</td></tr><tr><td>6–8 köfteli yıllar</td><td>81.29%</td></tr>
+      <tr><td>Ortalama köfte uzunluğu</td><td>587.963 gün</td></tr><tr><td>Köfte uzunluğu medyanı</td><td>560</td></tr><tr><td>Yılda ortalama ay sayısı</td><td>41.102</td></tr>
+      <tr><td>Ay sayısı medyanı</td><td>43</td></tr><tr><td>47 aylı yıllar</td><td>15.63%</td></tr><tr><td>En az 45 aylı yıllar</td><td>36.81%</td></tr>
+      <tr><td>Ortalama yapısal ay uzunluğu</td><td>104.014 gün</td></tr><tr><td>Ay uzunluğu medyanı</td><td>115</td></tr><tr><td>Ay başına ortalama kesintisiz parça</td><td>100.897</td></tr>
+      <tr><td>Tek günlük ay parçalarının oranı</td><td>97.482%</td></tr><tr><td>Komşu iki günün aynı aya ait olma olasılığı</td><td>2.9976%</td></tr>
+      <tr><td>Ayın <code>n</code> ve <code>n+1</code> günleri arasında ortalama başka-ay günü</td><td>40.408</td></tr><tr><td>Ayın ilk ve son görünüşü arasındaki ortalama yayılım</td><td>4,266.653 gün</td></tr>
+    </tbody></table></div>
+  <p>Pratikte yüz gün civarında bir ay neredeyse bütün bir Pastafari yılına yayılabilir.</p>
+  <p>Aynı atlas 5000 yılı çevresinde doğal bir uzunluk yanlılığı da gösterdi. Örnekteki “normal” yıl ortalama yaklaşık 4,262 gündü. Yıllar içerdikleri gün sayısıyla ağırlıklandırılınca ortalama yaklaşık 4,466 güne çıktı; kendi 5000 yılı ise ortalama yaklaşık 4,499 gündü.</p>
+  <p>Nedeni basit: 5000 yılı işlem gününü içermek zorundadır. Uzun bir yıl, işlem gününü içeren yıl olabileceği daha fazla gün sunar.</p>
+  <p>Birim adı ile uzunluğu arasındaki ilişki de örnekte çok zayıftı. Bu, tam matematiksel bağımsızlık kanıtı değildir; ancak adların uzunluğu kodlamak için tasarlandığına dair pratik bir işaret de vermez.</p>
+  <p>Ayrıca 86,016 yıl yapısı tamamen bağımsız 86,016 örnek değildir; yalnızca 24,786 farklı başlangıç/bitiş kapısı aralığı vardır. Komşu işlem günleri aynı yıllık aralığı seçip farklı iç yapı oluşturabilir.</p>
+  <p>Dolayısıyla atlas ölçülmüş uygulama davranışını iyi tanımlar, ama tüm olası takvim yapıları hakkında küresel bir olasılık teoremi değildir.</p><hr>
+</section>
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>Doğum günleri ve yıldönümleri</h2>
+  <p>“Her yıl aynı gün” ifadesi burada önce tanımlanmalıdır. Doğal tekrar koordinatları <code>(ay adı, ay içindeki gün)</code> ve <code>(köfte adı, köfte içindeki gün)</code> olabilir; koşullar birleştirilebilir.</p>
+  <p>Bu yüzden bir Pastafari doğum günü basitçe <code>RRULE:FREQ=YEARLY</code> değildir. Seçilen tekrar koşulunu sağlayan bir sonraki yıl aranmalı; başlangıç olayı otomatik olarak kendi “bir sonraki görünüşü” sayılmamalıdır.</p>
+  <p>Yalnızca görüntüleme amacıyla işlem gününü değiştirmek kişinin kimliğini, doğum anını veya yaşını değiştirmemelidir.</p>
+  <p>4,096 öz-tarihin tam taramasında, her ardışık Pastafari yılı ileri ve geri yönde 250,000 yıla kadar incelendi:</p>
+  <ul><li><code>(ay adı, ay içindeki gün)</code> için ilk dönüş medyanı 1 Pastafari yılıydı; ilk dönüşlerin 77.56%'sı komşu yılda, 93.77%'si iki yıl içinde, 99.44%'ü beş yıl içinde bulundu; gözlenen maksimum 21 yıldı.</li>
+  <li><code>(köfte adı, köfte içindeki gün)</code> için medyan 3 yıldı; 88.89% on yıl içinde bulundu, fakat dağılımın kuyruğu çok ağırdı ve gözlenen maksimum 51,954 Pastafari yılına ulaştı.</li></ul>
+  <p>Bunlar <strong>test edilen corpus'un ampirik sonuçlarıdır</strong>; her olası yıldönümünün mutlaka geri döneceğini kanıtlamaz ve maksimum bekleme süresi garantisi vermez.</p><hr>
+</section>
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>Nasıl randevulaşılır?</h2>
+  <p>İki kişi yalnızca Pastafari tarihi kullanarak buluşacaksa, en azından beşli tarih yapısı ve hesapta kullanılan işlem günü konusunda anlaşmalıdır. İşlem gününü “bugün” sözcüğü yerine sabit bir gün kimliği olarak saklamak daha iyidir; aksi halde iki kişi farklı takvim hesaplayabilir.</p>
+  <ul><li>“yarın” bir sonraki kronolojik gündür;</li><li>“ayın sonraki günü” aynı ayın bir sonraki görünüşüdür;</li><li>“ay sonu” o ayın son görünüşüdür;</li><li>“bütün ay” ayın günlerinin kümesini veya ilk görünüşten son görünüşe kadar bütün kronolojik yayılımı ifade edebilir;</li><li>“sonraki yıl” seçilmiş işlem günü altında kurulan takvimdeki sonraki yıldır.</li></ul>
+  <p>Çok önemli bir randevuda mutlak kronolojik gün veya an da ayrıca saklanabilir. Takvim bundan zarar görmez.</p><hr>
+</section>
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>Seyahat, olaylar ve all-day</h2>
+  <p>Bir olay ile onun için yerel olarak gösterilen etiket aynı şey değildir. Zamanı belirlenmiş bir olay sabit bir kronolojik ana bağlanmalıdır. Seyahat olayı zaman içinde taşımaz; ancak “yerel gün” tanımı konuma bağlı olduğu için aynı anda gösterilen yerel Pastafari tarihi değişebilir.</p>
+  <p><strong>all-day</strong> olayda fark daha büyüktür. Sivil bütün-gün olayı genellikle bir sivil gece yarısından bir sonraki gece yarısına kadar sürer. Pastafari bütün-gün olayı ise yerel Pastafari gün sınırından sonraki yerel sınıra kadar sürmelidir. Bunlar çoğunlukla aynı anlar değildir.</p>
+  <p>Bu yüzden bir Pastafari olayını sivil takvime düşünmeden “bütün gün” olarak aktarmak anlamını değiştirebilir. Doğru koruma için kronolojik çapa ve uygun konum/gün-sınırı bağlamı saklanmalı, yalnızca <code>all-day</code> işaretiyle yetinilmemelidir.</p><hr>
+</section>
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>Gün ne zaman değişir?</h2>
+  <p>Yerel Pastafari günü gece yarısında değişmez. Sınır, <strong>Venüs merkezinin yerel meridyen üzerindeki topocentric lower meridian transit'i</strong> ile belirlenir.</p>
+  <p>Yani bu, konuma bağlı yerel bir astronomik olaydır. 00:00'da olması gerekmez, sivil saat dilimi tarafından belirlenmez, yaz saati uygulamasının başlayıp bitmesi tek başına onu değiştirmez ve Venüs'ün çıplak gözle görünür olması gerekmez.</p>
+  <p>Aynı fiziksel an iki yerde yerel gün sınırlarının farklı taraflarında olabilir. Sistem kullanıcının işe yarar bir konumuna sahip değilse ürünün varsayılan yedek konumu <strong>Kisurra</strong>'dır.</p><hr>
+</section>
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>Basılı takvim ve elle hesap</h2>
+  <p>Pastafari takvimi basılabilir; yalnızca hangi işlem günü için hesaplandığı belirtilmelidir. Böyle bir takvim zamanı o günün bakış açısından gösterir. İşlem günü değiştiğinde yeni bir takvim gerekebilir. Böylece yazıcı önemini korur.</p>
+  <p>Spesifikasyon tam ve deterministik olduğu için tüm hesap elle de yapılabilir: giriş sayaçlarını hesaplayın, 7 gizli ve 46 görünür damlayı yürütün, altı kâseyi güncelleyin, 12 son karıştırmayı uygulayın, cevapları ve kapıları üretin, yılları ve köfteleri seçin, kombinatorik seçimleri yapın, adları seçip ayları örün.</p>
+  <p>Böylece şubatın bazen 28, bazen 29 gün çektiğini hatırlamak zorunda kalmazsınız.</p><hr>
+</section>
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>Peki Seer nedir?</h2>
+  <p>Kanonik uygulamanın yanında <strong>Pastafarian Calendar Seer</strong> adlı hızlı bir motor bulunur. Seer yetki kaynağı değildir: doğru tarihi Megillah ve kanonik hesap belirler. Çelişki varsa yanlış olan Seer'dır.</p>
+  <p>Görevi aynı sorguları hızlı ve ürünlere entegre edilmesi kolay biçimde çalıştırmaktır.</p>
+  <p>Bu sayfa düzenlenirken yapılan canlı doğrulamada Seer; tarih ve “şimdi” sorguları, batch, gün aralıkları, Pastafari tarihinden hedef güne reverse dönüşüm, yıl yapısını getirme, aktif işlem gününü çözme, Node API, tarayıcı/HTTP istemcisi, CLI, HTTP v1 hizmeti, OpenAPI 3.1 sözleşmesi, native uygulamalar ve dağıtım paketleri ile doğrulanmış container deployment içeriyordu.</p>
+  <p>Dolayısıyla “Seer'ın genel API'si yok” şeklindeki eski açıklama artık doğru değildir. date, range, batch, year, reverse, işlem günü, metadata, locales ve status endpoint'lerini içeren açık ve kararlı bir HTTP v1 sözleşmesi vardır.</p>
+  <p>21 Eylül 2026'da Render üzerindeki genel HTTPS deployment da canlı hizmet üzerinde gerçekten test edildi: exact sorgular, büyük range, restart, cold wake ve yük altındaki davranış denendi.</p>
+  <p>Buna rağmen proje belgeleri canlı genel beta/evaluation deployment ile SLA'lı kalıcı hosted production hizmeti ilanını birbirinden ayırır. Bu nedenle kavramsal açıklama sayfası bir sunucu adresini, barındırma sağlayıcısını veya sürüm numarasını takvimin kendisinin bir parçasıymış gibi sabitlememelidir.</p>
+  <p>Seer ön hesaplama, özel gösterimler, SIMD, cebir ve başka kestirmeler kullanabilir. Aynı anlamsal işlemi yürütüp aynı cevabı döndürdüğü sürece kanonik uygulamanın hesaplama geçmişini adım adım taklit etmesi gerekmez.</p>
+  <p>Optimizasyon alternatif bir otorite değildir.</p><hr>
+</section>
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>Köken, Kuruluş Günü ve Levhalar Günü</h2>
+  <p>Burada kanonik zaman çapaları ile sitenin anlatısı açıkça ayrılmalıdır.</p>
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>Çapalar</h3>
+    <p>Sistemin <strong>Kuruluş Günü</strong> adlı sabit bir referans günü vardır. Proleptik Gregoryen takvimde bu gün <strong>MÖ 22 Aralık 41,222</strong>'dir.</p>
+    <p>Kuruluş Günü “zamanın başlangıcı” değil, bir hesaplama çapasıdır.</p>
+    <p>Çevresindeki gün numaraları pozitif tek/çift kodlama kullanır: Kuruluş Günü=1; sonraki günler=3, 5, …; geçmiş yönünde bir önceki gün=2, daha önceki=4, sonra 6, … . Böylece bu sayaçta negatif gün numarası kullanmadan çapanın iki tarafı kodlanır.</p>
+    <p>İkinci çapa <strong>Levhalar Günü</strong>'dür: <strong>proleptik Jülyen takvimde MÖ 15 Haziran 763</strong>, yani <strong>proleptik Gregoryen takvimde MÖ 7 Haziran 763</strong>.</p>
+    <p>Kuruluş Günü'nden Levhalar Günü'ne tam uzaklık</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
+    <p>gündür.</p>
+    <p>Bunlar zaman eksenindeki sabit çapalardır. Bunlara gösterilen Pastafari tarihi yine de sorgunun yapıldığı işlem gününe bağlıdır.</p>
+  </section>
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>Sitenin anlatısı</h3>
+    <p>Sitenin editoryal anlatımında takvim, yaratılışın bir parçası ve insanlığın yeterince farkında olmadan kullandığı, modern çağda yeniden teslim edilen bir sistem olarak sunulur.</p>
+    <p>Bu, sitenin anlatısıdır; anlatıdaki her ayrıntı Megillah'nın açık teknik hükmüymüş gibi sunulmamalıdır.</p>
+    <p>Yeniden teslim olayının kendisi sabit tarihsel bir olaydır. Sitede bu olayın <strong>Pastafari tarihi</strong> tek bir değer olarak sonsuza kadar sabitlenmek yerine mevcut işlem gününe göre dinamik gösterilmelidir.</p><hr>
+  </section>
+</section>
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>İleri düzey: ters dönüşüm</h2>
+  <p>İşlem günü <code>c</code> biliniyorsa ters dönüşüm oldukça güçlüdür. Bilinen bir Pastafari yılı içinde</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{köfte adı},\text{köfte içindeki gün})</code></pre>
+  <p>en fazla bir günü belirler. Aynı şey</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{ay adı},\text{ay içindeki gün})</code></pre>
+  <p>için de geçerlidir. Dolayısıyla işlem günü biliniyorsa tam tarih hedef günü tekil olarak belirler.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Ters dönüşüm adaylarının üst sınırları"><table class="about-table">
+    <thead><tr><th scope="col">Ek olarak bilinen bilgi</th><th scope="col">En fazla aday</th></tr></thead><tbody>
+      <tr><td>Yıl dışı alan yok</td><td>5,778</td></tr><tr><td>Yalnız köfte adı</td><td>5,568</td></tr><tr><td>Yalnız köfte içindeki gün</td><td>17</td></tr>
+      <tr><td>Yalnız ay adı</td><td>123</td></tr><tr><td>Yalnız ay içindeki gün</td><td>47</td></tr><tr><td>Köfte adı + köfte içindeki gün</td><td>1</td></tr>
+      <tr><td>Ay adı + ay içindeki gün</td><td>1</td></tr><tr><td>Herhangi üç yıl-dışı alan</td><td>1</td></tr><tr><td>Dört yıl-dışı alanın tamamı</td><td>1</td></tr>
+    </tbody></table></div>
+  <p>İşlem günü bilinmiyorsa durum farklıdır. Aynı beşli farklı işlem günleri altında görünebilir; aynı tam tarihin <code>c</code>'den farklı uzaklıklarda ortaya çıktığı kesin örnekler vardır.</p>
+  <p>5000 yılında bu uzaklığın işareti bile beşliden her zaman belirlenemez: aynı tam tarih bir bağlamda işlem gününün geçmişinde, başka bir bağlamda geleceğinde bulunabilir.</p>
+  <p>Bu nedenle hangi <code>c</code> altında hesaplandığı bilinmiyorsa tam Pastafari tarihi zaman ekseninde mutlak bir adres değildir.</p>
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>Uzak zamanda yapı</h3>
+    <p>Spesifikasyondan türetilen matematiksel araştırma kesin bir asimptotik yapı da bulmuştur. <strong>Sabit işlem günü</strong> <code>c</code> için geçmiş kuyruğunda yeterince uzağa gidildiğinde affine periodicity ortaya çıkar.</p>
+    <p>Eğer</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>ise, aynı <code>c</code> için bir kayma <code>H_c</code>, yıl değişimi <code>p_c</code> ve yeterince uzak bir eşik vardır; eşiğin ötesinde</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>olur. Yıl dışındaki dört alan tekrar eder, yıl numarası sabit bir miktar değişir.</p>
+    <p>Bu sonuç sabit <code>c</code> içindir; küresel</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>ilişkisini vermez. Nihai asimptotik eğimin farklı işlem günleri arasında gerçekten değişip değişmediği hâlâ açık sorudur.</p><hr>
+  </section>
+</section>
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>İleri düzey: sos geçmişten ne kadarını korur?</h2>
+  <p>Sos dışarıdan çok güçlü bir karıştırıcı gibi görünür, fakat cebirsel araştırma görünüşünün düşündürdüğünden çok daha fazla bilgiyi koruduğunu göstermiştir. Bu, spesifikasyondan türetilen araştırmadır; yeni bir takvim kuralı değildir.</p>
+  <p>Görünür aşamalar 3–46 için ilgili asimptotik dalda generic injectivity kurulmuştur: genel durumda durum, girdilerin ve kâse sıralarının ilgili geçmişini yeniden kurmaya yetecek bilgi taşır.</p>
+  <p>12 son karıştırmada bilgi hemen kaybolmaz. Görünür damla 46'dan sonraki ilk beş karıştırma için ilgili kanonik birleşim üzerinde ek yan bilgi olmadan generic invertibility kurulmuştur; kalanlar için yeniden kurmaya yetecek yan bilgi miktarına ilişkin güçlü yapıcı üst sınırlar bilinmektedir.</p>
+  <p><strong>Yalnızca son altı kâsenin</strong> genel durumda her zaman yeterli olup olmadığı hâlâ açık sorudur.</p>
+  <p>Bazı sonuçlar sembolik olarak kanıtlanmış, bazıları sonlu ve kesin aritmetik kontrollerle kapatılmıştır. Sembolik güçlendirme güvenilmesi gereken hesaplama çekirdeğini büyük ölçüde küçültmüş, fakat tamamen ortadan kaldırmamıştır.</p>
+  <p>Başta devasa sayıda yolu taramayı gerektirecek gibi görünen uzaylar, 180 ve 9 durumlu otomatalar ile altı kâsenin simetrileri dâhil olmak üzere çok daha küçük sonlu yapılara indirgenmiştir.</p>
+  <p>Karışımın altında katı bir cebirsel yapı vardır. Bugünün tarihini bilmek için bunları bilmek gerekmez.</p><hr>
+</section>
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>Öyleyse Pastafari Takvimi nedir?</h2>
+  <p>Tarihin yalnız hedef günün değil, <strong>işlem günü ile sorgulanan günün birlikte</strong> fonksiyonu olduğu deterministik bir takvimdir.</p>
+  <p>Her tarih tam beş alandan oluşur. Şimdi, kendisine göre bakıldığında daima 5000 yılındadır; fakat 5000 yılı işlem günüyle birlikte hareket eder. Yıllar çok uzun olabilir, köfteler kesintisizdir, aylar olmak zorunda değildir ve kanonik hafta sistemi yoktur.</p>
+  <p>Ayın <code>n+1</code>. günü yarın olmak zorunda değildir. Aynı kronolojik gün yarın başka bir Pastafari etiketi alabilir. Aynı fiziksel an iki yerde iki farklı yerel Pastafari gününde olabilir. Bütün-gün olayı gece yarısından gece yarısına sürmek zorunda değildir. Yıllık doğum günü de takvim sorunu olmadan önce bir arama sorunudur.</p>
+  <p>Fakat işlem günü ile sorgulanan gün biliniyorsa belirsizlik kalmaz: tam olarak bir doğru cevap vardır.</p>
+  <p>Sonuçta bir takvimden beklenen de budur.</p>
+</section>
