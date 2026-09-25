@@ -21,7 +21,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | bn | bn-BD | ltr | partial | not started |
 | bs | bs-BA | ltr | partial | not started |
 | ca | ca-ES | ltr | partial | not started |
-| cs | cs-CZ | ltr | partial | not started |
+| cs | cs-CZ | ltr | partial | draft |
 | da | da-DK | ltr | partial | draft |
 | de | de-DE | ltr | partial | draft |
 | el | el-GR | ltr | partial | not started |
@@ -65,7 +65,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | pt | pt-BR | ltr | partial | draft |
 | ro | ro-RO | ltr | partial | draft |
 | ru | ru-RU | ltr | partial | draft |
-| sk | sk-SK | ltr | partial | not started |
+| sk | sk-SK | ltr | partial | draft |
 | sl | sl-SI | ltr | partial | not started |
 | so | so-SO | ltr | partial | not started |
 | sq | sq-AL | ltr | partial | not started |
