@@ -1,0 +1,342 @@
+<!-- Version française fondée directement sur le contenu sémantique de référence en hébreu. -->
+<!-- Les identifiants de section sont stables et publics : ne pas les dériver des titres traduits. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>Dans le récit du site, le calendrier pastafari est présenté comme le calendrier dans lequel le temps a été créé. Sa mécanique, elle, est définie avec précision.</p>
+  <p>Un jour n'est pas converti en une « étiquette » pastafari immuable. Pour connaître sa date, il faut deux jours : le <strong>jour de travail</strong>, depuis lequel le calcul est effectué, et le <strong>jour interrogé</strong>, celui dont on demande la date.</p>
+  <p>En notant le premier <code>c</code> et le second <code>t</code>, la date est</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>et non <code>F(t)</code>. Un même jour interrogé peut donc recevoir une autre date pastafari si le jour de travail change.</p>
+  <p>Ce n'est pas une anomalie : c'est le calendrier.</p>
+  <hr>
+</div>
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>Que contient une date pastafari ?</h2>
+  <p>Elle comporte <strong>exactement cinq éléments</strong> : le numéro de l'année, le nom de la boulette, le jour dans la boulette, le nom du mois et le jour dans le mois.</p>
+  <p>Par exemple : <strong>année 5000, boulette A, 417e jour de la boulette, mois B, 83e jour du mois.</strong></p>
+  <p>Le jour de travail, la position de l'observateur, l'identité chronologique du jour ou d'autres informations techniques peuvent être affichés à côté. Ils ne constituent pas un sixième élément de la date.</p>
+  <hr>
+</section>
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>Pourquoi un jour de travail ?</h2>
+  <p>Dans un calendrier ordinaire, on pense volontiers que la date « appartient » au jour. Ici, elle dépend de la relation entre deux jours.</p>
+  <p>Modifier <code>t</code>, c'est poser la question à propos d'un autre jour. Modifier <code>c</code> peut aller bien plus loin : les limites des années, les boulettes, les mois, leurs noms et leur entrelacement peuvent tous être reconstruits autrement.</p>
+  <p>Un almanach calculé aujourd'hui n'est donc pas forcément celui qu'il faudra utiliser demain. Cela évite la situation fâcheuse où un calendrier imprimé resterait utile pendant une année entière.</p>
+  <hr>
+</section>
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>Le même jour, une autre date</h2>
+  <p>Il faut distinguer <strong>l'identité du jour</strong> — sa position stable sur l'axe chronologique — de sa <strong>représentation pastafari</strong>, c'est-à-dire le quintuplet obtenu sous un jour de travail donné.</p>
+  <p>Dans le produit et l'API, on peut considérer la première comme un <code>day-id</code> : une identité chronologique qui ne change pas avec le mode d'affichage. En revanche,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre>
+  <p>et</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>ne sont pas nécessairement égaux.</p>
+  <p>Changer manuellement le jour de travail peut donc modifier la date affichée sans déplacer le jour lui-même sur la chronologie.</p>
+  <p>La même règle vaut pour les événements : une réunion, une naissance ou un fait historique doit rester rattaché à une identité chronologique stable. On peut ensuite recalculer sa représentation pastafari selon le contexte de consultation.</p>
+  <p>L'étiquette peut changer ; l'événement, non.</p>
+  <hr>
+</section>
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>L'année 5000</h2>
+  <p>Lorsque le jour de travail est aussi le jour interrogé,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>l'année vaut toujours</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>Le présent vu depuis lui-même se trouve donc toujours en année 5000. Mais cette année n'est pas une période historique fixe : elle est choisie à nouveau relativement au jour de travail.</p>
+  <p>Le jour de travail se trouve dans l'année 5000, et d'autres jours de cette même année aussi. Ainsi, <strong>être en année 5000 ne prouve pas que <code>t=c</code>.</strong></p>
+  <p>Le numéro de l'année indique cependant la direction :</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre>
+  <p>et</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p>Il existe aussi une <strong>année 0</strong> ; plus loin vers le passé, les années portent des numéros négatifs.</p>
+  <hr>
+</section>
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>Années et portes</h2>
+  <p>Une année pastafari peut durer</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ à }5778</code></pre>
+  <p>jours. Ce sont des bornes canoniques, pas des moyennes issues d'une expérience.</p>
+  <p>Une année peut donc être plus courte qu'une année solaire, ou dépasser quinze années solaires. Ses limites sont construites au moyen d'un système de <strong>portes</strong> ; les limites des boulettes en proviennent également.</p>
+  <p>Rien n'impose que la fin d'une année coïncide avec une saison, une révolution de la Terre autour du Soleil, un cycle lunaire ou un quelconque besoin pratique d'en finir avec l'année.</p>
+  <hr>
+</section>
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>Boulettes</h2>
+  <p>Chaque année est divisée en <strong>6 à 17 boulettes</strong>. Une boulette forme un segment chronologique continu.</p>
+  <p>Si aujourd'hui est le 250e jour d'une boulette, demain en sera le 251e — sauf si aujourd'hui en est le dernier jour.</p>
+  <p>Les limites des boulettes sont des portes, et une boulette dure au moins</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
+  <p>jours.</p>
+  <p>Le système possède 17 noms canoniques de boulettes, sans répétition d'un même nom au sein d'une année. Le nom n'impose ni longueur ni position : il ne rend pas, à lui seul, une boulette plus longue, plus courte, plus précoce ou plus tardive.</p>
+  <hr>
+</section>
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>Mois et entrelacement</h2>
+  <p>Une année compte</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ à }47</code></pre>
+  <p>mois structurels. Chacun reçoit</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ à }123</code></pre>
+  <p>jours.</p>
+  <p>Un mois pastafari <strong>n'est pas nécessairement un intervalle continu</strong>. La chronologie peut, par exemple, donner :</p>
+  <blockquote><p>Mois A — jour 14<br>Mois B — jour 9<br>Mois A — jour 15</p></blockquote>
+  <p>Cette structure est parfaitement valide. Le jour 15 du mois A est le jour suivant <strong>de ce mois</strong>, bien qu'un jour d'un autre mois se soit intercalé.</p>
+  <p>Le « jour du mois » n'est donc pas le nombre de jours écoulés depuis la première apparition du mois. C'est le rang de l'occurrence de ce mois dans l'année. Un « jour 48 » signifie le 48e jour attribué à ce mois, pas que 47 jours chronologiques se sont écoulés depuis sa première apparition.</p>
+  <hr>
+</section>
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>Des mois tissés les uns dans les autres</h2>
+  <p>On peut imaginer les mois comme des fils traversant l'année. Chaque jour appartient à exactement un mois, mais demain peut appartenir à un autre ; le premier mois peut ensuite réapparaître et reprendre avec son numéro suivant.</p>
+  <p>Le tissage obéit à des règles, notamment sur l'ordre des premières et des dernières apparitions. Il n'exige toutefois pas qu'un mois se termine avant qu'un autre commence.</p>
+  <p>Les boulettes et les mois constituent ainsi deux systèmes de coordonnées sur les mêmes jours :</p>
+  <ul>
+    <li>la boulette indique une position dans un segment chronologique continu ;</li>
+    <li>le mois indique l'appartenance à un fil structurel susceptible de disparaître puis de revenir.</li>
+  </ul>
+  <p>Un mois peut traverser plusieurs boulettes, et une boulette contenir des occurrences de nombreux mois. Début et fin d'une boulette ne sont pas tenus de coïncider avec ceux d'un mois.</p>
+  <hr>
+</section>
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>Le jour suivant du mois n'est pas forcément demain</h2>
+  <p>Si nous sommes au jour 17 d'un mois, le jour 18 de ce mois est <strong>sa prochaine occurrence</strong>. Elle peut avoir lieu demain, ou beaucoup plus tard.</p>
+  <p><strong>Demain</strong> désigne donc le prochain jour chronologique ; <strong>le jour suivant du mois</strong>, la prochaine apparition du même mois.</p>
+  <p>De même, « la fin du mois » peut être chronologiquement lointaine. Un mois de 120 jours peut en être à son jour 119 alors que le 120e n'apparaît que bien plus tard dans l'année.</p>
+  <hr>
+</section>
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>Pas de semaines</h2>
+  <p>La spécification canonique actuelle <strong>ne définit aucun système de semaines</strong>. Elle ne contient ni unité canonique de sept jours, ni noms pastafari des jours de la semaine, ni règle faisant de deux dates « le même jour de la semaine ».</p>
+  <p>On peut naturellement superposer un système hebdomadaire civil. Il ne fait simplement pas partie de la date pastafari.</p>
+  <hr>
+</section>
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>Les noms</h2>
+  <p>Le calendrier comporte 17 noms canoniques de boulettes et 47 noms canoniques de mois. Dans une année, chaque nom apparaît au plus une fois dans sa propre famille.</p>
+  <p>L'identité d'un nom est canonique et sémantique ; elle ne résulte pas d'un vote entre orthographes, traductions ou implémentations. La Megillah hébraïque est l'autorité suprême quant au sens des noms ; traductions et translittérations relèvent de l'affichage.</p>
+  <p>Le nom ne code pas secrètement la longueur de l'unité : aucun nom de boulette n'impose une boulette plus longue, ni aucun nom de mois un mois plus court.</p>
+  <hr>
+</section>
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>Un petit fait sur les mois</h2>
+  <p>Il existe 47 noms de mois, et un mois peut aller jusqu'au jour 123. Il y a donc</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>couples syntaxiquement possibles de la forme « nom du mois + numéro du jour dans le mois ».</p>
+  <p>Chaque jour d'une année réalise exactement un tel couple. Si l'année compte <code>L</code> jours, exactement <code>L</code> couples y apparaissent. Or</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>donc chaque année laisse nécessairement de côté au moins</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre>
+  <p>couples possibles. Même l'année la plus longue n'a pas assez de jours pour tous les utiliser.</p>
+  <hr>
+</section>
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>Comment le calendrier est-il calculé ?</h2>
+  <p>Le calcul interne est appelé ici <strong>la sauce</strong>. En son centre se trouve</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>qui est un nombre premier.</p>
+  <p>Le processus fait intervenir cinq compteurs d'entrée, 7 gouttes cachées, 46 gouttes visibles, 6 bols, des ordres variables des bols, 12 brassages finaux, des sceaux servant à produire différentes réponses, des mécanismes de choix combinatoires, la création des portes, la sélection des années, le découpage des boulettes, le choix des noms, la création des mois et le tissage de leurs jours.</p>
+  <p>Les mises à jour finales sont <strong>synchrones</strong> : à chaque brassage, les six nouvelles valeurs sont calculées à partir du même état ancien ; les six bols ne sont remplacés qu'ensuite, ensemble.</p>
+  <p>Les 12 brassages finaux comportent un détail canonique essentiel. Si <code>S</code> est la somme des six anciens bols et <code>r</code> le numéro du brassage, on calcule</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p><code>R</code> est la <strong>somme sauvegardée</strong>. C'est <code>R</code>, et non la somme brute <code>S</code>, qui intervient à la fois dans le choix de l'ordre des bols et dans la mise à jour interne du brassage.</p>
+  <p>Les anciennes versions qui réinjectaient la somme brute ne décrivent plus la sémantique canonique ; tout exemple issu de cette ancienne règle doit être considéré comme périmé tant qu'il n'a pas été vérifié de nouveau.</p>
+  <p>Après les brassages, l'anneau des réponses poursuit également l'ordre verrouillé à la 46e goutte visible ; cet ordre ne doit pas être remplacé automatiquement par celui du dernier brassage.</p>
+  <hr>
+</section>
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice et Wide Choice</h2>
+  <p><strong>Short Choice</strong> sert lorsque l'espace des possibilités reste relativement petit. Il emploie un échantillonnage par rejet afin d'éviter le biais d'un simple modulo.</p>
+  <p>Pour les espaces très vastes, le mécanisme est <strong>Wide Choice</strong>. Il ne faut pas lui attribuer des propriétés que la spécification ne garantit pas.</p>
+  <p>Wide Choice n'est pas équivalent à produire des chiffres de base <code>Q</code> indépendants et uniformes jusqu'à obtenir un indice. On ne peut donc pas conclure que toute possibilité légale reçoit nécessairement la même probabilité positive. Dans des espaces suffisamment grands, certaines possibilités légales peuvent même être inaccessibles par ce mécanisme particulier.</p>
+  <p>Le calendrier demeure entièrement déterministe. Le mot « choix » désigne une étape algorithmique, pas un tirage au sort effectué lors de l'utilisation.</p>
+  <hr>
+</section>
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>L'Atlas structurel</h2>
+  <p>Les règles précédentes appartiennent au calendrier. Les chiffres qui suivent sont d'une autre nature : ce sont des <strong>résultats empiriques</strong> obtenus sur un vaste échantillon informatique.</p>
+  <p>L'atlas a été produit avec le commit moteur <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code>. Le corpus comprend :</p>
+  <ul>
+    <li>4,096 jours de travail ;</li>
+    <li>les années 4990–5010 pour chacun de ces jours ;</li>
+    <li>86,016 structures d'année ;</li>
+    <li>625,437 boulettes ;</li>
+    <li>3,535,422 mois structurels ;</li>
+    <li>plus de 356 millions de séquences mensuelles continues ;</li>
+    <li>plus de 364 millions de transitions du jour <code>n</code> au jour <code>n+1</code> d'un même mois.</li>
+  </ul>
+  <p>Ces nombres décrivent ce corpus ; ce ne sont pas des lois canoniques.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Données mesurées de l'Atlas structurel">
+    <table class="about-table">
+      <thead><tr><th scope="col">Grandeur mesurée</th><th scope="col">Résultat dans l'échantillon</th></tr></thead>
+      <tbody>
+        <tr><td>Longueur moyenne d'une année</td><td>4,275.182 jours</td></tr>
+        <tr><td>Longueur médiane d'une année</td><td>4,343</td></tr>
+        <tr><td>Minimum / maximum observés</td><td>716 / 5,778</td></tr>
+        <tr><td>Nombre moyen de boulettes par année</td><td>7.271</td></tr>
+        <tr><td>Années comptant exactement 6 boulettes</td><td>42.00%</td></tr>
+        <tr><td>Années comptant 6 à 8 boulettes</td><td>81.29%</td></tr>
+        <tr><td>Longueur moyenne d'une boulette</td><td>587.963 jours</td></tr>
+        <tr><td>Longueur médiane d'une boulette</td><td>560</td></tr>
+        <tr><td>Nombre moyen de mois par année</td><td>41.102</td></tr>
+        <tr><td>Nombre médian de mois</td><td>43</td></tr>
+        <tr><td>Années à 47 mois</td><td>15.63%</td></tr>
+        <tr><td>Années comptant au moins 45 mois</td><td>36.81%</td></tr>
+        <tr><td>Longueur moyenne d'un mois structurel</td><td>104.014 jours</td></tr>
+        <tr><td>Longueur médiane d'un mois</td><td>115</td></tr>
+        <tr><td>Nombre moyen de séquences continues par mois</td><td>100.897</td></tr>
+        <tr><td>Part des séquences mensuelles longues d'un jour</td><td>97.482%</td></tr>
+        <tr><td>Probabilité que deux jours adjacents soient dans le même mois</td><td>2.9976%</td></tr>
+        <tr><td>Nombre moyen de jours étrangers entre <code>n</code> et <code>n+1</code> du même mois</td><td>40.408</td></tr>
+        <tr><td>Étendue moyenne entre première et dernière apparition d'un mois</td><td>4,266.653 jours</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>En pratique, un mois qui contient environ cent jours peut donc s'étaler sur presque toute une année pastafari.</p>
+  <p>Le même atlas met en évidence un biais naturel de longueur autour de l'année 5000. Une année « ordinaire » du corpus mesurait en moyenne environ 4,262 jours. En pondérant chaque année par le nombre de jours qu'elle contient, la moyenne monte à environ 4,466 jours ; l'année 5000 propre au jour de travail atteignait environ 4,499 jours.</p>
+  <p>L'explication est simple : l'année 5000 doit contenir le jour de travail. Une année longue offre davantage de jours susceptibles de jouer ce rôle.</p>
+  <p>Dans l'échantillon, le lien entre le nom d'une unité et sa longueur était lui aussi très faible. Ce n'est pas une preuve d'indépendance mathématique totale, mais l'atlas ne fournit aucun indice pratique que les noms auraient été conçus pour coder la longueur.</p>
+  <p>Enfin, les 86,016 structures d'année ne sont pas 86,016 échantillons totalement indépendants : on n'y trouve que 24,786 intervalles distincts entre porte initiale et porte finale. Deux jours de travail voisins peuvent sélectionner le même intervalle annuel tout en donnant une structure interne différente.</p>
+  <p>L'atlas décrit donc très bien le comportement de l'implémentation mesurée ; il ne doit pas être transformé en théorème probabiliste sur tout l'univers possible du calendrier.</p>
+  <hr>
+</section>
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>Anniversaires</h2>
+  <p>« Le même jour chaque année » demande ici une définition. Deux coordonnées structurelles naturelles peuvent servir de règle : le même <strong>nom de mois et jour du mois</strong>, ou le même <strong>nom de boulette et jour de la boulette</strong>. On peut aussi combiner les conditions.</p>
+  <p>Un anniversaire pastafari ne se réduit donc pas à <code>RRULE:FREQ=YEARLY</code> : il faut chercher la prochaine année qui satisfait la condition choisie. L'événement d'origine ne compte pas automatiquement comme sa propre « prochaine occurrence ».</p>
+  <p>Et, une fois encore, changer le jour de travail pour l'affichage ne doit changer ni l'identité d'une personne, ni l'instant de sa naissance, ni son âge.</p>
+  <p>Une exploration exacte de 4,096 dates propres a examiné chaque année pastafari successive vers l'avant et vers l'arrière, jusqu'à 250,000 ans dans chaque direction :</p>
+  <ul>
+    <li>avec la coordonnée <code>(nom du mois, jour du mois)</code>, la première récurrence avait une médiane de 1 année pastafari ; 77.56% survenaient dès l'année voisine, 93.77% dans les deux ans, 99.44% dans les cinq ans, et le maximum observé était de 21 ans ;</li>
+    <li>avec <code>(nom de la boulette, jour de la boulette)</code>, la médiane était de 3 ans et 88.89% apparaissaient dans les 10 ans ; la distribution avait cependant une très longue traîne, avec un maximum observé de 51,954 années pastafari.</li>
+  </ul>
+  <p>Ce sont des <strong>résultats empiriques du corpus étudié</strong>, ni une preuve que tout anniversaire possible finira par revenir, ni une garantie sur un délai maximal. Ils montrent pourquoi il faut définir « anniversaire annuel » avant de l'inscrire dans un agenda.</p>
+  <hr>
+</section>
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>Comment fixer un rendez-vous ?</h2>
+  <p>Deux personnes qui souhaitent fixer un rendez-vous uniquement avec une date pastafari doivent au minimum s'accorder sur le quintuplet de date et sur le jour de travail qui a servi à le calculer. Mieux vaut enregistrer ce dernier sous une identité de jour stable que sous le mot « aujourd'hui », faute de quoi chacun pourrait calculer un calendrier différent.</p>
+  <p>Les expressions usuelles demandent elles aussi de la précision :</p>
+  <ul>
+    <li>« demain » est le prochain jour chronologique ;</li>
+    <li>« le jour suivant du mois » est la prochaine occurrence de ce mois ;</li>
+    <li>« la fin du mois » est sa dernière occurrence ;</li>
+    <li>« un mois entier » peut désigner l'ensemble des jours du mois ou toute l'étendue chronologique entre sa première et sa dernière apparition ;</li>
+    <li>« l'année suivante » se rapporte au calendrier construit sous le jour de travail choisi.</li>
+  </ul>
+  <p>Pour un rendez-vous particulièrement important, on peut aussi conserver le jour ou l'instant chronologique absolu. Le calendrier ne s'en vexera pas.</p>
+  <hr>
+</section>
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>Voyages, événements et all-day</h2>
+  <p>Un événement n'est pas l'étiquette locale qu'on lui affiche. Un événement planifié doit rester ancré à un instant chronologique stable. Un déplacement géographique ne déplace pas l'événement dans le temps ; il peut toutefois modifier la date pastafari locale affichée à cet instant, puisque le « jour local » dépend du lieu.</p>
+  <p>Pour un événement <strong>all-day</strong>, la différence est encore plus importante. Dans un calendrier civil, un événement de journée entière s'étend en général d'un minuit civil au suivant. Son équivalent pastafari devrait aller d'une limite locale de jour pastafari à la suivante. Ce ne sont généralement pas les mêmes instants.</p>
+  <p>Exporter aveuglément un événement pastafari comme « journée entière » dans un calendrier civil peut donc en altérer le sens. Pour le préserver exactement, il faut conserver son ancrage chronologique ainsi que le contexte de lieu et de limite du jour, pas seulement cocher <code>all-day</code>.</p>
+  <hr>
+</section>
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>Quand le jour change-t-il ?</h2>
+  <p>Le jour pastafari local ne change pas à minuit. Sa limite est définie par le <strong>passage inférieur topocentrique du centre de Vénus au méridien local</strong>.</p>
+  <p>Autrement dit, le passage d'un jour pastafari au suivant est un événement astronomique local, dépendant de la position de l'observateur. Il n'a donc pas nécessairement lieu à 00:00, n'est pas fixé par le fuseau horaire civil, ne se déplace pas simplement parce que l'heure d'été entre en vigueur ou prend fin, et n'exige pas que Vénus soit visible à l'œil nu.</p>
+  <p>Deux lieux peuvent ainsi se trouver, au même instant physique, de part et d'autre de leur propre limite locale du jour.</p>
+  <p>Si le système ne dispose d'aucune position exploitable de l'utilisateur, la position de repli du produit est <strong>Kisurra</strong>.</p>
+  <hr>
+</section>
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>Calendrier imprimé et calcul à la main</h2>
+  <p>Un calendrier pastafari peut être imprimé ; il suffit d'indiquer à quel jour de travail il se rapporte. Il montre alors la structure du temps depuis le point de vue de ce jour. Si le jour de travail change, un nouveau calendrier peut devenir nécessaire. L'imprimante conserve donc toute son utilité.</p>
+  <p>On peut également tout calculer à la main : la spécification est complète et déterministe. Il faut calculer les compteurs d'entrée, effectuer les 7 gouttes cachées puis les 46 visibles, mettre à jour six bols, réaliser les 12 brassages finaux, produire les réponses, construire les portes, sélectionner années et boulettes, effectuer les choix combinatoires, choisir les noms et tisser les mois.</p>
+  <p>On évite ainsi d'avoir à retenir que février compte tantôt 28 jours, tantôt 29.</p>
+  <hr>
+</section>
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>Et Seer ?</h2>
+  <p>À côté de l'implémentation canonique existe un moteur rapide appelé <strong>Pastafarian Calendar Seer</strong>. Seer n'est pas une source d'autorité : la Megillah et le calcul canonique déterminent la bonne réponse. En cas de désaccord, c'est Seer qui a tort.</p>
+  <p>Son rôle est d'effectuer les mêmes requêtes rapidement et sous une forme pratique pour l'intégration dans des produits.</p>
+  <p>Lors de la vérification en conditions réelles effectuée pendant la rédaction de cette page, Seer proposait notamment les requêtes de date et de « maintenant », les lots et plages de jours, la conversion inverse vers un jour cible, la structure d'une année, la résolution du jour de travail actif, une API Node, un client navigateur/HTTP, une CLI, un service HTTP v1, un contrat OpenAPI 3.1, des implémentations natives et paquets de distribution, ainsi qu'un déploiement conteneurisé vérifié.</p>
+  <p>L'ancienne affirmation selon laquelle Seer ne posséderait pas d'API publique est donc dépassée. Il existe un contrat HTTP v1 explicite et stable, avec des endpoints pour date, range, batch, year, reverse, day of working, metadata, locales et status.</p>
+  <p>Le 21 septembre 2026, un déploiement HTTPS public sur Render a aussi été éprouvé en conditions réelles : requêtes exactes, grande plage, redémarrage, réveil à froid et comportement sous charge ont été testés sur le service en ligne.</p>
+  <p>La documentation du projet continue toutefois de distinguer ce déploiement public de bêta/évaluation d'un service de production hébergé permanent assorti d'un SLA. Une page d'explication de principe ne doit donc pas figer une adresse de serveur, un hébergeur ou un numéro de version comme s'ils appartenaient au calendrier.</p>
+  <p>Seer peut recourir au précalcul, à des représentations spécialisées, à SIMD, à l'algèbre ou à d'autres raccourcis. Il n'est pas obligé de rejouer chaque étape historique de l'implémentation canonique, pourvu qu'il réalise la même opération sémantique et renvoie la même réponse.</p>
+  <p>L'optimisation n'est pas une autorité concurrente.</p>
+  <hr>
+</section>
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>Origine, Jour de la Fondation et Jour des Tablettes</h2>
+  <p>Il faut ici distinguer soigneusement les repères canoniques du récit du site.</p>
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>Les repères</h3>
+    <p>Le système possède un jour de référence fixe, le <strong>Jour de la Fondation</strong>. Dans le calendrier grégorien proleptique, il correspond au <strong>22 décembre 41,222 av. J.-C.</strong></p>
+    <p>Ce n'est pas le « commencement du temps », mais un repère de calcul.</p>
+    <p>Le décompte des jours autour de ce repère utilise des entiers positifs impairs et pairs : le Jour de la Fondation vaut 1 ; les jours suivants valent 3, 5, etc. Vers le passé, le jour immédiatement précédent vaut 2, puis 4, puis 6, etc. Les deux côtés du repère sont ainsi encodés sans nombres de jour négatifs dans ce décompte.</p>
+    <p>Un second repère est le <strong>Jour des Tablettes</strong> : <strong>15 juin 763 av. J.-C. dans le calendrier julien proleptique</strong>, soit <strong>7 juin 763 av. J.-C. dans le calendrier grégorien proleptique</strong>.</p>
+    <p>La distance exacte entre le Jour de la Fondation et le Jour des Tablettes est de</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
+    <p>jours.</p>
+    <p>Ces deux repères sont fixes sur l'axe du temps. La date pastafari affichée pour chacun d'eux dépend malgré tout du jour de travail utilisé pour la requête.</p>
+  </section>
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>Le récit du site</h3>
+    <p>Dans la formulation éditoriale du site, le calendrier fait partie de la création et l'humanité l'aurait utilisé sans en avoir suffisamment conscience, jusqu'à sa remise moderne.</p>
+    <p>C'est le récit du site : ses détails narratifs ne doivent pas tous être présentés comme des propositions techniques explicites de la Megillah.</p>
+    <p>L'événement de remise est, lui, un événement historique fixe. Sur le site, mieux vaut afficher sa <strong>date pastafari</strong> dynamiquement selon le jour de travail actuel plutôt que de lui attacher pour toujours une date pastafari unique. Ainsi sa date reste celle qui convient au jour où le lecteur la consulte.</p>
+    <hr>
+  </section>
+</section>
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>Pour aller plus loin : conversion inverse</h2>
+  <p>Lorsque le jour de travail <code>c</code> est connu, la conversion inverse est très contraignante. Dans une année pastafari connue,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{nom de la boulette},\text{jour dans la boulette})</code></pre>
+  <p>identifie au plus un jour. Il en va de même pour</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{nom du mois},\text{jour dans le mois})</code></pre>
+  <p>Une date complète, dès lors que le jour de travail est connu, identifie donc le jour cible de façon unique.</p>
+  <p>Dans une année connue, on peut donner les bornes grossières suivantes :</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Bornes du nombre de candidats en conversion inverse">
+    <table class="about-table">
+      <thead><tr><th scope="col">Information supplémentaire connue</th><th scope="col">Nombre maximal de candidats</th></tr></thead>
+      <tbody>
+        <tr><td>Aucun champ hors année</td><td>5,778</td></tr>
+        <tr><td>Nom de boulette seul</td><td>5,568</td></tr>
+        <tr><td>Jour dans la boulette seul</td><td>17</td></tr>
+        <tr><td>Nom de mois seul</td><td>123</td></tr>
+        <tr><td>Jour dans le mois seul</td><td>47</td></tr>
+        <tr><td>Nom de boulette + jour dans la boulette</td><td>1</td></tr>
+        <tr><td>Nom de mois + jour dans le mois</td><td>1</td></tr>
+        <tr><td>Trois champs hors année quelconques</td><td>1</td></tr>
+        <tr><td>Les quatre champs hors année</td><td>1</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Sans connaître le jour de travail, la situation change. Un même quintuplet peut apparaître sous différents jours de travail ; on dispose de témoins exacts où une date complète identique se rencontre à des distances différentes du jour de travail.</p>
+  <p>En année 5000, même le signe de cette distance n'est pas toujours déterminé par le quintuplet : la même date complète peut se trouver dans le passé du jour de travail dans un contexte et dans son futur dans un autre.</p>
+  <p>Une date pastafari complète n'est donc pas une adresse absolue sur l'axe chronologique si l'on ignore sous quel calendrier — c'est-à-dire sous quel <code>c</code> — elle a été calculée.</p>
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>Structure aux temps très éloignés</h3>
+    <p>Les travaux mathématiques dérivés ont également établi une structure asymptotique exacte. Pour un <strong>jour de travail fixé</strong> <code>c</code>, suffisamment loin dans la queue du passé, une périodicité affine apparaît.</p>
+    <p>Si</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>alors, pour ce même <code>c</code>, il existe une translation <code>H_c</code>, une variation d'année <code>p_c</code> et un seuil assez éloigné tels qu'au-delà de ce seuil :</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>Les quatre champs non annuels se répètent tandis que le numéro de l'année varie d'une quantité fixe.</p>
+    <p>Ce résultat concerne un <code>c</code> fixé. Il n'autorise pas à conclure à une relation globale telle que</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>La question de savoir si la pente asymptotique finale diffère réellement entre jours de travail distincts reste ouverte.</p>
+    <hr>
+  </section>
+</section>
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>Pour aller plus loin : quelle histoire la sauce conserve-t-elle ?</h2>
+  <p>La sauce donne l'impression d'un mélangeur extrêmement agressif. L'étude algébrique a pourtant montré qu'elle conserve bien plus d'information qu'on ne pourrait le croire. Il s'agit d'un résultat dérivé de la spécification, non d'une nouvelle règle du calendrier.</p>
+  <p>Pour les étapes visibles 3 à 46, l'injectivité générique a été établie sur la branche asymptotique pertinente : génériquement, l'état conserve assez d'information pour reconstruire l'historique pertinent des entrées et des ordres de bols.</p>
+  <p>L'information ne disparaît pas immédiatement pendant les 12 brassages finaux. Pour les cinq premiers brassages qui suivent la 46e goutte visible, l'inversibilité générique a été établie sur l'union canonique pertinente sans information latérale supplémentaire. Pour les brassages restants, on connaît de fortes bornes constructives sur la quantité d'information latérale suffisante à la reconstruction.</p>
+  <p>La question de savoir si <strong>les six bols finaux, à eux seuls</strong>, suffisent toujours de manière générique reste ouverte.</p>
+  <p>Une partie des résultats a été démontrée symboliquement ; une autre a été close par des vérifications arithmétiques finies et exactes. Le renforcement symbolique a fortement réduit le noyau de calcul auquel il faut se fier, sans l'éliminer entièrement.</p>
+  <p>Parmi les surprises de l'étude, des espaces qui semblaient exiger l'exploration d'un nombre immense de chemins se sont réduits à de petites structures finies, notamment des automates à 180 et à 9 états ainsi que des symétries des six bols.</p>
+  <p>Sous le mélange se cache donc une structure algébrique rigide. Il n'est évidemment pas nécessaire de la connaître pour consulter la date d'aujourd'hui.</p>
+  <hr>
+</section>
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>Au fond, qu'est-ce que le calendrier pastafari ?</h2>
+  <p>C'est un calendrier déterministe dans lequel une date n'est pas fonction du seul jour cible, mais du <strong>jour de travail et du jour interrogé ensemble</strong>.</p>
+  <p>Une date possède exactement cinq champs. Le présent vu depuis lui-même est toujours en année 5000, mais l'année 5000 se déplace avec le jour de travail. Les années peuvent être très longues ; les boulettes sont continues ; les mois ne le sont pas nécessairement ; il n'existe pas de système hebdomadaire canonique.</p>
+  <p>Le jour <code>n+1</code> d'un mois n'est pas forcément demain. Un même jour chronologique peut recevoir demain une autre étiquette pastafari. Un même instant physique peut appartenir à deux jours pastafari locaux différents selon le lieu. Un événement de journée entière n'est pas forcément un événement de minuit à minuit. Et un anniversaire annuel est d'abord un problème de recherche avant d'être un problème d'agenda.</p>
+  <p>Mais si le jour de travail et le jour interrogé sont donnés, il n'y a aucune ambiguïté : une seule réponse exacte existe.</p>
+  <p>Et, finalement, c'est tout ce qu'on demande à un calendrier.</p>
+</section>
