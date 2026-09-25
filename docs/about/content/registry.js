@@ -6,7 +6,7 @@ export const ARTICLE_LOCALES = Object.freeze({
   he: Object.freeze({
     code: "he",
     dir: "rtl",
-    asset: "./content/he.html?v=2-about-review",
+    asset: "./content/he.html?v=4-about-polish",
   }),
 });
 

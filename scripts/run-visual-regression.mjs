@@ -37,6 +37,7 @@ const FIXED = Object.freeze({
 const VIEWPORTS = Object.freeze({
   desktop: Object.freeze({ width: 1440, height: 1000 }),
   mobile: Object.freeze({ width: 390, height: 844 }),
+  tablet: Object.freeze({ width: 820, height: 1000 }),
   narrow: Object.freeze({ width: 320, height: 800 }),
   wide: Object.freeze({ width: 1680, height: 1050 }),
 });
@@ -849,7 +850,7 @@ async function extremeWidths(browser, baseURL, state) {
 }
 
 async function aboutPageSmoke(browser, baseURL, state) {
-  for (const [name, viewport] of [["desktop", VIEWPORTS.desktop], ["mobile", VIEWPORTS.mobile]]) {
+  for (const [name, viewport] of [["desktop", VIEWPORTS.desktop], ["tablet", VIEWPORTS.tablet], ["mobile", VIEWPORTS.mobile]]) {
     await withTracedContext(browser, viewport, `about-${name}`, async (page) => {
       const url = new URL("about/?lang=he#day-boundary", baseURL);
       await page.goto(url.href, { waitUntil: "domcontentloaded" });
@@ -862,6 +863,10 @@ async function aboutPageSmoke(browser, baseURL, state) {
       assert.equal(tocOpen, name === "desktop", `About-page TOC default state is wrong for ${name}`);
       await assertNoPageOverflow(page, `about page ${name}`);
       await assertVisibleAndSized(page, [".about-toc", "#article-content", "#site-usage"]);
+      const readingWidth = await page.locator("#article-content p").first().evaluate((element) => element.getBoundingClientRect().width);
+      assert.ok(readingWidth <= 850, `About-page reading measure is too wide at ${name}: ${readingWidth}px`);
+      const kvOverflow = await page.locator(".about-kv-table-wrap").first().evaluate((element) => element.scrollWidth - element.clientWidth);
+      assert.ok(kvOverflow <= 1, `Key/value table should not require horizontal scrolling at ${name}: ${kvOverflow}px`);
       state.layoutChecks.push({ page: "about", viewport: name, deepLink: "#day-boundary", result: "PASS" });
     }, state);
   }

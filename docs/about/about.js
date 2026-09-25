@@ -14,7 +14,7 @@ import {
 import {
   ARTICLE_FALLBACK_LOCALE,
   resolveArticleLocale,
-} from "./content/registry.js?v=2-about-review";
+} from "./content/registry.js?v=4-about-polish";
 
 const elements = Object.fromEntries(
   [...document.querySelectorAll("[id]")].map((element) => [element.id, element]),
@@ -121,7 +121,7 @@ function focusHashTarget() {
 }
 
 function initializeResponsiveDisclosures() {
-  if (matchMedia("(max-width: 760px)").matches) elements["about-toc"].open = false;
+  if (matchMedia("(max-width: 860px)").matches) elements["about-toc"].open = false;
 }
 
 async function chooseLanguage(code) {

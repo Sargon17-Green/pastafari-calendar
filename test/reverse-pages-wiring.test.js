@@ -18,7 +18,7 @@ test("Pages markup exposes one reverse-search mount point", async () => {
   const html = await read("docs/index.html");
   assert.equal((html.match(/id="reverse-app"/g) || []).length, 1);
   assert.match(html, /id="reverse-panel"[^>]*aria-labelledby="reverse-heading"/);
-  assert.match(html, /styles\.css\?v=15-about-review/);
+  assert.match(html, /styles\.css\?v=16-about-polish/);
   assert.match(html, /app\.js\?v=23-about-page/);
 });
 
