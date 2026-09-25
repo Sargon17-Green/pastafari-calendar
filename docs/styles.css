@@ -1028,21 +1028,21 @@ h1 {
 }
 
 .about-masthead {
-  width: min(100%, 72rem);
+  display: block;
+  width: min(100%, 72ch);
   margin-inline: auto;
-  grid-template-columns: minmax(0, 1fr) minmax(11rem, 14rem);
-  gap: 1.5rem clamp(2rem, 6vw, 5rem);
   padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
 }
 
 .about-masthead .masthead-copy {
-  max-width: 50rem;
+  max-width: none;
 }
 
 .about-masthead .language-control {
-  width: 100%;
+  width: min(100%, 14rem);
   min-width: 0;
-  max-width: 14rem;
+  max-width: none;
+  margin-top: 1.25rem;
 }
 
 .about-language-notice,
@@ -1417,13 +1417,8 @@ h1 {
 }
 
 @media (max-width: 860px) {
-  .about-masthead {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-  }
-
-  .about-masthead .language-control {
-    max-width: 22rem;
+  .about-toc {
+    width: min(100%, 42rem);
   }
 
   .about-toc ol {
