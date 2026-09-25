@@ -130,7 +130,7 @@
   <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
   <p>dayanır. Proses beş giriş sayğacı, 7 gizli damcı, 46 görünən damcı, 6 kasa, dəyişən kasa sıraları, 12 son qarışdırma, fərqli cavablar üçün seal, combinatorial selection, qapıların qurulması, illərin seçilməsi, kotletlərin bölünməsi, adların seçilməsi, ayların qurulması və ay günlərinin hörülməsini əhatə edir.</p>
   <p>Son yeniləmə-lər <strong>sinxrondur</strong>: hər qarışdırmada altı yeni dəyərin hamısı eyni köhnə vəziyyət-dən hesablanır və yalnız bundan sonra altı kasa birlikdə dəyişdirilir.</p>
-  <p>12 son qarışdırmada xüsusilə vacib bir canonical detal var. <code>S</code> köhnə altı kasanın cəmidirsə, <code>r</code> isə qarışdırma nömrəsidirsə, sistem</p>
+  <p>12 son qarışdırmada xüsusilə vacib bir kanonik detal var. <code>S</code> köhnə altı kasanın cəmidirsə, <code>r</code> isə qarışdırma nömrəsidirsə, sistem</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
   <p>hesablayır. <code>R</code> <strong>saxlanmış cəmdir</strong>. Həm kasa sırasının seçimi, həm də qarışdırmanın daxili yeniləmə-i xam <code>S</code> deyil, <code>R</code> istifadə edir.</p>
   <p>Bu yeniləmə-ə xam cəmi verən köhnə versiyalar artıq mövcud kanonik semantika-i təsvir etmir. Köhnə qaydadan alınmış nümunələr yenidən yoxlanana qədər köhnəlmiş sayılmalıdır.</p>
@@ -140,7 +140,7 @@
 <section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
   <h2>Short Choice və Wide Choice</h2>
   <p>Nisbətən kiçik seçim fəzası üçün <strong>Short Choice</strong> istifadə edilir. Sadə modulo qərəzi-dan qaçmaq üçün rəddetmə üsulu ilə seçmə tətbiq olunur.</p>
-  <p>Çox böyük space üçün <strong>Wide Choice</strong> istifadə edilir. Specification-in təmin etmədiyi xüsusiyyətlər ona aid edilməməlidir.</p>
+  <p>Çox böyük seçim fəzaları üçün <strong>Wide Choice</strong> istifadə edilir. Spesifikasiyanın təmin etmədiyi xüsusiyyətləri ona aid etmək olmaz.</p>
   <p>Wide Choice, index alınana qədər müstəqil və bərabər paylanmış base-<code>Q</code> rəqəmlərinin yaradılması ilə eyni deyil. Buna görə hər etibarlı seçim-un mütləq eyni müsbət ehtimala malik olduğu nəticəsi çıxmır. Kifayət qədər böyük space-də bu mexanizm-in heç vaxt çata bilməyəcəyi etibarlı seçim-lar ola bilər.</p>
   <p>Təqvimin özü tam deterministik qalır. “Choice” bir alqoritmik mərhələ-in adıdır, istifadə zamanı baş verən təsadüfi püşkatma deyil.</p><hr>
 </section>
@@ -179,7 +179,7 @@
   <p>Praktikada təxminən yüz günlük bir ay demək olar ki, bütün Pastafari ili boyunca səpələnə bilər.</p>
   <p>Eyni atlas 5000-ci il ətrafında uzunluğun təbii bias-ını da göstərdi. Nümunədə “adi” il orta hesabla təxminən 4,262 gün idi. İlləri daxilindəki günlərin sayına görə çəki verdikdə orta təxminən 4,466 günə qalxır; 5000-ci ilin özü isə orta hesabla təxminən 4,499 gün idi.</p>
   <p>Səbəb sadədir: 5000-ci il əməl gününü daxil etməlidir. Daha uzun ilin əməl gününü ehtiva edən il olmaq üçün daha çox mümkün günü var.</p>
-  <p>Vahidin adı ilə uzunluğu arasındakı əlaqə də nümunədə çox zəif idi. Bu, tam riyazi müstəqillik sübut etmir, amma atlas adların uzunluğu kodlaşdır etmək üçün yaradıldığına dair praktik siqnal vermir.</p>
+  <p>Vahidin adı ilə uzunluğu arasındakı əlaqə də nümunədə çox zəif idi. Bu, tam riyazi müstəqillik sübut etmir, amma atlas adların uzunluğu kodlaşdırmaq üçün yaradıldığına dair praktik siqnal vermir.</p>
   <p>Bundan əlavə, 86,016 il strukturu əslində 86,016 tam müstəqil nümunə deyil: başlanğıc və son qapılar arasında cəmi 24,786 fərqli interval var. Bir-birinə yaxın əməl günləri eyni il intervalı-ı seçib yenə də fərqli daxili structure yarada bilər.</p>
   <p>Buna görə atlas reallaşdırma-un ölçülmüş davranışını yaxşı təsvir edir, amma bütün mümkün calendar structure-lar barədə ehtimal teoremi kimi işlədilməməlidir.</p><hr>
 </section>
@@ -233,13 +233,13 @@
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Bəs Seer nədir?</h2>
-  <p>Canonical reallaşdırma ilə yanaşı <strong>Pastafarian Calendar Seer</strong> adlı sürətli engine də var. Seer səlahiyyət mənbəyi deyil: düzgün tarixi Megillah və kanonik hesablama müəyyən edir. Seer onlarla uyğun gəlmirsə, səhv Seer-dədir.</p>
-  <p>Onun işi eyni query-ləri sürətlə yerinə yetirmək və nəticəni məhsullara asanlıqla integrate edilə bilən formada qaytarmaqdır.</p>
-  <p>Bu səhifə redaktə edilərkən aparılmış birbaşa verification zamanı Seer, başqa imkanlarla yanaşı, `date` və `now` sorğuları, `batch`, gün aralığı, Pastafari tarixindən hədəf gün-ə tərs çevirmə, il quruluşunun alınması, aktiv əməl günü determination, Node API-si, brauzer/HTTP müştərisi, CLI, HTTP v1 xidməti, OpenAPI 3.1 contract, native reallaşdırmalar və paylanma package-ları, eləcə də yoxlanmış konteyner yerləşdirməsi-i əhatə edirdi.</p>
-  <p>Seer-in açıq API-si yoxdur barədə köhnə iddia artıq doğru deyil. İndi date, range, batch, year, reverse, əməl günü, metadata, locales və status son nöqtələri olan aydın və sabit HTTP v1 müqaviləsi var.</p>
-  <p>2026-cı il sentyabrın 21-də Render-də açıq HTTPS yerləşdirməsi real olaraq sınaqdan keçirildi: işlək xidmət-də dəqiq sorğular-lər, geniş aralıq, yenidən başlatma, soyuq oyanma və yük altındakı davranış yoxlandı.</p>
-  <p>Bununla belə, project documentation hələ də açıq beta/qiymətləndirmə yerləşdirməsi ilə SLA-li sabit hostinqdə işləyən istehsal xidməti arasında fərq qoyur. Buna görə conceptual explanation page server ünvanı, hostinq provayderi və ya versiya nömrəsi-u təqvimin öz hissəsi kimi daimi sabitləmək etməməlidir.</p>
-  <p>Seer əvvəlcədən hesablama, xüsusi təqdimat, SIMD, algebra və başqa qısa yol-lardan istifadə edə bilər. Eyni semantik əməliyyat-u yerinə yetirib eyni cavabı qaytarırsa, kanonik reallaşdırma-un bütün hesablama tarixi-sini addım-addım təkrarlamalı deyil.</p>
+  <p>Kanonik reallaşdırma ilə yanaşı <strong>Pastafarian Calendar Seer</strong> adlı sürətli mühərrik də var. Seer səlahiyyət mənbəyi deyil: düzgün tarixi Megillah və kanonik hesablama müəyyən edir. Seer onlarla uyğun gəlmirsə, səhv Seer-dədir.</p>
+  <p>Onun işi eyni sorğuları sürətlə yerinə yetirmək və nəticəni məhsullara asanlıqla inteqrasiya edilə bilən formada qaytarmaqdır.</p>
+  <p>Bu səhifə redaktə edilərkən aparılan birbaşa yoxlamada Seer-in imkanları arasında <code>date</code> və <code>now</code> sorğuları, <code>batch</code>, gün aralığı, Pastafari tarixindən hədəf günə tərs çevirmə, il quruluşunun alınması, aktiv əməl gününün müəyyənləşdirilməsi, Node API-si, brauzer/HTTP müştərisi, CLI, HTTP v1 xidməti, OpenAPI 3.1 müqaviləsi, yerli reallaşdırmalar və paylama paketi, həmçinin yoxlanmış konteyner yerləşdirməsi var idi.</p>
+  <p>Seer-in açıq API-si olmadığı barədə köhnə iddia artıq doğru deyil. İndi <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, əməl günü, metadata, locales və status üçün son nöqtələri olan aydın və sabit HTTP v1 müqaviləsi mövcuddur.</p>
+  <p>21 sentyabr 2026-cı ildə Render-də açıq HTTPS yerləşdirməsi real şəraitdə sınaqdan keçirildi: işlək xidmətdə dəqiq sorğular, geniş aralıq, yenidən başlatma, soyuq oyanma və yük altındakı davranış yoxlandı.</p>
+  <p>Bununla belə, layihə sənədləri açıq beta/qiymətləndirmə yerləşdirməsini SLA-li sabit istehsal xidmətindən hələ də fərqləndirir. Buna görə konseptual izah səhifəsi server ünvanını, hostinq provayderini və ya versiya nömrəsini təqvimin öz hissəsi kimi daimi olaraq sabitləməməlidir.</p>
+  <p>Seer əvvəlcədən hesablama, xüsusi təqdimatlar, SIMD, cəbr və başqa qısa yollardan istifadə edə bilər. Eyni semantik əməliyyatı yerinə yetirib eyni cavabı qaytarırsa, kanonik reallaşdırmanın bütün hesablama tarixini addım-addım təkrarlamaq məcburiyyətində deyil.</p>
   <p>Optimallaşdırma alternativ səlahiyyət deyil.</p><hr>
 </section>
 
@@ -275,7 +275,7 @@
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{ayın adı},\text{ay daxilində gün})</code></pre>
   <p>üçün də keçərlidir. Buna görə məlum əməl günü ilə tam tarix hədəf gün-i birmənalı müəyyən edir.</p>
 
-  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Reverse conversion zamanı candidate sayının yuxarı hədləri">
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Tərs çevirmə zamanı namizəd sayının yuxarı hədləri">
     <table class="about-table">
       <thead><tr><th scope="col">Məlum əlavə məlumat</th><th scope="col">Maksimum candidate sayı</th></tr></thead>
       <tbody>
@@ -325,7 +325,7 @@
   <h2>Beləliklə, Pastafari təqvimi əslində nədir?</h2>
   <p>Bu, tarixin sadəcə hədəf gün-in funksiyası deyil, <strong>əməl günü ilə soruşulan günün birgə funksiyası</strong> olduğu deterministik təqvim-dır.</p>
   <p>Hər tarixdə dəqiq beş field var. İndiki an öz baxış bucağından həmişə 5000-ci ildədir, amma 5000-ci il özü əməl günü ilə birlikdə hərəkət edir. İllər çox uzun ola bilər, kotletlər fasiləsizdir, aylar mütləq deyil və kanonik həftə sistemi yoxdur.</p>
-  <p>Ayın <code>n+1</code>-ci günü mütləq sabah deyil. Eyni xronoloji gün sabah başqa Pastafari etiketi ala bilər. Eyni fiziki an iki yerdə iki fərqli yerli Pastafari günü-ə aid ola bilər. All-day event gecəyarısından gecəyarısına davam etməli deyil. Annual birthday isə əvvəlcə axtarış problemi, sonra təqvim problemi-dir.</p>
+  <p>Ayın <code>n+1</code>-ci günü mütləq sabah deyil. Eyni xronoloji gün sabah başqa Pastafari etiketi ala bilər. Eyni fiziki an iki yerdə iki fərqli yerli Pastafari gününə aid ola bilər. Tam-günlük hadisə gecəyarısından gecəyarısına davam etməli deyil. İllik ad günü isə əvvəlcə axtarış problemi, sonra təqvim problemidir.</p>
   <p>Amma əməl günü ilə soruşulan gün məlumdursa, qeyri-müəyyənlik yoxdur: düzgün cavab yalnız birdir.</p>
   <p>Nəticədə təqvimdən bundan artıq heç nə tələb olunmur.</p>
 </section>
