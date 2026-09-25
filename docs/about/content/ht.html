@@ -1,0 +1,331 @@
+<!-- Vèsyon kreyòl ayisyen an ekri dirèkteman apati semantic master ebre a; pa gen lang pivot ki sèvi. -->
+<!-- ID seksyon yo fè pati yon public deep-link contract ki estab; yo pa sòti nan tit tradui yo. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>Nan istwa sit sa a, yo prezante Kalandriye Pastafari a kòm kalandriye kote tan an menm te kreye. Men fason li fonksyone defini ak règ ki sevè e ki presi.</p>
+  <p>Kalandriye a pa kole yon sèl “etikèt” Pastafari ki pa janm chanje sou chak jou. Pou jwenn yon dat, fòk gen de jou: <strong>jou aksyon an</strong>, kote kalkil la kòmanse, ak <strong>jou yo mande a</strong>, jou nou vle konnen dat Pastafari li.</p>
+  <p>Si nou ekri jou aksyon an kòm <code>c</code> epi jou yo mande a kòm <code>t</code>, dat la se</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>se pa <code>F(t)</code>. Se poutèt sa menm jou yo mande a ka resevwa yon lòt dat Pastafari lè jou aksyon an chanje.</p>
+  <p>Sa pa yon erè. Se konsa kalandriye a defini.</p><hr>
+</div>
+
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>Ki sa yon dat Pastafari genyen ladan l?</h2>
+  <p>Li gen <strong>egzakteman senk pati</strong>: nimewo ane a, non koutlèt la, jou nan koutlèt la, non mwa a, ak jou nan mwa a.</p>
+  <p>Egzanp jeneral: <strong>ane 5000, koutlèt A, 417yèm jou koutlèt la, mwa B, 83yèm jou mwa a.</strong></p>
+  <p>Jou aksyon an, kote obsèvatè a ye, idantite kwonolojik jou a oswa lòt done teknik ka parèt bò kote dat la, men yo pa yon sizyèm chan nan dat la.</p><hr>
+</section>
+
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>Poukisa nou bezwen yon jou aksyon?</h2>
+  <p>Nan kalandriye òdinè, li nòmal pou nou panse dat la “pou” jou a menm. Nan Kalandriye Pastafari a, dat la depann de relasyon ant de jou.</p>
+  <p>Chanje <code>t</code> vle di mande pou yon lòt jou. Chanje <code>c</code> ka gen yon efè pi fon: limit ane yo, koutlèt yo, mwa yo, non yo, ak fason mwa yo mele youn ak lòt ka chanje.</p>
+  <p>Kidonk yon almanak nou kalkile jodi a pa oblije toujou kòrèk demen. Sa evite tou sitiyasyon anbarasan kote yon kalandriye enprime ta rete itil pandan tout yon ane.</p><hr>
+</section>
+
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>Menm jou a, yon lòt dat</h2>
+  <p>Nou dwe separe <strong>idantite jou a</strong> ak <strong>jan li parèt nan Pastafari</strong>. Premye a se plas fiks yon jou presi sou liy tan an; dezyèm lan se senk valè nou jwenn lè nou montre jou sa a anba yon jou aksyon presi.</p>
+  <p>Nan pwodwi a ak nan API a, nou ka wè premye a kòm <code>day-id</code>: yon idantite kwonolojik ki pa chanje lè reprezantasyon an chanje. Men</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre>
+  <p>ak</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>pa oblije menm bagay.</p>
+  <p>Donk, si nou chanje jou aksyon an alamen, dat Pastafari yo montre pou menm jou a ka chanje, san jou a li menm pa deplase okenn kote sou liy tan an.</p>
+  <p>Menm prensip la aplike pou evènman. Yon reyinyon, yon nesans oswa yon evènman istorik dwe rete mare ak yon idantite kwonolojik ki estab; dat Pastafari li ka rekalkile selon kontèks afichaj la.</p>
+  <p>Etikèt la ka chanje. Evènman an pa chanje.</p><hr>
+</section>
+
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>Ane 5000</h2>
+  <p>Lè jou aksyon an ak jou yo mande a se menm jou a,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>nimewo ane a toujou</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>Sa vle di, prezan an, lè li gade tèt li, toujou andedan ane 5000. Men ane 5000 pa yon epòk istorik ki fiks; yo chwazi l ankò chak fwa an rapò ak jou aksyon an.</p>
+  <p>Jou aksyon an li menm tou nan ane 5000, menm jan ak lòt jou nan menm ane yo chwazi a. Se poutèt sa <strong>lefèt sèlman ke yon jou nan ane 5000 pa pwouve ke <code>t=c</code>.</strong></p>
+  <p>Men nimewo ane a montre direksyon an:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre>
+  <p>epi</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p>Genyen tou yon <strong>ane 0</strong>; pi lwen nan tan pase a, gen ane ki gen nimewo negatif.</p><hr>
+</section>
+
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>Ane ak pòt yo</h2>
+  <p>Yon ane Pastafari ka genyen</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ rive }5778</code></pre>
+  <p>jou. Sa yo se limit canonical sistèm nan, se pa mwayèn anpirik.</p>
+  <p>Kidonk yon ane ka pi kout pase yon ane solè oswa pi long pase kenz ane solè. Limit ane yo bati apati sistèm <strong>pòt</strong> yo; limit koutlèt yo soti nan menm sistèm nan.</p>
+  <p>Fen ane a pa oblije mache ak yon sezon, yon tou Latè fè otou Solèy la, yon sik Lalin, oswa anvi pratik pou ane a ta fin fini.</p><hr>
+</section>
+
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>Koutlèt yo</h2>
+  <p>Chak ane divize an <strong>6 rive 17 koutlèt</strong>. Yon koutlèt se yon moso tan ki kontinye san kase nan lòd kwonolojik.</p>
+  <p>Si jodi a se 250yèm jou yon koutlèt, demen ap 251yèm jou menm koutlèt la, sof si jodi a se dènye jou li. Limit koutlèt yo se pòt, epi yon koutlèt dire omwen</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
+  <p>jou.</p>
+  <p>Sistèm nan gen 17 non canonical koutlèt, epi menm non an pa repete nan menm ane a. Non an pa detèmine ni longè ni pozisyon koutlèt la.</p><hr>
+</section>
+
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>Mwa ak tissage</h2>
+  <p>Chak ane gen</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ rive }47</code></pre>
+  <p>mwa estriktirèl, epi chak mwa resevwa</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ rive }123</code></pre>
+  <p>jou.</p>
+  <p>Men yon mwa Pastafari <strong>pa oblije yon entèval tan ki kontinye san kase</strong>. Pa egzanp, lòd kwonolojik la ka konsa:</p>
+  <blockquote><p>Mwa A — jou 14<br>Mwa B — jou 9<br>Mwa A — jou 15</p></blockquote>
+  <p>Sa totalman valab. Jou 15 nan mwa A a se pwochen jou <strong>mwa sa a</strong>, menm si gen yon jou yon lòt mwa nan mitan.</p>
+  <p>Kidonk “jou nan mwa a” pa vle di kantite jou kwonolojik ki pase depi premye fwa mwa a parèt. Se pozisyon li pami jou yo bay mwa sa a pandan ane a. Jou 48 vle di 48yèm jou ki fè pati mwa sa a, pa 47 jou apre premye aparisyon li.</p><hr>
+</section>
+
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>Mwa yo mele youn ak lòt</h2>
+  <p>Nou ka imajine mwa yo tankou fil k ap pase atravè ane a. Chak jou fè pati egzakteman yon mwa; demen ka fè pati yon lòt mwa, epi apre sa premye mwa a ka retounen pou li kontinye ak nimewo ki vin apre a.</p>
+  <p>Tissage sa a gen règ, ladan yo gen limit sou lòd premye ak dènye aparisyon mwa yo. Men pa gen okenn règ ki di yon mwa dwe fini anvan yon lòt kòmanse.</p>
+  <ul>
+    <li>Koutlèt la mezire pozisyon nan yon moso tan ki kontinye.</li>
+    <li>Mwa a montre manm nan yon fil estriktirèl ki ka disparèt epi parèt ankò pita.</li>
+  </ul>
+  <p>Yon mwa ka travèse plizyè koutlèt, epi plizyè mwa ka parèt nan yon sèl koutlèt. Kòmansman ak fen de sistèm yo pa oblije tonbe ansanm.</p><hr>
+</section>
+
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>Pwochen jou mwa a pa nesesèman demen</h2>
+  <p>Si jodi a se 17yèm jou yon mwa, 18yèm jou menm mwa a se <strong>pwochen aparisyon mwa sa a</strong>. Li ka demen, li ka pi ta anpil.</p>
+  <p><strong>Demen</strong> se pwochen jou kwonolojik la; <strong>pwochen jou mwa a</strong> se pwochen aparisyon menm mwa a.</p>
+  <p>Menm jan an tou, “fen mwa a” pa vle di fen an toupre nan tan kwonolojik. Yon mwa ki gen 120 jou ka jodi a sou jou 119, epi jou 120 ka rive pi ta anpil nan menm ane a.</p><hr>
+</section>
+
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>Pa gen semèn</h2>
+  <p>Specification canonical aktyèl la <strong>pa defini okenn sistèm semèn</strong>. Pa gen yon inite canonical sèt jou, pa gen non Pastafari pou jou semèn yo, epi pa gen règ ki fè de jou vin “menm jou nan semèn nan”.</p>
+  <p>Natirèlman, nou ka mete yon sistèm semèn sivil sou li depi deyò; li jis pa fè pati dat Pastafari a.</p><hr>
+</section>
+
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>Non yo</h2>
+  <p>Gen 17 non canonical koutlèt ak 47 non canonical mwa. Nan yon ane, chak non parèt pi plis yon sèl fwa nan pwòp gwoup li.</p>
+  <p>Idantite yon non canonical epi li baze sou sans; li pa rezilta yon vòt ant diferan òtograf, tradiksyon oswa implementations. Pou sans non yo, Megillah an ebre gen pi gwo otorite; tradiksyon ak transliterasyon yo se sèlman kouch afichaj.</p>
+  <p>Non an pa yon kòd kache pou longè non plis. Non yon koutlèt oswa yon mwa presi pa fè inite sa a pi long oswa pi kout poukont li.</p><hr>
+</section>
+
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>Yon ti bagay sou mwa yo</h2>
+  <p>Gen 47 non mwa, epi yon mwa ka rive pi lwen rive jou 123. Kidonk kantite pè ki posib sou plan sentaks nan fòm “non mwa + nimewo jou nan mwa” se</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>Chak jou nan ane a reyalize egzakteman youn nan pè sa yo. Si longè ane a se <code>L</code>, egzakteman <code>L</code> pè parèt. Paske</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>chak ane dwe kite omwen</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre>
+  <p>pè posib san itilize. Menm ane ki pi long lan pa gen ase jou pou itilize yo tout.</p><hr>
+</section>
+
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>Kijan kalandriye a kalkile?</h2>
+  <p>Nou rele kalkil entèn lan <strong>sòs</strong>. Nan sant li gen nonb premye</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>Pwosesis la gen senk input counter, 7 gout kache, 46 gout vizib, 6 bòl, lòd bòl ki chanje, 12 dènye melanj, seal pou repons diferan, combinatorial selection, konstriksyon pòt, chwa ane, separasyon koutlèt, chwa non, konstriksyon mwa, epi tissage jou mwa yo.</p>
+  <p>Dènye update yo fèt <strong>an menm tan</strong>: nan chak melanj, tout sis nouvo valè yo kalkile apati menm ansyen state la; se sèlman apre sa tout sis bòl yo chanje ansanm.</p>
+  <p>Nan 12 dènye melanj yo gen yon detay canonical ki enpòtan anpil. Si <code>S</code> se total sis ansyen bòl yo epi <code>r</code> se nimewo melanj lan, sistèm nan kalkile</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p><code>R</code> se <strong>total ki sove a</strong>. Chwa lòd bòl yo ak update entèn melanj lan toude sèvi ak <code>R</code>, pa total brit <code>S</code> la.</p>
+  <p>Ansyen vèsyon ki te pase total brit la nan update sa a pa dekri canonical semantics aktyèl la ankò. Egzanp ki soti nan ansyen règ la dwe konsidere kòm demode jiskaske yo verifye ankò.</p>
+  <p>Apre melanj yo, answer ring lan kontinye tou ak lòd ki te lock sou 46yèm gout vizib la; li pa dwe ranplase otomatikman ak lòd dènye melanj lan.</p><hr>
+</section>
+
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice ak Wide Choice</h2>
+  <p>Pou selection space ki relativman piti, yo sèvi ak <strong>Short Choice</strong>. Li sèvi ak rejection sampling pou evite yon modulo bias senp.</p>
+  <p>Pou space ki trè gwo, yo sèvi ak <strong>Wide Choice</strong>. Pa dwe bay li pwopriyete specification la pa garanti.</p>
+  <p>Wide Choice pa menm bagay ak pwodwi chif base-<code>Q</code> ki endepandan epi distribye egalego jiskaske nou jwenn yon index. Kidonk sa pa vle di chak valid choice dwe gen menm pwobabilite pozitif. Nan space ki ase gwo, kapab gen valid choice mechanism sa a pa janm rive jwenn.</p>
+  <p>Kalandriye a li menm rete totalman deterministic. “Choice” se non yon algorithmic stage, li pa yon random lottery pandan itilizasyon.</p><hr>
+</section>
+
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>Atlas estriktirèl</h2>
+  <p>Jiska isit la, nou t ap pale sou règ kalandriye a. Chif ki vin apre yo se yon lòt kalite enfòmasyon: <strong>rezilta anpirik</strong> ki soti nan yon gwo computational sample.</p>
+  <p>Atlas la te bati ak engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> epi li te gen 4,096 jou aksyon; ane 4990–5010 pou chak youn; 86,016 estrikti ane; 625,437 koutlèt; 3,535,422 mwa estriktirèl; plis pase 356 milyon segman mwa ki kontinye; ak plis pase 364 milyon tranzisyon soti nan jou <code>n</code> pou rive nan jou <code>n+1</code> nan menm mwa a.</p>
+  <p>Chif sa yo dekri corpus sa a, yo pa canonical lwa.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Done yo mezire nan atlas estriktirèl la">
+    <table class="about-table">
+      <thead><tr><th scope="col">Sa yo mezire</th><th scope="col">Rezilta nan echantiyon an</th></tr></thead>
+      <tbody>
+        <tr><td>Longè mwayèn yon ane</td><td>4,275.182 jou</td></tr>
+        <tr><td>Medyan longè ane</td><td>4,343</td></tr>
+        <tr><td>Minimum / maximum yo obsève</td><td>716 / 5,778</td></tr>
+        <tr><td>Kantite mwayèn koutlèt pa ane</td><td>7.271</td></tr>
+        <tr><td>Ane ki gen egzakteman 6 koutlèt</td><td>42.00%</td></tr>
+        <tr><td>Ane ki gen 6–8 koutlèt</td><td>81.29%</td></tr>
+        <tr><td>Longè mwayèn yon koutlèt</td><td>587.963 jou</td></tr>
+        <tr><td>Medyan longè koutlèt</td><td>560</td></tr>
+        <tr><td>Kantite mwayèn mwa pa ane</td><td>41.102</td></tr>
+        <tr><td>Medyan kantite mwa</td><td>43</td></tr>
+        <tr><td>Ane ki gen 47 mwa</td><td>15.63%</td></tr>
+        <tr><td>Ane ki gen omwen 45 mwa</td><td>36.81%</td></tr>
+        <tr><td>Longè mwayèn yon mwa estriktirèl</td><td>104.014 jou</td></tr>
+        <tr><td>Medyan longè mwa</td><td>115</td></tr>
+        <tr><td>Kantite mwayèn segman kontinyèl pa mwa</td><td>100.897</td></tr>
+        <tr><td>Pati segman mwa ki gen yon sèl jou</td><td>97.482%</td></tr>
+        <tr><td>Pwobabilite pou de jou youn apre lòt nan menm mwa</td><td>2.9976%</td></tr>
+        <tr><td>Kantite mwayèn jou lòt mwa ant <code>n</code> ak <code>n+1</code> nan menm mwa</td><td>40.408</td></tr>
+        <tr><td>Span mwayèn ant premye ak dènye aparisyon yon mwa</td><td>4,266.653 jou</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Nan pratik, yon mwa anviwon san jou ka gaye sou prèske tout yon ane Pastafari.</p>
+  <p>Menm atlas la te montre yon bias natirèl nan longè toupre ane 5000. Nan echantiyon an, yon ane “nòmal” te anviwon 4,262 jou an mwayèn. Lè yo weight ane yo selon kantite jou yo genyen, mwayèn nan monte rive anviwon 4,466 jou; ane 5000 li menm te anviwon 4,499 jou an mwayèn.</p>
+  <p>Rezon an senp: ane 5000 dwe genyen jou aksyon an. Yon ane ki pi long gen plis jou kote li ka tounen ane ki genyen jou aksyon an.</p>
+  <p>Relasyon ant non yon inite ak longè li te trè fèb nan echantiyon an tou. Sa pa pwouve yon mathematical independence total, men atlas la pa bay okenn signal pratik ki montre non yo fèt pou encode longè.</p>
+  <p>Anplis, 86,016 estrikti ane yo pa 86,016 independent sample total: gen sèlman 24,786 interval diferan ant pòt kòmansman ak pòt fen yo. Jou aksyon ki toupre youn lòt ka chwazi menm year interval la epi toujou pwodui diferan structure andedan.</p>
+  <p>Kidonk atlas la byen dekri konpòtman yo mezire nan implementation lan, men li pa dwe vin yon probability theorem sou tout calendar structure posib.</p><hr>
+</section>
+
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>Anivèsè ak komemorasyon</h2>
+  <p>Isit la, “menm jou chak ane” dwe defini anvan nou sèvi avè l. Recurrence coordinate natirèl yo se <code>(non mwa, jou nan mwa)</code> ak <code>(non koutlèt, jou nan koutlèt)</code>; kondisyon yo ka konbine tou.</p>
+  <p>Se poutèt sa yon anivèsè Pastafari pa senpleman <code>RRULE:FREQ=YEARLY</code>. Fòk nou jwenn pwochen ane ki satisfè recurrence condition nou chwazi a, epi evènman orijinal la pa konte otomatikman kòm pwòp “pwochen aparisyon” li.</p>
+  <p>Chanje jou aksyon an sèlman pou afichaj pa dwe chanje idantite yon moun, moman li fèt la oswa laj li.</p>
+  <p>Nan yon exact scan sou 4,096 self-referential date, yo te verifye chak pwochen ane Pastafari jiska 250,000 ane nan chak direksyon:</p>
+  <ul>
+    <li>Pou <code>(non mwa, jou nan mwa)</code>, medyan premye retou a te 1 ane Pastafari; 77.56% te retounen nan ane ki toupre a, 93.77% nan de ane, 99.44% nan senk ane; maximum yo te obsève a se 21 ane.</li>
+    <li>Pou <code>(non koutlèt, jou nan koutlèt)</code>, medyan an te 3 ane; 88.89% te jwenn nan 10 ane, men distribution lan gen yon heavy tail ki trè lou, epi maximum yo te obsève a te rive 51,954 ane Pastafari.</li>
+  </ul>
+  <p>Sa yo se <strong>rezilta anpirik nan corpus yo te verifye a</strong>; yo pa pwouve tout komemorasyon posib ap retounen, epi yo pa bay guarantee sou maximum waiting time.</p><hr>
+</section>
+
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>Kijan pou fikse yon reyinyon?</h2>
+  <p>Si de moun vle dakò sèlman ak yon dat Pastafari, yo dwe dakò omwen sou senk chan dat yo ak jou aksyon yo te sèvi avè l nan kalkil la. Li pi bon pou sere jou aksyon an kòm yon day identity ki fiks, pa kòm mo “jodi a”; sinon de moun ka kalkile de kalandriye diferan.</p>
+  <ul>
+    <li>“demen” se pwochen jou kwonolojik la;</li>
+    <li>“pwochen jou mwa a” se pwochen aparisyon mwa sa a;</li>
+    <li>“fen mwa a” se dènye aparisyon mwa sa a;</li>
+    <li>“tout mwa a” ka vle di set jou ki fè pati mwa a oswa tout span kwonolojik depi premye rive dènye aparisyon an;</li>
+    <li>“pwochen ane a” se pwochen ane nan kalandriye ki bati anba jou aksyon yo chwazi a.</li>
+  </ul>
+  <p>Pou yon reyinyon ki enpòtan anpil, nou ka sere yon absolute chronological day oswa moment tou. Kalandriye a pap fache.</p><hr>
+</section>
+
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>Vwayaj, evènman ak all-day</h2>
+  <p>Yon evènman ak etikèt lokal yo montre pou li pa menm bagay. Yon evènman ki gen yon lè presi dwe mare ak yon chronological moment ki estab. Vwayaje pa deplase li nan tan, men dat Pastafari lokal yo montre pou menm physical moment lan ka chanje, paske definisyon “jou lokal” la depann de kote a.</p>
+  <p>Pou yon evènman <strong>all-day</strong>, diferans lan pi gwo toujou. Yon evènman sivil pou tout jounen an nòmalman ale depi minwi rive pwochen minwi; yon evènman Pastafari pou tout jounen an ta dwe ale depi limit lokal jou Pastafari a rive pwochen limit la. Nòmalman se pa menm moments yo.</p>
+  <p>Se poutèt sa, si nou export yon evènman Pastafari avèg kòm yon evènman sivil “tout jounen”, sa ka chanje sans li. Pou konsève l kòrèkteman, fòk nou sere chronological anchor la ak bon location/day-boundary context la, pa sèlman flag <code>all-day</code> la.</p><hr>
+</section>
+
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>Kilè jou a chanje?</h2>
+  <p>Jou Pastafari lokal la pa chanje a minwi. Limit li detèmine pa <strong>topocentric lower meridian transit sant Venis atravè meridyen lokal la</strong>.</p>
+  <p>Sa vle di se yon evènman astwonomik lokal ki depann de kote a. Transit lan pa oblije rive a 00:00, time zone sivil la pa detèmine l, li pa deplase sèlman paske daylight saving time kòmanse oswa fini, epi Venis pa bezwen vizib ak je toutouni.</p>
+  <p>Menm physical moment lan ka sou de kote diferan nan de bò limit jou lokal yo. Si sistèm nan pa gen yon user location ki itil, default fallback location pwodwi a se <strong>Kisurra</strong>.</p><hr>
+</section>
+
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>Kalandriye enprime ak kalkil alamen</h2>
+  <p>Nou ka enprime Kalandriye Pastafari a; nou sèlman bezwen di pou ki jou aksyon li te kalkile. Yon kalandriye konsa montre estrikti tan an depi pwendvi jou sa a; si jou aksyon an chanje, yon nouvo kalandriye ka nesesè. Donk enprimant lan toujou gen travay.</p>
+  <p>Paske specification la konplè epi deterministic, nou ka kalkile tout bagay alamen tou: kalkile input counter yo, pase nan 7 gout kache ak 46 gout vizib yo, update sis bòl yo, fè 12 dènye melanj yo, pwodwi repons yo, bati pòt yo, chwazi ane ak koutlèt yo, fè combinatorial selection, chwazi non yo, epi tise mwa yo.</p>
+  <p>An retou, nou pa bezwen sonje kilè fevriye gen 28 jou ak kilè li gen 29.</p><hr>
+</section>
+
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>E Seer, sa li ye?</h2>
+  <p>Akote canonical implementation lan gen yon engine rapid ki rele <strong>Pastafarian Calendar Seer</strong>. Seer pa yon sous otorite: se Megillah ak canonical calculation ki detèmine dat ki kòrèk la. Si Seer pa dakò ak yo, erè a nan Seer.</p>
+  <p>Travay li se kouri menm query yo vit epi retounen rezilta a nan yon fòm ki fasil pou integrate nan pwodwi.</p>
+  <p>Nan verification dirèk ki fèt pandan yo t ap modifye paj sa a, Seer te gen ladan l, pami lòt bagay, date ak “now” query, batch, day range, reverse conversion soti nan yon dat Pastafari pou rive target day, year structure retrieval, detèminasyon active working day, Node API, browser/HTTP client, CLI, HTTP v1 service, OpenAPI 3.1 contract, native implementations ak distribution package, ansanm ak verified container deployment.</p>
+  <p>Ansyen deklarasyon ki te di Seer pa gen public API pa kòrèk ankò. Kounye a gen yon HTTP v1 contract ki klè epi ki estab, ak endpoint pou date, range, batch, year, reverse, jou aksyon, metadata, locales ak status.</p>
+  <p>Nan 21 septanm 2026, yo te teste yon public HTTPS deployment sou Render toutbon: sou live service la, yo verifye exact query, yon gwo range, restart, cold wake ak konpòtman anba load.</p>
+  <p>Men project documentation lan toujou fè diferans ant public beta/evaluation deployment ak yon hosted production service pèmanan ki gen SLA. Se poutèt sa yon paj eksplikasyon konsèptyèl pa ta dwe freeze yon server address, hosting provider oswa version number tankou si yo fè pati kalandriye a menm.</p>
+  <p>Seer ka sèvi ak precomputation, representation espesyal, SIMD, algebra ak lòt shortcut. Li pa oblije repwodui tout computational history canonical implementation lan etap pa etap depi li fè menm operasyon semantik la epi li retounen menm repons lan.</p>
+  <p>Optimization pa yon lòt sous otorite.</p><hr>
+</section>
+
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>Orijin, Jou Fondasyon an ak Jou Tablèt yo</h2>
+  <p>Isit la li enpòtan anpil pou separe canonical time anchor yo ak istwa sit la.</p>
+
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>Pwen referans</h3>
+    <p>Sistèm nan gen yon reference day ki fiks yo rele <strong>Jou Fondasyon an</strong>. Nan kalandriye gregoryen pwoleptik la, se <strong>22 desanm 41,222 anvan epòk nou an</strong>.</p>
+    <p>Jou Fondasyon an pa “kòmansman tan”; se yon computational anchor.</p>
+    <p>Numbering jou yo bò kote li sèvi ak nonb pozitif enpè/pè: Jou Fondasyon an=1; jou apre yo=3, 5, …; nan direksyon tan pase a, jou anvan an=2, apre sa 4, 6, … . Konsa, tou de bò anchor la encode nan counter sa a san negative day number.</p>
+    <p>Dezyèm anchor la se <strong>Jou Tablèt yo</strong>: <strong>15 jen 763 anvan epòk nou an nan kalandriye jilyen pwoleptik la</strong>, sa vle di <strong>7 jen 763 anvan epòk nou an nan kalandriye gregoryen pwoleptik la</strong>.</p>
+    <p>Distans egzak soti nan Jou Fondasyon an rive Jou Tablèt yo se</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
+    <p>jou.</p>
+    <p>Sa yo se anchor ki fiks sou liy tan an, men dat Pastafari yo montre pou yo toujou depann de jou aksyon kote yo poze kesyon an.</p>
+  </section>
+
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>Istwa sit la</h3>
+    <p>Nan istwa editoryal sit la, kalandriye a prezante kòm yon pati nan kreyasyon an ak kòm yon sistèm limanite te sèvi avè l san li pa t konprann li nèt, jouk yo te remèt li ankò nan epòk modèn lan.</p>
+    <p>Sa se istwa sit la; pa chak narrative detail ki dwe prezante tankou yon technical claim ki soti klèman nan Megillah.</p>
+    <p>Evènman kote yo remèt li ankò a se yon evènman istorik ki fiks. Li pi bon pou montre <strong>dat Pastafari</strong> li dynamic anba jou aksyon aktyèl la olye pou freeze li pou tout tan kòm yon sèl dat.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>Pou itilizatè avanse: reverse conversion</h2>
+  <p>Si jou aksyon <code>c</code> la konnen, reverse conversion limite anpil. Andedan yon ane Pastafari nou konnen,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{non koutlèt},\text{jou nan koutlèt})</code></pre>
+  <p>idantifye pi plis yon sèl jou. Menm bagay la vre pou</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{non mwa},\text{jou nan mwa})</code></pre>
+  <p>Kidonk yon dat konplè ak yon jou aksyon nou konnen idantifye target day la yon sèl fason.</p>
+
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Limit siperyè pou kantite candidate nan reverse conversion">
+    <table class="about-table">
+      <thead><tr><th scope="col">Lòt enfòmasyon nou konnen</th><th scope="col">Kantite candidate maksimòm</th></tr></thead>
+      <tbody>
+        <tr><td>Nou pa konnen okenn lòt chan apa ane a</td><td>5,778</td></tr>
+        <tr><td>Sèlman non koutlèt la</td><td>5,568</td></tr>
+        <tr><td>Sèlman jou nan koutlèt la</td><td>17</td></tr>
+        <tr><td>Sèlman non mwa a</td><td>123</td></tr>
+        <tr><td>Sèlman jou nan mwa a</td><td>47</td></tr>
+        <tr><td>Non koutlèt + jou nan koutlèt</td><td>1</td></tr>
+        <tr><td>Non mwa + jou nan mwa</td><td>1</td></tr>
+        <tr><td>Nenpòt twa chan apa ane a</td><td>1</td></tr>
+        <tr><td>Tout kat chan apa ane a</td><td>1</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Si nou pa konnen jou aksyon an, sitiyasyon an diferan. Menm senk valè yo ka parèt anba diferan jou aksyon, epi gen exact example kote menm dat konplè a parèt a diferan distans de <code>c</code>.</p>
+  <p>Nan ane 5000, menm sign distans sa a pa toujou detèmine pa senk valè yo: menm dat konplè a ka anvan jou aksyon an nan yon context, epi apre li nan yon lòt.</p>
+  <p>Kidonk yon dat Pastafari konplè pa yon absolute address sou liy tan an si nou pa konnen anba ki <code>c</code> yo te kalkile l.</p>
+
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>Estrikti nan tan ki lwen anpil</h3>
+    <p>Rechèch matematik ki sòti nan specification la jwenn tou yon asymptotic structure egzak. Pou yon <strong>jou aksyon ki fiks</strong> <code>c</code>, ase lwen nan tail tan pase a, affine periodicity parèt.</p>
+    <p>Si</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>alò, pou menm <code>c</code> la, gen yon shift <code>H_c</code>, yon year change <code>p_c</code> ak yon threshold ki ase lwen; apre sa</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>kat chan ki pa ane yo repete, pandan nimewo ane a chanje pa yon kantite ki fiks.</p>
+    <p>Sa se yon rezilta pou <code>c</code> ki fiks; li pa bay relasyon global</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>Kesyon si dènye asymptotic slope yo vrèman diferan ant diferan jou aksyon toujou ouvè.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>Pou itilizatè avanse: konbyen istwa sòs la konsève?</h2>
+  <p>Sòs la sanble ak yon mixing mechanism ki trè agresif, men algebraic research montre li konsève anpil plis enfòmasyon pase aparans li ta fè nou kwè. Sa se yon research result ki sòti nan specification la, pa yon nouvo règ kalandriye.</p>
+  <p>Nan stage vizib 3–46 yo, sou asymptotic branch ki konsène a, generic injectivity etabli: nan generic case la, state la konsève ase enfòmasyon pou rekonstwi input history ki konsène a ak lòd bòl yo.</p>
+  <p>Enfòmasyon an pa disparèt tousuit nan 12 dènye melanj yo non plis. Pou premye senk melanj apre 46yèm gout vizib la, generic invertibility etabli sou canonical union ki konsène a san side information anplis; pou rès la, yo konnen bon constructive upper bound sou kantite side information ki sifi pou reconstruction.</p>
+  <p>Kesyon si <strong>sèlman sis dènye bòl yo</strong> toujou sifi nan generic sense la toujou ouvè.</p>
+  <p>Gen rezilta yo pwouve symbolic; lòt yo fèmen ak finite exact arithmetic check. Symbolic strengthening la diminye anpil computational core nou dwe fè konfyans lan, men li pa elimine l nèt.</p>
+  <p>Space ki te sanble okòmansman mande rechèch atravè yon kantite path ki ekstrèmman gwo te redwi nan finite structure ki pi piti anpil, tankou automata ki gen 180 ak 9 state ansanm ak symmetry sis bòl yo.</p>
+  <p>Anba melanj lan gen yon algebraic structure ki sevè. Nou pa bezwen konnen l pou nou konnen dat jodi a.</p><hr>
+</section>
+
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>Kidonk, kisa Kalandriye Pastafari a ye vrèman?</h2>
+  <p>Se yon deterministic calendar kote dat la pa sèlman yon function de target day la, men yon <strong>function ansanm de jou aksyon an ak jou yo mande a</strong>.</p>
+  <p>Chak dat gen egzakteman senk chan. Prezant lan, nan pwòp pwendvi pa li, toujou nan ane 5000, men ane 5000 li menm deplase ansanm ak jou aksyon an. Ane yo ka trè long, koutlèt yo kontinyèl, mwa yo pa oblije konsa, epi pa gen canonical week system.</p>
+  <p>Jou <code>n+1</code> nan yon mwa pa nesesèman demen. Menm chronological day la ka resevwa yon lòt Pastafarian label demen. Menm physical moment lan ka fè pati de local Pastafari day diferan nan de kote. Yon all-day event pa oblije dire minwi rive minwi. E yon annual birthday se dabò yon search problem, apre sa yon calendar problem.</p>
+  <p>Men si jou aksyon an ak jou yo mande a konnen, pa gen ambiguity: gen yon sèl repons kòrèk.</p>
+  <p>Finalman, yon kalandriye pa bezwen fè plis pase sa.</p>
+</section>
