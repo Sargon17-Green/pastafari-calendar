@@ -312,7 +312,7 @@ export default Object.freeze({
       "honey": "Мёд",
       "spleen": "Селязёнка",
       "limestone": "Вапняк",
-      "joy": "Радість",
+      "joy": "Радасць",
       "fig": "Інжыр",
       "nineveh": "Ніневія",
       "frog": "Жаба",
