@@ -1,0 +1,331 @@
+<!-- తెలుగు సంచిక హీబ్రూ semantic master నుండి నేరుగా రాయబడింది; మధ్యవర్తి భాషను ఉపయోగించలేదు. -->
+<!-- Section IDలు స్థిరమైన public deep-link contractలో భాగం; అనువదించిన శీర్షికల నుంచి అవి రూపొందించబడవు. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>ఈ సైట్ కథనంలో పాస్తాఫారి క్యాలెండర్‌ను కాలమే ఇందులో సృష్టించబడిన క్యాలెండర్‌గా పరిచయం చేస్తారు. అయితే అది ఎలా పనిచేస్తుందో తెలిపే నియమాలు ఖచ్చితంగా నిర్వచించబడ్డాయి.</p>
+  <p>ఈ క్యాలెండర్ ప్రతి రోజుకూ ఒకే మారని పాస్తాఫారి “లేబుల్”ను కట్టిపెట్టదు. తేదీ తెలుసుకోవడానికి రెండు రోజులు అవసరం: లెక్కింపు మొదలయ్యే <strong>చర్య దినం</strong>, మరియు పాస్తాఫారి తేదీ తెలుసుకోవాలనుకున్న <strong>అడిగిన దినం</strong>.</p>
+  <p>చర్య దినాన్ని <code>c</code>గా, అడిగిన దినాన్ని <code>t</code>గా సూచిస్తే, తేదీ</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>అవుతుంది; <code>F(t)</code> కాదు. అందువల్ల అదే అడిగిన దినానికి చర్య దినం మారితే వేరే పాస్తాఫారి తేదీ రావచ్చు.</p>
+  <p>ఇది లోపం కాదు. క్యాలెండర్ నిర్వచనమే అలా ఉంది.</p><hr>
+</div>
+
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>పాస్తాఫారి తేదీలో ఏముంటుంది?</h2>
+  <p>దీనికి <strong>ఖచ్చితంగా ఐదు భాగాలు</strong> ఉన్నాయి: సంవత్సరం సంఖ్య, కట్లెట్ పేరు, కట్లెట్‌లోని దినం, నెల పేరు, నెలలోని దినం.</p>
+  <p>సాధారణ ఉదాహరణ: <strong>సంవత్సరం 5000, కట్లెట్ A, కట్లెట్‌లో 417వ దినం, నెల B, నెలలో 83వ దినం.</strong></p>
+  <p>చర్య దినం, పరిశీలకుడి స్థానం, దినం యొక్క కాలక్రమ గుర్తింపు లేదా ఇతర సాంకేతిక సమాచారం తేదీ పక్కన చూపవచ్చు; అవి ఆరో field మాత్రం కావు.</p><hr>
+</section>
+
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>చర్య దినం ఎందుకు అవసరం?</h2>
+  <p>సాధారణ క్యాలెండర్లలో తేదీ ఆ దినానికే స్వభావసిద్ధంగా చెందినదిగా అనిపించడం సహజం. పాస్తాఫారి క్యాలెండర్‌లో మాత్రం తేదీ రెండు దినాల మధ్య సంబంధంపై ఆధారపడుతుంది.</p>
+  <p><code>t</code> మార్చడం అంటే మరో దినం గురించి అడగడం. <code>c</code> మార్చడం మరింత లోతైన ప్రభావం చూపుతుంది: సంవత్సర సరిహద్దులు, కట్లెట్లు, నెలలు, వాటి పేర్లు, నెలలు ఒకదానితో మరొకటి ఎలా అల్లుకుపోతాయో అన్నీ మారవచ్చు.</p>
+  <p>కాబట్టి ఈరోజు లెక్కించిన పంచాంగం రేపటికీ సరైనదే కావాల్సిన అవసరం లేదు. ముద్రించిన క్యాలెండర్ మొత్తం సంవత్సరం ఉపయోగకరంగా మిగిలిపోవడం అనే అసౌకర్యకర పరిస్థితినీ ఇది తప్పిస్తుంది.</p><hr>
+</section>
+
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>అదే దినం, వేరే తేదీ</h2>
+  <p><strong>దినం యొక్క గుర్తింపు</strong>ను దాని <strong>పాస్తాఫారి ప్రాతినిధ్యం</strong> నుండి వేరు చేయాలి. మొదటిది కాలరేఖపై ఒక నిర్దిష్ట దినం యొక్క స్థిర స్థానం; రెండవది ఆ దినాన్ని ఒక నిర్దిష్ట చర్య దినం కింద చూపినప్పుడు వచ్చే ఐదు విలువలు.</p>
+  <p>ఉత్పత్తిలో మరియు APIలో మొదటిదాన్ని <code>day-id</code>గా భావించవచ్చు: ప్రదర్శన మారినా మారని కాలక్రమ గుర్తింపు. అయితే</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre>
+  <p>మరియు</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>ఒకేలా ఉండాల్సిన అవసరం లేదు.</p>
+  <p>అందువల్ల చర్య దినాన్ని చేతితో మార్చితే అదే దినానికి చూపే పాస్తాఫారి తేదీ మారవచ్చు; కానీ దినం తానే కాలరేఖపై ఎక్కడికీ కదలదు.</p>
+  <p>ఇదే సూత్రం సంఘటనలకూ వర్తిస్తుంది. సమావేశం, జననం లేదా చారిత్రక సంఘటన స్థిరమైన కాలక్రమ గుర్తింపుతో బంధించబడి ఉండాలి; దాని పాస్తాఫారి తేదీని ప్రదర్శన సందర్భానికి అనుగుణంగా మళ్లీ లెక్కించవచ్చు.</p>
+  <p>లేబుల్ మారవచ్చు. సంఘటన మారదు.</p><hr>
+</section>
+
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>సంవత్సరం 5000</h2>
+  <p>చర్య దినం మరియు అడిగిన దినం ఒకటే అయితే,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>సంవత్సరం సంఖ్య ఎల్లప్పుడూ</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>అవుతుంది. అంటే వర్తమానం తన దృష్టికోణంలో ఎప్పుడూ సంవత్సరం 5000లోనే ఉంటుంది. అయితే సంవత్సరం 5000 చరిత్రలో ఒక స్థిర కాలఖండం కాదు; చర్య దినానికి సంబంధించి ప్రతిసారి మళ్లీ ఎంచుకోబడుతుంది.</p>
+  <p>చర్య దినం తానే సంవత్సరం 5000లో ఉంటుంది; అదే ఎంచుకున్న సంవత్సరంలోని ఇతర దినాలూ అలాగే ఉంటాయి. కాబట్టి <strong>సంవత్సరం 5000లో ఉండటం మాత్రమే <code>t=c</code> అని నిరూపించదు.</strong></p>
+  <p>అయినా సంవత్సరం సంఖ్య దిశను చూపుతుంది:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre>
+  <p>మరియు</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p><strong>సంవత్సరం 0</strong> కూడా ఉంది; ఇంకా గతంలో ఋణ సంఖ్యల సంవత్సరాలు వస్తాయి.</p><hr>
+</section>
+
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>సంవత్సరాలు మరియు ద్వారాలు</h2>
+  <p>ఒక పాస్తాఫారి సంవత్సరంలో</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ నుండి }5778</code></pre>
+  <p>దినాలు ఉండవచ్చు. ఇవి వ్యవస్థ యొక్క canonical పరిమితులు; ప్రయోగాల నుంచి వచ్చిన సగటులు కావు.</p>
+  <p>అందువల్ల సంవత్సరం సౌర సంవత్సరంకంటే చిన్నదిగా లేదా పదిహేను సౌర సంవత్సరాలకంటే పెద్దదిగా కూడా ఉండవచ్చు. సంవత్సర సరిహద్దులు <strong>ద్వారాల</strong> వ్యవస్థ నుంచి నిర్మించబడతాయి; కట్లెట్ సరిహద్దులు కూడా అదే వ్యవస్థ నుంచి వస్తాయి.</p>
+  <p>సంవత్సరం ముగింపు ఋతువుతో, భూమి సూర్యుని చుట్టూ చేసే ఒక పరిభ్రమణంతో, చంద్ర చక్రంతో లేదా సంవత్సరం ఇక ముగియాలని మనకు అనిపించే ఆచరణాత్మక అవసరంతో సరిపోవాల్సిన అవసరం లేదు.</p><hr>
+</section>
+
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>కట్లెట్లు</h2>
+  <p>ప్రతి సంవత్సరం <strong>6 నుండి 17 కట్లెట్లుగా</strong> విభజించబడుతుంది. కట్లెట్ కాలక్రమంగా నిరంతరమైన సమయ భాగం.</p>
+  <p>ఈరోజు ఒక కట్లెట్‌లో 250వ దినం అయితే, ఈరోజే దాని చివరి దినం కాకపోతే రేపు అదే కట్లెట్‌లో 251వ దినం అవుతుంది. కట్లెట్ సరిహద్దులు ద్వారాలు; ఒక కట్లెట్‌లో కనీసం</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
+  <p>దినాలు ఉంటాయి.</p>
+  <p>వ్యవస్థలో 17 canonical కట్లెట్ పేర్లు ఉన్నాయి; ఒకే సంవత్సరంలో ఏ పేరు రెండుసార్లు రాదు. పేరు కట్లెట్ పొడవు లేదా స్థానం నిర్ణయించదు.</p><hr>
+</section>
+
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>నెలలు మరియు అల్లిక</h2>
+  <p>ప్రతి సంవత్సరంలో</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ నుండి }47</code></pre>
+  <p>నిర్మాణాత్మక నెలలు ఉంటాయి; ప్రతి నెలకు</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ నుండి }123</code></pre>
+  <p>దినాలు కేటాయించబడతాయి.</p>
+  <p>కానీ పాస్తాఫారి నెల <strong>నిరంతర సమయ విరామం కావాల్సిన అవసరం లేదు</strong>. ఉదాహరణకు కాలక్రమం ఇలా ఉండవచ్చు:</p>
+  <blockquote><p>నెల A — దినం 14<br>నెల B — దినం 9<br>నెల A — దినం 15</p></blockquote>
+  <p>ఇది పూర్తిగా చెల్లుబాటు అవుతుంది. A నెలలో 15వ దినం <strong>అదే నెలలో</strong> తదుపరి దినం; మధ్యలో మరో నెలకు చెందిన దినం వచ్చినా సరే.</p>
+  <p>అందువల్ల “నెలలో దినం” అంటే ఆ నెల మొదటిసారి కనిపించినప్పటి నుంచి గడిచిన కాలక్రమ దినాల సంఖ్య కాదు. ఆ సంవత్సరంలో ఆ నెలకు కేటాయించిన దినాల్లో అది ఎన్ని వదో తెలుపుతుంది. దినం 48 అంటే ఆ నెలకు చెందిన 48వ దినం; మొదటి కనిపింపుకు 47 దినాల తర్వాత అని కాదు.</p><hr>
+</section>
+
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>నెలలు ఒకదానితో మరొకటి అల్లుకుపోతాయి</h2>
+  <p>నెలలను సంవత్సరం అంతా సాగిపోయే దారాలుగా ఊహించవచ్చు. ప్రతి దినం ఖచ్చితంగా ఒక నెలకు చెందుతుంది; రేపటి దినం మరో నెలకు చెందవచ్చు, ఆ తరువాత మొదటి నెల తిరిగి వచ్చి తన తదుపరి సంఖ్యతో కొనసాగవచ్చు.</p>
+  <p>ఈ అల్లికకు నియమాలు ఉన్నాయి; నెలల మొదటి మరియు చివరి కనిపింపుల క్రమంపై పరిమితులు కూడా ఉన్నాయి. అయితే ఒక నెల ముగిసిన తరువాతే మరో నెల మొదలవాలి అనే నియమం లేదు.</p>
+  <ul>
+    <li>కట్లెట్ నిరంతర సమయ భాగంలో స్థానాన్ని కొలుస్తుంది.</li>
+    <li>నెల కనిపించకుండా పోయి తరువాత మళ్లీ కనిపించగల నిర్మాణాత్మక దారంలో సభ్యత్వాన్ని సూచిస్తుంది.</li>
+  </ul>
+  <p>ఒక నెల అనేక కట్లెట్లను దాటవచ్చు; ఒక కట్లెట్‌లో అనేక నెలలు కనిపించవచ్చు. ఈ రెండు వ్యవస్థల ప్రారంభం మరియు ముగింపు ఒకటిగా ఉండాల్సిన అవసరం లేదు.</p><hr>
+</section>
+
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>నెలలో తదుపరి దినం రేపే కావాల్సిన అవసరం లేదు</h2>
+  <p>ఈరోజు ఒక నెలలో 17వ దినం అయితే, అదే నెలలో 18వ దినం <strong>ఆ నెల యొక్క తదుపరి కనిపింపు</strong>. అది రేపు కావచ్చు; చాలా తరువాత కూడా కావచ్చు.</p>
+  <p><strong>రేపు</strong> అనేది తదుపరి కాలక్రమ దినం; <strong>నెలలో తదుపరి దినం</strong> అనేది అదే నెల యొక్క తదుపరి కనిపింపు.</p>
+  <p>అలాగే “నెల ముగింపు” అంటే ముగింపు కాలక్రమంగా దగ్గరలో ఉందని కాదు. 120 దినాల నెల ఈరోజు 119వ దినంలో ఉండవచ్చు; 120వ దినం అదే సంవత్సరంలో చాలా తరువాత రావచ్చు.</p><hr>
+</section>
+
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>వారాలు లేవు</h2>
+  <p>ప్రస్తుత canonical specification <strong>వార వ్యవస్థను నిర్వచించదు</strong>. ఏడు దినాల canonical యూనిట్ లేదు, పాస్తాఫారి వారదిన పేర్లు లేవు, రెండు దినాలను “వారంలోని అదే దినం”గా చేసే నియమం లేదు.</p>
+  <p>అవసరమైతే పౌర వార వ్యవస్థను బయట నుంచి జోడించవచ్చు; అది పాస్తాఫారి తేదీలో భాగం మాత్రమే కాదు.</p><hr>
+</section>
+
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>పేర్లు</h2>
+  <p>17 canonical కట్లెట్ పేర్లు మరియు 47 canonical నెల పేర్లు ఉన్నాయి. ఒక సంవత్సరంలో ప్రతి పేరు తన సమూహంలో గరిష్టంగా ఒక్కసారే కనిపిస్తుంది.</p>
+  <p>పేరు యొక్క గుర్తింపు canonical మరియు అర్థసంబంధమైనది; వేర్వేరు spelling, అనువాదం లేదా implementation మధ్య ఓటింగ్ ఫలితం కాదు. పేర్ల అర్థం విషయంలో హీబ్రూ Megillah అత్యున్నత అధికారం; అనువాదం, transliteration కేవలం ప్రదర్శన పొరలు.</p>
+  <p>పేరు పొడవుకు దాచిన code కూడా కాదు. ఏదైనా ప్రత్యేక కట్లెట్ లేదా నెల పేరు తనంతట తానే ఆ యూనిట్‌ను పొడవుగా లేదా చిన్నదిగా చేయదు.</p><hr>
+</section>
+
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>నెలల గురించి ఒక చిన్న విషయం</h2>
+  <p>47 నెల పేర్లు ఉన్నాయి; ఒక నెల గరిష్టంగా దినం 123 వరకు చేరవచ్చు. కాబట్టి “నెల పేరు + నెలలో దిన సంఖ్య” రూపంలో syntactically సాధ్యమైన జంటల సంఖ్య</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>అవుతుంది. సంవత్సరంలోని ప్రతి దినం ఖచ్చితంగా ఒక జంటను సాకారం చేస్తుంది. సంవత్సరం పొడవు <code>L</code> అయితే ఖచ్చితంగా <code>L</code> జంటలు కనిపిస్తాయి. ఎందుకంటే</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>ప్రతి సంవత్సరంలో కనీసం</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre>
+  <p>సాధ్యమైన జంటలు లేకుండానే ఉండాలి. అతి పొడవైన సంవత్సరంలో కూడా అన్నింటినీ ఉపయోగించడానికి సరిపడా దినాలు లేవు.</p><hr>
+</section>
+
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>క్యాలెండర్ ఎలా లెక్కించబడుతుంది?</h2>
+  <p>లోపలి లెక్కింపును ఇక్కడ మనం <strong>సాస్</strong> అని పిలుస్తాం. దాని కేంద్రంలో prime number</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>ఉంది. ఈ ప్రక్రియలో ఐదు input counter, 7 దాచిన చుక్కలు, 46 కనిపించే చుక్కలు, 6 గిన్నెలు, మారే గిన్నె క్రమాలు, 12 చివరి కలయికలు, వేర్వేరు జవాబులకు seal, combinatorial selection, ద్వారాల నిర్మాణం, సంవత్సర ఎంపిక, కట్లెట్ విభజన, పేర్ల ఎంపిక, నెలల నిర్మాణం, నెల దినాల అల్లిక ఉన్నాయి.</p>
+  <p>చివరి updateలు <strong>ఒకేసారి</strong> జరుగుతాయి: ప్రతి కలయికలో ఆరు కొత్త విలువలన్నీ అదే పాత state నుంచి లెక్కించబడతాయి; ఆ తర్వాతే ఆరు గిన్నెలు కలిసి మార్చబడతాయి.</p>
+  <p>చివరి 12 కలయికల్లో ఒక ప్రత్యేకంగా ముఖ్యమైన canonical detail ఉంది. <code>S</code> పాత ఆరు గిన్నెల మొత్తము, <code>r</code> కలయిక సంఖ్య అయితే వ్యవస్థ లెక్కించేది</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p><code>R</code> <strong>సేవ్ చేసిన మొత్తం</strong>. గిన్నెల క్రమ ఎంపిక కూడా, కలయికలోని అంతర్గత update కూడా raw <code>S</code>కు బదులుగా <code>R</code>ను ఉపయోగిస్తాయి.</p>
+  <p>ఈ updateలో raw మొత్తాన్ని ఇచ్చిన పాత versionలు ఇప్పుడు ప్రస్తుత canonical semanticsను వివరించవు. పాత నియమం నుంచి వచ్చిన ఉదాహరణలను మళ్లీ ధృవీకరించే వరకు పాతవిగా పరిగణించాలి.</p>
+  <p>కలయికల తర్వాత answer ring కూడా కనిపించే చుక్క 46 వద్ద lock చేసిన క్రమాన్నే కొనసాగిస్తుంది; దాన్ని స్వయంచాలకంగా చివరి కలయిక క్రమంతో మార్చకూడదు.</p><hr>
+</section>
+
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice మరియు Wide Choice</h2>
+  <p>తులనాత్మకంగా చిన్న selection spaceలకు <strong>Short Choice</strong> ఉపయోగిస్తారు. సాధారణ modulo bias నివారించడానికి అది rejection sampling ఉపయోగిస్తుంది.</p>
+  <p>చాలా పెద్ద spaceలకు <strong>Wide Choice</strong> ఉపయోగిస్తారు. Specification హామీ ఇవ్వని లక్షణాలను దానికి ఆపాదించకూడదు.</p>
+  <p>Wide Choice అంటే index దొరికే వరకు independent మరియు uniformly distributed base-<code>Q</code> digitలను తయారు చేయడం కాదు. అందువల్ల ప్రతి valid choiceకు ఒకే positive probability ఉండాల్సిందే అనే నిర్ణయం రాదు. తగినంత పెద్ద spaceలో ఈ mechanism ఎప్పుడూ చేరలేని valid choiceలు ఉండవచ్చు.</p>
+  <p>క్యాలెండర్ తానే పూర్తిగా deterministicగా ఉంటుంది. “Choice” అనేది algorithmic stage పేరు; ఉపయోగించే సమయంలో జరిగే random lottery కాదు.</p><hr>
+</section>
+
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>నిర్మాణాత్మక atlas</h2>
+  <p>ఇప్పటివరకు మనం క్యాలెండర్ నియమాల గురించి మాట్లాడాం. తరువాతి సంఖ్యలు వేరే రకం సమాచారం: పెద్ద computational sample నుంచి వచ్చిన <strong>empirical result</strong>.</p>
+  <p>Atlas engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code>తో నిర్మించబడింది. ఇందులో 4,096 చర్య దినాలు; ప్రతి దానికి 4990–5010 సంవత్సరాలు; 86,016 year structure; 625,437 కట్లెట్లు; 3,535,422 structural month; 356 millionకంటే ఎక్కువ contiguous month segment; అదే నెలలో <code>n</code> నుంచి <code>n+1</code>కు 364 millionకంటే ఎక్కువ transitionలు ఉన్నాయి.</p>
+  <p>ఈ సంఖ్యలు ఆ corpusను వివరిస్తాయి; canonical చట్టాలను కాదు.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="నిర్మాణాత్మక atlasలో కొలిచిన సమాచారం">
+    <table class="about-table">
+      <thead><tr><th scope="col">కొలత</th><th scope="col">నమూనాలో ఫలితం</th></tr></thead>
+      <tbody>
+        <tr><td>సంవత్సరం సగటు పొడవు</td><td>4,275.182 దినాలు</td></tr>
+        <tr><td>సంవత్సర పొడవు median</td><td>4,343</td></tr>
+        <tr><td>గమనించిన minimum / maximum</td><td>716 / 5,778</td></tr>
+        <tr><td>ప్రతి సంవత్సరానికి సగటు కట్లెట్లు</td><td>7.271</td></tr>
+        <tr><td>ఖచ్చితంగా 6 కట్లెట్లు ఉన్న సంవత్సరాలు</td><td>42.00%</td></tr>
+        <tr><td>6–8 కట్లెట్లు ఉన్న సంవత్సరాలు</td><td>81.29%</td></tr>
+        <tr><td>కట్లెట్ సగటు పొడవు</td><td>587.963 దినాలు</td></tr>
+        <tr><td>కట్లెట్ పొడవు median</td><td>560</td></tr>
+        <tr><td>ప్రతి సంవత్సరానికి సగటు నెలలు</td><td>41.102</td></tr>
+        <tr><td>నెలల సంఖ్య median</td><td>43</td></tr>
+        <tr><td>47 నెలలు ఉన్న సంవత్సరాలు</td><td>15.63%</td></tr>
+        <tr><td>కనీసం 45 నెలలు ఉన్న సంవత్సరాలు</td><td>36.81%</td></tr>
+        <tr><td>structural month సగటు పొడవు</td><td>104.014 దినాలు</td></tr>
+        <tr><td>నెల పొడవు median</td><td>115</td></tr>
+        <tr><td>ప్రతి నెలకు సగటు contiguous segment</td><td>100.897</td></tr>
+        <tr><td>ఒక దినం month segmentల వాటా</td><td>97.482%</td></tr>
+        <tr><td>పక్కపక్కన ఉన్న రెండు దినాలు అదే నెలలో ఉండే సంభావ్యత</td><td>2.9976%</td></tr>
+        <tr><td>అదే నెలలో <code>n</code> మరియు <code>n+1</code> మధ్య ఇతర నెలల దినాల సగటు సంఖ్య</td><td>40.408</td></tr>
+        <tr><td>నెల మొదటి నుంచి చివరి కనిపింపుల మధ్య సగటు span</td><td>4,266.653 దినాలు</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>ఆచరణలో సుమారు వంద దినాల నెల దాదాపు మొత్తం పాస్తాఫారి సంవత్సరం పొడవునా విస్తరించి ఉండవచ్చు.</p>
+  <p>అదే atlas సంవత్సరం 5000 చుట్టూ పొడవు యొక్క సహజ biasను కూడా చూపించింది. నమూనాలో “సాధారణ” సంవత్సరం సగటుగా సుమారు 4,262 దినాలు. సంవత్సరాలను వాటిలోని దినాల సంఖ్యతో weight చేస్తే సగటు సుమారు 4,466 దినాలకు చేరుతుంది; సంవత్సరం 5000 తానే సగటుగా సుమారు 4,499 దినాలు.</p>
+  <p>కారణం సులభం: సంవత్సరం 5000 చర్య దినాన్ని కలిగి ఉండాలి. పొడవైన సంవత్సరానికి చర్య దినాన్ని కలిగిన సంవత్సరం అయ్యే అవకాశమున్న దినాలు ఎక్కువగా ఉంటాయి.</p>
+  <p>యూనిట్ పేరు మరియు దాని పొడవు మధ్య సంబంధం కూడా నమూనాలో చాలా బలహీనంగా ఉంది. ఇది పూర్తి mathematical independenceను నిరూపించదు; కానీ పేర్లు పొడవును encode చేయడానికి సృష్టించబడ్డాయని atlas ఏ ఉపయోగకరమైన signalనూ ఇవ్వదు.</p>
+  <p>అదనంగా, 86,016 year structure అంటే 86,016 పూర్తిగా independent sample కాదు: ప్రారంభ, చివరి ద్వారాల మధ్య కేవలం 24,786 వేర్వేరు intervalలు మాత్రమే ఉన్నాయి. దగ్గరలోని చర్య దినాలు అదే year intervalను ఎంచుకుని వేరే అంతర్గత structureను ఇవ్వవచ్చు.</p>
+  <p>కాబట్టి atlas implementationలో కొలిచిన ప్రవర్తనను బాగా వివరిస్తుంది; కానీ అన్ని సాధ్యమైన calendar structureల గురించి probability theoremగా మార్చకూడదు.</p><hr>
+</section>
+
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>పుట్టినరోజులు మరియు వార్షికోత్సవాలు</h2>
+  <p>“ప్రతి సంవత్సరం అదే దినం” అన్న మాటకు ఇక్కడ ముందుగా అర్థం నిర్ణయించాలి. సహజ recurrence coordinateలు <code>(నెల పేరు, నెలలో దినం)</code> మరియు <code>(కట్లెట్ పేరు, కట్లెట్‌లో దినం)</code>; షరతులను కలిపి కూడా ఉపయోగించవచ్చు.</p>
+  <p>అందువల్ల పాస్తాఫారి పుట్టినరోజు కేవలం <code>RRULE:FREQ=YEARLY</code> కాదు. ఎంచుకున్న recurrence conditionను తీరుస్తున్న తదుపరి సంవత్సరాన్ని వెతకాలి; మూల సంఘటన తనంతట తానే తన “తదుపరి కనిపింపు”గా లెక్కించబడదు.</p>
+  <p>కేవలం ప్రదర్శన కోసం చర్య దినాన్ని మార్చడం వ్యక్తి గుర్తింపు, పుట్టిన క్షణం లేదా వయస్సును మార్చకూడదు.</p>
+  <p>4,096 self-referential dateల exact scanలో ప్రతి తదుపరి పాస్తాఫారి సంవత్సరాన్ని రెండు దిశల్లో 250,000 సంవత్సరాల వరకు పరీక్షించారు:</p>
+  <ul>
+    <li><code>(నెల పేరు, నెలలో దినం)</code> కోసం మొదటి తిరుగు median 1 పాస్తాఫారి సంవత్సరం; 77.56% పక్క సంవత్సరంలో తిరిగాయి, 93.77% రెండు సంవత్సరాల్లో, 99.44% ఐదు సంవత్సరాల్లో; గమనించిన maximum 21 సంవత్సరాలు.</li>
+    <li><code>(కట్లెట్ పేరు, కట్లెట్‌లో దినం)</code> కోసం median 3 సంవత్సరాలు; 88.89% 10 సంవత్సరాల్లో దొరికాయి, కానీ distributionలో heavy tail చాలా బరువుగా ఉంది; గమనించిన maximum 51,954 పాస్తాఫారి సంవత్సరాలకు చేరింది.</li>
+  </ul>
+  <p>ఇవి <strong>పరీక్షించిన corpus యొక్క empirical result</strong>; ప్రతి సాధ్యమైన వార్షికోత్సవం తప్పక తిరిగి వస్తుందనే నిరూపణ కాదు, maximum waiting timeకు guarantee కూడా కాదు.</p><hr>
+</section>
+
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>సమావేశాన్ని ఎలా నిర్ణయించాలి?</h2>
+  <p>ఇద్దరు వ్యక్తులు పాస్తాఫారి తేదీతో మాత్రమే సమావేశం నిర్ణయించాలనుకుంటే, కనీసం తేదీ యొక్క ఐదు fieldలపైనా లెక్కింపులో ఉపయోగించిన చర్య దినంపైనా అంగీకరించాలి. చర్య దినాన్ని “ఈరోజు” అనే పదంగా కాకుండా స్థిర day identityగా నిల్వ చేయడం మంచిది; లేకపోతే ఇద్దరూ వేర్వేరు క్యాలెండర్లు లెక్కించవచ్చు.</p>
+  <ul>
+    <li>“రేపు” తదుపరి కాలక్రమ దినం;</li>
+    <li>“నెలలో తదుపరి దినం” అదే నెల యొక్క తదుపరి కనిపింపు;</li>
+    <li>“నెల ముగింపు” ఆ నెల యొక్క చివరి కనిపింపు;</li>
+    <li>“మొత్తం నెల” ఆ నెలకు చెందిన దినాల set లేదా మొదటి నుంచి చివరి కనిపింపువరకు పూర్తి కాలక్రమ span కావచ్చు;</li>
+    <li>“తదుపరి సంవత్సరం” ఎంచుకున్న చర్య దినం కింద నిర్మించిన క్యాలెండర్‌లో తదుపరి సంవత్సరం.</li>
+  </ul>
+  <p>చాలా ముఖ్యమైన సమావేశం కోసం absolute chronological day లేదా momentను కూడా నిల్వ చేయవచ్చు. క్యాలెండర్ బాధపడదు.</p><hr>
+</section>
+
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>ప్రయాణం, సంఘటనలు మరియు all-day</h2>
+  <p>సంఘటన మరియు దానికి చూపే స్థానిక లేబుల్ ఒకటే కాదు. నిర్దిష్ట సమయమున్న సంఘటన స్థిర chronological momentతో బంధించబడాలి. ప్రయాణం దాన్ని కాలంలో కదిలించదు; కానీ అదే physical momentకు చూపే స్థానిక పాస్తాఫారి తేదీ మారవచ్చు, ఎందుకంటే “స్థానిక దినం” నిర్వచనం స్థలంపై ఆధారపడుతుంది.</p>
+  <p><strong>All-day</strong> సంఘటనలో తేడా మరింత పెద్దది. పౌర పూర్తి-దిన సంఘటన సాధారణంగా అర్ధరాత్రి నుంచి తదుపరి అర్ధరాత్రివరకు సాగుతుంది; పాస్తాఫారి పూర్తి-దిన సంఘటన స్థానిక పాస్తాఫారి దిన సరిహద్దు నుంచి తదుపరి సరిహద్దువరకు ఉండాలి. సాధారణంగా ఇవి ఒకే momentలు కావు.</p>
+  <p>కాబట్టి పాస్తాఫారి సంఘటనను ఆలోచించకుండా పౌర “పూర్తి దిన” సంఘటనగా export చేస్తే దాని అర్థం మారవచ్చు. సరైన సంరక్షణ కోసం chronological anchorతో పాటు సరైన location/day-boundary contextను నిల్వ చేయాలి; <code>all-day</code> flag మాత్రమే సరిపోదు.</p><hr>
+</section>
+
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>దినం ఎప్పుడు మారుతుంది?</h2>
+  <p>స్థానిక పాస్తాఫారి దినం అర్ధరాత్రి మారదు. దాని సరిహద్దును <strong>స్థానిక meridian దాటే Venus కేంద్రం యొక్క topocentric lower meridian transit</strong> నిర్ణయిస్తుంది.</p>
+  <p>అంటే ఇది స్థలంపై ఆధారపడే స్థానిక ఖగోళ సంఘటన. Transit 00:00కు జరగాల్సిన అవసరం లేదు; పౌర time zone దాన్ని నిర్ణయించదు; daylight saving time మొదలవడం లేదా ముగియడం వల్ల మాత్రమే అది కదలదు; Venus కంటికి కనిపించాల్సిన అవసరం కూడా లేదు.</p>
+  <p>అదే physical moment రెండు ప్రదేశాల్లో వారి స్థానిక దిన సరిహద్దుల వేర్వేరు వైపులలో ఉండవచ్చు. వ్యవస్థకు ఉపయోగించగల user location లేకపోతే product యొక్క default fallback location <strong>Kisurra</strong>.</p><hr>
+</section>
+
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>ముద్రించిన క్యాలెండర్ మరియు చేతి లెక్కింపు</h2>
+  <p>పాస్తాఫారి క్యాలెండర్‌ను ముద్రించవచ్చు; అది ఏ చర్య దినం కోసం లెక్కించబడిందో మాత్రమే చెప్పాలి. అలాంటి క్యాలెండర్ ఆ దినం దృష్టిలో కాల structureను చూపుతుంది; చర్య దినం మారితే కొత్త క్యాలెండర్ అవసరం కావచ్చు. కాబట్టి printerకు ఇంకా పని ఉంది.</p>
+  <p>Specification పూర్తి మరియు deterministic కాబట్టి అన్నింటినీ చేతితో కూడా లెక్కించవచ్చు: input counterలను లెక్కించండి, 7 దాచిన మరియు 46 కనిపించే చుక్కలను నడపండి, ఆరు గిన్నెలను update చేయండి, 12 చివరి కలయికలు చేయండి, జవాబులు రూపొందించండి, ద్వారాలు నిర్మించండి, సంవత్సరాలు మరియు కట్లెట్లు ఎంచుకోండి, combinatorial selection చేయండి, పేర్లు ఎంచుకోండి, తరువాత నెలలను అల్లండి.</p>
+  <p>దానికి బదులుగా ఫిబ్రవరిలో ఎప్పుడు 28, ఎప్పుడు 29 దినాలు ఉంటాయో గుర్తుంచుకోవాల్సిన అవసరం లేదు.</p><hr>
+</section>
+
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>అయితే Seer అంటే ఏమిటి?</h2>
+  <p>Canonical implementation పక్కన <strong>Pastafarian Calendar Seer</strong> అనే వేగవంతమైన engine కూడా ఉంది. Seer అధికారం యొక్క మూలం కాదు: సరైన తేదీని Megillah మరియు canonical calculation నిర్ణయిస్తాయి. Seer వాటితో సరిపోకపోతే తప్పు Seerదే.</p>
+  <p>దాని పని అదే queryలను వేగంగా నడిపి, resultను productలలో సులభంగా integrate చేయగల రూపంలో ఇవ్వడం.</p>
+  <p>ఈ పేజీని సవరించే సమయంలో చేసిన ప్రత్యక్ష verificationలో Seerలో date మరియు “now” query, batch, day range, పాస్తాఫారి తేదీ నుంచి target dayకు reverse conversion, year structure retrieval, active working day determination, Node API, browser/HTTP client, CLI, HTTP v1 service, OpenAPI 3.1 contract, native implementations మరియు distribution package, అలాగే verified container deployment ఉన్నాయి.</p>
+  <p>Seerకు public API లేదు అనే పాత వాదన ఇక సరైంది కాదు. ఇప్పుడు date, range, batch, year, reverse, చర్య దినం, metadata, locales మరియు status endpointలతో స్పష్టమైన స్థిర HTTP v1 contract ఉంది.</p>
+  <p>2026 సెప్టెంబర్ 21న Renderలో public HTTPS deploymentను నిజంగా పరీక్షించారు: live serviceలో exact query, పెద్ద range, restart, cold wake మరియు load కింద ప్రవర్తన verify చేయబడింది.</p>
+  <p>అయినా project documentation public beta/evaluation deploymentను SLA ఉన్న స్థిర hosted production service నుంచి వేరుగా చూస్తోంది. కాబట్టి conceptual explanation page server address, hosting provider లేదా version numberను క్యాలెండర్ యొక్క స్వంత భాగంలా freeze చేయకూడదు.</p>
+  <p>Seer precomputation, ప్రత్యేక representation, SIMD, algebra మరియు ఇతర shortcutలను ఉపయోగించవచ్చు. అదే semantic operation చేసి అదే సమాధానం ఇస్తే canonical implementation యొక్క మొత్తం computational historyను అడుగడుగునా అనుకరించాల్సిన అవసరం లేదు.</p>
+  <p>Optimization ప్రత్యామ్నాయ అధికారం కాదు.</p><hr>
+</section>
+
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>మూలం, స్థాపన దినం మరియు పలకల దినం</h2>
+  <p>ఇక్కడ canonical time anchorలను సైట్ కథ నుంచి స్పష్టంగా వేరు చేయడం ప్రత్యేకంగా ముఖ్యం.</p>
+
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>ఆధార బిందువులు</h3>
+    <p>వ్యవస్థలో <strong>స్థాపన దినం</strong> అనే ఒక స్థిర reference day ఉంది. Proleptic Gregorian calendarలో అది <strong>క్రీ.పూ. 41,222 డిసెంబర్ 22</strong>.</p>
+    <p>స్థాపన దినం “కాల ప్రారంభం” కాదు; అది computational anchor.</p>
+    <p>దాని చుట్టూ దిన numberingలో ధనాత్మక బేసి/సరి సంఖ్యలు వాడతారు: స్థాపన దినం=1; తరువాతి దినాలు=3, 5, …; గతం వైపు మునుపటి దినం=2, తరువాత 4, 6, … . ఇలా anchor యొక్క రెండు వైపులనూ ఈ counterలో negative day number లేకుండా encode చేస్తారు.</p>
+    <p>రెండవ anchor <strong>పలకల దినం</strong>: <strong>proleptic Julian calendarలో క్రీ.పూ. 763 జూన్ 15</strong>, అంటే <strong>proleptic Gregorian calendarలో క్రీ.పూ. 763 జూన్ 7</strong>.</p>
+    <p>స్థాపన దినం నుంచి పలకల దినం వరకు ఖచ్చిత దూరం</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
+    <p>దినాలు.</p>
+    <p>ఇవి కాలరేఖపై స్థిర anchorలు; కానీ వాటికి చూపే పాస్తాఫారి తేదీ ఇంకా ఏ చర్య దినం నుంచి వాటిని అడిగామన్న దానిపై ఆధారపడుతుంది.</p>
+  </section>
+
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>సైట్ కథ</h3>
+    <p>సైట్ editorial storyలో క్యాలెండర్‌ను సృష్టిలో భాగంగా, మానవజాతి పూర్తిగా తెలియకుండానే ఉపయోగించిన వ్యవస్థగా, తరువాత ఆధునిక కాలంలో మళ్లీ అందజేయబడినదిగా వివరిస్తారు.</p>
+    <p>ఇది సైట్ కథ; దానిలోని ప్రతి narrative detailను Megillah యొక్క స్పష్ట technical claimగా చూపకూడదు.</p>
+    <p>మళ్లీ అందజేయబడిన సంఘటన తానే ఒక స్థిర చారిత్రక సంఘటన. దాని <strong>పాస్తాఫారి తేదీని</strong> ఒకే తేదీగా శాశ్వతంగా freeze చేయడం కంటే ప్రస్తుత చర్య దినం కింద dynamicగా చూపడం మంచిది.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>ఉన్నత వినియోగదారులకు: reverse conversion</h2>
+  <p>చర్య దినం <code>c</code> తెలిసి ఉంటే reverse conversion చాలా కఠినంగా పరిమితమవుతుంది. తెలిసిన పాస్తాఫారి సంవత్సరంలో</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{కట్లెట్ పేరు},\text{కట్లెట్‌లో దినం})</code></pre>
+  <p>గరిష్టంగా ఒక దినాన్ని గుర్తిస్తుంది. అదే విధంగా</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{నెల పేరు},\text{నెలలో దినం})</code></pre>
+  <p>కూడా. కాబట్టి తెలిసిన చర్య దినంతో పూర్తి తేదీ target dayను ఏకైకంగా గుర్తిస్తుంది.</p>
+
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Reverse conversionలో candidate సంఖ్యల పై పరిమితులు">
+    <table class="about-table">
+      <thead><tr><th scope="col">తెలిసిన అదనపు సమాచారం</th><th scope="col">గరిష్ట candidateలు</th></tr></thead>
+      <tbody>
+        <tr><td>సంవత్సరం తప్ప ఏ field తెలియదు</td><td>5,778</td></tr>
+        <tr><td>కట్లెట్ పేరు మాత్రమే</td><td>5,568</td></tr>
+        <tr><td>కట్లెట్‌లో దినం మాత్రమే</td><td>17</td></tr>
+        <tr><td>నెల పేరు మాత్రమే</td><td>123</td></tr>
+        <tr><td>నెలలో దినం మాత్రమే</td><td>47</td></tr>
+        <tr><td>కట్లెట్ పేరు + కట్లెట్‌లో దినం</td><td>1</td></tr>
+        <tr><td>నెల పేరు + నెలలో దినం</td><td>1</td></tr>
+        <tr><td>సంవత్సరం కాకుండా ఏ మూడు fieldలు</td><td>1</td></tr>
+        <tr><td>సంవత్సరం కాకుండా నాలుగు fieldలన్నీ</td><td>1</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>చర్య దినం తెలియకపోతే పరిస్థితి వేరు. అదే ఐదు విలువలు వేర్వేరు చర్య దినాల కింద కనిపించవచ్చు; అదే పూర్తి తేదీ <code>c</code> నుంచి వేర్వేరు దూరాల్లో కనిపించే exact exampleలు ఉన్నాయి.</p>
+  <p>సంవత్సరం 5000లో ఆ దూరం యొక్క sign కూడా ఐదు విలువలతో ఎప్పుడూ నిర్ణయించబడదు: అదే పూర్తి తేదీ ఒక contextలో చర్య దినానికి ముందు, మరొకదానిలో తరువాత ఉండవచ్చు.</p>
+  <p>అందువల్ల ఏ <code>c</code> కింద తేదీ లెక్కించబడిందో తెలియకపోతే పూర్తి పాస్తాఫారి తేదీ కాలరేఖపై absolute address కాదు.</p>
+
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>చాలా దూర కాలంలోని నిర్మాణం</h3>
+    <p>Specification నుంచి వచ్చిన mathematical research exact asymptotic structureను కూడా కనుగొంది. <strong>స్థిర చర్య దినం</strong> <code>c</code> కోసం, గత tailలో తగినంత దూరంలో affine periodicity కనిపిస్తుంది.</p>
+    <p>అయితే</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>అదే <code>c</code> కోసం shift <code>H_c</code>, year change <code>p_c</code>, మరియు తగినంత దూర threshold ఉంటాయి; దాని తరువాత</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>సంవత్సరం తప్ప నాలుగు fieldలు మళ్లీ కనిపిస్తాయి; సంవత్సరం సంఖ్య స్థిర పరిమాణంతో మారుతుంది.</p>
+    <p>ఇది స్థిర <code>c</code> కోసం వచ్చిన ఫలితం; దీని నుంచి global relation</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>రాదు. వేర్వేరు చర్య దినాల కోసం చివరి asymptotic slopeలు నిజంగా వేరుగా ఉంటాయా అనే ప్రశ్న ఇంకా తెరిచే ఉంది.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>ఉన్నత వినియోగదారులకు: సాస్ ఎంత చరిత్రను ఉంచుతుంది?</h2>
+  <p>సాస్ చాలా aggressive mixing mechanismలా కనిపిస్తుంది; కానీ algebraic research అది కనిపించేదానికంటే ఎంతో ఎక్కువ సమాచారాన్ని ఉంచుతుందని చూపుతుంది. ఇది specification నుంచి వచ్చిన research result; కొత్త calendar rule కాదు.</p>
+  <p>కనిపించే stage 3–46లో, సంబంధిత asymptotic branchపై generic injectivity స్థాపించబడింది: generic caseలో state సంబంధిత input history మరియు గిన్నెల క్రమాన్ని తిరిగి నిర్మించడానికి సరిపడా సమాచారాన్ని ఉంచుతుంది.</p>
+  <p>చివరి 12 కలయికలలో కూడా సమాచారం వెంటనే మాయమవదు. కనిపించే చుక్క 46 తర్వాత మొదటి ఐదు కలయికల కోసం సంబంధిత canonical unionలో అదనపు side information లేకుండానే generic invertibility స్థాపించబడింది; మిగతా భాగానికి reconstructionకు సరిపడే side information పరిమాణంపై బలమైన constructive upper boundలు తెలిసి ఉన్నాయి.</p>
+  <p><strong>చివరి ఆరు గిన్నెలే</strong> generic senseలో ఎల్లప్పుడూ సరిపోతాయా అనే ప్రశ్న ఇంకా తెరిచి ఉంది.</p>
+  <p>కొన్ని ఫలితాలు symbolicగా నిరూపించబడ్డాయి; మరికొన్ని finite exact arithmetic checkతో ముగించబడ్డాయి. Symbolic strengthening నమ్మాల్సిన computational coreను చాలా చిన్నదిగా చేసింది; పూర్తిగా మాత్రం తొలగించలేదు.</p>
+  <p>మొదట భారీ సంఖ్యలో pathలను వెతకాల్సినట్టుగా కనిపించిన spaceలను చాలా చిన్న finite structureలుగా తగ్గించారు; వాటిలో 180 మరియు 9 stateల automata, అలాగే ఆరు గిన్నెల symmetry ఉన్నాయి.</p>
+  <p>కలయిక కింద కఠిన algebraic structure ఉంది. ఈరోజు తేదీ తెలుసుకోవడానికి అది తెలుసుకోవాల్సిన అవసరం లేదు.</p><hr>
+</section>
+
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>అయితే పాస్తాఫారి క్యాలెండర్ నిజానికి ఏమిటి?</h2>
+  <p>ఇది deterministic calendar; ఇందులో తేదీ కేవలం target day యొక్క function కాదు, <strong>చర్య దినం మరియు అడిగిన దినం కలిసి నిర్ణయించే function</strong>.</p>
+  <p>ప్రతి తేదీకి ఖచ్చితంగా ఐదు fieldలు ఉన్నాయి. వర్తమానం తన దృష్టిలో ఎప్పుడూ సంవత్సరం 5000లో ఉంటుంది; కానీ సంవత్సరం 5000 తానే చర్య దినంతో పాటు కదులుతుంది. సంవత్సరాలు చాలా పొడవుగా ఉండవచ్చు, కట్లెట్లు నిరంతరమైనవి, నెలలు అలా ఉండాల్సిన అవసరం లేదు, canonical week system లేదు.</p>
+  <p>నెలలో <code>n+1</code> దినం రేపే కావాల్సిన అవసరం లేదు. అదే chronological day రేపు వేరే పాస్తాఫారి label పొందవచ్చు. అదే physical moment రెండు ప్రదేశాల్లో రెండు వేర్వేరు local Pastafari dayల్లో ఉండవచ్చు. All-day event అర్ధరాత్రి నుంచి అర్ధరాత్రివరకు ఉండాల్సిన అవసరం లేదు. Annual birthday ముందుగా search problem, తరువాత calendar problem.</p>
+  <p>కానీ చర్య దినం మరియు అడిగిన దినం తెలిసి ఉంటే ambiguity లేదు: సరైన సమాధానం ఒక్కటే.</p>
+  <p>చివరికి క్యాలెండర్ దీనికంటే ఎక్కువ చేయాల్సిన అవసరం లేదు.</p>
+</section>
