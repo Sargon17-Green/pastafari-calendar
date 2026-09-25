@@ -12,7 +12,7 @@ import {
   usesTextualCalendarNumeral,
 } from "./calendar-input-conventions.js?v=9-calendar-input-conventions";
 import { CUTLETS, MONTHS } from "./i18n/calendar-identifiers.js?v=9-canonical-names";
-import { calendarLabel, translate } from "./i18n/registry.js?v=19-about-page";
+import { calendarLabel, translate } from "./i18n/registry.js?v=20-about-i18n";
 import {
   ReverseSearchController,
   advancedReverseProblem,
