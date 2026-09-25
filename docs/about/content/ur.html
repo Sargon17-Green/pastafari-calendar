@@ -1,0 +1,240 @@
+<!-- اردو متن براہِ راست عبرانی معنوی اصل سے اخذ کیا گیا ہے، کسی واسط زبان سے نہیں۔ -->
+<!-- سیکشن ID مستقل عوامی deep-link معاہدہ ہیں؛ انہیں ترجمہ شدہ سرخیوں سے اخذ نہ کیا جائے۔ -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>سائٹ کی روایت میں پاستافاری تقویم کو وہ تقویم بتایا جاتا ہے جس میں وقت تخلیق ہوا۔ اس کا حسابی طریقہ، البتہ، نہایت دقیق طور پر متعین ہے۔</p>
+  <p>یہ تقویم کسی دن کو ایک مستقل «لیبل» میں تبدیل نہیں کرتی۔ کسی دن کی تاریخ جاننے کے لیے دو دن درکار ہیں: <strong>عمل کا دن</strong>، جس سے حساب شروع کیا جاتا ہے، اور <strong>پوچھا گیا دن</strong>، جس کی تاریخ مطلوب ہے۔</p>
+  <p>اگر عمل کے دن کو <code>c</code> اور پوچھے گئے دن کو <code>t</code> کہیں تو تاریخ ہے:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>نہ کہ <code>F(t)</code>۔ چنانچہ ایک ہی پوچھے گئے دن کو مختلف عمل کے دن کے تحت مختلف پاستافاری تاریخ مل سکتی ہے۔</p>
+  <p>یہ خرابی نہیں؛ یہی تقویم ہے۔</p><hr>
+</div>
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>پاستافاری تاریخ میں کیا ہوتا ہے؟</h2>
+  <p>ہر پاستافاری تاریخ کے <strong>ٹھیک پانچ حصے</strong> ہیں: سال کا عدد، کٹلیٹ کا نام، کٹلیٹ میں دن، مہینے کا نام، اور مہینے میں دن۔</p>
+  <p>مثلاً عمومی صورت میں: <strong>سال 5000، کٹلیٹ الف، کٹلیٹ کا دن 417، مہینہ ب، مہینے کا دن 83۔</strong></p>
+  <p>عمل کا دن، ناظر کا مقام، دن کی زمانی شناخت یا دوسری فنی معلومات تاریخ کے ساتھ دکھائی جا سکتی ہیں، مگر وہ تاریخ کا چھٹا حصہ نہیں بنتیں۔</p><hr>
+</section>
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>عمل کا دن کیوں درکار ہے؟</h2>
+  <p>عام تقاویم میں ہم تاریخ کو خود دن کی صفت سمجھتے ہیں۔ یہاں تاریخ دو دنوں کے تعلق سے بنتی ہے۔</p>
+  <p><code>t</code> بدلنے کا مطلب کسی اور دن کے بارے میں پوچھنا ہے۔ <code>c</code> بدلنے سے اس سے بھی زیادہ کچھ بدل سکتا ہے: سالوں کی حدیں، کٹلیٹ، مہینے، ان کے نام اور مہینوں کی باہمی بُنائی۔</p>
+  <p>اس لیے آج بنایا ہوا سالنامہ ضروری نہیں کہ کل بھی درست ہو۔ یوں اس نامطلوب صورت سے بچا جاتا ہے کہ چھپی ہوئی تقویم پورا سال مفید رہے۔</p><hr>
+</section>
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>وہی دن، دوسری تاریخ</h2>
+  <p><strong>دن کی شناخت</strong> اور اس کی <strong>پاستافاری نمائندگی</strong> الگ چیزیں ہیں۔ شناخت وقت کی لکیر پر دن کا مستقل مقام ہے؛ نمائندگی وہ پانچ اجزا ہیں جو کسی خاص عمل کے دن کے تحت دکھانے پر حاصل ہوتے ہیں۔</p>
+  <p>پروڈکٹ اور API میں پہلی چیز کو <code>day-id</code> سمجھا جا سکتا ہے: ایسا زمانی شناختی نشان جو پیش کش بدلنے سے نہیں بدلتا۔ لیکن</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre><p>اور</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>ضروری نہیں برابر ہوں۔</p>
+  <p>اس لیے عمل کا دن دستی طور پر بدلنے سے اسی دن کی دکھائی گئی تاریخ بدل سکتی ہے، خود دن وقت کی لکیر پر اپنی جگہ رہتا ہے۔</p>
+  <p>ملاقات، پیدائش اور تاریخی واقعے کے لیے بھی یہی اصول ہے: واقعہ مستحکم زمانی شناخت سے بندھا رہے؛ پاستافاری تاریخ دیکھنے کے سیاق کے مطابق دوبارہ پیش کی جا سکتی ہے۔</p>
+  <p>لیبل بدل سکتا ہے؛ واقعہ نہیں۔</p><hr>
+</section>
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>سال 5000</h2>
+  <p>جب عمل کا دن اور پوچھا گیا دن ایک ہی ہوں،</p><pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>تو سال ہمیشہ</p><pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>ہوتا ہے۔ یعنی حال اپنے ہی نقطۂ نظر سے ہمیشہ سال 5000 میں ہے۔ مگر سال 5000 کوئی مستقل تاریخی دور نہیں؛ وہ عمل کے دن کے لحاظ سے ہر بار نئے سرے سے منتخب ہوتا ہے۔</p>
+  <p>عمل کا دن خود سال 5000 میں ہے، اور اسی سال کے دوسرے دن بھی۔ لہٰذا <strong>سال 5000 ہونا <code>t=c</code> کا ثبوت نہیں۔</strong></p>
+  <p>البتہ سال کا عدد سمت بتاتا ہے:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre><p>اور</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p><strong>سال 0</strong> بھی موجود ہے، اور اس سے مزید ماضی میں منفی عدد والے سال آتے ہیں۔</p><hr>
+</section>
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>سال اور دروازے</h2>
+  <p>پاستافاری سال کی لمبائی</p><pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ سے }5778</code></pre><p>دن ہو سکتی ہے۔ یہ نظام کی canonical حدیں ہیں، تجرباتی اوسط نہیں۔</p>
+  <p>سال شمسی سال سے چھوٹا بھی ہو سکتا ہے اور پندرہ سے زیادہ شمسی سالوں جتنا لمبا بھی۔ سال کی حدیں <strong>دروازوں</strong> کے نظام سے بنتی ہیں، اور کٹلیٹ کی حدیں بھی اسی نظام سے آتی ہیں۔</p>
+  <p>سال کا اختتام موسم، زمین کے سورج کے گرد چکر، قمری دور یا محض سال ختم کرنے کی عملی خواہش کے مطابق ہونا لازم نہیں۔</p><hr>
+</section>
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>کٹلیٹ</h2>
+  <p>ہر سال <strong>6 سے 17 کٹلیٹ</strong> میں تقسیم ہوتا ہے۔ کٹلیٹ ایک مسلسل زمانی قطعہ ہے۔</p>
+  <p>اگر آج کٹلیٹ کا دن 250 ہے تو، بشرطیکہ آج اس کا آخری دن نہ ہو، کل 251 ہوگا۔ کٹلیٹ کی سرحدیں دروازے ہیں اور اس کی کم از کم لمبائی</p><pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre><p>دن ہے۔</p>
+  <p>17 canonical کٹلیٹ نام ہیں، اور ایک سال کے اندر کوئی نام دوبارہ نہیں آتا۔ نام لمبائی یا ترتیب طے نہیں کرتا۔</p><hr>
+</section>
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>مہینے اور بُنائی</h2>
+  <p>ہر سال میں</p><pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ سے }47</code></pre><p>ساختی مہینے ہوتے ہیں، اور ہر مہینے کے</p><pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ سے }123</code></pre><p>دن اس سے منسوب ہوتے ہیں۔</p>
+  <p>لیکن پاستافاری مہینہ <strong>وقت میں مسلسل قطعہ ہونا ضروری نہیں</strong>۔ مثلاً زمانی ترتیب یوں ہو سکتی ہے:</p>
+  <blockquote><p>مہینہ الف — دن 14<br>مہینہ ب — دن 9<br>مہینہ الف — دن 15</p></blockquote>
+  <p>یہ درست ساخت ہے۔ مہینہ الف کا دن 15 <strong>اسی مہینے کا اگلا دن</strong> ہے، اگرچہ بیچ میں دوسرے مہینے کا دن آیا ہو۔</p>
+  <p>لہٰذا «مہینے کا دن» پہلے ظہور سے گزرے ہوئے مسلسل دنوں کی تعداد نہیں، بلکہ سال میں اس مہینے سے منسوب دن کا ترتیبی نمبر ہے۔ دن 48 کا مطلب اس مہینے سے منسوب اڑتالیسواں دن ہے، نہ کہ پہلی بار آنے کے 47 دن بعد۔</p><hr>
+</section>
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>مہینے ایک دوسرے میں بُنے ہوئے ہیں</h2>
+  <p>مہینوں کو سال بھر چلنے والے دھاگوں کی طرح سمجھا جا سکتا ہے۔ ہر دن ایک ہی مہینے سے تعلق رکھتا ہے؛ کل دوسرا مہینہ آ سکتا ہے، پھر پہلا مہینہ واپس آ کر اپنا اگلا عدد جاری رکھ سکتا ہے۔</p>
+  <p>بُنائی بے قاعدہ نہیں؛ خاص طور پر مہینوں کے پہلے اور آخری ظہور کی ترتیب پر پابندیاں ہیں۔ مگر یہ شرط نہیں کہ ایک مہینہ ختم ہو تب دوسرا شروع ہو۔</p>
+  <ul><li>کٹلیٹ مسلسل زمانی قطعے کے اندر مقام ناپتا ہے۔</li><li>مہینہ ایسے ساختی دھاگے سے تعلق ظاہر کرتا ہے جو غائب ہو کر دوبارہ آ سکتا ہے۔</li></ul>
+  <p>ایک مہینہ کئی کٹلیٹ سے گزر سکتا ہے اور ایک کٹلیٹ میں کئی مہینے نمودار ہو سکتے ہیں۔ دونوں کی ابتدا اور انتہا کا ملنا ضروری نہیں۔</p><hr>
+</section>
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>مہینے کا اگلا دن ضروری نہیں کل ہو</h2>
+  <p>اگر آج کسی مہینے کا دن 17 ہے تو اس مہینے کا دن 18 <strong>اسی مہینے کا اگلا ظہور</strong> ہے؛ وہ کل بھی ہو سکتا ہے اور بہت بعد میں بھی۔</p>
+  <p><strong>کل</strong> اگلا زمانی دن ہے؛ <strong>مہینے کا اگلا دن</strong> اسی مہینے کی اگلی واپسی ہے۔</p>
+  <p>اسی طرح «مہینے کا اختتام» زمانی طور پر قریب ہونا ضروری نہیں۔ 120 دن کے مہینے کا دن 119 آج ہو سکتا ہے، جبکہ دن 120 سال میں بہت دور آگے ہو۔</p><hr>
+</section>
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>ہفتے نہیں ہیں</h2>
+  <p>موجودہ canonical specification <strong>ہفتے کا نظام متعین نہیں کرتی</strong>۔ نہ سات دن کی canonical بالائی اکائی ہے، نہ پاستافاری ہفتے کے دنوں کے نام، نہ یہ قاعدہ کہ دو دن «ہفتے کا ایک ہی دن» ہیں۔</p>
+  <p>باہر سے سول ہفتہ ضرور لگایا جا سکتا ہے؛ وہ بس پاستافاری تاریخ کا حصہ نہیں۔</p><hr>
+</section>
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>نام</h2>
+  <p>17 canonical کٹلیٹ نام اور 47 canonical مہینوں کے نام ہیں۔ ایک سال میں ہر نام اپنی قسم کے اندر زیادہ سے زیادہ ایک بار آتا ہے۔</p>
+  <p>نام کی شناخت canonical اور معنوی ہے؛ مختلف املا، ترجموں یا implementation کے درمیان ووٹنگ سے نہیں بنتی۔ ناموں کے معنی کے لیے عبرانی Megillah سب سے بلند اتھارٹی ہے؛ ترجمہ اور transliteration محض display layer ہیں۔</p>
+  <p>نام لمبائی کا خفیہ کوڈ بھی نہیں۔ کوئی نام اپنے آپ کسی کٹلیٹ کو لمبا یا کسی مہینے کو چھوٹا نہیں کرتا۔</p><hr>
+</section>
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>مہینوں کے بارے میں ایک چھوٹی حقیقت</h2>
+  <p>47 مہینوں کے نام ہیں اور ہر مہینہ زیادہ سے زیادہ دن 123 تک پہنچ سکتا ہے، اس لیے «مہینے کا نام + مہینے میں دن» کے</p><pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre><p>نحوی جوڑے ممکن ہیں۔</p>
+  <p>سال کا ہر دن ٹھیک ایک جوڑا استعمال کرتا ہے۔ اگر سال کی لمبائی <code>L</code> ہو تو ٹھیک <code>L</code> جوڑے ظاہر ہوتے ہیں۔ مگر</p><pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>لہٰذا ہر سال کم از کم</p><pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre><p>ممکن جوڑے غائب رہتے ہیں۔ سب سے لمبے سال میں بھی سب کے لیے دن کافی نہیں۔</p><hr>
+</section>
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>تقویم کا حساب کیسے ہوتا ہے؟</h2>
+  <p>داخلی حساب کو یہاں <strong>ساس</strong> کہتے ہیں۔ اس کے مرکز میں اولی عدد</p><pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre><p>ہے۔</p>
+  <p>عمل میں پانچ input counters، 7 پوشیدہ قطرے، 46 نمایاں قطرے، 6 پیالے، پیالوں کی بدلتی ترتیبیں، 12 آخری ہلائیاں، مختلف جواب پیدا کرنے والے seals، combinatorial selection، دروازوں کی تشکیل، سال کا انتخاب، کٹلیٹ تقسیم، ناموں کا انتخاب، مہینوں کی تشکیل اور ماہانہ دنوں کی بُنائی شامل ہیں۔</p>
+  <p>آخری updates <strong>ہم وقت</strong> ہیں: ہر ہلائی میں چھوں نئے پیالوں کی قدریں اسی پرانی حالت سے نکالی جاتی ہیں، پھر سب پیالے ایک ساتھ بدلے جاتے ہیں۔</p>
+  <p>12 آخری ہلائیوں میں ایک اہم canonical نکتہ ہے۔ اگر <code>S</code> چھ پرانے پیالوں کا مجموعہ اور <code>r</code> ہلائی کا نمبر ہو تو:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p>نکالا جاتا ہے۔ <code>R</code> <strong>محفوظ شدہ مجموعہ</strong> ہے؛ پیالوں کی ترتیب چننے اور اندرونی update دونوں میں خام <code>S</code> نہیں بلکہ <code>R</code> استعمال ہوتا ہے۔</p>
+  <p>پرانی صورتیں جو خام مجموعہ update میں ڈالتی تھیں موجودہ canonical semantics نہیں بتاتیں؛ ان سے نکلی مثالیں دوبارہ verify کیے بغیر پرانی سمجھی جائیں گی۔</p>
+  <p>ہلائیوں کے بعد answer ring بھی نمایاں قطرہ 46 پر مقفل ترتیب کو جاری رکھتی ہے؛ اسے آخری ہلائی کی ترتیب سے خودکار طور پر بدلنا درست نہیں۔</p><hr>
+</section>
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice اور Wide Choice</h2>
+  <p>نسبتاً چھوٹی انتخابی جگہ کے لیے <strong>Short Choice</strong> استعمال ہوتی ہے۔ یہ سادہ modulo bias سے بچنے کے لیے <strong>قبول-رد (accept–reject) نمونہ گیری</strong> استعمال کرتی ہے۔</p>
+  <p>بہت بڑی جگہوں کے لیے <strong>Wide Choice</strong> ہے۔ اسے ایسی خصوصیات نہیں دینی چاہئیں جو specification میں نہیں۔</p>
+  <p>Wide Choice آزاد اور یکساں base-<code>Q</code> digits بناتے رہنے کے برابر نہیں۔ اس لیے یہ نتیجہ درست نہیں کہ ہر جائز انتخاب کو لازماً ایک جیسا مثبت احتمال ملے۔ کافی بڑی جگہ میں بعض جائز امکانات اس مخصوص طریقے سے بالکل ناقابلِ رسائی بھی ہو سکتے ہیں۔</p>
+  <p>تقویم بہرحال مکمل deterministic ہے۔ «Choice» الگورتھم کے مرحلے کا نام ہے، استعمال کے وقت قرعہ اندازی نہیں۔</p><hr>
+</section>
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>ساختی اٹلس</h2>
+  <p>اوپر تقویم کے قواعد تھے۔ اب آنے والے اعداد <strong>تجرباتی نتائج</strong> ہیں، ایک بڑے computational sample سے۔</p>
+  <p>اٹلس engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> سے بنایا گیا: 4,096 عمل کے دن؛ ہر ایک کے لیے سال 4990–5010؛ 86,016 سالانہ ساختیں؛ 625,437 کٹلیٹ؛ 3,535,422 ساختی مہینے؛ 356 ملین سے زیادہ مسلسل ماہانہ حصے؛ اور اسی مہینے کے دن <code>n</code> سے <code>n+1</code> تک 364 ملین سے زیادہ انتقال۔</p>
+  <p>یہ اس corpus کی تفصیل ہے، canonical قانون نہیں۔</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="ساختی اٹلس کے پیمائشی اعداد"><table class="about-table">
+    <thead><tr><th scope="col">پیمائش</th><th scope="col">نمونے کا نتیجہ</th></tr></thead><tbody>
+      <tr><td>سال کی اوسط لمبائی</td><td>4,275.182 دن</td></tr><tr><td>سال کی median لمبائی</td><td>4,343</td></tr><tr><td>مشاہدہ شدہ کم / زیادہ</td><td>716 / 5,778</td></tr>
+      <tr><td>فی سال اوسط کٹلیٹ</td><td>7.271</td></tr><tr><td>بالکل 6 کٹلیٹ والے سال</td><td>42.00%</td></tr><tr><td>6–8 کٹلیٹ والے سال</td><td>81.29%</td></tr>
+      <tr><td>کٹلیٹ کی اوسط لمبائی</td><td>587.963 دن</td></tr><tr><td>کٹلیٹ کی median لمبائی</td><td>560</td></tr><tr><td>فی سال اوسط مہینے</td><td>41.102</td></tr>
+      <tr><td>مہینوں کی median تعداد</td><td>43</td></tr><tr><td>47 مہینوں والے سال</td><td>15.63%</td></tr><tr><td>کم از کم 45 مہینوں والے سال</td><td>36.81%</td></tr>
+      <tr><td>ساختی مہینے کی اوسط لمبائی</td><td>104.014 دن</td></tr><tr><td>مہینے کی median لمبائی</td><td>115</td></tr><tr><td>فی مہینہ اوسط مسلسل حصے</td><td>100.897</td></tr>
+      <tr><td>ایک دن والے ماہانہ حصوں کا تناسب</td><td>97.482%</td></tr><tr><td>دو متصل دنوں کے ایک ہی مہینے میں ہونے کا احتمال</td><td>2.9976%</td></tr>
+      <tr><td>مہینے کے <code>n</code> اور <code>n+1</code> کے درمیان اوسط غیر ماہانہ دن</td><td>40.408</td></tr><tr><td>پہلے سے آخری ظہور تک اوسط پھیلاؤ</td><td>4,266.653 دن</td></tr>
+    </tbody></table></div>
+  <p>عملی طور پر تقریباً سو دن والا مہینہ تقریباً پورے پاستافاری سال میں پھیلا ہو سکتا ہے۔</p>
+  <p>اسی اٹلس میں سال 5000 کے گرد قدرتی length bias ملا۔ sample کا «عام» سال اوسطاً تقریباً 4,262 دن، دنوں کی تعداد سے وزن دینے پر تقریباً 4,466 دن، اور self year 5000 اوسطاً تقریباً 4,499 دن تھا۔ وجہ یہ ہے کہ سال 5000 کو عمل کا دن اپنے اندر رکھنا ہی ہے؛ لمبے سال میں ایسے ممکنہ دن زیادہ ہیں۔</p>
+  <p>نام اور لمبائی کا تعلق بھی sample میں بہت کمزور تھا۔ یہ مکمل mathematical independence کا ثبوت نہیں، مگر اٹلس میں ایسا عملی نشان نہیں کہ نام لمبائی encode کرنے کے لیے ہیں۔</p>
+  <p>86,016 سالانہ ساختیں بھی 86,016 مکمل آزاد samples نہیں؛ ان میں صرف 24,786 مختلف start/end gate intervals تھے۔ قریب عمل کے دن ایک ہی سالانہ interval چن کر بھی مختلف اندرونی ساخت بنا سکتے ہیں۔</p>
+  <p>اٹلس measured implementation کے رویے کی اچھی تصویر ہے، تمام ممکنہ تقاویم پر probability theorem نہیں۔</p><hr>
+</section>
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>سالگرہیں اور برسی نما تاریخیں</h2>
+  <p>«ہر سال وہی دن» کو پہلے تعریف کرنا پڑتا ہے۔ دو فطری coordinates ہیں <code>(مہینے کا نام, مہینے کا دن)</code> اور <code>(کٹلیٹ کا نام, کٹلیٹ کا دن)</code>؛ مشترک شرطیں بھی رکھی جا سکتی ہیں۔</p>
+  <p>پاستافاری سالگرہ سیدھی <code>RRULE:FREQ=YEARLY</code> نہیں۔ منتخب recurrence شرط پوری کرنے والا اگلا سال تلاش کرنا پڑتا ہے، اور اصل واقعہ خودکار طور پر اپنا «اگلا ظہور» شمار نہیں ہوتا۔</p>
+  <p>صرف display کے لیے عمل کا دن بدلنے سے شخص کی شناخت، پیدائش کا لمحہ یا عمر نہیں بدلنی چاہیے۔</p>
+  <p>4,096 self-dates کی exact scan میں ہر متواتر پاستافاری سال دونوں سمتوں میں 250,000 سال تک دیکھا گیا:</p>
+  <ul><li><code>(مہینے کا نام, مہینے کا دن)</code> کے لیے median 1 پاستافاری سال تھا؛ 77.56% پہلی واپسی ملحق سال میں، 93.77% دو سال کے اندر، 99.44% پانچ کے اندر؛ observed maximum 21 سال۔</li>
+  <li><code>(کٹلیٹ کا نام, کٹلیٹ کا دن)</code> کے لیے median 3 سال، 88.89% دس سال میں؛ مگر tail بہت heavy تھا اور observed maximum 51,954 پاستافاری سال تک پہنچا۔</li></ul>
+  <p>یہ <strong>آزمودہ corpus کے تجرباتی نتائج</strong> ہیں، ہر ممکن سالگرہ کے لازماً لوٹنے کا ثبوت یا زیادہ سے زیادہ انتظار کی ضمانت نہیں۔</p><hr>
+</section>
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>ملاقات کیسے طے کریں؟</h2>
+  <p>صرف پاستافاری تاریخ سے ملاقات طے کرنے والے دو افراد کو کم از کم پانچ اجزا اور اس تاریخ کا عمل کا دن دونوں طے کرنا ہوں گے۔ بہتر ہے عمل کے دن کو «آج» کے لفظ کے بجائے مستحکم day identity سے محفوظ کریں، ورنہ دونوں الگ تقویم حساب کر سکتے ہیں۔</p>
+  <ul><li>«کل» اگلا زمانی دن ہے؛</li><li>«مہینے کا اگلا دن» اسی مہینے کا اگلا ظہور ہے؛</li><li>«مہینے کا اختتام» اس کا آخری ظہور ہے؛</li><li>«پورا مہینہ» مہینے کے دنوں کا مجموعہ یا پہلے سے آخری ظہور تک پورا زمانی پھیلاؤ ہو سکتا ہے؛</li><li>«اگلا سال» منتخب عمل کے دن کے تحت بنائے گئے تقویم کا اگلا سال ہے۔</li></ul>
+  <p>بہت اہم ملاقات کے لیے absolute زمانی دن یا لمحہ بھی محفوظ کیا جا سکتا ہے۔ تقویم کو اس سے کوئی نقصان نہیں ہوگا۔</p><hr>
+</section>
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>سفر، واقعات اور all-day</h2>
+  <p>واقعہ اور اس کے لیے دکھایا گیا مقامی label ایک چیز نہیں۔ مقرر وقت کا واقعہ مستحکم زمانی لمحے سے بندھا رہنا چاہیے۔ سفر سے واقعہ وقت میں نہیں چلتا، مگر چونکہ «مقامی دن» مقام پر منحصر ہے، اسی لمحے کی مقامی پاستافاری تاریخ بدل سکتی ہے۔</p>
+  <p><strong>all-day</strong> واقعے میں فرق اور بڑا ہے۔ سول all-day واقعہ عموماً ایک سول آدھی رات سے اگلی تک ہوتا ہے؛ پاستافاری all-day واقعہ مقامی پاستافاری دن کی حد سے اگلی حد تک ہونا چاہیے۔ یہ عموماً وہی لمحات نہیں۔</p>
+  <p>اس لیے پاستافاری واقعے کو سول تقویم میں اندھا دھند «پورے دن» کے طور پر export کرنا معنی بدل سکتا ہے۔ درست حفاظت کے لیے زمانی anchor اور مناسب مقام/day-boundary context رکھنا ہوگا، صرف <code>all-day</code> checkbox نہیں۔</p><hr>
+</section>
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>دن کب بدلتا ہے؟</h2>
+  <p>مقامی پاستافاری دن آدھی رات کو نہیں بدلتا۔ حد <strong>مقامی نصف النہار پر مرکزِ زہرہ کے مقامِ ناظر سے محسوب زیریں عبور</strong> سے متعین ہوتی ہے۔</p>
+  <p>یعنی یہ مقام پر منحصر مقامی فلکیاتی واقعہ ہے۔ 00:00 پر ہونا ضروری نہیں، سول time zone اسے طے نہیں کرتا، صرف DST شروع یا ختم ہونے سے نہیں بدلتا، اور زہرہ کا ننگی آنکھ سے نظر آنا لازم نہیں۔</p>
+  <p>ایک ہی physical instant دو مقامات پر اپنی اپنی مقامی day boundary کے مخالف طرف ہو سکتا ہے۔ اگر نظام کو صارف کا قابلِ استعمال مقام نہ ملے تو product کا fallback مقام <strong>کسورا</strong> ہے۔</p><hr>
+</section>
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>چھپی تقویم اور ہاتھ سے حساب</h2>
+  <p>پاستافاری تقویم چھاپی جا سکتی ہے، بس یہ لکھنا ہوگا کہ کس عمل کے دن کے لیے ہے۔ وہ اسی دن کے نقطۂ نظر سے وقت کی ساخت دکھائے گی؛ عمل کا دن بدلے تو نئی تقویم درکار ہو سکتی ہے۔ پرنٹر کی اہمیت برقرار رہتی ہے۔</p>
+  <p>تمام حساب ہاتھ سے بھی ممکن ہے کیونکہ specification مکمل اور deterministic ہے: input counters، 7 پوشیدہ قطرے، 46 نمایاں قطرے، چھ پیالے، 12 آخری ہلائیاں، جواب، دروازے، سال و کٹلیٹ، combinatorial choices، نام اور مہینوں کی بُنائی سب حساب کیے جا سکتے ہیں۔</p>
+  <p>یوں فروری کے کبھی 28 اور کبھی 29 دن ہونے کی بات یاد رکھنے سے نجات ملتی ہے۔</p><hr>
+</section>
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>Seer کیا ہے؟</h2>
+  <p>canonical implementation کے ساتھ ایک تیز engine <strong>Pastafarian Calendar Seer</strong> بھی ہے۔ Seer اختیار کا سرچشمہ نہیں؛ Megillah اور canonical calculation صحیح تاریخ طے کرتے ہیں۔ اختلاف ہو تو غلط Seer ہے۔</p>
+  <p>اس کا مقصد وہی سوالات تیزی سے اور product integration کے لیے آسان شکل میں حل کرنا ہے۔</p>
+  <p>اس صفحے کی تدوین کے وقت live verification میں Seer کے پاس date query، “now” calculation، batch، day ranges، پاستافاری تاریخ سے target day کی reverse conversion، year structure، active day-of-working resolution، Node API، browser/HTTP client، CLI، HTTP v1 service، OpenAPI 3.1 contract، native implementations، distribution packages اور verified container deployment موجود تھے۔</p>
+  <p>اس لیے پرانا بیان کہ Seer کی public API نہیں، اب غلط ہے۔ date، range، batch، year، reverse، day of working، metadata، locales اور status کے endpoints کے ساتھ واضح اور stable HTTP v1 contract موجود ہے۔</p>
+  <p>21 ستمبر 2026 کو Render پر public HTTPS deployment بھی عملی طور پر آزمایا گیا: exact queries، بڑا range، restart، cold wake اور load behavior live service پر check کیے گئے۔</p>
+  <p>اس کے باوجود project documents live public beta/evaluation deployment اور مستقل hosted production service with SLA میں فرق رکھتے ہیں۔ اصولی explanation page کو server address، hosting provider یا version number کو تقویم کا حصہ بنا کر منجمد نہیں کرنا چاہیے۔</p>
+  <p>Seer precomputation، specialized representations، SIMD، algebra اور دوسرے shortcuts استعمال کر سکتا ہے۔ canonical implementation کی ہر تاریخی computational step دوبارہ دہرانا لازم نہیں، بشرطیکہ وہی semantic operation کرے اور وہی جواب دے۔</p>
+  <p>optimization الگ authority نہیں۔</p><hr>
+</section>
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>اصل، یومِ بنیاد اور یومِ الواح</h2>
+  <p>یہاں canonical anchors اور سائٹ کی کہانی الگ رکھنا ضروری ہے۔</p>
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>زمانی ستون</h3>
+    <p>نظام کا ایک مستقل reference day <strong>یومِ بنیاد</strong> ہے۔ proleptic Gregorian calendar میں یہ <strong>22 دسمبر 41,222 قبل مسیح</strong> ہے۔</p>
+    <p>یومِ بنیاد «وقت کی ابتدا» نہیں، حسابی anchor ہے۔</p>
+    <p>اس کے گرد دن مثبت طاق/جفت encoding سے نمبر ہوتے ہیں: یومِ بنیاد=1؛ بعد کے دن 3، 5، ...؛ ماضی میں فوراً پچھلا دن=2، پھر 4، 6، ...۔ یوں اس counter میں منفی day numbers کے بغیر دونوں طرف کی encoding ہو جاتی ہے۔</p>
+    <p>دوسرا anchor <strong>یومِ الواح</strong> ہے: <strong>proleptic Julian calendar میں 15 جون 763 قبل مسیح</strong>، یعنی <strong>proleptic Gregorian calendar میں 7 جون 763 قبل مسیح</strong>۔</p>
+    <p>یومِ بنیاد سے یومِ الواح تک درست فاصلہ</p><pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre><p>دن ہے۔</p>
+    <p>یہ وقت کی لکیر پر مستقل anchors ہیں، مگر ان کی دکھائی جانے والی پاستافاری تاریخ پھر بھی سوال کے عمل کے دن پر منحصر ہے۔</p>
+  </section>
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>سائٹ کی کہانی</h3>
+    <p>سائٹ کے editorial بیان میں تقویم کو تخلیق کا حصہ اور ایسا نظام بتایا جاتا ہے جسے انسانیت نے کافی شعور کے بغیر استعمال کیا، پھر جدید دور میں دوبارہ سپرد کیا گیا۔</p>
+    <p>یہ سائٹ کی کہانی ہے؛ اس کا ہر قصصی جزو Megillah کی صریح تکنیکی گزاره سمجھنا درست نہیں۔</p>
+    <p>دوبارہ سپرد کیے جانے کا واقعہ خود ایک مستقل تاریخی واقعہ ہے۔ سائٹ پر اس کی <strong>پاستافاری تاریخ</strong> کو موجودہ عمل کے دن کے مطابق dynamic دکھانا بہتر ہے، کسی ایک تاریخ پر ہمیشہ کے لیے منجمد کرنا نہیں۔</p><hr>
+  </section>
+</section>
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>اعلیٰ سطح: الٹا حساب</h2>
+  <p>عمل کا دن <code>c</code> معلوم ہو تو reverse conversion بہت مضبوط ہے۔ معلوم پاستافاری سال کے اندر</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{کٹلیٹ نام},\text{کٹلیٹ دن})</code></pre>
+  <p>زیادہ سے زیادہ ایک دن شناخت کرتا ہے۔ یہی</p><pre class="math-block" dir="ltr" tabindex="0"><code>(\text{مہینہ نام},\text{مہینہ دن})</code></pre><p>کے لیے درست ہے۔ چنانچہ معلوم عمل کے دن کے ساتھ مکمل تاریخ target day کو منفرد طور پر بتاتی ہے۔</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="reverse conversion کے امیدواروں کی حد"><table class="about-table">
+    <thead><tr><th scope="col">اضافی معلوم معلومات</th><th scope="col">زیادہ سے زیادہ امیدوار</th></tr></thead><tbody>
+      <tr><td>سال کے علاوہ کچھ نہیں</td><td>5,778</td></tr><tr><td>صرف کٹلیٹ نام</td><td>5,568</td></tr><tr><td>صرف کٹلیٹ دن</td><td>17</td></tr>
+      <tr><td>صرف مہینہ نام</td><td>123</td></tr><tr><td>صرف مہینہ دن</td><td>47</td></tr><tr><td>کٹلیٹ نام + کٹلیٹ دن</td><td>1</td></tr>
+      <tr><td>مہینہ نام + مہینہ دن</td><td>1</td></tr><tr><td>کوئی تین non-year fields</td><td>1</td></tr><tr><td>چاروں non-year fields</td><td>1</td></tr>
+    </tbody></table></div>
+  <p>عمل کا دن معلوم نہ ہو تو صورت بدل جاتی ہے۔ وہی پانچ اجزا مختلف عمل کے دنوں کے تحت آسکتے ہیں، اور exact witnesses موجود ہیں جہاں مکمل تاریخ وہی ہے مگر <code>c</code> سے فاصلہ مختلف ہے۔</p>
+  <p>سال 5000 میں تو فاصلے کا sign بھی ہمیشہ ان پانچ اجزا سے معلوم نہیں ہوتا: وہی مکمل تاریخ ایک context میں عمل کے دن کے ماضی اور دوسرے میں مستقبل میں ہو سکتی ہے۔</p>
+  <p>لہٰذا مکمل پاستافاری تاریخ بھی اس وقت absolute address نہیں جب معلوم نہ ہو کہ اسے کس <code>c</code> کے تحت نکالا گیا۔</p>
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>بہت دور زمانے کی ساخت</h3>
+    <p>specification سے اخذ شدہ ریاضی تحقیق نے ایک exact asymptotic structure بھی ثابت کی ہے۔ <strong>مقرر عمل کے دن</strong> <code>c</code> کے لیے ماضی کی tail میں کافی دور affine periodicity پیدا ہوتی ہے۔</p>
+    <p>اگر</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>تو اسی <code>c</code> کے لیے shift <code>H_c</code>، سالی تبدیلی <code>p_c</code> اور کافی دور threshold ہوتے ہیں، جس کے بعد</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>ہوتا ہے: چار non-year fields دہراتے ہیں جبکہ سال کا عدد مقرر مقدار سے بدلتا ہے۔</p>
+    <p>یہ fixed-<code>c</code> theorem ہے، اس سے عالمی</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>نہیں نکلتا۔ مختلف عمل کے دنوں کے درمیان آخری asymptotic slope واقعی بدلتی ہے یا نہیں، یہ سوال ابھی کھلا ہے۔</p><hr>
+  </section>
+</section>
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>اعلیٰ سطح: ساس کتنی تاریخ محفوظ رکھتی ہے؟</h2>
+  <p>ساس ظاہراً بہت سخت mixer ہے، مگر algebraic research نے دکھایا کہ وہ توقع سے کہیں زیادہ معلومات محفوظ رکھتی ہے۔ یہ specification سے اخذ شدہ تحقیق ہے، تقویم کا نیا قاعدہ نہیں۔</p>
+  <p>نمایاں مراحل 3 سے 46 پر متعلقہ asymptotic branch میں generic injectivity قائم ہو چکی ہے: عمومی حالت میں state متعلقہ inputs اور پیالوں کی ترتیب کی تاریخ دوبارہ بنانے کے لیے کافی معلومات رکھتی ہے۔</p>
+  <p>12 آخری ہلائیوں میں بھی معلومات فوراً غائب نہیں ہوتیں۔ نمایاں قطرہ 46 کے بعد پہلی پانچ ہلائیوں کے لیے متعلقہ canonical union پر اضافی side information کے بغیر generic invertibility قائم ہے؛ باقی کے لیے reconstruction کے لیے کافی side information کی مضبوط constructive bounds معلوم ہیں۔</p>
+  <p>یہ سوال کہ <strong>صرف آخری چھ پیالے</strong> ہمیشہ generically کافی ہیں یا نہیں، اب بھی کھلا ہے۔</p>
+  <p>کچھ نتائج symbolic proof سے اور کچھ finite exact arithmetic checks سے بند کیے گئے۔ symbolic strengthening نے اعتماد کے مطلوب computational kernel کو بہت گھٹایا، مکمل ختم نہیں کیا۔</p>
+  <p>ابتدا میں بہت بڑے path spaces نظر آنے والے مسائل چھوٹی finite structures تک سکڑ گئے، جن میں 180-state اور 9-state automata اور چھ پیالوں کی symmetries شامل ہیں۔</p>
+  <p>اختلاط کے نیچے سخت algebraic structure موجود ہے۔ آج کی تاریخ جاننے کے لیے اس علم کی ضرورت نہیں۔</p><hr>
+</section>
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>تو پاستافاری تقویم اصل میں کیا ہے؟</h2>
+  <p>ایک deterministic تقویم جس میں تاریخ صرف target day کا function نہیں، بلکہ <strong>عمل کے دن اور پوچھے گئے دن دونوں</strong> کا نتیجہ ہے۔</p>
+  <p>ہر تاریخ میں ٹھیک پانچ fields ہیں۔ حال اپنے لحاظ سے ہمیشہ سال 5000 میں ہے، مگر خود سال 5000 عمل کے دن کے ساتھ بدلتا ہے۔ سال بہت لمبے ہو سکتے ہیں؛ کٹلیٹ مسلسل ہیں؛ مہینے مسلسل ہونا ضروری نہیں؛ canonical ہفتہ نہیں۔</p>
+  <p>مہینے کا دن <code>n+1</code> ضروری نہیں کل ہو۔ وہی زمانی دن کل مختلف پاستافاری label پا سکتا ہے۔ ایک ہی physical instant دو مقامات پر مختلف مقامی پاستافاری دنوں میں ہو سکتا ہے۔ all-day event آدھی رات سے آدھی رات ہونا لازم نہیں۔ اور سالانہ سالگرہ تقویمی مسئلہ بننے سے پہلے search problem ہے۔</p>
+  <p>لیکن عمل کا دن اور پوچھا گیا دن دونوں معلوم ہوں تو ابہام نہیں: ایک ہی exact جواب ہے۔</p>
+  <p>آخرکار تقویم سے بس یہی چاہیے۔</p>
+</section>
