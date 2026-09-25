@@ -107,11 +107,15 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   const localeAssets = coreAssets.filter((entry) => entry.startsWith("./i18n/locales/"));
   assert.deepEqual(localeAssets, ["./i18n/locales/en.js?v=19-about-i18n"]);
   assert.equal(LOCALES.length, 72, "PWA accounting expects the current 72 registered locales");
-  assert.equal(LOCALES.filter(({ code }) => code !== "en").length, 71, "Every non-English UI locale is optional/on-demand");\n  const articleAssets = coreAssets.filter((entry) => entry.startsWith("./about/content/") && entry.endsWith(".html?v=3-about-i18n"));\n  assert.deepEqual(articleAssets, ["./about/content/he.html?v=3-about-i18n"], "Only the fallback article may be eagerly precached");
+  assert.equal(LOCALES.filter(({ code }) => code !== "en").length, 71, "Every non-English UI locale is optional/on-demand");
+  const articleAssets = coreAssets.filter((entry) => entry.startsWith("./about/content/") && entry.endsWith(".html?v=3-about-i18n"));
+  assert.deepEqual(articleAssets, ["./about/content/he.html?v=3-about-i18n"], "Only the fallback article may be eagerly precached");
 
   assert.match(source, /const VERSION = "pastafari-static-pwa-hardening-21-about-i18n";/);
   assert.match(source, /const RUNTIME_CACHE = "pastafari-runtime-assets";/);
-  assert.match(source, /const OPTIONAL_LOCALE_PATH = \/\^\\\/i18n\\\/locales/);\n  assert.match(source, /const OPTIONAL_ARTICLE_PATH = \/\^\\\/about\\\/content/);\n  assert.match(source, /url\\.search === ARTICLE_REVISION_SEARCH/);
+  assert.match(source, /const OPTIONAL_LOCALE_PATH = \/\^\\\/i18n\\\/locales/);
+  assert.match(source, /const OPTIONAL_ARTICLE_PATH = \/\^\\\/about\\\/content/);
+  assert.match(source, /url\\.search === ARTICLE_REVISION_SEARCH/);
   assert.match(source, /url\.search === LOCALE_REVISION_SEARCH/);
   assert.match(source, /cacheKey: scoped\(`\.\/__pwa_core__\/\$\{index\}`\)/);
   assert.match(source, /const CORE_COMPLETE_KEY = scoped\("\.\/__pwa_core__\/complete"\);/);
