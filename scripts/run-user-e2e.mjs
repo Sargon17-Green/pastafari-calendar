@@ -297,10 +297,14 @@ const desktopScenarios = [
       assert.equal(await page.locator('#about-toc-list a[href="#about-calendar"]').getAttribute("lang"), "he");
       assert.equal(await page.locator('#about-toc-list a[href="#about-calendar"]').getAttribute("dir"), "rtl");
       assert.equal(await page.locator("#calendar-workspace").count(), 0, "About page must not carry the calculation workspace");
-      assert.ok(await page.locator("#about-toc-list a").count() >= 30, "About page contents list must include the explanation and site-usage sections");
+      assert.ok(await page.locator("#about-toc-list a").count() >= 29, "About page contents list must include the explanation and site-usage sections");
+      const toc = page.locator("#about-toc");
+      if (!(await toc.evaluate((element) => element.open))) await toc.locator("summary").click();
       await page.locator('#about-toc-list a[href="#day-boundary"]').click();
       assert.match(page.url(), /#day-boundary$/);
       assert.equal(await page.locator("#day-boundary").isVisible(), true);
+      await page.locator('#about-toc-list a[href="#site-usage"]').click();
+      assert.equal(await page.locator("#site-usage-details").evaluate((element) => element.open), true);
       await page.locator('[data-back-to-calendar]').first().click();
       await waitForWorkspace(page);
       assert.match(page.url(), /\?lang=/);

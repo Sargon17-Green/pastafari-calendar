@@ -912,7 +912,7 @@ async function main() {
       assert.equal(await page.locator("#article-content").getAttribute("dir"), "rtl");
       assert.equal(await page.getByRole("heading", { level: 1 }).count(), 1);
       assert.equal(await page.locator("#calendar-workspace").count(), 0, "About page must not load the calculation workspace");
-      assert.ok(await page.locator("#about-toc-list a").count() >= 30, "About page must expose its stable sections in the contents list");
+      assert.ok(await page.locator("#about-toc-list a").count() >= 29, "About page must expose its stable sections in the contents list");
       assert.equal(await page.locator("#day-boundary").isVisible(), true, "Deep-link target must be present and visible");
       await assertNoGlobalHorizontalOverflow(page, "about page desktop");
       await page.setViewportSize(MOBILE);

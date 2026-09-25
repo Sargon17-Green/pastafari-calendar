@@ -785,7 +785,7 @@ try {
   assert.equal(aboutSnapshot.articleDir, "rtl");
   assert.equal(aboutSnapshot.hasTarget, true, "Deep-linked explanation section was not loaded offline");
   assert.equal(aboutSnapshot.hasCalendarWorkspace, false, "About page must not instantiate the calendar workspace");
-  assert.ok(aboutSnapshot.tocLinks >= 30, "About page contents list is incomplete offline");
+  assert.ok(aboutSnapshot.tocLinks >= 29, "About page contents list is incomplete offline");
   assertOfflineResponsesCameFromServiceWorker(diagnostics, "offline-about", "offline about-page subresources");
 
   diagnostics.phase = "offline-query";

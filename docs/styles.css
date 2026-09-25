@@ -1034,11 +1034,16 @@ h1 {
   background: rgb(255 253 248 / 92%);
 }
 
-.about-toc h2 {
+.about-toc-title {
   margin: 0.15rem 0 1rem;
   font-family: Georgia, "Times New Roman", "Noto Serif Hebrew", serif;
   font-size: clamp(1.6rem, 3vw, 2.4rem);
 }
+
+.about-toc > summary { cursor: pointer; }
+.about-toc > summary .eyebrow { margin-bottom: 0.2rem; }
+.about-toc-title { display: block; }
+.about-toc[open] > summary { margin-bottom: 1rem; }
 
 .about-toc ol {
   display: grid;
@@ -1051,6 +1056,30 @@ h1 {
 .about-toc li { min-width: 0; }
 .about-toc a { color: var(--ink); text-underline-offset: 0.18em; }
 .about-toc-level-3 { margin-inline-start: 1rem; color: var(--muted); }
+
+.about-site-usage {
+  scroll-margin-top: 1rem;
+  margin-block: clamp(2.5rem, 6vw, 5rem);
+  padding-block-start: clamp(1.5rem, 3vw, 2.5rem);
+  border-top: 1px solid var(--line);
+}
+.about-site-usage > h2 {
+  max-width: 28ch;
+  margin-bottom: 0.7rem;
+  font-family: Georgia, "Times New Roman", "Noto Serif Hebrew", serif;
+  font-size: clamp(1.7rem, 3.5vw, 2.5rem);
+  line-height: 1.08;
+}
+.about-site-usage-details {
+  margin-top: 1.25rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 0.7rem;
+  background: rgb(255 253 248 / 72%);
+}
+.about-site-usage-details > summary { cursor: pointer; color: var(--accent-dark); font-weight: 800; }
+.about-site-usage-details[open] > summary { margin-bottom: 0.5rem; }
+.about-site-usage .back-to-calendar { margin-top: 1rem; }
 
 .about-language-notice,
 .about-load-error {
@@ -1186,6 +1215,7 @@ h1 {
 
 @media (max-width: 760px) {
   .about-toc ol { grid-template-columns: 1fr; }
+  .about-site-usage-details { padding: 0.8rem; }
   .about-toc-level-3 { margin-inline-start: 0.75rem; }
   .about-section p,
   .about-section li,
@@ -1199,6 +1229,7 @@ h1 {
 
 @media (forced-colors: active) {
   .about-toc,
+  .about-site-usage-details,
   .about-language-notice,
   .about-load-error,
   .about-table-scroll,

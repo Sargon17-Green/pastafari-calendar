@@ -14,7 +14,7 @@ import {
 import {
   ARTICLE_FALLBACK_LOCALE,
   resolveArticleLocale,
-} from "./content/registry.js?v=1-about-page";
+} from "./content/registry.js?v=2-about-review";
 
 const elements = Object.fromEntries(
   [...document.querySelectorAll("[id]")].map((element) => [element.id, element]),
@@ -112,9 +112,16 @@ function focusHashTarget() {
   if (!id) return;
   const target = document.getElementById(id);
   if (!target) return;
+  if (id === "site-usage") elements["site-usage-details"].open = true;
+  const containingDetails = target.closest("details");
+  if (containingDetails) containingDetails.open = true;
   target.scrollIntoView({ block: "start" });
   if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
   target.focus({ preventScroll: true });
+}
+
+function initializeResponsiveDisclosures() {
+  if (matchMedia("(max-width: 760px)").matches) elements["about-toc"].open = false;
 }
 
 async function chooseLanguage(code) {
@@ -127,6 +134,7 @@ async function chooseLanguage(code) {
   await loadArticleForLocale(locale.code);
 }
 
+initializeResponsiveDisclosures();
 applyActiveLocale();
 await loadArticleForLocale(activeLocale.code);
 
