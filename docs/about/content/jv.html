@@ -1,0 +1,331 @@
+<!-- Versi Jawa iki ditulis langsung saka semantic master basa Ibrani; ora nganggo basa pivot. -->
+<!-- ID saben bagean minangka pérangan saka public deep-link contract sing ajeg; ora digawe saka judhul terjemahan. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>Ing crita situs iki, Kalèndher Pastafari digambarake minangka kalèndher sing dadi papan wektu iku dhéwé digawé. Nanging cara kerjané ditetepaké nganggo aturan sing ketat lan cetha.</p>
+  <p>Kalèndher iki ora masang siji “label” Pastafari sing ora owah ing saben dina. Kanggo entuk tanggal dibutuhake rong dina: <strong>dina tumindak</strong>, yaiku dina sing dadi wiwitan itungan, lan <strong>dina sing ditakokaké</strong>, yaiku dina sing arep digoleki tanggal Pastafari-ne.</p>
+  <p>Yèn dina tumindak ditulis <code>c</code> lan dina sing ditakokaké ditulis <code>t</code>, mula tanggalé yaiku</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>dudu <code>F(t)</code>. Mula dina sing padha bisa nduwé tanggal Pastafari sing béda yèn dina tumindaké diganti.</p>
+  <p>Iki dudu kesalahan. Kalèndher iki pancèn ditetepaké kaya mangkono.</p><hr>
+</div>
+
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>Apa waé isi tanggal Pastafari?</h2>
+  <p>Tanggal iki nduwé <strong>pas limang pérangan</strong>: nomer taun, jeneng kotlet, dina ing kotlet, jeneng wulan, lan dina ing wulan.</p>
+  <p>Conto umum: <strong>taun 5000, kotlet A, dina kaping 417 ing kotlet, wulan B, dina kaping 83 ing wulan.</strong></p>
+  <p>Dina tumindak, lokasi pengamat, identitas kronologis dina, utawa informasi teknis liyane bisa ditampilaké cedhak tanggal, nanging dudu field kaping enem saka tanggal.</p><hr>
+</section>
+
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>Napa perlu dina tumindak?</h2>
+  <p>Ing kalèndher biasa, lumrah yèn kita nganggep tanggal iku “duwèké” dina iku dhéwé. Ing Kalèndher Pastafari, tanggal gumantung marang hubungan antarane rong dina.</p>
+  <p>Ngganti <code>t</code> tegesé takon bab dina liyane. Ngganti <code>c</code> bisa nduwé akibat sing luwih jero: wates taun, kotlet, wulan, jeneng-jenengé, lan cara wulan padha sesambungan lan selang-seling kabèh bisa owah.</p>
+  <p>Mula almanak sing diwilang dina iki ora mesthi isih bener sesuk. Iki uga nyegah kahanan sing rada ora nyenengaké nalika kalèndher cetak isih migunani nganti setaun kebak.</p><hr>
+</section>
+
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>Dina padha, tanggal béda</h2>
+  <p><strong>Identitas dina</strong> kudu dibédakaké saka <strong>representasi Pastafari-ne</strong>. Sing kapisan yaiku panggonan tetep sawijining dina tartamtu ing garis wektu; sing kapindho yaiku limang nilai sing metu nalika dina kasebut ditampilaké kanthi dina tumindak tartamtu.</p>
+  <p>Ing produk lan API, sing kapisan bisa dianggep minangka <code>day-id</code>: identitas kronologis sing ora owah sanajan representasiné owah. Nanging</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre>
+  <p>lan</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>ora kudu padha.</p>
+  <p>Dadi, ngganti dina tumindak kanthi manual bisa ngganti tanggal Pastafari sing ditampilaké kanggo dina sing padha, tanpa mindhah dinané dhéwé saka panggonané ing garis wektu.</p>
+  <p>Prinsip sing padha uga kanggo kedadeyan. Rapat, lair, utawa kedadeyan sajarah kudu tetep kaiket marang identitas kronologis sing ajeg; tanggal Pastafari-ne bisa diwilang manèh manut konteks tampilan.</p>
+  <p>Label bisa owah. Kedadeyané ora.</p><hr>
+</section>
+
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>Taun 5000</h2>
+  <p>Yèn dina tumindak lan dina sing ditakokaké padha,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>nomer taun mesthi</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>Tegesé, wektu saiki yèn dideleng saka sudut pandangé dhéwé mesthi ana ing taun 5000. Nanging taun 5000 dudu periode sajarah sing tetep; saben itungan taun iki dipilih manèh relatif marang dina tumindak.</p>
+  <p>Dina tumindak iku dhéwé uga ana ing taun 5000, uga dina-dina liyane ing taun sing padha. Mula <strong>mung amarga sawijining dina ana ing taun 5000 ora mbuktekaké yèn <code>t=c</code>.</strong></p>
+  <p>Nanging nomer taun nuduhaké arah:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre>
+  <p>lan</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p>Ana uga <strong>taun 0</strong>; luwih adoh menyang jaman biyèn ana taun kanthi nomer negatif.</p><hr>
+</section>
+
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>Taun lan gapura</h2>
+  <p>Siji taun Pastafari bisa nduwé</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ nganti }5778</code></pre>
+  <p>dina. Iki wates canonical sistem, dudu rata-rata empiris.</p>
+  <p>Mula siji taun bisa luwih cendhak tinimbang taun surya utawa luwih dawa tinimbang limalas taun surya. Wates taun dibangun saka sistem <strong>gapura</strong>; wates kotlet uga asalé saka sistem sing padha.</p>
+  <p>Pungkasan taun ora kudu cocog karo mangsa, siji puteran Bumi ngubengi Srengéngé, siklus rembulan, utawa kepénginan praktis supaya taun kuwi enggal rampung.</p><hr>
+</section>
+
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>Kotlet</h2>
+  <p>Saben taun dipérang dadi <strong>6 nganti 17 kotlet</strong>. Kotlet iku pérangan wektu sing terus tanpa pedhot sacara kronologis.</p>
+  <p>Yèn dina iki dina kaping 250 ing sawijining kotlet, sesuk dadi dina kaping 251 ing kotlet sing padha, kajaba dina iki dina pungkasané. Wates kotlet yaiku gapura, lan siji kotlet suwéné paling ora</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
+  <p>dina.</p>
+  <p>Sistem nduwé 17 jeneng canonical kotlet lan jeneng sing padha ora mbaleni ing taun sing padha. Jeneng ora nemtokaké dawa utawa posisi kotlet.</p><hr>
+</section>
+
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>Wulan lan anyaman</h2>
+  <p>Saben taun nduwé</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ nganti }47</code></pre>
+  <p>wulan struktural, lan saben wulan diwènèhi</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ nganti }123</code></pre>
+  <p>dina.</p>
+  <p>Nanging wulan Pastafari <strong>ora kudu dadi interval wektu sing terus tanpa pedhot</strong>. Contoné urutan kronologis bisa kaya iki:</p>
+  <blockquote><p>Wulan A — dina 14<br>Wulan B — dina 9<br>Wulan A — dina 15</p></blockquote>
+  <p>Iki sah. Dina 15 ing wulan A yaiku dina sabanjuré <strong>ing wulan kuwi</strong>, sanajan ana dina saka wulan liya ing antarané.</p>
+  <p>Mula “dina ing wulan” dudu cacah dina kronologis sing wis kliwat wiwit wulan kuwi muncul kapisan. Iki urutan ing antarane dina-dina sing ditugasaké marang wulan kuwi sajroning taun. Dina 48 tegesé dina kaping 48 sing dadi duwèké wulan kuwi, dudu 47 dina sawisé muncul kapisan.</p><hr>
+</section>
+
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>Wulan padha dianyam siji lan sijiné</h2>
+  <p>Wulan bisa dibayangaké minangka benang sing mlaku ngliwati taun. Saben dina dadi duwèké pas siji wulan; sesuk bisa dadi duwèké wulan liyane, banjur wulan sing kapisan bisa muncul manèh lan nerusaké nganggo nomer sabanjuré.</p>
+  <p>Anyaman iki nduwé aturan, kalebu watesan ing urutan muncul kapisan lan pungkasan saben wulan. Nanging ora ana syarat yèn siji wulan kudu rampung dhisik sadurungé wulan liyane diwiwiti.</p>
+  <ul>
+    <li>Kotlet ngukur posisi ing sawijining pérangan wektu sing terus.</li>
+    <li>Wulan nuduhaké keanggotaan ing benang struktural sing bisa ilang banjur muncul manèh.</li>
+  </ul>
+  <p>Siji wulan bisa ngliwati sawetara kotlet, lan ing siji kotlet bisa muncul sawetara wulan. Wiwitan lan pungkasan loro sistem iki ora kudu padha.</p><hr>
+</section>
+
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>Dina sabanjuré ing wulan ora mesthi sesuk</h2>
+  <p>Yèn dina iki dina kaping 17 ing sawijining wulan, dina kaping 18 ing wulan sing padha yaiku <strong>munculé wulan kuwi sabanjuré</strong>. Bisa sesuk, bisa uga adoh mengko.</p>
+  <p><strong>Sesuk</strong> yaiku dina kronologis sabanjuré; <strong>dina sabanjuré ing wulan</strong> yaiku munculé wulan sing padha sabanjuré.</p>
+  <p>Mangkono uga, “pungkasan wulan” ora tegesé pungkasané wis cedhak sacara kronologis. Wulan sing nduwé 120 dina bisa saiki ana ing dina 119, nanging dina 120 teka luwih adoh ing taun sing padha.</p><hr>
+</section>
+
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>Ora ana minggu</h2>
+  <p>Canonical specification saiki <strong>ora nemtokaké sistem minggu</strong>. Ora ana unit canonical pitung dina, ora ana jeneng Pastafari kanggo dina minggu, lan ora ana aturan sing nggawe rong dina dadi “dina minggu sing padha”.</p>
+  <p>Sistem minggu sipil mesthi bisa ditumpangaké saka njaba; mung waé kuwi dudu pérangan saka tanggal Pastafari.</p><hr>
+</section>
+
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>Jeneng</h2>
+  <p>Ana 17 jeneng canonical kotlet lan 47 jeneng canonical wulan. Ing siji taun, saben jeneng paling akèh muncul sepisan ing kelompoké.</p>
+  <p>Identitas jeneng iku canonical lan semantis; dudu asil voting antarane ejaan, terjemahan, utawa implementations sing béda. Kanggo teges jeneng, Megillah basa Ibrani nduwé wewenang paling dhuwur; terjemahan lan transliterasi mung lapisan tampilan.</p>
+  <p>Jeneng uga dudu kode dawa sing didhelikaké. Jeneng kotlet utawa wulan tartamtu ora otomatis nggawe unit kuwi luwih dawa utawa luwih cendhak.</p><hr>
+</section>
+
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>Sawijining fakta cilik bab wulan</h2>
+  <p>Ana 47 jeneng wulan, lan siji wulan paling adoh bisa tekan dina 123. Mula cacah pasangan sing bisa sacara sintaksis kanthi wujud “jeneng wulan + nomer dina ing wulan” yaiku</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>Saben dina sajroning taun mujudaké pas siji pasangan kaya mangkono. Yèn dawa taun <code>L</code>, pas <code>L</code> pasangan sing muncul. Amarga</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>saben taun mesthi ninggal paling ora</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre>
+  <p>pasangan sing mungkin nanging ora digunakaké. Malah taun sing paling dawa ora nduwé cukup dina kanggo nganggo kabèh.</p><hr>
+</section>
+
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>Kepiyé kalèndher diwilang?</h2>
+  <p>Itungan internal iki diarani <strong>saus</strong>. Ing tengahé ana bilangan prima</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>Prosesé nyakup limang input counter, 7 tetes didhelikaké, 46 tetes katon, 6 mangkok, urutan mangkok sing owah, 12 campuran pungkasan, seal kanggo jawaban sing béda, combinatorial selection, pambangunan gapura, pilihan taun, pambagian kotlet, pilihan jeneng, pambangunan wulan, lan anyaman dina-dina wulan.</p>
+  <p>Update pungkasan dilakokaké <strong>bebarengan</strong>: ing saben campuran, enem nilai anyar kabèh diwilang saka state lawas sing padha, banjur mung sawisé kuwi enem mangkok diganti bebarengan.</p>
+  <p>Ing 12 campuran pungkasan ana siji rincian canonical sing wigati banget. Yèn <code>S</code> iku jumlah enem mangkok lawas lan <code>r</code> nomer campuran, sistem ngitung</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p><code>R</code> yaiku <strong>jumlah sing disimpen</strong>. Pilihan urutan mangkok lan update internal campuran loro-loroné nggunakake <code>R</code>, dudu jumlah mentah <code>S</code>.</p>
+  <p>Versi lawas sing ngirim jumlah mentah menyang update iki wis ora nggambaraké canonical semantics saiki. Conto sing asalé saka aturan lawas kudu dianggep kadaluwarsa nganti diverifikasi manèh.</p>
+  <p>Sawisé campuran, answer ring uga nerusaké urutan sing di-lock ing tetes katon 46; urutan iki ora kena diganti otomatis nganggo urutan campuran pungkasan.</p><hr>
+</section>
+
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice lan Wide Choice</h2>
+  <p>Kanggo selection space sing relatif cilik digunakaké <strong>Short Choice</strong>. Iki nggunakake rejection sampling supaya ora kena modulo bias sing prasaja.</p>
+  <p>Kanggo space sing gedhé banget digunakaké <strong>Wide Choice</strong>. Aja mènèhi sipat sing ora dijamin specification.</p>
+  <p>Wide Choice ora padha karo nggawe digit base-<code>Q</code> sing independen lan distribusinè rata nganti entuk index. Mula ora bisa disimpulaké yèn saben valid choice kudu nduwé probabilitas positif sing padha. Ing space sing cukup gedhé bisa ana valid choice sing ora tau bisa digayuh mechanism iki.</p>
+  <p>Kalèndheré dhéwé tetep sakabehé deterministic. “Choice” iku jeneng sawijining algorithmic stage, dudu random lottery nalika digunakaké.</p><hr>
+</section>
+
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>Atlas struktural</h2>
+  <p>Nganti kéné kita wis ngomongaké aturan kalèndher. Angka-angka sabanjuré iku jinis informasi liya: <strong>asil empiris</strong> saka computational sample sing gedhé.</p>
+  <p>Atlas dibangun nganggo engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> lan nyakup 4,096 dina tumindak; kanggo saben dina, taun 4990–5010; 86,016 struktur taun; 625,437 kotlet; 3,535,422 wulan struktural; luwih saka 356 yuta segmen wulan sing terus; lan luwih saka 364 yuta transisi saka dina <code>n</code> menyang dina <code>n+1</code> ing wulan sing padha.</p>
+  <p>Angka iki nggambaraké corpus kuwi, dudu hukum canonical.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Data sing diukur ing atlas struktural">
+    <table class="about-table">
+      <thead><tr><th scope="col">Ukuran</th><th scope="col">Asil ing sampel</th></tr></thead>
+      <tbody>
+        <tr><td>Rata-rata dawa taun</td><td>4,275.182 dina</td></tr>
+        <tr><td>Median dawa taun</td><td>4,343</td></tr>
+        <tr><td>Minimum / maximum sing diamati</td><td>716 / 5,778</td></tr>
+        <tr><td>Rata-rata cacah kotlet saben taun</td><td>7.271</td></tr>
+        <tr><td>Taun kanthi pas 6 kotlet</td><td>42.00%</td></tr>
+        <tr><td>Taun kanthi 6–8 kotlet</td><td>81.29%</td></tr>
+        <tr><td>Rata-rata dawa kotlet</td><td>587.963 dina</td></tr>
+        <tr><td>Median dawa kotlet</td><td>560</td></tr>
+        <tr><td>Rata-rata cacah wulan saben taun</td><td>41.102</td></tr>
+        <tr><td>Median cacah wulan</td><td>43</td></tr>
+        <tr><td>Taun kanthi 47 wulan</td><td>15.63%</td></tr>
+        <tr><td>Taun kanthi paling ora 45 wulan</td><td>36.81%</td></tr>
+        <tr><td>Rata-rata dawa wulan struktural</td><td>104.014 dina</td></tr>
+        <tr><td>Median dawa wulan</td><td>115</td></tr>
+        <tr><td>Rata-rata cacah segmen terus saben wulan</td><td>100.897</td></tr>
+        <tr><td>Bagéan segmen wulan sing mung sedina</td><td>97.482%</td></tr>
+        <tr><td>Probabilitas rong dina jejer ana ing wulan sing padha</td><td>2.9976%</td></tr>
+        <tr><td>Rata-rata cacah dina saka wulan liya antarane <code>n</code> lan <code>n+1</code> ing wulan sing padha</td><td>40.408</td></tr>
+        <tr><td>Rata-rata span saka muncul kapisan nganti pungkasan sawijining wulan</td><td>4,266.653 dina</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Ing praktik, wulan kira-kira satus dina bisa sumebar meh ing saindhenging taun Pastafari.</p>
+  <p>Atlas sing padha uga nuduhaké bias alami ing dawa watara taun 5000. Ing sampel, taun “biasa” rata-rata udakara 4,262 dina. Yèn taun diwènèhi weight manut cacah dina sing ana ing jeroné, rata-rata mundhak dadi udakara 4,466 dina; taun 5000 dhéwé rata-rata udakara 4,499 dina.</p>
+  <p>Alesané prasaja: taun 5000 kudu ngemot dina tumindak. Taun sing luwih dawa nduwé luwih akèh dina sing bisa ndadèkaké taun kuwi minangka taun sing ngemot dina tumindak.</p>
+  <p>Hubungan antarane jeneng unit lan dawané uga katon ringkih banget ing sampel. Iki ora mbuktekaké mathematical independence kanthi lengkap, nanging atlas ora menehi signal praktis yèn jeneng digawe kanggo encode dawa.</p>
+  <p>Saliyane kuwi, 86,016 struktur taun ora padha karo 86,016 independent sample kanthi lengkap: mung ana 24,786 interval béda antarane gapura wiwitan lan gapura pungkasan. Dina tumindak sing cedhak bisa milih year interval sing padha nanging isih ngasilaké structure internal sing béda.</p>
+  <p>Mula atlas cukup apik kanggo nggambaraké prilaku sing diukur saka implementation, nanging aja diowahi dadi probability theorem kanggo kabèh calendar structure sing mungkin.</p><hr>
+</section>
+
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>Ulang taun lan mengeti tahunan</h2>
+  <p>Ing kéné frasa “dina sing padha saben taun” kudu ditetepaké tegesé dhisik. Recurrence coordinate sing alami yaiku <code>(jeneng wulan, dina ing wulan)</code> lan <code>(jeneng kotlet, dina ing kotlet)</code>; syarat bisa uga digabungaké.</p>
+  <p>Mula ulang taun Pastafari ora mung <code>RRULE:FREQ=YEARLY</code>. Kita kudu nggoleki taun sabanjuré sing nyukupi recurrence condition sing dipilih, lan kedadeyan asli ora otomatis diitung minangka “muncul sabanjuré” saka awake dhéwé.</p>
+  <p>Ngganti dina tumindak mung kanggo tampilan ora kena ngganti identitas wong, wektu lair, utawa umuré.</p>
+  <p>Ing exact scan saka 4,096 self-referential date, saben taun Pastafari sabanjuré dipriksa nganti 250,000 taun ing loro arah:</p>
+  <ul>
+    <li>Kanggo <code>(jeneng wulan, dina ing wulan)</code>, median bali kapisan yaiku 1 taun Pastafari; 77.56% bali ing taun jejere, 93.77% sajroning rong taun, 99.44% sajroning limang taun; maximum sing diamati 21 taun.</li>
+    <li>Kanggo <code>(jeneng kotlet, dina ing kotlet)</code>, median 3 taun; 88.89% ditemokaké sajroning 10 taun, nanging distribution nduwé heavy tail sing abot banget, lan maximum sing diamati tekan 51,954 taun Pastafari.</li>
+  </ul>
+  <p>Iki <strong>asil empiris saka corpus sing dipriksa</strong>; ora mbuktekaké yèn saben mengeti sing mungkin mesthi bakal bali, lan ora menehi guarantee kanggo maximum waiting time.</p><hr>
+</section>
+
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>Kepiyé nggawe janji?</h2>
+  <p>Yèn wong loro arep janjian mung nganggo tanggal Pastafari, paling ora kudu padha setuju marang limang field tanggal lan dina tumindak sing digunakaké ing itungan. Luwih becik dina tumindak disimpen minangka day identity sing ajeg, dudu mung tembung “dina iki”; yèn ora, wong loro bisa ngitung kalèndher sing béda.</p>
+  <ul>
+    <li>“sesuk” yaiku dina kronologis sabanjuré;</li>
+    <li>“dina sabanjuré ing wulan” yaiku munculé wulan kuwi sabanjuré;</li>
+    <li>“pungkasan wulan” yaiku munculé wulan kuwi sing pungkasan;</li>
+    <li>“wulan sakabèhé” bisa tegesé set dina sing dadi duwèké wulan kuwi utawa sakabèhé span kronologis saka muncul kapisan nganti pungkasan;</li>
+    <li>“taun sabanjuré” yaiku taun sabanjuré ing kalèndher sing dibangun miturut dina tumindak sing dipilih.</li>
+  </ul>
+  <p>Kanggo janji sing wigati banget, absolute chronological day utawa moment uga bisa disimpen. Kalèndher ora bakal nesu.</p><hr>
+</section>
+
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>Lelungan, kedadeyan, lan all-day</h2>
+  <p>Kedadeyan lan label lokal sing ditampilaké kanggo kedadeyan kuwi ora padha. Kedadeyan kanthi wektu tartamtu kudu kaiket marang chronological moment sing ajeg. Lelungan ora mindhah kedadeyan ing wektu, nanging tanggal Pastafari lokal kanggo physical moment sing padha bisa owah amarga definisi “dina lokal” gumantung lokasi.</p>
+  <p>Ing kedadeyan <strong>all-day</strong>, bedané malah luwih gedhé. Kedadeyan sipil sedina kebak biasané saka tengah wengi tekan tengah wengi sabanjuré; kedadeyan Pastafari sedina kebak kuduné saka wates dina Pastafari lokal tekan wates sabanjuré. Biasané dudu moments sing padha.</p>
+  <p>Mula export kedadeyan Pastafari kanthi wuta dadi kedadeyan sipil “sedina kebak” bisa ngganti tegesé. Supaya maknané tetep bener, kudu disimpen chronological anchor lan location/day-boundary context sing cocog, ora mung flag <code>all-day</code>.</p><hr>
+</section>
+
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>Kapan dina ganti?</h2>
+  <p>Dina Pastafari lokal ora ganti ing tengah wengi. Watesé ditemtokaké déning <strong>topocentric lower meridian transit pusat Venus liwat meridian lokal</strong>.</p>
+  <p>Dadi iki kedadeyan astronomi lokal sing gumantung panggonan. Transit ora kudu kedadeyan jam 00:00, ora ditemtokaké time zone sipil, ora pindhah mung amarga daylight saving time diwiwiti utawa rampung, lan Venus ora kudu katon nganggo mripat langsung.</p>
+  <p>Physical moment sing padha bisa ana ing sisih wates dina lokal sing béda ing rong panggonan. Yèn sistem ora nduwé user location sing bisa digunakaké, default fallback location produk yaiku <strong>Kisurra</strong>.</p><hr>
+</section>
+
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>Kalèndher cetak lan itungan manual</h2>
+  <p>Kalèndher Pastafari bisa dicithak; cukup sebutaké kalèndher iku diwilang kanggo dina tumindak endi. Kalèndher kaya mangkono nuduhaké struktur wektu saka sudut pandang dina kuwi; yèn dina tumindak owah, bisa perlu kalèndher anyar. Dadi printer isih nduwé gawéan.</p>
+  <p>Amarga specification lengkap lan deterministic, kabèh uga bisa diwilang alamen: itung input counter, lakokaké 7 tetes didhelikaké lan 46 tetes katon, update enem mangkok, lakokaké 12 campuran pungkasan, hasilaké jawaban, bangun gapura, pilih taun lan kotlet, lakokaké combinatorial selection, pilih jeneng, banjur anyam wulan.</p>
+  <p>Gantiné, ora perlu éling kapan Februari nduwé 28 dina lan kapan 29.</p><hr>
+</section>
+
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>Banjur Seer kuwi apa?</h2>
+  <p>Ing jejere canonical implementation ana engine cepet sing jenengé <strong>Pastafarian Calendar Seer</strong>. Seer dudu sumber wewenang: tanggal sing bener ditemtokaké déning Megillah lan canonical calculation. Yèn Seer ora cocog karo kuwi, kesalahan ana ing Seer.</p>
+  <p>Tugasé yaiku nindakake query sing padha kanthi cepet lan mbalèkaké asil ing wangun sing gampang di-integrate menyang produk.</p>
+  <p>Ing verification langsung nalika kaca iki disunting, Seer nyakup antara liya date lan “now” query, batch, day range, reverse conversion saka tanggal Pastafari menyang target day, year structure retrieval, nemtokaké active working day, Node API, browser/HTTP client, CLI, HTTP v1 service, OpenAPI 3.1 contract, native implementations lan distribution package, uga verified container deployment.</p>
+  <p>Pernyataan lawas yèn Seer ora nduwé public API wis ora bener. Saiki ana HTTP v1 contract sing cetha lan ajeg kanthi endpoint kanggo date, range, batch, year, reverse, dina tumindak, metadata, locales, lan status.</p>
+  <p>Ing 21 September 2026, public HTTPS deployment ing Render pancèn diuji: ing live service diverifikasi exact query, range gedhé, restart, cold wake, lan prilaku nalika load.</p>
+  <p>Nanging project documentation isih mbédakaké public beta/evaluation deployment saka hosted production service permanen sing nduwé SLA. Mula kaca panjelasan konseptual ora kudu freeze server address, hosting provider, utawa version number kaya-kaya kuwi pérangan saka kalèndher dhéwé.</p>
+  <p>Seer bisa nggunakake precomputation, representation khusus, SIMD, algebra, lan shortcut liyane. Ora kudu niru kabèh computational history saka canonical implementation langkah demi langkah anggere nindakake operasi semantis sing padha lan ngasilaké jawaban sing padha.</p>
+  <p>Optimization dudu wewenang alternatif.</p><hr>
+</section>
+
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>Asal-usul, Dina Pangadegan, lan Dina Loh</h2>
+  <p>Ing kéné wigati banget kanggo misahaké canonical time anchor saka crita situs kanthi cetha.</p>
+
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>Titik jangkar</h3>
+    <p>Sistem nduwé sawijining reference day tetep sing diarani <strong>Dina Pangadegan</strong>. Ing kalèndher Gregorian proleptik, yaiku <strong>22 Desember 41,222 SM</strong>.</p>
+    <p>Dina Pangadegan dudu “wiwitan wektu”; iki computational anchor.</p>
+    <p>Numbering dina ing sakupengé nggunakake angka positif ganjil/genep: Dina Pangadegan=1; dina sabanjuré=3, 5, …; menyang jaman biyèn, dina sadurungé=2, banjur 4, 6, … . Mula loro sisih anchor encode ing counter iki tanpa negative day number.</p>
+    <p>Anchor kapindho yaiku <strong>Dina Loh</strong>: <strong>15 Juni 763 SM ing kalèndher Julian proleptik</strong>, yaiku <strong>7 Juni 763 SM ing kalèndher Gregorian proleptik</strong>.</p>
+    <p>Jarak sing pas saka Dina Pangadegan menyang Dina Loh yaiku</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
+    <p>dina.</p>
+    <p>Iki anchor sing tetep ing garis wektu, nanging tanggal Pastafari sing ditampilaké kanggo anchor-anchor kasebut isih gumantung marang dina tumindak saka ngendi pitakon diwiwiti.</p>
+  </section>
+
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>Crita situs</h3>
+    <p>Ing crita editorial situs, kalèndher iki diterangaké minangka pérangan saka penciptaan lan minangka sistem sing digunakaké manungsa tanpa ngerti sakabèhé, nganti banjur dipasrahaké manèh ing jaman modern.</p>
+    <p>Iki crita situs; ora saben narrative detail kudu ditampilaké kaya sawijining technical claim sing eksplisit saka Megillah.</p>
+    <p>Kedadeyan nalika kalèndher dipasrahaké manèh iku dhéwé kedadeyan sajarah sing tetep. <strong>Tanggal Pastafari</strong>-né luwih becik ditampilaké dynamic miturut dina tumindak saiki tinimbang freeze selawasé dadi siji tanggal.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>Kanggo pangguna maju: reverse conversion</h2>
+  <p>Yèn dina tumindak <code>c</code> dingertèni, reverse conversion diwatesi banget. Ing sawijining taun Pastafari sing dingertèni,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{jeneng kotlet},\text{dina ing kotlet})</code></pre>
+  <p>paling akèh ngenali siji dina. Semono uga</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{jeneng wulan},\text{dina ing wulan})</code></pre>
+  <p>Mula tanggal lengkap kanthi dina tumindak sing dingertèni ngenali target day kanthi unik.</p>
+
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Wates ndhuwur cacah candidate ing reverse conversion">
+    <table class="about-table">
+      <thead><tr><th scope="col">Informasi tambahan sing dingertèni</th><th scope="col">Cacah candidate maksimal</th></tr></thead>
+      <tbody>
+        <tr><td>Ora ana field dingertèni kejaba taun</td><td>5,778</td></tr>
+        <tr><td>Mung jeneng kotlet</td><td>5,568</td></tr>
+        <tr><td>Mung dina ing kotlet</td><td>17</td></tr>
+        <tr><td>Mung jeneng wulan</td><td>123</td></tr>
+        <tr><td>Mung dina ing wulan</td><td>47</td></tr>
+        <tr><td>Jeneng kotlet + dina ing kotlet</td><td>1</td></tr>
+        <tr><td>Jeneng wulan + dina ing wulan</td><td>1</td></tr>
+        <tr><td>Sembarang telung field kejaba taun</td><td>1</td></tr>
+        <tr><td>Kabèh patang field kejaba taun</td><td>1</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Yèn dina tumindak ora dingertèni, kahanané béda. Limang nilai sing padha bisa muncul ing dina tumindak sing béda, lan ana exact example nalika tanggal lengkap sing padha muncul kanthi jarak béda saka <code>c</code>.</p>
+  <p>Ing taun 5000, malah sign jarak kuwi ora mesthi ditemtokaké déning limang nilai: tanggal lengkap sing padha bisa ana sadurungé dina tumindak ing siji context lan sawisé ing context liyane.</p>
+  <p>Mula tanggal Pastafari lengkap dudu absolute address ing garis wektu yèn ora dingertèni tanggal kasebut diwilang miturut <code>c</code> endi.</p>
+
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>Struktur ing wektu sing adoh banget</h3>
+    <p>Riset matematis sing asalé saka specification uga nemokaké asymptotic structure sing pas. Kanggo <strong>dina tumindak tetep</strong> <code>c</code>, cukup adoh ing tail jaman biyèn muncul affine periodicity.</p>
+    <p>Yèn</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>mula kanggo <code>c</code> sing padha ana shift <code>H_c</code>, year change <code>p_c</code>, lan threshold sing cukup adoh; sawisé kuwi</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>patang field kejaba taun mbaleni, nalika nomer taun owah kanthi jumlah tetep.</p>
+    <p>Iki asil kanggo <code>c</code> sing tetep; iki ora nuduhaké hubungan global</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>Pitakon apa asymptotic slope pungkasan pancèn béda antarane dina tumindak sing béda isih kabuka.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>Kanggo pangguna maju: pira akèh sajarah sing disimpen saus?</h2>
+  <p>Saus katon kaya mixing mechanism sing agresif banget, nanging algebraic research nuduhaké yèn saus nyimpen informasi luwih akèh tinimbang sing katon saka njaba. Iki research result saka specification, dudu aturan kalèndher anyar.</p>
+  <p>Ing stage katon 3–46, ing asymptotic branch sing gegandhengan, generic injectivity wis ditetepaké: ing generic case, state nyimpen informasi cukup kanggo mbangun manèh input history sing gegandhengan lan urutan mangkok.</p>
+  <p>Informasi uga ora langsung ilang ing 12 campuran pungkasan. Kanggo limang campuran kapisan sawisé tetes katon 46, generic invertibility wis ditetepaké ing canonical union sing cocog tanpa side information tambahan; kanggo sisane wis dingertèni constructive upper bound sing kuwat kanggo pira side information sing cukup kanggo reconstruction.</p>
+  <p>Pitakon apa <strong>mung enem mangkok pungkasan</strong> mesthi cukup ing generic sense isih kabuka.</p>
+  <p>Sawetara asil dibuktekaké symbolic; liyane dirampungaké nganggo finite exact arithmetic check. Symbolic strengthening nyuda banget computational core sing kudu dipercaya, nanging ora ngilangi kabèh.</p>
+  <p>Space sing wiwitané katon mbutuhaké telusuran liwat cacah path sing gedhé banget wis disusutaké dadi finite structure sing luwih cilik, kalebu automata 180 lan 9 state lan symmetry enem mangkok.</p>
+  <p>Ing ngisor campuran ana algebraic structure sing ketat. Ora perlu ngerti kuwi kanggo ngerti tanggal dina iki.</p><hr>
+</section>
+
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>Dadi, apa sejatine Kalèndher Pastafari?</h2>
+  <p>Iki deterministic calendar sing tanggalé dudu mung function saka target day, nanging <strong>function bebarengan saka dina tumindak lan dina sing ditakokaké</strong>.</p>
+  <p>Saben tanggal nduwé pas limang field. Saiki, saka sudut pandangé dhéwé, mesthi ana ing taun 5000, nanging taun 5000 dhéwé obah bareng dina tumindak. Taun bisa dawa banget, kotlet terus tanpa pedhot, wulan ora kudu mangkono, lan ora ana canonical week system.</p>
+  <p>Dina <code>n+1</code> ing sawijining wulan ora mesthi sesuk. Chronological day sing padha sesuk bisa nampa Pastafarian label liyane. Physical moment sing padha bisa dadi bagéan saka loro local Pastafari day sing béda ing rong panggonan. All-day event ora kudu saka tengah wengi nganti tengah wengi. Lan annual birthday iku luwih dhisik search problem, banjur calendar problem.</p>
+  <p>Nanging yèn dina tumindak lan dina sing ditakokaké dingertèni, ora ana ambiguity: jawaban sing bener mung siji.</p>
+  <p>Pungkasané, kalèndher ora perlu nindakake luwih saka kuwi.</p>
+</section>
