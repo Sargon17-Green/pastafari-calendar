@@ -100,6 +100,18 @@ Status progression for target locales: `not started → draft → semantic QA �
 
 - `ms-MY`: locale-wide language finding: the existing locale mixes Malay and Indonesian rather than being consistently idiomatic Malay (for example Malay `tarikh`/`mesej` alongside Indonesian `situs`, `perhitungan`, `Terapkan`, `coba lagi`). Do not use it as a terminology oracle for the Malay article; native Malay review must repair the whole locale.
 
+- `az-AZ`: locale-wide language finding: prominent existing UI copy is Turkish rather than idiomatic Azerbaijani (`İşlem gününü değiştir`, `Bu site nasıl kullanılır`, `köftesinde`). Do not use it as an Azerbaijani terminology oracle.
+
+- `fo-FO`: locale-wide language finding: the existing locale is a Faroese/Danish hybrid (`Skift arbejdsdaguren`, `beregningens udgangspunkt`, `Sådan ...`), not idiomatic Faroese.
+
+- `fy-NL`: locale-wide language finding: prominent UI copy is Dutch rather than Frisian (`Werkdei wijzigen`, `uitgangspunt van de berekening`, `Deze site gebruiken`).
+
+- `is-IS`: locale-wide language finding: the existing locale is largely Danish with Icelandic-looking substitutions (`Skift arbejdsdaguren`, `beregningens udgangspunkt`, `Sådan ...`).
+
+- `sl-SI`: locale-wide language finding: prominent UI copy is Croatian/Bosnian/Serbian rather than idiomatic Slovenian (`Promijeni dan delovanja`, `polazišna je točka`, `u kotletu`).
+
+- `sr-Latn-RS`: locale-wide variant finding: the existing UI uses predominantly Ijekavian Bosnian/Croatian forms (`Promijeni`, `djelovanja`, `mjesecu`, `zdjela`) despite the registered Serbia Latin variant; review the whole locale against sr-Latn-RS.
+
 ## Native-language whole-site QA policy
 
 The final linguistic QA is intentionally a separate phase and will run on a dedicated branch forked from the completed translation branch, tentatively `qa/about-i18n-native-language-audit`.
