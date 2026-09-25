@@ -9,6 +9,7 @@ export default Object.freeze({
     "meta.description": "'n Pastafariese kalender met datumsoektog en vergelyking.",
     "manifest.shortName": "Pastafari",
     "manifest.defaultDescription": "'n Plaaslike, deterministiese Pastafari-kalender.",
+    "app.brand": "PASTAFARI",
     "app.title": "Pastafariese kalender",
     "nav.skip": "Ga naar datum soek",
     "app.intro": "Soek 'n dag in enige beskikbare kalender en bekyk daarna die volledige Pastafariese datum en die kotelet waarin die dag val.",
@@ -259,6 +260,9 @@ export default Object.freeze({
     "reverse.error.range": "Die einde van die reeks mag nie voor die begin wees nie.",
     "reverse.error.variable": "Elke beperking moet na 'n bestaande datumveranderlike verwys.",
     "reverse.error.pastafari": "Voer al vyf Pastafari-datumvelde in.",
+    "reverse.error.limitPositive": "{field} moet positief wees.",
+    "reverse.error.limitSafeInteger": "{field} val buite die veilige heelgetalreeks.",
+    "reverse.error.absoluteDateField": "Ongeldige veld vir die absolute datum.",
     "reverse.calendar.label": "Kalender wat vir hierdie absolute datum gebruik word",
 
   },
