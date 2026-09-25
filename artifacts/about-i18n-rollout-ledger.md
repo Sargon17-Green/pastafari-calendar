@@ -20,7 +20,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | bg | bg-BG | ltr | partial | not started |
 | bn | bn-BD | ltr | partial | draft |
 | bs | bs-BA | ltr | partial | draft |
-| ca | ca-ES | ltr | partial | not started |
+| ca | ca-ES | ltr | partial | draft |
 | cs | cs-CZ | ltr | partial | draft |
 | da | da-DK | ltr | partial | draft |
 | de | de-DE | ltr | partial | draft |
