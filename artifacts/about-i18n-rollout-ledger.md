@@ -25,7 +25,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | da | da-DK | ltr | partial | draft |
 | de | de-DE | ltr | partial | draft |
 | el | el-GR | ltr | partial | not started |
-| eo | eo | ltr | partial | not started |
+| eo | eo | ltr | partial | draft |
 | es | es-ES | ltr | partial | draft |
 | et | et-EE | ltr | partial | not started |
 | fa | fa-IR | rtl | partial | draft |
@@ -85,6 +85,10 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | zu | zu-ZA | ltr | partial | not started |
 
 Status progression for target locales: `not started → draft → semantic QA → linguistic QA → integrated → rendered → PASS`.
+
+## Findings requiring locale-wide review
+
+- `af-ZA`: locale-wide language finding discovered during terminology audit: prominent existing UI strings are Dutch rather than Afrikaans (for example `Werkdag wijzigen`, `Deze site gebruiken`). Treat as a whole-site locale defect for the native-language QA phase; do not silently normalize canonical terminology from those strings while drafting the article.
 
 ## Native-language whole-site QA policy
 

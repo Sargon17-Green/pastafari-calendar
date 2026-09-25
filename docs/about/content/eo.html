@@ -1,0 +1,263 @@
+<!-- La Esperanta versio estas verkita rekte laŭ la hebrea semantika fonto, ne pere de alia traduko. -->
+<!-- La sekciaj ID-oj estas stabila publika kontrakto por profundaj ligiloj kaj ne devenas de tradukitaj titoloj. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>En la rakonto de la retejo, la Pastafaria kalendaro estas prezentata kiel la kalendaro en kiu la tempo mem estis kreita. Ĝia mekanismo tamen estas difinita precize.</p>
+  <p>La kalendaro ne donas al ĉiu tago unu konstantan Pastafarian „etikedon”. Por ekscii daton necesas du tagoj: la <strong>tago de laboro</strong>, de kiu la kalkulo estas farata, kaj la <strong>pridemandata tago</strong>, kies daton ni volas scii.</p>
+  <p>Se la tago de laboro estas <code>c</code> kaj la pridemandata tago estas <code>t</code>, la dato estas</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>kaj ne <code>F(t)</code>. Tial la sama pridemandata tago povas ricevi alian Pastafarian daton sub alia tago de laboro.</p>
+  <p>Tio ne estas eraro. Tiel funkcias la kalendaro.</p><hr>
+</div>
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>El kio konsistas Pastafaria dato?</h2>
+  <p>Ĝi havas <strong>precize kvin partojn</strong>: la numeron de la jaro, la nomon de la kotleto, la tagon en la kotleto, la nomon de la monato kaj la tagon en la monato.</p>
+  <p>Ĝenerala ekzemplo: <strong>jaro 5000, kotleto A, tago 417 en la kotleto, monato B, tago 83 en la monato.</strong></p>
+  <p>La tago de laboro, la loko de la observanto, la kronologia identeco de la tago kaj aliaj teknikaj informoj povas aperi apud la dato, sed ili ne estas sesa datkampo.</p><hr>
+</section>
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>Kial necesas tago de laboro?</h2>
+  <p>En ordinaraj kalendaroj ni kutime pensas, ke dato „apartenas” al la tago mem. En la Pastafaria kalendaro la dato dependas de la rilato inter du tagoj.</p>
+  <p>Ŝanĝi <code>t</code> signifas demandi pri alia tago. Ŝanĝi <code>c</code> povas esti pli profunda ŝanĝo: la limoj de jaroj, la kotletoj, la monatoj, iliaj nomoj kaj la maniero laŭ kiu la monatoj interplektiĝas povas ĉiuj ŝanĝiĝi.</p>
+  <p>Do almanako kalkulita hodiaŭ ne nepre estas la ĝusta almanako morgaŭ. Tiel oni evitas la malagrablan staton, en kiu presita kalendaro restus utila dum tuta jaro.</p><hr>
+</section>
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>La sama tago, alia dato</h2>
+  <p>Necesas distingi inter la <strong>identeco de tago</strong> kaj ĝia <strong>Pastafaria prezento</strong>. La unua estas la stabila loko de konkreta tago sur la tempolinio; la dua estas la kvinopo akirita kiam tiu tago estas montrata sub certa tago de laboro.</p>
+  <p>En la produkto kaj la API, la unuan oni povas pensi kiel <code>day-id</code>: kronologia identeco, kiu ne ŝanĝiĝas kun la prezenta kunteksto. Kontraŭe,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre><p>kaj</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>ne devas esti egalaj.</p>
+  <p>Mana ŝanĝo de la tago de laboro povas do ŝanĝi la montratan daton de la sama tago sen movi la tagon mem sur la tempolinio.</p>
+  <p>La sama principo validas por eventoj. Renkontiĝo, naskiĝo aŭ historia evento restu ankrita al stabila kronologia identeco; ĝia Pastafaria dato povas esti rekalkulata laŭ la kunteksto de observado.</p>
+  <p>La etikedo povas ŝanĝiĝi. La evento ne.</p><hr>
+</section>
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>Jaro 5000</h2>
+  <p>Kiam la tago de laboro estas la sama kiel la pridemandata tago,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>la jaro ĉiam estas</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>La nuntempo, rigardata de si mem, do ĉiam troviĝas en jaro 5000. Sed jaro 5000 ne estas fiksa historia epoko; ĝi estas ree elektata rilate al la tago de laboro.</p>
+  <p>La tago de laboro mem estas en jaro 5000, kaj ankaŭ aliaj tagoj de la sama elektita jaro. Tial <strong>esti en jaro 5000 ne pruvas, ke <code>t=c</code>.</strong></p>
+  <p>La jarnumero tamen montras la direkton:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre><p>kaj</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p>Ekzistas ankaŭ <strong>jaro 0</strong>; pli for en la pasinteco sekvas jaroj kun negativaj numeroj.</p><hr>
+</section>
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>Jaroj kaj pordegoj</h2>
+  <p>Pastafaria jaro povas havi</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ ĝis }5778</code></pre>
+  <p>tagojn. Tiuj estas kanonaj limoj de la sistemo, ne empiriaj mezumoj.</p>
+  <p>Jaro povas do esti pli mallonga ol suna jaro aŭ pli longa ol dek kvin sunaj jaroj. Jarlimoj estas konstruitaj per sistemo de <strong>pordegoj</strong>; ankaŭ la limoj de kotletoj venas el tiu sistemo.</p>
+  <p>Jarfino ne devas koincidi kun sezono, orbito de la Tero ĉirkaŭ la Suno, luna ciklo aŭ iu praktika bezono finfine fini la jaron.</p><hr>
+</section>
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>Kotletoj</h2>
+  <p>Ĉiu jaro dividiĝas en <strong>6 ĝis 17 kotletojn</strong>. Kotleto estas kronologie kontinua segmento.</p>
+  <p>Se hodiaŭ estas tago 250 de kotleto, morgaŭ estas tago 251 de la sama kotleto, krom se hodiaŭ estas ĝia lasta tago. Kotletlimoj estas pordegoj, kaj kotleto havas almenaŭ</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
+  <p>tagojn.</p>
+  <p>La sistemo havas 17 kanonajn kotletnomojn, kaj nomo ne ripetiĝas ene de unu jaro. La nomo ne determinas la longon aŭ la pozicion de la kotleto.</p><hr>
+</section>
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>Monatoj kaj interplektado</h2>
+  <p>Ĉiu jaro havas</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ ĝis }47</code></pre>
+  <p>strukturajn monatojn, kaj al ĉiu monato estas atribuitaj</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ ĝis }123</code></pre>
+  <p>tagoj.</p>
+  <p>Sed Pastafaria monato <strong>ne nepre estas kontinua tempintervalo</strong>. Ekzemple la kronologia sinsekvo povas esti:</p>
+  <blockquote><p>monato A — tago 14<br>monato B — tago 9<br>monato A — tago 15</p></blockquote>
+  <p>Tio estas tute valida strukturo. Tago 15 de monato A estas la sekva tago <strong>de tiu monato</strong>, kvankam inter ili okazis tago de alia monato.</p>
+  <p>„Tago en monato” do ne mezuras la nombron de kronologiaj tagoj ekde la unua apero de la monato. Ĝi estas la vicnumero de tago atribuita al tiu monato en la jaro. Tago 48 signifas la 48-an tagon apartenantan al la monato, ne 47 tagojn post ĝia unua apero.</p><hr>
+</section>
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>La monatoj estas interplektitaj</h2>
+  <p>Oni povas imagi la monatojn kiel fadenojn tra la jaro. Ĉiu tago apartenas al ĝuste unu monato; morgaŭ povas aparteni al alia, kaj poste la unua monato povas reveni kaj daŭrigi per sia sekva numero.</p>
+  <p>La interplektado havas regulojn, interalie limigojn pri la ordo de la unuaj kaj lastaj aperoj de monatoj. Tamen ne ekzistas regulo, ke unu monato devas finiĝi antaŭ ol alia komenciĝas.</p>
+  <ul><li>Kotleto mezuras pozicion ene de kontinua tempsegmento.</li><li>Monato mezuras apartenon al struktura fadeno, kiu povas malaperi kaj poste reveni.</li></ul>
+  <p>Unu monato povas transiri plurajn kotletojn, kaj unu kotleto povas enhavi aperojn de multaj monatoj. La komencoj kaj finoj de la du sistemoj ne devas koincidi.</p><hr>
+</section>
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>La sekva tago de la monato ne nepre estas morgaŭ</h2>
+  <p>Se hodiaŭ estas tago 17 de certa monato, tago 18 de tiu sama monato estas <strong>la sekva apero de tiu monato</strong>. Ĝi povas esti morgaŭ aŭ multe pli poste.</p>
+  <p><strong>Morgaŭ</strong> estas la sekva kronologia tago; <strong>la sekva tago de la monato</strong> estas la sekva apero de la sama monato.</p>
+  <p>Ankaŭ „fino de la monato” ne signifas, ke la kronologia fino estas proksima. Monato kun 120 tagoj povas esti je tago 119 dum tago 120 kuŝas multe pli for en la jaro.</p><hr>
+</section>
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>Semajnoj ne ekzistas</h2>
+  <p>La nuna kanona specifo <strong>ne difinas semajnosistemon</strong>. Ne ekzistas kanona septaga supera unuo, Pastafariaj nomoj de semajntagoj aŭ regulo laŭ kiu du tagoj estas „la sama semajntago”.</p>
+  <p>Kompreneble oni povas de ekstere aldoni civilan semajnosistemon; ĝi simple ne estas parto de la Pastafaria dato.</p><hr>
+</section>
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>Nomoj</h2>
+  <p>Estas 17 kanonaj kotletnomoj kaj 47 kanonaj monatnomoj. Ene de unu jaro ĉiu nomo aperas en sia familio maksimume unufoje.</p>
+  <p>La identeco de nomo estas kanona kaj semantika, ne rezulto de voĉdono inter literumoj, tradukoj aŭ realigoj. Pri la signifo de la nomoj, la hebrea Megillah estas la plej alta aŭtoritato; traduko kaj transliterumo estas prezentaj tavoloj.</p>
+  <p>Nomo ankaŭ ne estas kaŝita kodo por longo. Neniu specifa kotlet- aŭ monatnomo per si mem devigas la unuon esti pli longa aŭ pli mallonga.</p><hr>
+</section>
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>Eta fakto pri monatoj</h2>
+  <p>Estas 47 monatnomoj, kaj monato povas atingi maksimume tagon 123. Do ekzistas</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>sintakse eblaj paroj „monatnomo + tagnumero en la monato”.</p>
+  <p>Ĉiu tago de jaro realigas ĝuste unu tian paron. Se la jarlongo estas <code>L</code>, aperas ĝuste <code>L</code> paroj. Sed</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>do en ĉiu jaro mankas almenaŭ</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre>
+  <p>eblaj paroj. Eĉ la plej longa jaro ne havas sufiĉe da tagoj por uzi ĉiujn.</p><hr>
+</section>
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>Kiel la kalendaro estas kalkulata?</h2>
+  <p>La internan kalkulon ni nomas ĉi tie la <strong>saŭco</strong>. En ĝia centro estas la primo</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>La procedo inkluzivas kvin enigajn nombrilojn, 7 kaŝitajn gutojn, 46 videblajn gutojn, 6 bovlojn, ŝanĝiĝantajn bovlordojn, 12 finajn kirlojn, sigelojn por malsamaj respondoj, kombinatorikajn elektojn, generadon de pordegoj, elekton de jaroj, dividon en kotletojn, elekton de nomoj, kreadon de monatoj kaj interplektadon de monat-tagoj.</p>
+  <p>La finaj ĝisdatigoj estas <strong>samtempaj</strong>: ĉe ĉiu kirlo ĉiuj ses novaj bovlvaloroj estas kalkulataj el la sama malnova stato, kaj nur poste ĉiuj ses bovloj estas anstataŭigitaj kune.</p>
+  <p>En la 12 finaj kirloj estas aparte grava kanona detalo. Se <code>S</code> estas la sumo de la ses malnovaj bovloj kaj <code>r</code> estas la numero de la kirlo, la sistemo kalkulas</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p><code>R</code> estas la <strong>konservita sumo</strong>. Kaj la elekto de bovlordo kaj la interna ĝisdatigo de la kirlo uzas <code>R</code>, ne la krudan sumon <code>S</code>.</p>
+  <p>Pli malnovaj versioj, kiuj enmetis la krudan sumon en tiun ĝisdatigon, ne priskribas la nunan kanonan semantikon. Ekzemploj derivitaj de la malnova regulo estas malnoviĝintaj krom se ili estas denove kontrolitaj.</p>
+  <p>Post la kirloj la respondringo ankaŭ daŭrigas laŭ la ordo ŝlosita ĉe videbla guto 46; oni ne rajtas aŭtomate anstataŭigi ĝin per la ordo de la lasta kirlo.</p><hr>
+</section>
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice kaj Wide Choice</h2>
+  <p>Por relative malgrandaj spacetoj de ebloj oni uzas <strong>Short Choice</strong>. Ĝi uzas malakceptan specimenadon (rejection sampling) por eviti simplan modulo-bias.</p>
+  <p>Tre grandaj spacoj uzas <strong>Wide Choice</strong>. Oni ne rajtas atribui al ĝi ecojn, kiujn la specifo ne garantias.</p>
+  <p>Wide Choice ne egalas al generado de sendependaj, egale distribuitaj ciferoj en bazo <code>Q</code> ĝis aperas indekso. Sekve ne estas pruveble, ke ĉiu laŭleĝa eblo nepre havas la saman pozitivan probablon. En sufiĉe grandaj spacoj povas ekzisti laŭleĝaj ebloj, kiujn tiu elekta mekanismo tute ne povas atingi.</p>
+  <p>La kalendaro mem estas plene determinisma. „Choice” estas nomo de algoritmo-paŝo, ne lotumado dum uzo.</p><hr>
+</section>
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>La struktura atlaso</h2>
+  <p>Ĝis nun temis pri reguloj de la kalendaro. La sekvaj nombroj estas io alia: <strong>empiriaj rezultoj</strong> de granda komputa specimeno.</p>
+  <p>La atlaso estis konstruita per la motora commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> kaj enhavis 4,096 tagojn de laboro; la jarojn 4990–5010 por ĉiu; 86,016 jarstrukturojn; 625,437 kotletojn; 3,535,422 strukturajn monatojn; pli ol 356 milionojn da kontinuaj monatsegmentoj; kaj pli ol 364 milionojn da transiroj de monat-tago <code>n</code> al <code>n+1</code>.</p>
+  <p>Tiuj estas priskriboj de tiu korpuso, ne kanonaj leĝoj.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Mezuritaj datumoj de la struktura atlaso"><table class="about-table">
+    <thead><tr><th scope="col">Mezurita kvanto</th><th scope="col">Rezulto en la specimeno</th></tr></thead><tbody>
+      <tr><td>Meza jarlongo</td><td>4,275.182 tagoj</td></tr><tr><td>Mediano de jarlongo</td><td>4,343</td></tr><tr><td>Observita minimumo / maksimumo</td><td>716 / 5,778</td></tr>
+      <tr><td>Meza nombro de kotletoj jare</td><td>7.271</td></tr><tr><td>Jaroj kun ĝuste 6 kotletoj</td><td>42.00%</td></tr><tr><td>Jaroj kun 6–8 kotletoj</td><td>81.29%</td></tr>
+      <tr><td>Meza kotletlongo</td><td>587.963 tagoj</td></tr><tr><td>Mediano de kotletlongo</td><td>560</td></tr><tr><td>Meza nombro de monatoj jare</td><td>41.102</td></tr>
+      <tr><td>Mediano de monatsumo</td><td>43</td></tr><tr><td>Jaroj kun 47 monatoj</td><td>15.63%</td></tr><tr><td>Jaroj kun almenaŭ 45 monatoj</td><td>36.81%</td></tr>
+      <tr><td>Meza longo de struktura monato</td><td>104.014 tagoj</td></tr><tr><td>Mediano de monat-longo</td><td>115</td></tr><tr><td>Meza nombro de kontinuaj segmentoj por monato</td><td>100.897</td></tr>
+      <tr><td>Proporcio de unutagaj monatsegmentoj</td><td>97.482%</td></tr><tr><td>Probablo, ke apudaj tagoj apartenas al la sama monato</td><td>2.9976%</td></tr>
+      <tr><td>Mezaj fremdaj tagoj inter <code>n</code> kaj <code>n+1</code> de monato</td><td>40.408</td></tr><tr><td>Meza amplekso de la unua ĝis la lasta apero de monato</td><td>4,266.653 tagoj</td></tr>
+    </tbody></table></div>
+  <p>Praktike monato kun ĉirkaŭ cent tagoj povas esti disĵetita tra preskaŭ tuta Pastafaria jaro.</p>
+  <p>La sama atlaso montris naturan longan bias-on ĉirkaŭ jaro 5000. „Ordinara” jaro en la specimeno averaĝis ĉirkaŭ 4,262 tagojn. Se jaroj estas pezataj laŭ la nombro de tagoj en ili, la mezumo altiĝas al ĉirkaŭ 4,466 tagoj; la propra jaro 5000 averaĝis ĉirkaŭ 4,499 tagojn.</p>
+  <p>La kialo estas simpla: jaro 5000 devas enhavi la tagon de laboro. Pli longa jaro havas pli da tagoj, ĉe kiuj ĝi povas esti la jaro enhavanta tiun tagon.</p>
+  <p>La rilato inter unuonomo kaj ĝia longo ankaŭ estis tre malforta en la specimeno. Tio ne pruvas kompletan matematikan sendependecon, sed la atlaso ne donas praktikan signon, ke la nomoj celas kodi longon.</p>
+  <p>Krome la 86,016 jarstrukturoj ne estas 86,016 tute sendependaj specimenoj: ili enhavas nur 24,786 malsamajn komenc-/fin-pordegajn intervalojn. Najbaraj tagoj de laboro povas elekti la saman jarintervalon kaj tamen produkti malsaman internan strukturon.</p>
+  <p>La atlaso do bone priskribas la mezuritan konduton de la realigo, sed oni ne transformu ĝin en probabloteoremon pri ĉiuj eblaj kalendarstrukturoj.</p><hr>
+</section>
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>Naskiĝtagoj kaj datrevenoj</h2>
+  <p>La esprimo „la sama tago ĉiujare” ĉi tie bezonas difinon. Naturaj ripet-koordinatoj estas <code>(monatnomo, tago en monato)</code> kaj <code>(kotletnomo, tago en kotleto)</code>; oni ankaŭ povas kombini kondiĉojn.</p>
+  <p>Pastafaria naskiĝtago tial ne estas simple <code>RRULE:FREQ=YEARLY</code>. Necesas serĉi la sekvan jaron, kiu plenumas la elektitan ripetkondiĉon, kaj la origina evento ne aŭtomate kalkuliĝas kiel sia propra „sekva apero”.</p>
+  <p>Ŝanĝi la tagon de laboro nur por montrado ne rajtas ŝanĝi la identecon de persono, la naskiĝmomenton aŭ la aĝon.</p>
+  <p>En preciza skano de 4,096 mem-datoj, ĉiu sinsekva Pastafaria jaro estis kontrolita antaŭen kaj malantaŭen ĝis 250,000 jaroj en ĉiu direkto:</p>
+  <ul><li>Por <code>(monatnomo, tago en monato)</code> la mediano de la unua reveno estis 1 Pastafaria jaro; 77.56% revenis en la najbara jaro, 93.77% ene de du jaroj, 99.44% ene de kvin; la observita maksimumo estis 21 jaroj.</li>
+  <li>Por <code>(kotletnomo, tago en kotleto)</code> la mediano estis 3 jaroj; 88.89% estis trovitaj ene de 10 jaroj, sed la distribuo havis tre pezan voston kaj la observita maksimumo atingis 51,954 Pastafariajn jarojn.</li></ul>
+  <p>Tiuj estas <strong>empiriaj rezultoj de la testita korpuso</strong>, ne pruvo, ke ĉiu ebla datreveno nepre revenos, kaj ne garantio pri maksimuma atendotempo.</p><hr>
+</section>
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>Kiel interkonsenti rendevuon?</h2>
+  <p>Se du homoj volas fiksi rendevuon nur per Pastafaria dato, ili devas konsenti almenaŭ pri la kvin datumkampoj kaj pri la tago de laboro uzita por la kalkulo. Pli bone estas konservi tiun tagon kiel stabilan tagidentecon ol kiel la vorton „hodiaŭ”, alie la du homoj povas kalkuli malsamajn kalendarojn.</p>
+  <ul><li>„morgaŭ” estas la sekva kronologia tago;</li><li>„la sekva tago de la monato” estas la sekva apero de tiu monato;</li><li>„la fino de la monato” estas ĝia lasta apero;</li><li>„tuta monato” povas signifi la aron de monat-tagoj aŭ la tutan kronologian amplekson de la unua ĝis la lasta apero;</li><li>„la sekva jaro” estas la sekva jaro en la kalendaro konstruita sub la elektita tago de laboro.</li></ul>
+  <p>Por aparte grava rendevuo oni povas ankaŭ konservi la absolutan kronologian tagon aŭ momenton. La kalendaro ne suferos pro tio.</p><hr>
+</section>
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>Vojaĝado, eventoj kaj all-day</h2>
+  <p>Evento ne estas la sama afero kiel la loka etikedo montrata por ĝi. Horplanita evento restu ankrita al stabila kronologia momento. Vojaĝado ne movas la eventon en la tempo, sed la loka Pastafaria dato montrata ĉe tiu sama momento povas ŝanĝiĝi, ĉar la difino de „loka tago” dependas de la loko.</p>
+  <p>Ĉe <strong>all-day</strong>-evento la diferenco estas eĉ pli granda. Civila tuttaga evento kutime daŭras de civila noktomezo ĝis la sekva; Pastafaria tuttaga evento devus daŭri de loka Pastafaria taglimo ĝis la sekva loka taglimo. Tiuj ĝenerale ne estas la samaj momentoj.</p>
+  <p>Tial blinda eksporto de Pastafaria evento kiel civila „tuttaga” evento povas ŝanĝi ĝian signifon. Por preciza konservado necesas stoki la kronologian ankron kaj la taŭgan lok-/tagliman kuntekston, ne nur flagon <code>all-day</code>.</p><hr>
+</section>
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>Kiam ŝanĝiĝas la tago?</h2>
+  <p>La loka Pastafaria tago ne ŝanĝiĝas je noktomezo. La limo estas difinita per la <strong>topocentra malsupra meridiana transito de la centro de Venuso tra la loka meridiano</strong>.</p>
+  <p>Do temas pri loka astronomia evento dependa de loko. La transiro ne devas okazi je 00:00, ne estas difinita de la civila horzono, ne ŝanĝiĝas nur pro komenco aŭ fino de somera tempo, kaj ne postulas, ke Venuso estu videbla nudokule.</p>
+  <p>La sama fizika momento povas en du lokoj troviĝi je kontraŭaj flankoj de iliaj respektivaj lokaj taglimoj. Se la sistemo ne havas uzeblan lokon de la uzanto, la defaŭlta rezerva loko de la produkto estas <strong>Kisurra</strong>.</p><hr>
+</section>
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>Presita kalendaro kaj mana kalkulo</h2>
+  <p>Pastafarian kalendaron oni povas presi; oni nur devas indiki, por kiu tago de laboro ĝi estis kalkulita. Tia kalendaro montras la tempstrukturon el la vidpunkto de tiu tago; kiam la tago de laboro ŝanĝiĝas, nova kalendaro povas esti bezonata. La presilo do restas grava.</p>
+  <p>Ĉion oni povas ankaŭ kalkuli mane, ĉar la specifo estas kompleta kaj determinisma: kalkulu la enigajn nombrilojn, plenumu 7 kaŝitajn kaj 46 videblajn gutojn, ĝisdatigu ses bovlojn, faru 12 finajn kirlojn, produktu respondojn, konstruu pordegojn, elektu jarojn kaj kotletojn, faru kombinatorikajn elektojn, elektu nomojn kaj interplektu la monatojn.</p>
+  <p>Kompense oni ne bezonas memori, ke februaro foje havas 28 kaj foje 29 tagojn.</p><hr>
+</section>
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>Kio do estas Seer?</h2>
+  <p>Apud la kanona realigo ekzistas rapida motoro nomata <strong>Pastafarian Calendar Seer</strong>. Seer ne estas fonto de aŭtoritato: la Megillah kaj la kanona kalkulo determinas la ĝustan daton. Se Seer kontraŭdiras ilin, Seer eraras.</p>
+  <p>Ĝia rolo estas fari la samajn demandojn rapide kaj en formo oportuna por integriĝo en produktoj.</p>
+  <p>Laŭ la viva kontrolo farita dum redaktado de ĉi tiu paĝo, Seer inkluzivis interalie dat- kaj „nun”-demandojn, batch, tagintervalojn, inversan konverton de Pastafaria dato al celtago, ricevon de jarstrukturo, solvadon de la aktiva tago de laboro, Node API, retumilan/HTTP-klienton, CLI, HTTP v1-servon, kontrakton OpenAPI 3.1, native-realigojn kaj distribupakaĵojn, kaj kontrolitan container-deployment.</p>
+  <p>La malnova aserto, ke Seer ne havas publikan API, do ne plu estas vera. Ekzistas eksplicita stabila kontrakto HTTP v1 kun endpoint-oj por date, range, batch, year, reverse, la tago de laboro, metadata, locales kaj status.</p>
+  <p>La 21-an de septembro 2026 publika HTTPS-deployment ĉe Render estis praktike testita: exact-demandoj, granda range, restart, cold wake kaj konduto sub ŝarĝo estis provitaj ĉe la viva servo.</p>
+  <p>La projekta dokumentaro tamen plu distingas inter viva publika beta/evaluation-deployment kaj deklarita konstanta hosted production-servo kun SLA. Tial baza klariga paĝo ne devas fiksi serviladreson, gastigan provizanton aŭ versionumeron kvazaŭ ili estus parto de la kalendaro mem.</p>
+  <p>Seer rajtas uzi antaŭkalkulon, specialajn prezentojn, SIMD, algebron kaj aliajn mallongigojn. Ĝi ne devas paŝon post paŝo reprodukti la tutan komputan historion de la kanona realigo, kondiĉe ke ĝi faras la saman semantikan operacion kaj redonas la saman respondon.</p>
+  <p>Optimumigo ne estas alternativa aŭtoritato.</p><hr>
+</section>
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>Origino, Fonda Tago kaj Tago de la Tabuloj</h2>
+  <p>Ĉi tie necesas klare apartigi kanonajn tempankrojn de la rakonto de la retejo.</p>
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>La ankroj</h3>
+    <p>La sistemo havas fiksan referencan tagon nomatan <strong>Fonda Tago</strong>. En la prolepta Gregoria kalendaro ĝi estas <strong>22 decembro 41,222 a.K.</strong></p>
+    <p>La Fonda Tago ne estas „la komenco de la tempo”, sed kalkula ankro.</p>
+    <p>La tagnumera sistemo ĉirkaŭ ĝi uzas pozitivajn neparajn/parajn nombrojn: Fonda Tago=1; la sekvaj tagoj=3, 5, …; direkte al la pasinteco la antaŭa tago=2, poste 4, 6, … . Tiel ambaŭ flankoj de la ankro estas kodataj sen negativaj tagnombroj en ĉi tiu nombrilo.</p>
+    <p>La alia ankro estas la <strong>Tago de la Tabuloj</strong>: <strong>15 junio 763 a.K. en la prolepta Julia kalendaro</strong>, do <strong>7 junio 763 a.K. en la prolepta Gregoria kalendaro</strong>.</p>
+    <p>La preciza distanco de la Fonda Tago ĝis la Tago de la Tabuloj estas</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
+    <p>tagoj.</p>
+    <p>Tiuj estas fiksaj ankroj sur la tempolinio. La Pastafaria dato montrata por ili tamen plu dependas de la tago de laboro, de kiu oni demandas pri ili.</p>
+  </section>
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>La rakonto de la retejo</h3>
+    <p>En la redakcia rakonto de la retejo, la kalendaro estas prezentata kiel parto de la kreado kaj kiel sistemo uzata de la homaro sen plena konscio pri ĝi ĝis ĝia moderna redono.</p>
+    <p>Tio estas la rakonto de la retejo; ne ĉiu rakonta detalo estu prezentata kiel eksplicita teknika aserto de la Megillah.</p>
+    <p>La evento de la redono mem estas fiksa historia evento. Ĝia <strong>Pastafaria dato</strong> estas pli bone montrata dinamike laŭ la nuna tago de laboro ol por ĉiam frostigita kiel unu sola Pastafaria dato.</p><hr>
+  </section>
+</section>
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>Por progresintoj: inversa konverto</h2>
+  <p>Kiam la tago de laboro <code>c</code> estas konata, la inversa konverto estas tre forta. Ene de konata Pastafaria jaro,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{kotletnomo},\text{tago en kotleto})</code></pre>
+  <p>identigas maksimume unu tagon. Same validas por</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{monatnomo},\text{tago en monato})</code></pre>
+  <p>Do plena dato kun konata tago de laboro unike identigas la celtagon.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Supraj limoj de kandidatoj ĉe inversa konverto"><table class="about-table">
+    <thead><tr><th scope="col">Plia konata informo</th><th scope="col">Maksimuma nombro de kandidatoj</th></tr></thead><tbody>
+      <tr><td>Neniu ne-jara kampo</td><td>5,778</td></tr><tr><td>Nur kotletnomo</td><td>5,568</td></tr><tr><td>Nur tago en kotleto</td><td>17</td></tr>
+      <tr><td>Nur monatnomo</td><td>123</td></tr><tr><td>Nur tago en monato</td><td>47</td></tr><tr><td>Kotletnomo + tago en kotleto</td><td>1</td></tr>
+      <tr><td>Monatnomo + tago en monato</td><td>1</td></tr><tr><td>Iuj ajn tri ne-jaraj kampoj</td><td>1</td></tr><tr><td>Ĉiuj kvar ne-jaraj kampoj</td><td>1</td></tr>
+    </tbody></table></div>
+  <p>Sen konata tago de laboro la situacio estas alia. La sama kvinopo povas aperi sub malsamaj tagoj de laboro, kaj ekzistas precizaj ekzemploj, en kiuj la sama plena dato aperas je malsamaj distancoj de <code>c</code>.</p>
+  <p>En jaro 5000 eĉ la signo de tiu distanco ne ĉiam estas determinita de la kvinopo: la sama plena dato povas en unu kunteksto troviĝi en la pasinteco de la tago de laboro kaj en alia en ĝia estonteco.</p>
+  <p>Plena Pastafaria dato do ne estas absoluta adreso sur la tempolinio, se oni ne scias sub kiu <code>c</code> ĝi estis kalkulita.</p>
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>Strukturo en fora tempo</h3>
+    <p>Matematika esploro derivita el la specifo trovis ankaŭ precizan asimptotan strukturon. Por <strong>fiksa tago de laboro</strong> <code>c</code>, sufiĉe for en la pasinteca vosto ekzistas afina periodeco.</p>
+    <p>Se</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>tiam por tiu sama <code>c</code> ekzistas ŝovo <code>H_c</code>, jarŝanĝo <code>p_c</code> kaj sufiĉe fora sojlo, post kiu</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>La kvar ne-jaraj kampoj ripetiĝas dum la jarnumero ŝanĝiĝas je fiksa kvanto.</p>
+    <p>Tio estas rezulto por fiksa <code>c</code>; ĝi ne donas tutmondan rilaton</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>Restas malferma la demando, ĉu la fina asimptota deklivo efektive varias inter malsamaj tagoj de laboro.</p><hr>
+  </section>
+</section>
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>Por progresintoj: kiom da historio konservas la saŭco?</h2>
+  <p>La saŭco aspektas kiel tre agresema miksilo, sed algebra esploro montris, ke ĝi konservas multe pli da informo ol ĝia ekstera formo sugestas. Tio estas esploro derivita el la specifo, ne nova regulo de la kalendaro.</p>
+  <p>En videblaj etapoj 3–46, sur la koncerna asimptota branĉo, estis establita injektiveco en la ĝenerala kazo (<span lang="en">generic injectivity</span>): ĝenerale la stato konservas sufiĉe da informo por rekonstrui la koncernan historion de enigoj kaj bovlordoj.</p>
+  <p>Ankaŭ dum la 12 finaj kirloj la informo ne tuj malaperas. Por la unuaj kvin post videbla guto 46 estis establita ĝenerala inversebleco sur la koncerna kanona unio sen plia flanka informo; por la ceteraj estas konataj fortaj konstruaj supraj limoj pri kiom da flanka informo sufiĉas por rekonstruo.</p>
+  <p>Daŭre estas malferma la demando, ĉu <strong>la ses finaj bovloj solaj</strong> ĉiam sufiĉas en la ĝenerala kazo.</p>
+  <p>Kelkaj rezultoj estis pruvoj simbolaj; aliaj estis fermitaj per finiaj, precizaj aritmetikaj kontroloj. Simbola plifortigo multe malgrandigis la komputan kernon, kiun necesas fidi, sed ne tute forigis ĝin.</p>
+  <p>Spacoj, kiuj komence ŝajnis postuli esploron de enorma nombro da vojoj, reduktiĝis al multe pli malgrandaj finiaj strukturoj, inter ili aŭtomatoj kun 180 kaj 9 statoj kaj simetrioj de la ses bovloj.</p>
+  <p>Sub la miksado do kuŝas rigida algebra strukturo. Por ekscii la hodiaŭan daton, oni ne bezonas koni ĝin.</p><hr>
+</section>
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>Kio do estas la Pastafaria kalendaro?</h2>
+  <p>Ĝi estas determinisma kalendaro, en kiu la dato ne estas funkcio de la celtago sola, sed de <strong>la tago de laboro kaj la pridemandata tago kune</strong>.</p>
+  <p>Ĉiu dato havas precize kvin kampojn. La nuntempo rilate al si mem ĉiam estas en jaro 5000, sed la jaro 5000 mem moviĝas kun la tago de laboro. Jaroj povas esti tre longaj, kotletoj estas kontinuaj, monatoj ne devas esti kontinuaj, kaj ne ekzistas kanona semajnosistemo.</p>
+  <p>Tago <code>n+1</code> de monato ne nepre estas morgaŭ. La sama kronologia tago povas morgaŭ havi alian Pastafarian etikedon. La sama fizika momento povas en du lokoj aparteni al malsamaj lokaj Pastafariaj tagoj. Tuttaga evento ne devas daŭri de noktomezo ĝis noktomezo. Kaj ĉiujara naskiĝtago estas serĉproblemo antaŭ ol ĝi estas kalendara problemo.</p>
+  <p>Sed kiam la tago de laboro kaj la pridemandata tago estas konataj, ne ekzistas ambigueco: estas ĝuste unu preciza respondo.</p>
+  <p>Fine, kalendaro ne bezonas fari pli ol tion.</p>
+</section>
