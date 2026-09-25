@@ -24,7 +24,7 @@ export default Object.freeze({
     "about.back": "Back to the calendar",
     "about.tocKicker": "On this page",
     "about.toc": "Contents",
-    "about.hebrewOnly": "The explanation itself is currently available in Hebrew only. The site controls can still use your selected language.",
+    "about.fallbackNotice": "The explanation is not available in the selected language right now, so the default version is shown.",
     "about.loadError": "The calendar explanation could not be loaded.",
     "language.label": "Language",
     "day.staleWarning": "The current day changed from {previousDate} to {currentDate}. Because the day of working was the current day, the displayed dates are no longer up to date. They will be recalculated after you dismiss this message.",

@@ -24,7 +24,7 @@ export default Object.freeze({
     "about.back": "חזרה ללוח",
     "about.tocKicker": "בעמוד זה",
     "about.toc": "תוכן העניינים",
-    "about.hebrewOnly": "ההסבר עצמו זמין כעת בעברית בלבד. פקדי האתר יכולים להישאר בשפה שבחרתם.",
+    "about.fallbackNotice": "ההסבר אינו זמין כעת בשפה שנבחרה, ולכן מוצגת גרסת ברירת־המחדל.",
     "about.loadError": "לא ניתן היה לטעון את ההסבר על הלוח.",
     "language.label": "שפה",
     "day.staleWarning": "היום הנוכחי השתנה מ־{previousDate} ל־{currentDate}. מאחר שיום המעשה היה היום הנוכחי, התאריכים המוצגים כבר אינם מעודכנים. הם יחושבו מחדש לאחר סגירת ההודעה.",
