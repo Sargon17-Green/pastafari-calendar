@@ -65,9 +65,9 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   const requiredCore = [
     "./index.html",
     "./about/index.html",
-    "./about/about.js?v=3-about-polish",
-    "./about/content/registry.js?v=3-about-polish",
-    "./about/content/he.html?v=3-about-polish",
+    "./about/about.js?v=4-about-polish",
+    "./about/content/registry.js?v=4-about-polish",
+    "./about/content/he.html?v=4-about-polish",
     "./styles.css?v=16-about-polish",
     "./app.js?v=23-about-page",
     "./reverse-ui.js?v=20-about-page",
@@ -109,7 +109,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   assert.equal(LOCALES.length, 72, "PWA accounting expects the current 72 registered locales");
   assert.equal(LOCALES.filter(({ code }) => code !== "en").length, 71, "Every non-English locale is optional/on-demand");
 
-  assert.match(source, /const VERSION = "pastafari-static-pwa-hardening-21-about-polish";/);
+  assert.match(source, /const VERSION = "pastafari-static-pwa-hardening-22-about-polish";/);
   assert.match(source, /const RUNTIME_CACHE = "pastafari-runtime-assets";/);
   assert.match(source, /const OPTIONAL_LOCALE_PATH = \/\^\\\/i18n\\\/locales/);
   assert.match(source, /url\.search === LOCALE_REVISION_SEARCH/);

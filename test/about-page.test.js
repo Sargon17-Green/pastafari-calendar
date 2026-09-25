@@ -69,6 +69,10 @@ test("Hebrew explanation preserves the full stable deep-link contract", async ()
     (html.match(/class="math-block"/g) || []).length,
     "Every horizontally scrollable math block must be keyboard-focusable",
   );
+  assert.doesNotMatch(html, /\\(?:operatorname|Rightarrow|times|le|text)\b/, "Raw TeX commands should not leak into rendered formulas");
+  assert.match(html, /Q = 2<sup>127<\/sup> − 1/);
+  assert.match(html, /R = SAVE\(S \+ 149r\)/);
+  assert.match(html, /d<sub>K<\/sub>/);
   assert.match(html, /המכניקה שלו, לעומת זאת, מוגדרת במדויק/);
   assert.match(html, /יש תשובה אחת מדויקת/);
 });
