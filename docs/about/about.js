@@ -61,6 +61,7 @@ async function loadArticleForLocale(localeCode) {
   if (requestedArticle.code === activeArticleCode && elements["article-content"].childElementCount > 0) {
     updateLanguageNotice(requestedArticle.code);
     buildTableOfContents();
+    focusHashTarget();
     return;
   }
 
@@ -192,6 +193,3 @@ if ("serviceWorker" in navigator) {
   else addEventListener("load", registerServiceWorker, { once: true });
 }
 
-if (activeArticleCode === null) {
-  activeArticleCode = ARTICLE_FALLBACK_LOCALE;
-}
