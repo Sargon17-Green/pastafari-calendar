@@ -1,6 +1,6 @@
 "use strict";
 
-const VERSION = "pastafari-static-pwa-hardening-18-canonical-names";
+const VERSION = "pastafari-static-pwa-hardening-19-about-page";
 const CORE_CACHE = `${VERSION}-core`;
 const RUNTIME_CACHE = "pastafari-runtime-assets";
 const CACHE_PREFIX = "pastafari-static-";
@@ -9,8 +9,12 @@ const CACHE_PREFIX = "pastafari-static-";
 // because it is the runtime fallback when no supported preference is selected.
 const CORE_ASSETS = [
   "./index.html",
-  "./styles.css?v=13-reverse-i18n",
-  "./app.js?v=22-canonical-names",
+  "./about/index.html",
+  "./about/about.js?v=1-about-page",
+  "./about/content/registry.js?v=1-about-page",
+  "./about/content/he.html?v=1-hebrew-baseline",
+  "./styles.css?v=14-about-page",
+  "./app.js?v=23-about-page",
   "./reverse-ui.js?v=19-canonical-names",
   "./reverse-search-controller.js",
   "./calendar-input-conventions.js?v=9-calendar-input-conventions",
@@ -25,9 +29,9 @@ const CORE_ASSETS = [
   "./engine/pastafari-constraints.js",
   "./engine/pastafari-reverse-worker.js",
   "./i18n/calendar-identifiers.js?v=9-canonical-names",
-  "./i18n/registry.js?v=18-canonical-names",
-  "./i18n/runtime.js?v=18-canonical-names",
-  "./i18n/locales/en.js?v=17-canonical-names"
+  "./i18n/registry.js?v=19-about-page",
+  "./i18n/runtime.js?v=19-about-page",
+  "./i18n/locales/en.js?v=18-about-page"
 ];
 
 const OPTIONAL_ASSETS = Object.freeze([
@@ -210,6 +214,14 @@ self.addEventListener("activate", (event) => {
   })());
 });
 
+function navigationFallbackEntry(url) {
+  const relativePath = scopeRelativePath(url);
+  if (relativePath === "/about" || relativePath === "/about/" || relativePath === "/about/index.html") {
+    return CORE_BY_URL.get(scoped("./about/index.html"));
+  }
+  return CORE_BY_URL.get(scoped("./index.html"));
+}
+
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
   const url = new URL(event.request.url);
@@ -217,9 +229,9 @@ self.addEventListener("fetch", (event) => {
 
   if (event.request.mode === "navigate") {
     event.respondWith(fetch(event.request).catch(async () => {
-      const indexEntry = CORE_BY_URL.get(scoped("./index.html"));
-      return indexEntry
-        ? (await coreResponse(indexEntry) ?? new Response("", { status: 503 }))
+      const fallbackEntry = navigationFallbackEntry(url);
+      return fallbackEntry
+        ? (await coreResponse(fallbackEntry) ?? new Response("", { status: 503 }))
         : new Response("", { status: 503 });
     }));
     return;
