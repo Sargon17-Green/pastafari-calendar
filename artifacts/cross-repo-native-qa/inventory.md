@@ -59,7 +59,7 @@ Generated from live repository state on 2026-09-26.
 | id | Bahasa Indonesia | id-ID | Latn | ltr | id: docs/i18n/locales/id.js; docs/about/content/id.html | — |
 | ie | Interlingue / Occidental | ie | Latn | ltr | — | `JavaScript+Interlingue` @ `4e9b724c81df`<br>`feat/live-stage-explanations-megillah-2026-09-26` @ `a9a1ad7e45e5`<br>`fix/live-cooking-copy-progress-monster-2026-09-26` @ `f98592a83313`<br>`fix/live-stage-guide-sync-retained` @ `6b276f4fffe3`<br>`fix/megillah-exact-text-fragments` @ `e711e616fc6f`<br>`fix/megillah-live-source-audit` @ `ea19d9896062` |
 | io | Ido | io | Latn | ltr | — | `Logo+Ido` @ `1d392e7e40f8` |
-| is | Íslenska | is-IS | Latn | ltr | is: docs/i18n/locales/is.js; docs/about/content/is.html | `Elm+íslensku` @ `ef2048ffd590` |
+| is | Íslenska | is-IS | Latn | ltr | is: docs/i18n/locales/is.js; docs/about/content/is.html | `Elm+íslensku` @ `825585ec2789` |
 | it | Italiano | it-IT | Latn | ltr | it: docs/i18n/locales/it.js; docs/about/content/it.html | `Scala+Italiano` @ `6971334694e9` |
 | ja | 日本語 | ja-JP | Jpan | ltr | ja: docs/i18n/locales/ja.js; docs/about/content/ja.html | `Q#+日本語の初期基盤を構築` @ `350ebf6fafe7` |
 | jbo | la .lojban. | jbo | Latn | ltr | — | `Java+Lojban` @ `1b44c391bf75` |
