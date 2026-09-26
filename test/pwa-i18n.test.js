@@ -186,6 +186,20 @@ test("every static HTML translation binding exists in every locale", async () =>
   }
 });
 
+test("no-JavaScript fallback hides the untranslated application shell and stays language-neutral", async () => {
+  const htmlSources = await Promise.all([
+    readFile(path.join(DOCS, "index.html"), "utf8"),
+    readFile(path.join(DOCS, "about", "index.html"), "utf8"),
+  ]);
+  for (const html of htmlSources) {
+    const block = html.match(/<noscript>([\\s\\S]*?)<\\/noscript>/)?.[1] ?? "";
+    assert.match(block, /\\.app-shell\\s*\\{\\s*display:\\s*none\\s*!important;\\s*\\}/);
+    assert.match(block, /<div class="noscript" lang="zxx" dir="ltr">/);
+    assert.match(block, /<strong>JavaScript<\\/strong>\\s*<span>⚠<\\/span>/u);
+    assert.doesNotMatch(block, /data-i18n=/);
+  }
+});
+
 test("application logic contains no Hebrew UI literals or hard-coded Hebrew Intl locale", async () => {
   const app = await readFile(path.join(DOCS, "app.js"), "utf8");
   assert.doesNotMatch(app, /[\u0590-\u05ff]/u);
