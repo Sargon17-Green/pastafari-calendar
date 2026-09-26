@@ -17,12 +17,12 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Checkout branch
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           fetch-depth: 1
 
       - name: Set up Node.js
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: "24"
 
@@ -95,7 +95,7 @@ jobs:
           cat artifacts/about-i18n-native-sessions/is/is-review.md
 
       - name: Upload native-session evidence
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: about-native-qa-smoke-is
           path: artifacts/about-i18n-native-sessions/is/
