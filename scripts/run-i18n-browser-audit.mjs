@@ -688,6 +688,197 @@ async function scanLayout(page, viewport) {
   }, { selectors: IMPORTANT_LAYOUT_SELECTORS, allowlist: INTENTIONAL_SCROLL_SELECTORS, viewportInfo: viewport });
 }
 
+
+function parseCssRgba(value) {
+  const match = String(value ?? "").trim().match(/^rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)(?:\s*,\s*([\d.]+))?\s*\)$/u);
+  if (!match) return null;
+  return {
+    r: Number(match[1]),
+    g: Number(match[2]),
+    b: Number(match[3]),
+    a: match[4] == null ? 1 : Number(match[4]),
+  };
+}
+
+function srgbChannelToLinear(value) {
+  const c = value / 255;
+  return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+}
+
+function relativeLuminance(color) {
+  return 0.2126 * srgbChannelToLinear(color.r)
+    + 0.7152 * srgbChannelToLinear(color.g)
+    + 0.0722 * srgbChannelToLinear(color.b);
+}
+
+function contrastRatio(left, right) {
+  const a = relativeLuminance(left);
+  const b = relativeLuminance(right);
+  const lighter = Math.max(a, b);
+  const darker = Math.min(a, b);
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
+function compositeColor(top, bottom) {
+  const alpha = Math.max(0, Math.min(1, top.a));
+  return {
+    r: top.r * alpha + bottom.r * (1 - alpha),
+    g: top.g * alpha + bottom.g * (1 - alpha),
+    b: top.b * alpha + bottom.b * (1 - alpha),
+    a: 1,
+  };
+}
+
+function interpolateRgb(left, right, amount) {
+  return {
+    r: left.r + (right.r - left.r) * amount,
+    g: left.g + (right.g - left.g) * amount,
+    b: left.b + (right.b - left.b) * amount,
+    a: 1,
+  };
+}
+
+function aboutLinearGradientAt(fraction) {
+  const top = { r: 248, g: 244, b: 236, a: 1 };
+  const middle = { r: 244, g: 240, b: 231, a: 1 };
+  const bottom = { r: 236, g: 229, b: 217, a: 1 };
+  const t = Math.max(0, Math.min(1, fraction));
+  if (t <= 0.55) return interpolateRgb(top, middle, t / 0.55);
+  return interpolateRgb(middle, bottom, (t - 0.55) / 0.45);
+}
+
+function bodyGradientBackgroundAt(y, bodyHeight, radialRadiusPx) {
+  const safeHeight = Math.max(1, bodyHeight);
+  const linear = aboutLinearGradientAt(y / safeHeight);
+  const centerY = safeHeight * 0.06;
+  const distance = Math.abs(y - centerY);
+  const radialStrength = Math.max(0, 1 - distance / Math.max(1, radialRadiusPx));
+  return compositeColor({ r: 157, g: 56, b: 37, a: 0.09 * radialStrength }, linear);
+}
+
+async function resolveBodyGradientContrast(page, flattenedIncomplete) {
+  const candidates = flattenedIncomplete.filter((item) =>
+    item.rule === "color-contrast"
+    && /background gradient/iu.test(item.failureSummary ?? "")
+    && Array.isArray(item.target)
+    && item.target.length > 0
+  );
+  if (candidates.length === 0) return { resolved: [], unresolved: flattenedIncomplete };
+
+  const environment = await page.evaluate((targets) => {
+    const bodyStyle = getComputedStyle(document.body);
+    const rootFontSize = Number.parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+    const bodyHeight = Math.max(
+      document.body.scrollHeight,
+      document.documentElement.scrollHeight,
+      document.body.getBoundingClientRect().height,
+      window.innerHeight,
+    );
+    const entries = targets.map((target) => {
+      const selector = target[0];
+      let element = null;
+      try {
+        element = document.querySelector(selector);
+      } catch {
+        return { selector, missing: true, foreground: null, layers: [], extraBackgroundImage: null };
+      }
+      if (!element) return { selector, missing: true, foreground: null, layers: [], extraBackgroundImage: null };
+      const layers = [];
+      let extraBackgroundImage = null;
+      for (let node = element; node && node !== document.body; node = node.parentElement) {
+        const style = getComputedStyle(node);
+        if (style.backgroundImage && style.backgroundImage !== "none") {
+          extraBackgroundImage = style.backgroundImage;
+          break;
+        }
+        layers.unshift(style.backgroundColor);
+      }
+      return {
+        selector,
+        missing: false,
+        foreground: getComputedStyle(element).color,
+        layers,
+        extraBackgroundImage,
+      };
+    });
+    return {
+      bodyBackgroundImage: bodyStyle.backgroundImage,
+      bodyHeight,
+      rootFontSize,
+      entries,
+    };
+  }, candidates.map((item) => item.target));
+
+  const background = environment.bodyBackgroundImage.replace(/\s+/gu, " ");
+  const knownGradient = background.includes("radial-gradient")
+    && background.includes("12% 6%")
+    && background.includes("157, 56, 37")
+    && (background.includes("28rem") || background.includes("448px"))
+    && background.includes("linear-gradient")
+    && background.includes("248, 244, 236")
+    && background.includes("244, 240, 231")
+    && background.includes("236, 229, 217")
+    && background.includes("55%");
+  if (!knownGradient) return { resolved: [], unresolved: flattenedIncomplete };
+
+  const proofBySignature = new Map();
+  const resolvedKeys = new Set();
+  const resolved = [];
+  for (let index = 0; index < candidates.length; index += 1) {
+    const item = candidates[index];
+    const entry = environment.entries[index];
+    if (!entry || entry.missing || entry.extraBackgroundImage) continue;
+    const foreground = parseCssRgba(entry.foreground);
+    if (!foreground || foreground.a < 0.999) continue;
+    const layers = [];
+    let supported = true;
+    for (const value of entry.layers) {
+      const color = parseCssRgba(value);
+      if (!color) {
+        supported = false;
+        break;
+      }
+      if (color.a > 0.001) layers.push(color);
+    }
+    if (!supported) continue;
+
+    const signature = JSON.stringify({ foreground, layers, bodyHeight: environment.bodyHeight, rootFontSize: environment.rootFontSize });
+    let proof = proofBySignature.get(signature);
+    if (!proof) {
+      let minContrast = Number.POSITIVE_INFINITY;
+      let minY = 0;
+      const height = Math.max(1, Math.ceil(environment.bodyHeight));
+      const radialRadiusPx = 28 * environment.rootFontSize;
+      for (let y = 0; y <= height; y += 1) {
+        let renderedBackground = bodyGradientBackgroundAt(y, height, radialRadiusPx);
+        for (const layer of layers) renderedBackground = compositeColor(layer, renderedBackground);
+        const ratio = contrastRatio(foreground, renderedBackground);
+        if (ratio < minContrast) {
+          minContrast = ratio;
+          minY = y;
+        }
+      }
+      proof = { minContrast, minY, threshold: 4.5 };
+      proofBySignature.set(signature, proof);
+    }
+    if (proof.minContrast + 1e-9 < proof.threshold) continue;
+    const key = JSON.stringify(item.target);
+    resolvedKeys.add(key);
+    resolved.push({
+      ...item,
+      resolution: "body-gradient-contrast-proof",
+      wcagThreshold: proof.threshold,
+      minimumContrastRatio: Number(proof.minContrast.toFixed(4)),
+      worstCaseDocumentY: proof.minY,
+    });
+  }
+
+  return {
+    resolved,
+    unresolved: flattenedIncomplete.filter((item) => !resolvedKeys.has(JSON.stringify(item.target))),
+  };
+}
+
 async function runAxeAudit(page, scenario, localeCode, scope = null) {
   const result = await page.evaluate(async ({ tags, scopeSelector }) => {
     const context = scopeSelector ? document.querySelector(scopeSelector) : document;
@@ -708,12 +899,15 @@ async function runAxeAudit(page, scenario, localeCode, scope = null) {
     failureSummary: node.failureSummary || null,
   })));
 
+  const flattenedIncomplete = flatten(result.incomplete);
+  const gradientContrast = await resolveBodyGradientContrast(page, flattenedIncomplete);
   return {
     scenario,
     locale: localeCode,
     scope: scope || "document",
     violations: flatten(result.violations),
-    incomplete: flatten(result.incomplete),
+    incomplete: gradientContrast.unresolved,
+    resolvedIncomplete: gradientContrast.resolved,
   };
 }
 
