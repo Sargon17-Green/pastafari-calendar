@@ -54,5 +54,5 @@
 יש לשמור את כל הנוסחאות, המזהים, המספרים, ערכי המדגם, hashes והליטרלים הטכניים שה־invariant suite דורש, לרבות `F(c,t)`, `F(t)`, `SAVE`, `Short Choice`, `Wide Choice`, `day-id`, `RRULE:FREQ=YEARLY`, `Pastafarian Calendar Seer`, `OpenAPI`, `8e155fa4198ea7bcfeb16138ac5d6662706f4d93`.
 אין להפוך מדגם למשפט מתמטי, השערה פתוחה לעובדה, ממצא נגזר לכלל קאנוני או פרט שאינו כתוב במגילה לציטוט מן המגילה.
 
-לצורך rollout זה מותר לשנות רק תוכן פנימי בתוך הסעיפים: `about-calendar`, `calculation`, `structural-atlas`, `appointments`, `travel-and-all-day`, `seer`, `site-story`, `reverse-conversion`, `far-time-structure`, `sauce-history`.
+ההשוואה מול ה־diff של המאסטר העברי מאז בסיס התרגומים מראה ששונו 12 מקטעים: `about-calendar`, `months-and-weaving`, `calculation`, `structural-atlas`, `appointments`, `travel-and-all-day`, `seer`, `foundation-and-tablets`, `site-story`, `reverse-conversion`, `far-time-structure`, `sauce-history`. רק בהם מותר לבצע semantic/editorial delta. ב־`months-and-weaving` וב־`far-time-structure` השינוי העברי הוא בעיקר תיקון ניסוח; אם שפת היעד כבר טבעית ושקולה, אין לשנותה.
 אין לשנות wrapper של stable ID, אין להוסיף או להסיר stable IDs, ואין לשנות סעיפים אחרים במסגרת semantic delta. תיקוני native-language QA נוספים מטופלים בשלב ה־QA הלשוני.
