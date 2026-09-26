@@ -1,8 +1,8 @@
 <!-- Die Afrikaanse weergawe is direk uit die Hebreeuse semantic master geskryf; geen tussentaal is gebruik nie. -->
 <!-- Afdeling-ID's is deel van 'n stabiele openbare deep-link contract; hulle word nie uit vertaalde opskrifte afgelei nie. -->
 <div class="about-section about-lead" id="about-calendar">
-  <p>In die verhaal van hierdie webwerf word die Pastafariese kalender voorgestel as die kalender waarin tyd self geskep is. Die manier waarop dit werk, is egter streng en presies omskryf.</p>
-  <p>Die kalender plak nie een onveranderlike Pastafariese “etiket” op elke dag nie. Om 'n datum te kry, is twee dae nodig: die <strong>aksiedag</strong>, waarvandaan die berekening begin, en die <strong>gevraagde dag</strong>, waarvan die Pastafariese datum verlang word.</p>
+  <p>Die Pastafariese kalender is die kalender waarin tyd geskep is. Die werking daarvan is presies omskryf.</p>
+  <p>Die kalender ken nie een onveranderlike Pastafariese “etiket” aan elke dag toe nie. Om te weet wat die datum van 'n bepaalde dag is, moet twee dae bekend wees: die <strong>aksiedag</strong>, waarvandaan die berekening begin, en die <strong>gevraagde dag</strong>, waarvan die datum bepaal word.</p>
   <p>As ons die aksiedag as <code>c</code> en die gevraagde dag as <code>t</code> skryf, is die datum</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
   <p>en nie <code>F(t)</code> nie. Dieselfde gevraagde dag kan dus 'n ander Pastafariese datum kry wanneer die aksiedag verander.</p>
@@ -126,7 +126,7 @@
 
 <section class="about-section" id="calculation" data-toc-section data-toc-level="2">
   <h2>Hoe word die kalender bereken?</h2>
-  <p>Ons noem die interne berekening hier die <strong>sous</strong>. In die middel daarvan staan die priemgetal</p>
+  <p>Die interne berekening word die <strong>sous</strong> genoem. In die middel daarvan staan die priemgetal</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
   <p>Die proses sluit vyf invoerteller, 7 verborge druppels, 46 sigbare druppels, 6 bakke, veranderende bakvolgordes, 12 finale mengings, seal vir verskillende antwoorde, combinatorial selection, die bou van poorte, die kies van jare, die verdeling van kotelette, die kies van name, die bou van maande en die verwewing van maanddae in.</p>
   <p>Die finale opdatering is <strong>sinchroon</strong>: tydens elke menging word al ses nuwe waardes uit dieselfde ou toestand bereken, en eers daarna word die ses bakke saam vervang.</p>
@@ -170,7 +170,7 @@
         <tr><td>Mediaan van maandlengte</td><td>115</td></tr>
         <tr><td>Gemiddelde aantal aaneenlopende segmente per maand</td><td>100.897</td></tr>
         <tr><td>Aandeel maandsegmente van een dag</td><td>97.482%</td></tr>
-        <tr><td>Waarskynlikheid dat twee aangrensende dae in dieselfde maand is</td><td>2.9976%</td></tr>
+        <tr><td>Aandeel van gemete aangrensende dagpare wat in dieselfde maand val</td><td>2.9976%</td></tr>
         <tr><td>Gemiddelde aantal dae van ander maande tussen <code>n</code> en <code>n+1</code> van dieselfde maand</td><td>40.408</td></tr>
         <tr><td>Gemiddelde span tussen die eerste en laaste verskyning van 'n maand</td><td>4,266.653 dae</td></tr>
       </tbody>
@@ -199,7 +199,7 @@
 
 <section class="about-section" id="appointments" data-toc-section data-toc-level="2">
   <h2>Hoe maak mens 'n afspraak?</h2>
-  <p>As twee mense bloot met 'n Pastafariese datum wil afspreek, moet hulle minstens oor die vyf datumvelde en die aksiedag wat vir die berekening gebruik is saamstem. Dit is beter om die aksiedag as 'n vaste dagidentiteit te stoor en nie as die woord “vandag” nie; anders kan twee mense twee verskillende kalenders bereken.</p>
+  <p>As twee mense die dag van 'n afspraak met 'n Pastafariese datum wil bepaal, moet hulle minstens ooreenkom oor die vyf datumvelde en die aksiedag waarvolgens die datum bereken is. Hierdie inligting bepaal nie op sigself 'n presiese oomblik binne die dag nie. Dit is beter om die aksiedag as 'n vaste dagidentiteit te stoor en nie as die woord “vandag” nie; anders kan twee mense twee verskillende kalenders bereken.</p>
   <ul>
     <li>“môre” is die volgende chronologiese dag;</li>
     <li>“die volgende dag van die maand” is die volgende verskyning van daardie maand;</li>
@@ -211,9 +211,9 @@
 </section>
 
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
-  <h2>Reis, gebeurtenisse en all-day</h2>
+  <h2>Reis, gebeurtenisse en heeldaggebeurtenisse</h2>
   <p>'n Gebeurtenis en die plaaslike etiket wat daarvoor vertoon word, is nie dieselfde ding nie. 'n Gebeurtenis met 'n bepaalde tyd moet aan 'n vaste kronologiese oomblik gekoppel word. Reis verskuif dit nie in tyd nie, maar die plaaslike Pastafariese datum wat vir dieselfde fisiese oomblik gewys word, kan verander omdat die definisie van “plaaslike dag” van ligging afhang.</p>
-  <p>By 'n <strong>all-day</strong>-gebeurtenis is die verskil nog groter. 'n Burgerlike heeldaggebeurtenis loop gewoonlik van middernag tot die volgende middernag; 'n Pastafariese heeldaggebeurtenis behoort van die plaaslike Pastafariese daggrens tot die volgende grens te loop. Gewoonlik is dit nie dieselfde moments nie.</p>
+  <p>By 'n <strong>heeldaggebeurtenis (<bdi dir="ltr">all-day</bdi>)</strong> is die verskil nog groter. 'n Burgerlike heeldaggebeurtenis loop gewoonlik van middernag tot die volgende middernag; 'n Pastafariese heeldaggebeurtenis behoort van die plaaslike Pastafariese daggrens tot die volgende grens te loop. Gewoonlik is dit nie dieselfde oomblikke nie.</p>
   <p>Om 'n Pastafariese gebeurtenis blindelings as 'n burgerlike “heeldag”-gebeurtenis te export kan dus die betekenis verander. Vir presiese bewaring moet die kronologiese anker en die toepaslike konteks van ligging en daggrens gestoor word, nie bloot die <code>all-day</code>-flag nie.</p><hr>
 </section>
 
@@ -233,19 +233,19 @@
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>En wat is Seer?</h2>
-  <p>Langs die kanonieke implementering is daar 'n vinnige engine genaamd <strong>Pastafarian Calendar Seer</strong>. Seer is nie 'n bron van gesag nie: die korrekte datum word deur die Megillah en die kanonieke berekening bepaal. As Seer nie daarmee ooreenstem nie, lê die fout by Seer.</p>
+  <p>Saam met die kanonieke implementering is daar 'n vinnige enjin met die naam <strong>Pastafarian Calendar Seer</strong>. Die boekrol bepaal die reëls; die kanonieke berekening gebruik dit om die datum te bereken. Seer is 'n vinnige enjin wat dieselfde antwoord behoort te gee. As Seer van 'n korrekte kanonieke berekening verskil, is Seer verkeerd.</p>
   <p>Die doel daarvan is om dieselfde query vinnig uit te voer en die resultate in 'n vorm te gee wat maklik in produkte geïntegreer kan word.</p>
-  <p>In die direkte verification wat tydens die redigering van hierdie bladsy gedoen is, het Seer onder meer `date`- en `now`-navrae, `batch`, dagreeks, omgekeerde omskakeling van 'n Pastafariese datum na teikendag, opvraging van die jaarstruktuur, bepaling van die aktiewe aksiedag, Node-API, blaaier-/HTTP-kliënt, CLI, HTTP v1-diens, OpenAPI 3.1 contract, native implementerings en verdeling package, asook geverifieerde houerontplooiing gedek.</p>
-  <p>Die ou bewering dat Seer geen openbare API het nie, is nie meer korrek nie. Daar is nou 'n duidelike, stabiele HTTP v1-kontrak met eindpunte vir `date`, `range`, `batch`, `year`, `reverse`, aksiedag, metadata, locales en status.</p>
+  <p>'n Regstreekse verifikasie op 21 September 2026 het bevestig dat Seer onder meer die volgende vermoëns gehad het: `date`- en `now`-navrae, bondelnavrae (`batch`), dagreekse, omgekeerde omskakeling van 'n Pastafariese datum na 'n gevraagde dag, opvraging van die jaarstruktuur, bepaling van die aktiewe aksiedag, 'n Node-API, 'n blaaier-/HTTP-kliënt, CLI, HTTP v1-diens, OpenAPI 3.1-kontrak, inheemse implementerings en verspreidingspakkette, en 'n geverifieerde houerontplooiing.</p>
+  <p>Seer het 'n openbare API. Die duidelike, stabiele HTTP v1-kontrak bevat eindpunte vir `date`, `range`, `batch`, `year`, `reverse`, aksiedag, metadata, locales en status.</p>
   <p>Op 21 September 2026 is 'n openbare HTTPS-ontplooiing op Render werklik getoets: presiese navrae, 'n groot reeks, herbegin, koue ontwaking en gedrag onder belasting is op die lopende diens nagegaan.</p>
-  <p>Die projekdokumentasie onderskei egter steeds tussen die openbare beta-/evaluasie-ontplooiing en 'n permanente gehuisveste produksiediens met 'n SLA. Daarom moet 'n konseptuele verduidelikingsblad nie 'n bedieneradres, gasheerverskaffer of weergawenommer permanent vaslê asof dit deel van die kalender self is nie.</p>
+  <p>Die getoetste openbare ontplooiing is 'n beta-/evalueringsontplooiing, nie 'n belofte van 'n permanente produksiediens met 'n SLA nie. Die bedieneradres, gasheerverskaffer en weergawenommer is nie deel van die kalender nie en is nie kanonieke vaste gegewens nie.</p>
   <p>Seer kan voorafberekening, spesiale voorstellings, SIMD, algebra en ander kortpaaie gebruik. Dit hoef nie die hele berekeningsgeskiedenis van die kanonieke implementering stap vir stap na te boots nie, solank dit dieselfde semantiese operasie uitvoer en dieselfde antwoord gee.</p>
   <p>Optimering is nie alternatiewe gesag nie.</p><hr>
 </section>
 
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
   <h2>Oorsprong, Stigtingsdag en Dag van die Tablette</h2>
-  <p>Hier is dit besonder belangrik om die kanonieke tydanker duidelik van die webwerf se verhaal te onderskei.</p>
+  <p>Die vaste berekeningsankers van die kalender moet onderskei word van die feite oor die oorsprong en oordraggeskiedenis daarvan.</p>
 
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>Ankers</h3>
@@ -260,10 +260,10 @@
   </section>
 
   <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
-    <h3>Die webwerf se verhaal</h3>
-    <p>In die redaksionele verhaal van die webwerf word die kalender beskryf as deel van die skepping en as 'n stelsel wat die mensdom gebruik het sonder om dit ten volle te verstaan, totdat dit in die moderne era weer oorhandig is.</p>
-    <p>Dit is die webwerf se verhaal; nie elke narratiewe besonderheid daarvan moet voorgehou word asof dit 'n uitdruklike technical claim van die Megillah is nie.</p>
-    <p>Die gebeurtenis van heroorhandiging self is 'n vaste historiese gebeurtenis. Die <strong>Pastafariese datum</strong> daarvan behoort eerder dinamies onder die huidige aksiedag vertoon te word as om vir altyd as een datum permanent vaslê te word.</p><hr>
+    <h3>Die kalender se oorsprong en herlewering</h3>
+    <p>Die Pastafariese kalender is deel van die skepping. Die mensdom het dit gebruik sonder om voldoende daarvan bewus te wees, totdat dit in die moderne tyd herlewer is.</p>
+    <p>Die boekrol beskryf nie elke besonderheid van hierdie geskiedenis nie; besonderhede wat nie uitdruklik daarin vermeld word nie, maak nie deel uit van die teks van die boekrol nie.</p>
+    <p>Die herlewering is 'n vaste historiese gebeurtenis. Die <strong>Pastafariese datum</strong> daarvan word volgens die toepaslike aksiedag bereken en kan dus verander wanneer 'n ander aksiedag gebruik word.</p><hr>
   </section>
 </section>
 
@@ -292,8 +292,8 @@
     </table>
   </div>
 
-  <p>As die aksiedag onbekend is, verander die prentjie. Dieselfde vyf waardes kan onder verskillende aksiedae verskyn, en daar is exact example waar dieselfde volledige datum op verskillende afstande van <code>c</code> voorkom.</p>
-  <p>In jaar 5000 word selfs die sign van daardie afstand nie altyd deur die vyf waardes bepaal nie: dieselfde volledige datum kan in een context voor die aksiedag en in 'n ander daarna wees.</p>
+  <p>As die aksiedag onbekend is, verander die prentjie. Dieselfde vyf waardes kan onder verskillende aksiedae verskyn, en daar bestaan uitdruklike voorbeelde waarin dieselfde volledige datum op verskillende afstande van <code>c</code> voorkom.</p>
+  <p>In jaar 5000 kan die rigting relatief tot die aksiedag selfs nie altyd uit die vyf waardes afgelei word nie: dieselfde volledige datum kan in een geval voor die aksiedag en in 'n ander geval daarna voorkom.</p>
   <p>'n Volledige Pastafariese datum is dus nie 'n absolute adres op die tydlyn as ons nie weet onder watter <code>c</code> dit bereken is nie.</p>
 
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
@@ -314,9 +314,9 @@
   <h2>Vir gevorderde gebruikers: hoeveel geskiedenis bewaar die sous?</h2>
   <p>Die sous lyk soos 'n baie aggressiewe mengmeganisme, maar algebraïese navorsing wys dat dit aansienlik meer inligting bewaar as wat die voorkoms suggereer. Dit is 'n navorsingsresultaat wat uit die spesifikasie afgelei is, nie 'n nuwe kalenderreël nie.</p>
   <p>In die sigbare stadiums 3–46, op die toepaslike asimptotiese tak, is generiese injektiwiteit vasgestel: in die generiese geval bewaar die toestand genoeg inligting om die toepaslike invoergeskiedenis en bakvolgorde te rekonstrueer.</p>
-  <p>Inligting verdwyn ook nie onmiddellik in die 12 finale mengings nie. Vir die eerste vyf mengings ná sigbare druppel 46 is generiese omkeerbaarheid op die toepaslike kanonieke unie sonder bykomende bykomende inligting vasgestel; vir die res is sterk konstruktiewe upper bound bekend vir hoeveel bykomende inligting genoeg is vir rekonstruksie.</p>
+  <p>Inligting verdwyn ook nie onmiddellik in die 12 finale mengings nie. Vir die eerste vyf mengings ná sigbare druppel 46 is generiese omkeerbaarheid op die toepaslike kanonieke unie sonder bykomende inligting bewys; vir die oorblywende mengings is sterk konstruktiewe boonste grense bekend vir die hoeveelheid bykomende inligting wat vir rekonstruksie voldoende is.</p>
   <p>Die vraag of <strong>slegs die finale ses bakke</strong> altyd in die generiese sin voldoende is, bly oop.</p>
-  <p>Sommige resultate is simbolies bewys, ander is met eindige presiese rekenkundige kontrole afgesluit. Simboliese versterking het die berekeningskern waarop vertrou moet word aansienlik kleiner gemaak, maar dit nie heeltemal verwyder nie.</p>
+  <p>Sommige resultate is simbolies bewys, en ander is deur eindige, presiese rekenkundige kontroles geverifieer. Simboliese versterking het die berekeningskern waarop vertrou moet word aansienlik kleiner gemaak, maar dit nie heeltemal verwyder nie.</p>
   <p>Ruimtes wat aanvanklik gelyk het of dit 'n enorme aantal paaie sou verg om te deursoek, is tot baie kleiner eindige strukture verminder, waaronder outomate met 180 en 9 toestande en simmetrieë van die ses bakke.</p>
   <p>Onder die menging lê 'n streng algebraïese struktuur. Dit is nie nodig om dit te ken om vandag se datum te weet nie.</p><hr>
 </section>
