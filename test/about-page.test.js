@@ -54,7 +54,7 @@ function idsIn(html) {
 function tableBodyRowCounts(html) {
   return [...html.matchAll(/<table\b(?=[^>]*\bclass="[^"]*\babout-table\b[^"]*")[^>]*>([\s\S]*?)<\/table>/g)].map((table) => {
     const body = table[1].match(/<tbody>([\s\S]*?)<\/tbody>/)?.[1] ?? "";
-    return (body.match(/<tr\\b/g) || []).length;
+    return (body.match(/<tr\b/g) || []).length;
   });
 }
 
