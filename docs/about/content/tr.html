@@ -122,7 +122,7 @@
 </section>
 <section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
   <h2>Short Choice ve Wide Choice</h2>
-  <p>Nispeten küçük seçenek uzaylarında <strong>Short Choice</strong> kullanılır. Basit modulo yanlılığından kaçınmak için rejection sampling kullanır.</p>
+  <p>Nispeten küçük seçenek uzaylarında <strong>Short Choice</strong> kullanılır. Basit modulo yanlılığından kaçınmak için reddetmeli örnekleme kullanır.</p>
   <p>Çok büyük uzaylarda <strong>Wide Choice</strong> kullanılır. Spesifikasyonun garanti etmediği özellikler ona atfedilmemelidir.</p>
   <p>Wide Choice, bir indeks elde edilene kadar bağımsız ve eşit dağılımlı taban-<code>Q</code> rakamları üretmekle eşdeğer değildir. Bu nedenle her yasal seçeneğin zorunlu olarak aynı pozitif olasılığa sahip olduğu sonucu çıkmaz. Yeterince büyük uzaylarda, bu mekanizmanın hiç ulaşamadığı yasal seçenekler bulunabilir.</p>
   <p>Takvimin kendisi bütünüyle deterministiktir. “Choice”, çalışma sırasında yapılan bir çekiliş değil, algoritmanın bir aşamasının adıdır.</p><hr>
@@ -130,7 +130,7 @@
 <section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
   <h2>Yapısal Atlas</h2>
   <p>Buraya kadar takvimin kurallarını anlattık. Şimdi gelecek sayılar başka tür bilgidir: büyük bir hesaplama örneğinden elde edilmiş <strong>ampirik bulgular</strong>.</p>
-  <p>Atlas, engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> ile oluşturuldu ve 4,096 işlem günü; her biri için 4990–5010 yılları; 86,016 yıl yapısı; 625,437 köfte; 3,535,422 yapısal ay; 356 milyondan fazla kesintisiz ay parçası; aynı ayın <code>n</code> gününden <code>n+1</code> gününe 364 milyondan fazla geçiş içeriyordu.</p>
+  <p>Atlas, motor commit'i <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> ile oluşturuldu ve 4,096 işlem günü; her biri için 4990–5010 yılları; 86,016 yıl yapısı; 625,437 köfte; 3,535,422 yapısal ay; 356 milyondan fazla kesintisiz ay parçası; aynı ayın <code>n</code> gününden <code>n+1</code> gününe 364 milyondan fazla geçiş içeriyordu.</p>
   <p>Bunlar bu corpus'un özellikleridir; kanonik yasa değildir.</p>
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Yapısal Atlas ölçüm verileri"><table class="about-table">
     <thead><tr><th scope="col">Ölçülen büyüklük</th><th scope="col">Örnek sonucu</th></tr></thead><tbody>
@@ -166,9 +166,9 @@
   <p>Çok önemli bir randevuda mutlak kronolojik gün veya an da ayrıca saklanabilir. Takvim bundan zarar görmez.</p><hr>
 </section>
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
-  <h2>Seyahat, olaylar ve all-day</h2>
+  <h2>Seyahat ve tüm gün süren olaylar</h2>
   <p>Bir olay ile onun için yerel olarak gösterilen etiket aynı şey değildir. Zamanı belirlenmiş bir olay sabit bir kronolojik ana bağlanmalıdır. Seyahat olayı zaman içinde taşımaz; ancak “yerel gün” tanımı konuma bağlı olduğu için aynı anda gösterilen yerel Pastafari tarihi değişebilir.</p>
-  <p><strong>all-day</strong> olayda fark daha büyüktür. Sivil bütün-gün olayı genellikle bir sivil gece yarısından bir sonraki gece yarısına kadar sürer. Pastafari bütün-gün olayı ise yerel Pastafari gün sınırından sonraki yerel sınıra kadar sürmelidir. Bunlar çoğunlukla aynı anlar değildir.</p>
+  <p><strong>tüm gün süren</strong> olayda fark daha büyüktür. Sivil bütün-gün olayı genellikle bir sivil gece yarısından bir sonraki gece yarısına kadar sürer. Pastafari bütün-gün olayı ise yerel Pastafari gün sınırından sonraki yerel sınıra kadar sürmelidir. Bunlar çoğunlukla aynı anlar değildir.</p>
   <p>Bu yüzden bir Pastafari olayını sivil takvime düşünmeden “bütün gün” olarak aktarmak anlamını değiştirebilir. Doğru koruma için kronolojik çapa ve uygun konum/gün-sınırı bağlamı saklanmalı, yalnızca <code>all-day</code> işaretiyle yetinilmemelidir.</p><hr>
 </section>
 <section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
@@ -187,10 +187,10 @@
   <h2>Peki Seer nedir?</h2>
   <p>Kanonik uygulamanın yanında <strong>Pastafarian Calendar Seer</strong> adlı hızlı bir motor bulunur. Seer yetki kaynağı değildir: doğru tarihi Megillah ve kanonik hesap belirler. Çelişki varsa yanlış olan Seer'dır.</p>
   <p>Görevi aynı sorguları hızlı ve ürünlere entegre edilmesi kolay biçimde çalıştırmaktır.</p>
-  <p>Bu sayfa düzenlenirken yapılan canlı doğrulamada Seer; tarih ve “şimdi” sorguları, batch, gün aralıkları, Pastafari tarihinden hedef güne reverse dönüşüm, yıl yapısını getirme, aktif işlem gününü çözme, Node API, tarayıcı/HTTP istemcisi, CLI, HTTP v1 hizmeti, OpenAPI 3.1 sözleşmesi, native uygulamalar ve dağıtım paketleri ile doğrulanmış container deployment içeriyordu.</p>
-  <p>Dolayısıyla “Seer'ın genel API'si yok” şeklindeki eski açıklama artık doğru değildir. date, range, batch, year, reverse, işlem günü, metadata, locales ve status endpoint'lerini içeren açık ve kararlı bir HTTP v1 sözleşmesi vardır.</p>
-  <p>21 Eylül 2026'da Render üzerindeki genel HTTPS deployment da canlı hizmet üzerinde gerçekten test edildi: exact sorgular, büyük range, restart, cold wake ve yük altındaki davranış denendi.</p>
-  <p>Buna rağmen proje belgeleri canlı genel beta/evaluation deployment ile SLA'lı kalıcı hosted production hizmeti ilanını birbirinden ayırır. Bu nedenle kavramsal açıklama sayfası bir sunucu adresini, barındırma sağlayıcısını veya sürüm numarasını takvimin kendisinin bir parçasıymış gibi sabitlememelidir.</p>
+  <p>Bu sayfa düzenlenirken yapılan canlı doğrulamada Seer; tarih ve “şimdi” sorguları, batch, gün aralıkları, Pastafari tarihinden sorgulanan güne ters dönüşüm, yıl yapısını getirme, aktif işlem gününü çözme, Node API, tarayıcı/HTTP istemcisi, CLI, HTTP v1 hizmeti, OpenAPI 3.1 sözleşmesi, yerel uygulamalar ve dağıtım paketleri ile doğrulanmış konteyner dağıtımı içeriyordu.</p>
+  <p>Dolayısıyla “Seer'ın genel API'si yok” şeklindeki eski açıklama artık doğru değildir. <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, işlem günü, <code>metadata</code>, <code>locales</code> ve <code>status</code> uç noktalarını içeren açık ve kararlı bir HTTP v1 sözleşmesi vardır.</p>
+  <p>21 Eylül 2026'da Render üzerindeki genel HTTPS dağıtımı da canlı hizmet üzerinde gerçekten test edildi: kesin sorgular, büyük aralık, yeniden başlatma, <code>cold wake</code> ve yük altındaki davranış denendi.</p>
+  <p>Buna rağmen proje belgeleri canlı genel beta/değerlendirme dağıtımı ile SLA'lı kalıcı barındırılan üretim hizmeti ilanını birbirinden ayırır. Bu nedenle kavramsal açıklama sayfası bir sunucu adresini, barındırma sağlayıcısını veya sürüm numarasını takvimin kendisinin bir parçasıymış gibi sabitlememelidir.</p>
   <p>Seer ön hesaplama, özel gösterimler, SIMD, cebir ve başka kestirmeler kullanabilir. Aynı anlamsal işlemi yürütüp aynı cevabı döndürdüğü sürece kanonik uygulamanın hesaplama geçmişini adım adım taklit etmesi gerekmez.</p>
   <p>Optimizasyon alternatif bir otorite değildir.</p><hr>
 </section>
@@ -221,7 +221,7 @@
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{köfte adı},\text{köfte içindeki gün})</code></pre>
   <p>en fazla bir günü belirler. Aynı şey</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{ay adı},\text{ay içindeki gün})</code></pre>
-  <p>için de geçerlidir. Dolayısıyla işlem günü biliniyorsa tam tarih hedef günü tekil olarak belirler.</p>
+  <p>için de geçerlidir. Dolayısıyla işlem günü biliniyorsa tam tarih sorgulanan günü tekil olarak belirler.</p>
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Ters dönüşüm adaylarının üst sınırları"><table class="about-table">
     <thead><tr><th scope="col">Ek olarak bilinen bilgi</th><th scope="col">En fazla aday</th></tr></thead><tbody>
       <tr><td>Yıl dışı alan yok</td><td>5,778</td></tr><tr><td>Yalnız köfte adı</td><td>5,568</td></tr><tr><td>Yalnız köfte içindeki gün</td><td>17</td></tr>
@@ -233,7 +233,7 @@
   <p>Bu nedenle hangi <code>c</code> altında hesaplandığı bilinmiyorsa tam Pastafari tarihi zaman ekseninde mutlak bir adres değildir.</p>
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
     <h3>Uzak zamanda yapı</h3>
-    <p>Spesifikasyondan türetilen matematiksel araştırma kesin bir asimptotik yapı da bulmuştur. <strong>Sabit işlem günü</strong> <code>c</code> için geçmiş kuyruğunda yeterince uzağa gidildiğinde affine periodicity ortaya çıkar.</p>
+    <p>Spesifikasyondan türetilen matematiksel araştırma kesin bir asimptotik yapı da bulmuştur. <strong>Sabit işlem günü</strong> <code>c</code> için geçmiş kuyruğunda yeterince uzağa gidildiğinde afin periyodiklik ortaya çıkar.</p>
     <p>Eğer</p>
     <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
     <p>ise, aynı <code>c</code> için bir kayma <code>H_c</code>, yıl değişimi <code>p_c</code> ve yeterince uzak bir eşik vardır; eşiğin ötesinde</p>
@@ -247,8 +247,8 @@
 <section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
   <h2>İleri düzey: sos geçmişten ne kadarını korur?</h2>
   <p>Sos dışarıdan çok güçlü bir karıştırıcı gibi görünür, fakat cebirsel araştırma görünüşünün düşündürdüğünden çok daha fazla bilgiyi koruduğunu göstermiştir. Bu, spesifikasyondan türetilen araştırmadır; yeni bir takvim kuralı değildir.</p>
-  <p>Görünür aşamalar 3–46 için ilgili asimptotik dalda generic injectivity kurulmuştur: genel durumda durum, girdilerin ve kâse sıralarının ilgili geçmişini yeniden kurmaya yetecek bilgi taşır.</p>
-  <p>12 son karıştırmada bilgi hemen kaybolmaz. Görünür damla 46'dan sonraki ilk beş karıştırma için ilgili kanonik birleşim üzerinde ek yan bilgi olmadan generic invertibility kurulmuştur; kalanlar için yeniden kurmaya yetecek yan bilgi miktarına ilişkin güçlü yapıcı üst sınırlar bilinmektedir.</p>
+  <p>Görünür aşamalar 3–46 için ilgili asimptotik dalda genel durumda birebirlik kurulmuştur: genel durumda durum, girdilerin ve kâse sıralarının ilgili geçmişini yeniden kurmaya yetecek bilgi taşır.</p>
+  <p>12 son karıştırmada bilgi hemen kaybolmaz. Görünür damla 46'dan sonraki ilk beş karıştırma için ilgili kanonik birleşim üzerinde ek yan bilgi olmadan genel durumda terslenebilirlik kurulmuştur; kalanlar için yeniden kurmaya yetecek yan bilgi miktarına ilişkin güçlü yapıcı üst sınırlar bilinmektedir.</p>
   <p><strong>Yalnızca son altı kâsenin</strong> genel durumda her zaman yeterli olup olmadığı hâlâ açık sorudur.</p>
   <p>Bazı sonuçlar sembolik olarak kanıtlanmış, bazıları sonlu ve kesin aritmetik kontrollerle kapatılmıştır. Sembolik güçlendirme güvenilmesi gereken hesaplama çekirdeğini büyük ölçüde küçültmüş, fakat tamamen ortadan kaldırmamıştır.</p>
   <p>Başta devasa sayıda yolu taramayı gerektirecek gibi görünen uzaylar, 180 ve 9 durumlu otomatalar ile altı kâsenin simetrileri dâhil olmak üzere çok daha küçük sonlu yapılara indirgenmiştir.</p>
@@ -256,7 +256,7 @@
 </section>
 <section class="about-section" id="summary" data-toc-section data-toc-level="2">
   <h2>Öyleyse Pastafari Takvimi nedir?</h2>
-  <p>Tarihin yalnız hedef günün değil, <strong>işlem günü ile sorgulanan günün birlikte</strong> fonksiyonu olduğu deterministik bir takvimdir.</p>
+  <p>Tarihin yalnız sorgulanan günün değil, <strong>işlem günü ile sorgulanan günün birlikte</strong> fonksiyonu olduğu deterministik bir takvimdir.</p>
   <p>Her tarih tam beş alandan oluşur. Şimdi, kendisine göre bakıldığında daima 5000 yılındadır; fakat 5000 yılı işlem günüyle birlikte hareket eder. Yıllar çok uzun olabilir, köfteler kesintisizdir, aylar olmak zorunda değildir ve kanonik hafta sistemi yoktur.</p>
   <p>Ayın <code>n+1</code>. günü yarın olmak zorunda değildir. Aynı kronolojik gün yarın başka bir Pastafari etiketi alabilir. Aynı fiziksel an iki yerde iki farklı yerel Pastafari gününde olabilir. Bütün-gün olayı gece yarısından gece yarısına sürmek zorunda değildir. Yıllık doğum günü de takvim sorunu olmadan önce bir arama sorunudur.</p>
   <p>Fakat işlem günü ile sorgulanan gün biliniyorsa belirsizlik kalmaz: tam olarak bir doğru cevap vardır.</p>
