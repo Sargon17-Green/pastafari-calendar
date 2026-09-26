@@ -1,8 +1,8 @@
 <!-- Íslenska útgáfan er skrifuð beint út frá hebreska frumtextanum sem er merkingarlegur grunnur; ekkert millimál er notað. -->
 <!-- Auðkenni kaflanna eru hluti af stöðugum opinberum samningi um djúptengla og eru ekki leidd af þýddum fyrirsögnum. -->
 <div class="about-section about-lead" id="about-calendar">
-  <p>Í frásögn þessa vefs er Pastafari-dagatalið sett fram sem dagatalið þar sem tíminn sjálfur varð til. Hvernig það virkar er þó skilgreint með ströngum og nákvæmum reglum.</p>
-  <p>Dagatalið úthlutar ekki hverjum degi fastri, óbreytanlegri Pastafari-framsetningu. Til að reikna dagsetningu þarf að tilgreina tvo daga: <strong>aðgerðardaginn</strong>, sem útreikningurinn hefst frá, og <strong>fyrirspurnardaginn</strong>, sem spurt er um.</p>
+  <p>Pastafari-dagatalið er dagatalið þar sem tíminn varð til. Reiknireglur þess eru nákvæmlega skilgreindar.</p>
+  <p>Dagatalið úthlutar ekki hverjum degi fastri, óbreytanlegri Pastafari-framsetningu. Til að reikna dagsetningu þarf að tilgreina tvo daga: <strong>aðgerðardaginn</strong>, sem útreikningurinn hefst frá, og <strong>fyrirspurnardaginn</strong>, sem þú vilt fá dagsetningu fyrir.</p>
   <p>Ef við táknum aðgerðardaginn með <code>c</code> og fyrirspurnardaginn með <code>t</code>, er dagsetningin</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
   <p>en ekki <code>F(t)</code>. Sami fyrirspurnardagur getur því fengið aðra Pastafari-dagsetningu þegar aðgerðardagurinn breytist.</p>
@@ -126,7 +126,7 @@
 
 <section class="about-section" id="calculation" data-toc-section data-toc-level="2">
   <h2>Hvernig er dagatalið reiknað?</h2>
-  <p>Innri útreikninginn köllum við hér <strong>sósuna</strong>. Í miðju hans er frumtalan</p>
+  <p>Innri útreikningurinn kallast <strong>sósan</strong>. Í miðju hennar er frumtalan</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
   <p>Ferlið felur í sér fimm inntaksteljara, 7 falda dropa, 46 sýnilega dropa, 6 skálar, breytilega röð skálanna, 12 lokablöndur, innsigli fyrir mismunandi svör, samsetningarval, smíði hliða, val ára, skiptingu kótelettna, val nafna, smíði mánaða og fléttun mánaðardaga.</p>
   <p>Lokauppfærslurnar eru <strong>samhliða</strong>: í hverri blöndu eru öll sex nýju gildin reiknuð úr sama gamla ástandinu og aðeins síðan eru allar sex skálarnar uppfærðar í einu.</p>
@@ -170,7 +170,7 @@
         <tr><td>Miðgildi mánaðarlengdar</td><td>115</td></tr>
         <tr><td>Meðalfjöldi samfelldra kafla í mánuði</td><td>100,897</td></tr>
         <tr><td>Hlutfall mánaðarkafla sem vara einn dag</td><td>97,482 %</td></tr>
-        <tr><td>Líkur á að tveir aðliggjandi dagar séu í sama mánuði</td><td>2,9976 %</td></tr>
+        <tr><td>Hlutfall samliggjandi daga sem voru í sama mánuði í úrtakinu</td><td>2,9976 %</td></tr>
         <tr><td>Meðalfjöldi daga úr öðrum mánuðum milli <code>n</code> og <code>n+1</code> í sama mánuði</td><td>40,408</td></tr>
         <tr><td>Meðalbil milli fyrstu og síðustu birtingar mánaðar</td><td>4.266,653 dagar</td></tr>
       </tbody>
@@ -199,7 +199,7 @@
 
 <section class="about-section" id="appointments" data-toc-section data-toc-level="2">
   <h2>Hvernig er fundur ákveðinn?</h2>
-  <p>Ef tveir vilja semja um fund með Pastafari-dagsetningu einni saman verða þeir að minnsta kosti að vera sammála um fimm dagsetningarreiti og aðgerðardaginn sem notaður var í útreikningnum. Betra er að vista aðgerðardaginn sem fast dagauðkenni en sem orðið „í dag“; annars geta tveir reiknað tvö mismunandi dagatöl.</p>
+  <p>Ef tveir vilja ákveða fundardag með Pastafari-dagsetningu verða þeir að minnsta kosti að vera sammála um fimm dagsetningarreiti og aðgerðardaginn sem útreikningurinn byggðist á. Þetta ákvarðar fundardaginn, en ekki endilega nákvæmt augnablik innan dagsins. Betra er að vista aðgerðardaginn sem fast dagauðkenni en orðið „í dag“; annars geta þeir reiknað út dagatöl sem eru ekki eins.</p>
   <ul>
     <li>„á morgun“ er næsti dagur á tímalínunni;</li>
     <li>„næsti dagur mánaðarins“ er næsta birting þess mánaðar;</li>
@@ -233,19 +233,19 @@
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Hvað er Seer þá?</h2>
-  <p>Við hlið kanónísku útfærslunnar er hröð reiknivél sem heitir <strong>Pastafarian Calendar Seer</strong>. Seer er ekki uppspretta valds: rétta dagsetningin ræðst af Megillah og kanóníska útreikningnum. Ef Seer er ósammála þeim er villan í Seer.</p>
+  <p>Við hlið kanónísku útfærslunnar er hraðvirk reiknivél sem kallast <strong>Pastafarian Calendar Seer</strong>. Megillah setur reglurnar; kanóníski útreikningurinn reiknar út dagsetninguna samkvæmt þeim, og Seer á að skila sömu niðurstöðu. Ef niðurstaða Seer víkur frá niðurstöðu rétts kanónísks útreiknings hefur Seer rangt fyrir sér.</p>
   <p>Hlutverk hans er að keyra sömu fyrirspurnir hratt og skila niðurstöðu á formi sem auðvelt er að samþætta við vörur.</p>
-  <p>Í beinni sannprófun við ritun þessarar síðu náði Seer meðal annars yfir <code>date</code>- og <code>now</code>-fyrirspurnir, <code>batch</code>, dagabil, öfuga umbreytingu frá Pastafari-dagsetningu til fyrirspurnardags, öflun ársuppbyggingar, ákvörðun virks aðgerðardags, Node API, vafra-/HTTP-biðlara, CLI, HTTP v1-þjónustu, OpenAPI 3.1-samning, innfæddar útfærslur og dreifingarpakka, auk staðfestrar gámaútsetningar.</p>
-  <p>Gamla fullyrðingin um að Seer hafi ekkert opinbert API er ekki lengur rétt. Nú er til skýr og stöðugur HTTP v1-samningur með endapunktum fyrir <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, aðgerðardag, <code>metadata</code>, <code>locales</code> og <code>status</code>.</p>
+  <p>Í beinni sannprófun 21. september 2026 hafði Seer meðal annars dagsetningar- og „núna“-fyrirspurnir, lotufyrirspurnir, dagabil, öfuga umbreytingu frá Pastafari-dagsetningu til fyrirspurnardags, öflun ársuppbyggingar, ákvörðun virks aðgerðardags, Node API, vafra-/HTTP-biðlara, CLI, HTTP v1-þjónustu, OpenAPI 3.1-samning, innfæddar útfærslur og dreifingarpakka, auk staðfestrar gámaútsetningar.</p>
+  <p>Seer er með opinbert API og skýran, stöðugan HTTP v1-samning með endapunktum fyrir <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, aðgerðardag, <code>metadata</code>, <code>locales</code> og <code>status</code>.</p>
   <p>21. september 2026 var opinber HTTPS-útsetning á Render prófuð í raun: á virku þjónustunni voru staðfestar nákvæmar fyrirspurnir, stórt dagabil, endurræsing, vöknun eftir dvala og hegðun undir álagi.</p>
-  <p>Verkefnisskjölin greina þó enn á milli opinberrar beta-/matsútsetningar og varanlegrar hýstrar framleiðsluþjónustu með SLA. Þess vegna ætti hugtaksskýringarsíða ekki að festa netfang netþjóns, hýsingaraðila eða útgáfunúmer eins og það væri hluti af dagatalinu sjálfu.</p>
+  <p>Opinbera þjónustan sem var prófuð er betaútgáfa til mats, ekki varanleg framleiðsluþjónusta með SLA. Netfang netþjónsins, hýsingaraðilinn og útgáfunúmerið eru ekki hluti dagatalsins og eru ekki fastar kanónískar stærðir.</p>
   <p>Seer má nota forútreikning, sérstaka framsetningu, SIMD, algebru og aðrar styttingar. Hann þarf ekki að líkja eftir allri reiknisögu kanónísku útfærslunnar skref fyrir skref svo lengi sem hann framkvæmir sömu merkingarlegu aðgerð og skilar sama svari.</p>
   <p>Hagræðing veitir ekki sjálfstætt merkingarvald.</p><hr>
 </section>
 
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
   <h2>Uppruni, Stofndagur og Dagur taflnanna</h2>
-  <p>Hér er sérstaklega mikilvægt að aðgreina kanónískar tímafestur skýrt frá frásögn vefsins.</p>
+  <p>Föst reikniakkeri dagatalsins eru aðgreind frá staðreyndum um uppruna þess og sögu endurafhendingar.</p>
 
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>Festipunktar</h3>
@@ -260,10 +260,10 @@
   </section>
 
   <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
-    <h3>Frásögn vefsins</h3>
-    <p>Í ritstjórnarfrásögn vefsins er dagatalinu lýst sem hluta sköpunarinnar og sem kerfi sem mannkynið notaði án þess að skilja það að fullu, þar til því var komið aftur á framfæri á nútímaöld.</p>
-    <p>Þetta er frásögn vefsins; ekki ætti að setja hvert smáatriði frásagnarinnar fram eins og það væri bein tæknileg fullyrðing úr Megillah.</p>
-    <p>Atburðurinn þegar kerfið var afhent aftur er sjálfur fastur sögulegur atburður. Betra er að sýna <strong>Pastafari-dagsetningu</strong> hans kviklega undir núverandi aðgerðardegi en festa hana að eilífu sem eina dagsetningu.</p><hr>
+    <h3>Uppruni dagatalsins og endurafhending þess</h3>
+    <p>Pastafari-dagatalið er hluti sköpunarinnar. Mannkynið notaði það án þess að gera sér nægilega grein fyrir því, þar til dagatalið var afhent aftur í nútímanum.</p>
+    <p>Megillah segir ekki frá öllum smáatriðum sögunnar; atriði sem hún nefnir ekki ber ekki að eigna henni.</p>
+    <p>Endurafhendingin er sögulegur atburður með fasta tímaröðlega staðsetningu. Hún hefur ekki eina fasta Pastafari-dagsetningu; dagsetning hennar er reiknuð út frá viðeigandi aðgerðardegi.</p><hr>
   </section>
 </section>
 
@@ -293,7 +293,7 @@
   </div>
 
   <p>Ef aðgerðardagurinn er óþekktur er staðan önnur. Sömu fimm gildi geta birst undir mismunandi aðgerðardögum og til eru nákvæm dæmi þar sem sama fulla dagsetning kemur fram í mismunandi fjarlægð frá <code>c</code>.</p>
-  <p>Í ári 5000 er jafnvel formerki þessarar fjarlægðar ekki alltaf ákvarðað af fimm gildunum: sama fulla dagsetning getur í einu samhengi verið fyrir aðgerðardaginn en í öðru eftir hann.</p>
+  <p>Á ári 5000 er ekki alltaf hægt að ráða af fimm gildunum hvort dagurinn sé fyrir eða eftir aðgerðardaginn: sama fulla dagsetning getur í einu tilviki átt við dag í fortíð aðgerðardagsins en í öðru dag í framtíð hans.</p>
   <p>Full Pastafari-dagsetning er því ekki algilt vistfang á tímalínunni ef ekki er vitað undir hvaða <code>c</code> hún var reiknuð.</p>
 
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
@@ -314,9 +314,9 @@
   <h2>Fyrir lengra komna: hversu mikla sögu varðveitir sósan?</h2>
   <p>Sósan lítur út eins og mjög árásargjarnt blöndunarkerfi, en algebruleg rannsókn sýnir að hún varðveitir miklu meiri upplýsingar en útlitið gefur til kynna. Þetta er rannsóknarniðurstaða sem dregin er af forskriftinni, ekki ný dagatalsregla.</p>
   <p>Í sýnilegu þrepunum 3–46, á viðeigandi asymptótískri grein, hefur almenn eintækni verið staðfest: í almennu tilviki varðveitir ástandið nægar upplýsingar til að endurgera viðeigandi inntakssögu og skálaröðina.</p>
-  <p>Upplýsingarnar hverfa heldur ekki samstundis í 12 lokablöndunum. Fyrir fyrstu fimm blöndurnar eftir 46. sýnilega dropann hefur almennur andhverfanleiki verið staðfestur á viðeigandi kanónísku sammengi án viðbótarupplýsinga; fyrir blöndurnar sem eftir eru þekkjast sterk uppbyggileg efri mörk á því magni viðbótarupplýsinga sem nægir fyrir endurbyggingu.</p>
+  <p>Upplýsingarnar hverfa heldur ekki samstundis í 12 lokablöndunum. Fyrir fyrstu fimm blöndurnar eftir 46. sýnilega dropann hefur almennur andhverfanleiki verið sannaður á viðeigandi kanónísku sammengi án viðbótarupplýsinga; fyrir blöndurnar sem eftir eru þekkjast sterk uppbyggileg efri mörk á því magni viðbótarupplýsinga sem nægir fyrir endurbyggingu.</p>
   <p>Spurningin hvort <strong>aðeins síðustu sex skálarnar</strong> séu alltaf nægjanlegar í almennum skilningi er enn opin.</p>
-  <p>Sumar niðurstöður voru sannaðar táknrænt, aðrar lokaðar með endanlegum nákvæmum reikniprófunum. Táknræn styrking minnkaði reiknikjarnann sem þarf að treysta verulega, en eyddi honum ekki alveg.</p>
+  <p>Sumar niðurstöður eru táknrænar sannanir; aðrar hafa verið sannreyndar með endanlegum nákvæmum reikniprófunum. Táknræn styrking minnkaði þann hluta niðurstaðnanna sem byggir á endanlegum reikniprófunum, en eyddi honum ekki alveg.</p>
   <p>Rúm sem virtust í fyrstu krefjast leitar yfir gífurlegan fjölda leiða voru minnkuð niður í miklu minni endanlegar gerðir, þar á meðal sjálfvirk kerfi með 180 og 9 ástandum og samhverfur sex skálanna.</p>
   <p>Undir blönduninni liggur ströng algebruleg uppbygging. Það þarf ekki að þekkja hana til að vita dagsetningu dagsins í dag.</p><hr>
 </section>
