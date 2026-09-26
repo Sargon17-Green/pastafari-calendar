@@ -139,7 +139,7 @@
 
 <section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
   <h2>Short Choice ir Wide Choice</h2>
-  <p>Santykinai mažose pasirinkimų erdvėse naudojamas <strong>Short Choice</strong>. Jis naudoja rejection sampling, kad išvengtų paprasto modulo šališkumo.</p>
+  <p>Santykinai mažose pasirinkimų erdvėse naudojamas <strong>Short Choice</strong>. Jis taiko atmetimo atranką, kad išvengtų šališkumo, kurį sukeltų paprasta modulio operacija.</p>
   <p>Labai didelėse erdvėse naudojamas <strong>Wide Choice</strong>. Jam negalima priskirti savybių, kurių specifikacija negarantuoja.</p>
   <p>Wide Choice nėra tas pats, kas generuoti nepriklausomus ir tolygiai pasiskirsčiusius bazės <code>Q</code> skaitmenis, kol gaunamas indeksas. Todėl negalima daryti išvados, kad kiekvienas galiojantis pasirinkimas būtinai turi tokią pačią teigiamą tikimybę. Pakankamai didelėse erdvėse gali būti galiojančių pasirinkimų, kurių šis mechanizmas apskritai negali pasiekti.</p>
   <p>Pats kalendorius išlieka visiškai deterministinis. „Choice“ yra algoritmo etapo pavadinimas, o ne atsitiktinis traukimas naudojimo metu.</p><hr>
@@ -148,7 +148,7 @@
 <section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
   <h2>Struktūrinis atlasas</h2>
   <p>Iki šiol kalbėjome apie kalendoriaus taisykles. Toliau pateikiami skaičiai yra kitokio pobūdžio: tai <strong>empiriniai rezultatai</strong> iš didelės kompiuterinės imties.</p>
-  <p>Atlasas sudarytas naudojant engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> ir apėmė 4,096 veikimo dienas; kiekvienai jų — 4990–5010 metus; 86,016 metų struktūrų; 625,437 kotletus; 3,535,422 struktūrinius mėnesius; daugiau kaip 356 milijonus ištisinių mėnesio segmentų; ir daugiau kaip 364 milijonus perėjimų nuo dienos <code>n</code> į dieną <code>n+1</code> tame pačiame mėnesyje.</p>
+  <p>Atlasas sudarytas naudojant variklio įrašą <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> ir apėmė 4,096 veikimo dienas; kiekvienai jų — 4990–5010 metus; 86,016 metų struktūrų; 625,437 kotletus; 3,535,422 struktūrinius mėnesius; daugiau kaip 356 milijonus ištisinių mėnesio segmentų; ir daugiau kaip 364 milijonus perėjimų nuo dienos <code>n</code> į dieną <code>n+1</code> tame pačiame mėnesyje.</p>
   <p>Šie skaičiai aprašo tą corpus, o ne kanoninius dėsnius.</p>
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Struktūrinio atlaso išmatuoti duomenys">
     <table class="about-table">
@@ -211,9 +211,9 @@
 </section>
 
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
-  <h2>Kelionės, įvykiai ir all-day</h2>
+  <h2>Kelionės ir visos dienos įvykiai</h2>
   <p>Įvykis ir jam rodoma vietinė etiketė nėra tas pats. Konkrečiam laikui suplanuotas įvykis turi būti susietas su stabiliu chronologiniu momentu. Kelionė jo laike neperkelia, tačiau tai pačiai akimirkai rodoma vietinė Pastafari data gali pasikeisti, nes „vietinės dienos“ apibrėžimas priklauso nuo vietos.</p>
-  <p><strong>All-day</strong> įvykio atveju skirtumas dar didesnis. Civilinis visos dienos įvykis paprastai tęsiasi nuo civilinio vidurnakčio iki kito vidurnakčio; Pastafari visos dienos įvykis turėtų tęstis nuo vietinės Pastafari dienos ribos iki kitos tokios ribos. Paprastai tai nėra tie patys momentai.</p>
+  <p><strong>Visos dienos</strong> įvykio atveju skirtumas dar didesnis. Civilinis visos dienos įvykis paprastai tęsiasi nuo civilinio vidurnakčio iki kito vidurnakčio; Pastafari visos dienos įvykis turėtų tęstis nuo vietinės Pastafari dienos ribos iki kitos tokios ribos. Paprastai tai nėra tie patys momentai.</p>
   <p>Todėl aklai eksportuojant Pastafari įvykį kaip civilinį „visos dienos“ įvykį galima pakeisti jo reikšmę. Norint ją išsaugoti tiksliai, reikia saugoti chronologinį inkarą ir tinkamą vietos / dienos ribos kontekstą, o ne vien <code>all-day</code> žymą.</p><hr>
 </section>
 
@@ -235,10 +235,10 @@
   <h2>O kas yra Seer?</h2>
   <p>Šalia kanoninio įgyvendinimo yra greitas engine, vadinamas <strong>Pastafarian Calendar Seer</strong>. Seer nėra autoriteto šaltinis: teisingą datą nustato Megillah ir kanoninis skaičiavimas. Jei Seer su jais nesutampa, klysta Seer.</p>
   <p>Jo paskirtis — greitai vykdyti tas pačias užklausas ir pateikti rezultatą forma, patogia integruoti į produktus.</p>
-  <p>Tiesioginės patikros, atliktos redaguojant šį puslapį, metu Seer, be kita ko, apėmė date ir „now“ užklausas, batch, dienų intervalus, reverse conversion iš Pastafari datos į tikslinę dieną, metų struktūros gavimą, aktyvios veikimo dienos nustatymą, Node API, browser/HTTP klientą, CLI, HTTP v1 paslaugą, OpenAPI 3.1 sutartį, native įgyvendinimus ir platinimo paketus bei patikrintą container deployment.</p>
-  <p>Senas teiginys, kad Seer neturi viešo API, nebėra teisingas. Dabar yra aiški ir stabili HTTP v1 sutartis su endpointais date, range, batch, year, reverse, veikimo dienai, metadata, locales ir status.</p>
-  <p>2026 m. rugsėjo 21 d. viešas HTTPS deployment Render platformoje buvo realiai išbandytas: gyvoje paslaugoje patikrintos exact užklausos, didelis range, restart, cold wake ir elgsena esant apkrovai.</p>
-  <p>Vis dėlto projekto dokumentacija ir toliau skiria viešą beta/evaluation deployment nuo nuolatinės hosted production paslaugos su SLA. Todėl konceptualiame paaiškinimo puslapyje nereikėtų įšaldyti serverio adreso, hostingo tiekėjo ar versijos numerio tarsi jie būtų paties kalendoriaus dalis.</p>
+  <p>Tiesioginės patikros, atliktos redaguojant šį puslapį, metu Seer, be kita ko, apėmė <code>date</code> ir <code>now</code> užklausas, <code>batch</code>, dienų intervalus, atvirkštinį konvertavimą iš Pastafari datos į užklaustą dieną, metų struktūros gavimą, aktyvios veikimo dienos nustatymą, Node API, naršyklės/HTTP klientą, CLI, HTTP v1 paslaugą, OpenAPI 3.1 sutartį, savąsias įgyvendinimo versijas ir platinimo paketus bei patikrintą konteinerio diegimą.</p>
+  <p>Senas teiginys, kad Seer neturi viešo API, nebėra teisingas. Dabar yra aiški ir stabili HTTP v1 sutartis su galiniais taškais <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, veikimo dienai, <code>metadata</code>, <code>locales</code> ir <code>status</code>.</p>
+  <p>2026 m. rugsėjo 21 d. viešas HTTPS diegimas Render platformoje buvo realiai išbandytas: veikiančioje paslaugoje patikrintos tikslios užklausos, didelis intervalas, paleidimas iš naujo, <code>cold wake</code> ir elgsena esant apkrovai.</p>
+  <p>Vis dėlto projekto dokumentacija ir toliau skiria viešą beta / vertinimo diegimą nuo nuolatinės talpinamos gamybinės paslaugos su SLA. Todėl konceptualiame paaiškinimo puslapyje nereikėtų įšaldyti serverio adreso, hostingo tiekėjo ar versijos numerio tarsi jie būtų paties kalendoriaus dalis.</p>
   <p>Seer gali naudoti precomputation, specialias reprezentacijas, SIMD, algebrą ir kitus trumpinimus. Jam nereikia žingsnis po žingsnio atkartoti visos kanoninio įgyvendinimo skaičiavimo istorijos, jei tik atliekama ta pati semantinė operacija ir grąžinamas tas pats atsakymas.</p>
   <p>Optimizacija nėra alternatyvus autoritetas.</p><hr>
 </section>
@@ -268,12 +268,12 @@
 </section>
 
 <section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
-  <h2>Pažengusiems: reverse conversion</h2>
-  <p>Kai veikimo diena <code>c</code> žinoma, reverse conversion yra labai stipriai apribotas. Žinomuose Pastafari metuose,</p>
+  <h2>Pažengusiems: atvirkštinis konvertavimas</h2>
+  <p>Kai veikimo diena <code>c</code> žinoma, atvirkštinis konvertavimas yra labai stipriai apribotas. Žinomuose Pastafari metuose,</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{kotleto pavadinimas},\text{diena kotlete})</code></pre>
   <p>identifikuoja daugiausia vieną dieną. Tas pats galioja</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{mėnesio pavadinimas},\text{diena mėnesyje})</code></pre>
-  <p>Todėl visa data su žinoma veikimo diena vienareikšmiškai identifikuoja tikslinę dieną.</p>
+  <p>Todėl visa data su žinoma veikimo diena vienareikšmiškai identifikuoja užklaustą dieną.</p>
 
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Viršutinės kandidatų skaičiaus ribos atliekant reverse conversion">
     <table class="about-table">
@@ -313,8 +313,8 @@
 <section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
   <h2>Pažengusiems: kiek istorijos išsaugo padažas?</h2>
   <p>Padažas atrodo kaip labai agresyvus maišymo mechanizmas, tačiau algebriniai tyrimai rodo, kad jis išsaugo kur kas daugiau informacijos, nei galima spręsti iš jo išvaizdos. Tai iš specifikacijos išvestas tyrimų rezultatas, o ne nauja kalendoriaus taisyklė.</p>
-  <p>Matomuose etapuose 3–46, atitinkamoje asimptotinėje šakoje, nustatyta generic injectivity: bendruoju atveju būsena išsaugo pakankamai informacijos atkurti svarbią įvesties istoriją ir dubenų eiliškumą.</p>
-  <p>Informacija iš karto neišnyksta ir per 12 galutinių maišymų. Pirmiems penkiems maišymams po 46 matomo lašo nustatyta generic invertibility atitinkamoje kanoninėje sąjungoje be papildomos šalutinės informacijos; likusiai daliai žinomos stiprios konstruktyvios viršutinės ribos, kiek šalutinės informacijos pakanka atkūrimui.</p>
+  <p>Matomuose etapuose 3–46, atitinkamoje asimptotinėje šakoje, nustatytas bendrojo atvejo injektyvumas: būsena išsaugo pakankamai informacijos atkurti svarbią įvesties istoriją ir dubenų eiliškumą.</p>
+  <p>Informacija iš karto neišnyksta ir per 12 galutinių maišymų. Pirmiems penkiems maišymams po 46 matomo lašo nustatytas bendrojo atvejo apverčiamumas atitinkamoje kanoninėje sąjungoje be papildomos informacijos; likusiai daliai žinomos stiprios konstruktyvios viršutinės ribos, kiek papildomos informacijos pakanka atkūrimui.</p>
   <p>Vis dar atviras klausimas, ar <strong>vien paskutinių šešių dubenų</strong> bendruoju atveju visada pakanka.</p>
   <p>Kai kurie rezultatai įrodyti simboliškai, kiti užbaigti baigtiniu ir tiksliu aritmetiniu patikrinimu. Simbolinis sustiprinimas smarkiai sumažino skaičiavimo branduolį, kuriuo reikia pasitikėti, bet jo visiškai nepašalino.</p>
   <p>Erdvės, kurios iš pradžių atrodė reikalaujančios milžiniško kelių skaičiaus paieškos, buvo suspaustos iki daug mažesnių baigtinių struktūrų, įskaitant 180 ir 9 būsenų automatus bei šešių dubenų simetrijas.</p>
