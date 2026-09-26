@@ -895,6 +895,7 @@ async function auditDirectLocale({ browser, baseUrl, locale, resource, breakpoin
     locale: locale.intlLocale || locale.code,
   });
   const page = await context.newPage();
+  await page.addInitScript({ content: axe.source });
   const tracker = installBrowserEventCollector(page);
 
   try {
