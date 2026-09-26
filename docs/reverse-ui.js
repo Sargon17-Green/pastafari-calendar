@@ -816,9 +816,9 @@ class ReverseSearchUi {
 
   parseLimits(limits) {
     const result = {};
-    const maxSolutions = positiveLimit(limits.maxSolutions.value, "maxSolutions", { number: true });
-    const maxScanned = positiveLimit(limits.maxScanned.value, "maxScanned");
-    const timeoutMs = positiveLimit(limits.timeoutMs.value, "timeoutMs", { number: true });
+    const maxSolutions = positiveLimit(limits.maxSolutions.value, this.rt("reverse.options.maxSolutions"), { number: true });
+    const maxScanned = positiveLimit(limits.maxScanned.value, this.rt("reverse.options.maxScanned"));
+    const timeoutMs = positiveLimit(limits.timeoutMs.value, this.rt("reverse.options.timeout"), { number: true });
     if (maxSolutions !== null) result.maxSolutions = maxSolutions;
     if (maxScanned !== null) result.maxScanned = maxScanned;
     if (timeoutMs !== null) result.timeoutMs = timeoutMs;
