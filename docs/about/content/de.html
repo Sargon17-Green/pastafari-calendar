@@ -1,7 +1,7 @@
 <!-- Deutsche Fassung, direkt aus dem hebräischen Bedeutungsstand abgeleitet. -->
 <!-- Abschnitts-IDs sind ein öffentlicher Deep-Link-Vertrag und werden nicht aus Überschriften erzeugt. -->
 <div class="about-section about-lead" id="about-calendar">
-  <p>In der Erzählung der Website ist der Pastafari-Kalender der Kalender, in dem die Zeit erschaffen wurde. Seine Mechanik ist dagegen exakt festgelegt.</p>
+  <p>Der Pastafari-Kalender ist der Kalender, in dem die Zeit erschaffen wurde. Seine Mechanik ist exakt festgelegt.</p>
   <p>Ein Tag wird nicht auf genau ein dauerhaftes Pastafari-Etikett abgebildet. Für ein Datum braucht man zwei Tage: den <strong>Tag der Ausführung</strong>, von dem aus gerechnet wird, und den <strong>abgefragten Tag</strong>, dessen Datum gesucht ist.</p>
   <p>Mit <code>c</code> für den Tag der Ausführung und <code>t</code> für den abgefragten Tag lautet die Abbildung:</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
@@ -99,7 +99,7 @@
 </section>
 <section class="about-section" id="calculation" data-toc-section data-toc-level="2">
   <h2>Wie wird der Kalender berechnet?</h2>
-  <p>Die interne Berechnung heißt hier <strong>die Sauce</strong>. In ihrem Zentrum steht</p><pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre><p>eine Primzahl.</p>
+  <p>Die interne Berechnung heißt <strong>die Sauce</strong>. In ihrem Zentrum steht</p><pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre><p>eine Primzahl.</p>
   <p>Zum Ablauf gehören fünf Eingabezähler, 7 verborgene Tropfen, 46 sichtbare Tropfen, 6 Schalen, wechselnde Schalenreihenfolgen, 12 abschließende Rührvorgänge, Siegel für unterschiedliche Antworten, kombinatorische Auswahlmechanismen, Torerzeugung, Jahresauswahl, Schnitzelteilung, Namensauswahl, Monatserzeugung und das Verweben der Monatstage.</p>
   <p>Die letzten Aktualisierungen sind <strong>synchron</strong>: In jedem Rührvorgang werden alle sechs neuen Schalenwerte aus demselben alten Zustand berechnet; erst danach werden alle Schalen gemeinsam ersetzt.</p>
   <p>Für die 12 Schlussrührungen gilt ein besonders wichtiger kanonischer Punkt. Ist <code>S</code> die Summe der sechs alten Schalen und <code>r</code> die Nummer des Rührvorgangs, wird</p><pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
@@ -126,7 +126,7 @@
       <tr><td>Mittlere Schnitzellänge</td><td>587.963 Tage</td></tr><tr><td>Median der Schnitzellänge</td><td>560</td></tr><tr><td>Mittlere Monatszahl pro Jahr</td><td>41.102</td></tr>
       <tr><td>Median der Monatszahl</td><td>43</td></tr><tr><td>Jahre mit 47 Monaten</td><td>15.63%</td></tr><tr><td>Jahre mit mindestens 45 Monaten</td><td>36.81%</td></tr>
       <tr><td>Mittlere strukturelle Monatslänge</td><td>104.014 Tage</td></tr><tr><td>Median der Monatslänge</td><td>115</td></tr><tr><td>Mittlere zusammenhängende Abschnitte pro Monat</td><td>100.897</td></tr>
-      <tr><td>Anteil eintägiger Monatsabschnitte</td><td>97.482%</td></tr><tr><td>Wahrscheinlichkeit, dass benachbarte Tage im selben Monat liegen</td><td>2.9976%</td></tr>
+      <tr><td>Anteil eintägiger Monatsabschnitte</td><td>97.482%</td></tr><tr><td>Anteil benachbarter Tage im selben Monat (in der Stichprobe)</td><td>2.9976%</td></tr>
       <tr><td>Mittlere fremde Tage zwischen <code>n</code> und <code>n+1</code> eines Monats</td><td>40.408</td></tr><tr><td>Mittlere Spanne vom ersten bis zum letzten Monatsvorkommen</td><td>4,266.653 Tage</td></tr>
     </tbody></table></div>
   <p>Ein Monat mit ungefähr hundert Tagen kann sich praktisch über fast ein ganzes Pastafari-Jahr verteilen.</p>
@@ -148,15 +148,15 @@
 </section>
 <section class="about-section" id="appointments" data-toc-section data-toc-level="2">
   <h2>Wie verabredet man sich?</h2>
-  <p>Wer eine Verabredung nur mit einem Pastafari-Datum festlegen will, muss sich mindestens über das Fünfer-Tupel und den zur Berechnung verwendeten Tag der Ausführung einigen. Besser wird dieser Tag selbst als stabile Tagesidentität gespeichert statt als Wort »heute«; sonst können zwei Personen verschiedene Kalender berechnen.</p>
+  <p>Wenn zwei Personen den Tag eines Treffens anhand eines Pastafari-Datums festlegen wollen, müssen sie sich mindestens auf das Fünfer-Tupel und den Tag der Ausführung einigen, der der Berechnung zugrunde liegt. Am besten speichern sie diesen Tag der Ausführung selbst als stabile Tagesidentität statt als das Wort »heute«; andernfalls könnten sie unterschiedliche Kalender berechnen.</p>
   <ul><li>»morgen« ist der nächste chronologische Tag;</li><li>»nächster Tag im Monat« ist das nächste Auftreten dieses Monats;</li><li>»Monatsende« ist sein letztes Auftreten;</li><li>»ganzer Monat« kann entweder die Menge der Monatstage oder die volle chronologische Spanne vom ersten bis zum letzten Auftreten meinen;</li><li>»nächstes Jahr« bezieht sich auf den unter dem gewählten Tag der Ausführung aufgebauten Kalender.</li></ul>
   <p>Bei besonders wichtigen Terminen kann zusätzlich der absolute chronologische Tag oder Zeitpunkt gespeichert werden. Der Kalender nimmt keinen Schaden daran.</p><hr>
 </section>
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
-  <h2>Reisen und Ganztagsereignisse</h2>
+  <h2>Reisen und ganztägige Ereignisse</h2>
   <p>Ein Ereignis ist nicht dasselbe wie sein örtlich angezeigtes Etikett. Ein terminiertes Ereignis sollte an einem stabilen chronologischen Zeitpunkt verankert sein. Eine Reise verschiebt es nicht in der Zeit; die lokal angezeigte Pastafari-Datumsangabe kann sich aber ändern, weil der »lokale Tag« vom Standort abhängt.</p>
-  <p>Bei einem <strong>Ganztagsereignis</strong> ist der Unterschied noch größer. Ein ziviles Ganztagsereignis läuft gewöhnlich von Mitternacht bis Mitternacht. Ein Pastafari-Ganztagsereignis sollte von einer lokalen Pastafari-Tagesgrenze bis zur nächsten reichen. Das sind üblicherweise nicht dieselben Zeitpunkte.</p>
-  <p>Wer ein Pastafari-Ereignis blind als ziviles »Ganztagsereignis« exportiert, kann seine Bedeutung verändern. Für eine genaue Bewahrung braucht man die chronologische Verankerung sowie den passenden Standort-/Tagesgrenzen-Kontext, nicht nur ein <code>all-day</code>-Häkchen.</p><hr>
+  <p>Bei einem <strong>ganztägigen Ereignis</strong> ist der Unterschied noch größer. Ein ziviles ganztägiges Ereignis läuft gewöhnlich von Mitternacht bis Mitternacht. Ein ganztägiges Pastafari-Ereignis sollte von einer lokalen Pastafari-Tagesgrenze bis zur nächsten reichen. Das sind üblicherweise nicht dieselben Zeitpunkte.</p>
+  <p>Wer ein Pastafari-Ereignis blind als ziviles »ganztägiges Ereignis« exportiert, kann seine Bedeutung verändern. Für eine genaue Bewahrung braucht man die chronologische Verankerung sowie den passenden Standort-/Tagesgrenzen-Kontext, nicht nur ein <code>all-day</code>-Häkchen.</p><hr>
 </section>
 <section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
   <h2>Wann wechselt der Tag?</h2>
@@ -172,18 +172,18 @@
 </section>
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Und was ist Seer?</h2>
-  <p>Neben der kanonischen Implementierung gibt es eine schnelle Engine namens <strong>Pastafarian Calendar Seer</strong>. Seer ist keine Autoritätsquelle. Megillah und kanonische Berechnung bestimmen das richtige Datum; widerspricht Seer ihnen, liegt Seer falsch.</p>
+  <p>Neben der kanonischen Implementierung gibt es eine schnelle Engine namens <strong>Pastafarian Calendar Seer</strong>. Seer ist keine Autoritätsquelle: Die Megillah legt die Regeln fest, und die kanonische Berechnung ermittelt das Datum nach diesen Regeln. Seer soll dieselbe Antwort liefern; weicht er von einer korrekten kanonischen Berechnung ab, liegt Seer falsch.</p>
   <p>Sein Zweck ist, dieselben Anfragen schnell und produktfreundlich zu beantworten.</p>
-  <p>Bei der während der Bearbeitung dieser Seite durchgeführten Live-Prüfung umfasste Seer unter anderem Datums- und »Jetzt«-Abfragen, Batch-Abfragen, Tagesbereiche, Rückumrechnung in einen abgefragten Tag, Abruf der Jahresstruktur, Auflösung des aktiven Tags der Ausführung, Node-API, Browser-/HTTP-Client, CLI, HTTP-v1-Dienst, OpenAPI-3.1-Vertrag, native Implementierungen und Distributionspakete sowie ein verifiziertes Container-Bereitstellung.</p>
-  <p>Die alte Aussage, Seer habe keine öffentliche API, ist damit überholt. Es gibt einen ausdrücklichen stabilen HTTP-v1-Vertrag mit Endpunkten für <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, Tag der Ausführung, <code>metadata</code>, <code>locales</code> und <code>status</code>.</p>
+  <p>Bei der Live-Prüfung am 21. September 2026 umfasste Seer unter anderem Datums- und »Jetzt«-Abfragen, Batch-Abfragen, Tagesbereiche, Rückumrechnung in einen abgefragten Tag, Abruf der Jahresstruktur, Auflösung des aktiven Tags der Ausführung, Node-API, Browser-/HTTP-Client, CLI, HTTP-v1-Dienst, OpenAPI-3.1-Vertrag, native Implementierungen und Distributionspakete sowie ein verifiziertes Container-Bereitstellung.</p>
+  <p>Seer hat eine öffentliche API mit einem ausdrücklichen, stabilen HTTP-v1-Vertrag und Endpunkten für <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, Tag der Ausführung, <code>metadata</code>, <code>locales</code> und <code>status</code>.</p>
   <p>Am 21. September 2026 wurde außerdem ein öffentliche HTTPS-Bereitstellung auf Render praktisch geprüft: exakte Abfragen, ein großer Bereich, Neustart, <code>cold wake</code> und Verhalten unter Last wurden am laufenden Dienst getestet.</p>
-  <p>Die Projektdokumentation unterscheidet weiterhin zwischen diesem öffentlichen Live-Beta-/Evaluationsbereitstellung und einem dauerhaft zugesagten gehosteten Produktionsdienst mit SLA. Daher sollte eine Grundlagenseite weder Serveradresse noch Hostinganbieter oder Versionsnummer zum Bestandteil des Kalenders erklären.</p>
+  <p>Die geprüfte öffentliche Bereitstellung ist eine Beta-/Evaluierungsbereitstellung und keine Zusage eines dauerhaft gehosteten Produktionsdienstes mit SLA. Serveradresse, Hostinganbieter und Versionsnummer sind keine Bestandteile des Kalenders und nicht kanonisch festgelegt.</p>
   <p>Seer darf Vorberechnung, Spezialdarstellungen, SIMD, Algebra und andere Abkürzungen einsetzen. Es muss die Rechengeschichte der kanonischen Implementierung nicht Schritt für Schritt nachspielen, solange es dieselbe semantische Operation ausführt und dieselbe Antwort liefert.</p>
   <p>Optimierung ist keine alternative Autorität.</p><hr>
 </section>
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
   <h2>Ursprung, Gründungstag und Tag der Tafeln</h2>
-  <p>Hier müssen kanonische Anker und Website-Erzählung sauber getrennt werden.</p>
+  <p>Die festen rechnerischen Bezugspunkte des Kalenders sind von den Tatsachen zu seinem Ursprung und seiner Weitergabe zu unterscheiden.</p>
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>Die Anker</h3>
     <p>Das System besitzt einen festen Referenztag, den <strong>Gründungstag</strong>. Im proleptischen gregorianischen Kalender ist das der <strong>22. Dezember 41,222 v. Chr.</strong></p>
@@ -194,17 +194,17 @@
     <p>Beide sind feste Anker auf der Zeitachse. Das angezeigte Pastafari-Datum für sie hängt trotzdem vom Tag der Ausführung ab.</p>
   </section>
   <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
-    <h3>Die Erzählung der Website</h3>
-    <p>In der redaktionellen Darstellung der Website ist der Kalender Teil der Schöpfung und ein System, das die Menschheit benutzt habe, ohne sich dessen ausreichend bewusst zu sein, bis zur modernen erneuten Übergabe.</p>
-    <p>Das ist die Erzählung der Website; nicht jedes erzählerische Detail darin darf als ausdrücklicher technischer Satz der Megillah dargestellt werden.</p>
-    <p>Das Ereignis der erneuten Übergabe selbst ist chronologisch fest. Sein <strong>Pastafari-Datum</strong> sollte auf der Website dynamisch unter dem aktuellen Tag der Ausführung gezeigt werden, statt ihm für immer ein einziges Pastafari-Datum anzuhängen.</p><hr>
+    <h3>Ursprung des Kalenders und seine Weitergabe</h3>
+    <p>Der Pastafari-Kalender ist Teil der Schöpfung. Die Menschheit nutzte ihn, ohne sich dessen hinreichend bewusst zu sein, bis er in der Moderne erneut übergeben wurde.</p>
+    <p>Die Megillah führt nicht jedes Detail dieser Geschichte aus; was sie nicht ausdrücklich sagt, ist nicht Teil ihres Wortlauts.</p>
+    <p>Das Ereignis der erneuten Übergabe ist chronologisch fest. Sein <strong>Pastafari-Datum</strong> wird unter dem jeweiligen Tag der Ausführung berechnet und kann daher variieren.</p><hr>
   </section>
 </section>
 <section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
   <h2>Für Fortgeschrittene: Rückumrechnung</h2>
-  <p>Ist der Tag der Ausführung <code>c</code> bekannt, ist die Rückumrechnung sehr stark. Innerhalb eines bekannten Pastafari-Jahres identifiziert</p>
+  <p>Ist der Tag der Ausführung <code>c</code> bekannt, ist die Rückumrechnung sehr stark. Innerhalb eines bekannten Pastafari-Jahres gilt:</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{Schnitzelname},\text{Tag im Schnitzel})</code></pre>
-  <p>höchstens einen Tag. Dasselbe gilt für</p><pre class="math-block" dir="ltr" tabindex="0"><code>(\text{Monatsname},\text{Tag im Monat})</code></pre>
+  <p>Diese Kombination identifiziert höchstens einen Tag. Auch die folgende Kombination identifiziert höchstens einen Tag:</p><pre class="math-block" dir="ltr" tabindex="0"><code>(\text{Monatsname},\text{Tag im Monat})</code></pre>
   <p>Damit identifiziert ein vollständiges Datum bei bekanntem Tag der Ausführung den abgefragten Tag eindeutig.</p>
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Obergrenzen für Kandidaten der Rückumrechnung"><table class="about-table">
     <thead><tr><th scope="col">Zusätzlich bekannte Information</th><th scope="col">Höchstens Kandidaten</th></tr></thead><tbody>
@@ -212,8 +212,8 @@
       <tr><td>Nur Monatsname</td><td>123</td></tr><tr><td>Nur Tag im Monat</td><td>47</td></tr><tr><td>Schnitzelname + Tag im Schnitzel</td><td>1</td></tr>
       <tr><td>Monatsname + Tag im Monat</td><td>1</td></tr><tr><td>Beliebige drei Nicht-Jahresfelder</td><td>1</td></tr><tr><td>Alle vier Nicht-Jahresfelder</td><td>1</td></tr>
     </tbody></table></div>
-  <p>Ohne Kenntnis des Tags der Ausführung sieht es anders aus. Dasselbe Fünfer-Tupel kann unter verschiedenen Tagen der Ausführung auftreten; es gibt exakte Zeugen, bei denen dasselbe vollständige Datum in verschiedenen Abständen zu <code>c</code> entsteht.</p>
-  <p>Selbst in Jahr 5000 ist das Vorzeichen dieses Abstands nicht immer aus dem Tupel bestimmt: dasselbe vollständige Datum kann in einem Kontext vor und in einem anderen nach dem Tag der Ausführung liegen.</p>
+  <p>Ohne Kenntnis des Tags der Ausführung sieht es anders aus. Dasselbe Fünfer-Tupel kann unter verschiedenen Tagen der Ausführung auftreten; es gibt ausdrückliche Beispiele, in denen dasselbe vollständige Datum in unterschiedlichen Abständen zum Tag der Ausführung <code>c</code> entsteht.</p>
+  <p>Selbst für Jahr 5000 lässt sich die Lage im Verhältnis zum Tag der Ausführung nicht immer aus dem Fünfer-Tupel bestimmen: Dasselbe vollständige Datum kann in einem Kontext vor und in einem anderen nach dem Tag der Ausführung liegen.</p>
   <p>Ein vollständiges Pastafari-Datum ist also ohne Kenntnis des verwendeten <code>c</code> keine absolute Adresse auf der Zeitachse.</p>
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
     <h3>Struktur in ferner Zeit</h3>
@@ -229,10 +229,10 @@
 <section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
   <h2>Für Fortgeschrittene: Wie viel Vergangenheit behält die Sauce?</h2>
   <p>Die Sauce wirkt wie ein sehr aggressiver Mischer. Algebraische Untersuchungen zeigen jedoch, dass sie weit mehr Information bewahrt, als der äußere Eindruck vermuten lässt. Das ist aus der Spezifikation abgeleitete Forschung, keine neue Kalenderregel.</p>
-  <p>Für die sichtbaren Stufen 3 bis 46 wurde auf dem relevanten asymptotischen Ast generische Injektivität geschlossen: Generisch enthält der Zustand genug Information, um die relevante Geschichte der Eingaben und Schalenreihenfolgen zu rekonstruieren.</p>
-  <p>Auch in den 12 Schlussrührungen verschwindet die Information nicht sofort. Für die ersten fünf Rührungen nach dem 46. sichtbaren Tropfen ist generische Invertierbarkeit auf der relevanten kanonischen Vereinigung ohne zusätzliche Seiteninformation geschlossen; für die übrigen Rührungen sind starke konstruktive Obergrenzen für ausreichende Seiteninformation bekannt.</p>
+  <p>Für die sichtbaren Stufen 3 bis 46 ist auf dem relevanten asymptotischen Ast generische Injektivität nachgewiesen: Der Zustand enthält generisch genug Information, um die relevante Geschichte der Eingaben und Schalenreihenfolgen zu rekonstruieren.</p>
+  <p>Auch in den 12 Schlussrührungen verschwindet die Information nicht sofort. Für die ersten fünf Rührungen nach dem 46. sichtbaren Tropfen ist generische Invertierbarkeit auf der relevanten kanonischen Vereinigung ohne zusätzliche Seiteninformation bewiesen; für die übrigen Rührungen sind starke konstruktive Obergrenzen für ausreichende Seiteninformation bekannt.</p>
   <p>Offen bleibt, ob <strong>die sechs endgültigen Schalen allein</strong> generisch immer genügen.</p>
-  <p>Ein Teil der Ergebnisse ist symbolisch bewiesen, ein Teil durch endliche exakte arithmetische Prüfungen geschlossen. Die symbolische Verstärkung verkleinerte den Rechenkern, dem man vertrauen muss, erheblich, beseitigte ihn aber nicht vollständig.</p>
+  <p>Ein Teil der Ergebnisse ist symbolisch bewiesen, ein Teil durch endliche exakte arithmetische Prüfungen verifiziert worden. Die symbolische Verstärkung verkleinerte den Rechenkern, dem man vertrauen muss, erheblich, beseitigte ihn aber nicht vollständig.</p>
   <p>Überraschend schrumpften Räume, die zunächst enorm viele Pfade zu verlangen schienen, auf viel kleinere endliche Strukturen zusammen, darunter Automaten mit 180 und 9 Zuständen sowie Symmetrien der sechs Schalen.</p>
   <p>Unter dem Durcheinander steckt also starre algebraische Struktur. Für das heutige Datum muss man davon nichts wissen.</p><hr>
 </section>
