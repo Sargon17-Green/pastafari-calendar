@@ -2,7 +2,7 @@
 
 Baseline commit: `f7a3d1feca145f1a3d98080117859dd870afa8ef`  
 Working branch: `feature/about-i18n-72-locales`  
-Semantic master: `docs/about/content/he.html` from the baseline commit above.  
+Semantic master: the current `docs/about/content/he.html` on this working branch. The baseline commit records the rollout origin only; later approved Hebrew semantic corrections supersede it.  
 Rule: semantic equivalence without textual isomorphism; English is not a pivot language.
 
 ## Locale snapshot
@@ -255,14 +255,16 @@ The following facts, distinctions and epistemic qualifications must survive ever
 - Project docs still distinguish public beta/evaluation deployment from a permanent hosted production service with SLA. Do not freeze a server URL, host provider or version number as calendar doctrine.
 - Seer may use precomputation, special representations, SIMD, algebra and shortcuts, provided semantic operation and answer match the canonical calculation.
 
-### Fixed anchors vs site story
+### Fixed anchors, origin and re-delivery
 - Foundation Day is a fixed computational reference, not “the beginning of time”.
 - In the proleptic Gregorian calendar: 22 December 41,222 BCE.
 - Foundation-day positive odd/even encoding: Foundation Day=1; following days 3,5,…; preceding days 2,4,6,…, avoiding negative day numbers in that counter.
 - Tablets Day: 15 June 763 BCE proleptic Julian = 7 June 763 BCE proleptic Gregorian.
 - Exact Foundation→Tablets distance: `14{,}777{,}149` days.
 - These anchors are fixed chronological identities; their displayed Pastafari date still depends on the day of working.
-- The site story presents the calendar as part of creation and later modern re-delivery; narrative details must not be promoted to technical claims of the Scroll.
+- The Pastafarian calendar is the calendar in which time was created. This must be stated directly, without meta-fictional hedges such as “within the site’s story”, “according to the mythology/tradition”, “is presented as”, or equivalent distancing language.
+- The calendar is part of creation; humanity used it without sufficient awareness that it was doing so until the modern re-delivery.
+- Not every historical detail is stated explicitly in the Scroll. Source attribution remains exact: do not attribute a detail to the Scroll unless the Scroll states it. This is a provenance rule, not a caveat about the reality of the event.
 - The re-delivery event is chronologically fixed; its displayed Pastafari date should be computed dynamically under the current day of working.
 
 ### Reverse conversion and far-time structure
@@ -292,7 +294,8 @@ The following facts, distinctions and epistemic qualifications must survive ever
 
 ## Translation and terminology rules
 
-- Start each locale from the semantic ledger and Hebrew master, never from English as a pivot.
+- Start each locale from the semantic ledger and current Hebrew master, never from English as a pivot.
+- State canonical cosmological and historical claims in the same direct factual voice as technical calendar facts. Do not add “story”, “mythology”, “tradition”, “according to”, “is presented as”, “in-universe”, or equivalent reality-distancing qualifiers unless the source itself is being quoted or discussed as a source.
 - Preserve technical identifiers/literals verbatim: `F(c,t)`, `c`, `t`, `Q=2^127-1`, `SAVE`, `Short Choice`, `Wide Choice`, `day-id`, `RRULE:FREQ=YEARLY`, `OpenAPI`, `Pastafarian Calendar Seer`, hashes and formulas.
 - Reuse the locale's existing UI/canonical terminology where it is suitable for prose. Do not invent new canonical names for cutlets/months.
 - The prose may restructure clauses/sentences/headings to sound native; semantic and epistemic content may not drift.
