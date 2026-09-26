@@ -79,7 +79,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | uk | uk-UA | ltr | partial | semantic QA |
 | ur | ur-PK | rtl | partial | semantic QA |
 | uz | uz-UZ | ltr | partial | semantic QA |
-| vi | vi-VN | ltr | partial | draft |
+| vi | vi-VN | ltr | partial | semantic QA |
 | yo | yo-NG | ltr | partial | draft |
 | zh | zh-CN | ltr | partial | draft |
 | zu | zu-ZA | ltr | partial | draft |
