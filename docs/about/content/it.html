@@ -63,7 +63,7 @@
 </section>
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2"><h2>Nomi</h2>
   <p>Il calendario ha 17 nomi canonici di cotolette e 47 nomi canonici di mesi. In un anno ciascun nome compare al massimo una volta all'interno della propria famiglia.</p>
-  <p>L'identità del nome è canonico-semantica, non il risultato di una votazione tra grafie, traduzioni o implementazioni. La Megillah ebraica è l'autorità superiore per il significato dei nomi; traduzione e traslitterazione appartengono allo strato di visualizzazione.</p>
+  <p>L'identità del nome è canonica sul piano semantico; non è il risultato di una votazione tra grafie, traduzioni o implementazioni. La Megillah ebraica è l'autorità superiore per il significato dei nomi; traduzione e traslitterazione appartengono allo strato di visualizzazione.</p>
   <p>Il nome non è nemmeno un codice nascosto della lunghezza: nessun nome impone una cotoletta più lunga o un mese più corto.</p><hr>
 </section>
 <section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2"><h2>Un piccolo fatto sui mesi</h2>
@@ -80,7 +80,7 @@
   <p>Dopo i mescolamenti, anche l'anello delle risposte continua nell'ordine fissato alla 46ª goccia visibile; non va sostituito automaticamente con l'ordine dell'ultimo mescolamento.</p><hr>
 </section>
 <section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2"><h2>Short Choice e Wide Choice</h2>
-  <p><strong>Short Choice</strong> opera negli spazi di scelta relativamente piccoli e usa il campionamento per rigetto per evitare la distorsione introdotta da un semplice modulo.</p>
+  <p><strong>Short Choice</strong> opera negli spazi di scelta relativamente piccoli e usa il campionamento per rigetto per evitare la distorsione introdotta da una semplice operazione modulo.</p>
   <p>Negli spazi molto grandi interviene <strong>Wide Choice</strong>. Non equivale a generare cifre indipendenti e uniformi in base <code>Q</code> finché non si ottiene un indice.</p>
   <p>Non segue quindi che ogni possibilità lecita abbia necessariamente la stessa probabilità positiva. In spazi sufficientemente grandi possono esistere perfino possibilità lecite irraggiungibili da questo specifico meccanismo.</p>
   <p>Il calendario resta del tutto deterministico. «Choice» è il nome di una fase algoritmica, non di un'estrazione casuale effettuata durante l'uso.</p><hr>
@@ -157,15 +157,15 @@
   </section>
 </section>
 <section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2"><h2>Per approfondire: conversione inversa</h2>
-  <p>Se il giorno di lavoro <code>c</code> è noto, la conversione inversa è molto forte. Dentro un anno pastafari noto,</p><pre class="math-block" dir="ltr" tabindex="0"><code>(\text{nome della cotoletta},\text{giorno nella cotoletta})</code></pre><p>identifica al massimo un giorno; lo stesso vale per</p><pre class="math-block" dir="ltr" tabindex="0"><code>(\text{nome del mese},\text{giorno nel mese})</code></pre>
+  <p>Se il giorno di lavoro <code>c</code> è noto, la conversione inversa è fortemente vincolata. Dentro un anno pastafari noto,</p><pre class="math-block" dir="ltr" tabindex="0"><code>(\text{nome della cotoletta},\text{giorno nella cotoletta})</code></pre><p>identifica al massimo un giorno; lo stesso vale per</p><pre class="math-block" dir="ltr" tabindex="0"><code>(\text{nome del mese},\text{giorno nel mese})</code></pre>
   <p>Una data completa con <code>c</code> noto individua quindi in modo univoco il giorno richiesto.</p>
-  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Limiti dei candidati nella conversione inversa"><table class="about-table"><thead><tr><th scope="col">Informazione aggiuntiva nota</th><th scope="col">Candidati massimi</th></tr></thead><tbody>
-    <tr><td>Nessun campo non annuale</td><td>5,778</td></tr><tr><td>Solo nome della cotoletta</td><td>5,568</td></tr><tr><td>Solo giorno nella cotoletta</td><td>17</td></tr><tr><td>Solo nome del mese</td><td>123</td></tr><tr><td>Solo giorno nel mese</td><td>47</td></tr><tr><td>Nome cotoletta + giorno nella cotoletta</td><td>1</td></tr><tr><td>Nome mese + giorno nel mese</td><td>1</td></tr><tr><td>Tre qualunque campi non annuali</td><td>1</td></tr><tr><td>Tutti e quattro i campi non annuali</td><td>1</td></tr>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Limiti dei candidati nella conversione inversa"><table class="about-table"><thead><tr><th scope="col">Altre informazioni note</th><th scope="col">Numero massimo di giorni possibili</th></tr></thead><tbody>
+    <tr><td>Nessun campo noto oltre all'anno</td><td>5,778</td></tr><tr><td>Solo nome della cotoletta</td><td>5,568</td></tr><tr><td>Solo giorno nella cotoletta</td><td>17</td></tr><tr><td>Solo nome del mese</td><td>123</td></tr><tr><td>Solo giorno nel mese</td><td>47</td></tr><tr><td>Nome cotoletta + giorno nella cotoletta</td><td>1</td></tr><tr><td>Nome mese + giorno nel mese</td><td>1</td></tr><tr><td>Tre qualunque campi non annuali</td><td>1</td></tr><tr><td>Tutti e quattro i campi non annuali</td><td>1</td></tr>
   </tbody></table></div>
-  <p>Senza conoscere il giorno di lavoro la situazione cambia. La stessa cinquina può comparire sotto giorni di lavoro diversi; esistono testimoni esatti in cui la stessa data completa si trova a distanze diverse da <code>c</code>. Nell'anno 5000 perfino il segno della distanza non è sempre determinato dalla cinquina: la stessa data può trovarsi nel passato in un contesto e nel futuro in un altro.</p>
+  <p>Senza conoscere il giorno di lavoro la situazione cambia. La stessa cinquina può comparire sotto giorni di lavoro diversi; esistono esempi esatti in cui la stessa data completa si trova a distanze diverse da <code>c</code>. Nell'anno 5000 perfino il segno della distanza non è sempre determinato dalla cinquina: la stessa data può trovarsi nel passato in un contesto e nel futuro in un altro.</p>
   <p>Una data pastafari completa non è dunque un indirizzo assoluto sulla linea del tempo se non sappiamo sotto quale <code>c</code> sia stata calcolata.</p>
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3"><h3>Struttura nei tempi remoti</h3>
-    <p>La ricerca matematica derivata ha trovato anche una struttura asintotica esatta. Per un <strong>giorno di lavoro fisso</strong> <code>c</code>, abbastanza lontano nella coda del passato compare periodicità affine.</p>
+    <p>Ricerche matematiche derivate dalla specifica hanno individuato anche una struttura asintotica esatta. Per un <strong>giorno di lavoro fisso</strong> <code>c</code>, abbastanza lontano nella coda remota del passato compare una periodicità affine.</p>
     <p>Se</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre><p>allora, per quel medesimo <code>c</code>, esistono uno spostamento <code>H_c</code>, una variazione annua <code>p_c</code> e una soglia sufficientemente remota tali che oltre la soglia</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
     <p>I quattro campi non annuali si ripetono mentre il numero dell'anno cambia in misura costante.</p>
     <p>È un teorema per <code>c</code> fisso. Non implica un'identità globale del tipo</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre><p>e rimane aperta la domanda se la pendenza asintotica finale cambi davvero fra giorni di lavoro diversi.</p><hr>
@@ -173,15 +173,15 @@
 </section>
 <section class="about-section" id="sauce-history" data-toc-section data-toc-level="2"><h2>Per approfondire: quanta storia conserva la salsa?</h2>
   <p>La salsa sembra un miscelatore molto aggressivo, ma la ricerca algebrica ha mostrato che conserva molta più informazione di quanto appaia. È un risultato derivato dalla specifica, non una nuova regola del calendario.</p>
-  <p>Nelle fasi visibili 3–46 è stata stabilita, sul ramo asintotico pertinente, l'iniettività generica: genericamente lo stato conserva abbastanza informazione da ricostruire la storia rilevante degli input e degli ordini delle ciotole.</p>
-  <p>Neppure nei 12 mescolamenti finali l'informazione scompare subito. Per i primi cinque dopo la goccia visibile 46 è stata stabilita l'invertibilità generica sull'unione canonica rilevante senza ulteriori informazioni laterali. Per i restanti si conoscono forti limiti costruttivi alla quantità di informazione laterale sufficiente alla ricostruzione.</p>
+  <p>Nelle fasi visibili 3–46 è stata stabilita, sul ramo asintotico pertinente, l'iniettività generica: nel caso generico lo stato conserva abbastanza informazione da ricostruire la storia rilevante degli input e degli ordini delle ciotole.</p>
+  <p>Neppure nei 12 mescolamenti finali l'informazione scompare subito. Per i primi cinque dopo la goccia visibile 46 è stata stabilita l'invertibilità generica sull'unione canonica rilevante senza ulteriori informazioni aggiuntive. Per i restanti si conoscono forti limiti costruttivi alla quantità di informazione aggiuntiva sufficiente alla ricostruzione.</p>
   <p>Resta aperto se <strong>le sei ciotole finali da sole</strong> siano sempre genericamente sufficienti.</p>
-  <p>Alcuni risultati sono stati provati simbolicamente, altri chiusi con verifiche aritmetiche finite ed esatte. Il rafforzamento simbolico ha ridotto di molto il nucleo computazionale di cui bisogna fidarsi, senza eliminarlo del tutto.</p>
+  <p>Alcuni risultati sono stati dimostrati simbolicamente, altri conclusi mediante verifiche aritmetiche finite ed esatte. Il rafforzamento simbolico ha ridotto di molto il nucleo computazionale di cui bisogna fidarsi, senza eliminarlo del tutto.</p>
   <p>Spazi che sembravano richiedere un numero enorme di cammini si sono ridotti a strutture finite molto più piccole, fra cui automi a 180 e 9 stati e simmetrie delle sei ciotole. Sotto il mescolamento c'è quindi una struttura algebrica rigida.</p>
   <p>Per sapere la data di oggi non serve conoscere nulla di tutto ciò.</p><hr>
 </section>
 <section class="about-section" id="summary" data-toc-section data-toc-level="2"><h2>In definitiva, che cos'è il calendario pastafari?</h2>
-  <p>È un calendario deterministico nel quale la data non dipende dal solo giorno richiesto, ma dal <strong>giorno di lavoro e dal giorno richiesto insieme</strong>.</p>
+  <p>È un calendario deterministico nel quale la data non dipende dal solo giorno richiesto, ma dall'<strong>azione congiunta del giorno di lavoro e del giorno richiesto</strong>.</p>
   <p>Ogni data ha esattamente cinque campi. Il presente rispetto a sé stesso è sempre nell'anno 5000, benché l'anno 5000 si sposti col giorno di lavoro. Gli anni possono essere lunghissimi; le cotolette sono continue; i mesi possono non esserlo affatto; non esiste un sistema canonico di settimane.</p>
   <p>Il giorno <code>n+1</code> di un mese non è necessariamente domani. Lo stesso giorno cronologico può ricevere domani un'altra etichetta pastafari. Lo stesso istante può trovarsi in giorni pastafari locali diversi in due luoghi. Un evento di giornata intera non deve andare da mezzanotte a mezzanotte. E un compleanno annuale è un problema di ricerca prima di essere un problema d'agenda.</p>
   <p>Ma se giorno di lavoro e giorno richiesto sono dati, non c'è ambiguità: esiste una sola risposta esatta.</p>
