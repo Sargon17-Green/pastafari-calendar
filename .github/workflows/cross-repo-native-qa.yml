@@ -103,15 +103,19 @@ jobs:
           source=source.replaceAll("{{SELF_NAME}}",process.env.SELF_NAME)
                        .replaceAll("{{REVIEW_ID}}",process.env.REVIEW_ID)
                        .replaceAll("{{LOCALE_TAG}}",process.env.LOCALE_TAG)
-                       .replaceAll("{{MANIFEST_PATH}}",manifestPath);
+                       .replaceAll("{{MANIFEST_PATH}}",manifestPath)
+                       .replaceAll("REVIEW_ID="+process.env.REVIEW_ID,"__PASTAFARI_REVIEW_ID_LINE__")
+                       .replaceAll("LOCALE_TAG="+process.env.LOCALE_TAG,"__PASTAFARI_LOCALE_TAG_LINE__")
+                       .replaceAll("NATIVE_QA_RESULT: PASS","__PASTAFARI_NATIVE_QA_PASS__")
+                       .replaceAll("NATIVE_QA_RESULT: FAIL","__PASTAFARI_NATIVE_QA_FAIL__");
           const request=[
             "Translate the reviewer protocol below completely and naturally into the human language named "+process.env.SELF_NAME+".",
             "The translated text will be the FIRST AND ONLY user message in a fresh reviewer session. Therefore every ordinary instruction sentence must be in the target language from its first line onward.",
-            "Preserve repository names, branch names, paths, code identifiers, placeholders, formulas, and the exact machine-readable verdict lines NATIVE_QA_RESULT: PASS / NATIVE_QA_RESULT: FAIL.",
+            "Preserve repository names, branch names, paths, code identifiers, placeholders, formulas, and every token beginning __PASTAFARI_ exactly byte-for-byte.",
             "Use the correct Unicode script for every target-language word. Do not substitute visually similar letters from another script. Before returning the prompt, silently proofread it for mixed-script confusables.",
-            "The translated protocol already contains the two literal examples NATIVE_QA_RESULT: PASS and NATIVE_QA_RESULT: FAIL. Preserve exactly one occurrence of each inside the protocol. Do not prepend or append a verdict of your own.",
-            "The first non-empty line of your output must be translated target-language prose, not a NATIVE_QA_RESULT line.",
-            "Do not add an English preface, explanation, translator note, or code fence. Output only the translated seed prompt.",
+            "Each __PASTAFARI_ sentinel occurs exactly once in the source and must occur exactly once in the translated output. Do not add a verdict, preface, explanation, translator note, or code fence.",
+            "The first non-empty line of your output must be translated target-language prose, not a __PASTAFARI_ sentinel.",
+            "Output only the translated seed prompt.",
             "",
             source
           ].join("\n");
@@ -126,14 +130,33 @@ jobs:
           LOCALE_TAG: ${{ steps.unit.outputs.locale_tag }}
         run: |
           OUT="artifacts/cross-repo-native-qa/runtime"
-          copilot --no-custom-instructions --no-ask-user --no-color --share="$OUT/translator-session.md" -s < /tmp/translate-request.md > "$OUT/prompt.md"
-          test -s "$OUT/prompt.md"
+          copilot --no-custom-instructions --no-ask-user --no-color --share="$OUT/translator-session.md" -s < /tmp/translate-request.md > "$OUT/prompt.raw.md"
+          test -s "$OUT/prompt.raw.md"
           test -s "$OUT/translator-session.md"
+          REVIEW_ID="$REVIEW_ID" LOCALE_TAG="$LOCALE_TAG" node <<'NODE'
+          const fs=require("node:fs");
+          const file="artifacts/cross-repo-native-qa/runtime/prompt.raw.md";
+          let prompt=fs.readFileSync(file,"utf8");
+          const replacements=[
+            ["__PASTAFARI_REVIEW_ID_LINE__","REVIEW_ID="+process.env.REVIEW_ID],
+            ["__PASTAFARI_LOCALE_TAG_LINE__","LOCALE_TAG="+process.env.LOCALE_TAG],
+            ["__PASTAFARI_NATIVE_QA_PASS__","NATIVE_QA_RESULT: PASS"],
+            ["__PASTAFARI_NATIVE_QA_FAIL__","NATIVE_QA_RESULT: FAIL"],
+          ];
+          for(const [sentinel,value] of replacements){
+            const count=prompt.split(sentinel).length-1;
+            if(count!==1) throw new Error("Expected exactly one "+sentinel+"; got "+count);
+            prompt=prompt.replace(sentinel,value);
+          }
+          if(/__PASTAFARI_[A-Z0-9_]+__/.test(prompt)) throw new Error("Unresolved PASTAFARI sentinel remains after deterministic reinsertion");
+          fs.writeFileSync("artifacts/cross-repo-native-qa/runtime/prompt.md",prompt);
+          NODE
+          test -s "$OUT/prompt.md"
           test "$(grep -cFx 'NATIVE_QA_RESULT: PASS' "$OUT/prompt.md")" -eq 1
           test "$(grep -cFx 'NATIVE_QA_RESULT: FAIL' "$OUT/prompt.md")" -eq 1
           FIRST_NONEMPTY="$(sed -n '/[^[:space:]]/{p;q;}' "$OUT/prompt.md")"
           case "$FIRST_NONEMPTY" in
-            NATIVE_QA_RESULT:*) echo "Translator illegally prepended a verdict line." >&2; exit 1 ;;
+            NATIVE_QA_RESULT:*) echo "Translated prompt illegally begins with a verdict line." >&2; exit 1 ;;
           esac
           grep -Fxq -- "REVIEW_ID=$REVIEW_ID" "$OUT/prompt.md"
           grep -Fxq -- "LOCALE_TAG=$LOCALE_TAG" "$OUT/prompt.md"
@@ -244,7 +267,7 @@ jobs:
           const src="artifacts/cross-repo-native-qa/runtime";
           const attempt=`artifacts/cross-repo-native-qa/attempts/${id}/${run}`;
           fs.mkdirSync(attempt,{recursive:true});
-          for(const f of ["prompt.md","review-output.md","final-report.md","session.md","translator-session.md","review-manifest.json","verdict.txt","copilot-exit-code.txt","reviewer-stderr.log"]){
+          for(const f of ["prompt.raw.md","prompt.md","review-output.md","final-report.md","session.md","translator-session.md","review-manifest.json","verdict.txt","copilot-exit-code.txt","reviewer-stderr.log"]){
             if(fs.existsSync(path.join(src,f))) fs.copyFileSync(path.join(src,f),path.join(attempt,f));
           }
           for(const [sub,file] of [["prompts","prompt.md"],["reports","final-report.md"],["sessions","session.md"]]){
