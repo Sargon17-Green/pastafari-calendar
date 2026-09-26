@@ -110,12 +110,53 @@ jobs:
               exit "$EXIT"
             fi
 
-            cp "/tmp/$LOCALE.response.txt" "artifacts/about-semantic-delta-runs/$LOCALE.proposal.txt"
+            cp "/tmp/$LOCALE.response.txt" "artifacts/about-semantic-delta-runs/$LOCALE.pass1.proposal.txt"
 
             node scripts/apply-about-semantic-delta.mjs \
               --file "$TARGET" \
               --response "/tmp/$LOCALE.response.txt" \
-              --report "artifacts/about-semantic-delta-runs/$LOCALE.json"
+              --report "artifacts/about-semantic-delta-runs/$LOCALE.pass1.json"
+
+            {
+              cat <<EOF
+          זהו סבב אימות שני אחרי שסבב עריכה אחד כבר הוחל על $TARGET.
+          אל תניח שהסבב הראשון היה מלא. בדוק מחדש, אחד־אחד, את כל סעיפי artifacts/about-semantic-delta-2026-09-26-he.md מול docs/about/content/he.html ומול $TARGET במצבו הנוכחי.
+          חפש במיוחד שאריות של מסגור מטא־בדיוני; „נקרא כאן”; הצגת 2.9976% כהסתברות כללית; ניסוח Seer מטא או היררכיית סמכות שגויה; witnesses; „סימן” של מניין המרחק; וניסוחי צוות כגון „התוצאה נסגרה”.
+          אם נותר פער כלשהו, החזר רק החלפות נוספות בפורמט המדויק שהוגדר להלן. אם הכול תואם, החזר ALREADY_ALIGNED.
+          EOF
+              cat "/tmp/$LOCALE.prompt.md"
+            } > "/tmp/$LOCALE.pass2.prompt.md"
+
+            set +e
+            copilot --no-custom-instructions --no-ask-user --no-color \
+              --allow-tool='shell(cat:*),shell(grep:*),shell(find:*),shell(sed:*),shell(head:*),shell(tail:*),shell(wc:*),shell(ls:*),shell(pwd:*),shell(rg:*),shell(awk:*),shell(sort:*),shell(uniq:*),shell(git status:*),shell(git diff:*),shell(git show:*),shell(git rev-parse:*)' \
+              -s < "/tmp/$LOCALE.pass2.prompt.md" > "/tmp/$LOCALE.pass2.response.txt"
+            EXIT=$?
+            set -e
+            if [ "$EXIT" -ne 0 ]; then
+              echo "Second semantic-delta pass failed for $LOCALE with exit $EXIT" >&2
+              exit "$EXIT"
+            fi
+            cp "/tmp/$LOCALE.pass2.response.txt" "artifacts/about-semantic-delta-runs/$LOCALE.pass2.proposal.txt"
+
+            node scripts/apply-about-semantic-delta.mjs \
+              --file "$TARGET" \
+              --response "/tmp/$LOCALE.pass2.response.txt" \
+              --report "artifacts/about-semantic-delta-runs/$LOCALE.pass2.json"
+
+            LOCALE="$LOCALE" node <<'NODE'
+          const fs=require("node:fs");
+          const dir="artifacts/about-semantic-delta-runs";
+          const a=JSON.parse(fs.readFileSync(`${dir}/${process.env.LOCALE}.pass1.json`,"utf8"));
+          const b=JSON.parse(fs.readFileSync(`${dir}/${process.env.LOCALE}.pass2.json`,"utf8"));
+          const result={
+            verdict:(a.verdict==="CHANGED"||b.verdict==="CHANGED")?"CHANGED":"ALREADY_ALIGNED",
+            replacement_count:a.replacement_count+b.replacement_count,
+            touched_sections:[...new Set([...a.touched_sections,...b.touched_sections])],
+            passes:[a.verdict,b.verdict]
+          };
+          fs.writeFileSync(`${dir}/${process.env.LOCALE}.json`,JSON.stringify(result,null,2)+"\n");
+          NODE
 
             node --test test/about-page.test.js
             git diff --check
