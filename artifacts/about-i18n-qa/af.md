@@ -41,3 +41,11 @@ Hulle is nou eksplisiet in die locale teenwoordig.
 ## Status
 
 Semantiese en linguistiese QA van die teks is voltooi. Visuele/render-QA en finale PASS bly afsonderlike volgende fases.
+
+## Aanvullende herkontrole
+
+'n Tweede taalronde op die toegewyde QA-tak het drie oorblywende Nederlandse vorme opgespoor en herstel: `Ga naar datum soek`, `Koteletten` en `Maanden`. Die herkontrole het ook semantiese veroudering in `search.intro`, `settings.intro` en gebruikersgidsstappe 1, 4 en 5 gevind; dié tekste stem nou weer met die huidige funksionele kontrak ooreen.
+
+Die /about/-artikel is weer op gewone Engelse prosa nagegaan. Nie-kanonieke Engelse uitdrukkings soos `engine commit`, `length-bias`, `export`, `time zone`, `daylight saving time`, `technical claim`, `exact example`, `sign`, `context`, `combinatorial selection` en `upper bound` is in natuurlike Afrikaans vervang. Die astronomiese term is herskryf as 'n toposentriese oorgang oor die onderste tak van die plaaslike meridiaan; `Dag van die Tablette` is na die idiomatiese Bybelse `Dag van die Kliptafels` verander.
+
+Die teks-QA is dus weer skoon. Finale PASS bly geblokkeer totdat die werklik gerenderde desktop- en 390px-mobiele aansig nagegaan is.

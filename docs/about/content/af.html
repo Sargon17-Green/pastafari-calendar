@@ -128,27 +128,27 @@
   <h2>Hoe word die kalender bereken?</h2>
   <p>Ons noem die interne berekening hier die <strong>sous</strong>. In die middel daarvan staan die priemgetal</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
-  <p>Die proses sluit vyf invoerteller, 7 verborge druppels, 46 sigbare druppels, 6 bakke, veranderende bakvolgordes, 12 finale mengings, seal vir verskillende antwoorde, combinatorial selection, die bou van poorte, die kies van jare, die verdeling van kotelette, die kies van name, die bou van maande en die verwewing van maanddae in.</p>
+  <p>Die proses sluit vyf invoerteller, 7 verborge druppels, 46 sigbare druppels, 6 bakke, veranderende bakvolgordes, 12 finale mengings, seëls vir verskillende antwoorde, kombinatoriese seleksie, die bou van poorte, die kies van jare, die verdeling van kotelette, die kies van name, die bou van maande en die verwewing van maanddae in.</p>
   <p>Die finale opdatering is <strong>sinchroon</strong>: tydens elke menging word al ses nuwe waardes uit dieselfde ou toestand bereken, en eers daarna word die ses bakke saam vervang.</p>
   <p>Binne die 12 finale mengings is daar een besonder belangrike kanonieke besonderheid. As <code>S</code> die som van die ses ou bakke is en <code>r</code> die mengnommer, bereken die stelsel</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
   <p><code>R</code> is die <strong>gestoorde som</strong>. Sowel die keuse van die bakvolgorde as die interne opdatering van die menging gebruik <code>R</code>, nie die rou som <code>S</code> nie.</p>
   <p>Ou weergawes wat die rou som aan hierdie opdatering gevoer het, beskryf nie meer die huidige kanonieke semantiek nie. Voorbeelde wat uit die ou reël afgelei is, moet as verouderd beskou word totdat hulle weer nagegaan is.</p>
-  <p>Ná die mengings gaan die answer ring ook voort met die volgorde wat by sigbare druppel 46 lock is; dié volgorde moet nie outomaties deur die volgorde van die laaste menging vervang word nie.</p><hr>
+  <p>Ná die mengings gaan die antwoordring ook voort met die volgorde wat by sigbare druppel 46 vasgelê is; dié volgorde moet nie outomaties deur die volgorde van die laaste menging vervang word nie.</p><hr>
 </section>
 
 <section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
   <h2>Short Choice en Wide Choice</h2>
   <p>Vir relatief klein keuseruimte word <strong>Short Choice</strong> gebruik. Dit gebruik verwerpingssteekproefneming om eenvoudige modulo-sydigheid te vermy.</p>
   <p>Vir baie groot ruimtes word <strong>Wide Choice</strong> gebruik. Eienskappe wat die spesifikasie nie waarborg nie, moet nie daaraan toegeskryf word nie.</p>
-  <p>Wide Choice is nie dieselfde as om onafhanklike, eenvormig verdeelde base-<code>Q</code>-syfers te genereer totdat 'n index verkry word nie. Daaruit volg dus nie dat elke geldige keuse noodwendig dieselfde positiewe waarskynlikheid het nie. In groot genoeg ruimtes kan daar geldige keuse wees wat hierdie meganisme nooit kan bereik nie.</p>
+  <p>Wide Choice is nie dieselfde as om onafhanklike, eenvormig verdeelde basis-<code>Q</code>-syfers te genereer totdat 'n indeks verkry word nie. Daaruit volg dus nie dat elke geldige keuse noodwendig dieselfde positiewe waarskynlikheid het nie. In groot genoeg ruimtes kan daar geldige keuse wees wat hierdie meganisme nooit kan bereik nie.</p>
   <p>Die kalender self bly volkome deterministies. “Choice” is die naam van 'n algoritmiese stadium, nie 'n lukrake loting tydens gebruik nie.</p><hr>
 </section>
 
 <section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
   <h2>Strukturele atlas</h2>
   <p>Tot dusver het ons oor die reëls van die kalender gepraat. Die volgende getalle is 'n ander soort inligting: <strong>empiriese resultate</strong> uit 'n groot berekeningssteekproef.</p>
-  <p>Die atlas is met engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> gebou en het 4,096 aksiedae ingesluit; vir elkeen die jare 4990–5010; 86,016 jaarstrukture; 625,437 kotelette; 3,535,422 strukturele maande; meer as 356 miljoen aaneenlopende maandsegmente; en meer as 364 miljoen oorgange van dag <code>n</code> na dag <code>n+1</code> binne dieselfde maand.</p>
+  <p>Die atlas is met enjin-commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> gebou en het 4,096 aksiedae ingesluit; vir elkeen die jare 4990–5010; 86,016 jaarstrukture; 625,437 kotelette; 3,535,422 strukturele maande; meer as 356 miljoen aaneenlopende maandsegmente; en meer as 364 miljoen oorgange van dag <code>n</code> na dag <code>n+1</code> binne dieselfde maand.</p>
   <p>Hierdie getalle beskryf daardie korpus, nie kanonieke reëls nie.</p>
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Gemete data uit die strukturele atlas">
     <table class="about-table">
@@ -172,12 +172,12 @@
         <tr><td>Aandeel maandsegmente van een dag</td><td>97.482%</td></tr>
         <tr><td>Waarskynlikheid dat twee aangrensende dae in dieselfde maand is</td><td>2.9976%</td></tr>
         <tr><td>Gemiddelde aantal dae van ander maande tussen <code>n</code> en <code>n+1</code> van dieselfde maand</td><td>40.408</td></tr>
-        <tr><td>Gemiddelde span tussen die eerste en laaste verskyning van 'n maand</td><td>4,266.653 dae</td></tr>
+        <tr><td>Gemiddelde tydsafstand tussen die eerste en laaste verskyning van 'n maand</td><td>4,266.653 dae</td></tr>
       </tbody>
     </table>
   </div>
   <p>In die praktyk kan 'n maand van ongeveer honderd dae oor byna 'n hele Pastafariese jaar versprei wees.</p>
-  <p>Dieselfde atlas het ook 'n natuurlike lengte-bias rondom jaar 5000 gewys. In die steekproef was 'n “gewone” jaar gemiddeld ongeveer 4,262 dae lank. As jare volgens hul aantal dae geweeg word, styg die gemiddeld tot ongeveer 4,466 dae; jaar 5000 self was gemiddeld ongeveer 4,499 dae.</p>
+  <p>Dieselfde atlas het ook 'n natuurlike lengtevooroordeel rondom jaar 5000 gewys. In die steekproef was 'n “gewone” jaar gemiddeld ongeveer 4,262 dae lank. As jare volgens hul aantal dae geweeg word, styg die gemiddeld tot ongeveer 4,466 dae; jaar 5000 self was gemiddeld ongeveer 4,499 dae.</p>
   <p>Die rede is eenvoudig: jaar 5000 moet die aksiedag bevat. 'n Langer jaar het meer dae waarop dit die jaar kan wees wat die aksiedag bevat.</p>
   <p>Die verband tussen 'n eenheid se naam en sy lengte was ook baie swak in die steekproef. Dit bewys nie volledige wiskundige onafhanklikheid nie, maar die atlas gee geen praktiese sein dat die name ontwerp is om lengte te kodeer nie.</p>
   <p>Verder is die 86,016 jaarstrukture nie 86,016 volkome onafhanklike steekproef nie: tussen die begin- en eindpoort is daar net 24,786 verskillende intervalle. Aksiedae naby mekaar kan dieselfde jaarinterval kies en tog verskillende interne strukture lewer.</p>
@@ -207,33 +207,33 @@
     <li>“die hele maand” kan die set dae beteken wat aan daardie maand behoort, of die volle chronologiese span van die eerste tot die laaste verskyning;</li>
     <li>“die volgende jaar” is die volgende jaar in die kalender wat onder die gekose aksiedag gebou is.</li>
   </ul>
-  <p>Vir 'n besonder belangrike afspraak kan 'n absolute kronologiese dag of moment ook gestoor word. Die kalender sal nie aanstoot neem nie.</p><hr>
+  <p>Vir 'n besonder belangrike afspraak kan 'n absolute kronologiese dag of oomblik ook gestoor word. Die kalender sal nie aanstoot neem nie.</p><hr>
 </section>
 
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
-  <h2>Reis, gebeurtenisse en all-day</h2>
+  <h2>Reis, gebeurtenisse en heeldaggebeurtenisse</h2>
   <p>'n Gebeurtenis en die plaaslike etiket wat daarvoor vertoon word, is nie dieselfde ding nie. 'n Gebeurtenis met 'n bepaalde tyd moet aan 'n vaste kronologiese oomblik gekoppel word. Reis verskuif dit nie in tyd nie, maar die plaaslike Pastafariese datum wat vir dieselfde fisiese oomblik gewys word, kan verander omdat die definisie van “plaaslike dag” van ligging afhang.</p>
-  <p>By 'n <strong>all-day</strong>-gebeurtenis is die verskil nog groter. 'n Burgerlike heeldaggebeurtenis loop gewoonlik van middernag tot die volgende middernag; 'n Pastafariese heeldaggebeurtenis behoort van die plaaslike Pastafariese daggrens tot die volgende grens te loop. Gewoonlik is dit nie dieselfde moments nie.</p>
-  <p>Om 'n Pastafariese gebeurtenis blindelings as 'n burgerlike “heeldag”-gebeurtenis te export kan dus die betekenis verander. Vir presiese bewaring moet die kronologiese anker en die toepaslike konteks van ligging en daggrens gestoor word, nie bloot die <code>all-day</code>-flag nie.</p><hr>
+  <p>By 'n <strong>heeldaggebeurtenis</strong> is die verskil nog groter. 'n Burgerlike heeldaggebeurtenis loop gewoonlik van middernag tot die volgende middernag; 'n Pastafariese heeldaggebeurtenis behoort van die plaaslike Pastafariese daggrens tot die volgende grens te loop. Gewoonlik is dit nie dieselfde oomblikke nie.</p>
+  <p>Om 'n Pastafariese gebeurtenis blindelings as 'n burgerlike “heeldag”-gebeurtenis uit te voer kan dus die betekenis verander. Vir presiese bewaring moet die kronologiese anker en die toepaslike konteks van ligging en daggrens gestoor word, nie bloot die <code>all-day</code>-vlag nie.</p><hr>
 </section>
 
 <section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
   <h2>Wanneer verander die dag?</h2>
-  <p>Die plaaslike Pastafariese dag verander nie om middernag nie. Die grens daarvan word bepaal deur die <strong>topocentric lower meridian transit van die middelpunt van Venus deur die plaaslike meridiaan</strong>.</p>
-  <p>Dit is dus 'n plaaslike astronomiese gebeurtenis wat van ligging afhang. Die transit hoef nie om 00:00 te gebeur nie, word nie deur die burgerlike time zone bepaal nie, skuif nie bloot omdat daylight saving time begin of eindig nie, en vereis nie dat Venus met die blote oog sigbaar is nie.</p>
+  <p>Die plaaslike Pastafariese dag verander nie om middernag nie. Die grens daarvan word bepaal deur die <strong>toposentriese oorgang van die middelpunt van Venus oor die onderste tak van die plaaslike meridiaan</strong>.</p>
+  <p>Dit is dus 'n plaaslike astronomiese gebeurtenis wat van ligging afhang. Die oorgang hoef nie om 00:00 te gebeur nie, word nie deur die burgerlike tydsone bepaal nie, skuif nie bloot omdat dagligbesparingstyd begin of eindig nie, en vereis nie dat Venus met die blote oog sigbaar is nie.</p>
   <p>Dieselfde fisiese oomblik kan op twee plekke aan verskillende kante van hul plaaslike daggrense lê. As die stelsel nie 'n bruikbare gebruikersligging het nie, is die produk se verstek-terugvalplek <strong>Kisurra</strong>.</p><hr>
 </section>
 
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
   <h2>Gedrukte kalender en handberekening</h2>
   <p>Die Pastafariese kalender kan gedruk word; mens moet net aandui vir watter aksiedag dit bereken is. So 'n kalender wys die tydstruktuur vanuit daardie dag se oogpunt; as die aksiedag verander, kan 'n nuwe kalender nodig wees. Die drukker het dus steeds werk.</p>
-  <p>Omdat die spesifikasie volledig en deterministies is, kan alles ook met die hand bereken word: bereken die invoerteller, voer die 7 verborge en 46 sigbare druppels uit, opdatering die ses bakke, doen die 12 finale mengings, lewer die antwoorde, bou die poorte, kies die jare en kotelette, doen die combinatorial selection, kies die name en verweef dan die maande.</p>
+  <p>Omdat die spesifikasie volledig en deterministies is, kan alles ook met die hand bereken word: bereken die invoerteller, voer die 7 verborge en 46 sigbare druppels uit, opdatering die ses bakke, doen die 12 finale mengings, lewer die antwoorde, bou die poorte, kies die jare en kotelette, doen die kombinatoriese seleksie, kies die name en verweef dan die maande.</p>
   <p>In ruil daarvoor hoef niemand te onthou of Februarie 28 of 29 dae het nie.</p><hr>
 </section>
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>En wat is Seer?</h2>
-  <p>Langs die kanonieke implementering is daar 'n vinnige engine genaamd <strong>Pastafarian Calendar Seer</strong>. Seer is nie 'n bron van gesag nie: die korrekte datum word deur die Megillah en die kanonieke berekening bepaal. As Seer nie daarmee ooreenstem nie, lê die fout by Seer.</p>
+  <p>Langs die kanonieke implementering is daar 'n vinnige enjin genaamd <strong>Pastafarian Calendar Seer</strong>. Seer is nie 'n bron van gesag nie: die korrekte datum word deur die Megillah en die kanonieke berekening bepaal. As Seer nie daarmee ooreenstem nie, lê die fout by Seer.</p>
   <p>Die doel daarvan is om dieselfde query vinnig uit te voer en die resultate in 'n vorm te gee wat maklik in produkte geïntegreer kan word.</p>
   <p>In die direkte verification wat tydens die redigering van hierdie bladsy gedoen is, het Seer onder meer `date`- en `now`-navrae, `batch`, dagreeks, omgekeerde omskakeling van 'n Pastafariese datum na teikendag, opvraging van die jaarstruktuur, bepaling van die aktiewe aksiedag, Node-API, blaaier-/HTTP-kliënt, CLI, HTTP v1-diens, OpenAPI 3.1 contract, native implementerings en verdeling package, asook geverifieerde houerontplooiing gedek.</p>
   <p>Die ou bewering dat Seer geen openbare API het nie, is nie meer korrek nie. Daar is nou 'n duidelike, stabiele HTTP v1-kontrak met eindpunte vir `date`, `range`, `batch`, `year`, `reverse`, aksiedag, metadata, locales en status.</p>
@@ -244,7 +244,7 @@
 </section>
 
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
-  <h2>Oorsprong, Stigtingsdag en Dag van die Tablette</h2>
+  <h2>Oorsprong, Stigtingsdag en Dag van die Kliptafels</h2>
   <p>Hier is dit besonder belangrik om die kanonieke tydanker duidelik van die webwerf se verhaal te onderskei.</p>
 
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
@@ -252,8 +252,8 @@
     <p>Die stelsel het een vaste verwysingsdag genaamd <strong>Stigtingsdag</strong>. In die proleptiese Gregoriaanse kalender is dit <strong>22 Desember 41,222 v.C.</strong>.</p>
     <p>Stigtingsdag is nie “die begin van tyd” nie; dit is 'n berekeningsanker.</p>
     <p>Die nommering van dae rondom dit gebruik positiewe onewe/ewe getalle: Stigtingsdag=1; latere dae=3, 5, …; na die verlede toe is die voorafgaande dag=2, daarna 4, 6, … . So word albei kante van die anchor in hierdie teller gekodeer sonder negatiewe day number.</p>
-    <p>Die tweede anchor is die <strong>Dag van die Tablette</strong>: <strong>15 Junie 763 v.C. in die proleptiese Juliaanse kalender</strong>, oftewel <strong>7 Junie 763 v.C. in die proleptiese Gregoriaanse kalender</strong>.</p>
-    <p>Die presiese afstand van Stigtingsdag tot die Dag van die Tablette is</p>
+    <p>Die tweede anchor is die <strong>Dag van die Kliptafels</strong>: <strong>15 Junie 763 v.C. in die proleptiese Juliaanse kalender</strong>, oftewel <strong>7 Junie 763 v.C. in die proleptiese Gregoriaanse kalender</strong>.</p>
+    <p>Die presiese afstand van Stigtingsdag tot die Dag van die Kliptafels is</p>
     <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
     <p>dae.</p>
     <p>Dit is vaste anchors op die tydlyn, maar die Pastafariese datum wat daarvoor vertoon word, hang steeds af van die aksiedag waarvandaan gevra word.</p>
@@ -262,7 +262,7 @@
   <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
     <h3>Die webwerf se verhaal</h3>
     <p>In die redaksionele verhaal van die webwerf word die kalender beskryf as deel van die skepping en as 'n stelsel wat die mensdom gebruik het sonder om dit ten volle te verstaan, totdat dit in die moderne era weer oorhandig is.</p>
-    <p>Dit is die webwerf se verhaal; nie elke narratiewe besonderheid daarvan moet voorgehou word asof dit 'n uitdruklike technical claim van die Megillah is nie.</p>
+    <p>Dit is die webwerf se verhaal; nie elke narratiewe besonderheid daarvan moet voorgehou word asof dit 'n uitdruklike tegniese stelling van die Megillah is nie.</p>
     <p>Die gebeurtenis van heroorhandiging self is 'n vaste historiese gebeurtenis. Die <strong>Pastafariese datum</strong> daarvan behoort eerder dinamies onder die huidige aksiedag vertoon te word as om vir altyd as een datum permanent vaslê te word.</p><hr>
   </section>
 </section>
@@ -292,8 +292,8 @@
     </table>
   </div>
 
-  <p>As die aksiedag onbekend is, verander die prentjie. Dieselfde vyf waardes kan onder verskillende aksiedae verskyn, en daar is exact example waar dieselfde volledige datum op verskillende afstande van <code>c</code> voorkom.</p>
-  <p>In jaar 5000 word selfs die sign van daardie afstand nie altyd deur die vyf waardes bepaal nie: dieselfde volledige datum kan in een context voor die aksiedag en in 'n ander daarna wees.</p>
+  <p>As die aksiedag onbekend is, verander die prentjie. Dieselfde vyf waardes kan onder verskillende aksiedae verskyn, en daar is presiese voorbeelde waar dieselfde volledige datum op verskillende afstande van <code>c</code> voorkom.</p>
+  <p>In jaar 5000 word selfs die teken van daardie afstand nie altyd deur die vyf waardes bepaal nie: dieselfde volledige datum kan in een konteks voor die aksiedag en in 'n ander daarna wees.</p>
   <p>'n Volledige Pastafariese datum is dus nie 'n absolute adres op die tydlyn as ons nie weet onder watter <code>c</code> dit bereken is nie.</p>
 
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
@@ -314,7 +314,7 @@
   <h2>Vir gevorderde gebruikers: hoeveel geskiedenis bewaar die sous?</h2>
   <p>Die sous lyk soos 'n baie aggressiewe mengmeganisme, maar algebraïese navorsing wys dat dit aansienlik meer inligting bewaar as wat die voorkoms suggereer. Dit is 'n navorsingsresultaat wat uit die spesifikasie afgelei is, nie 'n nuwe kalenderreël nie.</p>
   <p>In die sigbare stadiums 3–46, op die toepaslike asimptotiese tak, is generiese injektiwiteit vasgestel: in die generiese geval bewaar die toestand genoeg inligting om die toepaslike invoergeskiedenis en bakvolgorde te rekonstrueer.</p>
-  <p>Inligting verdwyn ook nie onmiddellik in die 12 finale mengings nie. Vir die eerste vyf mengings ná sigbare druppel 46 is generiese omkeerbaarheid op die toepaslike kanonieke unie sonder bykomende bykomende inligting vasgestel; vir die res is sterk konstruktiewe upper bound bekend vir hoeveel bykomende inligting genoeg is vir rekonstruksie.</p>
+  <p>Inligting verdwyn ook nie onmiddellik in die 12 finale mengings nie. Vir die eerste vyf mengings ná sigbare druppel 46 is generiese omkeerbaarheid op die toepaslike kanonieke unie sonder bykomende inligting vasgestel; vir die res is sterk konstruktiewe boonste grense bekend vir die hoeveelheid bykomende inligting wat vir rekonstruksie voldoende is.</p>
   <p>Die vraag of <strong>slegs die finale ses bakke</strong> altyd in die generiese sin voldoende is, bly oop.</p>
   <p>Sommige resultate is simbolies bewys, ander is met eindige presiese rekenkundige kontrole afgesluit. Simboliese versterking het die berekeningskern waarop vertrou moet word aansienlik kleiner gemaak, maar dit nie heeltemal verwyder nie.</p>
   <p>Ruimtes wat aanvanklik gelyk het of dit 'n enorme aantal paaie sou verg om te deursoek, is tot baie kleiner eindige strukture verminder, waaronder outomate met 180 en 9 toestande en simmetrieë van die ses bakke.</p>
@@ -325,7 +325,7 @@
   <h2>Wat is die Pastafariese kalender dan werklik?</h2>
   <p>Dit is 'n deterministiese kalender waarin die datum nie bloot 'n funksie van die teikendag is nie, maar 'n <strong>gesamentlike funksie van die aksiedag en die gevraagde dag</strong>.</p>
   <p>Elke datum het presies vyf velde. Die hede is uit sy eie oogpunt altyd in jaar 5000, maar jaar 5000 self skuif saam met die aksiedag. Jare kan baie lank wees, kotelette is aaneenlopend, maande nie noodwendig nie, en daar is geen kanonieke weekstelsel nie.</p>
-  <p>Dag <code>n+1</code> van 'n maand hoef nie môre te wees nie. Dieselfde kronologiese dag kan môre 'n ander Pastafariese etiket kry. Dieselfde fisiese oomblik kan op twee plekke tot twee verskillende plaaslike Pastafari-dag behoort. 'n All-day event hoef nie van middernag tot middernag te duur nie. En 'n jaarlikse verjaardag is eers 'n soekprobleem en daarna 'n kalenderprobleem.</p>
+  <p>Dag <code>n+1</code> van 'n maand hoef nie môre te wees nie. Dieselfde kronologiese dag kan môre 'n ander Pastafariese etiket kry. Dieselfde fisiese oomblik kan op twee plekke tot twee verskillende plaaslike Pastafari-dag behoort. 'n Heeldaggebeurtenis hoef nie van middernag tot middernag te duur nie. En 'n jaarlikse verjaardag is eers 'n soekprobleem en daarna 'n kalenderprobleem.</p>
   <p>Maar as die aksiedag en die gevraagde dag bekend is, is daar geen dubbelsinnigheid nie: daar is presies een korrekte antwoord.</p>
   <p>Uiteindelik hoef 'n kalender ook nie meer as dit te doen nie.</p>
 </section>
