@@ -289,7 +289,7 @@
   <ul>
     <li>date queries and a “now” calculation;</li>
     <li>batch queries and day ranges;</li>
-    <li>reverse conversion from a Pastafari date to a target day;</li>
+    <li>reverse conversion from a Pastafari date to a queried day;</li>
     <li>year-structure retrieval and active-day-of-working resolution;</li>
     <li>a Node API, a browser/HTTP client, and a CLI;</li>
     <li>an HTTP v1 service and an OpenAPI 3.1 contract;</li>
@@ -334,7 +334,7 @@
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{cutlet name},\text{day in cutlet})</code></pre>
   <p>identifies at most one day. So does</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{month name},\text{day in month})</code></pre>
-  <p>A full date therefore identifies the target day uniquely when the day of working is known.</p>
+  <p>A full date therefore identifies the queried day uniquely when the day of working is known.</p>
   <p>Some coarse upper bounds on the number of candidates within a known year are:</p>
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Reverse-conversion candidate bounds">
     <table class="about-table">
@@ -385,7 +385,7 @@
 
 <section class="about-section" id="summary" data-toc-section data-toc-level="2">
   <h2>So what is the Pastafari Calendar, really?</h2>
-  <p>It is a deterministic calendar in which a date is not a function of a target day alone, but of the <strong>day of working and the queried day together</strong>.</p>
+  <p>It is a deterministic calendar in which a date is not a function of a queried day alone, but of the <strong>day of working and the queried day together</strong>.</p>
   <p>A date has exactly five fields. The self-present is always in year 5000, although year 5000 itself changes with the day of working. Years can be extremely long; cutlets are continuous; months need not be continuous at all; and there is no canonical week system.</p>
   <p>Day <code>n+1</code> in a month is not necessarily tomorrow. The same chronological day may have a different Pastafari label tomorrow. The same physical instant may fall in different local Pastafari days at two different locations. An all-day event need not run from midnight to midnight. And an annual birthday is a search problem before it is a calendar problem.</p>
   <p>But once the day of working and the queried day are both given, there is no ambiguity: there is one exact answer.</p>
