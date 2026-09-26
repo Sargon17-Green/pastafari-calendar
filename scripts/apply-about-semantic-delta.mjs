@@ -102,3 +102,4 @@ await writeFile(reportFile, JSON.stringify({
   replacement_count: parsed.replacements.length,
   touched_sections: [...new Set(touched)],
 }, null, 2) + "\n");
+process.stdout.write(parsed.verdict + "\n");
