@@ -154,6 +154,12 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   assert.match(app, /addEventListener\("load", registerServiceWorker, \{ once: true \}\)/);
 });
 
+test("direct locale browser audit injects axe before navigation", async () => {
+  const source = await readFile(path.join(ROOT, "scripts", "run-i18n-browser-audit.mjs"), "utf8");
+  const directAudit = source.match(/async function auditDirectLocale[\\s\\S]*?const tracker = installBrowserEventCollector\\(page\\);/)?.[0] ?? "";
+  assert.match(directAudit, /const page = await context\\.newPage\\(\\);\\s*await page\\.addInitScript\\(\\{ content: axe\\.source \\}\\);/);
+});
+
 test("registry contains only dynamic locale imports", async () => {
   const source = await readFile(path.join(DOCS, "i18n", "registry.js"), "utf8");
   assert.doesNotMatch(source, /^import\s+\w+\s+from\s+["']\.\/locales\//m);
