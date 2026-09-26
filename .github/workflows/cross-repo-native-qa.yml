@@ -53,6 +53,7 @@ jobs:
           REVIEW_ID="$REVIEW_ID" node <<'NODE'
           const fs=require("node:fs");
           const cp=require("node:child_process");
+          const path=require("node:path");
           const inv=JSON.parse(fs.readFileSync("artifacts/cross-repo-native-qa/inventory.json","utf8"));
           const u=inv.units.find(x=>x.review_id===process.env.REVIEW_ID);
           if(!u) throw new Error("Unknown review_id "+process.env.REVIEW_ID);
@@ -75,11 +76,9 @@ jobs:
             }:null,
             repo2:{repository:"Sargon17-Green/Pastafarian-Calendar",reference_main_sha:inv.source_heads.Pastafarian_Calendar.reference_main_sha,branches:[]}
           };
-          fs.rmSync("/tmp/pastafari-cross-repo",{recursive:true,force:true});
-          fs.mkdirSync("/tmp/pastafari-cross-repo",{recursive:true});
           for(let i=0;i<u.Pastafarian_Calendar.branches.length;i++){
             const b=u.Pastafarian_Calendar.branches[i];
-            const dest="/tmp/pastafari-cross-repo/repo2-"+i;
+            const dest=path.resolve(dir,"repo2-"+i);
             cp.execFileSync("git",["clone","--depth","1","--branch",b.name,"https://github.com/Sargon17-Green/Pastafarian-Calendar.git",dest],{stdio:"inherit"});
             const got=cp.execFileSync("git",["-C",dest,"rev-parse","HEAD"],{encoding:"utf8"}).trim();
             if(got!==b.head_sha) throw new Error("Inventory stale for "+b.name+": expected "+b.head_sha+" got "+got);
@@ -121,6 +120,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
           REVIEW_ID: ${{ steps.unit.outputs.review_id }}
+          LOCALE_TAG: ${{ steps.unit.outputs.locale_tag }}
         run: |
           OUT="artifacts/cross-repo-native-qa/runtime"
           copilot --no-custom-instructions --no-ask-user --no-color --share="$OUT/translator-session.md" -s < /tmp/translate-request.md > "$OUT/prompt.md"
@@ -128,6 +128,8 @@ jobs:
           test -s "$OUT/translator-session.md"
           grep -q 'NATIVE_QA_RESULT: PASS' "$OUT/prompt.md"
           grep -q 'NATIVE_QA_RESULT: FAIL' "$OUT/prompt.md"
+          grep -Fxq -- "REVIEW_ID=$REVIEW_ID" "$OUT/prompt.md"
+          grep -Fxq -- "LOCALE_TAG=$LOCALE_TAG" "$OUT/prompt.md"
 
       - name: Run the isolated native-language cross-repository reviewer
         shell: bash
@@ -175,7 +177,8 @@ jobs:
           const statusDir="artifacts/cross-repo-native-qa/status"; fs.mkdirSync(statusDir,{recursive:true});
           fs.writeFileSync(path.join(statusDir,id+".json"),JSON.stringify({
             review_id:id,run_id:run,verdict,
-            same_language_session:verdict==="PASS"?"PASS":"FAIL",
+            same_language_session:"PASS",
+            linguistic_result:verdict,
             repo1_head:manifest.repo1?.reviewed_head||null,
             repo2_branches:manifest.repo2.branches.map(b=>({name:b.name,head_sha:b.head_sha})),
             rendered_desktop:"OPEN",rendered_mobile_390:"OPEN",accessibility:"OPEN",
@@ -185,11 +188,11 @@ jobs:
           const inv=JSON.parse(fs.readFileSync("artifacts/cross-repo-native-qa/inventory.json","utf8"));
           const esc=s=>String(s??"").replace(/\|/g,"\\|").replace(/\n/g," ");
           let md="# Cross-repository native QA ledger\n\n";
-          md+=`Inventory: **${inv.counts.qa_review_units} QA units / ${inv.counts.human_languages_unique} unique human languages**. A native reviewer PASS advances only the linguistic gate; rendered/accessibility/PWA/switching/CI gates remain separate.\n\n`;
-          md+="| review_id | self-name | site semantic state | native same-language | repo2 human-facing text | rendered desktop | rendered 390px | a11y | PWA/offline | switching | CI | final |\n|---|---|---|---|---|---|---|---|---|---|---|---|\n";
+          md+=`Inventory: **${inv.counts.qa_review_units} QA units / ${inv.counts.human_languages_unique} unique human languages**. A valid same-language session is recorded independently from its linguistic verdict. Only a clean linguistic PASS can advance the linguistic gate; rendered/accessibility/PWA/switching/CI gates remain separate.\n\n`;
+          md+="| review_id | self-name | site semantic state | native same-language session | native linguistic result | repo2 human-facing text | rendered desktop | rendered 390px | a11y | PWA/offline | switching | CI | final |\n|---|---|---|---|---|---|---|---|---|---|---|---|---|\n";
           for(const u of inv.units){
             let st=null; const sp=`artifacts/cross-repo-native-qa/status/${u.review_id}.json`; if(fs.existsSync(sp)) st=JSON.parse(fs.readFileSync(sp,"utf8"));
-            md+=`| ${esc(u.review_id)} | ${esc(u.self_name)} | ${esc(u.pastafari_calendar.status)} | ${st?st.same_language_session:"not started"} | ${u.Pastafarian_Calendar.branches.length?(st?"reviewed":"not reviewed"):"n/a"} | ${st?st.rendered_desktop:"open"} | ${st?st.rendered_mobile_390:"open"} | ${st?st.accessibility:"open"} | ${st?st.pwa_offline:"open"} | ${st?st.language_switching:"open"} | open | NOT PASS |\n`;
+            md+=`| ${esc(u.review_id)} | ${esc(u.self_name)} | ${esc(u.pastafari_calendar.status)} | ${st?st.same_language_session:"not started"} | ${st?st.linguistic_result:"not started"} | ${u.Pastafarian_Calendar.branches.length?(st?"reviewed":"not reviewed"):"n/a"} | ${st?st.rendered_desktop:"open"} | ${st?st.rendered_mobile_390:"open"} | ${st?st.accessibility:"open"} | ${st?st.pwa_offline:"open"} | ${st?st.language_switching:"open"} | open | NOT PASS |\n`;
           }
           fs.writeFileSync("artifacts/cross-repo-native-qa-ledger.md",md);
           NODE
