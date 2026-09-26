@@ -71,17 +71,24 @@ const originalIds = idsIn(original);
 assert.deepEqual(originalIds, EXPECTED_IDS, "stable-ID contract is already broken before applying delta");
 const parsed = parseResponse(await readFile(responseFile, "utf8"));
 const touched = [];
+const skipped = [];
+let appliedCount = 0;
 
 for (const [index, replacement] of parsed.replacements.entries()) {
   assert.ok(replacement.oldText.length > 0, "replacement " + (index + 1) + ": OLD is empty");
   assert.ok(!replacement.oldText.includes("\n"), "replacement " + (index + 1) + ": OLD must be exactly one physical line");
   assert.ok(!replacement.newText.includes("\n"), "replacement " + (index + 1) + ": NEW must be exactly one physical line");
   const count = html.split(replacement.oldText).length - 1;
-  assert.equal(count, 1, "replacement " + (index + 1) + ": OLD must occur exactly once; got " + count);
+  if (count !== 1) {
+    skipped.push({ index: index + 1, reason: "old-occurrence-count", count });
+    continue;
+  }
   const start = html.indexOf(replacement.oldText);
   const section = sectionAt(html, start);
-  assert.ok(section, "replacement " + (index + 1) + ": no containing stable section");
-  assert.ok(ALLOWED_IDS.has(section), "replacement " + (index + 1) + ": section " + section + " is outside semantic-delta scope");
+  if (!section || !ALLOWED_IDS.has(section)) {
+    skipped.push({ index: index + 1, reason: section ? "outside-semantic-delta-scope" : "no-containing-stable-section", section });
+    continue;
+  }
   assert.doesNotMatch(replacement.newText, /<(?:script|iframe|object)\b/i, "replacement " + (index + 1) + ": active HTML is forbidden");
   for (const stableId of EXPECTED_IDS) {
     assert.ok(!replacement.oldText.includes('id="' + stableId + '"'), "replacement " + (index + 1) + ": OLD must not include stable-ID wrapper");
@@ -89,17 +96,24 @@ for (const [index, replacement] of parsed.replacements.entries()) {
   }
   html = html.replace(replacement.oldText, replacement.newText);
   touched.push(section);
+  appliedCount += 1;
 }
 
 if (parsed.verdict === "ALREADY_ALIGNED") assert.equal(html, original, "ALREADY_ALIGNED unexpectedly changed content");
-if (parsed.verdict === "CHANGED") assert.notEqual(html, original, "CHANGED produced no content difference");
+if (appliedCount > 0) assert.notEqual(html, original, "applied replacements produced no content difference");
 assert.deepEqual(idsIn(html), originalIds, "stable-ID contract changed during delta");
 assert.doesNotMatch(html, /<(?:script|iframe|object)\b/i, "article contains active HTML after delta");
 
 await writeFile(file, html);
+const effectiveVerdict = parsed.verdict === "ALREADY_ALIGNED"
+  ? "ALREADY_ALIGNED"
+  : appliedCount > 0 ? "CHANGED" : "RETRY_REQUIRED";
 await writeFile(reportFile, JSON.stringify({
-  verdict: parsed.verdict,
-  replacement_count: parsed.replacements.length,
+  verdict: effectiveVerdict,
+  proposed_replacement_count: parsed.replacements.length,
+  replacement_count: appliedCount,
+  skipped_replacement_count: skipped.length,
+  skipped_replacements: skipped,
   touched_sections: [...new Set(touched)],
 }, null, 2) + "\n");
-process.stdout.write(parsed.verdict + "\n");
+process.stdout.write(effectiveVerdict + "\n");
