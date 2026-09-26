@@ -99,61 +99,66 @@ jobs:
           אין להוסיף עברית או שפה זרה שאינה ליטרל טכני מחייב. אל תחזיר שום טקסט מחוץ לפורמט.
           EOF
 
-            set +e
-            copilot --no-custom-instructions --no-ask-user --no-color \
-              --allow-tool='shell(cat:*),shell(grep:*),shell(find:*),shell(sed:*),shell(head:*),shell(tail:*),shell(wc:*),shell(ls:*),shell(pwd:*),shell(rg:*),shell(awk:*),shell(sort:*),shell(uniq:*),shell(git status:*),shell(git diff:*),shell(git show:*),shell(git rev-parse:*)' \
-              -s < "/tmp/$LOCALE.prompt.md" > "/tmp/$LOCALE.response.txt"
-            EXIT=$?
-            set -e
-            if [ "$EXIT" -ne 0 ]; then
-              echo "Copilot failed for $LOCALE with exit $EXIT" >&2
-              exit "$EXIT"
-            fi
-
-            cp "/tmp/$LOCALE.response.txt" "artifacts/about-semantic-delta-runs/$LOCALE.pass1.proposal.txt"
-
-            node scripts/apply-about-semantic-delta.mjs \
-              --file "$TARGET" \
-              --response "/tmp/$LOCALE.response.txt" \
-              --report "artifacts/about-semantic-delta-runs/$LOCALE.pass1.json"
-
-            {
-              cat <<EOF
-          זהו סבב אימות שני אחרי שסבב עריכה אחד כבר הוחל על $TARGET.
-          אל תניח שהסבב הראשון היה מלא. בדוק מחדש, אחד־אחד, את כל סעיפי artifacts/about-semantic-delta-2026-09-26-he.md מול docs/about/content/he.html ומול $TARGET במצבו הנוכחי.
-          חפש במיוחד שאריות של מסגור מטא־בדיוני; „נקרא כאן”; הצגת 2.9976% כהסתברות כללית; ניסוח Seer מטא או היררכיית סמכות שגויה; witnesses; „סימן” של מניין המרחק; וניסוחי צוות כגון „התוצאה נסגרה”.
-          אם נותר פער כלשהו, החזר רק החלפות נוספות בפורמט המדויק שהוגדר להלן. אם הכול תואם, החזר ALREADY_ALIGNED.
+            FINAL_ALIGNED=0
+            for PASS in 1 2 3; do
+              if [ "$PASS" -eq 1 ]; then
+                cp "/tmp/$LOCALE.prompt.md" "/tmp/$LOCALE.pass$PASS.prompt.md"
+              else
+                {
+                  cat <<EOF
+          זהו סבב אימות חוזר אחרי שכבר הוחלו שינויים על $TARGET.
+          אל תניח שהסבבים הקודמים היו מלאים. קרא מחדש את הקובץ במצבו הנוכחי ובדוק אחד־אחד את כל סעיפי הדלתא מול המאסטר העברי.
+          חפש במיוחד: מסגור מטא־בדיוני; „נקרא כאן”; הצגת 2.9976% כהסתברות כללית; ניסוח פגישות שמרמז על רגע מדויק; ניסוח all-day לא טבעי; ניסוח Seer מטא או היררכיית סמכות שגויה; witnesses; „סימן” של מניין המרחק; שגיאת התאמה דקדוקית בזוגות; וניסוחי צוות כגון „התוצאה נסגרה”.
+          אם נותר פער כלשהו, החזר CHANGED עם החלפות מדויקות נוספות. רק אם כל הדלתא כבר מיושמת במלואה החזר ALREADY_ALIGNED.
           EOF
-              cat "/tmp/$LOCALE.prompt.md"
-            } > "/tmp/$LOCALE.pass2.prompt.md"
+                  cat "/tmp/$LOCALE.prompt.md"
+                } > "/tmp/$LOCALE.pass$PASS.prompt.md"
+              fi
 
-            set +e
-            copilot --no-custom-instructions --no-ask-user --no-color \
-              --allow-tool='shell(cat:*),shell(grep:*),shell(find:*),shell(sed:*),shell(head:*),shell(tail:*),shell(wc:*),shell(ls:*),shell(pwd:*),shell(rg:*),shell(awk:*),shell(sort:*),shell(uniq:*),shell(git status:*),shell(git diff:*),shell(git show:*),shell(git rev-parse:*)' \
-              -s < "/tmp/$LOCALE.pass2.prompt.md" > "/tmp/$LOCALE.pass2.response.txt"
-            EXIT=$?
-            set -e
-            if [ "$EXIT" -ne 0 ]; then
-              echo "Second semantic-delta pass failed for $LOCALE with exit $EXIT" >&2
-              exit "$EXIT"
+              set +e
+              copilot --no-custom-instructions --no-ask-user --no-color \
+                --allow-tool='shell(cat:*),shell(grep:*),shell(find:*),shell(sed:*),shell(head:*),shell(tail:*),shell(wc:*),shell(ls:*),shell(pwd:*),shell(rg:*),shell(awk:*),shell(sort:*),shell(uniq:*),shell(git status:*),shell(git diff:*),shell(git show:*),shell(git rev-parse:*)' \
+                -s < "/tmp/$LOCALE.pass$PASS.prompt.md" > "/tmp/$LOCALE.pass$PASS.response.txt"
+              EXIT=$?
+              set -e
+              if [ "$EXIT" -ne 0 ]; then
+                echo "Semantic-delta pass $PASS failed for $LOCALE with exit $EXIT" >&2
+                exit "$EXIT"
+              fi
+
+              cp "/tmp/$LOCALE.pass$PASS.response.txt" "artifacts/about-semantic-delta-runs/$LOCALE.pass$PASS.proposal.txt"
+              PASS_VERDICT="$(node scripts/apply-about-semantic-delta.mjs \
+                --file "$TARGET" \
+                --response "/tmp/$LOCALE.pass$PASS.response.txt" \
+                --report "artifacts/about-semantic-delta-runs/$LOCALE.pass$PASS.json")"
+              echo "$LOCALE pass $PASS => $PASS_VERDICT"
+              if [ "$PASS_VERDICT" = "ALREADY_ALIGNED" ]; then
+                FINAL_ALIGNED=1
+                break
+              fi
+            done
+
+            if [ "$FINAL_ALIGNED" -ne 1 ]; then
+              echo "$LOCALE did not reach ALREADY_ALIGNED within three semantic-delta passes" >&2
+              exit 1
             fi
-            cp "/tmp/$LOCALE.pass2.response.txt" "artifacts/about-semantic-delta-runs/$LOCALE.pass2.proposal.txt"
-
-            node scripts/apply-about-semantic-delta.mjs \
-              --file "$TARGET" \
-              --response "/tmp/$LOCALE.pass2.response.txt" \
-              --report "artifacts/about-semantic-delta-runs/$LOCALE.pass2.json"
 
             LOCALE="$LOCALE" node <<'NODE'
           const fs=require("node:fs");
           const dir="artifacts/about-semantic-delta-runs";
-          const a=JSON.parse(fs.readFileSync(`${dir}/${process.env.LOCALE}.pass1.json`,"utf8"));
-          const b=JSON.parse(fs.readFileSync(`${dir}/${process.env.LOCALE}.pass2.json`,"utf8"));
+          const reports=[];
+          for(let pass=1;pass<=3;pass++){
+            const path=`${dir}/${process.env.LOCALE}.pass${pass}.json`;
+            if(fs.existsSync(path)) reports.push(JSON.parse(fs.readFileSync(path,"utf8")));
+          }
+          if(!reports.length) throw new Error("No semantic-delta reports");
+          if(reports.at(-1).verdict!=="ALREADY_ALIGNED") throw new Error("Final semantic-delta pass is not ALREADY_ALIGNED");
           const result={
-            verdict:(a.verdict==="CHANGED"||b.verdict==="CHANGED")?"CHANGED":"ALREADY_ALIGNED",
-            replacement_count:a.replacement_count+b.replacement_count,
-            touched_sections:[...new Set([...a.touched_sections,...b.touched_sections])],
-            passes:[a.verdict,b.verdict]
+            verdict:reports.some((report)=>report.verdict==="CHANGED")?"CHANGED":"ALREADY_ALIGNED",
+            final_verified_aligned:true,
+            replacement_count:reports.reduce((sum,report)=>sum+report.replacement_count,0),
+            touched_sections:[...new Set(reports.flatMap((report)=>report.touched_sections))],
+            passes:reports.map((report)=>report.verdict)
           };
           fs.writeFileSync(`${dir}/${process.env.LOCALE}.json`,JSON.stringify(result,null,2)+"\n");
           NODE
