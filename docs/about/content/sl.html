@@ -55,7 +55,7 @@
   <h2>Leta in vrata</h2>
   <p>Pastafarijansko leto lahko traja</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ do }5778</code></pre>
-  <p>dni. To so canonical meje sistema, ne empirična povprečja.</p>
+  <p>dni. To so kanoničen meje sistema, ne empirična povprečja.</p>
   <p>Leto je zato lahko krajše od sončnega leta ali daljše od petnajstih sončnih let. Meje let nastajajo iz sistema <strong>vrat</strong>; iz istega sistema izvirajo tudi meje kotletov.</p>
   <p>Konec leta ni nujno poravnan z letnim časom, enim obhodom Zemlje okoli Sonca, luninim ciklom ali praktično željo, da bi se leto že vendar končalo.</p><hr>
 </section>
@@ -66,7 +66,7 @@
   <p>Če je danes 250. dan kotleta, bo jutri 251. dan istega kotleta, razen če je danes njegov zadnji dan. Meje kotletov so vrata, vsak kotlet pa traja najmanj</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
   <p>dni.</p>
-  <p>Sistem ima 17 canonical imen kotletov, isto ime pa se v enem letu ne ponovi. Ime ne določa niti dolžine niti položaja kotleta.</p><hr>
+  <p>Sistem ima 17 kanoničen imen kotletov, isto ime pa se v enem letu ne ponovi. Ime ne določa niti dolžine niti položaja kotleta.</p><hr>
 </section>
 
 <section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
@@ -102,14 +102,14 @@
 
 <section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
   <h2>Tednov ni</h2>
-  <p>Trenutna canonical specification <strong>ne določa tedenskega sistema</strong>. Ni canonical sedemdnevne enote, ni pastafarijanskih imen za dneve v tednu in ni pravila, po katerem bi bila dva dneva »isti dan v tednu«.</p>
+  <p>Trenutna kanonična specifikacija <strong>ne določa tedenskega sistema</strong>. Ni kanoničen sedemdnevne enote, ni pastafarijanskih imen za dneve v tednu in ni pravila, po katerem bi bila dva dneva »isti dan v tednu«.</p>
   <p>Seveda lahko od zunaj dodamo civilni tedenski sistem; preprosto ni del pastafarijanskega datuma.</p><hr>
 </section>
 
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
   <h2>Imena</h2>
-  <p>Obstaja 17 canonical imen kotletov in 47 canonical imen mesecev. Znotraj enega leta se vsako ime v svoji skupini pojavi največ enkrat.</p>
-  <p>Identiteta imena je canonical in semantična; ni rezultat glasovanja med različnimi črkovanji, prevodi ali implementations. Pri pomenu imen ima najvišjo avtoriteto hebrejski Megillah; prevodi in transliteracije so samo plasti prikaza.</p>
+  <p>Obstaja 17 kanoničen imen kotletov in 47 kanoničen imen mesecev. Znotraj enega leta se vsako ime v svoji skupini pojavi največ enkrat.</p>
+  <p>Identiteta imena je kanoničen in semantična; ni rezultat glasovanja med različnimi črkovanji, prevodi ali izvedbe. Pri pomenu imen ima najvišjo avtoriteto hebrejski Megillah; prevodi in transliteracije so samo plasti prikaza.</p>
   <p>Ime tudi ni skrita koda za dolžino. Ime določenega kotleta ali meseca samo po sebi te enote ne naredi daljše ali krajše.</p><hr>
 </section>
 
@@ -128,28 +128,28 @@
   <h2>Kako se koledar izračuna?</h2>
   <p>Notranji izračun tukaj imenujemo <strong>omaka</strong>. V njegovem središču je praštevilo</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
-  <p>Postopek vključuje pet input counter, 7 skritih kapljic, 46 vidnih kapljic, 6 skled, spreminjajoče se vrstne rede skled, 12 končnih mešanj, seal za različne odgovore, combinatorial selection, gradnjo vrat, izbiro let, razdelitev kotletov, izbiro imen, gradnjo mesecev in prepletanje dni mesecev.</p>
-  <p>Končni update so <strong>sinhroni</strong>: pri vsakem mešanju se vseh šest novih vrednosti izračuna iz istega starega state, šele nato se vseh šest skled zamenja hkrati.</p>
-  <p>V 12 končnih mešanjih je ena posebej pomembna canonical podrobnost. Če je <code>S</code> vsota šestih starih skled, <code>r</code> pa številka mešanja, sistem izračuna</p>
+  <p>Postopek vključuje pet vhodni števec, 7 skritih kapljic, 46 vidnih kapljic, 6 skled, spreminjajoče se vrstne rede skled, 12 končnih mešanj, pečat za različne odgovore, kombinatorična izbira, gradnjo vrat, izbiro let, razdelitev kotletov, izbiro imen, gradnjo mesecev in prepletanje dni mesecev.</p>
+  <p>Končni posodobitev so <strong>sinhroni</strong>: pri vsakem mešanju se vseh šest novih vrednosti izračuna iz istega starega stanje, šele nato se vseh šest skled zamenja hkrati.</p>
+  <p>V 12 končnih mešanjih je ena posebej pomembna kanoničen podrobnost. Če je <code>S</code> vsota šestih starih skled, <code>r</code> pa številka mešanja, sistem izračuna</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
-  <p><code>R</code> je <strong>shranjena vsota</strong>. Tako izbira vrstnega reda skled kot notranji update mešanja uporabljata <code>R</code>, ne surove vsote <code>S</code>.</p>
-  <p>Starejše različice, ki so v ta update podajale surovo vsoto, ne opisujejo več trenutne canonical semantics. Primere, izpeljane iz starega pravila, je treba šteti za zastarele, dokler niso ponovno preverjeni.</p>
-  <p>Po mešanjih tudi answer ring nadaljuje vrstni red, ki je bil lock pri vidni kapljici 46; tega vrstnega reda se ne sme samodejno zamenjati z vrstnim redom zadnjega mešanja.</p><hr>
+  <p><code>R</code> je <strong>shranjena vsota</strong>. Tako izbira vrstnega reda skled kot notranji posodobitev mešanja uporabljata <code>R</code>, ne surove vsote <code>S</code>.</p>
+  <p>Starejše različice, ki so v ta posodobitev podajale surovo vsoto, ne opisujejo več trenutne kanonična semantika. Primere, izpeljane iz starega pravila, je treba šteti za zastarele, dokler niso ponovno preverjeni.</p>
+  <p>Po mešanjih tudi obroč odgovorov nadaljuje vrstni red, ki je bil zaklep pri vidni kapljici 46; tega vrstnega reda se ne sme samodejno zamenjati z vrstnim redom zadnjega mešanja.</p><hr>
 </section>
 
 <section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
   <h2>Short Choice in Wide Choice</h2>
-  <p>Za razmeroma majhne selection space se uporablja <strong>Short Choice</strong>. Z rejection sampling se izogne preprostemu modulo bias.</p>
-  <p>Za zelo velike space se uporablja <strong>Wide Choice</strong>. Ne smemo mu pripisovati lastnosti, ki jih specification ne zagotavlja.</p>
-  <p>Wide Choice ni enakovreden ustvarjanju neodvisnih, enakomerno porazdeljenih base-<code>Q</code> števk, dokler ne dobimo index. Zato ne sledi, da ima vsak valid choice nujno enako pozitivno verjetnost. V dovolj velikih space lahko obstajajo valid choice, ki jih ta mechanism nikoli ne doseže.</p>
-  <p>Sam koledar ostaja popolnoma deterministic. “Choice” je ime algorithmic stage, ne random lottery med uporabo.</p><hr>
+  <p>Za razmeroma majhne prostor izbire se uporablja <strong>Short Choice</strong>. Z vzorčenje z zavračanjem se izogne preprostemu pristranskost modula.</p>
+  <p>Za zelo velike prostor se uporablja <strong>Wide Choice</strong>. Ne smemo mu pripisovati lastnosti, ki jih specifikacija ne zagotavlja.</p>
+  <p>Wide Choice ni enakovreden ustvarjanju neodvisnih, enakomerno porazdeljenih osnova-<code>Q</code> števk, dokler ne dobimo indeks. Zato ne sledi, da ima vsak veljavna izbira nujno enako pozitivno verjetnost. V dovolj velikih prostor lahko obstajajo veljavna izbira, ki jih ta mehanizem nikoli ne doseže.</p>
+  <p>Sam koledar ostaja popolnoma determinističen. “Choice” je ime algoritmična stopnja, ne naključna loterija med uporabo.</p><hr>
 </section>
 
 <section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
   <h2>Strukturni atlas</h2>
-  <p>Doslej smo govorili o pravilih koledarja. Naslednje številke so drugačna vrsta podatkov: <strong>empirični rezultati</strong> iz velike computational sample.</p>
-  <p>Atlas je bil zgrajen z engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> in je zajel 4,096 dni dejanja; za vsakega leta 4990–5010; 86,016 struktur let; 625,437 kotletov; 3,535,422 strukturnih mesecev; več kot 356 milijonov neprekinjenih segmentov mesecev; ter več kot 364 milijonov prehodov od dneva <code>n</code> do dneva <code>n+1</code> v istem mesecu.</p>
-  <p>Te številke opisujejo ta corpus, ne canonical zakonov.</p>
+  <p>Doslej smo govorili o pravilih koledarja. Naslednje številke so drugačna vrsta podatkov: <strong>empirični rezultati</strong> iz velike računski vzorec.</p>
+  <p>Atlas je bil zgrajen z revizija računskega mehanizma <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> in je zajel 4,096 dni dejanja; za vsakega leta 4990–5010; 86,016 struktur let; 625,437 kotletov; 3,535,422 strukturnih mesecev; več kot 356 milijonov neprekinjenih segmentov mesecev; ter več kot 364 milijonov prehodov od dneva <code>n</code> do dneva <code>n+1</code> v istem mesecu.</p>
+  <p>Te številke opisujejo ta korpus, ne kanoničen zakonov.</p>
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Izmerjeni podatki strukturnega atlasa">
     <table class="about-table">
       <thead><tr><th scope="col">Merjena količina</th><th scope="col">Rezultat v vzorcu</th></tr></thead>
@@ -177,93 +177,93 @@
     </table>
   </div>
   <p>V praksi je lahko mesec s približno sto dnevi raztresen čez skoraj celo pastafarijansko leto.</p>
-  <p>Isti atlas je pokazal tudi naravni bias dolžine okoli leta 5000. V vzorcu je »običajno« leto v povprečju trajalo približno 4,262 dni. Če leta weight glede na število dni, ki jih vsebujejo, se povprečje dvigne na približno 4,466 dni; samo leto 5000 je v povprečju trajalo približno 4,499 dni.</p>
+  <p>Isti atlas je pokazal tudi naravni pristranskost dolžine okoli leta 5000. V vzorcu je »običajno« leto v povprečju trajalo približno 4,262 dni. Če leta utež glede na število dni, ki jih vsebujejo, se povprečje dvigne na približno 4,466 dni; samo leto 5000 je v povprečju trajalo približno 4,499 dni.</p>
   <p>Razlog je preprost: leto 5000 mora vsebovati dan dejanja. Daljše leto ima več dni, v katerih je lahko ravno leto, ki vsebuje dan dejanja.</p>
-  <p>Tudi povezava med imenom enote in njeno dolžino je bila v vzorcu zelo šibka. To ne dokazuje popolne mathematical independence, vendar atlas ne daje praktičnega signal, da so bila imena ustvarjena za encode dolžine.</p>
-  <p>Poleg tega 86,016 struktur let ni 86,016 povsem independent sample: med začetnimi in končnimi vrati je samo 24,786 različnih interval. Bližnji dnevi dejanja lahko izberejo isti year interval in kljub temu ustvarijo različne notranje structure.</p>
-  <p>Atlas zato dobro opisuje izmerjeno vedenje implementation, vendar ga ne smemo spremeniti v probability theorem o vseh možnih koledarskih strukturah.</p><hr>
+  <p>Tudi povezava med imenom enote in njeno dolžino je bila v vzorcu zelo šibka. To ne dokazuje popolne matematična neodvisnost, vendar atlas ne daje praktičnega predznakal, da so bila imena ustvarjena za kodirati dolžine.</p>
+  <p>Poleg tega 86,016 struktur let ni 86,016 povsem neodvisni vzorec: med začetnimi in končnimi vrati je samo 24,786 različnih interval. Bližnji dnevi dejanja lahko izberejo isti year interval in kljub temu ustvarijo različne notranje struktura.</p>
+  <p>Atlas zato dobro opisuje izmerjeno vedenje izvedba, vendar ga ne smemo spremeniti v verjetnostni izrek o vseh možnih koledarskih strukturah.</p><hr>
 </section>
 
 <section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
   <h2>Rojstni dnevi in obletnice</h2>
-  <p>Izraz »isti dan vsako leto« je treba tukaj najprej opredeliti. Naravni recurrence coordinate sta <code>(ime meseca, dan v mesecu)</code> in <code>(ime kotleta, dan v kotletu)</code>; pogoje je mogoče tudi kombinirati.</p>
-  <p>Pastafarijanski rojstni dan zato ni preprosto <code>RRULE:FREQ=YEARLY</code>. Poiskati je treba naslednje leto, ki ustreza izbranemu recurrence condition, prvotni dogodek pa se ne šteje samodejno kot lastna »naslednja pojavitev«.</p>
+  <p>Izraz »isti dan vsako leto« je treba tukaj najprej opredeliti. Naravni koordinate ponovitve sta <code>(ime meseca, dan v mesecu)</code> in <code>(ime kotleta, dan v kotletu)</code>; pogoje je mogoče tudi kombinirati.</p>
+  <p>Pastafarijanski rojstni dan zato ni preprosto <code>RRULE:FREQ=YEARLY</code>. Poiskati je treba naslednje leto, ki ustreza izbranemu pogoj ponovitve, prvotni dogodek pa se ne šteje samodejno kot lastna »naslednja pojavitev«.</p>
   <p>Sprememba dneva dejanja samo zaradi prikaza ne sme spremeniti identitete osebe, trenutka rojstva ali starosti.</p>
-  <p>Pri exact scan 4,096 self-referential date je bilo vsako naslednje pastafarijansko leto preverjeno do 250,000 let v obe smeri:</p>
+  <p>Pri natančen pregled 4,096 samoreferenčni datum je bilo vsako naslednje pastafarijansko leto preverjeno do 250,000 let v obe smeri:</p>
   <ul>
-    <li>Za <code>(ime meseca, dan v mesecu)</code> je bila mediana prve vrnitve 1 pastafarijansko leto; 77.56% se jih je vrnilo v sosednjem letu, 93.77% v dveh letih, 99.44% v petih; opazovani maksimum je bil 21 let.</li>
-    <li>Za <code>(ime kotleta, dan v kotletu)</code> je bila mediana 3 leta; 88.89% jih je bilo najdenih v 10 letih, vendar ima distribution zelo težak heavy tail, opazovani maksimum pa je dosegel 51,954 pastafarijanskih let.</li>
+    <li>Za <code>(ime meseca, dan v mesecu)</code> je bila medianaa prve vrnitve 1 pastafarijansko leto; 77.56% se jih je vrnilo v sosednjem letu, 93.77% v dveh letih, 99.44% v petih; opazovani maksimum je bil 21 let.</li>
+    <li>Za <code>(ime kotleta, dan v kotletu)</code> je bila medianaa 3 leta; 88.89% jih je bilo najdenih v 10 letih, vendar ima porazdelitev zelo težak težki rep, opazovani maksimum pa je dosegel 51,954 pastafarijanskih let.</li>
   </ul>
-  <p>To so <strong>empirični rezultati preverjenega corpus</strong>; ne dokazujejo, da se mora vsaka mogoča obletnica nujno vrniti, in ne dajejo guarantee za maximum waiting time.</p><hr>
+  <p>To so <strong>empirični rezultati preverjenega korpus</strong>; ne dokazujejo, da se mora vsaka mogoča obletnica nujno vrniti, in ne dajejo zagotovilo za najdaljši čas čakanja.</p><hr>
 </section>
 
 <section class="about-section" id="appointments" data-toc-section data-toc-level="2">
   <h2>Kako se dogovoriti za sestanek?</h2>
-  <p>Če se dve osebi želita dogovoriti samo s pastafarijanskim datumom, se morata strinjati vsaj o petih poljih datuma in o dnevu dejanja, uporabljenem pri izračunu. Dan dejanja je bolje shraniti kot stabilni day identity, ne kot besedo »danes«; sicer lahko dve osebi izračunata dva različna koledarja.</p>
+  <p>Če se dve osebi želita dogovoriti samo s pastafarijanskim datumom, se morata strinjati vsaj o petih poljih datuma in o dnevu dejanja, uporabljenem pri izračunu. Dan dejanja je bolje shraniti kot stabilni identiteta dneva, ne kot besedo »danes«; sicer lahko dve osebi izračunata dva različna koledarja.</p>
   <ul>
     <li>»jutri« je naslednji kronološki dan;</li>
     <li>»naslednji dan meseca« je naslednja pojavitev tega meseca;</li>
     <li>»konec meseca« je zadnja pojavitev tega meseca;</li>
-    <li>»cel mesec« lahko pomeni set dni, ki pripadajo temu mesecu, ali celoten kronološki span od prve do zadnje pojavitve;</li>
+    <li>»cel mesec« lahko pomeni množica dni, ki pripadajo temu mesecu, ali celoten kronološki razpon od prve do zadnje pojavitve;</li>
     <li>»naslednje leto« je naslednje leto v koledarju, zgrajenem pod izbranim dnevom dejanja.</li>
   </ul>
-  <p>Za posebej pomemben sestanek lahko shranimo tudi absolute chronological day ali moment. Koledar ne bo užaljen.</p><hr>
+  <p>Za posebej pomemben sestanek lahko shranimo tudi absolutni kronološki dan ali trenutek. Koledar ne bo užaljen.</p><hr>
 </section>
 
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
-  <h2>Potovanja, dogodki in all-day</h2>
-  <p>Dogodek in lokalna oznaka, ki se zanj prikazuje, nista ista stvar. Dogodek z določenim časom mora biti vezan na stabilen chronological moment. Potovanje ga ne premakne v času, lahko pa se lokalni pastafarijanski datum za isti physical moment spremeni, ker je definicija »lokalnega dne« odvisna od lokacije.</p>
-  <p>Pri dogodku <strong>all-day</strong> je razlika še večja. Civilni celodnevni dogodek običajno traja od polnoči do naslednje polnoči; pastafarijanski celodnevni dogodek pa mora trajati od lokalne meje pastafarijanskega dne do naslednje take meje. To navadno niso isti moments.</p>
-  <p>Zato lahko nepremišljen export pastafarijanskega dogodka kot civilnega »celodnevnega« dogodka spremeni njegov pomen. Za natančno ohranitev je treba shraniti chronological anchor in ustrezen location/day-boundary context, ne le flag <code>all-day</code>.</p><hr>
+  <h2>Potovanja, dogodki in celodnevni</h2>
+  <p>Dogodek in lokalna oznaka, ki se zanj prikazuje, nista ista stvar. Dogodek z določenim časom mora biti vezan na stabilen kronološki trenutek. Potovanje ga ne premakne v času, lahko pa se lokalni pastafarijanski datum za isti fizični trenutek spremeni, ker je definicija »lokalnega dne« odvisna od lokacije.</p>
+  <p>Pri dogodku <strong>celodnevni</strong> je razlika še večja. Civilni celodnevni dogodek običajno traja od polnoči do naslednje polnoči; pastafarijanski celodnevni dogodek pa mora trajati od lokalne meje pastafarijanskega dne do naslednje take meje. To navadno niso isti trenutki.</p>
+  <p>Zato lahko nepremišljen izvoz pastafarijanskega dogodka kot civilnega »celodnevnega« dogodka spremeni njegov pomen. Za natančno ohranitev je treba shraniti chronological sidro in ustrezen kontekst lokacije/meje dneva, ne le oznaka <code>all-day</code>.</p><hr>
 </section>
 
 <section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
   <h2>Kdaj se zamenja dan?</h2>
-  <p>Lokalni pastafarijanski dan se ne zamenja ob polnoči. Njegovo mejo določa <strong>topocentric lower meridian transit središča Venere čez lokalni poldnevnik</strong>.</p>
-  <p>Gre torej za lokalni astronomski dogodek, odvisen od lokacije. Transit se ne rabi zgoditi ob 00:00, ne določa ga civilni time zone, ne premakne se samo zato, ker se začne ali konča daylight saving time, in ne zahteva, da je Venera vidna s prostim očesom.</p>
-  <p>Isti physical moment je lahko na dveh lokacijah na različnih straneh njunih lokalnih dnevnih mej. Če sistem nima uporabnega user location, je default fallback location izdelka <strong>Kisurra</strong>.</p><hr>
+  <p>Lokalni pastafarijanski dan se ne zamenja ob polnoči. Njegovo mejo določa <strong>topocentrični spodnji prehod čez poldnevnik središča Venere čez lokalni poldnevnik</strong>.</p>
+  <p>Gre torej za lokalni astronomski dogodek, odvisen od lokacije. Prehod se ne rabi zgoditi ob 00:00, ne določa ga civilni časovni pas, ne premakne se samo zato, ker se začne ali konča poletni čas, in ne zahteva, da je Venera vidna s prostim očesom.</p>
+  <p>Isti fizični trenutek je lahko na dveh lokacijah na različnih straneh njunih lokalnih dnevnih mej. Če sistem nima uporabnega lokacija uporabnika, je privzeta nadomestna lokacija izdelka <strong>Kisurra</strong>.</p><hr>
 </section>
 
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
   <h2>Tiskani koledar in ročni izračun</h2>
   <p>Pastafarijanski koledar je mogoče natisniti; navesti je treba le, za kateri dan dejanja je bil izračunan. Tak koledar pokaže strukturo časa iz perspektive tega dne; če se dan dejanja spremeni, je morda potreben nov koledar. Tiskalnik ima torej še vedno delo.</p>
-  <p>Ker je specification popolna in deterministic, lahko vse izračunamo tudi ročno: izračunajte input counter, izvedite 7 skritih in 46 vidnih kapljic, update šest skled, opravite 12 končnih mešanj, izpeljite odgovore, zgradite vrata, izberite leta in kotlete, opravite combinatorial selection, izberite imena in nato prepletite mesece.</p>
+  <p>Ker je specifikacija popolna in determinističen, lahko vse izračunamo tudi ročno: izračunajte vhodni števec, izvedite 7 skritih in 46 vidnih kapljic, posodobitev šest skled, opravite 12 končnih mešanj, izpeljite odgovore, zgradite vrata, izberite leta in kotlete, opravite kombinatorična izbira, izberite imena in nato prepletite mesece.</p>
   <p>V zameno ni treba pomniti, kdaj ima februar 28 in kdaj 29 dni.</p><hr>
 </section>
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Kaj pa je Seer?</h2>
-  <p>Poleg canonical implementation obstaja hiter engine z imenom <strong>Pastafarian Calendar Seer</strong>. Seer ni vir avtoritete: pravilen datum določata Megillah in canonical calculation. Če se Seer z njima ne ujema, je napaka v Seerju.</p>
-  <p>Njegova naloga je hitro izvajati iste query in vrniti rezultat v obliki, ki jo je mogoče preprosto integrate v izdelke.</p>
-  <p>Pri neposredni verification med urejanjem te strani je Seer med drugim podpiral date in “now” query, batch, day range, reverse conversion iz pastafarijanskega datuma v target day, year structure retrieval, določanje active working day, Node API, browser/HTTP client, CLI, HTTP v1 service, OpenAPI 3.1 contract, native implementations in distribution package ter verified container deployment.</p>
-  <p>Stara trditev, da Seer nima public API, ni več pravilna. Zdaj obstaja jasen in stabilen HTTP v1 contract z endpoint za date, range, batch, year, reverse, dan dejanja, metadata, locales in status.</p>
-  <p>21. septembra 2026 je bil public HTTPS deployment na Renderju dejansko preizkušen: na live service so bili preverjeni exact query, velik range, restart, cold wake in vedenje pod load.</p>
-  <p>Project documentation pa še vedno razlikuje med public beta/evaluation deployment in trajno hosted production service z SLA. Zato konceptualna stran z razlago ne sme freeze server address, hosting provider ali version number, kot da so del samega koledarja.</p>
-  <p>Seer lahko uporablja precomputation, posebne representation, SIMD, algebra in druge shortcut. Ni mu treba korak za korakom posnemati celotne computational history canonical implementation, če izvede isto semantično operacijo in vrne isti odgovor.</p>
-  <p>Optimization ni alternativna avtoriteta.</p><hr>
+  <p>Poleg kanonične izvedbe obstaja hiter računski mehanizem z imenom <strong>Pastafarian Calendar Seer</strong>. Seer ni vir avtoritete: pravilen datum določata Megillah in kanonični izračun. Če se Seer z njima ne ujema, je napaka v Seerju.</p>
+  <p>Njegova naloga je hitro izvajati iste poizvedbe in vrniti rezultat v obliki, ki jo je mogoče preprosto vključiti v izdelke.</p>
+  <p>Pri neposrednem preverjanju med urejanjem te strani je Seer med drugim podpiral poizvedbi <code>date</code> in <code>now</code>, <code>batch</code>, razpone dni, obratno pretvorbo iz pastafarijanskega datuma v poizvedovani dan, pridobivanje strukture leta, določanje aktivnega dneva dejanja, Node API, brskalniški/HTTP odjemalec, CLI, storitev HTTP v1, pogodbo OpenAPI 3.1, izvorne izvedbe in distribucijske pakete ter preverjeno namestitev v vsebniku.</p>
+  <p>Stara trditev, da Seer nima javnega API-ja, ni več pravilna. Zdaj obstaja jasna in stabilna pogodba HTTP v1 s končnimi točkami za <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, dan dejanja, <code>metadata</code>, <code>locales</code> in <code>status</code>.</p>
+  <p>21. septembra 2026 je bila javna namestitev HTTPS na Renderju dejansko preizkušena: na delujoči storitvi so bile preverjene natančne poizvedbe, velik razpon, ponovni zagon, <code>cold wake</code> in vedenje pod obremenitvijo.</p>
+  <p>Projektna dokumentacija pa še vedno razlikuje med javno beta/evalvacijsko namestitvijo in trajno gostovano produkcijsko storitvijo s SLA. Zato konceptualna stran z razlago ne sme zamrzniti naslova strežnika, ponudnika gostovanja ali številke različice, kot da so del samega koledarja.</p>
+  <p>Seer lahko uporablja predizračun, posebne predstavitve, SIMD, algebro in druge bližnjice. Ni mu treba korak za korakom posnemati celotne računske zgodovine kanonične izvedbe, če izvede isto semantično operacijo in vrne isti odgovor.</p>
+  <p>Optimizacija ni alternativna avtoriteta.</p><hr>
 </section>
 
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
   <h2>Izvor, Dan ustanovitve in Dan plošč</h2>
-  <p>Tukaj je posebej pomembno jasno ločiti canonical time anchor od zgodbe spletnega mesta.</p>
+  <p>Tukaj je posebej pomembno jasno ločiti kanonično časovno sidro od zgodbe spletnega mesta.</p>
 
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>Sidra</h3>
-    <p>Sistem ima en fiksni reference day, imenovan <strong>Dan ustanovitve</strong>. V proleptičnem gregorijanskem koledarju je to <strong>22. december 41,222 pr. n. št.</strong>.</p>
-    <p>Dan ustanovitve ni »začetek časa«; je computational anchor.</p>
-    <p>Številčenje dni okoli njega uporablja pozitivna liha/soda števila: Dan ustanovitve=1; poznejši dnevi=3, 5, …; proti preteklosti je prejšnji dan=2, nato 4, 6, … . Tako sta obe strani anchor encode v tem counter brez negativnih day number.</p>
-    <p>Drugi anchor je <strong>Dan plošč</strong>: <strong>15. junij 763 pr. n. št. v proleptičnem julijanskem koledarju</strong>, torej <strong>7. junij 763 pr. n. št. v proleptičnem gregorijanskem koledarju</strong>.</p>
+    <p>Sistem ima en fiksni referenčni dan, imenovan <strong>Dan ustanovitve</strong>. V proleptičnem gregorijanskem koledarju je to <strong>22. december 41,222 pr. n. št.</strong>.</p>
+    <p>Dan ustanovitve ni »začetek časa«; je računsko sidro.</p>
+    <p>Številčenje dni okoli njega uporablja pozitivna liha/soda števila: Dan ustanovitve=1; poznejši dnevi=3, 5, …; proti preteklosti je prejšnji dan=2, nato 4, 6, … . Tako sta obe strani sidro kodirati v tem števec brez negativnih številka dneva.</p>
+    <p>Drugi sidro je <strong>Dan plošč</strong>: <strong>15. junij 763 pr. n. št. v proleptičnem julijanskem koledarju</strong>, torej <strong>7. junij 763 pr. n. št. v proleptičnem gregorijanskem koledarju</strong>.</p>
     <p>Natančna razdalja od Dneva ustanovitve do Dneva plošč je</p>
     <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
     <p>dni.</p>
-    <p>To so fiksni anchor na časovni osi, toda pastafarijanski datum, ki se jim prikaže, je še vedno odvisen od dneva dejanja, iz katerega jih vprašamo.</p>
+    <p>To so fiksni sidro na časovni osi, toda pastafarijanski datum, ki se jim prikaže, je še vedno odvisen od dneva dejanja, iz katerega jih vprašamo.</p>
   </section>
 
   <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
     <h3>Zgodba spletnega mesta</h3>
     <p>V uredniški pripovedi spletnega mesta je koledar opisan kot del stvarjenja in kot sistem, ki ga je človeštvo uporabljalo, ne da bi ga povsem razumelo, dokler ni bil v sodobnem času znova predan.</p>
-    <p>To je zgodba spletnega mesta; vsake narrative detail ni treba predstavljati, kot da je izrecen technical claim Megillah.</p>
-    <p>Sam dogodek ponovne predaje je fiksni zgodovinski dogodek. Njegov <strong>pastafarijanski datum</strong> je bolje prikazovati dynamic pod trenutnim dnevom dejanja, kot pa ga za vedno freeze kot en sam datum.</p><hr>
+    <p>To je zgodba spletnega mesta; vsake pripovedna podrobnost ni treba predstavljati, kot da je izrecen tehnična trditev Megillah.</p>
+    <p>Sam dogodek ponovne predaje je fiksni zgodovinski dogodek. Njegov <strong>pastafarijanski datum</strong> je bolje prikazovati dinamično pod trenutnim dnevom dejanja, kot pa ga za vedno zamrzniti kot en sam datum.</p><hr>
   </section>
 </section>
 
@@ -273,7 +273,7 @@
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{ime kotleta},\text{dan v kotletu})</code></pre>
   <p>določi največ en dan. Enako velja za</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{ime meseca},\text{dan v mesecu})</code></pre>
-  <p>Popoln datum z znanim dnevom dejanja zato enolično določi target day.</p>
+  <p>Popoln datum z znanim dnevom dejanja zato enolično določi poizvedovani dan.</p>
 
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Zgornje meje števila kandidatov pri reverse conversion">
     <table class="about-table">
@@ -292,40 +292,40 @@
     </table>
   </div>
 
-  <p>Če dan dejanja ni znan, je slika drugačna. Istih pet vrednosti se lahko pojavi pod različnimi dnevi dejanja in obstajajo exact example, v katerih se isti popolni datum pojavi na različnih razdaljah od <code>c</code>.</p>
-  <p>V letu 5000 niti sign te razdalje ni vedno določen s petimi vrednostmi: isti popolni datum je lahko v enem context pred dnevom dejanja, v drugem pa za njim.</p>
-  <p>Popoln pastafarijanski datum zato ni absolute address na časovni osi, če ne vemo, pod katerim <code>c</code> je bil izračunan.</p>
+  <p>Če dan dejanja ni znan, je slika drugačna. Istih pet vrednosti se lahko pojavi pod različnimi dnevi dejanja in obstajajo natančen primer, v katerih se isti popolni datum pojavi na različnih razdaljah od <code>c</code>.</p>
+  <p>V letu 5000 niti predznak te razdalje ni vedno določen s petimi vrednostmi: isti popolni datum je lahko v enem kontekst pred dnevom dejanja, v drugem pa za njim.</p>
+  <p>Popoln pastafarijanski datum zato ni absolutni naslov na časovni osi, če ne vemo, pod katerim <code>c</code> je bil izračunan.</p>
 
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
     <h3>Struktura v zelo oddaljenem času</h3>
-    <p>Matematična raziskava, izpeljana iz specification, je našla tudi natančno asymptotic structure. Za <strong>fiksni dan dejanja</strong> <code>c</code> se dovolj daleč v tail preteklosti pojavi affine periodicity.</p>
+    <p>Matematična raziskava, izpeljana iz specifikacija, je našla tudi natančno asymptotic struktura. Za <strong>fiksni dan dejanja</strong> <code>c</code> se dovolj daleč v rep preteklosti pojavi afina periodičnost.</p>
     <p>Če</p>
     <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
-    <p>potem za isti <code>c</code> obstajajo shift <code>H_c</code>, year change <code>p_c</code> in dovolj oddaljen threshold, po katerem</p>
+    <p>potem za isti <code>c</code> obstajajo premik <code>H_c</code>, sprememba leta <code>p_c</code> in dovolj oddaljen prag, po katerem</p>
     <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
     <p>se štiri polja razen leta ponavljajo, številka leta pa se spremeni za fiksno količino.</p>
     <p>To je rezultat za fiksni <code>c</code>; iz njega ne sledi globalna zveza</p>
     <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
-    <p>Vprašanje, ali se končni asymptotic slope med različnimi dnevi dejanja res razlikujejo, ostaja odprto.</p><hr>
+    <p>Vprašanje, ali se končni asimptotični naklon med različnimi dnevi dejanja res razlikujejo, ostaja odprto.</p><hr>
   </section>
 </section>
 
 <section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
   <h2>Za napredne uporabnike: koliko zgodovine ohrani omaka?</h2>
-  <p>Omaka je videti kot zelo agresiven mixing mechanism, vendar algebraic research kaže, da ohranja precej več informacij, kot bi sklepali po videzu. To je research result, izpeljan iz specification, ne novo koledarsko pravilo.</p>
-  <p>V vidnih stage 3–46 je na ustrezni asymptotic branch dokazana generic injectivity: v generic case state ohrani dovolj informacij za rekonstrukcijo ustrezne input history in vrstnega reda skled.</p>
-  <p>Informacije tudi v 12 končnih mešanjih ne izginejo takoj. Za prvih pet mešanj po vidni kapljici 46 je na ustreznem canonical union dokazana generic invertibility brez dodatnih side information; za preostanek so znane močne constructive upper bound količine side information, ki zadošča za reconstruction.</p>
-  <p>Odprto ostaja vprašanje, ali <strong>samo zadnjih šest skled</strong> v generic sense vedno zadošča.</p>
-  <p>Nekateri rezultati so bili dokazani symbolic, drugi zaključeni s finite exact arithmetic check. Symbolic strengthening je močno zmanjšal computational core, ki mu je treba zaupati, ni pa ga povsem odpravil.</p>
-  <p>Space, ki so sprva izgledali, kot da zahtevajo iskanje čez ogromno število path, so bili skrčeni na veliko manjše finite structure, med drugim automata s 180 in 9 state ter symmetry šestih skled.</p>
-  <p>Pod mešanjem je stroga algebraic structure. Za današnji datum je ni treba poznati.</p><hr>
+  <p>Omaka je videti kot zelo agresiven mehanizem mešanja, vendar algebraična raziskava kaže, da ohranja precej več informacij, kot bi sklepali po videzu. To je rezultat raziskave, izpeljan iz specifikacija, ne novo koledarsko pravilo.</p>
+  <p>V vidnih stopnja 3–46 je na ustrezni asimptotična veja dokazana generična injektivnost: v generični primer stanje ohrani dovolj informacij za rekonstrukcijo ustrezne zgodovina vhodov in vrstnega reda skled.</p>
+  <p>Informacije tudi v 12 končnih mešanjih ne izginejo takoj. Za prvih pet mešanj po vidni kapljici 46 je na ustreznem kanonična unija dokazana generična obrnljivost brez dodatnih dodatne informacije; za preostanek so znane močne konstruktivna zgornja meja količine dodatne informacije, ki zadošča za rekonstrukcija.</p>
+  <p>Odprto ostaja vprašanje, ali <strong>samo zadnjih šest skled</strong> v generični smisel vedno zadošča.</p>
+  <p>Nekateri rezultati so bili dokazani simbolno, drugi zaključeni s končni natančni aritmetični pregled. Simbolna okrepitev je močno zmanjšal računsko jedro, ki mu je treba zaupati, ni pa ga povsem odpravil.</p>
+  <p>Space, ki so sprva izgledali, kot da zahtevajo iskanje čez ogromno število pot, so bili skrčeni na veliko manjše končna struktura, med drugim avtomati s 180 in 9 stanje ter simetrija šestih skled.</p>
+  <p>Pod mešanjem je stroga algebraična struktura. Za današnji datum je ni treba poznati.</p><hr>
 </section>
 
 <section class="about-section" id="summary" data-toc-section data-toc-level="2">
   <h2>Kaj je torej Pastafarijanski koledar v resnici?</h2>
-  <p>Je deterministic calendar, pri katerem datum ni le function target day, temveč <strong>skupna function dneva dejanja in poizvedovanega dne</strong>.</p>
-  <p>Vsak datum ima natanko pet polj. Sedanjost je iz lastne perspektive vedno v letu 5000, toda samo leto 5000 se premika skupaj z dnevom dejanja. Leta so lahko zelo dolga, kotleti so neprekinjeni, meseci ne nujno, canonical week system pa ne obstaja.</p>
-  <p>Dan <code>n+1</code> v mesecu ni nujno jutri. Isti chronological day lahko jutri dobi drugo pastafarijansko label. Isti physical moment lahko na dveh krajih pripada dvema različnima local Pastafari day. All-day event ni nujno od polnoči do polnoči. Annual birthday pa je najprej search problem in šele nato calendar problem.</p>
-  <p>Če pa poznamo dan dejanja in poizvedovani dan, ambiguity ni: pravilen odgovor je samo eden.</p>
+  <p>Je determinističen koledar, pri katerem datum ni le funkcija poizvedovani dan, temveč <strong>skupna funkcija dneva dejanja in poizvedovanega dne</strong>.</p>
+  <p>Vsak datum ima natanko pet polj. Sedanjost je iz lastne perspektive vedno v letu 5000, toda samo leto 5000 se premika skupaj z dnevom dejanja. Leta so lahko zelo dolga, kotleti so neprekinjeni, meseci ne nujno, kanonični tedenski sistem pa ne obstaja.</p>
+  <p>Dan <code>n+1</code> v mesecu ni nujno jutri. Isti kronološki dan lahko jutri dobi drugo pastafarijansko oznaka. Isti fizični trenutek lahko na dveh krajih pripada dvema različnima lokalni dan Pastafari. celodnevni dogodek ni nujno od polnoči do polnoči. Annual birthday pa je najprej iskalni problem in šele nato koledarski problem.</p>
+  <p>Če pa poznamo dan dejanja in poizvedovani dan, dvoumnost ni: pravilen odgovor je samo eden.</p>
   <p>Navsezadnje od koledarja ni treba zahtevati več.</p>
 </section>
