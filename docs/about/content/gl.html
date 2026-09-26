@@ -55,7 +55,7 @@
   <h2>Anos e portas</h2>
   <p>Un ano pastafari pode ter</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ a }5778</code></pre>
-  <p>días. Son os límites canonical do sistema, non medias empíricas.</p>
+  <p>días. Son os límites canónico do sistema, non medias empíricas.</p>
   <p>Así, un ano pode ser máis curto ca un ano solar ou máis longo ca quince anos solares. Os límites dos anos constrúense a partir do sistema de <strong>portas</strong>; os límites das croquetas tamén proceden dese mesmo sistema.</p>
   <p>O final do ano non ten por que coincidir cunha estación, cunha órbita completa da Terra arredor do Sol, cun ciclo lunar nin co desexo práctico de que o ano remate dunha vez.</p><hr>
 </section>
@@ -66,7 +66,7 @@
   <p>Se hoxe é o día 250 dunha croqueta, mañá será o día 251 da mesma croqueta, salvo que hoxe sexa o seu último día. Os límites das croquetas son portas e unha croqueta dura polo menos</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
   <p>días.</p>
-  <p>O sistema ten 17 nomes canonical de croqueta e o mesmo nome non se repite dentro dun ano. O nome non determina nin a lonxitude nin a posición da croqueta.</p><hr>
+  <p>O sistema ten 17 nomes canónico de croqueta e o mesmo nome non se repite dentro dun ano. O nome non determina nin a lonxitude nin a posición da croqueta.</p><hr>
 </section>
 
 <section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
@@ -102,14 +102,14 @@
 
 <section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
   <h2>Non hai semanas</h2>
-  <p>A specification canonical actual <strong>non define un sistema de semanas</strong>. Non hai unha unidade canonical de sete días, nin nomes pastafari para os días da semana, nin unha regra que faga que dous días sexan “o mesmo día da semana”.</p>
+  <p>A especificación canónico actual <strong>non define un sistema de semanas</strong>. Non hai unha unidade canónico de sete días, nin nomes pastafari para os días da semana, nin unha regra que faga que dous días sexan “o mesmo día da semana”.</p>
   <p>Naturalmente, pódese superpoñer desde fóra un sistema civil de semanas; simplemente non forma parte da data pastafari.</p><hr>
 </section>
 
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
   <h2>Nomes</h2>
-  <p>Hai 17 nomes canonical de croqueta e 47 nomes canonical de mes. Dentro dun ano, cada nome aparece como máximo unha vez no seu grupo.</p>
-  <p>A identidade do nome é canonical e semántica; non é o resultado dunha votación entre diferentes grafías, traducións ou implementations. Sobre o significado dos nomes, a Megillah en hebreo ten a máxima autoridade; as traducións e transliteracións son só capas de presentación.</p>
+  <p>Hai 17 nomes canónico de croqueta e 47 nomes canónico de mes. Dentro dun ano, cada nome aparece como máximo unha vez no seu grupo.</p>
+  <p>A identidade do nome é canónico e semántica; non é o resultado dunha votación entre diferentes grafías, traducións ou implementacións. Sobre o significado dos nomes, a Megillah en hebreo ten a máxima autoridade; as traducións e transliteracións son só capas de presentación.</p>
   <p>O nome tampouco é un código oculto de lonxitude. O nome dunha croqueta ou dun mes concreto non fai por si só que esa unidade sexa máis longa ou máis curta.</p><hr>
 </section>
 
@@ -128,28 +128,28 @@
   <h2>Como se calcula o calendario?</h2>
   <p>Ao cálculo interno chamámoslle aquí <strong>salsa</strong>. No seu centro está o número primo</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
-  <p>O proceso inclúe cinco input counter, 7 gotas ocultas, 46 gotas visibles, 6 cuncas, ordes cambiantes das cuncas, 12 mesturas finais, seal para respostas diferentes, combinatorial selection, construción de portas, selección de anos, división de croquetas, selección de nomes, construción de meses e entretecido dos días dos meses.</p>
-  <p>Os update finais son <strong>síncronos</strong>: en cada mestura calcúlanse os seis valores novos a partir do mesmo state antigo, e só despois se substitúen xuntas as seis cuncas.</p>
-  <p>Nas 12 mesturas finais hai un detalle canonical especialmente importante. Se <code>S</code> é a suma das seis cuncas antigas e <code>r</code> é o número da mestura, o sistema calcula</p>
+  <p>O proceso inclúe cinco contadores de entrada, 7 gotas ocultas, 46 gotas visibles, 6 cuncas, ordes cambiantes das cuncas, 12 mesturas finais, selos para respostas diferentes, selección combinatoria, construción de portas, selección de anos, división de croquetas, selección de nomes, construción de meses e entretecido dos días dos meses.</p>
+  <p>Os actualización finais son <strong>síncronos</strong>: en cada mestura calcúlanse os seis valores novos a partir do mesmo estado antigo, e só despois se substitúen xuntas as seis cuncas.</p>
+  <p>Nas 12 mesturas finais hai un detalle canónico especialmente importante. Se <code>S</code> é a suma das seis cuncas antigas e <code>r</code> é o número da mestura, o sistema calcula</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
-  <p><code>R</code> é a <strong>suma gardada</strong>. Tanto a selección da orde das cuncas como o update interno da mestura usan <code>R</code>, non a suma bruta <code>S</code>.</p>
-  <p>As versións antigas que pasaban a suma bruta a este update xa non describen a semantics canonical actual. Os exemplos derivados da regra antiga deben considerarse obsoletos ata que se verifiquen de novo.</p>
-  <p>Tras as mesturas, o answer ring continúa tamén coa orde que quedou lock na gota visible 46; esa orde non debe substituírse automaticamente pola orde da última mestura.</p><hr>
+  <p><code>R</code> é a <strong>suma gardada</strong>. Tanto a selección da orde das cuncas como o actualización interno da mestura usan <code>R</code>, non a suma bruta <code>S</code>.</p>
+  <p>As versións antigas que pasaban a suma bruta a este actualización xa non describen a semántica canónico actual. Os exemplos derivados da regra antiga deben considerarse obsoletos ata que se verifiquen de novo.</p>
+  <p>Tras as mesturas, o anel de respostas continúa tamén coa orde que quedou fixada na gota visible 46; esa orde non debe substituírse automaticamente pola orde da última mestura.</p><hr>
 </section>
 
 <section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
   <h2>Short Choice e Wide Choice</h2>
-  <p>Para selection space relativamente pequenos emprégase <strong>Short Choice</strong>. Usa rejection sampling para evitar un modulo bias simple.</p>
-  <p>Para space moi grandes emprégase <strong>Wide Choice</strong>. Non se lle deben atribuír propiedades que a specification non garante.</p>
-  <p>Wide Choice non equivale a xerar díxitos base-<code>Q</code> independentes e uniformemente distribuídos ata obter un index. Polo tanto, non se deduce que cada valid choice teña necesariamente a mesma probabilidade positiva. En space suficientemente grandes pode haber valid choice aos que este mechanism nunca chega.</p>
-  <p>O propio calendario segue sendo completamente deterministic. “Choice” é o nome dunha algorithmic stage, non unha random lottery durante o uso.</p><hr>
+  <p>Para espazos de selección relativamente pequenos emprégase <strong>Short Choice</strong>. Usa mostraxe por rexeitamento para evitar un nesgo de módulo simple.</p>
+  <p>Para espazos moi grandes emprégase <strong>Wide Choice</strong>. Non se lle deben atribuír propiedades que a especificación non garante.</p>
+  <p>Wide Choice non equivale a xerar díxitos base <code>Q</code> independentes e uniformemente distribuídos ata obter un índice. Polo tanto, non se deduce que cada escolla válida teña necesariamente a mesma probabilidade positiva. En space suficientemente grandes pode haber escolla válida aos que este mecanismo nunca chega.</p>
+  <p>O propio calendario segue sendo completamente determinista. “Choice” é o nome dunha etapa algorítmica, non unha sorteo aleatorio durante o uso.</p><hr>
 </section>
 
 <section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
   <h2>Atlas estrutural</h2>
-  <p>Ata aquí falamos das regras do calendario. As seguintes cifras son outro tipo de información: <strong>resultados empíricos</strong> dunha gran computational sample.</p>
-  <p>O atlas construíuse co engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> e incluíu 4,096 días de acción; para cada un, os anos 4990–5010; 86,016 estruturas anuais; 625,437 croquetas; 3,535,422 meses estruturais; máis de 356 millóns de segmentos mensuais continuos; e máis de 364 millóns de transicións do día <code>n</code> ao día <code>n+1</code> do mesmo mes.</p>
-  <p>Estas cifras describen ese corpus, non leis canonical.</p>
+  <p>Ata aquí falamos das regras do calendario. As seguintes cifras son outro tipo de información: <strong>resultados empíricos</strong> dunha gran mostra computacional.</p>
+  <p>O atlas construíuse co commit do motor <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> e incluíu 4,096 días de acción; para cada un, os anos 4990–5010; 86,016 estruturas anuais; 625,437 croquetas; 3,535,422 meses estruturais; máis de 356 millóns de segmentos mensuais continuos; e máis de 364 millóns de transicións do día <code>n</code> ao día <code>n+1</code> do mesmo mes.</p>
+  <p>Estas cifras describen ese corpus, non leis canónico.</p>
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Datos medidos no atlas estrutural">
     <table class="about-table">
       <thead><tr><th scope="col">Magnitude medida</th><th scope="col">Resultado na mostra</th></tr></thead>
@@ -172,108 +172,108 @@
         <tr><td>Proporción de segmentos mensuais dun só día</td><td>97.482%</td></tr>
         <tr><td>Probabilidade de que dous días adxacentes estean no mesmo mes</td><td>2.9976%</td></tr>
         <tr><td>Número medio de días doutros meses entre <code>n</code> e <code>n+1</code> do mesmo mes</td><td>40.408</td></tr>
-        <tr><td>Span medio entre a primeira e a última aparición dun mes</td><td>4,266.653 días</td></tr>
+        <tr><td>Intervalo medio entre a primeira e a última aparición dun mes</td><td>4,266.653 días</td></tr>
       </tbody>
     </table>
   </div>
   <p>Na práctica, un mes duns cen días pode quedar repartido por case todo un ano pastafari.</p>
-  <p>O mesmo atlas mostrou tamén un bias natural da lonxitude arredor do ano 5000. Na mostra, un ano “normal” tiña de media arredor de 4,262 días. Se os anos se weight polo número de días que conteñen, a media sobe a arredor de 4,466 días; o propio ano 5000 tiña de media uns 4,499 días.</p>
+  <p>O mesmo atlas mostrou tamén un nesgo natural da lonxitude arredor do ano 5000. Na mostra, un ano “normal” tiña de media arredor de 4,262 días. Se os anos se ponderan polo número de días que conteñen, a media sobe a arredor de 4,466 días; o propio ano 5000 tiña de media uns 4,499 días.</p>
   <p>A razón é sinxela: o ano 5000 debe conter o día de acción. Un ano máis longo ten máis días nos que pode resultar ser o ano que contén ese día de acción.</p>
-  <p>A relación entre o nome dunha unidade e a súa lonxitude tamén foi moi feble na mostra. Isto non demostra unha mathematical independence completa, pero o atlas non ofrece ningún signal práctico de que os nomes se deseñasen para encode a lonxitude.</p>
-  <p>Ademais, as 86,016 estruturas anuais non son 86,016 independent sample completas: entre a porta inicial e a final só hai 24,786 interval distintos. Días de acción próximos poden seleccionar o mesmo year interval e, aínda así, producir diferentes structure internas.</p>
-  <p>Polo tanto, o atlas describe ben o comportamento medido da implementation, pero non debe converterse nunha probability theorem sobre todas as calendar structure posibles.</p><hr>
+  <p>A relación entre o nome dunha unidade e a súa lonxitude tamén foi moi feble na mostra. Isto non demostra unha independencia matemática completa, pero o atlas non ofrece ningún indicio práctico de que os nomes se deseñasen para codificar a lonxitude.</p>
+  <p>Ademais, as 86,016 estruturas anuais non son 86,016 mostras totalmente independentes: entre a porta inicial e a final só hai 24,786 intervalos distintos. Días de acción próximos poden seleccionar o mesmo intervalo anual e, aínda así, producir diferentes estruturas internas.</p>
+  <p>Polo tanto, o atlas describe ben o comportamento medido da implementación, pero non debe converterse nunha teorema de probabilidade sobre todas as estruturas de calendario posibles.</p><hr>
 </section>
 
 <section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
   <h2>Aniversarios e efemérides</h2>
-  <p>Aquí hai que definir primeiro que significa “o mesmo día cada ano”. As recurrence coordinate naturais son <code>(nome do mes, día no mes)</code> e <code>(nome da croqueta, día na croqueta)</code>; tamén se poden combinar condicións.</p>
-  <p>Por iso, un aniversario pastafari non é simplemente <code>RRULE:FREQ=YEARLY</code>. Hai que atopar o seguinte ano que cumpra a recurrence condition escollida, e o evento orixinal non conta automaticamente como a súa propia “seguinte aparición”.</p>
+  <p>Aquí hai que definir primeiro que significa “o mesmo día cada ano”. As coordenadas de recorrencia naturais son <code>(nome do mes, día no mes)</code> e <code>(nome da croqueta, día na croqueta)</code>; tamén se poden combinar condicións.</p>
+  <p>Por iso, un aniversario pastafari non é simplemente <code>RRULE:FREQ=YEARLY</code>. Hai que atopar o seguinte ano que cumpra a condición de recorrencia escollida, e o evento orixinal non conta automaticamente como a súa propia “seguinte aparición”.</p>
   <p>Cambiar o día de acción só para a visualización non debe cambiar a identidade dunha persoa, o momento do nacemento nin a idade.</p>
-  <p>Nun exact scan de 4,096 self-referential date, cada seguinte ano pastafari comprobouse ata 250,000 anos nas dúas direccións:</p>
+  <p>Nun varrido exacto de 4,096 datas autorreferenciais, cada seguinte ano pastafari comprobouse ata 250,000 anos nas dúas direccións:</p>
   <ul>
     <li>Para <code>(nome do mes, día no mes)</code>, a mediana do primeiro retorno foi 1 ano pastafari; o 77.56% volveu no ano adxacente, o 93.77% en dous anos, o 99.44% en cinco; o máximo observado foi 21 anos.</li>
-    <li>Para <code>(nome da croqueta, día na croqueta)</code>, a mediana foi 3 anos; o 88.89% atopouse en 10 anos, pero a distribution ten unha heavy tail moi pesada e o máximo observado chegou a 51,954 anos pastafari.</li>
+    <li>Para <code>(nome da croqueta, día na croqueta)</code>, a mediana foi 3 anos; o 88.89% atopouse en 10 anos, pero a distribución ten unha cola moi pesada e o máximo observado chegou a 51,954 anos pastafari.</li>
   </ul>
-  <p>Son <strong>resultados empíricos do corpus comprobado</strong>; non demostran que toda efeméride posible vaia regresar necesariamente nin dan unha guarantee sobre o maximum waiting time.</p><hr>
+  <p>Son <strong>resultados empíricos do corpus comprobado</strong>; non demostran que toda efeméride posible vaia regresar necesariamente nin dan unha garantía sobre o tempo máximo de espera.</p><hr>
 </section>
 
 <section class="about-section" id="appointments" data-toc-section data-toc-level="2">
   <h2>Como se fixa unha cita?</h2>
-  <p>Se dúas persoas queren acordar unha cita só cunha data pastafari, deben poñerse de acordo polo menos nos cinco campos da data e no día de acción utilizado no cálculo. É mellor gardar o día de acción como unha day identity estable e non como a palabra “hoxe”; se non, dúas persoas poden calcular dous calendarios diferentes.</p>
+  <p>Se dúas persoas queren acordar unha cita só cunha data pastafari, deben poñerse de acordo polo menos nos cinco campos da data e no día de acción utilizado no cálculo. É mellor gardar o día de acción como unha identidade de día estable e non como a palabra “hoxe”; se non, dúas persoas poden calcular dous calendarios diferentes.</p>
   <ul>
     <li>“mañá” é o seguinte día cronolóxico;</li>
     <li>“o seguinte día do mes” é a seguinte aparición dese mes;</li>
     <li>“o final do mes” é a última aparición dese mes;</li>
-    <li>“o mes enteiro” pode significar o set de días que pertencen a ese mes ou todo o span cronolóxico desde a primeira ata a última aparición;</li>
+    <li>“o mes enteiro” pode significar o conxunto de días que pertencen a ese mes ou todo o intervalo cronolóxico desde a primeira ata a última aparición;</li>
     <li>“o ano seguinte” é o seguinte ano no calendario construído baixo o día de acción escollido.</li>
   </ul>
-  <p>Para unha cita especialmente importante tamén se pode gardar un absolute chronological day ou moment. O calendario non se vai ofender.</p><hr>
+  <p>Para unha cita especialmente importante tamén se pode gardar un día ou instante cronolóxico absoluto. O calendario non se vai ofender.</p><hr>
 </section>
 
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
-  <h2>Viaxes, eventos e all-day</h2>
-  <p>Un evento e a etiqueta local que se lle mostra non son o mesmo. Un evento cunha hora concreta debe estar ligado a un chronological moment estable. Viaxar non o move no tempo, pero a data pastafari local mostrada para o mesmo physical moment pode cambiar, porque a definición de “día local” depende da localización.</p>
-  <p>Nun evento <strong>all-day</strong> a diferenza é aínda maior. Un evento civil de día completo adoita ir de medianoite á seguinte medianoite; un evento pastafari de día completo debería ir desde o límite local do día pastafari ata o seguinte límite. Normalmente non son os mesmos moments.</p>
-  <p>Por iso, facer export ás cegas dun evento pastafari como evento civil “de día completo” pode cambiar o seu significado. Para conservalo correctamente hai que gardar o chronological anchor e o location/day-boundary context adecuado, non só o flag <code>all-day</code>.</p><hr>
+  <h2>Viaxes e eventos de día completo</h2>
+  <p>Un evento e a etiqueta local que se lle mostra non son o mesmo. Un evento cunha hora concreta debe estar ligado a un instante cronolóxico estable. Viaxar non o move no tempo, pero a data pastafari local mostrada para o mesmo instante físico pode cambiar, porque a definición de “día local” depende da localización.</p>
+  <p>Nun evento <strong>all-day</strong> a diferenza é aínda maior. Un evento civil de día completo adoita ir de medianoite á seguinte medianoite; un evento pastafari de día completo debería ir desde o límite local do día pastafari ata o seguinte límite. Normalmente non son os mesmos instantes.</p>
+  <p>Por iso, facer export ás cegas dun evento pastafari como evento civil “de día completo” pode cambiar o seu significado. Para conservalo correctamente hai que gardar o ancoraxe cronolóxica e o contexto de localización e límite do día adecuado, non só o flag <code>all-day</code>.</p><hr>
 </section>
 
 <section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
   <h2>Cando cambia o día?</h2>
-  <p>O día pastafari local non cambia á medianoite. O seu límite determínao o <strong>topocentric lower meridian transit do centro de Venus polo meridiano local</strong>.</p>
-  <p>É, polo tanto, un evento astronómico local dependente da localización. O transit non ten por que ocorrer ás 00:00, non o determina o time zone civil, non se despraza só porque comece ou remate o daylight saving time e non require que Venus sexa visible a simple vista.</p>
-  <p>O mesmo physical moment pode quedar a lados distintos do límite local do día en dous lugares. Se o sistema non dispón dunha user location utilizable, o default fallback location do produto é <strong>Kisurra</strong>.</p><hr>
+  <p>O día pastafari local non cambia á medianoite. O seu límite determínao o <strong>tránsito meridiano inferior topocéntrico do centro de Venus polo meridiano local</strong>.</p>
+  <p>É, polo tanto, un evento astronómico local dependente da localización. O tránsito non ten por que ocorrer ás 00:00, non o determina o fuso horario civil, non se despraza só porque comece ou remate o horario de verán e non require que Venus sexa visible a simple vista.</p>
+  <p>O mesmo instante físico pode quedar a lados distintos do límite local do día en dous lugares. Se o sistema non dispón dunha localización de usuario utilizable, o localización de reserva predeterminada do produto é <strong>Kisurra</strong>.</p><hr>
 </section>
 
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
   <h2>Calendario impreso e cálculo manual</h2>
   <p>O Calendario Pastafari pódese imprimir; só hai que indicar para que día de acción foi calculado. Un calendario así mostra a estrutura do tempo desde o punto de vista dese día; se cambia o día de acción, pode facer falta un calendario novo. Así que a impresora aínda ten traballo.</p>
-  <p>Como a specification é completa e deterministic, todo pode calcularse tamén á man: calcule os input counter, pase polas 7 gotas ocultas e as 46 visibles, faga update das seis cuncas, execute as 12 mesturas finais, produza as respostas, constrúa as portas, escolla anos e croquetas, realice a combinatorial selection, escolla os nomes e despois entreteza os meses.</p>
+  <p>Como a especificación é completa e determinista, todo pode calcularse tamén á man: calcule os contadores de entrada, pase polas 7 gotas ocultas e as 46 visibles, faga actualización das seis cuncas, execute as 12 mesturas finais, produza as respostas, constrúa as portas, escolla anos e croquetas, realice a selección combinatoria, escolla os nomes e despois entreteza os meses.</p>
   <p>A cambio, non hai que lembrar cando febreiro ten 28 días e cando 29.</p><hr>
 </section>
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>E que é Seer?</h2>
-  <p>Xunto á canonical implementation existe un engine rápido chamado <strong>Pastafarian Calendar Seer</strong>. Seer non é unha fonte de autoridade: a data correcta determínana a Megillah e a canonical calculation. Se Seer non coincide con elas, o erro é de Seer.</p>
-  <p>A súa tarefa é executar rapidamente as mesmas query e devolver o resultado nunha forma fácil de integrate en produtos.</p>
-  <p>Na verification directa realizada ao editar esta páxina, Seer incluía, entre outras cousas, date e “now” query, batch, day range, reverse conversion dunha data pastafari ao target day, year structure retrieval, determinación do active working day, Node API, browser/HTTP client, CLI, HTTP v1 service, OpenAPI 3.1 contract, native implementations e distribution package, ademais de verified container deployment.</p>
-  <p>A afirmación antiga de que Seer non ten public API xa non é correcta. Agora existe un HTTP v1 contract claro e estable con endpoint para date, range, batch, year, reverse, día de acción, metadata, locales e status.</p>
-  <p>O 21 de setembro de 2026 probouse realmente un public HTTPS deployment en Render: no live service verificáronse exact query, un range grande, restart, cold wake e comportamento baixo load.</p>
-  <p>Con todo, a project documentation segue distinguindo o public beta/evaluation deployment dun hosted production service permanente con SLA. Por iso, unha páxina conceptual de explicación non debería freeze un server address, hosting provider ou version number como se fosen parte do propio calendario.</p>
-  <p>Seer pode usar precomputation, representation especiais, SIMD, algebra e outros shortcut. Non ten que reproducir paso a paso toda a computational history da canonical implementation, sempre que realice a mesma operación semántica e devolva a mesma resposta.</p>
-  <p>Optimization non é unha autoridade alternativa.</p><hr>
+  <p>Xunto á canónico implementación existe un motor rápido chamado <strong>Pastafarian Calendar Seer</strong>. Seer non é unha fonte de autoridade: a data correcta determínana a Megillah e a canónico calculation. Se Seer non coincide con elas, o erro é de Seer.</p>
+  <p>A súa tarefa é executar rapidamente as mesmas consultas e devolver o resultado nunha forma fácil de integrar en produtos.</p>
+  <p>Na verificación directa realizada ao editar esta páxina, Seer incluía, entre outras cousas, consultas <code>date</code> e <code>now</code>, <code>batch</code>, intervalos de días, conversión inversa dunha data pastafari ao día consultado, obtención da estrutura do ano, determinación do día de acción activo, Node API, cliente de navegador/HTTP, CLI, servizo HTTP v1, contrato OpenAPI 3.1, native implementacións e paquetes de distribución, ademais de despregamento verificado en contedor.</p>
+  <p>A afirmación antiga de que Seer non ten API pública xa non é correcta. Agora existe un contrato HTTP v1 claro e estable con endpoints para date, range, <code>batch</code>, year, reverse, día de acción, metadata, locales e status.</p>
+  <p>O 21 de setembro de 2026 probouse realmente un despregamento HTTPS público en Render: no servizo en funcionamento verificáronse consultas exactas, un intervalo grande, reinicio, <code>cold wake</code> e comportamento baixo carga.</p>
+  <p>Con todo, a documentación do proxecto segue distinguindo o despregamento público de beta/avaliación dun servizo de produción aloxado permanente con SLA. Por iso, unha páxina conceptual de explicación non debería fixar un enderezo do servidor, provedor de aloxamento ou número de versión como se fosen parte do propio calendario.</p>
+  <p>Seer pode usar precálculo, representacións especiais, SIMD, algebra e outros atallos. Non ten que reproducir paso a paso toda a historial de cálculo da canónico implementación, sempre que realice a mesma operación semántica e devolva a mesma resposta.</p>
+  <p>Optimización non é unha autoridade alternativa.</p><hr>
 </section>
 
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
   <h2>Orixe, Día da Fundación e Día das Táboas</h2>
-  <p>Aquí é especialmente importante separar con claridade os canonical time anchor do relato do sitio.</p>
+  <p>Aquí é especialmente importante separar con claridade os canónico ancoraxes temporais do relato do sitio.</p>
 
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>Ancoraxes</h3>
-    <p>O sistema ten un reference day fixo chamado <strong>Día da Fundación</strong>. No calendario gregoriano proléptico é o <strong>22 de decembro de 41,222 a.C.</strong>.</p>
-    <p>O Día da Fundación non é “o comezo do tempo”; é un computational anchor.</p>
-    <p>A numbering dos días ao seu redor usa enteiros positivos impares/pares: Día da Fundación=1; días posteriores=3, 5, …; cara ao pasado, o día anterior=2, despois 4, 6, … . Así, ambos lados do anchor se encode neste counter sen day number negativos.</p>
-    <p>O segundo anchor é o <strong>Día das Táboas</strong>: <strong>15 de xuño de 763 a.C. no calendario xuliano proléptico</strong>, é dicir, <strong>7 de xuño de 763 a.C. no calendario gregoriano proléptico</strong>.</p>
+    <p>O sistema ten un día de referencia fixo chamado <strong>Día da Fundación</strong>. No calendario gregoriano proléptico é o <strong>22 de decembro de 41,222 a.C.</strong>.</p>
+    <p>O Día da Fundación non é “o comezo do tempo”; é un ancoraxe de cálculo.</p>
+    <p>A numeración dos días ao seu redor usa enteiros positivos impares/pares: Día da Fundación=1; días posteriores=3, 5, …; cara ao pasado, o día anterior=2, despois 4, 6, … . Así, ambos lados do ancoraxe se codificar neste contador sen números de día negativos.</p>
+    <p>O segundo ancoraxe é o <strong>Día das Táboas</strong>: <strong>15 de xuño de 763 a.C. no calendario xuliano proléptico</strong>, é dicir, <strong>7 de xuño de 763 a.C. no calendario gregoriano proléptico</strong>.</p>
     <p>A distancia exacta desde o Día da Fundación ata o Día das Táboas é de</p>
     <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
     <p>días.</p>
-    <p>Son anchor fixos na liña temporal, pero a data pastafari que se lles mostra segue dependendo do día de acción desde o que se consulta.</p>
+    <p>Son ancoraxe fixos na liña temporal, pero a data pastafari que se lles mostra segue dependendo do día de acción desde o que se consulta.</p>
   </section>
 
   <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
     <h3>O relato do sitio</h3>
     <p>No relato editorial do sitio, o calendario descríbese como parte da creación e como un sistema que a humanidade utilizou sen comprendelo por completo, ata que foi entregado de novo na era moderna.</p>
     <p>Ese é o relato do sitio; non cada narrative detail debe presentarse coma se fose un technical claim explícito da Megillah.</p>
-    <p>O propio evento da nova entrega é un feito histórico fixo. É mellor mostrar a súa <strong>data pastafari</strong> dynamic baixo o día de acción actual que freeze para sempre como unha única data.</p><hr>
+    <p>O propio evento da nova entrega é un feito histórico fixo. É mellor mostrar a súa <strong>data pastafari</strong> dinamicamente baixo o día de acción actual que fixar para sempre como unha única data.</p><hr>
   </section>
 </section>
 
 <section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
-  <h2>Para usuarios avanzados: reverse conversion</h2>
-  <p>Se se coñece o día de acción <code>c</code>, o reverse conversion queda moi fortemente limitado. Dentro dun ano pastafari coñecido,</p>
+  <h2>Para usuarios avanzados: conversión inversa</h2>
+  <p>Se se coñece o día de acción <code>c</code>, o conversión inversa queda moi fortemente limitado. Dentro dun ano pastafari coñecido,</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{nome da croqueta},\text{día na croqueta})</code></pre>
   <p>identifica como máximo un día. O mesmo ocorre con</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{nome do mes},\text{día no mes})</code></pre>
-  <p>Así, unha data completa cun día de acción coñecido identifica o target day de forma única.</p>
+  <p>Así, unha data completa cun día de acción coñecido identifica o día consultado de forma única.</p>
 
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Límites superiores do número de candidatos en reverse conversion">
     <table class="about-table">
@@ -293,39 +293,39 @@
   </div>
 
   <p>Se non se coñece o día de acción, a situación é diferente. Os mesmos cinco valores poden aparecer baixo distintos días de acción e existen exact example nos que a mesma data completa aparece a distancias distintas de <code>c</code>.</p>
-  <p>No ano 5000, nin sequera o sign desa distancia queda sempre determinado polos cinco valores: a mesma data completa pode estar antes do día de acción nun context e despois noutro.</p>
-  <p>Polo tanto, unha data pastafari completa non é un absolute address na liña temporal se non sabemos baixo que <code>c</code> foi calculada.</p>
+  <p>No ano 5000, nin sequera o signo desa distancia queda sempre determinado polos cinco valores: a mesma data completa pode estar antes do día de acción nun contexto e despois noutro.</p>
+  <p>Polo tanto, unha data pastafari completa non é un enderezo absoluto na liña temporal se non sabemos baixo que <code>c</code> foi calculada.</p>
 
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
     <h3>Estrutura en tempos moi afastados</h3>
-    <p>A investigación matemática derivada da specification atopou tamén unha asymptotic structure exacta. Para un <strong>día de acción fixo</strong> <code>c</code>, suficientemente lonxe na tail do pasado aparece affine periodicity.</p>
+    <p>A investigación matemática derivada da especificación atopou tamén unha estrutura asintótica exacta. Para un <strong>día de acción fixo</strong> <code>c</code>, suficientemente lonxe na cola do pasado aparece periodicidade afín.</p>
     <p>Se</p>
     <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
-    <p>entón, para o mesmo <code>c</code>, existen un shift <code>H_c</code>, un year change <code>p_c</code> e un threshold suficientemente afastado, a partir do cal</p>
+    <p>entón, para o mesmo <code>c</code>, existen un desprazamento <code>H_c</code>, un cambio de ano <code>p_c</code> e un limiar suficientemente afastado, a partir do cal</p>
     <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
     <p>repítense os catro campos non anuais, mentres o número de ano cambia nunha cantidade fixa.</p>
     <p>Este é un resultado para <code>c</code> fixo; non implica a relación global</p>
     <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
-    <p>A pregunta de se os asymptotic slope finais realmente difiren entre distintos días de acción segue aberta.</p><hr>
+    <p>A pregunta de se os pendentes asintóticas finais realmente difiren entre distintos días de acción segue aberta.</p><hr>
   </section>
 </section>
 
 <section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
   <h2>Para usuarios avanzados: canta historia conserva a salsa?</h2>
-  <p>A salsa parece un mixing mechanism moi agresivo, pero a algebraic research mostra que conserva bastante máis información do que suxire a aparencia. É un research result derivado da specification, non unha nova regra do calendario.</p>
-  <p>Nas stage visibles 3–46, na asymptotic branch correspondente, estableceuse generic injectivity: no generic case, o state conserva información suficiente para reconstruír a input history relevante e a orde das cuncas.</p>
-  <p>A información tampouco desaparece de inmediato nas 12 mesturas finais. Para as primeiras cinco mesturas despois da gota visible 46 estableceuse generic invertibility sobre a canonical union correspondente sen side information adicional; para o resto coñécense fortes constructive upper bound sobre canta side information é suficiente para a reconstruction.</p>
-  <p>Segue aberta a pregunta de se <strong>só as seis cuncas finais</strong> son sempre suficientes en generic sense.</p>
-  <p>Algúns resultados probáronse symbolic, outros pecháronse mediante finite exact arithmetic check. O symbolic strengthening reduciu moito o computational core no que hai que confiar, pero non o eliminou por completo.</p>
-  <p>Space que inicialmente parecían requirir buscar entre unha cantidade enorme de path reducíronse a finite structure moito máis pequenas, incluíndo automata de 180 e 9 state e symmetry das seis cuncas.</p>
-  <p>Debaixo da mestura hai unha algebraic structure ríxida. Non fai falta coñecela para saber a data de hoxe.</p><hr>
+  <p>A salsa parece un mixing mecanismo moi agresivo, pero a investigación alxébrica mostra que conserva bastante máis información do que suxire a aparencia. É un resultado de investigación derivado da especificación, non unha regra nova do calendario.</p>
+  <p>Nas etapas visibles 3–46, na rama asintótica correspondente, estableceuse inxectividade xenérica: no caso xenérico, o estado conserva información suficiente para reconstruír a historial de entrada relevante e a orde das cuncas.</p>
+  <p>A información tampouco desaparece de inmediato nas 12 mesturas finais. Para as primeiras cinco mesturas despois da gota visible 46 estableceuse invertibilidade xenérica sobre a canónico union correspondente sen información auxiliar adicional; para o resto coñécense fortes cotas superiores construtivas sobre canta información auxiliar é suficiente para a reconstrución.</p>
+  <p>Segue aberta a pregunta de se <strong>só as seis cuncas finais</strong> son sempre suficientes en sentido xenérico.</p>
+  <p>Algúns resultados probáronse simbolicamente, outros pecháronse mediante comprobacións aritméticas finitas e exactas. O simbolicamente strengthening reduciu moito o núcleo computacional no que hai que confiar, pero non o eliminou por completo.</p>
+  <p>Espazos que inicialmente parecían requirir buscar entre unha cantidade enorme de camiños reducíronse a estruturas finitas moito máis pequenas, incluíndo autómatas de 180 e 9 estados e simetrías das seis cuncas.</p>
+  <p>Debaixo da mestura hai unha estrutura alxébrica ríxida. Non fai falta coñecela para saber a data de hoxe.</p><hr>
 </section>
 
 <section class="about-section" id="summary" data-toc-section data-toc-level="2">
   <h2>Entón, que é realmente o Calendario Pastafari?</h2>
-  <p>É un deterministic calendar no que a data non é só unha function do target day, senón unha <strong>function conxunta do día de acción e do día consultado</strong>.</p>
-  <p>Cada data ten exactamente cinco campos. O presente, visto desde si mesmo, está sempre no ano 5000, pero o propio ano 5000 móvese co día de acción. Os anos poden ser moi longos, as croquetas son continuas, os meses non necesariamente, e non hai canonical week system.</p>
-  <p>O día <code>n+1</code> dun mes non ten por que ser mañá. O mesmo chronological day pode recibir mañá outro Pastafarian label. O mesmo physical moment pode pertencer a dous local Pastafari day distintos en dous lugares. Un all-day event non ten por que ir de medianoite a medianoite. E un annual birthday é primeiro un search problem e despois un calendar problem.</p>
-  <p>Pero se se coñecen o día de acción e o día consultado, non hai ambiguity: só hai unha resposta correcta.</p>
+  <p>É un determinista calendar no que a data non é só unha función do día consultado, senón unha <strong>función conxunta do día de acción e do día consultado</strong>.</p>
+  <p>Cada data ten exactamente cinco campos. O presente, visto desde si mesmo, está sempre no ano 5000, pero o propio ano 5000 móvese co día de acción. Os anos poden ser moi longos, as croquetas son continuas, os meses non necesariamente, e non hai canónico week system.</p>
+  <p>O día <code>n+1</code> dun mes non ten por que ser mañá. O mesmo día cronolóxico pode recibir mañá outro Pastafarian label. O mesmo instante físico pode pertencer a dous días Pastafari locais distintos en dous lugares. Un evento de día completo non ten por que ir de medianoite a medianoite. E un aniversario anual é primeiro un problema de busca e despois un problema de calendario.</p>
+  <p>Pero se se coñecen o día de acción e o día consultado, non hai ambigüidade: só existe unha resposta correcta.</p>
   <p>Ao final, tampouco hai que esixirlle máis a un calendario.</p>
 </section>
