@@ -56,7 +56,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | mk | mk-MK | ltr | partial | semantic QA |
 | mr | mr-IN | ltr | partial | semantic QA |
 | ms | ms-MY | ltr | partial | semantic QA |
-| nb | nb-NO | ltr | partial | draft |
+| nb | nb-NO | ltr | partial | semantic QA |
 | ne | ne-NP | ltr | partial | draft |
 | nl | nl-NL | ltr | partial | draft |
 | nn | nn-NO | ltr | partial | draft |
