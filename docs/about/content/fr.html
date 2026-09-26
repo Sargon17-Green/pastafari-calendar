@@ -225,9 +225,9 @@
   <hr>
 </section>
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
-  <h2>Voyages, événements et all-day</h2>
+  <h2>Voyages et événements sur toute la journée</h2>
   <p>Un événement n'est pas l'étiquette locale qu'on lui affiche. Un événement planifié doit rester ancré à un instant chronologique stable. Un déplacement géographique ne déplace pas l'événement dans le temps ; il peut toutefois modifier la date pastafari locale affichée à cet instant, puisque le « jour local » dépend du lieu.</p>
-  <p>Pour un événement <strong>all-day</strong>, la différence est encore plus importante. Dans un calendrier civil, un événement de journée entière s'étend en général d'un minuit civil au suivant. Son équivalent pastafari devrait aller d'une limite locale de jour pastafari à la suivante. Ce ne sont généralement pas les mêmes instants.</p>
+  <p>Pour un <strong>événement sur toute la journée</strong>, la différence est encore plus importante. Dans un calendrier civil, un événement de journée entière s'étend en général d'un minuit civil au suivant. Son équivalent pastafari devrait aller d'une limite locale de jour pastafari à la suivante. Ce ne sont généralement pas les mêmes instants.</p>
   <p>Exporter aveuglément un événement pastafari comme « journée entière » dans un calendrier civil peut donc en altérer le sens. Pour le préserver exactement, il faut conserver son ancrage chronologique ainsi que le contexte de lieu et de limite du jour, pas seulement cocher <code>all-day</code>.</p>
   <hr>
 </section>
@@ -251,7 +251,7 @@
   <p>À côté de l'implémentation canonique existe un moteur rapide appelé <strong>Pastafarian Calendar Seer</strong>. Seer n'est pas une source d'autorité : la Megillah et le calcul canonique déterminent la bonne réponse. En cas de désaccord, c'est Seer qui a tort.</p>
   <p>Son rôle est d'effectuer les mêmes requêtes rapidement et sous une forme pratique pour l'intégration dans des produits.</p>
   <p>Lors de la vérification en conditions réelles effectuée pendant la rédaction de cette page, Seer proposait notamment les requêtes de date et de « maintenant », les lots et plages de jours, la conversion inverse vers un jour cible, la structure d'une année, la résolution du jour de travail actif, une API Node, un client navigateur/HTTP, une CLI, un service HTTP v1, un contrat OpenAPI 3.1, des implémentations natives et paquets de distribution, ainsi qu'un déploiement conteneurisé vérifié.</p>
-  <p>L'ancienne affirmation selon laquelle Seer ne posséderait pas d'API publique est donc dépassée. Il existe un contrat HTTP v1 explicite et stable, avec des endpoints pour date, range, batch, year, reverse, day of working, metadata, locales et status.</p>
+  <p>L'ancienne affirmation selon laquelle Seer ne posséderait pas d'API publique est donc dépassée. Il existe un contrat HTTP v1 explicite et stable, avec des points d’accès pour <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, le jour de travail, <code>metadata</code>, <code>locales</code> et <code>status</code>.</p>
   <p>Le 21 septembre 2026, un déploiement HTTPS public sur Render a aussi été éprouvé en conditions réelles : requêtes exactes, grande plage, redémarrage, réveil à froid et comportement sous charge ont été testés sur le service en ligne.</p>
   <p>La documentation du projet continue toutefois de distinguer ce déploiement public de bêta/évaluation d'un service de production hébergé permanent assorti d'un SLA. Une page d'explication de principe ne doit donc pas figer une adresse de serveur, un hébergeur ou un numéro de version comme s'ils appartenaient au calendrier.</p>
   <p>Seer peut recourir au précalcul, à des représentations spécialisées, à SIMD, à l'algèbre ou à d'autres raccourcis. Il n'est pas obligé de rejouer chaque étape historique de l'implémentation canonique, pourvu qu'il réalise la même opération sémantique et renvoie la même réponse.</p>
