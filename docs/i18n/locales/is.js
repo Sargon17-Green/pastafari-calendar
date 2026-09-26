@@ -97,7 +97,7 @@ export default Object.freeze({
     "calendarInput.bahaiTehran": "Bahá’í — jafndægur í Teheran",
     "calendarInput.bahaiWestern": "Bahá’í — vestrænt reiknað",
     "calendarInput.mayaLongCount": "Langtal Maya",
-    "calendarHelp.hebrew": "Mánuðir eru valdir eftir nafni. Ár og dag má slá inn með tugatölustöfum eða hebreskum talnastöfum, til dæmis תשפ״ו eða י״ד; ef ár er ritað með hebreskum talnastöfum án þúsundamerkis er 5.000 bætt við það.",
+    "calendarHelp.hebrew": "Mánuðir eru valdir eftir nafni. Ár og dag má slá inn með tugatölustöfum eða hebreskum talnastöfum, til dæmis \u2067תשפ״ו\u2069 eða \u2067י״ד\u2069; ef ár er ritað með hebreskum talnastöfum án þúsundamerkis er 5.000 bætt við það.",
     "calendarHelp.intl": "Þessi umbreyting notar dagatalsstuðning sem er innbyggður í vafrann. Ef vafrinn getur ekki sýnt dagsetninguna segir vefurinn það skýrt.",
     "calendarHelp.chinese": "Sláðu inn gregoríska árið sem samsvarar kínverska árinu og merktu „Innskotsmánuður“ aðeins fyrir endurtekna mánuðinn.",
     "calendarHelp.hindu": "Sláðu inn ár og dag samkvæmt forna hindúatalinu og veldu mánuðinn eftir nafni. Í tunglforminu má einnig merkja innskotsmánuð.",
