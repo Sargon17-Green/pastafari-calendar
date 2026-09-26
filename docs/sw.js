@@ -1,6 +1,6 @@
 "use strict";
 
-const VERSION = "pastafari-static-pwa-hardening-22-about-i18n-polish";
+const VERSION = "pastafari-static-pwa-hardening-23-nojs-i18n";
 const CORE_CACHE = `${VERSION}-core`;
 const RUNTIME_CACHE = "pastafari-runtime-assets";
 const CACHE_PREFIX = "pastafari-static-";
@@ -10,6 +10,7 @@ const CACHE_PREFIX = "pastafari-static-";
 const CORE_ASSETS = [
   "./index.html",
   "./about/index.html",
+  "./no-js/index.html",
   "./about/about.js?v=5-about-i18n-polish",
   "./about/content/registry.js?v=5-about-i18n-polish",
   "./about/content/he.html?v=5-about-i18n-polish",

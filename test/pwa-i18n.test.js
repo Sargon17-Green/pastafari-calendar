@@ -65,6 +65,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   const requiredCore = [
     "./index.html",
     "./about/index.html",
+    "./no-js/index.html",
     "./about/about.js?v=5-about-i18n-polish",
     "./about/content/registry.js?v=5-about-i18n-polish",
     "./about/content/he.html?v=5-about-i18n-polish",
@@ -89,7 +90,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
     "./i18n/locales/en.js?v=19-about-i18n",
   ];
   assert.deepEqual(coreAssets, requiredCore, "CORE_ASSETS must describe the complete deterministic offline application shell");
-  assert.equal(coreAssets.length, 24);
+  assert.equal(coreAssets.length, 25);
 
   const requiredOptional = [
     "./manifest.webmanifest?v=9-canonical-names",
@@ -186,17 +187,27 @@ test("every static HTML translation binding exists in every locale", async () =>
   }
 });
 
-test("no-JavaScript fallback hides the untranslated application shell and stays language-neutral", async () => {
-  const htmlSources = await Promise.all([
-    readFile(path.join(DOCS, "index.html"), "utf8"),
-    readFile(path.join(DOCS, "about", "index.html"), "utf8"),
-  ]);
-  for (const html of htmlSources) {
-    const block = html.match(/<noscript>([\\s\\S]*?)<\\/noscript>/)?.[1] ?? "";
-    assert.match(block, /\\.app-shell\\s*\\{\\s*display:\\s*none\\s*!important;\\s*\\}/);
-    assert.match(block, /<div class="noscript" lang="zxx" dir="ltr">/);
-    assert.match(block, /<strong>JavaScript<\\/strong>\\s*<span>⚠<\\/span>/u);
-    assert.doesNotMatch(block, /data-i18n=/);
+test("no-JavaScript fallback redirects to a complete static multilingual help surface", async () => {
+  const mainHtml = await readFile(path.join(DOCS, "index.html"), "utf8");
+  const aboutHtml = await readFile(path.join(DOCS, "about", "index.html"), "utf8");
+  const helpHtml = await readFile(path.join(DOCS, "no-js", "index.html"), "utf8");
+
+  assert.match(mainHtml, /<noscript><meta http-equiv="refresh" content="0; url=\.\/no-js\/"><\/noscript>/);
+  assert.match(aboutHtml, /<noscript><meta http-equiv="refresh" content="0; url=\.\.\/no-js\/"><\/noscript>/);
+  assert.match(mainHtml, /<a href="\.\/no-js\/" lang="zxx" dir="ltr">🌐<\/a>/u);
+  assert.match(aboutHtml, /<a href="\.\.\/no-js\/" lang="zxx" dir="ltr">🌐<\/a>/u);
+
+  assert.match(helpHtml, /<html lang="zxx" dir="ltr">/);
+  assert.doesNotMatch(helpHtml, /<script\b/i);
+  const entries = [...helpHtml.matchAll(/<details data-locale="([^"]+)" lang="([^"]+)" dir="(ltr|rtl)">[\s\S]*?<summary>([^<]+)<\/summary>[\s\S]*?<p>([^<]+)<\/p>[\s\S]*?<\/details>/g)];
+  assert.equal(entries.length, LOCALES.length, "static no-JS help must contain exactly one entry per active locale");
+  assert.deepEqual(entries.map((match) => match[1]), [...LOCALES.map(({ code }) => code)].sort((a, b) => a.localeCompare(b, "en")));
+  for (const [match, locale] of entries.map((entry) => [entry, LOCALES.find(({ code }) => code === entry[1])])) {
+    assert.ok(locale, `unexpected no-JS locale ${match[1]}`);
+    assert.equal(match[2], locale.intlLocale);
+    assert.equal(match[3], locale.dir);
+    assert.equal(match[4], locale.displayName);
+    assert.ok(match[5].trim().length >= 20, `no-JS message for ${locale.code} is implausibly short`);
   }
 });
 
