@@ -77,6 +77,8 @@ jobs:
           זו אינה משימת תרגום מחדש. שמור כל ניסוח מקומי טוב וכל תיקון QA קיים.
           ב-Seer, אל תסמן התאמה אם המגילה והחישוב הקאנוני מוצגים כשתי סמכויות מקבילות. הנוסח המקומי חייב למסור שהמגילה קובעת את הכללים, שהחישוב הקאנוני מפיק לפיהם את התאריך, וש-Seer אמור להחזיר אותה תשובה; מחלוקת עם חישוב קאנוני תקין היא טעות של Seer.
           הצע רק החלפות נקודתיות שנדרשות כדי להחיל את הדלתא הסמנטית.
+          בשלב זה מותר לבדוק ולשנות רק את 12 המקטעים ששונו במאסטר העברי: about-calendar, months-and-weaving, calculation, structural-atlas, appointments, travel-and-all-day, seer, foundation-and-tablets, site-story, reverse-conversion, far-time-structure, sauce-history.
+          אל תציע שינוי בשום stable section אחר, גם אם אתה מבחין שם בשיפור סגנוני אפשרי; תיקונים כאלה שייכים ל-native-language QA המאוחר.
           אל תתקן כאן בעיות לשון אחרות שאינן נדרשות לדלתא.
           אל תשנה נוסחאות, stable IDs, hashes, מספרים או ליטרלים טכניים.
           אל תשנה קבצים בעצמך. החזר רק patch טקסטואלי בפורמט הבא.
@@ -103,7 +105,7 @@ jobs:
           EOF
 
             FINAL_ALIGNED=0
-            for PASS in 1 2 3; do
+            for PASS in 1 2 3 4 5; do
               if [ "$PASS" -eq 1 ]; then
                 cp "/tmp/$LOCALE.prompt.md" "/tmp/$LOCALE.pass$PASS.prompt.md"
               else
@@ -111,6 +113,7 @@ jobs:
                   cat <<EOF
           זהו סבב אימות חוזר אחרי שכבר הוחלו שינויים על $TARGET.
           אל תניח שהסבבים הקודמים היו מלאים. קרא מחדש את הקובץ במצבו הנוכחי ובדוק אחד־אחד את כל סעיפי הדלתא מול המאסטר העברי.
+          הגבל את הבדיקה וההחלפות ל-12 המקטעים המותרים בלבד; אל תציע תיקון ב-summary או בכל stable section אחר בשלב זה.
           חפש במיוחד: מסגור מטא־בדיוני; „נקרא כאן”; הצגת 2.9976% כהסתברות כללית; ניסוח פגישות שמרמז על רגע מדויק; ניסוח all-day לא טבעי; witnesses; „סימן” של מניין המרחק; שגיאת התאמה דקדוקית בזוגות; וניסוחי צוות כגון „התוצאה נסגרה”.
           ב-Seer בדוק בנפרד ובקפדנות את שרשרת הסמכות: המגילה קובעת את הכללים; החישוב הקאנוני מפיק את התאריך לפי הכללים האלה; Seer אמור להחזיר אותה תשובה; ואם Seer חולק על חישוב קאנוני תקין, Seer טועה.
           אל תקבל כנוסח שקול ניסוח שמציג את המגילה ואת החישוב הקאנוני כשתי סמכויות מקבילות, כגון “the Scroll and the canonical calculation determine the correct date”.
@@ -144,7 +147,7 @@ jobs:
             done
 
             if [ "$FINAL_ALIGNED" -ne 1 ]; then
-              echo "$LOCALE did not reach ALREADY_ALIGNED within three semantic-delta passes" >&2
+              echo "$LOCALE did not reach ALREADY_ALIGNED within five semantic-delta passes" >&2
               exit 1
             fi
 
@@ -152,7 +155,7 @@ jobs:
           const fs=require("node:fs");
           const dir="artifacts/about-semantic-delta-runs";
           const reports=[];
-          for(let pass=1;pass<=3;pass++){
+          for(let pass=1;pass<=5;pass++){
             const path=`${dir}/${process.env.LOCALE}.pass${pass}.json`;
             if(fs.existsSync(path)) reports.push(JSON.parse(fs.readFileSync(path,"utf8")));
           }
