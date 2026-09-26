@@ -61,6 +61,22 @@ Tvö atriði voru ekki talin íslensk staðfærsluvilla:
 
 Eftir lagfæringarnar voru 258/258 skilaboð, placeholder-samræmi, 29 stable ID, töflur 19/9 og föst formúlu-/hash-gildi staðfest aftur. Ný sjálfstæð íslensk LLM-lota er keyrð áður en staðan má færast í `linguistic QA`.
 
+## Sjálfstæð íslensk LLM-lota — umferð 2
+
+Önnur sjálfstæð íslensk yfirferð var keyrð eftir fyrstu lagfæringarnar:
+
+- workflow run: `36262658231`
+- reviewer job: `108461338434`
+- niðurstaða: `VERDICT: NEEDS_CHANGES`
+
+Hún fann annað lag af þýðingarkenndu orðalagi sem fyrri umferðin hafði ekki bent á, meðal annars í `search.invalid`, `comparison.summary`, `guide.4.body`, heitum og stöðuskilaboðum öfugrar leitar, `calendarHelp.hebrew`, upphafi `#about-calendar`, `#day-identity`, endurtekningu ensku heitanna Short/Wide Choice og nokkrum setningum um atlas, ferðalög og Seer.
+
+Þessi atriði voru lagfærð í commitunum `452d455ff2e38846906e9b52041fcf3fa96b26d4` og `fd5c9eb56e0448c5597f5d3d584bfe8e2c01bf20`.
+
+Tvö sameiginleg fallback-atriiði um kyrrstæða HTML-skel án JavaScript voru aftur skráð af rýninum. Þau eru varðveitt sem opin integration/PWA atriði í `artifacts/about-i18n-global-integration-findings.md` og teljast ekki íslensk málfarsvilla.
+
+Eftir aðra lagfæringalotu voru samnings- og byggingarprófanir keyrðar aftur og staðfestu 258/258 lykla, óbreytt placeholder-mengi, 29 stable ID, töflur 19/9 og öll föst formúlu-/hash-gildi. Þriðja sjálfstæða íslenska LLM-lotan er keyrð áður en `linguistic QA` má teljast lokið.
+
 ## Það sem er enn opið
 
 Þessi skrá er **ekki** sönnun fyrir þeirri sérstöku lokakröfu að tungumála-QA sé framkvæmt af LLM í aðskildri samræðu/lota sem sjálf fer öll fram á íslensku. Sú krafa hefur ekki verið uppfyllt í þessari núverandi samræðu og má ekki telja hana uppfyllta eingöngu vegna þess að þessi QA-skrá er skrifuð á íslensku.
