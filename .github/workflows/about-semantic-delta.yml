@@ -92,9 +92,11 @@ jobs:
           הקטע החלופי הטבעי בשפת היעד
           <<<END>>>
 
-          OLD חייב להיות העתק byte-for-byte מן הקובץ הנוכחי. העדף את הקטע הקטן ביותר שמספיק לתיקון.
-          NEW חייב להישאר בשפת היעד ולהיות טבעי. אין להוסיף עברית או שפה זרה שאינה ליטרל טכני מחייב.
-          אל תחזיר שום טקסט מחוץ לפורמט.
+          OLD חייב להיות שורה פיזית שלמה אחת שהעתקת ישירות מן הקובץ הנוכחי, byte-for-byte, כולל ה-HTML וההזחה שבאותה שורה.
+          אל תשחזר OLD מן הזיכרון ואל תתרגם אותו. אתר את השורה בקובץ והעתק אותה בדיוק.
+          NEW חייב להיות גם הוא שורה פיזית אחת, באותו תפקיד HTML, בשפת היעד ובניסוח טבעי.
+          לפני הפלט ודא שכל OLD אכן מופיע פעם אחת בדיוק בקובץ היעד.
+          אין להוסיף עברית או שפה זרה שאינה ליטרל טכני מחייב. אל תחזיר שום טקסט מחוץ לפורמט.
           EOF
 
             set +e
@@ -107,6 +109,8 @@ jobs:
               echo "Copilot failed for $LOCALE with exit $EXIT" >&2
               exit "$EXIT"
             fi
+
+            cp "/tmp/$LOCALE.response.txt" "artifacts/about-semantic-delta-runs/$LOCALE.proposal.txt"
 
             node scripts/apply-about-semantic-delta.mjs \
               --file "$TARGET" \
@@ -146,3 +150,12 @@ jobs:
               sleep 3
             done
           done
+
+      - name: Upload semantic-delta pilot evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: about-semantic-delta-${{ github.run_id }}
+          path: artifacts/about-semantic-delta-runs/
+          if-no-files-found: warn
+          retention-days: 14
