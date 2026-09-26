@@ -1,7 +1,7 @@
 <!-- Føroyska útgávan er skrivað beinleiðis eftir hebraiska semantic master; einki millumliðsmál er brúkt. -->
 <!-- Section-ID eru partur av einum støðugum almennum deep-link contract og verða ikki gjørd úr umsettum yvirskriftum. -->
 <div class="about-section about-lead" id="about-calendar">
-  <p>Í frásøgnini á hesum staðnum verður Pastafari-kalendarin lýstur sum kalendarin, har sjálv tíðin varð skapað. Men hvussu hann virkar, er ásett við strongum og nágreiniligum reglum.</p>
+  <p>Pastafari-kalendarin er kalendarin, har tíðin varð skapað. Reglurnar, sum stýra honum, eru neyvt ásettar.</p>
   <p>Kalendarin festir ikki eitt óbroytiligt Pastafari-“merki” á hvønn dag. Fyri at fáa eina dagfesting tørvast tveir dagar: <strong>gerðardagurin</strong>, haðani útrokningin byrjar, og <strong>spurnardagurin</strong>, sum vit vilja vita Pastafari-dagfestingina fyri.</p>
   <p>Um gerðardagurin verður skrivaður sum <code>c</code> og spurnardagurin sum <code>t</code>, er dagfestingin</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
@@ -126,7 +126,7 @@
 
 <section class="about-section" id="calculation" data-toc-section data-toc-level="2">
   <h2>Hvussu verður kalendarin roknaður?</h2>
-  <p>Innaru útrokningina kalla vit her <strong>sósina</strong>. Í miðjuni stendur frumtalið</p>
+  <p>Innara útrokningin eitur <strong>sósin</strong>. Í miðjuni stendur frumtalið</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
   <p>Tilgongdin fevnir um fimm input counter, 7 fjaldar dropar, 46 sjónligar dropar, 6 skálir, skiftandi skálaraðfylgjur, 12 endaligar blandingar, seal fyri ymisk svar, combinatorial selection, bygging av portum, val av árum, býti av kotelettum, val av nøvnum, bygging av mánaðum og flætting av mánaðardøgum.</p>
   <p>Endaligu update eru <strong>samstundis</strong>: í hvørjari blanding verða øll seks nýggj virðini roknað út frá sama gamla state, og fyrst síðani verða allar seks skálirnar skiftar í einum.</p>
@@ -170,7 +170,7 @@
         <tr><td>Median fyri mánaðarlongd</td><td>115</td></tr>
         <tr><td>Miðal talið av samanhangandi segmentum fyri hvønn mánað</td><td>100.897</td></tr>
         <tr><td>Partur av eindags mánaðarsektorum</td><td>97.482%</td></tr>
-        <tr><td>Sannlíkind fyri at tveir grannadagar eru í sama mánaði</td><td>2.9976%</td></tr>
+        <tr><td>Partur av grannadøgum, sum vóru í sama mánaði</td><td>2.9976%</td></tr>
         <tr><td>Miðal talið av døgum úr øðrum mánaðum millum <code>n</code> og <code>n+1</code> í sama mánaði</td><td>40.408</td></tr>
         <tr><td>Miðal span frá fyrstu til seinastu framkomu hjá mánaðinum</td><td>4,266.653 dagar</td></tr>
       </tbody>
@@ -199,7 +199,7 @@
 
 <section class="about-section" id="appointments" data-toc-section data-toc-level="2">
   <h2>Hvussu avtalar ein fund?</h2>
-  <p>Um tvey fólk vilja avtala ein fund bara við einari Pastafari-dagfesting, mugu tey í minsta lagi vera samd um tey fimm dátufeltini og gerðardagin, sum varð brúktur í útrokningini. Tað er betri at goyma gerðardagin sum ein fastan dagsamleika enn sum orðið “í dag”; annars kunnu tvey fólk rokna tveir ymiskar kalendarar.</p>
+  <p>Um tvey fólk vilja brúka eina Pastafari-dagfesting til at avtala, hvønn dag ein fundur skal vera, mugu tey í minsta lagi vera samd um tey fimm dátufeltini og gerðardagin, sum varð brúktur í útrokningini. Hetta ásetur dagin, men ikki neyðturviliga eina ávísa løtu á degnum. Tað er betri at goyma gerðardagin sum ein fastan dagsamleika enn sum orðið “í dag”; annars kunnu tvey fólk rokna tveir ymiskar kalendarar.</p>
   <ul>
     <li>“í morgin” er næsti kronologiski dagur;</li>
     <li>“næsti dagur í mánaðinum” er næsta framkoman hjá sama mánaði;</li>
@@ -211,10 +211,10 @@
 </section>
 
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
-  <h2>Ferðing, hendingar og heil-dags</h2>
+  <h2>Ferðing og hendingar, sum vara allan dagin</h2>
   <p>Ein hending og staðbundna merkið, sum verður víst fyri hana, eru ikki tað sama. Ein hending við føstum klokkusletti eigur at vera knýtt at einari fastari kronologiskari løtu. Ferðing flytur hana ikki í tíð, men staðbundna Pastafari-dagfestingin fyri sama fysiska løta kann broytast, tí skilmarkingin av “staðbundnum degi” er treytað av staði.</p>
-  <p>Við einari <strong>heil-dags</strong>-hending er munurin enn størri. Ein borgarlig hending fyri allan dagin gongur vanliga frá miðnátt til næstu miðnátt; ein Pastafari-hending fyri allan dagin eigur at ganga frá staðbundna Pastafari-dagamarkinum til næsta mark. Vanliga eru hetta ikki somu moments.</p>
-  <p>Tí kann ein blind export av einari Pastafari-hending sum borgarlig “heil-dags”-hending broyta merkingina. Fyri at varðveita hana rætt má goymast chronological anchor og hóskandi location/day-boundary context, ikki bara <code>heil-dags</code> flag.</p><hr>
+  <p>Við einari <strong>hending, sum varir allan dagin (<bdi dir="ltr">all-day</bdi>)</strong> er munurin enn størri. Ein borgarlig hending, sum varir allan dagin, gongur vanliga frá einari borgarligari miðnátt til ta næstu; ein Pastafari-hending, sum varir allan dagin, eigur at vara frá staðbundna Pastafari-dagamarkinum til næsta staðbundna dagamark. Vanliga eru hetta ikki somu tíðspunkt.</p>
+  <p>Tí kann ein blind export av einari Pastafari-hending sum borgarlig hending, ið varir allan dagin, broyta merkingina. Fyri at varðveita hana rætt má goymast chronological anchor og hóskandi location/day-boundary context, ikki bara <code>all-day</code> flag.</p><hr>
 </section>
 
 <section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
@@ -233,19 +233,19 @@
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Hvat er Seer so?</h2>
-  <p>Við síðuna av kanonisku íverksetingini er ein skjótur útrokningarmotorur, ið eitur <strong>Pastafarian Calendar Seer</strong>. Seer er ikki ein myndugleikakeldan: rætta dagfestingin verður avgjørd av Megillah og kanonisku útrokningini. Um Seer ikki samsvarar við tey, er villan í Seer.</p>
+  <p>Við síðuna av kanonisku íverksetingini er ein skjótur útrokningarmotorur, ið eitur <strong>Pastafarian Calendar Seer</strong>. Megillah ásetur reglurnar, og kanoniska útrokningin roknar dagfestingina eftir teimum; Seer er ein skjótur motorur, sum eigur at geva sama svar. Um Seer er ósamdur við eina rætta kanoniska útrokning, tekur Seer feil.</p>
   <p>Uppgávan hjá honum er at koyra somu fyrispurningar skjótt og lata úrslitið í einum sniði, sum lætt kann flættast inn í vørur.</p>
-  <p>Í beinleiðis sannroynd, meðan henda síðan varð ritstjórnað, fevndi Seer millum annað um <code>date</code>- og <code>now</code>-fyrispurningar, bunkafyrispurningar, dagabil, afturumrokning frá Pastafari-dagfesting til spurnardag, heinting av ársbygnaði og áseting av virknari gerðardegi, Node API, kagara/HTTP-klient, CLI, HTTP v1-tænastu, OpenAPI 3.1-lýsing, nativar íverksetingar og útbreiðslupakka, umframt sannroynd container-útbreiðing.</p>
-  <p>Gamla uppáhaldið um, at Seer onga almenna API hevur, er ikki longur rætt. Nú er ein greið og støðug HTTP v1-lýsing við endpointunum <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, gerðardegi, metadata, málstillingum og støðu.</p>
+  <p>Í beinleiðis sannroyndini, sum varð gjørd 21. september 2026, fevndi Seer millum annað um <code>date</code>- og <code>now</code>-fyrispurningar, bunkafyrispurningar, dagabil, afturumrokning frá Pastafari-dagfesting til spurnardag, heinting av ársbygnaði og áseting av virknari gerðardegi, Node API, kagara/HTTP-klient, CLI, HTTP v1-tænastu, OpenAPI 3.1-lýsing, nativar íverksetingar og útbreiðslupakka, umframt sannroynd container-útbreiðing.</p>
+  <p>Seer hevur eitt alment API við einari greiðari og støðugari HTTP v1-forskrift, sum hevur endapunktini <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, gerðardegi, metadata, málstillingum og støðu.</p>
   <p>21. september 2026 varð ein almenn HTTPS-útbreiðing á Render veruliga roynt: á virknu tænastuni vórðu neyvar fyrispurningar, stórt dagabil, endurræsing, uppvaking eftir dvala og atburður undir álagi sannroyndur.</p>
-  <p>Verkætlanarskjalfestingin skilur tó framvegis ímillum almenna beta-/metingarútbreiðing og eina varandi hýsta framleiðslutænastu við SLA. Tí eigur ein hugtakslig frágreiðingarsíða ikki at frysta servarabústað, hýsingarveitara ella útgávunummar, sum vóru tey partur av sjálvum kalendaranum.</p>
+  <p>Almenna útbreiðslan, sum varð roynd, er ein beta-/metingarútbreiðsla, ikki eitt lyfti um eina varandi hýsta framleiðslutænastu við SLA. Servarabústaður, hýsingarveitari og útgávunummar eru ikki partur av kalendaranum og eru ikki kanonisk viðurskifti.</p>
   <p>Seer kann brúka forútrokning, serligar framsetingar, SIMD, algebra og aðrar snarvegir. Hann nýtist ikki at endurtaka alla útrokningarsøguna hjá kanonisku íverksetingini stig fyri stig, um hann ger somu merkingarligu gerðina og gevur sama svar.</p>
   <p>Optimering er ikki ein annar myndugleiki.</p><hr>
 </section>
 
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
   <h2>Uppruni, Stovningardagurin og Talvudagurin</h2>
-  <p>Her er serliga týdningarmikið at halda kanonisku tíðarfestipunktini greitt sundur frá frásøgnini á staðnum.</p>
+  <p>Tey føstu útrokningarankrini í kalendaranum eru ikki tað sama sum søguligu staðreyndirnar um uppruna hansara og endurhandan.</p>
 
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>Festipunkt</h3>
@@ -260,16 +260,16 @@
   </section>
 
   <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
-    <h3>Frásøgnin á staðnum</h3>
-    <p>Í redaktionellu frásøgnini á staðnum verður kalendarin lýstur sum partur av skapanini og sum ein skipan, ið mannaættin brúkti uttan at skilja hana til fulnar, til hon varð latin aftur í nýggjari tíð.</p>
-    <p>Hetta er frásøgnin á staðnum; ikki hvør narrative detail eigur at verða víst sum eitt beinleiðis technical claim frá Megillah.</p>
-    <p>Hendingin, tá skipanin varð latin aftur, er sjálv ein føst søgulig hending. <strong>Pastafari-dagfestingin</strong> hjá henni eigur heldur at verða víst dynamic undir núverandi gerðardegi enn freeze fyri allar tíðir sum ein einstøk dagfesting.</p><hr>
+    <h3>Uppruni kalendarans og endurhandanin</h3>
+    <p>Pastafari-kalendarin er partur av skapanini. Menniskjuni hava nýtt hann uttan at vera nóg varug við, at tey nýttu hann, fram til endurhandanina í nýggjari tíð.</p>
+    <p>Megillah greiðir ikki frá øllum søguligum smálutum. Smálutir, sum ikki eru nevndir beinleiðis í henni, eru ikki partur av orðingini í Megillah og eiga ikki at verða sagdir at standa har.</p>
+    <p>Hendingin, tá kalendarin varð handaður av nýggjum, er ein søgulig hending, ið liggur føst í tíðini. <strong>Pastafari-dagfestingin</strong> fyri hana verður roknað eftir viðkomandi gerðardegi og kann tí broytast, tá gerðardagurin broytist.</p><hr>
   </section>
 </section>
 
 <section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
-  <h2>Fyri framkomnar brúkarar: reverse conversion</h2>
-  <p>Er gerðardagurin <code>c</code> kendur, er reverse conversion sera strongt avmarkað. Innan eitt kent Pastafari-ár eyðmerkir</p>
+  <h2>Fyri framkomnar brúkarar: afturumrokning</h2>
+  <p>Er gerðardagurin <code>c</code> kendur, er afturumrokningin sera avmarkað. Innan eitt kent Pastafari-ár eyðmerkir</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{kotelettnavn},\text{dagur í kotelettini})</code></pre>
   <p>í mesta lagi ein dag. Tað sama er galdandi fyri</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{mánaðarnavn},\text{dagur í mánaðinum})</code></pre>
@@ -277,7 +277,7 @@
 
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Ovara mørk fyri talið av møguleikum í afturumrokning">
     <table class="about-table">
-      <thead><tr><th scope="col">Kend eyka upplýsing</th><th scope="col">Mest møgulig candidate</th></tr></thead>
+      <thead><tr><th scope="col">Kend eyka upplýsing</th><th scope="col">Mesta talið av møguligum døgum</th></tr></thead>
       <tbody>
         <tr><td>Einki felt er kent uttan árið</td><td>5,778</td></tr>
         <tr><td>Bara kotelettnavnið</td><td>5,568</td></tr>
@@ -292,8 +292,8 @@
     </table>
   </div>
 
-  <p>Er gerðardagurin ókendur, er myndin øðrvísi. Somu fimm virðini kunnu koma fram undir ymiskum gerðardøgum, og exact example finnast, har sama fulla dagfesting kemur fram við ymiskari frástøðu frá <code>c</code>.</p>
-  <p>Í ári 5000 verður sjálvt sign á frástøðuni ikki altíð avgjørt av teimum fimm virðunum: sama fulla dagfesting kann í einum context vera undan gerðardegnum og í einum øðrum eftir hann.</p>
+  <p>Er gerðardagurin ókendur, er myndin øðrvísi. Somu fimm virðini kunnu koma fram undir ymiskum gerðardøgum, og ítøkilig dømi finnast um, at sama fulla dagfesting kemur fram við ymiskari frástøðu frá <code>c</code>.</p>
+  <p>Í ári 5000 kunnu tey fimm virðini heldur ikki altíð siga, um spurnardagurin liggur undan ella eftir gerðardegnum: sama fulla dagfesting kann í einum samanhangi koma fyri gerðardagin og í einum øðrum eftir hann.</p>
   <p>Tí er ein full Pastafari-dagfesting ikki ein absoluttur bústaður á tíðarlínuni, um vit ikki vita, undir hvørjum <code>c</code> hon varð roknað.</p>
 
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
@@ -314,9 +314,9 @@
   <h2>Fyri framkomnar brúkarar: hvussu nógv søgu varðveitir sósin?</h2>
   <p>Sósin sær út sum ein sera aggressivur blandingarháttur, men algebraisk gransking vísir, at hon varðveitir munandi meira upplýsing enn útsjóndin bendir á. Hetta er eitt granskingarúrslit leitt út úr forskriftini, ikki ein nýggj kalenderregla.</p>
   <p>Í sjónligu stigunum 3–46, á viðkomandi asymptotiska grein, er injektivitetur í almenna førinum staðfest: í vanliga førinum goymir støðan nóg mikið av upplýsing til at endurskapa viðkomandi inntakssøguna og skálaraðfylgjuna.</p>
-  <p>Upplýsing hvørvur heldur ikki beinanvegin í teimum 12 endaligu blandingunum. Fyri fyrstu fimm blandingarnar eftir sjónliga dropa 46 er vendiligheit í almenna førinum staðfest á viðkomandi kanoniska økinum uttan eyka upplýsingar; fyri restina eru strong konstruktiv ovara mørk kend fyri, hvussu nógv eyka upplýsing er nóg mikið til endurskapan.</p>
+  <p>Upplýsing hvørvur heldur ikki beinanvegin í teimum 12 endaligu blandingunum. Fyri fyrstu fimm blandingarnar eftir sjónliga dropa 46 er vendiligheit í almenna førinum prógvað á viðkomandi kanoniska økinum uttan eyka upplýsingar; fyri restina eru strong konstruktiv ovara mørk kend fyri, hvussu nógv eyka upplýsing er nóg mikið til endurskapan.</p>
   <p>Spurningurin, um <strong>bara tær seks endaligu skálirnar</strong> altíð eru nóg mikið í vanliga førinum, er framvegis opin.</p>
-  <p>Nøkur úrslit vórðu prógvað symboliskt, onnur vórðu lokað við endaligari neyvari talfrøðiligari kanning. Symbolisk styrking minkaði nógv um útrokningarkjarnan, sum ein má líta á, men tók hann ikki heilt burtur.</p>
+  <p>Nøkur úrslit vórðu prógvað symboliskt, onnur vórðu váttað við endaligum, nágreiniligum aritmetiskum kanningum. Symbolisk styrking minkaði nógv um útrokningarkjarnan, sum ein má líta á, men tók hann ikki heilt burtur.</p>
   <p>Rúm, sum fyrst sóu út til at krevja leiting ígjøgnum eitt øgiligt tal av leiðum, vórðu minkað niður í nógv smærri endaligar bygnaðir, m.a. automatar við 180 og 9 støðum og symmetri hjá teimum seks skálunum.</p>
   <p>Undir blandingini liggur ein strongur algebraiskur bygnaður. Tað er ikki neyðugt at kenna hana fyri at vita dagfestingina í dag.</p><hr>
 </section>
