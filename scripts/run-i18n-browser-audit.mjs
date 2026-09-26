@@ -17,6 +17,8 @@ import { constants as fsConstants } from "node:fs";
 import { extname, dirname, join, normalize, relative, resolve, sep } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
+import axe from "axe-core";
+
 const SCRIPT_PATH = fileURLToPath(import.meta.url);
 const SCRIPT_DIR = dirname(SCRIPT_PATH);
 const REPO_ROOT = resolve(SCRIPT_DIR, "..");
@@ -37,6 +39,14 @@ const FIXED_ACTION_JDN = "2461266";
 const FIXED_SEARCH_DATE = Object.freeze({ year: "2026", month: "8", day: "14" });
 const DEFAULT_TIMEOUT_MS = 120_000;
 const YEAR_STRUCTURE_TIMEOUT_MS = 60_000;
+const AXE_TAGS = Object.freeze([
+  "wcag2a",
+  "wcag2aa",
+  "wcag21a",
+  "wcag21aa",
+  "wcag22a",
+  "wcag22aa",
+]);
 const VIEWPORTS = Object.freeze([
   Object.freeze({ label: "desktop", width: 1440, height: 1000 }),
   Object.freeze({ label: "mobile", width: 390, height: 844 }),
@@ -678,6 +688,44 @@ async function scanLayout(page, viewport) {
   }, { selectors: IMPORTANT_LAYOUT_SELECTORS, allowlist: INTENTIONAL_SCROLL_SELECTORS, viewportInfo: viewport });
 }
 
+async function runAxeAudit(page, scenario, localeCode, scope = null) {
+  const result = await page.evaluate(async ({ tags, scopeSelector }) => {
+    const context = scopeSelector ? document.querySelector(scopeSelector) : document;
+    if (!context) throw new Error(`axe scope not found: ${scopeSelector}`);
+    return window.axe.run(context, {
+      runOnly: { type: "tag", values: tags },
+      resultTypes: ["violations", "incomplete"],
+    });
+  }, { tags: AXE_TAGS, scopeSelector: scope });
+
+  const flatten = (items) => items.flatMap((item) => item.nodes.map((node) => ({
+    rule: item.id,
+    impact: item.impact || "unknown",
+    description: item.description,
+    help: item.help,
+    target: node.target,
+    html: node.html,
+    failureSummary: node.failureSummary || null,
+  })));
+
+  return {
+    scenario,
+    locale: localeCode,
+    scope: scope || "document",
+    violations: flatten(result.violations),
+    incomplete: flatten(result.incomplete),
+  };
+}
+
+function addAxeFindings(target, scan) {
+  for (const item of scan.violations) {
+    target.push(finding("FAIL", "accessibility/axe", `${scan.scenario}: ${item.rule} [${item.impact}] — ${item.help}`, item));
+  }
+  for (const item of scan.incomplete) {
+    target.push(finding("WARN", "accessibility/axe-incomplete", `${scan.scenario}: ${item.rule} requires manual review — ${item.help}`, item));
+  }
+}
+
 async function takeScreenshot(page, code, viewport, { fullPage = false } = {}) {
   await page.setViewportSize({ width: viewport.width, height: viewport.height });
   await page.evaluate(() => window.scrollTo(0, 0));
@@ -715,6 +763,7 @@ function addEventFindings(result, tracker, localeCode) {
 async function discoverSelector(browser, baseUrl, defaultLocale) {
   const context = await browser.newContext({ viewport: { width: 1000, height: 800 }, locale: defaultLocale?.intlLocale || "en-US" });
   const page = await context.newPage();
+  await page.addInitScript({ content: axe.source });
   const tracker = installBrowserEventCollector(page);
   try {
     tracker.phase = "selector-discovery";
@@ -735,6 +784,7 @@ async function auditAboutPage(page, tracker, { baseUrl, locale, resource, screen
     translationScan: null,
     layout: [],
     screenshots: [],
+    accessibility: [],
     findings: [],
   };
 
@@ -806,6 +856,9 @@ async function auditAboutPage(page, tracker, { baseUrl, locale, resource, screen
       for (const item of layout.findings) item.screenshot = shot.path;
     }
     for (const item of layout.findings) about.findings.push(finding(item.severity, "about/layout", `${item.type} at ${item.selector}`, item));
+    const axeScan = await runAxeAudit(page, `about-${viewport.label}`, locale.code);
+    about.accessibility.push(axeScan);
+    addAxeFindings(about.findings, axeScan);
   }
 
   return about;
@@ -832,6 +885,7 @@ async function auditDirectLocale({ browser, baseUrl, locale, resource, breakpoin
     persistence: null,
     smoke: null,
     about: null,
+    accessibility: [],
     findings: [],
     notes: ["Glyph shape/translation quality is not machine-validated; screenshots are for human review."],
   };
@@ -887,6 +941,9 @@ async function auditDirectLocale({ browser, baseUrl, locale, resource, breakpoin
         for (const item of layout.findings) item.screenshot = shot.path;
       }
       for (const item of layout.findings) result.findings.push(finding(item.severity, "layout", `${item.type} at ${item.selector}`, item));
+      const axeScan = await runAxeAudit(page, `main-${viewport.label}`, locale.code);
+      result.accessibility.push(axeScan);
+      addAxeFindings(result.findings, axeScan);
     }
 
     for (const viewport of breakpointViewports(breakpoints)) {
