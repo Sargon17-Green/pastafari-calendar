@@ -43,6 +43,24 @@ Eftir lagfæringarnar er eftirfarandi staðfest:
 - markviss lokaleit að venjulegri enskri prósa í greininni er hrein;
 - samanburður við danska locale-ið skilur aðeins eftir sameiginleg sérnöfn, alþjóðleg heiti, sniðstrengi eða orð sem eru löglega eins í báðum málum; engin dönsk setning fannst.
 
+## Sjálfstæð íslensk LLM-lota — umferð 1
+
+Skyldubundin same-language yfirferð var keyrð sem sjálfstætt Copilot CLI-kall í GitHub Actions, með fyrirmælum og samskiptum á íslensku:
+
+- workflow run: `36261881614`
+- reviewer job: `108459271015`
+- niðurstaða: `VERDICT: NEEDS_CHANGES`
+
+Rýnirinn fann 12 atriði. Raunveruleg íslensk málfarsatriði voru lagfærð, meðal annars „Pastafari-miði“, fyrirsögn vikukaflans, beyging „milljón“, íslensk skýring á Short/Wide Choice, setningin um asymptótíska þröskuldinn, `comparison.kicker`, `target.context`, `error.title` og nokkur heiti/stöðuskilaboð öfugrar leitar.
+
+Aðgengisatriði í sameiginlega reverse-search viðmótinu var einnig gilt og var lagað með `role="status"`, `aria-live="polite"`, `aria-atomic="true"` og `role="alert"`.
+
+Tvö atriði voru ekki talin íslensk staðfærsluvilla:
+- JavaScript-laust ástand hefur ekkert valið locale; kyrrstæða HTML-skelin er enskt grunngildi og getur því ekki endurheimt íslenskt locale án JavaScript.
+- manifestið hefur þegar `name_localized.is = "Pastafari-dagatal"`; að skipta sameiginlega grunngildinu yfir í íslensku myndi gera fallback rangt fyrir önnur tungumál.
+
+Eftir lagfæringarnar voru 258/258 skilaboð, placeholder-samræmi, 29 stable ID, töflur 19/9 og föst formúlu-/hash-gildi staðfest aftur. Ný sjálfstæð íslensk LLM-lota er keyrð áður en staðan má færast í `linguistic QA`.
+
 ## Það sem er enn opið
 
 Þessi skrá er **ekki** sönnun fyrir þeirri sérstöku lokakröfu að tungumála-QA sé framkvæmt af LLM í aðskildri samræðu/lota sem sjálf fer öll fram á íslensku. Sú krafa hefur ekki verið uppfyllt í þessari núverandi samræðu og má ekki telja hana uppfyllta eingöngu vegna þess að þessi QA-skrá er skrifuð á íslensku.
