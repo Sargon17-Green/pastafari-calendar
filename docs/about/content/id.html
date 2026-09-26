@@ -140,7 +140,7 @@
 
 <section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
   <h2>Short Choice dan Wide Choice</h2>
-  <p>Untuk ruang pilihan yang relatif kecil digunakan <strong>Short Choice</strong>. Mekanisme ini memakai rejection sampling untuk menghindari bias modulo sederhana.</p>
+  <p>Untuk ruang pilihan yang relatif kecil digunakan <strong>Short Choice</strong>. Mekanisme ini memakai pengambilan sampel dengan penolakan untuk menghindari bias modulo sederhana.</p>
   <p>Ruang yang sangat besar menggunakan <strong>Wide Choice</strong>. Jangan memberinya sifat yang tidak dijamin oleh spesifikasi.</p>
   <p>Wide Choice tidak setara dengan menghasilkan digit basis-<code>Q</code> yang independen dan seragam sampai diperoleh sebuah indeks. Jadi tidak dapat disimpulkan bahwa setiap pilihan yang sah pasti mempunyai peluang positif yang sama. Dalam ruang yang cukup besar, bisa ada pilihan sah yang sama sekali tidak dapat dicapai oleh mekanisme itu.</p>
   <p>Kalender itu sendiri tetap sepenuhnya deterministik. “Choice” adalah nama tahap algoritme, bukan undian yang dilakukan saat penggunaan.</p><hr>
@@ -212,9 +212,9 @@
 </section>
 
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
-  <h2>Perjalanan, peristiwa, dan all-day</h2>
+  <h2>Perjalanan dan peristiwa sepanjang hari</h2>
   <p>Peristiwa dan label lokal yang ditampilkan untuknya bukan hal yang sama. Peristiwa yang dijadwalkan pada saat tertentu harus ditambatkan pada momen kronologis yang stabil. Perjalanan tidak memindahkannya dalam waktu, tetapi tanggal Pastafari lokal yang ditampilkan pada momen yang sama dapat berubah karena definisi “hari lokal” bergantung pada lokasi.</p>
-  <p>Pada peristiwa <strong>all-day</strong>, perbedaannya bahkan lebih besar. Peristiwa sipil seharian biasanya berlangsung dari tengah malam sipil sampai tengah malam berikutnya; peristiwa Pastafari seharian seharusnya berlangsung dari batas hari Pastafari lokal sampai batas berikutnya. Biasanya itu bukan momen yang sama.</p>
+  <p>Pada <strong>peristiwa sepanjang hari</strong>, perbedaannya bahkan lebih besar. Peristiwa sipil seharian biasanya berlangsung dari tengah malam sipil sampai tengah malam berikutnya; peristiwa Pastafari seharian seharusnya berlangsung dari batas hari Pastafari lokal sampai batas berikutnya. Biasanya itu bukan momen yang sama.</p>
   <p>Karena itu mengekspor peristiwa Pastafari secara buta sebagai peristiwa sipil “seharian” dapat mengubah maknanya. Untuk mempertahankannya dengan tepat, kita perlu menyimpan tambatan kronologis dan konteks lokasi/batas hari yang sesuai, bukan hanya penanda <code>all-day</code>.</p><hr>
 </section>
 
@@ -236,10 +236,10 @@
   <h2>Lalu apa itu Seer?</h2>
   <p>Di samping implementasi kanonis ada mesin cepat bernama <strong>Pastafarian Calendar Seer</strong>. Seer bukan sumber otoritas: tanggal yang benar ditentukan oleh Megillah dan perhitungan kanonis. Jika Seer tidak cocok dengan keduanya, Seer-lah yang salah.</p>
   <p>Tugasnya adalah menjalankan pertanyaan yang sama dengan cepat dan dalam bentuk yang mudah diintegrasikan ke produk.</p>
-  <p>Dalam verifikasi langsung yang dilakukan saat menyunting halaman ini, Seer antara lain mencakup kueri tanggal dan “sekarang”, batch, rentang hari, konversi reverse dari tanggal Pastafari ke hari target, pengambilan struktur tahun, penentuan hari kerja aktif, Node API, klien browser/HTTP, CLI, layanan HTTP v1, kontrak OpenAPI 3.1, implementasi native dan paket distribusi, serta container deployment yang telah diverifikasi.</p>
-  <p>Pernyataan lama bahwa Seer tidak memiliki API publik sudah tidak benar. Kini ada kontrak HTTP v1 yang eksplisit dan stabil dengan endpoint untuk date, range, batch, year, reverse, hari kerja, metadata, locales, dan status.</p>
-  <p>Pada 21 September 2026, deployment HTTPS publik di Render benar-benar diuji: kueri exact, range besar, restart, cold wake, dan perilaku di bawah beban diuji pada layanan yang hidup.</p>
-  <p>Dokumentasi proyek tetap membedakan deployment publik beta/evaluation dari layanan hosted production permanen dengan SLA. Karena itu, halaman penjelasan konseptual tidak seharusnya membekukan alamat server, penyedia hosting, atau nomor versi seolah-olah semuanya adalah bagian dari kalender itu sendiri.</p>
+  <p>Dalam verifikasi langsung yang dilakukan saat menyunting halaman ini, Seer antara lain mencakup kueri tanggal dan “sekarang”, batch, rentang hari, konversi balik dari tanggal Pastafari ke hari yang ditanyakan, pengambilan struktur tahun, penentuan hari kerja aktif, Node API, klien browser/HTTP, CLI, layanan HTTP v1, kontrak OpenAPI 3.1, implementasi asli dan paket distribusi, serta deployment kontainer yang telah diverifikasi.</p>
+  <p>Pernyataan lama bahwa Seer tidak memiliki API publik sudah tidak benar. Kini ada kontrak HTTP v1 yang eksplisit dan stabil dengan endpoint untuk <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, hari kerja, <code>metadata</code>, <code>locales</code>, dan <code>status</code>.</p>
+  <p>Pada 21 September 2026, deployment HTTPS publik di Render benar-benar diuji: kueri tepat, rentang besar, mulai ulang, <code>cold wake</code>, dan perilaku di bawah beban diuji pada layanan yang hidup.</p>
+  <p>Dokumentasi proyek tetap membedakan deployment publik beta/evaluasi dari layanan produksi terhosting permanen dengan SLA. Karena itu, halaman penjelasan konseptual tidak seharusnya membekukan alamat server, penyedia hosting, atau nomor versi seolah-olah semuanya adalah bagian dari kalender itu sendiri.</p>
   <p>Seer boleh menggunakan prakomputasi, representasi khusus, SIMD, aljabar, dan jalan pintas lain. Ia tidak harus meniru seluruh riwayat komputasi implementasi kanonis langkah demi langkah selama menjalankan operasi semantis yang sama dan mengembalikan jawaban yang sama.</p>
   <p>Optimisasi bukan otoritas alternatif.</p><hr>
 </section>
@@ -314,8 +314,8 @@
 <section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
   <h2>Untuk tingkat lanjut: berapa banyak sejarah yang disimpan saus?</h2>
   <p>Saus tampak seperti mekanisme pencampuran yang sangat agresif, tetapi penelitian aljabar menunjukkan bahwa ia menyimpan jauh lebih banyak informasi daripada yang disiratkan tampilannya. Ini adalah hasil penelitian yang diturunkan dari spesifikasi, bukan aturan baru kalender.</p>
-  <p>Pada tahap terlihat 3–46, di cabang asimtotik yang relevan, generic injectivity telah ditetapkan: dalam kasus generik, keadaan menyimpan cukup informasi untuk merekonstruksi riwayat masukan dan urutan mangkuk yang relevan.</p>
-  <p>Dalam 12 pengadukan akhir pun informasi tidak langsung hilang. Untuk lima pengadukan pertama setelah tetes terlihat 46, generic invertibility telah ditetapkan pada gabungan kanonis yang relevan tanpa informasi samping tambahan; untuk sisanya diketahui batas atas konstruktif yang kuat atas jumlah informasi samping yang cukup untuk rekonstruksi.</p>
+  <p>Pada tahap terlihat 3–46, di cabang asimtotik yang relevan, injektivitas pada kasus generik telah ditetapkan: dalam kasus generik, keadaan menyimpan cukup informasi untuk merekonstruksi riwayat masukan dan urutan mangkuk yang relevan.</p>
+  <p>Dalam 12 pengadukan akhir pun informasi tidak langsung hilang. Untuk lima pengadukan pertama setelah tetes terlihat 46, invertibilitas pada kasus generik telah ditetapkan pada gabungan kanonis yang relevan tanpa informasi samping tambahan; untuk sisanya diketahui batas atas konstruktif yang kuat atas jumlah informasi samping yang cukup untuk rekonstruksi.</p>
   <p>Masih terbuka apakah <strong>enam mangkuk akhir saja</strong> selalu cukup dalam pengertian generik.</p>
   <p>Sebagian hasil dibuktikan secara simbolis, sedangkan yang lain ditutup dengan pemeriksaan aritmetika hingga dan tepat. Penguatan simbolis sangat mengurangi inti komputasi yang harus dipercaya, tetapi tidak menghapusnya sepenuhnya.</p>
   <p>Ruang yang mula-mula tampak memerlukan penelusuran jumlah jalur yang sangat besar telah menyusut menjadi struktur hingga yang jauh lebih kecil, termasuk automata dengan 180 dan 9 keadaan serta simetri enam mangkuk.</p>
