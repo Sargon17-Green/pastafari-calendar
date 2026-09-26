@@ -42,7 +42,7 @@ Inventory: **89 QA units / 85 unique human languages**. A valid same-language se
 | id | Bahasa Indonesia | semantic QA | not started | not started | n/a | open | open | open | open | open | open | NOT PASS |
 | ie | Interlingue / Occidental | not applicable | not started | not started | not reviewed | open | open | open | open | open | open | NOT PASS |
 | io | Ido | not applicable | not started | not started | not reviewed | open | open | open | open | open | open | NOT PASS |
-| is | Íslenska | semantic QA | FAIL | UNTRUSTED | reviewed | OPEN | OPEN | OPEN | OPEN | OPEN | open | NOT PASS |
+| is | Íslenska | semantic QA | PASS | FAIL | reviewed | OPEN | OPEN | OPEN | OPEN | OPEN | open | NOT PASS |
 | it | Italiano | semantic QA | not started | not started | not reviewed | open | open | open | open | open | open | NOT PASS |
 | ja | 日本語 | semantic QA | not started | not started | not reviewed | open | open | open | open | open | open | NOT PASS |
 | jbo | la .lojban. | not applicable | not started | not started | not reviewed | open | open | open | open | open | open | NOT PASS |
