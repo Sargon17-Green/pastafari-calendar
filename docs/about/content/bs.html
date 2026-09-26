@@ -149,8 +149,8 @@
 <section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
   <h2>Strukturni atlas</h2>
   <p>Do sada smo govorili o pravilima kalendara. Brojevi koji slijede drugačije su prirode: to su <strong>empirijski rezultati</strong> iz velikog računarskog uzorka.</p>
-  <p>Atlas je izgrađen pomoću engine commita <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> i obuhvatio je 4,096 dana djelovanja; godine 4990–5010 za svaki od njih; 86,016 struktura godina; 625,437 kotleta; 3,535,422 strukturna mjeseca; više od 356 miliona neprekinutih mjesečnih segmenata; i više od 364 miliona prijelaza s dana <code>n</code> na dan <code>n+1</code> u istom mjesecu.</p>
-  <p>Ti brojevi opisuju taj corpus, a ne kanonske zakone.</p>
+  <p>Atlas je izgrađen pomoću commita računskog pogona <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> i obuhvatio je 4,096 dana djelovanja; godine 4990–5010 za svaki od njih; 86,016 struktura godina; 625,437 kotleta; 3,535,422 strukturna mjeseca; više od 356 miliona neprekinutih mjesečnih segmenata; i više od 364 miliona prijelaza s dana <code>n</code> na dan <code>n+1</code> u istom mjesecu.</p>
+  <p>Ti brojevi opisuju taj korpus, a ne kanonske zakone.</p>
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Izmjereni podaci strukturnog atlasa">
     <table class="about-table">
       <thead><tr><th scope="col">Mjerena veličina</th><th scope="col">Rezultat u uzorku</th></tr></thead>
@@ -195,7 +195,7 @@
     <li>Za <code>(naziv mjeseca, dan u mjesecu)</code> medijan prvog povratka bio je 1 pastafarijanska godina; 77.56% vratilo se u susjednoj godini, 93.77% unutar dvije godine, 99.44% unutar pet godina; najveće opaženo bilo je 21 godina.</li>
     <li>Za <code>(naziv kotleta, dan u kotletu)</code> medijan je bio 3 godine; 88.89% pronađeno je unutar 10 godina, ali raspodjela ima izrazito težak rep i najveće opaženo dostiglo je 51,954 pastafarijanske godine.</li>
   </ul>
-  <p>To su <strong>empirijski rezultati ispitivanog corpusa</strong>, a ne dokaz da će se svaka moguća godišnjica sigurno vratiti niti garancija najvećeg vremena čekanja.</p><hr>
+  <p>To su <strong>empirijski rezultati ispitivanog korpusa</strong>, a ne dokaz da će se svaka moguća godišnjica sigurno vratiti niti garancija najvećeg vremena čekanja.</p><hr>
 </section>
 
 <section class="about-section" id="appointments" data-toc-section data-toc-level="2">
@@ -234,13 +234,13 @@
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>A šta je onda Seer?</h2>
-  <p>Uz kanonsku implementaciju postoji brz engine pod nazivom <strong>Pastafarian Calendar Seer</strong>. Seer nije izvor autoriteta: ispravan datum određuju Megillah i kanonski račun. Ako se Seer s njima ne slaže, Seer je taj koji griješi.</p>
+  <p>Uz kanonsku implementaciju postoji brz računski mehanizam pod nazivom <strong>Pastafarian Calendar Seer</strong>. Seer nije izvor autoriteta: ispravan datum određuju Megillah i kanonski račun. Ako se Seer s njima ne slaže, Seer je taj koji griješi.</p>
   <p>Njegov zadatak je izvršavati iste upite brzo i u obliku pogodnom za integraciju u proizvode.</p>
-  <p>U direktnoj provjeri obavljenoj tokom uređivanja ove stranice, Seer je, između ostalog, uključivao <code>date</code> i <code>now</code> upite, paketnu obradu, raspon dana, obrnutu konverziju iz pastafarijanskog datuma u ciljni dan, dohvat strukture godine, određivanje aktivnog dana djelovanja, Node API, browser/HTTP klijent, CLI, HTTP v1 servis, OpenAPI 3.1 ugovor, native implementacije i distribucijske pakete, kao i verifikovan container deployment.</p>
-  <p>Stara tvrdnja da Seer nema javni API više nije tačna. Sada postoji eksplicitan i stabilan HTTP v1 ugovor s endpointima za date, range, batch, year, reverse, dan djelovanja, metadata, locales i status.</p>
-  <p>21. septembra 2026. stvarno je testiran javni HTTPS deployment na Renderu: exact upiti, veliki range, restart, cold wake i ponašanje pod opterećenjem provjereni su na živom servisu.</p>
-  <p>Projektna dokumentacija ipak i dalje razlikuje javni beta/evaluation deployment od trajnog hosted production servisa sa SLA-om. Zato konceptualna stranica objašnjenja ne treba zaključavati adresu servera, hosting provajdera ili broj verzije kao da su dio samog kalendara.</p>
-  <p>Seer smije koristiti precomputation, posebne reprezentacije, SIMD, algebru i druge prečice. Ne mora korak po korak imitirati cijelu historiju računanja kanonske implementacije sve dok izvršava istu semantičku operaciju i vraća isti odgovor.</p>
+  <p>U direktnoj provjeri obavljenoj tokom uređivanja ove stranice, Seer je, između ostalog, uključivao <code>date</code> i <code>now</code> upite, paketnu obradu, raspon dana, obrnutu konverziju iz pastafarijanskog datuma u ciljni dan, dohvat strukture godine, određivanje aktivnog dana djelovanja, Node API, preglednički/HTTP klijent, CLI, HTTP v1 servis, OpenAPI 3.1 ugovor, izvorne implementacije i distribucijske pakete, kao i provjereno postavljanje u kontejneru.</p>
+  <p>Stara tvrdnja da Seer nema javni API više nije tačna. Sada postoji izričit i stabilan HTTP v1 ugovor s krajnjim tačkama <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, za dan djelovanja, <code>metadata</code>, <code>locales</code> i <code>status</code>.</p>
+  <p>21. septembra 2026. stvarno je testirano javno HTTPS postavljanje na Renderu: tačni upiti, veliki raspon, ponovno pokretanje, buđenje nakon mirovanja i ponašanje pod opterećenjem provjereni su na aktivnoj usluzi.</p>
+  <p>Projektna dokumentacija ipak i dalje razlikuje javno beta/evaluacijsko postavljanje od trajne produkcijske usluge s hostingom i SLA-om. Zato konceptualna stranica objašnjenja ne treba zaključavati adresu servera, pružaoca hostinga ili broj verzije kao da su dio samog kalendara.</p>
+  <p>Seer smije koristiti prethodna izračunavanja, posebne reprezentacije, SIMD, algebru i druge prečice. Ne mora korak po korak imitirati cijelu historiju računanja kanonske implementacije sve dok izvršava istu semantičku operaciju i vraća isti odgovor.</p>
   <p>Optimizacija nije alternativni autoritet.</p><hr>
 </section>
 
