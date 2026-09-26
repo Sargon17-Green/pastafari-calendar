@@ -109,6 +109,8 @@ jobs:
             "The translated text will be the FIRST AND ONLY user message in a fresh reviewer session. Therefore every ordinary instruction sentence must be in the target language from its first line onward.",
             "Preserve repository names, branch names, paths, code identifiers, placeholders, formulas, and the exact machine-readable verdict lines NATIVE_QA_RESULT: PASS / NATIVE_QA_RESULT: FAIL.",
             "Use the correct Unicode script for every target-language word. Do not substitute visually similar letters from another script. Before returning the prompt, silently proofread it for mixed-script confusables.",
+            "The translated protocol already contains the two literal examples NATIVE_QA_RESULT: PASS and NATIVE_QA_RESULT: FAIL. Preserve exactly one occurrence of each inside the protocol. Do not prepend or append a verdict of your own.",
+            "The first non-empty line of your output must be translated target-language prose, not a NATIVE_QA_RESULT line.",
             "Do not add an English preface, explanation, translator note, or code fence. Output only the translated seed prompt.",
             "",
             source
@@ -127,8 +129,12 @@ jobs:
           copilot --no-custom-instructions --no-ask-user --no-color --share="$OUT/translator-session.md" -s < /tmp/translate-request.md > "$OUT/prompt.md"
           test -s "$OUT/prompt.md"
           test -s "$OUT/translator-session.md"
-          grep -q 'NATIVE_QA_RESULT: PASS' "$OUT/prompt.md"
-          grep -q 'NATIVE_QA_RESULT: FAIL' "$OUT/prompt.md"
+          test "$(grep -cFx 'NATIVE_QA_RESULT: PASS' "$OUT/prompt.md")" -eq 1
+          test "$(grep -cFx 'NATIVE_QA_RESULT: FAIL' "$OUT/prompt.md")" -eq 1
+          FIRST_NONEMPTY="$(sed -n '/[^[:space:]]/{p;q;}' "$OUT/prompt.md")"
+          case "$FIRST_NONEMPTY" in
+            NATIVE_QA_RESULT:*) echo "Translator illegally prepended a verdict line." >&2; exit 1 ;;
+          esac
           grep -Fxq -- "REVIEW_ID=$REVIEW_ID" "$OUT/prompt.md"
           grep -Fxq -- "LOCALE_TAG=$LOCALE_TAG" "$OUT/prompt.md"
           REVIEW_ID="$REVIEW_ID" node <<'NODE'
@@ -183,19 +189,47 @@ jobs:
         run: |
           OUT="artifacts/cross-repo-native-qa/runtime"
           set +e
-          copilot             --no-custom-instructions             --no-ask-user             --no-color             --allow-tool='shell(cat:*),shell(grep:*),shell(find:*),shell(sed:*),shell(head:*),shell(tail:*),shell(wc:*),shell(ls:*),shell(pwd:*),shell(rg:*),shell(awk:*),shell(sort:*),shell(uniq:*),shell(git status:*),shell(git diff:*),shell(git show:*),shell(git rev-parse:*)'             --share="$OUT/session.md"             -s < "$OUT/prompt.md"             > "$OUT/review.md" 2> "$OUT/reviewer-stderr.log"
+          copilot             --no-custom-instructions             --no-ask-user             --no-color             --allow-tool='shell(cat:*),shell(grep:*),shell(find:*),shell(sed:*),shell(head:*),shell(tail:*),shell(wc:*),shell(ls:*),shell(pwd:*),shell(rg:*),shell(awk:*),shell(sort:*),shell(uniq:*),shell(git status:*),shell(git diff:*),shell(git show:*),shell(git rev-parse:*)'             --share="$OUT/session.md"             -s < "$OUT/prompt.md"             > "$OUT/review-output.md" 2> "$OUT/reviewer-stderr.log"
           EXIT=$?
           set -e
           printf '%s\n' "$EXIT" > "$OUT/copilot-exit-code.txt"
-          test -s "$OUT/review.md"
+          test -s "$OUT/review-output.md"
           test -s "$OUT/session.md"
-          mapfile -t VERDICTS < <(grep -E '^NATIVE_QA_RESULT: (PASS|FAIL)\r?$' "$OUT/review.md" | tr -d '\r')
-          if [ "${#VERDICTS[@]}" -ne 1 ]; then
-            echo "Expected exactly one verdict line; got ${#VERDICTS[@]}"
-            head -n 30 "$OUT/review.md" || true
-            exit 1
-          fi
-          printf '%s\n' "${VERDICTS[0]}" > "$OUT/verdict.txt"
+          OUT="$OUT" node <<'NODE'
+          const fs=require("node:fs");
+          const path=require("node:path");
+          const out=process.env.OUT;
+          const prompt=fs.readFileSync(path.join(out,"prompt.md"),"utf8").trimEnd();
+          const session=fs.readFileSync(path.join(out,"session.md"),"utf8");
+
+          const userMarker="### User\n\n";
+          const userStart=session.indexOf(userMarker);
+          if(userStart<0) throw new Error("session.md has no User block");
+          const userBodyStart=userStart+userMarker.length;
+          const userEnd=session.indexOf("\n\n---\n",userBodyStart);
+          if(userEnd<0) throw new Error("session.md first User block is unterminated");
+          const firstUser=session.slice(userBodyStart,userEnd).trimEnd();
+          if(firstUser!==prompt) throw new Error("First session user message is not byte-for-byte the retained translated prompt");
+
+          const copilotMarker="### Copilot\n\n";
+          const finalStart=session.lastIndexOf(copilotMarker);
+          if(finalStart<0) throw new Error("session.md has no Copilot block");
+          const bodyStart=finalStart+copilotMarker.length;
+          let finalBody=session.slice(bodyStart);
+          const finalEnd=finalBody.indexOf("\n\n---\n");
+          if(finalEnd>=0) finalBody=finalBody.slice(0,finalEnd);
+          finalBody=finalBody.trim();
+          if(!finalBody) throw new Error("Final Copilot block is empty");
+          fs.writeFileSync(path.join(out,"final-report.md"),finalBody+"\n");
+          NODE
+          test -s "$OUT/final-report.md"
+          FIRST_LINE="$(sed -n '1p' "$OUT/final-report.md" | tr -d '\r')"
+          case "$FIRST_LINE" in
+            "NATIVE_QA_RESULT: PASS"|"NATIVE_QA_RESULT: FAIL") ;;
+            *) echo "Final reviewer report does not start with a verdict: $FIRST_LINE" >&2; exit 1 ;;
+          esac
+          test "$(grep -Ec '^NATIVE_QA_RESULT: (PASS|FAIL)\r?$' "$OUT/final-report.md")" -eq 1
+          printf '%s\n' "$FIRST_LINE" > "$OUT/verdict.txt"
 
       - name: Install immutable and canonical evidence, then regenerate ledger
         shell: bash
@@ -210,10 +244,10 @@ jobs:
           const src="artifacts/cross-repo-native-qa/runtime";
           const attempt=`artifacts/cross-repo-native-qa/attempts/${id}/${run}`;
           fs.mkdirSync(attempt,{recursive:true});
-          for(const f of ["prompt.md","review.md","session.md","translator-session.md","review-manifest.json","verdict.txt","copilot-exit-code.txt","reviewer-stderr.log"]){
+          for(const f of ["prompt.md","review-output.md","final-report.md","session.md","translator-session.md","review-manifest.json","verdict.txt","copilot-exit-code.txt","reviewer-stderr.log"]){
             if(fs.existsSync(path.join(src,f))) fs.copyFileSync(path.join(src,f),path.join(attempt,f));
           }
-          for(const [sub,file] of [["prompts","prompt.md"],["reports","review.md"],["sessions","session.md"]]){
+          for(const [sub,file] of [["prompts","prompt.md"],["reports","final-report.md"],["sessions","session.md"]]){
             const d=`artifacts/cross-repo-native-qa/${sub}`; fs.mkdirSync(d,{recursive:true});
             fs.copyFileSync(path.join(src,file),path.join(d,id+".md"));
           }
