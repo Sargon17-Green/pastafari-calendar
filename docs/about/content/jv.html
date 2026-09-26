@@ -31,7 +31,7 @@
   <p>lan</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
   <p>ora kudu padha.</p>
-  <p>Dadi, ngganti dina tumindak kanthi manual bisa ngganti tanggal Pastafari sing ditampilaké kanggo dina sing padha, tanpa mindhah dinané dhéwé saka panggonané ing garis wektu.</p>
+  <p>Dadi, ngganti dina tumindak kanthi tangan bisa ngganti tanggal Pastafari sing ditampilaké kanggo dina sing padha, tanpa mindhah dinané dhéwé saka panggonané ing garis wektu.</p>
   <p>Prinsip sing padha uga kanggo kedadeyan. Rapat, lair, utawa kedadeyan sajarah kudu tetep kaiket marang identitas kronologis sing ajeg; tanggal Pastafari-ne bisa diwilang manèh manut konteks tampilan.</p>
   <p>Tetenger bisa owah. Kedadeyané ora.</p><hr>
 </section>
@@ -76,7 +76,7 @@
   <p>wulan struktural, lan saben wulan diwènèhi</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ nganti }123</code></pre>
   <p>dina.</p>
-  <p>Nanging wulan Pastafari <strong>ora kudu dadi interval wektu sing terus tanpa pedhot</strong>. Contoné urutan kronologis bisa kaya iki:</p>
+  <p>Nanging wulan Pastafari <strong>ora kudu dadi bagean wektu sing terus tanpa pedhot</strong>. Contoné urutan kronologis bisa kaya iki:</p>
   <blockquote><p>Wulan A — dina 14<br>Wulan B — dina 9<br>Wulan A — dina 15</p></blockquote>
   <p>Iki sah. Dina 15 ing wulan A yaiku dina sabanjuré <strong>ing wulan kuwi</strong>, sanajan ana dina saka wulan liya ing antarané.</p>
   <p>Mula “dina ing wulan” dudu cacah dina kronologis sing wis kliwat wiwit wulan kuwi muncul kapisan. Iki urutan ing antarane dina-dina sing ditugasaké marang wulan kuwi sajroning taun. Dina 48 tegesé dina kaping 48 sing dadi duwèké wulan kuwi, dudu 47 dina sawisé muncul kapisan.</p><hr>
@@ -126,20 +126,20 @@
 
 <section class="about-section" id="calculation" data-toc-section data-toc-level="2">
   <h2>Kepiyé kalèndher diwilang?</h2>
-  <p>Itungan internal iki diarani <strong>saus</strong>. Ing tengahé ana bilangan prima</p>
+  <p>Pangétungan njero iki diarani <strong>saus</strong>. Ing tengahé ana bilangan prima</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
   <p>Prosesé nyakup limang pencacah input, 7 tetes didhelikaké, 46 tetes katon, 6 mangkok, urutan mangkok sing owah, 12 campuran pungkasan, segel kanggo jawaban sing béda, pilihan kombinatorik, pambangunan gapura, pilihan taun, pambagian kotlet, pilihan jeneng, pambangunan wulan, lan anyaman dina-dina wulan.</p>
   <p>Pembaruan pungkasan dilakokaké <strong>bebarengan</strong>: ing saben campuran, enem nilai anyar kabèh diwilang saka kahanan lawas sing padha, banjur mung sawisé kuwi enem mangkok diganti bebarengan.</p>
   <p>Ing 12 campuran pungkasan ana siji rincian kanonik sing wigati banget. Yèn <code>S</code> iku gunggung enem mangkok lawas lan <code>r</code> nomer campuran, sistem ngitung</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
-  <p><code>R</code> yaiku <strong>gunggung sing disimpen</strong>. Pilihan urutan mangkok lan pembaruan internal campuran loro-loroné nggunakake <code>R</code>, dudu gunggung mentah <code>S</code>.</p>
+  <p><code>R</code> yaiku <strong>gunggung sing disimpen</strong>. Pilihan urutan mangkok lan pembaruan njero campuran loro-loroné nggunakake <code>R</code>, dudu gunggung mentah <code>S</code>.</p>
   <p>Versi lawas sing ngirim gunggung mentah menyang pembaruan iki wis ora nggambaraké semantik kanonik saiki. Conto sing asalé saka aturan lawas kudu dianggep kadaluwarsa nganti dipriksa manèh.</p>
   <p>Sawisé campuran, answer ring uga nerusaké urutan sing di-lock ing tetes katon 46; urutan iki ora kena diganti otomatis nganggo urutan campuran pungkasan.</p><hr>
 </section>
 
 <section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
   <h2>Short Choice lan Wide Choice</h2>
-  <p>Kanggo ruang pilihan sing relatif cilik digunakaké <strong>Short Choice</strong>. Iki nggunakake sampling penolakan supaya ora kena bias saka operasi modulo sing prasaja.</p>
+  <p>Kanggo ruang pilihan sing relatif cilik digunakaké <strong>Short Choice</strong>. Iki njupuk sampel kanthi panolakan supaya ora kena bias saka operasi modulo sing prasaja.</p>
   <p>Kanggo ruang pilihan sing gedhé banget digunakaké <strong>Wide Choice</strong>. Aja mènèhi sipat sing ora dijamin spésifikasi.</p>
   <p>Wide Choice ora padha karo nggawe digit basis-<code>Q</code> sing mandhiri lan kasebar rata nganti entuk indeks. Mula ora bisa disimpulaké yèn saben pilihan sing sah kudu nduwé probabilitas positif sing padha. Ing ruang sing cukup gedhé bisa ana pilihan sah sing ora tau bisa digayuh mekanisme iki.</p>
   <p>Kalèndheré dhéwé tetep sakabehé deterministik. “Choice” iku jeneng sawijining tataran algoritmik, dudu undhian acak nalika digunakaké.</p><hr>
@@ -148,7 +148,7 @@
 <section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
   <h2>Atlas struktural</h2>
   <p>Nganti kéné kita wis ngomongaké aturan kalèndher. Angka-angka sabanjuré iku jinis informasi liya: <strong>asil empiris</strong> saka sampel pangétungan sing gedhé.</p>
-  <p>Atlas dibangun nganggo engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> lan nyakup 4,096 dina tumindak; kanggo saben dina, taun 4990–5010; 86,016 struktur taun; 625,437 kotlet; 3,535,422 wulan struktural; luwih saka 356 yuta segmen wulan sing terus; lan luwih saka 364 yuta transisi saka dina <code>n</code> menyang dina <code>n+1</code> ing wulan sing padha.</p>
+  <p>Atlas dibangun nganggo commit mesin <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> lan nyakup 4,096 dina tumindak; kanggo saben dina, taun 4990–5010; 86,016 struktur taun; 625,437 kotlet; 3,535,422 wulan struktural; luwih saka 356 yuta segmen wulan sing terus; lan luwih saka 364 yuta transisi saka dina <code>n</code> menyang dina <code>n+1</code> ing wulan sing padha.</p>
   <p>Angka iki nggambaraké korpus kuwi, dudu hukum kanonik.</p>
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Data sing diukur ing atlas struktural">
     <table class="about-table">
@@ -156,7 +156,7 @@
       <tbody>
         <tr><td>Rata-rata dawa taun</td><td>4,275.182 dina</td></tr>
         <tr><td>Median dawa taun</td><td>4,343</td></tr>
-        <tr><td>Minimum / maximum sing diamati</td><td>716 / 5,778</td></tr>
+        <tr><td>Paling cilik / paling gedhé sing diamati</td><td>716 / 5,778</td></tr>
         <tr><td>Rata-rata cacah kotlet saben taun</td><td>7.271</td></tr>
         <tr><td>Taun kanthi pas 6 kotlet</td><td>42.00%</td></tr>
         <tr><td>Taun kanthi 6–8 kotlet</td><td>81.29%</td></tr>
@@ -177,11 +177,11 @@
     </table>
   </div>
   <p>Ing praktik, wulan kira-kira satus dina bisa sumebar meh ing saindhenging taun Pastafari.</p>
-  <p>Atlas sing padha uga nuduhaké bias alami ing dawa watara taun 5000. Ing sampel, taun “biasa” rata-rata udakara 4,262 dina. Yèn taun diwènèhi weight manut cacah dina sing ana ing jeroné, rata-rata mundhak dadi udakara 4,466 dina; taun 5000 dhéwé rata-rata udakara 4,499 dina.</p>
+  <p>Atlas sing padha uga nuduhaké bias alami ing dawa watara taun 5000. Ing sampel, taun “biasa” rata-rata udakara 4,262 dina. Yèn taun diboboti manut cacah dina sing ana ing jeroné, rata-rata mundhak dadi udakara 4,466 dina; taun 5000 dhéwé rata-rata udakara 4,499 dina.</p>
   <p>Alesané prasaja: taun 5000 kudu ngemot dina tumindak. Taun sing luwih dawa nduwé luwih akèh dina sing bisa ndadèkaké taun kuwi minangka taun sing ngemot dina tumindak.</p>
   <p>Hubungan antarane jeneng unit lan dawané uga katon ringkih banget ing sampel. Iki ora mbuktekaké kamardikan matematis kanthi lengkap, nanging atlas ora menehi pratandha praktis yèn jeneng digawe kanggo ngode dawané.</p>
   <p>Saliyane kuwi, 86,016 struktur taun ora padha karo 86,016 sampel sing mandhiri kanthi lengkap: mung ana 24,786 interval béda antarane gapura wiwitan lan gapura pungkasan. Dina tumindak sing cedhak bisa milih interval taun sing padha nanging isih ngasilaké struktur njero sing béda.</p>
-  <p>Mula atlas cukup apik kanggo nggambaraké prilaku sing diukur saka implementation, nanging aja diowahi dadi probability theorem kanggo kabèh calendar structure sing mungkin.</p><hr>
+  <p>Mula atlas cukup apik kanggo nggambaraké prilaku sing diukur saka implementasi, nanging aja diowahi dadi teorema probabilitas kanggo kabèh struktur kalèndher sing mungkin.</p><hr>
 </section>
 
 <section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
@@ -191,10 +191,10 @@
   <p>Ngganti dina tumindak mung kanggo tampilan ora kena ngganti identitas wong, wektu lair, utawa umuré.</p>
   <p>Ing pemindaian pas tumrap 4,096 tanggal kanthi <code>c=t</code>, saben taun Pastafari sabanjuré dipriksa nganti 250,000 taun ing loro arah:</p>
   <ul>
-    <li>Kanggo <code>(jeneng wulan, dina ing wulan)</code>, median bali kapisan yaiku 1 taun Pastafari; 77.56% bali ing taun jejere, 93.77% sajroning rong taun, 99.44% sajroning limang taun; maximum sing diamati 21 taun.</li>
+    <li>Kanggo <code>(jeneng wulan, dina ing wulan)</code>, median bali kapisan yaiku 1 taun Pastafari; 77.56% bali ing taun jejere, 93.77% sajroning rong taun, 99.44% sajroning limang taun; nilai paling gedhé sing diamati yaiku 21 taun.</li>
     <li>Kanggo <code>(jeneng kotlet, dina ing kotlet)</code>, median 3 taun; 88.89% ditemokaké sajroning 10 taun, nanging sebarané nduwé buntut sing abot banget, lan nilai paling gedhé sing diamati tekan 51,954 taun Pastafari.</li>
   </ul>
-  <p>Iki <strong>asil empiris saka corpus sing dipriksa</strong>; ora mbuktekaké yèn saben mengeti sing mungkin mesthi bakal bali, lan ora menehi guarantee kanggo maximum waiting time.</p><hr>
+  <p>Iki <strong>asil empiris saka korpus sing dipriksa</strong>; ora mbuktekaké yèn saben mengeti sing mungkin mesthi bakal bali, lan ora njamin wektu tunggu paling dawa.</p><hr>
 </section>
 
 <section class="about-section" id="appointments" data-toc-section data-toc-level="2">
@@ -225,7 +225,7 @@
 </section>
 
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
-  <h2>Kalèndher cetak lan itungan manual</h2>
+  <h2>Kalèndher cetak lan pangétungan kanthi tangan</h2>
   <p>Kalèndher Pastafari bisa dicithak; cukup sebutaké kalèndher iku diwilang kanggo dina tumindak endi. Kalèndher kaya mangkono nuduhaké struktur wektu saka sudut pandang dina kuwi; yèn dina tumindak owah, bisa perlu kalèndher anyar. Dadi printer isih nduwé gawéan.</p>
   <p>Amarga spésifikasi lengkap lan deterministik, kabèh uga bisa diwilang kanthi tangan: itung pencacah input, lakokaké 7 tetes didhelikaké lan 46 tetes katon, anyari enem mangkok, lakokaké 12 campuran pungkasan, gawé jawaban, bangun gapura, pilih taun lan kotlet, lakokaké pilihan kombinatorik, pilih jeneng, banjur anyam wulan.</p>
   <p>Gantiné, ora perlu éling kapan Februari nduwé 28 dina lan kapan 29.</p><hr>
@@ -240,7 +240,7 @@
   <p>Ing 21 September 2026, panyebaran HTTPS umum ing Render pancèn diuji: ing layanan sing lagi mlaku diverifikasi pitakon pas, rentang gedhé, wiwit manèh, <code>cold wake</code>, lan prilaku nalika ana beban.</p>
   <p>Nanging dokumentasi proyèk isih mbédakaké panyebaran bèta/evaluasi umum saka layanan produksi permanen sing di-host lan nduwé SLA. Mula kaca panjelasan konseptual ora kudu mbekuk alamat server, panyedhiya hosting, utawa nomer versi kaya-kaya kuwi pérangan saka kalèndher dhéwé.</p>
   <p>Seer bisa nggunakake pra-pangétungan, representasi khusus, SIMD, aljabar, lan cara cekak liyane. Ora kudu niru kabèh riwayat pangétungan saka implementasi kanonik langkah demi langkah, anggere nindakake operasi semantis sing padha lan ngasilaké jawaban sing padha.</p>
-  <p>Optimization dudu wewenang alternatif.</p><hr>
+  <p>Pangoptimalan dudu wewenang alternatif.</p><hr>
 </section>
 
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
