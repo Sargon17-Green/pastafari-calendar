@@ -1,7 +1,7 @@
 <!-- Version française fondée directement sur le contenu sémantique de référence en hébreu. -->
 <!-- Les identifiants de section sont stables et publics : ne pas les dériver des titres traduits. -->
 <div class="about-section about-lead" id="about-calendar">
-  <p>Dans le récit du site, le calendrier pastafari est présenté comme le calendrier dans lequel le temps a été créé. Sa mécanique, elle, est définie avec précision.</p>
+  <p>Le calendrier pastafari est le calendrier dans lequel le temps a été créé. Sa mécanique est définie avec précision.</p>
   <p>Un jour n'est pas converti en une « étiquette » pastafari immuable. Pour connaître sa date, il faut deux jours : le <strong>jour de travail</strong>, depuis lequel le calcul est effectué, et le <strong>jour interrogé</strong>, celui dont on demande la date.</p>
   <p>En notant le premier <code>c</code> et le second <code>t</code>, la date est</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
@@ -129,7 +129,7 @@
 </section>
 <section class="about-section" id="calculation" data-toc-section data-toc-level="2">
   <h2>Comment le calendrier est-il calculé ?</h2>
-  <p>Le calcul interne est appelé ici <strong>la sauce</strong>. En son centre se trouve</p>
+  <p>Le calcul interne est appelé <strong>la sauce</strong>. En son centre se trouve</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
   <p>qui est un nombre premier.</p>
   <p>Le processus fait intervenir cinq compteurs d'entrée, 7 gouttes cachées, 46 gouttes visibles, 6 bols, des ordres variables des bols, 12 brassages finaux, des sceaux servant à produire différentes réponses, des mécanismes de choix combinatoires, la création des portes, la sélection des années, le découpage des boulettes, le choix des noms, la création des mois et le tissage de leurs jours.</p>
@@ -183,7 +183,7 @@
         <tr><td>Longueur médiane d'un mois</td><td>115</td></tr>
         <tr><td>Nombre moyen de séquences continues par mois</td><td>100.897</td></tr>
         <tr><td>Part des séquences mensuelles longues d'un jour</td><td>97.482%</td></tr>
-        <tr><td>Probabilité que deux jours adjacents soient dans le même mois</td><td>2.9976%</td></tr>
+        <tr><td>Part mesurée, dans le corpus, des paires de jours consécutifs appartenant au même mois</td><td>2.9976%</td></tr>
         <tr><td>Nombre moyen de jours étrangers entre <code>n</code> et <code>n+1</code> du même mois</td><td>40.408</td></tr>
         <tr><td>Étendue moyenne entre première et dernière apparition d'un mois</td><td>4,266.653 jours</td></tr>
       </tbody>
@@ -212,7 +212,7 @@
 </section>
 <section class="about-section" id="appointments" data-toc-section data-toc-level="2">
   <h2>Comment fixer un rendez-vous ?</h2>
-  <p>Deux personnes qui souhaitent fixer un rendez-vous uniquement avec une date pastafari doivent au minimum s'accorder sur le quintuplet de date et sur le jour de travail qui a servi à le calculer. Mieux vaut enregistrer ce dernier sous une identité de jour stable que sous le mot « aujourd'hui », faute de quoi chacun pourrait calculer un calendrier différent.</p>
+  <p>Deux personnes qui souhaitent fixer le jour de leur rendez-vous à l'aide d'une date pastafari doivent au minimum s'accorder sur le quintuplet de date et sur le jour de travail qui a servi à le calculer. Mieux vaut enregistrer ce dernier sous une identité de jour stable que sous le mot « aujourd'hui », faute de quoi chacun pourrait calculer un calendrier différent.</p>
   <p>Les expressions usuelles demandent elles aussi de la précision :</p>
   <ul>
     <li>« demain » est le prochain jour chronologique ;</li>
@@ -221,14 +221,14 @@
     <li>« un mois entier » peut désigner l'ensemble des jours du mois ou toute l'étendue chronologique entre sa première et sa dernière apparition ;</li>
     <li>« l'année suivante » se rapporte au calendrier construit sous le jour de travail choisi.</li>
   </ul>
-  <p>Pour un rendez-vous particulièrement important, on peut aussi conserver le jour ou l'instant chronologique absolu. Le calendrier ne s'en vexera pas.</p>
+  <p>Pour un rendez-vous particulièrement important, on peut aussi conserver le jour ou l'instant chronologique absolu. Le calendrier n'en sera pas affecté.</p>
   <hr>
 </section>
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
-  <h2>Voyages et événements sur toute la journée</h2>
+  <h2>Voyages et événements d'une journée entière</h2>
   <p>Un événement n'est pas l'étiquette locale qu'on lui affiche. Un événement planifié doit rester ancré à un instant chronologique stable. Un déplacement géographique ne déplace pas l'événement dans le temps ; il peut toutefois modifier la date pastafari locale affichée à cet instant, puisque le « jour local » dépend du lieu.</p>
-  <p>Pour un <strong>événement sur toute la journée</strong>, la différence est encore plus importante. Dans un calendrier civil, un événement de journée entière s'étend en général d'un minuit civil au suivant. Son équivalent pastafari devrait aller d'une limite locale de jour pastafari à la suivante. Ce ne sont généralement pas les mêmes instants.</p>
-  <p>Exporter aveuglément un événement pastafari comme « journée entière » dans un calendrier civil peut donc en altérer le sens. Pour le préserver exactement, il faut conserver son ancrage chronologique ainsi que le contexte de lieu et de limite du jour, pas seulement cocher <code>all-day</code>.</p>
+  <p>Pour un <strong>événement d'une journée entière</strong>, la différence est encore plus importante. Dans un calendrier civil, un tel événement s'étend en général d'un minuit civil au suivant. Son équivalent pastafari devrait aller d'une limite locale de jour pastafari à la suivante. Ce ne sont généralement pas les mêmes instants.</p>
+  <p>Exporter aveuglément un événement pastafari comme « journée entière » dans un calendrier civil peut donc en altérer le sens. Pour le préserver exactement, il faut conserver son ancrage chronologique ainsi que le contexte de lieu et de limite du jour, et non se contenter de cocher la case « journée entière ».</p>
   <hr>
 </section>
 <section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
@@ -248,19 +248,19 @@
 </section>
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Et Seer ?</h2>
-  <p>À côté de l'implémentation canonique existe un moteur rapide appelé <strong>Pastafarian Calendar Seer</strong>. Seer n'est pas une source d'autorité : la Megillah et le calcul canonique déterminent la bonne réponse. En cas de désaccord, c'est Seer qui a tort.</p>
+  <p>À côté de l'implémentation canonique existe un moteur rapide appelé <strong>Pastafarian Calendar Seer</strong>. La Megillah fixe les règles, et le calcul canonique produit la date en les appliquant ; Seer est un moteur rapide qui doit renvoyer la même réponse. Si Seer diverge d'un calcul canonique correct, c'est Seer qui se trompe.</p>
   <p>Son rôle est d'effectuer les mêmes requêtes rapidement et sous une forme pratique pour l'intégration dans des produits.</p>
-  <p>Lors de la vérification en conditions réelles effectuée pendant la rédaction de cette page, Seer proposait notamment les requêtes de date et de « maintenant », les lots et plages de jours, la conversion inverse vers un jour cible, la structure d'une année, la résolution du jour de travail actif, une API Node, un client navigateur/HTTP, une CLI, un service HTTP v1, un contrat OpenAPI 3.1, des implémentations natives et paquets de distribution, ainsi qu'un déploiement conteneurisé vérifié.</p>
-  <p>L'ancienne affirmation selon laquelle Seer ne posséderait pas d'API publique est donc dépassée. Il existe un contrat HTTP v1 explicite et stable, avec des points d’accès pour <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, le jour de travail, <code>metadata</code>, <code>locales</code> et <code>status</code>.</p>
+  <p>Lors d'une vérification en conditions réelles le 21 septembre 2026, Seer proposait notamment les requêtes de date et de « maintenant », les lots et plages de jours, la conversion inverse vers un jour cible, la structure d'une année, la résolution du jour de travail actif, une API Node, un client navigateur/HTTP, une CLI, un service HTTP v1, un contrat OpenAPI 3.1, des implémentations natives et paquets de distribution, ainsi qu'un déploiement conteneurisé vérifié.</p>
+  <p>Seer dispose d'une API publique. Son contrat HTTP v1 explicite et stable comprend des points d’accès pour <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, le jour de travail, <code>metadata</code>, <code>locales</code> et <code>status</code>.</p>
   <p>Le 21 septembre 2026, un déploiement HTTPS public sur Render a aussi été éprouvé en conditions réelles : requêtes exactes, grande plage, redémarrage, réveil à froid et comportement sous charge ont été testés sur le service en ligne.</p>
-  <p>La documentation du projet continue toutefois de distinguer ce déploiement public de bêta/évaluation d'un service de production hébergé permanent assorti d'un SLA. Une page d'explication de principe ne doit donc pas figer une adresse de serveur, un hébergeur ou un numéro de version comme s'ils appartenaient au calendrier.</p>
+  <p>Le déploiement public testé est une version bêta/d'évaluation, et non la promesse d'un service de production hébergé permanent assorti d'un SLA. L'adresse du serveur, l'hébergeur et le numéro de version ne font pas partie du calendrier et ne sont pas des constantes canoniques.</p>
   <p>Seer peut recourir au précalcul, à des représentations spécialisées, à SIMD, à l'algèbre ou à d'autres raccourcis. Il n'est pas obligé de rejouer chaque étape historique de l'implémentation canonique, pourvu qu'il réalise la même opération sémantique et renvoie la même réponse.</p>
   <p>L'optimisation n'est pas une autorité concurrente.</p>
   <hr>
 </section>
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
   <h2>Origine, Jour de la Fondation et Jour des Tablettes</h2>
-  <p>Il faut ici distinguer soigneusement les repères canoniques du récit du site.</p>
+  <p>Les repères fixes du calendrier sont des références canoniques de calcul ; son origine et la transmission de la Megillah relèvent d'une histoire distincte.</p>
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>Les repères</h3>
     <p>Le système possède un jour de référence fixe, le <strong>Jour de la Fondation</strong>. Dans le calendrier grégorien proleptique, il correspond au <strong>22 décembre 41,222 av. J.-C.</strong></p>
@@ -273,10 +273,10 @@
     <p>Ces deux repères sont fixes sur l'axe du temps. La date pastafari affichée pour chacun d'eux dépend malgré tout du jour de travail utilisé pour la requête.</p>
   </section>
   <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
-    <h3>Le récit du site</h3>
-    <p>Dans la formulation éditoriale du site, le calendrier fait partie de la création et l'humanité l'aurait utilisé sans en avoir suffisamment conscience, jusqu'à sa remise moderne.</p>
-    <p>C'est le récit du site : ses détails narratifs ne doivent pas tous être présentés comme des propositions techniques explicites de la Megillah.</p>
-    <p>L'événement de remise est, lui, un événement historique fixe. Sur le site, mieux vaut afficher sa <strong>date pastafari</strong> dynamiquement selon le jour de travail actuel plutôt que de lui attacher pour toujours une date pastafari unique. Ainsi sa date reste celle qui convient au jour où le lecteur la consulte.</p>
+    <h3>Origine du calendrier et retransmission</h3>
+    <p>Le calendrier pastafari est le calendrier dans lequel le temps a été créé. Il fait partie de la création. L'humanité l'a utilisé sans avoir suffisamment conscience de l'utiliser, jusqu'à ce qu'il soit de nouveau transmis à l'époque moderne.</p>
+    <p>La Megillah ne détaille pas chaque aspect de cette histoire ; les éléments qu'elle n'énonce pas explicitement ne font pas partie de son texte.</p>
+    <p>L'événement de retransmission est un événement historique fixe ; sa date pastafari se calcule selon le jour de travail pertinent et peut donc varier si le jour de travail change.</p>
     <hr>
   </section>
 </section>
@@ -284,7 +284,7 @@
   <h2>Pour aller plus loin : conversion inverse</h2>
   <p>Lorsque le jour de travail <code>c</code> est connu, la conversion inverse est très contraignante. Dans une année pastafari connue,</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{nom de la boulette},\text{jour dans la boulette})</code></pre>
-  <p>identifie au plus un jour. Il en va de même pour</p>
+  <p>Le couple précédent identifie au plus un jour. Il en va de même pour le couple suivant :</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{nom du mois},\text{jour dans le mois})</code></pre>
   <p>Une date complète, dès lors que le jour de travail est connu, identifie donc le jour cible de façon unique.</p>
   <p>Dans une année connue, on peut donner les bornes grossières suivantes :</p>
@@ -304,8 +304,8 @@
       </tbody>
     </table>
   </div>
-  <p>Sans connaître le jour de travail, la situation change. Un même quintuplet peut apparaître sous différents jours de travail ; on dispose de témoins exacts où une date complète identique se rencontre à des distances différentes du jour de travail.</p>
-  <p>En année 5000, même le signe de cette distance n'est pas toujours déterminé par le quintuplet : la même date complète peut se trouver dans le passé du jour de travail dans un contexte et dans son futur dans un autre.</p>
+  <p>Sans connaître le jour de travail, la situation change. Un même quintuplet peut apparaître sous différents jours de travail ; des exemples explicites montrent qu'une même date complète peut se rencontrer à différentes distances du jour de travail.</p>
+  <p>En année 5000, le quintuplet ne détermine même pas toujours si le jour cible précède ou suit le jour de travail : la même date complète peut, dans un contexte, se trouver dans le passé du jour de travail et, dans un autre, dans son futur.</p>
   <p>Une date pastafari complète n'est donc pas une adresse absolue sur l'axe chronologique si l'on ignore sous quel calendrier — c'est-à-dire sous quel <code>c</code> — elle a été calculée.</p>
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
     <h3>Structure aux temps très éloignés</h3>
@@ -327,7 +327,7 @@
   <p>Pour les étapes visibles 3 à 46, l'injectivité générique a été établie sur la branche asymptotique pertinente : génériquement, l'état conserve assez d'information pour reconstruire l'historique pertinent des entrées et des ordres de bols.</p>
   <p>L'information ne disparaît pas immédiatement pendant les 12 brassages finaux. Pour les cinq premiers brassages qui suivent la 46e goutte visible, l'inversibilité générique a été établie sur l'union canonique pertinente sans information latérale supplémentaire. Pour les brassages restants, on connaît de fortes bornes constructives sur la quantité d'information latérale suffisante à la reconstruction.</p>
   <p>La question de savoir si <strong>les six bols finaux, à eux seuls</strong>, suffisent toujours de manière générique reste ouverte.</p>
-  <p>Une partie des résultats a été démontrée symboliquement ; une autre a été close par des vérifications arithmétiques finies et exactes. Le renforcement symbolique a fortement réduit le noyau de calcul auquel il faut se fier, sans l'éliminer entièrement.</p>
+  <p>Une partie des résultats a été démontrée symboliquement ; une autre a été vérifiée au moyen de calculs arithmétiques finis et exacts. Le renforcement symbolique a fortement réduit le noyau de calcul auquel il faut se fier, sans l'éliminer entièrement.</p>
   <p>Parmi les surprises de l'étude, des espaces qui semblaient exiger l'exploration d'un nombre immense de chemins se sont réduits à de petites structures finies, notamment des automates à 180 et à 9 états ainsi que des symétries des six bols.</p>
   <p>Sous le mélange se cache donc une structure algébrique rigide. Il n'est évidemment pas nécessaire de la connaître pour consulter la date d'aujourd'hui.</p>
   <hr>
