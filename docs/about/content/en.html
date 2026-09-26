@@ -1,8 +1,8 @@
 <!-- English explanation translated from the Hebrew semantic master. -->
 <!-- Stable section IDs are a public deep-link contract; do not derive them from translated headings. -->
 <div class="about-section about-lead" id="about-calendar">
-  <p>In the site's story, the Pastafari Calendar is presented as the calendar in which time itself was created. Its mechanics, however, are specified exactly.</p>
-  <p>A day does not map to one permanent Pastafari “label”. To determine a date, two days are required: the <strong>day of working</strong>, from which the calculation is performed, and the <strong>queried day</strong>, whose date is being asked for.</p>
+  <p>The Pastafari Calendar is the calendar in which time was created. Its mechanics are specified exactly.</p>
+  <p>A day does not map to one permanent Pastafari “label”. To determine a date, two days are required: the <strong>day of working</strong>, from which the calculation is performed, and the <strong>queried day</strong>, the day whose date you want to know.</p>
   <p>Write the day of working as <code>c</code> and the queried day as <code>t</code>. The date is therefore</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
   <p>not <code>F(t)</code>. The same queried day can consequently have a different Pastafari date when it is calculated from another day of working.</p>
@@ -150,7 +150,7 @@
 
 <section class="about-section" id="calculation" data-toc-section data-toc-level="2">
   <h2>How is the calendar calculated?</h2>
-  <p>The article calls the internal calculation <strong>the sauce</strong>. At its center is</p>
+  <p>The internal calculation is called <strong>the sauce</strong>. At its center is</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
   <p>which is prime.</p>
   <p>The process includes five input counters, 7 hidden drops, 46 visible drops, 6 bowls, changing bowl orders, 12 final stirs, seals that produce different answers, combinatorial selection mechanisms, gate generation, year selection, cutlet partitioning, name selection, month creation, and the weaving of month days.</p>
@@ -206,7 +206,7 @@
         <tr><td>Median month length</td><td>115</td></tr>
         <tr><td>Mean contiguous runs per month</td><td>100.897</td></tr>
         <tr><td>Share of month runs one day long</td><td>97.482%</td></tr>
-        <tr><td>Probability that adjacent days are in the same month</td><td>2.9976%</td></tr>
+        <tr><td>Share of adjacent-day pairs in the same month</td><td>2.9976%</td></tr>
         <tr><td>Mean foreign days between month day <code>n</code> and <code>n+1</code></td><td>40.408</td></tr>
         <tr><td>Mean span from a month's first to last occurrence</td><td>4,266.653 days</td></tr>
       </tbody>
@@ -237,7 +237,7 @@
 
 <section class="about-section" id="appointments" data-toc-section data-toc-level="2">
   <h2>How do you arrange a meeting?</h2>
-  <p>If two people want to schedule a meeting using only a Pastafari date, they must at least agree on the five-field Pastafari tuple and on the day of working used to calculate it. Preferably, that day of working should itself be stored as a stable day identity rather than as the word “today”; otherwise the two people may calculate different calendars.</p>
+  <p>If two people want to set the meeting day using a Pastafari date, they must agree at least on the five-field Pastafari tuple and the day of working used to calculate it. Together, these specify the Pastafari day, not necessarily an exact moment within it. Preferably, that day of working should itself be stored as a stable day identity rather than as the word “today”; otherwise the two people may calculate different calendars.</p>
   <p>Ordinary phrases also need precision:</p>
   <ul>
     <li>“tomorrow” is the next chronological day;</li>
@@ -251,7 +251,7 @@
 </section>
 
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
-  <h2>Travel, events, and all-day</h2>
+  <h2>Travel and all-day events</h2>
   <p>An event is not the same thing as the local label displayed for it. A scheduled event should be anchored to a stable chronological instant. Travel does not move the event in time, but it can change the local Pastafari date shown at that instant, because the definition of the “local day” depends on location.</p>
   <p>The difference is even more important for an <strong>all-day</strong> event. A civil all-day event normally runs from one civil midnight to the next. A Pastafari all-day event should run from one local Pastafari day boundary to the next. Those are generally not the same instants.</p>
   <p>Blindly exporting a Pastafari event as a civil “all-day event” can therefore change its meaning. To preserve it exactly, keep the chronological anchor and the relevant location/day-boundary context, not merely an <code>all-day</code> checkbox.</p>
@@ -285,7 +285,7 @@
   <h2>What is Seer?</h2>
   <p>Alongside the canonical implementation there is a fast engine called <strong>Pastafarian Calendar Seer</strong>. Seer is not a source of authority: the Scroll and the canonical calculation determine the correct date. If Seer disagrees with them, Seer is wrong.</p>
   <p>Its purpose is to answer the same questions quickly and in a form that is easy to integrate into products.</p>
-  <p>At the live verification performed while this page was being edited, Seer included, among other things:</p>
+  <p>At the live verification on 21 September 2026, Seer included, among other things:</p>
   <ul>
     <li>date queries and a “now” calculation;</li>
     <li>batch queries and day ranges;</li>
@@ -295,9 +295,9 @@
     <li>an HTTP v1 service and an OpenAPI 3.1 contract;</li>
     <li>native implementations, distribution packages, and a verified container deployment.</li>
   </ul>
-  <p>The old statement that Seer has no public API is therefore no longer true. There is an explicit, stable HTTP v1 contract with endpoints for date, range, batch, year, reverse, day of working, metadata, locales, and status.</p>
+  <p>Seer has a public API, with an explicit, stable HTTP v1 contract that includes endpoints for date, range, batch, year, reverse conversion, day of working, metadata, locales, and status.</p>
   <p>On 21 September 2026, a public HTTPS deployment on Render was also tested in practice: exact queries, a large range, restart, cold wake, and behavior under load were exercised against the live service.</p>
-  <p>The project documentation still distinguishes that live public beta/evaluation deployment from a declared permanent hosted production service with an SLA. A conceptual explanation page should therefore not freeze a server address, hosting provider, or version number as if any of them were part of the calendar.</p>
+  <p>The tested public deployment is a beta/evaluation deployment, not a promise of a permanent production service with an SLA. The server address, hosting provider, and version number are not part of the calendar and are not canonical constants.</p>
   <p>Seer may use precomputation, specialized representations, SIMD, algebra, and other shortcuts. It need not replay every computational step of the canonical implementation so long as it performs the same semantic operation and returns the same answer.</p>
   <p>Optimization is not an alternative source of authority.</p>
   <hr>
@@ -305,7 +305,7 @@
 
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
   <h2>Origin, Foundation Day, and Tablets Day</h2>
-  <p>Here it is especially important to separate canonical anchors from the site's story.</p>
+  <p>The calendar's fixed computational anchors are distinct from its origin and history of re-delivery.</p>
 
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>The anchors</h3>
@@ -320,10 +320,10 @@
   </section>
 
   <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
-    <h3>The site's story</h3>
-    <p>In the site's editorial framing, the calendar is presented as part of creation and as a system humanity used without being sufficiently aware of it until its modern re-delivery.</p>
-    <p>That is the site's story. Its narrative details must not all be presented as though they were explicit technical propositions in the Scroll.</p>
-    <p>The re-delivery event itself is a fixed historical event. On the site, its <strong>Pastafari date</strong> is best shown dynamically under the current day of working rather than frozen forever beside it. That way even the re-delivery continues to receive the date appropriate to the day on which the reader asks.</p>
+    <h3>The calendar's origin and re-delivery</h3>
+    <p>The Pastafari Calendar is part of creation. Humanity used it without fully realizing it was doing so until its modern re-delivery.</p>
+    <p>The Scroll does not set out every detail of this history; anything it does not state explicitly is not part of the Scroll's text.</p>
+    <p>The re-delivery is a fixed historical event. Its <strong>Pastafari date</strong> depends on the relevant day of working and can therefore differ when computed from a different day of working.</p>
     <hr>
   </section>
 </section>
@@ -352,8 +352,8 @@
       </tbody>
     </table>
   </div>
-  <p>Without the day of working, the situation changes. The same five-field tuple can occur under different working days, and exact witnesses exist in which the same full date occurs at different distances from the day of working.</p>
-  <p>Even in year 5000 the sign of that distance is not always determined by the tuple: the same full date can occur in one context in the past of the day of working and in another context in its future.</p>
+  <p>Without the day of working, the situation changes. The same five-field tuple can occur under different working days, and explicit examples show the same full date occurring at different distances from the day of working.</p>
+  <p>Even in year 5000, the direction relative to the day of working is not always determined by the five-field tuple: the same full date can occur before the day of working in one context and after it in another.</p>
   <p>A full Pastafari date is therefore not an absolute address on the timeline unless we also know which calendar—in other words, which <code>c</code>—was used to calculate it.</p>
 
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
@@ -375,9 +375,9 @@
   <h2>Advanced: how much history does the sauce retain?</h2>
   <p>The sauce looks like a very aggressive mixer, but algebraic research found that it preserves considerably more information than its outward appearance suggests. This is research derived from the specification, not an additional calendar rule.</p>
   <p>On visible stages 3 through 46, generic injectivity has been established on the relevant asymptotic branch: generically, the state retains enough information to recover the relevant history of the inputs and bowl orders.</p>
-  <p>The information does not immediately disappear during the 12 final stirs either. For the first five stirs after visible drop 46, generic invertibility has been established on the relevant canonical union without additional side information. For the remaining stirs, strong constructive bounds are known on how much side information is sufficient for reconstruction.</p>
+  <p>The information does not immediately disappear during the 12 final stirs either. For the first five stirs after visible drop 46, generic invertibility has been proved on the relevant canonical union without additional side information. For the remaining stirs, strong constructive bounds are known on how much side information is sufficient for reconstruction.</p>
   <p>Whether <strong>the final six bowls alone</strong> are always generically sufficient remains open.</p>
-  <p>Some results were proved symbolically; others were closed by exact finite arithmetic checks. Symbolic strengthening greatly reduced the computational kernel that must be trusted, but did not eliminate it completely.</p>
+  <p>Some results were proved symbolically; others were verified by exact finite arithmetic checks. Symbolic strengthening greatly reduced the computational kernel that must be trusted, but did not eliminate it completely.</p>
   <p>One surprise was that spaces that initially looked as if they would require traversing enormous numbers of paths collapsed to much smaller finite structures, including 180-state and 9-state automata and symmetries of the six bowls.</p>
   <p>Beneath the mixing lies a rigid algebraic structure. None of this is required just to find today's date.</p>
   <hr>
