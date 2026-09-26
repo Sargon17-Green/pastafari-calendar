@@ -55,7 +55,7 @@
   <h2>Anys i portes</h2>
   <p>Un any pastafari pot tenir</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ a }5778</code></pre>
-  <p>dies. Són els límits canonical del sistema, no pas mitjanes empíriques.</p>
+  <p>dies. Són els límits canònics del sistema, no pas mitjanes empíriques.</p>
   <p>Per tant, un any pot ser més curt que un any solar o més llarg que quinze anys solars. Els límits dels anys es construeixen a partir del sistema de <strong>portes</strong>; els límits de les croquetes també provenen del mateix sistema.</p>
   <p>El final de l'any no ha de coincidir amb una estació, una òrbita completa de la Terra al voltant del Sol, un cicle lunar ni amb el desig pràctic que l'any s'acabi d'una vegada.</p><hr>
 </section>
@@ -66,7 +66,7 @@
   <p>Si avui és el dia 250 d'una croqueta, demà serà el dia 251 de la mateixa croqueta, llevat que avui en sigui l'últim dia. Els límits de les croquetes són portes i una croqueta dura com a mínim</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
   <p>dies.</p>
-  <p>El sistema té 17 noms canonical de croqueta i un mateix nom no es repeteix dins d'un any. El nom no determina ni la llargada ni la posició de la croqueta.</p><hr>
+  <p>El sistema té 17 noms canònics de croqueta i un mateix nom no es repeteix dins d'un any. El nom no determina ni la llargada ni la posició de la croqueta.</p><hr>
 </section>
 
 <section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
@@ -102,14 +102,14 @@
 
 <section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
   <h2>No hi ha setmanes</h2>
-  <p>L'especificació canonical actual <strong>no defineix cap sistema de setmanes</strong>. No hi ha una unitat canonical de set dies, ni noms pastafarians dels dies de la setmana, ni cap regla que faci que dos dies siguin “el mateix dia de la setmana”.</p>
+  <p>L'especificació canònica actual <strong>no defineix cap sistema de setmanes</strong>. No hi ha una unitat canònica de set dies, ni noms pastafarians dels dies de la setmana, ni cap regla que faci que dos dies siguin “el mateix dia de la setmana”.</p>
   <p>Naturalment, es pot superposar des de fora un sistema civil de setmanes; simplement no forma part de la data pastafària.</p><hr>
 </section>
 
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
   <h2>Els noms</h2>
-  <p>Hi ha 17 noms canonical de croqueta i 47 noms canonical de mes. Dins d'un any, cada nom apareix com a màxim una vegada dins del seu grup.</p>
-  <p>La identitat del nom és canonical i semàntica; no és el resultat d'una votació entre grafies, traduccions o implementation diferents. Pel que fa al significat dels noms, la Megillah en hebreu té la màxima autoritat; les traduccions i transliteracions són només capes de presentació.</p>
+  <p>Hi ha 17 noms canònics de croqueta i 47 noms canonical de mes. Dins d'un any, cada nom apareix com a màxim una vegada dins del seu grup.</p>
+  <p>La identitat del nom és canònica i semàntica; no és el resultat d'una votació entre grafies, traduccions o implementacions diferents. Pel que fa al significat dels noms, la Megillah en hebreu té la màxima autoritat; les traduccions i transliteracions són només capes de presentació.</p>
   <p>El nom tampoc no és un codi ocult de longitud. El nom d'una croqueta o d'un mes concret no fa, per si sol, que aquella unitat sigui més llarga o més curta.</p><hr>
 </section>
 
@@ -130,26 +130,26 @@
   <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
   <p>El procés inclou cinc input counter, 7 gotes ocultes, 46 gotes visibles, 6 bols, ordres variables dels bols, 12 mescles finals, seal diferents per a respostes diferents, combinatorial selection, construcció de portes, selecció d'anys, divisió en croquetes, selecció de noms, construcció de mesos i entreteixit dels dies dels mesos.</p>
   <p>Els update finals són <strong>sincrònics</strong>: en cada mescla, els sis valors nous es calculen a partir del mateix state antic i només després es substitueixen alhora els sis bols.</p>
-  <p>Dins de les 12 mescles finals hi ha un detall canonical especialment important. Si <code>S</code> és la suma dels sis bols antics i <code>r</code> és el número de mescla, el sistema calcula</p>
+  <p>Dins de les 12 mescles finals hi ha un detall canònic especialment important. Si <code>S</code> és la suma dels sis bols antics i <code>r</code> és el número de mescla, el sistema calcula</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
   <p><code>R</code> és la <strong>suma desada</strong>. Tant la selecció de l'ordre dels bols com l'update intern de la mescla fan servir <code>R</code>, no la suma bruta <code>S</code>.</p>
-  <p>Les versions antigues que passaven la suma bruta a aquest update ja no descriuen la semàntica canonical actual. Els exemples derivats de la regla antiga s'han de considerar obsolets fins que es tornin a verificar.</p>
+  <p>Les versions antigues que passaven la suma bruta a aquesta actualització ja no descriuen la semàntica canònica actual. Els exemples derivats de la regla antiga s'han de considerar obsolets fins que es tornin a verificar.</p>
   <p>Després de les mescles, l'answer ring també continua l'ordre bloquejat a la gota visible 46; aquest ordre no s'ha de substituir automàticament per l'ordre de l'última mescla.</p><hr>
 </section>
 
 <section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
   <h2>Short Choice i Wide Choice</h2>
-  <p>Per a espais de selecció relativament petits s'utilitza <strong>Short Choice</strong>. Fa servir rejection sampling per evitar un modulo bias simple.</p>
+  <p>Per a espais de selecció relativament petits s'utilitza <strong>Short Choice</strong>. Fa servir mostreig per rebuig per evitar un biaix simple de l'operació mòdul.</p>
   <p>Per a espais molt grans s'utilitza <strong>Wide Choice</strong>. No se li han d'atribuir propietats que l'especificació no garanteix.</p>
   <p>Wide Choice no equival a generar dígits base-<code>Q</code> independents i uniformement distribuïts fins a obtenir un index. Per tant, no se'n dedueix que cada valid choice hagi de tenir la mateixa probabilitat positiva. En espais prou grans hi pot haver valid choice que aquest mechanism no pugui assolir mai.</p>
-  <p>El calendari mateix continua sent completament deterministic. “Choice” és el nom d'una etapa algorítmica, no una random lottery en temps d'ús.</p><hr>
+  <p>El calendari mateix continua sent completament determinista. “Choice” és el nom d'una etapa algorítmica, no una loteria aleatòria en temps d'ús.</p><hr>
 </section>
 
 <section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
   <h2>Atles estructural</h2>
   <p>Fins ara hem parlat de les regles del calendari. Les xifres següents són un altre tipus d'informació: <strong>resultats empírics</strong> obtinguts d'una gran mostra computacional.</p>
-  <p>L'atles es va construir amb l'engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> i va incloure 4,096 dies d'acció; els anys 4990–5010 per a cadascun; 86,016 estructures d'any; 625,437 croquetes; 3,535,422 mesos estructurals; més de 356 milions de segments mensuals continus; i més de 364 milions de transicions del dia <code>n</code> al dia <code>n+1</code> del mateix mes.</p>
-  <p>Aquestes xifres descriuen aquell corpus, no pas lleis canonical.</p>
+  <p>L'atles es va construir amb la revisió del motor <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> i va incloure 4,096 dies d'acció; els anys 4990–5010 per a cadascun; 86,016 estructures d'any; 625,437 croquetes; 3,535,422 mesos estructurals; més de 356 milions de segments mensuals continus; i més de 364 milions de transicions del dia <code>n</code> al dia <code>n+1</code> del mateix mes.</p>
+  <p>Aquestes xifres descriuen aquell corpus, no pas regles canòniques.</p>
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Dades mesurades de l'atles estructural">
     <table class="about-table">
       <thead><tr><th scope="col">Magnitud mesurada</th><th scope="col">Resultat a la mostra</th></tr></thead>
@@ -181,7 +181,7 @@
   <p>La raó és senzilla: l'any 5000 ha de contenir el dia d'acció. Un any més llarg té més dies en què pot resultar ser l'any que conté aquell dia d'acció.</p>
   <p>La relació entre el nom d'una unitat i la seva llargada també va resultar molt feble a la mostra. Això no demostra independència matemàtica completa, però l'atles no aporta cap senyal pràctic que els noms s'hagin dissenyat per codificar la llargada.</p>
   <p>A més, les 86,016 estructures d'any no són 86,016 mostres plenament independents: entre la porta inicial i la final només hi ha 24,786 intervals diferents. Dies d'acció pròxims poden seleccionar el mateix interval anual i, tot i així, generar estructures internes diferents.</p>
-  <p>Per tant, l'atles descriu bé el comportament mesurat de l'implementation, però no s'ha de convertir en un teorema de probabilitat sobre totes les estructures calendàriques possibles.</p><hr>
+  <p>Per tant, l'atles descriu bé el comportament mesurat de la implementació, però no s'ha de convertir en un teorema de probabilitat sobre totes les estructures calendàriques possibles.</p><hr>
 </section>
 
 <section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
@@ -211,9 +211,9 @@
 </section>
 
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
-  <h2>Viatges, esdeveniments i all-day</h2>
+  <h2>Viatges i esdeveniments de dia complet</h2>
   <p>Un esdeveniment i l'etiqueta local que se li mostra no són la mateixa cosa. Un esdeveniment amb hora concreta s'ha de vincular a un chronological moment estable. Viatjar no el desplaça en el temps, però la data pastafària local mostrada per al mateix physical moment pot canviar, perquè la definició de “dia local” depèn de la ubicació.</p>
-  <p>En un esdeveniment <strong>all-day</strong> la diferència és encara més gran. Un esdeveniment civil de dia complet acostuma a anar de mitjanit a mitjanit; un esdeveniment pastafari de dia complet hauria d'anar des del límit local del dia pastafari fins al límit següent. Normalment no són els mateixos moments.</p>
+  <p>En un <strong>esdeveniment de dia complet</strong> la diferència és encara més gran. Un esdeveniment civil de dia complet acostuma a anar de mitjanit a mitjanit; un esdeveniment pastafari de dia complet hauria d'anar des del límit local del dia pastafari fins al límit següent. Normalment no són els mateixos moments.</p>
   <p>Per això exportar a cegues un esdeveniment pastafari com a esdeveniment civil “de dia complet” pot alterar-ne el significat. Per conservar-lo correctament cal guardar l'ancoratge cronològic i el context adequat de location/day-boundary, no només el flag <code>all-day</code>.</p><hr>
 </section>
 
@@ -227,25 +227,25 @@
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
   <h2>Calendari imprès i càlcul manual</h2>
   <p>El Calendari Pastafari es pot imprimir; només cal indicar per a quin dia d'acció s'ha calculat. Un calendari així mostra l'estructura del temps des del punt de vista d'aquell dia; si canvia el dia d'acció, pot caldre un calendari nou. Així, la impressora encara té feina.</p>
-  <p>Com que l'especificació és completa i deterministic, també es pot calcular tot a mà: calculeu els input counter, feu passar les 7 gotes ocultes i les 46 visibles, actualitzeu els sis bols, executeu les 12 mescles finals, obteniu les respostes, construïu les portes, seleccioneu anys i croquetes, feu la combinatorial selection, trieu els noms i finalment entreteixiu els mesos.</p>
+  <p>Com que l'especificació és completa i determinista, també es pot calcular tot a mà: calculeu els comptadors d'entrada, feu passar les 7 gotes ocultes i les 46 visibles, actualitzeu els sis bols, executeu les 12 mescles finals, obteniu les respostes, construïu les portes, seleccioneu anys i croquetes, feu la selecció combinatòria, trieu els noms i finalment entreteixiu els mesos.</p>
   <p>A canvi, no cal recordar si el febrer té 28 dies o 29.</p><hr>
 </section>
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>I què és Seer?</h2>
-  <p>Al costat de l'implementation canonical hi ha un engine ràpid anomenat <strong>Pastafarian Calendar Seer</strong>. Seer no és una font d'autoritat: la data correcta la determinen la Megillah i el càlcul canonical. Si Seer no hi coincideix, l'error és de Seer.</p>
+  <p>Al costat de la implementació canònica hi ha un motor ràpid anomenat <strong>Pastafarian Calendar Seer</strong>. Seer no és una font d'autoritat: la data correcta la determinen la Megillah i el càlcul canònic. Si Seer no hi coincideix, l'error és de Seer.</p>
   <p>La seva funció és executar ràpidament les mateixes query i retornar el resultat en una forma fàcil d'integrar en productes.</p>
-  <p>En la verificació directa feta durant l'edició d'aquesta pàgina, Seer cobria, entre altres coses, date i “now” query, batch, day range, reverse conversion d'una data pastafària cap al target day, year structure retrieval, determinació de l'active working day, Node API, browser/HTTP client, CLI, servei HTTP v1, contracte OpenAPI 3.1, native implementations i distribution package, i verified container deployment.</p>
-  <p>L'afirmació antiga que Seer no té public API ja no és correcta. Ara hi ha un contracte HTTP v1 clar i estable amb endpoint de date, range, batch, year, reverse, dia d'acció, metadata, locales i status.</p>
-  <p>El 21 de setembre de 2026 es va provar realment un public HTTPS deployment a Render: al live service es van verificar exact query, range gran, restart, cold wake i comportament sota load.</p>
-  <p>Tot i això, la documentació del projecte encara distingeix entre el public beta/evaluation deployment i un hosted production service estable amb SLA. Per això la pàgina conceptual d'explicació no ha de freeze un server address, hosting provider o version number com si fossin part del calendari mateix.</p>
-  <p>Seer pot utilitzar precomputation, representacions especials, SIMD, algebra i altres shortcut. No ha de reproduir pas a pas tota la computational history de l'implementation canonical sempre que faci la mateixa operació semàntica i retorni la mateixa resposta.</p>
+  <p>En la verificació directa feta durant l'edició d'aquesta pàgina, Seer cobria, entre altres coses, les consultes <code>date</code> i <code>now</code>, <code>batch</code>, intervals de dies, conversió inversa d'una data pastafariana cap al dia consultat, obtenció de l'estructura de l'any, determinació del dia d'acció actiu, Node API, client de navegador/HTTP, CLI, servei HTTP v1, contracte OpenAPI 3.1, implementacions natives i paquets de distribució, i un desplegament verificat en contenidor.</p>
+  <p>L'afirmació antiga que Seer no té una API pública ja no és correcta. Ara hi ha un contracte HTTP v1 clar i estable amb punts finals per a <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, dia d'acció, <code>metadata</code>, <code>locales</code> i <code>status</code>.</p>
+  <p>El 21 de setembre de 2026 es va provar realment un desplegament HTTPS públic a Render: al servei actiu es van verificar consultes exactes, un interval gran, reinici, <code>cold wake</code> i el comportament sota càrrega.</p>
+  <p>Tot i això, la documentació del projecte encara distingeix entre el desplegament públic beta/d'avaluació i un servei de producció allotjat i estable amb SLA. Per això la pàgina conceptual d'explicació no ha de fixar una adreça de servidor, un proveïdor d'allotjament o un número de versió com si fossin part del calendari mateix.</p>
+  <p>Seer pot utilitzar precàlcul, representacions especials, SIMD, àlgebra i altres dreceres. No ha de reproduir pas a pas tot l'historial computacional de la implementació canònica sempre que faci la mateixa operació semàntica i retorni la mateixa resposta.</p>
   <p>Optimization no és una autoritat alternativa.</p><hr>
 </section>
 
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
   <h2>Origen, Dia de la Fundació i Dia de les Tauletes</h2>
-  <p>Aquí és especialment important separar clarament els ancoratges canonical del temps del relat del lloc.</p>
+  <p>Aquí és especialment important separar clarament els ancoratges canònics del temps del relat del lloc.</p>
 
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>Ancoratges</h3>
@@ -268,12 +268,12 @@
 </section>
 
 <section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
-  <h2>Per a usuaris avançats: reverse conversion</h2>
-  <p>Si es coneix el dia d'acció <code>c</code>, el reverse conversion queda fortament restringit. Dins d'un any pastafari conegut,</p>
+  <h2>Per a usuaris avançats: conversió inversa</h2>
+  <p>Si es coneix el dia d'acció <code>c</code>, la conversió inversa queda fortament restringida. Dins d'un any pastafari conegut,</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{nom de la croqueta},\text{dia dins de la croqueta})</code></pre>
   <p>identifica com a màxim un dia. El mateix és cert per a</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{nom del mes},\text{dia dins del mes})</code></pre>
-  <p>Per tant, una data completa amb dia d'acció conegut identifica el target day de manera única.</p>
+  <p>Per tant, una data completa amb dia d'acció conegut identifica el dia consultat de manera única.</p>
 
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Límits superiors del nombre de candidats en reverse conversion">
     <table class="about-table">
@@ -298,7 +298,7 @@
 
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
     <h3>Estructura en temps molt llunyà</h3>
-    <p>La recerca matemàtica derivada de l'especificació també ha trobat una estructura asimptòtica exacta. Per a un <strong>dia d'acció fix</strong> <code>c</code>, prou lluny a la cua del passat apareix affine periodicity.</p>
+    <p>La recerca matemàtica derivada de l'especificació també ha trobat una estructura asimptòtica exacta. Per a un <strong>dia d'acció fix</strong> <code>c</code>, prou lluny a la cua del passat apareix periodicitat afí.</p>
     <p>Si</p>
     <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
     <p>aleshores, per al mateix <code>c</code>, existeixen un shift <code>H_c</code>, un year change <code>p_c</code> i un llindar prou llunyà, a partir del qual</p>
@@ -313,8 +313,8 @@
 <section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
   <h2>Per a usuaris avançats: quanta història conserva la salsa?</h2>
   <p>La salsa sembla un mechanism de mescla molt agressiu, però la recerca algebraica mostra que conserva molta més informació del que la seva aparença faria pensar. És un resultat de recerca derivat de l'especificació, no una nova regla del calendari.</p>
-  <p>En les etapes visibles 3–46, a la branca asimptòtica corresponent, s'ha establert generic injectivity: en el cas generic, l'state conserva prou informació per reconstruir l'input history corresponent i l'ordre dels bols.</p>
-  <p>La informació tampoc desapareix de cop en les 12 mescles finals. Per a les cinc primeres mescles després de la gota visible 46, s'ha establert generic invertibility en la unió canonical corresponent sense side information addicional; per a la resta es coneixen límits superiors constructius forts de la quantitat de side information suficient per a la reconstrucció.</p>
+  <p>En les etapes visibles 3–46, a la branca asimptòtica corresponent, s'ha establert injectivitat en el cas general: en el cas general, l'estat conserva prou informació per reconstruir l'historial d'entrada corresponent i l'ordre dels bols.</p>
+  <p>La informació tampoc desapareix de cop en les 12 mescles finals. Per a les cinc primeres mescles després de la gota visible 46, s'ha establert invertibilitat en el cas general en la unió canònica corresponent sense informació auxiliar addicional; per a la resta es coneixen límits superiors constructius forts de la quantitat d'informació auxiliar suficient per a la reconstrucció.</p>
   <p>Continua oberta la pregunta de si <strong>només els sis bols finals</strong> són sempre suficients en el sentit generic.</p>
   <p>Alguns resultats s'han demostrat simbòlicament i d'altres s'han tancat amb finite exact arithmetic check. El symbolic strengthening ha reduït molt el computational core que cal donar per bo, però no l'ha eliminat del tot.</p>
   <p>Espais que inicialment semblaven exigir una cerca per una quantitat enorme de path s'han reduït a estructures finite molt més petites, inclosos automata de 180 i 9 state i simetries dels sis bols.</p>
@@ -323,9 +323,9 @@
 
 <section class="about-section" id="summary" data-toc-section data-toc-level="2">
   <h2>Aleshores, què és realment el Calendari Pastafari?</h2>
-  <p>És un calendari deterministic en què la data no és només una function del target day, sinó una <strong>function conjunta del dia d'acció i del dia consultat</strong>.</p>
-  <p>Cada data té exactament cinc camps. El present, vist des de si mateix, és sempre a l'any 5000, però el mateix any 5000 es desplaça amb el dia d'acció. Els anys poden ser molt llargs, les croquetes són contínues, els mesos no necessàriament, i no hi ha cap canonical week system.</p>
-  <p>El dia <code>n+1</code> d'un mes no ha de ser demà. El mateix chronological day pot rebre demà una altra etiqueta pastafària. El mateix physical moment pot pertànyer a dos local Pastafari day diferents en dos llocs. Un all-day event no ha d'anar necessàriament de mitjanit a mitjanit. I un annual birthday és primer un search problem i després un calendar problem.</p>
+  <p>És un calendari determinista en què la data no és només una funció del dia consultat, sinó una <strong>funció conjunta del dia d'acció i del dia consultat</strong>.</p>
+  <p>Cada data té exactament cinc camps. El present, vist des de si mateix, és sempre a l'any 5000, però el mateix any 5000 es desplaça amb el dia d'acció. Els anys poden ser molt llargs, les croquetes són contínues, els mesos no necessàriament, i no hi ha cap sistema setmanal canònic.</p>
+  <p>El dia <code>n+1</code> d'un mes no ha de ser demà. El mateix dia cronològic pot rebre demà una altra etiqueta pastafariana. El mateix moment físic pot pertànyer a dos dies Pastafari locals diferents en dos llocs. Un esdeveniment de dia complet no ha d'anar necessàriament de mitjanit a mitjanit. I un aniversari anual és primer un problema de cerca i després un problema de calendari.</p>
   <p>Però si es coneixen el dia d'acció i el dia consultat, no hi ha ambiguity: només hi ha una resposta correcta.</p>
   <p>Al capdavall, no cal demanar més a un calendari.</p>
 </section>
