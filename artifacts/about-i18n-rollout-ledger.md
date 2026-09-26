@@ -44,7 +44,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | hy | hy-AM | ltr | partial | draft |
 | id | id-ID | ltr | partial | draft |
 | is | is-IS | ltr | partial | semantic QA |
-| it | it-IT | ltr | partial | draft |
+| it | it-IT | ltr | partial | semantic QA |
 | ja | ja-JP | ltr | partial | draft |
 | jv | jv-ID | ltr | partial | draft |
 | ka | ka-GE | ltr | partial | draft |
