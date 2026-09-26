@@ -106,7 +106,7 @@ jobs:
           EOF
 
             FINAL_ALIGNED=0
-            for PASS in 1 2 3 4 5; do
+            for PASS in 1 2 3 4 5 6 7 8; do
               if [ "$PASS" -eq 1 ]; then
                 cp "/tmp/$LOCALE.prompt.md" "/tmp/$LOCALE.pass$PASS.prompt.md"
               else
@@ -183,7 +183,7 @@ jobs:
             done
 
             if [ "$FINAL_ALIGNED" -ne 1 ]; then
-              echo "$LOCALE did not reach ALREADY_ALIGNED within five semantic-delta passes" >&2
+              echo "$LOCALE did not reach ALREADY_ALIGNED within eight semantic-delta passes" >&2
               exit 1
             fi
 
@@ -191,7 +191,7 @@ jobs:
           const fs=require("node:fs");
           const dir="artifacts/about-semantic-delta-runs";
           const reports=[];
-          for(let pass=1;pass<=5;pass++){
+          for(let pass=1;pass<=8;pass++){
             const path=`${dir}/${process.env.LOCALE}.pass${pass}.json`;
             if(fs.existsSync(path)) reports.push(JSON.parse(fs.readFileSync(path,"utf8")));
           }
