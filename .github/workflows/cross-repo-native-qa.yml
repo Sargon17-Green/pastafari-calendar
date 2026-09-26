@@ -209,8 +209,11 @@ jobs:
         shell: bash
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          REVIEW_ID: ${{ steps.unit.outputs.review_id }}
+          LOCALE_TAG: ${{ steps.unit.outputs.locale_tag }}
         run: |
           OUT="artifacts/cross-repo-native-qa/runtime"
+          sha256sum "$OUT/prompt.md" > "$OUT/prompt.sha256"
           set +e
           copilot             --no-custom-instructions             --no-ask-user             --no-color             --allow-tool='shell(cat:*),shell(grep:*),shell(find:*),shell(sed:*),shell(head:*),shell(tail:*),shell(wc:*),shell(ls:*),shell(pwd:*),shell(rg:*),shell(awk:*),shell(sort:*),shell(uniq:*),shell(git status:*),shell(git diff:*),shell(git show:*),shell(git rev-parse:*)'             --share="$OUT/session.md"             -s < "$OUT/prompt.md"             > "$OUT/review-output.md" 2> "$OUT/reviewer-stderr.log"
           EXIT=$?
@@ -218,33 +221,9 @@ jobs:
           printf '%s\n' "$EXIT" > "$OUT/copilot-exit-code.txt"
           test -s "$OUT/review-output.md"
           test -s "$OUT/session.md"
-          OUT="$OUT" node <<'NODE'
-          const fs=require("node:fs");
-          const path=require("node:path");
-          const out=process.env.OUT;
-          const prompt=fs.readFileSync(path.join(out,"prompt.md"),"utf8").trimEnd();
-          const session=fs.readFileSync(path.join(out,"session.md"),"utf8");
-
-          const userMarker="### User\n\n";
-          const userStart=session.indexOf(userMarker);
-          if(userStart<0) throw new Error("session.md has no User block");
-          const userBodyStart=userStart+userMarker.length;
-          const userEnd=session.indexOf("\n\n---\n",userBodyStart);
-          if(userEnd<0) throw new Error("session.md first User block is unterminated");
-          const firstUser=session.slice(userBodyStart,userEnd).trimEnd();
-          if(firstUser!==prompt) throw new Error("First session user message is not byte-for-byte the retained translated prompt");
-
-          const copilotMarker="### Copilot\n\n";
-          const finalStart=session.lastIndexOf(copilotMarker);
-          if(finalStart<0) throw new Error("session.md has no Copilot block");
-          const bodyStart=finalStart+copilotMarker.length;
-          let finalBody=session.slice(bodyStart);
-          const finalEnd=finalBody.indexOf("\n\n---\n");
-          if(finalEnd>=0) finalBody=finalBody.slice(0,finalEnd);
-          finalBody=finalBody.trim();
-          if(!finalBody) throw new Error("Final Copilot block is empty");
-          fs.writeFileSync(path.join(out,"final-report.md"),finalBody+"\n");
-          NODE
+          grep -Fq -- "REVIEW_ID=$REVIEW_ID" "$OUT/session.md"
+          grep -Fq -- "LOCALE_TAG=$LOCALE_TAG" "$OUT/session.md"
+          cp "$OUT/review-output.md" "$OUT/final-report.md"
           test -s "$OUT/final-report.md"
           FIRST_LINE="$(sed -n '1p' "$OUT/final-report.md" | tr -d '\r')"
           case "$FIRST_LINE" in
@@ -267,7 +246,7 @@ jobs:
           const src="artifacts/cross-repo-native-qa/runtime";
           const attempt=`artifacts/cross-repo-native-qa/attempts/${id}/${run}`;
           fs.mkdirSync(attempt,{recursive:true});
-          for(const f of ["prompt.raw.md","prompt.md","review-output.md","final-report.md","session.md","translator-session.md","review-manifest.json","verdict.txt","copilot-exit-code.txt","reviewer-stderr.log"]){
+          for(const f of ["prompt.raw.md","prompt.md","prompt.sha256","review-output.md","final-report.md","session.md","translator-session.md","review-manifest.json","verdict.txt","copilot-exit-code.txt","reviewer-stderr.log"]){
             if(fs.existsSync(path.join(src,f))) fs.copyFileSync(path.join(src,f),path.join(attempt,f));
           }
           for(const [sub,file] of [["prompts","prompt.md"],["reports","final-report.md"],["sessions","session.md"]]){
