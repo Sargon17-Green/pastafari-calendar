@@ -167,7 +167,7 @@ jobs:
             --no-custom-instructions \
             --no-ask-user \
             --no-color \
-            --allow-tool='shell(cat:*),shell(grep:*),shell(find:*),shell(sed:*),shell(head:*),shell(tail:*),shell(wc:*),shell(git status:*),shell(git diff:*),shell(git show:*)' \
+            --allow-tool='shell(cat:*),shell(grep:*),shell(find:*),shell(sed:*),shell(head:*),shell(tail:*),shell(wc:*),shell(ls:*),shell(pwd:*),shell(rg:*),shell(awk:*),shell(sort:*),shell(uniq:*),shell(git status:*),shell(git diff:*),shell(git show:*)' \
             --share="$EVIDENCE_DIR/session.md" \
             -s < "$EVIDENCE_DIR/prompt.md" \
             > "$EVIDENCE_DIR/review.md" \
@@ -186,7 +186,24 @@ jobs:
             cat "$EVIDENCE_DIR/reviewer-stderr.log" || true
             exit 1
           fi
-          if ! head -n 1 "$EVIDENCE_DIR/review.md" | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)
+          if ! head -n 1 "$EVIDENCE_DIR/review.md" | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)'; then
+            echo "Reviewer output has no valid machine-readable verdict; Copilot exit code: $COPILOT_EXIT"
+            head -n 20 "$EVIDENCE_DIR/review.md" || true
+            cat "$EVIDENCE_DIR/reviewer-stderr.log" || true
+            exit 1
+          fi
+          head -n 1 "$EVIDENCE_DIR/review.md" > "$EVIDENCE_DIR/verdict.txt"
+          printf '%s\n' "--- reviewer exit: $COPILOT_EXIT ---"
+          cat "$EVIDENCE_DIR/verdict.txt"
+
+      - name: Upload immutable review evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: native-${{ matrix.code }}
+          path: artifacts/about-i18n-native-sessions/${{ matrix.code }}/attempt-${{ github.run_id }}/
+          if-no-files-found: error
+          retention-days: 90
 
   aggregate:
     if: ${{ always() }}
