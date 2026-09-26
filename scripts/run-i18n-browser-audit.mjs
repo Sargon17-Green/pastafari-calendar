@@ -759,7 +759,10 @@ function bodyGradientBackgroundAt(y, bodyHeight, radialRadiusPx) {
 async function resolveBodyGradientContrast(page, flattenedIncomplete) {
   const candidates = flattenedIncomplete.filter((item) =>
     item.rule === "color-contrast"
-    && /background gradient/iu.test(item.failureSummary ?? "")
+    && (
+      /background gradient/iu.test(item.failureSummary ?? "")
+      || /content is too short to determine if it is actual text content/iu.test(item.failureSummary ?? "")
+    )
     && Array.isArray(item.target)
     && item.target.length > 0
   );
@@ -780,9 +783,9 @@ async function resolveBodyGradientContrast(page, flattenedIncomplete) {
       try {
         element = document.querySelector(selector);
       } catch {
-        return { selector, missing: true, foreground: null, layers: [], extraBackgroundImage: null };
+        return { selector, missing: true, foreground: null, layers: [], extraBackgroundImage: null, text: "" };
       }
-      if (!element) return { selector, missing: true, foreground: null, layers: [], extraBackgroundImage: null };
+      if (!element) return { selector, missing: true, foreground: null, layers: [], extraBackgroundImage: null, text: "" };
       const layers = [];
       let extraBackgroundImage = null;
       for (let node = element; node && node !== document.body; node = node.parentElement) {
@@ -799,6 +802,7 @@ async function resolveBodyGradientContrast(page, flattenedIncomplete) {
         foreground: getComputedStyle(element).color,
         layers,
         extraBackgroundImage,
+        text: (element.textContent ?? "").trim(),
       };
     });
     return {
@@ -828,6 +832,7 @@ async function resolveBodyGradientContrast(page, flattenedIncomplete) {
     const item = candidates[index];
     const entry = environment.entries[index];
     if (!entry || entry.missing || entry.extraBackgroundImage) continue;
+    if (/content is too short to determine if it is actual text content/iu.test(item.failureSummary ?? "") && entry.text === "") continue;
     const foreground = parseCssRgba(entry.foreground);
     if (!foreground || foreground.a < 0.999) continue;
     const layers = [];
