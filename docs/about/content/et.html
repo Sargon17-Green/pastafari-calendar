@@ -130,10 +130,10 @@
   <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
   <p>Protsess hõlmab viit input counter'it, 7 peidetud tilka, 46 nähtavat tilka, 6 kaussi, muutuvaid kausijärjestusi, 12 lõplikku segamist, erinevate vastuste jaoks seal'e, combinatorial selection'it, väravate ehitamist, aastate valimist, kotlettide jaotamist, nimede valimist, kuude ehitamist ja kuupäevade põimimist.</p>
   <p>Lõplikud update'id on <strong>sünkroonsed</strong>: iga segamise ajal arvutatakse kõik kuus uut väärtust samast vanast state'ist ja alles siis asendatakse kuus kaussi korraga.</p>
-  <p>12 lõpliku segamise sees on üks eriti tähtis canonical detail. Kui <code>S</code> on kuue vana kausi summa ja <code>r</code> segamise number, arvutab süsteem</p>
+  <p>12 lõpliku segamise sees on üks eriti tähtis kanooniline üksikasi. Kui <code>S</code> on kuue vana kausi summa ja <code>r</code> segamise number, arvutab süsteem</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
   <p><code>R</code> on <strong>salvestatud summa</strong>. Nii kausijärjestuse valik kui ka segamise sisemine update kasutavad <code>R</code>-i, mitte toorest summat <code>S</code>.</p>
-  <p>Vanemad versioonid, mis andsid sellesse update'i toore summa, ei kirjelda enam praegust canonical semantics'it. Vana reegli põhjal tehtud näiteid tuleb pidada aegunuks, kuni need on uuesti kontrollitud.</p>
+  <p>Vanemad versioonid, mis andsid sellesse uuendusse toore summa, ei kirjelda enam praegust kanoonilist semantikat. Vana reegli põhjal tehtud näiteid tuleb pidada aegunuks, kuni need on uuesti kontrollitud.</p>
   <p>Pärast segamisi jätkab answer ring samuti järjestust, mis lock'iti nähtava tilga 46 juures; seda ei tohi automaatselt asendada viimase segamise järjestusega.</p><hr>
 </section>
 
@@ -149,7 +149,7 @@
   <h2>Struktuuriatlas</h2>
   <p>Seni rääkisime kalendri reeglitest. Järgmised arvud on teist tüüpi teave: suure computational sample'i <strong>empiirilised tulemused</strong>.</p>
   <p>Atlas ehitati engine commit'iga <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> ja hõlmas 4,096 toimingupäeva; igaühe jaoks aastaid 4990–5010; 86,016 aastastruktuuri; 625,437 kotletti; 3,535,422 struktuurset kuud; üle 356 miljoni katkematu kuusegmendi; ning üle 364 miljoni ülemineku sama kuu päevalt <code>n</code> päevale <code>n+1</code>.</p>
-  <p>Need arvud kirjeldavad seda corpus't, mitte canonical seadusi.</p>
+  <p>Need arvud kirjeldavad seda korpust, mitte kanoonilisi seadusi.</p>
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Struktuuriatlases mõõdetud andmed">
     <table class="about-table">
       <thead><tr><th scope="col">Mõõdetud suurus</th><th scope="col">Tulemus valimis</th></tr></thead>
@@ -245,7 +245,7 @@
 
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
   <h2>Päritolu, Asutamispäev ja Tahvlite päev</h2>
-  <p>Siin on eriti tähtis hoida canonical time anchor'id selgelt lahus saidi loost.</p>
+  <p>Siin on eriti tähtis hoida kanoonilised ajaankrud selgelt lahus saidi loost.</p>
 
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>Ankrud</h3>
@@ -273,9 +273,9 @@
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{kotleti nimi},\text{päev kotleti sees})</code></pre>
   <p>määrab kõige rohkem ühe päeva. Sama kehtib ka</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{kuu nimi},\text{päev kuu sees})</code></pre>
-  <p>kohta. Seega määrab täielik kuupäev koos teadaoleva toimingupäevaga target day üheselt.</p>
+  <p>kohta. Seega määrab täielik kuupäev koos teadaoleva toimingupäevaga päringupäeva üheselt.</p>
 
-  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Candidate'ide arvu ülempiirid reverse conversion'is">
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Kandidaatide arvu ülempiirid pöördteisenduses">
     <table class="about-table">
       <thead><tr><th scope="col">Teadaolev lisateave</th><th scope="col">Maksimaalne kandidaatide arv</th></tr></thead>
       <tbody>
