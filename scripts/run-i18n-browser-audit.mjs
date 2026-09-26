@@ -66,7 +66,15 @@ const IMPORTANT_LAYOUT_SELECTORS = Object.freeze([
   ".guide-grid article",
   ".comparison-scroll",
   ".comparison-table",
+  "#article-content",
+  ".about-toc",
+  ".about-table-wrap",
+  ".about-kv-table-wrap",
+  ".about-code-block",
+  ".about-article table",
+  ".about-article pre",
 ]);
+
 const DIRECTION_CHECK_SELECTORS = Object.freeze([
   ".calendar-toolbar",
   ".date-entry-form",
@@ -1475,7 +1483,7 @@ function reportMarkdown(report) {
   lines.push("## Locale results");
   lines.push("");
   lines.push("| Locale | Status | Classification | Registered | Selector | dir | Browser render | Switch | Persistence | Main screenshots | /about/ screenshots |");
-  lines.push("|---|---:|---|---:|---:|---|---|---|---|---|");
+  lines.push("|---|---:|---|---:|---:|---|---|---|---|---|---|");
   for (const result of Object.values(report.locales).sort((a, b) => a.code.localeCompare(b.code, "en"))) {
     lines.push(`| \`${mdEscape(result.code)}\` | **${result.status}** | ${mdEscape(result.classification)} | ${result.registered ? "yes" : "no"} | ${result.selectorPresent === true ? "yes" : result.selectorPresent === false ? "no" : "n/a"} | ${mdEscape(result.dir || "")} | ${result.basic ? (result.basic.workspaceHidden === false ? "ok" : "failed") : "n/a"} | ${result.switchLanguage ? (result.switchLanguage.ok ? "ok" : "failed") : "n/a"} | ${result.persistence ? (result.persistence.ok ? "ok" : "failed") : "n/a"} | ${(result.screenshots || []).map((shot) => `[${shot.width}×${shot.height}](${shot.path})`).join(" ") || "none"} | ${(result.about?.screenshots || []).map((shot) => `[${shot.width}×${shot.height}](${shot.path})`).join(" ") || "none"} |`);
   }
