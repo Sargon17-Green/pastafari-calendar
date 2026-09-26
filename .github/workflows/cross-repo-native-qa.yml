@@ -1,0 +1,209 @@
+name: Cross-repository native-language QA
+
+on:
+  push:
+    branches:
+      - feature/about-i18n-72-locales
+    paths:
+      - artifacts/cross-repo-native-qa-trigger.json
+  workflow_dispatch:
+    inputs:
+      review_id:
+        description: "One review_id from artifacts/cross-repo-native-qa/inventory.json"
+        required: true
+
+permissions:
+  contents: write
+  copilot-requests: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout orchestration branch
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: feature/about-i18n-72-locales
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: "24"
+
+      - name: Install pinned Copilot CLI
+        run: |
+          npm install -g @github/copilot@1.0.88
+          copilot --version
+
+      - name: Resolve fixed review unit and clone exact implementation branches
+        id: unit
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_ID: ${{ inputs.review_id }}
+        run: |
+          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+            REVIEW_ID="$INPUT_ID"
+          else
+            REVIEW_ID="$(node -p "require('./artifacts/cross-repo-native-qa-trigger.json').review_id")"
+          fi
+          printf 'review_id=%s\n' "$REVIEW_ID" >> "$GITHUB_OUTPUT"
+          REVIEW_ID="$REVIEW_ID" node <<'NODE'
+          const fs=require("node:fs");
+          const cp=require("node:child_process");
+          const inv=JSON.parse(fs.readFileSync("artifacts/cross-repo-native-qa/inventory.json","utf8"));
+          const u=inv.units.find(x=>x.review_id===process.env.REVIEW_ID);
+          if(!u) throw new Error("Unknown review_id "+process.env.REVIEW_ID);
+          const dir="artifacts/cross-repo-native-qa/runtime";
+          fs.mkdirSync(dir,{recursive:true});
+          const repo1Head=cp.execFileSync("git",["rev-parse","HEAD"],{encoding:"utf8"}).trim();
+          const manifest={
+            review_id:u.review_id,
+            self_name:u.self_name,
+            locale:u.locale,
+            script:u.script,
+            direction:u.direction,
+            repo1:u.pastafari_calendar.present?{
+              repository:"Sargon17-Green/pastafari-calendar",
+              branch:u.pastafari_calendar.branch,
+              reviewed_head:repo1Head,
+              locale_code:u.pastafari_calendar.locale_code,
+              locale_file:u.pastafari_calendar.locale_file,
+              about_file:u.pastafari_calendar.about_file
+            }:null,
+            repo2:{repository:"Sargon17-Green/Pastafarian-Calendar",reference_main_sha:inv.source_heads.Pastafarian_Calendar.reference_main_sha,branches:[]}
+          };
+          fs.rmSync("/tmp/pastafari-cross-repo",{recursive:true,force:true});
+          fs.mkdirSync("/tmp/pastafari-cross-repo",{recursive:true});
+          for(let i=0;i<u.Pastafarian_Calendar.branches.length;i++){
+            const b=u.Pastafarian_Calendar.branches[i];
+            const dest="/tmp/pastafari-cross-repo/repo2-"+i;
+            cp.execFileSync("git",["clone","--depth","1","--branch",b.name,"https://github.com/Sargon17-Green/Pastafarian-Calendar.git",dest],{stdio:"inherit"});
+            const got=cp.execFileSync("git",["-C",dest,"rev-parse","HEAD"],{encoding:"utf8"}).trim();
+            if(got!==b.head_sha) throw new Error("Inventory stale for "+b.name+": expected "+b.head_sha+" got "+got);
+            manifest.repo2.branches.push({name:b.name,head_sha:got,local_path:dest});
+          }
+          fs.writeFileSync(dir+"/review-manifest.json",JSON.stringify(manifest,null,2)+"\n");
+          fs.appendFileSync(process.env.GITHUB_OUTPUT,"self_name="+u.self_name.replace(/\n/g," ")+"\n");
+          fs.appendFileSync(process.env.GITHUB_OUTPUT,"locale_tag="+String(u.locale||u.review_id).replace(/\n/g," ")+"\n");
+          NODE
+
+      - name: Build translation request for the seed prompt
+        shell: bash
+        env:
+          REVIEW_ID: ${{ steps.unit.outputs.review_id }}
+          SELF_NAME: ${{ steps.unit.outputs.self_name }}
+          LOCALE_TAG: ${{ steps.unit.outputs.locale_tag }}
+        run: |
+          node <<'NODE'
+          const fs=require("node:fs");
+          const manifestPath="artifacts/cross-repo-native-qa/runtime/review-manifest.json";
+          let source=fs.readFileSync("artifacts/cross-repo-native-qa/REVIEW_PROTOCOL_SOURCE.md","utf8");
+          source=source.replaceAll("{{SELF_NAME}}",process.env.SELF_NAME)
+                       .replaceAll("{{REVIEW_ID}}",process.env.REVIEW_ID)
+                       .replaceAll("{{LOCALE_TAG}}",process.env.LOCALE_TAG)
+                       .replaceAll("{{MANIFEST_PATH}}",manifestPath);
+          const request=[
+            "Translate the reviewer protocol below completely and naturally into the human language named "+process.env.SELF_NAME+".",
+            "The translated text will be the FIRST AND ONLY user message in a fresh reviewer session. Therefore every ordinary instruction sentence must be in the target language from its first line onward.",
+            "Preserve repository names, branch names, paths, code identifiers, placeholders, formulas, and the exact machine-readable verdict lines NATIVE_QA_RESULT: PASS / NATIVE_QA_RESULT: FAIL.",
+            "Do not add an English preface, explanation, translator note, or code fence. Output only the translated seed prompt.",
+            "",
+            source
+          ].join("\n");
+          fs.writeFileSync("/tmp/translate-request.md",request);
+          NODE
+
+      - name: Translate and retain the exact target-language seed prompt
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          REVIEW_ID: ${{ steps.unit.outputs.review_id }}
+        run: |
+          OUT="artifacts/cross-repo-native-qa/runtime"
+          copilot --no-custom-instructions --no-ask-user --no-color --share="$OUT/translator-session.md" -s < /tmp/translate-request.md > "$OUT/prompt.md"
+          test -s "$OUT/prompt.md"
+          test -s "$OUT/translator-session.md"
+          grep -q 'NATIVE_QA_RESULT: PASS' "$OUT/prompt.md"
+          grep -q 'NATIVE_QA_RESULT: FAIL' "$OUT/prompt.md"
+
+      - name: Run the isolated native-language cross-repository reviewer
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          OUT="artifacts/cross-repo-native-qa/runtime"
+          set +e
+          copilot             --no-custom-instructions             --no-ask-user             --no-color             --allow-tool='shell(cat:*),shell(grep:*),shell(find:*),shell(sed:*),shell(head:*),shell(tail:*),shell(wc:*),shell(ls:*),shell(pwd:*),shell(rg:*),shell(awk:*),shell(sort:*),shell(uniq:*),shell(git status:*),shell(git diff:*),shell(git show:*),shell(git rev-parse:*)'             --share="$OUT/session.md"             -s < "$OUT/prompt.md"             > "$OUT/review.md" 2> "$OUT/reviewer-stderr.log"
+          EXIT=$?
+          set -e
+          printf '%s\n' "$EXIT" > "$OUT/copilot-exit-code.txt"
+          test -s "$OUT/review.md"
+          test -s "$OUT/session.md"
+          mapfile -t VERDICTS < <(grep -E '^NATIVE_QA_RESULT: (PASS|FAIL)\r?$' "$OUT/review.md" | tr -d '\r')
+          if [ "${#VERDICTS[@]}" -ne 1 ]; then
+            echo "Expected exactly one verdict line; got ${#VERDICTS[@]}"
+            head -n 30 "$OUT/review.md" || true
+            exit 1
+          fi
+          printf '%s\n' "${VERDICTS[0]}" > "$OUT/verdict.txt"
+
+      - name: Install immutable and canonical evidence, then regenerate ledger
+        shell: bash
+        env:
+          REVIEW_ID: ${{ steps.unit.outputs.review_id }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          node <<'NODE'
+          const fs=require("node:fs");
+          const path=require("node:path");
+          const id=process.env.REVIEW_ID, run=process.env.RUN_ID;
+          const src="artifacts/cross-repo-native-qa/runtime";
+          const attempt=`artifacts/cross-repo-native-qa/attempts/${id}/${run}`;
+          fs.mkdirSync(attempt,{recursive:true});
+          for(const f of ["prompt.md","review.md","session.md","translator-session.md","review-manifest.json","verdict.txt","copilot-exit-code.txt","reviewer-stderr.log"]){
+            if(fs.existsSync(path.join(src,f))) fs.copyFileSync(path.join(src,f),path.join(attempt,f));
+          }
+          for(const [sub,file] of [["prompts","prompt.md"],["reports","review.md"],["sessions","session.md"]]){
+            const d=`artifacts/cross-repo-native-qa/${sub}`; fs.mkdirSync(d,{recursive:true});
+            fs.copyFileSync(path.join(src,file),path.join(d,id+".md"));
+          }
+          const manifest=JSON.parse(fs.readFileSync(path.join(src,"review-manifest.json"),"utf8"));
+          const verdict=fs.readFileSync(path.join(src,"verdict.txt"),"utf8").trim().split(":").pop().trim();
+          const statusDir="artifacts/cross-repo-native-qa/status"; fs.mkdirSync(statusDir,{recursive:true});
+          fs.writeFileSync(path.join(statusDir,id+".json"),JSON.stringify({
+            review_id:id,run_id:run,verdict,
+            same_language_session:verdict==="PASS"?"PASS":"FAIL",
+            repo1_head:manifest.repo1?.reviewed_head||null,
+            repo2_branches:manifest.repo2.branches.map(b=>({name:b.name,head_sha:b.head_sha})),
+            rendered_desktop:"OPEN",rendered_mobile_390:"OPEN",accessibility:"OPEN",
+            pwa_offline:"OPEN",language_switching:"OPEN",final_result:"NOT PASS"
+          },null,2)+"\n");
+
+          const inv=JSON.parse(fs.readFileSync("artifacts/cross-repo-native-qa/inventory.json","utf8"));
+          const esc=s=>String(s??"").replace(/\|/g,"\\|").replace(/\n/g," ");
+          let md="# Cross-repository native QA ledger\n\n";
+          md+=`Inventory: **${inv.counts.qa_review_units} QA units / ${inv.counts.human_languages_unique} unique human languages**. A native reviewer PASS advances only the linguistic gate; rendered/accessibility/PWA/switching/CI gates remain separate.\n\n`;
+          md+="| review_id | self-name | site semantic state | native same-language | repo2 human-facing text | rendered desktop | rendered 390px | a11y | PWA/offline | switching | CI | final |\n|---|---|---|---|---|---|---|---|---|---|---|---|\n";
+          for(const u of inv.units){
+            let st=null; const sp=`artifacts/cross-repo-native-qa/status/${u.review_id}.json`; if(fs.existsSync(sp)) st=JSON.parse(fs.readFileSync(sp,"utf8"));
+            md+=`| ${esc(u.review_id)} | ${esc(u.self_name)} | ${esc(u.pastafari_calendar.status)} | ${st?st.same_language_session:"not started"} | ${u.Pastafarian_Calendar.branches.length?(st?"reviewed":"not reviewed"):"n/a"} | ${st?st.rendered_desktop:"open"} | ${st?st.rendered_mobile_390:"open"} | ${st?st.accessibility:"open"} | ${st?st.pwa_offline:"open"} | ${st?st.language_switching:"open"} | open | NOT PASS |\n`;
+          }
+          fs.writeFileSync("artifacts/cross-repo-native-qa-ledger.md",md);
+          NODE
+          rm -rf artifacts/cross-repo-native-qa/runtime
+
+      - name: Commit evidence and ledger serially to the feature branch
+        shell: bash
+        env:
+          REVIEW_ID: ${{ steps.unit.outputs.review_id }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add artifacts/cross-repo-native-qa/ artifacts/cross-repo-native-qa-ledger.md
+          git commit -m "qa(${REVIEW_ID}): record cross-repo native session ${RUN_ID}"
+          git pull --rebase origin feature/about-i18n-72-locales
+          git push origin HEAD:feature/about-i18n-72-locales
