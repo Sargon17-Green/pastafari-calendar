@@ -121,7 +121,7 @@
 </section>
 <section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
   <h2>Short Choice a Wide Choice</h2>
-  <p>Pri pomerne malých priestoroch možností sa používa <strong>Short Choice</strong>. Na odstránenie jednoduchého modulo bias používa rejection sampling.</p>
+  <p>Pri pomerne malých priestoroch možností sa používa <strong>Short Choice</strong>. Na odstránenie jednoduchému skresleniu modulo operácie používa výber s odmietaním.</p>
   <p>Veľmi veľké priestory používajú <strong>Wide Choice</strong>. Nemožno jej pripisovať vlastnosti, ktoré špecifikácia nezaručuje.</p>
   <p>Wide Choice nie je ekvivalent generovania nezávislých rovnomerných číslic v základe <code>Q</code>, až kým nevznikne index. Preto z nej nevyplýva, že každá povolená možnosť musí mať rovnakú kladnú pravdepodobnosť. V dostatočne veľkých priestoroch môžu existovať povolené možnosti, ktoré tento mechanizmus vôbec nedosiahne.</p>
   <p>Samotný kalendár je úplne deterministický. „Choice“ je názov kroku algoritmu, nie žrebovanie pri používaní.</p><hr>
@@ -165,9 +165,9 @@
   <p>Pri mimoriadne dôležitom stretnutí možno navyše uložiť absolútny chronologický deň alebo okamih. Kalendár to bez ujmy znesie.</p><hr>
 </section>
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
-  <h2>Cestovanie, udalosti a all-day</h2>
+  <h2>Cestovanie a celodenné udalosti</h2>
   <p>Udalosť nie je to isté ako miestna nálepka zobrazená pri nej. Časovaná udalosť má zostať ukotvená v stabilnom chronologickom okamihu. Cestovanie ju v čase neposúva, no miestny pastafariánsky dátum zobrazený pre ten istý okamih sa môže zmeniť, pretože definícia „miestneho dňa“ závisí od polohy.</p>
-  <p>Pri udalosti <strong>all-day</strong> je rozdiel ešte väčší. Občianska celodenná udalosť zvyčajne trvá od občianskej polnoci do ďalšej; pastafariánska celodenná udalosť by mala trvať od miestnej hranice pastafariánskeho dňa k nasledujúcej hranici. Zvyčajne nejde o tie isté okamihy.</p>
+  <p>Pri <strong>celodennej udalosti</strong> je rozdiel ešte väčší. Občianska celodenná udalosť zvyčajne trvá od občianskej polnoci do ďalšej; pastafariánska celodenná udalosť by mala trvať od miestnej hranice pastafariánskeho dňa k nasledujúcej hranici. Zvyčajne nejde o tie isté okamihy.</p>
   <p>Slepý export pastafariánskej udalosti ako občianskej udalosti „na celý deň“ tak môže zmeniť jej význam. Na presné zachovanie treba uložiť chronologickú kotvu a správny kontext polohy/hranice dňa, nie iba príznak <code>all-day</code>.</p><hr>
 </section>
 <section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
@@ -187,9 +187,9 @@
   <p>Popri kanonickej implementácii existuje rýchly engine <strong>Pastafarian Calendar Seer</strong>. Seer nie je zdrojom autority: správny dátum určujú Megillah a kanonický výpočet. Ak sa Seer nezhoduje, mýli sa Seer.</p>
   <p>Jeho účelom je vykonávať tie isté dotazy rýchlo a vo forme vhodnej na integráciu do produktov.</p>
   <p>Pri živom overení počas úprav tejto stránky Seer zahŕňal okrem iného dotazy na dátum a „teraz“, batch, rozsahy dní, spätnú konverziu pastafariánskeho dátumu na cieľový deň, získanie štruktúry roka, určenie aktívneho dňa činnosti, Node API, prehliadačový/HTTP klient, CLI, službu HTTP v1, kontrakt OpenAPI 3.1, native implementácie a distribučné balíky a overené container nasadenie.</p>
-  <p>Staré tvrdenie, že Seer nemá verejné API, už nie je správne. Existuje výslovný stabilný kontrakt HTTP v1 s endpointmi pre date, range, batch, year, reverse, deň činnosti, metadata, locales a status.</p>
-  <p>Dňa 21. septembra 2026 bolo prakticky otestované aj verejné HTTPS nasadenie na Render: na živej službe sa overili exact dotazy, veľký range, restart, cold wake a správanie pod záťažou.</p>
-  <p>Projektová dokumentácia však naďalej odlišuje verejné beta/evaluation nasadenie od trvalej hosted production služby so SLA. Preto základná vysvetľujúca stránka nemá zafixovať adresu servera, poskytovateľa hostingu či číslo verzie ako súčasť samotného kalendára.</p>
+  <p>Staré tvrdenie, že Seer nemá verejné API, už nie je správne. Existuje výslovný stabilný kontrakt HTTP v1 s koncovými bodmi pre <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, deň činnosti, <code>metadata</code>, <code>locales</code> a <code>status</code>.</p>
+  <p>Dňa 21. septembra 2026 bolo prakticky otestované aj verejné HTTPS nasadenie na Render: na živej službe sa overili presné dotazy, veľký rozsah, reštart, <code>cold wake</code> a správanie pod záťažou.</p>
+  <p>Projektová dokumentácia však naďalej odlišuje verejné beta/evaluačné nasadenie od trvalej hosťovanej produkčnej služby so SLA. Preto základná vysvetľujúca stránka nemá zafixovať adresu servera, poskytovateľa hostingu či číslo verzie ako súčasť samotného kalendára.</p>
   <p>Seer môže používať predvýpočty, špeciálne reprezentácie, SIMD, algebru a ďalšie skratky. Nemusí krok za krokom opakovať výpočtovú históriu kanonickej implementácie, ak vykonáva tú istú sémantickú operáciu a vracia tú istú odpoveď.</p>
   <p>Optimalizácia nie je alternatívna autorita.</p><hr>
 </section>
@@ -246,8 +246,8 @@
 <section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
   <h2>Pre pokročilých: koľko histórie si omáčka pamätá?</h2>
   <p>Omáčka pôsobí ako veľmi agresívne miešanie, no algebraický výskum ukázal, že zachováva omnoho viac informácií, než naznačuje jej vonkajší vzhľad. Je to výskum odvodený zo špecifikácie, nie nové pravidlo kalendára.</p>
-  <p>Vo viditeľných etapách 3–46 bola na príslušnej asymptotickej vetve stanovená generic injectivity: v generickom prípade stav zachováva dosť informácií na rekonštrukciu relevantnej histórie vstupov a poradí mís.</p>
-  <p>Ani v 12 záverečných miešaniach informácia nezmizne okamžite. Pre prvých päť po viditeľnej kvapke 46 bola na príslušnom kanonickom zjednotení stanovená generic invertibility bez dodatočných vedľajších informácií; pre zvyšok poznáme silné konštruktívne horné hranice množstva vedľajších informácií postačujúcich na rekonštrukciu.</p>
+  <p>Vo viditeľných etapách 3–46 bola na príslušnej asymptotickej vetve stanovená injektivita vo všeobecnom prípade: v generickom prípade stav zachováva dosť informácií na rekonštrukciu relevantnej histórie vstupov a poradí mís.</p>
+  <p>Ani v 12 záverečných miešaniach informácia nezmizne okamžite. Pre prvých päť po viditeľnej kvapke 46 bola na príslušnom kanonickom zjednotení stanovená invertibilita vo všeobecnom prípade bez dodatočných vedľajších informácií; pre zvyšok poznáme silné konštruktívne horné hranice množstva vedľajších informácií postačujúcich na rekonštrukciu.</p>
   <p>Otvorené zostáva, či <strong>samotných šesť finálnych mís</strong> vždy genericky stačí.</p>
   <p>Niektoré výsledky boli dokázané symbolicky, iné uzavreté konečnými presnými aritmetickými kontrolami. Symbolické posilnenie výrazne zmenšilo výpočtové jadro, ktorému treba dôverovať, no úplne ho neodstránilo.</p>
   <p>Priestory, ktoré spočiatku vyzerali ako obrovské množiny ciest, sa zmenšili na omnoho menšie konečné štruktúry vrátane automatov so 180 a 9 stavmi a symetrií šiestich mís.</p>
