@@ -140,7 +140,7 @@
 
 <section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
   <h2>Short Choice và Wide Choice</h2>
-  <p>Với không gian lựa chọn tương đối nhỏ, hệ thống dùng <strong>Short Choice</strong>. Nó dùng rejection sampling để tránh sai lệch modulo đơn giản.</p>
+  <p>Với không gian lựa chọn tương đối nhỏ, hệ thống dùng <strong>Short Choice</strong>. Nó dùng lấy mẫu bằng loại bỏ để tránh sai lệch modulo đơn giản.</p>
   <p>Không gian rất lớn dùng <strong>Wide Choice</strong>. Không nên gán cho nó những tính chất mà đặc tả không bảo đảm.</p>
   <p>Wide Choice không tương đương với việc sinh các chữ số độc lập, phân bố đều trong cơ số <code>Q</code> cho đến khi có một chỉ số. Do đó không thể suy ra rằng mọi lựa chọn hợp lệ nhất thiết có cùng xác suất dương. Trong không gian đủ lớn có thể tồn tại những lựa chọn hợp lệ mà cơ chế này hoàn toàn không thể đạt tới.</p>
   <p>Bản thân lịch vẫn hoàn toàn xác định. “Choice” là tên của một bước thuật toán, không phải rút thăm ngẫu nhiên khi sử dụng.</p><hr>
@@ -149,8 +149,8 @@
 <section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
   <h2>Atlas cấu trúc</h2>
   <p>Đến đây chúng ta đã nói về các quy tắc của lịch. Những con số tiếp theo thuộc loại khác: chúng là <strong>kết quả thực nghiệm</strong> từ một mẫu tính toán lớn.</p>
-  <p>Atlas được xây dựng bằng commit engine <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> và gồm 4,096 ngày thao tác; các năm 4990–5010 cho mỗi ngày đó; 86,016 cấu trúc năm; 625,437 cốt-lết; 3,535,422 tháng cấu trúc; hơn 356 triệu đoạn tháng liên tục; và hơn 364 triệu chuyển tiếp từ ngày <code>n</code> sang ngày <code>n+1</code> của cùng một tháng.</p>
-  <p>Đó là mô tả về corpus này, không phải luật chính tắc.</p>
+  <p>Atlas được xây dựng bằng bản ghi sửa đổi của engine <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> và gồm 4,096 ngày thao tác; các năm 4990–5010 cho mỗi ngày đó; 86,016 cấu trúc năm; 625,437 cốt-lết; 3,535,422 tháng cấu trúc; hơn 356 triệu đoạn tháng liên tục; và hơn 364 triệu chuyển tiếp từ ngày <code>n</code> sang ngày <code>n+1</code> của cùng một tháng.</p>
+  <p>Đó là mô tả về tập dữ liệu này, không phải luật chính tắc.</p>
 
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Dữ liệu đo được của atlas cấu trúc">
     <table class="about-table">
@@ -214,9 +214,9 @@
 </section>
 
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
-  <h2>Đi lại, sự kiện và all-day</h2>
+  <h2>Đi lại và sự kiện cả ngày</h2>
   <p>Một sự kiện không phải là cùng một thứ với nhãn địa phương được hiển thị cho nó. Sự kiện đã định giờ phải được neo vào một thời điểm ổn định theo thời gian. Đi lại không chuyển nó sang thời điểm khác, nhưng ngày Pastafari địa phương hiển thị cho cùng thời điểm có thể đổi vì định nghĩa “ngày địa phương” phụ thuộc vào vị trí.</p>
-  <p>Với sự kiện <strong>all-day</strong>, khác biệt còn lớn hơn. Sự kiện dân sự kéo dài cả ngày thường chạy từ nửa đêm dân sự này đến nửa đêm kế tiếp; sự kiện Pastafari cả ngày nên chạy từ ranh giới ngày Pastafari địa phương đến ranh giới kế tiếp. Thông thường đó không phải cùng các thời điểm.</p>
+  <p>Với <strong>sự kiện cả ngày</strong>, khác biệt còn lớn hơn. Sự kiện dân sự kéo dài cả ngày thường chạy từ nửa đêm dân sự này đến nửa đêm kế tiếp; sự kiện Pastafari cả ngày nên chạy từ ranh giới ngày Pastafari địa phương đến ranh giới kế tiếp. Thông thường đó không phải cùng các thời điểm.</p>
   <p>Do đó, xuất mù quáng một sự kiện Pastafari thành sự kiện dân sự “cả ngày” có thể làm đổi ý nghĩa của nó. Muốn giữ chính xác cần lưu điểm neo thời gian và ngữ cảnh vị trí/ranh giới ngày phù hợp, không chỉ một cờ <code>all-day</code>.</p><hr>
 </section>
 
@@ -236,12 +236,12 @@
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Vậy Seer là gì?</h2>
-  <p>Bên cạnh cách triển khai chính tắc có một engine nhanh tên là <strong>Pastafarian Calendar Seer</strong>. Seer không phải nguồn thẩm quyền: ngày đúng được xác định bởi Megillah và phép tính chính tắc. Nếu Seer không khớp với chúng, Seer là bên sai.</p>
+  <p>Bên cạnh cách triển khai chính tắc có một bộ máy tính nhanh tên là <strong>Pastafarian Calendar Seer</strong>. Seer không phải nguồn thẩm quyền: ngày đúng được xác định bởi Megillah và phép tính chính tắc. Nếu Seer không khớp với chúng, Seer là bên sai.</p>
   <p>Nhiệm vụ của nó là thực hiện cùng các truy vấn thật nhanh và dưới dạng thuận tiện để tích hợp vào sản phẩm.</p>
-  <p>Trong lần xác minh trực tiếp khi biên tập trang này, Seer bao gồm, trong số những thứ khác, truy vấn ngày và “bây giờ”, batch, khoảng ngày, chuyển đổi reverse từ ngày Pastafari sang ngày đích, lấy cấu trúc năm, xác định ngày thao tác đang hoạt động, Node API, client trình duyệt/HTTP, CLI, dịch vụ HTTP v1, hợp đồng OpenAPI 3.1, các triển khai native và gói phân phối, cùng container deployment đã được xác minh.</p>
-  <p>Vì vậy tuyên bố cũ rằng Seer không có API công khai không còn đúng. Hiện có một hợp đồng HTTP v1 rõ ràng và ổn định với endpoint cho date, range, batch, year, reverse, ngày thao tác, metadata, locales và status.</p>
-  <p>Ngày 21 tháng 9 năm 2026, deployment HTTPS công khai trên Render cũng đã được thử thật: truy vấn exact, range lớn, restart, cold wake và hành vi dưới tải đều được kiểm tra trên dịch vụ đang chạy.</p>
-  <p>Tuy vậy tài liệu dự án vẫn phân biệt deployment công khai beta/evaluation với một dịch vụ hosted production lâu dài có SLA. Do đó trang giải thích khái niệm không nên đóng cứng địa chỉ máy chủ, nhà cung cấp hosting hay số phiên bản như thể chúng là một phần của chính lịch.</p>
+  <p>Trong lần xác minh trực tiếp khi biên tập trang này, Seer bao gồm, trong số những thứ khác, các truy vấn <code>date</code> và <code>now</code>, <code>batch</code>, khoảng ngày, chuyển đổi ngược từ ngày Pastafari sang ngày được hỏi, lấy cấu trúc năm, xác định ngày thao tác đang hoạt động, Node API, máy khách trình duyệt/HTTP, CLI, dịch vụ HTTP v1, hợp đồng OpenAPI 3.1, các triển khai gốc và gói phân phối, cùng việc triển khai trong container đã được xác minh.</p>
+  <p>Vì vậy tuyên bố cũ rằng Seer không có API công khai không còn đúng. Hiện có một hợp đồng HTTP v1 rõ ràng và ổn định với điểm cuối cho <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, ngày thao tác, <code>metadata</code>, <code>locales</code> và <code>status</code>.</p>
+  <p>Ngày 21 tháng 9 năm 2026, triển khai HTTPS công khai trên Render cũng đã được thử thật: truy vấn chính xác, khoảng lớn, khởi động lại, <code>cold wake</code> và hành vi dưới tải đều được kiểm tra trên dịch vụ đang chạy.</p>
+  <p>Tuy vậy tài liệu dự án vẫn phân biệt triển khai công khai beta/đánh giá với một dịch vụ sản xuất được lưu trữ lâu dài có SLA. Do đó trang giải thích khái niệm không nên đóng cứng địa chỉ máy chủ, nhà cung cấp dịch vụ lưu trữ hay số phiên bản như thể chúng là một phần của chính lịch.</p>
   <p>Seer có thể dùng tiền tính toán, biểu diễn đặc biệt, SIMD, đại số và các đường tắt khác. Nó không cần lặp lại từng bước toàn bộ lịch sử tính toán của cách triển khai chính tắc miễn là thực hiện cùng phép toán ngữ nghĩa và trả cùng câu trả lời.</p>
   <p>Tối ưu hóa không phải một nguồn thẩm quyền thay thế.</p><hr>
 </section>
@@ -316,8 +316,8 @@
 <section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
   <h2>Dành cho người dùng nâng cao: nước sốt giữ lại bao nhiêu lịch sử?</h2>
   <p>Nước sốt trông như một cơ chế trộn rất mạnh, nhưng nghiên cứu đại số cho thấy nó giữ lại nhiều thông tin hơn rất nhiều so với vẻ ngoài gợi ý. Đây là kết quả nghiên cứu suy ra từ đặc tả, không phải một quy tắc lịch mới.</p>
-  <p>Ở các giai đoạn thấy được 3–46, trên nhánh tiệm cận liên quan, generic injectivity đã được xác lập: trong trường hợp tổng quát, trạng thái giữ đủ thông tin để tái dựng lịch sử đầu vào và thứ tự bát có liên quan.</p>
-  <p>Thông tin cũng không biến mất ngay trong 12 lần khuấy cuối. Với năm lần đầu sau giọt thấy được 46, generic invertibility đã được xác lập trên hợp chính tắc liên quan mà không cần thông tin phụ thêm; với phần còn lại, ta biết các giới hạn trên mang tính xây dựng mạnh về lượng thông tin phụ đủ để tái dựng.</p>
+  <p>Ở các giai đoạn thấy được 3–46, trên nhánh tiệm cận liên quan, tính đơn ánh tổng quát đã được xác lập: trong trường hợp tổng quát, trạng thái giữ đủ thông tin để tái dựng lịch sử đầu vào và thứ tự bát có liên quan.</p>
+  <p>Thông tin cũng không biến mất ngay trong 12 lần khuấy cuối. Với năm lần đầu sau giọt thấy được 46, tính khả nghịch tổng quát đã được xác lập trên hợp chính tắc liên quan mà không cần thông tin phụ thêm; với phần còn lại, ta biết các giới hạn trên mang tính xây dựng mạnh về lượng thông tin phụ đủ để tái dựng.</p>
   <p>Vẫn còn bỏ ngỏ liệu <strong>chỉ sáu bát cuối</strong> có luôn đủ theo nghĩa tổng quát hay không.</p>
   <p>Một số kết quả được chứng minh bằng ký hiệu, những kết quả khác được khép lại bằng kiểm tra số học hữu hạn và chính xác. Việc tăng cường chứng minh ký hiệu đã làm nhỏ đi đáng kể lõi tính toán cần phải tin cậy, nhưng chưa loại bỏ nó hoàn toàn.</p>
   <p>Những không gian ban đầu tưởng như đòi hỏi duyệt số lượng đường đi khổng lồ đã thu nhỏ thành các cấu trúc hữu hạn nhỏ hơn nhiều, trong đó có automata 180 và 9 trạng thái cùng các đối xứng của sáu bát.</p>
