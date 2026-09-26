@@ -1,0 +1,60 @@
+name: Refresh checksums
+
+on:
+  push:
+    branches:
+      - feature/about-i18n-72-locales
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-checksums-feature-about-i18n
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    if: github.actor != 'github-actions[bot]' || !contains(github.event.head_commit.message, 'chore: refresh generated checksums')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout feature branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: feature/about-i18n-72-locales
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24"
+
+      - name: Regenerate and push canonical checksum manifests
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          for attempt in 1 2 3 4; do
+            git fetch origin feature/about-i18n-72-locales
+            git reset --hard origin/feature/about-i18n-72-locales
+            node scripts/checksums.mjs generate
+
+            if git diff --quiet -- SHA256SUMS.txt docs/SHA256SUMS.txt; then
+              echo "Checksum manifests are already current."
+              exit 0
+            fi
+
+            git add SHA256SUMS.txt docs/SHA256SUMS.txt
+            git commit -m "chore: refresh generated checksums"
+
+            if git push origin HEAD:feature/about-i18n-72-locales; then
+              exit 0
+            fi
+
+            echo "Push raced with another writer; retrying against the new branch tip." >&2
+          done
+
+          echo "Could not refresh checksums after four serialized retries." >&2
+          exit 1
