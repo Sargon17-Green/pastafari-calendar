@@ -48,6 +48,7 @@ jobs:
             BEFORE_BLOB="$(git hash-object "$TARGET")"
             node --check test/about-page.test.js
             node --check scripts/apply-about-semantic-delta.mjs
+            node --test test/about-page.test.js
 
             META="$(LOCALE="$LOCALE" node --input-type=module <<'NODE'
           import { LOCALES } from "./docs/i18n/registry.js";
