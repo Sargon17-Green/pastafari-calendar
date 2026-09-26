@@ -19,7 +19,7 @@ jobs:
       - name: Checkout branch
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
-          fetch-depth: 1
+          fetch-depth: 0
 
       - name: Set up Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
@@ -33,7 +33,8 @@ jobs:
         shell: bash
         run: |
           mkdir -p artifacts/about-i18n-native-sessions/is
-          cat > /tmp/is-review-prompt.md <<'PROMPT'
+          git rev-parse HEAD > artifacts/about-i18n-native-sessions/is/reviewed-head.txt
+          cat > artifacts/about-i18n-native-sessions/is/prompt.md <<'PROMPT'
           Þú ert sjálfstæður málfars- og notendaviðmótsrýnir fyrir íslensku útgáfu Pastafari-dagatalsins.
 
           ÖLL samskipti þín í þessari lotu eiga að vera á íslensku. Ekki svara á ensku, nema þegar þú vitnar nákvæmlega í enskan texta sem þú fannst sem villu eða nefnir bókstafleg tækniauðkenni sem ekki má þýða.
@@ -60,7 +61,12 @@ jobs:
 
           Virðing fyrir kanónískum föstum gildum er skylda. Ekki leggja til að breyta formúlum, hash-gildum, code-literals, API-auðkennum eða kanónískum heitum eingöngu til að þýða þau.
 
-          Skilaðu EINUNGIS íslensku Markdown-skýrslu með:
+          Fyrsta línan í svarinu VERÐUR að vera nákvæmlega annaðhvort:
+          NATIVE_QA_RESULT: PASS
+          eða
+          NATIVE_QA_RESULT: FAIL
+
+          Að þeirri einu véllesanlegu línu undanskilinni skaltu skila EINUNGIS íslensku Markdown-skýrslu með:
           - heildarniðurstöðu: PASS eða FAIL fyrir strangt íslenskt málfars-QA;
           - öllum findings, hverju með alvarleika (critical/high/medium/low), nákvæmri skrá og eins nákvæmri staðsetningu og hægt er, núverandi texta og ráðlagðri leiðréttingu;
           - sérstökum kafla um texta úr öðru tungumáli/fallback;
@@ -83,14 +89,19 @@ jobs:
             --no-color \
             --allow-tool='shell(cat:*),shell(grep:*),shell(find:*),shell(sed:*),shell(head:*),shell(tail:*),shell(wc:*),shell(git status:*),shell(git diff:*),shell(git show:*)' \
             --share=artifacts/about-i18n-native-sessions/is/is-session.md \
-            -s < /tmp/is-review-prompt.md \
+            -s < artifacts/about-i18n-native-sessions/is/prompt.md \
             > artifacts/about-i18n-native-sessions/is/is-review.md
 
       - name: Verify outputs exist
         shell: bash
         run: |
+          test -s artifacts/about-i18n-native-sessions/is/prompt.md
           test -s artifacts/about-i18n-native-sessions/is/is-review.md
           test -s artifacts/about-i18n-native-sessions/is/is-session.md
+          test -s artifacts/about-i18n-native-sessions/is/reviewed-head.txt
+          head -n 1 artifacts/about-i18n-native-sessions/is/is-review.md | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)$'
+          printf '%s\n' '--- reviewed head ---'
+          cat artifacts/about-i18n-native-sessions/is/reviewed-head.txt
           printf '%s\n' '--- review ---'
           cat artifacts/about-i18n-native-sessions/is/is-review.md
 
@@ -106,6 +117,10 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add artifacts/about-i18n-native-sessions/is/is-review.md artifacts/about-i18n-native-sessions/is/is-session.md
+          git add artifacts/about-i18n-native-sessions/is/prompt.md \
+                  artifacts/about-i18n-native-sessions/is/is-review.md \
+                  artifacts/about-i18n-native-sessions/is/is-session.md \
+                  artifacts/about-i18n-native-sessions/is/reviewed-head.txt
           git commit -m "qa(is): record isolated Icelandic native-language session"
+          git pull --rebase origin feature/about-i18n-72-locales
           git push origin HEAD:feature/about-i18n-72-locales
