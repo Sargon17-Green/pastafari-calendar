@@ -52,3 +52,11 @@ Məqalədə `təkrarlanma şərti-a` şəklində yanlış hal şəkilçisi də v
 ## Status
 
 Semantik və dil QA-sı mətn səviyyəsində tamamlanıb. Render/visual smoke, mobil 390px yoxlaması və yekun `PASS` ayrıca növbəti mərhələ olaraq qalır.
+
+## Əlavə təkrar yoxlama
+
+Ayrılmış QA branch-də aparılan ikinci dil yoxlaması əvvəlki hesabatdan sonra qalan semantik köhnəlməni aşkar etdi. `search.intro`, `settings.intro`, eləcə də istifadəçi bələdçisinin 1, 4 və 5-ci addımları cari davranışla yenidən uyğunlaşdırıldı: cari Pastafari gününün standart doldurulması, aktiv müşahidəçi yerinə görə günün müəyyən edilməsi, astronomik gün sərhədi və “Bu günə qayıt” əməliyyatının həm axtarışı, həm əməl gününü sıfırlaması indi açıq yazılıb.
+
+Bundan başqa, `default versiya` ifadəsi Azərbaycan dilində `standart versiya` ilə əvəz edildi. /about/ məqaləsində adi ingilis texniki nəsrin qalıqları — `all-day`, `seal`, `combinatorial selection`, `answer ring`, `base-Q`, `index`, `flag` və `absolute` — təbii Azərbaycan qarşılıqları ilə əvəz edildi; həqiqi alqoritmik adlar və kod identifier-ləri saxlanıldı.
+
+Mətn səviyyəsində QA yenidən təmizdir. Yekun `PASS` yalnız real render yoxlamasından, o cümlədən desktop və 390px mobil smoke testindən sonra verilə bilər.

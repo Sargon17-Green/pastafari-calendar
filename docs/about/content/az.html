@@ -128,20 +128,20 @@
   <h2>Təqvim necə hesablanır?</h2>
   <p>Daxili hesablamanı burada <strong>sous</strong> adlandırırıq. Onun mərkəzində sadə ədəd</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
-  <p>dayanır. Proses beş giriş sayğacı, 7 gizli damcı, 46 görünən damcı, 6 kasa, dəyişən kasa sıraları, 12 son qarışdırma, fərqli cavablar üçün seal, combinatorial selection, qapıların qurulması, illərin seçilməsi, kotletlərin bölünməsi, adların seçilməsi, ayların qurulması və ay günlərinin hörülməsini əhatə edir.</p>
+  <p>dayanır. Proses beş giriş sayğacı, 7 gizli damcı, 46 görünən damcı, 6 kasa, dəyişən kasa sıraları, 12 son qarışdırma, fərqli cavablar üçün möhürlər, kombinator seçmə, qapıların qurulması, illərin seçilməsi, kotletlərin bölünməsi, adların seçilməsi, ayların qurulması və ay günlərinin hörülməsini əhatə edir.</p>
   <p>Son yeniləmələr <strong>sinxrondur</strong>: hər qarışdırmada altı yeni dəyərin hamısı eyni köhnə vəziyyətdən hesablanır və yalnız bundan sonra altı kasa birlikdə dəyişdirilir.</p>
   <p>12 son qarışdırmada xüsusilə vacib bir kanonik detal var. <code>S</code> köhnə altı kasanın cəmidirsə, <code>r</code> isə qarışdırma nömrəsidirsə, sistem</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
   <p>hesablayır. <code>R</code> <strong>saxlanmış cəmdir</strong>. Həm kasa sırasının seçimi, həm də qarışdırmanın daxili yeniləməsi xam <code>S</code> deyil, <code>R</code> istifadə edir.</p>
   <p>Bu yeniləməyə xam cəmi verən köhnə versiyalar artıq mövcud kanonik semantikanı təsvir etmir. Köhnə qaydadan alınmış nümunələr yenidən yoxlanana qədər köhnəlmiş sayılmalıdır.</p>
-  <p>Qarışdırmalardan sonra answer ring də görünən 46-cı damcıda lock edilmiş sıranı davam etdirir; bu sıra avtomatik olaraq son qarışdırmanın sırası ilə əvəz olunmamalıdır.</p><hr>
+  <p>Qarışdırmalardan sonra cavab halqası da görünən 46-cı damcıda sabitlənmiş sıranı davam etdirir; bu sıra avtomatik olaraq son qarışdırmanın sırası ilə əvəz olunmamalıdır.</p><hr>
 </section>
 
 <section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
   <h2>Short Choice və Wide Choice</h2>
   <p>Nisbətən kiçik seçim fəzası üçün <strong>Short Choice</strong> istifadə edilir. Sadə modulo qərəzindən qaçmaq üçün rəddetmə üsulu ilə seçmə tətbiq olunur.</p>
   <p>Çox böyük seçim fəzaları üçün <strong>Wide Choice</strong> istifadə edilir. Spesifikasiyanın təmin etmədiyi xüsusiyyətləri ona aid etmək olmaz.</p>
-  <p>Wide Choice, index alınana qədər müstəqil və bərabər paylanmış base-<code>Q</code> rəqəmlərinin yaradılması ilə eyni deyil. Buna görə hər etibarlı seçimin mütləq eyni müsbət ehtimala malik olduğu nəticəsi çıxmır. Kifayət qədər böyük fəzada bu mexanizmin heç vaxt çata bilməyəcəyi etibarlı seçimlər ola bilər.</p>
+  <p>Wide Choice, indeks alınana qədər müstəqil və bərabər paylanmış <code>Q</code> əsaslı rəqəmlərin yaradılması ilə eyni deyil. Buna görə hər etibarlı seçimin mütləq eyni müsbət ehtimala malik olduğu nəticəsi çıxmır. Kifayət qədər böyük fəzada bu mexanizmin heç vaxt çata bilməyəcəyi etibarlı seçimlər ola bilər.</p>
   <p>Təqvimin özü tam deterministik qalır. “Choice” bir alqoritmik mərhələnin adıdır, istifadə zamanı baş verən təsadüfi püşkatma deyil.</p><hr>
 </section>
 
@@ -207,14 +207,14 @@
     <li>“bütün ay” həmin aya aid günlər çoxluğu və ya ilk görünüşdən son görünüşə qədər bütün xronoloji interval ola bilər;</li>
     <li>“növbəti il” seçilmiş əməl günü altında qurulan təqvimin növbəti ilidir.</li>
   </ul>
-  <p>Xüsusilə vacib görüş üçün absolute xronoloji gün və ya an də saxlamaq olar. Təqvim inciməz.</p><hr>
+  <p>Xüsusilə vacib görüş üçün mütləq xronoloji gün və ya an də saxlamaq olar. Təqvim inciməz.</p><hr>
 </section>
 
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
-  <h2>Səyahət, hadisələr və all-day</h2>
+  <h2>Səyahət, hadisələr və tam-gün hadisələri</h2>
   <p>Hadisə ilə ona göstərilən yerli etiket eyni şey deyil. Müəyyən vaxtlı hadisə sabit xronoloji ana bağlanmalıdır. Səyahət onu zaman daxilində hərəkət etdirmir, amma eyni fiziki an üçün göstərilən yerli Pastafari tarixi dəyişə bilər, çünki “yerli gün” anlayışı yerə bağlıdır.</p>
-  <p><strong>All-day</strong> hadisədə fərq daha da böyükdür. Mülki tam-günlük hadisə adətən gecəyarısından növbəti gecəyarısına qədər davam edir; Pastafari tam-günlük hadisəsi isə yerli Pastafari gün sərhədindən növbəti sərhədə qədər davam etməlidir. Adətən bunlar eyni anlar deyil.</p>
-  <p>Buna görə Pastafari hadisəsini düşünmədən mülki “tam gün” hadisəsi kimi ixrac etmək onun mənasını dəyişə bilər. Mənanı dəqiq qorumaq üçün xronoloji dayaq və uyğun yer və gün sərhədi konteksti saxlanmalıdır, təkcə <code>all-day</code> flag yox.</p><hr>
+  <p><strong>Tam-gün hadisəsində</strong> fərq daha da böyükdür. Mülki tam-günlük hadisə adətən gecəyarısından növbəti gecəyarısına qədər davam edir; Pastafari tam-günlük hadisəsi isə yerli Pastafari gün sərhədindən növbəti sərhədə qədər davam etməlidir. Adətən bunlar eyni anlar deyil.</p>
+  <p>Buna görə Pastafari hadisəsini düşünmədən mülki “tam gün” hadisəsi kimi ixrac etmək onun mənasını dəyişə bilər. Mənanı dəqiq qorumaq üçün xronoloji dayaq və uyğun yer və gün sərhədi konteksti saxlanmalıdır, təkcə <code>all-day</code> göstəricisi yox.</p><hr>
 </section>
 
 <section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
