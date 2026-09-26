@@ -1,0 +1,103 @@
+name: About i18n native-session QA smoke
+
+on:
+  push:
+    branches:
+      - feature/about-i18n-72-locales
+    paths:
+      - .github/workflows/about-native-qa-smoke.yml
+
+permissions:
+  contents: read
+  copilot-requests: write
+
+jobs:
+  icelandic-native-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+
+      - name: Install Copilot CLI
+        run: npm install -g @github/copilot
+
+      - name: Prepare Icelandic review prompt
+        shell: bash
+        run: |
+          mkdir -p artifacts/native-session-smoke
+          cat > /tmp/is-review-prompt.md <<'PROMPT'
+          Þú ert sjálfstæður málfars- og notendaviðmótsrýnir fyrir íslensku útgáfu Pastafari-dagatalsins.
+
+          ÖLL samskipti þín í þessari lotu eiga að vera á íslensku. Ekki svara á ensku, nema þegar þú vitnar nákvæmlega í enskan texta sem þú fannst sem villu eða nefnir bókstafleg tækniauðkenni sem ekki má þýða.
+
+          Verkefnið er eingöngu rýni. Þú mátt EKKI breyta, búa til eða eyða skrám. Notaðu aðeins lesaðgerðir í skel til að skoða geymsluna.
+
+          Rýndu ALLA vefupplifunina þegar tungumálið er íslenska, ekki aðeins /about/. Skoðaðu að minnsta kosti:
+          - docs/i18n/locales/is.js í heild;
+          - docs/about/content/is.html í heild;
+          - docs/index.html og docs/about/index.html;
+          - docs/manifest.webmanifest;
+          - texta- og aðgengisflæði sem tengjast docs/app.js, docs/reverse-ui.js, docs/i18n/registry.js, docs/i18n/runtime.js og docs/about/about.js eftir þörfum;
+          - aðalviðmót, dagsetningarleit, aðgerðardag, samanburð, ársyfirlit, öfuga leit, villur og stöður, leiðbeiningar, fót, lýsigögn, manifest, ARIA/a11y, fallback og tungumálaskipti.
+
+          Leitaðu virkt að:
+          1. texta á röngu tungumáli eða óviljandi ensku fallbacki;
+          2. þýðingarmáli, óeðlilegum setningum, röngum beygingum, málfræði, setningagerð, stíl, skráningu, stafsetningu og greinarmerkjum;
+          3. ósamræmi í hugtökum milli /about/ og aðalviðmótsins;
+          4. texta sem er skiljanlegur en ekki eðlileg íslenska;
+          5. röngum eða vafasömum þýðingum tæknilegra hugtaka;
+          6. placeholders sem virðast í röngum málfræðilegum eða merkingarlegum hlutverkum;
+          7. metadata, title, ARIA, manifest, fallback og accessibility-texta sem er rangur eða óeðlilegur;
+          8. líklegum vandamálum með línuskipti, mjög langan texta eða UI-pláss vegna íslensku orðalags. Þetta er textaleg áhættugreining, ekki fullkomin sjónræn render-prófun.
+
+          Virðing fyrir kanónískum föstum gildum er skylda. Ekki leggja til að breyta formúlum, hash-gildum, code-literals, API-auðkennum eða kanónískum heitum eingöngu til að þýða þau.
+
+          Skilaðu EINUNGIS íslensku Markdown-skýrslu með:
+          - heildarniðurstöðu: PASS eða FAIL fyrir strangt íslenskt málfars-QA;
+          - öllum findings, hverju með alvarleika (critical/high/medium/low), nákvæmri skrá og eins nákvæmri staðsetningu og hægt er, núverandi texta og ráðlagðri leiðréttingu;
+          - sérstökum kafla um texta úr öðru tungumáli/fallback;
+          - sérstökum kafla um samræmi /about/ við UI;
+          - sérstökum kafla um metadata/ARIA/manifest/fallback;
+          - sérstökum kafla um líklega textatengda UI/wrapping-áhættu;
+          - ef engin villa finnst, segðu það skýrt og útskýrðu hvaða yfirborð voru skoðuð.
+
+          Ekki lýsa þessari lotu sem sjónrænni render-prófun. Hún er strangt, sjálfstætt, íslenskt whole-site linguistic QA.
+          PROMPT
+
+      - name: Run isolated Icelandic Copilot review
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          copilot \
+            --model=gpt-5.4 \
+            --no-custom-instructions \
+            --no-ask-user \
+            --no-color \
+            --allow-tool='shell(cat:*),shell(grep:*),shell(find:*),shell(sed:*),shell(head:*),shell(tail:*),shell(wc:*),shell(git status:*),shell(git diff:*),shell(git show:*)' \
+            --share=artifacts/native-session-smoke/is-session.md \
+            -s < /tmp/is-review-prompt.md \
+            > artifacts/native-session-smoke/is-review.md
+
+      - name: Verify outputs exist
+        shell: bash
+        run: |
+          test -s artifacts/native-session-smoke/is-review.md
+          test -s artifacts/native-session-smoke/is-session.md
+          printf '%s\n' '--- review ---'
+          cat artifacts/native-session-smoke/is-review.md
+
+      - name: Upload native-session evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: about-native-qa-smoke-is
+          path: artifacts/native-session-smoke/
+          if-no-files-found: error
