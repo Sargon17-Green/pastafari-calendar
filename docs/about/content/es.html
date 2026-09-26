@@ -159,9 +159,9 @@
   <p>Si la cita es especialmente importante, también puede guardarse el día o instante cronológico absoluto. Al calendario no le molesta.</p><hr>
 </section>
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
-  <h2>Viajes, eventos y all-day</h2>
+  <h2>Viajes y eventos de día completo</h2>
   <p>Un evento y la etiqueta local que se muestra para él no son lo mismo. Un evento programado debe permanecer anclado a un instante cronológico estable. Viajar no lo mueve en el tiempo, aunque sí puede cambiar su fecha pastafari local porque el «día local» depende de la ubicación.</p>
-  <p>La diferencia es todavía mayor en un evento <strong>all-day</strong>. Un evento civil de día completo suele ir de una medianoche civil a la siguiente. Uno pastafari debe ir de un límite local de día pastafari al siguiente. Normalmente no son los mismos instantes.</p>
+  <p>La diferencia es todavía mayor en un <strong>evento de día completo</strong>. Un evento civil de día completo suele ir de una medianoche civil a la siguiente. Uno pastafari debe ir de un límite local de día pastafari al siguiente. Normalmente no son los mismos instantes.</p>
   <p>Exportarlo ciegamente como «todo el día» a un calendario civil puede cambiar su significado. Para conservarlo con exactitud hay que guardar el anclaje cronológico y el contexto apropiado de ubicación/límite del día, no solo la marca <code>all-day</code>.</p><hr>
 </section>
 <section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
@@ -180,10 +180,10 @@
   <h2>¿Y qué es Seer?</h2>
   <p>Junto a la implementación canónica existe un motor rápido llamado <strong>Pastafarian Calendar Seer</strong>. No es una fuente de autoridad: la Meguilá y el cálculo canónico determinan la fecha correcta. Si Seer discrepa, Seer se equivoca.</p>
   <p>Su función es responder las mismas consultas con rapidez y de forma cómoda para integrarlas en productos.</p>
-  <p>En la verificación en vivo realizada al editar esta página, Seer incluía consultas de fecha y de «ahora», batch, rangos de días, conversión inversa a un día objetivo, estructura de año, resolución del día de trabajo activo, API para Node, cliente de navegador/HTTP, CLI, servicio HTTP v1, contrato OpenAPI 3.1, implementaciones nativas y paquetes de distribución, además de despliegue verificado en contenedor.</p>
-  <p>Ya no es correcto decir que Seer carece de API pública. Existe un contrato HTTP v1 explícito y estable con endpoints de fecha, rango, batch, año, reverse, día de trabajo, metadata, locales y status.</p>
-  <p>El 21 de septiembre de 2026 se probó además un despliegue HTTPS público en Render: consultas exactas, rango grande, reinicio, cold wake y comportamiento bajo carga en el servicio real.</p>
-  <p>La documentación del proyecto sigue distinguiendo esa beta/evaluación pública activa de la declaración de un servicio hosted production permanente con SLA. Por ello esta explicación no debe convertir una dirección de servidor, proveedor de alojamiento o número de versión en parte del calendario.</p>
+  <p>En la verificación en vivo realizada al editar esta página, Seer incluía consultas de fecha y de «ahora», <code>batch</code>, rangos de días, conversión inversa a un día consultado, estructura de año, resolución del día de trabajo activo, API para Node, cliente de navegador/HTTP, CLI, servicio HTTP v1, contrato OpenAPI 3.1, implementaciones nativas y paquetes de distribución, además de despliegue verificado en contenedor.</p>
+  <p>Ya no es correcto decir que Seer carece de API pública. Existe un contrato HTTP v1 explícito y estable con puntos finales para <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, día de trabajo, <code>metadata</code>, <code>locales</code> y <code>status</code>.</p>
+  <p>El 21 de septiembre de 2026 se probó además un despliegue HTTPS público en Render: consultas exactas, rango grande, reinicio, <code>cold wake</code> y comportamiento bajo carga en el servicio real.</p>
+  <p>La documentación del proyecto sigue distinguiendo esa beta/evaluación pública activa de la declaración de un servicio de producción alojado de forma permanente con SLA. Por ello esta explicación no debe convertir una dirección de servidor, proveedor de alojamiento o número de versión en parte del calendario.</p>
   <p>Seer puede usar precálculo, representaciones especiales, SIMD, álgebra y otros atajos. No tiene que reproducir paso a paso toda la historia computacional canónica siempre que realice la misma operación semántica y devuelva la misma respuesta. Optimizar no crea una autoridad alternativa.</p><hr>
 </section>
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
@@ -210,7 +210,7 @@
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{nombre de croqueta},\text{día en croqueta})</code></pre>
   <p>identifica como máximo un día; lo mismo ocurre con</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{nombre de mes},\text{día en mes})</code></pre>
-  <p>De ahí que una fecha completa, con <code>c</code> conocido, identifique unívocamente el día objetivo.</p>
+  <p>De ahí que una fecha completa, con <code>c</code> conocido, identifique unívocamente el día consultado.</p>
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Cotas de candidatos de la conversión inversa"><table class="about-table">
     <thead><tr><th scope="col">Información adicional conocida</th><th scope="col">Máximo de candidatos</th></tr></thead><tbody>
       <tr><td>Ningún campo no anual</td><td>5,778</td></tr><tr><td>Solo nombre de croqueta</td><td>5,568</td></tr><tr><td>Solo día en croqueta</td><td>17</td></tr>
@@ -242,9 +242,9 @@
 </section>
 <section class="about-section" id="summary" data-toc-section data-toc-level="2">
   <h2>Entonces, ¿qué es realmente el calendario pastafari?</h2>
-  <p>Es un calendario determinista en el que la fecha no depende solo del día objetivo, sino del <strong>día de trabajo y el día consultado conjuntamente</strong>.</p>
+  <p>Es un calendario determinista en el que la fecha no depende solo del día consultado, sino del <strong>día de trabajo y el día consultado conjuntamente</strong>.</p>
   <p>Cada fecha tiene cinco campos exactos. El presente respecto de sí mismo siempre está en el año 5000, aunque ese año se mueve con el día de trabajo. Los años pueden ser larguísimos; las croquetas son continuas; los meses no tienen por qué serlo; no existe una semana canónica.</p>
-  <p>El día <code>n+1</code> de un mes puede no ser mañana. Un mismo día cronológico puede recibir otra etiqueta pastafari al día siguiente. Un mismo instante puede pertenecer a días pastafari locales diferentes en dos lugares. Un evento all-day no tiene por qué ir de medianoche a medianoche. Y un cumpleaños anual es un problema de búsqueda antes que de agenda.</p>
+  <p>El día <code>n+1</code> de un mes puede no ser mañana. Un mismo día cronológico puede recibir otra etiqueta pastafari al día siguiente. Un mismo instante puede pertenecer a días pastafari locales diferentes en dos lugares. Un evento de día completo no tiene por qué ir de medianoche a medianoche. Y un cumpleaños anual es un problema de búsqueda antes que de agenda.</p>
   <p>Pero, dados el día de trabajo y el día consultado, no hay ambigüedad: existe una única respuesta exacta.</p>
   <p>Al fin y al cabo, eso es todo lo que un calendario necesita hacer.</p>
 </section>
