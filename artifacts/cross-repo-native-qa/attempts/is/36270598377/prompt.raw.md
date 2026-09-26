@@ -4,8 +4,8 @@
 
 Yfirferðareiningin er Íslenska (yfirferðarauðkenni `is`; staðfærsla/merki `is-IS`).
 
-REVIEW_ID=is
-LOCALE_TAG=is-IS
+__PASTAFARI_REVIEW_ID_LINE__
+__PASTAFARI_LOCALE_TAG_LINE__
 
 Öll samskipti með náttúrulegu máli í þessari yfirferðarlotu skulu vera á Íslensku. Fyrstu notendaskilaboðin eru þessi þýdda fyrirmæli og allur náttúrulegur texti í svari þínu skal áfram vera á Íslensku. Ekki skipta yfir í ensku. Nákvæm heiti geymslusvæða, heiti greina, slóðir, auðkenni, kóðabókstafir, formúlur, kjötkássar, API-heiti og áskilin véllesanleg niðurstaðalína eru undanþegin.
 
@@ -34,8 +34,8 @@ Samræmi milli geymslusvæða er merkingarlegt, ekki endilega orðrétt. Mismuna
 Fyrir efnislega ólíkar afbrigði eða skriftir sem eru táknuð með aðskildum yfirferðareiningum skaltu aðeins fara yfir það afbrigði sem nefnt er í þessum fyrirmælum og yfirlitinu.
 
 FYRSTA lína svars þíns VERÐUR að vera nákvæmlega ein af þessum:
-NATIVE_QA_RESULT: PASS
-NATIVE_QA_RESULT: FAIL
+__PASTAFARI_NATIVE_QA_PASS__
+__PASTAFARI_NATIVE_QA_FAIL__
 
 Eftir þá línu skaltu aðeins skrifa Markdown-skýrslu á Íslensku. Hún skal innihalda:
 - heildarniðurstöðu PASS/FAIL fyrir stranga málfars- og merkingarlega gæðatryggingu þvert á geymslusvæði;
