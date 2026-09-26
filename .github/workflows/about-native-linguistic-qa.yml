@@ -1,0 +1,80 @@
+name: About native linguistic QA
+
+on:
+  push:
+    branches:
+      - feature/about-i18n-72-locales
+    paths:
+      - artifacts/about-i18n-native-qa-trigger.txt
+
+permissions:
+  contents: read
+  copilot-requests: write
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      locales: ${{ steps.matrix.outputs.locales }}
+    steps:
+      - name: Clone review branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git clone --depth 1 --branch "$GITHUB_REF_NAME" "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" repo
+      - name: Build locale matrix
+        id: matrix
+        working-directory: repo
+        run: |
+          python - <<'PY'
+          import json, os, pathlib
+          prompts=json.loads(pathlib.Path("artifacts/about-i18n-native-qa-prompts.json").read_text(encoding="utf-8"))
+          raw=pathlib.Path("artifacts/about-i18n-native-qa-trigger.txt").read_text(encoding="utf-8").strip()
+          if raw.upper()=="ALL":
+              locales=list(prompts)
+          else:
+              locales=[x.strip() for x in raw.replace(",", "\n").splitlines() if x.strip()]
+          unknown=[x for x in locales if x not in prompts]
+          if unknown:
+              raise SystemExit(f"Unknown/missing prompt locales: {unknown}")
+          with open(os.environ["GITHUB_OUTPUT"],"a",encoding="utf-8") as fh:
+              fh.write("locales="+json.dumps(locales,ensure_ascii=False,separators=(",",":"))+"\n")
+          print("Review locales:", ", ".join(locales))
+          PY
+
+  review:
+    needs: prepare
+    if: ${{ needs.prepare.outputs.locales != '[]' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        locale: ${{ fromJSON(needs.prepare.outputs.locales) }}
+    steps:
+      - name: Clone review branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git clone --depth 1 --branch "$GITHUB_REF_NAME" "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" repo
+      - name: Install Copilot CLI
+        run: npm install -g @github/copilot
+      - name: Run independent native-language reviewer
+        working-directory: repo
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          LOCALE: ${{ matrix.locale }}
+        run: |
+          python - <<'PY' > /tmp/native-prompt.txt
+          import json, os, pathlib
+          prompts=json.loads(pathlib.Path("artifacts/about-i18n-native-qa-prompts.json").read_text(encoding="utf-8"))
+          print(prompts[os.environ["LOCALE"]])
+          PY
+          echo "=== NATIVE_QA_BEGIN ${LOCALE} ==="
+          copilot -p "$(cat /tmp/native-prompt.txt)" -s \
+            --allow-tool='shell(git:*)' \
+            --allow-tool='shell(sed:*)' \
+            --allow-tool='shell(grep:*)' \
+            --allow-tool='shell(find:*)' \
+            --allow-tool='shell(cat:*)' | tee "/tmp/native-qa-${LOCALE}.md"
+          echo "=== NATIVE_QA_END ${LOCALE} ==="
