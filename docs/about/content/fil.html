@@ -1,8 +1,8 @@
 <!-- Ang bersiyong Filipino ay isinulat nang direkta mula sa Hebrew semantic master; walang ginamit na pivot language. -->
 <!-- Ang mga section ID ay bahagi ng isang matatag na pampublikong deep-link contract at hindi hinango mula sa mga isinaling pamagat. -->
 <div class="about-section about-lead" id="about-calendar">
-  <p>Sa salaysay ng site na ito, inilalarawan ang Kalendaryong Pastafari bilang kalendaryong kinasasaklawan ng mismong paglikha ng panahon. Gayunman, mahigpit at tiyak ang mga patakarang nagtatakda kung paano ito gumagana.</p>
-  <p>Hindi naglalagay ang kalendaryong ito ng iisang hindi nagbabagong Pastafari na “etiketa” sa bawat araw. Dalawang araw ang kailangan upang makuha ang petsa: ang <strong>araw ng pagkilos</strong>, kung saan nagsisimula ang pagkalkula, at ang <strong>araw na tinatanong</strong>, na siyang gustong alamin ang Pastafari nitong petsa.</p>
+  <p>Sa Kalendaryong Pastafari nilikha ang panahon. Tumpak na tinukoy ang mga mekanika nito.</p>
+  <p>Hindi naglalagay ang kalendaryong ito ng iisang hindi nagbabagong Pastafari na “etiketa” sa bawat araw. Dalawang araw ang kailangan upang makuha ang petsa: ang <strong>araw ng pagkilos</strong>, kung saan nagsisimula ang pagkalkula, at ang <strong>araw na tinatanong</strong>, na ang petsang Pastafari nito ang gustong malaman.</p>
   <p>Kung isusulat ang araw ng pagkilos bilang <code>c</code> at ang araw na tinatanong bilang <code>t</code>, ang petsa ay</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
   <p>at hindi <code>F(t)</code>. Kaya maaaring magkaroon ng ibang Pastafari na petsa ang parehong araw na tinatanong kapag nagbago ang araw ng pagkilos.</p>
@@ -126,7 +126,7 @@
 
 <section class="about-section" id="calculation" data-toc-section data-toc-level="2">
   <h2>Paano kinakalkula ang kalendaryo?</h2>
-  <p>Ang panloob na pagkalkula ay tinatawag nating <strong>sarsa</strong> rito. Nasa gitna nito ang prime number na</p>
+  <p>Ang panloob na pagkalkula ay tinatawag na <strong>sarsa</strong>. Nasa gitna nito ang prime number na</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
   <p>Kabilang sa proseso ang limang input counter, 7 nakatagong patak, 46 nakikitang patak, 6 mangkok, nagbabagong pagkakasunod ng mga mangkok, 12 panghuling paghahalo, seal para sa magkakaibang sagot, combinatorial selection, pagbuo ng mga tarangkahan, pagpili ng mga taon, paghahati ng mga cutlet, pagpili ng mga pangalan, pagbuo ng mga buwan, at paghahabi ng mga araw ng buwan.</p>
   <p>Ang mga panghuling update ay <strong>sabay-sabay</strong>: sa bawat paghahalo, kinakalkula ang lahat ng anim na bagong value mula sa iisang lumang state, at saka pa lamang sabay na pinapalitan ang anim na mangkok.</p>
@@ -170,7 +170,7 @@
         <tr><td>Median ng haba ng buwan</td><td>115</td></tr>
         <tr><td>Average na tuloy-tuloy na segment bawat buwan</td><td>100.897</td></tr>
         <tr><td>Bahagi ng one-day month segment</td><td>97.482%</td></tr>
-        <tr><td>Probability na magkapareho ang buwan ng dalawang magkatabing araw</td><td>2.9976%</td></tr>
+        <tr><td>Bahagdan ng mga pares ng magkasunod na araw na nasa parehong buwan</td><td>2.9976%</td></tr>
         <tr><td>Average na bilang ng mga araw ng ibang buwan sa pagitan ng <code>n</code> at <code>n+1</code> ng parehong buwan</td><td>40.408</td></tr>
         <tr><td>Average na span mula una hanggang huling paglitaw ng buwan</td><td>4,266.653 araw</td></tr>
       </tbody>
@@ -199,7 +199,7 @@
 
 <section class="about-section" id="appointments" data-toc-section data-toc-level="2">
   <h2>Paano magtakda ng pagkikita?</h2>
-  <p>Kung dalawang tao ang gustong magkasundo gamit lamang ang isang Pastafari na petsa, kailangang magkasundo sila kahit sa limang field ng petsa at sa araw ng pagkilos na ginamit sa pagkalkula. Mas mabuting i-save ang araw ng pagkilos bilang isang matatag na day identity, hindi bilang salitang “ngayon”; kung hindi, maaaring magkompyut ang dalawang tao ng dalawang magkaibang kalendaryo.</p>
+  <p>Kung nais magtakda ang dalawang tao ng araw ng pagkikita gamit ang Pastafari na petsa, kailangan nilang magkasundo kahit sa limang bahagi ng petsa at sa araw ng pagkilos na ginamit sa pagkalkula. Mas mabuting itala ang araw ng pagkilos gamit ang matatag na pagkakakilanlan ng araw, hindi ang salitang “ngayon”; kung hindi, maaaring magkalkula ang bawat isa ng ibang kalendaryo.</p>
   <ul>
     <li>ang “bukas” ay ang susunod na kronolohikal na araw;</li>
     <li>ang “susunod na araw ng buwan” ay ang susunod na paglitaw ng buwang iyon;</li>
@@ -211,10 +211,10 @@
 </section>
 
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
-  <h2>Paglalakbay at mga pangyayaring buong-araw</h2>
+  <h2>Paglalakbay at mga kaganapang tumatagal nang buong araw</h2>
   <p>Hindi iisa ang isang pangyayari at ang lokal na etiketang ipinapakita para rito. Ang pangyayaring may tiyak na oras ay dapat nakatali sa isang matatag na chronological moment. Hindi ito inililipat ng paglalakbay sa oras, ngunit maaaring magbago ang lokal na Pastafari na petsa para sa parehong physical moment dahil nakasalalay sa lokasyon ang kahulugan ng “lokal na araw”.</p>
-  <p>Mas malaki pa ang pagkakaiba para sa <strong>pangyayaring buong-araw</strong>. Ang sibilyang pangyayaring buong-araw ay karaniwang mula hatinggabi hanggang sa susunod na hatinggabi; ang Pastafari na pangyayaring buong-araw ay dapat mula sa lokal na hangganan ng Pastafari na araw hanggang sa susunod na hangganan. Karaniwan, hindi pareho ang mga sandaling iyon.</p>
-  <p>Kaya maaaring mabago ang kahulugan kung basta ie-export ang isang Pastafari event bilang civil na “whole-day” event. Para mapanatili nang tama, kailangang i-save ang chronological anchor at ang angkop na location/day-boundary context, hindi lamang ang <code>all-day</code> flag.</p><hr>
+  <p>Mas malaki pa ang pagkakaiba para sa <strong>kaganapang tumatagal nang buong araw</strong>. Ang kaganapang buong araw sa kalendaryong sibil ay karaniwang mula hatinggabi hanggang sa susunod na hatinggabi; ang kaganapang Pastafari na tumatagal nang buong araw ay dapat magsimula sa lokal na hangganan ng araw ng Pastafari at magtapos sa kasunod na hangganan. Karaniwan, hindi iisa ang mga sandaling iyon.</p>
+  <p>Kaya maaaring magbago ang kahulugan kung basta ililipat sa kalendaryong sibil ang isang kaganapang Pastafari na tumatagal nang buong araw. Upang mapanatili ito nang eksakto, kailangang itala ang kronolohikal na batayan at ang kaugnay na lokasyon at hangganan ng araw, hindi lamang markahan ang <code>all-day</code>.</p><hr>
 </section>
 
 <section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
@@ -233,19 +233,19 @@
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Kung gayon, ano ang Seer?</h2>
-  <p>Katabi ng kanonikal na implementasyon ay may mabilis na makinang na tinatawag na <strong>Pastafarian Calendar Seer</strong>. Hindi awtoridad ang Seer: ang tamang petsa ay tinutukoy ng Megillah at kanonikal na pagkalkula. Kung hindi tugma ang Seer sa mga iyon, nasa Seer ang mali.</p>
+  <p>Katabi ng kanonikal na implementasyon ay may mabilis na makinang na tinatawag na <strong>Pastafarian Calendar Seer</strong>. Itinatakda ng Megillah ang mga tuntunin, at ayon sa mga tuntuning iyon kinukuwenta ng kanonikong pagkalkula ang petsa. Dapat ibalik ng Seer ang kaparehong sagot; kung sumalungat ito sa wastong kanonikong pagkalkula, Seer ang mali.</p>
   <p>Trabaho nitong patakbuhin nang mabilis ang parehong query at ibalik ang resulta sa anyong madaling i-integrate sa mga produkto.</p>
-  <p>Sa tuwirang beripikasyong ginawa habang ine-edit ang pahinang ito, saklaw ng Seer, bukod sa iba pa, ang mga query na <code>date</code> at <code>now</code>, <code>batch</code>, mga saklaw ng araw, baligtad na konbersiyon mula sa petsang Pastafari patungo sa araw na tinatanong, pagkuha ng estruktura ng taon, pagtukoy ng aktibong araw ng pagkilos, Node API, client ng browser/HTTP, CLI, serbisyong HTTP v1, kontratang OpenAPI 3.1, mga katutubong implementasyon at package ng distribusyon, at beripikadong paglalagay sa container.</p>
-  <p>Hindi na tama ang lumang pahayag na walang pampublikong API ang Seer. Mayroon na ngayong malinaw at matatag na kontratang HTTP v1 na may mga endpoint para sa <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, araw ng pagkilos, <code>metadata</code>, <code>locales</code>, at <code>status</code>.</p>
+  <p>Sa aktuwal na beripikasyong isinagawa noong Setyembre 21, 2026, kabilang sa mga sinusuportahan ng Seer ang mga query na <code>date</code> at <code>now</code>, <code>batch</code>, mga saklaw ng araw, baligtad na konbersiyon mula sa petsang Pastafari patungo sa araw na tinatanong, pagkuha ng estruktura ng taon, pagtukoy ng aktibong araw ng pagkilos, Node API, client ng browser/HTTP, CLI, serbisyong HTTP v1, kontratang OpenAPI 3.1, mga katutubong implementasyon at package ng distribusyon, at beripikadong paglalagay sa container.</p>
+  <p>May pampublikong API ang Seer, na may malinaw at matatag na kontratang HTTP v1 at mga endpoint para sa <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, araw ng pagkilos, <code>metadata</code>, <code>locales</code>, at <code>status</code>.</p>
   <p>Noong Setyembre 21, 2026, aktuwal na sinubukan ang pampublikong paglalagay ng HTTPS sa Render: na-verify sa aktibong serbisyo ang eksaktong query, malaking saklaw, muling pagsisimula, <code>cold wake</code>, at pag-uugali sa ilalim ng bigat.</p>
-  <p>Gayunman, patuloy na pinag-iiba ng dokumentasyon ng proyekto ang pampublikong beta/pagsusuring paglalagay at ang permanenteng naka-host na serbisyong produksiyon na may SLA. Kaya hindi dapat gawing permanente ng konseptuwal na pahina ng paliwanag ang address ng server, provider ng hosting, o numero ng bersiyon na para bang bahagi ang mga iyon ng mismong kalendaryo.</p>
+  <p>Beta o pansubok ang nasuring pampublikong deployment; hindi ito pangako ng permanenteng serbisyong pangproduksiyon na may SLA. Hindi bahagi ng kalendaryo at hindi mga nakapirming kanonikal na halaga ang address ng server, tagapagbigay ng pagho-host, at numero ng bersiyon.</p>
   <p>Maaaring gumamit ang Seer ng paunang pagkalkula, espesyal na representasyon, SIMD, algebra, at iba pang shortcut. Hindi nito kailangang gayahin nang hakbang-hakbang ang buong kasaysayan ng pagkalkula ng kanonikal na implementasyon hangga't ginagawa nito ang parehong semantikong operasyon at ibinabalik ang parehong sagot.</p>
   <p>Hindi alternatibong awtoridad ang optimization.</p><hr>
 </section>
 
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
   <h2>Pinagmulan, Araw ng Pagtatatag, at Araw ng mga Tablet</h2>
-  <p>Dito, lalong mahalagang malinaw na paghiwalayin ang kanonikal na temporal na angkla at ang kuwento ng site.</p>
+  <p>Magkaiba ang mga nakapirming sangguniang ginagamit sa pagkalkula ng kalendaryo at ang mga katotohanan tungkol sa pinagmulan nito at sa kasaysayan ng muling paghahatid nito.</p>
 
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>Mga anchor</h3>
@@ -260,10 +260,10 @@
   </section>
 
   <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
-    <h3>Kuwento ng site</h3>
-    <p>Sa editorial story ng site, inilalarawan ang kalendaryo bilang bahagi ng paglikha at bilang sistemang ginamit ng sangkatauhan nang hindi lubos na nauunawaan, hanggang sa muli itong maipasa sa makabagong panahon.</p>
-    <p>Kuwento ito ng site; hindi dapat ilahad ang bawat detalye ng salaysay na para bang tahasang teknikal na pahayag ito ng Megillah.</p>
-    <p>Ang mismong muling pagpasa ay isang fixed historical event. Mas mainam na ipakita nang dynamic ang <strong>Pastafari nitong petsa</strong> sa ilalim ng kasalukuyang araw ng pagkilos kaysa i-freeze magpakailanman bilang iisang petsa.</p><hr>
+    <h3>Pinagmulan ng kalendaryo at muling paghahatid nito</h3>
+    <p>Bahagi ng paglikha ang Kalendaryong Pastafari. Ginamit ito ng sangkatauhan nang hindi lubos na napagtatanto ng mga tao na ginagamit nila ito, hanggang sa muli itong ihatid sa makabagong panahon.</p>
+    <p>Hindi inilalahad ng Megillah ang bawat detalye ng kasaysayang ito; ang mga detalyeng hindi tahasang nakasaad dito ay hindi bahagi ng teksto ng Megillah.</p>
+    <p>Ang muling paghahatid ay isang nakapirming makasaysayang pangyayari. Wala itong iisang nakapirming petsang Pastafari: kinukuwenta ang petsang ipinapakita para rito ayon sa nauugnay na araw ng pagkilos, kaya maaari itong mag-iba kapag ibang araw ng pagkilos ang ginamit.</p><hr>
   </section>
 </section>
 
@@ -271,7 +271,7 @@
   <h2>Para sa advanced na user: baligtad na konbersiyon</h2>
   <p>Kung alam ang araw ng pagkilos na <code>c</code>, napakahigpit ng hangganan ng baligtad na konbersiyon. Sa loob ng kilalang Pastafari na taon, ang</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{pangalan ng cutlet},\text{araw sa cutlet})</code></pre>
-  <p>ay kumikilala sa hindi hihigit sa isang araw. Ganoon din ang</p>
+  <p>ay tumutukoy sa hindi hihigit sa isang araw. Ganoon din ang</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{pangalan ng buwan},\text{araw sa buwan})</code></pre>
   <p>Kaya ang buong petsa na may kilalang araw ng pagkilos ay natatanging kumikilala sa araw na tinatanong.</p>
 
@@ -292,8 +292,8 @@
     </table>
   </div>
 
-  <p>Kung hindi alam ang araw ng pagkilos, iba ang sitwasyon. Maaaring lumitaw ang parehong limang value sa ilalim ng magkakaibang araw ng pagkilos, at may exact example kung saan lumilitaw ang parehong buong petsa sa magkakaibang distansiya mula sa <code>c</code>.</p>
-  <p>Sa taon 5000, kahit ang sign ng distansiyang iyon ay hindi laging natutukoy ng limang value: maaaring bago ang araw ng pagkilos ang parehong buong petsa sa isang context at pagkatapos nito sa ibang context.</p>
+  <p>Kung hindi alam ang araw ng pagkilos, iba ang sitwasyon. Maaaring lumitaw ang parehong limang value sa ilalim ng magkakaibang araw ng pagkilos, at may mga tahasang halimbawa kung saan nakukuha ang parehong buong petsa sa magkakaibang layo mula sa <code>c</code>.</p>
+  <p>Sa taon 5000, hindi laging matutukoy mula sa limang value ang direksiyon kaugnay ng araw ng pagkilos: maaaring lumitaw ang parehong buong petsa bago ang araw ng pagkilos sa isang konteksto at pagkatapos nito sa ibang konteksto.</p>
   <p>Kaya hindi ganap na address sa guhit ng panahon ang isang buong Pastafari na petsa kung hindi alam kung sa ilalim ng aling <code>c</code> ito kinalkula.</p>
 
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
@@ -313,10 +313,10 @@
 <section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
   <h2>Para sa advanced user: gaano karaming history ang iniingatan ng sarsa?</h2>
   <p>Mukhang napakaagresibong mekanismo ng paghahalo ang sarsa, ngunit ipinapakita ng pananaliksik na algebraiko na mas marami itong iniingatang impormasyon kaysa sa ipinahihiwatig ng itsura nito. Resulta ito ng pananaliksik na hinango sa espesipikasyon, hindi bagong tuntunin ng kalendaryo.</p>
-  <p>Sa nakikitang stage 3–46, sa kaukulang asymptotic branch, naitatag ang injektibidad sa pangkalahatang kaso: sa generic case, sapat ang impormasyong iniingatan ng state upang ma-reconstruct ang kaukulang input history at order ng mga mangkok.</p>
-  <p>Hindi rin agad nawawala ang impormasyon sa 12 panghuling paghahalo. Para sa unang limang paghahalo pagkatapos ng nakikitang patak 46, naitatag sa kaukulang kanonikal na unyon ang kakayahang baligtarin sa pangkalahatang kaso nang walang dagdag na pantulong na impormasyon; para sa natitirang bahagi, may malalakas na constructive upper bound sa dami ng pantulong na impormasyon na sapat para sa reconstruction.</p>
+  <p>Sa mga nakikitang yugto 3–46, sa kaugnay na sangay na asimptotiko, naitatag ang pagiging injektibo sa pangkalahatang kaso: sapat ang impormasyong napapanatili ng estado upang mabuo muli ang kaugnay na kasaysayan ng mga input at ang pagkakasunod-sunod ng mga mangkok.</p>
+  <p>Hindi rin agad nawawala ang impormasyon sa 12 panghuling paghahalo. Para sa unang limang paghahalo pagkatapos ng nakikitang patak 46, napatunayan ang kakayahang baligtarin sa pangkalahatang kaso sa kaukulang kanonikal na unyon nang walang dagdag na impormasyong pantulong; para sa natitirang mga paghahalo, may matitibay na konstruktibong pinakamataas na hangganan sa dami ng impormasyong pantulong na sapat para sa muling pagbuo.</p>
   <p>Bukas pa rin ang tanong kung <strong>ang huling anim na mangkok lamang</strong> ay laging sapat sa generic sense.</p>
-  <p>May ilang resultang napatunayan nang symbolic, at ang iba ay isinara sa pamamagitan ng finite exact arithmetic check. Malaki ang ibinawas ng symbolic strengthening sa computational core na kailangang pagkatiwalaan, ngunit hindi nito iyon tuluyang inalis.</p>
+  <p>May ilang resultang napatunayan sa paraang simboliko, at ang iba naman ay nakumpirma sa pamamagitan ng eksaktong aritmetikang pagsusuring may hangganan. Malaki ang ibinawas ng pagpapalakas sa mga simbolikong patunay sa bahaging nakasalalay pa rin sa pagkalkula, ngunit hindi ito tuluyang naalis.</p>
   <p>Ang mga space na noong una ay mukhang nangangailangan ng paghahanap sa napakaraming path ay napaliit tungo sa mas maliliit na finite structure, kabilang ang automata na may 180 at 9 state at ang symmetry ng anim na mangkok.</p>
   <p>May mahigpit na algebraic structure sa ilalim ng paghahalo. Hindi kailangang alam iyon upang malaman ang petsa ngayon.</p><hr>
 </section>
