@@ -121,7 +121,7 @@
 </section>
 <section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
   <h2>Short Choice și Wide Choice</h2>
-  <p>Pentru spații de opțiuni relativ mici se folosește <strong>Short Choice</strong>. Ea utilizează eșantionarea prin respingere (rejection sampling) pentru a evita bias-ul simplu de modulo.</p>
+  <p>Pentru spații de opțiuni relativ mici se folosește <strong>Short Choice</strong>. Ea utilizează eșantionarea prin respingere pentru a evita bias-ul simplu de modulo.</p>
   <p>Spațiile foarte mari folosesc <strong>Wide Choice</strong>. Nu trebuie să-i atribuim proprietăți pe care specificația nu le garantează.</p>
   <p>Wide Choice nu este echivalentă cu generarea unor cifre independente și uniforme în baza <code>Q</code> până la obținerea unui indice. Prin urmare, nu rezultă că fiecare opțiune legală are neapărat aceeași probabilitate pozitivă; în spații suficient de mari pot exista opțiuni legale la care mecanismul nu ajunge deloc.</p>
   <p>Calendarul însuși este complet determinist. „Choice” este numele unei etape de algoritm, nu o loterie făcută în timpul utilizării.</p><hr>
@@ -165,9 +165,9 @@
   <p>Pentru o întâlnire deosebit de importantă se poate păstra și ziua sau clipa cronologică absolută. Calendarul nu va avea nimic împotrivă.</p><hr>
 </section>
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
-  <h2>Călătorii, evenimente și all-day</h2>
+  <h2>Călătorii și evenimente de o zi întreagă</h2>
   <p>Evenimentul nu este același lucru cu eticheta locală afișată pentru el. Un eveniment programat trebuie ancorat într-un moment cronologic stabil. Călătoria nu mută evenimentul în timp, dar data pastafariană locală afișată pentru același moment se poate schimba, fiindcă definiția „zilei locale” depinde de loc.</p>
-  <p>Pentru un eveniment <strong>all-day</strong> diferența este și mai mare. Un eveniment civil de o zi întreagă durează de regulă de la o miez de noapte civil la următorul; un eveniment pastafarian all-day ar trebui să dureze de la limita locală a zilei pastafariene la următoarea limită. De obicei, acestea nu sunt aceleași momente.</p>
+  <p>Pentru un <strong>eveniment de o zi întreagă</strong> diferența este și mai mare. Un eveniment civil de o zi întreagă durează de regulă de la o miez de noapte civil la următorul; un eveniment pastafarian de o zi întreagă ar trebui să dureze de la limita locală a zilei pastafariene la următoarea limită. De obicei, acestea nu sunt aceleași momente.</p>
   <p>Exportarea oarbă a unui eveniment pastafarian drept „toată ziua” într-un calendar civil îi poate schimba sensul. Pentru păstrare exactă trebuie salvate ancora cronologică și contextul corect al locului/limitei zilei, nu doar indicatorul <code>all-day</code>.</p><hr>
 </section>
 <section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
@@ -186,10 +186,10 @@
   <h2>Și ce este Seer?</h2>
   <p>Pe lângă implementarea canonică există un motor rapid numit <strong>Pastafarian Calendar Seer</strong>. Seer nu este o sursă de autoritate: Megillah și calculul canonic stabilesc data corectă. Dacă Seer le contrazice, Seer greșește.</p>
   <p>Rolul lui este să execute aceleași interogări rapid și într-o formă ușor de integrat în produse.</p>
-  <p>În verificarea live făcută în timpul redactării acestei pagini, Seer includea, printre altele, interogări de dată și „acum”, batch, intervale de zile, conversie inversă din dată pastafariană în zi-țintă, obținerea structurii anului, rezolvarea zilei de lucru active, Node API, client de browser/HTTP, CLI, serviciu HTTP v1, contract OpenAPI 3.1, implementări native și pachete de distribuție, precum și deployment container verificat.</p>
-  <p>Prin urmare, vechea afirmație că Seer nu are API public nu mai este adevărată. Există un contract HTTP v1 explicit și stabil, cu endpointuri pentru date, range, batch, year, reverse, ziua de lucru, metadata, locales și status.</p>
-  <p>La 21 septembrie 2026 a fost testat efectiv și un deployment HTTPS public pe Render: pe serviciul live au fost verificate interogări exact, un range mare, restart, cold wake și comportamentul sub sarcină.</p>
-  <p>Documentația proiectului continuă totuși să distingă deploymentul public beta/evaluation de declararea unui serviciu hosted production permanent, cu SLA. De aceea, o pagină conceptuală nu trebuie să fixeze o adresă de server, un furnizor de hosting sau un număr de versiune ca parte a calendarului.</p>
+  <p>În verificarea live făcută în timpul redactării acestei pagini, Seer includea, printre altele, interogări de dată și „acum”, batch, intervale de zile, conversie inversă din dată pastafariană în zi-țintă, obținerea structurii anului, rezolvarea zilei de lucru active, Node API, client de browser/HTTP, CLI, serviciu HTTP v1, contract OpenAPI 3.1, implementări native și pachete de distribuție, precum și o implementare în container verificată.</p>
+  <p>Prin urmare, vechea afirmație că Seer nu are API public nu mai este adevărată. Există un contract HTTP v1 explicit și stabil, cu endpointuri pentru <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, ziua de lucru, <code>metadata</code>, <code>locales</code> și <code>status</code>.</p>
+  <p>La 21 septembrie 2026 a fost testat efectiv și o implementare HTTPS publică pe Render: pe serviciul live au fost verificate interogări exacte, un interval mare, repornire, <code>cold wake</code> și comportamentul sub sarcină.</p>
+  <p>Documentația proiectului continuă totuși să distingă implementarea publică beta/de evaluare de declararea unui serviciu de producție găzduit permanent, cu SLA. De aceea, o pagină conceptuală nu trebuie să fixeze o adresă de server, un furnizor de hosting sau un număr de versiune ca parte a calendarului.</p>
   <p>Seer poate folosi precalcul, reprezentări speciale, SIMD, algebră și alte scurtături. Nu trebuie să repete pas cu pas întreaga istorie computațională a implementării canonice, atâta vreme cât execută aceeași operație semantică și întoarce același răspuns.</p>
   <p>Optimizarea nu este o autoritate alternativă.</p><hr>
 </section>
@@ -246,8 +246,8 @@
 <section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
   <h2>Pentru avansați: câtă istorie păstrează sosul?</h2>
   <p>Sosul arată ca un amestec foarte agresiv, dar cercetarea algebrică a arătat că păstrează mult mai multă informație decât sugerează aparența lui. Este cercetare derivată din specificație, nu o regulă nouă a calendarului.</p>
-  <p>În etapele vizibile 3–46, pe ramura asimptotică relevantă, a fost stabilită generic injectivity: în cazul generic, starea păstrează suficientă informație pentru a reconstrui istoricul relevant al intrărilor și ordinii bolurilor.</p>
-  <p>Nici în cele 12 amestecări finale informația nu dispare imediat. Pentru primele cinci după picătura vizibilă 46 s-a stabilit generic invertibility pe reuniunea canonică relevantă fără informație laterală suplimentară; pentru restul se cunosc limite constructive superioare puternice pentru cantitatea de informație laterală suficientă reconstrucției.</p>
+  <p>În etapele vizibile 3–46, pe ramura asimptotică relevantă, a fost stabilită injectivitatea în cazul generic: în cazul generic, starea păstrează suficientă informație pentru a reconstrui istoricul relevant al intrărilor și ordinii bolurilor.</p>
+  <p>Nici în cele 12 amestecări finale informația nu dispare imediat. Pentru primele cinci după picătura vizibilă 46 s-a stabilit inversabilitatea în cazul generic pe reuniunea canonică relevantă fără informație laterală suplimentară; pentru restul se cunosc limite constructive superioare puternice pentru cantitatea de informație laterală suficientă reconstrucției.</p>
   <p>Rămâne deschis dacă <strong>doar cele șase boluri finale</strong> sunt întotdeauna suficiente în sens generic.</p>
   <p>Unele rezultate au fost demonstrate simbolic, iar altele închise prin verificări aritmetice finite și exacte. Consolidarea simbolică a redus mult nucleul computațional în care trebuie să avem încredere, dar nu l-a eliminat complet.</p>
   <p>Spații care la început păreau să ceară explorarea unui număr enorm de trasee s-au redus la structuri finite mult mai mici, inclusiv automate cu 180 și 9 stări și simetriile celor șase boluri.</p>
@@ -257,7 +257,7 @@
   <h2>Așadar, ce este Calendarul Pastafarian?</h2>
   <p>Un calendar determinist în care data nu este o funcție doar a zilei-țintă, ci a <strong>zilei de lucru și a zilei interogate împreună</strong>.</p>
   <p>Fiecare dată are exact cinci câmpuri. Prezentul față de el însuși se află întotdeauna în anul 5000, dar anul 5000 însuși se mută odată cu ziua de lucru. Anii pot fi foarte lungi, șnițelele sunt continue, lunile nu trebuie să fie, iar un sistem canonic de săptămâni nu există.</p>
-  <p>Ziua <code>n+1</code> a unei luni nu este neapărat mâine. Aceeași zi cronologică poate primi mâine o altă etichetă pastafariană. Același moment fizic poate aparține unor zile pastafariene locale diferite în două locuri. Un eveniment all-day nu trebuie să dureze de la miezul nopții la miezul nopții. Iar o zi de naștere anuală este mai întâi o problemă de căutare și abia apoi una de calendar.</p>
+  <p>Ziua <code>n+1</code> a unei luni nu este neapărat mâine. Aceeași zi cronologică poate primi mâine o altă etichetă pastafariană. Același moment fizic poate aparține unor zile pastafariene locale diferite în două locuri. Un eveniment de o zi întreagă nu trebuie să dureze de la miezul nopții la miezul nopții. Iar o zi de naștere anuală este mai întâi o problemă de căutare și abia apoi una de calendar.</p>
   <p>Dar când ziua de lucru și ziua interogată sunt cunoscute, nu există ambiguitate: există un singur răspuns exact.</p>
   <p>În fond, mai mult de atât nu trebuie să facă un calendar.</p>
 </section>
