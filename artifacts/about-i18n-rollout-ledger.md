@@ -27,7 +27,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | el | el-GR | ltr | partial | draft |
 | eo | eo | ltr | partial | draft |
 | es | es-ES | ltr | partial | draft |
-| et | et-EE | ltr | partial | draft |
+| et | et-EE | ltr | partial | linguistic QA |
 | fa | fa-IR | rtl | partial | draft |
 | fi | fi-FI | ltr | partial | draft |
 | fil | fil-PH | ltr | partial | draft |
