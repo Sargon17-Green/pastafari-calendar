@@ -153,9 +153,9 @@
   <p>Para um compromisso especialmente importante, pode-se guardar também o dia ou instante cronológico absoluto. O calendário não se ofende.</p><hr>
 </section>
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
-  <h2>Viagens, eventos e all-day</h2>
+  <h2>Viagens e eventos de dia inteiro</h2>
   <p>Um evento não é a mesma coisa que a etiqueta local mostrada para ele. Um evento agendado deve ficar ancorado a um instante cronológico estável. Viajar não move o evento no tempo, mas pode mudar a data pastafari local exibida naquele instante, porque a definição de “dia local” depende do lugar.</p>
-  <p>Num evento <strong>all-day</strong>, a diferença é ainda maior. Um evento civil de dia inteiro normalmente vai de uma meia-noite civil à seguinte; um evento pastafari de dia inteiro deve ir de um limite local de dia pastafari ao próximo. Em geral, não são os mesmos instantes.</p>
+  <p>Num <strong>evento de dia inteiro</strong>, a diferença é ainda maior. Um evento civil de dia inteiro normalmente vai de uma meia-noite civil à seguinte; um evento pastafari de dia inteiro deve ir de um limite local de dia pastafari ao próximo. Em geral, não são os mesmos instantes.</p>
   <p>Exportar cegamente um evento pastafari como “dia inteiro” num calendário civil pode mudar seu sentido. Para preservá-lo, é preciso guardar a âncora cronológica e o contexto apropriado de local/limite do dia, não apenas marcar <code>all-day</code>.</p><hr>
 </section>
 <section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
@@ -174,10 +174,10 @@
   <h2>E o Seer?</h2>
   <p>Ao lado da implementação canônica existe um motor rápido chamado <strong>Pastafarian Calendar Seer</strong>. Seer não é fonte de autoridade: a Meguilá e o cálculo canônico determinam a data correta. Se houver divergência, Seer está errado.</p>
   <p>Seu objetivo é responder às mesmas consultas rapidamente e de forma conveniente para integração em produtos.</p>
-  <p>Na verificação ao vivo feita durante a edição desta página, Seer incluía consultas de data e de “agora”, batch, intervalos de dias, conversão reversa para um dia-alvo, recuperação da estrutura do ano, resolução do dia de trabalho ativo, API para Node, cliente de navegador/HTTP, CLI, serviço HTTP v1, contrato OpenAPI 3.1, implementações native e pacotes de distribuição, além de implantação verificada em container.</p>
-  <p>A antiga afirmação de que Seer não tinha API pública deixou de ser verdadeira. Há um contrato HTTP v1 explícito e estável, com endpoints para data, range, batch, year, reverse, dia de trabalho, metadata, locales e status.</p>
-  <p>Em 21 de setembro de 2026, uma implantação HTTPS pública no Render foi testada de fato: consultas exact, intervalo grande, restart, cold wake e comportamento sob carga foram exercitados no serviço ao vivo.</p>
-  <p>A documentação do projeto ainda distingue essa implantação pública de beta/avaliação de um serviço hosted production permanente com SLA. Por isso, uma página conceitual não deve fixar endereço de servidor, provedor de hospedagem ou número de versão como se fossem parte do calendário.</p>
+  <p>Na verificação ao vivo feita durante a edição desta página, Seer incluía consultas de data e de “agora”, batch, intervalos de dias, conversão reversa para o dia consultado, recuperação da estrutura do ano, resolução do dia de trabalho ativo, API para Node, cliente de navegador/HTTP, CLI, serviço HTTP v1, contrato OpenAPI 3.1, implementações nativas e pacotes de distribuição, além de implantação verificada em contêiner.</p>
+  <p>A antiga afirmação de que Seer não tinha API pública deixou de ser verdadeira. Há um contrato HTTP v1 explícito e estável, com endpoints para <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, dia de trabalho, <code>metadata</code>, <code>locales</code> e <code>status</code>.</p>
+  <p>Em 21 de setembro de 2026, uma implantação HTTPS pública no Render foi testada de fato: consultas exatas, intervalo grande, reinicialização, <code>cold wake</code> e comportamento sob carga foram exercitados no serviço ao vivo.</p>
+  <p>A documentação do projeto ainda distingue essa implantação pública de beta/avaliação de um serviço de produção hospedado e permanente com SLA. Por isso, uma página conceitual não deve fixar endereço de servidor, provedor de hospedagem ou número de versão como se fossem parte do calendário.</p>
   <p>Seer pode usar pré-cálculo, representações especiais, SIMD, álgebra e outros atalhos. Não precisa repetir passo a passo toda a história computacional da implementação canônica, contanto que realize a mesma operação semântica e devolva a mesma resposta.</p>
   <p>Otimização não é uma autoridade alternativa.</p><hr>
 </section>
