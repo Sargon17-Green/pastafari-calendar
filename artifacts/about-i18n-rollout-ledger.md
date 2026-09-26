@@ -16,7 +16,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | af | af-ZA | ltr | partial | linguistic QA |
 | ar | ar | rtl | partial | draft |
 | az | az-AZ | ltr | partial | linguistic QA |
-| be | be-BY | ltr | partial | draft |
+| be | be-BY | ltr | partial | linguistic QA |
 | bg | bg-BG | ltr | partial | draft |
 | bn | bn-BD | ltr | partial | draft |
 | bs | bs-BA | ltr | partial | draft |
