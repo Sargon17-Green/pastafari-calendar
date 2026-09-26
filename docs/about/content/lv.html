@@ -139,7 +139,7 @@
 
 <section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
   <h2>Short Choice un Wide Choice</h2>
-  <p>Salīdzinoši mazām izvēļu telpām izmanto <strong>Short Choice</strong>. Tas izmanto rejection sampling, lai izvairītos no vienkāršas modulo novirzes.</p>
+  <p>Salīdzinoši mazām izvēļu telpām izmanto <strong>Short Choice</strong>. Tas izmanto noraidīšanas izlasi, lai izvairītos no novirzes, ko radītu vienkārša moduļa operācija.</p>
   <p>Ļoti lielām telpām izmanto <strong>Wide Choice</strong>. Tam nedrīkst piedēvēt īpašības, ko specifikācija negarantē.</p>
   <p>Wide Choice nav tas pats, kas ģenerēt neatkarīgus, vienmērīgi sadalītus bāzes <code>Q</code> ciparus, līdz iegūts indekss. Tāpēc nevar secināt, ka katrai derīgai izvēlei obligāti ir vienāda pozitīva varbūtība. Pietiekami lielās telpās var būt derīgas izvēles, kuras šis mehānisms vispār nevar sasniegt.</p>
   <p>Pats kalendārs joprojām ir pilnībā deterministisks. “Choice” ir algoritma posma nosaukums, nevis nejauša izloze lietošanas laikā.</p><hr>
@@ -148,7 +148,7 @@
 <section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
   <h2>Strukturālais atlants</h2>
   <p>Līdz šim runājām par kalendāra noteikumiem. Tālāk minētie skaitļi ir cita veida informācija: tie ir <strong>empīriski rezultāti</strong> no liela skaitļošanas parauga.</p>
-  <p>Atlants tika veidots ar engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> un aptvēra 4,096 darbības dienas; katrai no tām 4990.–5010. gadu; 86,016 gadu struktūras; 625,437 kotletes; 3,535,422 strukturālos mēnešus; vairāk nekā 356 miljonus nepārtrauktu mēneša segmentu; un vairāk nekā 364 miljonus pāreju no dienas <code>n</code> uz dienu <code>n+1</code> tajā pašā mēnesī.</p>
+  <p>Atlants tika veidots ar dzinēja komitu <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> un aptvēra 4,096 darbības dienas; katrai no tām 4990.–5010. gadu; 86,016 gadu struktūras; 625,437 kotletes; 3,535,422 strukturālos mēnešus; vairāk nekā 356 miljonus nepārtrauktu mēneša segmentu; un vairāk nekā 364 miljonus pāreju no dienas <code>n</code> uz dienu <code>n+1</code> tajā pašā mēnesī.</p>
   <p>Šie skaitļi apraksta šo corpus, nevis kanoniskus likumus.</p>
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Strukturālā atlanta izmērītie dati">
     <table class="about-table">
@@ -211,9 +211,9 @@
 </section>
 
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
-  <h2>Ceļošana, notikumi un all-day</h2>
+  <h2>Ceļošana un visas dienas notikumi</h2>
   <p>Notikums un tam rādītā vietējā etiķete nav viens un tas pats. Notikums ar noteiktu laiku jāpiesaista stabilam hronoloģiskam brīdim. Ceļošana to laikā nepārvieto, taču tai pašai fiziskajai akimirkai rādītais vietējais Pastafari datums var mainīties, jo “vietējās dienas” definīcija ir atkarīga no atrašanās vietas.</p>
-  <p><strong>All-day</strong> notikumam atšķirība ir vēl lielāka. Civilais visas dienas notikums parasti ilgst no civilās pusnakts līdz nākamajai pusnaktij; Pastafari visas dienas notikumam būtu jāilgst no vietējās Pastafari dienas robežas līdz nākamajai tādai robežai. Parasti tie nav vieni un tie paši brīži.</p>
+  <p><strong>Visas dienas</strong> notikumam atšķirība ir vēl lielāka. Civilais visas dienas notikums parasti ilgst no civilās pusnakts līdz nākamajai pusnaktij; Pastafari visas dienas notikumam būtu jāilgst no vietējās Pastafari dienas robežas līdz nākamajai tādai robežai. Parasti tie nav vieni un tie paši brīži.</p>
   <p>Tāpēc Pastafari notikuma akla eksportēšana kā civilā “visas dienas” notikuma var mainīt tā nozīmi. Lai to saglabātu precīzi, jāglabā hronoloģiskais enkurs un atbilstošais atrašanās vietas / dienas robežas konteksts, nevis tikai <code>all-day</code> karodziņš.</p><hr>
 </section>
 
@@ -235,10 +235,10 @@
   <h2>Kas tad ir Seer?</h2>
   <p>Līdzās kanoniskajai implementācijai ir ātrs engine ar nosaukumu <strong>Pastafarian Calendar Seer</strong>. Seer nav autoritātes avots: pareizo datumu nosaka Megillah un kanoniskais aprēķins. Ja Seer ar tiem nesakrīt, kļūdās Seer.</p>
   <p>Tā uzdevums ir ātri izpildīt tos pašus vaicājumus un darīt to formā, ko ērti integrēt produktos.</p>
-  <p>Tiešajā pārbaudē, kas veikta šīs lapas rediģēšanas laikā, Seer cita starpā ietvēra date un “now” vaicājumus, batch, dienu diapazonus, reverse conversion no Pastafari datuma uz mērķa dienu, gada struktūras iegūšanu, aktīvās darbības dienas noteikšanu, Node API, browser/HTTP klientu, CLI, HTTP v1 pakalpojumu, OpenAPI 3.1 līgumu, native implementācijas un izplatīšanas pakotnes, kā arī pārbaudītu container deployment.</p>
-  <p>Tāpēc vecais apgalvojums, ka Seer nav publiska API, vairs nav patiess. Tagad ir skaidrs un stabils HTTP v1 līgums ar endpointiem date, range, batch, year, reverse, darbības dienai, metadata, locales un status.</p>
-  <p>2026. gada 21. septembrī publisks HTTPS deployment Render platformā tika patiešām pārbaudīts: dzīvajā servisā tika testēti exact vaicājumi, liels range, restart, cold wake un uzvedība slodzes apstākļos.</p>
-  <p>Tomēr projekta dokumentācija joprojām nošķir publisku beta/evaluation deployment no pastāvīga hosted production servisa ar SLA. Tādēļ konceptuālajai skaidrojuma lapai nevajadzētu iesaldēt servera adresi, hostinga pakalpojuma sniedzēju vai versijas numuru tā, it kā tie būtu paša kalendāra sastāvdaļa.</p>
+  <p>Tiešajā pārbaudē, kas veikta šīs lapas rediģēšanas laikā, Seer cita starpā ietvēra <code>date</code> un <code>now</code> vaicājumus, <code>batch</code>, dienu diapazonus, apgriezto pārveidi no Pastafari datuma uz vaicājuma dienu, gada struktūras iegūšanu, aktīvās darbības dienas noteikšanu, Node API, pārlūka/HTTP klientu, CLI, HTTP v1 pakalpojumu, OpenAPI 3.1 līgumu, vietējās implementācijas un izplatīšanas pakotnes, kā arī pārbaudītu konteinera izvietojumu.</p>
+  <p>Tāpēc vecais apgalvojums, ka Seer nav publiskas API, vairs nav patiess. Tagad ir skaidrs un stabils HTTP v1 līgums ar galapunktiem <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, darbības dienai, <code>metadata</code>, <code>locales</code> un <code>status</code>.</p>
+  <p>2026. gada 21. septembrī publisks HTTPS izvietojums Render platformā tika patiešām pārbaudīts: darbīgajā servisā tika testēti precīzi vaicājumi, liels diapazons, restartēšana, <code>cold wake</code> un uzvedība slodzes apstākļos.</p>
+  <p>Tomēr projekta dokumentācija joprojām nošķir publisku beta/novērtēšanas izvietojumu no pastāvīga mitināta ražošanas servisa ar SLA. Tādēļ konceptuālajai skaidrojuma lapai nevajadzētu iesaldēt servera adresi, mitināšanas pakalpojuma sniedzēju vai versijas numuru tā, it kā tie būtu paša kalendāra sastāvdaļa.</p>
   <p>Seer drīkst izmantot precomputation, īpašas reprezentācijas, SIMD, algebru un citus saīsinājumus. Tam nav soli pa solim jāatdarina visa kanoniskās implementācijas aprēķinu vēsture, ja vien tas veic to pašu semantisko darbību un atgriež to pašu atbildi.</p>
   <p>Optimizācija nav alternatīva autoritāte.</p><hr>
 </section>
@@ -268,12 +268,12 @@
 </section>
 
 <section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
-  <h2>Pieredzējušiem lietotājiem: reverse conversion</h2>
-  <p>Ja darbības diena <code>c</code> ir zināma, reverse conversion ir ļoti stingri ierobežots. Zināmā Pastafari gadā</p>
+  <h2>Pieredzējušiem lietotājiem: apgrieztā pārveide</h2>
+  <p>Ja darbības diena <code>c</code> ir zināma, apgrieztā pārveide ir ļoti stingri ierobežota. Zināmā Pastafari gadā</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{kotletes nosaukums},\text{diena kotletē})</code></pre>
   <p>identificē ne vairāk kā vienu dienu. Tas pats attiecas uz</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{mēneša nosaukums},\text{diena mēnesī})</code></pre>
-  <p>Tāpēc pilns datums ar zināmu darbības dienu viennozīmīgi identificē mērķa dienu.</p>
+  <p>Tāpēc pilns datums ar zināmu darbības dienu viennozīmīgi identificē vaicājuma dienu.</p>
 
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Kandidātu skaita augšējās robežas reverse conversion laikā">
     <table class="about-table">
@@ -313,8 +313,8 @@
 <section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
   <h2>Pieredzējušiem lietotājiem: cik daudz vēstures saglabā mērce?</h2>
   <p>Mērce izskatās kā ļoti agresīvs jaukšanas mehānisms, taču algebriskie pētījumi rāda, ka tā saglabā daudz vairāk informācijas, nekā šķiet pēc izskata. Tas ir no specifikācijas izsecināts pētījuma rezultāts, nevis jauns kalendāra noteikums.</p>
-  <p>Redzamajos 3.–46. posmos, attiecīgajā asimptotiskajā zarā, ir noteikta generic injectivity: vispārīgā gadījumā stāvoklis saglabā pietiekami daudz informācijas, lai rekonstruētu attiecīgo ievades vēsturi un bļodu secību.</p>
-  <p>Informācija nepazūd uzreiz arī 12 noslēdzošajās maisīšanās. Pirmajām piecām maisīšanām pēc 46. redzamā piliena attiecīgajā kanoniskajā kopā ir noteikta generic invertibility bez papildu sānu informācijas; pārējai daļai zināmas spēcīgas konstruktīvas augšējās robežas sānu informācijas daudzumam, kas pietiek rekonstrukcijai.</p>
+  <p>Redzamajos 3.–46. posmos, attiecīgajā asimptotiskajā zarā, ir noteikta injektivitāte vispārīgajā gadījumā: stāvoklis saglabā pietiekami daudz informācijas, lai rekonstruētu attiecīgo ievades vēsturi un bļodu secību.</p>
+  <p>Informācija nepazūd uzreiz arī 12 noslēdzošajās maisīšanās. Pirmajām piecām maisīšanām pēc 46. redzamā piliena attiecīgajā kanoniskajā kopā ir noteikta apgriežamība vispārīgajā gadījumā bez papildu informācijas; pārējai daļai zināmas spēcīgas konstruktīvas augšējās robežas papildu informācijas daudzumam, kas pietiek rekonstrukcijai.</p>
   <p>Joprojām atklāts ir jautājums, vai <strong>ar pēdējām sešām bļodām vien</strong> vispārīgā nozīmē vienmēr pietiek.</p>
   <p>Daži rezultāti pierādīti simboliski, citi noslēgti ar galīgu un precīzu aritmētisku pārbaudi. Simboliskā pastiprināšana ievērojami samazināja skaitļošanas kodolu, kam jāuzticas, bet pilnībā to nenovērsa.</p>
   <p>Telpas, kas sākotnēji izskatījās tā, it kā prasītu milzīga ceļu skaita izpēti, tika samazinātas līdz daudz mazākām galīgām struktūrām, tostarp automātiem ar 180 un 9 stāvokļiem un sešu bļodu simetrijām.</p>
@@ -323,7 +323,7 @@
 
 <section class="about-section" id="summary" data-toc-section data-toc-level="2">
   <h2>Kas tad īsti ir Pastafari kalendārs?</h2>
-  <p>Deterministisks kalendārs, kurā datums nav tikai mērķa dienas funkcija, bet gan <strong>darbības dienas un vaicātās dienas funkcija kopā</strong>.</p>
+  <p>Deterministisks kalendārs, kurā datums nav tikai vaicājuma dienas funkcija, bet gan <strong>darbības dienas un vaicātās dienas funkcija kopā</strong>.</p>
   <p>Katram datumam ir tieši pieci lauki. Tagadne, skatīta pati no sevis, vienmēr ir 5000. gadā, bet pats 5000. gads pārvietojas līdzi darbības dienai. Gadi var būt ļoti gari, kotletes ir nepārtrauktas, mēneši — ne obligāti, un kanoniskas nedēļu sistēmas nav.</p>
   <p>Mēneša diena <code>n+1</code> ne vienmēr ir rīt. Viena un tā pati hronoloģiskā diena rīt var saņemt citu Pastafari etiķeti. Viena un tā pati fiziskā akimirklis divās vietās var piederēt divām atšķirīgām vietējām Pastafari dienām. Visas dienas notikumam nav obligāti jāilgst no pusnakts līdz pusnaktij. Un ikgadēja dzimšanas diena vispirms ir meklēšanas problēma un tikai pēc tam kalendāra problēma.</p>
   <p>Taču, ja zināma darbības diena un vaicātā diena, neskaidrības nav: pareizā atbilde ir tieši viena.</p>
