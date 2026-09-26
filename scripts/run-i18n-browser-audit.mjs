@@ -360,6 +360,12 @@ function fixedUrl(baseUrl, language = null, extras = {}) {
   return url.toString();
 }
 
+function aboutUrl(baseUrl, language = null) {
+  const url = new URL("about/", baseUrl);
+  if (language) url.searchParams.set("lang", language);
+  return url.toString();
+}
+
 function installBrowserEventCollector(page) {
   const tracker = {
     phase: "initialization",
@@ -664,13 +670,13 @@ async function scanLayout(page, viewport) {
   }, { selectors: IMPORTANT_LAYOUT_SELECTORS, allowlist: INTENTIONAL_SCROLL_SELECTORS, viewportInfo: viewport });
 }
 
-async function takeScreenshot(page, code, viewport) {
+async function takeScreenshot(page, code, viewport, { fullPage = false } = {}) {
   await page.setViewportSize({ width: viewport.width, height: viewport.height });
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.waitForTimeout(100);
   const fileName = `${safeFileComponent(code)}-${safeFileComponent(viewport.label)}.png`;
   const absolutePath = join(SCREENSHOT_DIR, fileName);
-  const buffer = await page.screenshot({ path: absolutePath, fullPage: false, animations: "disabled" });
+  const buffer = await page.screenshot({ path: absolutePath, fullPage, animations: "disabled" });
   const fileStats = await stat(absolutePath);
   if (buffer.length < 1000 || fileStats.size < 1000) throw new Error(`Screenshot appears empty: ${fileName}`);
   return {
@@ -715,6 +721,88 @@ async function discoverSelector(browser, baseUrl, defaultLocale) {
   }
 }
 
+async function auditAboutPage(page, tracker, { baseUrl, locale, resource, screenshots }) {
+  const about = {
+    basic: null,
+    translationScan: null,
+    layout: [],
+    screenshots: [],
+    findings: [],
+  };
+
+  tracker.phase = "about-load";
+  await page.goto(aboutUrl(baseUrl, locale.code), { waitUntil: "domcontentloaded", timeout: DEFAULT_TIMEOUT_MS });
+  await page.waitForFunction((code) => {
+    const article = document.querySelector("#article-content");
+    return document.documentElement.lang === code
+      && article
+      && article.getAttribute("aria-busy") === "false"
+      && (article.textContent?.trim().length || 0) > 100;
+  }, locale.code, { timeout: DEFAULT_TIMEOUT_MS });
+
+  about.basic = await page.evaluate(() => {
+    const article = document.querySelector("#article-content");
+    const notice = document.querySelector("#about-language-notice");
+    return {
+      htmlLang: document.documentElement.lang,
+      htmlDir: document.documentElement.dir,
+      articleLang: article?.getAttribute("lang") || "",
+      articleDir: article?.getAttribute("dir") || "",
+      articleTextLength: article?.textContent?.trim().length || 0,
+      fallbackNoticeHidden: notice ? notice.hidden : null,
+      tocLinkCount: document.querySelectorAll("#about-toc-list a").length,
+      title: document.title,
+      metaDescription: document.querySelector('meta[name="description"]')?.getAttribute("content") || "",
+    };
+  });
+
+  if (about.basic.htmlLang !== locale.code) {
+    about.findings.push(finding("FAIL", "about/lang", `/about/ <html lang> is ${about.basic.htmlLang}, expected ${locale.code}`));
+  }
+  if (about.basic.htmlDir !== locale.dir) {
+    about.findings.push(finding("FAIL", "about/direction", `/about/ <html dir> is ${about.basic.htmlDir}, expected ${locale.dir}`));
+  }
+  if (about.basic.articleDir !== locale.dir) {
+    about.findings.push(finding("FAIL", "about/article-direction", `/about/ article dir is ${about.basic.articleDir}, expected ${locale.dir}`));
+  }
+  if (!about.basic.articleLang) {
+    about.findings.push(finding("FAIL", "about/article-lang", "/about/ article has no lang attribute"));
+  }
+  if (about.basic.fallbackNoticeHidden !== true) {
+    about.findings.push(finding("FAIL", "about/fallback", "/about/ unexpectedly displays the fallback-language notice"));
+  }
+  if (about.basic.tocLinkCount < 20) {
+    about.findings.push(finding("FAIL", "about/toc", `/about/ table of contents has only ${about.basic.tocLinkCount} links`));
+  }
+  if (about.basic.articleTextLength < 100) {
+    about.findings.push(finding("FAIL", "about/content", "/about/ localized article is empty or implausibly short"));
+  }
+  if (!about.basic.title.trim()) about.findings.push(finding("FAIL", "about/title", "/about/ document title is empty"));
+  if (!about.basic.metaDescription.trim()) about.findings.push(finding("WARN", "about/meta", "/about/ meta description is empty"));
+
+  tracker.phase = "about-translation-scan";
+  about.translationScan = await scanTranslations(page, Object.keys(resource.messages));
+  for (const item of about.translationScan.untranslated) about.findings.push(finding("FAIL", "about/untranslated-key", `Visible translation key: ${item.key}`, item));
+  for (const item of about.translationScan.empty) about.findings.push(finding("FAIL", "about/missing-text", "Visible translated UI element/attribute is empty", item));
+  if (about.translationScan.replacementCharacter) about.findings.push(finding("FAIL", "about/replacement-character", "Visible /about/ text contains U+FFFD replacement character"));
+
+  for (const viewport of VIEWPORTS) {
+    tracker.phase = `about-layout-${viewport.label}`;
+    await page.setViewportSize({ width: viewport.width, height: viewport.height });
+    await page.evaluate(() => window.scrollTo(0, 0));
+    const layout = await scanLayout(page, viewport);
+    about.layout.push(layout);
+    if (screenshots) {
+      const shot = await takeScreenshot(page, `${locale.code}-about`, viewport, { fullPage: true });
+      about.screenshots.push(shot);
+      for (const item of layout.findings) item.screenshot = shot.path;
+    }
+    for (const item of layout.findings) about.findings.push(finding(item.severity, "about/layout", `${item.type} at ${item.selector}`, item));
+  }
+
+  return about;
+}
+
 async function auditDirectLocale({ browser, baseUrl, locale, resource, breakpoints, screenshots, comparisonRepresentative }) {
   const result = {
     code: locale.code,
@@ -735,6 +823,7 @@ async function auditDirectLocale({ browser, baseUrl, locale, resource, breakpoin
     switchLanguage: null,
     persistence: null,
     smoke: null,
+    about: null,
     findings: [],
     notes: ["Glyph shape/translation quality is not machine-validated; screenshots are for human review."],
   };
@@ -818,6 +907,10 @@ async function auditDirectLocale({ browser, baseUrl, locale, resource, breakpoin
     tracker.phase = "post-switch-smoke";
     result.smoke = await testPostSwitchSmoke(browser, baseUrl, locale, comparisonRepresentative);
     for (const item of result.smoke.findings) result.findings.push(item);
+
+    tracker.phase = "about-page";
+    result.about = await auditAboutPage(page, tracker, { baseUrl, locale, resource, screenshots });
+    for (const item of result.about.findings) result.findings.push(item);
   } catch (error) {
     result.findings.push(finding("FAIL", "audit-exception", error?.message || String(error), { stack: error?.stack || null, phase: tracker.phase }));
   } finally {
@@ -1381,10 +1474,10 @@ function reportMarkdown(report) {
   lines.push("");
   lines.push("## Locale results");
   lines.push("");
-  lines.push("| Locale | Status | Classification | Registered | Selector | dir | Browser render | Switch | Persistence | Screenshots |");
+  lines.push("| Locale | Status | Classification | Registered | Selector | dir | Browser render | Switch | Persistence | Main screenshots | /about/ screenshots |");
   lines.push("|---|---:|---|---:|---:|---|---|---|---|---|");
   for (const result of Object.values(report.locales).sort((a, b) => a.code.localeCompare(b.code, "en"))) {
-    lines.push(`| \`${mdEscape(result.code)}\` | **${result.status}** | ${mdEscape(result.classification)} | ${result.registered ? "yes" : "no"} | ${result.selectorPresent === true ? "yes" : result.selectorPresent === false ? "no" : "n/a"} | ${mdEscape(result.dir || "")} | ${result.basic ? (result.basic.workspaceHidden === false ? "ok" : "failed") : "n/a"} | ${result.switchLanguage ? (result.switchLanguage.ok ? "ok" : "failed") : "n/a"} | ${result.persistence ? (result.persistence.ok ? "ok" : "failed") : "n/a"} | ${(result.screenshots || []).map((shot) => `[${shot.width}×${shot.height}](${shot.path})`).join(" ") || "none"} |`);
+    lines.push(`| \`${mdEscape(result.code)}\` | **${result.status}** | ${mdEscape(result.classification)} | ${result.registered ? "yes" : "no"} | ${result.selectorPresent === true ? "yes" : result.selectorPresent === false ? "no" : "n/a"} | ${mdEscape(result.dir || "")} | ${result.basic ? (result.basic.workspaceHidden === false ? "ok" : "failed") : "n/a"} | ${result.switchLanguage ? (result.switchLanguage.ok ? "ok" : "failed") : "n/a"} | ${result.persistence ? (result.persistence.ok ? "ok" : "failed") : "n/a"} | ${(result.screenshots || []).map((shot) => `[${shot.width}×${shot.height}](${shot.path})`).join(" ") || "none"} | ${(result.about?.screenshots || []).map((shot) => `[${shot.width}×${shot.height}](${shot.path})`).join(" ") || "none"} |`);
   }
   lines.push("");
   lines.push("## Unregistered / inactive resource validation");
