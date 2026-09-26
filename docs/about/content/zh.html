@@ -112,7 +112,7 @@
 <section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
   <h2>结构图谱</h2>
   <p>上面是历法规则。下面这些数字则是另一类信息：大型计算样本得到的<strong>经验结果</strong>。</p>
-  <p>图谱使用 engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> 构建，包括4,096个作业日；每个作业日的4990–5010年；86,016个年份结构；625,437个肉排；3,535,422个结构月份；超过3.56亿个连续月份片段；以及超过3.64亿次同一月份从 <code>n</code> 日到 <code>n+1</code> 日的转换。</p>
+  <p>图谱使用引擎提交 <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> 构建，包括4,096个作业日；每个作业日的4990–5010年；86,016个年份结构；625,437个肉排；3,535,422个结构月份；超过3.56亿个连续月份片段；以及超过3.64亿次同一月份从 <code>n</code> 日到 <code>n+1</code> 日的转换。</p>
   <p>这些只是该样本集的描述，不是规范律。</p>
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="结构图谱测量数据"><table class="about-table">
     <thead><tr><th scope="col">测量量</th><th scope="col">样本结果</th></tr></thead><tbody>
@@ -148,9 +148,9 @@
   <p>特别重要的约会还可以额外保存绝对的时间轴日期或时刻。历法不会因此受伤。</p><hr>
 </section>
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
-  <h2>旅行、事件与 all-day</h2>
+  <h2>旅行与全天事件</h2>
   <p>事件本身与当地为它显示的日期标签不是一回事。定时事件应锚定在稳定的时间点。旅行不会把事件在时间上移动，但由于“当地的一天”依赖位置，同一时刻显示的当地 Pastafari 日期可能改变。</p>
-  <p>对于 <strong>all-day</strong> 事件，差别更明显。民用全天事件通常从一个民用午夜延续到下一个；Pastafari 全天事件应从当地 Pastafari 日边界延续到下一个边界。两者通常不是相同的时刻。</p>
+  <p>对于<strong>全天事件</strong>，差别更明显。民用全天事件通常从一个民用午夜延续到下一个；Pastafari 全天事件应从当地 Pastafari 日边界延续到下一个边界。两者通常不是相同的时刻。</p>
   <p>所以把 Pastafari 事件盲目导出成民用“全天事件”可能改变其含义。若要精确保留，应保存时间锚点和相应的位置/日边界上下文，而不只是一个 <code>all-day</code> 标记。</p><hr>
 </section>
 <section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
@@ -169,10 +169,10 @@
   <h2>Seer 是什么？</h2>
   <p>规范实现之外还有高速引擎 <strong>Pastafarian Calendar Seer</strong>。Seer 不是权威来源；正确日期由 Megillah 和规范计算决定。两者若冲突，错的是 Seer。</p>
   <p>它的任务是快速执行同一类查询，并方便集成进产品。</p>
-  <p>在编辑本页时做的实时验证中，Seer 已包括日期查询、“现在”计算、batch、日范围、从 Pastafari 日期到目标日的 reverse 转换、年份结构获取、活动作业日解析、Node API、浏览器/HTTP客户端、CLI、HTTP v1服务、OpenAPI 3.1契约、native实现与发布包，以及经过验证的container部署。</p>
-  <p>所以“Seer 没有公开 API”的旧说法已经不正确。它有明确、稳定的 HTTP v1 契约，包含 date、range、batch、year、reverse、作业日、metadata、locales、status 等 endpoints。</p>
-  <p>2026年9月21日还实际测试了 Render 上的公开 HTTPS 部署：exact 查询、大范围、restart、cold wake 和负载下行为都在活服务上验证过。</p>
-  <p>不过项目文档仍区分公开的 beta/evaluation 部署与具有 SLA 的永久 hosted production 服务声明。因此原理性说明不应把某个服务器地址、托管商或版本号固定成历法本身的一部分。</p>
+  <p>在编辑本页时做的实时验证中，Seer 已包括日期查询、“现在”计算、批量查询、日范围、从 Pastafari 日期到被查询日的反向转换、年份结构获取、活动作业日解析、Node API、浏览器/HTTP客户端、CLI、HTTP v1服务、OpenAPI 3.1契约、原生实现与发布包，以及经过验证的容器部署。</p>
+  <p>所以“Seer 没有公开 API”的旧说法已经不正确。它有明确、稳定的 HTTP v1 契约，包含 <code>date</code>、<code>range</code>、<code>batch</code>、<code>year</code>、<code>reverse</code>、作业日、<code>metadata</code>、<code>locales</code>、<code>status</code> 等端点。</p>
+  <p>2026年9月21日还实际测试了 Render 上的公开 HTTPS 部署：精确查询、大范围、重启、<code>cold wake</code> 和负载下行为都在活服务上验证过。</p>
+  <p>不过项目文档仍区分公开的 beta/评估部署与具有 SLA 的永久托管生产服务。因此原理性说明不应把某个服务器地址、托管商或版本号固定成历法本身的一部分。</p>
   <p>Seer 可以使用预计算、特殊表示、SIMD、代数和其他捷径。只要执行同一语义操作并返回同一答案，就不必逐步重演规范实现的全部计算历史。</p>
   <p>优化不是另一套权威。</p><hr>
 </section>
@@ -199,7 +199,7 @@
   <h2>进阶：反向转换</h2>
   <p>作业日 <code>c</code> 已知时，反向转换的约束非常强。在一个已知 Pastafari 年中，</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{肉排名},\text{肉排内日})</code></pre>
-  <p>最多识别一天；</p><pre class="math-block" dir="ltr" tabindex="0"><code>(\text{月份名},\text{月内日})</code></pre><p>也是如此。因此作业日已知时，完整日期唯一确定目标日。</p>
+  <p>最多识别一天；</p><pre class="math-block" dir="ltr" tabindex="0"><code>(\text{月份名},\text{月内日})</code></pre><p>也是如此。因此作业日已知时，完整日期唯一确定被查询日。</p>
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="反向转换候选数上界"><table class="about-table">
     <thead><tr><th scope="col">额外已知信息</th><th scope="col">最大候选数</th></tr></thead><tbody>
       <tr><td>没有非年份字段</td><td>5,778</td></tr><tr><td>只有肉排名</td><td>5,568</td></tr><tr><td>只有肉排内日</td><td>17</td></tr>
@@ -232,9 +232,9 @@
 </section>
 <section class="about-section" id="summary" data-toc-section data-toc-level="2">
   <h2>那么，Pastafari 历究竟是什么？</h2>
-  <p>它是一套确定性历法：日期不是目标日单独的函数，而是<strong>作业日与目标日共同</strong>决定的。</p>
+  <p>它是一套确定性历法：日期不是被查询日单独的函数，而是<strong>作业日与被查询日共同</strong>决定的。</p>
   <p>每个日期恰有五个字段。现在从自身看永远是5000年，但5000年本身随作业日移动。年份可以极长；肉排连续；月份可以完全不连续；没有规范星期体系。</p>
   <p>月份的 <code>n+1</code> 日不一定是明天。同一个时间轴上的日子明天可能得到另一 Pastafari 标签。同一个物理时刻在两个地点可能属于不同的当地 Pastafari 日。全天事件也不一定从午夜到午夜。年度生日在成为日程问题之前，先是一个搜索问题。</p>
-  <p>但只要给定作业日和目标日，就没有歧义：精确答案只有一个。</p>
+  <p>但只要给定作业日和被查询日，就没有歧义：精确答案只有一个。</p>
   <p>归根结底，历法做到这一点就够了。</p>
 </section>
