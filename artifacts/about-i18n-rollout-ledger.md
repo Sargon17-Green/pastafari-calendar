@@ -39,7 +39,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | ha | ha-NG | ltr | partial | draft |
 | hi | hi-IN | ltr | partial | draft |
 | hr | hr-HR | ltr | partial | draft |
-| ht | ht-HT | ltr | partial | draft |
+| ht | ht-HT | ltr | partial | linguistic QA |
 | hu | hu-HU | ltr | partial | draft |
 | hy | hy-AM | ltr | partial | draft |
 | id | id-ID | ltr | partial | draft |
@@ -130,7 +130,7 @@ Status progression for target locales: `not started → draft → semantic QA �
 
 - `LOCALES` at this branch contains **72 locales**: Hebrew plus 71 target locales.
 - `docs/about/content/` now contains **72 locale articles**, exactly one for every registered locale.
-- All 71 target locales have complete article drafts. Native-language whole-site text QA is now complete through `gl-ES`: `af-ZA`, `az-AZ`, `be-BY`, `bg-BG`, `et-EE`, `fo-FO`, `fy-NL`, and `gl-ES` are at `linguistic QA`; the remaining 63 target locales remain at `draft` pending the same native-language pass.
+- All 71 target locales have complete article drafts. Native-language whole-site text QA is now complete through `ht-HT`: `af-ZA`, `az-AZ`, `be-BY`, `bg-BG`, `et-EE`, `fo-FO`, `fy-NL`, `gl-ES`, and `ht-HT` are at `linguistic QA`; the remaining 62 target locales remain at `draft` pending the same native-language pass.
 - Full mechanical audit was run in batches across every target locale. Each article has exactly the canonical 29 stable IDs, no duplicate IDs, both semantic tables with 19 and 9 body rows respectively, all required hard literals/formulas/hashes, no unintended Hebrew leakage, and its locale module has exactly 11 `about.*` shell keys.
 - During closure, the first audit helper exposed a real test bug: it matched only two-letter locale codes and therefore missed `fil`. The audit was corrected to accept 2–3 letter registry codes, `fil` was added and verified, and the final audit covered all 72 locales.
 - Native-language whole-site LLM QA remains pending by design. The required next phase is one locale at a time, with the reviewing conversation itself conducted in that locale and explicitly searching the whole site for unnatural language, foreign-language leakage, terminology drift, BiDi/layout issues where relevant, and semantic discrepancies.
