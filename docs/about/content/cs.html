@@ -1,7 +1,7 @@
 <!-- Česká verze byla napsána přímo z hebrejského sémantického základu, nikoli přes jiný překlad. -->
 <!-- ID oddílů tvoří stabilní veřejné deep-link API a nevycházejí z přeložených nadpisů. -->
 <div class="about-section about-lead" id="about-calendar">
-  <p>V příběhu tohoto webu je pastafariánský kalendář kalendářem, v němž byl stvořen čas. Jeho mechanismus je ovšem vymezen přesně.</p>
+  <p>Pastafariánský kalendář je kalendář, v němž byl stvořen čas. Jeho mechanika je přesně definována.</p>
   <p>Nejde o systém, který by každému dni navždy přiřadil jediný pastafariánský „štítek“. K určení data jsou zapotřebí dva dny: <strong>den činnosti</strong>, z něhož se počítá, a <strong>dotazovaný den</strong>, jehož datum hledáme.</p>
   <p>Označíme-li den činnosti jako <code>c</code> a dotazovaný den jako <code>t</code>, datum je</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
@@ -109,7 +109,7 @@
 </section>
 <section class="about-section" id="calculation" data-toc-section data-toc-level="2">
   <h2>Jak se kalendář počítá?</h2>
-  <p>Vnitřní výpočet zde nazýváme <strong>omáčkou</strong>. V jeho středu stojí prvočíslo</p>
+  <p>Vnitřní výpočet se nazývá <strong>omáčka</strong>. V jeho středu stojí prvočíslo</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
   <p>Postup zahrnuje pět vstupních čítačů, 7 skrytých kapek, 46 viditelných kapek, 6 mís, proměnlivá pořadí mís, 12 závěrečných zamíchání, pečetě pro různé odpovědi, kombinatorické volby, tvorbu bran, volbu roků, dělení řízků, volbu názvů, tvorbu měsíců a proplétání měsíčních dní.</p>
   <p>Závěrečné aktualizace jsou <strong>synchronní</strong>: při každém zamíchání se všech šest nových hodnot vypočte ze stejného starého stavu a teprve potom se všech šest mís nahradí současně.</p>
@@ -138,7 +138,7 @@
       <tr><td>Průměrná délka řízku</td><td>587.963 dne</td></tr><tr><td>Medián délky řízku</td><td>560</td></tr><tr><td>Průměrný počet měsíců za rok</td><td>41.102</td></tr>
       <tr><td>Medián počtu měsíců</td><td>43</td></tr><tr><td>Roky se 47 měsíci</td><td>15.63%</td></tr><tr><td>Roky s alespoň 45 měsíci</td><td>36.81%</td></tr>
       <tr><td>Průměrná délka strukturálního měsíce</td><td>104.014 dne</td></tr><tr><td>Medián délky měsíce</td><td>115</td></tr><tr><td>Průměrný počet souvislých úseků na měsíc</td><td>100.897</td></tr>
-      <tr><td>Podíl jednodenních měsíčních úseků</td><td>97.482%</td></tr><tr><td>Pravděpodobnost, že sousední dny patří do stejného měsíce</td><td>2.9976%</td></tr>
+      <tr><td>Podíl jednodenních měsíčních úseků</td><td>97.482%</td></tr><tr><td>Podíl dvojic sousedních dnů, které ve vzorku patřily do téhož měsíce</td><td>2.9976%</td></tr>
       <tr><td>Průměr cizích dní mezi <code>n</code> a <code>n+1</code> měsíce</td><td>40.408</td></tr><tr><td>Průměrný rozsah od prvního k poslednímu výskytu měsíce</td><td>4,266.653 dne</td></tr>
     </tbody></table></div>
   <p>V praxi se tedy měsíc přibližně o sto dnech může rozprostřít téměř přes celý pastafariánský rok.</p>
@@ -160,14 +160,14 @@
 </section>
 <section class="about-section" id="appointments" data-toc-section data-toc-level="2">
   <h2>Jak si domluvit schůzku?</h2>
-  <p>Mají-li se dva lidé domluvit pouze pomocí pastafariánského data, musejí se shodnout alespoň na pěti polích a na dni činnosti použitém k výpočtu. Lepší je uložit tento den jako stabilní identitu dne než jako slovo „dnes“, jinak mohou oba spočítat jiný kalendář.</p>
+  <p>Chtějí-li dva lidé určit den schůzky pomocí pastafariánského data, musejí se shodnout alespoň na jeho pěti polích a na dni činnosti použitém k výpočtu. Lepší je uložit tento den jako stabilní identitu dne než jako slovo „dnes“, jinak mohou oba spočítat jiný kalendář.</p>
   <ul><li>„zítra“ je následující chronologický den;</li><li>„další den měsíce“ je následující výskyt téhož měsíce;</li><li>„konec měsíce“ je jeho poslední výskyt;</li><li>„celý měsíc“ může znamenat množinu dní měsíce nebo celý chronologický rozsah od prvního do posledního výskytu;</li><li>„další rok“ je následující rok v kalendáři vytvořeném pod zvoleným dnem činnosti.</li></ul>
   <p>U zvlášť důležité schůzky lze navíc uložit absolutní chronologický den nebo okamžik. Kalendář to přežije.</p><hr>
 </section>
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
   <h2>Cestování a celodenní události</h2>
   <p>Událost není totéž co místní štítek, který se u ní zobrazuje. Časovaná událost má být ukotvena ke stabilnímu chronologickému okamžiku. Cestování událost v čase neposouvá, ale místní pastafariánské datum zobrazené v témž okamžiku se může změnit, protože definice „místního dne“ závisí na poloze.</p>
-  <p>U <strong>celodenní události</strong> je rozdíl ještě větší. Občanská celodenní událost obvykle běží od občanské půlnoci do následující; pastafariánská celodenní událost by měla běžet od místní hranice pastafariánského dne k další hranici. Obvykle to nejsou stejné okamžiky.</p>
+  <p>U <strong>celodenní události (<bdi dir="ltr">all-day</bdi>)</strong> je rozdíl ještě větší. Občanská celodenní událost obvykle běží od občanské půlnoci do následující; pastafariánská celodenní událost by měla běžet od místní hranice pastafariánského dne k další hranici. Obvykle to nejsou stejné okamžiky.</p>
   <p>Slepý export pastafariánské události jako občanské „celodenní“ tedy může změnit její význam. Pro přesné zachování je třeba uložit chronologickou kotvu a vhodný kontext polohy/hranice dne, nikoli jen příznak <code>all-day</code>.</p><hr>
 </section>
 <section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
@@ -184,18 +184,18 @@
 </section>
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>A co je Seer?</h2>
-  <p>Vedle kanonické implementace existuje rychlý engine <strong>Pastafarian Calendar Seer</strong>. Seer není zdrojem autority: správné datum určuje Megillah a kanonický výpočet. Pokud se Seer liší, mýlí se Seer.</p>
+  <p>Vedle kanonické implementace existuje rychlý engine <strong>Pastafarian Calendar Seer</strong>. Megillah stanoví pravidla a kanonický výpočet podle nich určuje datum. Seer je rychlý engine, který má vracet stejnou odpověď. Pokud se Seer neshoduje se správným kanonickým výpočtem, mýlí se Seer.</p>
   <p>Jeho úkolem je provádět stejné dotazy rychle a ve formě vhodné pro integraci do produktů.</p>
-  <p>Při živém ověření během redakce této stránky Seer zahrnoval mimo jiné dotazy na datum a „teď“, batch, rozsahy dní, zpětný převod z pastafariánského data na cílový den, získání struktury roku, určení aktivního dne činnosti, Node API, prohlížečový/HTTP klient, CLI, službu HTTP v1, kontrakt OpenAPI 3.1, native implementace a distribuční balíčky a ověřené container nasazení.</p>
-  <p>Staré tvrzení, že Seer nemá veřejné API, už není pravdivé. Existuje výslovný stabilní kontrakt HTTP v1 s koncovými body pro <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, den činnosti, <code>metadata</code>, <code>locales</code> a <code>status</code>.</p>
+  <p>Při živém ověření dne 21. září 2026 Seer zahrnoval mimo jiné dotazy na datum a „teď“, batch, rozsahy dní, zpětný převod z pastafariánského data na cílový den, získání struktury roku, určení aktivního dne činnosti, Node API, prohlížečový/HTTP klient, CLI, službu HTTP v1, kontrakt OpenAPI 3.1, native implementace a distribuční balíčky a ověřené container nasazení.</p>
+  <p>Seer má veřejné API. Existuje výslovný stabilní kontrakt HTTP v1 s koncovými body pro <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, den činnosti, <code>metadata</code>, <code>locales</code> a <code>status</code>.</p>
   <p>Dne 21. září 2026 bylo prakticky otestováno i veřejné HTTPS nasazení na Renderu: na živé službě byly ověřeny přesné dotazy, velký rozsah, restart, <code>cold wake</code> a chování pod zátěží.</p>
-  <p>Projektová dokumentace však stále rozlišuje veřejné beta/evaluační nasazení a trvalou hostovanou produkční službu se SLA. Koncepční stránka proto nemá zafixovat adresu serveru, poskytovatele hostingu nebo číslo verze jako součást samotného kalendáře.</p>
+  <p>Ověřené veřejné nasazení je ve fázi beta/evaluace, nikoli trvalou hostovanou produkční službou se SLA. Adresa serveru, poskytovatel hostingu ani číslo verze nejsou součástí kalendáře ani jeho pevnými kanonickými prvky.</p>
   <p>Seer smí používat předvýpočty, zvláštní reprezentace, SIMD, algebru a jiné zkratky. Nemusí krok za krokem opakovat celou výpočetní historii kanonické implementace, pokud provádí tutéž sémantickou operaci a vrací tutéž odpověď.</p>
   <p>Optimalizace není alternativní autorita.</p><hr>
 </section>
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
   <h2>Původ, Den založení a Den desek</h2>
-  <p>Zde je nutné jasně oddělit kanonické časové kotvy od příběhu webu.</p>
+  <p>Pevné časové kotvy kalendáře se liší od skutečností o jeho původu a historii jeho předání.</p>
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>Kotvy</h3>
     <p>Systém má pevný referenční den nazývaný <strong>Den založení</strong>. V proleptickém gregoriánském kalendáři připadá na <strong>22. prosince 41,222 př. n. l.</strong></p>
@@ -208,17 +208,17 @@
     <p>Jsou to pevné kotvy na časové ose. Jejich zobrazené pastafariánské datum však stále závisí na dni činnosti, z něhož se na ně ptáme.</p>
   </section>
   <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
-    <h3>Příběh webu</h3>
-    <p>V redakčním podání webu je kalendář součástí stvoření a systémem, který lidstvo používalo bez dostatečného uvědomění, dokud nebyl v moderní době znovu předán.</p>
-    <p>To je příběh webu; není správné vydávat každý jeho narativní detail za výslovné technické tvrzení Megillah.</p>
-    <p>Samotná událost znovupředání je pevnou historickou událostí. Její <strong>pastafariánské datum</strong> je vhodnější zobrazovat dynamicky podle aktuálního dne činnosti než navždy připevnit jedno jediné datum.</p><hr>
+    <h3>Původ kalendáře a jeho opětovné předání</h3>
+    <p>Pastafariánský kalendář je součástí stvoření. Lidstvo jej používalo, aniž by si dostatečně uvědomovalo, že jej používá, až do jeho moderního opětovného předání.</p>
+    <p>Megillah neuvádí všechny podrobnosti těchto dějin; co v ní není výslovně uvedeno, není součástí jejího textu.</p>
+    <p>Samotná událost znovupředání je pevnou historickou událostí. Nemá jediné neměnné pastafariánské datum: její <strong>pastafariánské datum</strong> se počítá podle příslušného dne činnosti a může se při změně dne činnosti změnit.</p><hr>
   </section>
 </section>
 <section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
   <h2>Pro pokročilé: zpětný převod</h2>
   <p>Je-li znám den činnosti <code>c</code>, je zpětný převod velmi silně omezen. Uvnitř známého pastafariánského roku</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{název řízku},\text{den v řízku})</code></pre>
-  <p>určuje nejvýše jeden den. Totéž platí pro</p>
+  <p>Tato dvojice určuje nejvýše jeden den. Totéž platí pro</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{název měsíce},\text{den v měsíci})</code></pre>
   <p>Úplné datum se známým dnem činnosti proto jednoznačně určuje cílový den.</p>
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Horní meze počtu kandidátů při zpětném převodu"><table class="about-table">
@@ -228,7 +228,7 @@
       <tr><td>Název měsíce + den v měsíci</td><td>1</td></tr><tr><td>Libovolná tři ne-roční pole</td><td>1</td></tr><tr><td>Všechna čtyři ne-roční pole</td><td>1</td></tr>
     </tbody></table></div>
   <p>Bez známého dne činnosti je situace jiná. Tatáž pětice se může objevit pod různými dny činnosti a existují přesné příklady, v nichž se stejné úplné datum objevuje v různých vzdálenostech od <code>c</code>.</p>
-  <p>V roce 5000 není vždy z pětice určeno ani znaménko této vzdálenosti: stejné úplné datum může být v jednom kontextu v minulosti vůči dni činnosti a v jiném v budoucnosti.</p>
+  <p>V roce 5000 samotná pětice neurčuje vždy, zda cílový den leží před dnem činnosti, nebo po něm: stejné úplné datum se v jednom kontextu může vztahovat k minulosti a v jiném k budoucnosti.</p>
   <p>Úplné pastafariánské datum tedy není absolutní adresou na časové ose, nevíme-li, pod kterým <code>c</code> bylo vypočteno.</p>
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
     <h3>Struktura ve vzdáleném čase</h3>
@@ -246,10 +246,10 @@
 <section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
   <h2>Pro pokročilé: kolik historie omáčka zachová?</h2>
   <p>Omáčka vypadá jako velmi agresivní míchačka, algebraický výzkum však ukázal, že uchovává mnohem více informací, než napovídá její vnější podoba. Jde o výzkum odvozený ze specifikace, nikoli o nové pravidlo kalendáře.</p>
-  <p>Ve viditelných etapách 3–46 byla na příslušné asymptotické větvi stanovena injektivita v obecném případě: v obecném případě stav uchovává dost informací k rekonstrukci relevantní historie vstupů a pořadí mís.</p>
-  <p>Ani během 12 závěrečných zamíchání informace nezmizí okamžitě. Pro prvních pět po viditelné kapce 46 byla na příslušném kanonickém sjednocení stanovena invertibilita v obecném případě bez dodatečných vedlejších informací; pro zbylá zamíchání jsou známy silné konstruktivní horní meze množství vedlejších informací dostačujících k rekonstrukci.</p>
+  <p>Ve viditelných etapách 3–46 byla na příslušné asymptotické větvi prokázána generická injektivita: stav v obecném případě uchovává dost informací k rekonstrukci relevantní historie vstupů a pořadí mís.</p>
+  <p>Ani během 12 závěrečných zamíchání informace nezmizí okamžitě. Pro prvních pět zamíchání po viditelné kapce 46 byla na příslušném kanonickém sjednocení prokázána generická invertibilita bez dodatečných vedlejších informací; pro zbývající zamíchání jsou známy silné konstruktivní horní meze množství vedlejších informací potřebných k rekonstrukci.</p>
   <p>Stále zůstává otevřené, zda <strong>samotných šest finálních mís</strong> v obecném případě vždy stačí.</p>
-  <p>Některé výsledky byly dokázány symbolicky, jiné uzavřeny konečnými přesnými aritmetickými kontrolami. Symbolické posílení výrazně zmenšilo výpočetní jádro, kterému je třeba důvěřovat, ale zcela jej neodstranilo.</p>
+  <p>Některé výsledky byly dokázány symbolicky, jiné byly ověřeny konečnými přesnými aritmetickými kontrolami. Symbolické posílení důkazů výrazně zmenšilo výpočetní jádro, jemuž je třeba důvěřovat, ale zcela je neodstranilo.</p>
   <p>Prostory, které zprvu vypadaly jako problém vyžadující průchod obrovským množstvím cest, se zmenšily na mnohem menší konečné struktury, včetně automatů se 180 a 9 stavy a symetrií šesti mís.</p>
   <p>Pod mícháním tedy leží pevná algebraická struktura. Ke zjištění dnešního data ji znát nemusíte.</p><hr>
 </section>
