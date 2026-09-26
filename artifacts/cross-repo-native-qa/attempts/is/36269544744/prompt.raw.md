@@ -2,8 +2,8 @@
 
 Yfirlestrarmálið er Íslenska (yfirlestrarauðkenni `is`; staðfærsla/staðsetningarmerki `is-IS`).
 
-REVIEW_ID=is
-LOCALE_TAG=is-IS
+__PASTAFARI_REVIEW_ID_LINE__
+__PASTAFARI_LOCALE_TAG_LINE__
 
 Öll samskipti á náttúrulegu máli í þessari yfirlestrarlotu skulu vera á Íslenska. Fyrstu skilaboðin frá notanda eru þessi þýdda fyrirmæli og allir hlutar svars þíns sem eru á náttúrulegu máli skulu áfram vera á Íslenska. Skiptu ekki yfir í ensku. Nákvæm heiti gagnasafna, heiti greina, slóðir, auðkenni, kóðastrengir, formúlur, kjötkássur, API-heiti og áskilin vélræn niðurstöðulína eru undanskilin.
 
@@ -34,8 +34,8 @@ Samræmi milli gagnasafna snýst um merkingu, ekki endilega orðrétt samræmi. 
 Þegar um er að ræða efnislega ólíkar útgáfur eða ritkerfi sem hafa aðskildar yfirlestrareiningar skaltu aðeins yfirfara þá útgáfu sem þessi fyrirmæli og skráin tilgreina.
 
 FYRSTA lína svars þíns VERÐUR að vera nákvæmlega annaðhvort:
-NATIVE_QA_RESULT: PASS
-NATIVE_QA_RESULT: FAIL
+__PASTAFARI_NATIVE_QA_PASS__
+__PASTAFARI_NATIVE_QA_FAIL__
 
 Skrifaðu aðeins Markdown-skýrslu á Íslenska eftir þá línu. Taktu fram:
 - heildarniðurstöðu PASS/FAIL fyrir stranga málfars- og merkingarlega gæðaskoðun milli gagnasafna;
