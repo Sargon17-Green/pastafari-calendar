@@ -798,9 +798,13 @@ class ReverseSearchUi {
     this.output.hidden = true;
     this.status = node("div", "reverse-status");
     this.status.id = "reverse-status";
+    this.status.setAttribute("role", "status");
+    this.status.setAttribute("aria-live", "polite");
+    this.status.setAttribute("aria-atomic", "true");
     this.progress = node("p", "reverse-progress");
     this.progress.id = "reverse-progress";
     this.error = node("p", "form-error");
+    this.error.setAttribute("role", "alert");
     this.error.hidden = true;
     const header = node("div", "reverse-output-heading");
     header.append(this.keyed("h3", "", "reverse.result.heading"));
