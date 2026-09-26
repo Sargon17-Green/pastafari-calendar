@@ -47,7 +47,7 @@ export default Object.freeze({
     "settings.invalid": "The day of working is invalid. Check the date and try again.",
 
     "comparison.toggle": "Compare two calculations side by side",
-    "comparison.toggleHelp": "Available on desktop. Each row will be the same target day under two days of working.",
+    "comparison.toggleHelp": "Available on desktop. Each row will be the same queried day under two days of working.",
     "comparison.secondActionLabel": "Calendar used to enter the second day of working",
     "comparison.apply": "Update comparison",
     "comparison.kicker": "Comparison aligned by day",
@@ -147,7 +147,7 @@ export default Object.freeze({
 
     "target.today": "This is today",
     "target.searched": "This is the date you searched for",
-    "target.context": "Target date: {targetDate} · day of working: {actionDate}",
+    "target.context": "Queried date: {targetDate} · day of working: {actionDate}",
     "target.notInView": "Your searched date remains saved; the cutlet currently displayed is different.",
     "date.aria": "Year {year} from the Creation of the World, day {dayInCutlet} in the cutlet {cutletName}, day {dayInMonth} in the month {monthName}",
     "date.yearLine": "Year {year} from the Creation of the World",
@@ -168,7 +168,7 @@ export default Object.freeze({
     "guide.5.heading": "Change the day of working",
     "guide.5.body": "Open “Calculation and comparison options” below the search. There you can choose a calendar and enter another day of working. Further searches use it until you reset to the current Pastafari day. This advanced control remains available without crowding the normal view.",
     "guide.6.heading": "Compare the same days twice",
-    "guide.6.body": "On desktop, enable comparison in the same area. Each row contains exactly the same target day; the first column uses the first day of working and the second uses the second. Today versus tomorrow is the default, making every changed Pastafari date easy to identify.",
+    "guide.6.body": "On desktop, enable comparison in the same area. Each row contains exactly the same queried day; the first column uses the first day of working and the second uses the second. Today versus tomorrow is the default, making every changed Pastafari date easy to identify.",
     "guide.7.heading": "Inspect the whole year",
     "guide.7.body": "Below the cutlet view, the site shows the structure of the displayed year: its length and span, every cutlet and its length, and every month. Months also show their number of continuous runs and their first and last occurrence, making the year-wide weaving visible.",
     "guide.note": "Rows and columns in the tile grid are only visual arrangement, not weeks. In the comparison table, however, alignment is meaningful: each row is the same queried day.",
