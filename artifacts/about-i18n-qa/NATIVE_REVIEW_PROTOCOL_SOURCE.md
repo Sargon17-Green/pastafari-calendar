@@ -29,6 +29,10 @@ Canonical invariants are mandatory. Do not propose changing formulas, hashes, co
 
 Manifest-specific rule: the current Web App Manifest standard supports `*_localized` language maps. Do not report the English default `name`, `short_name`, `description`, `lang`, or `dir` as a target-locale defect merely because they are the manifest fallback. Instead verify that the target locale has complete, correct `name_localized`, `short_name_localized`, and `description_localized` entries with the right language and direction, and report any missing, incorrect, or mismatched target-locale entry.
 
+Displayed-surface rule: distinguish repository source defaults from text actually displayed after locale initialization. Static HTML contains English bootstrap strings on elements carrying `data-i18n` / `data-i18n-attr`; the localization runtime replaces those strings for the active locale. Do not report those source defaults merely because they are English. Report them only when code inspection demonstrates that they can remain exposed after target-locale initialization or in an actual user-visible error/fallback path.
+
+No-JavaScript rule: locale resolution on this static site is itself performed by JavaScript. The `noscript` fallback is intentionally language-neutral and contains only the proper name `JavaScript` plus a warning symbol. Treat this as a language-neutral fallback rather than English leakage. Still report additional natural-language text from another language, or any concrete accessibility defect that is independent of locale resolution.
+
 The FIRST line of your response MUST be exactly one of:
 NATIVE_QA_RESULT: PASS
 NATIVE_QA_RESULT: FAIL
