@@ -104,7 +104,7 @@
 </section>
 <section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
   <h2>Short Choice ja Wide Choice</h2>
-  <p>Kun vaihtoehtoavaruus on suhteellisen pieni, käytetään <strong>Short Choice</strong> -menetelmää. Se käyttää hylkäysotantaa (rejection sampling) yksinkertaisen modulo-harhan välttämiseksi.</p>
+  <p>Kun vaihtoehtoavaruus on suhteellisen pieni, käytetään <strong>Short Choice</strong> -menetelmää. Se käyttää hylkäysotantaa yksinkertaisen modulo-harhan välttämiseksi.</p>
   <p>Hyvin suuret avaruudet käyttävät <strong>Wide Choice</strong> -menetelmää. Sille ei pidä olettaa ominaisuuksia, joita määrittely ei takaa.</p>
   <p>Wide Choice ei vastaa riippumattomien, tasaisesti jakautuneiden kantaluvun <code>Q</code> numeroiden tuottamista, kunnes saadaan indeksi. Siksi ei seuraa, että jokaisella sallitulla vaihtoehdolla olisi välttämättä sama positiivinen todennäköisyys. Riittävän suurissa avaruuksissa voi olla sallittuja vaihtoehtoja, joihin tämä valintamekanismi ei lainkaan yllä.</p>
   <p>Kalenteri itse on täysin deterministinen. “Choice” on algoritmivaiheen nimi, ei käytön aikana suoritettava arvonta.</p><hr>
@@ -148,9 +148,9 @@
   <p>Erittäin tärkeää tapaamista varten voidaan lisäksi tallentaa absoluuttinen kronologinen päivä tai hetki. Kalenteri kestää sen kyllä.</p><hr>
 </section>
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
-  <h2>Matkustaminen, tapahtumat ja all-day</h2>
+  <h2>Matkustaminen ja koko päivän tapahtumat</h2>
   <p>Tapahtuma ja sille paikallisesti näytetty etiketti eivät ole sama asia. Ajastettu tapahtuma pitää ankkuroida pysyvään kronologiseen hetkeen. Matkustaminen ei siirrä tapahtumaa ajassa, mutta sama hetki voi saada eri paikallisen pastafaripäivämäärän, koska “paikallinen päivä” riippuu sijainnista.</p>
-  <p><strong>all-day</strong>-tapahtumassa ero on vielä suurempi. Siviilikalenterin koko päivän tapahtuma kestää yleensä siviilikeskiyöstä seuraavaan. Pastafarin koko päivän tapahtuman pitäisi kestää paikalliselta pastafaripäivän rajalta seuraavalle. Nämä eivät yleensä ole samat hetket.</p>
+  <p><strong>koko päivän tapahtumassa</strong> ero on vielä suurempi. Siviilikalenterin koko päivän tapahtuma kestää yleensä siviilikeskiyöstä seuraavaan. Pastafarin koko päivän tapahtuman pitäisi kestää paikalliselta pastafaripäivän rajalta seuraavalle. Nämä eivät yleensä ole samat hetket.</p>
   <p>Pastafaritapahtuman sokea vienti siviilikalenterin “koko päivän tapahtumaksi” voi siis muuttaa sen merkitystä. Tarkkaan säilyttämiseen tarvitaan kronologinen ankkuri sekä oikea sijainti-/päivärajakonteksti, ei vain <code>all-day</code>-valintaa.</p><hr>
 </section>
 <section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
@@ -169,10 +169,10 @@
   <h2>Entä Seer?</h2>
   <p>Kanonisen toteutuksen rinnalla on nopea moottori nimeltä <strong>Pastafarian Calendar Seer</strong>. Seer ei ole auktoriteetin lähde. Oikean päivämäärän määräävät Megillah ja kanoninen laskenta; jos Seer on niiden kanssa eri mieltä, Seer on väärässä.</p>
   <p>Sen tehtävä on vastata samoihin kyselyihin nopeasti ja tuotteisiin helposti liitettävässä muodossa.</p>
-  <p>Tämän sivun muokkauksen yhteydessä tehdyssä reaaliaikaisessa tarkistuksessa Seer sisälsi muun muassa päivämäärä- ja “nyt”-kyselyt, batch-kyselyt, päiväalueet, käänteisen muunnoksen pastafaripäivämäärästä kohdepäiväksi, vuosirakenteen noudon, aktiivisen työpäivän ratkaisun, Node API:n, selain-/HTTP-asiakkaan, CLI:n, HTTP v1 -palvelun, OpenAPI 3.1 -sopimuksen, native-toteutuksia ja jakelupaketteja sekä varmennetun container-julkaisun.</p>
-  <p>Vanha väite, ettei Seerillä ole julkista API:a, ei siis enää pidä paikkaansa. Sillä on nimenomainen ja vakaa HTTP v1 -sopimus, jossa on endpointit päivämäärälle, alueelle, batchille, vuodelle, reverse-haulle, työpäivälle, metadatalle, localeille ja statukselle.</p>
-  <p>21. syyskuuta 2026 Renderissä oleva julkinen HTTPS-julkaisu testattiin käytännössä: exact-kyselyt, suuri alue, restart, cold wake ja kuormituskäyttäytyminen tarkistettiin elävässä palvelussa.</p>
-  <p>Projektin dokumentaatio erottaa silti julkisen beta/evaluation-julkaisun pysyvästä hosted production -palvelusta, jolla olisi SLA. Siksi periaatesivu ei saa jäädyttää palvelinosoitetta, hosting-palvelua tai versionumeroa osaksi kalenterin oppia.</p>
+  <p>Tämän sivun muokkauksen yhteydessä tehdyssä reaaliaikaisessa tarkistuksessa Seer sisälsi muun muassa päivämäärä- ja “nyt”-kyselyt, <code>batch</code>-kyselyt, päiväalueet, käänteisen muunnoksen pastafaripäivämäärästä kysytyksi päiväksi, vuosirakenteen noudon, aktiivisen työpäivän ratkaisun, Node API:n, selain-/HTTP-asiakkaan, CLI:n, HTTP v1 -palvelun, OpenAPI 3.1 -sopimuksen, alustakohtaisia toteutuksia ja jakelupaketteja sekä varmennetun konttijulkaisun.</p>
+  <p>Vanha väite, ettei Seerillä ole julkista API:a, ei siis enää pidä paikkaansa. Sillä on nimenomainen ja vakaa HTTP v1 -sopimus, jossa on rajapintapisteet <code>date</code>-, <code>range</code>-, <code>batch</code>-, <code>year</code>- ja <code>reverse</code>-toiminnoille sekä työpäivälle, <code>metadata</code>-, <code>locales</code>- ja <code>status</code>-tiedoille.</p>
+  <p>21. syyskuuta 2026 Renderissä oleva julkinen HTTPS-julkaisu testattiin käytännössä: täsmälliset kyselyt, suuri alue, uudelleenkäynnistys, <code>cold wake</code> ja kuormituskäyttäytyminen tarkistettiin elävässä palvelussa.</p>
+  <p>Projektin dokumentaatio erottaa silti julkisen beta-/arviointijulkaisun pysyvästä isännöidystä tuotantopalvelusta, jolla olisi SLA. Siksi periaatesivu ei saa jäädyttää palvelinosoitetta, hosting-palvelua tai versionumeroa osaksi kalenterin oppia.</p>
   <p>Seer saa käyttää esilaskentaa, erikoisesityksiä, SIMD:tä, algebraa ja muita oikoteitä. Sen ei tarvitse toistaa kanonisen toteutuksen laskentahistoriaa askel askeleelta, kunhan se toteuttaa saman semanttisen operaation ja palauttaa saman vastauksen.</p>
   <p>Optimointi ei ole vaihtoehtoinen auktoriteetti.</p><hr>
 </section>
