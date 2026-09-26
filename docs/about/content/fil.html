@@ -235,10 +235,10 @@
   <h2>Kung gayon, ano ang Seer?</h2>
   <p>Katabi ng kanonikal na implementasyon ay may mabilis na makinang na tinatawag na <strong>Pastafarian Calendar Seer</strong>. Hindi awtoridad ang Seer: ang tamang petsa ay tinutukoy ng Megillah at kanonikal na pagkalkula. Kung hindi tugma ang Seer sa mga iyon, nasa Seer ang mali.</p>
   <p>Trabaho nitong patakbuhin nang mabilis ang parehong query at ibalik ang resulta sa anyong madaling i-integrate sa mga produkto.</p>
-  <p>Sa tuwirang beripikasyong ginawa habang ine-edit ang pahinang ito, saklaw ng Seer, bukod sa iba pa, ang mga query na <code>date</code> at <code>now</code>, <code>batch</code>, mga saklaw ng araw, baligtad na konbersiyon mula sa petsang Pastafari patungo sa araw na tinatanong, pagkuha ng estruktura ng taon, pagtukoy ng aktibong araw ng pagkilos, Node API, client ng browser/HTTP, CLI, serbisyong HTTP v1, kontratang OpenAPI 3.1, mga katutubong implementasyon at package ng distribusyon, at beripikadong deployment sa container.</p>
+  <p>Sa tuwirang beripikasyong ginawa habang ine-edit ang pahinang ito, saklaw ng Seer, bukod sa iba pa, ang mga query na <code>date</code> at <code>now</code>, <code>batch</code>, mga saklaw ng araw, baligtad na konbersiyon mula sa petsang Pastafari patungo sa araw na tinatanong, pagkuha ng estruktura ng taon, pagtukoy ng aktibong araw ng pagkilos, Node API, client ng browser/HTTP, CLI, serbisyong HTTP v1, kontratang OpenAPI 3.1, mga katutubong implementasyon at package ng distribusyon, at beripikadong paglalagay sa container.</p>
   <p>Hindi na tama ang lumang pahayag na walang pampublikong API ang Seer. Mayroon na ngayong malinaw at matatag na kontratang HTTP v1 na may mga endpoint para sa <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, araw ng pagkilos, <code>metadata</code>, <code>locales</code>, at <code>status</code>.</p>
-  <p>Noong Setyembre 21, 2026, aktuwal na sinubukan ang pampublikong HTTPS deployment sa Render: na-verify sa aktibong serbisyo ang eksaktong query, malaking saklaw, muling pagsisimula, <code>cold wake</code>, at pag-uugali sa ilalim ng bigat.</p>
-  <p>Gayunman, patuloy na pinag-iiba ng dokumentasyon ng proyekto ang pampublikong beta/pagsusuring deployment at ang permanenteng naka-host na serbisyong produksiyon na may SLA. Kaya hindi dapat gawing permanente ng konseptuwal na pahina ng paliwanag ang address ng server, provider ng hosting, o numero ng bersiyon na para bang bahagi ang mga iyon ng mismong kalendaryo.</p>
+  <p>Noong Setyembre 21, 2026, aktuwal na sinubukan ang pampublikong paglalagay ng HTTPS sa Render: na-verify sa aktibong serbisyo ang eksaktong query, malaking saklaw, muling pagsisimula, <code>cold wake</code>, at pag-uugali sa ilalim ng bigat.</p>
+  <p>Gayunman, patuloy na pinag-iiba ng dokumentasyon ng proyekto ang pampublikong beta/pagsusuring paglalagay at ang permanenteng naka-host na serbisyong produksiyon na may SLA. Kaya hindi dapat gawing permanente ng konseptuwal na pahina ng paliwanag ang address ng server, provider ng hosting, o numero ng bersiyon na para bang bahagi ang mga iyon ng mismong kalendaryo.</p>
   <p>Maaaring gumamit ang Seer ng paunang pagkalkula, espesyal na representasyon, SIMD, algebra, at iba pang shortcut. Hindi nito kailangang gayahin nang hakbang-hakbang ang buong kasaysayan ng pagkalkula ng kanonikal na implementasyon hangga't ginagawa nito ang parehong semantikong operasyon at ibinabalik ang parehong sagot.</p>
   <p>Hindi alternatibong awtoridad ang optimization.</p><hr>
 </section>
@@ -294,7 +294,7 @@
 
   <p>Kung hindi alam ang araw ng pagkilos, iba ang sitwasyon. Maaaring lumitaw ang parehong limang value sa ilalim ng magkakaibang araw ng pagkilos, at may exact example kung saan lumilitaw ang parehong buong petsa sa magkakaibang distansiya mula sa <code>c</code>.</p>
   <p>Sa taon 5000, kahit ang sign ng distansiyang iyon ay hindi laging natutukoy ng limang value: maaaring bago ang araw ng pagkilos ang parehong buong petsa sa isang context at pagkatapos nito sa ibang context.</p>
-  <p>Kaya hindi absolute address sa timeline ang isang buong Pastafari na petsa kung hindi alam kung sa ilalim ng aling <code>c</code> ito kinalkula.</p>
+  <p>Kaya hindi ganap na address sa guhit ng panahon ang isang buong Pastafari na petsa kung hindi alam kung sa ilalim ng aling <code>c</code> ito kinalkula.</p>
 
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
     <h3>Estruktura sa napakalayong panahon</h3>
@@ -312,7 +312,7 @@
 
 <section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
   <h2>Para sa advanced user: gaano karaming history ang iniingatan ng sarsa?</h2>
-  <p>Mukhang napakaagresibong mixing mechanism ang sarsa, ngunit ipinapakita ng algebraic research na mas marami itong iniingatang impormasyon kaysa sa ipinahihiwatig ng itsura nito. Research result itong hinango sa specification, hindi bagong calendar rule.</p>
+  <p>Mukhang napakaagresibong mekanismo ng paghahalo ang sarsa, ngunit ipinapakita ng pananaliksik na algebraiko na mas marami itong iniingatang impormasyon kaysa sa ipinahihiwatig ng itsura nito. Resulta ito ng pananaliksik na hinango sa espesipikasyon, hindi bagong tuntunin ng kalendaryo.</p>
   <p>Sa nakikitang stage 3–46, sa kaukulang asymptotic branch, naitatag ang injektibidad sa pangkalahatang kaso: sa generic case, sapat ang impormasyong iniingatan ng state upang ma-reconstruct ang kaukulang input history at order ng mga mangkok.</p>
   <p>Hindi rin agad nawawala ang impormasyon sa 12 panghuling paghahalo. Para sa unang limang paghahalo pagkatapos ng nakikitang patak 46, naitatag sa kaukulang kanonikal na unyon ang kakayahang baligtarin sa pangkalahatang kaso nang walang dagdag na pantulong na impormasyon; para sa natitirang bahagi, may malalakas na constructive upper bound sa dami ng pantulong na impormasyon na sapat para sa reconstruction.</p>
   <p>Bukas pa rin ang tanong kung <strong>ang huling anim na mangkok lamang</strong> ay laging sapat sa generic sense.</p>
@@ -325,7 +325,7 @@
   <h2>Kung gayon, ano talaga ang Kalendaryong Pastafari?</h2>
   <p>Isa itong deterministikong kalendaryo kung saan ang petsa ay hindi lamang function ng araw na tinatanong kundi <strong>pinagsamang function ng araw ng pagkilos at araw na tinatanong</strong>.</p>
   <p>May eksaktong limang field ang bawat petsa. Ang kasalukuyan, mula sa sarili nitong pananaw, ay laging nasa taon 5000, ngunit gumagalaw ang mismong taon 5000 kasama ng araw ng pagkilos. Maaaring napakahaba ng mga taon, tuloy-tuloy ang mga cutlet, hindi kinakailangang tuloy-tuloy ang mga buwan, at walang kanonikal na sistema ng linggo.</p>
-  <p>Hindi kailangang bukas ang araw <code>n+1</code> ng isang buwan. Maaaring magkaroon bukas ng ibang Pastafari label ang parehong chronological day. Maaaring mapabilang sa dalawang magkaibang local Pastafari day ang parehong physical moment sa dalawang lugar. Hindi kailangang mula hatinggabi hanggang hatinggabi ang pangyayaring buong-araw. At ang annual birthday ay una munang search problem, saka calendar problem.</p>
+  <p>Hindi kailangang bukas ang araw <code>n+1</code> ng isang buwan. Maaaring magkaroon bukas ng ibang Pastafari na etiketa ang parehong kronolohikal na araw. Maaaring mapabilang sa dalawang magkaibang lokal na araw ng Pastafari ang parehong pisikal na sandali sa dalawang lugar. Hindi kailangang mula hatinggabi hanggang hatinggabi ang pangyayaring buong-araw. At ang taunang kaarawan ay una munang problema sa paghahanap, saka problema sa kalendaryo.</p>
   <p>Ngunit kapag alam ang araw ng pagkilos at araw na tinatanong, walang ambiguity: iisa lamang ang tamang sagot.</p>
   <p>Sa huli, wala namang kailangang hingin pa sa isang kalendaryo.</p>
 </section>
