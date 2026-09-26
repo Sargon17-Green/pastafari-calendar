@@ -140,7 +140,7 @@
 
 <section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
   <h2>Short Choice i Wide Choice</h2>
-  <p>Za relativno male prostore mogućnosti koristi se <strong>Short Choice</strong>. Primjenjuje rejection sampling kako bi izbjegao jednostavnu modulo-pristranost.</p>
+  <p>Za relativno male prostore mogućnosti koristi se <strong>Short Choice</strong>. Primjenjuje uzorkovanje odbacivanjem kako bi izbjegao jednostavnu modulo-pristranost.</p>
   <p>Vrlo veliki prostori koriste <strong>Wide Choice</strong>. Ne treba mu pripisivati svojstva koja specifikacija ne jamči.</p>
   <p>Wide Choice nije isto što i generiranje neovisnih, uniformnih znamenki u bazi <code>Q</code> sve dok se ne dobije indeks. Stoga iz njega ne slijedi da svaka dopuštena mogućnost nužno ima istu pozitivnu vjerojatnost. U dovoljno velikim prostorima mogu postojati dopuštene mogućnosti do kojih taj mehanizam uopće ne može doći.</p>
   <p>Sam kalendar ostaje potpuno deterministički. „Choice” je naziv koraka algoritma, a ne nasumično izvlačenje tijekom uporabe.</p><hr>
@@ -212,9 +212,9 @@
 </section>
 
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
-  <h2>Putovanja, događaji i all-day</h2>
+  <h2>Putovanja i cjelodnevni događaji</h2>
   <p>Događaj nije isto što i lokalna oznaka prikazana uz njega. Događaj zakazan za određeni trenutak treba biti vezan uz stabilan kronološki trenutak. Putovanje ga ne pomiče kroz vrijeme, ali lokalni pastafarijanski datum prikazan za isti trenutak može se promijeniti jer definicija „lokalnog dana” ovisi o mjestu.</p>
-  <p>Kod događaja <strong>all-day</strong> razlika je još veća. Građanski cjelodnevni događaj obično traje od jedne građanske ponoći do sljedeće; pastafarijanski cjelodnevni događaj trebao bi trajati od lokalne granice pastafarijanskog dana do sljedeće granice. To obično nisu isti trenuci.</p>
+  <p>Kod <strong>cjelodnevnog događaja</strong> razlika je još veća. Građanski cjelodnevni događaj obično traje od jedne građanske ponoći do sljedeće; pastafarijanski cjelodnevni događaj trebao bi trajati od lokalne granice pastafarijanskog dana do sljedeće granice. To obično nisu isti trenuci.</p>
   <p>Slijepi izvoz pastafarijanskog događaja kao građanskog „cjelodnevnog” događaja zato može promijeniti njegovo značenje. Za točno očuvanje treba spremiti kronološko sidro i odgovarajući kontekst mjesta/granice dana, a ne samo oznaku <code>all-day</code>.</p><hr>
 </section>
 
@@ -236,10 +236,10 @@
   <h2>A što je Seer?</h2>
   <p>Uz kanonsku implementaciju postoji brzi engine <strong>Pastafarian Calendar Seer</strong>. Seer nije izvor autoriteta: točan datum određuju Megillah i kanonski izračun. Ako se Seer s njima ne slaže, Seer griješi.</p>
   <p>Njegova je zadaća iste upite izvršavati brzo i u obliku pogodnom za integraciju u proizvode.</p>
-  <p>Tijekom žive provjere pri uređivanju ove stranice Seer je među ostalim uključivao upite za datum i „sada”, batch, raspone dana, obrnutu konverziju iz pastafarijanskog datuma u ciljni dan, dohvat strukture godine, određivanje aktivnog dana djelovanja, Node API, preglednički/HTTP klijent, CLI, HTTP v1 uslugu, OpenAPI 3.1 ugovor, native implementacije i distribucijske pakete te provjereni container deployment.</p>
-  <p>Stara tvrdnja da Seer nema javni API više nije točna. Postoji izričit i stabilan HTTP v1 ugovor s endpointima za date, range, batch, year, reverse, dan djelovanja, metadata, locales i status.</p>
-  <p>21. rujna 2026. stvarno je testiran i javni HTTPS deployment na Renderu: na živoj su usluzi provjereni exact upiti, veliki range, restart, cold wake i ponašanje pod opterećenjem.</p>
-  <p>Projektna dokumentacija ipak i dalje razlikuje javni beta/evaluation deployment od trajne hosted production usluge sa SLA-om. Zato stranica koja objašnjava načela ne bi trebala fiksirati adresu poslužitelja, pružatelja hostinga ili broj verzije kao dio samog kalendara.</p>
+  <p>Tijekom žive provjere pri uređivanju ove stranice Seer je među ostalim uključivao upite za datum i „sada”, batch, raspone dana, obrnutu konverziju iz pastafarijanskog datuma u ciljni dan, dohvat strukture godine, određivanje aktivnog dana djelovanja, Node API, preglednički/HTTP klijent, CLI, HTTP v1 uslugu, OpenAPI 3.1 ugovor, izvorne implementacije i distribucijske pakete te provjereno postavljanje u kontejneru.</p>
+  <p>Stara tvrdnja da Seer nema javni API više nije točna. Postoji izričit i stabilan HTTP v1 ugovor s krajnjim točkama za <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, dan djelovanja, <code>metadata</code>, <code>locales</code> i <code>status</code>.</p>
+  <p>21. rujna 2026. stvarno je testiran i javno HTTPS postavljanje na Renderu: na živoj su usluzi provjereni točni upiti, veliki raspon, ponovno pokretanje, <code>cold wake</code> i ponašanje pod opterećenjem.</p>
+  <p>Projektna dokumentacija ipak i dalje razlikuje javno beta/evaluacijsko postavljanje od trajne hostirane produkcijske usluge sa SLA-om. Zato stranica koja objašnjava načela ne bi trebala fiksirati adresu poslužitelja, pružatelja hostinga ili broj verzije kao dio samog kalendara.</p>
   <p>Seer može koristiti predizračune, posebne reprezentacije, SIMD, algebru i druge prečace. Ne mora korak po korak ponavljati cijelu povijest izračuna kanonske implementacije ako izvršava istu semantičku operaciju i vraća isti odgovor.</p>
   <p>Optimizacija nije alternativni autoritet.</p><hr>
 </section>
@@ -314,8 +314,8 @@
 <section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
   <h2>Za napredne: koliko povijesti umak čuva?</h2>
   <p>Umak izgleda kao vrlo agresivno miješanje, ali algebarsko je istraživanje pokazalo da zadržava mnogo više informacija nego što njegov vanjski izgled sugerira. To je istraživanje izvedeno iz specifikacije, a ne novo pravilo kalendara.</p>
-  <p>U vidljivim fazama 3–46, na relevantnoj asimptotskoj grani, utvrđena je generic injectivity: u generičkom slučaju stanje zadržava dovoljno informacija da se rekonstruira relevantna povijest ulaza i poretka zdjela.</p>
-  <p>Ni tijekom 12 završnih miješanja informacije ne nestaju odmah. Za prvih pet nakon vidljive kapi 46 utvrđena je generic invertibility na relevantnoj kanonskoj uniji bez dodatnih bočnih informacija; za preostale su poznate snažne konstruktivne gornje granice količine bočnih informacija dovoljne za rekonstrukciju.</p>
+  <p>U vidljivim fazama 3–46, na relevantnoj asimptotskoj grani, utvrđena je injektivnost u generičkom slučaju: u generičkom slučaju stanje zadržava dovoljno informacija da se rekonstruira relevantna povijest ulaza i poretka zdjela.</p>
+  <p>Ni tijekom 12 završnih miješanja informacije ne nestaju odmah. Za prvih pet nakon vidljive kapi 46 utvrđena je invertibilnost u generičkom slučaju na relevantnoj kanonskoj uniji bez dodatnih bočnih informacija; za preostale su poznate snažne konstruktivne gornje granice količine bočnih informacija dovoljne za rekonstrukciju.</p>
   <p>I dalje je otvoreno jesu li <strong>samo završnih šest zdjela</strong> uvijek dovoljne u generičkom smislu.</p>
   <p>Neki su rezultati dokazani simbolički, a drugi zatvoreni konačnim, točnim aritmetičkim provjerama. Simboličko jačanje znatno je smanjilo računalnu jezgru kojoj treba vjerovati, ali je nije potpuno uklonilo.</p>
   <p>Prostori za koje se isprva činilo da zahtijevaju prolazak golemog broja putova smanjili su se na mnogo manje konačne strukture, uključujući automate sa 180 i 9 stanja te simetrije šest zdjela.</p>
