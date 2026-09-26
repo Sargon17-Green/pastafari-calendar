@@ -59,7 +59,9 @@ function tableBodyRowCounts(html) {
 }
 
 function normalizeNumericFormatting(value) {
-  return value.replace(/[.,\s\u00a0\u202f]/gu, "");
+  return value
+    .replace(/(?<=\d)[.,\s\u00a0\u202f](?=\d)/gu, "#")
+    .replace(/[\s\u00a0\u202f]+/gu, "");
 }
 
 test("main page routes explanation links to the standalone about page", async () => {
