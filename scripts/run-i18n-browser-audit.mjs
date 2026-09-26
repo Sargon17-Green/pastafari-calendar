@@ -1236,9 +1236,10 @@ async function testPostSwitchSmoke(browser, baseUrl, locale, comparisonRepresent
   }
 }
 
-async function testBrowserLanguageResolution(browser, baseUrl, registry) {
+async function testBrowserLanguageResolution(browser, baseUrl, registry, scopeCodes = null) {
   const cases = [];
-  const registered = registry.LOCALES;
+  const allRegistered = registry.LOCALES;
+  const registered = scopeCodes?.size ? allRegistered.filter((locale) => scopeCodes.has(locale.code)) : allRegistered;
   const defaultCode = registry.DEFAULT_LOCALE;
   const unsupportedCandidates = ["qaa", "qab", "und-x-audit"];
   const unsupported = unsupportedCandidates.find((tag) => {
@@ -1255,7 +1256,8 @@ async function testBrowserLanguageResolution(browser, baseUrl, registry) {
     if (canonicalTag(regional)) cases.push({ name: `regional-${locale.code}`, languages: [regional], expected: registry.resolveLocale({ browserLanguages: [regional] }).locale.code });
   }
   cases.push({ name: "unsupported", languages: [unsupported], expected: defaultCode });
-  if (registered.length) cases.push({ name: "unsupported-then-supported", languages: [unsupported, registered[0].code], expected: registered[0].code });
+  const supportedFallbackProbe = registered[0] || allRegistered[0] || null;
+  if (supportedFallbackProbe) cases.push({ name: "unsupported-then-supported", languages: [unsupported, supportedFallbackProbe.code], expected: supportedFallbackProbe.code });
   cases.push({ name: "invalid", languages: ["%%%"], expected: defaultCode });
 
   const results = [];
@@ -1871,7 +1873,7 @@ async function main() {
         resource,
         breakpoints,
         screenshots: options.screenshots,
-        comparisonRepresentative: comparisonRepresentatives.has(code),
+        comparisonRepresentative: scopeCodes ? true : comparisonRepresentatives.has(code),
       });
       report.locales[code] = result;
       console.log(`[audit] ${code}: ${result.status}`);
@@ -1906,7 +1908,7 @@ async function main() {
     }
 
     console.log("[audit] browser-language resolution");
-    report.browserLanguageResolution = await testBrowserLanguageResolution(browser, server.baseUrl, registry);
+    report.browserLanguageResolution = await testBrowserLanguageResolution(browser, server.baseUrl, registry, scopeCodes);
     for (const item of report.browserLanguageResolution) {
       for (const itemFinding of item.findings || []) report.globalFindings.push(itemFinding);
     }
