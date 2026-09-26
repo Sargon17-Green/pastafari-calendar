@@ -1,6 +1,6 @@
 # Cross-repository native QA ledger
 
-Inventory: **89 QA units / 85 unique human languages**. No row may receive cross-repository PASS until the required same-language session, whole-site source QA, real rendered desktop/mobile QA, accessibility, PWA/offline, language switching, semantic invariants and relevant CI are all clean.
+Inventory: **89 QA units / 85 unique human languages**. A native reviewer PASS advances only the linguistic gate; rendered/accessibility/PWA/switching/CI gates remain separate.
 
 | review_id | self-name | site semantic state | native same-language | repo2 human-facing text | rendered desktop | rendered 390px | a11y | PWA/offline | switching | CI | final |
 |---|---|---|---|---|---|---|---|---|---|---|---|
@@ -42,7 +42,7 @@ Inventory: **89 QA units / 85 unique human languages**. No row may receive cross
 | id | Bahasa Indonesia | semantic QA | not started | n/a | open | open | open | open | open | open | NOT PASS |
 | ie | Interlingue / Occidental | not applicable | not started | not reviewed | open | open | open | open | open | open | NOT PASS |
 | io | Ido | not applicable | not started | not reviewed | open | open | open | open | open | open | NOT PASS |
-| is | Íslenska | semantic QA | not started | not reviewed | open | open | open | open | open | open | NOT PASS |
+| is | Íslenska | semantic QA | FAIL | reviewed | OPEN | OPEN | OPEN | OPEN | OPEN | open | NOT PASS |
 | it | Italiano | semantic QA | not started | not reviewed | open | open | open | open | open | open | NOT PASS |
 | ja | 日本語 | semantic QA | not started | not reviewed | open | open | open | open | open | open | NOT PASS |
 | jbo | la .lojban. | not applicable | not started | not reviewed | open | open | open | open | open | open | NOT PASS |
@@ -93,5 +93,3 @@ Inventory: **89 QA units / 85 unique human languages**. No row may receive cross
 | zh | 简体中文 | semantic QA | not started | not reviewed | open | open | open | open | open | open | NOT PASS |
 | zh-hant | 繁體中文（國語） | not applicable | not started | not reviewed | open | open | open | open | open | open | NOT PASS |
 | zu | isiZulu | semantic QA | not started | n/a | open | open | open | open | open | open | NOT PASS |
-
-The prior Icelandic repo-1-only native evidence is retained under `artifacts/about-i18n-native-sessions/is/`; its canonical verdict is currently FAIL and it does not satisfy this new cross-repository gate.
