@@ -1,0 +1,122 @@
+name: Locale browser QA
+
+on:
+  push:
+    branches:
+      - feature/about-i18n-72-locales
+    paths:
+      - artifacts/locale-browser-qa-trigger.json
+
+permissions:
+  contents: read
+
+jobs:
+  browser-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout feature branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: feature/about-i18n-72-locales
+          fetch-depth: 1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24"
+          cache: npm
+
+      - name: Resolve requested site locale
+        id: unit
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs=require("node:fs");
+          const trigger=JSON.parse(fs.readFileSync("artifacts/locale-browser-qa-trigger.json","utf8"));
+          const inv=JSON.parse(fs.readFileSync("artifacts/cross-repo-native-qa/inventory.json","utf8"));
+          const unit=inv.units.find(x=>x.review_id===trigger.review_id);
+          if(!unit) throw new Error("Unknown review_id "+trigger.review_id);
+          if(!unit.pastafari_calendar.present) throw new Error("Review unit "+trigger.review_id+" has no site locale");
+          fs.appendFileSync(process.env.GITHUB_OUTPUT,"review_id="+unit.review_id+"\n");
+          fs.appendFileSync(process.env.GITHUB_OUTPUT,"locale="+unit.pastafari_calendar.locale_code+"\n");
+          fs.appendFileSync(process.env.GITHUB_OUTPUT,"self_name="+unit.self_name.replace(/\n/g," ")+"\n");
+          NODE
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install pinned Chromium
+        run: ./node_modules/.bin/playwright install --with-deps chromium
+
+      - name: Run real rendered locale audit
+        id: audit
+        shell: bash
+        env:
+          LOCALE: ${{ steps.unit.outputs.locale }}
+        run: |
+          set +e
+          node scripts/run-i18n-browser-audit.mjs --locale "$LOCALE"
+          EXIT=$?
+          set -e
+          printf 'audit_exit=%s\n' "$EXIT" >> "$GITHUB_OUTPUT"
+          test -s artifacts/i18n-browser-audit/report.json
+          test -s artifacts/i18n-browser-audit/report.md
+
+      - name: Validate required rendered evidence
+        shell: bash
+        env:
+          REVIEW_ID: ${{ steps.unit.outputs.review_id }}
+          LOCALE: ${{ steps.unit.outputs.locale }}
+          AUDIT_EXIT: ${{ steps.audit.outputs.audit_exit }}
+          RUN_ID: ${{ github.run_id }}
+          HEAD_SHA: ${{ github.sha }}
+        run: |
+          node <<'NODE'
+          const fs=require("node:fs");
+          const path=require("node:path");
+          const report=JSON.parse(fs.readFileSync("artifacts/i18n-browser-audit/report.json","utf8"));
+          const locale=process.env.LOCALE;
+          const result=report.locales?.[locale];
+          if(!result) throw new Error("Audit report has no result for "+locale);
+          const required=[
+            `screenshots/${locale}-desktop.png`,
+            `screenshots/${locale}-mobile.png`,
+            `screenshots/${locale}-about-desktop.png`,
+            `screenshots/${locale}-about-mobile.png`,
+          ];
+          for(const rel of required){
+            const full=path.join("artifacts/i18n-browser-audit",rel);
+            if(!fs.existsSync(full) || fs.statSync(full).size<1000) throw new Error("Missing/empty rendered screenshot "+rel);
+          }
+          const summary={
+            schema_version:1,
+            run_id:process.env.RUN_ID,
+            event_head_sha:process.env.HEAD_SHA,
+            audited_head_sha:report.commit,
+            review_id:process.env.REVIEW_ID,
+            locale,
+            machine_result:result.status,
+            global_result:report.summary?.globalStatus||null,
+            audit_exit:Number(process.env.AUDIT_EXIT),
+            main_layout:result.layout,
+            about_layout:result.about?.layout||null,
+            language_switch:result.switchLanguage,
+            persistence:result.persistence,
+            engine_identity:result.engineIdentity,
+            screenshots:required,
+          };
+          fs.writeFileSync("artifacts/i18n-browser-audit/gate-summary.json",JSON.stringify(summary,null,2)+"\n");
+          if(Number(process.env.AUDIT_EXIT)!==0) throw new Error("Browser audit exited "+process.env.AUDIT_EXIT);
+          if(result.status!=="PASS") throw new Error("Locale browser result is "+result.status+", not PASS");
+          if(report.summary?.globalStatus==="FAIL") throw new Error("Browser audit global result is FAIL");
+          NODE
+
+      - name: Upload rendered QA evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: locale-browser-qa-${{ steps.unit.outputs.review_id }}-${{ github.run_id }}
+          path: artifacts/i18n-browser-audit/
+          if-no-files-found: error
+          retention-days: 30
