@@ -1,8 +1,8 @@
 <!-- Azərbaycan dili versiyası ivrit semantic master-dan birbaşa yazılıb; aralıq dil istifadə edilməyib. -->
 <!-- Bölmə ID-ləri sabit public deep-link contract-ın hissəsidir; tərcümə edilmiş başlıqlardan yaradılmır. -->
 <div class="about-section about-lead" id="about-calendar">
-  <p>Bu saytın hekayəsində Pastafari təqvimi zamanın özünün içində yaradıldığı təqvim kimi təqdim olunur. Amma onun necə işlədiyi sərt və dəqiq qaydalarla müəyyən edilir.</p>
-  <p>Bu təqvim hər günə dəyişməz bir Pastafari “etiketi” yapışdırmır. Tarixi hesablamaq üçün iki gün lazımdır: hesablamanın başladığı <strong>əməl günü</strong> və Pastafari tarixi soruşulan <strong>soruşulan gün</strong>.</p>
+  <p>Pastafari təqvimi zamanın yaradıldığı təqvimdir. Onun mexanikası dəqiq müəyyən edilib.</p>
+  <p>Bu təqvim hər günə dəyişməz bir Pastafari “etiketi” yapışdırmır. Tarixi hesablamaq üçün iki gün lazımdır: hesablamanın aparıldığı <strong>əməl günü</strong> və tarixini öyrənmək istədiyimiz <strong>soruşulan gün</strong>.</p>
   <p>Əməl gününü <code>c</code>, soruşulan günü isə <code>t</code> ilə işarə etsək, tarix</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
   <p>olur, <code>F(t)</code> yox. Buna görə eyni soruşulan günün Pastafari tarixi əməl günü dəyişəndə dəyişə bilər.</p>
@@ -126,7 +126,7 @@
 
 <section class="about-section" id="calculation" data-toc-section data-toc-level="2">
   <h2>Təqvim necə hesablanır?</h2>
-  <p>Daxili hesablamanı burada <strong>sous</strong> adlandırırıq. Onun mərkəzində sadə ədəd</p>
+  <p>Daxili hesablama <strong>sous</strong> adlanır. Onun mərkəzində sadə ədəd</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
   <p>dayanır. Proses beş giriş sayğacı, 7 gizli damcı, 46 görünən damcı, 6 kasa, dəyişən kasa sıraları, 12 son qarışdırma, fərqli cavablar üçün seal, combinatorial selection, qapıların qurulması, illərin seçilməsi, kotletlərin bölünməsi, adların seçilməsi, ayların qurulması və ay günlərinin hörülməsini əhatə edir.</p>
   <p>Son yeniləmələr <strong>sinxrondur</strong>: hər qarışdırmada altı yeni dəyərin hamısı eyni köhnə vəziyyətdən hesablanır və yalnız bundan sonra altı kasa birlikdə dəyişdirilir.</p>
@@ -170,7 +170,7 @@
         <tr><td>Ay uzunluğunun medianı</td><td>115</td></tr>
         <tr><td>Ay başına orta fasiləsiz segment sayı</td><td>100.897</td></tr>
         <tr><td>Birgünlük ay segmentlərinin payı</td><td>97.482%</td></tr>
-        <tr><td>İki qonşu günün eyni ayda olma ehtimalı</td><td>2.9976%</td></tr>
+        <tr><td>Eyni ayda olan qonşu gün cütlərinin payı</td><td>2.9976%</td></tr>
         <tr><td>Eyni ayın <code>n</code> və <code>n+1</code> günləri arasında başqa aylara aid günlərin orta sayı</td><td>40.408</td></tr>
         <tr><td>Ayın ilk və son görünüşü arasındakı orta məsafə</td><td>4,266.653 gün</td></tr>
       </tbody>
@@ -199,7 +199,7 @@
 
 <section class="about-section" id="appointments" data-toc-section data-toc-level="2">
   <h2>Görüşü necə təyin etmək olar?</h2>
-  <p>İki nəfər yalnız Pastafari tarixi ilə razılaşmaq istəyirsə, heç olmasa tarixin beş sahəsi və hesablamada istifadə olunan əməl günü barədə razılaşmalıdır. Əməl gününü “bu gün” sözü kimi deyil, sabit gün kimliyi kimi saxlamaq daha düzgündür; əks halda iki nəfər iki fərqli təqvim hesablaya bilər.</p>
+  <p>İki nəfər görüş gününü Pastafari tarixi ilə müəyyənləşdirmək istəyirsə, ən azı tarixin beş sahəsi və hesablamada istifadə olunan əməl günü barədə razılaşmalıdır. Bu məlumatlar görüşün dəqiq anını öz-özlüyündə müəyyən etmir. Əməl gününü “bu gün” sözü ilə deyil, sabit gün kimliyi ilə saxlamaq daha düzgündür; əks halda tərəflər fərqli təqvimlər hesablaya bilər.</p>
   <ul>
     <li>“sabah” növbəti xronoloji gündür;</li>
     <li>“ayın növbəti günü” həmin ayın növbəti görünüşüdür;</li>
@@ -211,9 +211,9 @@
 </section>
 
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
-  <h2>Səyahət və tam-günlük hadisələr</h2>
+  <h2>Səyahət və bütün gün davam edən hadisələr</h2>
   <p>Hadisə ilə ona göstərilən yerli etiket eyni şey deyil. Müəyyən vaxtlı hadisə sabit xronoloji ana bağlanmalıdır. Səyahət onu zaman daxilində hərəkət etdirmir, amma eyni fiziki an üçün göstərilən yerli Pastafari tarixi dəyişə bilər, çünki “yerli gün” anlayışı yerə bağlıdır.</p>
-  <p><code>all-day</code> hadisəsində fərq daha da böyükdür. Mülki tam-günlük hadisə adətən gecəyarısından növbəti gecəyarısına qədər davam edir; Pastafari tam-günlük hadisəsi isə yerli Pastafari gün sərhədindən növbəti sərhədə qədər davam etməlidir. Adətən bunlar eyni anlar deyil.</p>
+  <p>Bütün gün davam edən (<code>all-day</code>) hadisələrdə fərq daha da böyükdür. Mülki təqvimdə belə hadisə adətən bir gecəyarısından növbəti gecəyarısına qədər davam edir; Pastafari təqvimində isə yerli Pastafari gününün sərhədindən növbəti günün sərhədinədək davam etməlidir. Adətən bunlar eyni anlar deyil.</p>
   <p>Buna görə Pastafari hadisəsini düşünmədən mülki “tam gün” hadisəsi kimi ixrac etmək onun mənasını dəyişə bilər. Mənanı dəqiq qorumaq üçün xronoloji dayaq və uyğun yer və gün sərhədi konteksti saxlanmalıdır, təkcə <code>all-day</code> göstəricisi yox.</p><hr>
 </section>
 
@@ -233,19 +233,19 @@
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Bəs Seer nədir?</h2>
-  <p>Kanonik reallaşdırma ilə yanaşı <strong>Pastafarian Calendar Seer</strong> adlı sürətli mühərrik də var. Seer səlahiyyət mənbəyi deyil: düzgün tarixi Megillah və kanonik hesablama müəyyən edir. Seer onlarla uyğun gəlmirsə, səhv Seer-dədir.</p>
+  <p>Kanonik hesablamanın yanında <strong>Pastafarian Calendar Seer</strong> adlı sürətli mühərrik də var. Megillah qaydaları müəyyən edir, kanonik hesablama isə həmin qaydalara əsasən tarixi hesablayır; Seer də eyni cavabı qaytarmalıdır. Seer düzgün kanonik hesablamadan fərqli cavab verirsə, səhv Seer-dədir.</p>
   <p>Onun işi eyni sorğuları sürətlə yerinə yetirmək və nəticəni məhsullara asanlıqla inteqrasiya edilə bilən formada qaytarmaqdır.</p>
-  <p>Bu səhifə redaktə edilərkən aparılan birbaşa yoxlamada Seer-in imkanları arasında <code>date</code> və <code>now</code> sorğuları, <code>batch</code>, gün aralığı, Pastafari tarixindən hədəf günə tərs çevirmə, il quruluşunun alınması, aktiv əməl gününün müəyyənləşdirilməsi, Node API-si, brauzer/HTTP müştərisi, CLI, HTTP v1 xidməti, OpenAPI 3.1 müqaviləsi, yerli reallaşdırmalar və paylama paketi, həmçinin yoxlanmış konteyner yerləşdirməsi var idi.</p>
-  <p>Seer-in açıq API-si olmadığı barədə köhnə iddia artıq doğru deyil. İndi <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, əməl günü, metadata, locales və status üçün son nöqtələri olan aydın və sabit HTTP v1 müqaviləsi mövcuddur.</p>
+  <p>21 sentyabr 2026-cı ildə aparılmış canlı yoxlamada Seer-in imkanları arasında <code>date</code> və <code>now</code> sorğuları, <code>batch</code>, gün aralığı, Pastafari tarixindən hədəf günə tərs çevirmə, il quruluşunun alınması, aktiv əməl gününün müəyyənləşdirilməsi, Node API-si, brauzer/HTTP müştərisi, CLI, HTTP v1 xidməti, OpenAPI 3.1 müqaviləsi, yerli reallaşdırmalar və paylama paketi, həmçinin yoxlanmış konteyner yerləşdirməsi var idi.</p>
+  <p>Seer-in ictimai API-si var və <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, əməl günü, metadata, locales və status üçün son nöqtələri əhatə edən aydın, sabit HTTP v1 müqaviləsi mövcuddur.</p>
   <p>21 sentyabr 2026-cı ildə Render-də açıq HTTPS yerləşdirməsi real şəraitdə sınaqdan keçirildi: işlək xidmətdə dəqiq sorğular, geniş aralıq, yenidən başlatma, soyuq oyanma və yük altındakı davranış yoxlandı.</p>
-  <p>Bununla belə, layihə sənədləri açıq beta/qiymətləndirmə yerləşdirməsini SLA-li sabit istehsal xidmətindən hələ də fərqləndirir. Buna görə konseptual izah səhifəsi server ünvanını, hostinq provayderini və ya versiya nömrəsini təqvimin öz hissəsi kimi daimi olaraq sabitləməməlidir.</p>
-  <p>Seer əvvəlcədən hesablama, xüsusi təqdimatlar, SIMD, cəbr və başqa qısa yollardan istifadə edə bilər. Eyni semantik əməliyyatı yerinə yetirib eyni cavabı qaytarırsa, kanonik reallaşdırmanın bütün hesablama tarixini addım-addım təkrarlamaq məcburiyyətində deyil.</p>
-  <p>Optimallaşdırma alternativ səlahiyyət deyil.</p><hr>
+  <p>Yoxlanmış ictimai yerləşdirmə beta/qiymətləndirmə mərhələsindədir; bu, SLA-li daimi istehsal xidmətinə zəmanət vermir.</p>
+  <p>Server ünvanı, hostinq provayderi və versiya nömrəsi təqvimin hissəsi deyil və kanonik sabitlər sayılmır.</p>
+  <p>Seer əvvəlcədən hesablama, xüsusi təqdimatlar, SIMD, cəbr və başqa qısa yollardan istifadə edə bilər. Eyni semantik əməliyyatı yerinə yetirib eyni cavabı qaytarırsa, kanonik reallaşdırmanın bütün hesablama tarixini addım-addım təkrarlamaq məcburiyyətində deyil. Optimallaşdırma alternativ səlahiyyət deyil.</p><hr>
 </section>
 
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
   <h2>Mənşə, Təməl Günü və Lövhələr Günü</h2>
-  <p>Burada kanonik zaman dayaqlarını saytın hekayəsindən aydın şəkildə ayırmaq xüsusilə vacibdir.</p>
+  <p>Təqvimin sabit hesablama dayaqları onun mənşəyindən və yenidən çatdırılma tarixindən ayrıdır.</p>
 
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>İstinad nöqtələri</h3>
@@ -260,10 +260,10 @@
   </section>
 
   <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
-    <h3>Saytın hekayəsi</h3>
-    <p>Saytın redaksiya hekayəsində təqvim yaradılışın bir hissəsi və insanlığın onu tam anlamadan istifadə etdiyi, sonradan müasir dövrdə yenidən təqdim edilmiş bir sistem kimi təsvir olunur.</p>
-    <p>Bu, saytın hekayəsidir; oradakı hər hekayəvi detal Megillahın açıq texniki iddiası kimi təqdim edilməməlidir.</p>
-    <p>Yenidən təqdim edilmə hadisəsinin özü sabit tarixi hadisədir. Onun <strong>Pastafari tarixini</strong> həmişəlik bir tarix kimi sabitləməkdənsə, cari əməl günü altında dinamik göstərmək daha düzgündür.</p><hr>
+    <h3>Təqvimin mənşəyi və yenidən çatdırılması</h3>
+    <p>Pastafari təqvimi yaradılışın bir hissəsidir. Bəşəriyyət müasir dövrdə təqvim yenidən çatdırılanadək ondan istifadə etdiyinin yetərincə fərqində olmadan yararlanıb.</p>
+    <p>Megillah bu tarixçənin bütün təfərrüatlarını açıqlamır; orada açıq şəkildə deyilməyən təfərrüatlar Megillah mətninin tərkib hissəsi deyil.</p>
+    <p>Yenidən çatdırılma hadisəsi xronoloji baxımdan sabitdir; onun <strong>Pastafari tarixini</strong> müvafiq əməl günü əsasında hesablayırlar. Əməl günü dəyişdikcə həmin hadisənin Pastafari təqdimatı da dəyişə bilər.</p><hr>
   </section>
 </section>
 
@@ -293,7 +293,7 @@
   </div>
 
   <p>Əməl günü məlum deyilsə, vəziyyət fərqlidir. Eyni beş dəyər müxtəlif əməl günləri altında görünə bilər və eyni tam tarixin <code>c</code>-dən müxtəlif məsafələrdə göründüyü dəqiq nümunələr mövcuddur.</p>
-  <p>5000-ci ildə hətta həmin məsafənin işarəsi də beş dəyərlə həmişə müəyyən edilmir: eyni tam tarix bir kontekstdə əməl günündən əvvəl, başqa kontekstdə sonra ola bilər.</p>
+  <p>5000-ci ildə hətta beş sahə əməl gününə nəzərən istiqaməti də həmişə müəyyən etmir: eyni tam tarix bir kontekstdə əməl günündən əvvəl, başqa kontekstdə isə sonra ola bilər.</p>
   <p>Buna görə hansı <code>c</code> altında hesablandığı bilinmirsə, tam Pastafari tarixi zaman xəttində mütləq ünvan deyil.</p>
 
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
@@ -314,9 +314,9 @@
   <h2>İrəli səviyyə istifadəçilər üçün: sous nə qədər tarix saxlayır?</h2>
   <p>Sous çox aqressiv qarışdırma mexanizmi kimi görünür, amma cəbr araşdırması göstərir ki, o, zahiri görünüşün düşündürdüyündən xeyli çox məlumat saxlayır. Bu, spesifikasiyadan çıxarılan araşdırma nəticəsidir, yeni təqvim qaydası deyil.</p>
   <p>Görünən 3–46-cı mərhələlərdə, uyğun asimptotik budaqda generik injektivlik müəyyən edilib: generik halda vəziyyət uyğun giriş tarixçəsini və kasa sırasını bərpa etmək üçün kifayət qədər məlumat saxlayır.</p>
-  <p>12 son qarışdırmada da məlumat dərhal itmır. Görünən 46-cı damcıdan sonrakı ilk beş qarışdırma üçün uyğun kanonik birləşmədə əlavə məlumat olmadan generik çevriləbilənlik müəyyən edilib; qalan hissə üçün rekonstruksiyaya kifayət edən əlavə məlumat miqdarının güclü konstruktiv yuxarı hədləri məlumdur.</p>
+  <p>12 son qarışdırmada da məlumat dərhal itmır. Görünən 46-cı damcıdan sonrakı ilk beş qarışdırma üçün uyğun kanonik birləşmədə əlavə məlumat olmadan generik çevriləbilənlik sübut olunub; qalan qarışdırmalar üçün rekonstruksiyaya kifayət edən əlavə məlumat miqdarının güclü konstruktiv yuxarı hədləri məlumdur.</p>
   <p><strong>Yalnız son altı kasa</strong> generik mənada həmişə kifayət edirmi — bu sual hələ açıqdır.</p>
-  <p>Bəzi nəticələr simvolik şəkildə sübut olunub, digərləri sonlu dəqiq hesab yoxlaması ilə bağlanıb. Simvolik gücləndirmə etibar edilməli hesablama nüvəsini xeyli kiçildib, amma tam aradan qaldırmayıb.</p>
+  <p>Bəzi nəticələr simvolik şəkildə sübut olunub, digərlərinin doğruluğu isə sonlu və dəqiq arifmetik yoxlamalarla təsdiqlənib. Simvolik gücləndirmə etibar edilməli hesablama nüvəsini xeyli kiçildib, amma tam aradan qaldırmayıb.</p>
   <p>Əvvəlcə nəhəng sayda yol axtarışı tələb edirmiş kimi görünən fəzalar xeyli kiçik sonlu quruluşlara, o cümlədən 180 və 9 vəziyyətli avtomatlara və altı kasanın simmetriyasına qədər azaldılıb.</p>
   <p>Qarışdırmanın altında sərt cəbr quruluşu var. Bu günün tarixini bilmək üçün onu bilmək lazım deyil.</p><hr>
 </section>
