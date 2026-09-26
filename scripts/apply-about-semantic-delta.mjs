@@ -74,6 +74,8 @@ const touched = [];
 
 for (const [index, replacement] of parsed.replacements.entries()) {
   assert.ok(replacement.oldText.length > 0, "replacement " + (index + 1) + ": OLD is empty");
+  assert.ok(!replacement.oldText.includes("\n"), "replacement " + (index + 1) + ": OLD must be exactly one physical line");
+  assert.ok(!replacement.newText.includes("\n"), "replacement " + (index + 1) + ": NEW must be exactly one physical line");
   const count = html.split(replacement.oldText).length - 1;
   assert.equal(count, 1, "replacement " + (index + 1) + ": OLD must occur exactly once; got " + count);
   const start = html.indexOf(replacement.oldText);
