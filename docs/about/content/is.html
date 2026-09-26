@@ -2,7 +2,7 @@
 <!-- Section-ID eru hluti af stöðugum opinberum deep-link contract og eru ekki leidd af þýddum fyrirsögnum. -->
 <div class="about-section about-lead" id="about-calendar">
   <p>Í frásögn þessa vefs er Pastafari-dagatalið sett fram sem dagatalið þar sem tíminn sjálfur varð til. Hvernig það virkar er þó skilgreint með ströngum og nákvæmum reglum.</p>
-  <p>Dagatalið festir ekki einn óbreytanlegan Pastafari-„miða“ á hvern dag. Til að fá dagsetningu þarf tvo daga: <strong>aðgerðardaginn</strong>, sem útreikningurinn hefst frá, og <strong>fyrirspurnardaginn</strong>, þann dag sem spurt er um Pastafari-dagsetningu fyrir.</p>
+  <p>Dagatalið úthlutar ekki hverjum degi föstu, óbreytanlegu Pastafari-merki. Til að fá dagsetningu þarf tvo daga: <strong>aðgerðardaginn</strong>, sem útreikningurinn hefst frá, og <strong>fyrirspurnardaginn</strong>, þann dag sem spurt er um Pastafari-dagsetningu fyrir.</p>
   <p>Ef við táknum aðgerðardaginn með <code>c</code> og fyrirspurnardaginn með <code>t</code>, er dagsetningin</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
   <p>en ekki <code>F(t)</code>. Sami fyrirspurnardagur getur því fengið aðra Pastafari-dagsetningu þegar aðgerðardagurinn breytist.</p>
@@ -101,7 +101,7 @@
 </section>
 
 <section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
-  <h2>Engar vikur eru</h2>
+  <h2>Ekkert vikukerfi</h2>
   <p>Núverandi kanóníska forskrift <strong>skilgreinir ekkert vikukerfi</strong>. Engin kanónísk sjö daga eining er til, engin Pastafari-nöfn á vikudögum og engin regla sem gerir tvo daga að „sama vikudegi“.</p>
   <p>Auðvitað má leggja borgaralegt vikukerfi utan á; það er einfaldlega ekki hluti af Pastafari-dagsetningunni.</p><hr>
 </section>
@@ -138,17 +138,17 @@
 </section>
 
 <section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
-  <h2>Short Choice og Wide Choice</h2>
-  <p>Fyrir tiltölulega lítil valrúm er <strong>Short Choice</strong> notað. Það notar úrtak með höfnun til að forðast skekkju sem einföld módúlóaðgerð gæti annars valdið.</p>
-  <p>Fyrir mjög stór valrúm er <strong>Wide Choice</strong> notað. Ekki má eigna því eiginleika sem forskriftin tryggir ekki.</p>
-  <p>Wide Choice jafngildir ekki því að mynda óháða og jafnt dreifða tölustafi í <code>Q</code>-grunni þar til vísi fæst. Því leiðir ekki af þessu að hvert gilt val verði endilega að hafa sömu jákvæðu líkur. Í nógu stórum valrýmum geta verið gild val sem þetta kerfi nær aldrei til.</p>
-  <p>Dagatalið sjálft er áfram fullkomlega determinískt. „Choice“ er heiti reikniritsþrep, ekki slembiútdráttur við notkun.</p><hr>
+  <h2>Stutt val (Short Choice) og vítt val (Wide Choice)</h2>
+  <p>Fyrir tiltölulega lítil valrúm er <strong>stutt val (Short Choice)</strong> notað. Það notar úrtak með höfnun til að forðast skekkju sem einföld módúlóaðgerð gæti annars valdið.</p>
+  <p>Fyrir mjög stór valrúm er <strong>vítt val (Wide Choice)</strong> notað. Ekki má eigna því eiginleika sem forskriftin tryggir ekki.</p>
+  <p>Vítt val (Wide Choice) jafngildir ekki því að mynda óháða og jafnt dreifða tölustafi í <code>Q</code>-grunni þar til vísi fæst. Því leiðir ekki af þessu að hvert gilt val verði endilega að hafa sömu jákvæðu líkur. Í nógu stórum valrýmum geta verið gild val sem þetta kerfi nær aldrei til.</p>
+  <p>Dagatalið sjálft er áfram fullkomlega determinískt. „Choice“ er heiti á þrepi reikniritsins, ekki slembiútdráttur við notkun.</p><hr>
 </section>
 
 <section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
   <h2>Byggingaratlas</h2>
   <p>Hingað til höfum við talað um reglur dagatalsins. Næstu tölur eru annars konar upplýsingar: <strong>reynsluniðurstöður</strong> úr stórri reikniúrtaki.</p>
-  <p>Atlasinn var reiknaður út með þeirri útgáfu vélarinnar sem tilgreind er í commit-inu <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> og innihélt 4.096 aðgerðardaga; árin 4990–5010 fyrir hvern þeirra; 86.016 ársbyggingar; 625.437 kótelettur; 3.535.422 byggingarmánuði; meira en 356 milljón samfellda mánaðarkafla; og meira en 364 milljón færslur frá degi <code>n</code> í dag <code>n+1</code> í sama mánuði.</p>
+  <p>Atlasinn var reiknaður út með þeirri útgáfu vélarinnar sem tilgreind er í commit-inu <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> og innihélt 4.096 aðgerðardaga; árin 4990–5010 fyrir hvern þeirra; 86.016 ársbyggingar; 625.437 kótelettur; 3.535.422 byggingarmánuði; meira en 356 milljónir samfelldra mánaðarkafla; og meira en 364 milljónir færslna frá degi <code>n</code> í dag <code>n+1</code> í sama mánuði.</p>
   <p>Þessar tölur lýsa þessu gagnasafni, ekki kanónískum reglum.</p>
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Mæld gögn úr byggingaratlasnum">
     <table class="about-table">
@@ -301,7 +301,7 @@
     <p>Stærðfræðirannsóknir sem byggja á forskriftinni hafa einnig leitt í ljós nákvæma asymptótíska uppbyggingu. Fyrir <strong>fastan aðgerðardag</strong> <code>c</code> birtist affín lotubundni nógu langt út í hala fortíðarinnar.</p>
     <p>Ef</p>
     <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
-    <p>þá eru til fyrir sama <code>c</code> hliðrun <code>H_c</code>, ársbreytingu <code>p_c</code> og nægilega fjarlægt þröskuld, eftir sem</p>
+    <p>þá eru til fyrir sama <code>c</code> hliðrun <code>H_c</code>, ársbreytingu <code>p_c</code> og þröskuld <code>T_c</code> þannig að, fyrir öll nægilega gömul <code>t</code>,</p>
     <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
     <p>hinir fjórir reitirnir endurtaka sig en árnúmerið breytist um fasta stærð.</p>
     <p>Þetta er niðurstaða fyrir fast <code>c</code>; af henni leiðir ekki alþjóðlega sambandið</p>
