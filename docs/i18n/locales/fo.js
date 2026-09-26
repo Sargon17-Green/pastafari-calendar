@@ -118,7 +118,7 @@ export default Object.freeze({
     "calendar.next": "Næsta kotelett",
     "calendar.daysAria": "Dagar í kotelettini {cutletName}",
     "calendar.currentCutlet": "Ár {year} · kotelett",
-    "calendar.cutletDescription": "{count} dagure · arbejdsdagur: {actionDate}",
+    "calendar.cutletDescription": "{count} dagar · gerðardagur: {actionDate}",
     "calendar.targetOutside": "Den dagursetning, du søgte efter, er ikke i den kotelet, der vises nu. Du kan fortsætte med at bladre eller søge efter en anden dagursetning.",
     "year.kicker": "Árið í stuttum",
     "year.heading": "Bygnaður í ári {year}",
