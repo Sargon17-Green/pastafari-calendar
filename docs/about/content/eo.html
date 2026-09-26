@@ -121,7 +121,7 @@
 </section>
 <section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
   <h2>Short Choice kaj Wide Choice</h2>
-  <p>Por relative malgrandaj spacetoj de ebloj oni uzas <strong>Short Choice</strong>. Ĝi uzas malakceptan specimenadon (rejection sampling) por eviti simplan modulo-bias.</p>
+  <p>Por relative malgrandaj spacetoj de ebloj oni uzas <strong>Short Choice</strong>. Ĝi uzas malakceptan specimenadon por eviti simplan biason de modula redukto.</p>
   <p>Tre grandaj spacoj uzas <strong>Wide Choice</strong>. Oni ne rajtas atribui al ĝi ecojn, kiujn la specifo ne garantias.</p>
   <p>Wide Choice ne egalas al generado de sendependaj, egale distribuitaj ciferoj en bazo <code>Q</code> ĝis aperas indekso. Sekve ne estas pruveble, ke ĉiu laŭleĝa eblo nepre havas la saman pozitivan probablon. En sufiĉe grandaj spacoj povas ekzisti laŭleĝaj ebloj, kiujn tiu elekta mekanismo tute ne povas atingi.</p>
   <p>La kalendaro mem estas plene determinisma. „Choice” estas nomo de algoritmo-paŝo, ne lotumado dum uzo.</p><hr>
@@ -165,9 +165,9 @@
   <p>Por aparte grava rendevuo oni povas ankaŭ konservi la absolutan kronologian tagon aŭ momenton. La kalendaro ne suferos pro tio.</p><hr>
 </section>
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
-  <h2>Vojaĝado, eventoj kaj all-day</h2>
+  <h2>Vojaĝado kaj tuttagaj eventoj</h2>
   <p>Evento ne estas la sama afero kiel la loka etikedo montrata por ĝi. Horplanita evento restu ankrita al stabila kronologia momento. Vojaĝado ne movas la eventon en la tempo, sed la loka Pastafaria dato montrata ĉe tiu sama momento povas ŝanĝiĝi, ĉar la difino de „loka tago” dependas de la loko.</p>
-  <p>Ĉe <strong>all-day</strong>-evento la diferenco estas eĉ pli granda. Civila tuttaga evento kutime daŭras de civila noktomezo ĝis la sekva; Pastafaria tuttaga evento devus daŭri de loka Pastafaria taglimo ĝis la sekva loka taglimo. Tiuj ĝenerale ne estas la samaj momentoj.</p>
+  <p>Ĉe <strong>tuttaga evento</strong> la diferenco estas eĉ pli granda. Civila tuttaga evento kutime daŭras de civila noktomezo ĝis la sekva; Pastafaria tuttaga evento devus daŭri de loka Pastafaria taglimo ĝis la sekva loka taglimo. Tiuj ĝenerale ne estas la samaj momentoj.</p>
   <p>Tial blinda eksporto de Pastafaria evento kiel civila „tuttaga” evento povas ŝanĝi ĝian signifon. Por preciza konservado necesas stoki la kronologian ankron kaj la taŭgan lok-/tagliman kuntekston, ne nur flagon <code>all-day</code>.</p><hr>
 </section>
 <section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
@@ -186,10 +186,10 @@
   <h2>Kio do estas Seer?</h2>
   <p>Apud la kanona realigo ekzistas rapida motoro nomata <strong>Pastafarian Calendar Seer</strong>. Seer ne estas fonto de aŭtoritato: la Megillah kaj la kanona kalkulo determinas la ĝustan daton. Se Seer kontraŭdiras ilin, Seer eraras.</p>
   <p>Ĝia rolo estas fari la samajn demandojn rapide kaj en formo oportuna por integriĝo en produktoj.</p>
-  <p>Laŭ la viva kontrolo farita dum redaktado de ĉi tiu paĝo, Seer inkluzivis interalie dat- kaj „nun”-demandojn, batch, tagintervalojn, inversan konverton de Pastafaria dato al celtago, ricevon de jarstrukturo, solvadon de la aktiva tago de laboro, Node API, retumilan/HTTP-klienton, CLI, HTTP v1-servon, kontrakton OpenAPI 3.1, native-realigojn kaj distribupakaĵojn, kaj kontrolitan container-deployment.</p>
-  <p>La malnova aserto, ke Seer ne havas publikan API, do ne plu estas vera. Ekzistas eksplicita stabila kontrakto HTTP v1 kun endpoint-oj por date, range, batch, year, reverse, la tago de laboro, metadata, locales kaj status.</p>
-  <p>La 21-an de septembro 2026 publika HTTPS-deployment ĉe Render estis praktike testita: exact-demandoj, granda range, restart, cold wake kaj konduto sub ŝarĝo estis provitaj ĉe la viva servo.</p>
-  <p>La projekta dokumentaro tamen plu distingas inter viva publika beta/evaluation-deployment kaj deklarita konstanta hosted production-servo kun SLA. Tial baza klariga paĝo ne devas fiksi serviladreson, gastigan provizanton aŭ versionumeron kvazaŭ ili estus parto de la kalendaro mem.</p>
+  <p>Laŭ la viva kontrolo farita dum redaktado de ĉi tiu paĝo, Seer inkluzivis interalie demandojn <code>date</code> kaj <code>now</code>, <code>batch</code>, tagintervalojn, inversan konverton de Pastafaria dato al pridemandita tago, ricevon de jarstrukturo, solvadon de la aktiva tago de laboro, Node API, retumilan/HTTP-klienton, CLI, HTTP v1-servon, kontrakton OpenAPI 3.1, platformajn realigojn kaj distribupakaĵojn, kaj kontrolitan konteneran instalon.</p>
+  <p>La malnova aserto, ke Seer ne havas publikan API, do ne plu estas vera. Ekzistas eksplicita stabila kontrakto HTTP v1 kun finpunktoj por <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, la tago de laboro, <code>metadata</code>, <code>locales</code> kaj <code>status</code>.</p>
+  <p>La 21-an de septembro 2026 publika HTTPS-instalo ĉe Render estis praktike testita: ekzaktaj demandoj, granda intervalo, restartigo, <code>cold wake</code> kaj konduto sub ŝarĝo estis provitaj ĉe la viva servo.</p>
+  <p>La projekta dokumentaro tamen plu distingas inter viva publika beta/taksa instalo kaj deklarita konstanta gastigata produktada servo kun SLA. Tial baza klariga paĝo ne devas fiksi serviladreson, gastigan provizanton aŭ versionumeron kvazaŭ ili estus parto de la kalendaro mem.</p>
   <p>Seer rajtas uzi antaŭkalkulon, specialajn prezentojn, SIMD, algebron kaj aliajn mallongigojn. Ĝi ne devas paŝon post paŝo reprodukti la tutan komputan historion de la kanona realigo, kondiĉe ke ĝi faras la saman semantikan operacion kaj redonas la saman respondon.</p>
   <p>Optimumigo ne estas alternativa aŭtoritato.</p><hr>
 </section>
@@ -220,7 +220,7 @@
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{kotletnomo},\text{tago en kotleto})</code></pre>
   <p>identigas maksimume unu tagon. Same validas por</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{monatnomo},\text{tago en monato})</code></pre>
-  <p>Do plena dato kun konata tago de laboro unike identigas la celtagon.</p>
+  <p>Do plena dato kun konata tago de laboro unike identigas la pridemandita tagon.</p>
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Supraj limoj de kandidatoj ĉe inversa konverto"><table class="about-table">
     <thead><tr><th scope="col">Plia konata informo</th><th scope="col">Maksimuma nombro de kandidatoj</th></tr></thead><tbody>
       <tr><td>Neniu ne-jara kampo</td><td>5,778</td></tr><tr><td>Nur kotletnomo</td><td>5,568</td></tr><tr><td>Nur tago en kotleto</td><td>17</td></tr>
@@ -246,7 +246,7 @@
 <section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
   <h2>Por progresintoj: kiom da historio konservas la saŭco?</h2>
   <p>La saŭco aspektas kiel tre agresema miksilo, sed algebra esploro montris, ke ĝi konservas multe pli da informo ol ĝia ekstera formo sugestas. Tio estas esploro derivita el la specifo, ne nova regulo de la kalendaro.</p>
-  <p>En videblaj etapoj 3–46, sur la koncerna asimptota branĉo, estis establita injektiveco en la ĝenerala kazo (<span lang="en">generic injectivity</span>): ĝenerale la stato konservas sufiĉe da informo por rekonstrui la koncernan historion de enigoj kaj bovlordoj.</p>
+  <p>En videblaj etapoj 3–46, sur la koncerna asimptota branĉo, estis establita injektiveco en la ĝenerala kazo (injektiveco en la ĝenerala kazo): ĝenerale la stato konservas sufiĉe da informo por rekonstrui la koncernan historion de enigoj kaj bovlordoj.</p>
   <p>Ankaŭ dum la 12 finaj kirloj la informo ne tuj malaperas. Por la unuaj kvin post videbla guto 46 estis establita ĝenerala inversebleco sur la koncerna kanona unio sen plia flanka informo; por la ceteraj estas konataj fortaj konstruaj supraj limoj pri kiom da flanka informo sufiĉas por rekonstruo.</p>
   <p>Daŭre estas malferma la demando, ĉu <strong>la ses finaj bovloj solaj</strong> ĉiam sufiĉas en la ĝenerala kazo.</p>
   <p>Kelkaj rezultoj estis pruvoj simbolaj; aliaj estis fermitaj per finiaj, precizaj aritmetikaj kontroloj. Simbola plifortigo multe malgrandigis la komputan kernon, kiun necesas fidi, sed ne tute forigis ĝin.</p>
@@ -255,7 +255,7 @@
 </section>
 <section class="about-section" id="summary" data-toc-section data-toc-level="2">
   <h2>Kio do estas la Pastafaria kalendaro?</h2>
-  <p>Ĝi estas determinisma kalendaro, en kiu la dato ne estas funkcio de la celtago sola, sed de <strong>la tago de laboro kaj la pridemandata tago kune</strong>.</p>
+  <p>Ĝi estas determinisma kalendaro, en kiu la dato ne estas funkcio de la pridemandita tago sola, sed de <strong>la tago de laboro kaj la pridemandata tago kune</strong>.</p>
   <p>Ĉiu dato havas precize kvin kampojn. La nuntempo rilate al si mem ĉiam estas en jaro 5000, sed la jaro 5000 mem moviĝas kun la tago de laboro. Jaroj povas esti tre longaj, kotletoj estas kontinuaj, monatoj ne devas esti kontinuaj, kaj ne ekzistas kanona semajnosistemo.</p>
   <p>Tago <code>n+1</code> de monato ne nepre estas morgaŭ. La sama kronologia tago povas morgaŭ havi alian Pastafarian etikedon. La sama fizika momento povas en du lokoj aparteni al malsamaj lokaj Pastafariaj tagoj. Tuttaga evento ne devas daŭri de noktomezo ĝis noktomezo. Kaj ĉiujara naskiĝtago estas serĉproblemo antaŭ ol ĝi estas kalendara problemo.</p>
   <p>Sed kiam la tago de laboro kaj la pridemandata tago estas konataj, ne ekzistas ambigueco: estas ĝuste unu preciza respondo.</p>
