@@ -121,7 +121,7 @@
 </section>
 <section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
   <h2>Short Choice és Wide Choice</h2>
-  <p>Viszonylag kis választási terekben <strong>Short Choice</strong> használatos. Rejection sampling segítségével kerüli el az egyszerű modulo torzítást.</p>
+  <p>Viszonylag kis választási terekben <strong>Short Choice</strong> használatos. Elutasításos mintavétellel kerüli el az egyszerű modulo torzítást.</p>
   <p>Nagyon nagy terekben <strong>Wide Choice</strong> van. Nem szabad olyan tulajdonságokat tulajdonítani neki, amelyeket a specifikáció nem garantál.</p>
   <p>A Wide Choice nem azonos azzal, hogy független, egyenletes eloszlású <code>Q</code> alapú számjegyeket generálunk egy indexig. Ebből tehát nem következik, hogy minden megengedett lehetőségnek szükségképpen ugyanaz a pozitív valószínűsége. Kellően nagy terekben lehetnek megengedett lehetőségek, amelyeket ez a kiválasztási mechanizmus egyáltalán nem ér el.</p>
   <p>Maga a naptár teljesen determinisztikus. A „Choice” algoritmuslépés neve, nem futás közben végzett sorsolás.</p><hr>
@@ -165,9 +165,9 @@
   <p>Különösen fontos időpontnál az abszolút kronológiai nap vagy időpillanat is eltárolható. A naptár ettől nem sérül.</p><hr>
 </section>
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
-  <h2>Utazás, események és all-day</h2>
+  <h2>Utazás és egész napos események</h2>
   <p>Az esemény nem azonos a helyileg megjelenített címkéjével. Egy időponthoz kötött eseményt stabil kronológiai pillanathoz kell rögzíteni. Az utazás nem mozdítja el az eseményt az időben, de ugyanannak a pillanatnak a helyi pastafari dátuma megváltozhat, mert a „helyi nap” definíciója helyfüggő.</p>
-  <p><strong>all-day</strong> eseménynél még nagyobb a különbség. A polgári egész napos esemény rendszerint polgári éjféltől a következő éjfélig tart; a pastafari egész napos eseménynek a helyi pastafari naphatártól a következő helyi naphatárig kellene tartania. Ezek általában nem ugyanazok a pillanatok.</p>
+  <p><strong>egész napos</strong> eseménynél még nagyobb a különbség. A polgári egész napos esemény rendszerint polgári éjféltől a következő éjfélig tart; a pastafari egész napos eseménynek a helyi pastafari naphatártól a következő helyi naphatárig kellene tartania. Ezek általában nem ugyanazok a pillanatok.</p>
   <p>Ezért egy pastafari esemény vak exportálása polgári „egész napos” eseményként megváltoztathatja a jelentését. Pontos megőrzéshez a kronológiai horgonyt és a megfelelő hely-/naphatár-kontextust is tárolni kell, nem csupán egy <code>all-day</code> jelzőt.</p><hr>
 </section>
 <section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
@@ -187,9 +187,9 @@
   <p>A kanonikus implementáció mellett létezik egy gyors motor, a <strong>Pastafarian Calendar Seer</strong>. A Seer nem tekintélyforrás: a helyes dátumot a Megillah és a kanonikus számítás határozza meg. Ha eltérés van, a Seer téved.</p>
   <p>Feladata ugyanazokat a lekérdezéseket gyorsan és termékbe könnyen integrálható formában végrehajtani.</p>
   <p>Az oldal szerkesztése során végzett élő ellenőrzéskor a Seer többek között dátum- és „most” lekérdezést, batch működést, naptartományokat, pastafari dátumból célnapra történő reverse átalakítást, évstruktúra-lekérést, aktív műveleti nap feloldását, Node API-t, böngésző/HTTP klienst, CLI-t, HTTP v1 szolgáltatást, OpenAPI 3.1 szerződést, native implementációkat és terjesztési csomagokat, valamint ellenőrzött container deploymentet tartalmazott.</p>
-  <p>Ezért az a régi állítás, hogy a Seernek nincs nyilvános API-ja, már nem igaz. Létezik kifejezett és stabil HTTP v1 szerződés date, range, batch, year, reverse, műveleti nap, metadata, locales és status endpointokkal.</p>
-  <p>2026. szeptember 21-én a Renderen futó nyilvános HTTPS deploymentet ténylegesen is tesztelték: exact lekérdezések, nagy range, restart, cold wake és terhelés alatti viselkedés futott az élő szolgáltatáson.</p>
-  <p>A projekt dokumentációja ugyanakkor továbbra is különbséget tesz a nyilvános beta/evaluation deployment és az SLA-val vállalt tartós hosted production szolgáltatás között. Ezért egy elvi magyarázó oldalnak nem szabad szervercímet, tárhelyszolgáltatót vagy verziószámot a naptár részévé merevítenie.</p>
+  <p>Ezért az a régi állítás, hogy a Seernek nincs nyilvános API-ja, már nem igaz. Létezik kifejezett és stabil HTTP v1 szerződés <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, műveleti nap, <code>metadata</code>, <code>locales</code> és <code>status</code> végpontokkal.</p>
+  <p>2026. szeptember 21-én a Renderen futó nyilvános HTTPS-telepítést ténylegesen is tesztelték: pontos lekérdezések, nagy tartomány, újraindítás, <code>cold wake</code> és terhelés alatti viselkedés futott az élő szolgáltatáson.</p>
+  <p>A projekt dokumentációja ugyanakkor továbbra is különbséget tesz a nyilvános béta/értékelési telepítés és az SLA-val vállalt tartós hosztolt üzemi szolgáltatás között. Ezért egy elvi magyarázó oldalnak nem szabad szervercímet, tárhelyszolgáltatót vagy verziószámot a naptár részévé merevítenie.</p>
   <p>A Seer használhat előszámítást, speciális reprezentációkat, SIMD-t, algebrát és más rövidítéseket. Nem kell lépésről lépésre megismételnie a kanonikus implementáció teljes számítási történetét, ha ugyanazt a szemantikai műveletet hajtja végre és ugyanazt a választ adja.</p>
   <p>Az optimalizálás nem alternatív tekintély.</p><hr>
 </section>
@@ -246,8 +246,8 @@
 <section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
   <h2>Haladóknak: mennyi múltat őriz meg a szósz?</h2>
   <p>A szósz kívülről nagyon erős keverőnek látszik, de az algebrai kutatás szerint sokkal több információt őriz meg, mint amit a formája sugall. Ez a specifikációból levezetett kutatás, nem új naptári szabály.</p>
-  <p>A látható 3–46. szakaszokra, a releváns aszimptotikus ágon, generic injectivity áll fenn: generikus helyzetben az állapot elegendő információt tart meg a bemenetek és tálsorrendek releváns történetének visszaállításához.</p>
-  <p>A 12 végső keverésben sem tűnik el az információ azonnal. A látható 46. csepp utáni első öt keverésnél generic invertibility áll fenn a releváns kanonikus unión további mellékinformáció nélkül; a többire erős konstruktív felső korlátok ismertek a rekonstrukcióhoz elegendő mellékinformáció mennyiségére.</p>
+  <p>A látható 3–46. szakaszokra, a releváns aszimptotikus ágon, generikus esetben injektivitás áll fenn: generikus helyzetben az állapot elegendő információt tart meg a bemenetek és tálsorrendek releváns történetének visszaállításához.</p>
+  <p>A 12 végső keverésben sem tűnik el az információ azonnal. A látható 46. csepp utáni első öt keverésnél generikus esetben invertibilitás áll fenn a releváns kanonikus unión további mellékinformáció nélkül; a többire erős konstruktív felső korlátok ismertek a rekonstrukcióhoz elegendő mellékinformáció mennyiségére.</p>
   <p>Továbbra is nyitott, hogy <strong>a végső hat tál önmagában</strong> generikusan mindig elegendő-e.</p>
   <p>Egyes eredményeket szimbolikusan bizonyítottak, másokat véges és pontos aritmetikai ellenőrzések zártak le. A szimbolikus megerősítés jelentősen csökkentette azt a számítási magot, amelyben meg kell bízni, de nem szüntette meg teljesen.</p>
   <p>Olyan terek, amelyek kezdetben óriási számú út bejárását látszottak igényelni, sokkal kisebb véges szerkezetekre zsugorodtak, köztük 180 és 9 állapotú automatákra és a hat tál szimmetriáira.</p>
