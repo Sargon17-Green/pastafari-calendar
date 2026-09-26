@@ -201,6 +201,7 @@ jobs:
             verdict:reports.some((report)=>report.verdict==="CHANGED")?"CHANGED":"ALREADY_ALIGNED",
             final_verified_aligned:true,
             replacement_count:reports.reduce((sum,report)=>sum+report.replacement_count,0),
+            skipped_replacement_count:reports.reduce((sum,report)=>sum+(report.skipped_replacement_count||0),0),
             touched_sections:[...new Set(reports.flatMap((report)=>report.touched_sections))],
             passes:reports.map((report)=>report.verdict)
           };
@@ -224,6 +225,7 @@ jobs:
             before_blob:process.env.BEFORE_BLOB,
             after_blob:process.env.AFTER_BLOB,
             replacement_count:detail.replacement_count,
+            skipped_replacement_count:detail.skipped_replacement_count||0,
             touched_sections:detail.touched_sections,
             passes:detail.passes
           };
