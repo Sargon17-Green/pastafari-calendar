@@ -53,7 +53,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | lb | lb-LU | ltr | partial | semantic QA |
 | lt | lt-LT | ltr | partial | semantic QA |
 | lv | lv-LV | ltr | partial | semantic QA |
-| mk | mk-MK | ltr | partial | draft |
+| mk | mk-MK | ltr | partial | semantic QA |
 | mr | mr-IN | ltr | partial | draft |
 | ms | ms-MY | ltr | partial | draft |
 | nb | nb-NO | ltr | partial | draft |
