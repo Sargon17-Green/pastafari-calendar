@@ -108,7 +108,7 @@
 
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
   <h2>Els noms</h2>
-  <p>Hi ha 17 noms canònics de croqueta i 47 noms canonical de mes. Dins d'un any, cada nom apareix com a màxim una vegada dins del seu grup.</p>
+  <p>Hi ha 17 noms canònics de croqueta i 47 noms canònics de mes. Dins d'un any, cada nom apareix com a màxim una vegada dins del seu grup.</p>
   <p>La identitat del nom és canònica i semàntica; no és el resultat d'una votació entre grafies, traduccions o implementacions diferents. Pel que fa al significat dels noms, la Megillah en hebreu té la màxima autoritat; les traduccions i transliteracions són només capes de presentació.</p>
   <p>El nom tampoc no és un codi ocult de longitud. El nom d'una croqueta o d'un mes concret no fa, per si sol, que aquella unitat sigui més llarga o més curta.</p><hr>
 </section>
@@ -128,7 +128,7 @@
   <h2>Com es calcula el calendari?</h2>
   <p>Aquí anomenem <strong>salsa</strong> el càlcul intern. Al seu centre hi ha el nombre primer</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
-  <p>El procés inclou cinc input counter, 7 gotes ocultes, 46 gotes visibles, 6 bols, ordres variables dels bols, 12 mescles finals, seal diferents per a respostes diferents, combinatorial selection, construcció de portes, selecció d'anys, divisió en croquetes, selecció de noms, construcció de mesos i entreteixit dels dies dels mesos.</p>
+  <p>El procés inclou cinc comptadors d'entrada, 7 gotes ocultes, 46 gotes visibles, 6 bols, ordres variables dels bols, 12 mescles finals, segells diferents per a respostes diferents, selecció combinatòria, construcció de portes, selecció d'anys, divisió en croquetes, selecció de noms, construcció de mesos i entreteixit dels dies dels mesos.</p>
   <p>Els update finals són <strong>sincrònics</strong>: en cada mescla, els sis valors nous es calculen a partir del mateix state antic i només després es substitueixen alhora els sis bols.</p>
   <p>Dins de les 12 mescles finals hi ha un detall canònic especialment important. Si <code>S</code> és la suma dels sis bols antics i <code>r</code> és el número de mescla, el sistema calcula</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
@@ -207,12 +207,12 @@
     <li>“el mes complet” pot voler dir el set de dies que pertanyen a aquell mes o tot l'span cronològic des de la primera fins a l'última aparició;</li>
     <li>“l'any següent” és l'any següent dins del calendari construït sota el dia d'acció triat.</li>
   </ul>
-  <p>Per a una trobada especialment important també es pot desar un absolute chronological day o moment. El calendari no s'ofendrà.</p><hr>
+  <p>Per a una trobada especialment important també es pot desar un dia cronològic absolut o un moment. El calendari no s'ofendrà.</p><hr>
 </section>
 
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
   <h2>Viatges i esdeveniments de dia complet</h2>
-  <p>Un esdeveniment i l'etiqueta local que se li mostra no són la mateixa cosa. Un esdeveniment amb hora concreta s'ha de vincular a un chronological moment estable. Viatjar no el desplaça en el temps, però la data pastafària local mostrada per al mateix physical moment pot canviar, perquè la definició de “dia local” depèn de la ubicació.</p>
+  <p>Un esdeveniment i l'etiqueta local que se li mostra no són la mateixa cosa. Un esdeveniment amb hora concreta s'ha de vincular a un moment cronològic estable. Viatjar no el desplaça en el temps, però la data pastafària local mostrada per al mateix moment físic pot canviar, perquè la definició de “dia local” depèn de la ubicació.</p>
   <p>En un <strong>esdeveniment de dia complet</strong> la diferència és encara més gran. Un esdeveniment civil de dia complet acostuma a anar de mitjanit a mitjanit; un esdeveniment pastafari de dia complet hauria d'anar des del límit local del dia pastafari fins al límit següent. Normalment no són els mateixos moments.</p>
   <p>Per això exportar a cegues un esdeveniment pastafari com a esdeveniment civil “de dia complet” pot alterar-ne el significat. Per conservar-lo correctament cal guardar l'ancoratge cronològic i el context adequat de location/day-boundary, no només el flag <code>all-day</code>.</p><hr>
 </section>
@@ -221,7 +221,7 @@
   <h2>Quan canvia el dia?</h2>
   <p>El dia pastafari local no canvia a mitjanit. El seu límit el determina el <strong>topocentric lower meridian transit del centre de Venus pel meridià local</strong>.</p>
   <p>Per tant, és un esdeveniment astronòmic local dependent de la ubicació. El transit no ha de passar a les 00:00, no el determina la zona horària civil, no es desplaça només perquè comenci o acabi el daylight saving time i no exigeix que Venus sigui visible a ull nu.</p>
-  <p>El mateix physical moment pot quedar a costats diferents del límit del dia local en dos llocs. Si el sistema no disposa d'una user location utilitzable, el default fallback location del producte és <strong>Kisurra</strong>.</p><hr>
+  <p>El mateix moment físic pot quedar a costats diferents del límit del dia local en dos llocs. Si el sistema no disposa d'una ubicació d'usuari utilitzable, la ubicació alternativa predeterminada del producte és <strong>Kisurra</strong>.</p><hr>
 </section>
 
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
