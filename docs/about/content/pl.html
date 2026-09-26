@@ -121,7 +121,7 @@
 </section>
 <section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
   <h2>Short Choice i Wide Choice</h2>
-  <p>Dla stosunkowo małych przestrzeni wyboru używa się <strong>Short Choice</strong>. Wykorzystuje ona losowanie z odrzucaniem (rejection sampling), aby uniknąć prostego obciążenia modulo.</p>
+  <p>Dla stosunkowo małych przestrzeni wyboru używa się <strong>Short Choice</strong>. Wykorzystuje ona losowanie z odrzucaniem, aby uniknąć prostego obciążenia modulo.</p>
   <p>Bardzo duże przestrzenie używają <strong>Wide Choice</strong>. Nie wolno przypisywać jej własności, których specyfikacja nie gwarantuje.</p>
   <p>Wide Choice nie jest równoważna generowaniu niezależnych, jednostajnych cyfr w podstawie <code>Q</code> aż do uzyskania indeksu. Nie wynika więc z niej, że każda dozwolona możliwość ma koniecznie tę samą dodatnią szansę. W dostatecznie dużych przestrzeniach mogą istnieć legalne opcje całkowicie nieosiągalne dla tego mechanizmu.</p>
   <p>Sam kalendarz pozostaje w pełni deterministyczny. „Choice” to nazwa etapu algorytmu, a nie losowanie wykonywane podczas użycia.</p><hr>
@@ -165,9 +165,9 @@
   <p>Dla szczególnie ważnego spotkania można dodatkowo zapisać absolutny dzień lub moment chronologiczny. Kalendarz od tego nie ucierpi.</p><hr>
 </section>
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
-  <h2>Podróże, wydarzenia i all-day</h2>
+  <h2>Podróże i wydarzenia całodniowe</h2>
   <p>Wydarzenie i lokalna etykieta pokazywana przy nim to nie to samo. Wydarzenie zaplanowane na konkretną chwilę powinno być zakotwiczone w stabilnym momencie chronologicznym. Podróż nie przesuwa go w czasie, ale lokalna data pastafariańska pokazana w tej samej chwili może się zmienić, ponieważ definicja „lokalnego dnia” zależy od miejsca.</p>
-  <p>W przypadku wydarzenia <strong>all-day</strong> różnica jest jeszcze większa. Cywilne wydarzenie całodniowe zwykle trwa od cywilnej północy do następnej; pastafariańskie wydarzenie całodniowe powinno trwać od lokalnej granicy dnia pastafariańskiego do kolejnej granicy. Zwykle nie są to te same chwile.</p>
+  <p>W przypadku <strong>wydarzenia całodniowego</strong> różnica jest jeszcze większa. Cywilne wydarzenie całodniowe zwykle trwa od cywilnej północy do następnej; pastafariańskie wydarzenie całodniowe powinno trwać od lokalnej granicy dnia pastafariańskiego do kolejnej granicy. Zwykle nie są to te same chwile.</p>
   <p>Ślepy eksport wydarzenia pastafariańskiego jako cywilnego „całego dnia” może więc zmienić jego znaczenie. Dla wiernego zachowania trzeba przechować kotwicę chronologiczną i odpowiedni kontekst miejsca/granicy dnia, a nie tylko znacznik <code>all-day</code>.</p><hr>
 </section>
 <section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
@@ -186,10 +186,10 @@
   <h2>A czym jest Seer?</h2>
   <p>Obok implementacji kanonicznej istnieje szybki silnik <strong>Pastafarian Calendar Seer</strong>. Seer nie jest źródłem autorytetu: poprawną datę określają Megillah i obliczenie kanoniczne. Jeśli Seer się z nimi nie zgadza, błędny jest Seer.</p>
   <p>Jego zadaniem jest szybkie wykonywanie tych samych zapytań w formie wygodnej do integracji z produktami.</p>
-  <p>Podczas żywej weryfikacji prowadzonej przy redagowaniu tej strony Seer obejmował między innymi zapytania o datę i „teraz”, batch, zakresy dni, odwrotne przekształcenie daty pastafariańskiej na dzień docelowy, pobieranie struktury roku, ustalanie aktywnego dnia działania, Node API, klienta przeglądarkowego/HTTP, CLI, usługę HTTP v1, kontrakt OpenAPI 3.1, implementacje native i pakiety dystrybucyjne oraz zweryfikowane wdrożenie container.</p>
-  <p>Stare stwierdzenie, że Seer nie ma publicznego API, jest już nieprawdziwe. Istnieje jawny i stabilny kontrakt HTTP v1 z endpointami dla date, range, batch, year, reverse, dnia działania, metadata, locales i status.</p>
-  <p>21 września 2026 roku publiczne wdrożenie HTTPS na Render zostało rzeczywiście przetestowane: na żywej usłudze sprawdzono zapytania exact, duży range, restart, cold wake oraz zachowanie pod obciążeniem.</p>
-  <p>Dokumentacja projektu nadal odróżnia publiczne wdrożenie beta/evaluation od trwałej usługi hosted production z SLA. Dlatego strona objaśniająca zasady nie powinna utrwalać adresu serwera, dostawcy hostingu czy numeru wersji jako części samego kalendarza.</p>
+  <p>Podczas żywej weryfikacji prowadzonej przy redagowaniu tej strony Seer obejmował między innymi zapytania o datę i „teraz”, batch, zakresy dni, odwrotne przekształcenie daty pastafariańskiej na zapytany dzień, pobieranie struktury roku, ustalanie aktywnego dnia działania, Node API, klienta przeglądarkowego/HTTP, CLI, usługę HTTP v1, kontrakt OpenAPI 3.1, implementacje natywne i pakiety dystrybucyjne oraz zweryfikowane wdrożenie kontenerowe.</p>
+  <p>Stare stwierdzenie, że Seer nie ma publicznego API, jest już nieprawdziwe. Istnieje jawny i stabilny kontrakt HTTP v1 z punktami końcowymi dla <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, dnia działania, <code>metadata</code>, <code>locales</code> i <code>status</code>.</p>
+  <p>21 września 2026 roku publiczne wdrożenie HTTPS na Render zostało rzeczywiście przetestowane: na żywej usłudze sprawdzono dokładne zapytania, duży zakres, ponowne uruchomienie, <code>cold wake</code> oraz zachowanie pod obciążeniem.</p>
+  <p>Dokumentacja projektu nadal odróżnia publiczne wdrożenie beta/ewaluacyjne od trwałej hostowanej usługi produkcyjnej z SLA. Dlatego strona objaśniająca zasady nie powinna utrwalać adresu serwera, dostawcy hostingu czy numeru wersji jako części samego kalendarza.</p>
   <p>Seer może korzystać z obliczeń wstępnych, specjalnych reprezentacji, SIMD, algebry i innych skrótów. Nie musi krok po kroku odtwarzać historii obliczeń implementacji kanonicznej, jeżeli wykonuje tę samą operację semantyczną i zwraca tę samą odpowiedź.</p>
   <p>Optymalizacja nie jest alternatywnym źródłem autorytetu.</p><hr>
 </section>
@@ -220,7 +220,7 @@
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{nazwa kotleta},\text{dzień w kotlecie})</code></pre>
   <p>wskazuje najwyżej jeden dzień. To samo dotyczy</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{nazwa miesiąca},\text{dzień w miesiącu})</code></pre>
-  <p>Pełna data przy znanym dniu działania identyfikuje więc dzień docelowy jednoznacznie.</p>
+  <p>Pełna data przy znanym dniu działania identyfikuje więc zapytany dzień jednoznacznie.</p>
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Górne granice liczby kandydatów w konwersji odwrotnej"><table class="about-table">
     <thead><tr><th scope="col">Dodatkowo znana informacja</th><th scope="col">Maksymalna liczba kandydatów</th></tr></thead><tbody>
       <tr><td>Brak pól innych niż rok</td><td>5,778</td></tr><tr><td>Tylko nazwa kotleta</td><td>5,568</td></tr><tr><td>Tylko dzień w kotlecie</td><td>17</td></tr>
@@ -246,8 +246,8 @@
 <section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
   <h2>Dla zaawansowanych: ile historii zachowuje sos?</h2>
   <p>Sos wygląda jak bardzo agresywne mieszanie, ale badania algebraiczne wykazały, że zachowuje znacznie więcej informacji, niż sugeruje wygląd zewnętrzny. Jest to wynik badań wyprowadzonych ze specyfikacji, a nie nowa reguła kalendarza.</p>
-  <p>Na widocznych etapach 3–46, na odpowiedniej gałęzi asymptotycznej, ustalono generic injectivity: w typowym położeniu stan zachowuje dość informacji, by odtworzyć istotną historię wejść i kolejności mis.</p>
-  <p>W 12 końcowych mieszaniach informacja również nie znika od razu. Dla pierwszych pięciu po widocznej kropli 46 ustalono generic invertibility na odpowiedniej kanonicznej sumie bez dodatkowych informacji bocznych; dla pozostałych znane są silne konstruktywne górne granice ilości informacji bocznej wystarczającej do odtworzenia.</p>
+  <p>Na widocznych etapach 3–46, na odpowiedniej gałęzi asymptotycznej, ustalono iniektywność w przypadku ogólnym: w typowym położeniu stan zachowuje dość informacji, by odtworzyć istotną historię wejść i kolejności mis.</p>
+  <p>W 12 końcowych mieszaniach informacja również nie znika od razu. Dla pierwszych pięciu po widocznej kropli 46 ustalono odwracalność w przypadku ogólnym na odpowiedniej kanonicznej sumie bez dodatkowych informacji bocznych; dla pozostałych znane są silne konstruktywne górne granice ilości informacji bocznej wystarczającej do odtworzenia.</p>
   <p>Nadal otwarte jest pytanie, czy <strong>same sześć końcowych mis</strong> zawsze wystarcza w sensie ogólnym.</p>
   <p>Część wyników udowodniono symbolicznie, a część zamknięto skończonymi dokładnymi sprawdzeniami arytmetycznymi. Wzmocnienie symboliczne znacznie zmniejszyło rdzeń obliczeniowy, któremu trzeba ufać, lecz nie usunęło go całkowicie.</p>
   <p>Przestrzenie, które początkowo zdawały się wymagać przejścia ogromnej liczby ścieżek, skurczyły się do znacznie mniejszych struktur skończonych, w tym automatów o 180 i 9 stanach oraz symetrii sześciu mis.</p>
