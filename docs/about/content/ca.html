@@ -1,7 +1,7 @@
 <!-- La versió catalana s'ha redactat directament a partir del semantic master en hebreu, sense llengua pont. -->
 <!-- Els ID de secció formen part d'un contracte públic i estable de deep-link; no es generen a partir dels títols traduïts. -->
 <div class="about-section about-lead" id="about-calendar">
-  <p>En el relat d'aquest lloc, el Calendari Pastafari es presenta com el calendari dins del qual es va crear el temps mateix. Ara bé, el seu funcionament està definit per regles estrictes i precises.</p>
+  <p>El Calendari Pastafari és el calendari en què es va crear el temps; la seva mecànica està definida amb precisió.</p>
   <p>Aquest calendari no enganxa a cada dia una única “etiqueta” pastafària immutable. Per obtenir una data calen dos dies: el <strong>dia d'acció</strong>, a partir del qual comença el càlcul, i el <strong>dia consultat</strong>, del qual volem saber la data pastafària.</p>
   <p>Si representem el dia d'acció per <code>c</code> i el dia consultat per <code>t</code>, la data és</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
@@ -126,7 +126,7 @@
 
 <section class="about-section" id="calculation" data-toc-section data-toc-level="2">
   <h2>Com es calcula el calendari?</h2>
-  <p>Aquí anomenem <strong>salsa</strong> el càlcul intern. Al seu centre hi ha el nombre primer</p>
+  <p>El càlcul intern s'anomena <strong>salsa</strong>. Al seu centre hi ha el nombre primer</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
   <p>El procés inclou cinc comptadors d'entrada, 7 gotes ocultes, 46 gotes visibles, 6 bols, ordres variables dels bols, 12 mescles finals, segells diferents per a respostes diferents, selecció combinatòria, construcció de portes, selecció d'anys, divisió en croquetes, selecció de noms, construcció de mesos i entreteixit dels dies dels mesos.</p>
   <p>Els update finals són <strong>sincrònics</strong>: en cada mescla, els sis valors nous es calculen a partir del mateix state antic i només després es substitueixen alhora els sis bols.</p>
@@ -170,7 +170,7 @@
         <tr><td>Mediana de la llargada del mes</td><td>115</td></tr>
         <tr><td>Nombre mitjà de segments continus per mes</td><td>100.897</td></tr>
         <tr><td>Proporció de segments mensuals d'un sol dia</td><td>97.482%</td></tr>
-        <tr><td>Probabilitat que dos dies adjacents siguin del mateix mes</td><td>2.9976%</td></tr>
+        <tr><td>Proporció de parelles de dies consecutius pertanyents al mateix mes en la mostra</td><td>2.9976%</td></tr>
         <tr><td>Nombre mitjà de dies d'altres mesos entre <code>n</code> i <code>n+1</code> del mateix mes</td><td>40.408</td></tr>
         <tr><td>Interval mitjà entre la primera i l'última aparició d'un mes</td><td>4,266.653 dies</td></tr>
       </tbody>
@@ -199,7 +199,7 @@
 
 <section class="about-section" id="appointments" data-toc-section data-toc-level="2">
   <h2>Com es fixa una trobada?</h2>
-  <p>Si dues persones volen acordar una trobada només amb una data pastafària, han de coincidir com a mínim en els cinc camps de la data i en el dia d'acció utilitzat per al càlcul. És millor desar el dia d'acció com una day identity estable, no com la paraula “avui”; altrament, dues persones podrien calcular dos calendaris diferents.</p>
+  <p>Si dues persones volen fixar el dia d'una trobada mitjançant una data pastafariana, han d'acordar, com a mínim, els cinc camps de la data i el dia d'acció emprat per calcular-la. Això determina el dia de la trobada, però no necessàriament un moment precís dins d'aquest dia. És preferible desar el dia d'acció com una identitat cronològica estable, no pas com la paraula «avui»; altrament, cadascú podria calcular un calendari diferent.</p>
   <ul>
     <li>“demà” és el dia cronològic següent;</li>
     <li>“el dia següent del mes” és la propera aparició d'aquell mes;</li>
@@ -211,10 +211,10 @@
 </section>
 
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
-  <h2>Viatges i esdeveniments de dia complet</h2>
+  <h2>Viatges i esdeveniments de tot el dia</h2>
   <p>Un esdeveniment i l'etiqueta local que se li mostra no són la mateixa cosa. Un esdeveniment amb hora concreta s'ha de vincular a un moment cronològic estable. Viatjar no el desplaça en el temps, però la data pastafària local mostrada per al mateix moment físic pot canviar, perquè la definició de “dia local” depèn de la ubicació.</p>
-  <p>En un <strong>esdeveniment de dia complet</strong> la diferència és encara més gran. Un esdeveniment civil de dia complet acostuma a anar de mitjanit a mitjanit; un esdeveniment pastafari de dia complet hauria d'anar des del límit local del dia pastafari fins al límit següent. Normalment no són els mateixos moments.</p>
-  <p>Per això exportar a cegues un esdeveniment pastafari com a esdeveniment civil “de dia complet” pot alterar-ne el significat. Per conservar-lo correctament cal guardar l'ancoratge cronològic i el context adequat de location/day-boundary, no només el flag <code>all-day</code>.</p><hr>
+  <p>En un <strong>esdeveniment de tot el dia</strong>, la diferència és encara més gran. Un esdeveniment civil de tot el dia acostuma a anar de mitjanit a mitjanit; un esdeveniment pastafari de tot el dia hauria d'anar des del límit local del dia pastafari fins al límit següent. Normalment no són els mateixos moments.</p>
+  <p>Per això exportar a cegues un esdeveniment pastafari com a esdeveniment civil “de tot el dia” pot alterar-ne el significat. Per conservar-lo correctament cal guardar l'ancoratge cronològic i el context adequat de location/day-boundary, no només marcar la casella <code>all-day</code>.</p><hr>
 </section>
 
 <section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
@@ -233,19 +233,19 @@
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>I què és Seer?</h2>
-  <p>Al costat de la implementació canònica hi ha un motor ràpid anomenat <strong>Pastafarian Calendar Seer</strong>. Seer no és una font d'autoritat: la data correcta la determinen la Megillah i el càlcul canònic. Si Seer no hi coincideix, l'error és de Seer.</p>
+  <p>Al costat de la implementació canònica hi ha un motor ràpid anomenat <strong>Pastafarian Calendar Seer</strong>. La Megillah estableix les regles i el càlcul canònic n'obté la data; Seer ha de donar la mateixa resposta. Si Seer discrepa d'un càlcul canònic correcte, s'equivoca.</p>
   <p>La seva funció és executar ràpidament les mateixes query i retornar el resultat en una forma fàcil d'integrar en productes.</p>
-  <p>En la verificació directa feta durant l'edició d'aquesta pàgina, Seer cobria, entre altres coses, les consultes <code>date</code> i <code>now</code>, <code>batch</code>, intervals de dies, conversió inversa d'una data pastafariana cap al dia consultat, obtenció de l'estructura de l'any, determinació del dia d'acció actiu, Node API, client de navegador/HTTP, CLI, servei HTTP v1, contracte OpenAPI 3.1, implementacions natives i paquets de distribució, i un desplegament verificat en contenidor.</p>
-  <p>L'afirmació antiga que Seer no té una API pública ja no és correcta. Ara hi ha un contracte HTTP v1 clar i estable amb punts finals per a <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, dia d'acció, <code>metadata</code>, <code>locales</code> i <code>status</code>.</p>
+  <p>En una verificació en viu feta el 21 de setembre de 2026, Seer cobria, entre altres coses, les consultes <code>date</code> i <code>now</code>, <code>batch</code>, intervals de dies, conversió inversa d'una data pastafariana cap al dia consultat, obtenció de l'estructura de l'any, determinació del dia d'acció actiu, Node API, client de navegador/HTTP, CLI, servei HTTP v1, contracte OpenAPI 3.1, implementacions natives i paquets de distribució, i un desplegament verificat en contenidor.</p>
+  <p>Seer disposa d'una API pública i d'un contracte HTTP v1 clar i estable amb punts finals per a <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, dia d'acció, <code>metadata</code>, <code>locales</code> i <code>status</code>.</p>
   <p>El 21 de setembre de 2026 es va provar realment un desplegament HTTPS públic a Render: al servei actiu es van verificar consultes exactes, un interval gran, reinici, <code>cold wake</code> i el comportament sota càrrega.</p>
-  <p>Tot i això, la documentació del projecte encara distingeix entre el desplegament públic beta/d'avaluació i un servei de producció allotjat i estable amb SLA. Per això la pàgina conceptual d'explicació no ha de fixar una adreça de servidor, un proveïdor d'allotjament o un número de versió com si fossin part del calendari mateix.</p>
+  <p>El desplegament públic verificat és una versió beta/d'avaluació, no pas una promesa d'un servei de producció allotjat de manera permanent amb un SLA. L'adreça del servidor, el proveïdor d'allotjament i el número de versió no formen part del calendari ni són constants canòniques.</p>
   <p>Seer pot utilitzar precàlcul, representacions especials, SIMD, àlgebra i altres dreceres. No ha de reproduir pas a pas tot l'historial computacional de la implementació canònica sempre que faci la mateixa operació semàntica i retorni la mateixa resposta.</p>
   <p>Optimization no és una autoritat alternativa.</p><hr>
 </section>
 
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
   <h2>Origen, Dia de la Fundació i Dia de les Tauletes</h2>
-  <p>Aquí és especialment important separar clarament els ancoratges canònics del temps del relat del lloc.</p>
+  <p>Els ancoratges cronològics fixos del calendari i la història del seu origen i la seva transmissió són aspectes diferents.</p>
 
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>Ancoratges</h3>
@@ -260,10 +260,10 @@
   </section>
 
   <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
-    <h3>El relat del lloc</h3>
-    <p>En el relat editorial del lloc, el calendari es descriu com una part de la creació i com un sistema que la humanitat va fer servir sense entendre'l del tot, fins que va ser lliurat novament en l'era moderna.</p>
-    <p>Aquest és el relat del lloc; no s'ha de presentar cada detall narratiu com si fos una afirmació tècnica explícita de la Megillah.</p>
-    <p>L'esdeveniment de la nova entrega és, en si mateix, un fet històric fix. La seva <strong>data pastafària</strong> és millor mostrar-la dinàmicament sota el dia d'acció actual que no pas freeze-la per sempre com una sola data.</p><hr>
+    <h3>Origen del calendari i la seva transmissió</h3>
+    <p>El calendari forma part de la creació. La humanitat l'ha utilitzat sense prou consciència que ho feia fins que es va tornar a transmetre en l'època moderna.</p>
+    <p>La Megillah no detalla tots els aspectes d'aquesta història: allò que no s'hi diu explícitament no forma part del seu text.</p>
+    <p>L'esdeveniment de la nova entrega és, en si mateix, un fet històric fix. La seva <strong>data pastafària</strong> s'ha de calcular segons el dia d'acció vigent; per tant, no és una data única i fixa.</p><hr>
   </section>
 </section>
 
@@ -271,7 +271,7 @@
   <h2>Per a usuaris avançats: conversió inversa</h2>
   <p>Si es coneix el dia d'acció <code>c</code>, la conversió inversa queda fortament restringida. Dins d'un any pastafari conegut,</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{nom de la croqueta},\text{dia dins de la croqueta})</code></pre>
-  <p>identifica com a màxim un dia. El mateix és cert per a</p>
+  <p>Aquesta parella identifica com a màxim un dia. El mateix és cert per a</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{nom del mes},\text{dia dins del mes})</code></pre>
   <p>Per tant, una data completa amb dia d'acció conegut identifica el dia consultat de manera única.</p>
 
@@ -292,8 +292,8 @@
     </table>
   </div>
 
-  <p>Si no es coneix el dia d'acció, la situació és diferent. Els mateixos cinc valors poden aparèixer sota dies d'acció diferents, i hi ha exact example en què la mateixa data completa apareix a distàncies diferents de <code>c</code>.</p>
-  <p>A l'any 5000, fins i tot el sign d'aquella distància no sempre queda determinat pels cinc valors: una mateixa data completa pot ser anterior al dia d'acció en un context i posterior en un altre.</p>
+  <p>Si no es coneix el dia d'acció, la situació és diferent. Els mateixos cinc valors poden aparèixer sota dies d'acció diferents, i hi ha exemples concrets en què la mateixa data completa apareix a distàncies diferents de <code>c</code>.</p>
+  <p>A l'any 5000, ni tan sols els cinc camps permeten determinar sempre la posició del dia consultat respecte del dia d'acció: una mateixa data completa pot correspondre, en un context, a un dia anterior al dia d'acció i, en un altre, a un de posterior.</p>
   <p>Per això una data pastafària completa no és un absolute address a la línia temporal si no sabem sota quin <code>c</code> s'ha calculat.</p>
 
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
@@ -301,7 +301,7 @@
     <p>La recerca matemàtica derivada de l'especificació també ha trobat una estructura asimptòtica exacta. Per a un <strong>dia d'acció fix</strong> <code>c</code>, prou lluny a la cua del passat apareix periodicitat afí.</p>
     <p>Si</p>
     <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
-    <p>aleshores, per al mateix <code>c</code>, existeixen un shift <code>H_c</code>, un year change <code>p_c</code> i un llindar prou llunyà, a partir del qual</p>
+    <p>aleshores, per al mateix <code>c</code>, existeixen un desplaçament <code>H_c</code>, una variació de l'any <code>p_c</code> i un llindar prou llunyà, a partir del qual</p>
     <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
     <p>els quatre camps no anuals es repeteixen i el número d'any canvia en una quantitat fixa.</p>
     <p>Aquest és un resultat per a <code>c</code> fix; no implica la relació global</p>
@@ -313,10 +313,10 @@
 <section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
   <h2>Per a usuaris avançats: quanta història conserva la salsa?</h2>
   <p>La salsa sembla un mechanism de mescla molt agressiu, però la recerca algebraica mostra que conserva molta més informació del que la seva aparença faria pensar. És un resultat de recerca derivat de l'especificació, no una nova regla del calendari.</p>
-  <p>En les etapes visibles 3–46, a la branca asimptòtica corresponent, s'ha establert injectivitat en el cas general: en el cas general, l'estat conserva prou informació per reconstruir l'historial d'entrada corresponent i l'ordre dels bols.</p>
-  <p>La informació tampoc desapareix de cop en les 12 mescles finals. Per a les cinc primeres mescles després de la gota visible 46, s'ha establert invertibilitat en el cas general en la unió canònica corresponent sense informació auxiliar addicional; per a la resta es coneixen límits superiors constructius forts de la quantitat d'informació auxiliar suficient per a la reconstrucció.</p>
-  <p>Continua oberta la pregunta de si <strong>només els sis bols finals</strong> són sempre suficients en el sentit generic.</p>
-  <p>Alguns resultats s'han demostrat simbòlicament i d'altres s'han tancat amb finite exact arithmetic check. El symbolic strengthening ha reduït molt el computational core que cal donar per bo, però no l'ha eliminat del tot.</p>
+  <p>En les etapes visibles 3–46, s'ha establert la injectivitat genèrica a la branca asimptòtica pertinent: en el cas genèric, l'estat conserva prou informació per reconstruir l'historial d'entrada pertinent i l'ordre dels bols.</p>
+  <p>La informació tampoc desapareix de cop en les 12 mescles finals. Per a les cinc primeres mescles després de la gota visible 46, s'ha demostrat la invertibilitat genèrica sobre la unió canònica pertinent, sense informació auxiliar addicional; per a les mescles restants es coneixen cotes constructives sòlides de la quantitat d'informació auxiliar suficient per a la reconstrucció.</p>
+  <p>Continua oberta la qüestió de si <strong>només els sis bols finals</strong> són sempre suficients en termes genèrics.</p>
+  <p>Alguns resultats s'han demostrat simbòlicament; d'altres s'han verificat mitjançant comprovacions aritmètiques finites i exactes. L'enfortiment de les demostracions simbòliques ha reduït, però no eliminat, el nucli computacional finit que encara requereix verificació.</p>
   <p>Espais que inicialment semblaven exigir una cerca per una quantitat enorme de path s'han reduït a estructures finite molt més petites, inclosos automata de 180 i 9 state i simetries dels sis bols.</p>
   <p>Sota la mescla hi ha una estructura algebraica rígida. No cal conèixer-la per saber la data d'avui.</p><hr>
 </section>
