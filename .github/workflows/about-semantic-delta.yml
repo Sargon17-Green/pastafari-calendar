@@ -133,7 +133,7 @@ jobs:
           NODE
 
             git add "$TARGET" "artifacts/about-semantic-delta-runs/$LOCALE.json" artifacts/about-semantic-delta-status.json
-            git commit -m "about($LOCALE): apply semantic delta"
+            git commit -m "about($LOCALE): apply semantic delta [skip ci]"
             for TRY in 1 2 3; do
               git fetch origin feature/about-i18n-72-locales
               if git rebase origin/feature/about-i18n-72-locales && git push origin HEAD:feature/about-i18n-72-locales; then
