@@ -99,6 +99,7 @@ jobs:
 
           OLD חייב להיות שורה פיזית שלמה אחת שהעתקת ישירות מן הקובץ הנוכחי, byte-for-byte, כולל ה-HTML וההזחה שבאותה שורה.
           אל תשחזר OLD מן הזיכרון ואל תתרגם אותו. אתר את השורה בקובץ והעתק אותה בדיוק.
+          אם המאסטר דורש משמעות שחסרה לחלוטין ואין בשפת היעד משפט מקביל, אל תמציא OLD שאינו קיים. במקום זאת מצא פסקה קיימת באחד מ-12 המקטעים המותרים שנושאה המתאים ביותר, והצע להחליף את השורה הקיימת בנוסח שמוסיף את המשמעות החסרה.
           NEW חייב להיות גם הוא שורה פיזית אחת, באותו תפקיד HTML, בשפת היעד ובניסוח טבעי.
           לפני הפלט ודא שכל OLD אכן מופיע פעם אחת בדיוק בקובץ היעד.
           אין להוסיף עברית או שפה זרה שאינה ליטרל טכני מחייב. אל תחזיר שום טקסט מחוץ לפורמט.
@@ -123,22 +124,57 @@ jobs:
                 } > "/tmp/$LOCALE.pass$PASS.prompt.md"
               fi
 
-              set +e
-              copilot --no-custom-instructions --no-ask-user --no-color \
-                --allow-tool='shell(cat:*),shell(grep:*),shell(find:*),shell(sed:*),shell(head:*),shell(tail:*),shell(wc:*),shell(ls:*),shell(pwd:*),shell(rg:*),shell(awk:*),shell(sort:*),shell(uniq:*),shell(git status:*),shell(git diff:*),shell(git show:*),shell(git rev-parse:*)' \
-                -s < "/tmp/$LOCALE.pass$PASS.prompt.md" > "/tmp/$LOCALE.pass$PASS.response.txt"
-              EXIT=$?
-              set -e
-              if [ "$EXIT" -ne 0 ]; then
-                echo "Semantic-delta pass $PASS failed for $LOCALE with exit $EXIT" >&2
-                exit "$EXIT"
-              fi
+              APPLY_OK=0
+              for ATTEMPT in 1 2 3; do
+                if [ "$ATTEMPT" -eq 1 ]; then
+                  cp "/tmp/$LOCALE.pass$PASS.prompt.md" "/tmp/$LOCALE.pass$PASS.attempt$ATTEMPT.prompt.md"
+                else
+                  {
+                    cat <<EOF
+          ההצעה הקודמת לא הייתה ישימה בדיוק על הקובץ הנוכחי. קרא מחדש את $TARGET מן הדיסק.
+          כל OLD חייב להיות שורה פיזית אחת שקיימת עכשיו בדיוק פעם אחת. אל תשחזר או תנחש שורת מקור.
+          אם חסרה משמעות שאין לה משפט מקביל, ערוך שורה קיימת קרובה באחד מ-12 המקטעים המותרים והוסף אליה את המשמעות.
+          החזר מחדש את מלוא ההצעה לסבב הזה בלבד בפורמט המחייב.
+          EOF
+                    if [ -s "/tmp/$LOCALE.pass$PASS.apply-error.txt" ]; then
+                      echo "שגיאת היישום הקודמת:"
+                      cat "/tmp/$LOCALE.pass$PASS.apply-error.txt"
+                    fi
+                    cat "/tmp/$LOCALE.pass$PASS.prompt.md"
+                  } > "/tmp/$LOCALE.pass$PASS.attempt$ATTEMPT.prompt.md"
+                fi
 
-              cp "/tmp/$LOCALE.pass$PASS.response.txt" "artifacts/about-semantic-delta-runs/$LOCALE.pass$PASS.proposal.txt"
-              PASS_VERDICT="$(node scripts/apply-about-semantic-delta.mjs \
-                --file "$TARGET" \
-                --response "/tmp/$LOCALE.pass$PASS.response.txt" \
-                --report "artifacts/about-semantic-delta-runs/$LOCALE.pass$PASS.json")"
+                set +e
+                copilot --no-custom-instructions --no-ask-user --no-color \
+                  --allow-tool='shell(cat:*),shell(grep:*),shell(find:*),shell(sed:*),shell(head:*),shell(tail:*),shell(wc:*),shell(ls:*),shell(pwd:*),shell(rg:*),shell(awk:*),shell(sort:*),shell(uniq:*),shell(git status:*),shell(git diff:*),shell(git show:*),shell(git rev-parse:*)' \
+                  -s < "/tmp/$LOCALE.pass$PASS.attempt$ATTEMPT.prompt.md" > "/tmp/$LOCALE.pass$PASS.attempt$ATTEMPT.response.txt"
+                EXIT=$?
+                set -e
+                if [ "$EXIT" -ne 0 ]; then
+                  echo "Semantic-delta pass $PASS attempt $ATTEMPT failed for $LOCALE with exit $EXIT" >&2
+                  exit "$EXIT"
+                fi
+
+                cp "/tmp/$LOCALE.pass$PASS.attempt$ATTEMPT.response.txt" "artifacts/about-semantic-delta-runs/$LOCALE.pass$PASS.attempt$ATTEMPT.proposal.txt"
+                set +e
+                PASS_VERDICT="$(node scripts/apply-about-semantic-delta.mjs \
+                  --file "$TARGET" \
+                  --response "/tmp/$LOCALE.pass$PASS.attempt$ATTEMPT.response.txt" \
+                  --report "artifacts/about-semantic-delta-runs/$LOCALE.pass$PASS.json" 2>"/tmp/$LOCALE.pass$PASS.apply-error.txt")"
+                APPLY_EXIT=$?
+                set -e
+                if [ "$APPLY_EXIT" -eq 0 ]; then
+                  APPLY_OK=1
+                  break
+                fi
+                echo "$LOCALE pass $PASS proposal attempt $ATTEMPT rejected by guard" >&2
+                cat "/tmp/$LOCALE.pass$PASS.apply-error.txt" >&2 || true
+              done
+
+              if [ "$APPLY_OK" -ne 1 ]; then
+                echo "$LOCALE pass $PASS produced no applicable proposal after three attempts" >&2
+                exit 1
+              fi
               echo "$LOCALE pass $PASS => $PASS_VERDICT"
               if [ "$PASS_VERDICT" = "ALREADY_ALIGNED" ]; then
                 FINAL_ALIGNED=1
