@@ -27,6 +27,8 @@ Actively look for:
 
 Canonical invariants are mandatory. Do not propose changing formulas, hashes, code literals, API identifiers, stable section IDs, or true canonical names merely to translate them.
 
+Manifest-specific rule: the current Web App Manifest standard supports `*_localized` language maps. Do not report the English default `name`, `short_name`, `description`, `lang`, or `dir` as a target-locale defect merely because they are the manifest fallback. Instead verify that the target locale has complete, correct `name_localized`, `short_name_localized`, and `description_localized` entries with the right language and direction, and report any missing, incorrect, or mismatched target-locale entry.
+
 The FIRST line of your response MUST be exactly one of:
 NATIVE_QA_RESULT: PASS
 NATIVE_QA_RESULT: FAIL
