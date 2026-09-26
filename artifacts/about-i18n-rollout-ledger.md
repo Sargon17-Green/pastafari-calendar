@@ -13,11 +13,11 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 |---|---|---|---|---|
 | he | he-IL | rtl | complete | semantic master / existing |
 | en | en-US | ltr | complete | semantic QA |
-| af | af-ZA | ltr | partial | linguistic QA |
+| af | af-ZA | ltr | partial | semantic QA |
 | ar | ar | rtl | partial | semantic QA |
-| az | az-AZ | ltr | partial | linguistic QA |
-| be | be-BY | ltr | partial | linguistic QA |
-| bg | bg-BG | ltr | partial | linguistic QA |
+| az | az-AZ | ltr | partial | semantic QA |
+| be | be-BY | ltr | partial | semantic QA |
+| bg | bg-BG | ltr | partial | semantic QA |
 | bn | bn-BD | ltr | partial | semantic QA |
 | bs | bs-BA | ltr | partial | semantic QA |
 | ca | ca-ES | ltr | partial | semantic QA |
@@ -27,19 +27,19 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | el | el-GR | ltr | partial | semantic QA |
 | eo | eo | ltr | partial | semantic QA |
 | es | es-ES | ltr | partial | semantic QA |
-| et | et-EE | ltr | partial | linguistic QA |
+| et | et-EE | ltr | partial | semantic QA |
 | fa | fa-IR | rtl | partial | semantic QA |
 | fi | fi-FI | ltr | partial | semantic QA |
 | fil | fil-PH | ltr | partial | semantic QA |
-| fo | fo-FO | ltr | partial | linguistic QA |
+| fo | fo-FO | ltr | partial | semantic QA |
 | fr | fr-FR | ltr | partial | semantic QA |
-| fy | fy-NL | ltr | partial | linguistic QA |
-| gl | gl-ES | ltr | partial | linguistic QA |
+| fy | fy-NL | ltr | partial | semantic QA |
+| gl | gl-ES | ltr | partial | semantic QA |
 | gu | gu-IN | ltr | partial | semantic QA |
 | ha | ha-NG | ltr | partial | semantic QA |
 | hi | hi-IN | ltr | partial | semantic QA |
 | hr | hr-HR | ltr | partial | semantic QA |
-| ht | ht-HT | ltr | partial | linguistic QA |
+| ht | ht-HT | ltr | partial | semantic QA |
 | hu | hu-HU | ltr | partial | semantic QA |
 | hy | hy-AM | ltr | partial | semantic QA |
 | id | id-ID | ltr | partial | semantic QA |
