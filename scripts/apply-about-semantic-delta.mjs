@@ -12,9 +12,9 @@ const EXPECTED_IDS = Object.freeze([
 ]);
 
 const ALLOWED_IDS = new Set([
-  "about-calendar", "calculation", "structural-atlas", "appointments",
-  "travel-and-all-day", "seer", "site-story", "reverse-conversion",
-  "far-time-structure", "sauce-history",
+  "about-calendar", "months-and-weaving", "calculation", "structural-atlas",
+  "appointments", "travel-and-all-day", "seer", "foundation-and-tablets",
+  "site-story", "reverse-conversion", "far-time-structure", "sauce-history",
 ]);
 
 function arg(name) {
