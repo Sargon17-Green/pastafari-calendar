@@ -55,7 +55,7 @@
   <h2>Aastad ja väravad</h2>
   <p>Pastafari aasta võib kesta</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ kuni }5778</code></pre>
-  <p>päeva. Need on süsteemi canonical piirid, mitte empiirilised keskmised.</p>
+  <p>päeva. Need on süsteemi kanoonilised piirid, mitte empiirilised keskmised.</p>
   <p>Seega võib aasta olla lühem kui päikeseaasta või pikem kui viisteist päikeseaastat. Aastapiirid ehitatakse <strong>väravate</strong> süsteemist; kotletipiirid tulevad samast süsteemist.</p>
   <p>Aasta lõpp ei pea langema kokku aastaajaga, Maa ühe tiiruga ümber Päikese, kuutsükliga ega praktilise sooviga, et aasta nüüd lõpuks ära lõpeks.</p><hr>
 </section>
@@ -66,7 +66,7 @@
   <p>Kui täna on kotleti 250. päev, on homme sama kotleti 251. päev, välja arvatud juhul, kui täna on selle viimane päev. Kotlettide piirid on väravad ja üks kotlet kestab vähemalt</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
   <p>päeva.</p>
-  <p>Süsteemis on 17 canonical kotletinime ja sama nimi ei kordu ühe aasta jooksul. Nimi ei määra kotleti pikkust ega asukohta.</p><hr>
+  <p>Süsteemis on 17 kanoonilist kotletinime ja sama nimi ei kordu ühe aasta jooksul. Nimi ei määra kotleti pikkust ega asukohta.</p><hr>
 </section>
 
 <section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
@@ -102,14 +102,14 @@
 
 <section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
   <h2>Nädalaid ei ole</h2>
-  <p>Praegune canonical specification <strong>ei defineeri nädalasüsteemi</strong>. Puudub canonical seitsmepäevane üksus, puuduvad pastafari nädalapäevade nimed ning puudub reegel, mis teeks kaks päeva “samaks nädalapäevaks”.</p>
+  <p>Praegune kanooniline spetsifikatsioon <strong>ei defineeri nädalasüsteemi</strong>. Puudub kanooniline seitsmepäevane üksus, puuduvad pastafari nädalapäevade nimed ning puudub reegel, mis teeks kaks päeva “samaks nädalapäevaks”.</p>
   <p>Loomulikult võib tsiviilnädala süsteemi väljastpoolt peale asetada; see lihtsalt ei kuulu pastafari kuupäeva juurde.</p><hr>
 </section>
 
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
   <h2>Nimed</h2>
-  <p>On 17 canonical kotletinime ja 47 canonical kuunime. Ühe aasta jooksul ilmub iga nimi oma rühmas kõige rohkem ühe korra.</p>
-  <p>Nime identiteet on canonical ja semantiline; see ei ole hääletustulemus erinevate kirjapiltide, tõlgete või implementations vahel. Nimede tähenduse küsimuses on kõrgeim autoriteet heebreakeelsel Megillah'l; tõlked ja transliteratsioonid on vaid kuvakihid.</p>
+  <p>On 17 kanoonilist kotletinime ja 47 kanoonilist kuunime. Ühe aasta jooksul ilmub iga nimi oma rühmas kõige rohkem ühe korra.</p>
+  <p>Nime identiteet on kanooniline ja semantiline; see ei ole hääletustulemus erinevate kirjapiltide, tõlgete või teostuste vahel. Nimede tähenduse küsimuses on kõrgeim autoriteet heebreakeelsel Megillah'l; tõlked ja transliteratsioonid on vaid kuvakihid.</p>
   <p>Nimi ei ole ka varjatud pikkusekood. Konkreetse kotleti või kuu nimi ei muuda seda üksust iseenesest pikemaks ega lühemaks.</p><hr>
 </section>
 
@@ -139,10 +139,10 @@
 
 <section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
   <h2>Short Choice ja Wide Choice</h2>
-  <p>Suhteliselt väikeste selection space'ide jaoks kasutatakse <strong>Short Choice</strong>'i. Lihtsa modulo bias'i vältimiseks kasutab see rejection sampling'ut.</p>
-  <p>Väga suurte space'ide jaoks kasutatakse <strong>Wide Choice</strong>'i. Sellele ei tohi omistada omadusi, mida specification ei garanteeri.</p>
-  <p>Wide Choice ei ole sama mis sõltumatute ja ühtlaselt jaotunud base-<code>Q</code> numbrite genereerimine kuni index'i saamiseni. Seetõttu ei järeldu, et igal valid choice'il peab olema sama positiivne tõenäosus. Piisavalt suurtes space'ides võib olla valid choice'e, milleni see mechanism kunagi ei jõua.</p>
-  <p>Kalender ise jääb täiesti deterministic. “Choice” on algorithmic stage'i nimi, mitte kasutamise ajal toimuv random lottery.</p><hr>
+  <p>Suhteliselt väikeste valikuruumide jaoks kasutatakse <strong>Short Choice</strong>'i. Lihtsa moodulvõtmisel tekkiva kallutatuse vältimiseks kasutatakse sobimatute tulemuste tagasilükkamise meetodit.</p>
+  <p>Väga suurte valikuruumide jaoks kasutatakse <strong>Wide Choice</strong>'i. Sellele ei tohi omistada omadusi, mida spetsifikatsioon ei garanteeri.</p>
+  <p>Wide Choice ei ole sama mis sõltumatute ja ühtlaselt jaotunud alusega <code>Q</code> sõltumatute ja ühtlaselt jaotunud numbrikohtade genereerimine kuni indeksi saamiseni. Seetõttu ei järeldu, et igal valid choice'il peab olema sama positiivne tõenäosus. Piisavalt suurtes valikuruumides võib olla lubatud valikuid, milleni see mehhanism kunagi ei jõua.</p>
+  <p>Kalender ise jääb täiesti deterministlikuks. “Choice” on algoritmilise etapi nimi, mitte kasutamise ajal toimuv juhuslik loosimine.</p><hr>
 </section>
 
 <section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
@@ -180,8 +180,8 @@
   <p>Sama atlas näitas ka loomulikku pikkuse bias'i aasta 5000 ümber. Valimis oli “tavaline” aasta keskmiselt umbes 4,262 päeva. Kui aastaid weight'ida nende päevade arvu järgi, tõuseb keskmine umbes 4,466 päevani; aasta 5000 ise oli keskmiselt umbes 4,499 päeva pikk.</p>
   <p>Põhjus on lihtne: aasta 5000 peab sisaldama toimingupäeva. Pikemal aastal on rohkem päevi, mille puhul see saab olla toimingupäeva sisaldav aasta.</p>
   <p>Ka üksuse nime ja pikkuse seos oli valimis väga nõrk. See ei tõesta täielikku mathematical independence'it, kuid atlas ei anna praktilist signal'it, et nimed oleks loodud pikkuse encode'imiseks.</p>
-  <p>Lisaks ei ole 86,016 aastastruktuuri tegelikult 86,016 täiesti independent sample'it: alg- ja lõppvärava vahel on vaid 24,786 erinevat interval'i. Lähestikku asuvad toimingupäevad võivad valida sama year interval'i ja siiski moodustada erineva sisemise structure'i.</p>
-  <p>Seega kirjeldab atlas implementation'i mõõdetud käitumist hästi, kuid sellest ei tohi teha probability theorem'it kõigi võimalike calendar structure'ite kohta.</p><hr>
+  <p>Lisaks ei ole 86,016 aastastruktuuri tegelikult 86,016 täiesti independent sample'it: alg- ja lõppvärava vahel on vaid 24,786 erinevat interval'i. Lähestikku asuvad toimingupäevad võivad valida sama aastaintervalli ja siiski moodustada erineva sisemise structure'i.</p>
+  <p>Seega kirjeldab atlas teostuse mõõdetud käitumist hästi, kuid sellest ei tohi teha tõenäosusteoreemi kõigi võimalike kalendristruktuuride kohta.</p><hr>
 </section>
 
 <section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
@@ -192,14 +192,14 @@
   <p>4,096 self-referential date'i exact scan'is kontrolliti iga järgmist pastafari aastat mõlemas suunas kuni 250,000 aastani:</p>
   <ul>
     <li><code>(kuu nimi, päev kuu sees)</code> puhul oli esimese tagasituleku mediaan 1 pastafari aasta; 77.56% naasis naaberaastal, 93.77% kahe aasta jooksul, 99.44% viie aasta jooksul; vaadeldud maksimum oli 21 aastat.</li>
-    <li><code>(kotleti nimi, päev kotleti sees)</code> puhul oli mediaan 3 aastat; 88.89% leiti 10 aasta jooksul, kuid distribution'il on väga raske heavy tail ning vaadeldud maksimum ulatus 51,954 pastafari aastani.</li>
+    <li><code>(kotleti nimi, päev kotleti sees)</code> puhul oli mediaan 3 aastat; 88.89% leiti 10 aasta jooksul, kuid jaotusel on väga raske saba ning vaadeldud maksimum ulatus 51,954 pastafari aastani.</li>
   </ul>
-  <p>Need on <strong>kontrollitud corpus'e empiirilised tulemused</strong>; need ei tõesta, et iga võimalik aastapäev peab kindlasti korduma, ega anna guarantee'd maximum waiting time'ile.</p><hr>
+  <p>Need on <strong>kontrollitud corpus'e empiirilised tulemused</strong>; need ei tõesta, et iga võimalik aastapäev peab kindlasti korduma, ega anna guarantee'd maksimaalsele ooteajale.</p><hr>
 </section>
 
 <section class="about-section" id="appointments" data-toc-section data-toc-level="2">
   <h2>Kuidas kohtumine kokku leppida?</h2>
-  <p>Kui kaks inimest tahavad kokku leppida ainult pastafari kuupäeva abil, peavad nad vähemalt kokku leppima kuupäeva viies väljas ja arvutuses kasutatud toimingupäevas. Toimingupäeva on parem talletada stabiilse day identity'na, mitte sõnana “täna”; muidu võivad kaks inimest arvutada kaks erinevat kalendrit.</p>
+  <p>Kui kaks inimest tahavad kokku leppida ainult pastafari kuupäeva abil, peavad nad vähemalt kokku leppima kuupäeva viies väljas ja arvutuses kasutatud toimingupäevas. Toimingupäeva on parem talletada stabiilse päevaidentiteedina, mitte sõnana “täna”; muidu võivad kaks inimest arvutada kaks erinevat kalendrit.</p>
   <ul>
     <li>“homme” on järgmine kronoloogiline päev;</li>
     <li>“kuu järgmine päev” on sama kuu järgmine ilmumine;</li>
@@ -207,12 +207,12 @@
     <li>“terve kuu” võib tähendada sellele kuule kuuluvate päevade set'i või kogu kronoloogilist span'i esimesest viimase ilmumiseni;</li>
     <li>“järgmine aasta” on järgmine aasta kalendris, mis on ehitatud valitud toimingupäeva all.</li>
   </ul>
-  <p>Eriti tähtsa kohtumise jaoks võib talletada ka absolute chronological day või moment'i. Kalender ei solvu.</p><hr>
+  <p>Eriti tähtsa kohtumise jaoks võib talletada ka absoluutse kronoloogilise päeva või hetke. Kalender ei solvu.</p><hr>
 </section>
 
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
   <h2>Reisimine, sündmused ja all-day</h2>
-  <p>Sündmus ja selle juures näidatav kohalik silt ei ole sama asi. Kindla kellaajaga sündmus peaks olema seotud stabiilse chronological moment'iga. Reisimine ei liiguta seda ajas, kuid sama physical moment'i kohalik pastafari kuupäev võib muutuda, sest “kohaliku päeva” definitsioon sõltub asukohast.</p>
+  <p>Sündmus ja selle juures näidatav kohalik silt ei ole sama asi. Kindla kellaajaga sündmus peaks olema seotud stabiilse kronoloogilise hetkega. Reisimine ei liiguta seda ajas, kuid sama füüsilise hetke kohalik pastafari kuupäev võib muutuda, sest “kohaliku päeva” definitsioon sõltub asukohast.</p>
   <p><strong>All-day</strong> sündmuse puhul on erinevus veel suurem. Tsiviilne terve päeva sündmus kestab tavaliselt südaööst järgmise südaööni; pastafari terve päeva sündmus peaks kestma kohaliku pastafari päeva piirist järgmise piirini. Tavaliselt ei ole need samad moments.</p>
   <p>Seega võib pastafari sündmuse mõtlematu export tsiviilseks “terve päeva” sündmuseks muuta selle tähendust. Täpseks säilitamiseks tuleb talletada chronological anchor ja sobiv location/day-boundary context, mitte ainult <code>all-day</code> flag.</p><hr>
 </section>
@@ -221,26 +221,26 @@
   <h2>Millal päev vahetub?</h2>
   <p>Kohalik pastafari päev ei vahetu südaööl. Selle piiri määrab <strong>Veenuse keskme topocentric lower meridian transit üle kohaliku meridiaani</strong>.</p>
   <p>See on seega asukohast sõltuv kohalik astronoomiline sündmus. Transit ei pea toimuma kell 00:00, seda ei määra tsiviilne time zone, see ei nihku lihtsalt daylight saving time'i alguse või lõpu tõttu ning Veenus ei pea palja silmaga nähtav olema.</p>
-  <p>Sama physical moment võib kahes asukohas jääda nende kohaliku päevapiiri eri külgedele. Kui süsteemil ei ole kasutatavat user location'it, on toote default fallback location <strong>Kisurra</strong>.</p><hr>
+  <p>Sama füüsiline hetk võib kahes asukohas jääda nende kohaliku päevapiiri eri külgedele. Kui süsteemil ei ole kasutatavat kasutaja asukohta, on toote vaikimisi varuasukoht <strong>Kisurra</strong>.</p><hr>
 </section>
 
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
   <h2>Trükitud kalender ja käsitsi arvutamine</h2>
   <p>Pastafari kalendri võib välja printida; vaja on ainult märkida, millise toimingupäeva jaoks see arvutati. Selline kalender näitab aja struktuuri selle päeva vaatepunktist; toimingupäeva muutudes võib olla vaja uut kalendrit. Seega on printeril endiselt tööd.</p>
-  <p>Kuna specification on täielik ja deterministic, saab kõike arvutada ka käsitsi: arvutage input counter'id, läbige 7 peidetud ja 46 nähtavat tilka, update'ige kuus kaussi, tehke 12 lõplikku segamist, koostage vastused, ehitage väravad, valige aastad ja kotletid, tehke combinatorial selection, valige nimed ja seejärel põimige kuud.</p>
+  <p>Kuna spetsifikatsioon on täielik ja deterministlik, saab kõike arvutada ka käsitsi: arvutage input counter'id, läbige 7 peidetud ja 46 nähtavat tilka, update'ige kuus kaussi, tehke 12 lõplikku segamist, koostage vastused, ehitage väravad, valige aastad ja kotletid, tehke combinatorial selection, valige nimed ja seejärel põimige kuud.</p>
   <p>Vastutasuks ei pea meeles pidama, millal veebruaril on 28 ja millal 29 päeva.</p><hr>
 </section>
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Mis asi on siis Seer?</h2>
-  <p>Canonical implementation'i kõrval on kiire engine nimega <strong>Pastafarian Calendar Seer</strong>. Seer ei ole autoriteedi allikas: õige kuupäeva määravad Megillah ja canonical calculation. Kui Seer nendega ei ühti, on viga Seeris.</p>
+  <p>Kanoonilise teostuse kõrval on kiire arvutusmootor nimega <strong>Pastafarian Calendar Seer</strong>. Seer ei ole autoriteedi allikas: õige kuupäeva määravad Megillah ja kanooniline arvutus. Kui Seer nendega ei ühti, on viga Seeris.</p>
   <p>Selle ülesanne on käivitada samad query'd kiiresti ja tagastada tulemus kujul, mida on lihtne toodetesse integrate'ida.</p>
-  <p>Selle lehe toimetamise ajal tehtud otseses verification'is hõlmas Seer muu hulgas date- ja “now”-query'sid, batch'i, day range'i, reverse conversion'it pastafari kuupäevast target day'ni, year structure retrieval'it, active working day määramist, Node API-t, browser/HTTP client'i, CLI-d, HTTP v1 service'it, OpenAPI 3.1 contract'i, native implementations'e ja distribution package'it ning verified container deployment'i.</p>
-  <p>Vana väide, et Seeril puudub public API, ei vasta enam tõele. Nüüd on olemas selge ja stabiilne HTTP v1 contract endpoint'idega date, range, batch, year, reverse, toimingupäeva, metadata, locales ja status jaoks.</p>
-  <p>21. septembril 2026 testiti Renderis päriselt public HTTPS deployment'i: live service'is kontrolliti exact query'sid, suurt range'i, restart'i, cold wake'i ja käitumist load'i all.</p>
-  <p>Project documentation eristab siiski endiselt public beta/evaluation deployment'i püsivast SLA-ga hosted production service'ist. Seetõttu ei tohiks kontseptuaalne selgitusleht freeze'ida server address'it, hosting provider'it ega version number'it nii, nagu need kuuluksid kalendri enda juurde.</p>
-  <p>Seer võib kasutada precomputation'it, eriesitusi, SIMD-i, algebra't ja muid shortcut'e. Ta ei pea canonical implementation'i kogu computational history't samm-sammult jäljendama, kui teeb sama semantilise operatsiooni ja tagastab sama vastuse.</p>
-  <p>Optimization ei ole alternatiivne autoriteet.</p><hr>
+  <p>Selle lehe toimetamise ajal tehtud otseses verification'is hõlmas Seer muu hulgas date- ja “now”-query'sid, batch'i, päevavahemikku, reverse conversion'it pastafari kuupäevast päringupäevani, aasta struktuuri hankimist, aktiivse toimingupäeva määramist, Node API-t, brauseri/HTTP klienti, CLI-d, HTTP v1 teenust, OpenAPI 3.1 lepingut, natiivseid teostusi ja levipaketti ning kontrollitud konteinerjuurutust.</p>
+  <p>Vana väide, et Seeril puudub avalik API, ei vasta enam tõele. Nüüd on olemas selge ja stabiilne HTTP v1 leping otspunktidega <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, toimingupäeva, metaandmete, lokaatide ja oleku jaoks.</p>
+  <p>21. septembril 2026 testiti Renderis päriselt public HTTPS deployment'i: live service'is kontrolliti täpseid päringuid, suurt vahemikku, taaskäivitust, külmkäivitust ja käitumist koormuse all.</p>
+  <p>Projekti dokumentatsioon eristab siiski endiselt avalikku beeta-/hindamisjuurutust püsivast SLA-ga majutatud tootmisteenusest. Seetõttu ei tohiks kontseptuaalne selgitusleht külmutada serveri aadressi, majutusteenuse pakkujat ega versiooninumbrit nii, nagu need kuuluksid kalendri enda juurde.</p>
+  <p>Seer võib kasutada eelarvutust, eriesitusi, SIMD-i, algebrat ja muid otseteid. Ta ei pea kanoonilise teostuse kogu arvutusajalugu samm-sammult jäljendama, kui teeb sama semantilise operatsiooni ja tagastab sama vastuse.</p>
+  <p>Optimeerimine ei ole alternatiivne autoriteet.</p><hr>
 </section>
 
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
@@ -277,7 +277,7 @@
 
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Candidate'ide arvu ülempiirid reverse conversion'is">
     <table class="about-table">
-      <thead><tr><th scope="col">Teadaolev lisateave</th><th scope="col">Maksimaalne candidate'ide arv</th></tr></thead>
+      <thead><tr><th scope="col">Teadaolev lisateave</th><th scope="col">Maksimaalne kandidaatide arv</th></tr></thead>
       <tbody>
         <tr><td>Peale aasta pole ükski väli teada</td><td>5,778</td></tr>
         <tr><td>Ainult kotleti nimi</td><td>5,568</td></tr>
@@ -292,13 +292,13 @@
     </table>
   </div>
 
-  <p>Kui toimingupäev ei ole teada, on olukord teistsugune. Samad viis väärtust võivad ilmuda erinevate toimingupäevade all ning on olemas exact example'id, kus sama täielik kuupäev ilmub <code>c</code>-st erineval kaugusel.</p>
-  <p>Aastal 5000 ei ole isegi selle kauguse sign alati viie väärtusega määratud: sama täielik kuupäev võib ühes context'is olla enne toimingupäeva ja teises pärast seda.</p>
-  <p>Seega ei ole täielik pastafari kuupäev ajajoonel absolute address, kui ei ole teada, millise <code>c</code> all see arvutati.</p>
+  <p>Kui toimingupäev ei ole teada, on olukord teistsugune. Samad viis väärtust võivad ilmuda erinevate toimingupäevade all ning on olemas täpsed näited, kus sama täielik kuupäev ilmub <code>c</code>-st erineval kaugusel.</p>
+  <p>Aastal 5000 ei ole isegi selle kauguse märk alati viie väärtusega määratud: sama täielik kuupäev võib ühes kontekstis olla enne toimingupäeva ja teises pärast seda.</p>
+  <p>Seega ei ole täielik pastafari kuupäev ajajoonel absoluutne aadress, kui ei ole teada, millise <code>c</code> all see arvutati.</p>
 
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
     <h3>Väga kauge aja struktuur</h3>
-    <p>Specification'ist tuletatud matemaatiline uurimus on leidnud ka täpse asymptotic structure'i. <strong>Fikseeritud toimingupäeva</strong> <code>c</code> korral ilmub mineviku tail'is piisavalt kaugel affine periodicity.</p>
+    <p>Spetsifikatsioonist tuletatud matemaatiline uurimus on leidnud ka täpse asümptootilise struktuuri. <strong>Fikseeritud toimingupäeva</strong> <code>c</code> korral ilmub mineviku sabas piisavalt kaugel afiinne perioodilisus.</p>
     <p>Kui</p>
     <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
     <p>siis on sama <code>c</code> jaoks olemas shift <code>H_c</code>, year change <code>p_c</code> ja piisavalt kauge threshold, millest alates</p>
@@ -306,26 +306,26 @@
     <p>korduvad neli aasta-välist välja, samal ajal kui aasta number muutub kindla suuruse võrra.</p>
     <p>See on tulemus fikseeritud <code>c</code> jaoks; sellest ei järeldu globaalne seos</p>
     <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
-    <p>Küsimus, kas lõplikud asymptotic slope'id tõesti erinevad erinevate toimingupäevade vahel, on endiselt lahtine.</p><hr>
+    <p>Küsimus, kas lõplikud asümptootilised tõusud tõesti erinevad erinevate toimingupäevade vahel, on endiselt lahtine.</p><hr>
   </section>
 </section>
 
 <section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
   <h2>Edasijõudnutele: kui palju ajalugu kaste säilitab?</h2>
-  <p>Kaste näeb välja nagu väga agressiivne mixing mechanism, kuid algebraic research näitab, et see säilitab palju rohkem teavet, kui välimus lubaks arvata. See on specification'ist tuletatud research result, mitte uus kalendrireegel.</p>
-  <p>Nähtavates stage'ides 3–46 on vastaval asymptotic branch'il tõestatud generic injectivity: generic case'is säilitab state piisavalt teavet, et rekonstrueerida vastav input history ja kausijärjestus.</p>
-  <p>Ka 12 lõplikus segamises ei kao teave kohe. Esimese viie segamise puhul pärast nähtavat tilka 46 on vastaval canonical union'il tõestatud generic invertibility ilma täiendava side information'ita; ülejäänu kohta on teada tugevad constructive upper bound'id side information'i hulgale, millest reconstruction'iks piisab.</p>
-  <p>Lahtiseks jääb küsimus, kas <strong>ainult kuuest lõplikust kausist</strong> piisab generic sense'is alati.</p>
-  <p>Osa tulemusi tõestati symbolic, teised lõpetati finite exact arithmetic check'idega. Symbolic strengthening vähendas oluliselt computational core'i, mida tuleb usaldada, kuid ei kõrvaldanud seda täielikult.</p>
-  <p>Space'id, mis algul näisid nõudvat tohutu hulga path'ide otsingut, taandati palju väiksematele finite structure'itele, sealhulgas 180 ja 9 state'iga automata'le ning kuue kausi symmetry'le.</p>
+  <p>Kaste näeb välja nagu väga agressiivne segamismehhanism, kuid algebraline uurimus näitab, et see säilitab palju rohkem teavet, kui välimus lubaks arvata. See on spetsifikatsioonist tuletatud uurimistulemus, mitte uus kalendrireegel.</p>
+  <p>Nähtavates etappides 3–46 on vastavas asümptootilises harus tõestatud üldjuhu injektiivsus: üldjuhul säilitab state piisavalt teavet, et rekonstrueerida vastav sisendajalugu ja kausijärjestus.</p>
+  <p>Ka 12 lõplikus segamises ei kao teave kohe. Esimese viie segamise puhul pärast nähtavat tilka 46 on vastavas kanoonilises ühendis tõestatud üldjuhu pööratavus ilma täiendava lisateabeta; ülejäänu kohta on teada tugevad konstruktiivsed ülempiirid lisateabe hulgale, millest taastamiseks piisab.</p>
+  <p>Lahtiseks jääb küsimus, kas <strong>ainult kuuest lõplikust kausist</strong> piisab üldjuhul alati.</p>
+  <p>Osa tulemusi tõestati sümboolselt, teised lõpetati lõplike täppisaritmeetiliste kontrollidega. Sümboolne tugevdamine vähendas oluliselt arvutuslikku tuumikut, mida tuleb usaldada, kuid ei kõrvaldanud seda täielikult.</p>
+  <p>Ruumid, mis algul näisid nõudvat tohutu hulga arvutusteede otsingut, taandati palju väiksematele lõplikele struktuuridele, sealhulgas 180 ja 9 olekuga automaatidele ning kuue kausi sümmeetriale.</p>
   <p>Segamise all on range algebraic structure. Tänase kuupäeva teadmiseks ei ole vaja seda tunda.</p><hr>
 </section>
 
 <section class="about-section" id="summary" data-toc-section data-toc-level="2">
   <h2>Mis on pastafari kalender siis tegelikult?</h2>
-  <p>See on deterministic calendar, milles kuupäev ei ole ainult target day function, vaid <strong>toimingupäeva ja päringupäeva ühine function</strong>.</p>
-  <p>Igal kuupäeval on täpselt viis välja. Olevik on iseenda vaatepunktist alati aastal 5000, kuid aasta 5000 ise liigub koos toimingupäevaga. Aastad võivad olla väga pikad, kotletid on katkematud, kuud mitte tingimata ning canonical week system puudub.</p>
-  <p>Kuu päev <code>n+1</code> ei pea olema homme. Sama chronological day võib homme saada teise pastafari label'i. Sama physical moment võib kahes kohas kuuluda kahele erinevale local Pastafari day'le. All-day event ei pea kestma südaööst südaööni. Ja annual birthday on esmalt search problem ning alles siis calendar problem.</p>
-  <p>Kui aga toimingupäev ja päringupäev on teada, ei ole ambiguity't: õige vastus on ainult üks.</p>
+  <p>See on deterministlik kalender, milles kuupäev ei ole ainult päringupäeva funktsioon, vaid <strong>toimingupäeva ja päringupäeva ühine funktsioon</strong>.</p>
+  <p>Igal kuupäeval on täpselt viis välja. Olevik on iseenda vaatepunktist alati aastal 5000, kuid aasta 5000 ise liigub koos toimingupäevaga. Aastad võivad olla väga pikad, kotletid on katkematud, kuud mitte tingimata ning kanooniline nädalasüsteem puudub.</p>
+  <p>Kuu päev <code>n+1</code> ei pea olema homme. Sama kronoloogiline päev võib homme saada teise pastafari sildi. Sama füüsiline hetk võib kahes kohas kuuluda kahele erinevale kohalikule Pastafari päevale. <code>all-day</code> sündmus ei pea kestma südaööst südaööni. Ja iga-aastane sünnipäev on esmalt otsinguülesanne ning alles siis kalendriülesanne.</p>
+  <p>Kui aga toimingupäev ja päringupäev on teada, ei ole mitmetähenduslikkust: õige vastus on ainult üks.</p>
   <p>Lõppude lõpuks ei peagi kalender rohkemat tegema.</p>
 </section>
