@@ -78,3 +78,10 @@ jobs:
             --allow-tool='shell(find:*)' \
             --allow-tool='shell(cat:*)' | tee "/tmp/native-qa-${LOCALE}.md"
           echo "=== NATIVE_QA_END ${LOCALE} ==="
+      - name: Upload native-language QA report
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-qa-${{ matrix.locale }}
+          path: /tmp/native-qa-${{ matrix.locale }}.md
+          if-no-files-found: error
+          retention-days: 30
