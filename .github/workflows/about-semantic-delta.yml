@@ -18,7 +18,7 @@ concurrency:
 jobs:
   edit:
     runs-on: ubuntu-24.04
-    timeout-minutes: 180
+    timeout-minutes: 360
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -29,16 +29,17 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm install -g @github/copilot@1.0.88
-      - name: Apply pilot semantic delta
+      - name: Apply requested semantic delta
         shell: bash
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          BATCH: en,is,ar
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           mkdir -p artifacts/about-semantic-delta-runs
+          BATCH="$(node -e 'const t=require("./artifacts/about-semantic-delta-trigger.json"); if(!Array.isArray(t.locales)||!t.locales.length) throw new Error("trigger.locales must be a non-empty array"); process.stdout.write(t.locales.join(","));')"
+          echo "Requested locales: $BATCH"
           IFS=',' read -ra LOCALES <<< "$BATCH"
           for LOCALE in "${LOCALES[@]}"; do
             echo "=== semantic delta: $LOCALE ==="
@@ -180,10 +181,12 @@ jobs:
           data.locales[process.env.LOCALE]={
             locale_tag:process.env.TARGET_TAG,
             result:process.env.RESULT,
+            final_verified_aligned:detail.final_verified_aligned===true,
             before_blob:process.env.BEFORE_BLOB,
             after_blob:process.env.AFTER_BLOB,
             replacement_count:detail.replacement_count,
-            touched_sections:detail.touched_sections
+            touched_sections:detail.touched_sections,
+            passes:detail.passes
           };
           fs.writeFileSync(path,JSON.stringify(data,null,2)+"\n");
           NODE
@@ -201,7 +204,7 @@ jobs:
             done
           done
 
-      - name: Upload semantic-delta pilot evidence
+      - name: Upload semantic-delta evidence
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
