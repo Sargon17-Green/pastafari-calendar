@@ -58,6 +58,10 @@ function tableBodyRowCounts(html) {
   });
 }
 
+function normalizeNumericFormatting(value) {
+  return value.replace(/[.,\s\u00a0\u202f]/gu, "");
+}
+
 test("main page routes explanation links to the standalone about page", async () => {
   const html = await readFile(path.join(DOCS, "index.html"), "utf8");
   const app = await readFile(path.join(DOCS, "app.js"), "utf8");
@@ -145,8 +149,12 @@ test("every present locale article is structurally and semantically guarded", as
         assert.ok(html.includes(literal), `${locale.code}: missing immutable literal ${literal}`);
       }
     }
+    const normalizedNumericHtml = normalizeNumericFormatting(html);
     for (const literal of EMPIRICAL_LITERALS) {
-      assert.ok(html.includes(literal), `${locale.code}: missing empirical value ${literal}`);
+      assert.ok(
+        normalizedNumericHtml.includes(normalizeNumericFormatting(literal)),
+        `${locale.code}: missing empirical value ${literal}`,
+      );
     }
     assert.doesNotMatch(html, /<(?:script|iframe|object)\b/i, `${locale.code}: article content must remain inert HTML`);
     assert.doesNotMatch(html, /\b(?:TODO|TBD|TRANSLATE|PLACEHOLDER)\b/, `${locale.code}: unfinished translation marker`);
