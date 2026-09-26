@@ -2,8 +2,8 @@
 <!-- Gli ID di sezione sono un contratto pubblico per i deep link e non si traducono. -->
 <div class="about-section about-lead" id="about-calendar">
   <p>Nel racconto del sito, il calendario pastafari è presentato come il calendario nel quale il tempo è stato creato. La sua meccanica, però, è definita con precisione.</p>
-  <p>Un giorno non viene convertito in un'unica «etichetta» immutabile. Per determinarne la data servono due giorni: il <strong>giorno di lavoro</strong>, dal quale si esegue il calcolo, e il <strong>giorno interrogato</strong>, di cui si vuole conoscere la data.</p>
-  <p>Indicandoli con <code>c</code> e <code>t</code>, la data è</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre><p>e non <code>F(t)</code>. Lo stesso giorno interrogato può quindi ricevere una data pastafari diversa se cambia il giorno di lavoro.</p>
+  <p>Un giorno non viene convertito in un'unica «etichetta» immutabile. Per determinarne la data servono due giorni: il <strong>giorno di lavoro</strong>, dal quale si esegue il calcolo, e il <strong>giorno richiesto</strong>, di cui si vuole conoscere la data.</p>
+  <p>Indicandoli con <code>c</code> e <code>t</code>, la data è</p><pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre><p>e non <code>F(t)</code>. Lo stesso giorno richiesto può quindi ricevere una data pastafari diversa se cambia il giorno di lavoro.</p>
   <p>Non è un errore: è il calendario.</p><hr>
 </div>
 <section class="about-section" id="date-parts" data-toc-section data-toc-level="2"><h2>Com'è fatta una data pastafari?</h2>
@@ -24,7 +24,7 @@
   <p>L'etichetta può cambiare. L'evento no.</p><hr>
 </section>
 <section class="about-section" id="year-5000" data-toc-section data-toc-level="2"><h2>L'anno 5000</h2>
-  <p>Quando giorno di lavoro e giorno interrogato coincidono,</p><pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre><p>l'anno è sempre</p><pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>Quando giorno di lavoro e giorno richiesto coincidono,</p><pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre><p>l'anno è sempre</p><pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
   <p>Il presente rispetto a sé stesso si trova dunque sempre nell'anno 5000. Ma non è un periodo storico fisso: viene scelto nuovamente rispetto al giorno di lavoro.</p>
   <p>Il giorno di lavoro si trova nell'anno 5000 e così anche altri giorni dello stesso anno. Perciò <strong>anno 5000 non implica <code>t=c</code>.</strong></p>
   <p>Il numero dell'anno dà però la direzione:</p><pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre><p>e</p><pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
@@ -80,7 +80,7 @@
   <p>Dopo i mescolamenti, anche l'anello delle risposte continua nell'ordine fissato alla 46ª goccia visibile; non va sostituito automaticamente con l'ordine dell'ultimo mescolamento.</p><hr>
 </section>
 <section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2"><h2>Short Choice e Wide Choice</h2>
-  <p><strong>Short Choice</strong> opera negli spazi di scelta relativamente piccoli e usa il campionamento per rigetto per evitare il bias di un semplice modulo.</p>
+  <p><strong>Short Choice</strong> opera negli spazi di scelta relativamente piccoli e usa il campionamento per rigetto per evitare la distorsione introdotta da un semplice modulo.</p>
   <p>Negli spazi molto grandi interviene <strong>Wide Choice</strong>. Non equivale a generare cifre indipendenti e uniformi in base <code>Q</code> finché non si ottiene un indice.</p>
   <p>Non segue quindi che ogni possibilità lecita abbia necessariamente la stessa probabilità positiva. In spazi sufficientemente grandi possono esistere perfino possibilità lecite irraggiungibili da questo specifico meccanismo.</p>
   <p>Il calendario resta del tutto deterministico. «Choice» è il nome di una fase algoritmica, non di un'estrazione casuale effettuata durante l'uso.</p><hr>
@@ -99,7 +99,7 @@
     <tr><td>Giorni estranei medi tra <code>n</code> e <code>n+1</code> di un mese</td><td>40.408</td></tr><tr><td>Estensione media dalla prima all'ultima occorrenza di un mese</td><td>4,266.653 giorni</td></tr>
   </tbody></table></div>
   <p>In pratica, un mese di circa cento giorni può risultare distribuito su quasi un intero anno pastafari.</p>
-  <p>Nello stesso atlante emerge un naturale bias di lunghezza attorno all'anno 5000. Un anno «normale» del campione aveva una media di circa 4,262 giorni; pesando gli anni per i giorni contenuti si sale a circa 4,466; l'anno 5000 proprio aveva una media di circa 4,499. La ragione è semplice: l'anno 5000 deve contenere il giorno di lavoro e un anno lungo offre più giorni in cui può essere proprio quell'anno.</p>
+  <p>Nello stesso atlante emerge una naturale distorsione dovuta alla lunghezza attorno all'anno 5000. Un anno «normale» del campione aveva una media di circa 4,262 giorni; pesando gli anni per i giorni contenuti si sale a circa 4,466; l'anno 5000 stesso aveva una media di circa 4,499. La ragione è semplice: l'anno 5000 deve contenere il giorno di lavoro e un anno lungo offre più giorni in cui può essere proprio quell'anno.</p>
   <p>Il legame fra nome dell'unità e lunghezza è risultato molto debole. Non è una prova di completa indipendenza matematica, ma l'atlante non mostra un indizio pratico di nomi concepiti per codificare la lunghezza.</p>
   <p>Infine, le 86,016 strutture annuali non sono altrettanti campioni del tutto indipendenti: contengono solo 24,786 intervalli distinti fra porta iniziale e finale. Giorni di lavoro vicini possono scegliere lo stesso intervallo annuo e produrre comunque strutture interne diverse.</p>
   <p>L'atlante descrive bene il comportamento dell'implementazione misurata; non è un teorema probabilistico sull'intero spazio dei calendari possibili.</p><hr>
@@ -117,9 +117,9 @@
   <ul><li>«domani» è il giorno cronologico successivo;</li><li>«giorno successivo del mese» è la prossima occorrenza di quel mese;</li><li>«fine del mese» è la sua ultima occorrenza;</li><li>«mese intero» può indicare l'insieme dei giorni del mese oppure tutta l'estensione cronologica dalla prima all'ultima occorrenza;</li><li>«anno successivo» si riferisce al calendario costruito sotto il giorno di lavoro scelto.</li></ul>
   <p>Per un appuntamento particolarmente importante si può conservare anche il giorno o istante cronologico assoluto. Il calendario non ne risente.</p><hr>
 </section>
-<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2"><h2>Viaggi, eventi e all-day</h2>
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2"><h2>Viaggi ed eventi di giornata intera</h2>
   <p>Un evento è diverso dall'etichetta locale mostrata per esso. Un evento programmato va ancorato a un istante cronologico stabile. Viaggiare non lo sposta nel tempo, ma può cambiare la data pastafari locale mostrata in quell'istante perché il «giorno locale» dipende dalla posizione.</p>
-  <p>Con un evento <strong>all-day</strong> la differenza è ancora più importante. Un evento civile di giornata intera va di norma da una mezzanotte civile alla successiva; quello pastafari dovrebbe andare da un confine locale del giorno pastafari al successivo. In generale non coincidono.</p>
+  <p>Con un evento <strong>di giornata intera</strong> la differenza è ancora più importante. Un evento civile di giornata intera va di norma da una mezzanotte civile alla successiva; quello pastafari dovrebbe andare da un confine locale del giorno pastafari al successivo. In generale non coincidono.</p>
   <p>Esportare alla cieca un evento pastafari come «tutto il giorno» in un calendario civile può quindi alterarne il significato. Per conservarlo con precisione servono l'ancora cronologica e il contesto posizione/confine del giorno, non solo la casella <code>all-day</code>.</p><hr>
 </section>
 <section class="about-section" id="day-boundary" data-toc-section data-toc-level="2"><h2>Quando cambia il giorno?</h2>
@@ -135,10 +135,10 @@
 <section class="about-section" id="seer" data-toc-section data-toc-level="2"><h2>E Seer?</h2>
   <p>Accanto all'implementazione canonica esiste un motore veloce chiamato <strong>Pastafarian Calendar Seer</strong>. Seer non è una fonte d'autorità: la Megillah e il calcolo canonico stabiliscono la data corretta. Se Seer li contraddice, è Seer a sbagliare.</p>
   <p>Serve a rispondere alle stesse domande rapidamente e in una forma comoda da integrare nei prodotti.</p>
-  <p>Alla verifica live svolta durante la redazione di questa pagina, Seer comprendeva query di data e «adesso», batch, intervalli di giorni, conversione inversa verso un giorno obiettivo, struttura annuale, risoluzione del giorno di lavoro attivo, API Node, client browser/HTTP, CLI, servizio HTTP v1, contratto OpenAPI 3.1, implementazioni native e pacchetti di distribuzione, oltre a un deployment container verificato.</p>
-  <p>La vecchia affermazione secondo cui Seer non avrebbe un'API pubblica non è più vera. Esiste un contratto HTTP v1 esplicito e stabile con endpoint per data, range, batch, year, reverse, giorno di lavoro, metadata, locales e status.</p>
-  <p>Il 21 settembre 2026 è stato inoltre testato in pratica un deployment HTTPS pubblico su Render: query esatte, intervallo ampio, restart, cold wake e comportamento sotto carico sul servizio live.</p>
-  <p>I documenti del progetto distinguono tuttora questa beta/valutazione pubblica attiva dalla dichiarazione di un servizio hosted production permanente con SLA. Una pagina concettuale non dovrebbe quindi rendere indirizzo del server, provider o numero di versione parte della dottrina del calendario.</p>
+  <p>Nella verifica dal vivo svolta durante la redazione di questa pagina, Seer comprendeva richieste <code>date</code> e <code>now</code>, <code>batch</code>, intervalli di giorni, conversione inversa verso un giorno richiesto, struttura annuale, risoluzione del giorno di lavoro attivo, API Node, client per browser/HTTP, CLI, servizio HTTP v1, contratto OpenAPI 3.1, implementazioni native e pacchetti di distribuzione, oltre a una distribuzione in container verificata.</p>
+  <p>La vecchia affermazione secondo cui Seer non avrebbe un'API pubblica non è più vera. Esiste un contratto HTTP v1 esplicito e stabile con endpoint per <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, giorno di lavoro, <code>metadata</code>, <code>locales</code> e <code>status</code>.</p>
+  <p>Il 21 settembre 2026 è stata inoltre verificata in pratica una distribuzione HTTPS pubblica su Render: richieste esatte, un intervallo ampio, riavvio, <code>cold wake</code> e comportamento sotto carico sul servizio attivo.</p>
+  <p>I documenti del progetto distinguono tuttora questa distribuzione pubblica beta/di valutazione da un servizio di produzione ospitato e permanente con SLA. Una pagina concettuale non dovrebbe quindi rendere l'indirizzo del server, il fornitore di hosting o il numero di versione parte della dottrina del calendario.</p>
   <p>Seer può usare precalcolo, rappresentazioni speciali, SIMD, algebra e altre scorciatoie, purché esegua la stessa operazione semantica e restituisca la stessa risposta. L'ottimizzazione non è un'autorità alternativa.</p><hr>
 </section>
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2"><h2>Origine, Giorno della Fondazione e Giorno delle Tavole</h2>
@@ -158,7 +158,7 @@
 </section>
 <section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2"><h2>Per approfondire: conversione inversa</h2>
   <p>Se il giorno di lavoro <code>c</code> è noto, la conversione inversa è molto forte. Dentro un anno pastafari noto,</p><pre class="math-block" dir="ltr" tabindex="0"><code>(\text{nome della cotoletta},\text{giorno nella cotoletta})</code></pre><p>identifica al massimo un giorno; lo stesso vale per</p><pre class="math-block" dir="ltr" tabindex="0"><code>(\text{nome del mese},\text{giorno nel mese})</code></pre>
-  <p>Una data completa con <code>c</code> noto individua quindi in modo univoco il giorno obiettivo.</p>
+  <p>Una data completa con <code>c</code> noto individua quindi in modo univoco il giorno richiesto.</p>
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Limiti dei candidati nella conversione inversa"><table class="about-table"><thead><tr><th scope="col">Informazione aggiuntiva nota</th><th scope="col">Candidati massimi</th></tr></thead><tbody>
     <tr><td>Nessun campo non annuale</td><td>5,778</td></tr><tr><td>Solo nome della cotoletta</td><td>5,568</td></tr><tr><td>Solo giorno nella cotoletta</td><td>17</td></tr><tr><td>Solo nome del mese</td><td>123</td></tr><tr><td>Solo giorno nel mese</td><td>47</td></tr><tr><td>Nome cotoletta + giorno nella cotoletta</td><td>1</td></tr><tr><td>Nome mese + giorno nel mese</td><td>1</td></tr><tr><td>Tre qualunque campi non annuali</td><td>1</td></tr><tr><td>Tutti e quattro i campi non annuali</td><td>1</td></tr>
   </tbody></table></div>
@@ -181,9 +181,9 @@
   <p>Per sapere la data di oggi non serve conoscere nulla di tutto ciò.</p><hr>
 </section>
 <section class="about-section" id="summary" data-toc-section data-toc-level="2"><h2>In definitiva, che cos'è il calendario pastafari?</h2>
-  <p>È un calendario deterministico nel quale la data non dipende dal solo giorno obiettivo, ma dal <strong>giorno di lavoro e dal giorno interrogato insieme</strong>.</p>
+  <p>È un calendario deterministico nel quale la data non dipende dal solo giorno richiesto, ma dal <strong>giorno di lavoro e dal giorno richiesto insieme</strong>.</p>
   <p>Ogni data ha esattamente cinque campi. Il presente rispetto a sé stesso è sempre nell'anno 5000, benché l'anno 5000 si sposti col giorno di lavoro. Gli anni possono essere lunghissimi; le cotolette sono continue; i mesi possono non esserlo affatto; non esiste un sistema canonico di settimane.</p>
-  <p>Il giorno <code>n+1</code> di un mese non è necessariamente domani. Lo stesso giorno cronologico può ricevere domani un'altra etichetta pastafari. Lo stesso istante può trovarsi in giorni pastafari locali diversi in due luoghi. Un evento all-day non deve andare da mezzanotte a mezzanotte. E un compleanno annuale è un problema di ricerca prima di essere un problema d'agenda.</p>
-  <p>Ma se giorno di lavoro e giorno interrogato sono dati, non c'è ambiguità: esiste una sola risposta esatta.</p>
+  <p>Il giorno <code>n+1</code> di un mese non è necessariamente domani. Lo stesso giorno cronologico può ricevere domani un'altra etichetta pastafari. Lo stesso istante può trovarsi in giorni pastafari locali diversi in due luoghi. Un evento di giornata intera non deve andare da mezzanotte a mezzanotte. E un compleanno annuale è un problema di ricerca prima di essere un problema d'agenda.</p>
+  <p>Ma se giorno di lavoro e giorno richiesto sono dati, non c'è ambiguità: esiste una sola risposta esatta.</p>
   <p>Alla fine, è tutto ciò che un calendario deve fare.</p>
 </section>
