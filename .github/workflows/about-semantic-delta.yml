@@ -1,0 +1,145 @@
+name: About semantic delta rollout
+
+on:
+  push:
+    branches:
+      - feature/about-i18n-72-locales
+    paths:
+      - artifacts/about-semantic-delta-trigger.json
+
+permissions:
+  contents: write
+
+concurrency:
+  group: about-semantic-delta-rollout
+  cancel-in-progress: false
+
+jobs:
+  edit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: feature/about-i18n-72-locales
+          fetch-depth: 0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm install -g @github/copilot@1.0.88
+      - name: Apply pilot semantic delta
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          BATCH: en,is,ar
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p artifacts/about-semantic-delta-runs
+          IFS=',' read -ra LOCALES <<< "$BATCH"
+          for LOCALE in "${LOCALES[@]}"; do
+            echo "=== semantic delta: $LOCALE ==="
+            git pull --rebase origin feature/about-i18n-72-locales
+            TARGET="docs/about/content/$LOCALE.html"
+            test -s "$TARGET"
+            BEFORE_BLOB="$(git hash-object "$TARGET")"
+
+            META="$(LOCALE="$LOCALE" node --input-type=module <<'NODE'
+          import { LOCALES } from "./docs/i18n/registry.js";
+          const item=LOCALES.find((entry)=>entry.code===process.env.LOCALE);
+          if(!item) throw new Error("Unknown locale "+process.env.LOCALE);
+          process.stdout.write(JSON.stringify({code:item.code,tag:item.intlLocale,name:item.displayName,dir:item.dir}));
+          NODE
+            )"
+            TARGET_NAME="$(META="$META" node -p 'JSON.parse(process.env.META).name')"
+            TARGET_TAG="$(META="$META" node -p 'JSON.parse(process.env.META).tag')"
+
+            cat > "/tmp/$LOCALE.prompt.md" <<EOF
+          אתה עורך לשוני־סמנטי של דף /about/ בלוח השנה הפסטפרי.
+
+          שפת היעד היא $TARGET_NAME ($TARGET_TAG), וקובץ היעד היחיד הוא $TARGET.
+
+          קרא לפני ההחלטה את כל הקבצים הבאים:
+          - docs/about/content/he.html — המאסטר הסמנטי העברי הנוכחי;
+          - artifacts/about-semantic-delta-2026-09-26-he.md — מפרט הדלתא;
+          - artifacts/about-i18n-rollout-ledger.md — ובפרט Semantic invariant ledger וכללי התרגום;
+          - $TARGET — הגרסה המקומית העדכנית;
+          - artifacts/about-i18n-qa/$LOCALE.md אם היא קיימת — כדי לא להחזיר ניסוחים שכבר תוקנו ב-native QA.
+
+          אין להשתמש באנגלית כשפת pivot. השווה ישירות בין המאסטר העברי לבין שפת היעד.
+          זו אינה משימת תרגום מחדש. שמור כל ניסוח מקומי טוב וכל תיקון QA קיים.
+          הצע רק החלפות נקודתיות שנדרשות כדי להחיל את הדלתא הסמנטית.
+          אל תתקן כאן בעיות לשון אחרות שאינן נדרשות לדלתא.
+          אל תשנה נוסחאות, stable IDs, hashes, מספרים או ליטרלים טכניים.
+          אל תשנה קבצים בעצמך. החזר רק patch טקסטואלי בפורמט הבא.
+
+          אם הקובץ כבר תואם במלואו, החזר שורה אחת בלבד:
+          SEMANTIC_DELTA_RESULT: ALREADY_ALIGNED
+
+          אחרת השורה הראשונה חייבת להיות:
+          SEMANTIC_DELTA_RESULT: CHANGED
+
+          ואחריה בלוק אחד או יותר, ללא Markdown וללא הסבר:
+          <<<REPLACEMENT>>>
+          <<<OLD>>>
+          קטע מדויק שקיים פעם אחת בלבד בקובץ היעד
+          <<<NEW>>>
+          הקטע החלופי הטבעי בשפת היעד
+          <<<END>>>
+
+          OLD חייב להיות העתק byte-for-byte מן הקובץ הנוכחי. העדף את הקטע הקטן ביותר שמספיק לתיקון.
+          NEW חייב להישאר בשפת היעד ולהיות טבעי. אין להוסיף עברית או שפה זרה שאינה ליטרל טכני מחייב.
+          אל תחזיר שום טקסט מחוץ לפורמט.
+          EOF
+
+            set +e
+            copilot --no-custom-instructions --no-ask-user --no-color \
+              --allow-tool='shell(cat:*),shell(grep:*),shell(find:*),shell(sed:*),shell(head:*),shell(tail:*),shell(wc:*),shell(ls:*),shell(pwd:*),shell(rg:*),shell(awk:*),shell(sort:*),shell(uniq:*),shell(git status:*),shell(git diff:*),shell(git show:*),shell(git rev-parse:*)' \
+              -s < "/tmp/$LOCALE.prompt.md" > "/tmp/$LOCALE.response.txt"
+            EXIT=$?
+            set -e
+            if [ "$EXIT" -ne 0 ]; then
+              echo "Copilot failed for $LOCALE with exit $EXIT" >&2
+              exit "$EXIT"
+            fi
+
+            node scripts/apply-about-semantic-delta.mjs \
+              --file "$TARGET" \
+              --response "/tmp/$LOCALE.response.txt" \
+              --report "artifacts/about-semantic-delta-runs/$LOCALE.json"
+
+            node --test test/about-page.test.js
+            git diff --check
+            AFTER_BLOB="$(git hash-object "$TARGET")"
+            RESULT="$(node -p "require('./artifacts/about-semantic-delta-runs/$LOCALE.json').verdict")"
+
+            LOCALE="$LOCALE" TARGET_TAG="$TARGET_TAG" BEFORE_BLOB="$BEFORE_BLOB" AFTER_BLOB="$AFTER_BLOB" RESULT="$RESULT" node <<'NODE'
+          const fs=require("node:fs");
+          const path="artifacts/about-semantic-delta-status.json";
+          const data=fs.existsSync(path)?JSON.parse(fs.readFileSync(path,"utf8")):{schema_version:1,source:"docs/about/content/he.html",locales:{}};
+          const detail=JSON.parse(fs.readFileSync(`artifacts/about-semantic-delta-runs/${process.env.LOCALE}.json`,"utf8"));
+          data.locales[process.env.LOCALE]={
+            locale_tag:process.env.TARGET_TAG,
+            result:process.env.RESULT,
+            before_blob:process.env.BEFORE_BLOB,
+            after_blob:process.env.AFTER_BLOB,
+            replacement_count:detail.replacement_count,
+            touched_sections:detail.touched_sections
+          };
+          fs.writeFileSync(path,JSON.stringify(data,null,2)+"\n");
+          NODE
+
+            git add "$TARGET" "artifacts/about-semantic-delta-runs/$LOCALE.json" artifacts/about-semantic-delta-status.json
+            git commit -m "about($LOCALE): apply semantic delta"
+            for TRY in 1 2 3; do
+              git fetch origin feature/about-i18n-72-locales
+              if git rebase origin/feature/about-i18n-72-locales && git push origin HEAD:feature/about-i18n-72-locales; then
+                break
+              fi
+              git rebase --abort || true
+              if [ "$TRY" -eq 3 ]; then exit 1; fi
+              sleep 3
+            done
+          done
