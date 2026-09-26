@@ -8,7 +8,7 @@ on:
       - .github/workflows/about-native-qa-smoke.yml
 
 permissions:
-  contents: read
+  contents: write
   copilot-requests: write
 
 jobs:
@@ -32,7 +32,7 @@ jobs:
       - name: Prepare Icelandic review prompt
         shell: bash
         run: |
-          mkdir -p artifacts/native-session-smoke
+          mkdir -p artifacts/about-i18n-native-sessions/is
           cat > /tmp/is-review-prompt.md <<'PROMPT'
           Þú ert sjálfstæður málfars- og notendaviðmótsrýnir fyrir íslensku útgáfu Pastafari-dagatalsins.
 
@@ -83,21 +83,30 @@ jobs:
             --no-ask-user \
             --no-color \
             --allow-tool='shell(cat:*),shell(grep:*),shell(find:*),shell(sed:*),shell(head:*),shell(tail:*),shell(wc:*),shell(git status:*),shell(git diff:*),shell(git show:*)' \
-            --share=artifacts/native-session-smoke/is-session.md \
+            --share=artifacts/about-i18n-native-sessions/is/is-session.md \
             -s < /tmp/is-review-prompt.md \
-            > artifacts/native-session-smoke/is-review.md
+            > artifacts/about-i18n-native-sessions/is/is-review.md
 
       - name: Verify outputs exist
         shell: bash
         run: |
-          test -s artifacts/native-session-smoke/is-review.md
-          test -s artifacts/native-session-smoke/is-session.md
+          test -s artifacts/about-i18n-native-sessions/is/is-review.md
+          test -s artifacts/about-i18n-native-sessions/is/is-session.md
           printf '%s\n' '--- review ---'
-          cat artifacts/native-session-smoke/is-review.md
+          cat artifacts/about-i18n-native-sessions/is/is-review.md
 
       - name: Upload native-session evidence
         uses: actions/upload-artifact@v4
         with:
           name: about-native-qa-smoke-is
-          path: artifacts/native-session-smoke/
+          path: artifacts/about-i18n-native-sessions/is/
           if-no-files-found: error
+
+      - name: Commit review evidence back to the feature branch
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add artifacts/about-i18n-native-sessions/is/is-review.md artifacts/about-i18n-native-sessions/is/is-session.md
+          git commit -m "qa(is): record isolated Icelandic native-language session"
+          git push origin HEAD:feature/about-i18n-72-locales
