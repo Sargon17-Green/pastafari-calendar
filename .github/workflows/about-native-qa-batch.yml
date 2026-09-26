@@ -162,6 +162,7 @@ jobs:
           RUN_ID: ${{ github.run_id }}
         run: |
           EVIDENCE_DIR="artifacts/about-i18n-native-sessions/$CODE/attempt-$RUN_ID"
+          set +e
           copilot \
             --no-custom-instructions \
             --no-ask-user \
@@ -169,13 +170,89 @@ jobs:
             --allow-tool='shell(cat:*),shell(grep:*),shell(find:*),shell(sed:*),shell(head:*),shell(tail:*),shell(wc:*),shell(git status:*),shell(git diff:*),shell(git show:*)' \
             --share="$EVIDENCE_DIR/session.md" \
             -s < "$EVIDENCE_DIR/prompt.md" \
-            > "$EVIDENCE_DIR/review.md"
-          test -s "$EVIDENCE_DIR/review.md"
-          test -s "$EVIDENCE_DIR/session.md"
-          head -n 1 "$EVIDENCE_DIR/review.md" | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)$'
+            > "$EVIDENCE_DIR/review.md" \
+            2> "$EVIDENCE_DIR/reviewer-stderr.log"
+          COPILOT_EXIT=$?
+          set -e
+          printf '%s\n' "$COPILOT_EXIT" > "$EVIDENCE_DIR/copilot-exit-code.txt"
+
+          if [ ! -s "$EVIDENCE_DIR/review.md" ]; then
+            echo "Reviewer produced no review.md; Copilot exit code: $COPILOT_EXIT"
+            cat "$EVIDENCE_DIR/reviewer-stderr.log" || true
+            exit 1
+          fi
+          if [ ! -s "$EVIDENCE_DIR/session.md" ]; then
+            echo "Reviewer produced no session.md; Copilot exit code: $COPILOT_EXIT"
+            cat "$EVIDENCE_DIR/reviewer-stderr.log" || true
+            exit 1
+          fi
+          if ! head -n 1 "$EVIDENCE_DIR/review.md" | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)
+
+  aggregate:
+    if: ${{ always() }}
+    needs:
+      - prepare
+      - review
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout latest feature branch
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: feature/about-i18n-72-locales
+          fetch-depth: 0
+
+      - name: Download successful review evidence
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: native-*
+          path: /tmp/native-qa
+          merge-multiple: false
+
+      - name: Install evidence by immutable attempt
+        shell: bash
+        env:
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          shopt -s nullglob
+          found=0
+          for dir in /tmp/native-qa/native-*; do
+            code="${dir##*/native-}"
+            destination="artifacts/about-i18n-native-sessions/$code/attempt-$RUN_ID"
+            mkdir -p "$destination"
+            cp -a "$dir/." "$destination/"
+            found=1
+          done
+          test "$found" -eq 1
+
+      - name: Commit review evidence once
+        shell: bash
+        env:
+          BATCH: ${{ needs.prepare.outputs.batch }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add artifacts/about-i18n-native-sessions/
+          if git diff --cached --quiet; then
+            echo "No new evidence to commit."
+            exit 0
+          fi
+          git commit -m "qa(i18n): record native-language batch $BATCH"
+          git pull --rebase origin feature/about-i18n-72-locales
+          git push origin HEAD:feature/about-i18n-72-locales
+; then
+            echo "Reviewer output has no valid machine-readable verdict; Copilot exit code: $COPILOT_EXIT"
+            head -n 20 "$EVIDENCE_DIR/review.md" || true
+            cat "$EVIDENCE_DIR/reviewer-stderr.log" || true
+            exit 1
+          fi
           head -n 1 "$EVIDENCE_DIR/review.md" > "$EVIDENCE_DIR/verdict.txt"
+          printf '%s\n' "--- reviewer exit: $COPILOT_EXIT ---"
+          cat "$EVIDENCE_DIR/verdict.txt"
 
       - name: Upload immutable review evidence
+        if: ${{ always() }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: native-${{ matrix.code }}
