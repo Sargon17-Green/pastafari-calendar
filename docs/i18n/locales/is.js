@@ -8,7 +8,7 @@ export default Object.freeze({
   "messages": {
     "meta.description": "Pastafari-dagatal með dagsetningarleit og samanburði.",
     "manifest.shortName": "Pastafari",
-    "manifest.defaultDescription": "Pastafari-dagatal sem reiknar á tækinu og skilar sömu niðurstöðu fyrir sömu inntök.",
+    "manifest.defaultDescription": "Pastafari-dagatal sem reiknar á tækinu og skilar sömu niðurstöðu fyrir sama inntak.",
     "app.title": "Pastafari-dagatal",
     "nav.skip": "Fara í dagsetningarleit",
     "app.intro": "Finndu dagsetningu í einu dagatalanna sem vefurinn styður. Þá sérðu fulla Pastafari-dagsetningu þess dags og kótelettuna sem hann tilheyrir.",
