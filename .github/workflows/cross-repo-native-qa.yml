@@ -108,6 +108,7 @@ jobs:
             "Translate the reviewer protocol below completely and naturally into the human language named "+process.env.SELF_NAME+".",
             "The translated text will be the FIRST AND ONLY user message in a fresh reviewer session. Therefore every ordinary instruction sentence must be in the target language from its first line onward.",
             "Preserve repository names, branch names, paths, code identifiers, placeholders, formulas, and the exact machine-readable verdict lines NATIVE_QA_RESULT: PASS / NATIVE_QA_RESULT: FAIL.",
+            "Use the correct Unicode script for every target-language word. Do not substitute visually similar letters from another script. Before returning the prompt, silently proofread it for mixed-script confusables.",
             "Do not add an English preface, explanation, translator note, or code fence. Output only the translated seed prompt.",
             "",
             source
@@ -130,6 +131,34 @@ jobs:
           grep -q 'NATIVE_QA_RESULT: FAIL' "$OUT/prompt.md"
           grep -Fxq -- "REVIEW_ID=$REVIEW_ID" "$OUT/prompt.md"
           grep -Fxq -- "LOCALE_TAG=$LOCALE_TAG" "$OUT/prompt.md"
+          REVIEW_ID="$REVIEW_ID" node <<'NODE'
+          const fs=require("node:fs");
+          const inv=JSON.parse(fs.readFileSync("artifacts/cross-repo-native-qa/inventory.json","utf8"));
+          const unit=inv.units.find(x=>x.review_id===process.env.REVIEW_ID);
+          if(!unit) throw new Error("Unknown review unit "+process.env.REVIEW_ID);
+          const scriptNames={
+            Latn:["Latin"], Arab:["Arabic"], Hebr:["Hebrew"], Cyrl:["Cyrillic"],
+            Beng:["Bengali"], Grek:["Greek"], Gujr:["Gujarati"], Deva:["Devanagari"],
+            Armn:["Armenian"], Jpan:["Hiragana","Katakana","Han"], Geor:["Georgian"],
+            Kore:["Hangul","Han"], Guru:["Gurmukhi"], Taml:["Tamil"], Telu:["Telugu"],
+            Thai:["Thai"], Hans:["Han"], Hant:["Han"], Mlym:["Malayalam"], Knda:["Kannada"],
+            Ethi:["Ethiopic"], Copt:["Coptic","Greek"]
+          };
+          const allowed=["Latin",...(scriptNames[unit.script]||[])];
+          const tests=allowed.map(name=>new RegExp("^\\p{Script="+name+"}$","u"));
+          const common=/^[\\p{Script=Common}\\p{Script=Inherited}]$/u;
+          const prompt=fs.readFileSync("artifacts/cross-repo-native-qa/runtime/prompt.md","utf8");
+          const bad=[];
+          let pos=0;
+          for(const ch of prompt){
+            if(!common.test(ch) && !tests.some(re=>re.test(ch))) bad.push({pos,char:ch,code:"U+"+ch.codePointAt(0).toString(16).toUpperCase().padStart(4,"0")});
+            pos++;
+          }
+          if(bad.length){
+            console.error("Unexpected-script characters in translated seed prompt:",bad.slice(0,25));
+            process.exit(1);
+          }
+          NODE
 
       - name: Run the isolated native-language cross-repository reviewer
         shell: bash
