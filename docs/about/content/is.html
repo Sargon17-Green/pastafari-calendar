@@ -13,7 +13,7 @@
   <h2>Úr hverju samanstendur Pastafari-dagsetning?</h2>
   <p>Hún hefur <strong>nákvæmlega fimm hluta</strong>: árnúmer, nafn kótelettu, dag innan kótelettu, nafn mánaðar og dag innan mánaðar.</p>
   <p>Almennt dæmi: <strong>ár 5000, kóteletta A, dagur 417 í kótelettunni, mánuður B, dagur 83 í mánuðinum.</strong></p>
-  <p>Aðgerðardagurinn, staðsetning áhorfandans, tímaröðuauðkenni dagsins eða aðrar tæknilegar upplýsingar mega birtast við hlið dagsetningarinnar, en þær eru ekki sjötta dagsetningarreiturinn.</p><hr>
+  <p>Aðgerðardagurinn, staðsetning athugandans, auðkenni dagsins á tímalínunni eða aðrar tæknilegar upplýsingar mega birtast við hlið dagsetningarinnar, en þær eru ekki sjötta dagsetningarreiturinn.</p><hr>
 </section>
 
 <section class="about-section" id="working-day" data-toc-section data-toc-level="2">
@@ -26,13 +26,13 @@
 <section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
   <h2>Sami dagur, önnur dagsetning</h2>
   <p>Greina þarf á milli <strong>auðkennis dagsins</strong> og <strong>Pastafari-framsetningar hans</strong>. Hið fyrra er fastur staður tiltekins dags á tímalínunni; hið síðara eru þau fimm gildi sem fást þegar dagurinn er sýndur undir tilteknum aðgerðardegi.</p>
-  <p>Í vörunni og API má líta á hið fyrra sem <code>day-id</code>: tímaröðuauðkenni sem breytist ekki þótt framsetningin breytist. Hins vegar þurfa</p>
+  <p>Í vörunni og API má líta á hið fyrra sem <code>day-id</code>: fast auðkenni dags á tímalínunni sem breytist ekki þótt framsetningin breytist. Hins vegar þurfa</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre>
   <p>og</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
   <p>ekki að vera jöfn.</p>
   <p>Því getur handvirk breyting á aðgerðardegi breytt Pastafari-dagsetningunni sem sýnd er fyrir sama dag, án þess að dagurinn sjálfur færist nokkuð á tímalínunni.</p>
-  <p>Sama regla gildir um atburði. Fundur, fæðing eða sögulegur atburður ætti að vera tengdur föstu tímaröðuauðkenni; Pastafari-dagsetningu hans má endurreikna eftir birtingarsamhengi.</p>
+  <p>Sama regla gildir um atburði. Fundur, fæðing eða sögulegur atburður ætti að vera tengdur föstu auðkenni á tímalínunni; Pastafari-dagsetningu hans má endurreikna eftir birtingarsamhengi.</p>
   <p>Merkingin getur breyst. Atburðurinn ekki.</p><hr>
 </section>
 
@@ -79,7 +79,7 @@
   <p>En Pastafari-mánuður <strong>þarf ekki að vera samfellt tímabil</strong>. Tímaröðin gæti til dæmis verið:</p>
   <blockquote><p>Mánuður A — dagur 14<br>Mánuður B — dagur 9<br>Mánuður A — dagur 15</p></blockquote>
   <p>Þetta er fullkomlega gilt. Dagur 15 í mánuði A er næsti dagur <strong>þess mánaðar</strong>, jafnvel þótt dagur úr öðrum mánuði sé á milli.</p>
-  <p>„Dagur í mánuði“ segir því ekki hversu margir tímaröðudagar hafa liðið frá fyrstu birtingu mánaðarins. Þetta er raðnúmer meðal þeirra daga sem úthlutað er mánuðinum á árinu. Dagur 48 merkir 48. daginn sem tilheyrir mánuðinum, ekki 47 dögum eftir fyrstu birtingu hans.</p><hr>
+  <p>„Dagur í mánuði“ segir því ekki hversu margir dagar á tímalínunni hafa liðið frá fyrstu birtingu mánaðarins. Þetta er raðnúmer meðal þeirra daga sem úthlutað er mánuðinum á árinu. Dagur 48 merkir 48. daginn sem tilheyrir mánuðinum, ekki 47 dögum eftir fyrstu birtingu hans.</p><hr>
 </section>
 
 <section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
@@ -96,8 +96,8 @@
 <section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
   <h2>Næsti dagur mánaðarins er ekki endilega á morgun</h2>
   <p>Ef í dag er dagur 17 í tilteknum mánuði, þá er dagur 18 í sama mánuði <strong>næsta birting þess mánaðar</strong>. Hún getur verið á morgun eða miklu síðar.</p>
-  <p><strong>Á morgun</strong> er næsti tímaröðudagur; <strong>næsti dagur mánaðarins</strong> er næsta birting sama mánaðar.</p>
-  <p>Sömuleiðis þýðir „lok mánaðar“ ekki að lokin séu tímaröðulega nálægt. Mánuður með 120 daga getur verið á degi 119 í dag og dagur 120 komið miklu síðar innan sama árs.</p><hr>
+  <p><strong>Á morgun</strong> er næsti dagur á tímalínunni; <strong>næsti dagur mánaðarins</strong> er næsta birting sama mánaðar.</p>
+  <p>Sömuleiðis þýðir „lok mánaðar“ ekki að lokin séu nálægt í tíma. Mánuður með 120 daga getur verið á degi 119 í dag og dagur 120 komið miklu síðar innan sama árs.</p><hr>
 </section>
 
 <section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
@@ -148,39 +148,39 @@
 <section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
   <h2>Byggingaratlas</h2>
   <p>Hingað til höfum við talað um reglur dagatalsins. Næstu tölur eru annars konar upplýsingar: <strong>reynsluniðurstöður</strong> úr stórri reikniúrtaki.</p>
-  <p>Atlasinn var byggður með commit-i vélarinnar <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> og innihélt 4,096 aðgerðardaga; árin 4990–5010 fyrir hvern þeirra; 86,016 ársbyggingar; 625,437 kótelettur; 3,535,422 byggingarmánuði; meira en 356 milljón samfellda mánaðarkafla; og meira en 364 milljón færslur frá degi <code>n</code> í dag <code>n+1</code> í sama mánuði.</p>
+  <p>Atlasinn var byggður með commit-i vélarinnar <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> og innihélt 4.096 aðgerðardaga; árin 4990–5010 fyrir hvern þeirra; 86.016 ársbyggingar; 625.437 kótelettur; 3.535.422 byggingarmánuði; meira en 356 milljón samfellda mánaðarkafla; og meira en 364 milljón færslur frá degi <code>n</code> í dag <code>n+1</code> í sama mánuði.</p>
   <p>Þessar tölur lýsa þessu gagnasafni, ekki kanónískum reglum.</p>
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Mæld gögn úr byggingaratlasnum">
     <table class="about-table">
       <thead><tr><th scope="col">Mæld stærð</th><th scope="col">Niðurstaða í úrtaki</th></tr></thead>
       <tbody>
-        <tr><td>Meðallengd árs</td><td>4,275.182 dagar</td></tr>
-        <tr><td>Miðgildi árslengdar</td><td>4,343</td></tr>
-        <tr><td>Mælt lágmark / hámark</td><td>716 / 5,778</td></tr>
-        <tr><td>Meðalfjöldi kótelettna á ári</td><td>7.271</td></tr>
-        <tr><td>Ár með nákvæmlega 6 kótelettur</td><td>42.00%</td></tr>
-        <tr><td>Ár með 6–8 kótelettur</td><td>81.29%</td></tr>
-        <tr><td>Meðallengd kótelettu</td><td>587.963 dagar</td></tr>
+        <tr><td>Meðallengd árs</td><td>4.275,182 dagar</td></tr>
+        <tr><td>Miðgildi árslengdar</td><td>4.343</td></tr>
+        <tr><td>Mælt lágmark / hámark</td><td>716 / 5.778</td></tr>
+        <tr><td>Meðalfjöldi kótelettna á ári</td><td>7,271</td></tr>
+        <tr><td>Ár með nákvæmlega 6 kótelettur</td><td>42,00 %</td></tr>
+        <tr><td>Ár með 6–8 kótelettur</td><td>81,29 %</td></tr>
+        <tr><td>Meðallengd kótelettu</td><td>587,963 dagar</td></tr>
         <tr><td>Miðgildi kótelettulengdar</td><td>560</td></tr>
-        <tr><td>Meðalfjöldi mánaða á ári</td><td>41.102</td></tr>
+        <tr><td>Meðalfjöldi mánaða á ári</td><td>41,102</td></tr>
         <tr><td>Miðgildi fjölda mánaða</td><td>43</td></tr>
-        <tr><td>Ár með 47 mánuði</td><td>15.63%</td></tr>
-        <tr><td>Ár með að minnsta kosti 45 mánuði</td><td>36.81%</td></tr>
-        <tr><td>Meðallengd byggingarmánaðar</td><td>104.014 dagar</td></tr>
+        <tr><td>Ár með 47 mánuði</td><td>15,63 %</td></tr>
+        <tr><td>Ár með að minnsta kosti 45 mánuði</td><td>36,81 %</td></tr>
+        <tr><td>Meðallengd byggingarmánaðar</td><td>104,014 dagar</td></tr>
         <tr><td>Miðgildi mánaðarlengdar</td><td>115</td></tr>
-        <tr><td>Meðalfjöldi samfelldra segminta á mánuð</td><td>100.897</td></tr>
-        <tr><td>Hlutfall eins dags mánaðarsegminta</td><td>97.482%</td></tr>
-        <tr><td>Líkur á að tveir aðliggjandi dagar séu í sama mánuði</td><td>2.9976%</td></tr>
-        <tr><td>Meðalfjöldi daga úr öðrum mánuðum milli <code>n</code> og <code>n+1</code> í sama mánuði</td><td>40.408</td></tr>
-        <tr><td>Meðalbil milli fyrstu og síðustu birtingar mánaðar</td><td>4,266.653 dagar</td></tr>
+        <tr><td>Meðalfjöldi samfelldra kafla í mánuði</td><td>100,897</td></tr>
+        <tr><td>Hlutfall mánaðarkafla sem vara einn dag</td><td>97,482 %</td></tr>
+        <tr><td>Líkur á að tveir aðliggjandi dagar séu í sama mánuði</td><td>2,9976 %</td></tr>
+        <tr><td>Meðalfjöldi daga úr öðrum mánuðum milli <code>n</code> og <code>n+1</code> í sama mánuði</td><td>40,408</td></tr>
+        <tr><td>Meðalbil milli fyrstu og síðustu birtingar mánaðar</td><td>4.266,653 dagar</td></tr>
       </tbody>
     </table>
   </div>
   <p>Í reynd getur mánuður með um hundrað dögum verið dreifður yfir nær heilt Pastafari-ár.</p>
-  <p>Sami atlas sýndi einnig eðlilega lengdarhneigð í kringum ár 5000. Í úrtakinu var „venjulegt“ ár að meðaltali um 4,262 dagar. Ef ár eru vegin eftir fjölda daga í þeim hækkar meðaltalið í um 4,466 daga; ár 5000 sjálft var að meðaltali um 4,499 dagar.</p>
+  <p>Sami atlas sýndi einnig eðlilega lengdarhneigð í kringum ár 5000. Í úrtakinu var „venjulegt“ ár að meðaltali um 4.262 daga. Ef ár eru vegin eftir fjölda daga í þeim hækkar meðaltalið í um 4.466 daga; ár 5000 sjálft var að meðaltali um 4.499 dagar.</p>
   <p>Ástæðan er einföld: ár 5000 verður að innihalda aðgerðardaginn. Lengra ár hefur fleiri daga þar sem það getur verið árið sem inniheldur aðgerðardaginn.</p>
   <p>Samband milli nafns einingar og lengdar hennar var einnig mjög veikt í úrtakinu. Þetta sannar ekki fullkomið stærðfræðilegt óhæði, en atlasinn gefur enga hagnýta vísbendingu um að nöfnin hafi verið hönnuð til að kóða lengd.</p>
-  <p>Auk þess eru 86,016 ársbyggingarnar ekki 86,016 fullkomlega óháð úrtök: milli upphafs- og endahliðs eru aðeins 24,786 mismunandi bil. Aðgerðardagar sem liggja nálægt geta valið sama ársbil og samt myndað ólíka innri uppbyggingu.</p>
+  <p>Auk þess eru 86.016 ársbyggingarnar ekki 86.016 fullkomlega óháð úrtök: milli upphafs- og endahliðs eru aðeins 24.786 mismunandi bil. Aðgerðardagar sem liggja nálægt geta valið sama ársbil og samt myndað ólíka innri uppbyggingu.</p>
   <p>Atlasinn lýsir því mældri hegðun útfærslunnar vel, en ekki má breyta honum í líkindasetningu um allar mögulegar dagatalsgerðir.</p><hr>
 </section>
 
@@ -189,10 +189,10 @@
   <p>Hér þarf fyrst að skilgreina hvað „sami dagur á hverju ári“ merkir. Eðlilegar endurkomuhnit eru <code>(mánaðarnafn, dagur í mánuði)</code> og <code>(kótelettunafn, dagur í kótelettu)</code>; skilyrði má einnig sameina.</p>
   <p>Pastafari-afmæli er því ekki einfaldlega <code>RRULE:FREQ=YEARLY</code>. Finna þarf næsta ár sem uppfyllir valda endurkomuskilyrði, og upprunalegi atburðurinn telst ekki sjálfkrafa vera eigin „næsta birting“.</p>
   <p>Að breyta aðgerðardeginum aðeins fyrir birtingu ætti ekki að breyta auðkenni manns, fæðingarstund eða aldri.</p>
-  <p>Í nákvæmri yfirferð af 4,096 sjálftilvísandi dagsetningum var hvert næsta Pastafari-ár prófað allt að 250,000 ár í hvora átt:</p>
+  <p>Í nákvæmri yfirferð af 4.096 sjálftilvísandi dagsetningum var hvert næsta Pastafari-ár prófað allt að 250.000 ár í hvora átt:</p>
   <ul>
-    <li>Fyrir <code>(mánaðarnafn, dagur í mánuði)</code> var miðgildi fyrstu endurkomu 1 Pastafari-ár; 77.56% komu aftur í næsta ári, 93.77% innan tveggja ára, 99.44% innan fimm; lengsta mælda biðin var 21 ár.</li>
-    <li>Fyrir <code>(kótelettunafn, dagur í kótelettu)</code> var miðgildið 3 ár; 88.89% fundust innan 10 ára, en dreifingin hefur mjög þungan hala og lengsta mælda biðin var 51,954 Pastafari-ár.</li>
+    <li>Fyrir <code>(mánaðarnafn, dagur í mánuði)</code> var miðgildi fyrstu endurkomu 1 Pastafari-ár; 77,56 % komu aftur í næsta ári, 93,77 % innan tveggja ára, 99,44 % innan fimm; lengsta mælda biðin var 21 ár.</li>
+    <li>Fyrir <code>(kótelettunafn, dagur í kótelettu)</code> var miðgildið 3 ár; 88,89 % fundust innan 10 ára, en dreifingin hefur mjög þungan hala og lengsta mælda biðin var 51.954 Pastafari-ár.</li>
   </ul>
   <p>Þetta eru <strong>reynsluniðurstöður úr prófuðu gagnasafni</strong>; þær sanna ekki að sérhver möguleg endurkoma hljóti að gerast og gefa ekki tryggingu fyrir hámarksbiðtíma.</p><hr>
 </section>
@@ -201,24 +201,24 @@
   <h2>Hvernig er fundur ákveðinn?</h2>
   <p>Ef tveir vilja semja um fund með Pastafari-dagsetningu einni saman verða þeir að minnsta kosti að vera sammála um fimm dagsetningarreiti og aðgerðardaginn sem notaður var í útreikningnum. Betra er að vista aðgerðardaginn sem fast dagauðkenni en sem orðið „í dag“; annars geta tveir reiknað tvö mismunandi dagatöl.</p>
   <ul>
-    <li>„á morgun“ er næsti tímaröðudagur;</li>
+    <li>„á morgun“ er næsti dagur á tímalínunni;</li>
     <li>„næsti dagur mánaðarins“ er næsta birting þess mánaðar;</li>
     <li>„lok mánaðarins“ eru síðasta birting þess mánaðar;</li>
-    <li>„allur mánuðurinn“ getur þýtt mengi daga sem tilheyra mánuðinum eða allt heilt tímaröðubil frá fyrstu til síðustu birtingar;</li>
+    <li>„allur mánuðurinn“ getur þýtt mengi daga sem tilheyra mánuðinum eða allt samfellt tímabil á tímalínunni frá fyrstu til síðustu birtingar;</li>
     <li>„næsta ár“ er næsta árið í dagatalinu sem byggt er undir valda aðgerðardeginum.</li>
   </ul>
-  <p>Fyrir sérstaklega mikilvægan fund má einnig vista algildan tímaröðudag eða tímapunkt. Dagatalið móðgast ekki.</p><hr>
+  <p>Fyrir sérstaklega mikilvægan fund má einnig vista fastan dag á tímalínunni eða nákvæman tímapunkt. Dagatalið móðgast ekki.</p><hr>
 </section>
 
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
   <h2>Ferðalög og heilsdagsatburðir</h2>
   <p>Atburðurinn og staðbundna merkið sem honum er sýnt eru ekki sami hluturinn. Atburður með ákveðinni klukkustund ætti að vera bundinn við fastan tímapunkt. Ferðalag færir hann ekki í tíma, en staðbundin Pastafari-dagsetning sama raunverulega augnabliks getur breyst, því skilgreiningin á „staðbundnum degi“ ræðst af staðsetningu.</p>
   <p>Við <strong>heilsdagsatburð</strong> er munurinn enn meiri. Borgaralegur heilsdagsatburður gengur venjulega frá miðnætti til næsta miðnættis; Pastafari-heilsdagsatburður ætti að ganga frá staðbundnum mörkum Pastafari-dags til næstu marka. Yfirleitt eru þetta ekki sömu augnablik.</p>
-  <p>Því getur það breytt merkingu Pastafari-atburðar að flytja hann blint út sem borgaralegan heilsdagsatburð. Til að varðveita merkinguna rétt þarf að vista tímaröðufestu og viðeigandi samhengi staðsetningar og dagamarka, ekki aðeins <code>all-day</code>-merkinguna.</p><hr>
+  <p>Því getur það breytt merkingu Pastafari-atburðar að flytja hann blint út sem borgaralegan heilsdagsatburð. Til að varðveita merkinguna rétt þarf að vista fast tímatengt auðkenni og viðeigandi samhengi staðsetningar og dagamarka, ekki aðeins <code>all-day</code>-merkinguna.</p><hr>
 </section>
 
 <section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
-  <h2>Hvenær skiptir dagurinn um?</h2>
+  <h2>Hvar liggja dagamörkin?</h2>
   <p>Staðbundni Pastafari-dagurinn skiptir ekki um á miðnætti. Mörk hans ráðast af <strong>tímapunktinum þegar miðja Venusar, séð frá stað athugandans, fer um neðri hluta staðbundna hádegisbaugsins</strong>.</p>
   <p>Þetta er staðbundinn stjarnfræðilegur atburður sem ræðst af staðsetningu. Þessi yfirferð þarf ekki að gerast kl. 00:00, borgaralegt tímabelti ákvarðar það ekki, það færist ekki bara vegna þess að sumartími byrjar eða endar, og Venus þarf ekki að vera sýnileg berum augum.</p>
   <p>Sama raunverulega augnablik getur á tveimur stöðum verið sitthvorum megin við staðbundin dagamörk. Ef kerfið hefur enga nothæfa staðsetningu notanda er sjálfgefna varastaðsetning vörunnar <strong>Kisurra</strong>.</p><hr>
@@ -249,7 +249,7 @@
 
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>Festipunktar</h3>
-    <p>Kerfið hefur einn fastan viðmiðunardag sem kallast <strong>Stofndagur</strong>. Í proleptíska gregoríska dagatalinu er hann <strong>22. desember 41,222 f.Kr.</strong>.</p>
+    <p>Kerfið hefur einn fastan viðmiðunardag sem kallast <strong>Stofndagur</strong>. Í proleptíska gregoríska dagatalinu er hann <strong>22. desember 41.222 f.Kr.</strong>.</p>
     <p>Stofndagur er ekki „upphaf tímans“; hann er reiknifestipunktur.</p>
     <p>Tölusetning daga kringum hann notar jákvæðar oddatölur og sléttar tölur: Stofndagur=1; síðari dagar=3, 5, …; aftur í fortíðina er fyrri dagurinn=2, síðan 4, 6, … . Þannig eru báðar hliðar festipunktsins kóðaðar í þessum teljara án neikvæðra dagnúmera.</p>
     <p>Seinni festipunkturinn er <strong>Dagur taflnanna</strong>: <strong>15. júní 763 f.Kr. í proleptíska júlíanska dagatalinu</strong>, það er <strong>7. júní 763 f.Kr. í proleptíska gregoríska dagatalinu</strong>.</p>
@@ -279,8 +279,8 @@
     <table class="about-table">
       <thead><tr><th scope="col">Aðrar þekktar upplýsingar</th><th scope="col">Hámarksfjöldi mögulegra daga</th></tr></thead>
       <tbody>
-        <tr><td>Enginn reitur þekktur nema árið</td><td>5,778</td></tr>
-        <tr><td>Aðeins kótelettunafnið</td><td>5,568</td></tr>
+        <tr><td>Enginn reitur þekktur nema árið</td><td>5.778</td></tr>
+        <tr><td>Aðeins kótelettunafnið</td><td>5.568</td></tr>
         <tr><td>Aðeins dagur í kótelettu</td><td>17</td></tr>
         <tr><td>Aðeins mánaðarnafnið</td><td>123</td></tr>
         <tr><td>Aðeins dagur í mánuði</td><td>47</td></tr>
@@ -325,7 +325,7 @@
   <h2>Hvað er Pastafari-dagatalið þá í raun?</h2>
   <p>Það er determinískt dagatal þar sem dagsetningin er ekki bara fall af fyrirspurnardegi heldur <strong>sameiginlegt fall aðgerðardagsins og fyrirspurnardagsins</strong>.</p>
   <p>Hver dagsetning hefur nákvæmlega fimm reiti. Núið er frá sínu eigin sjónarhorni alltaf í ári 5000, en ár 5000 sjálft færist með aðgerðardeginum. Ár geta verið mjög löng, kótelettur eru samfelldar, mánuðir ekki endilega, og ekkert kanónískt vikukerfi er til.</p>
-  <p>Dagur <code>n+1</code> í mánuði þarf ekki að vera á morgun. Sami tímaröðudagur getur fengið annað Pastafari-merki á morgun. Sama raunverulega augnablik getur á tveimur stöðum tilheyrt tveimur mismunandi staðbundnum Pastafari-dögum. Heilsdagsatburður þarf ekki að standa frá miðnætti til miðnættis. Og árlegur afmælisdagur er fyrst leitarvandamál og síðan dagatalsvandamál.</p>
+  <p>Dagur <code>n+1</code> í mánuði þarf ekki að vera á morgun. Sami dagur á tímalínunni getur fengið annað Pastafari-merki á morgun. Sama raunverulega augnablik getur á tveimur stöðum tilheyrt tveimur mismunandi staðbundnum Pastafari-dögum. Heilsdagsatburður þarf ekki að standa frá miðnætti til miðnættis. Og árlegur afmælisdagur er fyrst leitarvandamál og síðan dagatalsvandamál.</p>
   <p>En ef aðgerðardagurinn og fyrirspurnardagurinn eru þekktir er engin tvíræðni: rétt svar er aðeins eitt.</p>
   <p>Þegar allt kemur til alls þarf dagatal ekki að gera meira en þetta.</p>
 </section>
