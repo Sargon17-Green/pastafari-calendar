@@ -1,0 +1,57 @@
+name: temp-current-visual-baseline-candidate
+
+on:
+  push:
+    branches:
+      - tmp/about-visual-baseline-capture
+    paths:
+      - .github/workflows/tmp-current-visual-candidate.yml
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: 64e64007b965c1ab1f40963bb0745f37042c60dd
+          fetch-depth: 0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm run security:supply-chain
+      - run: npm ci
+      - name: Install pinned Chromium
+        run: ./node_modules/.bin/playwright install --with-deps chromium
+      - name: Prove visual comparator detects artificial regressions
+        run: npm run test:visual:self-test
+      - name: Capture canonical baseline candidates
+        env:
+          PASTAFARI_ALLOW_VISUAL_UPDATE: '1'
+          PASTAFARI_VISUAL_CANONICAL: '1'
+        run: npm run test:visual:update
+      - name: Record candidate hashes
+        shell: bash
+        run: |
+          {
+            sha256sum ./test/visual/baselines/*.png
+            sha256sum ./test/visual/README.md
+            sha256sum ./test/visual/baseline-metadata.json
+          } | sort > /tmp/candidate-sha256.txt
+          cat /tmp/candidate-sha256.txt
+      - name: Upload candidate set for review
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: current-visual-baseline-candidate-${{ github.run_id }}
+          path: |
+            test/visual/baselines/
+            test/visual/baseline-metadata.json
+            test/visual/README.md
+            artifacts/visual/report.json
+            /tmp/candidate-sha256.txt
+          if-no-files-found: error
+          retention-days: 14
