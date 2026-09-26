@@ -1,7 +1,7 @@
 <!-- Hrvatska verzija napisana je izravno prema hebrejskoj semantičkoj osnovi, bez posrednog jezika. -->
 <!-- ID-jevi odjeljaka stabilan su javni ugovor za duboke poveznice i ne izvode se iz prevedenih naslova. -->
 <div class="about-section about-lead" id="about-calendar">
-  <p>U priči ove stranice Pastafarijanski kalendar prikazan je kao kalendar u kojem je stvoreno samo vrijeme. Njegova je mehanika ipak definirana vrlo precizno.</p>
+  <p>Pastafarijanski kalendar jest kalendar u kojem je stvoreno samo vrijeme. Njegova je mehanika precizno definirana.</p>
   <p>Ovaj kalendar svakom danu ne pridružuje jednu trajnu pastafarijansku „etiketu”. Da bismo saznali datum, trebaju nam dva dana: <strong>dan djelovanja</strong>, iz kojeg polazi izračun, i <strong>traženi dan</strong>, čiji datum želimo odrediti.</p>
   <p>Ako dan djelovanja označimo s <code>c</code>, a traženi dan s <code>t</code>, datum je</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
@@ -127,7 +127,7 @@
 
 <section class="about-section" id="calculation" data-toc-section data-toc-level="2">
   <h2>Kako se kalendar izračunava?</h2>
-  <p>Unutarnji izračun ovdje zovemo <strong>umakom</strong>. U njegovu je središtu prost broj</p>
+  <p>Unutarnji izračun zove se <strong>umak</strong>. U njegovu je središtu prost broj</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
   <p>Postupak uključuje pet ulaznih brojila, 7 skrivenih kapi, 46 vidljivih kapi, 6 zdjela, promjenjive poretke zdjela, 12 završnih miješanja, pečate za različite odgovore, mehanizme kombinatornog odabira, stvaranje vrata, odabir godina, podjelu na kotlete, odabir naziva, stvaranje mjeseci i preplitanje dana mjeseca.</p>
   <p>Završna su ažuriranja <strong>sinkrona</strong>: pri svakom miješanju svih šest novih vrijednosti računa se iz istog starog stanja, a tek potom svih šest zdjela bude zamijenjeno odjednom.</p>
@@ -171,7 +171,7 @@
         <tr><td>Medijan duljine mjeseca</td><td>115</td></tr>
         <tr><td>Prosječan broj neprekinutih odsječaka po mjesecu</td><td>100.897</td></tr>
         <tr><td>Udio jednodnevnih mjesečnih odsječaka</td><td>97.482%</td></tr>
-        <tr><td>Vjerojatnost da susjedni dani pripadaju istom mjesecu</td><td>2.9976%</td></tr>
+        <tr><td>Udio parova susjednih dana koji su u uzorku pripadali istom mjesecu</td><td>2.9976%</td></tr>
         <tr><td>Prosječan broj tuđih dana između <code>n</code> i <code>n+1</code> istog mjeseca</td><td>40.408</td></tr>
         <tr><td>Prosječan raspon od prve do posljednje pojave mjeseca</td><td>4,266.653 dana</td></tr>
       </tbody>
@@ -200,7 +200,7 @@
 
 <section class="about-section" id="appointments" data-toc-section data-toc-level="2">
   <h2>Kako dogovoriti sastanak?</h2>
-  <p>Ako se dvije osobe žele dogovoriti samo pomoću pastafarijanskog datuma, moraju uskladiti barem pet polja i dan djelovanja korišten u izračunu. Bolje je taj dan spremiti kao stabilan identitet dana nego kao riječ „danas”, jer bi inače dvije osobe mogle izračunati različite kalendare.</p>
+  <p>Ako dvije osobe žele odrediti dan sastanka pomoću pastafarijanskog datuma, moraju uskladiti barem pet polja i dan djelovanja korišten u izračunu. Bolje je taj dan spremiti kao stabilan identitet dana nego kao riječ „danas”, jer bi inače dvije osobe mogle izračunati različite kalendare.</p>
   <ul>
     <li>„sutra” je sljedeći kronološki dan;</li>
     <li>„sljedeći dan mjeseca” jest sljedeća pojava tog mjeseca;</li>
@@ -234,19 +234,19 @@
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>A što je Seer?</h2>
-  <p>Uz kanonsku implementaciju postoji brzi engine <strong>Pastafarian Calendar Seer</strong>. Seer nije izvor autoriteta: točan datum određuju Megillah i kanonski izračun. Ako se Seer s njima ne slaže, Seer griješi.</p>
+  <p>Uz kanonsku implementaciju postoji brzi engine <strong>Pastafarian Calendar Seer</strong>. Seer nije izvor autoriteta: Megillah određuje pravila, a kanonski izračun prema tim pravilima proizvodi datum. Ako se Seer ne slaže s ispravnim kanonskim izračunom, Seer griješi.</p>
   <p>Njegova je zadaća iste upite izvršavati brzo i u obliku pogodnom za integraciju u proizvode.</p>
-  <p>Tijekom žive provjere pri uređivanju ove stranice Seer je među ostalim uključivao upite za datum i „sada”, batch, raspone dana, obrnutu konverziju iz pastafarijanskog datuma u ciljni dan, dohvat strukture godine, određivanje aktivnog dana djelovanja, Node API, preglednički/HTTP klijent, CLI, HTTP v1 uslugu, OpenAPI 3.1 ugovor, izvorne implementacije i distribucijske pakete te provjereno postavljanje u kontejneru.</p>
-  <p>Stara tvrdnja da Seer nema javni API više nije točna. Postoji izričit i stabilan HTTP v1 ugovor s krajnjim točkama za <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, dan djelovanja, <code>metadata</code>, <code>locales</code> i <code>status</code>.</p>
+  <p>U živoj provjeri provedenoj 21. rujna 2026. Seer je među ostalim uključivao upite za datum i „sada”, batch, raspone dana, obrnutu konverziju iz pastafarijanskog datuma u ciljni dan, dohvat strukture godine, određivanje aktivnog dana djelovanja, Node API, preglednički/HTTP klijent, CLI, HTTP v1 uslugu, OpenAPI 3.1 ugovor, izvorne implementacije i distribucijske pakete te provjereno postavljanje u kontejneru.</p>
+  <p>Seer ima javni API. Postoji izričit i stabilan HTTP v1 ugovor s krajnjim točkama za <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, dan djelovanja, <code>metadata</code>, <code>locales</code> i <code>status</code>.</p>
   <p>21. rujna 2026. stvarno je testiran i javno HTTPS postavljanje na Renderu: na živoj su usluzi provjereni točni upiti, veliki raspon, ponovno pokretanje, <code>cold wake</code> i ponašanje pod opterećenjem.</p>
-  <p>Projektna dokumentacija ipak i dalje razlikuje javno beta/evaluacijsko postavljanje od trajne hostirane produkcijske usluge sa SLA-om. Zato stranica koja objašnjava načela ne bi trebala fiksirati adresu poslužitelja, pružatelja hostinga ili broj verzije kao dio samog kalendara.</p>
+  <p>Provjereno javno postavljanje jest beta/evaluacijsko postavljanje, a ne najava trajne hostirane produkcijske usluge sa SLA-om. Adresa poslužitelja, pružatelj hostinga i broj verzije nisu dio kalendara niti kanonske konstante.</p>
   <p>Seer može koristiti predizračune, posebne reprezentacije, SIMD, algebru i druge prečace. Ne mora korak po korak ponavljati cijelu povijest izračuna kanonske implementacije ako izvršava istu semantičku operaciju i vraća isti odgovor.</p>
   <p>Optimizacija nije alternativni autoritet.</p><hr>
 </section>
 
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
   <h2>Podrijetlo, Dan utemeljenja i Dan ploča</h2>
-  <p>Ovdje osobito treba jasno odvojiti kanonska vremenska sidra od priče stranice.</p>
+  <p>Fiksna računalna sidra kalendara razlikuju se od činjenica o njegovu podrijetlu i povijesti njegove predaje.</p>
 
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>Sidra</h3>
@@ -261,10 +261,10 @@
   </section>
 
   <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
-    <h3>Priča stranice</h3>
-    <p>U uredničkoj priči stranice kalendar je prikazan kao dio stvaranja i kao sustav koji je čovječanstvo koristilo bez dovoljno svijesti o njemu sve dok nije ponovno predan u moderno doba.</p>
-    <p>To je priča stranice; ne treba svaki njezin narativni detalj predstavljati kao izričitu tehničku tvrdnju Megillah.</p>
-    <p>Sam događaj ponovne predaje fiksni je povijesni događaj. Njegov <strong>pastafarijanski datum</strong> bolje je na stranici prikazivati dinamički prema trenutačnom danu djelovanja nego ga zauvijek zamrznuti kao jedan datum.</p><hr>
+    <h3>Podrijetlo kalendara i njegova predaja</h3>
+    <p>Pastafarijanski kalendar dio je stvaranja. Čovječanstvo ga je koristilo bez dovoljne svijesti da ga koristi, sve do moderne ponovne predaje.</p>
+    <p>Megillah ne navodi svaki detalj te povijesti; pojedinosti koje u njoj nisu izričito navedene nisu dio teksta Megillah. To je razlika u podrijetlu tvrdnje, a ne ograda od stvarnosti.</p>
+    <p>Sam događaj ponovne predaje fiksni je povijesni događaj. Njegov se <strong>pastafarijanski datum</strong> računa prema relevantnom danu djelovanja, pa nema jednu jedinu trajno fiksnu pastafarijansku petorku i njegovo se pastafarijansko prikazivanje može promijeniti pod drugim danom djelovanja.</p><hr>
   </section>
 </section>
 
@@ -294,7 +294,7 @@
   </div>
 
   <p>Bez poznatog dana djelovanja situacija je drukčija. Ista se petorka može pojaviti pod različitim danima djelovanja, a postoje točni primjeri u kojima isti puni datum leži na različitim udaljenostima od <code>c</code>.</p>
-  <p>U godini 5000 čak ni predznak te udaljenosti nije uvijek određen petorkom: isti puni datum može u jednom kontekstu biti u prošlosti u odnosu na dan djelovanja, a u drugome u budućnosti.</p>
+  <p>U godini 5000 petorka ne određuje uvijek ni smjer u odnosu na dan djelovanja: isti puni datum može u jednom kontekstu biti u prošlosti u odnosu na dan djelovanja, a u drugome u budućnosti.</p>
   <p>Potpuni pastafarijanski datum zato nije apsolutna adresa na vremenskoj osi ako ne znamo pod kojim je <code>c</code> izračunan.</p>
 
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
@@ -317,7 +317,7 @@
   <p>U vidljivim fazama 3–46, na relevantnoj asimptotskoj grani, utvrđena je injektivnost u generičkom slučaju: u generičkom slučaju stanje zadržava dovoljno informacija da se rekonstruira relevantna povijest ulaza i poretka zdjela.</p>
   <p>Ni tijekom 12 završnih miješanja informacije ne nestaju odmah. Za prvih pet nakon vidljive kapi 46 utvrđena je invertibilnost u generičkom slučaju na relevantnoj kanonskoj uniji bez dodatnih bočnih informacija; za preostale su poznate snažne konstruktivne gornje granice količine bočnih informacija dovoljne za rekonstrukciju.</p>
   <p>I dalje je otvoreno jesu li <strong>samo završnih šest zdjela</strong> uvijek dovoljne u generičkom smislu.</p>
-  <p>Neki su rezultati dokazani simbolički, a drugi zatvoreni konačnim, točnim aritmetičkim provjerama. Simboličko jačanje znatno je smanjilo računalnu jezgru kojoj treba vjerovati, ali je nije potpuno uklonilo.</p>
+  <p>Neki su rezultati dokazani simbolički, a drugi provjereni konačnim, točnim aritmetičkim provjerama. Simboličko jačanje znatno je smanjilo računalnu jezgru kojoj treba vjerovati, ali je nije potpuno uklonilo.</p>
   <p>Prostori za koje se isprva činilo da zahtijevaju prolazak golemog broja putova smanjili su se na mnogo manje konačne strukture, uključujući automate sa 180 i 9 stanja te simetrije šest zdjela.</p>
   <p>Ispod miješanja nalazi se kruta algebarska struktura. Za saznati današnji datum ne morate je poznavati.</p><hr>
 </section>
