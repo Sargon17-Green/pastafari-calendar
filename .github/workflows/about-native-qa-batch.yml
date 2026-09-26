@@ -189,13 +189,14 @@ jobs:
             cat "$EVIDENCE_DIR/reviewer-stderr.log" || true
             exit 1
           fi
-          if ! head -n 1 "$EVIDENCE_DIR/review.md" | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)'; then
-            echo "Reviewer output has no valid machine-readable verdict; Copilot exit code: $COPILOT_EXIT"
+          mapfile -t VERDICT_LINES < <(grep -E '^NATIVE_QA_RESULT: (PASS|FAIL)\\r?$' "$EVIDENCE_DIR/review.md" | tr -d '\\r')
+          if [ "${#VERDICT_LINES[@]}" -ne 1 ]; then
+            echo "Reviewer output must contain exactly one machine-readable verdict; found ${#VERDICT_LINES[@]}. Copilot exit code: $COPILOT_EXIT"
             head -n 20 "$EVIDENCE_DIR/review.md" || true
             cat "$EVIDENCE_DIR/reviewer-stderr.log" || true
             exit 1
           fi
-          head -n 1 "$EVIDENCE_DIR/review.md" > "$EVIDENCE_DIR/verdict.txt"
+          printf '%s\n' "${VERDICT_LINES[0]}" > "$EVIDENCE_DIR/verdict.txt"
           printf '%s\n' "--- reviewer exit: $COPILOT_EXIT ---"
           cat "$EVIDENCE_DIR/verdict.txt"
 
