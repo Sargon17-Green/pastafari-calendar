@@ -141,7 +141,7 @@
   <h2>Short Choice ja Wide Choice</h2>
   <p>Suhteliselt väikeste valikuruumide jaoks kasutatakse <strong>Short Choice</strong>'i. Lihtsa moodulvõtmisel tekkiva kallutatuse vältimiseks kasutatakse sobimatute tulemuste tagasilükkamise meetodit.</p>
   <p>Väga suurte valikuruumide jaoks kasutatakse <strong>Wide Choice</strong>'i. Sellele ei tohi omistada omadusi, mida spetsifikatsioon ei garanteeri.</p>
-  <p>Wide Choice ei ole sama mis sõltumatute ja ühtlaselt jaotunud alusega <code>Q</code> sõltumatute ja ühtlaselt jaotunud numbrikohtade genereerimine kuni indeksi saamiseni. Seetõttu ei järeldu, et igal valid choice'il peab olema sama positiivne tõenäosus. Piisavalt suurtes valikuruumides võib olla lubatud valikuid, milleni see mehhanism kunagi ei jõua.</p>
+  <p>Wide Choice ei ole sama mis alusega <code>Q</code> sõltumatute ja ühtlaselt jaotunud numbrikohtade genereerimine kuni indeksi saamiseni. Seetõttu ei järeldu, et igal lubatud valikul peab olema sama positiivne tõenäosus. Piisavalt suurtes valikuruumides võib olla lubatud valikuid, milleni see mehhanism kunagi ei jõua.</p>
   <p>Kalender ise jääb täiesti deterministlikuks. “Choice” on algoritmilise etapi nimi, mitte kasutamise ajal toimuv juhuslik loosimine.</p><hr>
 </section>
 
@@ -219,8 +219,8 @@
 
 <section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
   <h2>Millal päev vahetub?</h2>
-  <p>Kohalik pastafari päev ei vahetu südaööl. Selle piiri määrab <strong>Veenuse keskme topocentric lower meridian transit üle kohaliku meridiaani</strong>.</p>
-  <p>See on seega asukohast sõltuv kohalik astronoomiline sündmus. Transit ei pea toimuma kell 00:00, seda ei määra tsiviilne time zone, see ei nihku lihtsalt daylight saving time'i alguse või lõpu tõttu ning Veenus ei pea palja silmaga nähtav olema.</p>
+  <p>Kohalik pastafari päev ei vahetu südaööl. Selle piiri määrab <strong>Veenuse keskme topotsentriline alumine kulminatsioon kohalikul meridiaanil</strong>.</p>
+  <p>See on seega asukohast sõltuv kohalik astronoomiline sündmus. Kulminatsioon ei pea toimuma kell 00:00, seda ei määra tsiviilne ajavöönd ning see ei nihku lihtsalt suveaja alguse või lõpu tõttu ning Veenus ei pea palja silmaga nähtav olema.</p>
   <p>Sama füüsiline hetk võib kahes asukohas jääda nende kohaliku päevapiiri eri külgedele. Kui süsteemil ei ole kasutatavat kasutaja asukohta, on toote vaikimisi varuasukoht <strong>Kisurra</strong>.</p><hr>
 </section>
 
@@ -234,10 +234,10 @@
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Mis asi on siis Seer?</h2>
   <p>Kanoonilise teostuse kõrval on kiire arvutusmootor nimega <strong>Pastafarian Calendar Seer</strong>. Seer ei ole autoriteedi allikas: õige kuupäeva määravad Megillah ja kanooniline arvutus. Kui Seer nendega ei ühti, on viga Seeris.</p>
-  <p>Selle ülesanne on käivitada samad query'd kiiresti ja tagastada tulemus kujul, mida on lihtne toodetesse integrate'ida.</p>
-  <p>Selle lehe toimetamise ajal tehtud otseses verification'is hõlmas Seer muu hulgas date- ja “now”-query'sid, batch'i, päevavahemikku, reverse conversion'it pastafari kuupäevast päringupäevani, aasta struktuuri hankimist, aktiivse toimingupäeva määramist, Node API-t, brauseri/HTTP klienti, CLI-d, HTTP v1 teenust, OpenAPI 3.1 lepingut, natiivseid teostusi ja levipaketti ning kontrollitud konteinerjuurutust.</p>
+  <p>Selle ülesanne on käivitada samad päringud kiiresti ja tagastada tulemus kujul, mida on lihtne toodetesse integreerida.</p>
+  <p>Selle lehe toimetamise ajal tehtud otseses kontrollis hõlmas Seer muu hulgas <code>date</code>- ja <code>now</code>-päringuid, paketipäringuid, päevavahemikku, reverse conversion'it pastafari kuupäevast päringupäevani, aasta struktuuri hankimist, aktiivse toimingupäeva määramist, Node API-t, brauseri/HTTP klienti, CLI-d, HTTP v1 teenust, OpenAPI 3.1 lepingut, natiivseid teostusi ja levipaketti ning kontrollitud konteinerjuurutust.</p>
   <p>Vana väide, et Seeril puudub avalik API, ei vasta enam tõele. Nüüd on olemas selge ja stabiilne HTTP v1 leping otspunktidega <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, toimingupäeva, metaandmete, lokaatide ja oleku jaoks.</p>
-  <p>21. septembril 2026 testiti Renderis päriselt public HTTPS deployment'i: live service'is kontrolliti täpseid päringuid, suurt vahemikku, taaskäivitust, külmkäivitust ja käitumist koormuse all.</p>
+  <p>21. septembril 2026 testiti Renderis päriselt avalikku HTTPS-juurutust: töötavas teenuses kontrolliti täpseid päringuid, suurt vahemikku, taaskäivitust, külmkäivitust ja käitumist koormuse all.</p>
   <p>Projekti dokumentatsioon eristab siiski endiselt avalikku beeta-/hindamisjuurutust püsivast SLA-ga majutatud tootmisteenusest. Seetõttu ei tohiks kontseptuaalne selgitusleht külmutada serveri aadressi, majutusteenuse pakkujat ega versiooninumbrit nii, nagu need kuuluksid kalendri enda juurde.</p>
   <p>Seer võib kasutada eelarvutust, eriesitusi, SIMD-i, algebrat ja muid otseteid. Ta ei pea kanoonilise teostuse kogu arvutusajalugu samm-sammult jäljendama, kui teeb sama semantilise operatsiooni ja tagastab sama vastuse.</p>
   <p>Optimeerimine ei ole alternatiivne autoriteet.</p><hr>
@@ -301,7 +301,7 @@
     <p>Spetsifikatsioonist tuletatud matemaatiline uurimus on leidnud ka täpse asümptootilise struktuuri. <strong>Fikseeritud toimingupäeva</strong> <code>c</code> korral ilmub mineviku sabas piisavalt kaugel afiinne perioodilisus.</p>
     <p>Kui</p>
     <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
-    <p>siis on sama <code>c</code> jaoks olemas shift <code>H_c</code>, year change <code>p_c</code> ja piisavalt kauge threshold, millest alates</p>
+    <p>siis on sama <code>c</code> jaoks olemas nihe <code>H_c</code>, aastamuutus <code>p_c</code> ja piisavalt kauge lävi, millest alates</p>
     <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
     <p>korduvad neli aasta-välist välja, samal ajal kui aasta number muutub kindla suuruse võrra.</p>
     <p>See on tulemus fikseeritud <code>c</code> jaoks; sellest ei järeldu globaalne seos</p>
@@ -313,12 +313,12 @@
 <section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
   <h2>Edasijõudnutele: kui palju ajalugu kaste säilitab?</h2>
   <p>Kaste näeb välja nagu väga agressiivne segamismehhanism, kuid algebraline uurimus näitab, et see säilitab palju rohkem teavet, kui välimus lubaks arvata. See on spetsifikatsioonist tuletatud uurimistulemus, mitte uus kalendrireegel.</p>
-  <p>Nähtavates etappides 3–46 on vastavas asümptootilises harus tõestatud üldjuhu injektiivsus: üldjuhul säilitab state piisavalt teavet, et rekonstrueerida vastav sisendajalugu ja kausijärjestus.</p>
+  <p>Nähtavates etappides 3–46 on vastavas asümptootilises harus tõestatud üldjuhu injektiivsus: üldjuhul säilitab olek piisavalt teavet, et taastada vastav sisendajalugu ja kausijärjestus.</p>
   <p>Ka 12 lõplikus segamises ei kao teave kohe. Esimese viie segamise puhul pärast nähtavat tilka 46 on vastavas kanoonilises ühendis tõestatud üldjuhu pööratavus ilma täiendava lisateabeta; ülejäänu kohta on teada tugevad konstruktiivsed ülempiirid lisateabe hulgale, millest taastamiseks piisab.</p>
   <p>Lahtiseks jääb küsimus, kas <strong>ainult kuuest lõplikust kausist</strong> piisab üldjuhul alati.</p>
   <p>Osa tulemusi tõestati sümboolselt, teised lõpetati lõplike täppisaritmeetiliste kontrollidega. Sümboolne tugevdamine vähendas oluliselt arvutuslikku tuumikut, mida tuleb usaldada, kuid ei kõrvaldanud seda täielikult.</p>
   <p>Ruumid, mis algul näisid nõudvat tohutu hulga arvutusteede otsingut, taandati palju väiksematele lõplikele struktuuridele, sealhulgas 180 ja 9 olekuga automaatidele ning kuue kausi sümmeetriale.</p>
-  <p>Segamise all on range algebraic structure. Tänase kuupäeva teadmiseks ei ole vaja seda tunda.</p><hr>
+  <p>Segamise all on range algebraline struktuur. Tänase kuupäeva teadmiseks ei ole vaja seda tunda.</p><hr>
 </section>
 
 <section class="about-section" id="summary" data-toc-section data-toc-level="2">
