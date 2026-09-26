@@ -19,7 +19,7 @@
 <section class="about-section" id="working-day" data-toc-section data-toc-level="2">
   <h2>Af hverju þarf aðgerðardag?</h2>
   <p>Í venjulegum dagatölum er eðlilegt að hugsa sér að dagsetningin „tilheyri“ sjálfum deginum. Í Pastafari-dagatalinu ræðst dagsetningin af sambandi tveggja daga.</p>
-  <p>Að breyta <code>t</code> þýðir að spyrja um annan dag. Að breyta <code>c</code> getur haft miklu dýpri áhrif: mörk ára, kótelettur, mánuðir, nöfn þeirra og það hvernig mánuðirnir fléttast saman geta allt breyst.</p>
+  <p>Að breyta <code>t</code> þýðir að spyrja um annan dag. Að breyta <code>c</code> getur haft miklu víðtækari áhrif: það getur breytt ársmörkum, kótelettum, mánuðum, nöfnum þeirra og því hvernig þeir fléttast saman.</p>
   <p>Almanak sem reiknað er í dag þarf því ekki að vera rétt á morgun. Þetta forðar líka þeirri óþægilegu stöðu að prentað dagatal haldist gagnlegt heilt ár.</p><hr>
 </section>
 
@@ -57,7 +57,7 @@
   <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ til }5778</code></pre>
   <p>daga. Þetta eru kanónísk mörk kerfisins, ekki reynslumeðaltöl.</p>
   <p>Ár getur því verið styttra en sólarár eða lengra en fimmtán sólarár. Ársmörkin eru byggð úr kerfi <strong>hliða</strong>; mörk kótelettna koma úr sama kerfi.</p>
-  <p>Árslok þurfa ekki að falla saman við árstíð, eina umferð Jarðar um Sól, tunglhring eða þeirri hagnýtu ósk að árið fari nú loksins að klárast.</p><hr>
+  <p>Árslok þurfa hvorki að fylgja árstíð, einni umferð Jarðar um Sól né tunglhring, og þau þurfa heldur ekki að laga sig að þeirri hagnýtu ósk að árið fari nú loksins að klárast.</p><hr>
 </section>
 
 <section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
@@ -147,8 +147,8 @@
 
 <section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
   <h2>Byggingaratlas</h2>
-  <p>Hingað til höfum við talað um reglur dagatalsins. Næstu tölur eru annars konar upplýsingar: <strong>reynsluniðurstöður</strong> úr stórri reikniúrtaki.</p>
-  <p>Atlasinn var reiknaður út með þeirri útgáfu vélarinnar sem tilgreind er í commit-inu <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> og innihélt 4.096 aðgerðardaga; árin 4990–5010 fyrir hvern þeirra; 86.016 ársbyggingar; 625.437 kótelettur; 3.535.422 byggingarmánuði; meira en 356 milljónir samfelldra mánaðarkafla; og meira en 364 milljónir færslna frá degi <code>n</code> í dag <code>n+1</code> í sama mánuði.</p>
+  <p>Hingað til höfum við talað um reglur dagatalsins. Næstu tölur eru annars konar upplýsingar: <strong>reynsluniðurstöður</strong> úr stóru reikniúrtaki.</p>
+  <p>Atlasinn var reiknaður út með þeirri útgáfu vélarinnar sem auðkennd er með <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> og innihélt 4.096 aðgerðardaga; árin 4990–5010 fyrir hvern þeirra; 86.016 ársbyggingar; 625.437 kótelettur; 3.535.422 byggingarmánuði; meira en 356 milljónir samfelldra mánaðarkafla; og meira en 364 milljónir færslna frá degi <code>n</code> í dag <code>n+1</code> í sama mánuði.</p>
   <p>Þessar tölur lýsa þessu gagnasafni, ekki kanónískum reglum.</p>
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Mæld gögn úr byggingaratlasnum">
     <table class="about-table">
@@ -180,7 +180,7 @@
   <p>Sami atlas sýndi einnig eðlilega valskekkju í þágu lengri ára í kringum ár 5000. Í úrtakinu var „venjulegt“ ár að meðaltali um 4.262 daga. Ef ár eru vegin eftir fjölda daga í þeim hækkar meðaltalið í um 4.466 daga; ár 5000 sjálft var að meðaltali um 4.499 dagar.</p>
   <p>Ástæðan er einföld: ár 5000 verður að innihalda aðgerðardaginn. Lengra ár hefur fleiri daga þar sem það getur verið árið sem inniheldur aðgerðardaginn.</p>
   <p>Samband milli nafns einingar og lengdar hennar var einnig mjög veikt í úrtakinu. Þetta sannar ekki fullkomið stærðfræðilegt óhæði, en atlasinn gefur enga hagnýta vísbendingu um að nöfnin hafi verið hönnuð til að kóða lengd.</p>
-  <p>Auk þess eru 86.016 ársbyggingarnar ekki 86.016 fullkomlega óháð úrtök: milli upphafs- og endahliðs eru aðeins 24.786 mismunandi bil. Aðgerðardagar sem liggja nálægt geta valið sama ársbil og samt myndað ólíka innri uppbyggingu.</p>
+  <p>Auk þess eru 86.016 ársbyggingarnar ekki 86.016 fullkomlega óháð úrtök: milli upphafs- og endahliðs eru aðeins 24.786 mismunandi bil. Aðgerðardagar sem liggja nálægt hver öðrum geta valið sama ársbil og samt myndað ólíka innri uppbyggingu.</p>
   <p>Atlasinn lýsir því mældri hegðun útfærslunnar vel, en ekki má breyta honum í líkindasetningu um allar mögulegar dagatalsgerðir.</p><hr>
 </section>
 
@@ -189,9 +189,9 @@
   <p>Hér þarf fyrst að skilgreina hvað „sami dagur á hverju ári“ merkir. Eðlilegar endurkomuhnit eru <code>(mánaðarnafn, dagur í mánuði)</code> og <code>(kótelettunafn, dagur í kótelettu)</code>; skilyrði má einnig sameina.</p>
   <p>Pastafari-afmæli er því ekki einfaldlega <code>RRULE:FREQ=YEARLY</code>. Finna þarf næsta ár sem uppfyllir valda endurkomuskilyrði, og upprunalegi atburðurinn telst ekki sjálfkrafa vera eigin „næsta birting“.</p>
   <p>Að breyta aðgerðardeginum aðeins fyrir birtingu ætti ekki að breyta auðkenni manns, fæðingarstund eða aldri.</p>
-  <p>Í nákvæmri yfirferð af 4.096 sjálftilvísandi dagsetningum var hvert næsta Pastafari-ár prófað allt að 250.000 ár í hvora átt:</p>
+  <p>Í nákvæmri yfirferð á 4.096 sjálftilvísandi dagsetningum var næsta Pastafari-ár prófað allt að 250.000 ár í hvora átt:</p>
   <ul>
-    <li>Fyrir <code>(mánaðarnafn, dagur í mánuði)</code> var miðgildi fyrstu endurkomu 1 Pastafari-ár; 77,56 % komu aftur í næsta ári, 93,77 % innan tveggja ára, 99,44 % innan fimm; lengsta mælda biðin var 21 ár.</li>
+    <li>Fyrir <code>(mánaðarnafn, dagur í mánuði)</code> var miðgildi biðtímans fram að fyrstu endurkomu eitt Pastafari-ár; 77,56 % endurkomna áttu sér stað á næsta ári, 93,77 % innan tveggja ára og 99,44 % innan fimm ára. Lengsta mælda biðin var 21 ár.</li>
     <li>Fyrir <code>(kótelettunafn, dagur í kótelettu)</code> var miðgildið 3 ár; 88,89 % fundust innan 10 ára, en dreifingin hefur mjög þungan hala og lengsta mælda biðin var 51.954 Pastafari-ár.</li>
   </ul>
   <p>Þetta eru <strong>reynsluniðurstöður úr prófuðu gagnasafni</strong>; þær sanna ekki að sérhver möguleg endurkoma hljóti að gerast og gefa ekki tryggingu fyrir hámarksbiðtíma.</p><hr>
@@ -214,12 +214,12 @@
   <h2>Ferðalög og heilsdagsatburðir</h2>
   <p>Atburðurinn og staðbundna merkið sem honum er sýnt eru ekki sami hluturinn. Atburður með ákveðinni klukkustund ætti að vera bundinn við fastan tímapunkt. Ferðalag færir hann ekki í tíma, en staðbundin Pastafari-dagsetning sama raunverulega augnabliks getur breyst, því skilgreiningin á „staðbundnum degi“ ræðst af staðsetningu.</p>
   <p>Við <strong>heilsdagsatburð</strong> er munurinn enn meiri. Borgaralegur heilsdagsatburður gengur venjulega frá miðnætti til næsta miðnættis; Pastafari-heilsdagsatburður ætti að ganga frá staðbundnum mörkum Pastafari-dags til næstu marka. Yfirleitt eru þetta ekki sömu augnablik.</p>
-  <p>Því getur það breytt merkingu Pastafari-atburðar að flytja hann út án aðlögunar sem borgaralegan heilsdagsatburð. Til að varðveita merkinguna rétt þarf að vista fast tímatengt auðkenni og viðeigandi samhengi staðsetningar og dagamarka, ekki aðeins <code>all-day</code>-merkinguna.</p><hr>
+  <p>Að flytja Pastafari-atburð út sem borgaralegan heilsdagsatburð án þess að aðlaga tímamörkin getur því breytt merkingu hans. Til að varðveita merkinguna rétt þarf að vista fast tímatengt auðkenni og viðeigandi samhengi staðsetningar og dagamarka, ekki aðeins <code>all-day</code>-merkinguna.</p><hr>
 </section>
 
 <section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
   <h2>Hvar liggja dagamörkin?</h2>
-  <p>Staðbundni Pastafari-dagurinn skiptir ekki um á miðnætti. Mörk hans ráðast af <strong>tímapunktinum þegar miðja Venusar, séð frá stað athugandans, fer um neðri hluta staðbundna hádegisbaugsins</strong>.</p>
+  <p>Staðbundni Pastafari-dagurinn hefst ekki á miðnætti. Mörk hans ráðast af <strong>tímapunktinum þegar miðja Venusar, séð frá stað athugandans, fer um neðri hluta staðbundna hádegisbaugsins</strong>.</p>
   <p>Þetta er staðbundinn stjarnfræðilegur atburður sem ræðst af staðsetningu. Þessi atburður á sér ekki endilega stað kl. 00:00. Borgaralegt tímabelti ákvarðar hann ekki, hann færist ekki einfaldlega vegna þess að sumartími byrjar eða endar og Venus þarf ekki að vera sýnileg berum augum.</p>
   <p>Sama raunverulega augnablik getur á tveimur stöðum verið sitthvorum megin við staðbundin dagamörk. Ef kerfið hefur enga nothæfa staðsetningu notanda er sjálfgefna varastaðsetning vörunnar <strong>Kisurra</strong>.</p><hr>
 </section>
