@@ -221,3 +221,47 @@ Do not preemptively change the locale pack before the corpus is pinned.
 These statements are not mere implementation mechanics. They may overlap the new theological/calendar canon.
 
 Future alignment must classify each statement rather than assuming a technical-doc file is canon-independent.
+
+
+## A12 — Kisurra Hebrew spelling differs between current App main and public /about/
+
+Observed current strings:
+- App `main`: `כישורא`
+- public Hebrew `/about/`: `קיסורה`
+
+Both refer to the fallback reference location called Kisurra in English/project materials.
+
+This is a real cross-surface localization inconsistency, not yet a semantic contradiction.
+
+Future action:
+- use corpus naming authority if it defines the Hebrew form;
+- otherwise make one explicit localization choice and align all public products.
+
+Do not pick a winner merely from frequency in current implementations.
+
+## A13 — App has Week/Work Week views while /about/ says no canonical weeks
+
+Current App `main` includes localized `שבוע` and `שבוע עבודה` views.
+
+WS14 documentation clarifies that these are ordinary product windows on DayId/ChronoDay with locale-derived week settings, while Pastafarian Month/Cutlet/Year views are separate representation-dependent structural views.
+
+Therefore:
+- this is not currently a calendar-rule contradiction;
+- it is a potential UI ambiguity.
+
+Future alignment must preserve the distinction:
+**weekly product view ≠ canonical Pastafarian week system**.
+
+## A14 — App Today display currently uses numeric cutlet/month placeholders
+
+Current App Hebrew `ws13.today.date` formats:
+`שנה {year}, קציצה {cutlet}, יום {cutlet_day}; חודש {month}, יום {month_day}`
+
+with `cutlet` and `month` declared as integers.
+
+The public explanation defines the five fields using **names** for cutlet and month.
+
+This may simply reflect the current vertical-slice/provider state, but it is a future presentation alignment point:
+- semantic canonical index may remain machine identity;
+- public date display may need localized/canonical names;
+- names must not be allowed to alter calculation identity.
