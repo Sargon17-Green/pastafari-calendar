@@ -168,3 +168,54 @@ What remains unavailable:
 - exact full later appendix body.
 
 Those gaps are explicitly recorded rather than filled by invented “recovered” prose.
+
+
+## A08 — Disorder among traditions as credibility material
+
+**State:** `APPROVED_CONCEPT_SUMMARY`.
+
+Later approved discussion included the deliberately counterintuitive idea that inconsistency/disorder among traditions can be made to count in favor of credibility inside the article's reasoning style.
+
+This is **not** the real editorial provenance rule.
+
+It belongs with the article's deliberate epistemology/fallacy material and must never be used operationally when selecting project canon.
+
+## A09 — Limited gods and the problem of evil
+
+**State:** `APPROVED_CONCEPT_SUMMARY`.
+
+The later discussion explicitly connected the non-omnipotent-gods model to the problem of evil: a deity that is powerful but limited does not generate the same contradiction/assumption burden as a being defined as simultaneously omnipotent, omniscient and perfectly good.
+
+The approved rhetorical direction was that this model handles the problem with fewer assumptions.
+
+QA requirement:
+- distinguish the logical compatibility point from a proof that any particular deity exists;
+- final theological status waits for corpus reconciliation.
+
+## A10 — Preferred conclusion may count as “evidence” inside the deliberate bad epistemology
+
+**State:** `APPROVED_CONCEPT_SUMMARY`.
+
+A later approved idea allowed a preferred conclusion itself to be treated as part of the “evidence” in the article's intentionally distorted epistemic method.
+
+This belongs with:
+- confirmation bias;
+- wishful thinking;
+- selective evidence;
+- familiarity/popularity reasoning.
+
+It must stay clearly separated from the project's actual evidence and provenance method.
+
+## A11 — Earlier approved project-theology facts already present in the saved draft
+
+Historical recovery confirms that, before the later post-draft additions, the user had explicitly approved adding:
+- male / female / carbohydrate as the article's gender scheme;
+- personal Noodly gravity pressure;
+- blood-vessel structure connected to the Monster's noodle-like design habits;
+- Anti-Past;
+- carbohydrate importance;
+- explicit logical-fallacy / bias material.
+
+These facts may lack external Henderson provenance because they were deliberately authorized as **new project theology after source checking**.
+
+The future corpus alignment should therefore classify them as prior project decisions, not as accidental unsupported claims.
