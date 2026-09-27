@@ -38,9 +38,17 @@ The intended inference is valid only in the limited form:
 
 It does **not** prove anything about the actual powers of the Flying Spaghetti Monster.
 
-### Canon dependency
+### Prior project decision versus future corpus authority
 
-The later sentence saying that the FSM's need to act, forget or fail to repair immediately is compatible with divinity is a project-world application. Whether those limitations are actually canonical remains deferred.
+Historical recovery now establishes that the later user-approved material did not merely use Odin/Thor/Loki as hypothetical examples. It required a concrete project-world ontology:
+- Odin is real but not omniscient;
+- Thor is connected with storms/lightning;
+- Loki is a shape-shifter;
+- gods can be limited, mistaken, quarrelsome and defeatable.
+
+That is therefore a **previously approved project decision**, not an unresolved historical blank.
+
+The separately developed canonical corpus will nevertheless become the superior authority. The future task is reconciliation: preserve this prior decision unless the corpus supersedes or refines it.
 
 ## Q02 — Mechanism versus agent
 
@@ -147,7 +155,7 @@ Safe now:
 - logical guardrails.
 
 Blocked until canon:
-- whether Odin/Thor/Loki literally exist in the project world;
+- final reconciliation of the **previously approved** Odin/Thor/Loki ontology with the new corpus;
 - whether the FSM is actually limited in the ways used as examples;
 - whether “epistemic activism” becomes canonical theology/philosophy or remains editorial;
 - final section placement and voice if it depends on canonical hierarchy.
