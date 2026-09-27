@@ -94,6 +94,67 @@ Alignment rule:
 - never promote a sampled regularity to a canonical rule;
 - if corpus changes a premise, invalidate/recompute only research that depends on that premise.
 
+## 2A. Seer repository
+
+Repository:
+`Sargon-17-Green/Pastafarian-Calendar-Seer`
+
+Current default branch inspected:
+`main`
+
+High-priority alignment surfaces:
+- `README.md`
+- `docs/CONFORMANCE.md`
+- `docs/DATA_PROVENANCE.md`
+- `docs/RELATION_TO_THE_MONSTER.md`
+- `docs/TERMINOLOGY.md`
+- `docs/LOCALIZATION.md`
+- `docs/PUBLIC_API_ARCHITECTURE.md`
+- OpenAPI/API descriptions where they restate semantic authority or calendar facts;
+- canonical test vectors / provenance descriptions only where the new corpus changes a premise.
+
+### Current authority wording that will need reconciliation
+
+The present Seer documentation explicitly says:
+- the Seer is not normative;
+- the **current Scroll** is the supreme semantic authority / source of truth;
+- if Seer disagrees with the normative calendar, the Seer is wrong.
+
+The first two ideas are conceptually separable:
+- Seer remaining non-authoritative is likely a stable architectural rule;
+- naming the **Scroll** as the supreme authority will need to be reconciled to the new canonical corpus.
+
+Do not change this early. When the corpus is pinned, update authority wording in one controlled pass.
+
+### Seer relation-to-Monster documentation
+
+`docs/RELATION_TO_THE_MONSTER.md` contains project-world language about:
+- performative/liturgical implementation;
+- Seer shortcuts being “illicit” / unapproved by the Monster;
+- independent implementations not using Seer as their normative oracle.
+
+This is not merely API documentation. It intersects the FSM/theological content workstream and therefore belongs in the later cross-surface canon pass.
+
+### Seer terminology trap
+
+`presentation: "canonical"` in the API means language-free machine coordinates, not “this response is the canonical authority”.
+
+Preserve that API meaning unless a separately justified API version change is made.
+
+### Hebrew proper-name policy
+
+Current `docs/LOCALIZATION.md` says the Hebrew locale retains verified English Pastafarian proper names until an authoritative Hebrew naming source is supplied.
+
+The new canonical corpus is expected to settle or at least constrain naming authority.
+
+At alignment time:
+1. inspect the corpus's semantic/naming model;
+2. decide whether Seer's Hebrew pack should finally carry Hebrew proper names or continue an explicit retained-name policy;
+3. preserve canonical indices as semantic identity;
+4. rerun semantic-invariance and RTL tests.
+
+This is a concrete future alignment item, not a reason to modify the current Seer pack prematurely.
+
 ## 2. Legacy/alternate web implementation and cooking trace
 
 Repository: `Sargon17-Green/Pastafarian-Calendar`
