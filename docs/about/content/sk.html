@@ -1,7 +1,7 @@
 <!-- Slovenská verzia vznikla priamo z hebrejského sémantického zdroja, nie cez sprostredkujúci preklad. -->
 <!-- ID sekcií sú stabilným verejným deep-link kontraktom a nevytvárajú sa z preložených nadpisov. -->
 <div class="about-section about-lead" id="about-calendar">
-  <p>V príbehu stránky je pastafariánsky kalendár kalendárom, v ktorom bol stvorený čas. Jeho mechanika je však definovaná presne.</p>
+  <p>Pastafariánsky kalendár je kalendárom, v ktorom bol stvorený čas. Jeho mechanika je definovaná presne.</p>
   <p>Nepriraďuje každému dňu jednu nemennú pastafariánsku „nálepku“. Na zistenie dátumu potrebujeme dva dni: <strong>deň činnosti</strong>, od ktorého sa počíta, a <strong>opytovaný deň</strong>, ktorého dátum chceme poznať.</p>
   <p>Ak označíme deň činnosti ako <code>c</code> a opytovaný deň ako <code>t</code>, dátum je</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
@@ -109,7 +109,7 @@
 </section>
 <section class="about-section" id="calculation" data-toc-section data-toc-level="2">
   <h2>Ako sa kalendár počíta?</h2>
-  <p>Vnútorný výpočet tu nazývame <strong>omáčkou</strong>. V jeho strede je prvočíslo</p>
+  <p>Vnútorný výpočet sa nazýva <strong>omáčkou</strong>. V jeho strede je prvočíslo</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
   <p>Postup zahŕňa päť vstupných počítadiel, 7 skrytých kvapiek, 46 viditeľných kvapiek, 6 mís, meniace sa poradia mís, 12 záverečných miešaní, pečate na rôzne odpovede, kombinatorické voľby, vytváranie brán, výber rokov, delenie rezňov, výber názvov, tvorbu mesiacov a prepletanie mesačných dní.</p>
   <p>Záverečné aktualizácie sú <strong>synchrónne</strong>: pri každom miešaní sa všetkých šesť nových hodnôt vypočíta z toho istého starého stavu a až potom sa všetkých šesť mís naraz nahradí.</p>
@@ -138,7 +138,7 @@
       <tr><td>Priemerná dĺžka rezňa</td><td>587.963 dňa</td></tr><tr><td>Medián dĺžky rezňa</td><td>560</td></tr><tr><td>Priemerný počet mesiacov na rok</td><td>41.102</td></tr>
       <tr><td>Medián počtu mesiacov</td><td>43</td></tr><tr><td>Roky so 47 mesiacmi</td><td>15.63%</td></tr><tr><td>Roky s aspoň 45 mesiacmi</td><td>36.81%</td></tr>
       <tr><td>Priemerná dĺžka štrukturálneho mesiaca</td><td>104.014 dňa</td></tr><tr><td>Medián dĺžky mesiaca</td><td>115</td></tr><tr><td>Priemerný počet súvislých úsekov na mesiac</td><td>100.897</td></tr>
-      <tr><td>Podiel jednodňových mesačných úsekov</td><td>97.482%</td></tr><tr><td>Pravdepodobnosť, že susedné dni patria do toho istého mesiaca</td><td>2.9976%</td></tr>
+      <tr><td>Podiel jednodňových mesačných úsekov</td><td>97.482%</td></tr><tr><td>Podiel dvojíc susedných dní, ktoré vo vzorke patrili do toho istého mesiaca</td><td>2.9976%</td></tr>
       <tr><td>Priemerný počet cudzích dní medzi <code>n</code> a <code>n+1</code> mesiaca</td><td>40.408</td></tr><tr><td>Priemerné rozpätie od prvého po posledný výskyt mesiaca</td><td>4,266.653 dňa</td></tr>
     </tbody></table></div>
   <p>Prakticky to znamená, že mesiac s približne sto dňami sa môže rozprestierať takmer cez celý pastafariánsky rok.</p>
@@ -160,7 +160,7 @@
 </section>
 <section class="about-section" id="appointments" data-toc-section data-toc-level="2">
   <h2>Ako si dohodnúť stretnutie?</h2>
-  <p>Ak sa dvaja ľudia dohodnú len pomocou pastafariánskeho dátumu, musia si zhodne určiť aspoň päť polí a deň činnosti použitý pri výpočte. Lepšie je uložiť deň činnosti ako stabilnú identitu dňa než ako slovo „dnes“, inak môže každý vypočítať iný kalendár.</p>
+  <p>Ak chcú dvaja ľudia určiť deň stretnutia pomocou pastafariánskeho dátumu, musia si zhodne určiť aspoň päť polí a deň činnosti použitý pri výpočte. Lepšie je uložiť deň činnosti ako stabilnú identitu dňa než ako slovo „dnes“, inak môže každý vypočítať iný kalendár.</p>
   <ul><li>„zajtra“ je nasledujúci chronologický deň;</li><li>„nasledujúci deň mesiaca“ je ďalší výskyt toho istého mesiaca;</li><li>„koniec mesiaca“ je jeho posledný výskyt;</li><li>„celý mesiac“ môže znamenať množinu dní mesiaca alebo celý chronologický rozsah od prvého po posledný výskyt;</li><li>„nasledujúci rok“ znamená ďalší rok v kalendári vytvorenom pod zvoleným dňom činnosti.</li></ul>
   <p>Pri mimoriadne dôležitom stretnutí možno navyše uložiť absolútny chronologický deň alebo okamih. Kalendár to bez ujmy znesie.</p><hr>
 </section>
@@ -184,18 +184,18 @@
 </section>
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>A čo je Seer?</h2>
-  <p>Popri kanonickej implementácii existuje rýchly engine <strong>Pastafarian Calendar Seer</strong>. Seer nie je zdrojom autority: správny dátum určujú Megillah a kanonický výpočet. Ak sa Seer nezhoduje, mýli sa Seer.</p>
+  <p>Popri kanonickej implementácii existuje rýchly engine <strong>Pastafarian Calendar Seer</strong>. Seer nie je zdrojom autority: Megillah určuje pravidlá a kanonický výpočet podľa nich vytvára dátum. Ak sa Seer nezhoduje so správnym kanonickým výpočtom, mýli sa Seer.</p>
   <p>Jeho účelom je vykonávať tie isté dotazy rýchlo a vo forme vhodnej na integráciu do produktov.</p>
-  <p>Pri živom overení počas úprav tejto stránky Seer zahŕňal okrem iného dotazy na dátum a „teraz“, batch, rozsahy dní, spätnú konverziu pastafariánskeho dátumu na cieľový deň, získanie štruktúry roka, určenie aktívneho dňa činnosti, Node API, prehliadačový/HTTP klient, CLI, službu HTTP v1, kontrakt OpenAPI 3.1, native implementácie a distribučné balíky a overené container nasadenie.</p>
-  <p>Staré tvrdenie, že Seer nemá verejné API, už nie je správne. Existuje výslovný stabilný kontrakt HTTP v1 s koncovými bodmi pre <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, deň činnosti, <code>metadata</code>, <code>locales</code> a <code>status</code>.</p>
+  <p>Pri živom overení 21. septembra 2026 Seer zahŕňal okrem iného dotazy na dátum a „teraz“, batch, rozsahy dní, spätnú konverziu pastafariánskeho dátumu na cieľový deň, získanie štruktúry roka, určenie aktívneho dňa činnosti, Node API, prehliadačový/HTTP klient, CLI, službu HTTP v1, kontrakt OpenAPI 3.1, native implementácie a distribučné balíky a overené container nasadenie.</p>
+  <p>Seer má verejné API. Existuje výslovný stabilný kontrakt HTTP v1 s koncovými bodmi pre <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, deň činnosti, <code>metadata</code>, <code>locales</code> a <code>status</code>.</p>
   <p>Dňa 21. septembra 2026 bolo prakticky otestované aj verejné HTTPS nasadenie na Render: na živej službe sa overili presné dotazy, veľký rozsah, reštart, <code>cold wake</code> a správanie pod záťažou.</p>
-  <p>Projektová dokumentácia však naďalej odlišuje verejné beta/evaluačné nasadenie od trvalej hosťovanej produkčnej služby so SLA. Preto základná vysvetľujúca stránka nemá zafixovať adresu servera, poskytovateľa hostingu či číslo verzie ako súčasť samotného kalendára.</p>
+  <p>Overené verejné nasadenie je beta/evaluačné nasadenie, nie vyhlásenie trvalej hosťovanej produkčnej služby so SLA. Adresa servera, poskytovateľ hostingu a číslo verzie nie sú súčasťou kalendára ani kanonickými konštantami.</p>
   <p>Seer môže používať predvýpočty, špeciálne reprezentácie, SIMD, algebru a ďalšie skratky. Nemusí krok za krokom opakovať výpočtovú históriu kanonickej implementácie, ak vykonáva tú istú sémantickú operáciu a vracia tú istú odpoveď.</p>
   <p>Optimalizácia nie je alternatívna autorita.</p><hr>
 </section>
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
   <h2>Pôvod, Deň založenia a Deň tabúľ</h2>
-  <p>Tu treba jasne oddeliť kanonické časové kotvy od príbehu stránky.</p>
+  <p>Pevné výpočtové kotvy kalendára sú odlišné od faktov o jeho pôvode a od histórie jeho znovuodovzdania.</p>
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>Kotvy</h3>
     <p>Systém má pevný referenčný deň nazvaný <strong>Deň založenia</strong>. V proleptickom gregoriánskom kalendári je to <strong>22. december 41,222 pred n. l.</strong></p>
@@ -208,10 +208,10 @@
     <p>Sú to pevné kotvy na časovej osi. Zobrazený pastafariánsky dátum pre ne však stále závisí od dňa činnosti, z ktorého sa na ne pýtame.</p>
   </section>
   <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
-    <h3>Príbeh stránky</h3>
-    <p>V redakčnom podaní stránky je kalendár súčasťou stvorenia a systémom, ktorý ľudstvo používalo bez dostatočného uvedomenia, kým nebol v modernej dobe znovu odovzdaný.</p>
-    <p>Je to príbeh stránky; každý jeho naratívny detail sa nemá vydávať za výslovné technické tvrdenie Megillah.</p>
-    <p>Samotná udalosť znovuodovzdania je pevná historická udalosť. Jej <strong>pastafariánsky dátum</strong> je vhodnejšie na stránke zobrazovať dynamicky podľa aktuálneho dňa činnosti než navždy fixovať jednu jedinú hodnotu.</p><hr>
+    <h3>Pôvod kalendára a jeho znovuodovzdanie</h3>
+    <p>Pastafariánsky kalendár je súčasťou stvorenia. Ľudstvo ho používalo bez dostatočného uvedomenia, že používa práve tento kalendár, kým nebol v modernej dobe znovu odovzdaný.</p>
+    <p>Megillah neopisuje každý detail tejto histórie; detaily, ktoré v nej nie sú výslovne uvedené, nie sú súčasťou textu Megillah. Ide o rozlíšenie zdroja, nie o pochybnosť o realite.</p>
+    <p>Samotná udalosť znovuodovzdania je pevná historická udalosť. Jej <strong>pastafariánsky dátum</strong> sa vypočítava podľa príslušného dňa činnosti; preto nemá jednu navždy pevnú päťicu a jej pastafariánske zobrazenie sa môže pri inom dni činnosti zmeniť.</p><hr>
   </section>
 </section>
 <section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
@@ -227,8 +227,8 @@
       <tr><td>Iba názov mesiaca</td><td>123</td></tr><tr><td>Iba deň v mesiaci</td><td>47</td></tr><tr><td>Názov rezňa + deň v rezni</td><td>1</td></tr>
       <tr><td>Názov mesiaca + deň v mesiaci</td><td>1</td></tr><tr><td>Ľubovoľné tri ne-ročné polia</td><td>1</td></tr><tr><td>Všetky štyri ne-ročné polia</td><td>1</td></tr>
     </tbody></table></div>
-  <p>Bez známeho dňa činnosti je situácia iná. Rovnaká päťica sa môže objaviť pod rôznymi dňami činnosti a existujú presné príklady, kde sa ten istý úplný dátum nachádza v rôznych vzdialenostiach od <code>c</code>.</p>
-  <p>V roku 5000 dokonca ani znamienko tejto vzdialenosti nie je vždy určené päťicou: ten istý úplný dátum môže byť v jednom kontexte v minulosti dňa činnosti a v inom v budúcnosti.</p>
+  <p>Bez známeho dňa činnosti je situácia iná. Rovnaká päťica sa môže objaviť pod rôznymi dňami činnosti a existujú konkrétne príklady, kde sa ten istý úplný dátum nachádza v rôznych vzdialenostiach od <code>c</code>.</p>
+  <p>V roku 5000 päťica nie vždy určuje ani to, či je dátum pred dňom činnosti alebo po ňom: ten istý úplný dátum môže byť v jednom kontexte v minulosti dňa činnosti a v inom v budúcnosti.</p>
   <p>Úplný pastafariánsky dátum teda nie je absolútnou adresou na časovej osi, ak nevieme, pod ktorým <code>c</code> bol vypočítaný.</p>
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
     <h3>Štruktúra vo vzdialenom čase</h3>
@@ -249,7 +249,7 @@
   <p>Vo viditeľných etapách 3–46 bola na príslušnej asymptotickej vetve stanovená injektivita vo všeobecnom prípade: v generickom prípade stav zachováva dosť informácií na rekonštrukciu relevantnej histórie vstupov a poradí mís.</p>
   <p>Ani v 12 záverečných miešaniach informácia nezmizne okamžite. Pre prvých päť po viditeľnej kvapke 46 bola na príslušnom kanonickom zjednotení stanovená invertibilita vo všeobecnom prípade bez dodatočných vedľajších informácií; pre zvyšok poznáme silné konštruktívne horné hranice množstva vedľajších informácií postačujúcich na rekonštrukciu.</p>
   <p>Otvorené zostáva, či <strong>samotných šesť finálnych mís</strong> vždy genericky stačí.</p>
-  <p>Niektoré výsledky boli dokázané symbolicky, iné uzavreté konečnými presnými aritmetickými kontrolami. Symbolické posilnenie výrazne zmenšilo výpočtové jadro, ktorému treba dôverovať, no úplne ho neodstránilo.</p>
+  <p>Niektoré výsledky boli dokázané symbolicky, iné overené konečnými presnými aritmetickými kontrolami. Symbolické posilnenie výrazne zmenšilo výpočtové jadro, ktorému treba dôverovať, no úplne ho neodstránilo.</p>
   <p>Priestory, ktoré spočiatku vyzerali ako obrovské množiny ciest, sa zmenšili na omnoho menšie konečné štruktúry vrátane automatov so 180 a 9 stavmi a symetrií šiestich mís.</p>
   <p>Pod miešaním je teda pevná algebraická štruktúra. Na zistenie dnešného dátumu ju poznať netreba.</p><hr>
 </section>
