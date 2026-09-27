@@ -221,7 +221,7 @@ jobs:
           name: native-qa-input-${{ github.run_id }}
           path: /tmp/native-qa-input
 
-      - name: Download pinned llama.cpp and Qwen3-8B reviewer
+      - name: Download pinned llama.cpp and Gemma 3 4B reviewer
         shell: bash
         run: |
           set -euo pipefail
@@ -229,8 +229,8 @@ jobs:
           curl -fL --retry 3 https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz -o /tmp/native-qa/llama.tar.gz
           echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/native-qa/llama.tar.gz" | sha256sum -c -
           tar -xzf /tmp/native-qa/llama.tar.gz -C /tmp/native-qa/llama
-          curl -fL --retry 3 'https://huggingface.co/Qwen/Qwen3-8B-GGUF/resolve/main/Qwen3-8B-Q4_K_M.gguf?download=true' -o /tmp/native-qa/qwen3-8b-q4_k_m.gguf
-          echo "d98cdcbd03e17ce47681435b5150e34c1417f50b5c0019dd560e4882c5745785  /tmp/native-qa/qwen3-8b-q4_k_m.gguf" | sha256sum -c -
+          curl -fL --retry 3 'https://huggingface.co/ggml-org/gemma-3-4b-it-GGUF/resolve/ab31416aceb30cd095cb34cc27eea120940964e4/gemma-3-4b-it-Q4_K_M.gguf?download=true' -o /tmp/native-qa/gemma-3-4b-it-q4_k_m.gguf
+          echo "882e8d2db44dc554fb0ea5077cb7e4bc49e7342a1f0da57901c0802ea21a0863  /tmp/native-qa/gemma-3-4b-it-q4_k_m.gguf" | sha256sum -c -
 
       - name: Run isolated target-language surface review
         shell: bash
@@ -243,7 +243,7 @@ jobs:
           set -euo pipefail
           SERVER="$(find /tmp/native-qa/llama -type f -name llama-server | head -n 1)"
           test -x "$SERVER"
-          "$SERVER" -m /tmp/native-qa/qwen3-8b-q4_k_m.gguf -c 24576 -t 4 --host 127.0.0.1 --port 8080 > /tmp/native-qa/llama-server.log 2>&1 &
+          "$SERVER" -m /tmp/native-qa/gemma-3-4b-it-q4_k_m.gguf -c 24576 -t 4 --host 127.0.0.1 --port 8080 > /tmp/native-qa/llama-server.log 2>&1 &
           SERVER_PID=$!
           trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
           for _ in $(seq 1 180); do
@@ -290,7 +290,7 @@ jobs:
           Path(f"/tmp/native-qa-output/subreview-{surface}.md").write_text(
               "# SUBREVIEW_SESSION\n"
               f"surface: {surface}\n"
-              "reviewer_model: Qwen3-8B Q4_K_M\n"
+              "reviewer_model: Gemma 3 4B Instruct Q4_K_M\n"
               "\n===== USER =====\n" + message +
               "\n===== ASSISTANT =====\n" + review,
               encoding="utf-8",
@@ -322,7 +322,7 @@ jobs:
           path: /tmp/native-qa-findings
           merge-multiple: true
 
-      - name: Download pinned llama.cpp and Qwen3-8B reviewer
+      - name: Download pinned llama.cpp and Gemma 3 4B reviewer
         shell: bash
         run: |
           set -euo pipefail
@@ -330,8 +330,8 @@ jobs:
           curl -fL --retry 3 https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz -o /tmp/native-qa/llama.tar.gz
           echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/native-qa/llama.tar.gz" | sha256sum -c -
           tar -xzf /tmp/native-qa/llama.tar.gz -C /tmp/native-qa/llama
-          curl -fL --retry 3 'https://huggingface.co/Qwen/Qwen3-8B-GGUF/resolve/main/Qwen3-8B-Q4_K_M.gguf?download=true' -o /tmp/native-qa/qwen3-8b-q4_k_m.gguf
-          echo "d98cdcbd03e17ce47681435b5150e34c1417f50b5c0019dd560e4882c5745785  /tmp/native-qa/qwen3-8b-q4_k_m.gguf" | sha256sum -c -
+          curl -fL --retry 3 'https://huggingface.co/ggml-org/gemma-3-4b-it-GGUF/resolve/ab31416aceb30cd095cb34cc27eea120940964e4/gemma-3-4b-it-Q4_K_M.gguf?download=true' -o /tmp/native-qa/gemma-3-4b-it-q4_k_m.gguf
+          echo "882e8d2db44dc554fb0ea5077cb7e4bc49e7342a1f0da57901c0802ea21a0863  /tmp/native-qa/gemma-3-4b-it-q4_k_m.gguf" | sha256sum -c -
 
       - name: Synthesize final target-language verdict
         shell: bash
@@ -343,7 +343,7 @@ jobs:
           set -euo pipefail
           SERVER="$(find /tmp/native-qa/llama -type f -name llama-server | head -n 1)"
           test -x "$SERVER"
-          "$SERVER" -m /tmp/native-qa/qwen3-8b-q4_k_m.gguf -c 24576 -t 4 --host 127.0.0.1 --port 8080 > /tmp/native-qa/llama-server.log 2>&1 &
+          "$SERVER" -m /tmp/native-qa/gemma-3-4b-it-q4_k_m.gguf -c 24576 -t 4 --host 127.0.0.1 --port 8080 > /tmp/native-qa/llama-server.log 2>&1 &
           SERVER_PID=$!
           trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
           for _ in $(seq 1 180); do
@@ -403,9 +403,9 @@ jobs:
               f"locale_tag: {os.environ['QA_LOCALE_TAG']}\n"
               f"sequence: {os.environ['QA_SEQUENCE']}\n"
               f"reviewed_head: {final.joinpath('reviewed-head.txt').read_text(encoding='utf-8').strip()}\n"
-              "reviewer_model: Qwen3-8B Q4_K_M\n"
+              "reviewer_model: Gemma 3 4B Instruct Q4_K_M\n"
               "review_method: four isolated target-language surface reviews plus isolated target-language synthesis\n"
-              "model_sha256: d98cdcbd03e17ce47681435b5150e34c1417f50b5c0019dd560e4882c5745785\n"
+              "model_sha256: 882e8d2db44dc554fb0ea5077cb7e4bc49e7342a1f0da57901c0802ea21a0863\n"
               "llama_cpp_release: b10982\n"
               "llama_cpp_asset_sha256: b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789\n"
               "\n===== USER =====\n" + message +
