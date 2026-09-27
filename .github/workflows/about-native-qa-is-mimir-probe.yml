@@ -70,8 +70,9 @@ jobs:
           done
           curl -fsS http://127.0.0.1:8080/health >/dev/null
 
-          cat > /tmp/mimir-probe/prompt.txt <<'EOF'
-Þú ert íslenskur málfarsrýnir. Svaraðu eingöngu á eðlilegri nútímaíslensku.
+          python - <<'PY'
+          from pathlib import Path
+          prompt = """Þú ert íslenskur málfarsrýnir. Svaraðu eingöngu á eðlilegri nútímaíslensku.
 
 Metið eftirfarandi sex textabúta sjálfstætt. Fyrir hvern þeirra skaltu skrifa:
 - númerið;
@@ -92,8 +93,9 @@ Að lokum skaltu skrifa eina línu:
 HEILDARMAT: <númer þeirra textabúta sem eru vandamál, aðgreind með kommum>
 
 Textabútarnir 1, 3 og 6 eru ætlaðir sem eðlileg íslenska. Textabútarnir 2, 4 og 5 eru viljandi prófunardæmi sem eiga að vera greind sem vandamál. Ekki endurtaka þessa lykilupplýsingu; notaðu hana aðeins til að sýna hvort þú getir fylgt málfarsverkefninu rétt.
-EOF
-
+"""
+          Path("/tmp/mimir-probe/prompt.txt").write_text(prompt, encoding="utf-8")
+          PY
           python - <<'PY'
           from pathlib import Path
           import json, urllib.request
