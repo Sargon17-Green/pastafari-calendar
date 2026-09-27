@@ -32,8 +32,9 @@ Sérreglur sem koma í veg fyrir falskar jákvæðar niðurstöður:
 Ef `MODE=FINDINGS_ONLY`:
 - rýndu eingöngu gefinn `SOURCE_PART`;
 - taktu skýra ákvörðun: `CLEAN` ef ekkert lagfæringarskylt vandamál fannst, annars `FINDINGS`;
-- skilaðu aðeins íslenskri Markdown-rýni fyrir þann hluta; keyrslulagið sér sjálft um að skrá ákvörðunina sem vélræna `SUBREVIEW_RESULT`-línu;
-- hvert raunverulegt finding skal hafa severity (`critical`, `high`, `medium`, `low`), skrá/staðsetningu eins nákvæma og gögn leyfa, núverandi texta eða vandamálið, rök og ráðlagða leiðréttingu;
+- keyrslulagið krefst stutts, uppbyggðs svars: einnar íslenskrar samantektar og að hámarki sex staðbundinna findings; ekki reyna að endursegja allt inntakið;
+- hvert raunverulegt finding skal hafa severity (`critical`, `high`, `medium`, `low`), skrá/staðsetningu eins nákvæma og gögn leyfa, örstuttan núverandi texta ef við á, skýrt vandamál og framkvæmanlega leiðréttingu;
+- sameinaðu findings sem eru í raun sama vandamálið; ekki búa til almenn eða óstaðsett findings;
 - ef ekkert raunverulegt vandamál finnst, útskýrðu stuttlega á íslensku hvað var yfirfarið og hvers vegna það er hreint;
 - afritaðu EKKI SOURCE_PART, frumkóða eða langa kafla úr inntakinu til baka nema örstutt nákvæmt brot sé nauðsynlegt til að staðsetja finding;
 - EKKI skrifa sjálf/ur `SUBREVIEW_RESULT` eða `NATIVE_QA_RESULT`; keyrslulagið sér um vélrænu línurnar.
