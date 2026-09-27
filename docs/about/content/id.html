@@ -1,7 +1,7 @@
 <!-- Versi bahasa Indonesia ditulis langsung dari dasar semantik Ibrani, tanpa bahasa perantara. -->
 <!-- ID bagian adalah kontrak deep-link publik yang stabil dan tidak diturunkan dari judul terjemahan. -->
 <div class="about-section about-lead" id="about-calendar">
-  <p>Dalam narasi situs ini, Kalender Pastafari digambarkan sebagai kalender tempat waktu itu sendiri diciptakan. Namun mekanismenya didefinisikan secara ketat.</p>
+  <p>Kalender Pastafari adalah kalender tempat waktu itu sendiri diciptakan. Mekanismenya didefinisikan secara tepat.</p>
   <p>Kalender ini tidak menempelkan satu “label” Pastafari yang tetap pada setiap hari. Untuk mengetahui suatu tanggal, kita memerlukan dua hari: <strong>hari kerja</strong>, yang menjadi titik awal perhitungan, dan <strong>hari yang ditanyakan</strong>, yaitu hari yang tanggalnya ingin kita ketahui.</p>
   <p>Jika hari kerja kita lambangkan dengan <code>c</code> dan hari yang ditanyakan dengan <code>t</code>, maka tanggalnya adalah</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
@@ -127,7 +127,7 @@
 
 <section class="about-section" id="calculation" data-toc-section data-toc-level="2">
   <h2>Bagaimana kalender dihitung?</h2>
-  <p>Perhitungan internal kita sebut di sini <strong>saus</strong>. Di pusatnya terdapat bilangan prima</p>
+  <p>Perhitungan internal disebut <strong>saus</strong>. Di pusatnya terdapat bilangan prima</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
   <p>Prosesnya mencakup lima penghitung masukan, 7 tetes tersembunyi, 46 tetes terlihat, 6 mangkuk, urutan mangkuk yang berubah, 12 pengadukan akhir, segel untuk jawaban berbeda, mekanisme pilihan kombinatorial, pembentukan gerbang, pemilihan tahun, pembagian kotlet, pemilihan nama, pembentukan bulan, dan penganyaman hari-hari bulan.</p>
   <p>Pembaruan akhir bersifat <strong>sinkron</strong>: pada setiap pengadukan, keenam nilai baru dihitung dari keadaan lama yang sama, dan baru setelah itu keenam mangkuk diganti sekaligus.</p>
@@ -171,7 +171,7 @@
         <tr><td>Median panjang bulan</td><td>115</td></tr>
         <tr><td>Rata-rata jumlah segmen berkesinambungan per bulan</td><td>100.897</td></tr>
         <tr><td>Proporsi segmen bulan satu hari</td><td>97.482%</td></tr>
-        <tr><td>Peluang dua hari bersebelahan berada dalam bulan yang sama</td><td>2.9976%</td></tr>
+        <tr><td>Proporsi pasangan hari bersebelahan yang dalam sampel berada dalam bulan yang sama</td><td>2.9976%</td></tr>
         <tr><td>Rata-rata hari asing antara <code>n</code> dan <code>n+1</code> bulan yang sama</td><td>40.408</td></tr>
         <tr><td>Rata-rata rentang dari kemunculan pertama hingga terakhir suatu bulan</td><td>4,266.653 hari</td></tr>
       </tbody>
@@ -200,7 +200,7 @@
 
 <section class="about-section" id="appointments" data-toc-section data-toc-level="2">
   <h2>Bagaimana membuat janji?</h2>
-  <p>Jika dua orang hendak membuat janji hanya dengan tanggal Pastafari, mereka setidaknya harus menyepakati lima bidang tanggal dan hari kerja yang digunakan dalam perhitungan. Sebaiknya hari kerja disimpan sebagai identitas hari yang stabil, bukan sebagai kata “hari ini”, karena jika tidak, kedua orang dapat menghitung kalender yang berbeda.</p>
+  <p>Jika dua orang hendak menentukan hari pertemuan dengan tanggal Pastafari, mereka setidaknya harus menyepakati lima bidang tanggal dan hari kerja yang digunakan dalam perhitungan. Sebaiknya hari kerja disimpan sebagai identitas hari yang stabil, bukan sebagai kata “hari ini”, karena jika tidak, kedua orang dapat menghitung kalender yang berbeda.</p>
   <ul>
     <li>“besok” adalah hari kronologis berikutnya;</li>
     <li>“hari berikutnya dalam bulan” adalah kemunculan berikutnya dari bulan yang sama;</li>
@@ -234,19 +234,19 @@
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Lalu apa itu Seer?</h2>
-  <p>Di samping implementasi kanonis ada mesin cepat bernama <strong>Pastafarian Calendar Seer</strong>. Seer bukan sumber otoritas: tanggal yang benar ditentukan oleh Megillah dan perhitungan kanonis. Jika Seer tidak cocok dengan keduanya, Seer-lah yang salah.</p>
+  <p>Di samping implementasi kanonis ada mesin cepat bernama <strong>Pastafarian Calendar Seer</strong>. Seer bukan sumber otoritas: Megillah menetapkan aturan, dan perhitungan kanonis menghasilkan tanggal menurut aturan tersebut. Jika Seer tidak cocok dengan perhitungan kanonis yang benar, Seer-lah yang salah.</p>
   <p>Tugasnya adalah menjalankan pertanyaan yang sama dengan cepat dan dalam bentuk yang mudah diintegrasikan ke produk.</p>
-  <p>Dalam verifikasi langsung yang dilakukan saat menyunting halaman ini, Seer antara lain mencakup kueri tanggal dan “sekarang”, batch, rentang hari, konversi balik dari tanggal Pastafari ke hari yang ditanyakan, pengambilan struktur tahun, penentuan hari kerja aktif, Node API, klien browser/HTTP, CLI, layanan HTTP v1, kontrak OpenAPI 3.1, implementasi asli dan paket distribusi, serta penerapan kontainer yang telah diverifikasi.</p>
-  <p>Pernyataan lama bahwa Seer tidak memiliki API publik sudah tidak benar. Kini ada kontrak HTTP v1 yang eksplisit dan stabil dengan endpoint untuk <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, hari kerja, <code>metadata</code>, <code>locales</code>, dan <code>status</code>.</p>
+  <p>Dalam verifikasi langsung yang dilakukan pada 21 September 2026, Seer antara lain mencakup kueri tanggal dan “sekarang”, batch, rentang hari, konversi balik dari tanggal Pastafari ke hari yang ditanyakan, pengambilan struktur tahun, penentuan hari kerja aktif, Node API, klien browser/HTTP, CLI, layanan HTTP v1, kontrak OpenAPI 3.1, implementasi asli dan paket distribusi, serta penerapan kontainer yang telah diverifikasi.</p>
+  <p>Seer memiliki API publik. Ada kontrak HTTP v1 yang eksplisit dan stabil dengan endpoint untuk <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, hari kerja, <code>metadata</code>, <code>locales</code>, dan <code>status</code>.</p>
   <p>Pada 21 September 2026, penerapan HTTPS publik di Render benar-benar diuji: kueri tepat, rentang besar, mulai ulang, <code>cold wake</code>, dan perilaku di bawah beban diuji pada layanan yang hidup.</p>
-  <p>Dokumentasi proyek tetap membedakan penerapan publik beta/evaluasi dari layanan produksi terhosting permanen dengan SLA. Karena itu, halaman penjelasan konseptual tidak seharusnya membekukan alamat server, penyedia hosting, atau nomor versi seolah-olah semuanya adalah bagian dari kalender itu sendiri.</p>
+  <p>Penerapan publik yang telah diverifikasi adalah penerapan beta/evaluasi, bukan pengumuman layanan produksi terhosting permanen dengan SLA. Alamat server, penyedia hosting, dan nomor versi bukan bagian dari kalender dan bukan konstanta kanonis.</p>
   <p>Seer boleh menggunakan prakomputasi, representasi khusus, SIMD, aljabar, dan jalan pintas lain. Ia tidak harus meniru seluruh riwayat komputasi implementasi kanonis langkah demi langkah selama menjalankan operasi semantis yang sama dan mengembalikan jawaban yang sama.</p>
   <p>Optimisasi bukan otoritas alternatif.</p><hr>
 </section>
 
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
   <h2>Asal-usul, Hari Pendirian, dan Hari Loh</h2>
-  <p>Di sini kita terutama perlu memisahkan dengan jelas tambatan waktu kanonis dari cerita situs.</p>
+  <p>Tambatan komputasi tetap pada kalender berbeda dari fakta tentang asal-usulnya dan sejarah penyampaiannya.</p>
 
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>Tambatan</h3>
@@ -261,10 +261,10 @@
   </section>
 
   <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
-    <h3>Cerita situs</h3>
-    <p>Dalam narasi editorial situs, kalender digambarkan sebagai bagian dari penciptaan dan sebagai sistem yang digunakan umat manusia tanpa kesadaran penuh sampai disampaikan kembali pada zaman modern.</p>
-    <p>Itu adalah cerita situs; tidak setiap rincian naratifnya harus dipresentasikan sebagai pernyataan teknis eksplisit dari Megillah.</p>
-    <p>Peristiwa penyampaian kembali itu sendiri adalah peristiwa sejarah yang tetap. <strong>Tanggal Pastafari</strong>-nya lebih baik ditampilkan secara dinamis di bawah hari kerja saat ini daripada dibekukan selamanya sebagai satu tanggal saja.</p><hr>
+    <h3>Asal-usul kalender dan penyampaiannya</h3>
+    <p>Kalender Pastafari adalah bagian dari penciptaan. Umat manusia menggunakannya tanpa cukup menyadari bahwa mereka sedang menggunakannya, sampai kalender itu disampaikan kembali pada zaman modern.</p>
+    <p>Megillah tidak merinci setiap bagian dari sejarah ini; rincian yang tidak dinyatakan secara eksplisit di dalamnya bukan bagian dari teks Megillah. Ini adalah perbedaan sumber, bukan keraguan terhadap kenyataan.</p>
+    <p>Peristiwa penyampaian kembali itu sendiri adalah peristiwa sejarah yang tetap. <strong>Tanggal Pastafari</strong>-nya dihitung menurut hari kerja yang relevan; karena itu peristiwa tersebut tidak memiliki satu tanggal Pastafari lima-bidang yang tetap untuk selamanya, dan representasi Pastafari-nya dapat berubah di bawah hari kerja yang berbeda.</p><hr>
   </section>
 </section>
 
@@ -293,8 +293,8 @@
     </table>
   </div>
 
-  <p>Tanpa mengetahui hari kerja, situasinya berbeda. Lima nilai yang sama dapat muncul di bawah hari kerja yang berbeda, dan terdapat contoh pasti ketika tanggal lengkap yang sama muncul pada jarak berbeda dari <code>c</code>.</p>
-  <p>Dalam tahun 5000, bahkan tanda jarak itu tidak selalu ditentukan oleh lima nilai tadi: tanggal lengkap yang sama dapat berada di masa lalu relatif terhadap hari kerja dalam satu konteks, dan di masa depan dalam konteks lain.</p>
+  <p>Tanpa mengetahui hari kerja, situasinya berbeda. Lima nilai yang sama dapat muncul di bawah hari kerja yang berbeda, dan terdapat contoh eksplisit ketika tanggal lengkap yang sama muncul pada jarak berbeda dari <code>c</code>.</p>
+  <p>Dalam tahun 5000, bahkan arah relatif terhadap hari kerja tidak selalu ditentukan oleh lima nilai tadi: tanggal lengkap yang sama dapat berada di masa lalu relatif terhadap hari kerja dalam satu konteks, dan di masa depan dalam konteks lain.</p>
   <p>Jadi tanggal Pastafari lengkap bukan alamat absolut di garis waktu jika kita tidak mengetahui di bawah <code>c</code> mana tanggal itu dihitung.</p>
 
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
@@ -317,7 +317,7 @@
   <p>Pada tahap terlihat 3–46, di cabang asimtotik yang relevan, injektivitas pada kasus generik telah ditetapkan: dalam kasus generik, keadaan menyimpan cukup informasi untuk merekonstruksi riwayat masukan dan urutan mangkuk yang relevan.</p>
   <p>Dalam 12 pengadukan akhir pun informasi tidak langsung hilang. Untuk lima pengadukan pertama setelah tetes terlihat 46, invertibilitas pada kasus generik telah ditetapkan pada gabungan kanonis yang relevan tanpa informasi samping tambahan; untuk sisanya diketahui batas atas konstruktif yang kuat atas jumlah informasi samping yang cukup untuk rekonstruksi.</p>
   <p>Masih terbuka apakah <strong>enam mangkuk akhir saja</strong> selalu cukup dalam pengertian generik.</p>
-  <p>Sebagian hasil dibuktikan secara simbolis, sedangkan yang lain ditutup dengan pemeriksaan aritmetika hingga dan tepat. Penguatan simbolis sangat mengurangi inti komputasi yang harus dipercaya, tetapi tidak menghapusnya sepenuhnya.</p>
+  <p>Sebagian hasil dibuktikan secara simbolis, sedangkan yang lain diverifikasi dengan pemeriksaan aritmetika hingga dan tepat. Penguatan simbolis sangat mengurangi inti komputasi yang harus dipercaya, tetapi tidak menghapusnya sepenuhnya.</p>
   <p>Ruang yang mula-mula tampak memerlukan penelusuran jumlah jalur yang sangat besar telah menyusut menjadi struktur hingga yang jauh lebih kecil, termasuk automata dengan 180 dan 9 keadaan serta simetri enam mangkuk.</p>
   <p>Di balik pencampuran itu terdapat struktur aljabar yang kaku. Untuk mengetahui tanggal hari ini, Anda tidak perlu mengetahuinya.</p><hr>
 </section>
