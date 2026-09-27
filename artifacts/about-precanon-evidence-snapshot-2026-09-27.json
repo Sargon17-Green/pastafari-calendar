@@ -1,0 +1,47 @@
+{
+  "schema": "about-precanon-evidence-snapshot/v1",
+  "captured": "2026-09-27",
+  "sourceRepository": "Sargon17-Green/pastafari-calendar",
+  "sourceBranch": "feature/about-i18n-72-locales",
+  "sourceHead": "da4ee3edfb4bf2b7fe6f5cd556d7cfacce6054de",
+  "purpose": "Preserve exact semantic-alignment and native-QA control evidence before future corpus-driven changes. This snapshot is migration evidence, not canonical authority.",
+  "articleInventory": {
+    "htmlArticleCount": 72,
+    "hebrewSemanticMasterBlob": "954f82559e618a091bb338c65a61be9e50d48331",
+    "nonHebrewTargetCount": 71
+  },
+  "semanticDelta": {
+    "statusBlob": "7b44506c8a37bb0dbda233bd37bddd7ad78c541f",
+    "rolloutLedgerBlob": "0e5a1a7a509a3c5cc6df0d29389cf68dac1251c6",
+    "localeEntries": 71,
+    "finalVerifiedAlignedTrue": 71,
+    "finalVerifiedAlignedFalse": 0,
+    "perLocaleEvidenceFileCount": 71,
+    "meaning": "All 71 non-Hebrew article resources are verified aligned to the then-current Hebrew semantic master for the completed semantic delta. This is not equivalent to native-language whole-site PASS."
+  },
+  "nativeQa": {
+    "controlBlob": "ce2b0bed7b068afcf5f235781a7cd3287115c799",
+    "currentLocaleCode": "is",
+    "currentLocaleTag": "is-IS",
+    "sequence": 14,
+    "promptPath": "artifacts/about-i18n-native-prompts/is.md",
+    "workflowBlob": "ce298edd4bcfb46541fa41be293e32eb66d08d71",
+    "promotionScriptBlob": "70930a0471c2cbfcf41a73d1e2af1c9f469ec892",
+    "staleReviewGuard": "Promotion rejects reviewed evidence when guarded source surfaces changed after the reviewed HEAD."
+  },
+  "futureCorpusRule": {
+    "restartTranslationsFromZero": false,
+    "preserveNativeLanguageFixes": true,
+    "deltaStrategy": "bounded semantic delta after Hebrew/canon reconciliation",
+    "invalidateQaOnlyWhenAffected": true,
+    "evidenceLayers": [
+      "semantic alignment",
+      "native-language whole-site review",
+      "rendered layout",
+      "accessibility/BiDi",
+      "language switching",
+      "PWA/offline"
+    ]
+  },
+  "note": "The native-QA control is live and may advance after this capture. Re-read live branch when canon alignment actually starts."
+}
