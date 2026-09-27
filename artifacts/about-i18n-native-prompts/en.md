@@ -34,6 +34,8 @@ If `MODE=FINDINGS_ONLY`:
 - if no real defect is found, say so explicitly;
 - DO NOT output `NATIVE_QA_RESULT` in an intermediate pass.
 
+=== FINAL_ONLY_INSTRUCTIONS ===
+
 If `MODE=FINAL`:
 - critically synthesize findings from all earlier parts and reject false positives that violate the rules above;
 - the FIRST line MUST be exactly one of:
