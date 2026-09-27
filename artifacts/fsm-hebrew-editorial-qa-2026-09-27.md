@@ -18,13 +18,17 @@ No attempt is made here to flatten the style or explain the jokes.
 
 ## Editorial findings
 
-### E01 — Gender section currently sounds more sourced than it is
+### E01 — Gender section has a provenance error, not an “unapproved idea” error
 **Severity:** High  
 **Section:** `זכר, נקבה או פחמימה`
 
-The first paragraph is evidence-based language commentary. The second abruptly says that Pastafarian communities recognize three genders and that the Monster is carbohydrate. The source audit does not support that as a general community rule and the Loose Canon contains a different gender framing.
+The first paragraph is evidence-based language commentary. The second says that Pastafarian communities recognize three genders and that the Monster is carbohydrate.
 
-**Later action:** corpus/project-canon decision, then rewrite the paragraph so its voice matches its actual provenance.
+Historical recovery now establishes that **the user explicitly approved adding “male / female / carbohydrate” as new project theology**. So the theological idea itself was not an accidental invention.
+
+The problem is narrower and more precise: the sentence attributes the scheme to external “Pastafarian communities”, and the checked source set does not support that attribution; the Loose Canon contains a different gender framing.
+
+**Later action:** corpus alignment decides whether the prior project-theology scheme survives. If it does, rewrite the paragraph in the project's factual voice without falsely attributing it to external community consensus.
 
 ### E02 — Heaven/hell transition is potentially misleading even before canon alignment
 **Severity:** High  
