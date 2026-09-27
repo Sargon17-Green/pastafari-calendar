@@ -34,6 +34,8 @@ Ef `MODE=FINDINGS_ONLY`:
 - ef ekkert raunverulegt vandamál finnst, segðu það skýrt;
 - EKKI skrifa `NATIVE_QA_RESULT` í þessari milliumferð.
 
+=== FINAL_ONLY_INSTRUCTIONS ===
+
 Ef `MODE=FINAL`:
 - þú færð findings úr öllum fyrri hlutum; mettu þau gagnrýnið og hafnaðu fals-positive findings sem brjóta gegn reglunum hér að ofan;
 - fyrsta línan VERÐUR að vera nákvæmlega annaðhvort:
