@@ -47,16 +47,27 @@ Separate files preserve:
 
 Do not collapse those provenance classes.
 
-## A03 — Other gods exist and need not be omnipotent
+## A03 — Concrete Norse-god ontology; gods need not be omnipotent
 
-**State:** `APPROVED_CONCEPT`.
+**State:** `APPROVED_CONTENT_SUMMARY`.
 
-Later approved material explicitly brought in Odin, Thor and Loki as examples in a discussion of deity ontology and power.
+A later user-approved addition was stronger than a mere comparative example: it required a **concrete ontological opening** concerning the Norse gods.
 
-The conceptual point approved in that discussion was:
+Recovered approved content summary:
+- Odin is real, but is not omniscient;
+- Thor is connected with storms/lightning;
+- Loki is a shape-shifter;
+- gods need not be omnipotent, omniscient or perfectly good;
+- gods can make mistakes, quarrel and lose.
+
+This is not currently recoverable as exact historical prose, so it must not be quoted as verbatim wording.
+
+The logical point accompanying the ontology was:
 - “god” does not logically entail omnipotence;
-- a supernatural/divine agent can have limited powers, be opposed by other agents, be vulnerable, or fail;
-- therefore an account in which a deity has mechanisms, limitations or competitors is not self-contradictory merely because the entity is called a god.
+- a divine/supernatural agent may have limited powers, competitors, vulnerability or failure;
+- therefore mechanisms, limitations or setbacks are not self-contradictory merely because an entity is called a god.
+
+Because the separately developed canonical corpus will become authoritative, this earlier approved ontology must be **preserved as a prior decision** and then reconciled against the corpus later; it should not be downgraded to “never decided”.
 
 ### External-fact QA
 
