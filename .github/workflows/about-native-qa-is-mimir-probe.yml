@@ -96,26 +96,25 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           import json, urllib.request
-          prompt = Path("/tmp/mimir-probe/prompt.txt").read_text(encoding="utf-8")
-          with urllib.request.urlopen("http://127.0.0.1:8080/v1/models", timeout=30) as resp:
-              model_id = json.load(resp)["data"][0]["id"]
+          user_prompt = Path("/tmp/mimir-probe/prompt.txt").read_text(encoding="utf-8").strip()
+          instruct_prompt = "<s>[INST] " + user_prompt + " [/INST]"
           payload = {
-              "model": model_id,
-              "messages": [{"role": "user", "content": prompt}],
+              "prompt": instruct_prompt,
               "temperature": 0.1,
               "top_p": 0.8,
-              "max_tokens": 700,
+              "n_predict": 700,
               "stream": False,
+              "stop": ["</s>"],
           }
           req = urllib.request.Request(
-              "http://127.0.0.1:8080/v1/chat/completions",
+              "http://127.0.0.1:8080/completion",
               data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
               headers={"Content-Type":"application/json"},
               method="POST",
           )
           with urllib.request.urlopen(req, timeout=1800) as resp:
               data=json.load(resp)
-          answer=data["choices"][0]["message"]["content"].strip()+"\n"
+          answer=str(data.get("content","")).strip()+"\n"
           Path("/tmp/mimir-probe/answer.md").write_text(answer,encoding="utf-8")
           print(answer)
           PY
