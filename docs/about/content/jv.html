@@ -1,7 +1,7 @@
 <!-- Versi Jawa iki ditulis langsung saka semantic master basa Ibrani; ora nganggo basa pivot. -->
 <!-- ID saben pérangan minangka pérangan saka kontrak deep-link umum sing ajeg; ora digawe saka judhul terjemahan. -->
 <div class="about-section about-lead" id="about-calendar">
-  <p>Ing crita situs iki, Kalèndher Pastafari digambarake minangka kalèndher sing dadi papan wektu iku dhéwé digawé. Nanging cara kerjané ditetepaké nganggo aturan sing ketat lan cetha.</p>
+  <p>Kalèndher Pastafari yaiku kalèndher sing dadi papan wektu iku dhéwé digawé. Cara kerjané ditetepaké kanthi cetha lan pas.</p>
   <p>Kalèndher iki ora masang siji “tetenger” Pastafari sing ora owah ing saben dina. Kanggo entuk tanggal dibutuhake rong dina: <strong>dina tumindak</strong>, yaiku dina sing dadi wiwitan itungan, lan <strong>dina sing ditakokaké</strong>, yaiku dina sing arep digoleki tanggal Pastafari-ne.</p>
   <p>Yèn dina tumindak ditulis <code>c</code> lan dina sing ditakokaké ditulis <code>t</code>, mula tanggalé yaiku</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
@@ -170,7 +170,7 @@
         <tr><td>Median dawa wulan</td><td>115</td></tr>
         <tr><td>Rata-rata cacah segmen terus saben wulan</td><td>100.897</td></tr>
         <tr><td>Bagéan segmen wulan sing mung sedina</td><td>97.482%</td></tr>
-        <tr><td>Probabilitas rong dina jejer ana ing wulan sing padha</td><td>2.9976%</td></tr>
+        <tr><td>Proporsi pasangan dina jejer sing ing sampel ana ing wulan sing padha</td><td>2.9976%</td></tr>
         <tr><td>Rata-rata cacah dina saka wulan liya antarane <code>n</code> lan <code>n+1</code> ing wulan sing padha</td><td>40.408</td></tr>
         <tr><td>Rata-rata span saka muncul kapisan nganti pungkasan sawijining wulan</td><td>4,266.653 dina</td></tr>
       </tbody>
@@ -199,7 +199,7 @@
 
 <section class="about-section" id="appointments" data-toc-section data-toc-level="2">
   <h2>Kepiyé nggawe janji?</h2>
-  <p>Yèn wong loro arep janjian mung nganggo tanggal Pastafari, paling ora kudu padha setuju marang limang kolom tanggal lan dina tumindak sing digunakaké ing itungan. Luwih becik dina tumindak disimpen minangka identitas dina sing ajeg, dudu mung tembung “dina iki”; yèn ora, wong loro bisa ngitung kalèndher sing béda.</p>
+  <p>Yèn wong loro arep nemtokaké dina janjian nganggo tanggal Pastafari, paling ora kudu padha setuju marang limang kolom tanggal lan dina tumindak sing digunakaké ing itungan. Luwih becik dina tumindak disimpen minangka identitas dina sing ajeg, dudu mung tembung “dina iki”; yèn ora, wong loro bisa ngitung kalèndher sing béda.</p>
   <ul>
     <li>“sesuk” yaiku dina kronologis sabanjuré;</li>
     <li>“dina sabanjuré ing wulan” yaiku munculé wulan kuwi sabanjuré;</li>
@@ -233,19 +233,19 @@
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Banjur Seer kuwi apa?</h2>
-  <p>Ing jejere implementasi kanonik ana mesin cepet sing jenengé <strong>Pastafarian Calendar Seer</strong>. Seer dudu sumber wewenang: tanggal sing bener ditemtokaké déning Megillah lan pangétungan kanonik. Yèn Seer ora cocog karo kuwi, kaluputané ana ing Seer.</p>
+  <p>Ing jejere implementasi kanonik ana mesin cepet sing jenengé <strong>Pastafarian Calendar Seer</strong>. Seer dudu sumber wewenang: Megillah netepaké aturan, lan pangétungan kanonik ngasilaké tanggal manut aturan kasebut. Yèn Seer ora cocog karo pangétungan kanonik sing bener, kaluputané ana ing Seer.</p>
   <p>Tugasé yaiku nangani pitakon sing padha kanthi cepet lan mbalèkaké asil ing wangun sing gampang digabungaké menyang produk.</p>
-  <p>Ing verifikasi langsung nalika kaca iki disunting, Seer nyakup antara liya pitakon <code>date</code> lan <code>now</code>, <code>batch</code>, rentang dina, konversi walik saka tanggal Pastafari menyang dina sing ditakokaké, njupuk struktur taun, nemtokaké dina tumindak aktif, Node API, klien browser/HTTP, CLI, layanan HTTP v1, kontrak OpenAPI 3.1, implementasi natif lan paket distribusi, uga panyebaran kontainer sing wis diverifikasi.</p>
-  <p>Pernyataan lawas yèn Seer ora nduwé API umum wis ora bener. Saiki ana kontrak HTTP v1 sing cetha lan ajeg kanthi titik pungkasan kanggo <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, dina tumindak, <code>metadata</code>, <code>locales</code>, lan <code>status</code>.</p>
+  <p>Ing verifikasi langsung tanggal 21 September 2026, Seer nyakup antara liya pitakon <code>date</code> lan <code>now</code>, <code>batch</code>, rentang dina, konversi walik saka tanggal Pastafari menyang dina sing ditakokaké, njupuk struktur taun, nemtokaké dina tumindak aktif, Node API, klien browser/HTTP, CLI, layanan HTTP v1, kontrak OpenAPI 3.1, implementasi natif lan paket distribusi, uga panyebaran kontainer sing wis diverifikasi.</p>
+  <p>Seer nduwé API umum. Ana kontrak HTTP v1 sing cetha lan ajeg kanthi titik pungkasan kanggo <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, dina tumindak, <code>metadata</code>, <code>locales</code>, lan <code>status</code>.</p>
   <p>Ing 21 September 2026, panyebaran HTTPS umum ing Render pancèn diuji: ing layanan sing lagi mlaku diverifikasi pitakon pas, rentang gedhé, wiwit manèh, <code>cold wake</code>, lan prilaku nalika ana beban.</p>
-  <p>Nanging dokumentasi proyèk isih mbédakaké panyebaran bèta/evaluasi umum saka layanan produksi permanen sing di-host lan nduwé SLA. Mula kaca panjelasan konseptual ora kudu mbekuk alamat server, panyedhiya hosting, utawa nomer versi kaya-kaya kuwi pérangan saka kalèndher dhéwé.</p>
+  <p>Panyebaran umum sing wis diverifikasi iku panyebaran bèta/evaluasi, dudu pengumuman layanan produksi permanen sing di-host lan nduwé SLA. Alamat server, panyedhiya hosting, lan nomer versi dudu pérangan saka kalèndher lan dudu konstanta kanonik.</p>
   <p>Seer bisa nggunakake pra-pangétungan, representasi khusus, SIMD, aljabar, lan cara cekak liyane. Ora kudu niru kabèh riwayat pangétungan saka implementasi kanonik langkah demi langkah, anggere nindakake operasi semantis sing padha lan ngasilaké jawaban sing padha.</p>
   <p>Pangoptimalan dudu wewenang alternatif.</p><hr>
 </section>
 
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
   <h2>Asal-usul, Dina Pangadegan, lan Dina Loh</h2>
-  <p>Ing kéné wigati banget kanggo misahaké pancangan wektu kanonik saka crita situs kanthi cetha.</p>
+  <p>Pancangan pangétungan kalèndher sing tetep béda saka kasunyatan bab asal-usulé lan riwayat panyerahane manèh.</p>
 
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>Titik jangkar</h3>
@@ -260,10 +260,10 @@
   </section>
 
   <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
-    <h3>Crita situs</h3>
-    <p>Ing crita editorial situs, kalèndher iki diterangaké minangka pérangan saka penciptaan lan minangka sistem sing digunakaké manungsa tanpa ngerti sakabèhé, nganti banjur dipasrahaké manèh ing jaman modern.</p>
-    <p>Iki crita situs; ora saben rincian narasi kudu ditampilaké kaya sawijining pratelan teknis sing eksplisit saka Megillah.</p>
-    <p>Kedadeyan nalika kalèndher dipasrahaké manèh iku dhéwé kedadeyan sajarah sing tetep. <strong>Tanggal Pastafari</strong>-né luwih becik ditampilaké kanthi dinamis miturut dina tumindak saiki tinimbang dibekuk selawasé dadi siji tanggal.</p><hr>
+    <h3>Asal-usul kalèndher lan panyerahane manèh</h3>
+    <p>Kalèndher Pastafari iku pérangan saka penciptaan. Manungsa wis nggunakake tanpa cukup ngerti yèn padha nggunakake kalèndher iki, nganti dipasrahaké manèh ing jaman modern.</p>
+    <p>Megillah ora njlèntrèhaké saben rincian riwayat iki; rincian sing ora kasebut kanthi cetha ing kono dudu pérangan saka teks Megillah. Iki béda sumberé, dudu mangu-mangu marang kasunyatan.</p>
+    <p>Kedadeyan nalika kalèndher dipasrahaké manèh iku dhéwé kedadeyan sajarah sing tetep. <strong>Tanggal Pastafari</strong>-né diwilang manut dina tumindak sing cocog; mula ora ana siji limang kolom tanggal Pastafari sing tetep selawasé, lan representasi Pastafari-ne bisa owah ing dina tumindak sing béda.</p><hr>
   </section>
 </section>
 
@@ -292,8 +292,8 @@
     </table>
   </div>
 
-  <p>Yèn dina tumindak ora dingertèni, kahanané béda. Limang nilai sing padha bisa muncul ing dina tumindak sing béda, lan ana conto pas nalika tanggal lengkap sing padha muncul kanthi jarak béda saka <code>c</code>.</p>
-  <p>Ing taun 5000, malah tandha jarak kuwi ora mesthi ditemtokaké déning limang nilai: tanggal lengkap sing padha bisa ana sadurungé dina tumindak ing siji konteks lan sawisé ing konteks liyane.</p>
+  <p>Yèn dina tumindak ora dingertèni, kahanané béda. Limang nilai sing padha bisa muncul ing dina tumindak sing béda, lan ana conto sing cetha nalika tanggal lengkap sing padha muncul kanthi jarak béda saka <code>c</code>.</p>
+  <p>Ing taun 5000, malah apa tanggal kuwi ana sadurungé utawa sawisé dina tumindak ora mesthi ditemtokaké déning limang nilai: tanggal lengkap sing padha bisa ana sadurungé dina tumindak ing siji konteks lan sawisé ing konteks liyane.</p>
   <p>Mula tanggal Pastafari lengkap dudu alamat mutlak ing garis wektu yèn ora dingertèni tanggal kasebut diwilang miturut <code>c</code> endi.</p>
 
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
@@ -316,7 +316,7 @@
   <p>Ing tataran katon 3–46, ing cabang asimtotik sing gegandhengan, sifat injektif ing kasus umum wis ditetepaké: ing kasus umum, kahanan nyimpen informasi cukup kanggo mbangun manèh riwayat input sing gegandhengan lan urutan mangkok.</p>
   <p>Informasi uga ora langsung ilang ing 12 campuran pungkasan. Kanggo limang campuran kapisan sawisé tetes katon 46, sifat bisa-diwalik ing kasus umum wis ditetepaké ing gabungan kanonik sing cocog tanpa informasi tambahan; kanggo sisane wis dingertèni wates ndhuwur konstruktif sing kuwat kanggo pira informasi tambahan sing cukup kanggo rekonstruksi.</p>
   <p>Pitakon apa <strong>mung enem mangkok pungkasan</strong> mesthi cukup ing kasus umum isih kabuka.</p>
-  <p>Sawetara asil dibuktekaké kanthi simbolik; liyane dirampungaké nganggo pamriksan aritmetika winates lan pas. Penguatan simbolik nyuda banget inti pangétungan sing kudu dipercaya, nanging ora ngilangi kabèh.</p>
+  <p>Sawetara asil dibuktekaké kanthi simbolik; liyane diverifikasi nganggo pamriksan aritmetika winates lan pas. Penguatan simbolik nyuda banget inti pangétungan sing kudu dipercaya, nanging ora ngilangi kabèh.</p>
   <p>Ruang sing wiwitané katon mbutuhaké telusuran liwat cacah jalur sing gedhé banget wis disusutaké dadi struktur winates sing luwih cilik, kalebu automata 180 lan 9 kahanan lan simetri enem mangkok.</p>
   <p>Ing ngisor campuran ana struktur aljabar sing ketat. Ora perlu ngerti kuwi kanggo ngerti tanggal dina iki.</p><hr>
 </section>
