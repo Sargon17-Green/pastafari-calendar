@@ -192,8 +192,7 @@ jobs:
           ])
 
           final_source = "\n\n".join([
-              f"===== {locale_path} — FULL TARGET LOCALE =====\n" + text(locale_path),
-              f"===== {about_path} — FULL TARGET ABOUT ARTICLE =====\n" + text(about_path),
+              consistency,
               integration,
               "===== docs/manifest.webmanifest — FALLBACK + TARGET LOCALE =====\n" +
                   excerpt("docs/manifest.webmanifest", [rf'"{re.escape(code)}"\s*:', re.escape(tag)], radius=5, first_lines=12),
@@ -202,7 +201,7 @@ jobs:
               "===== docs/about/index.html — RAW METADATA/A11Y/FALLBACK =====\n" +
                   excerpt("docs/about/index.html", [r"aria-", r"placeholder", r"<title", r"<meta", r"<noscript", r"<html"]),
           ])
-          if len(final_source) > 110000:
+          if len(final_source) > 60000:
               raise SystemExit(f"final source too large: {len(final_source)} chars")
           (out / "final-source.txt").write_text(final_source, encoding="utf-8")
           print(f"final-source: {len(final_source)} chars")
@@ -476,6 +475,10 @@ jobs:
                   raise SystemExit(f"missing surface finding: {surface}")
               findings.append(f"===== {surface.upper()} SUBREVIEW =====\n" + path.read_text(encoding="utf-8"))
           final_source = Path("/tmp/native-qa-input/final-source.txt").read_text(encoding="utf-8")
+          all_primary_sources = "\n\n".join(
+              Path(f"/tmp/native-qa-input/{name}.txt").read_text(encoding="utf-8")
+              for name in ["ui", "about", "integration", "consistency"]
+          )
           message = (
               base
               + "\n\nMODE=FINAL\nSOURCE_PART=PRIMARY_SOURCES_AND_SUBREVIEW_FINDINGS\n\n"
@@ -577,7 +580,7 @@ jobs:
           for item in findings_final:
               current_text = str(item.get("current_text", ""))
               location = str(item.get("location", ""))
-              if current_text and current_text not in final_source:
+              if current_text and current_text not in all_primary_sources:
                   raise SystemExit(f"final finding current_text is not present in primary sources: {current_text!r}")
               if not location.startswith("docs/"):
                   raise SystemExit(f"final finding location is not a docs/ source path: {location!r}")
