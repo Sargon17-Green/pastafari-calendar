@@ -28,12 +28,14 @@ Work branch: `work/about-canon-transition-2026-09-27`.
 ### A. Source/provenance closure
 
 - [x] Penguin appendix historical recovery substantially closed: a recovered historical composite now covers the full section sequence with exact recovered fragments from multiple conversation records. It is not claimed to be a byte-for-byte single-message export. The earlier reconstruction remains separately labeled and is no longer the preferred historical baseline.
-- [~] Gospel creation/flood chronology is now strongly located through publisher/Google Books metadata plus cited book summaries; direct book page-level wording remains desirable only where final wording depends on a precise detail.
+- [!] Gospel creation/flood chronology is strongly located through publisher/Google Books metadata plus cited summaries. Direct full-book text was found only behind an access-restricted holding in the inspected sources; do not bypass access controls. Reopen page-level verification only if lawful accessible primary text becomes available or exact wording becomes necessary.
 - [x] Gender-source search completed to the current useful limit: Henderson uses masculine English; historical material includes mixed/beyond-binary framings; no checked source establishes exactly “male/female/carbohydrate”. Leave that formulation as a project-canon candidate.
 - [x] Checked Loose Canon Hell material: it describes separation from Pasta / never eating Pasta, not the saved wording “antipasti instead of pasta”. Treat the latter as project-specific unless later canon adopts it.
 - [x] RAmen/R'Amen prayer-closing usage is strongly established by the official-site prayer page and repeated Loose Canon prayers. No mandatory universal command was found; keep the distinction between widespread usage and obligation.
 - [x] Loose Canon directly states that sharing Pasta is a form of worship; this source question is closed.
-- [~] Precise Loose Canon locations are now recorded for Anti-Past, healthy-pasta observance, tolerance exception, Hell/HellLight, gender framing, RAmen prayers and Holy Friday. Direct Gospel page-level indexing remains the main source-location gap.
+- [x] Precise Loose Canon locations are recorded for Anti-Past, healthy-pasta observance, tolerance exception, Hell/HellLight, gender framing, RAmen prayers and Holy Friday. The remaining Gospel page-level gap is now explicitly recorded as access-limited, not an untracked research omission.
+
+- [x] Exact post-draft recovery frontier documented: later ontology/epistemology paragraphs are preserved as approved summaries/reconstruction, with only the known exact sentence marked verbatim; repeat search is not required unless a new source appears.
 
 ### B. Non-canonical editorial QA
 
@@ -44,6 +46,9 @@ Work branch: `work/about-canon-transition-2026-09-27`.
 - [x] Structure/cross-reference QA completed in `fsm-structure-crossref-qa-2026-09-27.md`; appendix subsections were correctly nested as H3 in the staging candidate while historical source text remained untouched.
 - [x] High-risk external-attribution sites are identified in the provenance matrix and editorial QA, especially gender, meal rules, Hell/Antipasti, prayer custom and tradition/provenance.
 - [x] Consolidated staged candidate exists: `fsm-about-consolidated-candidate-2026-09-27.md`; canon-dependent choices remain intentionally unresolved.
+
+- [x] Specification/conformance versus legal-prohibition distinction audited across current public article, repository licenses and Seer NOTICE; staged Hebrew wording candidates prepared without publishing them.
+- [x] Dynamic modern re-delivery display has an implementation-ready design plan using the existing worker `convert` operation; actual implementation waits for corpus decisions on event identity and calculation-day context.
 
 ### C. /about/ infrastructure and QA that do not depend on canon text
 
