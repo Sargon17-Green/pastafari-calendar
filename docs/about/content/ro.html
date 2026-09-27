@@ -1,7 +1,7 @@
 <!-- Versiunea română este redactată direct din sursa semantică ebraică, fără limbă-pivot. -->
 <!-- ID-urile secțiunilor sunt un contract public stabil de deep-link și nu se deduc din titlurile traduse. -->
 <div class="about-section about-lead" id="about-calendar">
-  <p>În narațiunea site-ului, Calendarul Pastafarian este prezentat drept calendarul în care a fost creat timpul însuși. Mecanica lui, însă, este definită precis.</p>
+  <p>Calendarul Pastafarian este calendarul în care a fost creat timpul însuși. Mecanica lui este definită precis.</p>
   <p>Calendarul nu transformă fiecare zi într-o singură „etichetă” pastafariană permanentă. Pentru a afla data unei zile sunt necesare două zile: <strong>ziua de lucru</strong>, de la care pornește calculul, și <strong>ziua interogată</strong>, a cărei dată vrem s-o aflăm.</p>
   <p>Dacă notăm ziua de lucru cu <code>c</code> și ziua interogată cu <code>t</code>, data este</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
@@ -109,7 +109,7 @@
 </section>
 <section class="about-section" id="calculation" data-toc-section data-toc-level="2">
   <h2>Cum se calculează calendarul?</h2>
-  <p>Numim aici calculul intern <strong>sosul</strong>. În centrul lui se află numărul prim</p>
+  <p>Calculul intern se numește <strong>sosul</strong>. În centrul lui se află numărul prim</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
   <p>Procesul include cinci contoare de intrare, 7 picături ascunse, 46 de picături vizibile, 6 boluri, ordini schimbătoare ale bolurilor, 12 amestecări finale, sigilii pentru răspunsuri diferite, mecanisme de alegere combinatorie, generarea porților, alegerea anilor, împărțirea șnițelelor, alegerea numelor, crearea lunilor și întrețeserea zilelor lunare.</p>
   <p>Actualizările finale sunt <strong>sincrone</strong>: la fiecare amestecare, toate cele șase valori noi se calculează din aceeași stare veche, iar abia apoi toate cele șase boluri sunt înlocuite împreună.</p>
@@ -138,7 +138,7 @@
       <tr><td>Lungimea medie a șnițelului</td><td>587.963 zile</td></tr><tr><td>Mediana lungimii șnițelului</td><td>560</td></tr><tr><td>Număr mediu de luni pe an</td><td>41.102</td></tr>
       <tr><td>Mediana numărului de luni</td><td>43</td></tr><tr><td>Ani cu 47 de luni</td><td>15.63%</td></tr><tr><td>Ani cu cel puțin 45 de luni</td><td>36.81%</td></tr>
       <tr><td>Lungimea medie a lunii structurale</td><td>104.014 zile</td></tr><tr><td>Mediana lungimii lunii</td><td>115</td></tr><tr><td>Număr mediu de segmente continue pe lună</td><td>100.897</td></tr>
-      <tr><td>Ponderea segmentelor lunare de o zi</td><td>97.482%</td></tr><tr><td>Probabilitatea ca două zile adiacente să fie în aceeași lună</td><td>2.9976%</td></tr>
+      <tr><td>Ponderea segmentelor lunare de o zi</td><td>97.482%</td></tr><tr><td>Ponderea perechilor de zile adiacente care, în eșantion, se aflau în aceeași lună</td><td>2.9976%</td></tr>
       <tr><td>Numărul mediu de zile străine între <code>n</code> și <code>n+1</code> ale lunii</td><td>40.408</td></tr><tr><td>Întinderea medie de la prima la ultima apariție a lunii</td><td>4,266.653 zile</td></tr>
     </tbody></table></div>
   <p>Practic, o lună cu aproximativ o sută de zile poate fi răspândită pe aproape întregul an pastafarian.</p>
@@ -160,7 +160,7 @@
 </section>
 <section class="about-section" id="appointments" data-toc-section data-toc-level="2">
   <h2>Cum stabilim o întâlnire?</h2>
-  <p>Dacă două persoane vor să stabilească o întâlnire doar cu o dată pastafariană, trebuie să cadă de acord cel puțin asupra celor cinci câmpuri și asupra zilei de lucru folosite la calcul. Este mai bine ca ziua de lucru să fie păstrată ca identitate stabilă a zilei, nu prin cuvântul „astăzi”, altfel fiecare poate calcula alt calendar.</p>
+  <p>Dacă două persoane vor să stabilească ziua întâlnirii cu o dată pastafariană, trebuie să cadă de acord cel puțin asupra celor cinci câmpuri și asupra zilei de lucru folosite la calcul. Este mai bine ca ziua de lucru să fie păstrată ca identitate stabilă a zilei, nu prin cuvântul „astăzi”, altfel fiecare poate calcula alt calendar.</p>
   <ul><li>„mâine” este următoarea zi cronologică;</li><li>„următoarea zi a lunii” este următoarea apariție a aceleiași luni;</li><li>„sfârșitul lunii” este ultima ei apariție;</li><li>„o lună întreagă” poate însemna mulțimea zilelor lunii sau întreaga întindere cronologică de la prima la ultima apariție;</li><li>„anul următor” înseamnă anul următor în calendarul construit sub ziua de lucru aleasă.</li></ul>
   <p>Pentru o întâlnire deosebit de importantă se poate păstra și ziua sau clipa cronologică absolută. Calendarul nu va avea nimic împotrivă.</p><hr>
 </section>
@@ -184,18 +184,18 @@
 </section>
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Și ce este Seer?</h2>
-  <p>Pe lângă implementarea canonică există un motor rapid numit <strong>Pastafarian Calendar Seer</strong>. Seer nu este o sursă de autoritate: Megillah și calculul canonic stabilesc data corectă. Dacă Seer le contrazice, Seer greșește.</p>
+  <p>Pe lângă implementarea canonică există un motor rapid numit <strong>Pastafarian Calendar Seer</strong>. Seer nu este o sursă de autoritate: Megillah stabilește regulile, iar calculul canonic produce data conform acelor reguli. Dacă Seer contrazice un calcul canonic corect, Seer greșește.</p>
   <p>Rolul lui este să execute aceleași interogări rapid și într-o formă ușor de integrat în produse.</p>
-  <p>În verificarea live făcută în timpul redactării acestei pagini, Seer includea, printre altele, interogări de dată și „acum”, batch, intervale de zile, conversie inversă din dată pastafariană în zi-țintă, obținerea structurii anului, rezolvarea zilei de lucru active, Node API, client de browser/HTTP, CLI, serviciu HTTP v1, contract OpenAPI 3.1, implementări native și pachete de distribuție, precum și o implementare în container verificată.</p>
-  <p>Prin urmare, vechea afirmație că Seer nu are API public nu mai este adevărată. Există un contract HTTP v1 explicit și stabil, cu endpointuri pentru <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, ziua de lucru, <code>metadata</code>, <code>locales</code> și <code>status</code>.</p>
+  <p>În verificarea live făcută la 21 septembrie 2026, Seer includea, printre altele, interogări de dată și „acum”, batch, intervale de zile, conversie inversă din dată pastafariană în zi-țintă, obținerea structurii anului, rezolvarea zilei de lucru active, Node API, client de browser/HTTP, CLI, serviciu HTTP v1, contract OpenAPI 3.1, implementări native și pachete de distribuție, precum și o implementare în container verificată.</p>
+  <p>Seer are un API public. Există un contract HTTP v1 explicit și stabil, cu endpointuri pentru <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, ziua de lucru, <code>metadata</code>, <code>locales</code> și <code>status</code>.</p>
   <p>La 21 septembrie 2026 a fost testat efectiv și o implementare HTTPS publică pe Render: pe serviciul live au fost verificate interogări exacte, un interval mare, repornire, <code>cold wake</code> și comportamentul sub sarcină.</p>
-  <p>Documentația proiectului continuă totuși să distingă implementarea publică beta/de evaluare de declararea unui serviciu de producție găzduit permanent, cu SLA. De aceea, o pagină conceptuală nu trebuie să fixeze o adresă de server, un furnizor de hosting sau un număr de versiune ca parte a calendarului.</p>
+  <p>Implementarea publică verificată este o implementare beta/de evaluare, nu declararea unui serviciu de producție găzduit permanent, cu SLA. Adresa serverului, furnizorul de hosting și numărul versiunii nu fac parte din calendar și nu sunt constante canonice.</p>
   <p>Seer poate folosi precalcul, reprezentări speciale, SIMD, algebră și alte scurtături. Nu trebuie să repete pas cu pas întreaga istorie computațională a implementării canonice, atâta vreme cât execută aceeași operație semantică și întoarce același răspuns.</p>
   <p>Optimizarea nu este o autoritate alternativă.</p><hr>
 </section>
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
   <h2>Originea, Ziua Întemeierii și Ziua Tablelor</h2>
-  <p>Aici trebuie separate limpede ancorele canonice de narațiunea site-ului.</p>
+  <p>Ancorele computaționale fixe ale calendarului sunt distincte de faptele despre originea lui și de istoria retransmiterii sale.</p>
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>Ancorele</h3>
     <p>Sistemul are o zi de referință fixă numită <strong>Ziua Întemeierii</strong>. În calendarul gregorian proleptic, aceasta este <strong>22 decembrie 41,222 î.Hr.</strong></p>
@@ -208,10 +208,10 @@
     <p>Acestea sunt ancore fixe pe axa timpului, însă data pastafariană afișată pentru ele depinde în continuare de ziua de lucru din care sunt interogate.</p>
   </section>
   <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
-    <h3>Narațiunea site-ului</h3>
-    <p>În formularea editorială a site-ului, calendarul este prezentat ca parte a creației și ca un sistem folosit de omenire fără o conștientizare deplină până la retransmiterea sa în epoca modernă.</p>
-    <p>Aceasta este narațiunea site-ului; nu trebuie ca fiecare detaliu narativ să fie prezentat ca afirmație tehnică explicită a Megillah.</p>
-    <p>Evenimentul retransmiterii în sine este un eveniment istoric fix. <strong>Data pastafariană</strong> a lui este mai bine afișată dinamic sub ziua de lucru curentă decât înghețată pentru totdeauna într-o singură dată.</p><hr>
+    <h3>Originea calendarului și retransmiterea lui</h3>
+    <p>Calendarul Pastafarian face parte din creație. Omenirea l-a folosit fără să fie suficient de conștientă că folosește tocmai acest calendar, până la retransmiterea lui în epoca modernă.</p>
+    <p>Megillah nu descrie fiecare detaliu al acestei istorii; detaliile care nu sunt afirmate explicit în ea nu fac parte din textul Megillah. Este o diferență de sursă, nu o îndoială privind realitatea.</p>
+    <p>Evenimentul retransmiterii în sine este un eveniment istoric fix. <strong>Data pastafariană</strong> a lui se calculează în funcție de ziua de lucru relevantă; de aceea nu există un singur cvintuplu pastafarian fix pentru totdeauna, iar reprezentarea lui pastafariană se poate schimba sub o altă zi de lucru.</p><hr>
   </section>
 </section>
 <section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
@@ -227,8 +227,8 @@
       <tr><td>Doar numele lunii</td><td>123</td></tr><tr><td>Doar ziua în lună</td><td>47</td></tr><tr><td>Numele șnițelului + ziua în șnițel</td><td>1</td></tr>
       <tr><td>Numele lunii + ziua în lună</td><td>1</td></tr><tr><td>Oricare trei câmpuri non-anuale</td><td>1</td></tr><tr><td>Toate cele patru câmpuri non-anuale</td><td>1</td></tr>
     </tbody></table></div>
-  <p>Fără ziua de lucru, situația este alta. Același cvintuplu poate apărea sub zile de lucru diferite, iar există martori exacți în care aceeași dată completă apare la distanțe diferite față de <code>c</code>.</p>
-  <p>În anul 5000 nici semnul distanței nu este întotdeauna determinat de cvintuplu: aceeași dată completă poate fi în trecutul zilei de lucru într-un context și în viitorul ei în altul.</p>
+  <p>Fără ziua de lucru, situația este alta. Același cvintuplu poate apărea sub zile de lucru diferite, iar există exemple concrete în care aceeași dată completă apare la distanțe diferite față de <code>c</code>.</p>
+  <p>În anul 5000 cvintuplul nu determină întotdeauna nici dacă data este înainte sau după ziua de lucru: aceeași dată completă poate fi în trecutul zilei de lucru într-un context și în viitorul ei în altul.</p>
   <p>Prin urmare, data pastafariană completă nu este o adresă absolută pe axa timpului dacă nu știm sub ce <code>c</code> a fost calculată.</p>
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
     <h3>Structura în timp îndepărtat</h3>
@@ -249,7 +249,7 @@
   <p>În etapele vizibile 3–46, pe ramura asimptotică relevantă, a fost stabilită injectivitatea în cazul generic: în cazul generic, starea păstrează suficientă informație pentru a reconstrui istoricul relevant al intrărilor și ordinii bolurilor.</p>
   <p>Nici în cele 12 amestecări finale informația nu dispare imediat. Pentru primele cinci după picătura vizibilă 46 s-a stabilit inversabilitatea în cazul generic pe reuniunea canonică relevantă fără informație laterală suplimentară; pentru restul se cunosc limite constructive superioare puternice pentru cantitatea de informație laterală suficientă reconstrucției.</p>
   <p>Rămâne deschis dacă <strong>doar cele șase boluri finale</strong> sunt întotdeauna suficiente în sens generic.</p>
-  <p>Unele rezultate au fost demonstrate simbolic, iar altele închise prin verificări aritmetice finite și exacte. Consolidarea simbolică a redus mult nucleul computațional în care trebuie să avem încredere, dar nu l-a eliminat complet.</p>
+  <p>Unele rezultate au fost demonstrate simbolic, iar altele verificate prin verificări aritmetice finite și exacte. Consolidarea simbolică a redus mult nucleul computațional în care trebuie să avem încredere, dar nu l-a eliminat complet.</p>
   <p>Spații care la început păreau să ceară explorarea unui număr enorm de trasee s-au redus la structuri finite mult mai mici, inclusiv automate cu 180 și 9 stări și simetriile celor șase boluri.</p>
   <p>Sub amestec se află o structură algebrică rigidă. Pentru a afla data de astăzi nu este nevoie s-o cunoaștem.</p><hr>
 </section>
