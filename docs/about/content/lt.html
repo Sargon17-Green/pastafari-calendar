@@ -1,7 +1,7 @@
 <!-- Lietuviška versija parašyta tiesiogiai pagal hebrajišką semantinį pagrindą, nenaudojant tarpinės kalbos. -->
 <!-- Skirsnių ID yra stabilios viešų giliųjų nuorodų sutarties dalis ir nėra kuriami iš išverstų antraščių. -->
 <div class="about-section about-lead" id="about-calendar">
-  <p>Šios svetainės pasakojime Pastafari kalendorius pateikiamas kaip kalendorius, kuriame buvo sukurtas pats laikas. Tačiau jo veikimo mechanizmas apibrėžtas tiksliai.</p>
+  <p>Pastafari kalendorius yra kalendorius, kuriame buvo sukurtas pats laikas. Jo veikimo mechanizmas apibrėžtas tiksliai.</p>
   <p>Šis kalendorius nepriskiria kiekvienai dienai vienos nekintamos Pastafari „etiketės“. Norint sužinoti datą, reikia dviejų dienų: <strong>veikimo dienos</strong>, nuo kurios pradedamas skaičiavimas, ir <strong>užklaustos dienos</strong>, kurios Pastafari datą norime nustatyti.</p>
   <p>Jei veikimo dieną žymime <code>c</code>, o užklaustą dieną — <code>t</code>, data yra</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
@@ -126,7 +126,7 @@
 
 <section class="about-section" id="calculation" data-toc-section data-toc-level="2">
   <h2>Kaip apskaičiuojamas kalendorius?</h2>
-  <p>Vidinį skaičiavimą čia vadiname <strong>padažu</strong>. Jo centre yra pirminis skaičius</p>
+  <p>Vidinis skaičiavimas vadinamas <strong>padažu</strong>. Jo centre yra pirminis skaičius</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
   <p>Procesas apima penkis įvesties skaitiklius, 7 paslėptus lašus, 46 matomus lašus, 6 dubenis, kintančias dubenų eiles, 12 galutinių maišymų, skirtingų atsakymų antspaudus, kombinatorinius pasirinkimus, vartų sudarymą, metų parinkimą, kotletų skirstymą, pavadinimų parinkimą, mėnesių sudarymą ir mėnesio dienų supynimą.</p>
   <p>Galutiniai atnaujinimai atliekami <strong>sinchroniškai</strong>: kiekvieno maišymo metu visos šešios naujos reikšmės apskaičiuojamos iš tos pačios senos būsenos, o tik tada visi šeši dubenys pakeičiami iš karto.</p>
@@ -170,7 +170,7 @@
         <tr><td>Mėnesio ilgio mediana</td><td>115</td></tr>
         <tr><td>Vidutinis ištisinių segmentų skaičius viename mėnesyje</td><td>100.897</td></tr>
         <tr><td>Vienos dienos mėnesio segmentų dalis</td><td>97.482%</td></tr>
-        <tr><td>Tikimybė, kad dvi gretimos dienos priklauso tam pačiam mėnesiui</td><td>2.9976%</td></tr>
+        <tr><td>Gretimų dienų porų, kurios imtyje priklausė tam pačiam mėnesiui, dalis</td><td>2.9976%</td></tr>
         <tr><td>Vidutinis kitų mėnesių dienų skaičius tarp <code>n</code> ir <code>n+1</code> tame pačiame mėnesyje</td><td>40.408</td></tr>
         <tr><td>Vidutinis tarpas nuo pirmojo iki paskutinio mėnesio pasirodymo</td><td>4,266.653 dienos</td></tr>
       </tbody>
@@ -199,7 +199,7 @@
 
 <section class="about-section" id="appointments" data-toc-section data-toc-level="2">
   <h2>Kaip susitarti dėl susitikimo?</h2>
-  <p>Jei du žmonės nori susitarti naudodami tik Pastafari datą, jie turi bent sutarti dėl visų penkių datos laukų ir skaičiavimui naudotos veikimo dienos. Geriau veikimo dieną saugoti kaip pastovią dienos tapatybę, o ne kaip žodį „šiandien“; kitaip abu žmonės gali apskaičiuoti skirtingus kalendorius.</p>
+  <p>Jei du žmonės nori Pastafari data nustatyti susitikimo dieną, jie turi bent sutarti dėl visų penkių datos laukų ir skaičiavimui naudotos veikimo dienos. Geriau veikimo dieną saugoti kaip pastovią dienos tapatybę, o ne kaip žodį „šiandien“; kitaip abu žmonės gali apskaičiuoti skirtingus kalendorius.</p>
   <ul>
     <li>„rytoj“ yra kita chronologinė diena;</li>
     <li>„kita mėnesio diena“ yra kitas to paties mėnesio pasirodymas;</li>
@@ -233,19 +233,19 @@
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>O kas yra Seer?</h2>
-  <p>Šalia kanoninio įgyvendinimo yra greitas engine, vadinamas <strong>Pastafarian Calendar Seer</strong>. Seer nėra autoriteto šaltinis: teisingą datą nustato Megillah ir kanoninis skaičiavimas. Jei Seer su jais nesutampa, klysta Seer.</p>
+  <p>Šalia kanoninio įgyvendinimo yra greitas engine, vadinamas <strong>Pastafarian Calendar Seer</strong>. Seer nėra autoriteto šaltinis: Megillah nustato taisykles, o kanoninis skaičiavimas pagal jas apskaičiuoja datą. Jei Seer nesutampa su teisingu kanoniniu skaičiavimu, klysta Seer.</p>
   <p>Jo paskirtis — greitai vykdyti tas pačias užklausas ir pateikti rezultatą forma, patogia integruoti į produktus.</p>
-  <p>Tiesioginės patikros, atliktos redaguojant šį puslapį, metu Seer, be kita ko, apėmė <code>date</code> ir <code>now</code> užklausas, <code>batch</code>, dienų intervalus, atvirkštinį konvertavimą iš Pastafari datos į užklaustą dieną, metų struktūros gavimą, aktyvios veikimo dienos nustatymą, Node API, naršyklės/HTTP klientą, CLI, HTTP v1 paslaugą, OpenAPI 3.1 sutartį, savąsias įgyvendinimo versijas ir platinimo paketus bei patikrintą konteinerio diegimą.</p>
-  <p>Senas teiginys, kad Seer neturi viešo API, nebėra teisingas. Dabar yra aiški ir stabili HTTP v1 sutartis su galiniais taškais <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, veikimo dienai, <code>metadata</code>, <code>locales</code> ir <code>status</code>.</p>
+  <p>2026 m. rugsėjo 21 d. atliktos tiesioginės patikros metu Seer, be kita ko, apėmė <code>date</code> ir <code>now</code> užklausas, <code>batch</code>, dienų intervalus, atvirkštinį konvertavimą iš Pastafari datos į užklaustą dieną, metų struktūros gavimą, aktyvios veikimo dienos nustatymą, Node API, naršyklės/HTTP klientą, CLI, HTTP v1 paslaugą, OpenAPI 3.1 sutartį, savąsias įgyvendinimo versijas ir platinimo paketus bei patikrintą konteinerio diegimą.</p>
+  <p>Seer turi viešą API. Yra aiški ir stabili HTTP v1 sutartis su galiniais taškais <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, veikimo dienai, <code>metadata</code>, <code>locales</code> ir <code>status</code>.</p>
   <p>2026 m. rugsėjo 21 d. viešas HTTPS diegimas Render platformoje buvo realiai išbandytas: veikiančioje paslaugoje patikrintos tikslios užklausos, didelis intervalas, paleidimas iš naujo, <code>cold wake</code> ir elgsena esant apkrovai.</p>
-  <p>Vis dėlto projekto dokumentacija ir toliau skiria viešą beta / vertinimo diegimą nuo nuolatinės talpinamos gamybinės paslaugos su SLA. Todėl konceptualiame paaiškinimo puslapyje nereikėtų įšaldyti serverio adreso, hostingo tiekėjo ar versijos numerio tarsi jie būtų paties kalendoriaus dalis.</p>
+  <p>Patikrintas viešas diegimas yra beta / vertinimo diegimas, o ne nuolatinės talpinamos gamybinės paslaugos su SLA paskelbimas. Serverio adresas, hostingo tiekėjas ir versijos numeris nėra kalendoriaus dalis ir nėra kanoninės konstantos.</p>
   <p>Seer gali naudoti precomputation, specialias reprezentacijas, SIMD, algebrą ir kitus trumpinimus. Jam nereikia žingsnis po žingsnio atkartoti visos kanoninio įgyvendinimo skaičiavimo istorijos, jei tik atliekama ta pati semantinė operacija ir grąžinamas tas pats atsakymas.</p>
   <p>Optimizacija nėra alternatyvus autoritetas.</p><hr>
 </section>
 
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
   <h2>Kilmė, Įkūrimo diena ir Lentelių diena</h2>
-  <p>Čia ypač svarbu aiškiai atskirti kanoninius laiko inkarus nuo svetainės pasakojimo.</p>
+  <p>Pastovūs kalendoriaus skaičiavimo inkarai skiriasi nuo faktų apie jo kilmę ir perdavimo istorijos.</p>
 
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>Inkarai</h3>
@@ -260,10 +260,10 @@
   </section>
 
   <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
-    <h3>Svetainės pasakojimas</h3>
-    <p>Svetainės redakciniame pasakojime kalendorius pateikiamas kaip kūrimo dalis ir kaip sistema, kurią žmonija naudojo jos iki galo nesuvokdama, kol ši buvo vėl perduota moderniaisiais laikais.</p>
-    <p>Tai svetainės pasakojimas; ne kiekviena jo naratyvinė detalė turi būti pateikiama kaip aiškus techninis Megillah teiginys.</p>
-    <p>Pats pakartotinio perdavimo įvykis yra nekintamas istorinis įvykis. Jo <strong>Pastafari datą</strong> geriau dinamiškai rodyti pagal dabartinę veikimo dieną, o ne amžiams įšaldyti kaip vieną datą.</p><hr>
+    <h3>Kalendoriaus kilmė ir jo perdavimas</h3>
+    <p>Pastafari kalendorius yra kūrimo dalis. Žmonija jį naudojo pakankamai nesuvokdama, kad naudoja būtent šį kalendorių, kol moderniaisiais laikais jis buvo perduotas iš naujo.</p>
+    <p>Megillah neišdėsto kiekvienos šios istorijos detalės; joje aiškiai nepaminėtos detalės nėra Megillah teksto dalis. Tai šaltinio atskyrimas, o ne abejonė tikrove.</p>
+    <p>Pats pakartotinio perdavimo įvykis yra nekintamas istorinis įvykis. Jo <strong>Pastafari data</strong> apskaičiuojama pagal atitinkamą veikimo dieną; todėl nėra vienos amžiams nekintamos penkių laukų Pastafari datos, o esant kitai veikimo dienai jo Pastafari pateikimas gali pasikeisti.</p><hr>
   </section>
 </section>
 
@@ -292,8 +292,8 @@
     </table>
   </div>
 
-  <p>Nežinant veikimo dienos situacija kitokia. Tas pats penkių reikšmių rinkinys gali pasirodyti pagal skirtingas veikimo dienas, ir yra tikslių pavyzdžių, kai ta pati visa data pasirodo skirtingais atstumais nuo <code>c</code>.</p>
-  <p>5000 metais net to atstumo ženklą ne visada lemia penkios reikšmės: ta pati visa data viename kontekste gali būti praeityje veikimo dienos atžvilgiu, o kitame — ateityje.</p>
+  <p>Nežinant veikimo dienos situacija kitokia. Tas pats penkių reikšmių rinkinys gali pasirodyti pagal skirtingas veikimo dienas, ir yra konkrečių pavyzdžių, kai ta pati visa data pasirodo skirtingais atstumais nuo <code>c</code>.</p>
+  <p>5000 metais penkios reikšmės ne visada lemia net tai, ar data yra prieš veikimo dieną, ar po jos: ta pati visa data viename kontekste gali būti praeityje veikimo dienos atžvilgiu, o kitame — ateityje.</p>
   <p>Todėl visa Pastafari data nėra absoliutus adresas laiko ašyje, jei nežinome, pagal kurį <code>c</code> ji buvo apskaičiuota.</p>
 
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
@@ -316,7 +316,7 @@
   <p>Matomuose etapuose 3–46, atitinkamoje asimptotinėje šakoje, nustatytas bendrojo atvejo injektyvumas: būsena išsaugo pakankamai informacijos atkurti svarbią įvesties istoriją ir dubenų eiliškumą.</p>
   <p>Informacija iš karto neišnyksta ir per 12 galutinių maišymų. Pirmiems penkiems maišymams po 46 matomo lašo nustatytas bendrojo atvejo apverčiamumas atitinkamoje kanoninėje sąjungoje be papildomos informacijos; likusiai daliai žinomos stiprios konstruktyvios viršutinės ribos, kiek papildomos informacijos pakanka atkūrimui.</p>
   <p>Vis dar atviras klausimas, ar <strong>vien paskutinių šešių dubenų</strong> bendruoju atveju visada pakanka.</p>
-  <p>Kai kurie rezultatai įrodyti simboliškai, kiti užbaigti baigtiniu ir tiksliu aritmetiniu patikrinimu. Simbolinis sustiprinimas smarkiai sumažino skaičiavimo branduolį, kuriuo reikia pasitikėti, bet jo visiškai nepašalino.</p>
+  <p>Kai kurie rezultatai įrodyti simboliškai, kiti patikrinti baigtiniais ir tiksliais aritmetiniais patikrinimais. Simbolinis sustiprinimas smarkiai sumažino skaičiavimo branduolį, kuriuo reikia pasitikėti, bet jo visiškai nepašalino.</p>
   <p>Erdvės, kurios iš pradžių atrodė reikalaujančios milžiniško kelių skaičiaus paieškos, buvo suspaustos iki daug mažesnių baigtinių struktūrų, įskaitant 180 ir 9 būsenų automatus bei šešių dubenų simetrijas.</p>
   <p>Po maišymu slypi standi algebrinė struktūra. Norint sužinoti šiandienos datą, jos žinoti nereikia.</p><hr>
 </section>
