@@ -8,6 +8,8 @@ Work branch: `work/about-canon-transition-2026-09-27`.
 
 ## Completed in this branch
 
+- recovery ledger for post-draft approved additions (Norse-god ontology example, mechanism/agent distinction, epistemic-activism/wishful-thinking material);
+
 - authority-transition checkpoint;
 - 29-section `/about/` reconciliation inventory;
 - exact preservation of the 2026-09-16 FSM draft;
@@ -25,23 +27,23 @@ Work branch: `work/about-canon-transition-2026-09-27`.
 
 ### A. Source/provenance closure
 
-- [ ] Try to recover the complete later penguin appendix; never fill missing recovered prose by invention.
-- [ ] Directly verify Gospel page-level details for the creation chronology and cooking-accident flood where exact wording matters.
-- [ ] Search for a direct external source, if any, for “male/female/carbohydrate”; otherwise leave it as a project-canon candidate.
-- [ ] Determine whether an external source actually states that Hell serves antipasti rather than merely lacks Pasta.
-- [ ] Determine whether a direct source elevates RAmen/R'Amen from common devotional usage to an explicit general custom/rule.
+- [~] Penguin appendix recovery is partial: exact opening fragment, full heading sequence and exact conclusion are recovered; intervening historical paragraphs remain unavailable. A separate reconstruction exists and is explicitly labeled reconstruction.
+- [~] Gospel creation/flood chronology is now strongly located through publisher/Google Books metadata plus cited book summaries; direct book page-level wording remains desirable only where final wording depends on a precise detail.
+- [x] Gender-source search completed to the current useful limit: Henderson uses masculine English; historical material includes mixed/beyond-binary framings; no checked source establishes exactly “male/female/carbohydrate”. Leave that formulation as a project-canon candidate.
+- [x] Checked Loose Canon Hell material: it describes separation from Pasta / never eating Pasta, not the saved wording “antipasti instead of pasta”. Treat the latter as project-specific unless later canon adopts it.
+- [~] RAmen/R'Amen is strongly attested in official-site and Loose Canon devotional usage; no stronger universal mandatory rule has been located. “נהוג” is supportable; “חובה” is not.
 - [ ] Check external-source wording for pasta as worship/ritual rather than merely dietary/religious motif.
-- [ ] Record precise source locations where possible.
+- [~] Precise source locations are recorded for key Loose Canon items and source URLs are machine-readable in the source manifest; direct Gospel page-level indexing remains the main source-location gap.
 
 ### B. Non-canonical editorial QA
 
-- [ ] Full Hebrew language pass on the FSM working draft: syntax, register, repetitions, accidental ambiguity and typography.
-- [ ] Separate intentional logical fallacies from accidental logical contradictions.
+- [x] First full Hebrew editorial pass completed and saved in `fsm-hebrew-editorial-qa-2026-09-27.md`; several safe mechanical fixes were applied.
+- [x] Intentional-fallacy map recorded; confirmation bias, unfalsifiability, correlation/causation, selective prayer accounting and familiarity-as-proof are explicitly protected from accidental “correction”.
 - [ ] Verify every real-world science claim used as a premise for a joke.
-- [ ] Verify language claims (English pronouns, Hebrew grammatical gender).
+- [x] Language claims checked: Henderson's English masculine pronouns are source-backed; Hebrew `מפלצת` is grammatically feminine; theological gender remains separate.
 - [ ] Check internal cross-references and section ordering.
-- [ ] Identify places where a sentence falsely claims “Pastafarians/communities/tradition says…” when evidence only supports project editorial voice.
-- [ ] Produce a consolidated candidate that changes only source-safe/editorial material and leaves canon-dependent choices flagged.
+- [x] High-risk external-attribution sites are identified in the provenance matrix and editorial QA, especially gender, meal rules, Hell/Antipasti, prayer custom and tradition/provenance.
+- [x] Consolidated staged candidate exists: `fsm-about-consolidated-candidate-2026-09-27.md`; canon-dependent choices remain intentionally unresolved.
 
 ### C. /about/ infrastructure and QA that do not depend on canon text
 
