@@ -1,7 +1,7 @@
 <!-- Versão em português do Brasil, redigida diretamente a partir do conteúdo semântico hebraico. -->
 <!-- Os IDs das seções são estáveis e públicos; não dependem dos títulos traduzidos. -->
 <div class="about-section about-lead" id="about-calendar">
-  <p>Na narrativa do site, o Calendário Pastafari é apresentado como o calendário em que o próprio tempo foi criado. A mecânica, por outro lado, é definida com precisão.</p>
+  <p>O Calendário Pastafari é o calendário em que o próprio tempo foi criado. Sua mecânica é definida com precisão.</p>
   <p>Um dia não recebe uma única “etiqueta” pastafari fixa. Para obter uma data são necessários dois dias: o <strong>dia de trabalho</strong>, a partir do qual o cálculo é feito, e o <strong>dia consultado</strong>, cuja data queremos saber.</p>
   <p>Chamando o primeiro de <code>c</code> e o segundo de <code>t</code>, a data é</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
@@ -99,7 +99,7 @@
 </section>
 <section class="about-section" id="calculation" data-toc-section data-toc-level="2">
   <h2>Como o calendário é calculado?</h2>
-  <p>Chamamos aqui o cálculo interno de <strong>molho</strong>. No centro está</p><pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre><p>um número primo.</p>
+  <p>O cálculo interno é chamado de <strong>molho</strong>. No centro está</p><pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre><p>um número primo.</p>
   <p>O processo inclui cinco contadores de entrada, 7 gotas ocultas, 46 gotas visíveis, 6 tigelas, ordens variáveis das tigelas, 12 mexidas finais, selos para produzir respostas diferentes, mecanismos de escolha combinatória, criação de portões, seleção de anos, divisão das almôndegas, escolha de nomes, criação de meses e tecido dos dias mensais.</p>
   <p>As atualizações finais são <strong>síncronas</strong>: em cada mexida, os seis novos valores são calculados a partir da mesma fotografia do estado antigo; somente depois as seis tigelas são substituídas juntas.</p>
   <p>Há um detalhe canônico especialmente importante nas 12 mexidas finais. Se <code>S</code> é a soma das seis tigelas antigas e <code>r</code> é o número da mexida, calcula-se</p><pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
@@ -126,7 +126,7 @@
       <tr><td>Comprimento médio de almôndega</td><td>587.963 dias</td></tr><tr><td>Mediana do comprimento de almôndega</td><td>560</td></tr><tr><td>Média de meses por ano</td><td>41.102</td></tr>
       <tr><td>Mediana da quantidade de meses</td><td>43</td></tr><tr><td>Anos com 47 meses</td><td>15.63%</td></tr><tr><td>Anos com pelo menos 45 meses</td><td>36.81%</td></tr>
       <tr><td>Comprimento médio de mês estrutural</td><td>104.014 dias</td></tr><tr><td>Mediana do comprimento de mês</td><td>115</td></tr><tr><td>Média de trechos contínuos por mês</td><td>100.897</td></tr>
-      <tr><td>Trechos mensais de um único dia</td><td>97.482%</td></tr><tr><td>Probabilidade de dias adjacentes pertencerem ao mesmo mês</td><td>2.9976%</td></tr>
+      <tr><td>Trechos mensais de um único dia</td><td>97.482%</td></tr><tr><td>Proporção de pares de dias adjacentes que, na amostra, pertenciam ao mesmo mês</td><td>2.9976%</td></tr>
       <tr><td>Média de dias de outros meses entre <code>n</code> e <code>n+1</code></td><td>40.408</td></tr><tr><td>Extensão média da primeira à última ocorrência do mês</td><td>4,266.653 dias</td></tr>
     </tbody></table></div>
   <p>Na prática, um mês com cerca de cem dias pode ficar espalhado por quase um ano pastafari inteiro.</p>
@@ -148,7 +148,7 @@
 </section>
 <section class="about-section" id="appointments" data-toc-section data-toc-level="2">
   <h2>Como marcar um compromisso?</h2>
-  <p>Para marcar um encontro usando somente uma data pastafari, duas pessoas precisam concordar pelo menos com a quíntupla e com o dia de trabalho usado no cálculo. É melhor guardar esse dia como uma identidade estável, e não como a palavra “hoje”; caso contrário, cada pessoa pode calcular um calendário diferente.</p>
+  <p>Para definir o dia de um encontro usando uma data pastafari, duas pessoas precisam concordar pelo menos com a quíntupla e com o dia de trabalho usado no cálculo. É melhor guardar esse dia como uma identidade estável, e não como a palavra “hoje”; caso contrário, cada pessoa pode calcular um calendário diferente.</p>
   <ul><li>“amanhã” é o próximo dia cronológico;</li><li>“próximo dia no mês” é a próxima ocorrência daquele mês;</li><li>“fim do mês” é a última ocorrência;</li><li>“mês inteiro” pode significar o conjunto dos dias do mês ou toda a extensão cronológica da primeira à última ocorrência;</li><li>“ano seguinte” se refere ao calendário construído sob o dia de trabalho escolhido.</li></ul>
   <p>Para um compromisso especialmente importante, pode-se guardar também o dia ou instante cronológico absoluto. O calendário não se ofende.</p><hr>
 </section>
@@ -172,18 +172,18 @@
 </section>
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>E o Seer?</h2>
-  <p>Ao lado da implementação canônica existe um motor rápido chamado <strong>Pastafarian Calendar Seer</strong>. Seer não é fonte de autoridade: a Meguilá e o cálculo canônico determinam a data correta. Se houver divergência, Seer está errado.</p>
+  <p>Ao lado da implementação canônica existe um motor rápido chamado <strong>Pastafarian Calendar Seer</strong>. Seer não é fonte de autoridade: a Meguilá estabelece as regras, e o cálculo canônico produz a data de acordo com essas regras. Se Seer divergir de um cálculo canônico correto, Seer está errado.</p>
   <p>Seu objetivo é responder às mesmas consultas rapidamente e de forma conveniente para integração em produtos.</p>
-  <p>Na verificação ao vivo feita durante a edição desta página, Seer incluía consultas de data e de “agora”, batch, intervalos de dias, conversão reversa para o dia consultado, recuperação da estrutura do ano, resolução do dia de trabalho ativo, API para Node, cliente de navegador/HTTP, CLI, serviço HTTP v1, contrato OpenAPI 3.1, implementações nativas e pacotes de distribuição, além de implantação verificada em contêiner.</p>
-  <p>A antiga afirmação de que Seer não tinha API pública deixou de ser verdadeira. Há um contrato HTTP v1 explícito e estável, com endpoints para <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, dia de trabalho, <code>metadata</code>, <code>locales</code> e <code>status</code>.</p>
+  <p>Na verificação ao vivo realizada em 21 de setembro de 2026, Seer incluía consultas de data e de “agora”, batch, intervalos de dias, conversão reversa para o dia consultado, recuperação da estrutura do ano, resolução do dia de trabalho ativo, API para Node, cliente de navegador/HTTP, CLI, serviço HTTP v1, contrato OpenAPI 3.1, implementações nativas e pacotes de distribuição, além de implantação verificada em contêiner.</p>
+  <p>Seer tem uma API pública. Há um contrato HTTP v1 explícito e estável, com endpoints para <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, dia de trabalho, <code>metadata</code>, <code>locales</code> e <code>status</code>.</p>
   <p>Em 21 de setembro de 2026, uma implantação HTTPS pública no Render foi testada de fato: consultas exatas, intervalo grande, reinicialização, <code>cold wake</code> e comportamento sob carga foram exercitados no serviço ao vivo.</p>
-  <p>A documentação do projeto ainda distingue essa implantação pública de beta/avaliação de um serviço de produção hospedado e permanente com SLA. Por isso, uma página conceitual não deve fixar endereço de servidor, provedor de hospedagem ou número de versão como se fossem parte do calendário.</p>
+  <p>A implantação pública verificada é uma implantação de beta/avaliação, não a declaração de um serviço de produção hospedado e permanente com SLA. Endereço de servidor, provedor de hospedagem e número de versão não fazem parte do calendário e não são constantes canônicas.</p>
   <p>Seer pode usar pré-cálculo, representações especiais, SIMD, álgebra e outros atalhos. Não precisa repetir passo a passo toda a história computacional da implementação canônica, contanto que realize a mesma operação semântica e devolva a mesma resposta.</p>
   <p>Otimização não é uma autoridade alternativa.</p><hr>
 </section>
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
   <h2>Origem, Dia da Fundação e Dia das Tábuas</h2>
-  <p>Aqui é essencial separar âncoras canônicas da narrativa do site.</p>
+  <p>As âncoras computacionais fixas do calendário são distintas dos fatos sobre sua origem e da história de sua reentrega.</p>
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>As âncoras</h3>
     <p>O sistema tem um dia de referência fixo chamado <strong>Dia da Fundação</strong>. No calendário gregoriano proléptico, é <strong>22 de dezembro de 41,222 a.C.</strong></p>
@@ -194,10 +194,10 @@
     <p>São âncoras fixas na linha do tempo. A data pastafari exibida para elas continua dependendo do dia de trabalho usado na consulta.</p>
   </section>
   <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
-    <h3>A narrativa do site</h3>
-    <p>Na formulação editorial do site, o calendário aparece como parte da criação e como um sistema que a humanidade teria usado sem consciência suficiente até sua reentrega moderna.</p>
-    <p>Isso é a narrativa do site; seus detalhes não devem ser apresentados todos como proposições técnicas explícitas da Meguilá.</p>
-    <p>O evento da reentrega em si é um acontecimento histórico fixo. No site, sua <strong>data pastafari</strong> deve de preferência ser mostrada dinamicamente sob o dia de trabalho atual, e não congelada para sempre como uma única data.</p><hr>
+    <h3>A origem do calendário e sua reentrega</h3>
+    <p>O Calendário Pastafari faz parte da criação. A humanidade o utilizou sem consciência suficiente de que usava esse calendário, até sua reentrega moderna.</p>
+    <p>A Meguilá não descreve todos os detalhes dessa história; os detalhes que não são explicitamente declarados nela não fazem parte do texto da Meguilá. Trata-se de uma distinção de fonte, não de uma dúvida sobre a realidade.</p>
+    <p>O evento da reentrega em si é um acontecimento histórico fixo. Sua <strong>data pastafari</strong> é calculada de acordo com o dia de trabalho relevante; por isso, ele não tem uma única quíntupla pastafari fixada para sempre, e sua representação pastafari pode mudar sob outro dia de trabalho.</p><hr>
   </section>
 </section>
 <section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
@@ -212,8 +212,8 @@
       <tr><td>Apenas nome do mês</td><td>123</td></tr><tr><td>Apenas dia no mês</td><td>47</td></tr><tr><td>Nome da almôndega + dia na almôndega</td><td>1</td></tr>
       <tr><td>Nome do mês + dia no mês</td><td>1</td></tr><tr><td>Quaisquer três campos não anuais</td><td>1</td></tr><tr><td>Todos os quatro campos não anuais</td><td>1</td></tr>
     </tbody></table></div>
-  <p>Sem conhecer o dia de trabalho, a situação muda. A mesma quíntupla pode surgir sob dias de trabalho distintos; há testemunhas exatas em que a mesma data completa aparece a distâncias diferentes de <code>c</code>.</p>
-  <p>No ano 5000, nem sequer o sinal dessa distância é sempre determinado pela quíntupla: a mesma data completa pode estar no passado do dia de trabalho num contexto e no futuro em outro.</p>
+  <p>Sem conhecer o dia de trabalho, a situação muda. A mesma quíntupla pode surgir sob dias de trabalho distintos; há exemplos concretos em que a mesma data completa aparece a distâncias diferentes de <code>c</code>.</p>
+  <p>No ano 5000, a quíntupla nem sempre determina sequer se a data está antes ou depois do dia de trabalho: a mesma data completa pode estar no passado do dia de trabalho num contexto e no futuro em outro.</p>
   <p>Uma data pastafari completa não é, portanto, um endereço absoluto na linha do tempo sem sabermos qual <code>c</code> foi usado.</p>
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
     <h3>Estrutura em tempos remotos</h3>
@@ -232,7 +232,7 @@
   <p>Nas etapas visíveis 3 a 46, foi estabelecida, no ramo assintótico relevante, a injetividade genérica: genericamente, o estado conserva informação suficiente para reconstruir a história relevante das entradas e das ordens das tigelas.</p>
   <p>Nas 12 mexidas finais, a informação também não desaparece de imediato. Para as cinco primeiras depois da gota visível 46, a invertibilidade genérica foi estabelecida na união canônica relevante sem informação lateral adicional. Para as restantes, conhecem-se limites construtivos fortes sobre quanta informação lateral basta para a reconstrução.</p>
   <p>Ainda está em aberto se <strong>as seis tigelas finais sozinhas</strong> são sempre genericamente suficientes.</p>
-  <p>Parte dos resultados foi provada simbolicamente; parte foi fechada por verificações aritméticas finitas e exatas. O reforço simbólico reduziu muito o núcleo computacional em que é preciso confiar, mas não o eliminou.</p>
+  <p>Parte dos resultados foi provada simbolicamente; parte foi verificada por verificações aritméticas finitas e exatas. O reforço simbólico reduziu muito o núcleo computacional em que é preciso confiar, mas não o eliminou.</p>
   <p>Espaços que a princípio pareciam exigir quantidades enormes de trajetórias encolheram para estruturas finitas bem menores, incluindo autômatos de 180 e 9 estados e simetrias das seis tigelas.</p>
   <p>Por baixo da mistura há uma estrutura algébrica rígida. Nada disso é necessário para descobrir a data de hoje.</p><hr>
 </section>
