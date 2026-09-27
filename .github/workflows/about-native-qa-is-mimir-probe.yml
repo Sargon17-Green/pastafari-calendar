@@ -97,7 +97,7 @@ jobs:
           from pathlib import Path
           import json, urllib.request
           user_prompt = Path("/tmp/mimir-probe/prompt.txt").read_text(encoding="utf-8").strip()
-          instruct_prompt = "<s>[INST] " + user_prompt + " [/INST]"
+          instruct_prompt = "[INST] " + user_prompt + " [/INST]"
           payload = {
               "prompt": instruct_prompt,
               "temperature": 0.1,
