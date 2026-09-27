@@ -1,7 +1,7 @@
 <!-- 简体中文版本直接依据希伯来文的语义主稿撰写，不经过其他语言转译。 -->
 <!-- 章节 ID 是公开的深链接契约，不由译文标题生成。 -->
 <div class="about-section about-lead" id="about-calendar">
-  <p>按本站的叙事，Pastafari 历被描述为“时间在其中被创造”的历法；但它的运算机制本身有严格定义。</p>
+  <p>Pastafari 历就是时间本身在其中被创造的历法。它的运算机制有严格定义。</p>
   <p>这套历法并不是给每一天贴上一个永久不变的 Pastafari “标签”。要得到某一天的日期，必须同时知道两个日子：作为计算出发点的<strong>作业日</strong>，以及我们正在询问的<strong>目标日</strong>。</p>
   <p>若把作业日记作 <code>c</code>，目标日记作 <code>t</code>，日期就是</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
@@ -94,7 +94,7 @@
 </section>
 <section class="about-section" id="calculation" data-toc-section data-toc-level="2">
   <h2>这套历法怎样计算？</h2>
-  <p>本文把内部计算称为<strong>酱汁</strong>。核心是素数</p><pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>内部计算称为<strong>酱汁</strong>。核心是素数</p><pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
   <p>。流程包括5个输入计数器、7滴隐藏滴、46滴可见滴、6只碗、变化的碗顺序、12次最终搅拌、产生不同答案的封印、组合选择机制、门生成、年份选择、肉排划分、名称选择、月份生成以及月份日的编织。</p>
   <p>最终更新是<strong>同步</strong>的：每次搅拌都从同一份旧状态计算出6个新碗值，然后才一次性替换全部6只碗。</p>
   <p>12次最终搅拌还有一条特别重要的规范细节。若 <code>S</code> 是6只旧碗之和，<code>r</code> 是搅拌编号，则计算</p><pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
@@ -121,7 +121,7 @@
       <tr><td>平均肉排长度</td><td>587.963 天</td></tr><tr><td>肉排长度中位数</td><td>560</td></tr><tr><td>每年平均月份数</td><td>41.102</td></tr>
       <tr><td>月份数中位数</td><td>43</td></tr><tr><td>有47个月的年份</td><td>15.63%</td></tr><tr><td>至少有45个月的年份</td><td>36.81%</td></tr>
       <tr><td>平均结构月长度</td><td>104.014 天</td></tr><tr><td>月长中位数</td><td>115</td></tr><tr><td>每月平均连续片段数</td><td>100.897</td></tr>
-      <tr><td>只有一天的月份片段比例</td><td>97.482%</td></tr><tr><td>相邻两天属于同一月的概率</td><td>2.9976%</td></tr>
+      <tr><td>只有一天的月份片段比例</td><td>97.482%</td></tr><tr><td>样本中属于同一月的相邻日对比例</td><td>2.9976%</td></tr>
       <tr><td>同一月 <code>n</code> 与 <code>n+1</code> 之间平均夹入的他月天数</td><td>40.408</td></tr><tr><td>月份首末出现之间平均跨度</td><td>4,266.653 天</td></tr>
     </tbody></table></div>
   <p>实际效果是：一个约有100天的月份，可能铺展到几乎整个 Pastafari 年。</p>
@@ -143,7 +143,7 @@
 </section>
 <section class="about-section" id="appointments" data-toc-section data-toc-level="2">
   <h2>怎样约定一个时间？</h2>
-  <p>如果两个人只用 Pastafari 日期约定见面，至少要共同确定五元组和计算它时所用的作业日。最好把作业日本身保存成稳定的日身份，而不是“今天”这个词；否则双方可能算出不同历法。</p>
+  <p>如果两个人要用 Pastafari 日期确定见面的那一天，至少要共同确定五元组和计算它时所用的作业日。最好把作业日本身保存成稳定的日身份，而不是“今天”这个词；否则双方可能算出不同历法。</p>
   <ul><li>“明天”是时间轴上的下一天；</li><li>“月内下一天”是同一月下一次出现；</li><li>“月底”是该月最后一次出现；</li><li>“整个月”既可指该月全部天的集合，也可指从首次到末次出现的整个时间跨度；</li><li>“下一年”是按选定作业日构造的历法中的下一年。</li></ul>
   <p>特别重要的约会还可以额外保存绝对的时间轴日期或时刻。历法不会因此受伤。</p><hr>
 </section>
@@ -167,18 +167,18 @@
 </section>
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Seer 是什么？</h2>
-  <p>规范实现之外还有高速引擎 <strong>Pastafarian Calendar Seer</strong>。Seer 不是权威来源；正确日期由 Megillah 和规范计算决定。两者若冲突，错的是 Seer。</p>
+  <p>规范实现之外还有高速引擎 <strong>Pastafarian Calendar Seer</strong>。Seer 不是权威来源；Megillah 规定规则，规范计算依照这些规则算出日期。若 Seer 与正确的规范计算冲突，错的是 Seer。</p>
   <p>它的任务是快速执行同一类查询，并方便集成进产品。</p>
-  <p>在编辑本页时做的实时验证中，Seer 已包括日期查询、“现在”计算、批量查询、日范围、从 Pastafari 日期到被查询日的反向转换、年份结构获取、活动作业日解析、Node API、浏览器/HTTP客户端、CLI、HTTP v1服务、OpenAPI 3.1契约、原生实现与发布包，以及经过验证的容器部署。</p>
-  <p>所以“Seer 没有公开 API”的旧说法已经不正确。它有明确、稳定的 HTTP v1 契约，包含 <code>date</code>、<code>range</code>、<code>batch</code>、<code>year</code>、<code>reverse</code>、作业日、<code>metadata</code>、<code>locales</code>、<code>status</code> 等端点。</p>
+  <p>在2026年9月21日进行的实时验证中，Seer 已包括日期查询、“现在”计算、批量查询、日范围、从 Pastafari 日期到被查询日的反向转换、年份结构获取、活动作业日解析、Node API、浏览器/HTTP客户端、CLI、HTTP v1服务、OpenAPI 3.1契约、原生实现与发布包，以及经过验证的容器部署。</p>
+  <p>Seer 有公开 API。它有明确、稳定的 HTTP v1 契约，包含 <code>date</code>、<code>range</code>、<code>batch</code>、<code>year</code>、<code>reverse</code>、作业日、<code>metadata</code>、<code>locales</code>、<code>status</code> 等端点。</p>
   <p>2026年9月21日还实际测试了 Render 上的公开 HTTPS 部署：精确查询、大范围、重启、<code>cold wake</code> 和负载下行为都在活服务上验证过。</p>
-  <p>不过项目文档仍区分公开的 beta/评估部署与具有 SLA 的永久托管生产服务。因此原理性说明不应把某个服务器地址、托管商或版本号固定成历法本身的一部分。</p>
+  <p>经过验证的公开部署是 beta/评估部署，并不是对具有 SLA 的永久托管生产服务的声明。服务器地址、托管商和版本号都不是历法的一部分，也不是规范常量。</p>
   <p>Seer 可以使用预计算、特殊表示、SIMD、代数和其他捷径。只要执行同一语义操作并返回同一答案，就不必逐步重演规范实现的全部计算历史。</p>
   <p>优化不是另一套权威。</p><hr>
 </section>
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
   <h2>起源、奠基日与泥板日</h2>
-  <p>这里尤其要把规范时间锚点与本站叙事分开。</p>
+  <p>历法的固定计算锚点，与其起源事实和再次传授的历史是不同层面的内容。</p>
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>锚点</h3>
     <p>系统有一个固定参考日，称为<strong>奠基日</strong>。在前推格里高利历中，它是<strong>公元前41,222年12月22日</strong>。</p>
@@ -189,10 +189,10 @@
     <p>这些是时间轴上的固定锚点；为它们显示的 Pastafari 日期仍取决于查询所用作业日。</p>
   </section>
   <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
-    <h3>本站叙事</h3>
-    <p>本站的编辑叙事把这套历法说成创世的一部分，并说人类曾在缺乏充分自觉的情况下使用它，直到现代再次传授。</p>
-    <p>这属于本站叙事；不能把每个叙事情节都当成 Megillah 中明确的技术命题。</p>
-    <p>再次传授本身是固定的历史事件。网站上最好根据当前作业日动态显示它的<strong>Pastafari 日期</strong>，而不是永远给它钉死一个 Pastafari 日期。</p><hr>
+    <h3>历法的起源与再次传授</h3>
+    <p>Pastafari 历是创世的一部分。人类曾在没有充分意识到自己使用的正是这套历法的情况下使用它，直到现代再次传授。</p>
+    <p>Megillah 并没有记述这段历史的每个细节；其中未被明确陈述的细节不是 Megillah 文本的一部分。这是信息来源的区别，不是对现实性的保留。</p>
+    <p>再次传授本身是固定的历史事件。它的<strong>Pastafari 日期</strong>按照相关作业日计算；因此不存在一个永远固定的 Pastafari 五元组，在另一作业日下它的 Pastafari 表示可以改变。</p><hr>
   </section>
 </section>
 <section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
@@ -206,8 +206,8 @@
       <tr><td>只有月份名</td><td>123</td></tr><tr><td>只有月内日</td><td>47</td></tr><tr><td>肉排名 + 肉排内日</td><td>1</td></tr>
       <tr><td>月份名 + 月内日</td><td>1</td></tr><tr><td>任意三个非年份字段</td><td>1</td></tr><tr><td>全部四个非年份字段</td><td>1</td></tr>
     </tbody></table></div>
-  <p>若作业日未知，情况就不同。同一个五元组可出现在不同作业日下；已有精确见证表明，同一个完整日期可以位于距作业日不同距离的位置。</p>
-  <p>甚至在5000年中，距离的正负也不总能从五元组决定：同一完整日期在一个上下文中可位于作业日过去，在另一个上下文中位于未来。</p>
+  <p>若作业日未知，情况就不同。同一个五元组可出现在不同作业日下；已有明确的具体例子表明，同一个完整日期可以位于距作业日不同距离的位置。</p>
+  <p>甚至在5000年中，五元组也不总能决定日期位于作业日之前还是之后：同一完整日期在一个上下文中可位于作业日过去，在另一个上下文中位于未来。</p>
   <p>所以，不知道用哪个 <code>c</code> 计算时，完整 Pastafari 日期也不是时间轴上的绝对地址。</p>
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
     <h3>遥远时间中的结构</h3>
@@ -226,7 +226,7 @@
   <p>在可见阶段3到46，相关渐近分支上的泛型单射性已经确立：一般情形下，状态保留足够信息，可重构相关的输入历史和碗顺序。</p>
   <p>12次最终搅拌中，信息也不会立刻消失。可见滴46之后的前5次搅拌，在相关规范并集上已经证明无需额外旁信息即可泛型可逆；对剩余搅拌，也已知足以重构的旁信息量的强构造上界。</p>
   <p><strong>仅凭最终6只碗</strong>是否总能在泛型意义下做到这一点，仍然开放。</p>
-  <p>部分结果是符号证明，部分通过有限且精确的算术检查闭合。符号强化大幅缩小了必须信赖的计算核心，但尚未完全消除它。</p>
+  <p>部分结果是符号证明，部分通过有限且精确的算术检查得到验证。符号强化大幅缩小了必须信赖的计算核心，但尚未完全消除它。</p>
   <p>研究中的一个意外，是原本似乎需要遍历海量路径的空间缩减成小得多的有限结构，其中包括180状态与9状态自动机以及6只碗的对称性。</p>
   <p>混合之下存在刚性的代数结构。仅仅查询今天日期并不需要知道这些。</p><hr>
 </section>
