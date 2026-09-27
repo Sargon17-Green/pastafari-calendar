@@ -1,7 +1,7 @@
 <!-- O‘zbekcha versiya ibroniycha semantik asosdan bevosita yozildi, oraliq til ishlatilmadi. -->
 <!-- Bo‘lim ID-lari barqaror ommaviy deep-link shartnomasining qismi bo‘lib, tarjima qilingan sarlavhalardan hosil qilinmaydi. -->
 <div class="about-section about-lead" id="about-calendar">
-  <p>Ushbu sayt hikoyasida Pastafari taqvimi vaqtning o‘zi yaratilgan taqvim sifatida tasvirlanadi. Biroq uning ishlash mexanizmi qat’iy va aniq belgilangan.</p>
+  <p>Pastafari taqvimi vaqtning o‘zi yaratilgan taqvimdir. Uning ishlash mexanizmi aniq belgilangan.</p>
   <p>Bu taqvim har bir kunga bitta o‘zgarmas Pastafari “yorlig‘i” yopishtirmaydi. Sanani aniqlash uchun ikki kun kerak: hisoblash boshlanadigan <strong>amal kuni</strong> va Pastafari sanasi so‘ralayotgan <strong>so‘ralgan kun</strong>.</p>
   <p>Agar amal kunini <code>c</code>, so‘ralgan kunni esa <code>t</code> deb belgilasak, sana</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
@@ -126,7 +126,7 @@
 
 <section class="about-section" id="calculation" data-toc-section data-toc-level="2">
   <h2>Taqvim qanday hisoblanadi?</h2>
-  <p>Ichki hisobni bu yerda <strong>sous</strong> deb ataymiz. Uning markazida tub son turadi:</p>
+  <p>Ichki hisob <strong>sous</strong> deb ataladi. Uning markazida tub son turadi:</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
   <p>Jarayon beshta kirish hisoblagichi, 7 ta yashirin tomchi, 46 ta ko‘rinadigan tomchi, 6 ta kosa, o‘zgaruvchan kosa tartiblari, 12 ta yakuniy aralashtirish, turli javoblar uchun muhrlar, kombinatorik tanlovlar, darvozalarni qurish, yillarni tanlash, kotletlarni bo‘lish, nomlarni tanlash, oylarni qurish va oy kunlarini o‘rishni o‘z ichiga oladi.</p>
   <p>Yakuniy yangilanishlar <strong>sinxron</strong>: har bir aralashtirishda barcha olti yangi qiymat bir xil eski holatdan hisoblanadi, shundan keyingina olti kosa bir vaqtda almashtiriladi.</p>
@@ -170,7 +170,7 @@
         <tr><td>Oy uzunligi medianasi</td><td>115</td></tr>
         <tr><td>Har oyga to‘g‘ri keladigan uzluksiz segmentlar o‘rtachasi</td><td>100.897</td></tr>
         <tr><td>Bir kunlik oy segmentlarining ulushi</td><td>97.482%</td></tr>
-        <tr><td>Ikki qo‘shni kunning bir oyga tegishli bo‘lish ehtimoli</td><td>2.9976%</td></tr>
+        <tr><td>Namunada bir oyga tegishli bo‘lgan qo‘shni kunlar juftlarining ulushi</td><td>2.9976%</td></tr>
         <tr><td>Bir oy ichidagi <code>n</code> va <code>n+1</code> orasidagi boshqa oy kunlarining o‘rtacha soni</td><td>40.408</td></tr>
         <tr><td>Oyning birinchi va oxirgi paydo bo‘lishlari orasidagi o‘rtacha oraliq</td><td>4,266.653 kun</td></tr>
       </tbody>
@@ -199,7 +199,7 @@
 
 <section class="about-section" id="appointments" data-toc-section data-toc-level="2">
   <h2>Uchrashuvni qanday belgilash mumkin?</h2>
-  <p>Agar ikki kishi faqat Pastafari sanasi yordamida uchrashuv belgilamoqchi bo‘lsa, ular kamida sananing besh maydoni va hisoblashda ishlatilgan amal kuni haqida kelishib olishlari kerak. Amal kunini “bugun” so‘zi sifatida emas, barqaror kun identifikatori sifatida saqlash yaxshiroq; aks holda ular ikki xil taqvimni hisoblab chiqishi mumkin.</p>
+  <p>Agar ikki kishi Pastafari sanasi yordamida uchrashuv kunini belgilamoqchi bo‘lsa, ular kamida sananing besh maydoni va hisoblashda ishlatilgan amal kuni haqida kelishib olishlari kerak. Amal kunini “bugun” so‘zi sifatida emas, barqaror kun identifikatori sifatida saqlash yaxshiroq; aks holda ular ikki xil taqvimni hisoblab chiqishi mumkin.</p>
   <ul>
     <li>“ertaga” — keyingi xronologik kun;</li>
     <li>“oyning keyingi kuni” — shu oyning keyingi paydo bo‘lishi;</li>
@@ -233,19 +233,19 @@
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Unda Seer nima?</h2>
-  <p>Kanonik amalga oshirish yonida <strong>Pastafarian Calendar Seer</strong> deb ataladigan tezkor hisoblash dvigateli bor. Seer vakolat manbai emas: to‘g‘ri sanani Megillah va kanonik hisob belgilaydi. Agar Seer ularga mos kelmasa, xato Seer’da.</p>
+  <p>Kanonik amalga oshirish yonida <strong>Pastafarian Calendar Seer</strong> deb ataladigan tezkor hisoblash dvigateli bor. Seer vakolat manbai emas: Megillah qoidalarni belgilaydi, kanonik hisob esa shu qoidalarga ko‘ra sanani hisoblaydi. Agar Seer to‘g‘ri kanonik hisobga mos kelmasa, xato Seer’da.</p>
   <p>Uning vazifasi xuddi shu savollarni tez bajarish va mahsulotlarga qo‘shish uchun qulay shaklda javob berish.</p>
-  <p>Ushbu sahifani tahrirlash paytida o‘tkazilgan bevosita tekshiruvda Seer, jumladan, <code>date</code> va <code>now</code> so‘rovlarini, <code>batch</code>ni, kun diapazonlarini, Pastafari sanasidan so‘ralgan kunga teskari o‘girishni, yil tuzilmasini olishni, faol amal kunini aniqlashni, Node API’ni, brauzer/HTTP mijozini, CLI’ni, HTTP v1 xizmatini, OpenAPI 3.1 shartnomasini, mahalliy amalga oshirishlar va tarqatish paketlarini hamda tekshirilgan konteyner joylashtirishni qamrab olgan.</p>
-  <p>Seer’da ommaviy API yo‘q degan eski da’vo endi to‘g‘ri emas. Hozir <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, amal kuni, <code>metadata</code>, <code>locales</code> va <code>status</code> yakuniy nuqtalariga ega aniq va barqaror HTTP v1 shartnomasi bor.</p>
+  <p>2026-yil 21-sentabrda o‘tkazilgan bevosita tekshiruvda Seer, jumladan, <code>date</code> va <code>now</code> so‘rovlarini, <code>batch</code>ni, kun diapazonlarini, Pastafari sanasidan so‘ralgan kunga teskari o‘girishni, yil tuzilmasini olishni, faol amal kunini aniqlashni, Node API’ni, brauzer/HTTP mijozini, CLI’ni, HTTP v1 xizmatini, OpenAPI 3.1 shartnomasini, mahalliy amalga oshirishlar va tarqatish paketlarini hamda tekshirilgan konteyner joylashtirishni qamrab olgan.</p>
+  <p>Seer’da ommaviy API bor. <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, amal kuni, <code>metadata</code>, <code>locales</code> va <code>status</code> yakuniy nuqtalariga ega aniq va barqaror HTTP v1 shartnomasi bor.</p>
   <p>2026-yil 21-sentabrda Render’dagi ommaviy HTTPS joylashtirish amalda sinovdan o‘tkazilgan: jonli xizmatda aniq so‘rovlar, katta diapazon, qayta ishga tushirish, <code>cold wake</code> va yuklama ostidagi xatti-harakat tekshirilgan.</p>
-  <p>Shunga qaramay, loyiha hujjatlari ommaviy beta/baholash joylashtirishi bilan SLA’li doimiy xostlangan ishlab chiqarish xizmatini farqlashda davom etadi. Shuning uchun konseptual tushuntirish sahifasi server manzili, xosting provayderi yoki versiya raqamini go‘yo taqvimning o‘z qismi kabi qotirib qo‘ymasligi kerak.</p>
+  <p>Tekshirilgan ommaviy joylashtirish beta/baholash joylashtirishidir, SLA’li doimiy xostlangan ishlab chiqarish xizmati e’loni emas. Server manzili, xosting provayderi va versiya raqami taqvimning qismi emas va kanonik konstantalar ham emas.</p>
   <p>Seer oldindan hisoblash, maxsus ifodalar, SIMD, algebra va boshqa qisqa yo‘llardan foydalanishi mumkin. U kanonik implementatsiyaning butun hisoblash tarixini qadam-baqadam takrorlashi shart emas, agar aynan bir xil semantik operatsiyani bajarib, bir xil javobni qaytarsa.</p>
   <p>Optimallashtirish muqobil vakolat emas.</p><hr>
 </section>
 
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
   <h2>Kelib chiqish, Asos solingan kun va Lavhalar kuni</h2>
-  <p>Bu yerda kanonik vaqt tayanchlarini sayt hikoyasidan aniq ajratish ayniqsa muhim.</p>
+  <p>Taqvimning o‘zgarmas hisoblash tayanchlari uning kelib chiqishi haqidagi faktlar va qayta topshirilish tarixidan farq qiladi.</p>
 
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>Tayanchlar</h3>
@@ -260,10 +260,10 @@
   </section>
 
   <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
-    <h3>Sayt hikoyasi</h3>
-    <p>Saytning tahririy hikoyasida taqvim yaratilishning bir qismi va insoniyat uni to‘liq anglamagan holda ishlatib kelgan, keyin zamonaviy davrda yana topshirilgan tizim sifatida tasvirlanadi.</p>
-    <p>Bu sayt hikoyasi; undagi har bir narrativ tafsilot Megillah’ning ochiq texnik da’vosi sifatida taqdim etilmasligi kerak.</p>
-    <p>Qayta topshirish voqeasining o‘zi o‘zgarmas tarixiy voqea. Uning <strong>Pastafari sanasini</strong> bitta sana qilib abadiy qotirib qo‘yishdan ko‘ra, joriy amal kuni ostida dinamik ko‘rsatish ma’qul.</p><hr>
+    <h3>Taqvimning kelib chiqishi va qayta topshirilishi</h3>
+    <p>Pastafari taqvimi yaratilishning bir qismidir. Insoniyat aynan shu taqvimdan foydalanayotganini yetarlicha anglamagan holda undan foydalangan, keyin zamonaviy davrda u yana topshirilgan.</p>
+    <p>Megillah bu tarixning har bir tafsilotini bayon qilmaydi; unda ochiq aytilmagan tafsilotlar Megillah matnining qismi emas. Bu manbalar farqidir, voqelikka shubha emas.</p>
+    <p>Qayta topshirish voqeasining o‘zi o‘zgarmas tarixiy voqea. Uning <strong>Pastafari sanasi</strong> tegishli amal kuniga ko‘ra hisoblanadi; shu sababli uning abadiy qotirilgan bitta besh-maydonli Pastafari sanasi yo‘q va boshqa amal kuni ostida Pastafari ko‘rinishi o‘zgarishi mumkin.</p><hr>
   </section>
 </section>
 
@@ -292,8 +292,8 @@
     </table>
   </div>
 
-  <p>Amal kunini bilmasak, holat boshqacha. Bir xil beshta qiymat turli amal kunlari ostida paydo bo‘lishi mumkin va aynan bir xil to‘liq sana <code>c</code> dan turli masofalarda chiqadigan aniq misollar mavjud.</p>
-  <p>5000-yilda hatto shu masofaning ishorasi ham beshta qiymatdan doim aniqlanmaydi: aynan bir xil to‘liq sana bir kontekstda amal kuniga nisbatan o‘tmishda, boshqasida esa kelajakda bo‘lishi mumkin.</p>
+  <p>Amal kunini bilmasak, holat boshqacha. Bir xil beshta qiymat turli amal kunlari ostida paydo bo‘lishi mumkin va aynan bir xil to‘liq sana <code>c</code> dan turli masofalarda chiqadigan aniq va konkret misollar mavjud.</p>
+  <p>5000-yilda beshta qiymat sananing amal kunidan oldinmi yoki keyinmi ekanini ham doim aniqlamaydi: aynan bir xil to‘liq sana bir kontekstda amal kuniga nisbatan o‘tmishda, boshqasida esa kelajakda bo‘lishi mumkin.</p>
   <p>Shuning uchun qaysi <code>c</code> ostida hisoblanganini bilmasak, to‘liq Pastafari sanasi vaqt chizig‘idagi mutlaq manzil emas.</p>
 
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
@@ -316,7 +316,7 @@
   <p>3–46 ko‘rinadigan bosqichlarda, tegishli asimptotik shoxda umumiy inyektivlik o‘rnatilgan: umumiy holatda holat tegishli kirish tarixini va kosa tartibini qayta tiklash uchun yetarli ma’lumotni saqlaydi.</p>
   <p>12 yakuniy aralashtirishda ham ma’lumot darhol yo‘qolmaydi. 46-ko‘rinadigan tomchidan keyingi dastlabki besh aralashtirish uchun tegishli kanonik birlashmada qo‘shimcha yon ma’lumotsiz umumiy teskarilanuvchanlik o‘rnatilgan; qolgan qismi uchun qayta tiklashga yetadigan yon ma’lumot miqdorining kuchli konstruktiv yuqori chegaralari ma’lum.</p>
   <p><strong>Faqat oxirgi olti kosa</strong> umumiy ma’noda har doim yetarlimi — bu savol hanuz ochiq.</p>
-  <p>Ba’zi natijalar ramziy tarzda isbotlangan, boshqalari esa chekli va aniq arifmetik tekshiruv bilan yopilgan. Ramziy kuchaytirish ishonish kerak bo‘lgan hisoblash yadrosini ancha kichraytirdi, lekin uni butunlay yo‘q qilmadi.</p>
+  <p>Ba’zi natijalar ramziy tarzda isbotlangan, boshqalari esa chekli va aniq arifmetik tekshiruvlar bilan tasdiqlangan. Ramziy kuchaytirish ishonish kerak bo‘lgan hisoblash yadrosini ancha kichraytirdi, lekin uni butunlay yo‘q qilmadi.</p>
   <p>Dastlab ulkan sondagi yo‘llarni qidirishni talab qiladigandek ko‘ringan fazolar ancha kichik chekli tuzilmalarga, jumladan 180 va 9 holatli avtomatlar va olti kosaning simmetriyalariga qisqartirildi.</p>
   <p>Aralashtirish ostida qat’iy algebraik tuzilma bor. Bugungi sanani bilish uchun uni bilishingiz shart emas.</p><hr>
 </section>
