@@ -87,9 +87,9 @@ This explicitly avoids the older false/adapted quotation `וכן עשה שער �
 - exact readable 2026-09-16 draft is preserved verbatim as a historical baseline;
 - it is explicitly not mislabeled as final;
 - later approved Newton/Einstein correction is preserved as a constraint and staged safely;
-- later penguin appendix title/opening fragment, 13-heading structure and exact conclusion are preserved;
-- missing historical appendix paragraphs remain honestly marked unavailable;
-- a separate reconstructed appendix exists and is never described as recovered text;
+- later penguin appendix recovery progressed to a recovered historical composite assembled from exact fragments across several conversation-state records;
+- the composite is not falsely claimed to be a byte-for-byte export of one original message;
+- the earlier separately reconstructed appendix remains labeled reconstruction and is retained only as editorial comparison/QA material;
 - later approved material about non-omnipotent gods, mechanism versus agency and epistemic activism/wishful thinking is preserved in a dedicated ledger;
 - one exact recovered sentence on “אקטיביזם אפיסטמי גלוי” is retained as exact text; surrounding reconstruction is labeled reconstruction.
 
