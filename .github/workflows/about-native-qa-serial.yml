@@ -132,9 +132,8 @@ jobs:
                   excerpt("docs/about/index.html", [r"data-i18n", r"aria-", r"placeholder", r"<title", r"<meta", r"<noscript", r"lang=", r"dir="]),
               "===== docs/manifest.webmanifest — FALLBACK + TARGET LOCALE =====\n" +
                   excerpt("docs/manifest.webmanifest",
-                          [rf'"{re.escape(code)}"\s*:', re.escape(tag), r'"name"\s*:', r'"short_name"\s*:',
-                           r'"description"\s*:', r'"lang"\s*:', r'"dir"\s*:'],
-                          radius=2, first_lines=12),
+                          [rf'"{re.escape(code)}"\s*:', re.escape(tag)],
+                          radius=5, first_lines=12),
               "===== docs/i18n/runtime.js — FULL LOCALIZATION RUNTIME =====\n" + text("docs/i18n/runtime.js"),
               "===== docs/i18n/registry.js — TARGET REGISTRATION =====\n" +
                   excerpt("docs/i18n/registry.js",
@@ -147,15 +146,18 @@ jobs:
                       function_block("docs/i18n/registry.js", "loadLocale"),
                   ])),
               "===== docs/about/about.js — FULL ARTICLE LOCALIZATION FLOW =====\n" + text("docs/about/about.js"),
-              "===== docs/app.js — HARD-CODED DISPLAY/FALLBACK TOUCHPOINTS =====\n" +
+              "===== docs/app.js — HARD-CODED DISPLAY + LOCALE-LOAD TOUCHPOINTS =====\n" +
                   excerpt("docs/app.js",
-                          [r"textContent\s*=", r"innerHTML\s*=", r"setAttribute\s*\(", r"placeholder\s*=",
-                           r"title\s*=", r"loadLocale\s*\(", r"applyDocumentLocale", r"fallback", r"visibleError", r"status"],
+                          [r"textContent\s*=\s*[\'\"]", r"innerHTML\s*=\s*[\'\"]",
+                           r"setAttribute\s*\(\s*[\'\"](aria-label|title|placeholder)[\'\"]",
+                           r"placeholder\s*=\s*[\'\"]", r"title\s*=\s*[\'\"]",
+                           r"loadLocale\s*\(", r"applyDocumentLocale", r"visibleError"],
                           radius=1, first_lines=55),
-              "===== docs/reverse-ui.js — HARD-CODED DISPLAY/FALLBACK TOUCHPOINTS =====\n" +
+              "===== docs/reverse-ui.js — HARD-CODED DISPLAY TOUCHPOINTS =====\n" +
                   excerpt("docs/reverse-ui.js",
-                          [r"textContent\s*=", r"innerHTML\s*=", r"setAttribute\s*\(", r"placeholder\s*=",
-                           r"title\s*=", r"translate\s*\(", r"\bt\s*\(", r"fallback", r"error", r"status"],
+                          [r"textContent\s*=\s*[\'\"]", r"innerHTML\s*=\s*[\'\"]",
+                           r"setAttribute\s*\(\s*[\'\"](aria-label|title|placeholder)[\'\"]",
+                           r"placeholder\s*=\s*[\'\"]", r"title\s*=\s*[\'\"]"],
                           radius=1),
               "===== I18N KEYS REFERENCED BY UI CODE =====\n" +
                   key_inventory(["docs/index.html", "docs/about/index.html", "docs/app.js",
