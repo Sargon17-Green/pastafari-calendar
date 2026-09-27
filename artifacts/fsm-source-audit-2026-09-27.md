@@ -271,3 +271,85 @@ It does **not** automatically verify every extra detail in the saved Hebrew pros
 
 Those remain separately classified.
 
+
+
+## Loose Canon pass — Antipast, diet and hell
+
+The first edition of *The Loose Canon* was inspected directly.
+
+Source used:
+https://www.klps.pl/files/loose_canon.pdf
+
+### The Anti-Past is genuinely present in The Loose Canon
+
+The saved Hebrew draft's core Antipast/Antipasta idea is not merely later community invention.
+
+In *The Story of the FSM and the Eastern Pirates*, the text explicitly contains:
+
+- an entity named `Anti-Past`;
+- the title/description `Foul Lord of the Diets`;
+- temptation to discard proper food and serve hardtack/stale water;
+- the FSM driving him away with a single touch of His Noodly Appendage;
+- a warning to beware the Anti-Past;
+- balls made of `ersatz soy-meat`.
+
+Relevant passage: PDF page 31 (viewer lines around 714–733).
+
+This upgrades the draft's **core antagonist** from `OPEN_OR_UNVERIFIED` to:
+`EXTERNAL_PASTAFARIAN_SOURCE (LOOSE_CANON) + PROJECT_ELABORATION`.
+
+However, the saved Hebrew draft still adds details not established by that passage, including:
+- the exact count of his appendages;
+- the full detailed low-carb program;
+- the formulation that he is “also called Anti-Pasta” in every source;
+- the specific claim that hell serves antipasti instead of pasta.
+
+Those additions must be classified separately.
+
+### Hell in The Loose Canon does not match the saved “antipasti instead of pasta” sentence
+
+The *Loose Canon* FAQ describes a `HellLight` and a rarer Pastafarian Hell.
+
+The relevant text says, among other things, that those in actual Pastafarian Hell are separated from Pasta and fine beverages and **never eat Pasta of any kind**; it lists other foods and unpleasant work.
+
+Relevant passage: PDF pages 63–64 (viewer lines around 1670–1700).
+
+Therefore the saved Hebrew statement:
+
+> בגיהנום מגישים אנטיפסטי במקום פסטה
+
+should currently be classified as **project-specific rewriting**, not a faithful summary of this Loose Canon passage.
+
+It may still be retained if the project canon deliberately chooses it, but it should not be silently attributed to the Loose Canon.
+
+### Pasta/diet material is stronger than previously recorded, but not an absolute eating command
+
+The *Loose Canon* includes:
+
+- a statement that “a healthy diet of pasta” is an important observance;
+- strong anti-low-carb satire;
+- warnings about feasting without carbohydrates;
+- but also an explicit tolerant answer for people whose medical condition/diet/personal preference prevents eating pasta: being a good person is sufficient.
+
+Relevant passages include PDF pages around 50, 59, 65, 99 and 169–171.
+
+Editorial consequence:
+
+- the saved article's strong carbohydrate motif has real textual roots;
+- an absolute rule “a proper Pastafarian meal must contain carbohydrate” is still stronger than the checked source;
+- the source set itself contains tolerance/contradiction, so the project's eventual canon must decide whether it wants a stricter project rule or a source-faithful softer formulation.
+
+### The Loose Canon itself explicitly warns against treating all its texts as infallible
+
+The introductory announcements state that:
+- the Loose Canon should remain open-ended;
+- later texts may contradict earlier texts and even the Gospel;
+- readers should not have blind faith in a holy text or treat every word as literal truth;
+- future Pastafarians must think for themselves.
+
+Relevant passage: PDF pages 7–8.
+
+This is directly relevant to the article's “מסורת, זיכרון ודיוק” section.
+
+Editorial consequence: the article can support the proposition that Pastafarian source texts may contradict one another and need not all be harmonized. But the saved draft's specific proposed decision rule — prefer the version that “sounds more familiar” because many remember it — remains an intentional epistemology joke, not the actual provenance method.
+
