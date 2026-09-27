@@ -1,0 +1,695 @@
+{
+  "schema": "pastafarian-about-claim-register/v1",
+  "created": "2026-09-27",
+  "source": {
+    "branch": "feature/about-i18n-72-locales",
+    "article": "docs/about/content/he.html",
+    "articleBlobSha": "954f82559e618a091bb338c65a61be9e50d48331",
+    "note": "The source branch advanced by 35 commits after the work-branch fork, but those observed changes are native-QA infrastructure only; this Hebrew article blob is unchanged."
+  },
+  "authority": {
+    "currentStatus": "MIGRATION_EVIDENCE_ONLY",
+    "futureAuthority": "separately developed canonical corpus",
+    "rule": "Every claim below describes what the current public explanation says. It is not promoted to canon by appearing in this register."
+  },
+  "sections": [
+    {
+      "id": "about-calendar",
+      "priority": "P0",
+      "claims": [
+        {
+          "id": "ABOUT.FUNCTION_TWO_INPUTS",
+          "class": "CANONICAL_RULE_CANDIDATE",
+          "summary": "The displayed Pastafarian date is a function F(c,t) of calculation/working day c and target day t, not of t alone.",
+          "futureAction": "Reconcile directly against corpus definition of date mapping."
+        },
+        {
+          "id": "ABOUT.SAME_TARGET_DIFFERENT_C",
+          "class": "CANONICAL_RULE_CANDIDATE",
+          "summary": "The same target day may receive a different Pastafarian date under a different working day.",
+          "futureAction": "Reconcile directly against corpus and preserve explanatory example only if true."
+        },
+        {
+          "id": "ABOUT.TIME_CREATED_IN_CALENDAR",
+          "class": "THEOLOGY_ORIGIN",
+          "summary": "The calendar is described as the calendar in which time was created.",
+          "futureAction": "Check exact corpus ontology/origin wording; this is high-risk public framing."
+        }
+      ]
+    },
+    {
+      "id": "date-parts",
+      "priority": "P0",
+      "claims": [
+        {
+          "id": "DATE.EXACTLY_FIVE_FIELDS",
+          "class": "CANONICAL_RULE_CANDIDATE",
+          "summary": "A Pastafarian date has exactly five fields: year, cutlet name, day in cutlet, month name, day in month.",
+          "futureAction": "Reconcile field count/order/semantics directly against corpus."
+        },
+        {
+          "id": "DATE.METADATA_NOT_SIXTH_FIELD",
+          "class": "EDITORIAL_MODEL",
+          "summary": "Working day, observer location, chronological identity and technical metadata may accompany the date but are not a sixth date field.",
+          "futureAction": "Check corpus/data-model distinction; retain as explanatory product guidance if compatible."
+        }
+      ]
+    },
+    {
+      "id": "working-day",
+      "priority": "P0",
+      "claims": [
+        {
+          "id": "WORKING_DAY.CHANGES_STRUCTURE",
+          "class": "CANONICAL_RULE_CANDIDATE",
+          "summary": "Changing c can change years, cutlets, months, names and weaving, not merely relabel a fixed structure.",
+          "futureAction": "Direct corpus reconciliation."
+        },
+        {
+          "id": "WORKING_DAY.PRINTED_ALMANAC_EPHEMERAL",
+          "class": "EDITORIAL_JOKE",
+          "summary": "An almanac computed today need not remain useful tomorrow.",
+          "futureAction": "Keep only if the corpus semantics still support the premise; wording is editorial."
+        }
+      ]
+    },
+    {
+      "id": "day-identity",
+      "priority": "P1",
+      "claims": [
+        {
+          "id": "IDENTITY.DAY_ID_STABLE",
+          "class": "PRODUCT_MODEL",
+          "summary": "A stable chronological day identity/day-id is distinguished from its Pastafarian representation.",
+          "futureAction": "Check product/domain-model contract; corpus governs semantics, not necessarily identifier naming."
+        },
+        {
+          "id": "IDENTITY.EVENT_ANCHOR_STABLE",
+          "class": "PRODUCT_MODEL",
+          "summary": "Meetings, births and historical events should remain anchored to a stable chronological identity while their Pastafarian presentation may change.",
+          "futureAction": "Retain as product guidance if consistent with corpus."
+        }
+      ]
+    },
+    {
+      "id": "year-5000",
+      "priority": "P0",
+      "claims": [
+        {
+          "id": "YEAR5000.DIAGONAL",
+          "class": "CANONICAL_RULE_CANDIDATE",
+          "summary": "If c=t, the year is always 5000.",
+          "futureAction": "Direct corpus reconciliation."
+        },
+        {
+          "id": "YEAR5000.CONVERSE_FALSE",
+          "class": "DERIVED_OR_CANONICAL_PROPERTY",
+          "summary": "Year 5000 does not imply c=t.",
+          "futureAction": "Determine whether corpus states this or it remains derived; revalidate if underlying rules change."
+        },
+        {
+          "id": "YEAR5000.DIRECTION_BY_YEAR",
+          "class": "DERIVED_PROPERTY",
+          "summary": "Y>5000 implies t>c and Y<5000 implies t<c.",
+          "futureAction": "Reprove/revalidate against corpus implementation."
+        },
+        {
+          "id": "YEAR5000.ZERO_NEGATIVE_YEARS",
+          "class": "CANONICAL_RULE_CANDIDATE",
+          "summary": "Year 0 exists and negative-numbered years exist farther into the past.",
+          "futureAction": "Direct corpus reconciliation."
+        }
+      ]
+    },
+    {
+      "id": "years-and-gates",
+      "priority": "P0",
+      "claims": [
+        {
+          "id": "YEAR.LENGTH_BOUNDS",
+          "class": "CANONICAL_RULE_CANDIDATE",
+          "summary": "Year length is between 252 and 5778 days.",
+          "futureAction": "Direct corpus reconciliation."
+        },
+        {
+          "id": "YEAR.GATE_BOUNDARIES",
+          "class": "CANONICAL_RULE_CANDIDATE",
+          "summary": "Year boundaries and cutlet boundaries are built from the gate system.",
+          "futureAction": "Direct corpus reconciliation."
+        },
+        {
+          "id": "YEAR.NOT_ASTRONOMICAL",
+          "class": "EDITORIAL_EXPLANATION",
+          "summary": "Years need not align to seasons, solar orbit or lunar cycle.",
+          "futureAction": "Retain if implied by corpus; not itself an extra rule."
+        }
+      ]
+    },
+    {
+      "id": "cutlets",
+      "priority": "P0",
+      "claims": [
+        {
+          "id": "CUTLET.COUNT_RANGE",
+          "class": "CANONICAL_RULE_CANDIDATE",
+          "summary": "Each year has 6–17 cutlets.",
+          "futureAction": "Direct corpus reconciliation."
+        },
+        {
+          "id": "CUTLET.CONTIGUOUS",
+          "class": "CANONICAL_RULE_CANDIDATE",
+          "summary": "A cutlet is a contiguous chronological segment.",
+          "futureAction": "Direct corpus reconciliation."
+        },
+        {
+          "id": "CUTLET.MIN_LENGTH",
+          "class": "CANONICAL_RULE_CANDIDATE",
+          "summary": "Cutlet length is at least 42 days.",
+          "futureAction": "Direct corpus reconciliation."
+        },
+        {
+          "id": "CUTLET.NAME_COUNT",
+          "class": "CANONICAL_NAMING",
+          "summary": "There are 17 canonical cutlet names and no within-year repeated name.",
+          "futureAction": "Reconcile semantic naming identity and repetition rules against corpus."
+        }
+      ]
+    },
+    {
+      "id": "months-and-weaving",
+      "priority": "P0",
+      "claims": [
+        {
+          "id": "MONTH.COUNT_RANGE",
+          "class": "CANONICAL_RULE_CANDIDATE",
+          "summary": "Each year has 3–47 structural months.",
+          "futureAction": "Direct corpus reconciliation."
+        },
+        {
+          "id": "MONTH.LENGTH_RANGE",
+          "class": "CANONICAL_RULE_CANDIDATE",
+          "summary": "Each month has 4–123 member days.",
+          "futureAction": "Direct corpus reconciliation."
+        },
+        {
+          "id": "MONTH.NONCONTIGUOUS",
+          "class": "CANONICAL_RULE_CANDIDATE",
+          "summary": "A month need not be chronologically contiguous; its day number is ordinal occurrence within that month.",
+          "futureAction": "Direct corpus reconciliation."
+        }
+      ]
+    },
+    {
+      "id": "month-interleaving",
+      "priority": "P0",
+      "claims": [
+        {
+          "id": "MONTH.INTERLEAVING",
+          "class": "CANONICAL_RULE_CANDIDATE",
+          "summary": "Months can interleave; each chronological day belongs to exactly one month.",
+          "futureAction": "Direct corpus reconciliation."
+        },
+        {
+          "id": "MONTH.FIRST_LAST_ORDER_CONSTRAINTS",
+          "class": "CANONICAL_RULE_CANDIDATE",
+          "summary": "There are constraints on first/last occurrence ordering even though months need not finish before another starts.",
+          "futureAction": "Reconcile exact constraint formulation with corpus."
+        },
+        {
+          "id": "MONTH.CUTLET_COORDINATES_DISTINCT",
+          "class": "DERIVED_EXPLANATION",
+          "summary": "Cutlets and months are distinct coordinate systems over the same days.",
+          "futureAction": "Retain as explanatory consequence if corpus supports premises."
+        }
+      ]
+    },
+    {
+      "id": "next-day-in-month",
+      "priority": "P1",
+      "claims": [
+        {
+          "id": "MONTH.NEXT_OCCURRENCE_NOT_TOMORROW",
+          "class": "DERIVED_EXPLANATION",
+          "summary": "Day n+1 of a month is the next occurrence of that month and need not be the next chronological day.",
+          "futureAction": "Revalidate from month semantics; explanatory wording only."
+        },
+        {
+          "id": "MONTH.END_NOT_CHRONOLOGICALLY_NEAR",
+          "class": "DERIVED_EXPLANATION",
+          "summary": "Being near the final ordinal day of a month does not imply chronological proximity to that occurrence.",
+          "futureAction": "Retain if interleaving semantics remain."
+        }
+      ]
+    },
+    {
+      "id": "no-weeks",
+      "priority": "P0",
+      "claims": [
+        {
+          "id": "WEEK.NO_CANONICAL_WEEK_SYSTEM",
+          "class": "CANONICAL_ABSENCE_CLAIM",
+          "summary": "The current specification defines no canonical week system, week-day names or same-weekday relation.",
+          "futureAction": "Ask corpus explicitly whether absence remains canonical; absence claims are sensitive to added canon."
+        },
+        {
+          "id": "WEEK.EXTERNAL_CIVIL_WEEK_ALLOWED",
+          "class": "EDITORIAL_PRODUCT_GUIDANCE",
+          "summary": "An external civil week system may be overlaid without becoming part of the Pastafarian date.",
+          "futureAction": "Retain if compatible with corpus/product scope."
+        }
+      ]
+    },
+    {
+      "id": "canonical-names",
+      "priority": "P0",
+      "claims": [
+        {
+          "id": "NAMES.COUNTS",
+          "class": "CANONICAL_NAMING",
+          "summary": "There are 17 cutlet names and 47 month names.",
+          "futureAction": "Direct corpus reconciliation."
+        },
+        {
+          "id": "NAMES.SEMANTIC_IDENTITY",
+          "class": "CANONICAL_NAMING",
+          "summary": "Name identity is semantic/canonical rather than a vote among spellings, translations or implementations.",
+          "futureAction": "Directly align with corpus naming model."
+        },
+        {
+          "id": "NAMES.HEBREW_SCROLL_SUPREME",
+          "class": "AUTHORITY_STATEMENT",
+          "summary": "The current article says the Hebrew Scroll is the supreme authority for name meaning.",
+          "futureAction": "P0 authority migration: replace/refine according to new corpus hierarchy."
+        },
+        {
+          "id": "NAMES.TRANSLATION_PRESENTATION",
+          "class": "LOCALIZATION_MODEL",
+          "summary": "Translation/transliteration are presentation layers rather than semantic identity.",
+          "futureAction": "Reconcile with corpus naming/localization rules and propagate to Seer/app locale policy."
+        }
+      ]
+    },
+    {
+      "id": "month-day-pairs",
+      "priority": "P2",
+      "claims": [
+        {
+          "id": "MONTH.PAIR_COUNT_5781",
+          "class": "DERIVED_THEOREM",
+          "summary": "47 names × 123 ordinal days gives 5781 syntactic month/day pairs.",
+          "futureAction": "Recompute if name count or max month length changes."
+        },
+        {
+          "id": "MONTH.AT_LEAST_3_PAIRS_MISSING",
+          "class": "DERIVED_THEOREM",
+          "summary": "With year length ≤5778, at least three possible month/day pairs are absent in every year.",
+          "futureAction": "Reprove mechanically from corpus bounds; do not treat as independent canon."
+        }
+      ]
+    },
+    {
+      "id": "calculation",
+      "priority": "P0",
+      "claims": [
+        {
+          "id": "SAUCE.Q",
+          "class": "CANONICAL_ALGORITHM",
+          "summary": "Q=2^127−1 is central to the calculation.",
+          "futureAction": "Direct corpus algorithm reconciliation."
+        },
+        {
+          "id": "SAUCE.COUNTERS_DROPS_BOWLS_STIRS",
+          "class": "CANONICAL_ALGORITHM",
+          "summary": "The current article lists five input counts, 7 hidden drops, 46 visible drops, 6 bowls and 12 final stirs.",
+          "futureAction": "Direct corpus algorithm reconciliation."
+        },
+        {
+          "id": "SAUCE.SYNCHRONOUS_UPDATE",
+          "class": "CANONICAL_ALGORITHM",
+          "summary": "Each final stir computes all six new bowls from one old snapshot before simultaneous commit.",
+          "futureAction": "Direct corpus algorithm reconciliation."
+        },
+        {
+          "id": "SAUCE.SAVED_SUM_R",
+          "class": "CANONICAL_ALGORITHM",
+          "summary": "R=SAVE(S+149r), not raw S, is used both for permutation and additive term inside final-stir update.",
+          "futureAction": "Direct corpus reconciliation; if changed, invalidate dependent vectors/research."
+        },
+        {
+          "id": "SAUCE.OLD_RAW_SUM_SUPERSEDED",
+          "class": "HISTORICAL_SUPERSESSION",
+          "summary": "Older raw-sum-derived examples are described as obsolete unless reverified.",
+          "futureAction": "Preserve historical status if corpus confirms; otherwise annotate, do not rewrite history."
+        }
+      ]
+    },
+    {
+      "id": "short-and-wide-choice",
+      "priority": "P0",
+      "claims": [
+        {
+          "id": "CHOICE.SHORT_REJECTION",
+          "class": "CANONICAL_ALGORITHM",
+          "summary": "Short Choice uses rejection sampling to avoid simple modulo bias.",
+          "futureAction": "Direct corpus reconciliation."
+        },
+        {
+          "id": "CHOICE.WIDE_NOT_UNIFORM_DIGITS",
+          "class": "CANONICAL_ALGORITHM_OR_NEGATIVE_CLAIM",
+          "summary": "Wide Choice is not equivalent to independent uniform base-Q digits until an index is formed.",
+          "futureAction": "Reconcile exact algorithm and preserve negative warning only if still true."
+        },
+        {
+          "id": "CHOICE.WIDE_UNREACHABLE_LEGAL_OPTIONS",
+          "class": "DERIVED_PROPERTY",
+          "summary": "For sufficiently large spaces, legal options may be unreachable under the specific Wide Choice mechanism.",
+          "futureAction": "Reprove against corpus algorithm."
+        }
+      ]
+    },
+    {
+      "id": "structural-atlas",
+      "priority": "P2",
+      "claims": [
+        {
+          "id": "ATLAS.NOT_CANON",
+          "class": "PROVENANCE_CLASSIFICATION",
+          "summary": "Structural Atlas values are empirical observations from a computation corpus, not canonical rules.",
+          "futureAction": "Preserve classification; rerun only if premises/engine version change."
+        },
+        {
+          "id": "ATLAS.VERSION_AND_SAMPLE",
+          "class": "EMPIRICAL_RESULT",
+          "summary": "Article records a specific engine identifier, sample sizes and many observed statistics.",
+          "futureAction": "Do not copy into canon; validate provenance and optionally regenerate after corpus alignment."
+        }
+      ]
+    },
+    {
+      "id": "anniversaries",
+      "priority": "P1",
+      "claims": [
+        {
+          "id": "ANNIVERSARY.MULTIPLE_COORDINATE_DEFINITIONS",
+          "class": "PRODUCT_OR_DERIVED_MODEL",
+          "summary": "Recurrence may be defined by month/day, cutlet/day or combined conditions.",
+          "futureAction": "Check corpus field semantics; final recurrence policy is product/editorial."
+        },
+        {
+          "id": "ANNIVERSARY.NOT_SIMPLE_RRULE",
+          "class": "PRODUCT_GUIDANCE",
+          "summary": "A Pastafarian yearly recurrence is a search problem rather than simple RRULE:FREQ=YEARLY.",
+          "futureAction": "Retain if semantics still make recurrence nontrivial."
+        },
+        {
+          "id": "ANNIVERSARY.EMPIRICAL_SCAN",
+          "class": "EMPIRICAL_RESULT",
+          "summary": "Article reports exact scan horizons and recurrence-distribution statistics.",
+          "futureAction": "Revalidate only if underlying semantics or scan implementation change."
+        }
+      ]
+    },
+    {
+      "id": "appointments",
+      "priority": "P1",
+      "claims": [
+        {
+          "id": "APPOINTMENT.NEEDS_DATE_PLUS_WORKING_DAY",
+          "class": "PRODUCT_GUIDANCE",
+          "summary": "Scheduling by Pastafarian date requires agreement on the five-field date and the working day used.",
+          "futureAction": "Check against corpus representation uniqueness and product contract."
+        },
+        {
+          "id": "APPOINTMENT.SAVE_ABSOLUTE_ANCHOR",
+          "class": "PRODUCT_GUIDANCE",
+          "summary": "Important appointments may additionally store an absolute chronological day/instant.",
+          "futureAction": "Likely product best practice; not canon."
+        }
+      ]
+    },
+    {
+      "id": "travel-and-all-day",
+      "priority": "P1",
+      "claims": [
+        {
+          "id": "TRAVEL.EVENT_STABLE_LABEL_LOCAL",
+          "class": "PRODUCT_MODEL",
+          "summary": "An event remains fixed while its local Pastafarian label may change with location.",
+          "futureAction": "Check day-boundary/location semantics and product model."
+        },
+        {
+          "id": "ALLDAY.PASTAFARIAN_BOUNDARY_TO_BOUNDARY",
+          "class": "PRODUCT_SEMANTIC_RULE",
+          "summary": "A Pastafarian all-day event spans local Pastafarian day boundary to the next, not civil midnight to midnight.",
+          "futureAction": "Reconcile boundary definition with corpus; retain export warning if true."
+        }
+      ]
+    },
+    {
+      "id": "day-boundary",
+      "priority": "P0",
+      "claims": [
+        {
+          "id": "BOUNDARY.VENUS_LOWER_CULMINATION",
+          "class": "CANONICAL_OR_PRODUCT_RULE",
+          "summary": "The local day boundary is the topocentric lower culmination of Venus's center on the local meridian.",
+          "futureAction": "Direct corpus reconciliation; clarify whether astronomy definition is canon or product interpretation."
+        },
+        {
+          "id": "BOUNDARY.NOT_MIDNIGHT_TIMEZONE_DST_VISIBILITY",
+          "class": "DERIVED_EXPLANATION",
+          "summary": "Boundary is not civil midnight, not defined by timezone/DST, and does not require naked-eye visibility.",
+          "futureAction": "Retain only as consequence of exact corpus definition."
+        },
+        {
+          "id": "BOUNDARY.LOCATION_DEPENDENT",
+          "class": "DERIVED_PROPERTY",
+          "summary": "The same instant can fall in different Pastafarian local days at different locations.",
+          "futureAction": "Revalidate from boundary definition."
+        },
+        {
+          "id": "BOUNDARY.CAESAREA_FALLBACK",
+          "class": "PRODUCT_BEHAVIOR",
+          "summary": "When no usable user location exists, the product defaults to Caesarea.",
+          "futureAction": "Recheck live product behavior; not canon."
+        }
+      ]
+    },
+    {
+      "id": "printed-calendar",
+      "priority": "P1",
+      "claims": [
+        {
+          "id": "PRINTED.CALENDAR_SCOPED_TO_WORKING_DAY",
+          "class": "DERIVED_PRODUCT_GUIDANCE",
+          "summary": "A printed calendar is valid for its stated working day and may need replacement when c changes.",
+          "futureAction": "Retain if F(c,t) semantics remain."
+        },
+        {
+          "id": "HAND_CALC.FULL_DETERMINISTIC",
+          "class": "CANONICAL_COMPLETENESS_CLAIM",
+          "summary": "The current specification is described as deterministic and complete enough to calculate by hand.",
+          "futureAction": "High sensitivity: corpus must substantiate completeness/determinism before retaining."
+        }
+      ]
+    },
+    {
+      "id": "seer",
+      "priority": "P0",
+      "claims": [
+        {
+          "id": "SEER.NOT_AUTHORITY",
+          "class": "ARCHITECTURE_AUTHORITY",
+          "summary": "Seer is not the source of authority and is wrong if it disagrees with the correct normative result.",
+          "futureAction": "Preserve non-authority architecture unless corpus explicitly changes it; update authority referent from Scroll/canonical implementation to corpus hierarchy."
+        },
+        {
+          "id": "SEER.SCROLL_RULES_CANONICAL_CALC",
+          "class": "AUTHORITY_STATEMENT",
+          "summary": "Current article says the Scroll sets the rules and canonical calculation produces the date.",
+          "futureAction": "P0 migration to new corpus authority model."
+        },
+        {
+          "id": "SEER.CAPABILITY_LIST_2026_09_21",
+          "class": "TIME_STAMPED_PRODUCT_EVIDENCE",
+          "summary": "Article records a dated list of Seer APIs/clients/native/container capabilities.",
+          "futureAction": "Reverify live product state; corpus does not decide capabilities."
+        },
+        {
+          "id": "SEER.PUBLIC_BETA_RENDER",
+          "class": "TIME_STAMPED_PRODUCT_EVIDENCE",
+          "summary": "Article describes live HTTPS beta deployment testing on Render.",
+          "futureAction": "Reverify current deployment/status; keep date if historical evidence rather than current claim."
+        }
+      ]
+    },
+    {
+      "id": "foundation-and-tablets",
+      "priority": "P0",
+      "claims": [
+        {
+          "id": "ANCHORS.DISTINCT_FROM_PROVENANCE",
+          "class": "EDITORIAL_PROVENANCE_MODEL",
+          "summary": "Computational anchors are distinguished from origin/history of delivery.",
+          "futureAction": "Retain distinction if corpus uses same separation."
+        }
+      ]
+    },
+    {
+      "id": "anchors",
+      "priority": "P0",
+      "claims": [
+        {
+          "id": "FOUNDATION.GREGORIAN_DATE",
+          "class": "CANONICAL_ANCHOR",
+          "summary": "Foundation Day is stated as 22 Dec 41,222 BCE proleptic Gregorian.",
+          "futureAction": "Direct corpus anchor reconciliation."
+        },
+        {
+          "id": "FOUNDATION.NOT_BEGINNING_OF_TIME",
+          "class": "CANONICAL_OR_THEOLOGY_NEGATIVE_CLAIM",
+          "summary": "Foundation Day is explicitly not the beginning of time; it is a computational anchor.",
+          "futureAction": "Direct corpus reconciliation."
+        },
+        {
+          "id": "FOUNDATION.ODD_EVEN_ENCODING",
+          "class": "CANONICAL_COUNTER_RULE",
+          "summary": "Days around Foundation use positive odd/even encoding on opposite sides.",
+          "futureAction": "Direct corpus reconciliation."
+        },
+        {
+          "id": "TABLETS.DATE",
+          "class": "CANONICAL_ANCHOR",
+          "summary": "Tablets Day is stated as 15 Jun 763 BCE Julian / 7 Jun 763 BCE Gregorian.",
+          "futureAction": "Direct corpus reconciliation."
+        },
+        {
+          "id": "FOUNDATION_TABLETS.DISTANCE",
+          "class": "CANONICAL_ANCHOR",
+          "summary": "Exact distance Foundation→Tablets is stated as 14,777,149 days.",
+          "futureAction": "Direct corpus reconciliation and arithmetic verification."
+        }
+      ]
+    },
+    {
+      "id": "site-story",
+      "priority": "P0",
+      "claims": [
+        {
+          "id": "ORIGIN.CALENDAR_PART_OF_CREATION",
+          "class": "PROJECT_THEOLOGY_ORIGIN",
+          "summary": "The calendar is described as part of creation.",
+          "futureAction": "Direct corpus origin reconciliation."
+        },
+        {
+          "id": "ORIGIN.HUMANITY_UNAWARE_USE",
+          "class": "PROJECT_HISTORY",
+          "summary": "Humanity is said to have used it without sufficient awareness until modern re-delivery.",
+          "futureAction": "Direct corpus provenance/history reconciliation."
+        },
+        {
+          "id": "ORIGIN.SCROLL_NOT_EXHAUSTIVE",
+          "class": "PROVENANCE_STATEMENT",
+          "summary": "The Scroll is said not to specify every historical detail; unstated details are not part of its text.",
+          "futureAction": "Replace/refine within corpus provenance model."
+        },
+        {
+          "id": "REDELIVERY.FIXED_EVENT_DYNAMIC_PASTAFARIAN_DATE",
+          "class": "PROJECT_HISTORY_PLUS_DERIVED_SEMANTICS",
+          "summary": "Modern re-delivery is a fixed historical event but has no single fixed Pastafarian date; representation depends on working day.",
+          "futureAction": "Corpus must settle event description/date; dynamic representation follows F(c,t) if retained."
+        }
+      ]
+    },
+    {
+      "id": "reverse-conversion",
+      "priority": "P2",
+      "claims": [
+        {
+          "id": "REVERSE.UNIQUE_WITH_C_AND_PAIR",
+          "class": "DERIVED_THEOREM",
+          "summary": "Within a known year and working day, cutlet-name/day or month-name/day identify at most one day; full date is unique.",
+          "futureAction": "Reprove against corpus rules and implementation."
+        },
+        {
+          "id": "REVERSE.CANDIDATE_BOUNDS",
+          "class": "DERIVED_THEOREM",
+          "summary": "Article provides candidate-count upper bounds for partial known fields.",
+          "futureAction": "Recompute if structural bounds change."
+        },
+        {
+          "id": "REVERSE.WITHOUT_C_NOT_ABSOLUTE",
+          "class": "DERIVED_THEOREM",
+          "summary": "A full Pastafarian five-field date without working day is not an absolute chronological address.",
+          "futureAction": "Reprove/revalidate; likely central explanatory result."
+        }
+      ]
+    },
+    {
+      "id": "far-time-structure",
+      "priority": "P3",
+      "claims": [
+        {
+          "id": "ASYMPTOTIC.FIXED_C_AFFINE_PERIODICITY",
+          "class": "DERIVED_THEOREM",
+          "summary": "For fixed c, sufficiently far in the past there is exact affine periodicity preserving four non-year fields with a fixed year shift.",
+          "futureAction": "Reprove against aligned semantics; do not make canon."
+        },
+        {
+          "id": "ASYMPTOTIC.NO_GLOBAL_DIAGONAL_PERIODICITY",
+          "class": "NEGATIVE_DERIVED_CLAIM",
+          "summary": "The fixed-c theorem does not imply F(c+T,t+T)=F(c,t).",
+          "futureAction": "Retain as logical warning if theorem remains."
+        },
+        {
+          "id": "ASYMPTOTIC.SLOPE_VARIATION_OPEN",
+          "class": "OPEN_RESEARCH_QUESTION",
+          "summary": "Whether final asymptotic slope varies among working days remains open.",
+          "futureAction": "Preserve as open unless later research closes it."
+        }
+      ]
+    },
+    {
+      "id": "sauce-history",
+      "priority": "P3",
+      "claims": [
+        {
+          "id": "SAUCE_HISTORY.DERIVED_NOT_RULE",
+          "class": "PROVENANCE_CLASSIFICATION",
+          "summary": "Invertibility/history-retention results are explicitly derived research, not additional calendar rules.",
+          "futureAction": "Preserve classification."
+        },
+        {
+          "id": "SAUCE_HISTORY.GENERIC_INJECTIVITY_VISIBLE",
+          "class": "DERIVED_THEOREM",
+          "summary": "Visible stages 3–46 are described as generically injective on the relevant asymptotic branch.",
+          "futureAction": "Reprove if algorithm changes."
+        },
+        {
+          "id": "SAUCE_HISTORY.FIRST_FIVE_POSTSTIRS_INVERTIBLE",
+          "class": "DERIVED_THEOREM",
+          "summary": "First five final post-stirs are said to be generically invertible on the relevant canonical union without side information.",
+          "futureAction": "Reprove if algorithm changes."
+        },
+        {
+          "id": "SAUCE_HISTORY.FINAL_SIX_BOWLS_SUFFICIENCY_OPEN",
+          "class": "OPEN_RESEARCH_QUESTION",
+          "summary": "Whether final six bowls alone are always generically sufficient remains open.",
+          "futureAction": "Preserve as open unless research updates."
+        }
+      ]
+    },
+    {
+      "id": "summary",
+      "priority": "P4",
+      "claims": [
+        {
+          "id": "SUMMARY.DERIVED_SYNTHESIS",
+          "class": "EDITORIAL_SYNTHESIS",
+          "summary": "Summary restates core semantics and product consequences.",
+          "futureAction": "Rewrite last from reconciled sections; never use summary as independent authority."
+        }
+      ]
+    }
+  ]
+}
