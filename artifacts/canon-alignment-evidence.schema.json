@@ -1,0 +1,277 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "pastafarian-canon-alignment-evidence.schema.json",
+  "title": "Pastafarian Canon Alignment Evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "corpusSnapshot",
+    "surface",
+    "changes",
+    "verification",
+    "status"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "corpusSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "identifier",
+        "authorityKind"
+      ],
+      "properties": {
+        "identifier": {
+          "type": "string",
+          "minLength": 1
+        },
+        "authorityKind": {
+          "type": "string",
+          "enum": [
+            "commit",
+            "hash",
+            "version",
+            "bundle",
+            "other"
+          ]
+        },
+        "sourceLocation": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "pinnedAt": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "surface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "refBefore",
+        "path"
+      ],
+      "properties": {
+        "repository": {
+          "type": "string",
+          "minLength": 1
+        },
+        "refBefore": {
+          "type": "string",
+          "minLength": 1
+        },
+        "shaBefore": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "refAfter": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "shaAfter": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "locale": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "surfaceKind": {
+          "type": "string",
+          "enum": [
+            "public_explanation",
+            "ui_string",
+            "api_doc",
+            "implementation_doc",
+            "research",
+            "historical_record",
+            "translation",
+            "fsm_article",
+            "scroll_quote",
+            "test_fixture",
+            "other"
+          ]
+        }
+      }
+    },
+    "changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "classification",
+          "disposition"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sectionOrLocator": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "classification": {
+            "type": "string",
+            "enum": [
+              "CANONICAL_CORRECTION",
+              "PROVENANCE_CORRECTION",
+              "DERIVED_THEOREM",
+              "EMPIRICAL_RESULT",
+              "PRODUCT_BEHAVIOR",
+              "EDITORIAL_ONLY",
+              "HISTORICAL_QUOTATION",
+              "DELIBERATE_JOKE",
+              "NO_CHANGE_REQUIRED",
+              "UNRESOLVED"
+            ]
+          },
+          "beforeSummary": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "canonSummary": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "afterSummary": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "disposition": {
+            "type": "string",
+            "enum": [
+              "changed",
+              "unchanged",
+              "deferred",
+              "not_applicable"
+            ]
+          },
+          "notes": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "semanticReview",
+        "tests"
+      ],
+      "properties": {
+        "semanticReview": {
+          "type": "string",
+          "enum": [
+            "PASS",
+            "FAIL",
+            "NOT_RUN",
+            "PARTIAL"
+          ]
+        },
+        "languageReview": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "PASS",
+            "FAIL",
+            "NOT_RUN",
+            "PARTIAL",
+            null
+          ]
+        },
+        "renderReview": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "PASS",
+            "FAIL",
+            "NOT_RUN",
+            "PARTIAL",
+            null
+          ]
+        },
+        "accessibilityReview": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "PASS",
+            "FAIL",
+            "NOT_RUN",
+            "PARTIAL",
+            null
+          ]
+        },
+        "tests": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "evidenceNotes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "PASS",
+        "FAIL",
+        "BLOCKED",
+        "PARTIAL",
+        "NOT_STARTED"
+      ]
+    },
+    "unresolved": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}
