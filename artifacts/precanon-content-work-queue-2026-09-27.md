@@ -6,6 +6,8 @@ Continue everything that can be completed without deciding unsettled canonical c
 
 Work branch: `work/about-canon-transition-2026-09-27`.
 
+Current local status: **quiescent pending a trigger**. All content/recovery/QA work that is both useful and independent of unsettled canon has been completed to the currently available evidence limit. The remaining items are blocked on a new source, the pinned corpus, or an explicitly separate live QA workstream.
+
 ## Completed in this branch
 
 - recovery ledger for post-draft approved additions (Norse-god ontology example, mechanism/agent distinction, epistemic-activism/wishful-thinking material);
@@ -46,6 +48,8 @@ Work branch: `work/about-canon-transition-2026-09-27`.
 - [x] Structure/cross-reference QA completed in `fsm-structure-crossref-qa-2026-09-27.md`; appendix subsections were correctly nested as H3 in the staging candidate while historical source text remained untouched.
 - [x] High-risk external-attribution sites are identified in the provenance matrix and editorial QA, especially gender, meal rules, Hell/Antipasti, prayer custom and tradition/provenance.
 - [x] Consolidated staged candidate exists: `fsm-about-consolidated-candidate-2026-09-27.md`; canon-dependent choices remain intentionally unresolved.
+- [x] Candidate insertion points for the separately staged 2026-09-17 ontology/epistemology additions are documented in `fsm-postdraft-insertion-plan-2026-09-27.md`; no public integration was performed.
+- [x] Provenance/status artifacts were re-audited against the later recovery work so they no longer advertise already-completed insertion/recovery tasks as open.
 
 - [x] Specification/conformance versus legal-prohibition distinction audited across current public article, repository licenses and Seer NOTICE; staged Hebrew wording candidates prepared without publishing them.
 - [x] Dynamic modern re-delivery display has an implementation-ready design plan using the existing worker `convert` operation; actual implementation waits for corpus decisions on event identity and calculation-day context.
@@ -57,6 +61,18 @@ Work branch: `work/about-canon-transition-2026-09-27`.
 - [~] Live native QA continues independently on `feature/about-i18n-72-locales`; this workstream snapshots its control/evidence without interfering. At the latest capture the live control was Icelandic (`is-IS`), sequence 14.
 - [x] Evidence-layer separation is explicitly preserved in the transition docs and machine-readable evidence snapshot/schema; semantic alignment must never be promoted to render/a11y/PWA PASS.
 - [x] The 29 stable `/about/` IDs are captured in the reconciliation inventory/claim register and protected as the current deep-link contract pending an explicit corpus-driven structural decision.
+
+## Continuation triggers
+
+Do not manufacture another pre-canon prose pass merely to keep this branch moving. Resume substantive work here only when at least one of these happens:
+
+- a stable canonical-corpus snapshot is available;
+- a new lawful primary source makes the Gospel page-level gap actually closable;
+- a newly surfaced historical file/conversation contains missing exact post-draft prose;
+- a new Pastafarian product/document surface is discovered and needs inventorying;
+- a result from the separate native-language QA workstream materially changes the evidence snapshot used here.
+
+Absent one of those triggers, the correct state of this workstream is to remain quiescent.
 
 ## Deferred until the corpus is ready
 
