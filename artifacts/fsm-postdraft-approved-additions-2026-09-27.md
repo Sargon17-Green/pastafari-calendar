@@ -33,19 +33,23 @@ This is a staging reconstruction of the later approved idea, not claimed as the 
 
 ## A02 — Penguin / solar-water-heater-factory appendix
 
-**State:** `STRUCTURE_RECOVERED` + partial exact text.
+**State:** `RECOVERED_HISTORICAL_COMPOSITE` + provenance caveat.
 
-Recovered:
+Initial recovery found only:
 - title/opening fragment;
 - 13 subsection headings;
-- exact final conclusion;
-- existence of later wording edits.
+- exact final conclusion.
 
-Separate files preserve:
-- exact known fragment: `fsm-penguin-appendix-recovered-fragment-2026-09-27.md`;
-- explicitly reconstructed body: `fsm-penguin-appendix-reconstruction-draft-2026-09-27.md`.
+Later conversation-state recovery found exact historical section text across multiple prior assistant-output records. These fragments are now assembled in:
 
-Do not collapse those provenance classes.
+`fsm-penguin-appendix-recovered-composite-2026-09-27.md`
+
+The composite is the preferred historical-text baseline.
+
+Caveat:
+- it is **not** claimed to be a byte-for-byte export of one single original message;
+- its paragraphs are recovered historical wording from the same approved appendix lineage;
+- the separate `fsm-penguin-appendix-reconstruction-draft-2026-09-27.md` is newly written reconstruction and must remain clearly distinguished.
 
 ## A03 — Concrete Norse-god ontology; gods need not be omnipotent
 
@@ -165,7 +169,7 @@ These additions are now durable and cannot be silently lost in a future rewrite.
 What remains unavailable:
 - exact full historical paragraphs for A03–A05;
 - exact historical location of those paragraphs;
-- exact full later appendix body.
+- exact byte-for-byte export of one single later appendix message (the recovered composite is the best available historical reconstruction from exact fragments).
 
 Those gaps are explicitly recorded rather than filled by invented “recovered” prose.
 
