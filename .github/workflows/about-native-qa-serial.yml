@@ -161,7 +161,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          OUT="artifacts/about-i18n-native-sessions/$QA_LOCALE_CODE"
+          OUT="artifacts/about-i18n-native-sessions/$QA_LOCALE_CODE/staged-$QA_SEQUENCE"
           SERVER="$(find /tmp/native-qa/llama -type f -name llama-server | head -n 1)"
           test -x "$SERVER"
           "$SERVER" -m /tmp/native-qa/qwen3-8b-q4_k_m.gguf -c 32768 -t 4 --host 127.0.0.1 --port 8080 > /tmp/native-qa/llama-server.log 2>&1 &
@@ -180,7 +180,7 @@ jobs:
           code = os.environ["QA_LOCALE_CODE"]
           tag = os.environ["QA_LOCALE_TAG"]
           seq = os.environ["QA_SEQUENCE"]
-          out = Path("artifacts/about-i18n-native-sessions") / code
+          out = Path("artifacts/about-i18n-native-sessions") / code / f"staged-{os.environ['QA_SEQUENCE']}"
           base = (out / "prompt.md").read_text(encoding="utf-8").strip()
 
           with urllib.request.urlopen("http://127.0.0.1:8080/v1/models", timeout=30) as resp:
