@@ -26,6 +26,8 @@ Sérreglur sem koma í veg fyrir falskar jákvæðar niðurstöður:
 - Web App Manifest styður `*_localized` tungumálakort. Ekki telja ensku fallback-gildin `name`, `short_name`, `description`, `lang` eða `dir` sjálfkrafa íslenskan staðfærslugalla. Athugaðu þess í stað hvort íslenska eigi fullkomnar og réttar færslur í `name_localized`, `short_name_localized` og `description_localized`, með réttu tungumáli og stefnu.
 - Static HTML getur innihaldið ensk bootstrap-gildi á elementum með `data-i18n` eða `data-i18n-attr`. Runtime-staðfærslan skiptir þeim út þegar íslenskt locale hefur verið virkjað. Ekki tilkynna þessi source-default ein og sér sem galla; tilkynntu þau aðeins ef kóðaflæði sýnir að þau geta raunverulega verið sýnileg eftir íslenska locale-initialization eða í raunverulegri villu-/fallback-leið.
 - Locale-resolution þessa static site er sjálft gert með JavaScript. `noscript`-fallbackið er viljandi tungumálahlutlaust og inniheldur aðeins sérnafnið `JavaScript` auk viðvörunartákns. Ekki telja það enska tungumálaleka. Tilkynntu hins vegar annan náttúrulegan texta á röngu tungumáli eða raunverulegan accessibility-galla sem er óháður locale-resolution.
+- Fyrirmæli rýnisins sjálfs, `MODE`/`SOURCE_PART` stýrilínur, skráarhausar og samantektir annarra rýnenda eru **ekki** texti vefsins. Aldrei nota texta úr þessum fyrirmælum sem `current_text`, aldrei staðsetja finding í prompt-/artifact-skrá og aldrei telja slíkan texta staðfærslugalla.
+- Finding um „texta á röngu tungumáli“ er aðeins gilt ef þú getur vitnað í raunverulegan náttúrulegan texta úr gefinni vefskrá og nafngreint þá vefskrá. Ekki kalla texta íslenskan „ensku“ eða annað tungumál nema hann sé það í raun.
 
 Þú færð `MODE` og `SOURCE_PART` neðan við þessi fyrirmæli.
 
