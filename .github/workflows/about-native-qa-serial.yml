@@ -15,9 +15,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  native-review:
+  prepare:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 10
+    outputs:
+      code: ${{ steps.control.outputs.code }}
+      tag: ${{ steps.control.outputs.tag }}
+      sequence: ${{ steps.control.outputs.sequence }}
+      prompt_path: ${{ steps.control.outputs.prompt_path }}
     steps:
       - name: Checkout branch
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
@@ -25,11 +30,12 @@ jobs:
           fetch-depth: 0
 
       - name: Read and validate serial QA control
+        id: control
         shell: bash
         run: |
           set -euo pipefail
-          python - <<'PY' >> "$GITHUB_ENV"
-          import json, re
+          python - <<'PY'
+          import json, os, re
           from pathlib import Path
 
           control = json.loads(Path("artifacts/about-i18n-native-qa-control.json").read_text(encoding="utf-8"))
@@ -44,27 +50,30 @@ jobs:
               raise SystemExit(f"unsafe locale_tag: {tag!r}")
           if prompt_path != f"artifacts/about-i18n-native-prompts/{code}.md":
               raise SystemExit(f"unexpected prompt_path: {prompt_path!r}")
-          if not Path(prompt_path).is_file():
-              raise SystemExit(f"missing target-language prompt: {prompt_path}")
-          if not Path(f"docs/i18n/locales/{code}.js").is_file():
-              raise SystemExit(f"missing locale module: {code}")
-          if not Path(f"docs/about/content/{code}.html").is_file():
-              raise SystemExit(f"missing about article: {code}")
+          for path in [prompt_path, f"docs/i18n/locales/{code}.js", f"docs/about/content/{code}.html"]:
+              if not Path(path).is_file():
+                  raise SystemExit(f"missing required file: {path}")
 
-          print(f"QA_LOCALE_CODE={code}")
-          print(f"QA_LOCALE_TAG={tag}")
-          print(f"QA_PROMPT_PATH={prompt_path}")
-          print(f"QA_SEQUENCE={sequence}")
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as out:
+              out.write(f"code={code}\n")
+              out.write(f"tag={tag}\n")
+              out.write(f"sequence={sequence}\n")
+              out.write(f"prompt_path={prompt_path}\n")
           PY
 
-      - name: Prepare compact whole-site review source
+      - name: Build target-locale source parts
         shell: bash
+        env:
+          QA_LOCALE_CODE: ${{ steps.control.outputs.code }}
+          QA_LOCALE_TAG: ${{ steps.control.outputs.tag }}
+          QA_PROMPT_PATH: ${{ steps.control.outputs.prompt_path }}
+          QA_SEQUENCE: ${{ steps.control.outputs.sequence }}
         run: |
           set -euo pipefail
-          OUT="artifacts/about-i18n-native-sessions/$QA_LOCALE_CODE/staged-$QA_SEQUENCE"
-          mkdir -p "$OUT"
-          git rev-parse HEAD > "$OUT/reviewed-head.txt"
-          cp "$QA_PROMPT_PATH" "$OUT/prompt.md"
+          rm -rf /tmp/native-qa-input
+          mkdir -p /tmp/native-qa-input
+          cp "$QA_PROMPT_PATH" /tmp/native-qa-input/base-prompt.md
+          git rev-parse HEAD > /tmp/native-qa-input/reviewed-head.txt
 
           python - <<'PY'
           from pathlib import Path
@@ -72,8 +81,7 @@ jobs:
 
           code = os.environ["QA_LOCALE_CODE"]
           tag = os.environ["QA_LOCALE_TAG"]
-          seq = os.environ["QA_SEQUENCE"]
-          out = Path("artifacts/about-i18n-native-sessions") / code / f"staged-{seq}"
+          out = Path("/tmp/native-qa-input")
 
           def text(path):
               return Path(path).read_text(encoding="utf-8")
@@ -84,7 +92,7 @@ jobs:
               keep = set(range(min(first_lines, len(lines))))
               for i, line in enumerate(lines):
                   if any(rx.search(line) for rx in regexes):
-                      for j in range(max(0, i-radius), min(len(lines), i+radius+1)):
+                      for j in range(max(0, i-radius), min(len(lines), i + radius + 1)):
                           keep.add(j)
               result, last = [], None
               for i in sorted(keep):
@@ -124,30 +132,41 @@ jobs:
                       keys.update(rx.findall(data))
               return "\n".join(sorted(keys))
 
+          def headings_and_leads(path):
+              lines = text(path).splitlines()
+              keep = set()
+              paragraph_budget = 0
+              for i, line in enumerate(lines):
+                  if re.search(r"<h[23]\b", line, re.I):
+                      keep.add(i)
+                      paragraph_budget = 2
+                  elif paragraph_budget and re.search(r"<p\b", line, re.I):
+                      keep.add(i)
+                      paragraph_budget -= 1
+              return "\n".join(f"{i+1}: {lines[i]}" for i in sorted(keep))
+
           locale_path = f"docs/i18n/locales/{code}.js"
           about_path = f"docs/about/content/{code}.html"
 
-          sections = [
+          ui = "\n\n".join([
               f"===== {locale_path} — FULL TARGET LOCALE =====\n" + text(locale_path),
-              f"===== {about_path} — FULL TARGET ABOUT ARTICLE =====\n" + text(about_path),
-              "===== docs/index.html — I18N KEY INVENTORY =====\n" +
-                  key_inventory(["docs/index.html"]),
-              "===== docs/index.html — RAW METADATA/A11Y/FALLBACK SURFACES =====\n" +
-                  excerpt("docs/index.html", [r"aria-", r"placeholder", r"<title", r"<meta", r"<noscript", r"<html"], radius=0),
-              "===== docs/about/index.html — I18N KEY INVENTORY =====\n" +
-                  key_inventory(["docs/about/index.html"]),
-              "===== docs/about/index.html — RAW METADATA/A11Y/FALLBACK SURFACES =====\n" +
-                  excerpt("docs/about/index.html", [r"aria-", r"placeholder", r"<title", r"<meta", r"<noscript", r"<html"], radius=0),
+              "===== docs/index.html — I18N KEY INVENTORY =====\n" + key_inventory(["docs/index.html"]),
+              "===== docs/index.html — RAW METADATA/A11Y/FALLBACK =====\n" +
+                  excerpt("docs/index.html", [r"aria-", r"placeholder", r"<title", r"<meta", r"<noscript", r"<html"]),
+              "===== docs/about/index.html — I18N KEY INVENTORY =====\n" + key_inventory(["docs/about/index.html"]),
+              "===== docs/about/index.html — RAW METADATA/A11Y/FALLBACK =====\n" +
+                  excerpt("docs/about/index.html", [r"aria-", r"placeholder", r"<title", r"<meta", r"<noscript", r"<html"]),
               "===== docs/manifest.webmanifest — FALLBACK + TARGET LOCALE =====\n" +
-                  excerpt("docs/manifest.webmanifest",
-                          [rf'"{re.escape(code)}"\s*:', re.escape(tag)],
-                          radius=5, first_lines=12),
+                  excerpt("docs/manifest.webmanifest", [rf'"{re.escape(code)}"\s*:', re.escape(tag)], radius=5, first_lines=12),
+          ])
+
+          about = f"===== {about_path} — FULL TARGET ABOUT ARTICLE =====\n" + text(about_path)
+
+          integration = "\n\n".join([
               "===== docs/i18n/runtime.js — FULL LOCALIZATION RUNTIME =====\n" + text("docs/i18n/runtime.js"),
               "===== docs/i18n/registry.js — TARGET REGISTRATION =====\n" +
-                  excerpt("docs/i18n/registry.js",
-                          [rf'defineLocale\("{re.escape(code)}"', re.escape(tag), r"DEFAULT_LOCALE"],
-                          radius=2),
-              "===== docs/i18n/registry.js — LOCALE LOAD/FALLBACK FUNCTIONS =====\n" +
+                  excerpt("docs/i18n/registry.js", [rf'defineLocale\("{re.escape(code)}"', re.escape(tag), r"DEFAULT_LOCALE"], radius=2),
+              "===== docs/i18n/registry.js — LOAD/FALLBACK FUNCTIONS =====\n" +
                   "\n\n".join(filter(None, [
                       function_block("docs/i18n/registry.js", "loadLocaleSource"),
                       function_block("docs/i18n/registry.js", "materializeLocaleResources"),
@@ -156,26 +175,51 @@ jobs:
               "===== docs/about/about.js — FULL ARTICLE LOCALIZATION FLOW =====\n" + text("docs/about/about.js"),
               "===== docs/app.js — HARD-CODED DISPLAY + LOCALE-LOAD TOUCHPOINTS =====\n" +
                   excerpt("docs/app.js",
-                          [r"textContent\s*=\s*[\'\"]", r"innerHTML\s*=\s*[\'\"]",
-                           r"setAttribute\s*\(\s*[\'\"](aria-label|title|placeholder)[\'\"]",
-                           r"placeholder\s*=\s*[\'\"]", r"title\s*=\s*[\'\"]",
-                           r"loadLocale\s*\(", r"applyDocumentLocale", r"visibleError"],
-                          radius=1),
+                          [r"textContent\s*=\s*['\"]", r"innerHTML\s*=\s*['\"]",
+                           r"setAttribute\s*\(\s*['\"](aria-label|title|placeholder)['\"]",
+                           r"placeholder\s*=\s*['\"]", r"title\s*=\s*['\"]",
+                           r"loadLocale\s*\(", r"applyDocumentLocale", r"visibleError"], radius=1),
               "===== docs/reverse-ui.js — HARD-CODED DISPLAY TOUCHPOINTS =====\n" +
                   excerpt("docs/reverse-ui.js",
-                          [r"textContent\s*=\s*[\'\"]", r"innerHTML\s*=\s*[\'\"]",
-                           r"setAttribute\s*\(\s*[\'\"](aria-label|title|placeholder)[\'\"]",
-                           r"placeholder\s*=\s*[\'\"]", r"title\s*=\s*[\'\"]"],
-                          radius=1),
+                          [r"textContent\s*=\s*['\"]", r"innerHTML\s*=\s*['\"]",
+                           r"setAttribute\s*\(\s*['\"](aria-label|title|placeholder)['\"]",
+                           r"placeholder\s*=\s*['\"]", r"title\s*=\s*['\"]"], radius=1),
+          ])
 
-          ]
+          consistency = "\n\n".join([
+              f"===== {locale_path} — FULL TARGET UI TERMINOLOGY =====\n" + text(locale_path),
+              f"===== {about_path} — HEADINGS + LEAD PARAGRAPHS =====\n" + headings_and_leads(about_path),
+          ])
 
-          source = "\n\n".join(sections)
-          if len(source) > 90000:
-              raise SystemExit(f"compact review source too large: {len(source)} chars")
-          (out / "source.txt").write_text(source, encoding="utf-8")
-          print(f"compact review source: {len(source)} chars")
+          parts = {"ui": ui, "about": about, "integration": integration, "consistency": consistency}
+          for name, data in parts.items():
+              if len(data) > 60000:
+                  raise SystemExit(f"{name} source too large: {len(data)} chars")
+              (out / f"{name}.txt").write_text(data, encoding="utf-8")
+              print(f"{name}: {len(data)} chars")
           PY
+
+      - name: Upload reviewer inputs
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: native-qa-input-${{ github.run_id }}
+          path: /tmp/native-qa-input/
+          if-no-files-found: error
+
+  review:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        surface: [ui, about, integration, consistency]
+    steps:
+      - name: Download reviewer inputs
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: native-qa-input-${{ github.run_id }}
+          path: /tmp/native-qa-input
 
       - name: Download pinned llama.cpp and Qwen3-4B reviewer
         shell: bash
@@ -188,14 +232,18 @@ jobs:
           curl -fL --retry 3 'https://huggingface.co/Qwen/Qwen3-4B-GGUF/resolve/main/Qwen3-4B-Q4_K_M.gguf?download=true' -o /tmp/native-qa/qwen3-4b-q4_k_m.gguf
           echo "7485fe6f11af29433bc51cab58009521f205840f5b4ae3a32fa7f92e8534fdf5  /tmp/native-qa/qwen3-4b-q4_k_m.gguf" | sha256sum -c -
 
-      - name: Run isolated compact target-language review
+      - name: Run isolated target-language surface review
         shell: bash
+        env:
+          QA_SURFACE: ${{ matrix.surface }}
+          QA_LOCALE_CODE: ${{ needs.prepare.outputs.code }}
+          QA_LOCALE_TAG: ${{ needs.prepare.outputs.tag }}
+          QA_SEQUENCE: ${{ needs.prepare.outputs.sequence }}
         run: |
           set -euo pipefail
-          OUT="artifacts/about-i18n-native-sessions/$QA_LOCALE_CODE/staged-$QA_SEQUENCE"
           SERVER="$(find /tmp/native-qa/llama -type f -name llama-server | head -n 1)"
           test -x "$SERVER"
-          "$SERVER" -m /tmp/native-qa/qwen3-4b-q4_k_m.gguf -c 32768 -t 4 --host 127.0.0.1 --port 8080 > /tmp/native-qa/llama-server.log 2>&1 &
+          "$SERVER" -m /tmp/native-qa/qwen3-4b-q4_k_m.gguf -c 16384 -t 4 --host 127.0.0.1 --port 8080 > /tmp/native-qa/llama-server.log 2>&1 &
           SERVER_PID=$!
           trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
           for _ in $(seq 1 180); do
@@ -204,27 +252,24 @@ jobs:
           done
           curl -fsS http://127.0.0.1:8080/health >/dev/null
 
+          mkdir -p /tmp/native-qa-output
           python - <<'PY'
           from pathlib import Path
           import json, os, urllib.request, urllib.error
 
-          code = os.environ["QA_LOCALE_CODE"]
-          tag = os.environ["QA_LOCALE_TAG"]
-          seq = os.environ["QA_SEQUENCE"]
-          out = Path("artifacts/about-i18n-native-sessions") / code / f"staged-{seq}"
-          base = (out / "prompt.md").read_text(encoding="utf-8").strip()
-          source = (out / "source.txt").read_text(encoding="utf-8")
-          message = base + "\n\nMODE=FINAL\nSOURCE_PART=WHOLE_SITE_COMPACT\n\n" + source
+          surface = os.environ["QA_SURFACE"]
+          base = Path("/tmp/native-qa-input/base-prompt.md").read_text(encoding="utf-8").strip()
+          source = Path(f"/tmp/native-qa-input/{surface}.txt").read_text(encoding="utf-8")
+          message = base + f"\n\nMODE=FINDINGS_ONLY\nSOURCE_PART={surface.upper()}\n\n" + source
 
           with urllib.request.urlopen("http://127.0.0.1:8080/v1/models", timeout=30) as resp:
               model_id = json.load(resp)["data"][0]["id"]
-
           payload = {
               "model": model_id,
               "messages": [{"role": "user", "content": message}],
               "temperature": 0.15,
               "top_p": 0.8,
-              "max_tokens": 1600,
+              "max_tokens": 850,
               "stream": False,
           }
           req = urllib.request.Request(
@@ -234,69 +279,221 @@ jobs:
               method="POST",
           )
           try:
-              with urllib.request.urlopen(req, timeout=5400) as resp:
+              with urllib.request.urlopen(req, timeout=3600) as resp:
                   data = json.load(resp)
           except urllib.error.HTTPError as exc:
-              print("HTTP error body:")
               print(exc.read().decode("utf-8", errors="replace"))
               raise
 
           review = data["choices"][0]["message"]["content"].strip() + "\n"
-          (out / "review.md").write_text(review, encoding="utf-8")
+          Path(f"/tmp/native-qa-output/finding-{surface}.md").write_text(review, encoding="utf-8")
+          Path(f"/tmp/native-qa-output/subreview-{surface}.md").write_text(
+              "# SUBREVIEW_SESSION\n"
+              f"surface: {surface}\n"
+              "reviewer_model: Qwen3-4B Q4_K_M\n"
+              "\n===== USER =====\n" + message +
+              "\n===== ASSISTANT =====\n" + review,
+              encoding="utf-8",
+          )
+          PY
 
-          reviewed_head = (out / "reviewed-head.txt").read_text(encoding="utf-8").strip()
+      - name: Upload surface findings
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: native-qa-findings-${{ github.run_id }}-${{ matrix.surface }}
+          path: /tmp/native-qa-output/
+          if-no-files-found: error
+
+  synthesize:
+    needs: [prepare, review]
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Download reviewer inputs
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: native-qa-input-${{ github.run_id }}
+          path: /tmp/native-qa-input
+
+      - name: Download surface findings
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: native-qa-findings-${{ github.run_id }}-*
+          path: /tmp/native-qa-findings
+          merge-multiple: true
+
+      - name: Download pinned llama.cpp and Qwen3-4B reviewer
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/native-qa/llama
+          curl -fL --retry 3 https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz -o /tmp/native-qa/llama.tar.gz
+          echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/native-qa/llama.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/native-qa/llama.tar.gz -C /tmp/native-qa/llama
+          curl -fL --retry 3 'https://huggingface.co/Qwen/Qwen3-4B-GGUF/resolve/main/Qwen3-4B-Q4_K_M.gguf?download=true' -o /tmp/native-qa/qwen3-4b-q4_k_m.gguf
+          echo "7485fe6f11af29433bc51cab58009521f205840f5b4ae3a32fa7f92e8534fdf5  /tmp/native-qa/qwen3-4b-q4_k_m.gguf" | sha256sum -c -
+
+      - name: Synthesize final target-language verdict
+        shell: bash
+        env:
+          QA_LOCALE_CODE: ${{ needs.prepare.outputs.code }}
+          QA_LOCALE_TAG: ${{ needs.prepare.outputs.tag }}
+          QA_SEQUENCE: ${{ needs.prepare.outputs.sequence }}
+        run: |
+          set -euo pipefail
+          SERVER="$(find /tmp/native-qa/llama -type f -name llama-server | head -n 1)"
+          test -x "$SERVER"
+          "$SERVER" -m /tmp/native-qa/qwen3-4b-q4_k_m.gguf -c 16384 -t 4 --host 127.0.0.1 --port 8080 > /tmp/native-qa/llama-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+          for _ in $(seq 1 180); do
+            curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8080/health >/dev/null
+
+          mkdir -p /tmp/native-qa-final
+          python - <<'PY'
+          from pathlib import Path
+          import json, os, urllib.request, urllib.error
+
+          base = Path("/tmp/native-qa-input/base-prompt.md").read_text(encoding="utf-8").strip()
+          findings = []
+          for surface in ["ui", "about", "integration", "consistency"]:
+              path = Path(f"/tmp/native-qa-findings/finding-{surface}.md")
+              if not path.is_file():
+                  raise SystemExit(f"missing surface finding: {surface}")
+              findings.append(f"===== {surface.upper()} SUBREVIEW =====\n" + path.read_text(encoding="utf-8"))
+          message = base + "\n\nMODE=FINAL\nSOURCE_PART=SUBREVIEW_FINDINGS\n\n" + "\n\n".join(findings)
+
+          with urllib.request.urlopen("http://127.0.0.1:8080/v1/models", timeout=30) as resp:
+              model_id = json.load(resp)["data"][0]["id"]
+          payload = {
+              "model": model_id,
+              "messages": [{"role": "user", "content": message}],
+              "temperature": 0.10,
+              "top_p": 0.8,
+              "max_tokens": 1400,
+              "stream": False,
+          }
+          req = urllib.request.Request(
+              "http://127.0.0.1:8080/v1/chat/completions",
+              data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+              headers={"Content-Type": "application/json"},
+              method="POST",
+          )
+          try:
+              with urllib.request.urlopen(req, timeout=3600) as resp:
+                  data = json.load(resp)
+          except urllib.error.HTTPError as exc:
+              print(exc.read().decode("utf-8", errors="replace"))
+              raise
+
+          review = data["choices"][0]["message"]["content"].strip() + "\n"
+          final = Path("/tmp/native-qa-final")
+          final.joinpath("prompt.md").write_text(message, encoding="utf-8")
+          final.joinpath("review.md").write_text(review, encoding="utf-8")
+          final.joinpath("reviewed-head.txt").write_text(
+              Path("/tmp/native-qa-input/reviewed-head.txt").read_text(encoding="utf-8"),
+              encoding="utf-8",
+          )
           session = (
               "# LLM_SESSION_EVIDENCE\n"
-              f"locale_code: {code}\n"
-              f"locale_tag: {tag}\n"
-              f"sequence: {seq}\n"
-              f"reviewed_head: {reviewed_head}\n"
+              f"locale_code: {os.environ['QA_LOCALE_CODE']}\n"
+              f"locale_tag: {os.environ['QA_LOCALE_TAG']}\n"
+              f"sequence: {os.environ['QA_SEQUENCE']}\n"
+              f"reviewed_head: {final.joinpath('reviewed-head.txt').read_text(encoding='utf-8').strip()}\n"
               "reviewer_model: Qwen3-4B Q4_K_M\n"
+              "review_method: four isolated target-language surface reviews plus isolated target-language synthesis\n"
               "model_sha256: 7485fe6f11af29433bc51cab58009521f205840f5b4ae3a32fa7f92e8534fdf5\n"
               "llama_cpp_release: b10982\n"
               "llama_cpp_asset_sha256: b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789\n"
               "\n===== USER =====\n" + message +
               "\n===== ASSISTANT =====\n" + review
           )
-          (out / "session.md").write_text(session, encoding="utf-8")
+          final.joinpath("session.md").write_text(session, encoding="utf-8")
           PY
 
-      - name: Verify evidence and preserve attempt
+      - name: Verify final verdict
         shell: bash
         run: |
           set -euo pipefail
-          OUT="artifacts/about-i18n-native-sessions/$QA_LOCALE_CODE/staged-$QA_SEQUENCE"
-          test -s "$OUT/prompt.md"
-          test -s "$OUT/review.md"
-          test -s "$OUT/session.md"
-          test -s "$OUT/reviewed-head.txt"
-          test -s "$OUT/source.txt"
-          head -n 1 "$OUT/review.md" | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)$'
-          HEAD_SHA="$(cat "$OUT/reviewed-head.txt")"
-          ATTEMPT="artifacts/about-i18n-native-sessions/$QA_LOCALE_CODE/attempts/${QA_SEQUENCE}-${HEAD_SHA}"
-          mkdir -p "$ATTEMPT"
-          cp "$OUT/prompt.md" "$ATTEMPT/prompt.md"
-          cp "$OUT/review.md" "$ATTEMPT/review.md"
-          cp "$OUT/session.md" "$ATTEMPT/session.md"
-          cp "$OUT/reviewed-head.txt" "$ATTEMPT/reviewed-head.txt"
-          cp "$OUT/source.txt" "$ATTEMPT/source.txt"
-          head -n 1 "$OUT/review.md"
-          cat "$OUT/review.md"
+          test -s /tmp/native-qa-final/prompt.md
+          test -s /tmp/native-qa-final/review.md
+          test -s /tmp/native-qa-final/session.md
+          test -s /tmp/native-qa-final/reviewed-head.txt
+          head -n 1 /tmp/native-qa-final/review.md | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)$'
+          head -n 1 /tmp/native-qa-final/review.md
+          cat /tmp/native-qa-final/review.md
 
-      - name: Upload native-session evidence
+      - name: Upload final synthesis
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: about-native-qa-${{ env.QA_LOCALE_CODE }}-${{ env.QA_SEQUENCE }}
-          path: artifacts/about-i18n-native-sessions/${{ env.QA_LOCALE_CODE }}/
+          name: native-qa-final-${{ github.run_id }}
+          path: /tmp/native-qa-final/
           if-no-files-found: error
 
-      - name: Commit review evidence back to the feature branch
+  aggregate:
+    needs: [prepare, review, synthesize]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout live branch
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: feature/about-i18n-72-locales
+          fetch-depth: 0
+
+      - name: Download reviewer inputs
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: native-qa-input-${{ github.run_id }}
+          path: /tmp/native-qa-input
+
+      - name: Download surface findings
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: native-qa-findings-${{ github.run_id }}-*
+          path: /tmp/native-qa-findings
+          merge-multiple: true
+
+      - name: Download final synthesis
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: native-qa-final-${{ github.run_id }}
+          path: /tmp/native-qa-final
+
+      - name: Preserve isolated attempt evidence
         shell: bash
+        env:
+          QA_LOCALE_CODE: ${{ needs.prepare.outputs.code }}
+          QA_LOCALE_TAG: ${{ needs.prepare.outputs.tag }}
+          QA_SEQUENCE: ${{ needs.prepare.outputs.sequence }}
+        run: |
+          set -euo pipefail
+          REVIEWED_HEAD="$(tr -d '\r\n' < /tmp/native-qa-final/reviewed-head.txt)"
+          ATTEMPT="artifacts/about-i18n-native-sessions/$QA_LOCALE_CODE/attempts/$QA_SEQUENCE-$REVIEWED_HEAD"
+          mkdir -p "$ATTEMPT/subreviews"
+          cp /tmp/native-qa-final/prompt.md "$ATTEMPT/prompt.md"
+          cp /tmp/native-qa-final/review.md "$ATTEMPT/review.md"
+          cp /tmp/native-qa-final/session.md "$ATTEMPT/session.md"
+          cp /tmp/native-qa-final/reviewed-head.txt "$ATTEMPT/reviewed-head.txt"
+          cp /tmp/native-qa-input/base-prompt.md "$ATTEMPT/base-prompt.md"
+          cp /tmp/native-qa-input/*.txt "$ATTEMPT/" || true
+          cp /tmp/native-qa-findings/finding-*.md "$ATTEMPT/subreviews/"
+          cp /tmp/native-qa-findings/subreview-*.md "$ATTEMPT/subreviews/"
+          head -n 1 "$ATTEMPT/review.md" | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)$'
+
+      - name: Commit attempt evidence
+        shell: bash
+        env:
+          QA_LOCALE_CODE: ${{ needs.prepare.outputs.code }}
+          QA_SEQUENCE: ${{ needs.prepare.outputs.sequence }}
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add "artifacts/about-i18n-native-sessions/$QA_LOCALE_CODE/"
+          git add "artifacts/about-i18n-native-sessions/$QA_LOCALE_CODE/attempts/"
           git commit -m "qa($QA_LOCALE_CODE): record isolated native-language session $QA_SEQUENCE"
           git pull --rebase origin feature/about-i18n-72-locales
           git push origin HEAD:feature/about-i18n-72-locales
