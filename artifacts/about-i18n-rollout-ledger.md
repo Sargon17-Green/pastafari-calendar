@@ -135,6 +135,16 @@ Status progression for target locales: `not started → draft → semantic QA �
 - During closure, the first audit helper exposed a real test bug: it matched only two-letter locale codes and therefore missed `fil`. The audit was corrected to accept 2–3 letter registry codes, `fil` was added and verified, and the final audit covered all 72 locales.
 - Native-language whole-site LLM QA remains pending by design. The required next phase is one locale at a time, with the reviewing conversation itself conducted in that locale and explicitly searching the whole site for unnatural language, foreign-language leakage, terminology drift, BiDi/layout issues where relevant, and semantic discrepancies.
 
+## Semantic-delta re-alignment checkpoint — 2026-09-27
+
+- The current Hebrew article remains the semantic master and was not modified by the non-Hebrew delta rollout.
+- All **71 non-Hebrew target locales** have been re-aligned to the current Hebrew semantic master and this invariant ledger.
+- `artifacts/about-semantic-delta-status.json` contains exactly 71 target-locale entries, all with `final_verified_aligned: true`.
+- `artifacts/about-semantic-delta-runs/` contains exactly 71 per-locale evidence files, with no missing or extra target locale.
+- Closure comparison against `docs/about/content/` found exactly 72 article resources: Hebrew plus the same 71 target locales; Hebrew is intentionally absent from the delta status/evidence set.
+- Every manual locale commit enforced the stable 29-ID sequence, semantic-table row counts 19 and 9, required formulas/identifiers/hashes, allowed-section scope, absence of unintended Hebrew leakage, and preservation of article line count.
+- This checkpoint closes the **semantic-delta re-alignment only**. It does not by itself promote any locale through the separate native-language whole-site review, rendered smoke, accessibility, PWA/offline, or final `PASS` gates.
+
 ## Native-language whole-site QA policy
 
 The final linguistic QA is intentionally a separate phase and will run on a dedicated branch forked from the completed translation branch, tentatively `qa/about-i18n-native-language-audit`.
@@ -216,7 +226,7 @@ The following facts, distinctions and epistemic qualifications must survive ever
   - mean year length 4,275.182 days; median 4,343; observed min/max 716 / 5,778;
   - mean cutlets/year 7.271; exactly 6 cutlets 42.00%; 6–8 cutlets 81.29%; mean cutlet length 587.963 days; median 560;
   - mean months/year 41.102; median 43; exactly 47 months 15.63%; at least 45 months 36.81%; mean structural-month length 104.014 days; median 115;
-  - mean contiguous runs/month 100.897; one-day month runs 97.482%; adjacent days in same month 2.9976%; mean foreign days between `n` and `n+1` 40.408; mean first-to-last month span 4,266.653 days.
+  - mean contiguous runs/month 100.897; one-day month runs 97.482%; measured proportion of adjacent-day pairs in the same month 2.9976%; mean foreign days between `n` and `n+1` 40.408; mean first-to-last month span 4,266.653 days.
 - Additional sampled means: ordinary year ≈4,262 days; day-weighted mean ≈4,466; self year 5000 ≈4,499.
 - The name/length association was very weak in the sample; this is not a proof of independence.
 - The 86,016 year structures contain only 24,786 distinct start/end gate intervals; samples are not fully independent. Do not turn the atlas into a global probabilistic theorem.
@@ -233,7 +243,7 @@ The following facts, distinctions and epistemic qualifications must survive ever
 - These are corpus results, not a proof that every possible anniversary must recur and not a maximum-wait guarantee.
 
 ### Events, travel and day boundary
-- A meeting scheduled only by Pastafari date requires at least the five-field tuple and the day of working; storing the latter as a stable day identity is preferable to the word “today”.
+- To determine a meeting day using a Pastafari date, the parties must agree at least on the five-field tuple and the day of working used for the calculation. This identifies the Pastafari day context, not necessarily an exact instant within that day. Storing the day of working as a stable day identity is preferable to the word “today”.
 - “tomorrow”, “next day in month”, “end of month”, “whole month”, and “next year” have distinct semantics described in the article.
 - Important events may additionally store an absolute chronological day/instant.
 - Event identity is distinct from the local label shown for it.
@@ -248,11 +258,12 @@ The following facts, distinctions and epistemic qualifications must survive ever
 - A printed calendar is valid relative to a stated day of working and may need replacement when `c` changes.
 - Hand calculation is possible because the specification is complete and deterministic.
 - `Pastafarian Calendar Seer` is a fast engine beside the canonical implementation; it is not an authority source.
-- If Seer and the Scroll/canonical calculation disagree, Seer is wrong.
-- At the live verification reflected by the article, Seer supports date, now, batch, ranges, reverse conversion, year structure, active-working-day resolution, Node API, browser/HTTP client, CLI, HTTP v1, OpenAPI 3.1, native/distribution packages and verified container deployment.
-- The old claim that Seer has no public API is false. Explicit stable HTTP v1 endpoints include date, range, batch, year, reverse, working day, metadata, locales and status.
+- The Megillah sets the rules; the canonical calculation produces the date according to those rules; Seer must return the same answer. If Seer disagrees with a correct canonical calculation, Seer is wrong.
+- In the live verification performed on 21 September 2026, Seer supported date, now, batch, ranges, reverse conversion, year structure, active-working-day resolution, Node API, browser/HTTP client, CLI, HTTP v1, OpenAPI 3.1, native/distribution packages and verified container deployment.
+- Seer has a public API. Explicit stable HTTP v1 endpoints include date, range, batch, year, reverse, working day, metadata, locales and status.
 - A public HTTPS deployment on Render was actually tested on 21 September 2026 for exact queries, large range, restart, cold wake and load behavior.
-- Project docs still distinguish public beta/evaluation deployment from a permanent hosted production service with SLA. Do not freeze a server URL, host provider or version number as calendar doctrine.
+- The verified public deployment is a beta/evaluation deployment, not a promise or declaration of a permanent hosted production service with SLA.
+- Server URL, hosting provider and version number are not parts of the calendar and are not canonical constants.
 - Seer may use precomputation, special representations, SIMD, algebra and shortcuts, provided semantic operation and answer match the canonical calculation.
 
 ### Fixed anchors, origin and re-delivery
@@ -265,7 +276,7 @@ The following facts, distinctions and epistemic qualifications must survive ever
 - The Pastafarian calendar is the calendar in which time was created. This must be stated directly, without meta-fictional hedges such as “within the site’s story”, “according to the mythology/tradition”, “is presented as”, or equivalent distancing language.
 - The calendar is part of creation; humanity used it without sufficient awareness that it was doing so until the modern re-delivery.
 - Not every historical detail is stated explicitly in the Scroll. Source attribution remains exact: do not attribute a detail to the Scroll unless the Scroll states it. This is a provenance rule, not a caveat about the reality of the event.
-- The re-delivery event is chronologically fixed; its displayed Pastafari date should be computed dynamically under the current day of working.
+- The re-delivery event is chronologically fixed; its Pastafari representation is computed under the relevant day of working and can differ under another day of working.
 
 ### Reverse conversion and far-time structure
 - With known `c` and a known Pastafari year, (cutlet name, day in cutlet) identifies at most one day; likewise (month name, day in month) identifies at most one day. A full Pastafari date with known `c` therefore identifies the target day uniquely.
@@ -279,7 +290,7 @@ The following facts, distinctions and epistemic qualifications must survive ever
   - month name + day in month: 1;
   - any three non-year fields: 1;
   - all four non-year fields: 1.
-- Without `c`, the same full five-field date can occur under different working days and at different distances; in year 5000 the sign of distance is not always determined by the tuple.
+- Without `c`, the same full five-field date can occur under different working days and at different absolute distances; explicit examples exist. In year 5000, even the direction relative to the day of working is not always determined by the tuple: the same full date can lie before the day of working in one context and after it in another.
 - Derived mathematics: for fixed `c`, sufficiently far in the past tail there is exact affine periodicity. If `F(c,t)=(Y,K,d_K,M,d_M)`, then for that `c` there exist `H_c`, `p_c`, and a sufficiently remote threshold such that `F(c,t-H_c)=(Y-p_c, K, d_K, M, d_M)`.
 - This is a fixed-`c` theorem and does NOT establish a global `F(c+T,t+T)=F(c,t)`.
 - Whether the final asymptotic slope actually varies between different days of working remains open.
@@ -289,7 +300,7 @@ The following facts, distinctions and epistemic qualifications must survive ever
 - For the first five final stirs after visible drop 46, generic invertibility on the relevant canonical union is established without extra side information.
 - For remaining stirs, strong constructive upper bounds are known for sufficient side information.
 - Whether the final six bowls alone are always generically sufficient remains open.
-- Some results are symbolic proofs; some are closed by exact finite arithmetic checks. Symbolic strengthening reduced but did not eliminate the finite computational kernel.
+- Some results are symbolic proofs; some are verified by exact finite arithmetic checks. Symbolic strengthening reduced but did not eliminate the finite computational kernel.
 - Relevant reductions include automata of 180 and 9 states and symmetries of the six bowls.
 
 ## Translation and terminology rules
