@@ -1,0 +1,134 @@
+name: Icelandic Mimir reviewer probe
+
+on:
+  push:
+    branches:
+      - feature/about-i18n-72-locales
+    paths:
+      - .github/workflows/about-native-qa-is-mimir-probe.yml
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - name: Download pinned llama.cpp
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/mimir-probe/llama
+          curl -fL --retry 3 \
+            https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz \
+            -o /tmp/mimir-probe/llama.tar.gz
+          echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/mimir-probe/llama.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/mimir-probe/llama.tar.gz -C /tmp/mimir-probe/llama
+
+      - name: Resolve and download Icelandic-focused Mimir reviewer
+        shell: bash
+        run: |
+          set -euo pipefail
+          REPO='charles6huang/mimir-mistral-7b-core-scratch-instruct-Q4_K_M-GGUF'
+          FILE='mimir-mistral-7b-core-scratch-instruct-q4_k_m.gguf'
+          REVISION="$(curl -fsSL "https://huggingface.co/api/models/$REPO" | python -c 'import json,sys; print(json.load(sys.stdin)["sha"])')"
+          test -n "$REVISION"
+          mkdir -p /tmp/mimir-probe
+          curl -fL --retry 3 \
+            "https://huggingface.co/$REPO/resolve/$REVISION/$FILE?download=true" \
+            -o "/tmp/mimir-probe/$FILE"
+          SHA256="$(sha256sum "/tmp/mimir-probe/$FILE" | awk '{print $1}')"
+          SIZE="$(stat -c %s "/tmp/mimir-probe/$FILE")"
+          {
+            echo "repo=$REPO"
+            echo "file=$FILE"
+            echo "revision=$REVISION"
+            echo "sha256=$SHA256"
+            echo "size_bytes=$SIZE"
+          } | tee /tmp/mimir-probe/model-metadata.txt
+          test "$SIZE" -gt 3500000000
+
+      - name: Run Icelandic language-quality probe
+        shell: bash
+        run: |
+          set -euo pipefail
+          SERVER="$(find /tmp/mimir-probe/llama -type f -name llama-server | head -n 1)"
+          test -x "$SERVER"
+          MODEL='/tmp/mimir-probe/mimir-mistral-7b-core-scratch-instruct-q4_k_m.gguf'
+
+          "$SERVER" -m "$MODEL" -c 2048 -t 4 --host 127.0.0.1 --port 8080 \
+            > /tmp/mimir-probe/server.log 2>&1 &
+          PID=$!
+          trap 'kill "$PID" 2>/dev/null || true' EXIT
+          for _ in $(seq 1 180); do
+            curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8080/health >/dev/null
+
+          cat > /tmp/mimir-probe/prompt.txt <<'EOF'
+Þú ert íslenskur málfarsrýnir. Svaraðu eingöngu á eðlilegri nútímaíslensku.
+
+Metið eftirfarandi sex textabúta sjálfstætt. Fyrir hvern þeirra skaltu skrifa:
+- númerið;
+- annaðhvort „Í LAGI“ eða „VANDAMÁL“;
+- eina stutta, skýra skýringu á íslensku;
+- ef um VANDAMÁL er að ræða, eðlilegri íslenska leiðréttingu.
+
+Ekki gagnrýna sérnafnið Pastafari. Ekki þýða það.
+
+1. Leitaðu í hvaða dagatali sem vefurinn styður.
+2. Leitaðu í hvaða studdu dagatali sem er.
+3. Um Pastafari-dagatalið
+4. Kalender Pastafari
+5. A local, deterministic Pastafari calendar.
+6. Pastafari-dagatalið er hluti sköpunarinnar.
+
+Að lokum skaltu skrifa eina línu:
+HEILDARMAT: <númer þeirra textabúta sem eru vandamál, aðgreind með kommum>
+
+Textabútarnir 1, 3 og 6 eru ætlaðir sem eðlileg íslenska. Textabútarnir 2, 4 og 5 eru viljandi prófunardæmi sem eiga að vera greind sem vandamál. Ekki endurtaka þessa lykilupplýsingu; notaðu hana aðeins til að sýna hvort þú getir fylgt málfarsverkefninu rétt.
+EOF
+
+          python - <<'PY'
+          from pathlib import Path
+          import json, urllib.request
+          prompt = Path("/tmp/mimir-probe/prompt.txt").read_text(encoding="utf-8")
+          with urllib.request.urlopen("http://127.0.0.1:8080/v1/models", timeout=30) as resp:
+              model_id = json.load(resp)["data"][0]["id"]
+          payload = {
+              "model": model_id,
+              "messages": [{"role": "user", "content": prompt}],
+              "temperature": 0.1,
+              "top_p": 0.8,
+              "max_tokens": 700,
+              "stream": False,
+          }
+          req = urllib.request.Request(
+              "http://127.0.0.1:8080/v1/chat/completions",
+              data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+              headers={"Content-Type":"application/json"},
+              method="POST",
+          )
+          with urllib.request.urlopen(req, timeout=1800) as resp:
+              data=json.load(resp)
+          answer=data["choices"][0]["message"]["content"].strip()+"\n"
+          Path("/tmp/mimir-probe/answer.md").write_text(answer,encoding="utf-8")
+          print(answer)
+          PY
+
+      - name: Upload probe evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: icelandic-mimir-reviewer-probe
+          path: |
+            /tmp/mimir-probe/model-metadata.txt
+            /tmp/mimir-probe/prompt.txt
+            /tmp/mimir-probe/answer.md
+            /tmp/mimir-probe/server.log
+          if-no-files-found: warn
