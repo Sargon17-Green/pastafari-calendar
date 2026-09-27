@@ -53,7 +53,7 @@ jobs:
           print(f"QA_SEQUENCE={sequence}")
           PY
 
-      - name: Prepare staged review inputs
+      - name: Prepare compact whole-site review source
         shell: bash
         run: |
           set -euo pipefail
@@ -68,7 +68,8 @@ jobs:
 
           code = os.environ["QA_LOCALE_CODE"]
           tag = os.environ["QA_LOCALE_TAG"]
-          out = Path("artifacts/about-i18n-native-sessions") / code / f"staged-{os.environ['QA_SEQUENCE']}"
+          seq = os.environ["QA_SEQUENCE"]
+          out = Path("artifacts/about-i18n-native-sessions") / code / f"staged-{seq}"
 
           def text(path):
               return Path(path).read_text(encoding="utf-8")
@@ -89,61 +90,83 @@ jobs:
                   last = i
               return "\n".join(result)
 
+          def function_block(path, function_name):
+              lines = text(path).splitlines()
+              start = next((i for i, line in enumerate(lines)
+                            if re.search(rf"\b(?:async\s+)?function\s+{re.escape(function_name)}\b", line)), None)
+              if start is None:
+                  return ""
+              depth = 0
+              seen = False
+              block = []
+              for i in range(start, len(lines)):
+                  line = lines[i]
+                  block.append(f"{i+1}: {line}")
+                  depth += line.count("{") - line.count("}")
+                  seen = seen or "{" in line
+                  if seen and depth <= 0:
+                      break
+              return "\n".join(block)
+
+          def key_inventory(paths):
+              keys = set()
+              patterns = [
+                  re.compile(r"""(?:\bt\b|i18n\.t|translate)\(\s*['"]([^'"]+)['"]"""),
+                  re.compile(r"""data-i18n(?:-[a-z-]+)?=['"]([^'"]+)['"]"""),
+              ]
+              for path in paths:
+                  data = text(path)
+                  for rx in patterns:
+                      keys.update(rx.findall(data))
+              return "\n".join(sorted(keys))
+
           locale_path = f"docs/i18n/locales/{code}.js"
           about_path = f"docs/about/content/{code}.html"
 
-          ui = [
-              f"===== {locale_path} =====",
-              text(locale_path),
-              "===== docs/index.html :: I18N_SURFACES =====",
-              excerpt("docs/index.html", [r"data-i18n", r"aria-", r"placeholder", r"<title", r"<meta", r"<noscript", r"lang=", r"dir="]),
-              "===== docs/about/index.html :: I18N_SURFACES =====",
-              excerpt("docs/about/index.html", [r"data-i18n", r"aria-", r"placeholder", r"<title", r"<meta", r"<noscript", r"lang=", r"dir="]),
-              "===== docs/manifest.webmanifest :: TARGET_LOCALE =====",
-              excerpt("docs/manifest.webmanifest", [re.escape(tag), re.escape(code)], radius=5, first_lines=24),
-              "===== docs/i18n/registry.js :: TARGET_LOCALE_AND_FALLBACK =====",
-              excerpt("docs/i18n/registry.js", [rf"['\"]{re.escape(code)}['\"]", re.escape(tag), r"fallback", r"defaultLocale"], radius=3),
-              "===== docs/i18n/runtime.js :: LOCALIZATION_FLOW =====",
-              excerpt("docs/i18n/runtime.js", [r"fallback", r"locale", r"data-i18n", r"aria", r"title", r"placeholder", r"textContent"], radius=1),
+          sections = [
+              f"===== {locale_path} — FULL TARGET LOCALE =====\n" + text(locale_path),
+              f"===== {about_path} — FULL TARGET ABOUT ARTICLE =====\n" + text(about_path),
+              "===== docs/index.html — DISPLAYED/I18N/A11Y SURFACES =====\n" +
+                  excerpt("docs/index.html", [r"data-i18n", r"aria-", r"placeholder", r"<title", r"<meta", r"<noscript", r"lang=", r"dir="]),
+              "===== docs/about/index.html — DISPLAYED/I18N/A11Y SURFACES =====\n" +
+                  excerpt("docs/about/index.html", [r"data-i18n", r"aria-", r"placeholder", r"<title", r"<meta", r"<noscript", r"lang=", r"dir="]),
+              "===== docs/manifest.webmanifest — FALLBACK + TARGET LOCALE =====\n" +
+                  excerpt("docs/manifest.webmanifest",
+                          [rf'"{re.escape(code)}"\s*:', re.escape(tag), r'"name"\s*:', r'"short_name"\s*:',
+                           r'"description"\s*:', r'"lang"\s*:', r'"dir"\s*:'],
+                          radius=2, first_lines=12),
+              "===== docs/i18n/runtime.js — FULL LOCALIZATION RUNTIME =====\n" + text("docs/i18n/runtime.js"),
+              "===== docs/i18n/registry.js — TARGET REGISTRATION =====\n" +
+                  excerpt("docs/i18n/registry.js",
+                          [rf'defineLocale\("{re.escape(code)}"', re.escape(tag), r"DEFAULT_LOCALE"],
+                          radius=2),
+              "===== docs/i18n/registry.js — LOCALE LOAD/FALLBACK FUNCTIONS =====\n" +
+                  "\n\n".join(filter(None, [
+                      function_block("docs/i18n/registry.js", "loadLocaleSource"),
+                      function_block("docs/i18n/registry.js", "materializeLocaleResources"),
+                      function_block("docs/i18n/registry.js", "loadLocale"),
+                  ])),
+              "===== docs/about/about.js — FULL ARTICLE LOCALIZATION FLOW =====\n" + text("docs/about/about.js"),
+              "===== docs/app.js — HARD-CODED DISPLAY/FALLBACK TOUCHPOINTS =====\n" +
+                  excerpt("docs/app.js",
+                          [r"textContent\s*=", r"innerHTML\s*=", r"setAttribute\s*\(", r"placeholder\s*=",
+                           r"title\s*=", r"loadLocale\s*\(", r"applyDocumentLocale", r"fallback", r"visibleError", r"status"],
+                          radius=1, first_lines=55),
+              "===== docs/reverse-ui.js — HARD-CODED DISPLAY/FALLBACK TOUCHPOINTS =====\n" +
+                  excerpt("docs/reverse-ui.js",
+                          [r"textContent\s*=", r"innerHTML\s*=", r"setAttribute\s*\(", r"placeholder\s*=",
+                           r"title\s*=", r"translate\s*\(", r"\bt\s*\(", r"fallback", r"error", r"status"],
+                          radius=1),
+              "===== I18N KEYS REFERENCED BY UI CODE =====\n" +
+                  key_inventory(["docs/index.html", "docs/about/index.html", "docs/app.js",
+                                 "docs/reverse-ui.js", "docs/i18n/runtime.js", "docs/about/about.js"]),
           ]
-          (out / "stage-ui-source.txt").write_text("\n".join(ui), encoding="utf-8")
 
-          (out / "stage-about-source.txt").write_text(
-              f"===== {about_path} =====\n" + text(about_path), encoding="utf-8"
-          )
-
-          common = [
-              "===== docs/app.js :: DISPLAYED_TEXT_AND_A11Y_PATHS =====",
-              excerpt("docs/app.js", [r"loadLocale", r"fallback", r"aria", r"placeholder", r"textContent", r"setAttribute", r"title", r"status", r"error"], radius=0),
-              "===== docs/reverse-ui.js :: DISPLAYED_TEXT_AND_A11Y_PATHS =====",
-              excerpt("docs/reverse-ui.js", [r"loadLocale", r"fallback", r"aria", r"placeholder", r"textContent", r"setAttribute", r"title", r"status", r"error"], radius=0),
-              "===== docs/about/about.js :: ARTICLE_LOCALIZATION_FLOW =====",
-              excerpt("docs/about/about.js", [r"loadLocale", r"ARTICLE_FALLBACK", r"fallback", r"lang", r"data-i18n", r"textContent", r"aria"], radius=1),
-          ]
-          (out / "stage-integration-source.txt").write_text("\n".join(common), encoding="utf-8")
-
-          about_lines = text(about_path).splitlines()
-          selected, budget_after_heading = [], 0
-          for i, line in enumerate(about_lines):
-              if re.search(r"<h[23]\b", line):
-                  selected.append(f"{i+1}: {line}")
-                  budget_after_heading = 2
-              elif budget_after_heading and re.search(r"<p\b", line):
-                  selected.append(f"{i+1}: {line}")
-                  budget_after_heading -= 1
-          consistency = [
-              f"===== {locale_path} :: TERMINOLOGY_SURFACES =====",
-              excerpt(locale_path, [r'"(?:working|target|search|comparison|year|reverse|calendarInput|calendarHelp|about|guide)\\.', r"action", r"queried", r"cutlet", r"month", r"sauce", r"Seer", r"all-day"], radius=0),
-              f"===== {about_path} :: HEADINGS_AND_LEAD_PARAGRAPHS =====",
-              "\n".join(selected),
-          ]
-          (out / "stage-consistency-source.txt").write_text("\n".join(consistency), encoding="utf-8")
-
-          for name in ["stage-ui-source.txt", "stage-about-source.txt", "stage-integration-source.txt", "stage-consistency-source.txt"]:
-              size = len((out / name).read_text(encoding="utf-8"))
-              if size > 60000:
-                  raise SystemExit(f"{name} too large: {size} chars")
-              print(f"{name}: {size} chars")
+          source = "\n\n".join(sections)
+          if len(source) > 90000:
+              raise SystemExit(f"compact review source too large: {len(source)} chars")
+          (out / "source.txt").write_text(source, encoding="utf-8")
+          print(f"compact review source: {len(source)} chars")
           PY
 
       - name: Download pinned llama.cpp and Qwen3-4B reviewer
@@ -157,7 +180,7 @@ jobs:
           curl -fL --retry 3 'https://huggingface.co/Qwen/Qwen3-4B-GGUF/resolve/main/Qwen3-4B-Q4_K_M.gguf?download=true' -o /tmp/native-qa/qwen3-4b-q4_k_m.gguf
           echo "7485fe6f11af29433bc51cab58009521f205840f5b4ae3a32fa7f92e8534fdf5  /tmp/native-qa/qwen3-4b-q4_k_m.gguf" | sha256sum -c -
 
-      - name: Run staged isolated target-language review
+      - name: Run isolated compact target-language review
         shell: bash
         run: |
           set -euo pipefail
@@ -180,70 +203,54 @@ jobs:
           code = os.environ["QA_LOCALE_CODE"]
           tag = os.environ["QA_LOCALE_TAG"]
           seq = os.environ["QA_SEQUENCE"]
-          out = Path("artifacts/about-i18n-native-sessions") / code / f"staged-{os.environ['QA_SEQUENCE']}"
+          out = Path("artifacts/about-i18n-native-sessions") / code / f"staged-{seq}"
           base = (out / "prompt.md").read_text(encoding="utf-8").strip()
+          source = (out / "source.txt").read_text(encoding="utf-8")
+          message = base + "\n\nMODE=FINAL\nSOURCE_PART=WHOLE_SITE_COMPACT\n\n" + source
 
           with urllib.request.urlopen("http://127.0.0.1:8080/v1/models", timeout=30) as resp:
               model_id = json.load(resp)["data"][0]["id"]
 
-          def call(label, source, mode, max_tokens):
-              message = base + "\n\n" + f"MODE={mode}\nSOURCE_PART={label}\n\n" + source
-              payload = {
-                  "model": model_id,
-                  "messages": [{"role": "user", "content": message}],
-                  "temperature": 0.15,
-                  "top_p": 0.8,
-                  "max_tokens": max_tokens,
-                  "stream": False,
-              }
-              req = urllib.request.Request(
-                  "http://127.0.0.1:8080/v1/chat/completions",
-                  data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
-                  headers={"Content-Type": "application/json"},
-                  method="POST",
-              )
-              try:
-                  with urllib.request.urlopen(req, timeout=5400) as resp:
-                      data = json.load(resp)
-              except urllib.error.HTTPError as exc:
-                  print(f"HTTP error in {label}:")
-                  print(exc.read().decode("utf-8", errors="replace"))
-                  raise
-              result = data["choices"][0]["message"]["content"].strip() + "\n"
-              (out / f"{label}.md").write_text(result, encoding="utf-8")
-              return message, result
+          payload = {
+              "model": model_id,
+              "messages": [{"role": "user", "content": message}],
+              "temperature": 0.15,
+              "top_p": 0.8,
+              "max_tokens": 1600,
+              "stream": False,
+          }
+          req = urllib.request.Request(
+              "http://127.0.0.1:8080/v1/chat/completions",
+              data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+              headers={"Content-Type": "application/json"},
+              method="POST",
+          )
+          try:
+              with urllib.request.urlopen(req, timeout=5400) as resp:
+                  data = json.load(resp)
+          except urllib.error.HTTPError as exc:
+              print("HTTP error body:")
+              print(exc.read().decode("utf-8", errors="replace"))
+              raise
 
-          transcript, findings = [], []
-          for label, filename in [
-              ("stage-ui", "stage-ui-source.txt"),
-              ("stage-about", "stage-about-source.txt"),
-              ("stage-integration", "stage-integration-source.txt"),
-              ("stage-consistency", "stage-consistency-source.txt"),
-          ]:
-              source = (out / filename).read_text(encoding="utf-8")
-              prompt, result = call(label, source, "FINDINGS_ONLY", 850)
-              transcript.append((label, prompt, result))
-              findings.append(f"===== {label} =====\n{result}")
-
-          synthesis_source = "===== STAGE_FINDINGS =====\n" + "\n".join(findings)
-          final_prompt, review = call("review", synthesis_source, "FINAL", 1400)
-          transcript.append(("final", final_prompt, review))
+          review = data["choices"][0]["message"]["content"].strip() + "\n"
+          (out / "review.md").write_text(review, encoding="utf-8")
 
           reviewed_head = (out / "reviewed-head.txt").read_text(encoding="utf-8").strip()
-          session_parts = [
-              "# LLM_SESSION_EVIDENCE",
-              f"locale_code: {code}",
-              f"locale_tag: {tag}",
-              f"sequence: {seq}",
-              f"reviewed_head: {reviewed_head}",
-              "reviewer_model: Qwen3-4B Q4_K_M",
-              "model_sha256: 7485fe6f11af29433bc51cab58009521f205840f5b4ae3a32fa7f92e8534fdf5",
-              "llama_cpp_release: b10982",
-              "llama_cpp_asset_sha256: b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789",
-          ]
-          for label, prompt, result in transcript:
-              session_parts += [f"\n===== TURN {label} USER =====\n", prompt, f"\n===== TURN {label} ASSISTANT =====\n", result]
-          (out / "session.md").write_text("\n".join(session_parts), encoding="utf-8")
+          session = (
+              "# LLM_SESSION_EVIDENCE\n"
+              f"locale_code: {code}\n"
+              f"locale_tag: {tag}\n"
+              f"sequence: {seq}\n"
+              f"reviewed_head: {reviewed_head}\n"
+              "reviewer_model: Qwen3-4B Q4_K_M\n"
+              "model_sha256: 7485fe6f11af29433bc51cab58009521f205840f5b4ae3a32fa7f92e8534fdf5\n"
+              "llama_cpp_release: b10982\n"
+              "llama_cpp_asset_sha256: b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789\n"
+              "\n===== USER =====\n" + message +
+              "\n===== ASSISTANT =====\n" + review
+          )
+          (out / "session.md").write_text(session, encoding="utf-8")
           PY
 
       - name: Verify evidence and preserve attempt
@@ -255,6 +262,7 @@ jobs:
           test -s "$OUT/review.md"
           test -s "$OUT/session.md"
           test -s "$OUT/reviewed-head.txt"
+          test -s "$OUT/source.txt"
           head -n 1 "$OUT/review.md" | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)$'
           HEAD_SHA="$(cat "$OUT/reviewed-head.txt")"
           ATTEMPT="artifacts/about-i18n-native-sessions/$QA_LOCALE_CODE/attempts/${QA_SEQUENCE}-${HEAD_SHA}"
@@ -263,7 +271,7 @@ jobs:
           cp "$OUT/review.md" "$ATTEMPT/review.md"
           cp "$OUT/session.md" "$ATTEMPT/session.md"
           cp "$OUT/reviewed-head.txt" "$ATTEMPT/reviewed-head.txt"
-          cp "$OUT"/stage-*.md "$ATTEMPT/" || true
+          cp "$OUT/source.txt" "$ATTEMPT/source.txt"
           head -n 1 "$OUT/review.md"
           cat "$OUT/review.md"
 
