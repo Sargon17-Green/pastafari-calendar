@@ -243,3 +243,23 @@ When the corpus is ready:
 3. start reconciliation from live product branches;
 4. use these artifacts as migration evidence;
 5. do not merge this preparation branch merely because it contains the artifacts.
+
+## 10. Additional closed QA / migration controls
+
+### `fsm-real-world-science-qa-2026-09-27.md`
+Systematic check of the real-world scientific premises used by the FSM article, while protecting deliberate fallacies from accidental “correction”.
+
+### `fsm-structure-crossref-qa-2026-09-27.md`
+Heading/order/cross-reference QA; records the staging-only H3 nesting fix for penguin appendix subsections.
+
+### `fsm-postdraft-exact-recovery-frontier-2026-09-27.md`
+Records the current exact-text recovery limit for later 2026-09-17 material so paraphrase/reconstruction is not mislabeled as verbatim history.
+
+### `about-precanon-evidence-snapshot-2026-09-27.json`
+Pins live 72-locale semantic-alignment evidence: source HEAD, article/status/ledger blobs, 71/71 semantic alignment, 71 per-locale evidence files, and current native-QA control.
+
+### `about-claim-register-qa-2026-09-27.md`
+Mechanical QA of the 29-section / 84-claim register: unique IDs, complete classifications/actions, P0–P4 counts.
+
+### `spec-conformance-vs-law-audit-2026-09-27.md`
+Preserves the required distinction among specification conformance, project governance, liturgical authorization and legal permission; notes the existing Seer NOTICE precedent and current MIT-style repository licensing.
