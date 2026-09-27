@@ -1,0 +1,286 @@
+name: About i18n serial native-language QA
+
+on:
+  push:
+    branches:
+      - feature/about-i18n-72-locales
+    paths:
+      - artifacts/about-i18n-native-qa-control.json
+
+permissions:
+  contents: write
+
+jobs:
+  native-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 0
+
+      - name: Read and validate serial QA control
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY' >> "$GITHUB_ENV"
+          import json, re
+          from pathlib import Path
+
+          control = json.loads(Path("artifacts/about-i18n-native-qa-control.json").read_text(encoding="utf-8"))
+          code = control["locale_code"]
+          tag = control["locale_tag"]
+          prompt_path = control["prompt_path"]
+          sequence = str(control["sequence"])
+
+          if not re.fullmatch(r"[a-z]{2,3}", code):
+              raise SystemExit(f"unsafe locale_code: {code!r}")
+          if not re.fullmatch(r"[A-Za-z0-9-]+", tag):
+              raise SystemExit(f"unsafe locale_tag: {tag!r}")
+          if prompt_path != f"artifacts/about-i18n-native-prompts/{code}.md":
+              raise SystemExit(f"unexpected prompt_path: {prompt_path!r}")
+          if not Path(prompt_path).is_file():
+              raise SystemExit(f"missing target-language prompt: {prompt_path}")
+          if not Path(f"docs/i18n/locales/{code}.js").is_file():
+              raise SystemExit(f"missing locale module: {code}")
+          if not Path(f"docs/about/content/{code}.html").is_file():
+              raise SystemExit(f"missing about article: {code}")
+
+          print(f"QA_LOCALE_CODE={code}")
+          print(f"QA_LOCALE_TAG={tag}")
+          print(f"QA_PROMPT_PATH={prompt_path}")
+          print(f"QA_SEQUENCE={sequence}")
+          PY
+
+      - name: Prepare staged review inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="artifacts/about-i18n-native-sessions/$QA_LOCALE_CODE"
+          mkdir -p "$OUT"
+          git rev-parse HEAD > "$OUT/reviewed-head.txt"
+          cp "$QA_PROMPT_PATH" "$OUT/prompt.md"
+
+          python - <<'PY'
+          from pathlib import Path
+          import os, re
+
+          code = os.environ["QA_LOCALE_CODE"]
+          tag = os.environ["QA_LOCALE_TAG"]
+          out = Path("artifacts/about-i18n-native-sessions") / code
+
+          def text(path):
+              return Path(path).read_text(encoding="utf-8")
+
+          def excerpt(path, patterns, radius=0, first_lines=0):
+              lines = text(path).splitlines()
+              regexes = [re.compile(p, re.I) for p in patterns]
+              keep = set(range(min(first_lines, len(lines))))
+              for i, line in enumerate(lines):
+                  if any(rx.search(line) for rx in regexes):
+                      for j in range(max(0, i-radius), min(len(lines), i+radius+1)):
+                          keep.add(j)
+              result, last = [], None
+              for i in sorted(keep):
+                  if last is not None and i != last + 1:
+                      result.append("…")
+                  result.append(f"{i+1}: {lines[i]}")
+                  last = i
+              return "\n".join(result)
+
+          locale_path = f"docs/i18n/locales/{code}.js"
+          about_path = f"docs/about/content/{code}.html"
+
+          ui = [
+              f"===== {locale_path} =====",
+              text(locale_path),
+              "===== docs/index.html :: I18N_SURFACES =====",
+              excerpt("docs/index.html", [r"data-i18n", r"aria-", r"placeholder", r"<title", r"<meta", r"<noscript", r"lang=", r"dir="]),
+              "===== docs/about/index.html :: I18N_SURFACES =====",
+              excerpt("docs/about/index.html", [r"data-i18n", r"aria-", r"placeholder", r"<title", r"<meta", r"<noscript", r"lang=", r"dir="]),
+              "===== docs/manifest.webmanifest :: TARGET_LOCALE =====",
+              excerpt("docs/manifest.webmanifest", [re.escape(tag), re.escape(code)], radius=5, first_lines=24),
+              "===== docs/i18n/registry.js :: TARGET_LOCALE_AND_FALLBACK =====",
+              excerpt("docs/i18n/registry.js", [rf"['\"]{re.escape(code)}['\"]", re.escape(tag), r"fallback", r"defaultLocale"], radius=3),
+              "===== docs/i18n/runtime.js :: LOCALIZATION_FLOW =====",
+              excerpt("docs/i18n/runtime.js", [r"fallback", r"locale", r"data-i18n", r"aria", r"title", r"placeholder", r"textContent"], radius=1),
+          ]
+          (out / "stage-ui-source.txt").write_text("\n".join(ui), encoding="utf-8")
+
+          (out / "stage-about-source.txt").write_text(
+              f"===== {about_path} =====\n" + text(about_path), encoding="utf-8"
+          )
+
+          common = [
+              "===== docs/app.js :: DISPLAYED_TEXT_AND_A11Y_PATHS =====",
+              excerpt("docs/app.js", [r"i18n", r"aria", r"placeholder", r"textContent", r"setAttribute", r"title", r"status", r"error", r"fallback"], radius=1),
+              "===== docs/reverse-ui.js :: DISPLAYED_TEXT_AND_A11Y_PATHS =====",
+              excerpt("docs/reverse-ui.js", [r"i18n", r"aria", r"placeholder", r"textContent", r"setAttribute", r"title", r"status", r"error", r"fallback"], radius=1),
+              "===== docs/about/about.js :: ARTICLE_LOCALIZATION_FLOW =====",
+              excerpt("docs/about/about.js", [r"locale", r"fallback", r"lang", r"data-i18n", r"textContent", r"aria"], radius=1),
+          ]
+          (out / "stage-integration-source.txt").write_text("\n".join(common), encoding="utf-8")
+
+          about_lines = text(about_path).splitlines()
+          selected, budget_after_heading = [], 0
+          for i, line in enumerate(about_lines):
+              if re.search(r"<h[23]\b", line):
+                  selected.append(f"{i+1}: {line}")
+                  budget_after_heading = 2
+              elif budget_after_heading and re.search(r"<p\b", line):
+                  selected.append(f"{i+1}: {line}")
+                  budget_after_heading -= 1
+          consistency = [
+              f"===== {locale_path} :: FULL_UI_TERMINOLOGY =====",
+              text(locale_path),
+              f"===== {about_path} :: HEADINGS_AND_LEAD_PARAGRAPHS =====",
+              "\n".join(selected),
+          ]
+          (out / "stage-consistency-source.txt").write_text("\n".join(consistency), encoding="utf-8")
+
+          for name in ["stage-ui-source.txt", "stage-about-source.txt", "stage-integration-source.txt", "stage-consistency-source.txt"]:
+              size = len((out / name).read_text(encoding="utf-8"))
+              if size > 80000:
+                  raise SystemExit(f"{name} too large: {size} chars")
+              print(f"{name}: {size} chars")
+          PY
+
+      - name: Download pinned llama.cpp and Qwen3-8B reviewer
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/native-qa/llama
+          curl -fL --retry 3 https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz -o /tmp/native-qa/llama.tar.gz
+          echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/native-qa/llama.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/native-qa/llama.tar.gz -C /tmp/native-qa/llama
+          curl -fL --retry 3 'https://huggingface.co/Qwen/Qwen3-8B-GGUF/resolve/main/Qwen3-8B-Q4_K_M.gguf?download=true' -o /tmp/native-qa/qwen3-8b-q4_k_m.gguf
+          echo "d98cdcbd03e17ce47681435b5150e34c1417f50b5c0019dd560e4882c5745785  /tmp/native-qa/qwen3-8b-q4_k_m.gguf" | sha256sum -c -
+
+      - name: Run staged isolated target-language review
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="artifacts/about-i18n-native-sessions/$QA_LOCALE_CODE"
+          SERVER="$(find /tmp/native-qa/llama -type f -name llama-server | head -n 1)"
+          test -x "$SERVER"
+          "$SERVER" -m /tmp/native-qa/qwen3-8b-q4_k_m.gguf -c 32768 -t 4 --host 127.0.0.1 --port 8080 > /tmp/native-qa/llama-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+          for _ in $(seq 1 180); do
+            curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8080/health >/dev/null
+
+          python - <<'PY'
+          from pathlib import Path
+          import json, os, urllib.request, urllib.error
+
+          code = os.environ["QA_LOCALE_CODE"]
+          tag = os.environ["QA_LOCALE_TAG"]
+          seq = os.environ["QA_SEQUENCE"]
+          out = Path("artifacts/about-i18n-native-sessions") / code
+          base = (out / "prompt.md").read_text(encoding="utf-8").strip()
+
+          with urllib.request.urlopen("http://127.0.0.1:8080/v1/models", timeout=30) as resp:
+              model_id = json.load(resp)["data"][0]["id"]
+
+          def call(label, source, mode, max_tokens):
+              message = base + "\n\n" + f"MODE={mode}\nSOURCE_PART={label}\n\n" + source
+              payload = {
+                  "model": model_id,
+                  "messages": [{"role": "user", "content": message}],
+                  "temperature": 0.15,
+                  "top_p": 0.8,
+                  "max_tokens": max_tokens,
+                  "stream": False,
+              }
+              req = urllib.request.Request(
+                  "http://127.0.0.1:8080/v1/chat/completions",
+                  data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+                  headers={"Content-Type": "application/json"},
+                  method="POST",
+              )
+              try:
+                  with urllib.request.urlopen(req, timeout=5400) as resp:
+                      data = json.load(resp)
+              except urllib.error.HTTPError as exc:
+                  print(f"HTTP error in {label}:")
+                  print(exc.read().decode("utf-8", errors="replace"))
+                  raise
+              result = data["choices"][0]["message"]["content"].strip() + "\n"
+              (out / f"{label}.md").write_text(result, encoding="utf-8")
+              return message, result
+
+          transcript, findings = [], []
+          for label, filename in [
+              ("stage-ui", "stage-ui-source.txt"),
+              ("stage-about", "stage-about-source.txt"),
+              ("stage-integration", "stage-integration-source.txt"),
+              ("stage-consistency", "stage-consistency-source.txt"),
+          ]:
+              source = (out / filename).read_text(encoding="utf-8")
+              prompt, result = call(label, source, "FINDINGS_ONLY", 1100)
+              transcript.append((label, prompt, result))
+              findings.append(f"===== {label} =====\n{result}")
+
+          synthesis_source = "===== STAGE_FINDINGS =====\n" + "\n".join(findings)
+          final_prompt, review = call("review", synthesis_source, "FINAL", 1800)
+          transcript.append(("final", final_prompt, review))
+
+          reviewed_head = (out / "reviewed-head.txt").read_text(encoding="utf-8").strip()
+          session_parts = [
+              "# LLM_SESSION_EVIDENCE",
+              f"locale_code: {code}",
+              f"locale_tag: {tag}",
+              f"sequence: {seq}",
+              f"reviewed_head: {reviewed_head}",
+              "reviewer_model: Qwen3-8B Q4_K_M",
+              "model_sha256: d98cdcbd03e17ce47681435b5150e34c1417f50b5c0019dd560e4882c5745785",
+              "llama_cpp_release: b10982",
+              "llama_cpp_asset_sha256: b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789",
+          ]
+          for label, prompt, result in transcript:
+              session_parts += [f"\n===== TURN {label} USER =====\n", prompt, f"\n===== TURN {label} ASSISTANT =====\n", result]
+          (out / "session.md").write_text("\n".join(session_parts), encoding="utf-8")
+          PY
+
+      - name: Verify evidence and preserve attempt
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="artifacts/about-i18n-native-sessions/$QA_LOCALE_CODE"
+          test -s "$OUT/prompt.md"
+          test -s "$OUT/review.md"
+          test -s "$OUT/session.md"
+          test -s "$OUT/reviewed-head.txt"
+          head -n 1 "$OUT/review.md" | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)$'
+          HEAD_SHA="$(cat "$OUT/reviewed-head.txt")"
+          ATTEMPT="$OUT/attempts/${QA_SEQUENCE}-${HEAD_SHA}"
+          mkdir -p "$ATTEMPT"
+          cp "$OUT/prompt.md" "$ATTEMPT/prompt.md"
+          cp "$OUT/review.md" "$ATTEMPT/review.md"
+          cp "$OUT/session.md" "$ATTEMPT/session.md"
+          cp "$OUT/reviewed-head.txt" "$ATTEMPT/reviewed-head.txt"
+          cp "$OUT"/stage-*.md "$ATTEMPT/" || true
+          head -n 1 "$OUT/review.md"
+          cat "$OUT/review.md"
+
+      - name: Upload native-session evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: about-native-qa-${{ env.QA_LOCALE_CODE }}-${{ env.QA_SEQUENCE }}
+          path: artifacts/about-i18n-native-sessions/${{ env.QA_LOCALE_CODE }}/
+          if-no-files-found: error
+
+      - name: Commit review evidence back to the feature branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "artifacts/about-i18n-native-sessions/$QA_LOCALE_CODE/"
+          git commit -m "qa($QA_LOCALE_CODE): record isolated native-language session $QA_SEQUENCE"
+          git pull --rebase origin feature/about-i18n-72-locales
+          git push origin HEAD:feature/about-i18n-72-locales
