@@ -43,7 +43,7 @@ Status: editorial control document; not public prose; not canonical authority
 | 25 | האם יש ראיות נגד | PROJECT + EPIST | Fits the foundational invisible/measurement-manipulation framework. | Keep as explicit structural example of unfalsifiability; do not accidentally describe unfalsifiability as a scientific virtue outside the joke. |
 | 26 | מסורת, זיכרון ודיוק | LOOSE-CANON + PROJECT + EPIST + CANON-DEP | The Loose Canon itself says later texts can contradict earlier texts and even the Gospel and warns against treating every holy text as infallible/literal. | The final popularity/familiarity criterion in the saved draft is still intentionally weak reasoning and must not become the project's actual provenance rule. Canon reconciliation will supply the real rule. |
 | 27 | כך הדבר עובד | PROJECT + CANON-DEP | Synthesizes earlier project cosmology. | Rewrite last, after canon alignment and provenance decisions. |
-| 28 | Later appendix: penguins / solar-water-heater factory | RECOVERED-PARTIAL + REAL + EPIST | Later conversation history confirms the appendix existed after the saved draft and survived the later integrated response. | Exact full later wording has not been recovered from durable storage. The opening is known; do not invent missing paragraphs. Check animal/engineering facts normally. |
+| 28 | Later appendix: penguins / solar-water-heater factory | RECOVERED-COMPOSITE + REAL + EPIST | A recovered historical composite now covers the full appendix section sequence using exact fragments from several conversation-state records; it is the preferred historical-text baseline and is used in the consolidated staging candidate with separately tracked cleanup. | Do not mislabel the composite as a byte-for-byte export of one original message. The earlier reconstruction remains comparison material only. Reopen recovery only if a new historical source appears; continue to check animal/engineering facts normally. |
 | 29 | Later Newton/Einstein revision | RECOVERED-PARTIAL + REAL + EPIST | Later integrated response replaced the crude “Newton was wrong” line with a more accurate distinction: Newtonian gravity is not the fundamental description; Einstein supplied the deeper theory; the joke then says he had not reached the noodles. | Reconstruct exact public wording from the later conversation if possible; scientifically preserve Newtonian gravity as an excellent approximation in its domain. |
 
 ## Source anchors currently established
@@ -78,15 +78,16 @@ Status: editorial control document; not public prose; not canonical authority
 
 - Wikipedia article on *The Gospel of the Flying Spaghetti Monster* was used to identify the creation sequence and flood account with page citations to the book. Before relying on wording details in final public prose, prefer direct book verification where available.
 
-## Safe work before the canonical corpus is ready
+## Pre-canon status
 
-The following can proceed without settling calendar canon:
+The formerly safe work categories represented by this matrix have now been completed to the current evidence limit:
+- later revisions are preserved either as recovered text, recovered composite, or explicitly labeled reconstruction;
+- external claims are classified and source-audited;
+- real-world scientific/linguistic premises have a dedicated QA pass;
+- deliberate reasoning fallacies are mapped separately from accidental errors;
+- safe editorial/Markdown repairs were applied only in staging;
+- the consolidated draft and provenance metadata are separate.
 
-1. recover later article revisions;
-2. source and classify external Pastafarian claims;
-3. verify real-world scientific/linguistic claims;
-4. isolate deliberate reasoning fallacies from accidental errors;
-5. repair purely editorial typos and malformed Markdown in a staging copy;
-6. prepare a consolidated draft with provenance metadata kept outside the public prose.
+Remaining gaps are dependency-bound rather than untracked work: exact Gospel page-level text is access-limited, exact later ontology/epistemology prose requires a new historical source, and canon-dependent claims require the pinned corpus.
 
-Do **not** yet use this matrix to decide disputed calendar-history claims; those wait for the canonical corpus reconciliation.
+Do **not** use this matrix to decide disputed calendar-history claims; those wait for canonical-corpus reconciliation.
