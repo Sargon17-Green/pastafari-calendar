@@ -35,12 +35,13 @@ jobs:
           set -euo pipefail
           REPO='charles6huang/mimir-mistral-7b-core-scratch-instruct-Q4_K_M-GGUF'
           FILE='mimir-mistral-7b-core-scratch-instruct-q4_k_m.gguf'
-          REVISION="$(curl -fsSL "https://huggingface.co/api/models/$REPO" | python -c 'import json,sys; print(json.load(sys.stdin)["sha"])')"
-          test -n "$REVISION"
+          REVISION='6b03e564dd569fea1ea05782b2c613484033f29c'
+          EXPECTED_SHA256='b8a914fea5e7b5e6c31626760c50ec6c6ae9c2645c3ee5c0dddc7e0b898159b9'
           mkdir -p /tmp/mimir-probe
           curl -fL --retry 3 \
             "https://huggingface.co/$REPO/resolve/$REVISION/$FILE?download=true" \
             -o "/tmp/mimir-probe/$FILE"
+          echo "$EXPECTED_SHA256  /tmp/mimir-probe/$FILE" | sha256sum -c -
           SHA256="$(sha256sum "/tmp/mimir-probe/$FILE" | awk '{print $1}')"
           SIZE="$(stat -c %s "/tmp/mimir-probe/$FILE")"
           {
@@ -50,7 +51,7 @@ jobs:
             echo "sha256=$SHA256"
             echo "size_bytes=$SIZE"
           } | tee /tmp/mimir-probe/model-metadata.txt
-          test "$SIZE" -gt 3500000000
+          test "$SIZE" -eq 4372819552
 
       - name: Run Icelandic language-quality probe
         shell: bash
@@ -70,27 +71,27 @@ jobs:
           done
           curl -fsS http://127.0.0.1:8080/health >/dev/null
 
-          printf '%s\\n' \\
-            'Þú ert íslenskur málfarsrýnir. Svaraðu eingöngu á eðlilegri nútímaíslensku.' \\
-            '' \\
-            'Metið eftirfarandi sex textabúta sjálfstætt. Fyrir hvern þeirra skaltu skrifa:' \\
-            '- númerið;' \\
-            '- annaðhvort „Í LAGI“ eða „VANDAMÁL“;' \\
-            '- eina stutta, skýra skýringu á íslensku;' \\
-            '- ef um VANDAMÁL er að ræða, eðlilegri íslenska leiðréttingu.' \\
-            '' \\
-            'Ekki gagnrýna sérnafnið Pastafari. Ekki þýða það.' \\
-            '' \\
-            '1. Leitaðu í hvaða dagatali sem vefurinn styður.' \\
-            '2. Leitaðu í hvaða studdu dagatali sem er.' \\
-            '3. Um Pastafari-dagatalið' \\
-            '4. Kalender Pastafari' \\
-            '5. A local, deterministic Pastafari calendar.' \\
-            '6. Pastafari-dagatalið er hluti sköpunarinnar.' \\
-            '' \\
-            'Að lokum skaltu skrifa eina línu:' \\
-            'HEILDARMAT: <númer þeirra textabúta sem eru vandamál, aðgreind með kommum>' \\
-            '' \\
+          printf '%s\n' \
+            'Þú ert íslenskur málfarsrýnir. Svaraðu eingöngu á eðlilegri nútímaíslensku.' \
+            '' \
+            'Metið eftirfarandi sex textabúta sjálfstætt. Fyrir hvern þeirra skaltu skrifa:' \
+            '- númerið;' \
+            '- annaðhvort „Í LAGI“ eða „VANDAMÁL“;' \
+            '- eina stutta, skýra skýringu á íslensku;' \
+            '- ef um VANDAMÁL er að ræða, eðlilegri íslenska leiðréttingu.' \
+            '' \
+            'Ekki gagnrýna sérnafnið Pastafari. Ekki þýða það.' \
+            '' \
+            '1. Leitaðu í hvaða dagatali sem vefurinn styður.' \
+            '2. Leitaðu í hvaða studdu dagatali sem er.' \
+            '3. Um Pastafari-dagatalið' \
+            '4. Kalender Pastafari' \
+            '5. A local, deterministic Pastafari calendar.' \
+            '6. Pastafari-dagatalið er hluti sköpunarinnar.' \
+            '' \
+            'Að lokum skaltu skrifa eina línu:' \
+            'HEILDARMAT: <númer þeirra textabúta sem eru vandamál, aðgreind með kommum>' \
+            '' \
             'Textabútarnir 1, 3 og 6 eru ætlaðir sem eðlileg íslenska. Textabútarnir 2, 4 og 5 eru viljandi prófunardæmi sem eiga að vera greind sem vandamál. Ekki endurtaka þessa lykilupplýsingu; notaðu hana aðeins til að sýna hvort þú getir fylgt málfarsverkefninu rétt.' > /tmp/mimir-probe/prompt.txt
           python - <<'PY'
           from pathlib import Path
