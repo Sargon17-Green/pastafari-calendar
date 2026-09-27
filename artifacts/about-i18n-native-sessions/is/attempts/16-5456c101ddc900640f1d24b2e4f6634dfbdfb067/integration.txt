@@ -1,0 +1,445 @@
+===== docs/i18n/runtime.js — FULL LOCALIZATION RUNTIME =====
+"use strict";
+
+import { LOCALES, getLocale, resolveLocale, translate } from "./registry.js?v=20-about-i18n";
+
+export const LANGUAGE_STORAGE_KEY = "pastafari.language";
+
+function safeReadStorage(storage, key) {
+  try { return storage?.getItem(key) ?? null; } catch { return null; }
+}
+
+function safeWriteStorage(storage, key, value) {
+  try { storage?.setItem(key, value); return true; } catch { return false; }
+}
+
+export function resolveBrowserLocale({ url = location.href, storage = localStorage, navigatorObject = navigator } = {}) {
+  const language = new URL(url).searchParams.get("lang");
+  const browserLanguages = Array.isArray(navigatorObject?.languages) && navigatorObject.languages.length
+    ? [...navigatorObject.languages]
+    : navigatorObject?.language ? [navigatorObject.language] : [];
+  return resolveLocale({
+    urlLanguage: language,
+    savedLanguage: safeReadStorage(storage, LANGUAGE_STORAGE_KEY),
+    browserLanguages,
+  });
+}
+
+export function persistLanguage(code, storage = localStorage) {
+  const locale = getLocale(code);
+  return safeWriteStorage(storage, LANGUAGE_STORAGE_KEY, locale.code);
+}
+
+export function urlWithLanguage(url, code) {
+  const locale = getLocale(code);
+  const next = new URL(url);
+  next.searchParams.set("lang", locale.code);
+  return next;
+}
+
+export function populateLanguageSelector(select, activeCode) {
+  const fragment = document.createDocumentFragment();
+  for (const locale of LOCALES) {
+    const option = document.createElement("option");
+    option.value = locale.code;
+    option.textContent = locale.displayName;
+    option.lang = locale.code;
+    option.dir = locale.dir;
+    fragment.append(option);
+  }
+  select.replaceChildren(fragment);
+  select.value = getLocale(activeCode).code;
+}
+
+export function applyDocumentLocale(locale, root = document) {
+  const documentElement = root.documentElement ?? root.ownerDocument?.documentElement;
+  if (!documentElement) throw new TypeError("A document-like root with documentElement is required.");
+  documentElement.lang = locale.code;
+  documentElement.dir = locale.dir;
+  for (const element of root.querySelectorAll("[data-i18n]")) {
+    element.textContent = translate(locale, element.dataset.i18n);
+  }
+  for (const element of root.querySelectorAll("[data-i18n-attr]")) {
+    const bindings = element.dataset.i18nAttr.split(";").map((part) => part.trim()).filter(Boolean);
+    for (const binding of bindings) {
+      const separator = binding.indexOf(":");
+      if (separator <= 0) throw new SyntaxError(`Invalid data-i18n-attr binding: ${binding}`);
+      const attribute = binding.slice(0, separator).trim();
+      const key = binding.slice(separator + 1).trim();
+      element.setAttribute(attribute, translate(locale, key));
+    }
+  }
+}
+
+
+===== docs/i18n/registry.js — TARGET REGISTRATION =====
+3: import { CUTLETS, MONTHS } from "./calendar-identifiers.js?v=9-canonical-names";
+4: 
+5: export const DEFAULT_LOCALE = "en";
+6: export const SUPPORT_LEVELS = Object.freeze(["complete", "partial", "experimental"]);
+7: 
+…
+58:   defineLocale("hy", "Հայերեն", "ltr", "hy-AM", "partial", () => import("./locales/hy.js?v=19-about-i18n")),
+59:   defineLocale("id", "Bahasa Indonesia", "ltr", "id-ID", "partial", () => import("./locales/id.js?v=19-about-i18n")),
+60:   defineLocale("is", "Íslenska", "ltr", "is-IS", "partial", () => import("./locales/is.js?v=19-about-i18n")),
+61:   defineLocale("it", "Italiano", "ltr", "it-IT", "partial", () => import("./locales/it.js?v=19-about-i18n")),
+62:   defineLocale("ja", "日本語", "ltr", "ja-JP", "partial", () => import("./locales/ja.js?v=19-about-i18n")),
+…
+190:   }
+191: 
+192:   return Object.freeze({ locale: byCode.get(canonicalTag(DEFAULT_LOCALE)), source: "fallback" });
+193: }
+194: 
+195: export function getLocale(code) {
+196:   return matchSupportedLocale(code) ?? byCode.get(canonicalTag(DEFAULT_LOCALE));
+197: }
+198: 
+…
+328:   assertLoadedLocaleMatchesMetadata(resource, metadata);
+329:   validateLocaleResourceShape(resource, metadata.code);
+330:   validateLocaleResourceShape(englishBaseline, DEFAULT_LOCALE);
+331:   if (!SUPPORT_LEVELS.includes(metadata.support)) throw new RangeError(`Locale ${metadata.code} has invalid support status.`);
+332:   if (!["ltr", "rtl"].includes(metadata.dir)) throw new RangeError(`Locale ${metadata.code} has invalid direction.`);
+…
+393:     const resource = await loadLocaleSource(metadata.code);
+394:     if (metadata.support === "complete") return wrapCompleteLocaleSource(resource);
+395:     const english = await loadLocaleSource(DEFAULT_LOCALE);
+396:     return materializeLocaleResources(resource, metadata, english);
+397:   })();
+…
+485:     return [source?.code, source];
+486:   }));
+487:   const english = sourceByCode.get(DEFAULT_LOCALE);
+488:   if (!english) throw new RangeError("English baseline locale is required for audit.");
+489:   const englishGroups = localGroups(english);
+…
+495:     const groups = localGroups(source);
+496:     const resourceGroups = {
+497:       messages: analyzeGroup(groups.messages, englishGroups.messages, "messages", { checkEnglishLeakage: metadata.code !== DEFAULT_LOCALE }),
+498:       terminology: analyzeGroup(groups.terminology, englishGroups.terminology, "terminology", { checkEnglishLeakage: metadata.code !== DEFAULT_LOCALE }),
+499:       cutlets: analyzeGroup(groups.cutlets, englishGroups.cutlets, "cutlets", { checkEnglishLeakage: metadata.code !== DEFAULT_LOCALE }),
+500:       months: analyzeGroup(groups.months, englishGroups.months, "months", { checkEnglishLeakage: metadata.code !== DEFAULT_LOCALE }),
+501:     };
+502: 
+…
+543:     sourceByCode.set(source.code, source);
+544:   }
+545:   const english = sourceByCode.get(DEFAULT_LOCALE);
+546:   if (!english) throw new RangeError("English baseline locale is required for validation.");
+547:   if (sources.length !== LOCALES.length) throw new RangeError(`Expected ${LOCALES.length} locale resources, received ${sources.length}.`);
+
+===== docs/i18n/registry.js — LOAD/FALLBACK FUNCTIONS =====
+218: export async function loadLocaleSource(code) {
+219:   const metadata = getLocale(code);
+220:   const existing = loadedSources.get(metadata.code);
+221:   if (existing) return existing;
+222: 
+223:   const loading = metadata.loader().then((module) => assertLoadedLocaleMatchesMetadata(module.default, metadata));
+224:   loadedSources.set(metadata.code, loading);
+225:   try {
+226:     return await loading;
+227:   } catch (error) {
+228:     if (loadedSources.get(metadata.code) === loading) loadedSources.delete(metadata.code);
+229:     throw error;
+230:   }
+231: }
+
+362: export function materializeLocaleResources(resource, metadata, englishBaseline) {
+363:   validateLocaleSourceContract(resource, metadata, englishBaseline);
+364:   const local = localGroups(resource);
+365:   const fallback = localGroups(englishBaseline);
+366:   const result = {
+367:     ...resource,
+368:     messages: mergeGroup(fallback.messages, local.messages),
+369:     terminology: mergeGroup(fallback.terminology, local.terminology),
+370:     calendar: Object.freeze({
+371:       ...ownRecord(englishBaseline?.calendar),
+372:       ...ownRecord(resource?.calendar),
+373:       cutlets: mergeGroup(fallback.cutlets, local.cutlets),
+374:       months: mergeGroup(fallback.months, local.months),
+375:     }),
+376:   };
+377:   Object.defineProperty(result, LOCAL_SOURCE, { value: resource, enumerable: false });
+378:   return Object.freeze(result);
+379: }
+
+387: export async function loadLocale(code) {
+388:   const metadata = getLocale(code);
+389:   const existing = loadedLocales.get(metadata.code);
+390:   if (existing) return existing;
+391: 
+392:   const loading = (async () => {
+393:     const resource = await loadLocaleSource(metadata.code);
+394:     if (metadata.support === "complete") return wrapCompleteLocaleSource(resource);
+395:     const english = await loadLocaleSource(DEFAULT_LOCALE);
+396:     return materializeLocaleResources(resource, metadata, english);
+397:   })();
+398:   loadedLocales.set(metadata.code, loading);
+399:   try {
+400:     return await loading;
+401:   } catch (error) {
+402:     if (loadedLocales.get(metadata.code) === loading) loadedLocales.delete(metadata.code);
+403:     throw error;
+404:   }
+405: }
+
+===== docs/about/about.js — FULL ARTICLE LOCALIZATION FLOW =====
+"use strict";
+
+import {
+  loadLocale,
+  translate,
+} from "../i18n/registry.js?v=20-about-i18n";
+import {
+  applyDocumentLocale,
+  persistLanguage,
+  populateLanguageSelector,
+  resolveBrowserLocale,
+  urlWithLanguage,
+} from "../i18n/runtime.js?v=20-about-i18n";
+import {
+  ARTICLE_FALLBACK_LOCALE,
+  resolveArticleLocale,
+} from "./content/registry.js?v=5-about-i18n-polish";
+
+const elements = Object.fromEntries(
+  [...document.querySelectorAll("[id]")].map((element) => [element.id, element]),
+);
+
+let activeLocale = await loadLocale(resolveBrowserLocale().locale.code);
+let activeArticleCode = null;
+
+function t(key, values = {}) {
+  return translate(activeLocale, key, values);
+}
+
+function syncCalendarLinks() {
+  for (const link of document.querySelectorAll("[data-back-to-calendar]")) {
+    link.href = urlWithLanguage(new URL("../", location.href), activeLocale.code);
+  }
+}
+
+function applyActiveLocale() {
+  applyDocumentLocale(activeLocale);
+  populateLanguageSelector(elements["language-selector"], activeLocale.code);
+  syncCalendarLinks();
+}
+
+async function fetchArticle(articleLocale) {
+  const url = new URL(articleLocale.asset, import.meta.url);
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`HTTP ${response.status} while loading ${articleLocale.code}`);
+  return response.text();
+}
+
+function renderArticle(articleLocale, html) {
+  elements["article-content"].innerHTML = html;
+  elements["article-content"].lang = articleLocale.lang;
+  elements["article-content"].dir = articleLocale.dir;
+  activeArticleCode = articleLocale.code;
+  updateLanguageNotice(articleLocale.code);
+  buildTableOfContents();
+  focusHashTarget();
+}
+
+async function loadArticleForLocale(localeCode) {
+  const requestedArticle = resolveArticleLocale(localeCode);
+  if (requestedArticle.code === activeArticleCode && elements["article-content"].childElementCount > 0) {
+    updateLanguageNotice(requestedArticle.code);
+    buildTableOfContents();
+    focusHashTarget();
+    return;
+  }
+
+  elements["article-content"].setAttribute("aria-busy", "true");
+  elements["about-load-error"].hidden = true;
+
+  try {
+    let articleLocale = requestedArticle;
+    let html;
+    try {
+      html = await fetchArticle(articleLocale);
+    } catch (selectedError) {
+      if (articleLocale.code === ARTICLE_FALLBACK_LOCALE) throw selectedError;
+      console.warn(`Falling back from article locale ${articleLocale.code} to ${ARTICLE_FALLBACK_LOCALE}.`, selectedError);
+      articleLocale = resolveArticleLocale(ARTICLE_FALLBACK_LOCALE);
+      html = await fetchArticle(articleLocale);
+    }
+    renderArticle(articleLocale, html);
+  } catch (error) {
+    console.error(error);
+    elements["article-content"].replaceChildren();
+    activeArticleCode = null;
+    elements["about-language-notice"].hidden = true;
+    elements["about-load-error"].hidden = false;
+    elements["about-load-error"].textContent = t("about.loadError");
+    elements["about-toc-list"].replaceChildren();
+  } finally {
+    elements["article-content"].setAttribute("aria-busy", "false");
+  }
+}
+
+function updateLanguageNotice(articleCode) {
+  elements["about-language-notice"].hidden = articleCode === activeLocale.code;
+}
+
+function sectionHeading(section) {
+  return section.querySelector(":scope > h2, :scope > h3");
+}
+
+function buildTableOfContents() {
+  const list = elements["about-toc-list"];
+  list.replaceChildren();
+
+  const sections = [
+    ...elements["article-content"].querySelectorAll("[data-toc-section][id]"),
+    elements["site-usage"],
+  ];
+
+  for (const section of sections) {
+    const heading = sectionHeading(section);
+    if (!heading) continue;
+    const item = document.createElement("li");
+    item.className = `about-toc-level-${section.dataset.tocLevel === "3" ? "3" : "2"}`;
+    const link = document.createElement("a");
+    link.href = `#${section.id}`;
+    link.textContent = heading.textContent.trim();
+    if (elements["article-content"].contains(section)) {
+      link.lang = elements["article-content"].lang;
+      link.dir = elements["article-content"].dir;
+    }
+    item.append(link);
+    list.append(item);
+  }
+}
+
+function focusHashTarget() {
+  const id = decodeURIComponent(location.hash.slice(1));
+  if (!id) return;
+  const target = document.getElementById(id);
+  if (!target) return;
+  if (id === "site-usage") elements["site-usage-details"].open = true;
+  const containingDetails = target.closest("details");
+  if (containingDetails) containingDetails.open = true;
+  target.scrollIntoView({ block: "start" });
+  if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
+  target.focus({ preventScroll: true });
+}
+
+function initializeResponsiveDisclosures() {
+  if (matchMedia("(max-width: 860px)").matches) elements["about-toc"].open = false;
+}
+
+async function chooseLanguage(code) {
+  const locale = await loadLocale(code);
+  persistLanguage(locale.code);
+  const url = urlWithLanguage(location.href, locale.code);
+  history.pushState({ pastafariAbout: true }, "", url);
+  activeLocale = locale;
+  applyActiveLocale();
+  await loadArticleForLocale(locale.code);
+}
+
+initializeResponsiveDisclosures();
+applyActiveLocale();
+await loadArticleForLocale(activeLocale.code);
+
+elements["language-selector"].addEventListener("change", (event) => {
+  const select = event.currentTarget;
+  const requested = select.value;
+  select.disabled = true;
+  chooseLanguage(requested)
+    .catch((error) => {
+      console.error(error);
+      populateLanguageSelector(select, activeLocale.code);
+    })
+    .finally(() => { select.disabled = false; });
+});
+
+addEventListener("popstate", () => {
+  const resolved = resolveBrowserLocale();
+  if (resolved.locale.code === activeLocale.code) {
+    focusHashTarget();
+    return;
+  }
+  loadLocale(resolved.locale.code)
+    .then(async (locale) => {
+      activeLocale = locale;
+      applyActiveLocale();
+      await loadArticleForLocale(locale.code);
+    })
+    .catch((error) => console.error(error));
+});
+
+addEventListener("hashchange", focusHashTarget);
+
+if ("serviceWorker" in navigator) {
+  const registerServiceWorker = () => navigator.serviceWorker.register("../sw.js").catch(() => {});
+  if (document.readyState === "complete") registerServiceWorker();
+  else addEventListener("load", registerServiceWorker, { once: true });
+}
+
+
+
+===== docs/app.js — HARD-CODED DISPLAY + LOCALE-LOAD TOUCHPOINTS =====
+29: import {
+30:   applyDocumentLocale,
+31:   persistLanguage,
+…
+45: let requestId = 0;
+46: let activeLocale = await loadLocale(resolveBrowserLocale().locale.code);
+47: let numberFormatter = null;
+48: let dateFormatter = null;
+49: let lastVisibleErrorKey = null;
+50: let viewLoadSequence = 0;
+…
+362:   });
+363:   elements["calendar-grid"].setAttribute("aria-label", t("calendar.daysAria", { cutletName: viewCutletName }));
+364:   const targetIsInView = state.targetJdn >= view.startJdn && state.targetJdn <= view.endJdn;
+…
+376:     card.dataset.target = String(isTarget);
+377:     card.setAttribute("aria-label", dateAria(day));
+378:     card.style.setProperty("--month-bg", colors.background);
+…
+401:   elements["next-cutlet"].disabled = false;
+402:   lastVisibleErrorKey = null;
+403: 
+…
+566:   cell.className = "comparison-date-cell";
+567:   cell.setAttribute("aria-label", dateAria(day));
+568:   cell.append(...makeDateLines(day, "comparison-date-line"));
+…
+688:   const key = error?.translationKey || "error.engineFailed";
+689:   lastVisibleErrorKey = key;
+690:   elements["loading-panel"].hidden = true;
+…
+882:   rebuildFormatters();
+883:   applyDocumentLocale(activeLocale);
+884:   populateLanguageSelector(elements["language-selector"], activeLocale.code);
+…
+897:   }
+898:   if (lastVisibleErrorKey && !elements["error-panel"].hidden) {
+899:     elements["error-message"].textContent = t(lastVisibleErrorKey);
+900:   }
+…
+906:   if (resolved.locale.code === activeLocale.code) return;
+907:   activeLocale = await loadLocale(resolved.locale.code);
+908:   applyActiveLocale({ rerender });
+…
+912:   const metadata = getLocale(code);
+913:   const locale = metadata.code === activeLocale.code ? activeLocale : await loadLocale(metadata.code);
+914:   persistLanguage(metadata.code);
+
+===== docs/reverse-ui.js — HARD-CODED DISPLAY TOUCHPOINTS =====
+941:     this.status.textContent = this.rt("reverse.status.running");
+942:     this.progress.textContent = "";
+943:     this.setRunning(true);
+…
+1051:     this.renderVisibleErrorMessage();
+1052:     this.status.textContent = "";
+1053:   }
+…
+1081:     this.output.hidden = true;
+1082:     this.status.textContent = "";
+1083:     this.progress.textContent = "";
+1084:     this.error.hidden = true;
