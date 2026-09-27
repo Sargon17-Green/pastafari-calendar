@@ -106,7 +106,7 @@ Status progression for target locales: `not started → draft → semantic QA �
 
 - `fy-NL`: locale-wide language finding: prominent UI copy is Dutch rather than Frisian (`Werkdei wijzigen`, `uitgangspunt van de berekening`, `Deze site gebruiken`).
 
-- `is-IS`: locale-wide language finding: the existing locale is largely Danish with Icelandic-looking substitutions (`Skift arbejdsdaguren`, `beregningens udgangspunkt`, `Sådan ...`).
+- `is-IS`: historical locale-wide language finding: the locale was largely Danish with Icelandic-looking substitutions (`Skift arbejdsdaguren`, `beregningens udgangspunkt`, `Sådan ...`). A broad Icelandic repair has since replaced those strings; the final isolated same-language whole-site gate is still in progress.
 
 - `sl-SI`: locale-wide language finding: prominent UI copy is Croatian/Bosnian/Serbian rather than idiomatic Slovenian (`Promijeni dan delovanja`, `polazišna je točka`, `u kotletu`).
 
