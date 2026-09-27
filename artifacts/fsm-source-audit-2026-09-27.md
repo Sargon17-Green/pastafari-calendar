@@ -546,3 +546,29 @@ Therefore:
 - this is sufficient for staging/provenance classification but should not be misreported as exact direct-book quotation verification.
 
 No attempt should be made to bypass access restrictions just to obtain the text.
+
+
+## Important provenance correction — external absence is not project rejection
+
+Historical conversation recovery establishes an editorial rule that was active when the FSM article was drafted:
+
+1. search Bobby Henderson / existing Pastafarian sources first;
+2. if the desired point is not already supplied there, new project theology may be invented;
+3. invented theology should be concrete/causal rather than rescued as mere symbolism.
+
+It also establishes explicit user approval, before the corpus-authority transition, for:
+- male / female / carbohydrate;
+- personal Noodly gravity;
+- vascular design linked to noodle-like structure;
+- Anti-Past material;
+- carbohydrate importance;
+- logical-fallacy / cognitive-bias sections.
+
+Therefore the source audit must be interpreted correctly:
+
+`NOT FOUND EXTERNALLY` does **not** mean `REJECTED` or `ACCIDENTAL`.
+
+For those items the historical status is:
+`PREVIOUSLY_APPROVED_PROJECT_THEOLOGY`.
+
+The forthcoming canonical corpus may still supersede them. The future task is reconciliation, not pretending they were never approved.
