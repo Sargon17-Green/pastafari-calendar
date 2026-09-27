@@ -121,3 +121,38 @@ The saved draft itself says that traditions can conflict and that a source can s
 This article should remain a separate content workstream from the technical `/about/` calendar explanation unless a later explicit editorial decision says otherwise.
 
 No publication, merge, translation rollout or canonical status is implied by this recovery ledger.
+
+
+## Penguin appendix recovery update — near-complete composite recovered
+
+Later conversation recovery substantially improved the appendix state.
+
+A new artifact now assembles exact historical fragments recovered from the 2026-09-16/17 assistant outputs:
+
+`fsm-penguin-appendix-recovered-composite-2026-09-27.md`
+
+Recovered historical wording now covers:
+- opening;
+- מבנה הגוף;
+- תקשורת;
+- קריאה, כתיבה וחישוב;
+- בקרת איכות;
+- בטיחות;
+- אקלים;
+- חומרי גלם;
+- לוגיסטיקה;
+- משאבי אנוש;
+- אחריות משפטית;
+- שאלת הניסיון;
+- יתרונות אפשריים;
+- מסקנה, including the previously known exact final recommendation.
+
+This is much stronger than the earlier fragment-only state.
+
+Caveat:
+- the text was reconstructed from **exact conversation fragments across several recovery records**, not from one durable byte-for-byte export of a single assistant message;
+- therefore it is labeled a `RECOVERED HISTORICAL COMPOSITE`, not a byte-identical original file.
+
+The earlier fully reconstructed appendix remains useful as editorial comparison/QA material but is no longer the best historical-text baseline.
+
+The consolidated FSM candidate has been updated to use the recovered composite instead of the newly written reconstruction.
