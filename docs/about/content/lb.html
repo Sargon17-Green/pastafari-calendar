@@ -1,7 +1,7 @@
 <!-- Déi lëtzebuergesch Versioun ass direkt aus dem hebräesche semantic master geschriwwen; keng Pivot-Sprooch gouf benotzt. -->
 <!-- D'Section-IDe gehéieren zu engem stabile public deep-link contract a ginn net aus iwwersate Rubriken ofgeleet. -->
 <div class="about-section about-lead" id="about-calendar">
-  <p>An der Erzielung vun dëser Säit gëtt de Pastafari-Kalenner als dee Kalenner duergestallt, an deem d'Zäit selwer erschaf gouf. Wéi en funktionéiert, ass awer duerch strikt a präzis Reegelen definéiert.</p>
+  <p>De Pastafari-Kalenner ass dee Kalenner, an deem d'Zäit selwer erschaf gouf. Seng Mechanik ass präzis definéiert.</p>
   <p>De Kalenner pecht net op all Dag een onverännerlecht Pastafari-“Etikett”. Fir en Datum ze kréien, brauche mir zwee Deeg: den <strong>Aktiounsdag</strong>, vun deem aus d'Berechnung ufänkt, an den <strong>gefroten Dag</strong>, fir deen de Pastafari-Datum gesicht gëtt.</p>
   <p>Wa mir den Aktiounsdag als <code>c</code> an de gefroten Dag als <code>t</code> schreiwen, ass den Datum</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
@@ -126,7 +126,7 @@
 
 <section class="about-section" id="calculation" data-toc-section data-toc-level="2">
   <h2>Wéi gëtt de Kalenner berechent?</h2>
-  <p>Déi intern Berechnung nenne mir hei d'<strong>Zooss</strong>. An hirem Mëttelpunkt steet d'Primzuel</p>
+  <p>Déi intern Berechnung heescht d'<strong>Zooss</strong>. An hirem Mëttelpunkt steet d'Primzuel</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
   <p>De Prozess ëmfaasst fënnef Agabezieler, 7 verstoppt Drëpsen, 46 sichtbar Drëpsen, 6 Schosselen, verännerlech Reiefollege vun de Schosselen, 12 Schlussmëschungen, Sigelen fir verschidden Äntwerten, kombinatoresch Wiel, d'Baue vu Paarten, d'Auswiele vu Joren, d'Opdeele vu Koteletten, d'Auswiele vun Nimm, d'Baue vu Méint an d'Verflechte vun de Mountsdeeg.</p>
   <p>D'Schlussaktualiséierunge si <strong>synchron</strong>: bei all Mëschung ginn déi sechs nei Wäerter aus deem selwechten ale Zoustand berechent, an eréischt duerno ginn all sechs Schosselen zesumme geännert.</p>
@@ -170,7 +170,7 @@
         <tr><td>Median vun der Mountslängt</td><td>115</td></tr>
         <tr><td>Duerchschnëttlech Zuel vu kontinuéierleche Segmenter pro Mount</td><td>100.897</td></tr>
         <tr><td>Undeel vu Mountssegmenter vun engem Dag</td><td>97.482%</td></tr>
-        <tr><td>Warscheinlechkeet, datt zwee Nopeschdeeg am selwechte Mount sinn</td><td>2.9976%</td></tr>
+        <tr><td>Undeel vun den Nopeschdag-Puer, déi an der Prouf am selwechte Mount waren</td><td>2.9976%</td></tr>
         <tr><td>Duerchschnëttlech Zuel vun Deeg aus anere Méint tëscht <code>n</code> an <code>n+1</code> vum selwechte Mount</td><td>40.408</td></tr>
         <tr><td>Duerchschnëttlechen Zäitraum tëscht dem éischten a leschten Optriede vun engem Mount</td><td>4,266.653 Deeg</td></tr>
       </tbody>
@@ -233,19 +233,19 @@
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>A wat ass dann de Seer?</h2>
-  <p>Niewent der kanonescher Implementatioun gëtt et eng séier Maschinn mam Numm <strong>Pastafarian Calendar Seer</strong>. De Seer ass keng Autoritéitsquell: de richtegen Datum gëtt vun der Megillah an der kanonescher Berechnung bestëmmt. Wann de Seer net domat iwwereneestëmmt, läit de Feeler beim Seer.</p>
+  <p>Niewent der kanonescher Implementatioun gëtt et eng séier Maschinn mam Numm <strong>Pastafarian Calendar Seer</strong>. De Seer ass keng Autoritéitsquell: d'Megillah leet d'Reegele fest, an déi kanonesch Berechnung berechent den Datum no dëse Reegelen. Wann de Seer enger korrekter kanonescher Berechnung widdersprécht, läit de Feeler beim Seer.</p>
   <p>Seng Aufgab ass et, déi selwecht Ufro séier auszeféieren an d'Resultat an enger Form zeréckzeginn, déi einfach a Produkter integréiert ka ginn.</p>
-  <p>An der direkter Verifikatioun beim Redigéiere vun dëser Säit huet de Seer ënner anerem <code>date</code>- an <code>now</code>-Ufroen, <code>batch</code>, Dagsberäicher, Réckkonversioun vun engem Pastafari-Datum op de gefroten Dag, d'Ofruffe vun der Joeresstruktur, d'Bestëmmung vum aktiven Aktiounsdag, Node API, Browser-/HTTP-Client, CLI, HTTP v1-Service, OpenAPI 3.1-Kontrakt, nativ Implementatiounen a Verdeelungspäck, souwéi eng verifizéiert Container-Bereetstellung ëmfaasst.</p>
-  <p>Déi al Ausso, de Seer hätt keng ëffentlech API, ass net méi richteg. Elo gëtt et e kloeren a stabile HTTP v1-Kontrakt mat Endpunkte fir <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, Aktiounsdag, <code>metadata</code>, <code>locales</code> a <code>status</code>.</p>
+  <p>An der direkter Verifikatioun vum 21. September 2026 huet de Seer ënner anerem <code>date</code>- an <code>now</code>-Ufroen, <code>batch</code>, Dagsberäicher, Réckkonversioun vun engem Pastafari-Datum op de gefroten Dag, d'Ofruffe vun der Joeresstruktur, d'Bestëmmung vum aktiven Aktiounsdag, Node API, Browser-/HTTP-Client, CLI, HTTP v1-Service, OpenAPI 3.1-Kontrakt, nativ Implementatiounen a Verdeelungspäck, souwéi eng verifizéiert Container-Bereetstellung ëmfaasst.</p>
+  <p>De Seer huet eng ëffentlech API. Et gëtt e kloeren a stabile HTTP v1-Kontrakt mat Endpunkte fir <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, Aktiounsdag, <code>metadata</code>, <code>locales</code> a <code>status</code>.</p>
   <p>Den 21. September 2026 gouf eng ëffentlech HTTPS-Bereetstellung op Render wierklech getest: um lafende Service goufe genee Ufroen, e grousse Beräich, en Neistart, <code>cold wake</code> an d'Verhalen ënner Laascht verifizéiert.</p>
-  <p>D'Projetdokumentatioun ënnerscheet awer nach ëmmer tëscht enger ëffentlecher Beta-/Evaluatiounsbereetstellung an engem permanente gehoste Produktiounsservice mat SLA. Dofir soll eng konzeptuell Erklärungssäit keng Serveradress, keen Hosting-Ubidder a keng Versiounsnummer esou festschreiwen, wéi wann dat Deel vum Kalenner selwer wier.</p>
+  <p>Déi verifizéiert ëffentlech Bereetstellung ass eng Beta-/Evaluatiounsbereetstellung, keng Ukënnegung vun engem permanente gehoste Produktiounsservice mat SLA. D'Serveradress, den Hosting-Ubidder an d'Versiounsnummer sinn net Deel vum Kalenner a keng kanonesch Konstanten.</p>
   <p>De Seer kann Virberechnung, speziell Duerstellungen, SIMD, Algebra an aner Ofkierzunge benotzen. Hie muss net déi ganz Berechnungsgeschicht vun der kanonescher Implementatioun Schrëtt fir Schrëtt nokopéieren, soulaang hien déiselwecht semantesch Operatioun mécht an déiselwecht Äntwert zeréckgëtt.</p>
   <p>Optimisatioun ass keng alternativ Autoritéit.</p><hr>
 </section>
 
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
   <h2>Ursprong, Grënnungsdag an Dag vun den Tafelen</h2>
-  <p>Hei ass et besonnesch wichteg, kanonesch Zäitanker kloer vun der Geschicht vum Site ze trennen.</p>
+  <p>Déi fix Berechnungsanker vum Kalenner sinn eppes anescht wéi d'Fakten iwwer säin Ursprong an d'Geschicht vu senger Iwwerreechung.</p>
 
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>Ankerpunkten</h3>
@@ -260,10 +260,10 @@
   </section>
 
   <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
-    <h3>D'Geschicht vum Site</h3>
-    <p>An der redaktioneller Geschicht vum Site gëtt de Kalenner als Deel vun der Schëpfung beschriwwen an als System, deen d'Mënschheet benotzt huet, ouni en ganz ze verstoen, bis en an der moderner Zäit erëm iwwerreecht gouf.</p>
-    <p>Dat ass d'Geschicht vum Site; net all narrativen Detail soll duergestallt ginn, wéi wann et eng explizit technesch Ausso vun der Megillah wier.</p>
-    <p>D'Evenement vun der erneierter Iwwerreechung selwer ass e fixt historescht Evenement. Säi <strong>Pastafari-Datum</strong> soll besser dynamesch ënner dem aktuellen Aktiounsdag ugewise ginn, amplaz fir ëmmer op een Datum festgeschriwwen ze ginn.</p><hr>
+    <h3>Den Ursprong vum Kalenner a seng Iwwerreechung</h3>
+    <p>De Pastafari-Kalenner ass Deel vun der Schëpfung. D'Mënschheet huet en benotzt, ouni sech genuch bewosst ze sinn, datt si dëse Kalenner benotzt, bis en an der moderner Zäit erëm iwwerreecht gouf.</p>
+    <p>D'Megillah beschreift net all Detail vun dëser Geschicht; Detailer, déi do net ausdrécklech genannt ginn, sinn net Deel vum Text vun der Megillah. Dat ass en Ënnerscheed vun der Quell, net en Zweiwel un der Realitéit.</p>
+    <p>D'Evenement vun der erneierter Iwwerreechung selwer ass e fixt historescht Evenement. Säi <strong>Pastafari-Datum</strong> gëtt no dem relevante Aktiounsdag berechent; dofir huet et net eng eenzeg fir ëmmer fix Pastafari-Fënneferkombinatioun, a seng Pastafari-Duerstellung kann ënner engem aneren Aktiounsdag änneren.</p><hr>
   </section>
 </section>
 
@@ -292,8 +292,8 @@
     </table>
   </div>
 
-  <p>Wann den Aktiounsdag net bekannt ass, ass d'Situatioun anescht. Déi selwecht fënnef Wäerter kënnen ënner verschiddenen Aktiounsdeeg optrieden, an et gëtt e geneet Beispill, wou dee selwechte komplette Datum op ënnerschiddlechen Distanze vu <code>c</code> opdaucht.</p>
-  <p>Am Joer 5000 gëtt souguer d'Zeeche vun där Distanz net ëmmer vun de fënnef Wäerter bestëmmt: dee selwechte komplette Datum kann an engem Kontext virum Aktiounsdag leien an an engem aneren dono.</p>
+  <p>Wann den Aktiounsdag net bekannt ass, ass d'Situatioun anescht. Déi selwecht fënnef Wäerter kënnen ënner verschiddenen Aktiounsdeeg optrieden, an et gëtt e konkret Beispill, wou dee selwechte komplette Datum op ënnerschiddlechen Distanze vu <code>c</code> opdaucht.</p>
+  <p>Am Joer 5000 bestëmmen déi fënnef Wäerter net emol ëmmer, ob den Datum virum oder nom Aktiounsdag läit: dee selwechte komplette Datum kann an engem Kontext virum Aktiounsdag leien an an engem aneren dono.</p>
   <p>E komplette Pastafari-Datum ass also keng absolut Adress op der Zäitlinn, wann net bekannt ass, ënner wéi engem <code>c</code> en berechent gouf.</p>
 
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
@@ -316,7 +316,7 @@
   <p>An de siichtbaren Etappen 3–46, um entspriechenden asymptoteschen Ast, ass generesch Injektivitéit festgestallt: am generesche Fall späichert den Zoustand genuch Informatioun, fir déi relevant Agabegeschicht an d'Schosselreiefolleg ze rekonstruéieren.</p>
   <p>D'Informatioun verschwënnt och net direkt an den 12 Schlussmëschungen. Fir déi éischt fënnef Mëschunge no der siichtbarer Drëps 46 ass generesch Invertibilitéit op der entspriechender kanonescher Vereenegung ouni zousätzlech Informatioun festgestallt; fir de Rescht si staark konstruktiv iewescht Grenze bekannt, wéi vill Zousatzinformatioun fir d'Rekonstruktioun genuch ass.</p>
   <p>D'Fro, ob <strong>nëmmen déi lescht sechs Schosselen</strong> am generesche Sënn ëmmer genuch sinn, bleift op.</p>
-  <p>E puer Resultater goufe symbolesch bewisen, anerer mat endlechen exakten arithmetesche Kontrollen ofgeschloss. Symbolesch Verstäerkung huet de Berechnungskär, deem vertraut muss ginn, staark verkleinert, awer net komplett eliminéiert.</p>
+  <p>E puer Resultater goufe symbolesch bewisen, anerer mat endlechen exakten arithmetesche Kontrollen verifizéiert. Symbolesch Verstäerkung huet de Berechnungskär, deem vertraut muss ginn, staark verkleinert, awer net komplett eliminéiert.</p>
   <p>Raim, déi am Ufank ausgesinn hunn, wéi wann eng immens Zuel vu Weeër duerchsicht misst ginn, goufen op vill méi kleng endlech Strukture reduzéiert, dorënner Automaten mat 180 an 9 Zoustänn an d'Symmetrie vun de sechs Schosselen.</p>
   <p>Ënner dem Mësche läit eng streng algebraesch Struktur. Et ass net néideg, se ze kennen, fir den Datum vun haut ze wëssen.</p><hr>
 </section>
