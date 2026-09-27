@@ -39,19 +39,19 @@ Work branch: `work/about-canon-transition-2026-09-27`.
 
 - [x] First full Hebrew editorial pass completed and saved in `fsm-hebrew-editorial-qa-2026-09-27.md`; several safe mechanical fixes were applied.
 - [x] Intentional-fallacy map recorded; confirmation bias, unfalsifiability, correlation/causation, selective prayer accounting and familiarity-as-proof are explicitly protected from accidental “correction”.
-- [ ] Verify every real-world science claim used as a premise for a joke.
+- [x] Real-world science premise pass completed in `fsm-real-world-science-qa-2026-09-27.md`; no new prose defect remained after the earlier Newton/Einstein and penguin staging fixes.
 - [x] Language claims checked: Henderson's English masculine pronouns are source-backed; Hebrew `מפלצת` is grammatically feminine; theological gender remains separate.
-- [ ] Check internal cross-references and section ordering.
+- [x] Structure/cross-reference QA completed in `fsm-structure-crossref-qa-2026-09-27.md`; appendix subsections were correctly nested as H3 in the staging candidate while historical source text remained untouched.
 - [x] High-risk external-attribution sites are identified in the provenance matrix and editorial QA, especially gender, meal rules, Hell/Antipasti, prayer custom and tradition/provenance.
 - [x] Consolidated staged candidate exists: `fsm-about-consolidated-candidate-2026-09-27.md`; canon-dependent choices remain intentionally unresolved.
 
 ### C. /about/ infrastructure and QA that do not depend on canon text
 
-- [ ] Preserve the existing 72-locale semantic-alignment evidence.
-- [ ] Do not restart translations from zero.
-- [ ] Continue bookkeeping for same-language/native QA where doing so does not require accepting disputed facts.
-- [ ] Keep rendered-layout/a11y/BiDi/switching/PWA evidence separate from semantic evidence.
-- [ ] Preserve 29 stable section IDs until a later canon-driven structural change explicitly requires otherwise.
+- [x] Exact live semantic-alignment evidence snapshot preserved in `about-precanon-evidence-snapshot-2026-09-27.json`: 72 article resources, 71/71 non-Hebrew semantic targets aligned, 71 per-locale semantic evidence files, with blob SHAs and source HEAD.
+- [x] No-restart rule is now encoded in transition/checkpoint/evidence artifacts: future corpus changes use a bounded delta and preserve prior native-language fixes.
+- [~] Live native QA continues independently on `feature/about-i18n-72-locales`; this workstream snapshots its control/evidence without interfering. At the latest capture the live control was Icelandic (`is-IS`), sequence 14.
+- [x] Evidence-layer separation is explicitly preserved in the transition docs and machine-readable evidence snapshot/schema; semantic alignment must never be promoted to render/a11y/PWA PASS.
+- [x] The 29 stable `/about/` IDs are captured in the reconciliation inventory/claim register and protected as the current deep-link contract pending an explicit corpus-driven structural decision.
 
 ## Deferred until the corpus is ready
 
