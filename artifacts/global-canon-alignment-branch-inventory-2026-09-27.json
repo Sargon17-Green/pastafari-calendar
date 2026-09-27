@@ -1,0 +1,106 @@
+{
+  "schema": "pastafarian-global-canon-alignment-branch-inventory/v1",
+  "created": "2026-09-27",
+  "note": "Snapshot only. Re-discover live branches/HEADs when the canonical corpus is pinned because all four repositories are actively changing.",
+  "repositories": [
+    {
+      "repository": "Sargon17-Green/pastafari-calendar",
+      "role": "main public site/toolkit and /about/ rollout",
+      "branchCount": 11,
+      "branches": [
+        "dependabot/github_actions/actions/setup-java-6.0.1",
+        "dependabot/github_actions/ruby/setup-ruby-1.324.0",
+        "dependabot/npm_and_yarn/playwright-1.63.0",
+        "feature/about-calendar-explanation",
+        "feature/about-i18n-72-locales",
+        "feature/about-visual-polish",
+        "fix/monster-short-selection-infeasible-work",
+        "main",
+        "qa/about-i18n-native-language-audit",
+        "tmp/about-visual-baseline-capture",
+        "work/about-canon-transition-2026-09-27"
+      ]
+    },
+    {
+      "repository": "Sargon17-Green/Pastafarian-Calendar",
+      "role": "independent programming-language + human-language implementations and live cooking/Megillah UI branches",
+      "branchCount": 66,
+      "implementationBranchCount": 60,
+      "branchManifest": "artifacts/multi-implementation-branch-inventory-2026-09-27.json",
+      "mergeConstraint": "Do not merge implementation/work branches into main as part of this repository workflow."
+    },
+    {
+      "repository": "Sargon-17-Green/Pastafarian-Calendar-Seer",
+      "role": "accelerated Seer engine/API and semantic/conformance documentation",
+      "branchCount": 32,
+      "branches": [
+        "arm64-multiarch-runtime",
+        "arm64-multiarch-runtime-v2",
+        "arm64-multiarch-runtime-v3",
+        "cache-data",
+        "ci/actions-maintenance-refactor",
+        "ci/native-diagnostics",
+        "dependabot/docker/node-25-bookworm-slim",
+        "feat/typescript-typings",
+        "feature/web-ux-localization-pass",
+        "fix/long-lived-npm-runtime",
+        "fix/stage6-windows-runner",
+        "fix/v0.2.4-release-recovery",
+        "fix/v0.2.5-release-recovery",
+        "gate-domain-100k",
+        "hardening-resource-amplification-20260919",
+        "hosting/back4app-targetarch-fix",
+        "hosting/no-payment-selection-20260919",
+        "hosting/render-http-overload-admission",
+        "localization-locale-packs-20260918",
+        "main",
+        "observability/http-v1-foundation",
+        "opt/OPT-P02-persistent-exact-service-concurrency",
+        "perf/opt-p01-diagonal-range",
+        "reconcile/pr13-main-20260921",
+        "reconcile/pr36-main-20260921",
+        "reconcile/pr37-main-20260921",
+        "supply-chain-hardening",
+        "supply-chain-hardening-016",
+        "workstream/node-compatibility-matrix",
+        "workstream/repository-information-architecture",
+        "workstream/schema-runtime-drift-corpus",
+        "ws/WS06-mobile-native-c-abi"
+      ]
+    },
+    {
+      "repository": "Sargon-17-Green/Pastafarian-Calendar-App",
+      "role": "mobile application",
+      "branchCount": 20,
+      "branches": [
+        "fix/ws10-intercalary-input-guard",
+        "integration/android-forward-m2",
+        "main",
+        "ws/WS00-repository-ci-bootstrap",
+        "ws/WS01-testing-traceability-fixtures",
+        "ws/WS02-temporal-core",
+        "ws/WS03-security-foundation",
+        "ws/WS04-design-system-code-foundation",
+        "ws/WS05-localization-infrastructure",
+        "ws/WS06-seer-mobile-native-integration",
+        "ws/WS07-monster-mobile-host-validation",
+        "ws/WS08-persistence-migration-bootstrap",
+        "ws/WS09-canonical-domain-core",
+        "ws/WS10-secondary-calendar-adapters",
+        "ws/WS12-android-application-shell",
+        "ws/WS12-android-application-shell-native-boundaries",
+        "ws/WS13-first-true-local-calendar-android",
+        "ws/WS13-first-true-local-calendar-vertical-slice",
+        "ws/WS14-local-calendar-expansion",
+        "ws/WS15-tasks-time-blocking"
+      ]
+    }
+  ],
+  "futureProcedure": [
+    "re-discover all live branches when corpus snapshot is pinned",
+    "classify branches as active product, historical, dependency-only, validation-only, or superseded",
+    "align only semantic/public/canon-sensitive surfaces; do not churn infrastructure branches unnecessarily",
+    "preserve historical reports rather than rewriting past evidence",
+    "record exact pre/post SHAs and verification evidence per surface"
+  ]
+}
