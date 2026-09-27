@@ -284,7 +284,7 @@ jobs:
                           "type": "object",
                           "properties": {
                               "result": {"type": "string", "enum": ["CLEAN", "FINDINGS"]},
-                              "report": {"type": "string"}
+                              "report": {"type": "string", "minLength": 180}
                           },
                           "required": ["result", "report"],
                           "additionalProperties": False
@@ -420,7 +420,7 @@ jobs:
                           "type": "object",
                           "properties": {
                               "result": {"type": "string", "enum": ["PASS", "FAIL"]},
-                              "report": {"type": "string"}
+                              "report": {"type": "string", "minLength": 650}
                           },
                           "required": ["result", "report"],
                           "additionalProperties": False
