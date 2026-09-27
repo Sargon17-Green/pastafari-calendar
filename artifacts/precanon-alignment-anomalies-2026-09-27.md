@@ -265,3 +265,74 @@ This may simply reflect the current vertical-slice/provider state, but it is a f
 - semantic canonical index may remain machine identity;
 - public date display may need localized/canonical names;
 - names must not be allowed to alter calculation identity.
+
+
+## A12 — Old live-stage branches contain non-source/adapted Megillah quotations
+
+Repository:
+`Sargon17-Green/Pastafarian-Calendar`
+
+Relevant branches inspected:
+- `feat/live-stage-explanations-megillah-2026-09-26`
+- `fix/live-stage-guide-sync-retained`
+- `fix/megillah-exact-text-fragments`
+- `fix/megillah-live-source-audit`
+
+### Concrete example
+
+The older live-stage quotation table contains:
+
+> וכן עשה שער אחר שער.
+
+That sentence was previously identified as **not actually present in the published Hebrew source**.
+
+The later `fix/megillah-live-source-audit` branch replaces it with the audited source passage beginning:
+
+> כדי למצוא את המרחק מן השער הראשון אל השני...
+
+and similarly replaces other shortened/adapted stage quotations with exact published-source fragments.
+
+### Consequence
+
+Do not use the older stage-guide branches as quotation authority.
+
+A machine-readable snapshot of the audited table is now preserved in:
+
+`artifacts/megillah-live-stage-source-inventory-2026-09-27.json`
+
+It records **16** stage keys from source blob:
+`5f21f5af28597850b4dda26bf512a8543daec90b`.
+
+The future corpus alignment must distinguish:
+- exact quotation from the historical/published Scroll;
+- explanatory paraphrase;
+- semantic authority of the new corpus.
+
+A quote may remain verbatim as a quotation even if the corpus becomes the superior semantic authority.
+
+## A13 — Live-stage fix branches are not a simple linear chain
+
+Observed Git relationships:
+
+- `fix/live-stage-guide-sync-retained` is ahead of the initial live-stage feature branch;
+- `fix/megillah-exact-text-fragments` diverges from `fix/live-stage-guide-sync-retained`;
+- `fix/megillah-live-source-audit` diverges from `fix/megillah-exact-text-fragments`.
+
+The latest audited source branch contains retained-stage-guide functionality in the inspected files, but commit ancestry alone does not prove that every fix from every sibling branch is present.
+
+### Consequence
+
+At later integration:
+- compare **content and tests**, not merely branch names or apparent chronology;
+- do not merge these branches mechanically into `main`;
+- preserve the repository rule that branches stay separate;
+- pick/reconcile the desired state on the target work branch explicitly.
+
+## A14 — “canonical Megillah URL/quote” is now a provenance term, not the future top-level authority claim
+
+The live-stage code names the current published Blogger URL `MEGILLAH_CANONICAL_URL` and describes quotations as canonical.
+
+After the authority transition:
+- the URL can remain the canonical **quotation/source location** for the historical Scroll text if that remains the project convention;
+- it should not imply that the published Scroll alone outranks the new canonical corpus;
+- naming/documentation may need clarification even if the URL and exact quoted text do not change.
