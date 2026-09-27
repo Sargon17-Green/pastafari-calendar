@@ -8,9 +8,9 @@ The claim-level register is:
 
 ## Important live-branch observation
 
-The source branch `feature/about-i18n-72-locales` has advanced **35 commits** since this work branch forked from `f52745a...`.
+The source branch `feature/about-i18n-72-locales` has advanced **44 commits** since this work branch forked from `f52745a...`.
 
-The observed 35-commit delta touches only native-QA infrastructure:
+The observed 44-commit delta touches only native-QA infrastructure:
 - `.github/workflows/about-native-qa-serial.yml`;
 - checksum data;
 - two native prompt files;
