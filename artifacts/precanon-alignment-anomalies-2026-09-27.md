@@ -163,3 +163,61 @@ If a historical report records an old interpretation:
 - do not edit old PASS statements into statements that were never historically made.
 
 The future alignment target is current normative/public truth, not retroactive history rewriting.
+
+
+## A08 — Seer currently names the Scroll as supreme semantic authority
+
+Repository:
+`Sargon-17-Green/Pastafarian-Calendar-Seer`
+
+Files:
+- `README.md`
+- `docs/CONFORMANCE.md`
+- `docs/TERMINOLOGY.md`
+
+Current wording says the Seer does not define the calendar and the current Scroll is the supreme semantic authority / source of truth.
+
+### Consequence
+
+When the new canonical corpus is ready:
+- preserve “Seer is not normative” unless the corpus/project architecture explicitly changes that;
+- replace/refine the **authority referent** so documentation points to the new corpus hierarchy rather than treating the Scroll alone as supreme;
+- do not update one Seer file and leave contradictory authority statements elsewhere.
+
+## A09 — Seer's `canonical` presentation mode is an API-format term
+
+In Seer:
+`presentation: "canonical"`
+
+means language-free machine-oriented output with canonical indices/coordinates and no localized names.
+
+It does **not** mean the Seer is the canonical authority.
+
+### Trap
+
+A corpus-alignment search for the word `canonical` must not mechanically rename this API mode.
+
+## A10 — Seer Hebrew proper-name policy is explicitly waiting for naming authority
+
+`docs/LOCALIZATION.md` says the Hebrew pack currently retains English Pastafarian proper names and declares `properNamePolicy: "english-retained"` until an authoritative naming source is documented.
+
+### Consequence
+
+This is a ready-made alignment hook for the new corpus:
+- corpus decides semantic/naming authority;
+- indices stay semantic identity;
+- display names may change;
+- semantic-invariance tests must prove names do not affect calculation.
+
+Do not preemptively change the locale pack before the corpus is pinned.
+
+## A11 — Seer theology/architecture document is canon-sensitive despite being technical documentation
+
+`docs/RELATION_TO_THE_MONSTER.md` contains claims about:
+- the Monster's performative/liturgical implementation;
+- Seer shortcuts being unapproved/illicit;
+- what counts as the prescribed work.
+
+These statements are not mere implementation mechanics. They may overlap the new theological/calendar canon.
+
+Future alignment must classify each statement rather than assuming a technical-doc file is canon-independent.
