@@ -217,7 +217,7 @@ Items whose final substantive status must be reconciled when the new corpus is p
 ## 9. Control/checkpoint files
 
 ### `precanon-content-work-queue-2026-09-27.md`
-Operational queue of safe work versus blocked work.
+Operational queue of safe work versus blocked work. The current state is **quiescent pending a trigger**: no useful canon-independent content/recovery task remains open at the present evidence limit.
 
 ### `precanon-content-checkpoint-2026-09-27.md`
 Narrative state checkpoint.
@@ -230,11 +230,12 @@ Ready-to-use intake checklist for the moment the corpus is declared stable: what
 When resuming this work before corpus completion:
 
 1. read this index;
-2. read `precanon-content-checkpoint-2026-09-27.md`;
-3. for `/about/`, use the claim register + priority plan;
-4. for FSM article, use prior-decision manifest + provenance matrix + consolidated candidate;
-5. for cross-repo planning, use propagation map + surface inventory + anomalies;
-6. do not treat any staging artifact as the new corpus.
+2. read `precanon-content-checkpoint-2026-09-27.md` and the live `precanon-content-work-queue-2026-09-27.md`;
+3. if the queue is still quiescent and no listed continuation trigger has occurred, do not repeat closed recovery/QA merely to create activity;
+4. for `/about/`, use the claim register + priority plan;
+5. for FSM article, use prior-decision manifest + provenance matrix + consolidated candidate;
+6. for cross-repo planning, use propagation map + surface inventory + anomalies;
+7. do not treat any staging artifact as the new corpus.
 
 When the corpus is ready:
 
