@@ -209,7 +209,7 @@ jobs:
   review:
     needs: prepare
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 120
     strategy:
       fail-fast: false
       matrix:
@@ -221,7 +221,7 @@ jobs:
           name: native-qa-input-${{ github.run_id }}
           path: /tmp/native-qa-input
 
-      - name: Download pinned llama.cpp and Qwen3-4B reviewer
+      - name: Download pinned llama.cpp and Qwen3-8B reviewer
         shell: bash
         run: |
           set -euo pipefail
@@ -229,8 +229,8 @@ jobs:
           curl -fL --retry 3 https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz -o /tmp/native-qa/llama.tar.gz
           echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/native-qa/llama.tar.gz" | sha256sum -c -
           tar -xzf /tmp/native-qa/llama.tar.gz -C /tmp/native-qa/llama
-          curl -fL --retry 3 'https://huggingface.co/Qwen/Qwen3-4B-GGUF/resolve/main/Qwen3-4B-Q4_K_M.gguf?download=true' -o /tmp/native-qa/qwen3-4b-q4_k_m.gguf
-          echo "7485fe6f11af29433bc51cab58009521f205840f5b4ae3a32fa7f92e8534fdf5  /tmp/native-qa/qwen3-4b-q4_k_m.gguf" | sha256sum -c -
+          curl -fL --retry 3 'https://huggingface.co/Qwen/Qwen3-8B-GGUF/resolve/main/Qwen3-8B-Q4_K_M.gguf?download=true' -o /tmp/native-qa/qwen3-8b-q4_k_m.gguf
+          echo "d98cdcbd03e17ce47681435b5150e34c1417f50b5c0019dd560e4882c5745785  /tmp/native-qa/qwen3-8b-q4_k_m.gguf" | sha256sum -c -
 
       - name: Run isolated target-language surface review
         shell: bash
@@ -243,7 +243,7 @@ jobs:
           set -euo pipefail
           SERVER="$(find /tmp/native-qa/llama -type f -name llama-server | head -n 1)"
           test -x "$SERVER"
-          "$SERVER" -m /tmp/native-qa/qwen3-4b-q4_k_m.gguf -c 24576 -t 4 --host 127.0.0.1 --port 8080 > /tmp/native-qa/llama-server.log 2>&1 &
+          "$SERVER" -m /tmp/native-qa/qwen3-8b-q4_k_m.gguf -c 24576 -t 4 --host 127.0.0.1 --port 8080 > /tmp/native-qa/llama-server.log 2>&1 &
           SERVER_PID=$!
           trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
           for _ in $(seq 1 180); do
@@ -273,7 +273,7 @@ jobs:
               "messages": [{"role": "user", "content": message}],
               "temperature": 0.15,
               "top_p": 0.8,
-              "max_tokens": 850,
+              "max_tokens": 1100,
               "stream": False,
               "response_format": {
                   "type": "json_schema",
@@ -284,9 +284,25 @@ jobs:
                           "type": "object",
                           "properties": {
                               "result": {"type": "string", "enum": ["CLEAN", "FINDINGS"]},
-                              "report": {"type": "string", "minLength": 180}
+                              "summary": {"type": "string", "minLength": 40, "maxLength": 360},
+                              "findings": {
+                                  "type": "array",
+                                  "maxItems": 6,
+                                  "items": {
+                                      "type": "object",
+                                      "properties": {
+                                          "severity": {"type": "string", "enum": ["critical", "high", "medium", "low"]},
+                                          "location": {"type": "string", "minLength": 1, "maxLength": 180},
+                                          "current_text": {"type": "string", "maxLength": 180},
+                                          "issue": {"type": "string", "minLength": 20, "maxLength": 260},
+                                          "correction": {"type": "string", "minLength": 5, "maxLength": 260}
+                                      },
+                                      "required": ["severity", "location", "current_text", "issue", "correction"],
+                                      "additionalProperties": False
+                                  }
+                              }
                           },
-                          "required": ["result", "report"],
+                          "required": ["result", "summary", "findings"],
                           "additionalProperties": False
                       }
                   }
@@ -312,19 +328,35 @@ jobs:
           except json.JSONDecodeError as exc:
               raise SystemExit(f"invalid JSON subreview for {surface}: {exc}") from exc
           result = parsed.get("result")
-          report = str(parsed.get("report", "")).strip()
+          summary = str(parsed.get("summary", "")).strip()
+          findings = parsed.get("findings")
           if result not in {"CLEAN", "FINDINGS"}:
               raise SystemExit(f"invalid subreview result for {surface}: {result!r}")
-          if len(report) < 120:
-              raise SystemExit(f"subreview too short for {surface}: {len(report)} chars")
-          if "SOURCE_PART=" in report or "FINDINGS_ONLY" in report:
+          if not isinstance(findings, list):
+              raise SystemExit(f"invalid findings list for {surface}")
+          if result == "CLEAN" and findings:
+              raise SystemExit(f"CLEAN subreview unexpectedly contains findings for {surface}")
+          if result == "FINDINGS" and not findings:
+              raise SystemExit(f"FINDINGS subreview contains no findings for {surface}")
+          if "SOURCE_PART=" in summary or "FINDINGS_ONLY" in summary:
               raise SystemExit(f"subreview echoed control/source markers for {surface}")
+          report_lines = [summary]
+          for idx, item in enumerate(findings, 1):
+              report_lines += [
+                  "",
+                  f"### Finding {idx} — {item['severity']}",
+                  f"- Staðsetning: {item['location']}",
+                  f"- Núverandi texti: {item['current_text'] or '(ekki við)'}",
+                  f"- Vandamál: {item['issue']}",
+                  f"- Ráðlögð leiðrétting: {item['correction']}",
+              ]
+          report = "\n".join(report_lines).strip()
           review = f"SUBREVIEW_RESULT: {result}\n\n{report}\n"
           Path(f"/tmp/native-qa-output/finding-{surface}.md").write_text(review, encoding="utf-8")
           Path(f"/tmp/native-qa-output/subreview-{surface}.md").write_text(
               "# SUBREVIEW_SESSION\n"
               f"surface: {surface}\n"
-              "reviewer_model: Qwen3-4B Q4_K_M\n"
+              "reviewer_model: Qwen3-8B Q4_K_M\n"
               "\n===== USER =====\n" + message +
               "\n===== ASSISTANT_RAW_JSON =====\n" + raw +
               "\n===== NORMALIZED_REVIEW =====\n" + review,
@@ -358,7 +390,7 @@ jobs:
           path: /tmp/native-qa-findings
           merge-multiple: true
 
-      - name: Download pinned llama.cpp and Qwen3-4B reviewer
+      - name: Download pinned llama.cpp and Qwen3-8B reviewer
         shell: bash
         run: |
           set -euo pipefail
@@ -366,8 +398,8 @@ jobs:
           curl -fL --retry 3 https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz -o /tmp/native-qa/llama.tar.gz
           echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/native-qa/llama.tar.gz" | sha256sum -c -
           tar -xzf /tmp/native-qa/llama.tar.gz -C /tmp/native-qa/llama
-          curl -fL --retry 3 'https://huggingface.co/Qwen/Qwen3-4B-GGUF/resolve/main/Qwen3-4B-Q4_K_M.gguf?download=true' -o /tmp/native-qa/qwen3-4b-q4_k_m.gguf
-          echo "7485fe6f11af29433bc51cab58009521f205840f5b4ae3a32fa7f92e8534fdf5  /tmp/native-qa/qwen3-4b-q4_k_m.gguf" | sha256sum -c -
+          curl -fL --retry 3 'https://huggingface.co/Qwen/Qwen3-8B-GGUF/resolve/main/Qwen3-8B-Q4_K_M.gguf?download=true' -o /tmp/native-qa/qwen3-8b-q4_k_m.gguf
+          echo "d98cdcbd03e17ce47681435b5150e34c1417f50b5c0019dd560e4882c5745785  /tmp/native-qa/qwen3-8b-q4_k_m.gguf" | sha256sum -c -
 
       - name: Synthesize final target-language verdict
         shell: bash
@@ -379,7 +411,7 @@ jobs:
           set -euo pipefail
           SERVER="$(find /tmp/native-qa/llama -type f -name llama-server | head -n 1)"
           test -x "$SERVER"
-          "$SERVER" -m /tmp/native-qa/qwen3-4b-q4_k_m.gguf -c 24576 -t 4 --host 127.0.0.1 --port 8080 > /tmp/native-qa/llama-server.log 2>&1 &
+          "$SERVER" -m /tmp/native-qa/qwen3-8b-q4_k_m.gguf -c 24576 -t 4 --host 127.0.0.1 --port 8080 > /tmp/native-qa/llama-server.log 2>&1 &
           SERVER_PID=$!
           trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
           for _ in $(seq 1 180); do
@@ -469,9 +501,9 @@ jobs:
               f"locale_tag: {os.environ['QA_LOCALE_TAG']}\n"
               f"sequence: {os.environ['QA_SEQUENCE']}\n"
               f"reviewed_head: {final.joinpath('reviewed-head.txt').read_text(encoding='utf-8').strip()}\n"
-              "reviewer_model: Qwen3-4B Q4_K_M\n"
+              "reviewer_model: Qwen3-8B Q4_K_M\n"
               "review_method: four isolated target-language surface reviews plus isolated target-language synthesis\n"
-              "model_sha256: 7485fe6f11af29433bc51cab58009521f205840f5b4ae3a32fa7f92e8534fdf5\n"
+              "model_sha256: d98cdcbd03e17ce47681435b5150e34c1417f50b5c0019dd560e4882c5745785\n"
               "llama_cpp_release: b10982\n"
               "llama_cpp_asset_sha256: b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789\n"
               "\n===== USER =====\n" + message +
