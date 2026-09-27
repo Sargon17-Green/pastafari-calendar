@@ -8,7 +8,7 @@ Work branch:
 Base:
 `feature/about-i18n-72-locales @ f52745a6628618f7c3488ff4a8e6ab677f5e591a`
 
-The branch is currently **90 commits ahead of that base**.
+The branch has intentionally accumulated a large artifact-only preparation history above that base. Exact ahead-count is not treated as stable because this workstream continues to add checkpoints.
 
 No public normative article, translated article or `main` branch has been changed by this workstream.
 
@@ -123,6 +123,16 @@ Strongly established in checked sources:
 - obvious Hebrew/Markdown defects found so far were fixed in staging;
 - provenance matrix and machine-readable source manifest exist;
 - unresolved project-canon choices are isolated in a machine-readable decision queue.
+
+### Canon-alignment trigger package
+A dedicated `CANON_ALIGNMENT_START_CHECKLIST_2026-09-27.md` now defines the exact intake needed when the corpus is ready:
+- pin/hash/version;
+- P0 semantic extraction;
+- naming package;
+- classification pass;
+- downstream order;
+- mandatory preservation rules;
+- per-surface evidence requirements.
 
 ## What remains safe to do before the corpus is ready
 
