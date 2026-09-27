@@ -1,0 +1,50 @@
+{
+  "schema": "normativity-domain-taxonomy/v1",
+  "created": "2026-09-27",
+  "purpose": "Prevent conformance rules, project governance, law, source quotations and editorial guidance from being conflated during future canon alignment.",
+  "classes": {
+    "CANON_CONFORMANCE": {
+      "description": "A rule/constraint defining conformance to the Pastafarian Calendar or its canonical semantic system.",
+      "legalEffect": "none implied merely by this classification"
+    },
+    "PROJECT_GOVERNANCE": {
+      "description": "A repository, branch, contribution, release, file-handling or workflow rule of the project.",
+      "legalEffect": "none implied merely by this classification"
+    },
+    "LEGAL_RULE": {
+      "description": "A claim about law, regulation, licence terms, legal rights, duties or prohibitions.",
+      "legalEffect": "legal claim; requires appropriate legal source/scope"
+    },
+    "HISTORICAL_QUOTE": {
+      "description": "Exact quoted source text. Preserve wording; interpret its normative domain separately.",
+      "legalEffect": "none inferred solely from normative verbs inside the quotation"
+    },
+    "EDITORIAL_GUIDANCE": {
+      "description": "Writing, terminology, UX or explanatory-style guidance.",
+      "legalEffect": "none"
+    }
+  },
+  "examples": [
+    {
+      "text": "החלפת שני הימים אסורה.",
+      "class": "HISTORICAL_QUOTE",
+      "note": "Exact Megillah quotation; surrounding explanation handles conformance/legal distinction."
+    },
+    {
+      "text": "A conforming implementation must not swap calculation and target day.",
+      "class": "CANON_CONFORMANCE"
+    },
+    {
+      "text": "Do not merge this branch into main.",
+      "class": "PROJECT_GOVERNANCE"
+    },
+    {
+      "text": "This act is prohibited by statute X.",
+      "class": "LEGAL_RULE"
+    },
+    {
+      "text": "Prefer 'admissible option' over 'legal option'.",
+      "class": "EDITORIAL_GUIDANCE"
+    }
+  ]
+}
