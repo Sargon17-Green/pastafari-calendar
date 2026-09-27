@@ -30,13 +30,15 @@ The problem is narrower and more precise: the sentence attributes the scheme to 
 
 **Later action:** corpus alignment decides whether the prior project-theology scheme survives. If it does, rewrite the paragraph in the project's factual voice without falsely attributing it to external community consensus.
 
-### E02 — Heaven/hell transition is potentially misleading even before canon alignment
-**Severity:** High  
+### E02 — Heaven/hell source conflation
+**Severity:** High — **fixed in staging**  
 **Section:** `אנטיפסטי והגיהנום`
 
-The sentence about “מסורות אחדות” and entertainment facilities risks conflating externally familiar Pastafarian heaven motifs (Beer Volcano / Stripper Factory) with the draft's project-specific hell account.
+The earlier wording risked conflating familiar Pastafarian Heaven motifs (Beer Volcano / Stripper Factory) with the draft's project-specific Hell account.
 
-**Later action:** when canon is available, make the contrast explicit rather than implying that the same source tradition puts those facilities in Hell.
+The staged working/consolidated drafts now explicitly say that the familiar entertainment motifs belong to Heaven before moving to the separate project-specific Hell sentence.
+
+**Remaining canon dependency:** whether “Hell serves antipasti instead of pasta” survives is still a corpus decision; the source-conflation bug itself is fixed.
 
 ### E03 — Several epistemology sections overlap heavily
 **Severity:** Medium  
@@ -180,7 +182,7 @@ The Loose Canon directly states that sharing Pasta is a form of worship. Therefo
 The official Church site states that every Friday is a religious holiday; the Loose Canon also contains a “Holy Friday” prayer. The saved Friday claim is strongly sourced.
 
 ### Gender
-The source problem became sharper, not weaker: the Loose Canon contains a prayer describing the FSM as neither male nor female and beyond ordinary human gender categories. Therefore the saved “three genders / carbohydrate” community-attribution sentence should remain blocked pending a project-canon decision.
+The source problem became sharper, not weaker: the Loose Canon contains a prayer describing the FSM as neither male nor female and beyond ordinary human gender categories. Therefore the saved **community attribution** should remain blocked. Historical recovery separately shows that the three-category scheme itself was already approved as project theology; the corpus will determine whether that prior project decision survives.
 
 ### Heaven / Hell
 The source distinction is now clear:
