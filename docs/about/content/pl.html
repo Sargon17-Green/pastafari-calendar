@@ -1,7 +1,7 @@
 <!-- Polska wersja została napisana bezpośrednio na podstawie hebrajskiego wzorca semantycznego, bez języka pośredniego. -->
 <!-- ID sekcji są stałym publicznym kontraktem deep-linków; nie powstają z tłumaczonych nagłówków. -->
 <div class="about-section about-lead" id="about-calendar">
-  <p>W narracji tej witryny Kalendarz Pastafariański jest kalendarzem, w którym stworzono sam czas. Jego mechanika jest jednak zdefiniowana ściśle.</p>
+  <p>Kalendarz Pastafariański jest kalendarzem, w którym stworzono sam czas. Jego mechanika jest zdefiniowana ściśle.</p>
   <p>Ten kalendarz nie przypisuje każdemu dniowi jednej niezmiennej pastafariańskiej „etykiety”. Aby poznać datę, potrzebne są dwa dni: <strong>dzień działania</strong>, od którego prowadzimy obliczenie, oraz <strong>dzień pytany</strong>, którego datę chcemy ustalić.</p>
   <p>Jeżeli dzień działania oznaczymy przez <code>c</code>, a dzień pytany przez <code>t</code>, data ma postać</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
@@ -109,7 +109,7 @@
 </section>
 <section class="about-section" id="calculation" data-toc-section data-toc-level="2">
   <h2>Jak oblicza się kalendarz?</h2>
-  <p>Wewnętrzne obliczenie nazywamy tu <strong>sosem</strong>. W jego centrum znajduje się liczba pierwsza</p>
+  <p>Wewnętrzne obliczenie nazywa się <strong>sosem</strong>. W jego centrum znajduje się liczba pierwsza</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
   <p>Proces obejmuje pięć liczników wejściowych, 7 ukrytych kropli, 46 widocznych kropli, 6 mis, zmienne kolejności mis, 12 końcowych mieszań, pieczęcie dające różne odpowiedzi, mechanizmy wyboru kombinatorycznego, generowanie bram, wybór lat, podział na kotlety, wybór nazw, tworzenie miesięcy i przeplatanie dni miesięcznych.</p>
   <p>Końcowe aktualizacje są <strong>synchroniczne</strong>: podczas każdego mieszania wszystkie sześć nowych wartości mis oblicza się z tego samego starego stanu, a dopiero potem wszystkie sześć zostaje naraz zastąpionych.</p>
@@ -138,7 +138,7 @@
       <tr><td>Średnia długość kotleta</td><td>587.963 dnia</td></tr><tr><td>Mediana długości kotleta</td><td>560</td></tr><tr><td>Średnia liczba miesięcy na rok</td><td>41.102</td></tr>
       <tr><td>Mediana liczby miesięcy</td><td>43</td></tr><tr><td>Lata z 47 miesiącami</td><td>15.63%</td></tr><tr><td>Lata z co najmniej 45 miesiącami</td><td>36.81%</td></tr>
       <tr><td>Średnia długość miesiąca strukturalnego</td><td>104.014 dnia</td></tr><tr><td>Mediana długości miesiąca</td><td>115</td></tr><tr><td>Średnia liczba ciągłych odcinków na miesiąc</td><td>100.897</td></tr>
-      <tr><td>Udział jednodniowych odcinków miesięcznych</td><td>97.482%</td></tr><tr><td>Prawdopodobieństwo, że sąsiednie dni należą do tego samego miesiąca</td><td>2.9976%</td></tr>
+      <tr><td>Udział jednodniowych odcinków miesięcznych</td><td>97.482%</td></tr><tr><td>Odsetek par sąsiednich dni, które w próbie należały do tego samego miesiąca</td><td>2.9976%</td></tr>
       <tr><td>Średnia liczba obcych dni między <code>n</code> i <code>n+1</code> miesiąca</td><td>40.408</td></tr><tr><td>Średni odstęp od pierwszego do ostatniego wystąpienia miesiąca</td><td>4,266.653 dnia</td></tr>
     </tbody></table></div>
   <p>W praktyce miesiąc liczący około stu dni może rozciągać się niemal przez cały rok pastafariański.</p>
@@ -160,7 +160,7 @@
 </section>
 <section class="about-section" id="appointments" data-toc-section data-toc-level="2">
   <h2>Jak umówić spotkanie?</h2>
-  <p>Jeżeli dwie osoby chcą umówić się wyłącznie za pomocą daty pastafariańskiej, muszą uzgodnić co najmniej pięć pól oraz dzień działania użyty do obliczenia. Lepiej zapisać ten dzień jako stabilną tożsamość dnia niż słowo „dzisiaj”, bo inaczej obie osoby mogą wyliczyć różne kalendarze.</p>
+  <p>Jeżeli dwie osoby chcą ustalić dzień spotkania za pomocą daty pastafariańskiej, muszą uzgodnić co najmniej pięć pól oraz dzień działania użyty do obliczenia. Lepiej zapisać ten dzień jako stabilną tożsamość dnia niż słowo „dzisiaj”, bo inaczej obie osoby mogą wyliczyć różne kalendarze.</p>
   <ul><li>„jutro” to następny dzień chronologiczny;</li><li>„następny dzień miesiąca” to kolejne pojawienie się tego miesiąca;</li><li>„koniec miesiąca” to jego ostatnie pojawienie się;</li><li>„cały miesiąc” może oznaczać zbiór dni należących do miesiąca albo pełny chronologiczny zakres od pierwszego do ostatniego pojawienia się;</li><li>„następny rok” oznacza następny rok w kalendarzu zbudowanym pod wybranym dniem działania.</li></ul>
   <p>Dla szczególnie ważnego spotkania można dodatkowo zapisać absolutny dzień lub moment chronologiczny. Kalendarz od tego nie ucierpi.</p><hr>
 </section>
@@ -184,18 +184,18 @@
 </section>
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>A czym jest Seer?</h2>
-  <p>Obok implementacji kanonicznej istnieje szybki silnik <strong>Pastafarian Calendar Seer</strong>. Seer nie jest źródłem autorytetu: poprawną datę określają Megillah i obliczenie kanoniczne. Jeśli Seer się z nimi nie zgadza, błędny jest Seer.</p>
+  <p>Obok implementacji kanonicznej istnieje szybki silnik <strong>Pastafarian Calendar Seer</strong>. Seer nie jest źródłem autorytetu: Megillah ustala reguły, a obliczenie kanoniczne wyznacza datę zgodnie z tymi regułami. Jeśli Seer nie zgadza się z poprawnym obliczeniem kanonicznym, błędny jest Seer.</p>
   <p>Jego zadaniem jest szybkie wykonywanie tych samych zapytań w formie wygodnej do integracji z produktami.</p>
-  <p>Podczas żywej weryfikacji prowadzonej przy redagowaniu tej strony Seer obejmował między innymi zapytania o datę i „teraz”, batch, zakresy dni, odwrotne przekształcenie daty pastafariańskiej na zapytany dzień, pobieranie struktury roku, ustalanie aktywnego dnia działania, Node API, klienta przeglądarkowego/HTTP, CLI, usługę HTTP v1, kontrakt OpenAPI 3.1, implementacje natywne i pakiety dystrybucyjne oraz zweryfikowane wdrożenie kontenerowe.</p>
-  <p>Stare stwierdzenie, że Seer nie ma publicznego API, jest już nieprawdziwe. Istnieje jawny i stabilny kontrakt HTTP v1 z punktami końcowymi dla <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, dnia działania, <code>metadata</code>, <code>locales</code> i <code>status</code>.</p>
+  <p>Podczas żywej weryfikacji przeprowadzonej 21 września 2026 roku Seer obejmował między innymi zapytania o datę i „teraz”, batch, zakresy dni, odwrotne przekształcenie daty pastafariańskiej na zapytany dzień, pobieranie struktury roku, ustalanie aktywnego dnia działania, Node API, klienta przeglądarkowego/HTTP, CLI, usługę HTTP v1, kontrakt OpenAPI 3.1, implementacje natywne i pakiety dystrybucyjne oraz zweryfikowane wdrożenie kontenerowe.</p>
+  <p>Seer ma publiczne API. Istnieje jawny i stabilny kontrakt HTTP v1 z punktami końcowymi dla <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, dnia działania, <code>metadata</code>, <code>locales</code> i <code>status</code>.</p>
   <p>21 września 2026 roku publiczne wdrożenie HTTPS na Render zostało rzeczywiście przetestowane: na żywej usłudze sprawdzono dokładne zapytania, duży zakres, ponowne uruchomienie, <code>cold wake</code> oraz zachowanie pod obciążeniem.</p>
-  <p>Dokumentacja projektu nadal odróżnia publiczne wdrożenie beta/ewaluacyjne od trwałej hostowanej usługi produkcyjnej z SLA. Dlatego strona objaśniająca zasady nie powinna utrwalać adresu serwera, dostawcy hostingu czy numeru wersji jako części samego kalendarza.</p>
+  <p>Zweryfikowane publiczne wdrożenie jest wdrożeniem beta/ewaluacyjnym, a nie deklaracją trwałej hostowanej usługi produkcyjnej z SLA. Adres serwera, dostawca hostingu i numer wersji nie są częścią kalendarza ani kanonicznymi stałymi.</p>
   <p>Seer może korzystać z obliczeń wstępnych, specjalnych reprezentacji, SIMD, algebry i innych skrótów. Nie musi krok po kroku odtwarzać historii obliczeń implementacji kanonicznej, jeżeli wykonuje tę samą operację semantyczną i zwraca tę samą odpowiedź.</p>
   <p>Optymalizacja nie jest alternatywnym źródłem autorytetu.</p><hr>
 </section>
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
   <h2>Pochodzenie, Dzień Założenia i Dzień Tablic</h2>
-  <p>Tu szczególnie trzeba oddzielić kanoniczne kotwice czasu od opowieści witryny.</p>
+  <p>Stałe kotwice obliczeniowe kalendarza są czymś innym niż fakty o jego pochodzeniu i historia jego przekazania.</p>
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>Kotwice</h3>
     <p>System ma stały dzień odniesienia nazwany <strong>Dniem Założenia</strong>. W proleptycznym kalendarzu gregoriańskim jest to <strong>22 grudnia 41,222 r. p.n.e.</strong></p>
@@ -208,10 +208,10 @@
     <p>Są to stałe kotwice na osi czasu, ale wyświetlana dla nich data pastafariańska nadal zależy od dnia działania, z którego o nie pytamy.</p>
   </section>
   <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
-    <h3>Opowieść witryny</h3>
-    <p>W redakcyjnej narracji witryny kalendarz jest przedstawiany jako część stworzenia i jako system używany przez ludzkość bez wystarczającej świadomości, aż został ponownie przekazany w epoce nowożytnej.</p>
-    <p>To opowieść witryny; nie należy przedstawiać każdego jej elementu fabularnego jako jawnego technicznego stwierdzenia Megillah.</p>
-    <p>Samo wydarzenie ponownego przekazania jest stałym wydarzeniem historycznym. Jego <strong>datę pastafariańską</strong> lepiej na stronie wyświetlać dynamicznie pod bieżącym dniem działania niż na zawsze przypisywać mu jedną datę.</p><hr>
+    <h3>Pochodzenie kalendarza i jego przekazanie</h3>
+    <p>Kalendarz Pastafariański jest częścią stworzenia. Ludzkość używała go bez wystarczającej świadomości, że używa właśnie tego kalendarza, aż został ponownie przekazany w epoce nowożytnej.</p>
+    <p>Megillah nie opisuje każdego szczegółu tej historii; szczegóły, których nie podaje wprost, nie są częścią tekstu Megillah. To rozróżnienie źródeł, a nie zastrzeżenie co do rzeczywistości.</p>
+    <p>Samo wydarzenie ponownego przekazania jest stałym wydarzeniem historycznym. Jego <strong>data pastafariańska</strong> jest obliczana względem odpowiedniego dnia działania; dlatego nie istnieje jedna pięcioelementowa data pastafariańska ustalona na zawsze, a jej reprezentacja może się zmienić pod innym dniem działania.</p><hr>
   </section>
 </section>
 <section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
@@ -227,8 +227,8 @@
       <tr><td>Tylko nazwa miesiąca</td><td>123</td></tr><tr><td>Tylko dzień w miesiącu</td><td>47</td></tr><tr><td>Nazwa kotleta + dzień w kotlecie</td><td>1</td></tr>
       <tr><td>Nazwa miesiąca + dzień w miesiącu</td><td>1</td></tr><tr><td>Dowolne trzy pola nieroczne</td><td>1</td></tr><tr><td>Wszystkie cztery pola nieroczne</td><td>1</td></tr>
     </tbody></table></div>
-  <p>Bez znajomości dnia działania sytuacja jest inna. Ta sama piątka może pojawiać się pod różnymi dniami działania; istnieją dokładne przykłady, w których ta sama pełna data wypada w różnych odległościach od <code>c</code>.</p>
-  <p>W roku 5000 nawet znak tej odległości nie zawsze wynika z pięciu pól: ta sama pełna data może w jednym kontekście leżeć w przeszłości względem dnia działania, a w innym w przyszłości.</p>
+  <p>Bez znajomości dnia działania sytuacja jest inna. Ta sama piątka może pojawiać się pod różnymi dniami działania; istnieją konkretne przykłady, w których ta sama pełna data wypada w różnych odległościach od <code>c</code>.</p>
+  <p>W roku 5000 pięć pól nie zawsze wyznacza nawet tego, czy data leży przed dniem działania, czy po nim: ta sama pełna data może w jednym kontekście leżeć w przeszłości względem dnia działania, a w innym w przyszłości.</p>
   <p>Pełna data pastafariańska nie jest więc absolutnym adresem na osi czasu, jeśli nie wiadomo, pod jakim <code>c</code> ją obliczono.</p>
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
     <h3>Struktura w dalekim czasie</h3>
@@ -249,7 +249,7 @@
   <p>Na widocznych etapach 3–46, na odpowiedniej gałęzi asymptotycznej, ustalono iniektywność w przypadku ogólnym: w typowym położeniu stan zachowuje dość informacji, by odtworzyć istotną historię wejść i kolejności mis.</p>
   <p>W 12 końcowych mieszaniach informacja również nie znika od razu. Dla pierwszych pięciu po widocznej kropli 46 ustalono odwracalność w przypadku ogólnym na odpowiedniej kanonicznej sumie bez dodatkowych informacji bocznych; dla pozostałych znane są silne konstruktywne górne granice ilości informacji bocznej wystarczającej do odtworzenia.</p>
   <p>Nadal otwarte jest pytanie, czy <strong>same sześć końcowych mis</strong> zawsze wystarcza w sensie ogólnym.</p>
-  <p>Część wyników udowodniono symbolicznie, a część zamknięto skończonymi dokładnymi sprawdzeniami arytmetycznymi. Wzmocnienie symboliczne znacznie zmniejszyło rdzeń obliczeniowy, któremu trzeba ufać, lecz nie usunęło go całkowicie.</p>
+  <p>Część wyników udowodniono symbolicznie, a część zweryfikowano skończonymi dokładnymi sprawdzeniami arytmetycznymi. Wzmocnienie symboliczne znacznie zmniejszyło rdzeń obliczeniowy, któremu trzeba ufać, lecz nie usunęło go całkowicie.</p>
   <p>Przestrzenie, które początkowo zdawały się wymagać przejścia ogromnej liczby ścieżek, skurczyły się do znacznie mniejszych struktur skończonych, w tym automatów o 180 i 9 stanach oraz symetrii sześciu mis.</p>
   <p>Pod mieszaniem kryje się sztywna struktura algebraiczna. Do poznania dzisiejszej daty nie trzeba jej znać.</p><hr>
 </section>
