@@ -36,7 +36,7 @@ jobs:
             'safetensors==0.8.0' \
             'protobuf==7.36.2'
 
-      - name: Run Icelandic reviewer smoke
+      - name: Run isolated Icelandic reviewer qualification
         shell: bash
         run: |
           set -euo pipefail
@@ -61,43 +61,69 @@ jobs:
           )
           model.eval()
 
-          messages = [
+          system = (
+              "Þú ert strangur íslenskur málfarsrýnir. "
+              "Svaraðu eingöngu á eðlilegri nútímaíslensku. "
+              "Þú færð aðeins eitt textabrot í einu. "
+              "Ræddu EINGÖNGU það textabrot; nefndu ekki orð eða efni sem koma ekki fyrir í því. "
+              "Ekki framkvæma almennt kóðarýni. "
+              "Fyrsta línan á að vera nákvæmlega annaðhvort „DÓMUR: EÐLILEGT“ eða „DÓMUR: LAGFÆRA“."
+          )
+
+          cases = [
               {
-                  "role": "system",
-                  "content": (
-                      "Þú ert strangur íslenskur málfarsrýnir. "
-                      "Svaraðu eingöngu á eðlilegri nútímaíslensku. "
-                      "Ekki framkvæma almennt kóðarýni; mettu aðeins íslenskt málfar."
-                  ),
+                  "id": "good-search-heading",
+                  "text": "Leitaðu í hvaða dagatali sem vefurinn styður",
+                  "note": "known-good/current wording",
               },
               {
-                  "role": "user",
-                  "content": (
-                      "Metið eftirfarandi þrjú UI-brot. Segðu fyrir hvert þeirra hvort "
-                      "íslenskan sé náttúruleg. Ef eitthvað er stirðlegt, leggðu til betra orðalag.\n\n"
-                      "1. „Leitaðu í hvaða dagatali sem vefurinn styður“\n"
-                      "2. „Fyrirspurnardagur: {targetDate} · aðgerðardagur: {actionDate}“\n"
-                      "3. „Mánuðir fléttast óháð kótelettum í gegnum árið.“\n\n"
-                      "Svaraðu stuttlega, en með skýrum rökum."
-                  ),
+                  "id": "awkward-old-search-heading",
+                  "text": "Leitaðu í hvaða studdu dagatali sem er",
+                  "note": "known-awkward superseded wording",
+              },
+              {
+                  "id": "clear-agreement-error",
+                  "text": "Þessar dagsetningar er rétt og birtist hér.",
+                  "note": "intentionally ungrammatical control",
               },
           ]
 
-          text = tokenizer.apply_chat_template(
-              messages,
-              tokenize=False,
-              add_generation_prompt=True,
-          )
-          inputs = tokenizer(text, return_tensors="pt")
-          with torch.inference_mode():
-              output = model.generate(
-                  **inputs,
-                  max_new_tokens=240,
-                  do_sample=False,
-                  eos_token_id=tokenizer.eos_token_id,
+          def review_one(fragment):
+              messages = [
+                  {"role": "system", "content": system},
+                  {
+                      "role": "user",
+                      "content": (
+                          "Metið eingöngu eftirfarandi íslenska textabrot með tilliti til "
+                          "náttúrulegs málfars, málfræði og setningagerðar. "
+                          "Ef það þarf lagfæringu, útskýrðu stuttlega hvers vegna og gefðu eina betri tillögu.\n\n"
+                          f"TEXTABROT: „{fragment}“"
+                      ),
+                  },
+              ]
+              rendered = tokenizer.apply_chat_template(
+                  messages,
+                  tokenize=False,
+                  add_generation_prompt=True,
               )
-          new_tokens = output[0, inputs["input_ids"].shape[1]:]
-          answer = tokenizer.decode(new_tokens, skip_special_tokens=True).strip()
+              inputs = tokenizer(rendered, return_tensors="pt")
+              with torch.inference_mode():
+                  output = model.generate(
+                      **inputs,
+                      max_new_tokens=160,
+                      do_sample=False,
+                      eos_token_id=tokenizer.eos_token_id,
+                  )
+              new_tokens = output[0, inputs["input_ids"].shape[1]:]
+              return tokenizer.decode(new_tokens, skip_special_tokens=True).strip()
+
+          results = []
+          for case in cases:
+              answer = review_one(case["text"])
+              results.append({**case, "answer": answer})
+              print(f"--- {case['id']} ---")
+              print(answer)
+              print()
 
           out = Path("/tmp/is-reviewer-smoke")
           out.joinpath("model.json").write_text(
@@ -108,18 +134,28 @@ jobs:
                       "torch_dtype": "bfloat16",
                       "transformers": "5.17.0",
                       "torch": "2.8.0",
+                      "qualification_method": "three isolated one-fragment reviews",
                   },
                   ensure_ascii=False,
                   indent=2,
               ) + "\n",
               encoding="utf-8",
           )
-          out.joinpath("answer.md").write_text(answer + "\n", encoding="utf-8")
-          print("MODEL_REVISION", revision)
-          print("--- ANSWER ---")
-          print(answer)
-          if len(answer) < 80:
-              raise SystemExit("reviewer answer unexpectedly short")
+          out.joinpath("qualification.json").write_text(
+              json.dumps(results, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          out.joinpath("answer.md").write_text(
+              "\n\n".join(
+                  f"## {r['id']}\n\nTexti: „{r['text']}“\n\n{r['answer']}"
+                  for r in results
+              ) + "\n",
+              encoding="utf-8",
+          )
+
+          for r in results:
+              if len(r["answer"]) < 40:
+                  raise SystemExit(f"reviewer answer unexpectedly short: {r['id']}")
           PY
 
       - name: Upload smoke evidence
