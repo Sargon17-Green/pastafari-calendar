@@ -386,3 +386,74 @@ Editorial consequence:
 - If the project wants “carbohydrate” to be the Monster's gender, that should be adopted explicitly as project canon rather than retroactively attributed to external communities.
 
 This is a genuine source tension, not a reason to force all historical Pastafarian texts into one harmonized doctrine. The Loose Canon itself explicitly allows contradiction among Pastafarian texts.
+
+
+## Official Church About-page pass
+
+A fresh direct read of the current official Church “About” page resolves several provenance questions more cleanly than secondary summaries.
+
+Source:
+https://www.spaghettimonster.org/about/
+
+### Literal belief is explicitly not required
+
+The page says that religion need not require literal belief and explicitly welcomes skeptics and members of other religions.
+
+Editorial consequence:
+- the saved article's `אמונה וספק` section has strong external support in principle;
+- a direct factual voice about the FSM can coexist with an explicit Pastafarian tradition of non-literal membership.
+
+### Pirates as original Pastafarians / peaceful explorers — directly supported
+
+The page directly describes Pirates as the original Pastafarians and peaceful explorers whose later criminal image is attributed to misinformation.
+
+This strongly supports the first paragraph of the saved `פיראטים` section.
+
+### Heaven versus Hell must stay separated
+
+The official page says FSM **Heaven** has a Beer Volcano and Stripper Factory.
+
+This strengthens the editorial finding that the saved `אנטיפסטי והגיהנום` section should not casually introduce “entertainment facilities” as though the familiar Beer Volcano / Stripper Factory motif were a Hell tradition.
+
+### Contradictory scripture is explicitly acknowledged
+
+The official page says Pastafarian scripture contains outlandish and sometimes contradictory components and that these are intentional and known to the congregation.
+
+Editorial consequence:
+- `מסורת, זיכרון ודיוק` can legitimately say that not all Pastafarian material needs to be harmonized;
+- the project's actual canon-selection method still must come from the new canonical corpus, not from the article's deliberately bad “familiarity/popularity” rule.
+
+### Evidence, social proof and faith are already discussed explicitly by the Church
+
+The official Q&A distinguishes evidence-based reasoning from faith and discusses the role of group size / longevity as social proof without equating that with truth.
+
+This is useful context for the article's epistemology material:
+- confirmation bias/social proof jokes are thematically consistent with existing Pastafarian discourse;
+- the article should still keep its deliberately invalid inferences visibly distinct from real editorial provenance rules.
+
+### Creation / apparent age is directly restated
+
+The official Q&A says the FSM created the world roughly as it exists and made it appear billions of years old; apparent experimental support for old-earth/evolution accounts is attributed to data modification by the Noodly Appendage.
+
+This independently reinforces the foundational open-letter support for the saved `גילו של העולם` and measurement-interference material.
+
+## Gospel chronology — stronger secondary indexing
+
+A chapter-level summary of *The Gospel of the Flying Spaghetti Monster* gives a sequence that closely matches the saved Hebrew draft:
+
+- day 1: light, divided into day/night;
+- day 2: land/firmament plus Beer Volcano;
+- heavy drinking;
+- day 3: hangover and repeat land creation after forgetting the prior work;
+- day 4: sun, moon and stars;
+- day 5: animal life;
+- later Olive Garden of Eden / Flood material.
+
+Locator:
+https://www.bookrags.com/studyguide-gospel-flying-spaghetti-monster/chapanal016.html
+
+This means the saved sequence involving the sun/moon/stars is no longer merely an unsupported project interpolation; it has **summary-level Gospel support**.
+
+Caveat:
+- this is still a secondary chapter summary;
+- wording-sensitive publication claims should prefer direct access to the book if available.
