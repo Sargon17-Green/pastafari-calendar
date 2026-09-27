@@ -524,3 +524,25 @@ PDF page 50 calls a healthy diet of pasta an important observance.
 
 This should be read together with the page-65 tolerance exception, not as an absolute command.
 
+
+
+## Primary-book access status
+
+A direct Internet Archive record for Bobby Henderson's 2006 Villard edition was located:
+
+https://archive.org/details/gospelofflyingsp0000hend
+
+The item metadata directly confirms the book/edition/ISBN and scan record, but the inspected Archive interface marks the item access-restricted and does not expose suitable downloadable full-text files.
+
+Google Books directly confirms:
+- the book and publisher;
+- the chapter `A Condensed History of the World` beginning at page 51;
+- indexed terms including Beer Volcano, midget, Noah, creation, gravity and Ramen;
+- the publisher's broad description of the book and Pastafarian practices.
+
+Therefore:
+- broad Gospel identity/content claims are directly anchored;
+- the detailed day-by-day creation chronology and cooking-accident flood remain **summary-located rather than full-primary-text-verified** in this workstream;
+- this is sufficient for staging/provenance classification but should not be misreported as exact direct-book quotation verification.
+
+No attempt should be made to bypass access restrictions just to obtain the text.
