@@ -31,22 +31,20 @@ Sérreglur sem koma í veg fyrir falskar jákvæðar niðurstöður:
 
 Ef `MODE=FINDINGS_ONLY`:
 - rýndu eingöngu gefinn `SOURCE_PART`;
-- fyrsta línan VERÐUR að vera nákvæmlega annaðhvort `SUBREVIEW_RESULT: CLEAN` eða `SUBREVIEW_RESULT: FINDINGS`;
-- eftir fyrstu línuna skaltu skila aðeins íslenskri Markdown-rýni fyrir þann hluta;
+- taktu skýra ákvörðun: `CLEAN` ef ekkert lagfæringarskylt vandamál fannst, annars `FINDINGS`;
+- skilaðu aðeins íslenskri Markdown-rýni fyrir þann hluta; keyrslulagið sér sjálft um að skrá ákvörðunina sem vélræna `SUBREVIEW_RESULT`-línu;
 - hvert raunverulegt finding skal hafa severity (`critical`, `high`, `medium`, `low`), skrá/staðsetningu eins nákvæma og gögn leyfa, núverandi texta eða vandamálið, rök og ráðlagða leiðréttingu;
-- ef ekkert raunverulegt vandamál finnst, veldu `CLEAN` og útskýrðu stuttlega á íslensku hvað var yfirfarið;
+- ef ekkert raunverulegt vandamál finnst, útskýrðu stuttlega á íslensku hvað var yfirfarið og hvers vegna það er hreint;
 - afritaðu EKKI SOURCE_PART, frumkóða eða langa kafla úr inntakinu til baka nema örstutt nákvæmt brot sé nauðsynlegt til að staðsetja finding;
-- EKKI skrifa `NATIVE_QA_RESULT` í þessari milliumferð.
+- EKKI skrifa sjálf/ur `SUBREVIEW_RESULT` eða `NATIVE_QA_RESULT`; keyrslulagið sér um vélrænu línurnar.
 
 === FINAL_ONLY_INSTRUCTIONS ===
 
 Ef `MODE=FINAL`:
 - þú færð findings úr öllum fyrri hlutum; mettu þau gagnrýnið og hafnaðu fals-positive findings sem brjóta gegn reglunum hér að ofan;
-- fyrsta línan VERÐUR að vera nákvæmlega annaðhvort:
-`NATIVE_QA_RESULT: PASS`
-eða
-`NATIVE_QA_RESULT: FAIL`
+- taktu skýra lokaákvörðun: `PASS` eða `FAIL`; keyrslulagið sér sjálft um að setja hana í nákvæmu vélrænu `NATIVE_QA_RESULT`-línuna;
 - PASS er aðeins leyfilegt ef eftir gagnrýna samantekt stendur ekkert raunverulegt málfars-, fallback-, hugtaka-, accessibility-texta- eða locale-samræmisvandamál eftir;
+- EKKI skrifa sjálf/ur `NATIVE_QA_RESULT` inni í skýrslutextanum;
 - eftir fyrstu línuna skaltu skila EINUNGIS íslenskri Markdown-skýrslu með:
   - heildarniðurstöðu;
   - öllum staðfestum findings, hverju með severity, skrá/staðsetningu, núverandi texta/vandamáli, útskýringu og ráðlagðri leiðréttingu;
