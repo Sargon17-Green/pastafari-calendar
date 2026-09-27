@@ -202,7 +202,7 @@ jobs:
               "===== docs/about/index.html — RAW METADATA/A11Y/FALLBACK =====\n" +
                   excerpt("docs/about/index.html", [r"aria-", r"placeholder", r"<title", r"<meta", r"<noscript", r"<html"]),
           ])
-          if len(final_source) > 125000:
+          if len(final_source) > 110000:
               raise SystemExit(f"final source too large: {len(final_source)} chars")
           (out / "final-source.txt").write_text(final_source, encoding="utf-8")
           print(f"final-source: {len(final_source)} chars")
@@ -237,7 +237,7 @@ jobs:
           name: native-qa-input-${{ github.run_id }}
           path: /tmp/native-qa-input
 
-      - name: Download pinned llama.cpp and Qwen3-8B reviewer
+      - name: Download pinned llama.cpp and Gemma 3 4B reviewer
         shell: bash
         run: |
           set -euo pipefail
@@ -245,8 +245,8 @@ jobs:
           curl -fL --retry 3 https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz -o /tmp/native-qa/llama.tar.gz
           echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/native-qa/llama.tar.gz" | sha256sum -c -
           tar -xzf /tmp/native-qa/llama.tar.gz -C /tmp/native-qa/llama
-          curl -fL --retry 3 'https://huggingface.co/Qwen/Qwen3-8B-GGUF/resolve/main/Qwen3-8B-Q4_K_M.gguf?download=true' -o /tmp/native-qa/qwen3-8b-q4_k_m.gguf
-          echo "d98cdcbd03e17ce47681435b5150e34c1417f50b5c0019dd560e4882c5745785  /tmp/native-qa/qwen3-8b-q4_k_m.gguf" | sha256sum -c -
+          curl -fL --retry 3 'https://huggingface.co/ggml-org/gemma-3-4b-it-GGUF/resolve/main/gemma-3-4b-it-Q4_K_M.gguf?download=true' -o /tmp/native-qa/gemma-3-4b-it-q4_k_m.gguf
+          echo "882e8d2db44dc554fb0ea5077cb7e4bc49e7342a1f0da57901c0802ea21a0863  /tmp/native-qa/gemma-3-4b-it-q4_k_m.gguf" | sha256sum -c -
 
       - name: Run isolated target-language surface review
         shell: bash
@@ -259,7 +259,7 @@ jobs:
           set -euo pipefail
           SERVER="$(find /tmp/native-qa/llama -type f -name llama-server | head -n 1)"
           test -x "$SERVER"
-          "$SERVER" -m /tmp/native-qa/qwen3-8b-q4_k_m.gguf -c 24576 -t 4 --host 127.0.0.1 --port 8080 > /tmp/native-qa/llama-server.log 2>&1 &
+          "$SERVER" -m /tmp/native-qa/gemma-3-4b-it-q4_k_m.gguf -c 32768 -t 4 --host 127.0.0.1 --port 8080 > /tmp/native-qa/llama-server.log 2>&1 &
           SERVER_PID=$!
           trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
           for _ in $(seq 1 180); do
@@ -289,7 +289,7 @@ jobs:
               "messages": [{"role": "user", "content": message}],
               "temperature": 0.15,
               "top_p": 0.8,
-              "max_tokens": 1100,
+              "max_tokens": 1500,
               "stream": False,
               "response_format": {
                   "type": "json_schema",
@@ -300,10 +300,10 @@ jobs:
                           "type": "object",
                           "properties": {
                               "result": {"type": "string", "enum": ["CLEAN", "FINDINGS"]},
-                              "summary": {"type": "string", "minLength": 40, "maxLength": 360},
+                              "summary": {"type": "string", "minLength": 20, "maxLength": 280},
                               "findings": {
                                   "type": "array",
-                                  "maxItems": 6,
+                                  "maxItems": 4,
                                   "items": {
                                       "type": "object",
                                       "properties": {
@@ -339,40 +339,56 @@ jobs:
 
           raw = data["choices"][0]["message"]["content"].strip()
           Path(f"/tmp/native-qa-output/raw-{surface}.json").write_text(raw + "\n", encoding="utf-8")
+
+          parse_error = None
+          parsed = None
           try:
               parsed = json.loads(raw)
           except json.JSONDecodeError as exc:
-              raise SystemExit(f"invalid JSON subreview for {surface}: {exc}") from exc
-          result = parsed.get("result")
-          summary = str(parsed.get("summary", "")).strip()
-          findings = parsed.get("findings")
-          if result not in {"CLEAN", "FINDINGS"}:
-              raise SystemExit(f"invalid subreview result for {surface}: {result!r}")
-          if not isinstance(findings, list):
-              raise SystemExit(f"invalid findings list for {surface}")
-          if result == "CLEAN" and findings:
-              raise SystemExit(f"CLEAN subreview unexpectedly contains findings for {surface}")
-          if result == "FINDINGS" and not findings:
-              raise SystemExit(f"FINDINGS subreview contains no findings for {surface}")
-          if "SOURCE_PART=" in summary or "FINDINGS_ONLY" in summary:
-              raise SystemExit(f"subreview echoed control/source markers for {surface}")
-          report_lines = [summary]
-          for idx, item in enumerate(findings, 1):
-              report_lines += [
-                  "",
-                  f"### Finding {idx} — {item['severity']}",
-                  f"- Staðsetning: {item['location']}",
-                  f"- Núverandi texti: {item['current_text'] or '(ekki við)'}",
-                  f"- Vandamál: {item['issue']}",
-                  f"- Ráðlögð leiðrétting: {item['correction']}",
-              ]
-          report = "\n".join(report_lines).strip()
+              parse_error = f"invalid JSON: {exc}"
+
+          if parse_error is None:
+              result = parsed.get("result")
+              summary = str(parsed.get("summary", "")).strip()
+              findings = parsed.get("findings")
+              if result not in {"CLEAN", "FINDINGS"}:
+                  parse_error = f"invalid result: {result!r}"
+              elif not isinstance(findings, list):
+                  parse_error = "findings is not an array"
+              elif result == "CLEAN" and findings:
+                  parse_error = "CLEAN subreview unexpectedly contains findings"
+              elif result == "FINDINGS" and not findings:
+                  parse_error = "FINDINGS subreview contains no findings"
+              elif "SOURCE_PART=" in summary or "FINDINGS_ONLY" in summary:
+                  parse_error = "subreview echoed control/source markers"
+
+          if parse_error is not None:
+              result = "INVALID"
+              report = (
+                  "The surface reviewer output could not be accepted as structured evidence.\n\n"
+                  f"reason: {parse_error}\n\n"
+                  "raw_output:\n" + raw[:5000]
+              )
+          else:
+              report_lines = [summary]
+              for idx, item in enumerate(findings, 1):
+                  report_lines += [
+                      "",
+                      f"### Finding {idx} — {item['severity']}",
+                      f"- severity: {item['severity']}",
+                      f"- location: {item['location']}",
+                      f"- current_text: {item['current_text'] or '(none)'}",
+                      f"- issue: {item['issue']}",
+                      f"- correction: {item['correction']}",
+                  ]
+              report = "\n".join(report_lines).strip()
+
           review = f"SUBREVIEW_RESULT: {result}\n\n{report}\n"
           Path(f"/tmp/native-qa-output/finding-{surface}.md").write_text(review, encoding="utf-8")
           Path(f"/tmp/native-qa-output/subreview-{surface}.md").write_text(
               "# SUBREVIEW_SESSION\n"
               f"surface: {surface}\n"
-              "reviewer_model: Qwen3-8B Q4_K_M\n"
+              "reviewer_model: Gemma 3 4B IT Q4_K_M\n"
               "\n===== USER =====\n" + message +
               "\n===== ASSISTANT_RAW_JSON =====\n" + raw +
               "\n===== NORMALIZED_REVIEW =====\n" + review,
@@ -389,6 +405,7 @@ jobs:
           if-no-files-found: error
 
   synthesize:
+    if: always() && needs.prepare.result == 'success'
     needs: [prepare, review]
     runs-on: ubuntu-latest
     timeout-minutes: 75
@@ -406,7 +423,7 @@ jobs:
           path: /tmp/native-qa-findings
           merge-multiple: true
 
-      - name: Download pinned llama.cpp and Gemma 3 12B adjudicator
+      - name: Download pinned llama.cpp and Gemma 3 4B adjudicator
         shell: bash
         run: |
           set -euo pipefail
@@ -414,8 +431,8 @@ jobs:
           curl -fL --retry 3 https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz -o /tmp/native-qa/llama.tar.gz
           echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/native-qa/llama.tar.gz" | sha256sum -c -
           tar -xzf /tmp/native-qa/llama.tar.gz -C /tmp/native-qa/llama
-          curl -fL --retry 3 'https://huggingface.co/ggml-org/gemma-3-12b-it-GGUF/resolve/main/gemma-3-12b-it-Q4_K_M.gguf?download=true' -o /tmp/native-qa/gemma-3-12b-it-q4_k_m.gguf
-          echo "7bb69bff3f48a7b642355d64a90e481182a7794707b3133890646b1efa778ff5  /tmp/native-qa/qwen3-8b-q4_k_m.gguf" | sha256sum -c -
+          curl -fL --retry 3 'https://huggingface.co/ggml-org/gemma-3-4b-it-GGUF/resolve/main/gemma-3-4b-it-Q4_K_M.gguf?download=true' -o /tmp/native-qa/gemma-3-4b-it-q4_k_m.gguf
+          echo "882e8d2db44dc554fb0ea5077cb7e4bc49e7342a1f0da57901c0802ea21a0863  /tmp/native-qa/gemma-3-4b-it-q4_k_m.gguf" | sha256sum -c -
 
       - name: Synthesize final target-language verdict
         shell: bash
@@ -427,7 +444,7 @@ jobs:
           set -euo pipefail
           SERVER="$(find /tmp/native-qa/llama -type f -name llama-server | head -n 1)"
           test -x "$SERVER"
-          "$SERVER" -m /tmp/native-qa/qwen3-8b-q4_k_m.gguf -c 24576 -t 4 --host 127.0.0.1 --port 8080 > /tmp/native-qa/llama-server.log 2>&1 &
+          "$SERVER" -m /tmp/native-qa/gemma-3-4b-it-q4_k_m.gguf -c 49152 -t 4 --host 127.0.0.1 --port 8080 > /tmp/native-qa/llama-server.log 2>&1 &
           SERVER_PID=$!
           trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
           for _ in $(seq 1 180); do
@@ -579,9 +596,9 @@ jobs:
               f"locale_tag: {os.environ['QA_LOCALE_TAG']}\n"
               f"sequence: {os.environ['QA_SEQUENCE']}\n"
               f"reviewed_head: {final.joinpath('reviewed-head.txt').read_text(encoding='utf-8').strip()}\n"
-              "reviewer_model: Gemma 3 12B IT Q4_K_M\n"
-              "review_method: four isolated Qwen3-8B target-language surface reviews plus independent Gemma-3-12B target-language adjudication over primary sources and candidate findings\n"
-              "model_sha256: d98cdcbd03e17ce47681435b5150e34c1417f50b5c0019dd560e4882c5745785\n"
+              "reviewer_model: Gemma 3 4B IT Q4_K_M\n"
+              "review_method: four isolated Gemma-3-4B target-language surface reviews plus independent Gemma-3-12B target-language adjudication over primary sources and candidate findings\n"
+              "model_sha256: 882e8d2db44dc554fb0ea5077cb7e4bc49e7342a1f0da57901c0802ea21a0863\n"
               "llama_cpp_release: b10982\n"
               "llama_cpp_asset_sha256: b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789\n"
               "\n===== USER =====\n" + message +
@@ -692,4 +709,26 @@ jobs:
           set -euo pipefail
           REVIEWED_HEAD="$(tr -d '\r\n' < /tmp/native-qa-final/reviewed-head.txt)"
           ATTEMPT="artifacts/about-i18n-native-sessions/$QA_LOCALE_CODE/attempts/$QA_SEQUENCE-$REVIEWED_HEAD"
-          head -n 1 "$ATTEMPT/review.md" | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)$'
+          head -n 1 "$ATTEMPT/review.md" | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)
+
+
+      - name: Promote latest valid locale evidence
+        shell: bash
+        env:
+          QA_LOCALE_CODE: ${{ needs.prepare.outputs.code }}
+          QA_SEQUENCE: ${{ needs.prepare.outputs.sequence }}
+        run: |
+          set -euo pipefail
+          REVIEWED_HEAD="$(tr -d '\r\n' < /tmp/native-qa-final/reviewed-head.txt)"
+          ATTEMPT="artifacts/about-i18n-native-sessions/$QA_LOCALE_CODE/attempts/$QA_SEQUENCE-$REVIEWED_HEAD"
+          OUT="artifacts/about-i18n-native-sessions/$QA_LOCALE_CODE"
+          cp "$ATTEMPT/prompt.md" "$OUT/prompt.md"
+          cp "$ATTEMPT/review.md" "$OUT/review.md"
+          cp "$ATTEMPT/session.md" "$OUT/session.md"
+          cp "$ATTEMPT/reviewed-head.txt" "$OUT/reviewed-head.txt"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$OUT/prompt.md" "$OUT/review.md" "$OUT/session.md" "$OUT/reviewed-head.txt"
+          git commit -m "qa($QA_LOCALE_CODE): promote latest native-language review $QA_SEQUENCE"
+          git pull --rebase origin feature/about-i18n-72-locales
+          git push origin HEAD:feature/about-i18n-72-locales
