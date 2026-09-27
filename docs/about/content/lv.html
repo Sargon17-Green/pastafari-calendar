@@ -1,7 +1,7 @@
 <!-- Latviešu versija ir rakstīta tieši no ebreju semantiskā pamata, neizmantojot starpvalodu. -->
 <!-- Sadaļu ID ir stabila publisko dziļo saišu līguma daļa un netiek veidoti no tulkotajiem virsrakstiem. -->
 <div class="about-section about-lead" id="about-calendar">
-  <p>Šīs vietnes stāstā Pastafari kalendārs ir attēlots kā kalendārs, kurā tika radīts pats laiks. Taču tā darbības mehānisms ir definēts precīzi.</p>
+  <p>Pastafari kalendārs ir kalendārs, kurā tika radīts pats laiks. Tā darbības mehānisms ir definēts precīzi.</p>
   <p>Šis kalendārs nepiešķir katrai dienai vienu nemainīgu Pastafari “etiķeti”. Lai noteiktu datumu, ir vajadzīgas divas dienas: <strong>darbības diena</strong>, no kuras sāk aprēķinu, un <strong>vaicātā diena</strong>, kuras Pastafari datumu vēlamies noskaidrot.</p>
   <p>Ja darbības dienu apzīmējam ar <code>c</code>, bet vaicāto dienu ar <code>t</code>, tad datums ir</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
@@ -126,7 +126,7 @@
 
 <section class="about-section" id="calculation" data-toc-section data-toc-level="2">
   <h2>Kā kalendāru aprēķina?</h2>
-  <p>Iekšējo aprēķinu šeit saucam par <strong>mērci</strong>. Tā centrā ir pirmskaitlis</p>
+  <p>Iekšējo aprēķinu sauc par <strong>mērci</strong>. Tā centrā ir pirmskaitlis</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
   <p>Process ietver piecus ievades skaitītājus, 7 slēptus pilienus, 46 redzamus pilienus, 6 bļodas, mainīgas bļodu secības, 12 noslēdzošās maisīšanas, zīmogus dažādām atbildēm, kombinatoriskas izvēles, vārtu veidošanu, gadu izvēli, kotlešu sadalījumu, nosaukumu izvēli, mēnešu veidošanu un mēnešu dienu savīšanu.</p>
   <p>Noslēdzošie atjauninājumi ir <strong>sinhroni</strong>: katrā maisīšanā visas sešas jaunās vērtības aprēķina no viena un tā paša vecā stāvokļa, un tikai pēc tam visas sešas bļodas nomaina vienlaikus.</p>
@@ -170,7 +170,7 @@
         <tr><td>Mēneša garuma mediāna</td><td>115</td></tr>
         <tr><td>Vidējais nepārtraukto segmentu skaits mēnesī</td><td>100.897</td></tr>
         <tr><td>Vienas dienas mēneša segmentu īpatsvars</td><td>97.482%</td></tr>
-        <tr><td>Varbūtība, ka divas blakus dienas pieder vienam mēnesim</td><td>2.9976%</td></tr>
+        <tr><td>Blakus dienu pāru īpatsvars, kas izlasē piederēja vienam mēnesim</td><td>2.9976%</td></tr>
         <tr><td>Vidējais citu mēnešu dienu skaits starp <code>n</code> un <code>n+1</code> tajā pašā mēnesī</td><td>40.408</td></tr>
         <tr><td>Vidējais intervāls no mēneša pirmās līdz pēdējai parādīšanās reizei</td><td>4,266.653 dienas</td></tr>
       </tbody>
@@ -199,7 +199,7 @@
 
 <section class="about-section" id="appointments" data-toc-section data-toc-level="2">
   <h2>Kā norunāt tikšanos?</h2>
-  <p>Ja divi cilvēki vēlas vienoties, izmantojot tikai Pastafari datumu, viņiem vismaz jāvienojas par visiem pieciem datuma laukiem un aprēķinā izmantoto darbības dienu. Labāk darbības dienu saglabāt kā stabilu dienas identitāti, nevis kā vārdu “šodien”; pretējā gadījumā abi cilvēki var aprēķināt atšķirīgus kalendārus.</p>
+  <p>Ja divi cilvēki vēlas noteikt tikšanās dienu, izmantojot Pastafari datumu, viņiem vismaz jāvienojas par visiem pieciem datuma laukiem un aprēķinā izmantoto darbības dienu. Labāk darbības dienu saglabāt kā stabilu dienas identitāti, nevis kā vārdu “šodien”; pretējā gadījumā abi cilvēki var aprēķināt atšķirīgus kalendārus.</p>
   <ul>
     <li>“rīt” ir nākamā hronoloģiskā diena;</li>
     <li>“nākamā mēneša diena” ir tā paša mēneša nākamā parādīšanās;</li>
@@ -233,19 +233,19 @@
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Kas tad ir Seer?</h2>
-  <p>Līdzās kanoniskajai implementācijai ir ātrs engine ar nosaukumu <strong>Pastafarian Calendar Seer</strong>. Seer nav autoritātes avots: pareizo datumu nosaka Megillah un kanoniskais aprēķins. Ja Seer ar tiem nesakrīt, kļūdās Seer.</p>
+  <p>Līdzās kanoniskajai implementācijai ir ātrs engine ar nosaukumu <strong>Pastafarian Calendar Seer</strong>. Seer nav autoritātes avots: Megillah nosaka noteikumus, bet kanoniskais aprēķins pēc tiem iegūst datumu. Ja Seer nesakrīt ar pareizu kanonisko aprēķinu, kļūdās Seer.</p>
   <p>Tā uzdevums ir ātri izpildīt tos pašus vaicājumus un darīt to formā, ko ērti integrēt produktos.</p>
-  <p>Tiešajā pārbaudē, kas veikta šīs lapas rediģēšanas laikā, Seer cita starpā ietvēra <code>date</code> un <code>now</code> vaicājumus, <code>batch</code>, dienu diapazonus, apgriezto pārveidi no Pastafari datuma uz vaicājuma dienu, gada struktūras iegūšanu, aktīvās darbības dienas noteikšanu, Node API, pārlūka/HTTP klientu, CLI, HTTP v1 pakalpojumu, OpenAPI 3.1 līgumu, vietējās implementācijas un izplatīšanas pakotnes, kā arī pārbaudītu konteinera izvietojumu.</p>
-  <p>Tāpēc vecais apgalvojums, ka Seer nav publiskas API, vairs nav patiess. Tagad ir skaidrs un stabils HTTP v1 līgums ar galapunktiem <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, darbības dienai, <code>metadata</code>, <code>locales</code> un <code>status</code>.</p>
+  <p>2026. gada 21. septembrī veiktajā tiešajā pārbaudē Seer cita starpā ietvēra <code>date</code> un <code>now</code> vaicājumus, <code>batch</code>, dienu diapazonus, apgriezto pārveidi no Pastafari datuma uz vaicājuma dienu, gada struktūras iegūšanu, aktīvās darbības dienas noteikšanu, Node API, pārlūka/HTTP klientu, CLI, HTTP v1 pakalpojumu, OpenAPI 3.1 līgumu, vietējās implementācijas un izplatīšanas pakotnes, kā arī pārbaudītu konteinera izvietojumu.</p>
+  <p>Seer ir publiska API. Ir skaidrs un stabils HTTP v1 līgums ar galapunktiem <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, darbības dienai, <code>metadata</code>, <code>locales</code> un <code>status</code>.</p>
   <p>2026. gada 21. septembrī publisks HTTPS izvietojums Render platformā tika patiešām pārbaudīts: darbīgajā servisā tika testēti precīzi vaicājumi, liels diapazons, restartēšana, <code>cold wake</code> un uzvedība slodzes apstākļos.</p>
-  <p>Tomēr projekta dokumentācija joprojām nošķir publisku beta/novērtēšanas izvietojumu no pastāvīga mitināta ražošanas servisa ar SLA. Tādēļ konceptuālajai skaidrojuma lapai nevajadzētu iesaldēt servera adresi, mitināšanas pakalpojuma sniedzēju vai versijas numuru tā, it kā tie būtu paša kalendāra sastāvdaļa.</p>
+  <p>Pārbaudītais publiskais izvietojums ir beta/novērtēšanas izvietojums, nevis paziņojums par pastāvīgu mitinātu ražošanas servisu ar SLA. Servera adrese, mitināšanas pakalpojuma sniedzējs un versijas numurs nav kalendāra daļa un nav kanoniskas konstantes.</p>
   <p>Seer drīkst izmantot precomputation, īpašas reprezentācijas, SIMD, algebru un citus saīsinājumus. Tam nav soli pa solim jāatdarina visa kanoniskās implementācijas aprēķinu vēsture, ja vien tas veic to pašu semantisko darbību un atgriež to pašu atbildi.</p>
   <p>Optimizācija nav alternatīva autoritāte.</p><hr>
 </section>
 
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
   <h2>Izcelsme, Dibināšanas diena un Plākšņu diena</h2>
-  <p>Šeit īpaši svarīgi ir skaidri nošķirt kanoniskos laika enkurus no vietnes stāsta.</p>
+  <p>Kalendāra fiksētie aprēķinu enkuri atšķiras no faktiem par tā izcelsmi un nodošanas vēstures.</p>
 
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>Enkuri</h3>
@@ -260,10 +260,10 @@
   </section>
 
   <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
-    <h3>Vietnes stāsts</h3>
-    <p>Vietnes redakcionālajā stāstā kalendārs ir aprakstīts kā radīšanas daļa un sistēma, ko cilvēce lietoja, pilnībā to neapzinoties, līdz tā mūsdienās tika nodota no jauna.</p>
-    <p>Tas ir vietnes stāsts; ne katra tā naratīvā detaļa jāpasniedz kā skaidrs Megillah tehnisks apgalvojums.</p>
-    <p>Pats atkārtotās nodošanas notikums ir fiksēts vēsturisks notikums. Tā <strong>Pastafari datumu</strong> labāk rādīt dinamiski zem pašreizējās darbības dienas, nevis uz mūžiem iesaldēt kā vienu datumu.</p><hr>
+    <h3>Kalendāra izcelsme un tā nodošana</h3>
+    <p>Pastafari kalendārs ir radīšanas daļa. Cilvēce to lietoja, pietiekami neapzinoties, ka lieto tieši šo kalendāru, līdz tas mūsdienās tika nodots no jauna.</p>
+    <p>Megillah neizklāsta katru šīs vēstures detaļu; detaļas, kas tajā nav skaidri pateiktas, nav Megillah teksta daļa. Tā ir avotu nošķiršana, nevis šaubas par realitāti.</p>
+    <p>Pats atkārtotās nodošanas notikums ir fiksēts vēsturisks notikums. Tā <strong>Pastafari datums</strong> tiek aprēķināts pēc attiecīgās darbības dienas; tāpēc tam nav viena uz mūžiem fiksēta piecu lauku Pastafari datuma, un citā darbības dienā tā Pastafari attēlojums var mainīties.</p><hr>
   </section>
 </section>
 
@@ -292,8 +292,8 @@
     </table>
   </div>
 
-  <p>Nezinot darbības dienu, situācija ir cita. Tas pats piecu vērtību kopums var parādīties zem dažādām darbības dienām, un ir precīzi piemēri, kuros tas pats pilnais datums parādās dažādos attālumos no <code>c</code>.</p>
-  <p>5000. gadā pat šī attāluma zīmi ne vienmēr nosaka piecas vērtības: tas pats pilnais datums vienā kontekstā var būt pagātnē attiecībā pret darbības dienu, bet citā — nākotnē.</p>
+  <p>Nezinot darbības dienu, situācija ir cita. Tas pats piecu vērtību kopums var parādīties zem dažādām darbības dienām, un ir konkrēti piemēri, kuros tas pats pilnais datums parādās dažādos attālumos no <code>c</code>.</p>
+  <p>5000. gadā piecas vērtības ne vienmēr nosaka pat to, vai datums ir pirms darbības dienas vai pēc tās: tas pats pilnais datums vienā kontekstā var būt pagātnē attiecībā pret darbības dienu, bet citā — nākotnē.</p>
   <p>Tāpēc pilns Pastafari datums nav absolūta adrese laika līnijā, ja nezinām, zem kura <code>c</code> tas aprēķināts.</p>
 
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
@@ -316,7 +316,7 @@
   <p>Redzamajos 3.–46. posmos, attiecīgajā asimptotiskajā zarā, ir noteikta injektivitāte vispārīgajā gadījumā: stāvoklis saglabā pietiekami daudz informācijas, lai rekonstruētu attiecīgo ievades vēsturi un bļodu secību.</p>
   <p>Informācija nepazūd uzreiz arī 12 noslēdzošajās maisīšanās. Pirmajām piecām maisīšanām pēc 46. redzamā piliena attiecīgajā kanoniskajā kopā ir noteikta apgriežamība vispārīgajā gadījumā bez papildu informācijas; pārējai daļai zināmas spēcīgas konstruktīvas augšējās robežas papildu informācijas daudzumam, kas pietiek rekonstrukcijai.</p>
   <p>Joprojām atklāts ir jautājums, vai <strong>ar pēdējām sešām bļodām vien</strong> vispārīgā nozīmē vienmēr pietiek.</p>
-  <p>Daži rezultāti pierādīti simboliski, citi noslēgti ar galīgu un precīzu aritmētisku pārbaudi. Simboliskā pastiprināšana ievērojami samazināja skaitļošanas kodolu, kam jāuzticas, bet pilnībā to nenovērsa.</p>
+  <p>Daži rezultāti pierādīti simboliski, citi pārbaudīti ar galīgām un precīzām aritmētiskām pārbaudēm. Simboliskā pastiprināšana ievērojami samazināja skaitļošanas kodolu, kam jāuzticas, bet pilnībā to nenovērsa.</p>
   <p>Telpas, kas sākotnēji izskatījās tā, it kā prasītu milzīga ceļu skaita izpēti, tika samazinātas līdz daudz mazākām galīgām struktūrām, tostarp automātiem ar 180 un 9 stāvokļiem un sešu bļodu simetrijām.</p>
   <p>Zem sajaukšanas atrodas stingra algebriska struktūra. Lai uzzinātu šodienas datumu, tā nav jāzina.</p><hr>
 </section>
