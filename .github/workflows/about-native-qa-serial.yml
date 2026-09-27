@@ -152,16 +152,14 @@ jobs:
                            r"setAttribute\s*\(\s*[\'\"](aria-label|title|placeholder)[\'\"]",
                            r"placeholder\s*=\s*[\'\"]", r"title\s*=\s*[\'\"]",
                            r"loadLocale\s*\(", r"applyDocumentLocale", r"visibleError"],
-                          radius=1, first_lines=55),
+                          radius=1),
               "===== docs/reverse-ui.js — HARD-CODED DISPLAY TOUCHPOINTS =====\n" +
                   excerpt("docs/reverse-ui.js",
                           [r"textContent\s*=\s*[\'\"]", r"innerHTML\s*=\s*[\'\"]",
                            r"setAttribute\s*\(\s*[\'\"](aria-label|title|placeholder)[\'\"]",
                            r"placeholder\s*=\s*[\'\"]", r"title\s*=\s*[\'\"]"],
                           radius=1),
-              "===== I18N KEYS REFERENCED BY UI CODE =====\n" +
-                  key_inventory(["docs/index.html", "docs/about/index.html", "docs/app.js",
-                                 "docs/reverse-ui.js", "docs/i18n/runtime.js", "docs/about/about.js"]),
+
           ]
 
           source = "\n\n".join(sections)
