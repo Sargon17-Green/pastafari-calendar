@@ -168,3 +168,63 @@ This means:
 - suitable to preserve and continue editing as reconstruction;
 - not suitable to label historical verbatim text;
 - not suitable for publication before the corpus-alignment pass.
+
+
+## Q08 — Problem of evil reconstruction
+
+The newly reconstructed section is philosophically defensible in its limited form:
+
+- the classical logical/tensional problem of evil depends on a strong package of divine attributes;
+- if a deity is not assumed omnipotent, omniscient and perfectly good, the same contradiction pressure does not arise in the same form;
+- this does not prove the limited deity exists or that the model is true.
+
+The staging prose correctly says the model needs fewer perfection-preserving rescue assumptions, rather than claiming it solves every philosophical problem of evil.
+
+Canon dependency:
+- prior project approval exists;
+- final theological status still waits for corpus reconciliation.
+
+## Q09 — Preferred conclusion as “evidence”
+
+The reconstructed section intentionally contains circular/social-proof reasoning.
+
+Its structure is:
+
+1. prefer conclusion C;
+2. adopt C;
+3. count the fact that someone adopted C as additional support for C.
+
+That is not sound evidence generation in the real editorial process.
+
+It is suitable only as deliberate epistemology satire.
+
+Guard:
+- do not let this mechanism leak into provenance or canon selection;
+- keep the real project evidence process source/corpus based.
+
+## Q10 — Disorder among traditions
+
+The reconstructed section uses a real but weak heuristic and deliberately pushes it too far:
+
+- independent historical transmission can indeed produce variation/contradiction;
+- therefore some messiness may be compatible with genuine transmission;
+- but contradiction does not, by itself, establish truth or authenticity.
+
+The comic inference:
+
+> if it were invented, someone would have organized it better
+
+depends on unstated assumptions about how invented traditions are produced.
+
+That makes it suitable as deliberate reasoning material, provided the real provenance process remains separate.
+
+## Q11 — New reconstruction status
+
+The added sections:
+- `בעיית הרוע`;
+- `כשהמסקנה עצמה מצטרפת לראיות`;
+- `אי־סדר במסורות`;
+
+are **new 2026-09-27 reconstruction prose** based on recovered approved concepts.
+
+They are not verbatim historical text and must remain labeled accordingly.
