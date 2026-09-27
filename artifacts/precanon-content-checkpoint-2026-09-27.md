@@ -8,7 +8,7 @@ Work branch:
 Base:
 `feature/about-i18n-72-locales @ f52745a6628618f7c3488ff4a8e6ab677f5e591a`
 
-The branch is currently **66 commits ahead of that base**.
+The branch is currently **90 commits ahead of that base**.
 
 No public normative article, translated article or `main` branch has been changed by this workstream.
 
@@ -47,6 +47,35 @@ Seer-specific alignment traps are documented:
 - `presentation: "canonical"` is an API-format term, not an authority claim;
 - Hebrew Seer proper names currently remain English pending naming authority;
 - `docs/RELATION_TO_THE_MONSTER.md` contains theology/canon-sensitive claims despite being technical documentation.
+
+### Live App snapshot refreshed
+The private App was re-read from its actual current `main`, not the old WS04 branch.
+
+At inspection:
+- App `main`: `f5216db9373d674a47c48930a63174ca813b9401`;
+- latest merged work: WS14 local calendar expansion;
+- the old WS04 snapshot is 351 commits behind that main;
+- current App now exposes materially more calendar semantics and localized UI than WS04.
+
+A dedicated snapshot is preserved in:
+- `app-precanon-alignment-snapshot-2026-09-27.md`.
+
+Important current contracts include:
+- P(c,t) representation explicitly separated from physical DayId identity;
+- Calculation-Day Override changes only c;
+- Today resolved by a versioned Venus lower-transit model;
+- representation-dependent woven structural Month/Cutlet/Year views;
+- PastafarianDaySpan distinct from CivilDaySpan;
+- Seer provider failures cannot rewrite physical day identity.
+
+### Live Megillah/cooking source audit captured
+The current audited live-stage source table from `Pastafarian-Calendar` is preserved as:
+- `megillah-live-stage-source-inventory-2026-09-27.json`.
+
+It contains **16** source-audited stage quotations from blob:
+`5f21f5af28597850b4dda26bf512a8543daec90b`.
+
+This explicitly avoids the older false/adapted quotation `וכן עשה שער אחר שער.` that appeared on earlier branches.
 
 ### /about/ preparation
 - authority transition is documented;
