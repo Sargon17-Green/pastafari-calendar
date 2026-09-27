@@ -3,9 +3,9 @@ CONSOLIDATED EDITORIAL CANDIDATE — 2026-09-27.
 NOT CANONICAL AND NOT PUBLIC-READY.
 
 Main article: exact recovered 2026-09-16 baseline plus safe staging fixes.
-Penguin appendix: replaced with a recovered historical composite assembled from exact
-2026-09-16/17 conversation fragments. The composite is historical wording, but not
-claimed to be a byte-for-byte export of one single original message.
+Penguin appendix: based on a recovered historical composite assembled from exact
+2026-09-16/17 conversation fragments, with explicitly tracked non-canonical editorial
+cleanup in this staging candidate. The historical composite itself remains unchanged.
 Later 2026-09-17 approved ontology/epistemology additions remain staged separately
 pending canonical-corpus reconciliation and placement review.
 -->
@@ -266,7 +266,7 @@ pending canonical-corpus reconciliation and placement review.
 
 מפעל מודרני מייצר כמויות גדולות של מידע. יש מספרי חלקים, כמויות, מידות, לחצים, טמפרטורות, תאריכים, חשבוניות, הזמנות, הוראות בטיחות, תוצאות בדיקה, שרטוטים ורישומי תחזוקה.
 
-פינגווינים אינם יודעים לקרוא מסמכים טכניים. הם גם אינם כותבים אותם.
+אין ראיה שפינגווינים קוראים מסמכים טכניים או כותבים אותם.
 
 קושי דומה קיים בחישוב. מנהל מפעל נדרש להתמודד עם כמויות, עלויות, תפוקות, שיעורי פסילה, זמני אספקה ומלאי. אין צורך שכל מנהל יבצע בעצמו חישובים מתקדמים, אך הוא צריך לפחות להבין את המספרים שמציגים לו.
 
@@ -318,7 +318,7 @@ pending canonical-corpus reconciliation and placement review.
 
 מוצרים מוגמרים צריכים לצאת מן המפעל.
 
-דודי־שמש גדולים וכבדים מכדי שפינגווין יוכל להעבירם בצורה שימושית באמצעות גופו.
+דודי־שמש הם מטענים גדולים וכבדים; נשיאתם באמצעות גוף של פינגווין אינה פתרון שימושי.
 
 גם ניהול מלגזה אינו פותר את הקושי, מפני שמערכות הבקרה של מלגזות רגילות נבנו למפעיל אנושי.
 
@@ -338,13 +338,12 @@ pending canonical-corpus reconciliation and placement review.
 
 מערכת ניהול שבה כל החלטה מחייבת מתורגמן אנושי למעשה מחזירה חלק גדול מן הניהול לבני האדם.
 
-אין מספר סביר של השתלמויות בניהול ייצור שבסופן יצמחו לפינגווין אצבעות.
 
 ## אחריות משפטית
 
 מפעל הוא גם ישות הפועלת בתוך מערכת משפטית ומסחרית. יש חוזים, אחריות למוצרים, תקנות בטיחות, מסים, ביטוח, יחסי עבודה ולעיתים גם רישיונות ואישורים.
 
-פינגווין אינו יכול לחתום על חוזה במובן המשפטי הרגיל, ואי־אפשר להניח שהוא מבין את תוכנו.
+מערכות משפט ומסחר רגילות מטילות את החוזים, האחריות והחתימה על בני אדם או על ישויות משפטיות מוכרות. פינגווין אינו ממלא בעצמו תפקיד כזה.
 
 טביעת כף רגל בדיו יכולה להיראות רשמית למדי, אך אינה פותרת את הבעיה.
 
