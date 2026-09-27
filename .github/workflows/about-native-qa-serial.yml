@@ -114,11 +114,11 @@ jobs:
 
           common = [
               "===== docs/app.js :: DISPLAYED_TEXT_AND_A11Y_PATHS =====",
-              excerpt("docs/app.js", [r"i18n", r"aria", r"placeholder", r"textContent", r"setAttribute", r"title", r"status", r"error", r"fallback"], radius=1),
+              excerpt("docs/app.js", [r"loadLocale", r"fallback", r"aria", r"placeholder", r"textContent", r"setAttribute", r"title", r"status", r"error"], radius=0),
               "===== docs/reverse-ui.js :: DISPLAYED_TEXT_AND_A11Y_PATHS =====",
-              excerpt("docs/reverse-ui.js", [r"i18n", r"aria", r"placeholder", r"textContent", r"setAttribute", r"title", r"status", r"error", r"fallback"], radius=1),
+              excerpt("docs/reverse-ui.js", [r"loadLocale", r"fallback", r"aria", r"placeholder", r"textContent", r"setAttribute", r"title", r"status", r"error"], radius=0),
               "===== docs/about/about.js :: ARTICLE_LOCALIZATION_FLOW =====",
-              excerpt("docs/about/about.js", [r"locale", r"fallback", r"lang", r"data-i18n", r"textContent", r"aria"], radius=1),
+              excerpt("docs/about/about.js", [r"loadLocale", r"ARTICLE_FALLBACK", r"fallback", r"lang", r"data-i18n", r"textContent", r"aria"], radius=1),
           ]
           (out / "stage-integration-source.txt").write_text("\n".join(common), encoding="utf-8")
 
@@ -132,8 +132,8 @@ jobs:
                   selected.append(f"{i+1}: {line}")
                   budget_after_heading -= 1
           consistency = [
-              f"===== {locale_path} :: FULL_UI_TERMINOLOGY =====",
-              text(locale_path),
+              f"===== {locale_path} :: TERMINOLOGY_SURFACES =====",
+              excerpt(locale_path, [r'"(?:working|target|search|comparison|year|reverse|calendarInput|calendarHelp|about|guide)\\.', r"action", r"queried", r"cutlet", r"month", r"sauce", r"Seer", r"all-day"], radius=0),
               f"===== {about_path} :: HEADINGS_AND_LEAD_PARAGRAPHS =====",
               "\n".join(selected),
           ]
@@ -141,7 +141,7 @@ jobs:
 
           for name in ["stage-ui-source.txt", "stage-about-source.txt", "stage-integration-source.txt", "stage-consistency-source.txt"]:
               size = len((out / name).read_text(encoding="utf-8"))
-              if size > 80000:
+              if size > 60000:
                   raise SystemExit(f"{name} too large: {size} chars")
               print(f"{name}: {size} chars")
           PY
@@ -221,12 +221,12 @@ jobs:
               ("stage-consistency", "stage-consistency-source.txt"),
           ]:
               source = (out / filename).read_text(encoding="utf-8")
-              prompt, result = call(label, source, "FINDINGS_ONLY", 1100)
+              prompt, result = call(label, source, "FINDINGS_ONLY", 850)
               transcript.append((label, prompt, result))
               findings.append(f"===== {label} =====\n{result}")
 
           synthesis_source = "===== STAGE_FINDINGS =====\n" + "\n".join(findings)
-          final_prompt, review = call("review", synthesis_source, "FINAL", 1800)
+          final_prompt, review = call("review", synthesis_source, "FINAL", 1400)
           transcript.append(("final", final_prompt, review))
 
           reviewed_head = (out / "reviewed-head.txt").read_text(encoding="utf-8").strip()
