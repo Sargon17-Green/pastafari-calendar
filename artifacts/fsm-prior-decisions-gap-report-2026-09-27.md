@@ -57,9 +57,11 @@ The candidate contains:
 - tradition/memory reasoning.
 
 ### Penguin / solar-water-heater appendix
-**Present only as reconstruction.**
+**Present as a recovered historical composite, with staging-only cleanup.**
 
-The consolidated candidate includes the reconstructed appendix, with provenance comments stating that its body is not recovered verbatim.
+Later recovery produced `fsm-penguin-appendix-recovered-composite-2026-09-27.md`, assembled from exact historical fragments across several conversation-state records. It is not claimed to be a byte-for-byte export of one single original assistant message, but it is now the best historical-text baseline.
+
+The consolidated candidate uses that recovered composite and applies only explicitly tracked non-canonical editorial cleanup. The earlier newly written reconstruction remains separate archaeology/comparison material.
 
 ## Previously approved material still absent from the consolidated candidate
 
@@ -120,7 +122,7 @@ The consolidated candidate is therefore **not** a complete representation of the
 It is:
 - the saved 2026-09-16 draft;
 - plus safe corrections;
-- plus reconstructed penguin appendix;
+- plus the recovered historical penguin appendix composite with staging-only cleanup;
 
 while several approved 2026-09-17 additions are still staged separately.
 
