@@ -426,9 +426,10 @@ jobs:
           test -s /tmp/native-qa-final/review.md
           test -s /tmp/native-qa-final/session.md
           test -s /tmp/native-qa-final/reviewed-head.txt
-          printf '%s\\n' '--- first 12 lines of final review ---'
+          printf '%s\n' '--- first 12 lines of final review ---'
           sed -n '1,12p' /tmp/native-qa-final/review.md
-          head -n 1 /tmp/native-qa-final/review.md | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)
+          head -n 1 /tmp/native-qa-final/review.md | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)$'
+          cat /tmp/native-qa-final/review.md
 
       - name: Upload final synthesis
         if: always()
