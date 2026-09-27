@@ -1,4 +1,5 @@
 name: About i18n native-session QA smoke
+# Evidence filenames conform to SAME_LANGUAGE_LLM_GATE_2026-09-26.md
 
 on:
   push:
@@ -88,22 +89,22 @@ jobs:
             --no-ask-user \
             --no-color \
             --allow-tool='shell(cat:*),shell(grep:*),shell(find:*),shell(sed:*),shell(head:*),shell(tail:*),shell(wc:*),shell(git status:*),shell(git diff:*),shell(git show:*)' \
-            --share=artifacts/about-i18n-native-sessions/is/is-session.md \
+            --share=artifacts/about-i18n-native-sessions/is/session.md \
             -s < artifacts/about-i18n-native-sessions/is/prompt.md \
-            > artifacts/about-i18n-native-sessions/is/is-review.md
+            > artifacts/about-i18n-native-sessions/is/review.md
 
       - name: Verify outputs exist
         shell: bash
         run: |
           test -s artifacts/about-i18n-native-sessions/is/prompt.md
-          test -s artifacts/about-i18n-native-sessions/is/is-review.md
-          test -s artifacts/about-i18n-native-sessions/is/is-session.md
+          test -s artifacts/about-i18n-native-sessions/is/review.md
+          test -s artifacts/about-i18n-native-sessions/is/session.md
           test -s artifacts/about-i18n-native-sessions/is/reviewed-head.txt
-          head -n 1 artifacts/about-i18n-native-sessions/is/is-review.md | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)$'
+          head -n 1 artifacts/about-i18n-native-sessions/is/review.md | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)$'
           printf '%s\n' '--- reviewed head ---'
           cat artifacts/about-i18n-native-sessions/is/reviewed-head.txt
           printf '%s\n' '--- review ---'
-          cat artifacts/about-i18n-native-sessions/is/is-review.md
+          cat artifacts/about-i18n-native-sessions/is/review.md
 
       - name: Upload native-session evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -118,8 +119,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add artifacts/about-i18n-native-sessions/is/prompt.md \
-                  artifacts/about-i18n-native-sessions/is/is-review.md \
-                  artifacts/about-i18n-native-sessions/is/is-session.md \
+                  artifacts/about-i18n-native-sessions/is/review.md \
+                  artifacts/about-i18n-native-sessions/is/session.md \
                   artifacts/about-i18n-native-sessions/is/reviewed-head.txt
           git commit -m "qa(is): record isolated Icelandic native-language session"
           git pull --rebase origin feature/about-i18n-72-locales
