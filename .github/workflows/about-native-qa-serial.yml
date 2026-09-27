@@ -191,6 +191,22 @@ jobs:
               f"===== {about_path} — HEADINGS + LEAD PARAGRAPHS =====\n" + headings_and_leads(about_path),
           ])
 
+          final_source = "\n\n".join([
+              f"===== {locale_path} — FULL TARGET LOCALE =====\n" + text(locale_path),
+              f"===== {about_path} — FULL TARGET ABOUT ARTICLE =====\n" + text(about_path),
+              integration,
+              "===== docs/manifest.webmanifest — FALLBACK + TARGET LOCALE =====\n" +
+                  excerpt("docs/manifest.webmanifest", [rf'"{re.escape(code)}"\s*:', re.escape(tag)], radius=5, first_lines=12),
+              "===== docs/index.html — RAW METADATA/A11Y/FALLBACK =====\n" +
+                  excerpt("docs/index.html", [r"aria-", r"placeholder", r"<title", r"<meta", r"<noscript", r"<html"]),
+              "===== docs/about/index.html — RAW METADATA/A11Y/FALLBACK =====\n" +
+                  excerpt("docs/about/index.html", [r"aria-", r"placeholder", r"<title", r"<meta", r"<noscript", r"<html"]),
+          ])
+          if len(final_source) > 125000:
+              raise SystemExit(f"final source too large: {len(final_source)} chars")
+          (out / "final-source.txt").write_text(final_source, encoding="utf-8")
+          print(f"final-source: {len(final_source)} chars")
+
           parts = {"ui": ui, "about": about, "integration": integration, "consistency": consistency}
           for name, data in parts.items():
               if len(data) > 60000:
@@ -390,7 +406,7 @@ jobs:
           path: /tmp/native-qa-findings
           merge-multiple: true
 
-      - name: Download pinned llama.cpp and Qwen3-8B reviewer
+      - name: Download pinned llama.cpp and Gemma 3 12B adjudicator
         shell: bash
         run: |
           set -euo pipefail
@@ -398,8 +414,8 @@ jobs:
           curl -fL --retry 3 https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz -o /tmp/native-qa/llama.tar.gz
           echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/native-qa/llama.tar.gz" | sha256sum -c -
           tar -xzf /tmp/native-qa/llama.tar.gz -C /tmp/native-qa/llama
-          curl -fL --retry 3 'https://huggingface.co/Qwen/Qwen3-8B-GGUF/resolve/main/Qwen3-8B-Q4_K_M.gguf?download=true' -o /tmp/native-qa/qwen3-8b-q4_k_m.gguf
-          echo "d98cdcbd03e17ce47681435b5150e34c1417f50b5c0019dd560e4882c5745785  /tmp/native-qa/qwen3-8b-q4_k_m.gguf" | sha256sum -c -
+          curl -fL --retry 3 'https://huggingface.co/ggml-org/gemma-3-12b-it-GGUF/resolve/main/gemma-3-12b-it-Q4_K_M.gguf?download=true' -o /tmp/native-qa/gemma-3-12b-it-q4_k_m.gguf
+          echo "7bb69bff3f48a7b642355d64a90e481182a7794707b3133890646b1efa778ff5  /tmp/native-qa/qwen3-8b-q4_k_m.gguf" | sha256sum -c -
 
       - name: Synthesize final target-language verdict
         shell: bash
@@ -432,7 +448,15 @@ jobs:
               if not path.is_file():
                   raise SystemExit(f"missing surface finding: {surface}")
               findings.append(f"===== {surface.upper()} SUBREVIEW =====\n" + path.read_text(encoding="utf-8"))
-          message = base + "\n\nMODE=FINAL\nSOURCE_PART=SUBREVIEW_FINDINGS\n\n" + "\n\n".join(findings)
+          final_source = Path("/tmp/native-qa-input/final-source.txt").read_text(encoding="utf-8")
+          message = (
+              base
+              + "\n\nMODE=FINAL\nSOURCE_PART=PRIMARY_SOURCES_AND_SUBREVIEW_FINDINGS\n\n"
+              + "===== PRIMARY_SOURCES =====\n"
+              + final_source
+              + "\n\n===== CANDIDATE_SUBREVIEW_FINDINGS =====\n"
+              + "\n\n".join(findings)
+          )
 
           with urllib.request.urlopen("http://127.0.0.1:8080/v1/models", timeout=30) as resp:
               model_id = json.load(resp)["data"][0]["id"]
@@ -441,7 +465,7 @@ jobs:
               "messages": [{"role": "user", "content": message}],
               "temperature": 0.10,
               "top_p": 0.8,
-              "max_tokens": 1400,
+              "max_tokens": 2600,
               "stream": False,
               "response_format": {
                   "type": "json_schema",
@@ -452,9 +476,40 @@ jobs:
                           "type": "object",
                           "properties": {
                               "result": {"type": "string", "enum": ["PASS", "FAIL"]},
-                              "report": {"type": "string", "minLength": 650}
+                              "summary": {"type": "string", "minLength": 80, "maxLength": 650},
+                              "findings": {
+                                  "type": "array",
+                                  "maxItems": 10,
+                                  "items": {
+                                      "type": "object",
+                                      "properties": {
+                                          "title": {"type": "string", "minLength": 3, "maxLength": 120},
+                                          "severity": {"type": "string", "enum": ["critical", "high", "medium", "low"]},
+                                          "location": {"type": "string", "minLength": 1, "maxLength": 200},
+                                          "current_text": {"type": "string", "maxLength": 220},
+                                          "issue": {"type": "string", "minLength": 20, "maxLength": 360},
+                                          "correction": {"type": "string", "minLength": 5, "maxLength": 360}
+                                      },
+                                      "required": ["title", "severity", "location", "current_text", "issue", "correction"],
+                                      "additionalProperties": False
+                                  }
+                              },
+                              "sections": {
+                                  "type": "array",
+                                  "minItems": 4,
+                                  "maxItems": 4,
+                                  "items": {
+                                      "type": "object",
+                                      "properties": {
+                                          "title": {"type": "string", "minLength": 3, "maxLength": 120},
+                                          "body": {"type": "string", "minLength": 40, "maxLength": 520}
+                                      },
+                                      "required": ["title", "body"],
+                                      "additionalProperties": False
+                                  }
+                              }
                           },
-                          "required": ["result", "report"],
+                          "required": ["result", "summary", "findings", "sections"],
                           "additionalProperties": False
                       }
                   }
@@ -481,13 +536,36 @@ jobs:
           except json.JSONDecodeError as exc:
               raise SystemExit(f"invalid JSON final review: {exc}") from exc
           result = parsed.get("result")
-          report = str(parsed.get("report", "")).strip()
+          summary = str(parsed.get("summary", "")).strip()
+          findings_final = parsed.get("findings")
+          sections = parsed.get("sections")
           if result not in {"PASS", "FAIL"}:
               raise SystemExit(f"invalid final result: {result!r}")
+          if not isinstance(findings_final, list) or not isinstance(sections, list):
+              raise SystemExit("invalid final structured fields")
+          if result == "PASS" and findings_final:
+              raise SystemExit("PASS final review unexpectedly contains findings")
+          if result == "FAIL" and not findings_final:
+              raise SystemExit("FAIL final review contains no findings")
+          if len(sections) != 4:
+              raise SystemExit(f"final review must contain exactly four sections, got {len(sections)}")
+
+          report_lines = [summary]
+          for idx, item in enumerate(findings_final, 1):
+              report_lines += [
+                  "",
+                  f"### {idx}. {item['title']} — {item['severity']}",
+                  "",
+                  item["location"],
+              ]
+              if item["current_text"]:
+                  report_lines += ["", f"> {item['current_text']}"]
+              report_lines += ["", item["issue"], "", item["correction"]]
+          for section in sections:
+              report_lines += ["", f"## {section['title']}", "", section["body"]]
+          report = "\n".join(report_lines).strip()
           if len(report) < 500:
               raise SystemExit(f"final report too short: {len(report)} chars")
-          if result == "PASS" and len(report.splitlines()) < 7:
-              raise SystemExit("PASS report lacks the required substantive report")
           review = f"NATIVE_QA_RESULT: {result}\n\n{report}\n"
           final.joinpath("prompt.md").write_text(message, encoding="utf-8")
           final.joinpath("review.md").write_text(review, encoding="utf-8")
@@ -501,8 +579,8 @@ jobs:
               f"locale_tag: {os.environ['QA_LOCALE_TAG']}\n"
               f"sequence: {os.environ['QA_SEQUENCE']}\n"
               f"reviewed_head: {final.joinpath('reviewed-head.txt').read_text(encoding='utf-8').strip()}\n"
-              "reviewer_model: Qwen3-8B Q4_K_M\n"
-              "review_method: four isolated target-language surface reviews plus isolated target-language synthesis\n"
+              "reviewer_model: Gemma 3 12B IT Q4_K_M\n"
+              "review_method: four isolated Qwen3-8B target-language surface reviews plus independent Gemma-3-12B target-language adjudication over primary sources and candidate findings\n"
               "model_sha256: d98cdcbd03e17ce47681435b5150e34c1417f50b5c0019dd560e4882c5745785\n"
               "llama_cpp_release: b10982\n"
               "llama_cpp_asset_sha256: b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789\n"
