@@ -31,9 +31,9 @@ Work branch: `work/about-canon-transition-2026-09-27`.
 - [~] Gospel creation/flood chronology is now strongly located through publisher/Google Books metadata plus cited book summaries; direct book page-level wording remains desirable only where final wording depends on a precise detail.
 - [x] Gender-source search completed to the current useful limit: Henderson uses masculine English; historical material includes mixed/beyond-binary framings; no checked source establishes exactly “male/female/carbohydrate”. Leave that formulation as a project-canon candidate.
 - [x] Checked Loose Canon Hell material: it describes separation from Pasta / never eating Pasta, not the saved wording “antipasti instead of pasta”. Treat the latter as project-specific unless later canon adopts it.
-- [~] RAmen/R'Amen is strongly attested in official-site and Loose Canon devotional usage; no stronger universal mandatory rule has been located. “נהוג” is supportable; “חובה” is not.
-- [ ] Check external-source wording for pasta as worship/ritual rather than merely dietary/religious motif.
-- [~] Precise source locations are recorded for key Loose Canon items and source URLs are machine-readable in the source manifest; direct Gospel page-level indexing remains the main source-location gap.
+- [x] RAmen/R'Amen prayer-closing usage is strongly established by the official-site prayer page and repeated Loose Canon prayers. No mandatory universal command was found; keep the distinction between widespread usage and obligation.
+- [x] Loose Canon directly states that sharing Pasta is a form of worship; this source question is closed.
+- [~] Precise Loose Canon locations are now recorded for Anti-Past, healthy-pasta observance, tolerance exception, Hell/HellLight, gender framing, RAmen prayers and Holy Friday. Direct Gospel page-level indexing remains the main source-location gap.
 
 ### B. Non-canonical editorial QA
 
