@@ -361,6 +361,16 @@ jobs:
                   parse_error = "FINDINGS subreview contains no findings"
               elif "SOURCE_PART=" in summary or "FINDINGS_ONLY" in summary:
                   parse_error = "subreview echoed control/source markers"
+              elif any(
+                  item.get("current_text") and item["current_text"] not in source
+                  for item in findings
+              ):
+                  parse_error = "subreview current_text is not present in reviewed source"
+              elif any(
+                  not str(item.get("location", "")).startswith("docs/")
+                  for item in findings
+              ):
+                  parse_error = "subreview finding location is not a docs/ source path"
 
           if parse_error is not None:
               result = "INVALID"
@@ -564,6 +574,13 @@ jobs:
               raise SystemExit("PASS final review unexpectedly contains findings")
           if result == "FAIL" and not findings_final:
               raise SystemExit("FAIL final review contains no findings")
+          for item in findings_final:
+              current_text = str(item.get("current_text", ""))
+              location = str(item.get("location", ""))
+              if current_text and current_text not in final_source:
+                  raise SystemExit(f"final finding current_text is not present in primary sources: {current_text!r}")
+              if not location.startswith("docs/"):
+                  raise SystemExit(f"final finding location is not a docs/ source path: {location!r}")
           if len(sections) != 4:
               raise SystemExit(f"final review must contain exactly four sections, got {len(sections)}")
 
