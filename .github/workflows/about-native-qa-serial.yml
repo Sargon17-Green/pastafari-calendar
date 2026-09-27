@@ -146,7 +146,7 @@ jobs:
               print(f"{name}: {size} chars")
           PY
 
-      - name: Download pinned llama.cpp and Qwen3-8B reviewer
+      - name: Download pinned llama.cpp and Qwen3-4B reviewer
         shell: bash
         run: |
           set -euo pipefail
@@ -154,8 +154,8 @@ jobs:
           curl -fL --retry 3 https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz -o /tmp/native-qa/llama.tar.gz
           echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/native-qa/llama.tar.gz" | sha256sum -c -
           tar -xzf /tmp/native-qa/llama.tar.gz -C /tmp/native-qa/llama
-          curl -fL --retry 3 'https://huggingface.co/Qwen/Qwen3-8B-GGUF/resolve/main/Qwen3-8B-Q4_K_M.gguf?download=true' -o /tmp/native-qa/qwen3-8b-q4_k_m.gguf
-          echo "d98cdcbd03e17ce47681435b5150e34c1417f50b5c0019dd560e4882c5745785  /tmp/native-qa/qwen3-8b-q4_k_m.gguf" | sha256sum -c -
+          curl -fL --retry 3 'https://huggingface.co/Qwen/Qwen3-4B-GGUF/resolve/main/Qwen3-4B-Q4_K_M.gguf?download=true' -o /tmp/native-qa/qwen3-4b-q4_k_m.gguf
+          echo "7485fe6f11af29433bc51cab58009521f205840f5b4ae3a32fa7f92e8534fdf5  /tmp/native-qa/qwen3-4b-q4_k_m.gguf" | sha256sum -c -
 
       - name: Run staged isolated target-language review
         shell: bash
@@ -164,7 +164,7 @@ jobs:
           OUT="artifacts/about-i18n-native-sessions/$QA_LOCALE_CODE/staged-$QA_SEQUENCE"
           SERVER="$(find /tmp/native-qa/llama -type f -name llama-server | head -n 1)"
           test -x "$SERVER"
-          "$SERVER" -m /tmp/native-qa/qwen3-8b-q4_k_m.gguf -c 32768 -t 4 --host 127.0.0.1 --port 8080 > /tmp/native-qa/llama-server.log 2>&1 &
+          "$SERVER" -m /tmp/native-qa/qwen3-4b-q4_k_m.gguf -c 32768 -t 4 --host 127.0.0.1 --port 8080 > /tmp/native-qa/llama-server.log 2>&1 &
           SERVER_PID=$!
           trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
           for _ in $(seq 1 180); do
@@ -236,8 +236,8 @@ jobs:
               f"locale_tag: {tag}",
               f"sequence: {seq}",
               f"reviewed_head: {reviewed_head}",
-              "reviewer_model: Qwen3-8B Q4_K_M",
-              "model_sha256: d98cdcbd03e17ce47681435b5150e34c1417f50b5c0019dd560e4882c5745785",
+              "reviewer_model: Qwen3-4B Q4_K_M",
+              "model_sha256: 7485fe6f11af29433bc51cab58009521f205840f5b4ae3a32fa7f92e8534fdf5",
               "llama_cpp_release: b10982",
               "llama_cpp_asset_sha256: b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789",
           ]
