@@ -8,13 +8,45 @@ Work branch:
 Base:
 `feature/about-i18n-72-locales @ f52745a6628618f7c3488ff4a8e6ab677f5e591a`
 
-The branch is currently **40 commits ahead of that base**.
+The branch is currently **66 commits ahead of that base**.
 
 No public normative article, translated article or `main` branch has been changed by this workstream.
 
 The separately developed canonical corpus remains the future authority. This branch is preparation, source recovery, staging and QA only.
 
 ## What is now safely closed before canon alignment
+
+### Historical-decision recovery expanded
+Later conversation recovery established several facts that the earlier recovery files had under-classified:
+- project theology was explicitly allowed to be invented after checking Henderson/existing sources;
+- invented theology was meant to be concrete/causal rather than merely symbolic;
+- male/female/carbohydrate, personal Noodly gravity, vascular/noodle design, Anti-Past, carbohydrate importance and logical-bias sections were **explicitly approved project content**, not accidental unsupported claims;
+- 2026-09-17 approval added a concrete Odin/Thor/Loki ontology, limited-gods framing, mechanism-vs-agent distinction, wishful thinking as epistemic activism, contradiction-as-credibility material, problem-of-evil reasoning and preferred-conclusion-as-evidence material.
+
+These are now preserved in:
+- `fsm-editorial-principles-recovered-2026-09-27.md`;
+- `fsm-prior-project-decisions-2026-09-27.json`;
+- `fsm-postdraft-approved-additions-2026-09-27.md`;
+- `fsm-prior-decisions-gap-report-2026-09-27.md`;
+- `fsm-postdraft-insertion-plan-2026-09-27.md`.
+
+The consolidated candidate is explicitly **not** mislabeled as containing all of those later approvals.
+
+
+### Global surface/branch inventory
+All currently installed Pastafarian repositories were discovered and snapshotted:
+- `Sargon17-Green/pastafari-calendar` — 11 branches;
+- `Sargon17-Green/Pastafarian-Calendar` — 66 branches, including **60 independent implementation branches**;
+- `Sargon-17-Green/Pastafarian-Calendar-Seer` — 32 branches;
+- `Sargon-17-Green/Pastafarian-Calendar-App` — 20 branches.
+
+Machine-readable inventories now exist. They are snapshots only; live branches/HEADs must be rediscovered when the corpus is pinned.
+
+Seer-specific alignment traps are documented:
+- Seer currently names the Scroll as supreme semantic authority;
+- `presentation: "canonical"` is an API-format term, not an authority claim;
+- Hebrew Seer proper names currently remain English pending naming authority;
+- `docs/RELATION_TO_THE_MONSTER.md` contains theology/canon-sensitive claims despite being technical documentation.
 
 ### /about/ preparation
 - authority transition is documented;
@@ -31,6 +63,13 @@ The separately developed canonical corpus remains the future authority. This bra
 - a separate reconstructed appendix exists and is never described as recovered text;
 - later approved material about non-omnipotent gods, mechanism versus agency and epistemic activism/wishful thinking is preserved in a dedicated ledger;
 - one exact recovered sentence on “אקטיביזם אפיסטמי גלוי” is retained as exact text; surrounding reconstruction is labeled reconstruction.
+
+### Primary-source access status
+The 2006 Gospel was located directly in Internet Archive and Google Books metadata. The Archive item is access-restricted in the inspected interface, so exact full chapter text was **not** bypassed or claimed as directly read.
+
+Broad book/publisher facts are direct; detailed day-by-day creation/flood wording remains summary-located unless an unrestricted lawful primary text becomes available.
+
+A dedicated source-access ledger records direct vs secondary evidence.
 
 ### External Pastafarian provenance
 Strongly established in checked sources:
