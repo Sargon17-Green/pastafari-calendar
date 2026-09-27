@@ -128,10 +128,12 @@ The most effective lines are those where the conclusion follows from an obviousl
 - belly sliding versus enamel-tank transport;
 - “פינגווין שאינו יודע לנהל מפעל אינו פינגווין גרוע. הוא פינגווין.”
 
-### P03 — “heavier than an average fish” should not be made into a factual hinge
-The reconstruction currently compares a solar water heater with an average fish. “Average fish” is undefined and some fish are much heavier than a heater.
+### P03 — Undefined “average fish” comparison
+**Status: fixed in staging.**
 
-The joke does not require this comparison. Before publication, prefer a formulation based only on the heater being a large/heavy manufactured object.
+The reconstruction originally compared a solar water heater with an “average fish”. That quantity is undefined and unnecessary.
+
+It now says that a solar water heater is a large/heavy object and “אינו דומה במיוחד לטרף ימי”, preserving the joke without making a numerical/biological comparison.
 
 ### P04 — Legal paragraph remains broad
 Keep it staged until legal/jurisdictional wording is tightened. This is already tracked in the factual QA ledger.
