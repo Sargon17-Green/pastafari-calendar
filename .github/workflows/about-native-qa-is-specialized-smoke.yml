@@ -1,0 +1,130 @@
+name: About i18n Icelandic reviewer smoke
+
+on:
+  push:
+    branches:
+      - feature/about-i18n-72-locales
+    paths:
+      - .github/workflows/about-native-qa-is-specialized-smoke.yml
+
+permissions:
+  contents: read
+
+jobs:
+  icelandic-model-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      HF_HUB_DISABLE_XET: "0"
+      OMP_NUM_THREADS: "4"
+      MKL_NUM_THREADS: "4"
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - name: Install pinned reviewer runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install \
+            'torch==2.8.0' --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install \
+            'transformers==4.56.2' \
+            'accelerate==1.10.1' \
+            'huggingface_hub==0.34.4' \
+            'safetensors==0.6.2'
+
+      - name: Run Icelandic reviewer smoke
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/is-reviewer-smoke
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          import torch
+          from huggingface_hub import HfApi
+          from transformers import AutoModelForCausalLM, AutoTokenizer
+
+          model_id = "arnastofnun/Qwen3-4B-wmt26-AMI-en-is"
+          revision = HfApi().model_info(model_id).sha
+
+          tokenizer = AutoTokenizer.from_pretrained(model_id, revision=revision)
+          model = AutoModelForCausalLM.from_pretrained(
+              model_id,
+              revision=revision,
+              torch_dtype=torch.bfloat16,
+              low_cpu_mem_usage=True,
+              device_map="cpu",
+          )
+          model.eval()
+
+          messages = [
+              {
+                  "role": "system",
+                  "content": (
+                      "Þú ert strangur íslenskur málfarsrýnir. "
+                      "Svaraðu eingöngu á eðlilegri nútímaíslensku. "
+                      "Ekki framkvæma almennt kóðarýni; mettu aðeins íslenskt málfar."
+                  ),
+              },
+              {
+                  "role": "user",
+                  "content": (
+                      "Metið eftirfarandi þrjú UI-brot. Segðu fyrir hvert þeirra hvort "
+                      "íslenskan sé náttúruleg. Ef eitthvað er stirðlegt, leggðu til betra orðalag.\n\n"
+                      "1. „Leitaðu í hvaða dagatali sem vefurinn styður“\n"
+                      "2. „Fyrirspurnardagur: {targetDate} · aðgerðardagur: {actionDate}“\n"
+                      "3. „Mánuðir fléttast óháð kótelettum í gegnum árið.“\n\n"
+                      "Svaraðu stuttlega, en með skýrum rökum."
+                  ),
+              },
+          ]
+
+          text = tokenizer.apply_chat_template(
+              messages,
+              tokenize=False,
+              add_generation_prompt=True,
+          )
+          inputs = tokenizer(text, return_tensors="pt")
+          with torch.inference_mode():
+              output = model.generate(
+                  **inputs,
+                  max_new_tokens=240,
+                  do_sample=False,
+                  eos_token_id=tokenizer.eos_token_id,
+              )
+          new_tokens = output[0, inputs["input_ids"].shape[1]:]
+          answer = tokenizer.decode(new_tokens, skip_special_tokens=True).strip()
+
+          out = Path("/tmp/is-reviewer-smoke")
+          out.joinpath("model.json").write_text(
+              json.dumps(
+                  {
+                      "model_id": model_id,
+                      "revision": revision,
+                      "torch_dtype": "bfloat16",
+                      "transformers": "4.56.2",
+                      "torch": "2.8.0",
+                  },
+                  ensure_ascii=False,
+                  indent=2,
+              ) + "\n",
+              encoding="utf-8",
+          )
+          out.joinpath("answer.md").write_text(answer + "\n", encoding="utf-8")
+          print("MODEL_REVISION", revision)
+          print("--- ANSWER ---")
+          print(answer)
+          if len(answer) < 80:
+              raise SystemExit("reviewer answer unexpectedly short")
+          PY
+
+      - name: Upload smoke evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: icelandic-specialized-reviewer-smoke
+          path: /tmp/is-reviewer-smoke/
+          if-no-files-found: warn
