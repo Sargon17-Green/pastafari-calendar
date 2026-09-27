@@ -457,3 +457,70 @@ This means the saved sequence involving the sun/moon/stars is no longer merely a
 Caveat:
 - this is still a secondary chapter summary;
 - wording-sensitive publication claims should prefer direct access to the book if available.
+
+
+## Loose Canon precision pass — worship, prayer and exact locations
+
+Direct text search in the PDF now supplies precise page-level anchors for several items that were previously only broadly classified.
+
+Source:
+https://www.klps.pl/files/loose_canon.pdf
+
+### Pasta sharing as worship — direct support
+
+PDF pages 64–65 state that the Flying Spaghetti Monster is not literally pasta but a deity representing Himself as pasta, and then explicitly say that **sharing Pasta is a form of worship**, especially the sharing.
+
+Editorial consequence:
+- the saved `פולחן` section's claim that pasta eating can be part of religious practice now has direct textual support;
+- the source emphasizes sharing rather than imposing a universal eating requirement.
+
+### Medical/diet/personal-preference exception — direct support
+
+PDF page 65 explicitly asks what someone should do if a medical condition, diet or personal preference prevents eating pasta; the answer is that the FSM is tolerant and being a good person is sufficient, with or without pasta.
+
+Editorial consequence:
+- this directly blocks any claim that external Pastafarian scripture imposes an absolute pasta-eating requirement on every adherent;
+- a stricter project-specific meal rule remains possible only as an explicit project-canon decision.
+
+### Gender framing — exact location
+
+PDF page 187 contains a prayer stating that the FSM is neither male nor female and is beyond ordinary human gender categories.
+
+Editorial consequence:
+- this is stronger than merely “mixed imagery” and confirms that historical Pastafarian texts themselves contain a non-binary/beyond-binary framing;
+- it does not establish “carbohydrate” as the third/true gender.
+
+### RAmen devotional usage — extensive direct support
+
+The prayer collection around PDF pages 188–200 repeatedly ends prayers with `RAmen` / `Ramen`, including multiple named prayers.
+
+Editorial consequence:
+- `RAmen` is unquestionably established devotional/prayer-closing usage in the Loose Canon;
+- the remaining caution is only against turning common usage into a mandatory universal rule without a direct command.
+
+### Holy Friday — direct support
+
+PDF page 198 contains a prayer titled `Holy Friday` and calls Friday the holiest of holy days, devoted to the FSM.
+
+Together with the official Church home page's current statement that every Friday is a religious holiday, this provides strong source support for the saved article's Friday-as-holy-day claim.
+
+The added phrase “מתאים במיוחד למנוחה” remains editorial/project wording unless separately sourced.
+
+### Hell / HellLight — exact location
+
+PDF pages 63–65 distinguish:
+- `HellLight`, with poor cafeteria spaghetti, second-rate beer and boring jobs;
+- a rarer actual Pastafarian Hell, where residents are separated from Pasta and fine beverages and do unpleasant work.
+
+The text explicitly says actual Hell residents never eat Pasta of any kind.
+
+Editorial consequence:
+- “Hell serves antipasti instead of pasta” remains a project-specific version;
+- it is not a faithful paraphrase of the checked Loose Canon account.
+
+### Healthy pasta diet — exact location
+
+PDF page 50 calls a healthy diet of pasta an important observance.
+
+This should be read together with the page-65 tolerance exception, not as an absolute command.
+
