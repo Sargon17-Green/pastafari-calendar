@@ -126,10 +126,14 @@ jobs:
           sections = [
               f"===== {locale_path} — FULL TARGET LOCALE =====\n" + text(locale_path),
               f"===== {about_path} — FULL TARGET ABOUT ARTICLE =====\n" + text(about_path),
-              "===== docs/index.html — DISPLAYED/I18N/A11Y SURFACES =====\n" +
-                  excerpt("docs/index.html", [r"data-i18n", r"aria-", r"placeholder", r"<title", r"<meta", r"<noscript", r"lang=", r"dir="]),
-              "===== docs/about/index.html — DISPLAYED/I18N/A11Y SURFACES =====\n" +
-                  excerpt("docs/about/index.html", [r"data-i18n", r"aria-", r"placeholder", r"<title", r"<meta", r"<noscript", r"lang=", r"dir="]),
+              "===== docs/index.html — I18N KEY INVENTORY =====\n" +
+                  key_inventory(["docs/index.html"]),
+              "===== docs/index.html — RAW METADATA/A11Y/FALLBACK SURFACES =====\n" +
+                  excerpt("docs/index.html", [r"aria-", r"placeholder", r"<title", r"<meta", r"<noscript", r"<html"], radius=0),
+              "===== docs/about/index.html — I18N KEY INVENTORY =====\n" +
+                  key_inventory(["docs/about/index.html"]),
+              "===== docs/about/index.html — RAW METADATA/A11Y/FALLBACK SURFACES =====\n" +
+                  excerpt("docs/about/index.html", [r"aria-", r"placeholder", r"<title", r"<meta", r"<noscript", r"<html"], radius=0),
               "===== docs/manifest.webmanifest — FALLBACK + TARGET LOCALE =====\n" +
                   excerpt("docs/manifest.webmanifest",
                           [rf'"{re.escape(code)}"\s*:', re.escape(tag)],
