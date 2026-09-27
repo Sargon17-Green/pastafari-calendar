@@ -1,0 +1,217 @@
+{
+  "schema": "pastafarian-canon-claim-propagation-map/v1",
+  "created": "2026-09-27",
+  "status": "PREPARATORY",
+  "rule": "This map links concepts to surfaces that may need alignment. It does not assert that the current wording is canonical.",
+  "concepts": [
+    {
+      "id": "AUTHORITY_HIERARCHY",
+      "priority": "P0",
+      "corpusQuestion": "What is the exact authority hierarchy among canonical corpus, Scroll/Megillah, implementations, Seer, tests, research and public explanations?",
+      "surfaces": [
+        "pastafari-calendar: docs/about/content/he.html#canonical-names",
+        "pastafari-calendar: docs/about/content/he.html#seer",
+        "Pastafarian-Calendar-Seer: README.md",
+        "Pastafarian-Calendar-Seer: docs/CONFORMANCE.md",
+        "Pastafarian-Calendar-Seer: docs/TERMINOLOGY.md",
+        "Pastafarian-Calendar-Seer: docs/RELATION_TO_THE_MONSTER.md",
+        "Pastafarian-Calendar: current-status/development docs on normative reference",
+        "Pastafarian-Calendar-App: docs that use canonical/normative terminology"
+      ],
+      "specialTrap": "Do not confuse Seer API presentation='canonical' or App 'canonical domain' with semantic authority."
+    },
+    {
+      "id": "SPEC_CONFORMANCE_VS_LAW",
+      "priority": "P0",
+      "corpusQuestion": "What does normative must/must-not mean for conformance, and what project/legal layers are explicitly outside that meaning?",
+      "surfaces": [
+        "pastafari-calendar: future explanatory box/section",
+        "repository specification/conformance documentation",
+        "license/IP documentation only where a legal statement is actually made"
+      ],
+      "specialTrap": "A specification constraint on a conforming implementation is not by itself a legal, moral, religious or social prohibition."
+    },
+    {
+      "id": "DATE_FUNCTION_F_C_T",
+      "priority": "P0",
+      "corpusQuestion": "Exact definition of date as function of working/calculation day c and target day t.",
+      "surfaces": [
+        "pastafari-calendar: #about-calendar, #working-day, #day-identity, #summary",
+        "Pastafarian-Calendar-Seer: README/API query concepts",
+        "Pastafarian-Calendar-App: Temporal Context, Calculation-Day Override, structural view resolver",
+        "Pastafarian-Calendar: every independent implementation branch"
+      ]
+    },
+    {
+      "id": "DATE_FIVE_FIELDS",
+      "priority": "P0",
+      "corpusQuestion": "Exact five-field date tuple and semantic identity of name fields.",
+      "surfaces": [
+        "pastafari-calendar: #date-parts",
+        "Pastafarian-Calendar-App: ws13.today.date and domain representation",
+        "Pastafarian-Calendar-Seer: canonical/full presentation JSON",
+        "Pastafarian-Calendar: every independent implementation branch"
+      ],
+      "specialTrap": "Machine canonical indices and public localized names are different layers."
+    },
+    {
+      "id": "CANONICAL_NAMES",
+      "priority": "P0",
+      "corpusQuestion": "Semantic identity, authoritative Hebrew/source forms, permitted translations/transliterations and local numeric-base rendering.",
+      "surfaces": [
+        "pastafari-calendar: #canonical-names and all locale articles",
+        "Pastafarian-Calendar-Seer: docs/LOCALIZATION.md and query/locales",
+        "Pastafarian-Calendar-App: localization catalogs and representation provider",
+        "Pastafarian-Calendar: source-language catalogs in all 60 implementation branches"
+      ],
+      "knownAnomaly": "JavaScript+Interlingue README says Karshumab while source/test require Karshumav.",
+      "specialTrap": "Do not infer semantic identity from whichever display string is currently executable."
+    },
+    {
+      "id": "YEAR_5000_AND_YEAR_NUMBERING",
+      "priority": "P0",
+      "corpusQuestion": "Diagonal c=t rule, converse, year 0/negative years, directional implications.",
+      "surfaces": [
+        "pastafari-calendar: #year-5000",
+        "Pastafarian-Calendar-Seer: canonical vectors/query output",
+        "Pastafarian-Calendar-App: provider output and tests",
+        "Pastafarian-Calendar: all implementation branches"
+      ]
+    },
+    {
+      "id": "YEAR_CUTLET_MONTH_STRUCTURE",
+      "priority": "P0",
+      "corpusQuestion": "Year length, cutlet count/continuity/minimum, month count/length/weaving and structural ordering constraints.",
+      "surfaces": [
+        "pastafari-calendar: #years-and-gates through #next-day-in-month",
+        "Pastafarian-Calendar-App: structural Pastafarian Month/Cutlet/Year views",
+        "Pastafarian-Calendar-Seer: structure/boundaries output, exact runtime data",
+        "Pastafarian-Calendar: all implementation branches"
+      ]
+    },
+    {
+      "id": "NO_CANONICAL_WEEKS",
+      "priority": "P0",
+      "corpusQuestion": "Whether canonical calendar defines any week system.",
+      "surfaces": [
+        "pastafari-calendar: #no-weeks",
+        "Pastafarian-Calendar-App: ordinary Week and Work Week product views",
+        "localized help/UI where weekly view could be mistaken for Pastafarian structure"
+      ],
+      "specialTrap": "A product may offer a civil/ordinary weekly view without creating a canonical Pastafarian week."
+    },
+    {
+      "id": "DAY_BOUNDARY_VENUS",
+      "priority": "P0",
+      "corpusQuestion": "Exact astronomical definition of local Pastafarian day boundary and role of location.",
+      "surfaces": [
+        "pastafari-calendar: #day-boundary, #travel-and-all-day",
+        "Pastafarian-Calendar-App: WS13 physical DayId, Temporal Context, fallback location",
+        "Pastafarian-Calendar-Seer: calculation-day resolution/boundary logic and API docs",
+        "Pastafarian-Calendar: implementations that expose local day/today behavior"
+      ],
+      "knownAnomaly": "Hebrew Kisurra form differs: App 'כישורא' vs /about/ 'קיסורה'."
+    },
+    {
+      "id": "ALL_DAY_SEMANTICS",
+      "priority": "P1",
+      "corpusQuestion": "Definition of Pastafarian day span versus civil all-day span.",
+      "surfaces": [
+        "pastafari-calendar: #travel-and-all-day",
+        "Pastafarian-Calendar-App: TemporalAnchor variants, PastafarianDaySpan/CivilDaySpan",
+        "calendar export/import product behavior"
+      ]
+    },
+    {
+      "id": "FOUNDATION_AND_TABLETS",
+      "priority": "P0",
+      "corpusQuestion": "Exact anchor dates, axis encoding, distance and theological/computational interpretation.",
+      "surfaces": [
+        "pastafari-calendar: #foundation-and-tablets, #anchors",
+        "Pastafarian-Calendar-Seer: Foundation-adjacent corpora/conformance",
+        "Pastafarian-Calendar-App: temporal/domain fixtures if any",
+        "Pastafarian-Calendar: all implementations and test vectors"
+      ],
+      "specialTrap": "Do not infer stale semantics from legacy variable names such as FOUNDATION_DAY_OLD."
+    },
+    {
+      "id": "SAUCE_SAVED_SUM",
+      "priority": "P0",
+      "corpusQuestion": "Exact Sauce semantics including Q, drops, bowls, synchronous updates and final saved-sum R.",
+      "surfaces": [
+        "pastafari-calendar: #calculation",
+        "Pastafarian-Calendar-Seer: docs/CONFORMANCE.md, docs/DATA_PROVENANCE.md, canonical corpora",
+        "Pastafarian-Calendar: all implementation branches, especially JavaScript+Interlingue",
+        "research artifacts that depend on Sauce invertibility/history"
+      ],
+      "specialTrap": "Historical raw-sum reports must remain historical rather than be rewritten as if they never existed."
+    },
+    {
+      "id": "SHORT_WIDE_CHOICE",
+      "priority": "P0",
+      "corpusQuestion": "Exact short/wide selection algorithms and reachability/uniformity properties.",
+      "surfaces": [
+        "pastafari-calendar: #short-and-wide-choice",
+        "Pastafarian-Calendar-Seer: exact runtime/optimization conformance where selection semantics are encoded",
+        "Pastafarian-Calendar: all implementation branches",
+        "derived research or test vectors using selection distributions"
+      ]
+    },
+    {
+      "id": "SEER_NON_AUTHORITY_AND_LITURGY",
+      "priority": "P0",
+      "corpusQuestion": "Seer's semantic authority and project-world status of shortcutting prescribed work.",
+      "surfaces": [
+        "pastafari-calendar: #seer",
+        "Pastafarian-Calendar-Seer: README.md, docs/RELATION_TO_THE_MONSTER.md, docs/TERMINOLOGY.md, docs/CONFORMANCE.md",
+        "Pastafarian-Calendar-App: Seer binding/provider status/help"
+      ],
+      "priorDecision": "Seer is much faster/useful for integration, but the Monster does not approve the shortcut; semantic authority and liturgical approval are distinct."
+    },
+    {
+      "id": "REDELIVERY_2026_08_05",
+      "priority": "P0",
+      "corpusQuestion": "Exact origin/re-delivery history and presentation rule.",
+      "surfaces": [
+        "pastafari-calendar: #site-story",
+        "future dynamic re-delivery display component",
+        "FSM/origin article",
+        "any historical/about metadata"
+      ],
+      "priorDecision": "5 Aug 2026 is modern re-delivery, not creation; public calendar presentation should use a dynamically computed Pastafarian date rather than substitute the Gregorian date."
+    },
+    {
+      "id": "CALENDAR_DESIGN_ORIGIN",
+      "priority": "P1",
+      "corpusQuestion": "How the particular concrete details of the calendar were determined/created in project-world history.",
+      "surfaces": [
+        "FSM/origin article primarily",
+        "pastafari-calendar: short #site-story cross-reference if appropriate"
+      ],
+      "priorDecision": "The origin/creator material should explain how the calendar's details were determined, not only how to compute them."
+    },
+    {
+      "id": "DERIVED_RESEARCH_BOUNDARY",
+      "priority": "P2",
+      "corpusQuestion": "Which premises are canonical; derived results remain theorem/empirical/open rather than rules.",
+      "surfaces": [
+        "pastafari-calendar: #structural-atlas, #anniversaries empirical scan, #reverse-conversion, #far-time-structure, #sauce-history",
+        "Seer benchmark/data provenance docs",
+        "research artifacts across repositories"
+      ],
+      "specialTrap": "Do not align derived numbers by copying them into canon; reprove/regenerate only when a premise changes."
+    },
+    {
+      "id": "FSM_PROJECT_THEOLOGY",
+      "priority": "P1",
+      "corpusQuestion": "Which previously approved project-theology decisions survive the new corpus.",
+      "surfaces": [
+        "fsm-prior-project-decisions-2026-09-27.json",
+        "fsm-about-consolidated-candidate-2026-09-27.md",
+        "fsm-postdraft-reconstruction-draft-2026-09-27.md",
+        "Pastafarian-Calendar-Seer: docs/RELATION_TO_THE_MONSTER.md where theology overlaps implementation"
+      ],
+      "specialTrap": "External-source absence does not mean lack of prior project approval; corpus nonetheless becomes superior authority."
+    }
+  ]
+}
