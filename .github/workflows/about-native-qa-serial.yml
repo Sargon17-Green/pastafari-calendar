@@ -597,7 +597,7 @@ jobs:
               f"sequence: {os.environ['QA_SEQUENCE']}\n"
               f"reviewed_head: {final.joinpath('reviewed-head.txt').read_text(encoding='utf-8').strip()}\n"
               "reviewer_model: Gemma 3 4B IT Q4_K_M\n"
-              "review_method: four isolated Gemma-3-4B target-language surface reviews plus independent Gemma-3-12B target-language adjudication over primary sources and candidate findings\n"
+              "review_method: four isolated Gemma-3-4B target-language surface reviews plus independent Gemma-3-4B target-language adjudication over primary sources and candidate findings\n"
               "model_sha256: 882e8d2db44dc554fb0ea5077cb7e4bc49e7342a1f0da57901c0802ea21a0863\n"
               "llama_cpp_release: b10982\n"
               "llama_cpp_asset_sha256: b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789\n"
@@ -710,6 +710,28 @@ jobs:
           REVIEWED_HEAD="$(tr -d '\r\n' < /tmp/native-qa-final/reviewed-head.txt)"
           ATTEMPT="artifacts/about-i18n-native-sessions/$QA_LOCALE_CODE/attempts/$QA_SEQUENCE-$REVIEWED_HEAD"
           head -n 1 "$ATTEMPT/review.md" | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)
+
+      - name: Promote latest valid locale evidence
+        shell: bash
+        env:
+          QA_LOCALE_CODE: ${{ needs.prepare.outputs.code }}
+          QA_SEQUENCE: ${{ needs.prepare.outputs.sequence }}
+        run: |
+          set -euo pipefail
+          REVIEWED_HEAD="$(tr -d '\r\n' < /tmp/native-qa-final/reviewed-head.txt)"
+          ATTEMPT="artifacts/about-i18n-native-sessions/$QA_LOCALE_CODE/attempts/$QA_SEQUENCE-$REVIEWED_HEAD"
+          OUT="artifacts/about-i18n-native-sessions/$QA_LOCALE_CODE"
+          cp "$ATTEMPT/prompt.md" "$OUT/prompt.md"
+          cp "$ATTEMPT/review.md" "$OUT/review.md"
+          cp "$ATTEMPT/session.md" "$OUT/session.md"
+          cp "$ATTEMPT/reviewed-head.txt" "$OUT/reviewed-head.txt"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$OUT/prompt.md" "$OUT/review.md" "$OUT/session.md" "$OUT/reviewed-head.txt"
+          git commit -m "qa($QA_LOCALE_CODE): promote latest native-language review $QA_SEQUENCE"
+          git pull --rebase origin feature/about-i18n-72-locales
+          git push origin HEAD:feature/about-i18n-72-locales
+
 
 
       - name: Promote latest valid locale evidence
