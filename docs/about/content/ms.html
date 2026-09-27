@@ -1,7 +1,7 @@
 <!-- Versi Bahasa Melayu ini ditulis terus daripada semantic master bahasa Ibrani; tiada bahasa perantara digunakan. -->
 <!-- ID seksyen ialah sebahagian daripada public deep-link contract yang stabil; ID tidak dijana daripada tajuk terjemahan. -->
 <div class="about-section about-lead" id="about-calendar">
-  <p>Dalam kisah laman ini, Kalendar Pastafari digambarkan sebagai kalendar tempat masa itu sendiri dicipta. Namun cara kalendar ini berfungsi ditakrifkan dengan peraturan yang ketat dan tepat.</p>
+  <p>Kalendar Pastafari ialah kalendar tempat masa itu sendiri dicipta. Cara kalendar ini berfungsi ditakrifkan dengan tepat.</p>
   <p>Kalendar ini tidak melekatkan satu “label” Pastafari yang kekal pada setiap hari. Untuk mendapatkan suatu tarikh, dua hari diperlukan: <strong>hari tindakan</strong>, iaitu titik mula pengiraan, dan <strong>hari yang ditanyakan</strong>, iaitu hari yang tarikh Pastafari-nya ingin diketahui.</p>
   <p>Jika hari tindakan ditulis sebagai <code>c</code> dan hari yang ditanyakan sebagai <code>t</code>, maka tarikhnya ialah</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
@@ -126,7 +126,7 @@
 
 <section class="about-section" id="calculation" data-toc-section data-toc-level="2">
   <h2>Bagaimanakah kalendar dikira?</h2>
-  <p>Pengiraan dalaman kami panggil <strong>sos</strong>. Di tengahnya ialah nombor perdana</p>
+  <p>Pengiraan dalaman dipanggil <strong>sos</strong>. Di tengahnya ialah nombor perdana</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
   <p>Proses itu merangkumi lima pembilang input, 7 titisan tersembunyi, 46 titisan kelihatan, 6 mangkuk, susunan mangkuk yang berubah-ubah, 12 campuran akhir, meterai untuk jawapan berbeza, pemilihan kombinatorik, pembinaan gerbang, pemilihan tahun, pembahagian kotlet, pemilihan nama, pembinaan bulan dan jalinan hari-hari bulan.</p>
   <p>Kemas kini akhir berlaku <strong>serentak</strong>: dalam setiap campuran, keenam-enam nilai baharu dikira daripada keadaan lama yang sama, dan hanya selepas itu keenam-enam mangkuk ditukar bersama-sama.</p>
@@ -170,7 +170,7 @@
         <tr><td>Median panjang bulan</td><td>115</td></tr>
         <tr><td>Purata bilangan segmen berterusan setiap bulan</td><td>100.897</td></tr>
         <tr><td>Bahagian segmen bulan satu hari</td><td>97.482%</td></tr>
-        <tr><td>Kebarangkalian dua hari bersebelahan berada dalam bulan yang sama</td><td>2.9976%</td></tr>
+        <tr><td>Bahagian pasangan hari bersebelahan yang berada dalam bulan yang sama dalam sampel</td><td>2.9976%</td></tr>
         <tr><td>Purata bilangan hari daripada bulan lain antara <code>n</code> dan <code>n+1</code> dalam bulan yang sama</td><td>40.408</td></tr>
         <tr><td>Purata tempoh antara kemunculan pertama dan terakhir sesuatu bulan</td><td>4,266.653 hari</td></tr>
       </tbody>
@@ -199,7 +199,7 @@
 
 <section class="about-section" id="appointments" data-toc-section data-toc-level="2">
   <h2>Bagaimana menetapkan janji temu?</h2>
-  <p>Jika dua orang mahu membuat janji hanya dengan tarikh Pastafari, mereka perlu sekurang-kurangnya bersetuju tentang lima medan tarikh dan hari tindakan yang digunakan dalam pengiraan. Lebih baik menyimpan hari tindakan sebagai identiti hari yang stabil, bukannya sebagai perkataan “hari ini”; jika tidak, dua orang boleh mengira dua kalendar yang berbeza.</p>
+  <p>Jika dua orang mahu menetapkan hari janji temu dengan tarikh Pastafari, mereka perlu sekurang-kurangnya bersetuju tentang lima medan tarikh dan hari tindakan yang digunakan dalam pengiraan. Lebih baik menyimpan hari tindakan sebagai identiti hari yang stabil, bukannya sebagai perkataan “hari ini”; jika tidak, dua orang boleh mengira dua kalendar yang berbeza.</p>
   <ul>
     <li>“esok” ialah hari kronologi seterusnya;</li>
     <li>“hari berikutnya dalam bulan” ialah kemunculan seterusnya bulan itu;</li>
@@ -233,19 +233,19 @@
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Jadi apakah Seer?</h2>
-  <p>Di samping pelaksanaan kanonik terdapat enjin pantas bernama <strong>Pastafarian Calendar Seer</strong>. Seer bukan sumber autoriti: tarikh yang betul ditentukan oleh Megillah dan pengiraan kanonik. Jika Seer tidak sepadan dengan kedua-duanya, kesilapan terletak pada Seer.</p>
+  <p>Di samping pelaksanaan kanonik terdapat enjin pantas bernama <strong>Pastafarian Calendar Seer</strong>. Seer bukan sumber autoriti: Megillah menetapkan peraturan, dan pengiraan kanonik menghasilkan tarikh mengikut peraturan itu. Jika Seer tidak sepadan dengan pengiraan kanonik yang betul, kesilapan terletak pada Seer.</p>
   <p>Tugasnya ialah menjalankan pertanyaan yang sama dengan pantas dan mengembalikan hasil dalam bentuk yang mudah disepadukan ke dalam produk.</p>
-  <p>Dalam pengesahan langsung semasa halaman ini disunting, Seer merangkumi antara lain pertanyaan <code>date</code> dan <code>now</code>, <code>batch</code>, julat hari, penukaran songsang daripada tarikh Pastafari kepada hari yang ditanya, pengambilan struktur tahun, penentuan hari tindakan aktif, Node API, klien pelayar/HTTP, CLI, perkhidmatan HTTP v1, kontrak OpenAPI 3.1, pelaksanaan natif dan pakej pengedaran, serta penempatan kontena yang telah disahkan.</p>
-  <p>Dakwaan lama bahawa Seer tidak mempunyai API awam tidak lagi betul. Kini terdapat kontrak HTTP v1 yang jelas dan stabil dengan titik akhir untuk <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, hari tindakan, <code>metadata</code>, <code>locales</code> dan <code>status</code>.</p>
+  <p>Dalam pengesahan langsung pada 21 September 2026, Seer merangkumi antara lain pertanyaan <code>date</code> dan <code>now</code>, <code>batch</code>, julat hari, penukaran songsang daripada tarikh Pastafari kepada hari yang ditanya, pengambilan struktur tahun, penentuan hari tindakan aktif, Node API, klien pelayar/HTTP, CLI, perkhidmatan HTTP v1, kontrak OpenAPI 3.1, pelaksanaan natif dan pakej pengedaran, serta penempatan kontena yang telah disahkan.</p>
+  <p>Seer mempunyai API awam. Terdapat kontrak HTTP v1 yang jelas dan stabil dengan titik akhir untuk <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, hari tindakan, <code>metadata</code>, <code>locales</code> dan <code>status</code>.</p>
   <p>Pada 21 September 2026, penempatan HTTPS awam di Render benar-benar diuji: pertanyaan tepat, julat besar, mula semula, <code>cold wake</code> dan tingkah laku di bawah beban disahkan pada perkhidmatan yang sedang berjalan.</p>
-  <p>Walau bagaimanapun, dokumentasi projek masih membezakan penempatan beta/penilaian awam daripada perkhidmatan pengeluaran kekal yang dihoskan dengan SLA. Oleh itu, halaman penerangan konseptual tidak sepatutnya menetapkan alamat pelayan, penyedia pengehosan atau nombor versi seolah-olah ia sebahagian daripada kalendar itu sendiri.</p>
+  <p>Penempatan awam yang telah disahkan ialah penempatan beta/penilaian, bukannya pengumuman perkhidmatan pengeluaran kekal yang dihoskan dengan SLA. Alamat pelayan, penyedia pengehosan dan nombor versi bukan sebahagian daripada kalendar dan bukan pemalar kanonik.</p>
   <p>Seer boleh menggunakan prapengiraan, perwakilan khas, SIMD, algebra dan jalan pintas lain. Ia tidak perlu meniru seluruh sejarah pengiraan pelaksanaan kanonik langkah demi langkah selagi ia melakukan operasi semantik yang sama dan mengembalikan jawapan yang sama.</p>
   <p>Pengoptimuman bukan autoriti alternatif.</p><hr>
 </section>
 
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
   <h2>Asal-usul, Hari Penubuhan dan Hari Loh</h2>
-  <p>Di sini sangat penting untuk memisahkan sauh masa kanonik dengan jelas daripada kisah laman.</p>
+  <p>Sauh pengiraan tetap kalendar berbeza daripada fakta tentang asal usulnya dan sejarah penyerahannya.</p>
 
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>Titik sauh</h3>
@@ -260,10 +260,10 @@
   </section>
 
   <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
-    <h3>Kisah laman</h3>
-    <p>Dalam kisah editorial laman, kalendar diterangkan sebagai sebahagian daripada penciptaan dan sebagai sistem yang digunakan manusia tanpa memahaminya sepenuhnya, sehingga ia diserahkan semula pada zaman moden.</p>
-    <p>Itulah kisah laman; bukan setiap butiran naratif patut dipersembahkan seolah-olah ia dakwaan teknikal yang dinyatakan secara langsung oleh Megillah.</p>
-    <p>Peristiwa penyerahan semula itu sendiri ialah peristiwa sejarah yang tetap. <strong>Tarikh Pastafari</strong>-nya lebih baik dipaparkan secara dinamik di bawah hari tindakan semasa daripada dibekukan selama-lamanya sebagai satu tarikh.</p><hr>
+    <h3>Asal usul kalendar dan penyerahannya</h3>
+    <p>Kalendar Pastafari ialah sebahagian daripada penciptaan. Manusia menggunakannya tanpa cukup menyedari bahawa mereka menggunakan kalendar ini, sehingga ia diserahkan semula pada zaman moden.</p>
+    <p>Megillah tidak memperincikan setiap butiran sejarah ini; butiran yang tidak dinyatakan secara jelas di dalamnya bukan sebahagian daripada teks Megillah. Ini ialah perbezaan sumber, bukan keraguan tentang realiti.</p>
+    <p>Peristiwa penyerahan semula itu sendiri ialah peristiwa sejarah yang tetap. <strong>Tarikh Pastafari</strong>-nya dikira mengikut hari tindakan yang berkenaan; oleh itu ia tidak mempunyai satu tarikh Pastafari lima medan yang kekal selama-lamanya, dan perwakilan Pastafari-nya boleh berubah di bawah hari tindakan yang lain.</p><hr>
   </section>
 </section>
 
@@ -292,8 +292,8 @@
     </table>
   </div>
 
-  <p>Jika hari tindakan tidak diketahui, keadaannya berbeza. Lima nilai yang sama boleh muncul di bawah hari tindakan yang berbeza, dan terdapat contoh tepat apabila tarikh lengkap yang sama muncul pada jarak yang berbeza daripada <code>c</code>.</p>
-  <p>Dalam tahun 5000, bahkan tanda jarak itu tidak sentiasa ditentukan oleh lima nilai: tarikh lengkap yang sama boleh berada sebelum hari tindakan dalam satu konteks dan selepasnya dalam konteks yang lain.</p>
+  <p>Jika hari tindakan tidak diketahui, keadaannya berbeza. Lima nilai yang sama boleh muncul di bawah hari tindakan yang berbeza, dan terdapat contoh nyata apabila tarikh lengkap yang sama muncul pada jarak yang berbeza daripada <code>c</code>.</p>
+  <p>Dalam tahun 5000, lima nilai itu tidak sentiasa menentukan sama ada tarikh berada sebelum atau selepas hari tindakan: tarikh lengkap yang sama boleh berada sebelum hari tindakan dalam satu konteks dan selepasnya dalam konteks yang lain.</p>
   <p>Oleh itu, tarikh Pastafari lengkap bukan alamat mutlak pada garis masa jika kita tidak tahu di bawah <code>c</code> yang mana ia dikira.</p>
 
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
@@ -316,7 +316,7 @@
   <p>Dalam peringkat kelihatan 3–46, pada cabang asimptotik yang berkaitan, sifat injektif dalam kes umum telah ditetapkan: dalam kes umum, keadaan menyimpan maklumat yang cukup untuk membina semula sejarah input berkaitan dan susunan mangkuk.</p>
   <p>Maklumat juga tidak hilang serta-merta dalam 12 campuran akhir. Bagi lima campuran pertama selepas titisan kelihatan 46, kebolehbalikan dalam kes umum telah ditetapkan pada gabungan kanonik berkaitan tanpa maklumat tambahan; bagi selebihnya, batas atas konstruktif yang kukuh diketahui bagi jumlah maklumat tambahan yang mencukupi untuk pembinaan semula.</p>
   <p>Persoalan sama ada <strong>hanya enam mangkuk akhir</strong> sentiasa mencukupi dalam pengertian umum masih terbuka.</p>
-  <p>Sesetengah hasil dibuktikan secara simbolik, yang lain diselesaikan dengan pemeriksaan aritmetik tepat dan terhingga. Pengukuhan simbolik telah mengecilkan teras pengiraan yang perlu dipercayai dengan ketara, tetapi tidak menghapuskannya sepenuhnya.</p>
+  <p>Sesetengah hasil dibuktikan secara simbolik, yang lain disahkan dengan pemeriksaan aritmetik yang terhingga dan tepat. Pengukuhan simbolik telah mengecilkan teras pengiraan yang perlu dipercayai dengan ketara, tetapi tidak menghapuskannya sepenuhnya.</p>
   <p>Ruang yang pada mulanya kelihatan memerlukan carian melalui jumlah laluan yang amat besar telah dikecilkan menjadi struktur terhingga yang jauh lebih kecil, termasuk automata dengan 180 dan 9 keadaan serta simetri enam mangkuk.</p>
   <p>Di bawah proses pencampuran terdapat struktur algebra yang ketat. Anda tidak perlu mengetahuinya untuk mengetahui tarikh hari ini.</p><hr>
 </section>
