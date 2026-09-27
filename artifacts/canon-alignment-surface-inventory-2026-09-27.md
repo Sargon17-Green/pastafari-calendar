@@ -190,10 +190,12 @@ Repository-management constraint:
 
 Repository: `Sargon-17-Green/Pastafarian-Calendar-App` (private)
 
-Known active/workstream branch family includes:
-- `ws/WS00...` through later WS branches;
-- the current installation/design work has used `ws/WS04-design-system-code-foundation`;
-- localization, domain-core and later Android vertical-slice branches also exist.
+Known active/workstream branch family includes `ws/WS00...` through later WS branches.
+
+A later read-only audit of current `main` shows that App semantics/public strings have advanced beyond the earlier WS04-only snapshot and now include WS09/WS13/WS14 domain and UI surfaces. See:
+`artifacts/app-main-canon-alignment-audit-2026-09-27.md`.
+
+At actual alignment time, rediscover the live App ref again rather than assuming either WS04 or this current-main snapshot is still current.
 
 Top-level content-bearing areas observed:
 - `apps/`
@@ -206,11 +208,16 @@ Top-level content-bearing areas observed:
 - `test-corpora/`
 
 Alignment scope when corpus is ready:
-- date terminology;
+- date terminology and the five-field display model;
+- Today/DayId/Calculation-Day labels;
+- Venus day-boundary wording/implementation;
+- Kisurra fallback naming and Hebrew transliteration;
+- ordinary Week/Work Week product views versus the absence of a canonical Pastafarian week system;
+- Pastafarian Month/Cutlet/Year structural views;
+- Pastafarian all-day versus civil all-day;
 - help/onboarding/about text;
-- day-of-working explanations;
 - accessibility labels that encode semantic claims;
-- error/help text;
+- error/help/status text;
 - localization source strings;
 - any bundled examples/fixtures described as canonical;
 - app-side claims about Seer versus local/canonical calculation.
