@@ -160,3 +160,30 @@ No further broad prose rewrite should be applied before:
 - the intentional fallacy map is preserved.
 
 The current candidate is suitable as a staging baseline, not as a publication candidate.
+
+
+## Source-status updates after the first Hebrew pass
+
+Later source work changes the **provenance confidence**, not the staged public prose.
+
+### Prayer / RAmen
+Repeated Loose Canon prayers and an official Church “FSM Prayer” establish RAmen/R'Amen as genuine prayer-closing usage. The remaining caution is only against presenting common usage as an absolute command.
+
+### Pasta as worship
+The Loose Canon directly states that sharing Pasta is a form of worship. Therefore the saved `פולחן` section has a stronger external basis than the first pass assumed.
+
+### Friday
+The official Church site states that every Friday is a religious holiday; the Loose Canon also contains a “Holy Friday” prayer. The saved Friday claim is strongly sourced.
+
+### Gender
+The source problem became sharper, not weaker: the Loose Canon contains a prayer describing the FSM as neither male nor female and beyond ordinary human gender categories. Therefore the saved “three genders / carbohydrate” community-attribution sentence should remain blocked pending a project-canon decision.
+
+### Heaven / Hell
+The source distinction is now clear:
+- familiar Beer Volcano / Stripper Factory material is Heaven;
+- Loose Canon Hell/HellLight material is different;
+- the saved “antipasti instead of pasta” line is a project-specific version unless adopted by project canon.
+
+### Creation chronology
+Secondary chapter-level indexing now closely matches the saved sequence through light/dark, Beer Volcano, hangover, duplicate land, sun/moon/stars and later life. The chronology should therefore be preserved in staging rather than pruned merely for lack of source confidence.
+
