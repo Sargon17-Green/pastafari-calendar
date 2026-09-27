@@ -157,3 +157,88 @@ Before reconstructing a final Hebrew FSM article:
 5. Only after provenance is stable, perform the final prose pass so the public article can remain direct/deadpan without cluttering it with source caveats.
 
 The public prose does not need to expose this taxonomy. The taxonomy is an editorial control layer.
+
+
+## Second source pass — additional verified distinctions
+
+### Gravity by Noodly Appendage is externally sourced
+
+A Church of the Flying Spaghetti Monster leaflet hosted on the official site explicitly states that people are held on Earth by His Noodliness pressing down on them with noodly appendages, and then gives the intentionally pseudo-scientific “humans are getting taller” argument.
+
+Source:
+https://www.spaghettimonster.org/wp-content/uploads/2006/10/leaflet.pdf
+
+This changes the earlier provisional classification:
+
+- the **general FSM-gravity mechanism** is externally sourced Pastafarian material;
+- the saved draft's much more specific mechanics — a personally allocated appendage for every individual, detailed handling of chairs/rocks/local-down directions, and instrument interpretation — remain project elaboration unless separately sourced.
+
+Therefore the gravity section should not be treated as wholly project-invented. It is better modeled as:
+`EXTERNAL_PASTAFARIAN_SOURCE + PROJECT_EDITORIAL_ELABORATION`.
+
+### R'Amen / RAmen has strong official-site usage, but the universal rule still needs care
+
+The official Church site contains multiple prayers/devotional submissions ending in `RAmen` / `R'Amen`, including a page literally titled “FSM Prayer”.
+
+Sources:
+https://www.spaghettimonster.org/2009/08/03/fsm-prayer/
+https://www.spaghettimonster.org/2010/04/01/new-painting-by-milek/
+
+This supports `R'Amen/RAmen` as established Pastafarian devotional usage.
+
+What is **not yet established by the checked sources** is the stronger universal formulation that every Pastafarian prayer is customarily or normatively required to end that way. The public text should either use a softer customary formulation or wait for a direct source for the stronger statement.
+
+### Male/female imagery exists; “third gender = carbohydrate” still not verified
+
+An official-site leaflet and the Church's endorsements page reproduce an endorsement saying the FSM has aspects of both male and female.
+
+Sources:
+https://www.spaghettimonster.org/wp-content/uploads/2006/10/leaflet.pdf
+https://www.spaghettimonster.org/about/endorsements/
+
+This supports the existence of mixed-gender imagery in historical Pastafarian material.
+
+It does **not** establish the saved draft's specific community rule “three genders: male, female, carbohydrate”. That claim remains unverified as an external-community fact.
+
+### Low-carbohydrate diets appear in historical Church material, but not as the saved Antipasti doctrine
+
+The Church's endorsements page contains material connecting low-carbohydrate diets with persecution/opposition to FSM teachings.
+
+Source:
+https://www.spaghettimonster.org/about/endorsements/
+
+This gives a genuine historical root for the low-carb-antagonism joke.
+
+It still does not establish:
+- a named supernatural adversary “Antipasti”;
+- the detailed body/strength of that entity;
+- hell serving antipasti instead of pasta;
+- the saved hierarchy of titles such as “lord of diets”.
+
+Those remain project-specific unless a stronger source is recovered.
+
+### “Scientific proof” framing is itself historical Pastafarian material
+
+The official leaflet has an explicit “MORE SCIENTIFIC PROOF” section and deliberately argues from the gravity story, pirate correlation and related pseudo-scientific reasoning.
+
+This is important for editorial QA: the article's epistemology jokes are not merely later commentary *about* Pastafarian satire. Mimicking flawed proof structures in a deadpan voice is consistent with early Pastafarian source style.
+
+That does not excuse accidental scientific errors in background facts. The distinction remains:
+- intentionally bad inference can be preserved;
+- factual premises about real science should still be accurate.
+
+## Later-discussion recovery status
+
+Conversation recovery found a later integrated response dated 2026-09-16 that post-dates the saved 229-line draft.
+
+It confirms at least two concrete later changes:
+
+1. the gravity passage was revised from the bare “Newton was wrong” formulation to a line substantially equivalent to:
+   “Newton's description is not the fundamental description of gravity; Einstein showed this later; he still had not reached the noodles.”
+2. the penguin/solar-water-heater-factory appendix remained after the final “כך הדבר עובד” section and itself received wording edits.
+
+The exact full text of that later integrated response has not yet been recovered from durable file storage. Therefore:
+- do not silently recreate its missing paragraphs from memory;
+- preserve the known changes as recovery constraints;
+- when reconstructing, mark any newly written bridge text as a reconstruction rather than recovered wording.
+
