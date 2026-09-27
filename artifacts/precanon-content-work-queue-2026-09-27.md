@@ -15,7 +15,7 @@ Work branch: `work/about-canon-transition-2026-09-27`.
 - exact preservation of the 2026-09-16 FSM draft;
 - staged working FSM draft;
 - recovery ledger;
-- recovered exact opening fragment of the penguin/solar-water-heater appendix;
+- recovered near-complete historical composite of the penguin/solar-water-heater appendix, assembled from exact prior conversation fragments;
 - external-source audit;
 - section provenance matrix;
 - machine-readable source manifest;
@@ -27,7 +27,7 @@ Work branch: `work/about-canon-transition-2026-09-27`.
 
 ### A. Source/provenance closure
 
-- [~] Penguin appendix recovery is partial: exact opening fragment, full heading sequence and exact conclusion are recovered; intervening historical paragraphs remain unavailable. A separate reconstruction exists and is explicitly labeled reconstruction.
+- [x] Penguin appendix historical recovery substantially closed: a recovered historical composite now covers the full section sequence with exact recovered fragments from multiple conversation records. It is not claimed to be a byte-for-byte single-message export. The earlier reconstruction remains separately labeled and is no longer the preferred historical baseline.
 - [~] Gospel creation/flood chronology is now strongly located through publisher/Google Books metadata plus cited book summaries; direct book page-level wording remains desirable only where final wording depends on a precise detail.
 - [x] Gender-source search completed to the current useful limit: Henderson uses masculine English; historical material includes mixed/beyond-binary framings; no checked source establishes exactly “male/female/carbohydrate”. Leave that formulation as a project-canon candidate.
 - [x] Checked Loose Canon Hell material: it describes separation from Pasta / never eating Pasta, not the saved wording “antipasti instead of pasta”. Treat the latter as project-specific unless later canon adopts it.
