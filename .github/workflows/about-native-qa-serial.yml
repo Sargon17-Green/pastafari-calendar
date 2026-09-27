@@ -731,26 +731,3 @@ jobs:
           git commit -m "qa($QA_LOCALE_CODE): promote latest native-language review $QA_SEQUENCE"
           git pull --rebase origin feature/about-i18n-72-locales
           git push origin HEAD:feature/about-i18n-72-locales
-
-
-
-      - name: Promote latest valid locale evidence
-        shell: bash
-        env:
-          QA_LOCALE_CODE: ${{ needs.prepare.outputs.code }}
-          QA_SEQUENCE: ${{ needs.prepare.outputs.sequence }}
-        run: |
-          set -euo pipefail
-          REVIEWED_HEAD="$(tr -d '\r\n' < /tmp/native-qa-final/reviewed-head.txt)"
-          ATTEMPT="artifacts/about-i18n-native-sessions/$QA_LOCALE_CODE/attempts/$QA_SEQUENCE-$REVIEWED_HEAD"
-          OUT="artifacts/about-i18n-native-sessions/$QA_LOCALE_CODE"
-          cp "$ATTEMPT/prompt.md" "$OUT/prompt.md"
-          cp "$ATTEMPT/review.md" "$OUT/review.md"
-          cp "$ATTEMPT/session.md" "$OUT/session.md"
-          cp "$ATTEMPT/reviewed-head.txt" "$OUT/reviewed-head.txt"
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add "$OUT/prompt.md" "$OUT/review.md" "$OUT/session.md" "$OUT/reviewed-head.txt"
-          git commit -m "qa($QA_LOCALE_CODE): promote latest native-language review $QA_SEQUENCE"
-          git pull --rebase origin feature/about-i18n-72-locales
-          git push origin HEAD:feature/about-i18n-72-locales
