@@ -236,6 +236,12 @@ jobs:
           name: native-qa-input-${{ github.run_id }}
           path: /tmp/native-qa-input
 
+      - name: Restore pinned Gemma 3 4B reviewer cache
+        uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: /tmp/native-qa/gemma-3-4b-it-q4_k_m.gguf
+          key: native-qa-gemma3-4b-q4km-882e8d2db44dc554fb0ea5077cb7e4bc49e7342a1f0da57901c0802ea21a0863
+
       - name: Download pinned llama.cpp and Gemma 3 4B reviewer
         shell: bash
         run: |
@@ -244,7 +250,9 @@ jobs:
           curl -fL --retry 3 https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz -o /tmp/native-qa/llama.tar.gz
           echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/native-qa/llama.tar.gz" | sha256sum -c -
           tar -xzf /tmp/native-qa/llama.tar.gz -C /tmp/native-qa/llama
-          curl -fL --retry 3 'https://huggingface.co/ggml-org/gemma-3-4b-it-GGUF/resolve/main/gemma-3-4b-it-Q4_K_M.gguf?download=true' -o /tmp/native-qa/gemma-3-4b-it-q4_k_m.gguf
+          if [ ! -s /tmp/native-qa/gemma-3-4b-it-q4_k_m.gguf ]; then
+            curl -fL --retry 3 'https://huggingface.co/ggml-org/gemma-3-4b-it-GGUF/resolve/main/gemma-3-4b-it-Q4_K_M.gguf?download=true' -o /tmp/native-qa/gemma-3-4b-it-q4_k_m.gguf
+          fi
           echo "882e8d2db44dc554fb0ea5077cb7e4bc49e7342a1f0da57901c0802ea21a0863  /tmp/native-qa/gemma-3-4b-it-q4_k_m.gguf" | sha256sum -c -
 
       - name: Run isolated target-language surface review
