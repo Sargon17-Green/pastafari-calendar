@@ -353,3 +353,28 @@ This is directly relevant to the article's “מסורת, זיכרון ודיו�
 
 Editorial consequence: the article can support the proposition that Pastafarian source texts may contradict one another and need not all be harmonized. But the saved draft's specific proposed decision rule — prefer the version that “sounds more familiar” because many remember it — remains an intentional epistemology joke, not the actual provenance method.
 
+
+
+## Loose Canon gender pass
+
+A direct pass over *The Loose Canon* found material that makes the saved draft's “three genders: male, female, carbohydrate” attribution substantially weaker than it first appeared.
+
+Source inspected directly:
+https://www.klps.pl/files/loose_canon.pdf
+
+### What the Loose Canon actually contains
+
+The text uses human classifications that include male, female and gender-nonspecific people.
+
+More importantly, a prayer in the book addresses the Flying Spaghetti Monster as neither male nor female and as beyond ordinary human gender categories.
+
+Editorial consequence:
+
+- Bobby Henderson's foundational English still uses masculine pronouns, so the saved article's observation about English grammar remains supportable.
+- Hebrew `מפלצת` remains grammatically feminine; that is a language fact, not a theological ruling.
+- Historical Pastafarian material therefore contains more than one gender framing.
+- The checked sources do **not** establish a general Pastafarian community doctrine of exactly three genders “male, female, carbohydrate”.
+- The specific sentence “לפי החלוקה הזאת, המפלצת היא פחמימה” should not be published as an externally established community fact on the evidence currently available.
+- If the project wants “carbohydrate” to be the Monster's gender, that should be adopted explicitly as project canon rather than retroactively attributed to external communities.
+
+This is a genuine source tension, not a reason to force all historical Pastafarian texts into one harmonized doctrine. The Loose Canon itself explicitly allows contradiction among Pastafarian texts.
