@@ -222,6 +222,9 @@ Operational queue of safe work versus blocked work.
 ### `precanon-content-checkpoint-2026-09-27.md`
 Narrative state checkpoint.
 
+### `CANON_ALIGNMENT_START_CHECKLIST_2026-09-27.md`
+Ready-to-use intake checklist for the moment the corpus is declared stable: what to pin, which P0 facts to extract, naming package requirements, classification rules, downstream order and evidence requirements.
+
 ## Current hierarchy of use
 
 When resuming this work before corpus completion:
