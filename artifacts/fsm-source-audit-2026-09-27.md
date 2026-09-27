@@ -111,7 +111,7 @@ The evidence actually contains multiple framings:
 - other historical Church material contains mixed male/female imagery;
 - the Loose Canon includes a prayer describing the FSM as neither male nor female and beyond ordinary human gender categories.
 
-Therefore “the Monster's gender is carbohydrate” is currently a **project-canon candidate**, not an externally established community rule.
+Therefore “the Monster's gender is carbohydrate” is **not an externally established community rule**. Historical recovery separately establishes that the three-category scheme was already approved as project theology; the future canonical corpus will decide whether that prior project decision survives.
 
 The grammatical observation that Hebrew “מפלצת” is feminine remains independently valid.
 
@@ -159,7 +159,7 @@ For the Newton–Einstein example, use scientifically accurate language: general
 Before reconstructing a final Hebrew FSM article:
 
 1. Preserve the externally sourced material above.
-2. Mark unsupported claims as project-canon candidates or editorial jokes rather than silently presenting them as Henderson/community tradition.
+2. For unsupported external attributions, consult the prior-project-decision manifest: some items are already approved project theology, while others are only editorial candidates. In either case, do not silently present them as Henderson/community tradition.
 3. Recover the later penguin/solar-water-heater appendix and any other post-2026-09-16 additions.
 4. Reconcile any calendar-history overlap with the canonical corpus.
 5. Only after provenance is stable, perform the final prose pass so the public article can remain direct/deadpan without cluttering it with source caveats.
