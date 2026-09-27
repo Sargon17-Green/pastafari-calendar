@@ -242,3 +242,32 @@ The exact full text of that later integrated response has not yet been recovered
 - preserve the known changes as recovery constraints;
 - when reconstructing, mark any newly written bridge text as a reconstruction rather than recovered wording.
 
+
+
+## Gospel-level creation/flood recovery
+
+A second pass found a well-cited standard summary of Bobby Henderson's *The Gospel of the Flying Spaghetti Monster* that attributes the following sequence to the book:
+
+- separation of light and darkness;
+- creation of land together with a beer volcano because the FSM was tired of flying/treading water;
+- overindulgence and a hangover;
+- later production of seas and a second land after forgetting the first;
+- creation of Heaven and a “midget”/Man;
+- an equally short woman in the Olive Garden of Eden;
+- a global flood caused by a cooking accident.
+
+Useful reference for locating the book passages:
+https://en.wikipedia.org/wiki/The_Gospel_of_the_Flying_Spaghetti_Monster
+
+This upgrades two earlier items from “apparently project-invented” to **Gospel-supported, pending direct page-level verification where wording matters**:
+
+1. much of the saved draft's `תחילת הבריאה` section;
+2. the core claim in `המבול` that the flood was caused by a cooking accident.
+
+It does **not** automatically verify every extra detail in the saved Hebrew prose, especially:
+- the exact sun/moon/stars sequence;
+- mountains/plants/animals wording beyond the known mountain/trees/midget motif;
+- post-flood repair mechanics and alleged geological leftovers.
+
+Those remain separately classified.
+
