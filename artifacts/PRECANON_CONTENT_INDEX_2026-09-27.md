@@ -263,3 +263,14 @@ Mechanical QA of the 29-section / 84-claim register: unique IDs, complete classi
 
 ### `spec-conformance-vs-law-audit-2026-09-27.md`
 Preserves the required distinction among specification conformance, project governance, liturgical authorization and legal permission; notes the existing Seer NOTICE precedent and current MIT-style repository licensing.
+
+## 11. Ready-made future deltas
+
+### `authority-wording-register-2026-09-27.md`
+Exact-current wording inventory for authority claims in `/about/`, Seer conformance/terminology/relation docs, JavaScript+Interlingue development status and audited live Megillah UI.
+
+### `spec-vs-law-hebrew-wording-candidates-2026-09-27.md`
+Three staged Hebrew formulations of the specification/conformance versus legal-permission distinction; none is public/canonical yet.
+
+### `redelivery-dynamic-display-plan-2026-09-27.md`
+Implementation-ready design for a live Pastafarian representation of the fixed modern re-delivery event using the existing browser worker `convert` operation, while deliberately leaving event identity/current-day context to the corpus gate.
