@@ -1,7 +1,7 @@
 <!-- Bản tiếng Việt được viết trực tiếp từ nền tảng ngữ nghĩa tiếng Hebrew, không qua ngôn ngữ trung gian. -->
 <!-- ID của các mục là hợp đồng deep-link công khai ổn định và không được tạo từ tiêu đề đã dịch. -->
 <div class="about-section about-lead" id="about-calendar">
-  <p>Trong câu chuyện của trang này, Lịch Pastafari được trình bày như cuốn lịch mà trong đó chính thời gian đã được tạo ra. Tuy vậy, cơ chế của nó được xác định rất chặt chẽ.</p>
+  <p>Lịch Pastafari là cuốn lịch mà trong đó chính thời gian đã được tạo ra. Cơ chế của nó được xác định rất chặt chẽ.</p>
   <p>Lịch này không gắn cho mỗi ngày một “nhãn” Pastafari cố định. Muốn biết ngày Pastafari của một ngày, cần hai ngày: <strong>ngày thao tác</strong>, là điểm xuất phát của phép tính, và <strong>ngày được hỏi</strong>, là ngày ta muốn biết ngày Pastafari của nó.</p>
   <p>Nếu ký hiệu ngày thao tác là <code>c</code> và ngày được hỏi là <code>t</code>, thì ngày Pastafari là</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
@@ -127,7 +127,7 @@
 
 <section class="about-section" id="calculation" data-toc-section data-toc-level="2">
   <h2>Lịch được tính như thế nào?</h2>
-  <p>Ta gọi phép tính nội bộ ở đây là <strong>nước sốt</strong>. Ở trung tâm của nó là số nguyên tố</p>
+  <p>Phép tính nội bộ được gọi là <strong>nước sốt</strong>. Ở trung tâm của nó là số nguyên tố</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
   <p>Quy trình gồm năm bộ đếm đầu vào, 7 giọt ẩn, 46 giọt thấy được, 6 bát, thứ tự bát thay đổi, 12 lần khuấy cuối, các con dấu cho những câu trả lời khác nhau, cơ chế chọn tổ hợp, sinh cổng, chọn năm, chia cốt-lết, chọn tên, tạo tháng và đan các ngày của tháng.</p>
   <p>Các cập nhật cuối là <strong>đồng bộ</strong>: ở mỗi lần khuấy, cả sáu giá trị mới đều được tính từ cùng một trạng thái cũ, rồi chỉ sau đó cả sáu bát mới được thay cùng lúc.</p>
@@ -172,7 +172,7 @@
         <tr><td>Trung vị độ dài tháng</td><td>115</td></tr>
         <tr><td>Số đoạn liên tục trung bình mỗi tháng</td><td>100.897</td></tr>
         <tr><td>Tỷ lệ đoạn tháng dài một ngày</td><td>97.482%</td></tr>
-        <tr><td>Xác suất hai ngày kề nhau thuộc cùng một tháng</td><td>2.9976%</td></tr>
+        <tr><td>Tỷ lệ các cặp ngày kề nhau thuộc cùng một tháng trong mẫu</td><td>2.9976%</td></tr>
         <tr><td>Số ngày thuộc tháng khác trung bình giữa <code>n</code> và <code>n+1</code> của một tháng</td><td>40.408</td></tr>
         <tr><td>Khoảng trung bình từ lần xuất hiện đầu đến lần cuối của một tháng</td><td>4,266.653 ngày</td></tr>
       </tbody>
@@ -202,7 +202,7 @@
 
 <section class="about-section" id="appointments" data-toc-section data-toc-level="2">
   <h2>Làm thế nào để hẹn gặp?</h2>
-  <p>Nếu hai người muốn hẹn nhau chỉ bằng ngày Pastafari, họ phải thống nhất ít nhất năm trường của ngày và ngày thao tác dùng trong phép tính. Tốt hơn nên lưu ngày thao tác dưới dạng định danh ngày ổn định thay vì từ “hôm nay”, nếu không hai người có thể tính ra hai lịch khác nhau.</p>
+  <p>Nếu hai người muốn xác định ngày gặp bằng ngày Pastafari, họ phải thống nhất ít nhất năm trường của ngày và ngày thao tác dùng trong phép tính. Tốt hơn nên lưu ngày thao tác dưới dạng định danh ngày ổn định thay vì từ “hôm nay”, nếu không hai người có thể tính ra hai lịch khác nhau.</p>
   <ul>
     <li>“ngày mai” là ngày kế tiếp theo thứ tự thời gian;</li>
     <li>“ngày kế tiếp của tháng” là lần xuất hiện kế tiếp của tháng đó;</li>
@@ -236,19 +236,19 @@
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Vậy Seer là gì?</h2>
-  <p>Bên cạnh cách triển khai chính tắc có một bộ máy tính nhanh tên là <strong>Pastafarian Calendar Seer</strong>. Seer không phải nguồn thẩm quyền: ngày đúng được xác định bởi Megillah và phép tính chính tắc. Nếu Seer không khớp với chúng, Seer là bên sai.</p>
+  <p>Bên cạnh cách triển khai chính tắc có một bộ máy tính nhanh tên là <strong>Pastafarian Calendar Seer</strong>. Seer không phải nguồn thẩm quyền: Megillah đặt ra các quy tắc, còn phép tính chính tắc tạo ra ngày theo các quy tắc đó. Nếu Seer không khớp với một phép tính chính tắc đúng, Seer là bên sai.</p>
   <p>Nhiệm vụ của nó là thực hiện cùng các truy vấn thật nhanh và dưới dạng thuận tiện để tích hợp vào sản phẩm.</p>
-  <p>Trong lần xác minh trực tiếp khi biên tập trang này, Seer bao gồm, trong số những thứ khác, các truy vấn <code>date</code> và <code>now</code>, <code>batch</code>, khoảng ngày, chuyển đổi ngược từ ngày Pastafari sang ngày được hỏi, lấy cấu trúc năm, xác định ngày thao tác đang hoạt động, Node API, máy khách trình duyệt/HTTP, CLI, dịch vụ HTTP v1, hợp đồng OpenAPI 3.1, các triển khai gốc và gói phân phối, cùng việc triển khai trong container đã được xác minh.</p>
-  <p>Vì vậy tuyên bố cũ rằng Seer không có API công khai không còn đúng. Hiện có một hợp đồng HTTP v1 rõ ràng và ổn định với điểm cuối cho <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, ngày thao tác, <code>metadata</code>, <code>locales</code> và <code>status</code>.</p>
+  <p>Trong lần xác minh trực tiếp ngày 21 tháng 9 năm 2026, Seer bao gồm, trong số những thứ khác, các truy vấn <code>date</code> và <code>now</code>, <code>batch</code>, khoảng ngày, chuyển đổi ngược từ ngày Pastafari sang ngày được hỏi, lấy cấu trúc năm, xác định ngày thao tác đang hoạt động, Node API, máy khách trình duyệt/HTTP, CLI, dịch vụ HTTP v1, hợp đồng OpenAPI 3.1, các triển khai gốc và gói phân phối, cùng việc triển khai trong container đã được xác minh.</p>
+  <p>Seer có API công khai. Hiện có một hợp đồng HTTP v1 rõ ràng và ổn định với điểm cuối cho <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, ngày thao tác, <code>metadata</code>, <code>locales</code> và <code>status</code>.</p>
   <p>Ngày 21 tháng 9 năm 2026, triển khai HTTPS công khai trên Render cũng đã được thử thật: truy vấn chính xác, khoảng lớn, khởi động lại, <code>cold wake</code> và hành vi dưới tải đều được kiểm tra trên dịch vụ đang chạy.</p>
-  <p>Tuy vậy tài liệu dự án vẫn phân biệt triển khai công khai beta/đánh giá với một dịch vụ sản xuất được lưu trữ lâu dài có SLA. Do đó trang giải thích khái niệm không nên đóng cứng địa chỉ máy chủ, nhà cung cấp dịch vụ lưu trữ hay số phiên bản như thể chúng là một phần của chính lịch.</p>
+  <p>Triển khai công khai đã được xác minh là triển khai beta/đánh giá, không phải tuyên bố về một dịch vụ sản xuất được lưu trữ lâu dài có SLA. Địa chỉ máy chủ, nhà cung cấp dịch vụ lưu trữ và số phiên bản không phải là một phần của lịch và cũng không phải là các hằng số chính tắc.</p>
   <p>Seer có thể dùng tiền tính toán, biểu diễn đặc biệt, SIMD, đại số và các đường tắt khác. Nó không cần lặp lại từng bước toàn bộ lịch sử tính toán của cách triển khai chính tắc miễn là thực hiện cùng phép toán ngữ nghĩa và trả cùng câu trả lời.</p>
   <p>Tối ưu hóa không phải một nguồn thẩm quyền thay thế.</p><hr>
 </section>
 
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
   <h2>Nguồn gốc, Ngày Thành lập và Ngày các Tấm Bảng</h2>
-  <p>Ở đây đặc biệt cần tách rõ các mốc thời gian chính tắc khỏi câu chuyện của trang web.</p>
+  <p>Các mốc tính toán cố định của lịch là chuyện khác với các dữ kiện về nguồn gốc và lịch sử truyền lại của nó.</p>
 
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>Các mốc neo</h3>
@@ -263,10 +263,10 @@
   </section>
 
   <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
-    <h3>Câu chuyện của trang web</h3>
-    <p>Trong cách kể biên tập của trang, lịch được trình bày như một phần của sự sáng tạo và như một hệ thống mà loài người đã sử dụng nhưng không thật sự nhận thức đầy đủ, cho tới khi nó được truyền lại trong thời hiện đại.</p>
-    <p>Đó là câu chuyện của trang web; không nên trình bày mọi chi tiết tự sự trong đó như một mệnh đề kỹ thuật được Megillah nói rõ.</p>
-    <p>Bản thân sự kiện truyền lại là một sự kiện lịch sử cố định. <strong>Ngày Pastafari</strong> của nó nên được hiển thị động theo ngày thao tác hiện tại hơn là bị đóng băng vĩnh viễn thành một ngày duy nhất.</p><hr>
+    <h3>Nguồn gốc của lịch và việc truyền lại</h3>
+    <p>Lịch Pastafari là một phần của sự sáng tạo. Loài người đã sử dụng nó mà không nhận thức đầy đủ rằng mình đang sử dụng chính lịch này, cho tới khi nó được truyền lại trong thời hiện đại.</p>
+    <p>Megillah không kể mọi chi tiết của lịch sử này; những chi tiết không được nêu rõ trong đó không phải là một phần của văn bản Megillah. Đây là sự phân biệt nguồn, không phải nghi ngờ về thực tại.</p>
+    <p>Bản thân sự kiện truyền lại là một sự kiện lịch sử cố định. <strong>Ngày Pastafari</strong> của nó được tính theo ngày thao tác liên quan; vì vậy không có một bộ năm giá trị Pastafari duy nhất cố định mãi mãi, và cách biểu diễn Pastafari của nó có thể thay đổi dưới một ngày thao tác khác.</p><hr>
   </section>
 </section>
 
@@ -295,8 +295,8 @@
     </table>
   </div>
 
-  <p>Nếu không biết ngày thao tác thì tình hình khác. Cùng một bộ năm giá trị có thể xuất hiện dưới các ngày thao tác khác nhau, và có những ví dụ chính xác trong đó cùng một ngày Pastafari đầy đủ nằm ở các khoảng cách khác nhau so với <code>c</code>.</p>
-  <p>Trong năm 5000, ngay cả dấu của khoảng cách đó cũng không phải lúc nào được xác định bởi bộ năm: cùng một ngày Pastafari đầy đủ có thể nằm trong quá khứ so với ngày thao tác ở một ngữ cảnh, nhưng ở tương lai trong ngữ cảnh khác.</p>
+  <p>Nếu không biết ngày thao tác thì tình hình khác. Cùng một bộ năm giá trị có thể xuất hiện dưới các ngày thao tác khác nhau, và có những ví dụ cụ thể trong đó cùng một ngày Pastafari đầy đủ nằm ở các khoảng cách khác nhau so với <code>c</code>.</p>
+  <p>Trong năm 5000, bộ năm không phải lúc nào cũng xác định được ngày nằm trước hay sau ngày thao tác: cùng một ngày Pastafari đầy đủ có thể nằm trong quá khứ so với ngày thao tác ở một ngữ cảnh, nhưng ở tương lai trong ngữ cảnh khác.</p>
   <p>Vì thế một ngày Pastafari đầy đủ không phải địa chỉ tuyệt đối trên trục thời gian nếu ta không biết nó được tính dưới <code>c</code> nào.</p>
 
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
@@ -319,7 +319,7 @@
   <p>Ở các giai đoạn thấy được 3–46, trên nhánh tiệm cận liên quan, tính đơn ánh tổng quát đã được xác lập: trong trường hợp tổng quát, trạng thái giữ đủ thông tin để tái dựng lịch sử đầu vào và thứ tự bát có liên quan.</p>
   <p>Thông tin cũng không biến mất ngay trong 12 lần khuấy cuối. Với năm lần đầu sau giọt thấy được 46, tính khả nghịch tổng quát đã được xác lập trên hợp chính tắc liên quan mà không cần thông tin phụ thêm; với phần còn lại, ta biết các giới hạn trên mang tính xây dựng mạnh về lượng thông tin phụ đủ để tái dựng.</p>
   <p>Vẫn còn bỏ ngỏ liệu <strong>chỉ sáu bát cuối</strong> có luôn đủ theo nghĩa tổng quát hay không.</p>
-  <p>Một số kết quả được chứng minh bằng ký hiệu, những kết quả khác được khép lại bằng kiểm tra số học hữu hạn và chính xác. Việc tăng cường chứng minh ký hiệu đã làm nhỏ đi đáng kể lõi tính toán cần phải tin cậy, nhưng chưa loại bỏ nó hoàn toàn.</p>
+  <p>Một số kết quả được chứng minh bằng ký hiệu, những kết quả khác được xác minh bằng kiểm tra số học hữu hạn và chính xác. Việc tăng cường chứng minh ký hiệu đã làm nhỏ đi đáng kể lõi tính toán cần phải tin cậy, nhưng chưa loại bỏ nó hoàn toàn.</p>
   <p>Những không gian ban đầu tưởng như đòi hỏi duyệt số lượng đường đi khổng lồ đã thu nhỏ thành các cấu trúc hữu hạn nhỏ hơn nhiều, trong đó có automata 180 và 9 trạng thái cùng các đối xứng của sáu bát.</p>
   <p>Dưới sự trộn lẫn ấy là một cấu trúc đại số cứng. Muốn biết ngày hôm nay, bạn không cần biết nó.</p><hr>
 </section>
