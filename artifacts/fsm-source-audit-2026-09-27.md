@@ -71,7 +71,7 @@ Editorial consequence: the draft's pirate section has strong source roots, but w
 
 The original letter's postscript includes artwork of the FSM creating a mountain, trees and a midget. Bobby Henderson's site later describes this as a Creation scene / first moments of creation.
 
-Editorial consequence: this triad is externally sourced. A much more detailed chronological creation narrative is not established merely by these sources.
+Editorial consequence: this triad is externally sourced. A later Gospel-level recovery also supports substantial parts of the longer creation chronology; exact wording/order beyond the recovered source trail remains a separate verification task.
 
 ### Friday as a religious holiday
 
@@ -91,43 +91,51 @@ The Gospel is consistently described as containing ten original exhortations/tab
 
 Editorial consequence: the saved draft's Mosey / ten → eight framework is source-supported. Exact wording of the eight should be cited or paraphrased carefully rather than reproduced wholesale.
 
-## Claims with partial/community support but not established as primary-source doctrine in this audit
+## Claims whose external source status is mixed or narrower than the saved draft
 
-### “Antipasti” as an adversary
+### Anti-Past / Antipasti
 
-Search located community/forum usage of “antipasti” as a Pastafarian opponent/adversary term, but no checked primary Henderson/Church source establishing the detailed antagonist in the saved draft.
+The Anti-Past is externally attested in *The Loose Canon*: the source calls him the Foul Lord of the Diets, gives him ersatz soy-meat balls, and has the FSM drive him away with one Noodly touch.
 
-Editorial classification for now: `OPEN_OR_UNVERIFIED` or `PROJECT_CANON` if deliberately adopted later.
+The saved Hebrew draft nevertheless adds details beyond the checked passage. In particular, the specific Hell formulation “antipasti instead of pasta” is not what the checked Loose Canon Hell passage says.
 
-Do not describe it as an established Henderson doctrine without a better source.
+Current classification:
+`EXTERNAL_PASTAFARIAN_SOURCE (LOOSE CANON) + PROJECT_ELABORATION`.
 
 ### “Carbohydrate” as a third gender
 
-The checked source set readily supports describing Pastafarianism/FSM as carbohydrate-based, but did not establish a primary-source doctrine of three genders “male, female, carbohydrate”.
+Pastafarian sources readily use carbohydrate imagery, but the checked source set does not establish a general doctrine of exactly three genders “male, female, carbohydrate”.
 
-Editorial classification for now: external-community claim not yet verified, or project canon if deliberately adopted.
+The evidence actually contains multiple framings:
+- Henderson's English commonly uses masculine pronouns;
+- other historical Church material contains mixed male/female imagery;
+- the Loose Canon includes a prayer describing the FSM as neither male nor female and beyond ordinary human gender categories.
 
-The grammatical observation that Hebrew “מפלצת” is feminine while Henderson's English uses masculine pronouns remains independently valid.
+Therefore “the Monster's gender is carbohydrate” is currently a **project-canon candidate**, not an externally established community rule.
 
-### “Ramen” as a prayer ending
+The grammatical observation that Hebrew “מפלצת” is feminine remains independently valid.
 
-Community and Church-site user material clearly use “RAmen/Ramen”, but this audit did not yet locate a clean primary doctrinal statement defining it as a required or customary prayer ending.
+### R'Amen / RAmen
 
-Treat as likely but not yet fully sourced if the prose makes a strong universal claim.
+Official Church pages and the Loose Canon provide strong evidence that `RAmen` / `R'Amen` is established devotional usage.
+
+What remains unverified is the stronger universal proposition that every Pastafarian prayer is normatively or invariably required to end that way.
+
+A public sentence using “נהוג” is much safer than one claiming a mandatory universal rule.
 
 ## Claims not established by the checked external source set
 
 The following elements of the saved Hebrew draft should not be attributed to Henderson or general Pastafarian tradition without additional evidence:
 
-- the detailed sequence “light before sun → land → beer volcano → hangover → accidental second land → later sun/moon/stars”;
-- a claim that the FSM individually assigns one noodle to each person, animal or object to produce gravity;
+- the **full exact chronology** of the saved creation paragraph beyond the Gospel-supported core; light/dark, land + beer volcano, hangover, accidental second land and the cooking-accident flood do have Gospel-level source support, while some ordering/details still need direct verification;
+- a claim that the FSM individually assigns one noodle to each person, animal or object to produce gravity; the general Noodly-Appendage gravity mechanism itself is externally sourced;
 - detailed physiology claims that blood vessels or the digestive tract were designed because the FSM likes long branching/tubular structures;
-- a general Pastafarian rule that every proper meal must contain carbohydrate;
-- the detailed Antipasti theology and hell serving antipasti instead of pasta;
+- a universal Pastafarian rule that every proper meal must contain carbohydrate;
+- the **extra** Anti-Past biography and the specific claim that Hell serves antipasti instead of pasta; the core Anti-Past character is Loose-Canon sourced;
 - the “meal continuation test” with toast;
 - the specific catalogue of everyday “signs” and the method of accumulating only successful prayer matches;
-- the flood as a world-scale cooking accident;
-- the detailed “work, forgetting and repairs” model unless adopted by project canon;
+- post-flood repair mechanics and alleged geological/historical leftovers; the cooking-accident flood core is Gospel-supported;
+- the detailed “work, forgetting and repairs” cosmology beyond the sourced forgotten-land motif;
 - the claim that choosing the more familiar tradition is a sound way to settle contradictory traditions.
 
 Many of these are plainly useful as deliberate project-written deadpan or epistemology jokes. The issue is provenance, not whether they may exist in the article.
