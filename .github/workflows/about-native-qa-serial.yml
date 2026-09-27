@@ -259,8 +259,12 @@ jobs:
 
           surface = os.environ["QA_SURFACE"]
           base = Path("/tmp/native-qa-input/base-prompt.md").read_text(encoding="utf-8").strip()
+          final_marker = "=== FINAL_ONLY_INSTRUCTIONS ==="
+          if final_marker not in base:
+              raise SystemExit("base prompt is missing FINAL_ONLY_INSTRUCTIONS marker")
+          surface_base = base.split(final_marker, 1)[0].strip()
           source = Path(f"/tmp/native-qa-input/{surface}.txt").read_text(encoding="utf-8")
-          message = base + f"\n\nMODE=FINDINGS_ONLY\nSOURCE_PART={surface.upper()}\n\n" + source
+          message = surface_base + f"\n\nMODE=FINDINGS_ONLY\nSOURCE_PART={surface.upper()}\n\n" + source
 
           with urllib.request.urlopen("http://127.0.0.1:8080/v1/models", timeout=30) as resp:
               model_id = json.load(resp)["data"][0]["id"]
