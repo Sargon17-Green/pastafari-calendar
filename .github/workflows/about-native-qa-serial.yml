@@ -10,6 +10,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: about-i18n-native-qa-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   native-review:
     runs-on: ubuntu-latest
