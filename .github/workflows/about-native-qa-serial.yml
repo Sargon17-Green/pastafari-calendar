@@ -275,6 +275,22 @@ jobs:
               "top_p": 0.8,
               "max_tokens": 850,
               "stream": False,
+              "response_format": {
+                  "type": "json_schema",
+                  "json_schema": {
+                      "name": "native_subreview",
+                      "strict": True,
+                      "schema": {
+                          "type": "object",
+                          "properties": {
+                              "result": {"type": "string", "enum": ["CLEAN", "FINDINGS"]},
+                              "report": {"type": "string"}
+                          },
+                          "required": ["result", "report"],
+                          "additionalProperties": False
+                      }
+                  }
+              },
           }
           req = urllib.request.Request(
               "http://127.0.0.1:8080/v1/chat/completions",
@@ -289,27 +305,35 @@ jobs:
               print(exc.read().decode("utf-8", errors="replace"))
               raise
 
-          review = data["choices"][0]["message"]["content"].strip() + "\n"
-          lines = review.splitlines()
-          first = lines[0].strip() if lines else ""
-          if first not in {"SUBREVIEW_RESULT: CLEAN", "SUBREVIEW_RESULT: FINDINGS"}:
-              raise SystemExit(f"malformed subreview verdict for {surface}: {first!r}")
-          if len(review) < 120:
-              raise SystemExit(f"subreview too short for {surface}: {len(review)} chars")
-          if "SOURCE_PART=" in review or "FINDINGS_ONLY" in review:
+          raw = data["choices"][0]["message"]["content"].strip()
+          Path(f"/tmp/native-qa-output/raw-{surface}.json").write_text(raw + "\n", encoding="utf-8")
+          try:
+              parsed = json.loads(raw)
+          except json.JSONDecodeError as exc:
+              raise SystemExit(f"invalid JSON subreview for {surface}: {exc}") from exc
+          result = parsed.get("result")
+          report = str(parsed.get("report", "")).strip()
+          if result not in {"CLEAN", "FINDINGS"}:
+              raise SystemExit(f"invalid subreview result for {surface}: {result!r}")
+          if len(report) < 120:
+              raise SystemExit(f"subreview too short for {surface}: {len(report)} chars")
+          if "SOURCE_PART=" in report or "FINDINGS_ONLY" in report:
               raise SystemExit(f"subreview echoed control/source markers for {surface}")
+          review = f"SUBREVIEW_RESULT: {result}\n\n{report}\n"
           Path(f"/tmp/native-qa-output/finding-{surface}.md").write_text(review, encoding="utf-8")
           Path(f"/tmp/native-qa-output/subreview-{surface}.md").write_text(
               "# SUBREVIEW_SESSION\n"
               f"surface: {surface}\n"
               "reviewer_model: Qwen3-4B Q4_K_M\n"
               "\n===== USER =====\n" + message +
-              "\n===== ASSISTANT =====\n" + review,
+              "\n===== ASSISTANT_RAW_JSON =====\n" + raw +
+              "\n===== NORMALIZED_REVIEW =====\n" + review,
               encoding="utf-8",
           )
           PY
 
       - name: Upload surface findings
+        if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: native-qa-findings-${{ github.run_id }}-${{ matrix.surface }}
@@ -387,6 +411,22 @@ jobs:
               "top_p": 0.8,
               "max_tokens": 1400,
               "stream": False,
+              "response_format": {
+                  "type": "json_schema",
+                  "json_schema": {
+                      "name": "native_final_review",
+                      "strict": True,
+                      "schema": {
+                          "type": "object",
+                          "properties": {
+                              "result": {"type": "string", "enum": ["PASS", "FAIL"]},
+                              "report": {"type": "string"}
+                          },
+                          "required": ["result", "report"],
+                          "additionalProperties": False
+                      }
+                  }
+              },
           }
           req = urllib.request.Request(
               "http://127.0.0.1:8080/v1/chat/completions",
@@ -401,16 +441,22 @@ jobs:
               print(exc.read().decode("utf-8", errors="replace"))
               raise
 
-          review = data["choices"][0]["message"]["content"].strip() + "\n"
-          lines = review.splitlines()
-          first = lines[0].strip() if lines else ""
-          if first not in {"NATIVE_QA_RESULT: PASS", "NATIVE_QA_RESULT: FAIL"}:
-              raise SystemExit(f"malformed final verdict: {first!r}")
-          if len(review) < 500:
-              raise SystemExit(f"final review too short: {len(review)} chars")
-          if first == "NATIVE_QA_RESULT: PASS" and len(lines) < 8:
-              raise SystemExit("PASS review lacks the required substantive report")
+          raw = data["choices"][0]["message"]["content"].strip()
           final = Path("/tmp/native-qa-final")
+          final.joinpath("raw-review.json").write_text(raw + "\n", encoding="utf-8")
+          try:
+              parsed = json.loads(raw)
+          except json.JSONDecodeError as exc:
+              raise SystemExit(f"invalid JSON final review: {exc}") from exc
+          result = parsed.get("result")
+          report = str(parsed.get("report", "")).strip()
+          if result not in {"PASS", "FAIL"}:
+              raise SystemExit(f"invalid final result: {result!r}")
+          if len(report) < 500:
+              raise SystemExit(f"final report too short: {len(report)} chars")
+          if result == "PASS" and len(report.splitlines()) < 7:
+              raise SystemExit("PASS report lacks the required substantive report")
+          review = f"NATIVE_QA_RESULT: {result}\n\n{report}\n"
           final.joinpath("prompt.md").write_text(message, encoding="utf-8")
           final.joinpath("review.md").write_text(review, encoding="utf-8")
           final.joinpath("reviewed-head.txt").write_text(
@@ -429,7 +475,8 @@ jobs:
               "llama_cpp_release: b10982\n"
               "llama_cpp_asset_sha256: b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789\n"
               "\n===== USER =====\n" + message +
-              "\n===== ASSISTANT =====\n" + review
+              "\n===== ASSISTANT_RAW_JSON =====\n" + raw +
+              "\n===== NORMALIZED_REVIEW =====\n" + review
           )
           final.joinpath("session.md").write_text(session, encoding="utf-8")
           PY
