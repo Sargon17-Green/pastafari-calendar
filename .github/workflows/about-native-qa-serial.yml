@@ -194,6 +194,7 @@ jobs:
           final_source = "\n\n".join([
               consistency,
               integration,
+              f"===== {about_path} — FULL TARGET ABOUT ARTICLE =====\n" + text(about_path),
               "===== docs/manifest.webmanifest — FALLBACK + TARGET LOCALE =====\n" +
                   excerpt("docs/manifest.webmanifest", [rf'"{re.escape(code)}"\s*:', re.escape(tag)], radius=5, first_lines=12),
               "===== docs/index.html — RAW METADATA/A11Y/FALLBACK =====\n" +
@@ -201,7 +202,7 @@ jobs:
               "===== docs/about/index.html — RAW METADATA/A11Y/FALLBACK =====\n" +
                   excerpt("docs/about/index.html", [r"aria-", r"placeholder", r"<title", r"<meta", r"<noscript", r"<html"]),
           ])
-          if len(final_source) > 60000:
+          if len(final_source) > 110000:
               raise SystemExit(f"final source too large: {len(final_source)} chars")
           (out / "final-source.txt").write_text(final_source, encoding="utf-8")
           print(f"final-source: {len(final_source)} chars")
