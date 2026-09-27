@@ -134,6 +134,14 @@ A dedicated `CANON_ALIGNMENT_START_CHECKLIST_2026-09-27.md` now defines the exac
 - mandatory preservation rules;
 - per-surface evidence requirements.
 
+### Safe QA closure advanced
+- real-world science premises in the FSM candidate now have a dedicated PASS-for-staging audit;
+- structure/cross-reference QA is complete; appendix heading hierarchy was corrected only in staging;
+- post-draft exact-text recovery has an explicit frontier and reopen condition;
+- the 72-locale semantic evidence is snapshotted with exact blobs/head and 71/71 semantic alignment status;
+- the `/about/` claim register has 29 sections / 84 unique claims with no missing classification or future action;
+- specification/conformance versus legal prohibition now has a dedicated audit anchored by the existing Seer legal-vs-liturgical NOTICE precedent.
+
 ## What remains safe to do before the corpus is ready
 
 The genuinely useful remaining work is now narrower:
