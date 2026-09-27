@@ -1,7 +1,7 @@
 <!-- A magyar változat közvetlenül a héber szemantikai forrásból készült, közvetítő nyelv nélkül. -->
 <!-- A szakaszazonosítók állandó, nyilvános deep-link szerződést alkotnak; nem a lefordított címekből származnak. -->
 <div class="about-section about-lead" id="about-calendar">
-  <p>A webhely elbeszélésében a pastafari naptár az a naptár, amelyben maga az idő létrejött. A működése ettől függetlenül pontosan meghatározott.</p>
+  <p>A pastafari naptár az a naptár, amelyben maga az idő létrejött. Működése pontosan meghatározott.</p>
   <p>Ez a naptár nem rendel minden naphoz egyetlen állandó pastafari „címkét”. Egy dátum kiszámításához két nap kell: a számítás kiindulópontja, a <strong>művelet napja</strong>, valamint a <strong>kérdezett nap</strong>, amelynek a dátumát keressük.</p>
   <p>Ha a művelet napját <code>c</code>-vel, a kérdezett napot <code>t</code>-vel jelöljük, akkor a dátum</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
@@ -108,7 +108,7 @@
 </section>
 <section class="about-section" id="calculation" data-toc-section data-toc-level="2">
   <h2>Hogyan számol a naptár?</h2>
-  <p>A belső számítást itt <strong>szósznak</strong> nevezzük. Középpontjában a prímszám</p>
+  <p>A belső számítás neve <strong>szósz</strong>. Középpontjában a prímszám</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
   <p>áll.</p>
   <p>A folyamat része öt bemeneti számláló, 7 rejtett csepp, 46 látható csepp, 6 tál, változó tálsorrendek, 12 végső keverés, különböző válaszokat előállító pecsétek, kombinatorikus választások, kapugenerálás, évválasztás, szeletfelosztás, névválasztás, hónapépítés és a hónapnapok összeszövése.</p>
@@ -138,7 +138,7 @@
       <tr><td>Átlagos szelet-hossz</td><td>587.963 nap</td></tr><tr><td>Szelet-hossz mediánja</td><td>560</td></tr><tr><td>Átlagos hónapszám évente</td><td>41.102</td></tr>
       <tr><td>Hónapszám mediánja</td><td>43</td></tr><tr><td>47 hónapos évek</td><td>15.63%</td></tr><tr><td>Legalább 45 hónapos évek</td><td>36.81%</td></tr>
       <tr><td>Átlagos strukturális hónaphossz</td><td>104.014 nap</td></tr><tr><td>Hónaphossz mediánja</td><td>115</td></tr><tr><td>Átlagos folytonos szakasz havonta</td><td>100.897</td></tr>
-      <tr><td>Egynapos hónapszakaszok aránya</td><td>97.482%</td></tr><tr><td>Annak valószínűsége, hogy két szomszédos nap ugyanabban a hónapban van</td><td>2.9976%</td></tr>
+      <tr><td>Egynapos hónapszakaszok aránya</td><td>97.482%</td></tr><tr><td>Azon szomszédos nappárok aránya, amelyek a mintában ugyanabba a hónapba estek</td><td>2.9976%</td></tr>
       <tr><td>Átlagos idegen napok <code>n</code> és <code>n+1</code> között ugyanabban a hónapban</td><td>40.408</td></tr><tr><td>Átlagos kiterjedés a hónap első és utolsó megjelenése között</td><td>4,266.653 nap</td></tr>
     </tbody></table></div>
   <p>Gyakorlatilag egy körülbelül száz napos hónap csaknem egy teljes pastafari éven át szétszóródhat.</p>
@@ -160,7 +160,7 @@
 </section>
 <section class="about-section" id="appointments" data-toc-section data-toc-level="2">
   <h2>Hogyan egyeztessünk időpontot?</h2>
-  <p>Ha két ember kizárólag pastafari dátummal egyeztet találkozót, legalább az öt mezőben és a számításhoz használt műveleti napban meg kell állapodniuk. Jobb a művelet napját stabil napazonosságként tárolni, mint „ma” szóként, különben két különböző naptárat számolhatnak ki.</p>
+  <p>Ha két ember pastafari dátummal szeretné meghatározni a találkozó napját, legalább az öt mezőben és a számításhoz használt műveleti napban meg kell állapodniuk. Jobb a művelet napját stabil napazonosságként tárolni, mint „ma” szóként, különben két különböző naptárat számolhatnak ki.</p>
   <ul><li>„holnap” a következő kronológiai nap;</li><li>„a hónap következő napja” ugyanannak a hónapnak a következő megjelenése;</li><li>„a hónap vége” annak utolsó megjelenése;</li><li>„az egész hónap” jelentheti a hónap napjainak halmazát vagy az első és utolsó megjelenés közti teljes kronológiai terjedelmet;</li><li>„a következő év” a kiválasztott műveleti nap alatt felépített naptár következő éve.</li></ul>
   <p>Különösen fontos időpontnál az abszolút kronológiai nap vagy időpillanat is eltárolható. A naptár ettől nem sérül.</p><hr>
 </section>
@@ -184,18 +184,18 @@
 </section>
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>És mi az a Seer?</h2>
-  <p>A kanonikus implementáció mellett létezik egy gyors motor, a <strong>Pastafarian Calendar Seer</strong>. A Seer nem tekintélyforrás: a helyes dátumot a Megillah és a kanonikus számítás határozza meg. Ha eltérés van, a Seer téved.</p>
+  <p>A kanonikus implementáció mellett létezik egy gyors motor, a <strong>Pastafarian Calendar Seer</strong>. A Seer nem tekintélyforrás: a Megillah rögzíti a szabályokat, a kanonikus számítás pedig ezek alapján állítja elő a dátumot. Ha a Seer eltér egy helyes kanonikus számítástól, a Seer téved.</p>
   <p>Feladata ugyanazokat a lekérdezéseket gyorsan és termékbe könnyen integrálható formában végrehajtani.</p>
-  <p>Az oldal szerkesztése során végzett élő ellenőrzéskor a Seer többek között dátum- és „most” lekérdezést, batch működést, naptartományokat, pastafari dátumból célnapra történő reverse átalakítást, évstruktúra-lekérést, aktív műveleti nap feloldását, Node API-t, böngésző/HTTP klienst, CLI-t, HTTP v1 szolgáltatást, OpenAPI 3.1 szerződést, native implementációkat és terjesztési csomagokat, valamint ellenőrzött container deploymentet tartalmazott.</p>
-  <p>Ezért az a régi állítás, hogy a Seernek nincs nyilvános API-ja, már nem igaz. Létezik kifejezett és stabil HTTP v1 szerződés <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, műveleti nap, <code>metadata</code>, <code>locales</code> és <code>status</code> végpontokkal.</p>
+  <p>A 2026. szeptember 21-én végzett élő ellenőrzéskor a Seer többek között dátum- és „most” lekérdezést, batch működést, naptartományokat, pastafari dátumból célnapra történő reverse átalakítást, évstruktúra-lekérést, aktív műveleti nap feloldását, Node API-t, böngésző/HTTP klienst, CLI-t, HTTP v1 szolgáltatást, OpenAPI 3.1 szerződést, native implementációkat és terjesztési csomagokat, valamint ellenőrzött container deploymentet tartalmazott.</p>
+  <p>A Seernek van nyilvános API-ja. Létezik kifejezett és stabil HTTP v1 szerződés <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, műveleti nap, <code>metadata</code>, <code>locales</code> és <code>status</code> végpontokkal.</p>
   <p>2026. szeptember 21-én a Renderen futó nyilvános HTTPS-telepítést ténylegesen is tesztelték: pontos lekérdezések, nagy tartomány, újraindítás, <code>cold wake</code> és terhelés alatti viselkedés futott az élő szolgáltatáson.</p>
-  <p>A projekt dokumentációja ugyanakkor továbbra is különbséget tesz a nyilvános béta/értékelési telepítés és az SLA-val vállalt tartós hosztolt üzemi szolgáltatás között. Ezért egy elvi magyarázó oldalnak nem szabad szervercímet, tárhelyszolgáltatót vagy verziószámot a naptár részévé merevítenie.</p>
+  <p>Az ellenőrzött nyilvános telepítés béta/értékelési telepítés, nem SLA-val vállalt tartós hosztolt üzemi szolgáltatás bejelentése. A szervercím, a tárhelyszolgáltató és a verziószám nem része a naptárnak, és nem kanonikus állandó.</p>
   <p>A Seer használhat előszámítást, speciális reprezentációkat, SIMD-t, algebrát és más rövidítéseket. Nem kell lépésről lépésre megismételnie a kanonikus implementáció teljes számítási történetét, ha ugyanazt a szemantikai műveletet hajtja végre és ugyanazt a választ adja.</p>
   <p>Az optimalizálás nem alternatív tekintély.</p><hr>
 </section>
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
   <h2>Eredet, Alapítás napja és a Táblák napja</h2>
-  <p>Itt világosan el kell választani a kanonikus időhorgonyokat a webhely történetétől.</p>
+  <p>A naptár rögzített számítási horgonyai különböznek eredetének tényeitől és átadásának történetétől.</p>
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>Horgonyok</h3>
     <p>A rendszernek van egy rögzített referencianapja, az <strong>Alapítás napja</strong>. A proleptikus Gergely-naptárban ez <strong>Kr. e. 41,222. december 22.</strong></p>
@@ -208,10 +208,10 @@
     <p>Ezek rögzített horgonyok az időtengelyen. A számukra megjelenített pastafari dátum azonban továbbra is attól a műveleti naptól függ, amelyből kérdezzük őket.</p>
   </section>
   <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
-    <h3>A webhely története</h3>
-    <p>A webhely szerkesztői elbeszélésében a naptár a teremtés részeként és olyan rendszerként jelenik meg, amelyet az emberiség kellő tudatosság nélkül használt, amíg a modern korban újra át nem adták.</p>
-    <p>Ez a webhely története; nem szabad minden narratív részletét a Megillah kifejezett technikai állításaként előadni.</p>
-    <p>Maga az újraátadás eseménye rögzített történelmi esemény. A <strong>pastafari dátumát</strong> célszerű a webhelyen az aktuális műveleti nap alapján dinamikusan megjeleníteni, nem pedig örökre egyetlen dátumhoz kötni.</p><hr>
+    <h3>A naptár eredete és átadása</h3>
+    <p>A pastafari naptár a teremtés része. Az emberiség úgy használta, hogy nem volt kellően tudatában annak, hogy ezt a naptárt használja, egészen a modern újraátadásig.</p>
+    <p>A Megillah ennek a történetnek nem minden részletét írja le; ami nincs benne kifejezetten kimondva, az nem része a Megillah szövegének. Ez forrásmegjelölési különbség, nem a valóság megkérdőjelezése.</p>
+    <p>Maga az újraátadás eseménye rögzített történelmi esemény. A <strong>pastafari dátumát</strong> az adott műveleti nap szerint kell kiszámítani; ezért nincs egyetlen, örökre rögzített pastafari ötöse, és pastafari megjelenítése más műveleti nap alatt eltérhet.</p><hr>
   </section>
 </section>
 <section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
@@ -227,8 +227,8 @@
       <tr><td>Csak a hónap neve</td><td>123</td></tr><tr><td>Csak a hónapbeli nap</td><td>47</td></tr><tr><td>Szeletnév + szeletbeli nap</td><td>1</td></tr>
       <tr><td>Hónapnév + hónapbeli nap</td><td>1</td></tr><tr><td>Bármely három évmezőn kívüli mező</td><td>1</td></tr><tr><td>Mind a négy évmezőn kívüli mező</td><td>1</td></tr>
     </tbody></table></div>
-  <p>Ismeretlen műveleti nap mellett más a helyzet. Ugyanaz az ötös több különböző műveleti nap alatt is előfordulhat, és vannak pontos példák, ahol ugyanaz a teljes dátum <code>c</code>-től különböző távolságokra jelenik meg.</p>
-  <p>Az 5000. évben még a távolság előjele sem mindig következik az ötösből: ugyanaz a teljes dátum egyik helyzetben a műveleti nap múltjában, másikban a jövőjében lehet.</p>
+  <p>Ismeretlen műveleti nap mellett más a helyzet. Ugyanaz az ötös több különböző műveleti nap alatt is előfordulhat, és vannak konkrét példák, ahol ugyanaz a teljes dátum <code>c</code>-től különböző távolságokra jelenik meg.</p>
+  <p>Az 5000. évben még a műveleti naphoz viszonyított irány sem mindig következik az ötösből: ugyanaz a teljes dátum egyik helyzetben a műveleti nap múltjában, másikban a jövőjében lehet.</p>
   <p>Ezért a teljes pastafari dátum sem abszolút cím az időtengelyen, ha nem tudjuk, milyen <code>c</code> alatt számolták ki.</p>
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
     <h3>Szerkezet távoli időkben</h3>
@@ -249,7 +249,7 @@
   <p>A látható 3–46. szakaszokra, a releváns aszimptotikus ágon, generikus esetben injektivitás áll fenn: generikus helyzetben az állapot elegendő információt tart meg a bemenetek és tálsorrendek releváns történetének visszaállításához.</p>
   <p>A 12 végső keverésben sem tűnik el az információ azonnal. A látható 46. csepp utáni első öt keverésnél generikus esetben invertibilitás áll fenn a releváns kanonikus unión további mellékinformáció nélkül; a többire erős konstruktív felső korlátok ismertek a rekonstrukcióhoz elegendő mellékinformáció mennyiségére.</p>
   <p>Továbbra is nyitott, hogy <strong>a végső hat tál önmagában</strong> generikusan mindig elegendő-e.</p>
-  <p>Egyes eredményeket szimbolikusan bizonyítottak, másokat véges és pontos aritmetikai ellenőrzések zártak le. A szimbolikus megerősítés jelentősen csökkentette azt a számítási magot, amelyben meg kell bízni, de nem szüntette meg teljesen.</p>
+  <p>Egyes eredményeket szimbolikusan bizonyítottak, másokat véges, pontos aritmetikai vizsgálatokkal ellenőriztek. A szimbolikus megerősítés jelentősen csökkentette azt a számítási magot, amelyben meg kell bízni, de nem szüntette meg teljesen.</p>
   <p>Olyan terek, amelyek kezdetben óriási számú út bejárását látszottak igényelni, sokkal kisebb véges szerkezetekre zsugorodtak, köztük 180 és 9 állapotú automatákra és a hat tál szimmetriáira.</p>
   <p>A keverés alatt tehát merev algebrai szerkezet rejtőzik. A mai dátum kiszámításához ezt nem kell ismerni.</p><hr>
 </section>
