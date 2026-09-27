@@ -22,11 +22,14 @@ This file does not resolve calendar-canon questions. It separates safe editorial
 
 **Evidence state:** Henderson's foundational English uses masculine pronouns. The Loose Canon contains material about male/female/gender-nonspecific humans and also a prayer explicitly saying the FSM is neither male nor female but beyond human gender categories. The checked source set does not establish a general community doctrine of exactly three genders with “carbohydrate” as the FSM's gender.
 
-**Action:** Do not publish the community-attribution sentence as an external fact unless a direct source is found. At canon alignment, either:
-- adopt “carbohydrate” explicitly as project canon; or
-- rewrite the section around source-backed pronoun/gender ambiguity.
+**Historical-status correction:** later recovery establishes that “male / female / carbohydrate” was already explicitly approved as **new project theology**. The defect is therefore the external-community attribution, not lack of project approval.
 
-No automatic prose change is made now because this is a canon/editorial choice.
+**Action:** Do not publish the community-attribution sentence as an external fact unless a direct source is found. At corpus alignment:
+- treat the three-category scheme as a prior project decision to reconcile;
+- if the corpus preserves it, state it in the project's factual voice rather than falsely attributing it to external community consensus;
+- if the corpus supersedes it, follow the corpus.
+
+No automatic public-prose change is made now because the future corpus is authoritative.
 
 ### F02 — Anti-Past core is source-backed; saved article overstates some details
 **Severity:** Medium  
@@ -52,7 +55,9 @@ No automatic prose change is made now because this is a canon/editorial choice.
 
 **Evidence state:** Strong carbohydrate/pasta themes are source-backed. The Loose Canon calls a healthy diet of pasta an important observance and mocks low-carb diets. It also explicitly says someone unable/unwilling to eat pasta can simply be a good person and be fine.
 
-**Action:** The project may adopt a stronger “proper meal needs carbohydrate” rule, but it should be recognized as project canon, not inferred from external scripture.
+**Historical-status correction:** the user had already approved the **central importance of carbohydrates** as project theology. What is not yet separately recovered as an explicit prior decision is the exact universal formulation “every proper meal must contain carbohydrate”.
+
+**Action:** At corpus alignment, distinguish the previously approved broad carbohydrate importance from the stronger exact meal rule. Do not infer the latter merely from external scripture.
 
 ### F05 — R'Amen/RAmen is strongly attested usage, but the universal custom claim is slightly stronger
 **Severity:** Low–Medium  
