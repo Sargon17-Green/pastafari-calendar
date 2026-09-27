@@ -57,7 +57,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          OUT="artifacts/about-i18n-native-sessions/$QA_LOCALE_CODE"
+          OUT="artifacts/about-i18n-native-sessions/$QA_LOCALE_CODE/staged-$QA_SEQUENCE"
           mkdir -p "$OUT"
           git rev-parse HEAD > "$OUT/reviewed-head.txt"
           cp "$QA_PROMPT_PATH" "$OUT/prompt.md"
@@ -68,7 +68,7 @@ jobs:
 
           code = os.environ["QA_LOCALE_CODE"]
           tag = os.environ["QA_LOCALE_TAG"]
-          out = Path("artifacts/about-i18n-native-sessions") / code
+          out = Path("artifacts/about-i18n-native-sessions") / code / f"staged-{os.environ['QA_SEQUENCE']}"
 
           def text(path):
               return Path(path).read_text(encoding="utf-8")
@@ -250,14 +250,14 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          OUT="artifacts/about-i18n-native-sessions/$QA_LOCALE_CODE"
+          OUT="artifacts/about-i18n-native-sessions/$QA_LOCALE_CODE/staged-$QA_SEQUENCE"
           test -s "$OUT/prompt.md"
           test -s "$OUT/review.md"
           test -s "$OUT/session.md"
           test -s "$OUT/reviewed-head.txt"
           head -n 1 "$OUT/review.md" | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)$'
           HEAD_SHA="$(cat "$OUT/reviewed-head.txt")"
-          ATTEMPT="$OUT/attempts/${QA_SEQUENCE}-${HEAD_SHA}"
+          ATTEMPT="artifacts/about-i18n-native-sessions/$QA_LOCALE_CODE/attempts/${QA_SEQUENCE}-${HEAD_SHA}"
           mkdir -p "$ATTEMPT"
           cp "$OUT/prompt.md" "$ATTEMPT/prompt.md"
           cp "$OUT/review.md" "$ATTEMPT/review.md"
