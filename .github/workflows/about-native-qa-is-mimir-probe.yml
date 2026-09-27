@@ -70,32 +70,28 @@ jobs:
           done
           curl -fsS http://127.0.0.1:8080/health >/dev/null
 
-          python - <<'PY'
-          from pathlib import Path
-          prompt = """Þú ert íslenskur málfarsrýnir. Svaraðu eingöngu á eðlilegri nútímaíslensku.
-
-Metið eftirfarandi sex textabúta sjálfstætt. Fyrir hvern þeirra skaltu skrifa:
-- númerið;
-- annaðhvort „Í LAGI“ eða „VANDAMÁL“;
-- eina stutta, skýra skýringu á íslensku;
-- ef um VANDAMÁL er að ræða, eðlilegri íslenska leiðréttingu.
-
-Ekki gagnrýna sérnafnið Pastafari. Ekki þýða það.
-
-1. Leitaðu í hvaða dagatali sem vefurinn styður.
-2. Leitaðu í hvaða studdu dagatali sem er.
-3. Um Pastafari-dagatalið
-4. Kalender Pastafari
-5. A local, deterministic Pastafari calendar.
-6. Pastafari-dagatalið er hluti sköpunarinnar.
-
-Að lokum skaltu skrifa eina línu:
-HEILDARMAT: <númer þeirra textabúta sem eru vandamál, aðgreind með kommum>
-
-Textabútarnir 1, 3 og 6 eru ætlaðir sem eðlileg íslenska. Textabútarnir 2, 4 og 5 eru viljandi prófunardæmi sem eiga að vera greind sem vandamál. Ekki endurtaka þessa lykilupplýsingu; notaðu hana aðeins til að sýna hvort þú getir fylgt málfarsverkefninu rétt.
-"""
-          Path("/tmp/mimir-probe/prompt.txt").write_text(prompt, encoding="utf-8")
-          PY
+          printf '%s\\n' \\
+            'Þú ert íslenskur málfarsrýnir. Svaraðu eingöngu á eðlilegri nútímaíslensku.' \\
+            '' \\
+            'Metið eftirfarandi sex textabúta sjálfstætt. Fyrir hvern þeirra skaltu skrifa:' \\
+            '- númerið;' \\
+            '- annaðhvort „Í LAGI“ eða „VANDAMÁL“;' \\
+            '- eina stutta, skýra skýringu á íslensku;' \\
+            '- ef um VANDAMÁL er að ræða, eðlilegri íslenska leiðréttingu.' \\
+            '' \\
+            'Ekki gagnrýna sérnafnið Pastafari. Ekki þýða það.' \\
+            '' \\
+            '1. Leitaðu í hvaða dagatali sem vefurinn styður.' \\
+            '2. Leitaðu í hvaða studdu dagatali sem er.' \\
+            '3. Um Pastafari-dagatalið' \\
+            '4. Kalender Pastafari' \\
+            '5. A local, deterministic Pastafari calendar.' \\
+            '6. Pastafari-dagatalið er hluti sköpunarinnar.' \\
+            '' \\
+            'Að lokum skaltu skrifa eina línu:' \\
+            'HEILDARMAT: <númer þeirra textabúta sem eru vandamál, aðgreind með kommum>' \\
+            '' \\
+            'Textabútarnir 1, 3 og 6 eru ætlaðir sem eðlileg íslenska. Textabútarnir 2, 4 og 5 eru viljandi prófunardæmi sem eiga að vera greind sem vandamál. Ekki endurtaka þessa lykilupplýsingu; notaðu hana aðeins til að sýna hvort þú getir fylgt málfarsverkefninu rétt.' > /tmp/mimir-probe/prompt.txt
           python - <<'PY'
           from pathlib import Path
           import json, urllib.request
