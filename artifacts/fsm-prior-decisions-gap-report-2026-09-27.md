@@ -132,8 +132,10 @@ This is now explicit and should prevent the candidate from being mislabeled “l
 
 Do not integrate the missing post-draft material into public prose yet.
 
-Instead:
+The pre-canon preparation steps are now closed to the current evidence limit:
 1. preserve it in dedicated reconstruction/decision files — done;
 2. QA its logic and factual premises — done for the main reconstructed cluster;
-3. prepare candidate insertion points without deciding final canon — still safe;
-4. when corpus is pinned, decide which prior additions survive and integrate them in one controlled pass.
+3. prepare candidate insertion points without deciding final canon — done in `fsm-postdraft-insertion-plan-2026-09-27.md`;
+4. exact-text recovery frontier — documented; do not repeat the same search unless a new historical source appears.
+
+The next substantive step is therefore blocked on the pinned canonical corpus. When that snapshot exists, decide which prior additions survive and integrate only those in one controlled pass.
