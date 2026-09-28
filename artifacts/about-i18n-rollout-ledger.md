@@ -43,7 +43,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | hu | hu-HU | ltr | partial | semantic QA |
 | hy | hy-AM | ltr | partial | semantic QA |
 | id | id-ID | ltr | partial | semantic QA |
-| is | is-IS | ltr | partial | linguistic QA |
+| is | is-IS | ltr | partial | semantic QA |
 | it | it-IT | ltr | partial | semantic QA |
 | ja | ja-JP | ltr | partial | semantic QA |
 | jv | jv-ID | ltr | partial | semantic QA |
@@ -106,7 +106,7 @@ Status progression for target locales: `not started → draft → semantic QA �
 
 - `fy-NL`: locale-wide language finding: prominent UI copy is Dutch rather than Frisian (`Werkdei wijzigen`, `uitgangspunt van de berekening`, `Deze site gebruiken`).
 
-- `is-IS`: historical locale-wide language finding: the locale was largely Danish with Icelandic-looking substitutions (`Skift arbejdsdaguren`, `beregningens udgangspunkt`, `Sådan ...`). A broad Icelandic repair replaced those strings. Strict isolated same-language whole-site QA sequence 31 completed with `NATIVE_QA_RESULT: PASS` in workflow run `36417191232`; rendered/visual and final integration gates remain separate.
+- `is-IS`: historical locale-wide language finding: the locale was largely Danish with Icelandic-looking substitutions (`Skift arbejdsdaguren`, `beregningens udgangspunkt`, `Sådan ...`). A broad Icelandic repair replaced those strings. Sequence 31 / run `36417191232` was structurally PASS, but the workflow still injected ordinary English reviewer instructions; strict same-language QA is therefore reopened and must be rerun under the machine-control-only workflow before promotion.
 
 - `sl-SI`: locale-wide language finding: prominent UI copy is Croatian/Bosnian/Serbian rather than idiomatic Slovenian (`Promijeni dan delovanja`, `polazišna je točka`, `u kotletu`).
 
