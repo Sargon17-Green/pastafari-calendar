@@ -40,7 +40,7 @@ Allowed strict-session states: `pending` → `reviewed PASS` or `reviewed FAIL` 
 | hu | hu-HU | ltr | semantic QA | pending | — |
 | hy | hy-AM | ltr | semantic QA | pending | — |
 | id | id-ID | ltr | semantic QA | pending | — |
-| is | is-IS | ltr | semantic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/is/review.md` — sequence 31, workflow run `36417191232` |
+| is | is-IS | ltr | semantic QA | pending | sequence 31 / run `36417191232` was structurally PASS, but rerun required because workflow-injected reviewer prose was not fully in Icelandic |
 | it | it-IT | ltr | semantic QA | pending | — |
 | ja | ja-JP | ltr | semantic QA | pending | — |
 | jv | jv-ID | ltr | semantic QA | pending | — |
