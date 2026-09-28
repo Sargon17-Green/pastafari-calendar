@@ -46,7 +46,7 @@ jobs:
 
           git clone --depth 1 --branch b10982 https://github.com/ggml-org/llama.cpp.git /tmp/is-strict/llama-src
           python -m pip install -r /tmp/is-strict/llama-src/requirements/requirements-convert_lora_to_gguf.txt
-          python -m pip install 'transformers==5.17.0' 'huggingface_hub==0.36.2'
+          python -m pip install 'transformers==5.17.0'
 
       - name: Resolve pinned Icelandic SAGA adapter
         shell: bash
