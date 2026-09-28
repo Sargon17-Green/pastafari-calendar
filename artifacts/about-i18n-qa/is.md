@@ -86,3 +86,20 @@ Einnig hefur ekki verið lokið render-/sjónrænu QA á desktop og 390 px mobil
 ## Staða
 
 Textinn og merkingarsamningurinn eru tilbúin fyrir næsta hlið. Staðan skal því vera **semantic QA**, ekki `linguistic QA`, þar til sérstök íslensk LLM-lota hefur farið yfir allt vefsvæðið. `rendered` og `PASS` eru einnig óheimil þar til sjónrænu og samþættingarprófunum er lokið.
+
+
+## Sjálfstæð íslensk LLM-lota — lokahlið, röð 31
+
+Lokahliðin var keyrð sem fjögur einangruð íslensk surface-review og sérstök íslensk lokaúrlausn með vélrænni sannprófun á heimildum og false-positive síun:
+
+- workflow run: `36417191232`
+- sequence: `31`
+- reviewed HEAD: `daeee78722e5283126c70e274f54e5872d61d184`
+- niðurstaða: `NATIVE_QA_RESULT: PASS`
+- full session evidence: `artifacts/about-i18n-native-sessions/is/`
+
+Öll fjögur review-jobs, synthesis og aggregate luku með `success`. Enginn staðfestur lagfæringarskyldur íslenskur finding stóð eftir eftir deterministic adjudication. Static HTML bootstrap-texti með `data-i18n` og fullkomið localized manifest fallback voru réttilega hafnað sem false positives.
+
+## Uppfærð staða
+
+Stranga same-language whole-site linguistic QA krafan fyrir `is-IS` er nú uppfyllt og staðan má vera **linguistic QA**. Þetta er ekki enn loka-`PASS` fyrir rolloutið: render-/sjónrænt QA, PWA/offline, tungumálaskipti og önnur lokasamþættingarhlið eru áfram aðskilin.
