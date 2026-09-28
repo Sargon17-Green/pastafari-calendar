@@ -36,6 +36,7 @@ jobs:
           git clone --depth 1 --branch b10982 https://github.com/ggml-org/llama.cpp.git /tmp/is-saga/llama-src
           python -m pip install --upgrade pip
           python -m pip install -r /tmp/is-saga/llama-src/requirements/requirements-convert_lora_to_gguf.txt
+          python -m pip install 'transformers==5.17.0'
           python - <<'PY'
           from huggingface_hub import HfApi, snapshot_download
           from pathlib import Path
