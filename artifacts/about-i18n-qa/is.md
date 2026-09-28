@@ -103,3 +103,16 @@ Lokahliðin var keyrð sem fjögur einangruð íslensk surface-review og sérst�
 ## Uppfærð staða
 
 Stranga same-language whole-site linguistic QA krafan fyrir `is-IS` er nú uppfyllt og staðan má vera **linguistic QA**. Þetta er ekki enn loka-`PASS` fyrir rolloutið: render-/sjónrænt QA, PWA/offline, tungumálaskipti og önnur lokasamþættingarhlið eru áfram aðskilin.
+
+
+## Leiðrétting á ströngu lokahliði
+
+Röð 31 og workflow-run `36417191232` náðu tæknilega `NATIVE_QA_RESULT: PASS`, en við síðari úttekt á sjálfri rýnilotunni kom í ljós að keyrslulagið bætti venjulegum enskum fyrirmælatexta við annars íslenskt prompt, meðal annars í surface-reglum og lokaúrlausninni.
+
+Þar sem lokakrafan er bókstafleg — að sjálf LLM-rýnilotan og venjuleg rýnisamskipti fari fram á markmálinu — telst þessi PASS ekki fullnægjandi sönnun fyrir stranga same-language hliðinu. Gögn röðar 31 eru varðveitt óbreytt sem söguleg og tæknileg evidence; þau eru ekki felld niður eða endurskrifuð.
+
+Keyrslulagið hefur síðan verið hert þannig að viðbótarstýring þess er sett fram sem vélrænir control-tokenar en ekki venjulegur enskur fyrirmælatexti. Ný sjálfstæð íslensk whole-site keyrsla þarf að ná gildum PASS áður en `reviewed PASS` og `linguistic QA` mega verða endurheimt.
+
+## Núverandi staða
+
+Stranga same-language hliðið fyrir `is-IS` er því aftur **pending**. Textinn og fyrri lagfæringar standa áfram; aðeins lokasönnunin er endurtekin undir hertum rýnisamningi.
