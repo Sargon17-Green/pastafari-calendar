@@ -1,0 +1,161 @@
+name: Icelandic SAGA reviewer qualification
+
+on:
+  push:
+    branches:
+      - feature/about-i18n-72-locales
+    paths:
+      - .github/workflows/about-native-qa-is-saga-smoke.yml
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      HF_HUB_DISABLE_XET: "0"
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - name: Install pinned llama.cpp runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/is-saga/llama
+          curl -fL --retry 3             https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz             -o /tmp/is-saga/llama.tar.gz
+          echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/is-saga/llama.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/is-saga/llama.tar.gz -C /tmp/is-saga/llama
+
+      - name: Fetch and convert Icelandic SAGA LoRA
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --depth 1 --branch b10982 https://github.com/ggml-org/llama.cpp.git /tmp/is-saga/llama-src
+          python -m pip install --upgrade pip
+          python -m pip install -r /tmp/is-saga/llama-src/requirements/requirements-convert_lora_to_gguf.txt
+          python - <<'PY'
+          from huggingface_hub import HfApi, snapshot_download
+          from pathlib import Path
+          import json
+
+          repo = "Hodfa71/gemma4-e4b-is-saga-kl-sft-delta-dpo"
+          info = HfApi().model_info(repo)
+          revision = info.sha
+          target = "/tmp/is-saga/adapter"
+          snapshot_download(
+              repo_id=repo,
+              revision=revision,
+              local_dir=target,
+              allow_patterns=["adapter_config.json", "adapter_model.safetensors", "*.json", "*.model"],
+          )
+          Path("/tmp/is-saga/adapter-revision.txt").write_text(revision + "\n", encoding="utf-8")
+          print("adapter_revision=" + revision)
+          PY
+          python /tmp/is-saga/llama-src/convert_lora_to_gguf.py             --base-model-id google/gemma-4-E4B-it             --outtype f16             --outfile /tmp/is-saga/icelandic-saga-lora.gguf             /tmp/is-saga/adapter
+          test -s /tmp/is-saga/icelandic-saga-lora.gguf
+          sha256sum /tmp/is-saga/icelandic-saga-lora.gguf > /tmp/is-saga/lora-sha256.txt
+
+      - name: Qualify reviewer on hidden controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          SERVER="$(find /tmp/is-saga/llama -type f -name llama-server | head -n 1)"
+          test -x "$SERVER"
+          "$SERVER"             -hf ggml-org/gemma-4-E4B-it-GGUF:Q4_0             --lora /tmp/is-saga/icelandic-saga-lora.gguf             -c 4096 -t 4 --host 127.0.0.1 --port 8080             > /tmp/is-saga/server.log 2>&1 &
+          PID=$!
+          trap 'kill "$PID" 2>/dev/null || true' EXIT
+          for _ in $(seq 1 240); do
+            curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8080/health >/dev/null
+
+          python - <<'PY'
+          from pathlib import Path
+          import json, urllib.request
+
+          cases = [
+              ("g1", "Velkomin á vefinn.", "EÐLILEGT"),
+              ("g2", "Veldu dagsetningu og reyndu aftur.", "EÐLILEGT"),
+              ("g3", "Þessar dagsetningar eru réttar og birtast hér.", "EÐLILEGT"),
+              ("b1", "Þessar dagsetningar er rétt og birtist hér.", "LAGFÆRA"),
+              ("b2", "Veldu dagsetning og reyna aftur.", "LAGFÆRA"),
+              ("b3", "This text is in English.", "LAGFÆRA"),
+          ]
+
+          base = (
+              "Þú ert strangur íslenskur málfarsrýnir. "
+              "Metið aðeins textabrotið sem fylgir. "
+              "Athugaðu eðlilega nútímaíslensku, málfræði, beygingu, setningagerð og hvort textinn sé á íslensku. "
+              "Ekki bæta við efni sem ekki er í textabrotinu. "
+              "Fyrsta línan verður að vera nákvæmlega annaðhvort „DÓMUR: EÐLILEGT“ eða „DÓMUR: LAGFÆRA“. "
+              "Á annarri línu skaltu gefa mjög stutta ástæðu á íslensku. "
+              "Ef dómurinn er LAGFÆRA skaltu á þriðju línu gefa eina eðlilega leiðréttingu."
+          )
+
+          results = []
+          for case_id, fragment, expected in cases:
+              payload = {
+                  "messages": [{"role": "user", "content": base + "\n\nTEXTABROT: „" + fragment + "“"}],
+                  "temperature": 0.0,
+                  "max_tokens": 140,
+                  "stream": False,
+              }
+              req = urllib.request.Request(
+                  "http://127.0.0.1:8080/v1/chat/completions",
+                  data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+                  headers={"Content-Type": "application/json"},
+                  method="POST",
+              )
+              with urllib.request.urlopen(req, timeout=900) as resp:
+                  data = json.load(resp)
+              answer = data["choices"][0]["message"]["content"].strip()
+              first = answer.splitlines()[0].strip() if answer else ""
+              actual = "EÐLILEGT" if first == "DÓMUR: EÐLILEGT" else "LAGFÆRA" if first == "DÓMUR: LAGFÆRA" else "ÓGILT"
+              passed = actual == expected
+              results.append({
+                  "id": case_id,
+                  "fragment": fragment,
+                  "expected": expected,
+                  "actual": actual,
+                  "passed": passed,
+                  "answer": answer,
+              })
+              print(f"{case_id}: expected={expected} actual={actual} passed={passed}")
+              print(answer)
+              print()
+
+          Path("/tmp/is-saga/qualification.json").write_text(
+              json.dumps(results, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          Path("/tmp/is-saga/qualification.md").write_text(
+              "\n\n".join(
+                  f"## {r['id']}\n\nTexti: „{r['fragment']}“\n\n"
+                  f"Vænt: {r['expected']}\n\nRaun: {r['actual']}\n\n{r['answer']}"
+                  for r in results
+              ) + "\n",
+              encoding="utf-8",
+          )
+
+          failed = [r["id"] for r in results if not r["passed"]]
+          if failed:
+              raise SystemExit("Icelandic reviewer qualification failed: " + ", ".join(failed))
+          PY
+
+      - name: Upload qualification evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: icelandic-saga-reviewer-qualification
+          path: |
+            /tmp/is-saga/adapter-revision.txt
+            /tmp/is-saga/lora-sha256.txt
+            /tmp/is-saga/qualification.json
+            /tmp/is-saga/qualification.md
+            /tmp/is-saga/server.log
+          if-no-files-found: warn
+          retention-days: 30
