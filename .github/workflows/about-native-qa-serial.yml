@@ -163,16 +163,23 @@ jobs:
           about = f"===== {about_path} — FULL TARGET ABOUT ARTICLE =====\n" + text(about_path)
 
           integration = "\n\n".join([
-              "===== docs/i18n/runtime.js — FULL LOCALIZATION RUNTIME =====\n" + text("docs/i18n/runtime.js"),
+              "===== docs/i18n/runtime.js — USER-VISIBLE LOCALIZATION/FALLBACK TOUCHPOINTS =====\n" +
+                  excerpt("docs/i18n/runtime.js",
+                          [r"data-i18n", r"aria-", r"placeholder", r"title", r"textContent",
+                           r"documentElement\.(lang|dir)", r"manifest", r"loadLocale\s*\(",
+                           r"translate\s*\(", r"fallback", r"visibleError"], radius=1),
               "===== docs/i18n/registry.js — TARGET REGISTRATION =====\n" +
                   excerpt("docs/i18n/registry.js", [rf'defineLocale\("{re.escape(code)}"', re.escape(tag), r"DEFAULT_LOCALE"], radius=2),
-              "===== docs/i18n/registry.js — LOAD/FALLBACK FUNCTIONS =====\n" +
+              "===== docs/i18n/registry.js — LOCALE LOAD/FALLBACK FUNCTIONS =====\n" +
                   "\n\n".join(filter(None, [
                       function_block("docs/i18n/registry.js", "loadLocaleSource"),
                       function_block("docs/i18n/registry.js", "materializeLocaleResources"),
                       function_block("docs/i18n/registry.js", "loadLocale"),
                   ])),
-              "===== docs/about/about.js — FULL ARTICLE LOCALIZATION FLOW =====\n" + text("docs/about/about.js"),
+              "===== docs/about/about.js — USER-VISIBLE ARTICLE LOCALIZATION/FALLBACK TOUCHPOINTS =====\n" +
+                  excerpt("docs/about/about.js",
+                          [r"loadLocale\s*\(", r"ARTICLE_FALLBACK", r"fallbackNotice", r"loadError",
+                           r"applyDocumentLocale", r"textContent", r"aria-", r"\blang\b", r"\bdir\b"], radius=2),
               "===== docs/app.js — HARD-CODED DISPLAY + LOCALE-LOAD TOUCHPOINTS =====\n" +
                   excerpt("docs/app.js",
                           [r"textContent\s*=\s*['\"]", r"innerHTML\s*=\s*['\"]",
@@ -288,7 +295,35 @@ jobs:
               raise SystemExit("base prompt is missing FINAL_ONLY_INSTRUCTIONS marker")
           surface_base = base.split(final_marker, 1)[0].strip()
           source = Path(f"/tmp/native-qa-input/{surface}.txt").read_text(encoding="utf-8")
-          message = surface_base + f"\n\nMODE=FINDINGS_ONLY\nSOURCE_PART={surface.upper()}\n\n" + source
+          surface_rules = {
+              "ui": (
+                  "Review only user-visible or accessibility-facing target-language text, metadata, "
+                  "manifest localization, and actual wrong-language leakage. Do not review application logic. "
+                  "Every finding must quote an exact current_text substring from the supplied source and use a docs/ path."
+              ),
+              "about": (
+                  "Review only the naturalness, grammar, style, terminology and readability of the target-language /about/ article. "
+                  "Do not challenge canonical facts or propose semantic rewrites. "
+                  "Every finding must quote an exact current_text substring and use docs/about/content/ as its location."
+              ),
+              "integration": (
+                  "Review ONLY language-facing localization behavior: visible fallback text, ARIA/title/placeholder text, locale switching, "
+                  "document language/direction and whether a wrong-language string can actually remain visible. "
+                  "DO NOT review JavaScript style, storage helpers, parameter naming, performance, general error handling, API design, comments, "
+                  "or code correctness that has no direct language-facing effect. If no concrete language-facing defect is shown, return CLEAN. "
+                  "For a text finding, current_text must be the exact visible literal; for a proven fallback-path defect with no literal, current_text may be empty."
+              ),
+              "consistency": (
+                  "Compare terminology and naming across the target UI and /about/ only. Do not review calendar mathematics or general code quality. "
+                  "Every finding must quote an exact current_text substring from the supplied source and use a docs/ path."
+              ),
+          }
+          message = (
+              surface_base
+              + f"\n\nMODE=FINDINGS_ONLY\nSOURCE_PART={surface.upper()}\n"
+              + "SURFACE_RULES:\n" + surface_rules[surface] + "\n\n"
+              + source
+          )
 
           with urllib.request.urlopen("http://127.0.0.1:8080/v1/models", timeout=30) as resp:
               model_id = json.load(resp)["data"][0]["id"]
@@ -486,11 +521,20 @@ jobs:
 
           base = Path("/tmp/native-qa-input/base-prompt.md").read_text(encoding="utf-8").strip()
           findings = []
+          invalid_surfaces = []
           for surface in ["ui", "about", "integration", "consistency"]:
               path = Path(f"/tmp/native-qa-findings/finding-{surface}.md")
               if not path.is_file():
                   raise SystemExit(f"missing surface finding: {surface}")
-              findings.append(f"===== {surface.upper()} SUBREVIEW =====\n" + path.read_text(encoding="utf-8"))
+              report = path.read_text(encoding="utf-8")
+              if report.startswith("SUBREVIEW_RESULT: INVALID"):
+                  invalid_surfaces.append(surface)
+              findings.append(f"===== {surface.upper()} SUBREVIEW =====\n" + report)
+          if invalid_surfaces:
+              raise SystemExit(
+                  "cannot issue a final PASS/FAIL because surface evidence is INVALID: "
+                  + ", ".join(invalid_surfaces)
+              )
           sources = {
               name: Path(f"/tmp/native-qa-input/{name}.txt").read_text(encoding="utf-8")
               for name in ["ui", "about", "integration", "consistency"]
