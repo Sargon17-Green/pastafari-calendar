@@ -73,6 +73,9 @@ jobs:
           rm -rf /tmp/native-qa-input
           mkdir -p /tmp/native-qa-input
           cp "$QA_PROMPT_PATH" /tmp/native-qa-input/base-prompt.md
+          cp docs/index.html /tmp/native-qa-input/proof-index.html
+          cp docs/about/index.html /tmp/native-qa-input/proof-about-index.html
+          cp docs/manifest.webmanifest /tmp/native-qa-input/proof-manifest.webmanifest
           git rev-parse HEAD > /tmp/native-qa-input/reviewed-head.txt
 
           python - <<'PY'
@@ -605,38 +608,138 @@ jobs:
           from pathlib import Path
           import json, os, urllib.request, urllib.error
 
+          final = Path("/tmp/native-qa-final")
           base = Path("/tmp/native-qa-input/base-prompt.md").read_text(encoding="utf-8").strip()
-          findings = []
+          code = os.environ["QA_LOCALE_CODE"]
+
+          surface_reports = {}
           invalid_surfaces = []
+          raw_candidates = []
+
           for surface in ["ui", "about", "integration", "consistency"]:
-              path = Path(f"/tmp/native-qa-findings/finding-{surface}.md")
-              if not path.is_file():
+              finding_path = Path(f"/tmp/native-qa-findings/finding-{surface}.md")
+              raw_path = Path(f"/tmp/native-qa-findings/raw-{surface}.json")
+              if not finding_path.is_file():
                   raise SystemExit(f"missing surface finding: {surface}")
-              report = path.read_text(encoding="utf-8")
+              if not raw_path.is_file():
+                  raise SystemExit(f"missing accepted surface raw JSON: {surface}")
+
+              report = finding_path.read_text(encoding="utf-8")
+              surface_reports[surface] = report
               if report.startswith("SUBREVIEW_RESULT: INVALID"):
                   invalid_surfaces.append(surface)
-              findings.append(f"===== {surface.upper()} SUBREVIEW =====\n" + report)
+                  continue
+
+              try:
+                  parsed_surface = json.loads(raw_path.read_text(encoding="utf-8"))
+              except json.JSONDecodeError as exc:
+                  raise SystemExit(f"accepted surface raw JSON became unreadable for {surface}: {exc}") from exc
+
+              surface_result = parsed_surface.get("result")
+              surface_findings = parsed_surface.get("findings")
+              if surface_result not in {"CLEAN", "FINDINGS"} or not isinstance(surface_findings, list):
+                  raise SystemExit(f"accepted surface evidence is structurally inconsistent: {surface}")
+              if surface_result == "CLEAN" and surface_findings:
+                  raise SystemExit(f"accepted CLEAN surface unexpectedly contains findings: {surface}")
+              if surface_result == "FINDINGS" and not surface_findings:
+                  raise SystemExit(f"accepted FINDINGS surface contains no findings: {surface}")
+
+              for item in surface_findings:
+                  candidate = dict(item)
+                  candidate["_surface"] = surface
+                  raw_candidates.append(candidate)
+
           if invalid_surfaces:
               raise SystemExit(
                   "cannot issue a final PASS/FAIL because surface evidence is INVALID: "
                   + ", ".join(invalid_surfaces)
               )
+
           sources = {
               name: Path(f"/tmp/native-qa-input/{name}.txt").read_text(encoding="utf-8")
               for name in ["ui", "about", "integration", "consistency"]
           }
           all_primary_sources = "\n\n".join(sources.values())
 
-          quoted_texts = []
-          for report in findings:
-              for line in report.splitlines():
-                  if line.startswith("- current_text: "):
-                      value = line[len("- current_text: "):].strip()
-                      if value and value != "(none)" and value not in quoted_texts:
-                          quoted_texts.append(value)
+          html_proofs = {
+              "docs/index.html": Path("/tmp/native-qa-input/proof-index.html").read_text(encoding="utf-8"),
+              "docs/about/index.html": Path("/tmp/native-qa-input/proof-about-index.html").read_text(encoding="utf-8"),
+          }
+          manifest = json.loads(
+              Path("/tmp/native-qa-input/proof-manifest.webmanifest").read_text(encoding="utf-8")
+          )
+          manifest_fallbacks = {
+              str(manifest.get("name", "")),
+              str(manifest.get("short_name", "")),
+              str(manifest.get("description", "")),
+          } - {""}
+          manifest_target_complete = all(
+              isinstance(manifest.get(key), dict)
+              and isinstance(manifest[key].get(code), dict)
+              and bool(str(manifest[key][code].get("value", "")).strip())
+              for key in ("name_localized", "short_name_localized", "description_localized")
+          )
+
+          def deterministic_rejection(item):
+              location = str(item.get("location", "")).strip()
+              current_text = str(item.get("current_text", "")).strip()
+              correction = str(item.get("correction", "")).strip()
+
+              if current_text and correction == current_text:
+                  return "proposed correction is identical to current_text"
+
+              if location in html_proofs and current_text:
+                  matching_lines = [
+                      line for line in html_proofs[location].splitlines()
+                      if current_text in line
+                  ]
+                  if matching_lines and all(
+                      "data-i18n" in line or "data-i18n-attr" in line
+                      for line in matching_lines
+                  ):
+                      return "static HTML bootstrap/fallback text is bound to runtime localization"
+
+              if (
+                  location == "docs/manifest.webmanifest"
+                  and current_text in manifest_fallbacks
+                  and manifest_target_complete
+              ):
+                  return "base manifest fallback is exempt because complete target-locale localized entries exist"
+
+              return None
+
+          candidates = []
+          rejected_candidates = []
+          seen_pairs = set()
+          for item in raw_candidates:
+              location = str(item.get("location", "")).strip()
+              current_text = str(item.get("current_text", "")).strip()
+              pair = (location, current_text)
+              if pair in seen_pairs:
+                  rejected_candidates.append({
+                      "reason": "duplicate location/current_text candidate",
+                      "candidate": item,
+                  })
+                  continue
+              seen_pairs.add(pair)
+
+              reason = deterministic_rejection(item)
+              if reason:
+                  rejected_candidates.append({"reason": reason, "candidate": item})
+                  continue
+
+              candidates.append(item)
+
+          candidate_pairs = {
+              (str(item.get("location", "")).strip(), str(item.get("current_text", "")).strip())
+              for item in candidates
+          }
 
           contexts = []
-          for value in quoted_texts:
+          for item in candidates:
+              value = str(item.get("current_text", "")).strip()
+              if not value:
+                  continue
               matched = False
               for name, source in sources.items():
                   pos = source.find(value)
@@ -646,7 +749,7 @@ jobs:
                   start = max(0, pos - 500)
                   end = min(len(source), pos + len(value) + 500)
                   contexts.append(
-                      f"===== {name.upper()} CONTEXT FOR QUOTED FINDING =====\n"
+                      f"===== {name.upper()} CONTEXT FOR SURVIVING CANDIDATE =====\n"
                       + source[start:end]
                   )
               if not matched:
@@ -656,116 +759,231 @@ jobs:
           if len(compact_context) > 30000:
               raise SystemExit(f"adjudication context too large: {len(compact_context)} chars")
 
+          findings_text = "\n\n".join(
+              f"===== {surface.upper()} SUBREVIEW =====\n{surface_reports[surface]}"
+              for surface in ["ui", "about", "integration", "consistency"]
+          )
+
+          surviving_text = json.dumps(
+              [{k: v for k, v in item.items() if k != "_surface"} for item in candidates],
+              ensure_ascii=False,
+              indent=2,
+          )
+          rejected_text = json.dumps(rejected_candidates, ensure_ascii=False, indent=2)
+
+          forced_note = (
+              "There are no surviving candidate findings after deterministic validation. "
+              "You MUST return result=PASS and findings=[]. "
+              if not candidates
+              else
+              "You may return PASS after rejecting all surviving candidates, or FAIL only with findings drawn from the surviving candidate list. "
+          )
+
           message = (
               base
               + "\n\nMODE=FINAL\nSOURCE_PART=SUBREVIEW_FINDINGS_WITH_VERIFIED_LOCAL_CONTEXT\n\n"
               + "The four surface reviews below already inspected the primary sources. "
-                "Every nonempty current_text was mechanically checked against those sources. "
-                "Adjudicate the candidate findings critically; reject false positives.\n\n"
-              + "===== CANDIDATE_SUBREVIEW_FINDINGS =====\n"
-              + "\n\n".join(findings)
+                "A deterministic gate has removed duplicate, no-op, runtime-localized bootstrap, "
+                "and localized-manifest fallback pseudo-findings where those exemptions were mechanically proven. "
+                "Do not restore rejected candidates. Do not invent new findings. "
+                "Every FAIL finding must use exactly a (location, current_text) pair from SURVIVING_CANDIDATES.\n"
+              + forced_note
+              + "\n===== ORIGINAL_SUBREVIEWS =====\n"
+              + findings_text
+              + "\n\n===== DETERMINISTICALLY_REJECTED_CANDIDATES =====\n"
+              + rejected_text
+              + "\n\n===== SURVIVING_CANDIDATES =====\n"
+              + surviving_text
               + "\n\n===== VERIFIED_LOCAL_CONTEXTS =====\n"
-              + (compact_context or "(No candidate finding quoted source text.)")
+              + (compact_context or "(No surviving candidate requires local context.)")
           )
+          final.joinpath("prompt.md").write_text(message, encoding="utf-8")
 
           with urllib.request.urlopen("http://127.0.0.1:8080/v1/models", timeout=30) as resp:
               model_id = json.load(resp)["data"][0]["id"]
+
+          result_enum = ["PASS"] if not candidates else ["PASS", "FAIL"]
+          max_findings = min(10, len(candidates))
+          schema = {
+              "type": "object",
+              "properties": {
+                  "result": {"type": "string", "enum": result_enum},
+                  "summary": {"type": "string", "minLength": 80, "maxLength": 650},
+                  "findings": {
+                      "type": "array",
+                      "maxItems": max_findings,
+                      "items": {
+                          "type": "object",
+                          "properties": {
+                              "title": {"type": "string", "minLength": 3, "maxLength": 120},
+                              "severity": {"type": "string", "enum": ["critical", "high", "medium", "low"]},
+                              "location": {"type": "string", "minLength": 1, "maxLength": 200},
+                              "current_text": {"type": "string", "maxLength": 220},
+                              "issue": {"type": "string", "minLength": 20, "maxLength": 360},
+                              "correction": {"type": "string", "minLength": 5, "maxLength": 360},
+                          },
+                          "required": ["title", "severity", "location", "current_text", "issue", "correction"],
+                          "additionalProperties": False,
+                      },
+                  },
+                  "sections": {
+                      "type": "array",
+                      "minItems": 4,
+                      "maxItems": 4,
+                      "items": {
+                          "type": "object",
+                          "properties": {
+                              "title": {"type": "string", "minLength": 3, "maxLength": 120},
+                              "body": {"type": "string", "minLength": 40, "maxLength": 520},
+                          },
+                          "required": ["title", "body"],
+                          "additionalProperties": False,
+                      },
+                  },
+              },
+              "required": ["result", "summary", "findings", "sections"],
+              "additionalProperties": False,
+          }
+
           payload = {
               "model": model_id,
               "messages": [{"role": "user", "content": message}],
               "temperature": 0.10,
               "top_p": 0.8,
-              "max_tokens": 1800,
+              "max_tokens": 2500,
               "stream": False,
               "response_format": {
                   "type": "json_schema",
                   "json_schema": {
                       "name": "native_final_review",
                       "strict": True,
-                      "schema": {
-                          "type": "object",
-                          "properties": {
-                              "result": {"type": "string", "enum": ["PASS", "FAIL"]},
-                              "summary": {"type": "string", "minLength": 80, "maxLength": 650},
-                              "findings": {
-                                  "type": "array",
-                                  "maxItems": 10,
-                                  "items": {
-                                      "type": "object",
-                                      "properties": {
-                                          "title": {"type": "string", "minLength": 3, "maxLength": 120},
-                                          "severity": {"type": "string", "enum": ["critical", "high", "medium", "low"]},
-                                          "location": {"type": "string", "minLength": 1, "maxLength": 200},
-                                          "current_text": {"type": "string", "maxLength": 220},
-                                          "issue": {"type": "string", "minLength": 20, "maxLength": 360},
-                                          "correction": {"type": "string", "minLength": 5, "maxLength": 360}
-                                      },
-                                      "required": ["title", "severity", "location", "current_text", "issue", "correction"],
-                                      "additionalProperties": False
-                                  }
-                              },
-                              "sections": {
-                                  "type": "array",
-                                  "minItems": 4,
-                                  "maxItems": 4,
-                                  "items": {
-                                      "type": "object",
-                                      "properties": {
-                                          "title": {"type": "string", "minLength": 3, "maxLength": 120},
-                                          "body": {"type": "string", "minLength": 40, "maxLength": 520}
-                                      },
-                                      "required": ["title", "body"],
-                                      "additionalProperties": False
-                                  }
-                              }
-                          },
-                          "required": ["result", "summary", "findings", "sections"],
-                          "additionalProperties": False
-                      }
-                  }
+                      "schema": schema,
+                  },
               },
           }
-          req = urllib.request.Request(
-              "http://127.0.0.1:8080/v1/chat/completions",
-              data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
-              headers={"Content-Type": "application/json"},
-              method="POST",
-          )
-          try:
-              with urllib.request.urlopen(req, timeout=3600) as resp:
-                  data = json.load(resp)
-          except urllib.error.HTTPError as exc:
-              print(exc.read().decode("utf-8", errors="replace"))
-              raise
 
-          raw = data["choices"][0]["message"]["content"].strip()
-          final = Path("/tmp/native-qa-final")
-          final.joinpath("raw-review.json").write_text(raw + "\n", encoding="utf-8")
-          try:
-              parsed = json.loads(raw)
-          except json.JSONDecodeError as exc:
-              raise SystemExit(f"invalid JSON final review: {exc}") from exc
-          result = parsed.get("result")
-          summary = str(parsed.get("summary", "")).strip()
-          findings_final = parsed.get("findings")
-          sections = parsed.get("sections")
-          if result not in {"PASS", "FAIL"}:
-              raise SystemExit(f"invalid final result: {result!r}")
-          if not isinstance(findings_final, list) or not isinstance(sections, list):
-              raise SystemExit("invalid final structured fields")
-          if result == "PASS" and findings_final:
-              raise SystemExit("PASS final review unexpectedly contains findings")
-          if result == "FAIL" and not findings_final:
-              raise SystemExit("FAIL final review contains no findings")
-          for item in findings_final:
-              current_text = str(item.get("current_text", ""))
-              location = str(item.get("location", ""))
-              if current_text and current_text not in all_primary_sources:
-                  raise SystemExit(f"final finding current_text is not present in primary sources: {current_text!r}")
-              if not location.startswith("docs/"):
-                  raise SystemExit(f"final finding location is not a docs/ source path: {location!r}")
-          if len(sections) != 4:
-              raise SystemExit(f"final review must contain exactly four sections, got {len(sections)}")
+          def call_adjudicator(user_message):
+              payload["messages"] = [{"role": "user", "content": user_message}]
+              req = urllib.request.Request(
+                  "http://127.0.0.1:8080/v1/chat/completions",
+                  data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+                  headers={"Content-Type": "application/json"},
+                  method="POST",
+              )
+              try:
+                  with urllib.request.urlopen(req, timeout=3600) as resp:
+                      data = json.load(resp)
+              except urllib.error.HTTPError as exc:
+                  print(exc.read().decode("utf-8", errors="replace"))
+                  raise
+              return data["choices"][0]["message"]["content"].strip()
+
+          def repeated_phrase(text):
+              words = text.split()
+              if len(words) < 24:
+                  return False
+              for size in (3, 4, 5):
+                  seen = {}
+                  for i in range(len(words) - size + 1):
+                      phrase = tuple(words[i:i+size])
+                      seen[phrase] = seen.get(phrase, 0) + 1
+                      if seen[phrase] >= 4:
+                          return True
+              return False
+
+          def validate_final(raw):
+              try:
+                  parsed = json.loads(raw)
+              except json.JSONDecodeError as exc:
+                  return None, f"invalid JSON final review: {exc}"
+
+              if not isinstance(parsed, dict):
+                  return None, "final review top-level value is not an object"
+
+              result = parsed.get("result")
+              summary = str(parsed.get("summary", "")).strip()
+              findings_final = parsed.get("findings")
+              sections = parsed.get("sections")
+
+              if result not in result_enum:
+                  return None, f"invalid final result: {result!r}"
+              if not isinstance(findings_final, list) or not isinstance(sections, list):
+                  return None, "invalid final structured fields"
+              if result == "PASS" and findings_final:
+                  return None, "PASS final review unexpectedly contains findings"
+              if result == "FAIL" and not findings_final:
+                  return None, "FAIL final review contains no findings"
+              if len(sections) != 4:
+                  return None, f"final review must contain exactly four sections, got {len(sections)}"
+              if repeated_phrase(summary) or any(repeated_phrase(str(sec.get("body", ""))) for sec in sections):
+                  return None, "final review contains pathological phrase repetition"
+
+              final_pairs = []
+              for item in findings_final:
+                  if not isinstance(item, dict):
+                      return None, "final findings contains a non-object item"
+                  current_text = str(item.get("current_text", "")).strip()
+                  location = str(item.get("location", "")).strip()
+                  pair = (location, current_text)
+                  if pair not in candidate_pairs:
+                      return None, f"final finding was not present in surviving candidates: {pair!r}"
+                  if current_text and current_text not in all_primary_sources:
+                      return None, f"final finding current_text is not present in primary sources: {current_text!r}"
+                  if not location.startswith("docs/"):
+                      return None, f"final finding location is not a docs/ source path: {location!r}"
+                  final_pairs.append(pair)
+              if len(final_pairs) != len(set(final_pairs)):
+                  return None, "final review duplicated the same location/current_text finding"
+              return parsed, None
+
+          max_attempts = 3
+          accepted = None
+          attempt_sections = []
+          last_error = "adjudicator did not run"
+          last_raw = ""
+
+          for attempt in range(1, max_attempts + 1):
+              if attempt == 1:
+                  attempt_message = message
+              else:
+                  attempt_message = (
+                      message
+                      + "\n\n=== FINAL_REPAIR_RETRY ===\n"
+                      + "The previous final JSON was rejected mechanically. Return a fresh COMPLETE JSON object only. "
+                        "Do not add any finding that is not in SURVIVING_CANDIDATES. "
+                        "Do not repeat findings or phrases. Keep the four required sections concise.\n"
+                      + f"VALIDATION_REASON: {last_error}\n"
+                  )
+
+              raw = call_adjudicator(attempt_message)
+              last_raw = raw
+              final.joinpath(f"raw-review-attempt-{attempt}.json").write_text(raw + "\n", encoding="utf-8")
+              parsed, parse_error = validate_final(raw)
+              validation_note = "VALID" if parse_error is None else f"INVALID: {parse_error}"
+              final.joinpath(f"validation-review-attempt-{attempt}.txt").write_text(
+                  validation_note + "\n", encoding="utf-8"
+              )
+              attempt_sections.append(
+                  f"\n===== ATTEMPT {attempt} RAW JSON =====\n{raw}"
+                  f"\n===== ATTEMPT {attempt} VALIDATION =====\n{validation_note}\n"
+              )
+              if parse_error is None:
+                  accepted = parsed
+                  final.joinpath("raw-review.json").write_text(raw + "\n", encoding="utf-8")
+                  break
+              last_error = parse_error
+
+          if accepted is None:
+              final.joinpath("raw-review.json").write_text(last_raw + "\n", encoding="utf-8")
+              final.joinpath("synthesis-status.txt").write_text(
+                  f"INVALID after {max_attempts} attempts: {last_error}\n", encoding="utf-8"
+              )
+              raise SystemExit(f"final adjudication remained invalid after {max_attempts} attempts: {last_error}")
+
+          result = accepted["result"]
+          summary = str(accepted["summary"]).strip()
+          findings_final = accepted["findings"]
+          sections = accepted["sections"]
 
           report_lines = [summary]
           for idx, item in enumerate(findings_final, 1):
@@ -783,8 +1001,8 @@ jobs:
           report = "\n".join(report_lines).strip()
           if len(report) < 500:
               raise SystemExit(f"final report too short: {len(report)} chars")
+
           review = f"NATIVE_QA_RESULT: {result}\n\n{report}\n"
-          final.joinpath("prompt.md").write_text(message, encoding="utf-8")
           final.joinpath("review.md").write_text(review, encoding="utf-8")
           final.joinpath("reviewed-head.txt").write_text(
               Path("/tmp/native-qa-input/reviewed-head.txt").read_text(encoding="utf-8"),
@@ -797,13 +1015,13 @@ jobs:
               f"sequence: {os.environ['QA_SEQUENCE']}\n"
               f"reviewed_head: {final.joinpath('reviewed-head.txt').read_text(encoding='utf-8').strip()}\n"
               "reviewer_model: Qwen3 8B Q4_K_M\n"
-              "review_method: four isolated Qwen3-8B target-language surface reviews plus a fresh separate Qwen3-8B target-language adjudication over candidate findings and mechanically verified local source context\n"
+              "review_method: four isolated Qwen3-8B target-language surface reviews, deterministic candidate validation, then a fresh separate Qwen3-8B target-language adjudication restricted to surviving source-grounded candidates\n"
               "model_sha256: d98cdcbd03e17ce47681435b5150e34c1417f50b5c0019dd560e4882c5745785\n"
               "llama_cpp_release: b10982\n"
               "llama_cpp_asset_sha256: b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789\n"
-              "\n===== USER =====\n" + message +
-              "\n===== ASSISTANT_RAW_JSON =====\n" + raw +
-              "\n===== NORMALIZED_REVIEW =====\n" + review
+              "\n===== USER =====\n" + message
+              + "".join(attempt_sections)
+              + "\n===== NORMALIZED_REVIEW =====\n" + review
           )
           final.joinpath("session.md").write_text(session, encoding="utf-8")
           PY
@@ -871,8 +1089,9 @@ jobs:
           set -euo pipefail
           REVIEWED_HEAD="$(tr -d '\r\n' < /tmp/native-qa-input/reviewed-head.txt)"
           ATTEMPT="artifacts/about-i18n-native-sessions/$QA_LOCALE_CODE/attempts/$QA_SEQUENCE-$REVIEWED_HEAD"
-          mkdir -p "$ATTEMPT/subreviews"
+          mkdir -p "$ATTEMPT/subreviews" "$ATTEMPT/final-attempt"
           cp /tmp/native-qa-input/base-prompt.md "$ATTEMPT/base-prompt.md"
+          cp /tmp/native-qa-final/* "$ATTEMPT/final-attempt/" 2>/dev/null || true
           cp /tmp/native-qa-input/*.txt "$ATTEMPT/" || true
           cp /tmp/native-qa-findings/finding-*.md "$ATTEMPT/subreviews/" || true
           cp /tmp/native-qa-findings/subreview-*.md "$ATTEMPT/subreviews/" || true
