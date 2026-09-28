@@ -441,13 +441,13 @@ jobs:
           path: /tmp/native-qa-findings
           merge-multiple: true
 
-      - name: Restore pinned Gemma 3 12B adjudicator cache
+      - name: Restore pinned Gemma 3 4B adjudicator cache
         uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
         with:
-          path: /tmp/native-qa/gemma-3-12b-it-q4_k_m.gguf
-          key: native-qa-gemma3-12b-q4km-7bb69bff3f48a7b642355d64a90e481182a7794707b3133890646b1efa778ff5
+          path: /tmp/native-qa/gemma-3-4b-it-q4_k_m.gguf
+          key: native-qa-gemma3-4b-q4km-882e8d2db44dc554fb0ea5077cb7e4bc49e7342a1f0da57901c0802ea21a0863
 
-      - name: Download pinned llama.cpp and Gemma 3 12B adjudicator
+      - name: Download pinned llama.cpp and Gemma 3 4B adjudicator
         shell: bash
         run: |
           set -euo pipefail
@@ -455,10 +455,10 @@ jobs:
           curl -fL --retry 3 https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz -o /tmp/native-qa/llama.tar.gz
           echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/native-qa/llama.tar.gz" | sha256sum -c -
           tar -xzf /tmp/native-qa/llama.tar.gz -C /tmp/native-qa/llama
-          if [ ! -s /tmp/native-qa/gemma-3-12b-it-q4_k_m.gguf ]; then
-            curl -fL --retry 3 'https://huggingface.co/ggml-org/gemma-3-12b-it-GGUF/resolve/main/gemma-3-12b-it-Q4_K_M.gguf?download=true' -o /tmp/native-qa/gemma-3-12b-it-q4_k_m.gguf
+          if [ ! -s /tmp/native-qa/gemma-3-4b-it-q4_k_m.gguf ]; then
+            curl -fL --retry 3 'https://huggingface.co/ggml-org/gemma-3-4b-it-GGUF/resolve/main/gemma-3-4b-it-Q4_K_M.gguf?download=true' -o /tmp/native-qa/gemma-3-4b-it-q4_k_m.gguf
           fi
-          echo "7bb69bff3f48a7b642355d64a90e481182a7794707b3133890646b1efa778ff5  /tmp/native-qa/gemma-3-12b-it-q4_k_m.gguf" | sha256sum -c -
+          echo "882e8d2db44dc554fb0ea5077cb7e4bc49e7342a1f0da57901c0802ea21a0863  /tmp/native-qa/gemma-3-4b-it-q4_k_m.gguf" | sha256sum -c -
 
       - name: Synthesize final target-language verdict
         shell: bash
@@ -470,7 +470,7 @@ jobs:
           set -euo pipefail
           SERVER="$(find /tmp/native-qa/llama -type f -name llama-server | head -n 1)"
           test -x "$SERVER"
-          "$SERVER" -m /tmp/native-qa/gemma-3-12b-it-q4_k_m.gguf -c 49152 -t 4 --host 127.0.0.1 --port 8080 > /tmp/native-qa/llama-server.log 2>&1 &
+          "$SERVER" -m /tmp/native-qa/gemma-3-4b-it-q4_k_m.gguf -c 32768 -t 4 --host 127.0.0.1 --port 8080 > /tmp/native-qa/llama-server.log 2>&1 &
           SERVER_PID=$!
           trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
           for _ in $(seq 1 180); do
@@ -491,18 +491,51 @@ jobs:
               if not path.is_file():
                   raise SystemExit(f"missing surface finding: {surface}")
               findings.append(f"===== {surface.upper()} SUBREVIEW =====\n" + path.read_text(encoding="utf-8"))
-          final_source = Path("/tmp/native-qa-input/final-source.txt").read_text(encoding="utf-8")
-          all_primary_sources = "\n\n".join(
-              Path(f"/tmp/native-qa-input/{name}.txt").read_text(encoding="utf-8")
+          sources = {
+              name: Path(f"/tmp/native-qa-input/{name}.txt").read_text(encoding="utf-8")
               for name in ["ui", "about", "integration", "consistency"]
-          )
+          }
+          all_primary_sources = "\n\n".join(sources.values())
+
+          quoted_texts = []
+          for report in findings:
+              for line in report.splitlines():
+                  if line.startswith("- current_text: "):
+                      value = line[len("- current_text: "):].strip()
+                      if value and value != "(none)" and value not in quoted_texts:
+                          quoted_texts.append(value)
+
+          contexts = []
+          for value in quoted_texts:
+              matched = False
+              for name, source in sources.items():
+                  pos = source.find(value)
+                  if pos < 0:
+                      continue
+                  matched = True
+                  start = max(0, pos - 500)
+                  end = min(len(source), pos + len(value) + 500)
+                  contexts.append(
+                      f"===== {name.upper()} CONTEXT FOR QUOTED FINDING =====\n"
+                      + source[start:end]
+                  )
+              if not matched:
+                  raise SystemExit(f"candidate current_text missing from primary sources: {value!r}")
+
+          compact_context = "\n\n".join(contexts)
+          if len(compact_context) > 30000:
+              raise SystemExit(f"adjudication context too large: {len(compact_context)} chars")
+
           message = (
               base
-              + "\n\nMODE=FINAL\nSOURCE_PART=PRIMARY_SOURCES_AND_SUBREVIEW_FINDINGS\n\n"
-              + "===== PRIMARY_SOURCES =====\n"
-              + final_source
-              + "\n\n===== CANDIDATE_SUBREVIEW_FINDINGS =====\n"
+              + "\n\nMODE=FINAL\nSOURCE_PART=SUBREVIEW_FINDINGS_WITH_VERIFIED_LOCAL_CONTEXT\n\n"
+              + "The four surface reviews below already inspected the primary sources. "
+                "Every nonempty current_text was mechanically checked against those sources. "
+                "Adjudicate the candidate findings critically; reject false positives.\n\n"
+              + "===== CANDIDATE_SUBREVIEW_FINDINGS =====\n"
               + "\n\n".join(findings)
+              + "\n\n===== VERIFIED_LOCAL_CONTEXTS =====\n"
+              + (compact_context or "(No candidate finding quoted source text.)")
           )
 
           with urllib.request.urlopen("http://127.0.0.1:8080/v1/models", timeout=30) as resp:
@@ -512,7 +545,7 @@ jobs:
               "messages": [{"role": "user", "content": message}],
               "temperature": 0.10,
               "top_p": 0.8,
-              "max_tokens": 2600,
+              "max_tokens": 1800,
               "stream": False,
               "response_format": {
                   "type": "json_schema",
@@ -633,9 +666,9 @@ jobs:
               f"locale_tag: {os.environ['QA_LOCALE_TAG']}\n"
               f"sequence: {os.environ['QA_SEQUENCE']}\n"
               f"reviewed_head: {final.joinpath('reviewed-head.txt').read_text(encoding='utf-8').strip()}\n"
-              "reviewer_model: Gemma 3 12B IT Q4_K_M\n"
-              "review_method: four isolated Gemma-3-4B target-language surface reviews plus independent Gemma-3-12B target-language adjudication over primary sources and candidate findings\n"
-              "model_sha256: 7bb69bff3f48a7b642355d64a90e481182a7794707b3133890646b1efa778ff5\n"
+              "reviewer_model: Gemma 3 4B IT Q4_K_M\n"
+              "review_method: four isolated Gemma-3-4B target-language surface reviews plus a fresh separate Gemma-3-4B target-language adjudication over candidate findings and mechanically verified local source context\n"
+              "model_sha256: 882e8d2db44dc554fb0ea5077cb7e4bc49e7342a1f0da57901c0802ea21a0863\n"
               "llama_cpp_release: b10982\n"
               "llama_cpp_asset_sha256: b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789\n"
               "\n===== USER =====\n" + message +
