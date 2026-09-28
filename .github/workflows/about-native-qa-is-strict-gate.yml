@@ -1,0 +1,658 @@
+name: Icelandic strict native-language whole-site gate
+
+on:
+  push:
+    branches:
+      - feature/about-i18n-72-locales
+    paths:
+      - .github/workflows/about-native-qa-is-strict-gate.yml
+
+permissions:
+  contents: read
+
+jobs:
+  strict-is:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      HF_HUB_DISABLE_XET: "0"
+      OMP_NUM_THREADS: "4"
+      MKL_NUM_THREADS: "4"
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 1
+
+      - name: Install deterministic Icelandic checker
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install 'reynir-correct==4.1.3'
+          python -m pip install 'reynir==3.8.0'
+          python -m icegrams.download
+
+      - name: Install pinned llama.cpp and conversion tools
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/is-strict/llama
+          curl -fL --retry 3 \
+            https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz \
+            -o /tmp/is-strict/llama.tar.gz
+          echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/is-strict/llama.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/is-strict/llama.tar.gz -C /tmp/is-strict/llama
+
+          git clone --depth 1 --branch b10982 https://github.com/ggml-org/llama.cpp.git /tmp/is-strict/llama-src
+          python -m pip install -r /tmp/is-strict/llama-src/requirements/requirements-convert_lora_to_gguf.txt
+          python -m pip install 'transformers==5.17.0' 'huggingface_hub==0.36.2'
+
+      - name: Resolve pinned Icelandic SAGA adapter
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/is-strict/adapter
+          python - <<'PY'
+          from huggingface_hub import snapshot_download
+          from pathlib import Path
+
+          repo = "Hodfa71/gemma4-e4b-is-saga-kl-sft-delta-dpo"
+          revision = "15b4d53d60686ed9405d2b4bb234c96cd097e3ca"
+          snapshot_download(
+              repo_id=repo,
+              revision=revision,
+              local_dir="/tmp/is-strict/adapter",
+              allow_patterns=["adapter_config.json", "adapter_model.safetensors", "*.json", "*.model"],
+          )
+          Path("/tmp/is-strict/adapter-revision.txt").write_text(revision + "\n", encoding="utf-8")
+          PY
+
+          python /tmp/is-strict/llama-src/convert_lora_to_gguf.py \
+            --base-model-id google/gemma-4-E4B-it \
+            --outtype f16 \
+            --outfile /tmp/is-strict/icelandic-saga-lora.gguf \
+            /tmp/is-strict/adapter
+          test -s /tmp/is-strict/icelandic-saga-lora.gguf
+          sha256sum /tmp/is-strict/icelandic-saga-lora.gguf > /tmp/is-strict/lora-sha256.txt
+
+      - name: Extract auditable Icelandic review items
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/is-strict/evidence
+          git rev-parse HEAD > /tmp/is-strict/evidence/reviewed-head.txt
+
+          python - <<'PY'
+          from pathlib import Path
+          from html.parser import HTMLParser
+          import html, json, re
+
+          out = Path("/tmp/is-strict")
+          items = []
+
+          locale_path = Path("docs/i18n/locales/is.js")
+          locale_text = locale_path.read_text(encoding="utf-8")
+          for key, raw in re.findall(r'"([^"]+)"\s*:\s*("(?:\\.|[^"\\])*")', locale_text):
+              try:
+                  value = json.loads(raw)
+              except Exception:
+                  continue
+              if not isinstance(value, str) or not value.strip():
+                  continue
+              if key in {"code", "displayName", "dir", "intlLocale"}:
+                  continue
+              items.append({
+                  "source": "ui",
+                  "location": f"docs/i18n/locales/is.js#{key}",
+                  "text": value.strip(),
+              })
+
+          class VisibleTextParser(HTMLParser):
+              wanted = {"p","li","h1","h2","h3","h4","h5","h6","th","td","caption","blockquote"}
+              def __init__(self):
+                  super().__init__(convert_charrefs=True)
+                  self.stack = []
+                  self.section_ids = []
+                  self.current = None
+              def handle_starttag(self, tag, attrs):
+                  attrs = dict(attrs)
+                  self.stack.append(tag)
+                  if tag == "section":
+                      self.section_ids.append(attrs.get("id",""))
+                  if tag in self.wanted:
+                      self.current = {
+                          "tag": tag,
+                          "id": attrs.get("id",""),
+                          "section": next((x for x in reversed(self.section_ids) if x), ""),
+                          "parts": [],
+                      }
+              def handle_endtag(self, tag):
+                  if self.current is not None and self.current["tag"] == tag:
+                      text = re.sub(r"\s+", " ", "".join(self.current["parts"])).strip()
+                      if text:
+                          ident = self.current["id"] or self.current["section"] or tag
+                          items.append({
+                              "source": "about",
+                              "location": f"docs/about/content/is.html#{ident}",
+                              "text": text,
+                          })
+                      self.current = None
+                  if tag == "section" and self.section_ids:
+                      self.section_ids.pop()
+                  if self.stack:
+                      self.stack.pop()
+              def handle_data(self, data):
+                  if self.current is not None:
+                      self.current["parts"].append(data)
+
+          p = VisibleTextParser()
+          p.feed(Path("docs/about/content/is.html").read_text(encoding="utf-8"))
+
+          manifest = json.loads(Path("docs/manifest.webmanifest").read_text(encoding="utf-8"))
+          for field in ("name_localized", "short_name_localized", "description_localized"):
+              value = manifest.get(field, {}).get("is", {}).get("value")
+              if isinstance(value, str) and value.strip():
+                  items.append({
+                      "source": "integration",
+                      "location": f"docs/manifest.webmanifest#{field}.is.value",
+                      "text": value.strip(),
+                  })
+
+          for html_path in ("docs/index.html", "docs/about/index.html"):
+              source = Path(html_path).read_text(encoding="utf-8")
+              for m in re.finditer(r"<noscript[^>]*>(.*?)</noscript>", source, re.I | re.S):
+                  text = re.sub(r"<[^>]+>", " ", m.group(1))
+                  text = html.unescape(re.sub(r"\s+", " ", text)).strip()
+                  if text:
+                      items.append({
+                          "source": "integration",
+                          "location": f"{html_path}#noscript",
+                          "text": text,
+                      })
+
+          # De-duplicate exact location/text pairs while preserving order.
+          seen = set()
+          deduped = []
+          for item in items:
+              key = (item["location"], item["text"])
+              if key in seen:
+                  continue
+              seen.add(key)
+              item["id"] = f"I{len(deduped):04d}"
+              deduped.append(item)
+
+          out.joinpath("evidence/items.json").write_text(
+              json.dumps(deduped, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+
+          # Build chunks with a strict character budget.
+          chunks = []
+          current = []
+          current_chars = 0
+          for item in deduped:
+              encoded_len = len(json.dumps(item, ensure_ascii=False))
+              if current and current_chars + encoded_len > 18000:
+                  chunks.append(current)
+                  current = []
+                  current_chars = 0
+              current.append(item)
+              current_chars += encoded_len
+          if current:
+              chunks.append(current)
+
+          out.joinpath("chunks.json").write_text(
+              json.dumps(chunks, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          print(f"review_items={len(deduped)} chunks={len(chunks)}")
+          PY
+
+      - name: Run GreynirCorrect candidate scan
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json, re
+          from reynir_correct import check_single
+
+          items = json.loads(Path("/tmp/is-strict/evidence/items.json").read_text(encoding="utf-8"))
+          warnings = []
+
+          def eligible(text):
+              if "{" in text or "}" in text:
+                  return False
+              if len(text) < 22 or len(text) > 420:
+                  return False
+              words = re.findall(r"[A-Za-zÁÉÍÓÚÝÞÆÖÐáéíóúýþæöð]+", text)
+              if len(words) < 4:
+                  return False
+              latin_plain = re.findall(r"[A-Za-z]{4,}", text)
+              if latin_plain and len(latin_plain) / max(1, len(words)) > 0.35:
+                  return False
+              if any(token in text for token in ("Q=", "SHA", "KMAC", "RRULE:", "http://", "https://")):
+                  return False
+              return True
+
+          for item in items:
+              text = item["text"]
+              if not eligible(text):
+                  continue
+              try:
+                  sent = check_single(text)
+              except Exception as exc:
+                  warnings.append({
+                      "id": f"G{len(warnings):04d}",
+                      "item_id": item["id"],
+                      "location": item["location"],
+                      "code": "ENGINE_ERROR",
+                      "message": type(exc).__name__,
+                      "suggest": "",
+                  })
+                  continue
+              for ann in getattr(sent, "annotations", ()) or ():
+                  code = str(getattr(ann, "code", ""))
+                  # Long-sentence/style-only notices are not grammar failures.
+                  if code in {"E005", "E006", "E007"}:
+                      continue
+                  warnings.append({
+                      "id": f"G{len(warnings):04d}",
+                      "item_id": item["id"],
+                      "location": item["location"],
+                      "code": code,
+                      "message": str(getattr(ann, "text", "")),
+                      "detail": str(getattr(ann, "detail", "")),
+                      "suggest": str(getattr(ann, "suggest", "")),
+                  })
+
+          Path("/tmp/is-strict/evidence/greynir-warnings.json").write_text(
+              json.dumps(warnings, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          print(f"greynir_warnings={len(warnings)}")
+          PY
+
+      - name: Start isolated Icelandic SAGA reviewer
+        shell: bash
+        run: |
+          set -euo pipefail
+          SERVER="$(find /tmp/is-strict/llama -type f -name llama-server | head -n 1)"
+          test -x "$SERVER"
+          "$SERVER" \
+            -hf ggml-org/gemma-4-E4B-it-GGUF:Q4_0 \
+            --lora /tmp/is-strict/icelandic-saga-lora.gguf \
+            --reasoning auto \
+            --chat-template-kwargs '{"enable_thinking":false}' \
+            -c 32768 -t 4 --host 127.0.0.1 --port 8080 \
+            > /tmp/is-strict/evidence/server.log 2>&1 &
+          echo "$!" > /tmp/is-strict/server.pid
+          for _ in $(seq 1 300); do
+            curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8080/health >/dev/null
+
+      - name: Combined hidden qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json, urllib.request
+          from reynir_correct import check_single
+
+          cases = [
+              ("g1", "Velkomin á vefinn.", "EÐLILEGT"),
+              ("g2", "Veldu dagsetningu og reyndu aftur.", "EÐLILEGT"),
+              ("g3", "Þessar dagsetningar eru réttar og birtast hér.", "EÐLILEGT"),
+              ("b1", "Þessar dagsetningar er rétt og birtist hér.", "LAGFÆRA"),
+              ("b2", "Veldu dagsetning og reyna aftur.", "LAGFÆRA"),
+              ("b3", "This text is in English.", "LAGFÆRA"),
+          ]
+
+          prompt = (
+              "Þú ert strangur íslenskur málfarsrýnir. Metið aðeins textabrotið sem fylgir. "
+              "Athugaðu eðlilega nútímaíslensku, málfræði, beygingu, setningagerð og hvort textinn sé á íslensku. "
+              "Ekki bæta við efni sem ekki er í textabrotinu. "
+              "Fyrsta línan verður að vera nákvæmlega annaðhvort „DÓMUR: EÐLILEGT“ eða „DÓMUR: LAGFÆRA“. "
+              "Á annarri línu skaltu gefa mjög stutta ástæðu á íslensku."
+          )
+
+          results = []
+          for case_id, fragment, expected in cases:
+              payload = {
+                  "messages": [{"role": "user", "content": prompt + "\n\nTEXTABROT: „" + fragment + "“"}],
+                  "temperature": 0.0,
+                  "max_tokens": 120,
+                  "reasoning_effort": "none",
+                  "chat_template_kwargs": {"enable_thinking": False},
+                  "stream": False,
+              }
+              req = urllib.request.Request(
+                  "http://127.0.0.1:8080/v1/chat/completions",
+                  data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+                  headers={"Content-Type": "application/json"},
+                  method="POST",
+              )
+              with urllib.request.urlopen(req, timeout=900) as resp:
+                  data = json.load(resp)
+              answer = data["choices"][0]["message"]["content"].strip()
+              first = answer.splitlines()[0].strip() if answer else ""
+              saga = "EÐLILEGT" if first == "DÓMUR: EÐLILEGT" else "LAGFÆRA" if first == "DÓMUR: LAGFÆRA" else "ÓGILT"
+
+              sent = check_single(fragment)
+              greynir_flag = bool(getattr(sent, "annotations", ()) or ())
+              combined = "LAGFÆRA" if saga == "LAGFÆRA" or greynir_flag else saga
+              passed = combined == expected
+              results.append({
+                  "id": case_id,
+                  "expected": expected,
+                  "saga": saga,
+                  "greynir_flag": greynir_flag,
+                  "combined": combined,
+                  "passed": passed,
+                  "answer": answer,
+              })
+              print(case_id, results[-1])
+
+          Path("/tmp/is-strict/evidence/qualification.json").write_text(
+              json.dumps(results, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          failed = [r["id"] for r in results if not r["passed"]]
+          if failed:
+              raise SystemExit("Samsett íslenskt hæfnipróf mistókst: " + ", ".join(failed))
+          PY
+
+      - name: Run isolated Icelandic whole-site reviews
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json, re, urllib.request, urllib.error
+
+          root = Path("/tmp/is-strict")
+          ev = root / "evidence"
+          chunks = json.loads(root.joinpath("chunks.json").read_text(encoding="utf-8"))
+          warnings = json.loads(ev.joinpath("greynir-warnings.json").read_text(encoding="utf-8"))
+          warnings_by_item = {}
+          for warning in warnings:
+              warnings_by_item.setdefault(warning["item_id"], []).append(warning)
+
+          base_prompt = """
+          Þú ert sjálfstæður, strangur íslenskur málfars- og notendaviðmótsrýnir.
+          Öll eigin samskipti þín verða að vera á eðlilegri nútímaíslensku.
+          Þú rýnir texta úr íslensku útgáfu Pastafari-dagatalsins. Verkefnið er rýni, ekki endurþýðing frá grunni.
+
+          Leitaðu að texta á röngu tungumáli, þýðingarmáli, óeðlilegu orðalagi, málfræði-, beygingar-, setningagerðar-,
+          stafsetningar-, greinarmerkja- og stílvillum, röngum hugtökum, rangri placeholder-notkun, metadata-/ARIA-/
+          manifest-/fallback-vandamálum og textatengdri UI-áhættu.
+
+          Kanónísk föst gildi, formúlur, hash-gildi, code-literals, API-auðkenni og raunveruleg sérnöfn eru ekki gallar.
+          Enskt bootstrap-gildi í static HTML er ekki galli ef data-i18n/runtime skiptir því út eftir íslenska locale-virkjun.
+          Grunnfallback Web App Manifest er ekki galli ef full íslensk *_localized færsla er til.
+          JavaScript í noscript-texta er sérnafn og telst ekki enskt málleki.
+
+          Þú færð JSON-lista af hlutum. Hver hlutur hefur nákvæmt id, location og text.
+          current_text í finding verður að vera nákvæmur samfelldur substring úr text þess sama location.
+          Ekki finna upp location eða texta sem ekki er gefinn.
+          Ekki leggja til correction sem er eins og current_text.
+
+          Vélrænar GREYNIR_VIÐVARANIR eru hjálpargögn, ekki sjálfkrafa sannleikur.
+          Fyrir HVERJA viðvörun sem fylgir þessum hluta verður að skila einni warning_decision með sama id:
+          SAMÞYKKJA ef hún bendir á raunverulegan galla, annars HAFNA, með stuttri íslenskri ástæðu.
+          Þú mátt einnig finna raunveruleg vandamál sem GreynirCorrect fann ekki.
+
+          Skilaðu aðeins JSON samkvæmt schema. result er CLEAN ef findings er tómt og FINDINGS ef findings er ekki tómt.
+          summary verður stutt íslensk samantekt. Ekki endursegja allt inntakið.
+          """.strip()
+
+          schema = {
+              "type": "object",
+              "properties": {
+                  "result": {"type": "string", "enum": ["CLEAN", "FINDINGS"]},
+                  "summary": {"type": "string", "minLength": 40, "maxLength": 500},
+                  "warning_decisions": {
+                      "type": "array",
+                      "items": {
+                          "type": "object",
+                          "properties": {
+                              "id": {"type": "string"},
+                              "decision": {"type": "string", "enum": ["SAMÞYKKJA", "HAFNA"]},
+                              "reason": {"type": "string", "minLength": 8, "maxLength": 220},
+                          },
+                          "required": ["id", "decision", "reason"],
+                          "additionalProperties": False,
+                      },
+                  },
+                  "findings": {
+                      "type": "array",
+                      "maxItems": 8,
+                      "items": {
+                          "type": "object",
+                          "properties": {
+                              "severity": {"type": "string", "enum": ["critical", "high", "medium", "low"]},
+                              "location": {"type": "string"},
+                              "current_text": {"type": "string", "minLength": 1, "maxLength": 240},
+                              "issue": {"type": "string", "minLength": 15, "maxLength": 360},
+                              "correction": {"type": "string", "minLength": 2, "maxLength": 360},
+                          },
+                          "required": ["severity", "location", "current_text", "issue", "correction"],
+                          "additionalProperties": False,
+                      },
+                  },
+              },
+              "required": ["result", "summary", "warning_decisions", "findings"],
+              "additionalProperties": False,
+          }
+
+          def repeated(text):
+              words = str(text).split()
+              if len(words) < 20:
+                  return False
+              for size in (2,3,4):
+                  seen = {}
+                  for i in range(len(words)-size+1):
+                      p = tuple(words[i:i+size])
+                      seen[p] = seen.get(p, 0) + 1
+                      if seen[p] >= 4:
+                          return True
+              return False
+
+          def call(message):
+              payload = {
+                  "messages": [{"role": "user", "content": message}],
+                  "temperature": 0.05,
+                  "top_p": 0.85,
+                  "max_tokens": 950,
+                  "reasoning_effort": "none",
+                  "chat_template_kwargs": {"enable_thinking": False},
+                  "stream": False,
+                  "response_format": {
+                      "type": "json_schema",
+                      "json_schema": {
+                          "name": "islensk_heildarryni",
+                          "strict": True,
+                          "schema": schema,
+                      },
+                  },
+              }
+              req = urllib.request.Request(
+                  "http://127.0.0.1:8080/v1/chat/completions",
+                  data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+                  headers={"Content-Type": "application/json"},
+                  method="POST",
+              )
+              with urllib.request.urlopen(req, timeout=2400) as resp:
+                  data = json.load(resp)
+              return data["choices"][0]["message"]["content"].strip()
+
+          all_results = []
+          all_findings = []
+          for idx, chunk in enumerate(chunks, 1):
+              ids = {item["id"] for item in chunk}
+              chunk_warnings = [w for w in warnings if w["item_id"] in ids]
+              locations = {}
+              for item in chunk:
+                  locations.setdefault(item["location"], []).append(item["text"])
+              expected_warning_ids = {w["id"] for w in chunk_warnings}
+
+              source = json.dumps(chunk, ensure_ascii=False, indent=2)
+              warn = json.dumps(chunk_warnings, ensure_ascii=False, indent=2)
+              message = (
+                  base_prompt
+                  + f"\n\nHLUTI={idx}/{len(chunks)}"
+                  + "\n\nVEFSÍÐUHLUTIR_JSON:\n" + source
+                  + "\n\nGREYNIR_VIÐVARANIR_JSON:\n" + warn
+              )
+
+              last_error = ""
+              accepted = None
+              attempts = []
+              for attempt in (1, 2):
+                  attempt_message = message
+                  if attempt == 2:
+                      attempt_message += (
+                          "\n\nENDURTEKIN_VÉLRÆN_TILRAUN=TRUE"
+                          + "\nÁSTÆÐA=" + last_error
+                          + "\nSKILA_HEILU_JSON=TRUE"
+                      )
+                  raw = call(attempt_message)
+                  attempts.append({"attempt": attempt, "raw": raw})
+                  ev.joinpath(f"chunk-{idx:02d}-attempt-{attempt}.json").write_text(raw + "\n", encoding="utf-8")
+                  try:
+                      parsed = json.loads(raw)
+                  except Exception as exc:
+                      last_error = "ÓGILT_JSON"
+                      continue
+
+                  findings = parsed.get("findings")
+                  decisions = parsed.get("warning_decisions")
+                  result = parsed.get("result")
+                  summary = str(parsed.get("summary","")).strip()
+                  if result not in {"CLEAN","FINDINGS"} or not isinstance(findings, list) or not isinstance(decisions, list):
+                      last_error = "ÓGILD_UPPBYGGING"
+                      continue
+                  if result == "CLEAN" and findings:
+                      last_error = "CLEAN_MEÐ_FINDINGS"
+                      continue
+                  if result == "FINDINGS" and not findings:
+                      last_error = "FINDINGS_ÁN_FINDINGS"
+                      continue
+                  if repeated(summary):
+                      last_error = "ENDURTEKNING"
+                      continue
+
+                  decision_ids = [str(d.get("id","")) for d in decisions if isinstance(d, dict)]
+                  if len(decision_ids) != len(set(decision_ids)) or set(decision_ids) != expected_warning_ids:
+                      last_error = "VIÐVARANIR_EKKI_FULLMETNAR"
+                      continue
+
+                  good = True
+                  for f in findings:
+                      if not isinstance(f, dict):
+                          good = False; last_error = "ÓGILT_FINDING"; break
+                      loc = str(f.get("location","")).strip()
+                      cur = str(f.get("current_text","")).strip()
+                      corr = str(f.get("correction","")).strip()
+                      if loc not in locations:
+                          good = False; last_error = "RÖNG_LOCATION"; break
+                      if not cur or not any(cur in text for text in locations[loc]):
+                          good = False; last_error = "CURRENT_TEXT_EKKI_Í_HEIMILD"; break
+                      if cur == corr:
+                          good = False; last_error = "LEIÐRÉTTING_ÓBREYTT"; break
+                  if not good:
+                      continue
+
+                  accepted = parsed
+                  break
+
+              if accepted is None:
+                  raise SystemExit(f"Ógild LLM-rýni fyrir hluta {idx}: {last_error}")
+
+              ev.joinpath(f"chunk-{idx:02d}-accepted.json").write_text(
+                  json.dumps(accepted, ensure_ascii=False, indent=2) + "\n",
+                  encoding="utf-8",
+              )
+              all_results.append({
+                  "chunk": idx,
+                  "result": accepted["result"],
+                  "summary": accepted["summary"],
+                  "warning_decisions": accepted["warning_decisions"],
+              })
+              all_findings.extend(accepted["findings"])
+
+          final_result = "PASS" if not all_findings else "FAIL"
+          final = {
+              "result": final_result,
+              "reviewed_head": ev.joinpath("reviewed-head.txt").read_text(encoding="utf-8").strip(),
+              "chunks": all_results,
+              "findings": all_findings,
+              "greynir_warning_count": len(warnings),
+          }
+          ev.joinpath("final.json").write_text(
+              json.dumps(final, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+
+          lines = [f"NATIVE_QA_RESULT: {final_result}", ""]
+          if final_result == "PASS":
+              lines += [
+                  "Íslenska whole-site málfarsrýnin lauk án staðfests lagfæringarskylds galla.",
+                  "",
+                  f"Yfirfarnir hlutar: {len(chunks)}. GreynirCorrect-viðvaranir metnar sérstaklega: {len(warnings)}.",
+                  "",
+              ]
+          else:
+              lines += [
+                  "Íslenska whole-site málfarsrýnin fann staðfesta lagfæringarskylda galla.",
+                  "",
+              ]
+              for i, f in enumerate(all_findings, 1):
+                  lines += [
+                      f"### {i}. {f['severity']}",
+                      "",
+                      f["location"],
+                      "",
+                      f"> {f['current_text']}",
+                      "",
+                      f["issue"],
+                      "",
+                      f"Tillaga: {f['correction']}",
+                      "",
+                  ]
+          lines += ["## Samantektir hluta", ""]
+          for r in all_results:
+              lines += [f"### Hluti {r['chunk']} — {r['result']}", "", str(r["summary"]).strip(), ""]
+          ev.joinpath("review.md").write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
+          print(final_result)
+          PY
+
+      - name: Verify verdict
+        shell: bash
+        run: |
+          set -euo pipefail
+          head -n 1 /tmp/is-strict/evidence/review.md | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)$'
+
+      - name: Stop reviewer
+        if: always()
+        shell: bash
+        run: |
+          if [ -f /tmp/is-strict/server.pid ]; then
+            kill "$(cat /tmp/is-strict/server.pid)" 2>/dev/null || true
+          fi
+
+      - name: Upload strict Icelandic evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: icelandic-strict-native-whole-site
+          path: |
+            /tmp/is-strict/evidence/
+            /tmp/is-strict/adapter-revision.txt
+            /tmp/is-strict/lora-sha256.txt
+          if-no-files-found: warn
+          retention-days: 90
