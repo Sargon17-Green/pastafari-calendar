@@ -1,0 +1,89 @@
+name: Icelandic GreynirCorrect qualification
+
+on:
+  push:
+    branches:
+      - feature/about-i18n-72-locales
+    paths:
+      - .github/workflows/about-native-qa-is-greynir-smoke.yml
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - name: Install pinned Icelandic checker
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install 'reynir-correct==4.1.3'
+
+      - name: Qualify correction engine
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/is-greynir
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          from reynir_correct import check_single
+
+          cases = [
+              ("g1", "Velkomin á vefinn.", False),
+              ("g2", "Veldu dagsetningu og reyndu aftur.", False),
+              ("g3", "Þessar dagsetningar eru réttar og birtast hér.", False),
+              ("b1", "Þessar dagsetningar er rétt og birtist hér.", True),
+              ("b2", "Veldu dagsetning og reyna aftur.", True),
+          ]
+
+          results = []
+          for case_id, fragment, should_flag in cases:
+              result = check_single(fragment)
+              annotations = []
+              for annotation in getattr(result, "annotations", ()) or ():
+                  annotations.append({
+                      "code": str(getattr(annotation, "code", "")),
+                      "text": str(getattr(annotation, "text", "")),
+                      "detail": str(getattr(annotation, "detail", "")),
+                      "original": str(getattr(annotation, "original", "")),
+                      "suggest": str(getattr(annotation, "suggest", "")),
+                      "start": getattr(annotation, "start", None),
+                      "end": getattr(annotation, "end", None),
+                  })
+              flagged = bool(annotations)
+              passed = flagged == should_flag
+              results.append({
+                  "id": case_id,
+                  "fragment": fragment,
+                  "should_flag": should_flag,
+                  "flagged": flagged,
+                  "passed": passed,
+                  "annotations": annotations,
+              })
+              print(case_id, "flagged=", flagged, "expected=", should_flag, "passed=", passed)
+              for annotation in annotations:
+                  print(json.dumps(annotation, ensure_ascii=False))
+
+          Path("/tmp/is-greynir/qualification.json").write_text(
+              json.dumps(results, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+          )
+          failed = [r["id"] for r in results if not r["passed"]]
+          if failed:
+              raise SystemExit("GreynirCorrect qualification failed: " + ", ".join(failed))
+          PY
+
+      - name: Upload qualification evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: icelandic-greynir-qualification
+          path: /tmp/is-greynir/
+          if-no-files-found: warn
+          retention-days: 30
