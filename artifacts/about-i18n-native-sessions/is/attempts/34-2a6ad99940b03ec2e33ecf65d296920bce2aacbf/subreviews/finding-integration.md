@@ -1,0 +1,3 @@
+SUBREVIEW_RESULT: CLEAN
+
+Þessi vefsíða er íslensk í þýðingarásæti og hægt er að rýna hana með íslensku tungumáli. Það eru engin ræður texta á röngu tungumáli, engin óeðlilegur texti, engin röngur málfræði, engin röngur stíl eða röngur texti í þýðingum tæknilegra hugtaka. Allar texta sem eru sýnilegar eru
