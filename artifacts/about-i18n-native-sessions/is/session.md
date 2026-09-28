@@ -1,3 +1,15 @@
+# LLM_SESSION_EVIDENCE
+locale_code: is
+locale_tag: is-IS
+sequence: 31
+reviewed_head: daeee78722e5283126c70e274f54e5872d61d184
+reviewer_model: Qwen3 8B Q4_K_M
+review_method: four isolated Qwen3-8B target-language surface reviews, deterministic candidate validation, then a fresh separate Qwen3-8B target-language adjudication restricted to surviving source-grounded candidates
+model_sha256: d98cdcbd03e17ce47681435b5150e34c1417f50b5c0019dd560e4882c5745785
+llama_cpp_release: b10982
+llama_cpp_asset_sha256: b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789
+
+===== USER =====
 /no_think
 
 Þú ert sjálfstæður og strangur málfars- og notendaviðmótsrýnir fyrir íslensku útgáfu Pastafari-dagatalsins (locale `is-IS`, repository code `is`).
@@ -235,3 +247,50 @@ SUBREVIEW_RESULT: FINDINGS
 
 ===== VERIFIED_LOCAL_CONTEXTS =====
 (No surviving candidate requires local context.)
+===== ATTEMPT 1 RAW JSON =====
+{
+  "result": "PASS",
+  "summary": "Þessi vefsýna er í samræmi við íslensku tungumálið og ræðu rýnilögum. Ekkert raunverulegt málfars-, fallback-, hugtaka-, accessibility-texta- eða locale-samræmisvandamál fannst eftir gagnrýna samantekt.",
+  "findings": [],
+  "sections": [
+    {
+      "title": "Texta úr öðru tungumáli/fallback",
+      "body": "Ekkert texta úr öðru tungumáli eða fallback fannst. Allar textaupplifunir eru íslenskar og sýnilegar."
+    },
+    {
+      "title": "Samræmi /about/ við UI",
+      "body": "Texti í /about/ er íslenskur og sýnilegur. Það er ekki á röngu tungumáli, eðlilegur og nútímaíslenskur. Allar textaupplifunir eru íslenskar og sýnilegar."
+    },
+    {
+      "title": "Metadata/ARIA/manifest/noscript/fallback",
+      "body": "Allar metadata, ARIA, manifest og noscript/fallback textaupplifunir eru íslenskar og sýnilegar. Það er ekki á röngu tungumáli, eðlilegur og nútímaíslenskur."
+    },
+    {
+      "title": "Líklega textatengda UI/wrapping-áhættu",
+      "body": "Þar sem texta er í röngu mál, stíl eða ritstefnu fannst ekki raunverulegt vandamál. Allar textaupplifunir eru íslenskar og sýnilegar."
+    }
+  ]
+}
+===== ATTEMPT 1 VALIDATION =====
+VALID
+
+===== NORMALIZED_REVIEW =====
+NATIVE_QA_RESULT: PASS
+
+Þessi vefsýna er í samræmi við íslensku tungumálið og ræðu rýnilögum. Ekkert raunverulegt málfars-, fallback-, hugtaka-, accessibility-texta- eða locale-samræmisvandamál fannst eftir gagnrýna samantekt.
+
+## Texta úr öðru tungumáli/fallback
+
+Ekkert texta úr öðru tungumáli eða fallback fannst. Allar textaupplifunir eru íslenskar og sýnilegar.
+
+## Samræmi /about/ við UI
+
+Texti í /about/ er íslenskur og sýnilegur. Það er ekki á röngu tungumáli, eðlilegur og nútímaíslenskur. Allar textaupplifunir eru íslenskar og sýnilegar.
+
+## Metadata/ARIA/manifest/noscript/fallback
+
+Allar metadata, ARIA, manifest og noscript/fallback textaupplifunir eru íslenskar og sýnilegar. Það er ekki á röngu tungumáli, eðlilegur og nútímaíslenskur.
+
+## Líklega textatengda UI/wrapping-áhættu
+
+Þar sem texta er í röngu mál, stíl eða ritstefnu fannst ekki raunverulegt vandamál. Allar textaupplifunir eru íslenskar og sýnilegar.
