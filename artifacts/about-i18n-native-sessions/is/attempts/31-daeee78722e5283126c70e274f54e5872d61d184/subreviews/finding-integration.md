@@ -1,0 +1,3 @@
+SUBREVIEW_RESULT: CLEAN
+
+Þessi rýnilotu hefur verið rýnd á `INTEGRATION` hluta og hefur ekki fundið neina röngu texta, málfræði, stíl eða tæknilegum vandamál sem eru í samræmi við íslenska tungumálið og ræðu rýnilögum. Allar textaupplifunir eru íslenskar, réttar og sýnilegar. Þar sem texta er í röngu mál

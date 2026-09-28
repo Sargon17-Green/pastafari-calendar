@@ -1,0 +1,3 @@
+SUBREVIEW_RESULT: CLEAN
+
+Pastafari-dagatalið er íslensk íslensku og sýnilegt. Það er ekki á röngu tungumáli, eðlilegur og nútímaíslenskur. Allar textaupplifunir eru íslenskar og sýnilegar. Það eru ekki röngar eða vafasömur íslenskar þýðingar tæknilegra hugtaka. Allar textaupplifunir eru íslenskar og sýn.
