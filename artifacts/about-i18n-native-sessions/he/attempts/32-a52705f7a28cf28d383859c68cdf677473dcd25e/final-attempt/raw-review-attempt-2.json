@@ -1,0 +1,104 @@
+{
+  "result": "FAIL",
+  "summary": "הגרסה העברית של האתר מכילה ליקויים משמעותיים במקורות רבים, כולל טקסטים באנגלית לא מכוונים, תרגומים לא מדויקים, וטעויות דקדוקיות. ליקויים משמעותיים נמצאו בחלקים שונים של האתר, כולל בחלקים של ה-UI, ב-`/about/`, ב-`manifest.webmanifest`, ובmetadata. בנוסף, קיימים ליקויים בעקביות בין המונחים ב-`/about/` לבין ה-UI, ובעיית קיווניות RTL/BiDi.",
+  "findings": [
+    {
+      "title": "טקסט באנגלית ב-`meta.description`",
+      "severity": "high",
+      "location": "docs/i18n/locales/he.js",
+      "current_text": "A local, deterministic Pastafari calendar.",
+      "issue": "טקסט באנגלית ב-`meta.description` שאינו מכוון לעברית.",
+      "correction": "החלפת הטקסט לגרסה עברית: \"לוח שנה פסטפרי לחיפוש ולהשוואת תאריכים\"."
+    },
+    {
+      "title": "שם האתר באנגלית ב-`app.title`",
+      "severity": "high",
+      "location": "docs/i18n/locales/he.js",
+      "current_text": "Pastafari Calendar",
+      "issue": "שם האתר באנגלית ב-`app.title` שאינו מכוון לעברית.",
+      "correction": "החלפת הטקסט לגרסה עברית: \"לוח השנה הfstpri\"."
+    },
+    {
+      "title": "שם ה-`app.brand` באנגלית",
+      "severity": "high",
+      "location": "docs/i18n/locales/he.js",
+      "current_text": "Pastafari",
+      "issue": "שם ה-`app.brand` באנגלית שאינו מכוון לעברית.",
+      "correction": "החלפת הטקסט לגרסה עברית: \"PASTAFARI\"."
+    },
+    {
+      "title": "טקסט באנגלית ב-`manifest.defaultDescription`",
+      "severity": "high",
+      "location": "docs/i18n/locales/he.js",
+      "current_text": "A local, deterministic Pastafari calendar.",
+      "issue": "טקסט באנגלית ב-`manifest.defaultDescription` שאינו מכוון לעברית.",
+      "correction": "החלפת הטקסט לגרסה עברית: \"לוח שנה פסטפרי מקומי וקבוע\"."
+    },
+    {
+      "title": "הטקסט 'בצורה כללית' אינו מדויק",
+      "severity": "medium",
+      "location": "docs/about/content/he.html#date-parts",
+      "current_text": "למשל, בצורה כללית:",
+      "issue": "הטקסט 'בצורה כללית' אינו מדויק ומכיל מונח כללי שאינו מוגדר ב맥락.",
+      "correction": "החלפת 'בצורה כללית' ל'למשל, בצורה כללית:' או 'למשל, בצורה כללית:'."
+    },
+    {
+      "title": "הטקסט 'מבחן' אינו מדויק",
+      "severity": "medium",
+      "location": "docs/about/content/he.html#year-5000",
+      "current_text": "שנת 5000 אינה מבחן לכך ש־<code>t=c</code>.",
+      "issue": "הטקסט 'מבחן' אינו מדויק ומכיל מונח שאינו מתאים ל맥락 ההלחוטי.",
+      "correction": "החלפת 'מבחן' ל'מבחן' או 'הוכחה' בהתאם ל맥락."
+    },
+    {
+      "title": "הטקסט 'אבל' מופיע פעמיים ברצף",
+      "severity": "medium",
+      "location": "docs/about/content/he.html#reverse-conversion",
+      "current_text": "אבל בלי לדעת את יום המעשה, המצב שונה.",
+      "issue": "הטקסט 'אבל' מופיע פעמיים ברצף, מה שגורם לאי-הסכמה ומכבד את הקריאה.",
+      "correction": "החלפת 'אבל' בפעם השנייה ל'במקרה זה' או 'במקרה זה' כדי להימנע מהסכמה."
+    },
+    {
+      "title": "הטקסט 'במרחקים שונים' אינו מדויק",
+      "severity": "medium",
+      "location": "docs/about/content/he.html#reverse-conversion",
+      "current_text": "קיימות דוגמאות מפורשות שבהן אותו תאריך מלא מתקבל במרחקים שונים מיום המעשה.",
+      "issue": "הטקסט 'במרחקים שונים' אינו מדויק ומכיל מונח שאינו מוגדר ב맥락.",
+      "correction": "החלפת 'במרחקים שונים' ל'במרחקים שונים' או 'בשונה מהיום המעשה' בהתאם ל맥락."
+    },
+    {
+      "title": "המונח \"PASTAFARI\" אינו מופיע ב-`/about/`",
+      "severity": "medium",
+      "location": "docs/i18n/locales/he.js",
+      "current_text": "PASTAFARI",
+      "issue": "השם \"PASTAFARI\" מופיע ב-UI כשם מסחרי (בשורה `app.brand`) אך אינו מופיע ב-`/about/` בגרסה העברית. זה גורם לחוסר עקביות בין המונחים.",
+      "correction": "השם \"PASTAFARI\" צריך להיות מופיע גם ב-`/about/` בגרסה העברית, כשם מסחרי."
+    },
+    {
+      "title": "המונח \"היום הנשאל\" אינו מופיע ב-UI",
+      "severity": "medium",
+      "location": "docs/i18n/locales/he.js",
+      "current_text": "היום הנשאל",
+      "issue": "המונח \"היום הנשאל\" מופיע ב-`/about/` אך לא מופיע ב-UI. זה גורם לחוסר עקביות בין המונחים.",
+      "correction": "המונח \"היום הנשאל\" צריך להיות מופיע גם ב-UI, כשם מונח מרכזי."
+    }
+  ],
+  "sections": [
+    {
+      "title": "טקסט בשפה אחרת/fallback",
+      "body": "הטקסט העברי של האתר כולל מספר ליקויים משמעותיים, כולל טקסטים באנגלית לא מכוונים, תרגומים לא מדויקים, וטעויות דקדוקיות. ליקויים משמעותיים נמצאו בחלקים שונים של האתר, כולל בחלקים של ה-UI, ב-`/about/`, ב-`manifest.webmanifest`, ובmetadata."
+    },
+    {
+      "title": "עקביות `/about/` מול ה-UI",
+      "body": "הטקסט הופך לבעייתי עקב חוסר עקביות במונחים בין ה-UI לבין `/about/`. המונחים \"PASTAFARI\", \"היום הנשאל\", \"יום המעשה\", \"שנת 5000\" מופיעים בחלק אחד של האתר אך לא בחלקים אחרים, מה שגורם לחוסר עקביות."
+    },
+    {
+      "title": "metadata/ARIA/manifest/noscript/fallback",
+      "body": "הטקסט ב-`meta.description` ו-`manifest.defaultDescription` הוא באנגלית ולא מכוון לעברית. בנוסף, קיימים ליקויים ב-ARIA ובסגנון ה-RTL/BiDi."
+    },
+    {
+      "title": "סיכוני UI/wrapping טקסטואליים",
+      "body": "הטקסטים בחלק מהחלקים של האתר, כמו ב-`/about/`, יכולים להוביל ל wrapping או overflow עקב הניסוח העברי. לדוגמה, טקסטים כמו \"במרחקים שונים\" ו\"אבל בלי לדעת את יום המעשה, המצב שונה\" יכולים להוביל לבעיית קיווניות."
+    }
+  ]
+}

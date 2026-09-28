@@ -1,0 +1,34 @@
+{
+  "result": "FINDINGS",
+  "summary": "הבדיקה של קבצי הלוגיקה של הלוגיקה של הלוגיקה של הלוגיקה של הלוגיקה של הלוגיקה של הלוגיקה של הלוגיקה של הלוגיקה של הלוגיקה של הלוגיקה של הלוגיקה של הלוגיקה של הלוגיקה של הלוגיקה של הלוגיקה של הלוגיקה של הלוגיקה של הלוגיקה של הלוגיקה של הלוגיקה של הלוגיקה של הלוגיקה של הלוגיקה שלהל",
+  "findings": [
+    {
+      "severity": "low",
+      "location": "docs/i18n/runtime.js",
+      "current_text": "option.textContent = locale.displayName;",
+      "issue": "הטקסט 'locale.displayName' מופיע בקוד, אך לא ניתן לצטט טקסט אמיתי מתוך קובץ האתר. אין צורך בבדיקה של טקסט נוכחי.",
+      "correction": "אין צורך ב תיקון."
+    },
+    {
+      "severity": "low",
+      "location": "docs/i18n/registry.js",
+      "current_text": "export const DEFAULT_LOCALE = \"en\";",
+      "issue": "הערך 'en' הוא הערך ברירת המחדל, אך לא קיים טקסט נוכחי בכתובת האתר. אין צורך בבדיקה של טקסט נוכחי.",
+      "correction": "אין צורך ב תיקון."
+    },
+    {
+      "severity": "low",
+      "location": "docs/i18n/registry.js",
+      "current_text": "export const SUPPORT_LEVELS = Object.freeze([\"complete\", \"partial\", \"experimental\"]);",
+      "issue": "הערך 'SUPPORT_LEVELS' הוא מערך של תומכות, אך לא קיים טקסט נוכחי בכתובת האתר. אין צורך בבדיקה של טקסט נוכחי.",
+      "correction": "אין צורך ב תיקון."
+    },
+    {
+      "severity": "low",
+      "location": "docs/i18n/registry.js",
+      "current_text": "export const LOCALES = Object.freeze([defineLocale(\"he\", \"עברית\", \"rtl\", \"he-IL\", \"complete\", () => import(\"./locales/he.js?v=19-about-i18n\")), defineLocale(\"en\", \"English\", \"ltr\",",
+      "issue": "הערך 'he' מופיע בקוד, אך לא ניתן לצטט טקסט אמיתי מתוך קובץ האתר. אין צורך בבדיקה של טקסט נוכחי.",
+      "correction": "אין צורך ב תיקון."
+    }
+  ]
+}
