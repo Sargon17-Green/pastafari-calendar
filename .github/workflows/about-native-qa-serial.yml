@@ -289,7 +289,7 @@ jobs:
           mkdir -p /tmp/native-qa-output
           python - <<'PY'
           from pathlib import Path
-          import json, os, urllib.request, urllib.error
+          import json, os, re, urllib.request, urllib.error
 
           surface = os.environ["QA_SURFACE"]
           base = Path("/tmp/native-qa-input/base-prompt.md").read_text(encoding="utf-8").strip()
@@ -298,33 +298,67 @@ jobs:
               raise SystemExit("base prompt is missing FINAL_ONLY_INSTRUCTIONS marker")
           surface_base = base.split(final_marker, 1)[0].strip()
           source = Path(f"/tmp/native-qa-input/{surface}.txt").read_text(encoding="utf-8")
-          surface_rules = {
+          code = os.environ["QA_LOCALE_CODE"]
+          locale_path = f"docs/i18n/locales/{code}.js"
+
+          def source_sections(payload):
+              sections = {}
+              current = None
+              for line in payload.splitlines():
+                  match = re.match(r"^===== (docs/\S+)", line)
+                  if match:
+                      current = match.group(1)
+                      sections.setdefault(current, [])
+                      continue
+                  if line.startswith("====="):
+                      current = None
+                      continue
+                  if current is not None:
+                      sections[current].append(line)
+              return {path: "\n".join(parts) for path, parts in sections.items()}
+
+          sections_by_path = source_sections(source)
+          locale_values = {}
+          locale_section = sections_by_path.get(locale_path, "")
+          for key, raw_value in re.findall(r'"([^"]+)"\s*:\s*("(?:\\.|[^"\\])*")', locale_section):
+              try:
+                  locale_values[key] = json.loads(raw_value)
+              except json.JSONDecodeError:
+                  pass
+
+          surface_contracts = {
               "ui": (
-                  "Review only user-visible or accessibility-facing target-language text, metadata, "
-                  "manifest localization, and actual wrong-language leakage. Do not review application logic. "
-                  "Every finding must quote an exact current_text substring from the supplied source and use a docs/ path."
+                  "SCOPE_USER_VISIBLE_OR_ACCESSIBILITY_TEXT_ONLY=TRUE\n"
+                  "IGNORE_APPLICATION_LOGIC=TRUE\n"
+                  "LOCALE_FINDING_LOCATION_REQUIRES_TRANSLATION_KEY_FRAGMENT=TRUE\n"
+                  "CURRENT_TEXT_MUST_EQUAL_EXACT_LOCALE_VALUE=TRUE\n"
+                  "ACTIONABLE_CHANGE_REQUIRED=TRUE"
               ),
               "about": (
-                  "Review only the naturalness, grammar, style, terminology and readability of the target-language /about/ article. "
-                  "Do not challenge canonical facts or propose semantic rewrites. "
-                  "Every finding must quote an exact current_text substring and use docs/about/content/ as its location."
+                  "SCOPE_TARGET_ABOUT_NATURAL_LANGUAGE_ONLY=TRUE\n"
+                  "CANONICAL_FACTS_IMMUTABLE=TRUE\n"
+                  "CURRENT_TEXT_EXACT_SOURCE=TRUE\n"
+                  "ACTIONABLE_CHANGE_REQUIRED=TRUE"
               ),
               "integration": (
-                  "Review ONLY language-facing localization behavior: visible fallback text, ARIA/title/placeholder text, locale switching, "
-                  "document language/direction and whether a wrong-language string can actually remain visible. "
-                  "DO NOT review JavaScript style, storage helpers, parameter naming, performance, general error handling, API design, comments, "
-                  "or code correctness that has no direct language-facing effect. If no concrete language-facing defect is shown, return CLEAN. "
-                  "For a text finding, current_text must be the exact visible literal; for a proven fallback-path defect with no literal, current_text may be empty."
+                  "SCOPE_LANGUAGE_FACING_BEHAVIOR_ONLY=TRUE\n"
+                  "IGNORE_NON_USER_VISIBLE_CODE=TRUE\n"
+                  "TEXT_FINDING_CURRENT_TEXT_VISIBLE_LITERAL_ONLY=TRUE\n"
+                  "FALLBACK_PATH_FINDING_MAY_USE_EMPTY_CURRENT_TEXT=TRUE\n"
+                  "ACTIONABLE_CHANGE_REQUIRED=TRUE"
               ),
               "consistency": (
-                  "Compare terminology and naming across the target UI and /about/ only. Do not review calendar mathematics or general code quality. "
-                  "Every finding must quote an exact current_text substring from the supplied source and use a docs/ path."
+                  "SCOPE_UI_ABOUT_TERMINOLOGY_ONLY=TRUE\n"
+                  "IGNORE_CALENDAR_MATHEMATICS_AND_CODE_QUALITY=TRUE\n"
+                  "LOCALE_FINDING_LOCATION_REQUIRES_TRANSLATION_KEY_FRAGMENT=TRUE\n"
+                  "CURRENT_TEXT_MUST_EQUAL_EXACT_LOCALE_VALUE=TRUE\n"
+                  "ACTIONABLE_CHANGE_REQUIRED=TRUE"
               ),
           }
           message = (
               surface_base
               + f"\n\nMODE=FINDINGS_ONLY\nSOURCE_PART={surface.upper()}\n"
-              + "SURFACE_RULES:\n" + surface_rules[surface] + "\n\n"
+              + "SURFACE_CONTRACT:\n" + surface_contracts[surface] + "\n\n"
               + source
           )
 
@@ -386,6 +420,23 @@ jobs:
                   raise
               return data["choices"][0]["message"]["content"].strip()
 
+          def repeated_phrase(text):
+              words = str(text).split()
+              if len(words) < 18:
+                  return False
+              for size in (2, 3, 4, 5):
+                  counts = {}
+                  for i in range(len(words) - size + 1):
+                      phrase = tuple(words[i:i+size])
+                      counts[phrase] = counts.get(phrase, 0) + 1
+                      if counts[phrase] >= 4:
+                          return True
+              return False
+
+          def normalized_base_location(location):
+              base_location = str(location).split("#", 1)[0]
+              return re.sub(r":\d+(?::\d+)?$", "", base_location)
+
           def validate_response(raw):
               try:
                   parsed = json.loads(raw)
@@ -426,16 +477,49 @@ jobs:
                   return result, summary, findings, "FINDINGS subreview contains no findings", duplicate_count
               if "SOURCE_PART=" in summary or "FINDINGS_ONLY" in summary:
                   return result, summary, findings, "subreview echoed control/source markers", duplicate_count
-              if any(
-                  item.get("current_text") and item["current_text"] not in source
-                  for item in findings
-              ):
-                  return result, summary, findings, "subreview current_text is not present in reviewed source", duplicate_count
-              if any(
-                  not str(item.get("location", "")).startswith("docs/")
-                  for item in findings
-              ):
-                  return result, summary, findings, "subreview finding location is not a docs/ source path", duplicate_count
+              if repeated_phrase(summary):
+                  return result, summary, findings, "subreview summary contains pathological phrase repetition", duplicate_count
+
+              for item in findings:
+                  location = str(item.get("location", "")).strip()
+                  current_text = str(item.get("current_text", "")).strip()
+                  correction = str(item.get("correction", "")).strip()
+                  issue = str(item.get("issue", "")).strip()
+
+                  if not location.startswith("docs/"):
+                      return result, summary, findings, "subreview finding location is not a docs/ source path", duplicate_count
+                  if repeated_phrase(issue) or repeated_phrase(correction):
+                      return result, summary, findings, "subreview finding contains pathological phrase repetition", duplicate_count
+                  if current_text and correction == current_text:
+                      return result, summary, findings, "subreview proposed correction is identical to current_text", duplicate_count
+                  if surface != "integration" and not current_text:
+                      return result, summary, findings, "textual surface finding has empty current_text", duplicate_count
+
+                  base_location = normalized_base_location(location)
+                  location_source = sections_by_path.get(base_location)
+                  if location_source is None:
+                      return result, summary, findings, f"finding location is not supplied by this surface: {base_location!r}", duplicate_count
+
+                  if current_text and current_text not in location_source:
+                      return result, summary, findings, f"current_text is not present at claimed location: {base_location!r}", duplicate_count
+
+                  if base_location == locale_path:
+                      if "#" not in location:
+                          return result, summary, findings, "locale finding location must include #translation.key", duplicate_count
+                      key = location.split("#", 1)[1].split(":", 1)[0].strip()
+                      if key not in locale_values:
+                          return result, summary, findings, f"locale finding names unknown translation key: {key!r}", duplicate_count
+                      if current_text != str(locale_values[key]):
+                          return result, summary, findings, f"current_text does not equal the exact value of locale key {key!r}", duplicate_count
+
+                  if surface == "integration" and current_text and any(
+                      marker in current_text for marker in (
+                          "translate(", "defineLocale(", "textContent =", "innerHTML =",
+                          "setAttribute(", "loadLocale(", "return ", "=>"
+                      )
+                  ):
+                      return result, summary, findings, "integration current_text quotes code instead of a visible literal", duplicate_count
+
               return result, summary, findings, None, duplicate_count
 
           max_attempts = 3
@@ -451,20 +535,16 @@ jobs:
                   attempt_message = (
                       surface_base
                       + f"\n\nMODE=FINDINGS_ONLY\nSOURCE_PART={surface.upper()}\n"
-                      + "SURFACE_RULES:\n" + surface_rules[surface] + "\n\n"
-                      + "REPAIR_RETRY:\n"
-                      + "Your previous structured response was rejected by the mechanical validator. "
-                        "Review the SAME source again and return a fresh complete JSON response. "
-                        "Do not invent a finding merely to satisfy the schema.\n"
-                      + f"VALIDATION_REASON: {last_error}\n"
-                      + "MECHANICAL_CONTRACT:\n"
-                        "- If findings is empty, result MUST be CLEAN.\n"
-                        "- If findings is nonempty, result MUST be FINDINGS.\n"
-                        "- current_text MUST be an exact verbatim substring from the supplied source; "
-                        "do not prepend a translation key, label, filename or other prefix unless it literally occurs in the source.\n"
-                        "- Report the same finding only once.\n"
-                        "- Every location MUST begin with docs/.\n"
-                        "- Do not discuss this retry or the previous response in the review itself.\n\n"
+                      + "SURFACE_CONTRACT:\n" + surface_contracts[surface] + "\n"
+                      + "REPAIR_RETRY=TRUE\n"
+                      + f"VALIDATION_REASON={last_error}\n"
+                      + "RESULT_EMPTY_FINDINGS=CLEAN\n"
+                      + "RESULT_NONEMPTY_FINDINGS=FINDINGS\n"
+                      + "CURRENT_TEXT_EXACT_SOURCE=TRUE\n"
+                      + "LOCATION_GROUNDED_TO_CLAIMED_FILE=TRUE\n"
+                      + "DUPLICATE_FINDINGS_FORBIDDEN=TRUE\n"
+                      + "ACTIONABLE_CHANGE_REQUIRED=TRUE\n"
+                      + "RETRY_COMMENTARY_FORBIDDEN=TRUE\n\n"
                       + source
                   )
 
@@ -550,7 +630,7 @@ jobs:
     if: always() && needs.prepare.result == 'success'
     needs: [prepare, review]
     runs-on: ubuntu-latest
-    timeout-minutes: 75
+    timeout-minutes: 120
     steps:
       - name: Download reviewer inputs
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
@@ -606,13 +686,33 @@ jobs:
           mkdir -p /tmp/native-qa-final
           python - <<'PY'
           from pathlib import Path
-          import json, os, urllib.request, urllib.error
+          import json, os, re, urllib.request, urllib.error
 
           final = Path("/tmp/native-qa-final")
           base = Path("/tmp/native-qa-input/base-prompt.md").read_text(encoding="utf-8").strip()
           code = os.environ["QA_LOCALE_CODE"]
 
-          surface_reports = {}
+          def normalized_base_location(location):
+              base_location = str(location).split("#", 1)[0]
+              return re.sub(r":\d+(?::\d+)?$", "", base_location)
+
+          def split_source_sections(payload):
+              sections = {}
+              current = None
+              for line in payload.splitlines():
+                  match = re.match(r"^===== (docs/\S+)", line)
+                  if match:
+                      current = match.group(1)
+                      sections.setdefault(current, [])
+                      continue
+                  if line.startswith("====="):
+                      current = None
+                      continue
+                  if current is not None:
+                      sections[current].append(line)
+              return {path: "\n".join(parts) for path, parts in sections.items()}
+
+          surface_summaries = {}
           invalid_surfaces = []
           raw_candidates = []
 
@@ -625,7 +725,6 @@ jobs:
                   raise SystemExit(f"missing accepted surface raw JSON: {surface}")
 
               report = finding_path.read_text(encoding="utf-8")
-              surface_reports[surface] = report
               if report.startswith("SUBREVIEW_RESULT: INVALID"):
                   invalid_surfaces.append(surface)
                   continue
@@ -637,6 +736,7 @@ jobs:
 
               surface_result = parsed_surface.get("result")
               surface_findings = parsed_surface.get("findings")
+              surface_summary = str(parsed_surface.get("summary", "")).strip()
               if surface_result not in {"CLEAN", "FINDINGS"} or not isinstance(surface_findings, list):
                   raise SystemExit(f"accepted surface evidence is structurally inconsistent: {surface}")
               if surface_result == "CLEAN" and surface_findings:
@@ -644,6 +744,10 @@ jobs:
               if surface_result == "FINDINGS" and not surface_findings:
                   raise SystemExit(f"accepted FINDINGS surface contains no findings: {surface}")
 
+              surface_summaries[surface] = {
+                  "result": surface_result,
+                  "summary": surface_summary,
+              }
               for item in surface_findings:
                   candidate = dict(item)
                   candidate["_surface"] = surface
@@ -659,7 +763,13 @@ jobs:
               name: Path(f"/tmp/native-qa-input/{name}.txt").read_text(encoding="utf-8")
               for name in ["ui", "about", "integration", "consistency"]
           }
-          all_primary_sources = "\n\n".join(sources.values())
+          file_sections = {}
+          for source in sources.values():
+              for path, body in split_source_sections(source).items():
+                  if path not in file_sections:
+                      file_sections[path] = body
+                  elif body not in file_sections[path]:
+                      file_sections[path] += "\n" + body
 
           html_proofs = {
               "docs/index.html": Path("/tmp/native-qa-input/proof-index.html").read_text(encoding="utf-8"),
@@ -682,15 +792,22 @@ jobs:
 
           def deterministic_rejection(item):
               location = str(item.get("location", "")).strip()
+              base_location = normalized_base_location(location)
               current_text = str(item.get("current_text", "")).strip()
               correction = str(item.get("correction", "")).strip()
 
               if current_text and correction == current_text:
                   return "proposed correction is identical to current_text"
 
-              if location in html_proofs and current_text:
+              location_source = file_sections.get(base_location)
+              if location_source is None:
+                  return "claimed location is absent from supplied primary evidence"
+              if current_text and current_text not in location_source:
+                  return "current_text is absent from the claimed source file"
+
+              if base_location in html_proofs and current_text:
                   matching_lines = [
-                      line for line in html_proofs[location].splitlines()
+                      line for line in html_proofs[base_location].splitlines()
                       if current_text in line
                   ]
                   if matching_lines and all(
@@ -700,7 +817,7 @@ jobs:
                       return "static HTML bootstrap/fallback text is bound to runtime localization"
 
               if (
-                  location == "docs/manifest.webmanifest"
+                  base_location == "docs/manifest.webmanifest"
                   and current_text in manifest_fallbacks
                   and manifest_target_complete
               ):
@@ -727,104 +844,91 @@ jobs:
               if reason:
                   rejected_candidates.append({"reason": reason, "candidate": item})
                   continue
-
               candidates.append(item)
 
-          candidate_pairs = {
-              (str(item.get("location", "")).strip(), str(item.get("current_text", "")).strip())
-              for item in candidates
-          }
-
+          indexed_candidates = []
           contexts = []
-          for item in candidates:
+          seen_contexts = set()
+          for index, item in enumerate(candidates):
+              public_item = {k: v for k, v in item.items() if k != "_surface"}
+              public_item["index"] = index
+              indexed_candidates.append(public_item)
+
+              location = str(item.get("location", "")).strip()
+              base_location = normalized_base_location(location)
               value = str(item.get("current_text", "")).strip()
-              if not value:
-                  continue
-              matched = False
-              for name, source in sources.items():
-                  pos = source.find(value)
+              body = file_sections.get(base_location, "")
+              if value:
+                  pos = body.find(value)
                   if pos < 0:
-                      continue
-                  matched = True
-                  start = max(0, pos - 500)
-                  end = min(len(source), pos + len(value) + 500)
-                  contexts.append(
-                      f"===== {name.upper()} CONTEXT FOR SURVIVING CANDIDATE =====\n"
-                      + source[start:end]
+                      raise SystemExit(f"candidate current_text missing from claimed primary source: {location!r}")
+                  start = max(0, pos - 420)
+                  end = min(len(body), pos + len(value) + 420)
+                  context = (
+                      f"===== CANDIDATE_{index}_CONTEXT {base_location} =====\n"
+                      + body[start:end]
                   )
-              if not matched:
-                  raise SystemExit(f"candidate current_text missing from primary sources: {value!r}")
+              else:
+                  context = (
+                      f"===== CANDIDATE_{index}_CONTEXT {base_location} =====\n"
+                      + body[:1000]
+                  )
+              if context not in seen_contexts:
+                  seen_contexts.add(context)
+                  contexts.append(context)
 
           compact_context = "\n\n".join(contexts)
-          if len(compact_context) > 30000:
+          if len(compact_context) > 18000:
               raise SystemExit(f"adjudication context too large: {len(compact_context)} chars")
 
-          findings_text = "\n\n".join(
-              f"===== {surface.upper()} SUBREVIEW =====\n{surface_reports[surface]}"
-              for surface in ["ui", "about", "integration", "consistency"]
+          filter_record = {
+              "surface_summaries": surface_summaries,
+              "rejected_candidates": rejected_candidates,
+              "surviving_candidates": indexed_candidates,
+          }
+          final.joinpath("candidate-filter.json").write_text(
+              json.dumps(filter_record, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
           )
 
-          surviving_text = json.dumps(
-              [{k: v for k, v in item.items() if k != "_surface"} for item in candidates],
-              ensure_ascii=False,
-              indent=2,
-          )
-          rejected_text = json.dumps(rejected_candidates, ensure_ascii=False, indent=2)
-
-          forced_note = (
-              "There are no surviving candidate findings after deterministic validation. "
-              "You MUST return result=PASS and findings=[]. "
-              if not candidates
-              else
-              "You may return PASS after rejecting all surviving candidates, or FAIL only with findings drawn from the surviving candidate list. "
-          )
-
+          contract_lines = [
+              "FINAL_SELECTION_CONTRACT:",
+              "NO_NEW_FINDINGS=TRUE",
+              "ACCEPT_ONLY_SURVIVING_CANDIDATE_INDICES=TRUE",
+              "ACCEPTED_INDICES_UNIQUE=TRUE",
+              "PASS_REQUIRES_ACCEPTED_INDICES_EMPTY=TRUE",
+              "FAIL_REQUIRES_ACCEPTED_INDICES_NONEMPTY=TRUE",
+              "REJECT_FALSE_POSITIVES_CONTRADICTED_BY_CONTEXT=TRUE",
+              "FOUR_REQUIRED_SECTIONS=TRUE",
+              f"CANDIDATE_COUNT={len(indexed_candidates)}",
+          ]
           message = (
               base
-              + "\n\nMODE=FINAL\nSOURCE_PART=SUBREVIEW_FINDINGS_WITH_VERIFIED_LOCAL_CONTEXT\n\n"
-              + "The four surface reviews below already inspected the primary sources. "
-                "A deterministic gate has removed duplicate, no-op, runtime-localized bootstrap, "
-                "and localized-manifest fallback pseudo-findings where those exemptions were mechanically proven. "
-                "Do not restore rejected candidates. Do not invent new findings. "
-                "Every FAIL finding must use exactly a (location, current_text) pair from SURVIVING_CANDIDATES.\n"
-              + forced_note
-              + "\n===== ORIGINAL_SUBREVIEWS =====\n"
-              + findings_text
-              + "\n\n===== DETERMINISTICALLY_REJECTED_CANDIDATES =====\n"
-              + rejected_text
-              + "\n\n===== SURVIVING_CANDIDATES =====\n"
-              + surviving_text
-              + "\n\n===== VERIFIED_LOCAL_CONTEXTS =====\n"
-              + (compact_context or "(No surviving candidate requires local context.)")
+              + "\n\nMODE=FINAL\nSOURCE_PART=VERIFIED_CANDIDATE_ADJUDICATION\n"
+              + "\n".join(contract_lines)
+              + "\n\nSURFACE_RESULTS_JSON:\n"
+              + json.dumps(surface_summaries, ensure_ascii=False, indent=2)
+              + "\n\nSURVIVING_CANDIDATES_JSON:\n"
+              + json.dumps(indexed_candidates, ensure_ascii=False, indent=2)
+              + "\n\nVERIFIED_LOCAL_CONTEXTS:\n"
+              + (compact_context or "NO_SURVIVING_CANDIDATES")
           )
           final.joinpath("prompt.md").write_text(message, encoding="utf-8")
 
           with urllib.request.urlopen("http://127.0.0.1:8080/v1/models", timeout=30) as resp:
               model_id = json.load(resp)["data"][0]["id"]
 
-          result_enum = ["PASS"] if not candidates else ["PASS", "FAIL"]
-          max_findings = min(10, len(candidates))
+          result_enum = ["PASS"] if not indexed_candidates else ["PASS", "FAIL"]
+          index_enum = list(range(len(indexed_candidates)))
           schema = {
               "type": "object",
               "properties": {
                   "result": {"type": "string", "enum": result_enum},
-                  "summary": {"type": "string", "minLength": 80, "maxLength": 650},
-                  "findings": {
+                  "summary": {"type": "string", "minLength": 60, "maxLength": 420},
+                  "accepted_indices": {
                       "type": "array",
-                      "maxItems": max_findings,
-                      "items": {
-                          "type": "object",
-                          "properties": {
-                              "title": {"type": "string", "minLength": 3, "maxLength": 120},
-                              "severity": {"type": "string", "enum": ["critical", "high", "medium", "low"]},
-                              "location": {"type": "string", "minLength": 1, "maxLength": 200},
-                              "current_text": {"type": "string", "maxLength": 220},
-                              "issue": {"type": "string", "minLength": 20, "maxLength": 360},
-                              "correction": {"type": "string", "minLength": 5, "maxLength": 360},
-                          },
-                          "required": ["title", "severity", "location", "current_text", "issue", "correction"],
-                          "additionalProperties": False,
-                      },
+                      "maxItems": len(indexed_candidates),
+                      "items": {"type": "integer", "enum": index_enum} if index_enum else {"type": "integer"},
                   },
                   "sections": {
                       "type": "array",
@@ -833,29 +937,29 @@ jobs:
                       "items": {
                           "type": "object",
                           "properties": {
-                              "title": {"type": "string", "minLength": 3, "maxLength": 120},
-                              "body": {"type": "string", "minLength": 40, "maxLength": 520},
+                              "title": {"type": "string", "minLength": 3, "maxLength": 100},
+                              "body": {"type": "string", "minLength": 30, "maxLength": 240},
                           },
                           "required": ["title", "body"],
                           "additionalProperties": False,
                       },
                   },
               },
-              "required": ["result", "summary", "findings", "sections"],
+              "required": ["result", "summary", "accepted_indices", "sections"],
               "additionalProperties": False,
           }
 
           payload = {
               "model": model_id,
               "messages": [{"role": "user", "content": message}],
-              "temperature": 0.10,
+              "temperature": 0.05,
               "top_p": 0.8,
-              "max_tokens": 2500,
+              "max_tokens": 1100,
               "stream": False,
               "response_format": {
                   "type": "json_schema",
                   "json_schema": {
-                      "name": "native_final_review",
+                      "name": "native_final_selection",
                       "strict": True,
                       "schema": schema,
                   },
@@ -871,7 +975,7 @@ jobs:
                   method="POST",
               )
               try:
-                  with urllib.request.urlopen(req, timeout=3600) as resp:
+                  with urllib.request.urlopen(req, timeout=2400) as resp:
                       data = json.load(resp)
               except urllib.error.HTTPError as exc:
                   print(exc.read().decode("utf-8", errors="replace"))
@@ -879,15 +983,15 @@ jobs:
               return data["choices"][0]["message"]["content"].strip()
 
           def repeated_phrase(text):
-              words = text.split()
-              if len(words) < 24:
+              words = str(text).split()
+              if len(words) < 18:
                   return False
-              for size in (3, 4, 5):
-                  seen = {}
+              for size in (2, 3, 4, 5):
+                  counts = {}
                   for i in range(len(words) - size + 1):
                       phrase = tuple(words[i:i+size])
-                      seen[phrase] = seen.get(phrase, 0) + 1
-                      if seen[phrase] >= 4:
+                      counts[phrase] = counts.get(phrase, 0) + 1
+                      if counts[phrase] >= 4:
                           return True
               return False
 
@@ -902,38 +1006,27 @@ jobs:
 
               result = parsed.get("result")
               summary = str(parsed.get("summary", "")).strip()
-              findings_final = parsed.get("findings")
+              accepted_indices = parsed.get("accepted_indices")
               sections = parsed.get("sections")
 
               if result not in result_enum:
                   return None, f"invalid final result: {result!r}"
-              if not isinstance(findings_final, list) or not isinstance(sections, list):
+              if not isinstance(accepted_indices, list) or not isinstance(sections, list):
                   return None, "invalid final structured fields"
-              if result == "PASS" and findings_final:
-                  return None, "PASS final review unexpectedly contains findings"
-              if result == "FAIL" and not findings_final:
-                  return None, "FAIL final review contains no findings"
+              if any(not isinstance(index, int) or isinstance(index, bool) for index in accepted_indices):
+                  return None, "accepted_indices contains a non-integer"
+              if len(accepted_indices) != len(set(accepted_indices)):
+                  return None, "accepted_indices contains duplicates"
+              if any(index < 0 or index >= len(indexed_candidates) for index in accepted_indices):
+                  return None, "accepted_indices contains an out-of-range index"
+              if result == "PASS" and accepted_indices:
+                  return None, "PASS final review unexpectedly accepts findings"
+              if result == "FAIL" and not accepted_indices:
+                  return None, "FAIL final review accepts no findings"
               if len(sections) != 4:
                   return None, f"final review must contain exactly four sections, got {len(sections)}"
               if repeated_phrase(summary) or any(repeated_phrase(str(sec.get("body", ""))) for sec in sections):
                   return None, "final review contains pathological phrase repetition"
-
-              final_pairs = []
-              for item in findings_final:
-                  if not isinstance(item, dict):
-                      return None, "final findings contains a non-object item"
-                  current_text = str(item.get("current_text", "")).strip()
-                  location = str(item.get("location", "")).strip()
-                  pair = (location, current_text)
-                  if pair not in candidate_pairs:
-                      return None, f"final finding was not present in surviving candidates: {pair!r}"
-                  if current_text and current_text not in all_primary_sources:
-                      return None, f"final finding current_text is not present in primary sources: {current_text!r}"
-                  if not location.startswith("docs/"):
-                      return None, f"final finding location is not a docs/ source path: {location!r}"
-                  final_pairs.append(pair)
-              if len(final_pairs) != len(set(final_pairs)):
-                  return None, "final review duplicated the same location/current_text finding"
               return parsed, None
 
           max_attempts = 3
@@ -948,11 +1041,12 @@ jobs:
               else:
                   attempt_message = (
                       message
-                      + "\n\n=== FINAL_REPAIR_RETRY ===\n"
-                      + "The previous final JSON was rejected mechanically. Return a fresh COMPLETE JSON object only. "
-                        "Do not add any finding that is not in SURVIVING_CANDIDATES. "
-                        "Do not repeat findings or phrases. Keep the four required sections concise.\n"
-                      + f"VALIDATION_REASON: {last_error}\n"
+                      + "\n\nFINAL_REPAIR_RETRY=TRUE\n"
+                      + f"VALIDATION_REASON={last_error}\n"
+                      + "COMPLETE_JSON_ONLY=TRUE\n"
+                      + "NO_NEW_FINDINGS=TRUE\n"
+                      + "ACCEPTED_INDICES_UNIQUE=TRUE\n"
+                      + "FOUR_REQUIRED_SECTIONS=TRUE\n"
                   )
 
               raw = call_adjudicator(attempt_message)
@@ -982,14 +1076,15 @@ jobs:
 
           result = accepted["result"]
           summary = str(accepted["summary"]).strip()
-          findings_final = accepted["findings"]
+          accepted_indices = accepted["accepted_indices"]
           sections = accepted["sections"]
+          findings_final = [indexed_candidates[index] for index in accepted_indices]
 
           report_lines = [summary]
           for idx, item in enumerate(findings_final, 1):
               report_lines += [
                   "",
-                  f"### {idx}. {item['title']} — {item['severity']}",
+                  f"### Finding {idx} — {item['severity']}",
                   "",
                   item["location"],
               ]
@@ -999,7 +1094,7 @@ jobs:
           for section in sections:
               report_lines += ["", f"## {section['title']}", "", section["body"]]
           report = "\n".join(report_lines).strip()
-          if len(report) < 500:
+          if len(report) < 350:
               raise SystemExit(f"final report too short: {len(report)} chars")
 
           review = f"NATIVE_QA_RESULT: {result}\n\n{report}\n"
@@ -1015,7 +1110,7 @@ jobs:
               f"sequence: {os.environ['QA_SEQUENCE']}\n"
               f"reviewed_head: {final.joinpath('reviewed-head.txt').read_text(encoding='utf-8').strip()}\n"
               "reviewer_model: Qwen3 8B Q4_K_M\n"
-              "review_method: four isolated Qwen3-8B target-language surface reviews, deterministic candidate validation, then a fresh separate Qwen3-8B target-language adjudication restricted to surviving source-grounded candidates\n"
+              "review_method: four isolated target-language surface reviews with path/key grounding, deterministic candidate validation, then a fresh target-language adjudication selecting only surviving candidate indices\n"
               "model_sha256: d98cdcbd03e17ce47681435b5150e34c1417f50b5c0019dd560e4882c5745785\n"
               "llama_cpp_release: b10982\n"
               "llama_cpp_asset_sha256: b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789\n"
