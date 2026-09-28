@@ -367,62 +367,147 @@ jobs:
                   }
               },
           }
-          req = urllib.request.Request(
-              "http://127.0.0.1:8080/v1/chat/completions",
-              data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
-              headers={"Content-Type": "application/json"},
-              method="POST",
-          )
-          try:
-              with urllib.request.urlopen(req, timeout=3600) as resp:
-                  data = json.load(resp)
-          except urllib.error.HTTPError as exc:
-              print(exc.read().decode("utf-8", errors="replace"))
-              raise
+          def call_reviewer(user_message):
+              payload["messages"] = [{"role": "user", "content": user_message}]
+              req = urllib.request.Request(
+                  "http://127.0.0.1:8080/v1/chat/completions",
+                  data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+                  headers={"Content-Type": "application/json"},
+                  method="POST",
+              )
+              try:
+                  with urllib.request.urlopen(req, timeout=3600) as resp:
+                      data = json.load(resp)
+              except urllib.error.HTTPError as exc:
+                  print(exc.read().decode("utf-8", errors="replace"))
+                  raise
+              return data["choices"][0]["message"]["content"].strip()
 
-          raw = data["choices"][0]["message"]["content"].strip()
-          Path(f"/tmp/native-qa-output/raw-{surface}.json").write_text(raw + "\n", encoding="utf-8")
+          def validate_response(raw):
+              try:
+                  parsed = json.loads(raw)
+              except json.JSONDecodeError as exc:
+                  return None, None, [], f"invalid JSON: {exc}", 0
 
-          parse_error = None
-          parsed = None
-          try:
-              parsed = json.loads(raw)
-          except json.JSONDecodeError as exc:
-              parse_error = f"invalid JSON: {exc}"
+              if not isinstance(parsed, dict):
+                  return None, None, [], "top-level response is not an object", 0
 
-          if parse_error is None:
               result = parsed.get("result")
               summary = str(parsed.get("summary", "")).strip()
               findings = parsed.get("findings")
               if result not in {"CLEAN", "FINDINGS"}:
-                  parse_error = f"invalid result: {result!r}"
-              elif not isinstance(findings, list):
-                  parse_error = "findings is not an array"
-              elif result == "CLEAN" and findings:
-                  parse_error = "CLEAN subreview unexpectedly contains findings"
-              elif result == "FINDINGS" and not findings:
-                  parse_error = "FINDINGS subreview contains no findings"
-              elif "SOURCE_PART=" in summary or "FINDINGS_ONLY" in summary:
-                  parse_error = "subreview echoed control/source markers"
-              elif any(
+                  return result, summary, [], f"invalid result: {result!r}", 0
+              if not isinstance(findings, list):
+                  return result, summary, [], "findings is not an array", 0
+              if any(not isinstance(item, dict) for item in findings):
+                  return result, summary, [], "findings contains a non-object item", 0
+
+              deduped = []
+              seen = set()
+              duplicate_count = 0
+              for item in findings:
+                  key = tuple(
+                      str(item.get(field, "")).strip()
+                      for field in ("severity", "location", "current_text", "issue", "correction")
+                  )
+                  if key in seen:
+                      duplicate_count += 1
+                      continue
+                  seen.add(key)
+                  deduped.append(item)
+              findings = deduped
+
+              if result == "CLEAN" and findings:
+                  return result, summary, findings, "CLEAN subreview unexpectedly contains findings", duplicate_count
+              if result == "FINDINGS" and not findings:
+                  return result, summary, findings, "FINDINGS subreview contains no findings", duplicate_count
+              if "SOURCE_PART=" in summary or "FINDINGS_ONLY" in summary:
+                  return result, summary, findings, "subreview echoed control/source markers", duplicate_count
+              if any(
                   item.get("current_text") and item["current_text"] not in source
                   for item in findings
               ):
-                  parse_error = "subreview current_text is not present in reviewed source"
-              elif any(
+                  return result, summary, findings, "subreview current_text is not present in reviewed source", duplicate_count
+              if any(
                   not str(item.get("location", "")).startswith("docs/")
                   for item in findings
               ):
-                  parse_error = "subreview finding location is not a docs/ source path"
+                  return result, summary, findings, "subreview finding location is not a docs/ source path", duplicate_count
+              return result, summary, findings, None, duplicate_count
 
-          if parse_error is not None:
+          max_attempts = 3
+          attempt_sections = []
+          accepted = None
+          last_raw = ""
+          last_error = "surface reviewer did not run"
+
+          for attempt in range(1, max_attempts + 1):
+              if attempt == 1:
+                  attempt_message = message
+              else:
+                  attempt_message = (
+                      surface_base
+                      + f"\n\nMODE=FINDINGS_ONLY\nSOURCE_PART={surface.upper()}\n"
+                      + "SURFACE_RULES:\n" + surface_rules[surface] + "\n\n"
+                      + "REPAIR_RETRY:\n"
+                      + "Your previous structured response was rejected by the mechanical validator. "
+                        "Review the SAME source again and return a fresh complete JSON response. "
+                        "Do not invent a finding merely to satisfy the schema.\n"
+                      + f"VALIDATION_REASON: {last_error}\n"
+                      + "MECHANICAL_CONTRACT:\n"
+                        "- If findings is empty, result MUST be CLEAN.\n"
+                        "- If findings is nonempty, result MUST be FINDINGS.\n"
+                        "- current_text MUST be an exact verbatim substring from the supplied source; "
+                        "do not prepend a translation key, label, filename or other prefix unless it literally occurs in the source.\n"
+                        "- Report the same finding only once.\n"
+                        "- Every location MUST begin with docs/.\n"
+                        "- Do not discuss this retry or the previous response in the review itself.\n\n"
+                      + source
+                  )
+
+              raw = call_reviewer(attempt_message)
+              last_raw = raw
+              Path(f"/tmp/native-qa-output/raw-{surface}-attempt-{attempt}.json").write_text(
+                  raw + "\n", encoding="utf-8"
+              )
+
+              result, summary, findings, parse_error, duplicate_count = validate_response(raw)
+              validation_note = (
+                  f"INVALID: {parse_error}"
+                  if parse_error is not None
+                  else f"VALID: deduplicated_exact_findings={duplicate_count}"
+              )
+              Path(f"/tmp/native-qa-output/validation-{surface}-attempt-{attempt}.txt").write_text(
+                  validation_note + "\n", encoding="utf-8"
+              )
+              attempt_sections.append(
+                  f"\n===== ATTEMPT {attempt} RAW JSON =====\n{raw}"
+                  f"\n===== ATTEMPT {attempt} VALIDATION =====\n{validation_note}\n"
+              )
+
+              if parse_error is None:
+                  accepted = (result, summary, findings)
+                  Path(f"/tmp/native-qa-output/raw-{surface}.json").write_text(
+                      raw + "\n", encoding="utf-8"
+                  )
+                  break
+              last_error = parse_error
+
+          if accepted is None:
               result = "INVALID"
+              summary = ""
+              findings = []
+              Path(f"/tmp/native-qa-output/raw-{surface}.json").write_text(
+                  last_raw + "\n", encoding="utf-8"
+              )
               report = (
-                  "The surface reviewer output could not be accepted as structured evidence.\n\n"
-                  f"reason: {parse_error}\n\n"
-                  "raw_output:\n" + raw[:5000]
+                  "The surface reviewer output could not be accepted as structured evidence "
+                  f"after {max_attempts} attempts.\n\n"
+                  f"reason: {last_error}\n\n"
+                  "All raw attempts and validator reasons are preserved in this artifact."
               )
           else:
+              result, summary, findings = accepted
               report_lines = [summary]
               for idx, item in enumerate(findings, 1):
                   report_lines += [
@@ -442,8 +527,9 @@ jobs:
               "# SUBREVIEW_SESSION\n"
               f"surface: {surface}\n"
               "reviewer_model: Qwen3 8B Q4_K_M\n"
-              "\n===== USER =====\n" + message +
-              "\n===== ASSISTANT_RAW_JSON =====\n" + raw +
+              f"attempts: {len(attempt_sections)}\n"
+              "\n===== ORIGINAL_USER =====\n" + message +
+              "".join(attempt_sections) +
               "\n===== NORMALIZED_REVIEW =====\n" + review,
               encoding="utf-8",
           )
@@ -769,6 +855,7 @@ jobs:
           merge-multiple: true
 
       - name: Download final synthesis
+        continue-on-error: true
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           name: native-qa-final-${{ github.run_id }}
@@ -782,22 +869,36 @@ jobs:
           QA_SEQUENCE: ${{ needs.prepare.outputs.sequence }}
         run: |
           set -euo pipefail
-          REVIEWED_HEAD="$(tr -d '\r\n' < /tmp/native-qa-final/reviewed-head.txt)"
+          REVIEWED_HEAD="$(tr -d '\r\n' < /tmp/native-qa-input/reviewed-head.txt)"
           ATTEMPT="artifacts/about-i18n-native-sessions/$QA_LOCALE_CODE/attempts/$QA_SEQUENCE-$REVIEWED_HEAD"
           mkdir -p "$ATTEMPT/subreviews"
-          cp /tmp/native-qa-final/prompt.md "$ATTEMPT/prompt.md"
-          cp /tmp/native-qa-final/review.md "$ATTEMPT/review.md"
-          cp /tmp/native-qa-final/session.md "$ATTEMPT/session.md"
-          cp /tmp/native-qa-final/reviewed-head.txt "$ATTEMPT/reviewed-head.txt"
           cp /tmp/native-qa-input/base-prompt.md "$ATTEMPT/base-prompt.md"
           cp /tmp/native-qa-input/*.txt "$ATTEMPT/" || true
-          cp /tmp/native-qa-findings/finding-*.md "$ATTEMPT/subreviews/"
-          cp /tmp/native-qa-findings/subreview-*.md "$ATTEMPT/subreviews/"
-          if head -n 1 "$ATTEMPT/review.md" | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)$'; then
-            printf '%s\n' valid > "$ATTEMPT/verdict-format.txt"
+          cp /tmp/native-qa-findings/finding-*.md "$ATTEMPT/subreviews/" || true
+          cp /tmp/native-qa-findings/subreview-*.md "$ATTEMPT/subreviews/" || true
+          cp /tmp/native-qa-findings/raw-*.json "$ATTEMPT/subreviews/" || true
+          cp /tmp/native-qa-findings/validation-*.txt "$ATTEMPT/subreviews/" || true
+
+          if [ -s /tmp/native-qa-final/review.md ] && [ -s /tmp/native-qa-final/prompt.md ] && [ -s /tmp/native-qa-final/session.md ]; then
+            cp /tmp/native-qa-final/prompt.md "$ATTEMPT/prompt.md"
+            cp /tmp/native-qa-final/review.md "$ATTEMPT/review.md"
+            cp /tmp/native-qa-final/session.md "$ATTEMPT/session.md"
+            if [ -s /tmp/native-qa-final/reviewed-head.txt ]; then
+              cp /tmp/native-qa-final/reviewed-head.txt "$ATTEMPT/reviewed-head.txt"
+            else
+              cp /tmp/native-qa-input/reviewed-head.txt "$ATTEMPT/reviewed-head.txt"
+            fi
+            if head -n 1 "$ATTEMPT/review.md" | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)$'; then
+              printf '%s\n' valid > "$ATTEMPT/verdict-format.txt"
+            else
+              printf '%s\n' invalid > "$ATTEMPT/verdict-format.txt"
+              printf '%s\n' 'Final reviewer output did not begin with the required NATIVE_QA_RESULT line.' >> "$ATTEMPT/verdict-format.txt"
+            fi
           else
+            cp /tmp/native-qa-input/reviewed-head.txt "$ATTEMPT/reviewed-head.txt"
+            printf '%s\n' unavailable > "$ATTEMPT/synthesis-status.txt"
             printf '%s\n' invalid > "$ATTEMPT/verdict-format.txt"
-            printf '%s\n' 'Final reviewer output did not begin with the required NATIVE_QA_RESULT line.' >> "$ATTEMPT/verdict-format.txt"
+            printf '%s\n' 'No final synthesis artifact was available; surface evidence did not permit a final gate verdict.' >> "$ATTEMPT/verdict-format.txt"
           fi
 
       - name: Commit attempt evidence
