@@ -103,6 +103,8 @@ jobs:
                   "messages": [{"role": "user", "content": base + "\n\nTEXTABROT: „" + fragment + "“"}],
                   "temperature": 0.0,
                   "max_tokens": 140,
+                  "reasoning_effort": "none",
+                  "chat_template_kwargs": {"enable_thinking": False},
                   "stream": False,
               }
               req = urllib.request.Request(
