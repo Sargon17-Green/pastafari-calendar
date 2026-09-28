@@ -24,6 +24,7 @@ jobs:
           set -euo pipefail
           python -m pip install --upgrade pip
           python -m pip install 'reynir-correct==4.1.3'
+          python -m icegrams.download
 
       - name: Qualify correction engine
         shell: bash
@@ -41,6 +42,7 @@ jobs:
               ("g3", "Þessar dagsetningar eru réttar og birtast hér.", False),
               ("b1", "Þessar dagsetningar er rétt og birtist hér.", True),
               ("b2", "Veldu dagsetning og reyna aftur.", True),
+              ("b3", "This text is in English.", True),
           ]
 
           results = []
