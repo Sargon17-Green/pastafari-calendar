@@ -1,0 +1,343 @@
+name: English strict native-language whole-site gate
+
+on:
+  push:
+    branches:
+      - feature/about-i18n-72-locales
+    paths:
+      - .github/workflows/about-native-qa-en-strict-gate.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: english-strict-native-\${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  strict-en:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 1
+
+      - name: Install pinned llama.cpp runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/en-strict/llama /tmp/en-strict/evidence
+          curl -fL --retry 3 \
+            https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz \
+            -o /tmp/en-strict/llama.tar.gz
+          echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/en-strict/llama.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/en-strict/llama.tar.gz -C /tmp/en-strict/llama
+          git rev-parse HEAD > /tmp/en-strict/evidence/reviewed-head.txt
+
+      - name: Extract auditable English website text
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          from html.parser import HTMLParser
+          import html, json, re
+
+          items=[]
+
+          locale_path=Path("docs/i18n/locales/en.js")
+          locale_text=locale_path.read_text(encoding="utf-8")
+          for key, raw in re.findall(r'"([^"]+)"\s*:\s*("(?:\\.|[^"\\])*")', locale_text):
+              try:
+                  value=json.loads(raw)
+              except Exception:
+                  continue
+              if not isinstance(value,str) or not value.strip():
+                  continue
+              if key in {"code","displayName","dir","intlLocale"}:
+                  continue
+              items.append({"location":f"docs/i18n/locales/en.js#{key}","text":value.strip()})
+
+          class VisibleTextParser(HTMLParser):
+              wanted={"p","li","h1","h2","h3","h4","h5","h6","th","td","caption","blockquote"}
+              def __init__(self):
+                  super().__init__(convert_charrefs=True)
+                  self.sections=[]
+                  self.current=None
+              def handle_starttag(self,tag,attrs):
+                  attrs=dict(attrs)
+                  if tag=="br" and self.current is not None:
+                      self.current["parts"].append(". ")
+                  if tag=="section":
+                      self.sections.append(attrs.get("id",""))
+                  if tag in self.wanted:
+                      self.current={
+                          "tag":tag,
+                          "id":attrs.get("id",""),
+                          "section":next((x for x in reversed(self.sections) if x),""),
+                          "parts":[],
+                      }
+              def handle_endtag(self,tag):
+                  if self.current is not None and self.current["tag"]==tag:
+                      text=re.sub(r"\s+"," ","".join(self.current["parts"])).strip()
+                      if text:
+                          ident=self.current["id"] or self.current["section"] or tag
+                          items.append({"location":f"docs/about/content/en.html#{ident}","text":text})
+                      self.current=None
+                  if tag=="section" and self.sections:
+                      self.sections.pop()
+              def handle_data(self,data):
+                  if self.current is not None:
+                      self.current["parts"].append(data)
+
+          parser=VisibleTextParser()
+          parser.feed(Path("docs/about/content/en.html").read_text(encoding="utf-8"))
+
+          manifest=json.loads(Path("docs/manifest.webmanifest").read_text(encoding="utf-8"))
+          for field in ("name_localized","short_name_localized","description_localized"):
+              value=manifest.get(field,{}).get("en",{}).get("value")
+              if isinstance(value,str) and value.strip():
+                  items.append({"location":f"docs/manifest.webmanifest#{field}.en.value","text":value.strip()})
+
+          for html_path in ("docs/index.html","docs/about/index.html"):
+              source=Path(html_path).read_text(encoding="utf-8")
+              title=re.search(r"<title>(.*?)</title>",source,re.I|re.S)
+              if title:
+                  items.append({"location":f"{html_path}#title","text":html.unescape(re.sub(r"\s+"," ",title.group(1))).strip()})
+              for m in re.finditer(r'<meta\s+name=["\']description["\'][^>]*content=["\']([^"\']+)["\']',source,re.I|re.S):
+                  items.append({"location":f"{html_path}#meta-description","text":html.unescape(m.group(1)).strip()})
+              for m in re.finditer(r"<noscript[^>]*>(.*?)</noscript>",source,re.I|re.S):
+                  text=re.sub(r"<[^>]+>"," ",m.group(1))
+                  text=html.unescape(re.sub(r"\s+"," ",text)).strip()
+                  if text:
+                      items.append({"location":f"{html_path}#noscript","text":text})
+
+          registry=Path("docs/i18n/registry.js").read_text(encoding="utf-8")
+          m=re.search(r'defineLocale\("en",\s*"([^"]+)"',registry)
+          if m:
+              items.append({"location":"docs/i18n/registry.js#locale-en-display-name","text":m.group(1)})
+
+          seen=set(); out=[]
+          for item in items:
+              pair=(item["location"],item["text"])
+              if pair in seen: continue
+              seen.add(pair)
+              item["id"]=f"E{len(out):04d}"
+              out.append(item)
+
+          Path("/tmp/en-strict/evidence/items.json").write_text(
+              json.dumps(out,ensure_ascii=False,indent=2)+"\n",encoding="utf-8"
+          )
+          print("review_items="+str(len(out)))
+          print("chars="+str(len(json.dumps(out,ensure_ascii=False,separators=(',',':')))))
+          PY
+
+      - name: Start isolated English Gemma 4 reviewer
+        shell: bash
+        run: |
+          set -euo pipefail
+          SERVER="$(find /tmp/en-strict/llama -type f -name llama-server | head -n 1)"
+          test -x "$SERVER"
+          "$SERVER" \
+            -hf ggml-org/gemma-4-E4B-it-GGUF:Q4_0 \
+            --reasoning auto --chat-template-kwargs '{"enable_thinking":false}' \
+            -c 32768 -t 4 --host 127.0.0.1 --port 8080 \
+            > /tmp/en-strict/evidence/server.log 2>&1 &
+          echo "$!" > /tmp/en-strict/server.pid
+          for _ in $(seq 1 300); do
+            curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8080/health >/dev/null
+
+      - name: Hidden qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json, urllib.request
+
+          cases=[
+              ("g1","Select a date and try again.","NATURAL"),
+              ("g2","The next day in the month is not necessarily tomorrow.","NATURAL"),
+              ("g3","Changing the day of working changes the displayed representation, not the day itself.","NATURAL"),
+              ("g4","The calendar uses woven months that need not be chronologically contiguous.","NATURAL"),
+              ("g5","Being in year 5000 does not imply t=c.","NATURAL"),
+              ("b1","These date is valid.","FIX"),
+              ("b2","Select a date and tries again.","FIX"),
+              ("b3","Este texto está en español.","FIX"),
+              ("b4","The calendar have woven months.","FIX"),
+          ]
+          prompt=(
+              "You are a strict native-English language reviewer. Judge only the supplied fragment. "
+              "Check natural modern English, grammar, agreement, syntax, idiom, and whether the text is actually English. "
+              "The project uses domain terms such as 'day of working', 'queried day', 'cutlet', and 'woven months'; "
+              "do not reject a grammatical sentence merely because those terms are unusual. "
+              "The first line must be exactly either 'VERDICT: NATURAL' or 'VERDICT: FIX'. "
+              "On the second line give one brief English reason."
+          )
+          results=[]
+          for case_id,fragment,expected in cases:
+              payload={
+                  "messages":[{"role":"user","content":prompt+"\n\nFRAGMENT: "+json.dumps(fragment)}],
+                  "temperature":0.0,"max_tokens":120,"reasoning_effort":"none",
+                  "chat_template_kwargs":{"enable_thinking":False},"stream":False,
+              }
+              req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",
+                  data=json.dumps(payload).encode(),headers={"Content-Type":"application/json"},method="POST")
+              with urllib.request.urlopen(req,timeout=900) as resp:
+                  data=json.load(resp)
+              answer=data["choices"][0]["message"]["content"].strip()
+              first=answer.splitlines()[0].strip() if answer else ""
+              actual="NATURAL" if first=="VERDICT: NATURAL" else "FIX" if first=="VERDICT: FIX" else "INVALID"
+              passed=actual==expected
+              results.append({"id":case_id,"expected":expected,"actual":actual,"passed":passed,"answer":answer})
+              print(case_id,results[-1])
+          Path("/tmp/en-strict/evidence/qualification.json").write_text(json.dumps(results,indent=2)+"\n")
+          failed=[r["id"] for r in results if not r["passed"]]
+          if failed: raise SystemExit("English reviewer qualification failed: "+", ".join(failed))
+          PY
+
+      - name: Run strict English whole-site review
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json, urllib.request
+
+          ev=Path("/tmp/en-strict/evidence")
+          items=json.loads(ev.joinpath("items.json").read_text(encoding="utf-8"))
+          by_location={}
+          for item in items:
+              by_location.setdefault(item["location"],[]).append(item["text"])
+
+          prompt=(
+              "You are an independent, strict native-English language and user-interface reviewer for the English "
+              "version of the Pastafari Calendar. ALL ordinary review communication must be in English. "
+              "Review the ENTIRE supplied user-visible and accessibility-facing text corpus as one whole-site experience. "
+              "Actively look for wrong-language leakage, awkward or translationese-like English, grammar, syntax, agreement, "
+              "register, punctuation, spelling, typography, capitalization, inconsistent terminology, wrong placeholder roles, "
+              "unnatural metadata/title/manifest/fallback/accessibility text, and likely text-driven UI risks. "
+              "The canonical domain terms 'day of working', 'queried day', 'cutlet', and 'woven months' are intentional; "
+              "do not propose replacing them merely because they are unusual. Canonical formulas, code literals, hashes, "
+              "API identifiers, section IDs, proper names, and calendar names are exempt. "
+              "Each finding MUST use an exact location from the supplied items and current_text MUST be an exact contiguous "
+              "substring of that location's supplied text. Do not invent source locations, do not quote code, do not report "
+              "review instructions, and do not offer a correction identical to current_text. "
+              "Report only fix-worthy issues. If no real issue remains, return CLEAN with an empty findings array. "
+              "Return JSON only according to the schema."
+          )
+          source=json.dumps(items,ensure_ascii=False,separators=(",",":"))
+          message=prompt+"\n\nWEBSITE_TEXT_ITEMS_JSON:\n"+source
+          schema={
+              "type":"object",
+              "properties":{
+                  "result":{"type":"string","enum":["CLEAN","FINDINGS"]},
+                  "findings":{
+                      "type":"array","maxItems":12,
+                      "items":{
+                          "type":"object",
+                          "properties":{
+                              "severity":{"type":"string","enum":["critical","high","medium","low"]},
+                              "location":{"type":"string"},
+                              "current_text":{"type":"string","minLength":1,"maxLength":260},
+                              "issue":{"type":"string","minLength":15,"maxLength":360},
+                              "correction":{"type":"string","minLength":2,"maxLength":360}
+                          },
+                          "required":["severity","location","current_text","issue","correction"],
+                          "additionalProperties":False
+                      }
+                  }
+              },
+              "required":["result","findings"],
+              "additionalProperties":False
+          }
+          payload={
+              "messages":[{"role":"user","content":message}],
+              "temperature":0.05,"top_p":0.85,"max_tokens":1600,
+              "reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,
+              "response_format":{"type":"json_schema","json_schema":{"name":"english_whole_site_review","strict":True,"schema":schema}}
+          }
+
+          last_error=""
+          accepted=None
+          for attempt in (1,2):
+              msg=message if attempt==1 else message+"\n\nMECHANICAL_RETRY=TRUE\nREASON="+last_error+"\nRETURN_COMPLETE_JSON_ONLY=TRUE"
+              payload["messages"]=[{"role":"user","content":msg}]
+              req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",
+                  data=json.dumps(payload).encode(),headers={"Content-Type":"application/json"},method="POST")
+              with urllib.request.urlopen(req,timeout=3000) as resp:
+                  data=json.load(resp)
+              raw=data["choices"][0]["message"]["content"].strip()
+              ev.joinpath(f"raw-attempt-{attempt}.json").write_text(raw+"\n",encoding="utf-8")
+              try: parsed=json.loads(raw)
+              except Exception:
+                  last_error="INVALID_JSON"; continue
+              result=parsed.get("result"); findings=parsed.get("findings")
+              if result not in {"CLEAN","FINDINGS"} or not isinstance(findings,list):
+                  last_error="INVALID_STRUCTURE"; continue
+              if result=="CLEAN" and findings:
+                  last_error="CLEAN_WITH_FINDINGS"; continue
+              if result=="FINDINGS" and not findings:
+                  last_error="FINDINGS_WITHOUT_FINDINGS"; continue
+              seen=set(); good=True
+              for f in findings:
+                  loc=str(f.get("location","")).strip()
+                  cur=str(f.get("current_text","")).strip()
+                  corr=str(f.get("correction","")).strip()
+                  pair=(loc,cur)
+                  if loc not in by_location:
+                      last_error="UNKNOWN_LOCATION"; good=False; break
+                  if not cur or not any(cur in text for text in by_location[loc]):
+                      last_error="CURRENT_TEXT_NOT_AT_LOCATION"; good=False; break
+                  if cur==corr:
+                      last_error="NO_OP_CORRECTION"; good=False; break
+                  if pair in seen:
+                      last_error="DUPLICATE_FINDING"; good=False; break
+                  seen.add(pair)
+              if not good: continue
+              accepted=parsed; break
+
+          if accepted is None:
+              raise SystemExit("English whole-site review invalid after retries: "+last_error)
+
+          final_result="PASS" if accepted["result"]=="CLEAN" else "FAIL"
+          final={"result":final_result,"reviewed_head":ev.joinpath("reviewed-head.txt").read_text().strip(),"findings":accepted["findings"]}
+          ev.joinpath("final.json").write_text(json.dumps(final,indent=2)+"\n")
+          lines=[f"NATIVE_QA_RESULT: {final_result}",""]
+          if final_result=="PASS":
+              lines+=["The strict English whole-site linguistic review found no confirmed fix-worthy issue.",""]
+          else:
+              lines+=["The strict English whole-site linguistic review found confirmed fix-worthy issues.",""]
+              for i,f in enumerate(accepted["findings"],1):
+                  lines += [f"### {i}. {f['severity']}","",f["location"],"",f"> {f['current_text']}","",f["issue"],"","Recommended correction: "+f["correction"],""]
+          ev.joinpath("review.md").write_text("\n".join(lines).rstrip()+"\n")
+          print(final_result)
+          PY
+
+      - name: Verify verdict
+        shell: bash
+        run: |
+          set -euo pipefail
+          head -n 1 /tmp/en-strict/evidence/review.md | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)$'
+
+      - name: Stop reviewer
+        if: always()
+        shell: bash
+        run: |
+          if [ -f /tmp/en-strict/server.pid ]; then
+            kill "$(cat /tmp/en-strict/server.pid)" 2>/dev/null || true
+          fi
+
+      - name: Upload strict English evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: english-strict-native-whole-site
+          path: /tmp/en-strict/evidence/
+          if-no-files-found: warn
+          retention-days: 90
