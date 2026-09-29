@@ -116,3 +116,25 @@ Keyrslulagið hefur síðan verið hert þannig að viðbótarstýring þess er 
 ## Núverandi staða
 
 Stranga same-language hliðið fyrir `is-IS` er því aftur **pending**. Textinn og fyrri lagfæringar standa áfram; aðeins lokasönnunin er endurtekin undir hertum rýnisamningi.
+
+
+## Lokaniðurstaða stranga íslenska hliðsins
+
+Stranga same-language whole-site hliðinu er nú lokið með aðskildri íslenskri rýnilotu sem notar sérhæfðan SAGA-rýni ásamt GreynirCorrect sem óháðu málfræðihliði:
+
+- workflow run: `36550435224`
+- reviewed HEAD: `f23e411e64f992bd7327eb8e14d0d21f0c2b33b3`
+- niðurstaða: `NATIVE_QA_RESULT: PASS`
+- falið samsett hæfnipróf: **6/6**
+- whole-site rýni: **6/6 chunks CLEAN**
+- GreynirCorrect-viðvaranir úr veftextanum eftir deterministic síun: **0**
+- staðfest findings: **0**
+- immutable evidence: `artifacts/about-i18n-native-sessions/is/strict-36550435224/`
+
+Frjálsar meta-samantektir SAGA-rýnisins innihalda endurtekna beygingarvillu (`Engar gallar ...`). Þær eru varðveittar óbreyttar í evidence-inu og eru ekki látnar líta út fyrir að vera betri en þær voru. Þetta er ekki texti vefsins og skilaði engu site-findingi. Sjálf vefniðurstaðan er studd af sex hreinum source-grounded hlutum, 6/6 földu hæfniprófi og sjálfstæðri GreynirCorrect-yfirferð án site-viðvarana.
+
+Samanburður frá reviewed HEAD að lifandi grein sýndi engar breytingar á `docs/i18n/locales/is.js` eða `docs/about/content/is.html`; síðari breytingar voru eingöngu QA-workflow/evidence/checksum breytingar. Því gildir niðurstaðan fyrir lifandi íslenska veftextann.
+
+## Uppfærð staða
+
+`is-IS` uppfyllir nú stranga native-language whole-site linguistic QA kröfuna og má vera **linguistic QA**. Þetta er áfram aðskilið frá render-/sjónrænu QA, PWA/offline, tungumálaskiptum og loka-`PASS` rollout-hliðinu.
