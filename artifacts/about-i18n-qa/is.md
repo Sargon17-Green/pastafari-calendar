@@ -138,3 +138,19 @@ Samanburður frá reviewed HEAD að lifandi grein sýndi engar breytingar á `do
 ## Uppfærð staða
 
 `is-IS` uppfyllir nú stranga native-language whole-site linguistic QA kröfuna og má vera **linguistic QA**. Þetta er áfram aðskilið frá render-/sjónrænu QA, PWA/offline, tungumálaskiptum og loka-`PASS` rollout-hliðinu.
+
+
+## Evidence-hygiene lokakeyrsla
+
+Eftir fyrri ströngu PASS-keyrsluna var gerð sérstök lokakeyrsla til að fjarlægja frjáls meta-summary svið úr output-samningi rýnisins. Þannig er lokaúrskurðurinn ekki lengur háður gæðum frjálsrar málfarsprósu rýnisins.
+
+- workflow run: `36555762016`
+- reviewed HEAD: `a107ff25e0cb33ba542f21666640ad27a553c80a`
+- niðurstaða: `NATIVE_QA_RESULT: PASS`
+- falið samsett hæfnipróf: **6/6**
+- whole-site rýni: **3/3 chunks CLEAN**
+- GreynirCorrect-viðvaranir úr veftextanum eftir deterministic síun: **0**
+- staðfest findings: **0**
+- evidence: `artifacts/about-i18n-native-sessions/is/strict-36555762016/`
+
+Þessi lokakeyrsla leysir run `36550435224` af hólmi sem sterkasta audit-evidence fyrir stranga same-language linguistic gate. Engin breyting varð á íslenska veftextanum milli reviewed HEAD og síðari lifandi HEAD; drift var takmarkað við QA/evidence/checksum skrár.
