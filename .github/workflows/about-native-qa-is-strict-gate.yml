@@ -10,6 +10,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: icelandic-strict-native-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   strict-is:
     runs-on: ubuntu-latest
@@ -385,6 +389,7 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           import json, re, urllib.request, urllib.error
+          from reynir_correct import check_single
 
           root = Path("/tmp/is-strict")
           ev = root / "evidence"
