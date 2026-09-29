@@ -117,6 +117,8 @@ jobs:
                   self.current = None
               def handle_starttag(self, tag, attrs):
                   attrs = dict(attrs)
+                  if tag == "br" and self.current is not None:
+                      self.current["parts"].append(". ")
                   self.stack.append(tag)
                   if tag == "section":
                       self.section_ids.append(attrs.get("id",""))
@@ -254,8 +256,18 @@ jobs:
                   continue
               for ann in getattr(sent, "annotations", ()) or ():
                   code = str(getattr(ann, "code", ""))
+                  message = str(getattr(ann, "text", ""))
+                  suggest = str(getattr(ann, "suggest", ""))
                   # Long-sentence/style-only notices are not grammar failures.
                   if code in {"E005", "E006", "E007"}:
+                      continue
+                  # Canonical one-letter mathematical variables are not Icelandic words.
+                  unknown = re.search(r"Óþekkt orð: '([^']+)'", message)
+                  if code == "U001" and unknown and re.fullmatch(r"[A-Za-z]", unknown.group(1)):
+                      continue
+                  # A lower-case paragraph can deliberately continue an immediately preceding
+                  # displayed 'Ef F(...)' mathematical condition; the HTML source provides that context.
+                  if code == "Z002" and item["location"].endswith("#far-time-structure") and text.startswith("þá "):
                       continue
                   warnings.append({
                       "id": f"G{len(warnings):04d}",
@@ -403,7 +415,7 @@ jobs:
 
           Vélrænar GREYNIR_VIÐVARANIR eru hjálpargögn, ekki sjálfkrafa sannleikur.
           Fyrir HVERJA viðvörun sem fylgir þessum hluta verður að skila einni warning_decision með sama id:
-          SAMÞYKKJA ef hún bendir á raunverulegan galla, annars HAFNA, með stuttri íslenskri ástæðu.
+          RAUNVERULEGUR_GALLI ef hún bendir á raunverulegan galla, annars FALSK_JÁKVÆÐ, með stuttri íslenskri ástæðu.
           Þú mátt einnig finna raunveruleg vandamál sem GreynirCorrect fann ekki.
 
           Skilaðu aðeins JSON samkvæmt schema. result er CLEAN ef findings er tómt og FINDINGS ef findings er ekki tómt.
@@ -421,7 +433,7 @@ jobs:
                           "type": "object",
                           "properties": {
                               "id": {"type": "string"},
-                              "decision": {"type": "string", "enum": ["SAMÞYKKJA", "HAFNA"]},
+                              "decision": {"type": "string", "enum": ["RAUNVERULEGUR_GALLI", "FALSK_JÁKVÆÐ"]},
                               "reason": {"type": "string", "minLength": 8, "maxLength": 220},
                           },
                           "required": ["id", "decision", "reason"],
@@ -519,6 +531,10 @@ jobs:
                           "\n\nENDURTEKIN_VÉLRÆN_TILRAUN=TRUE"
                           + "\nÁSTÆÐA=" + last_error
                           + "\nSKILA_HEILU_JSON=TRUE"
+                          + "\nRAUNVERULEGUR_GALLI_KREFST_FINDING=TRUE"
+                          + "\nFALSK_JÁKVÆÐ_KREFST_EKKI_FINDING=TRUE"
+                          + "\nLEIÐRÉTTING_VERÐUR_AÐ_BREYTA_TEXTA=TRUE"
+                          + "\nRÝNISVAR_VERÐUR_AÐ_VERA_EÐLILEG_ÍSLENSKA=TRUE"
                       )
                   raw = call(attempt_message)
                   attempts.append({"attempt": attempt, "raw": raw})
@@ -551,6 +567,15 @@ jobs:
                       last_error = "VIÐVARANIR_EKKI_FULLMETNAR"
                       continue
 
+                  accepted_warning_item_ids = {
+                      w["item_id"]
+                      for w in chunk_warnings
+                      if any(
+                          d.get("id") == w["id"] and d.get("decision") == "RAUNVERULEGUR_GALLI"
+                          for d in decisions
+                      )
+                  }
+
                   good = True
                   for f in findings:
                       if not isinstance(f, dict):
@@ -565,6 +590,41 @@ jobs:
                       if cur == corr:
                           good = False; last_error = "LEIÐRÉTTING_ÓBREYTT"; break
                   if not good:
+                      continue
+
+                  finding_item_ids = set()
+                  for f in findings:
+                      loc = str(f.get("location","")).strip()
+                      cur = str(f.get("current_text","")).strip()
+                      for item in chunk:
+                          if item["location"] == loc and cur in item["text"]:
+                              finding_item_ids.add(item["id"])
+                  if not accepted_warning_item_ids.issubset(finding_item_ids):
+                      last_error = "SAMÞYKKT_VIÐVÖRUN_ÁN_FINDING"
+                      continue
+
+                  # The reviewer's own Icelandic must also be intelligible and grammatical.
+                  reviewer_texts = [summary]
+                  reviewer_texts += [str(d.get("reason","")) for d in decisions]
+                  reviewer_texts += [str(f.get("issue","")) for f in findings]
+                  bad_reviewer_prose = False
+                  for reviewer_text in reviewer_texts:
+                      reviewer_text = reviewer_text.strip()
+                      if len(reviewer_text) < 12 or "{" in reviewer_text or "}" in reviewer_text:
+                          continue
+                      try:
+                          checked = check_single(reviewer_text)
+                      except Exception:
+                          continue
+                      prose_annotations = [
+                          a for a in (getattr(checked, "annotations", ()) or ())
+                          if str(getattr(a, "code", "")) not in {"E005", "E006", "E007", "U001"}
+                      ]
+                      if prose_annotations:
+                          bad_reviewer_prose = True
+                          last_error = "ÓEÐLILEGT_MÁL_Í_RÝNISVARI"
+                          break
+                  if bad_reviewer_prose:
                       continue
 
                   accepted = parsed
