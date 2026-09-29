@@ -40,7 +40,7 @@ Allowed strict-session states: `pending` → `reviewed PASS` or `reviewed FAIL` 
 | hu | hu-HU | ltr | semantic QA | pending | — |
 | hy | hy-AM | ltr | semantic QA | pending | — |
 | id | id-ID | ltr | semantic QA | pending | — |
-| is | is-IS | ltr | semantic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/is/strict-36550435224/` — strict Icelandic SAGA + Greynir whole-site run `36550435224`; hidden qualification 6/6, 6/6 chunks CLEAN, 0 site warnings, 0 findings |
+| is | is-IS | ltr | semantic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/is/strict-36555762016/` — evidence-hygiene strict SAGA + Greynir run `36555762016`; hidden qualification 6/6, 3/3 chunks CLEAN, 0 site warnings, 0 findings |n-native-sessions/is/strict-36550435224/` — strict Icelandic SAGA + Greynir whole-site run `36550435224`; hidden qualification 6/6, 6/6 chunks CLEAN, 0 site warnings, 0 findings |
 | it | it-IT | ltr | semantic QA | pending | — |
 | ja | ja-JP | ltr | semantic QA | pending | — |
 | jv | jv-ID | ltr | semantic QA | pending | — |
