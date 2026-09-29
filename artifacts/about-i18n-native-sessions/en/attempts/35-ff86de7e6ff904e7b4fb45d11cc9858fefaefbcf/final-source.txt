@@ -1,0 +1,1163 @@
+===== docs/i18n/locales/en.js — FULL TARGET UI TERMINOLOGY =====
+"use strict";
+
+export default Object.freeze({
+  code: "en",
+  displayName: "English",
+  dir: "ltr",
+  intlLocale: "en-US",
+  messages: Object.freeze({
+    "meta.description": "A Pastafari calendar with date search and comparison.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
+    "app.title": "Pastafari Calendar",
+    "app.brand": "PASTAFARI",
+    "nav.skip": "Skip to date search",
+    "app.intro": "Find a day in any available calendar, then see its complete Pastafari date and the cutlet that contains it.",
+    "guide.open": "How do I use this site?",
+    "guide.openShort": "How to use this site",
+    "about.open": "About the calendar",
+    "about.openShort": "About the calendar",
+    "about.title": "About the Pastafari Calendar",
+    "about.metaDescription": "An explanation of the Pastafari Calendar: its two-day calculation, years, cutlets, woven months, day boundary, and advanced mechanics.",
+    "about.intro": "How the calendar represents days, years, cutlets, woven months, and the day of working.",
+    "about.skip": "Skip to the calendar explanation",
+    "about.back": "Back to the calendar",
+    "about.tocKicker": "On this page",
+    "about.toc": "Contents",
+    "about.fallbackNotice": "The explanation is not available in the selected language right now, so the default version is shown.",
+    "about.loadError": "The calendar explanation could not be loaded.",
+    "language.label": "Language",
+    "day.staleWarning": "The current day changed from {previousDate} to {currentDate}. Because the day of working was the current day, the displayed dates are no longer up to date. They will be recalculated after you dismiss this message.",
+    "location.assumption": "(In the absence of contrary information, the device is assumed to be in Kisurra.)",
+    "location.useDevice": "Use device location",
+
+    "search.kicker": "Date search",
+    "search.heading": "Which day would you like to find?",
+    "search.intro": "Choose a calendar, enter a date, and select “Show date.” The current Pastafari day is filled in by default.",
+    "search.calendarLabel": "Calendar used for input",
+    "search.submit": "Show date",
+    "search.invalid": "That date could not be recognized. Check that every field is complete and that the date exists in the selected calendar.",
+
+    "settings.summary": "Calculation and comparison options",
+    "settings.heading": "Change the day of working",
+    "settings.intro": "The day of working is the calculation's point of departure. By default, the site uses the current Pastafari day determined for the active observer location.",
+    "settings.actionCalendarLabel": "Calendar used to enter the day of working",
+    "settings.apply": "Apply day of working",
+    "settings.reset": "Reset to current Pastafari day",
+    "settings.invalid": "The day of working is invalid. Check the date and try again.",
+
+    "comparison.toggle": "Compare two calculations side by side",
+    "comparison.toggleHelp": "Available on desktop. Each row will be the same queried day under two days of working.",
+    "comparison.secondActionLabel": "Calendar used to enter the second day of working",
+    "comparison.apply": "Update comparison",
+    "comparison.kicker": "Comparison aligned by day",
+    "comparison.heading": "The same days, two days of working",
+    "comparison.intro": "Every row contains the same queried day. Only the day of working changes between the first and second columns.",
+    "comparison.sameDay": "Day shared by both calculations",
+    "comparison.actionHeading": "Day of working: {date}",
+    "comparison.summary": "Showing {count} days — from the first through the last day of the cutlet opened by the first calculation.",
+    "comparison.scrollAria": "Comparison table of the same days under two calculations",
+    "comparison.desktopOnly": "The full comparison table is available on a wide desktop screen.",
+    "comparison.invalid": "The second day of working is invalid. Check the date and try again.",
+
+    "field.year": "Year",
+    "field.month": "Month",
+    "field.day": "Day",
+    "field.relatedYear": "Related Gregorian year",
+    "field.leapMonth": "Leap month",
+    "field.era": "Era",
+    "field.eraYear": "Year in era",
+    "field.ayyamiHa": "Ayyám-i-Há",
+    "field.baktun": "Baktun",
+    "field.katun": "Katun",
+    "field.tun": "Tun",
+    "field.uinal": "Uinal",
+    "field.kin": "Kin",
+    "field.correlation": "Correlation number",
+    "era.meiji": "Meiji",
+    "era.taisho": "Taishō",
+    "era.showa": "Shōwa",
+    "era.heisei": "Heisei",
+    "era.reiwa": "Reiwa",
+
+    "calendarInput.gregorian": "Gregorian",
+    "calendarInput.julian": "Julian",
+    "calendarInput.hebrew": "Hebrew",
+    "calendarInput.islamicCivil": "Islamic civil",
+    "calendarInput.islamicUmmAlQura": "Umm al-Qura",
+    "calendarInput.solarHijriOfficial": "Solar Hijri — official",
+    "calendarInput.solarHijriArithmetic": "Solar Hijri — arithmetic 2,820",
+    "calendarInput.chinese": "Chinese",
+    "calendarInput.hinduOldSolar": "Old Hindu — solar",
+    "calendarInput.hinduOldLunar": "Old Hindu — lunar",
+    "calendarInput.saka": "Saka",
+    "calendarInput.thaiBuddhist": "Thai Buddhist",
+    "calendarInput.ethiopic": "Ethiopic",
+    "calendarInput.coptic": "Coptic",
+    "calendarInput.japaneseImperial": "Japanese imperial",
+    "calendarInput.minguo": "Minguo",
+    "calendarInput.bahaiTehran": "Bahá’í — Tehran equinox",
+    "calendarInput.bahaiWestern": "Bahá’í — western arithmetic",
+    "calendarInput.mayaLongCount": "Maya Long Count",
+    "calendarHelp.hebrew": "Months are selected by name. Year and day accept decimal digits or Hebrew numeral letters, for example תשפ״ו or י״ד; a letter-form year with no thousands mark is interpreted with 5,000 added.",
+    "calendarHelp.intl": "This conversion uses calendar support built into your browser. If the browser cannot represent the date, the site reports that explicitly.",
+    "calendarHelp.chinese": "Enter the Gregorian year associated with the Chinese year, and mark “Leap month” only for the repeated month.",
+    "calendarHelp.hindu": "Enter the year and day in the old Hindu count and choose the month by name. The lunar form can also mark a leap month.",
+    "calendarHelp.japanese": "Year 1 begins on the first day of the era; you may also enter 元 or 元年 for the first year. A date before its beginning or after its end is rejected.",
+    "calendarHelp.bahai": "Choose the month by name or Ayyám-i-Há. The Tehran-equinox form supports the conventional Gregorian range 1844–3000.",
+    "calendarHelp.maya": "The default correlation is GMT 584,283. You can change it if you use a different correlation.",
+
+    "loading.kicker": "Calculated locally",
+    "loading.title": "Finding the cutlet and date…",
+    "error.kicker": "Unable to display the calendar",
+    "error.title": "The calculation engine did not load",
+    "error.reload": "Reload",
+    "error.timeout": "The calculation is taking too long.",
+    "error.engineFailed": "The calculation engine failed.",
+    "error.engineLoadFailed": "The calculation engine could not be loaded.",
+
+    "calendar.toolbarAria": "Cutlet navigation",
+    "calendar.previous": "Previous cutlet",
+    "calendar.today": "Back to today",
+    "calendar.next": "Next cutlet",
+    "calendar.daysAria": "Days in the cutlet {cutletName}",
+    "calendar.currentCutlet": "Year {year} · cutlet",
+    "calendar.cutletDescription": "{count} days · day of working: {actionDate}",
+    "calendar.targetOutside": "The date you searched for is not in the cutlet currently on screen. You can keep browsing or search for another date.",
+
+    "year.kicker": "Year at a glance",
+    "year.heading": "Structure of year {year}",
+    "year.context": "This structure is calculated for the day of working {actionDate}. Changing the day of working can rebuild the year's boundaries, cutlets, and months.",
+    "year.loading": "Building the full year structure…",
+    "year.error": "The full year structure could not be built. The cutlet view is still available.",
+    "year.lengthLabel": "Year length",
+    "year.cutletCountLabel": "Cutlets",
+    "year.monthCountLabel": "Months",
+    "year.rangeLabel": "Gregorian span",
+    "year.daysValue": "{count} days",
+    "year.rangeValue": "{startDate} to {endDate}",
+    "year.displayedCutletPosition": "The displayed cutlet occupies days {start}–{end} of the year.",
+    "year.targetPosition": "The date you searched for is day {day} of {length} in this year.",
+    "year.monthExplainer": "Months are woven independently of cutlets: a month is not a subdivision of a cutlet, and its days can appear in many separate runs across the year. A month's length is therefore its total number of assigned days, not necessarily one continuous span.",
+    "year.cutletsSummary": "Cutlets in this year ({count})",
+    "year.monthsSummary": "Months in this year ({count})",
+    "year.numberedName": "{number}. {name}",
+    "year.cutletMeta": "Length: {length} days · position in year: days {start}–{end}",
+    "year.monthMeta": "Days: {length} · continuous runs: {runs} · first occurrence: day {first} · last: day {last}",
+
+    "target.today": "This is today",
+    "target.searched": "This is the date you searched for",
+    "target.context": "Queried date: {targetDate} · day of working: {actionDate}",
+    "target.notInView": "Your searched date remains saved; the cutlet currently displayed is different.",
+    "date.aria": "Year {year} from the Creation of the World, day {dayInCutlet} in the cutlet {cutletName}, day {dayInMonth} in the month {monthName}",
+    "date.yearLine": "Year {year} from the Creation of the World",
+    "date.cutletLine": "Day {dayInCutlet} in the cutlet {cutletName}",
+    "date.monthLine": "Day {dayInMonth} in the month {monthName}",
+
+    "guide.eyebrow": "User guide",
+    "guide.heading": "What can you do here, and how?",
+    "guide.intro": "The site shows a complete Pastafari date for any day, accepts searches in many calendars, and can compare the effect of the day of working on desktop.",
+    "guide.1.heading": "Open the site and get today",
+    "guide.1.body": "As soon as the link opens, the site determines the current Pastafari day for the active observer location and displays the cutlet containing it. The day boundary is the location-dependent lower meridian transit of Venus described in ASTRONOMICAL-DAY.md; it is not civil midnight. There is no registration, sign-in, or date sent to a calculation server.",
+    "guide.2.heading": "Search in any available calendar",
+    "guide.2.body": "In “Which day would you like to find?”, choose a calendar, fill its fields, and select “Show date.” The choices include Gregorian, Hebrew, Julian, Islamic, Persian, Chinese, Hindu, Saka, Thai, Ethiopic, Coptic, Japanese, Minguo, Bahá’í, and the Maya Long Count.",
+    "guide.3.heading": "Read the date",
+    "guide.3.body": "Every tile has three fixed lines: year from the Creation of the World; the day number in the cutlet and its name; then the day in the month and its name. No single number represents the whole date. The month name determines the tile's color.",
+    "guide.4.heading": "Browse without selecting by accident",
+    "guide.4.body": "“Previous cutlet” and “Next cutlet” move to neighboring cutlets. Other day tiles are not buttons because clicking them has no action. “Back to today” resets both the search and the day of working to the current Pastafari day.",
+    "guide.5.heading": "Change the day of working",
+    "guide.5.body": "Open “Calculation and comparison options” below the search. There you can choose a calendar and enter another day of working. Further searches use it until you reset to the current Pastafari day. This advanced control remains available without crowding the normal view.",
+    "guide.6.heading": "Compare the same days twice",
+    "guide.6.body": "On desktop, enable comparison in the same area. Each row contains exactly the same queried day; the first column uses the first day of working and the second uses the second. Today versus tomorrow is the default, making every changed Pastafari date easy to identify.",
+    "guide.7.heading": "Inspect the whole year",
+    "guide.7.body": "Below the cutlet view, the site shows the structure of the displayed year: its length and span, every cutlet and its length, and every month. Months also show their number of continuous runs and their first and last occurrence, making the year-wide weaving visible.",
+    "guide.note": "Rows and columns in the tile grid are only visual arrangement, not weeks. In the comparison table, however, alignment is meaningful: each row is the same queried day.",
+    "guide.back": "Back to search and calendar",
+    "footer.local": "Calculation happens on your device; this site has no user account and no tracking code.",
+    "footer.open": "The link is public and loads directly, including in a private-browsing window.",
+    "reverse.kicker": "Reverse search",
+    "reverse.heading": "Find a day from its Pastafari date",
+    "reverse.intro": "Enter a complete Pastafari date and define its day of working. The search runs locally on this device.",
+    "reverse.mode.basic": "Single date",
+    "reverse.mode.advanced": "Constraint system",
+    "reverse.basic.heading": "Single-date reverse search",
+    "reverse.basic.dateHeading": "Pastafari date to find",
+    "reverse.field.year": "Year",
+    "reverse.field.cutlet": "Cutlet",
+    "reverse.field.dayInCutlet": "Day in cutlet",
+    "reverse.field.month": "Month",
+    "reverse.field.dayInMonth": "Day in month",
+    "reverse.basic.calculationHeading": "Day of working",
+    "reverse.basic.calculationMode": "How is the day of working defined?",
+    "reverse.basic.calculation.active": "Use the site's active day of working",
+    "reverse.basic.calculation.absolute": "Use another known date",
+    "reverse.basic.calculation.same": "The day of working is the queried day (c = t)",
+    "reverse.basic.calculation.pastafari": "The day of working is itself Pastafari / depends on other dates",
+    "reverse.basic.activeValue": "Active day of working: {date}",
+    "reverse.basic.absoluteHeading": "Known day of working",
+    "reverse.basic.sameHeading": "Finite search range for c = t",
+    "reverse.basic.rangeStart": "Range start",
+    "reverse.basic.rangeEnd": "Range end",
+    "reverse.basic.toAdvanced": "Continue in the constraint-system editor",
+    "reverse.basic.toAdvancedHelp": "Recursive Pastafari calculation days are represented as variables and constraints so the chain can be extended without an artificial depth limit.",
+    "reverse.action.solve": "Search",
+    "reverse.action.cancel": "Cancel search",
+    "reverse.action.open": "Open in calendar",
+    "reverse.action.addVariable": "Add date variable",
+    "reverse.action.addConstraint": "Add constraint",
+    "reverse.action.remove": "Remove",
+    "reverse.action.clear": "Clear results",
+    "reverse.progress.reverse": "Resolving Pastafari relations",
+    "reverse.progress.verify": "Verifying candidate solutions",
+    "reverse.progress.done": "Search finished",
+    "reverse.progress.scanned": "Work units completed: {count}",
+    "reverse.status.running": "Searching locally…",
+    "reverse.status.cancelled": "Search cancelled.",
+    "reverse.status.superseded": "A newer search replaced this search.",
+    "reverse.status.completeEmpty": "No solution exists in the completely searched domain.",
+    "reverse.status.completeSolutions": "Search complete. All {count} solutions in the domain are shown.",
+    "reverse.status.partialEmpty": "The search stopped before completion. No solution has been found yet.",
+    "reverse.status.partialSolutions": "{count} verified solutions are shown, but the search stopped before completion and more may exist.",
+    "reverse.status.stale": "These results used a previous active day of working. Run the search again to use the current one.",
+    "reverse.status.rangeRequired": "This problem cannot be searched exhaustively until a finite range or fixed date is added.",
+    "reverse.status.timeout": "The search reached its time limit before completion.",
+    "reverse.status.failed": "The reverse-search engine failed.",
+    "reverse.result.heading": "Solutions",
+    "reverse.result.solution": "Solution {index}",
+    "reverse.result.target": "Queried day",
+    "reverse.result.calculation": "Day of working",
+    "reverse.result.jdn": "JDN {jdn}",
+    "reverse.result.complete": "Complete search",
+    "reverse.result.partial": "Partial search",
+    "reverse.advanced.heading": "Constraint-system solver",
+    "reverse.advanced.intro": "Define date variables and relationships between them. Cycles are allowed when the system is reduced to finite domains.",
+    "reverse.variables.heading": "Date variables",
+    "reverse.variable.label": "Display name",
+    "reverse.variable.defaultName": "Date {index}",
+    "reverse.variable.domain": "Domain",
+    "reverse.variable.domain.unknown": "Unknown (must be bounded by other constraints)",
+    "reverse.variable.domain.exact": "Exact known date",
+    "reverse.variable.domain.range": "Finite date range",
+    "reverse.constraint.heading": "Constraints",
+    "reverse.constraint.type": "Constraint type",
+    "reverse.constraint.pastafari": "Pastafari date",
+    "reverse.constraint.equal": "Same absolute day",
+    "reverse.constraint.order": "Chronological order",
+    "reverse.constraint.difference": "Difference in days",
+    "reverse.constraint.left": "Left date",
+    "reverse.constraint.right": "Right date",
+    "reverse.constraint.target": "Queried date variable",
+    "reverse.constraint.calculationMode": "Day-of-working source",
+    "reverse.constraint.calculation.variable": "Another date variable",
+    "reverse.constraint.calculation.absolute": "Known absolute date",
+    "reverse.constraint.calculation.same": "Same as queried date (c = t)",
+    "reverse.constraint.calculationVariable": "Day-of-working variable",
+    "reverse.constraint.orderOp": "Relation",
+    "reverse.constraint.differenceMode": "Difference rule",
+    "reverse.constraint.differenceExact": "Exact difference",
+    "reverse.constraint.differenceRange": "Difference range",
+    "reverse.constraint.equals": "Exact days (left − right)",
+    "reverse.constraint.min": "Minimum days (left − right)",
+    "reverse.constraint.max": "Maximum days (left − right)",
+    "reverse.options.heading": "Search limits",
+    "reverse.options.intro": "Leave a limit blank for no limit. A limit is never applied silently.",
+    "reverse.options.maxSolutions": "Stop after this many verified solutions",
+    "reverse.options.maxScanned": "Stop after this many work units",
+    "reverse.options.timeout": "Time limit in milliseconds",
+    "reverse.advanced.emptyVariables": "Add at least one date variable.",
+    "reverse.advanced.emptyConstraints": "A system may contain no constraints, but every remaining variable must still have a finite domain.",
+    "reverse.error.input": "Some reverse-search fields are missing or invalid.",
+    "reverse.error.limitPositive": "{field} must be positive.",
+    "reverse.error.limitSafeInteger": "{field} is outside the safe integer range.",
+    "reverse.error.absoluteDateField": "Invalid absolute date field.",
+    "reverse.error.range": "The range end must not precede the range start.",
+    "reverse.error.variable": "Each constraint must refer to an existing date variable.",
+    "reverse.error.pastafari": "Enter all five Pastafari date fields.",
+    "reverse.calendar.label": "Calendar used for this absolute date",
+
+  }),
+  calendar: Object.freeze({
+    cutlets: Object.freeze({
+      bronze: "Bronze", fox: "Fox", kidney: "Kidney", lagash: "Lagash", thought: "Thought",
+      fourPartsOfNine: "Four Parts of Nine", palgurash: "Palgurash", papyrusSedge: "Papyrus Sedge",
+      cluster: "Cluster", scorpion: "Scorpion", ash: "Ash", wheat: "Wheat", river: "River",
+      laughter: "Laughter", akkad: "Akkad", horn: "Horn", theEmptyJar: "The Empty Jar",
+    }),
+    months: Object.freeze({
+      clay: "Clay", pomegranate: "Pomegranate", elbow: "Elbow", envy: "Envy", eridu: "Eridu",
+      toothpaste: "Toothpaste", threePartsOfFive: "Three Parts of Five", karshumav: "Karshumav",
+      leopard: "Leopard", tin: "Tin", mist: "Mist", frankincense: "Frankincense", spindle: "Spindle",
+      rib: "Rib", carob: "Carob", uruk: "Uruk", shame: "Shame", camel: "Camel", copper: "Copper",
+      well: "Well", yolk: "Yolk", star: "Star", honey: "Honey", spleen: "Spleen", limestone: "Limestone",
+      joy: "Joy", fig: "Fig", nineveh: "Nineveh", frog: "Frog", pitch: "Pitch", lamp: "Lamp",
+      theClosedDoor: "The Closed Door", sesame: "Sesame", nape: "Nape", silver: "Silver", susa: "Susa",
+      storm: "Storm", donkey: "Donkey", flour: "Flour", regret: "Regret", babylon: "Babylon", tongue: "Tongue",
+      flax: "Flax", salt: "Salt", pear: "Pear", bow: "Bow", sand: "Sand",
+    }),
+  }),
+  terminology: Object.freeze({
+    foundationDay: "Foundation Day",
+    workingNumber: "Working Number",
+    queryNumber: "Query Number",
+    distanceNumber: "Distance Number",
+    sumNumber: "Sum Number",
+    directionNumber: "Direction Number",
+    bowl: "Bowl",
+    drop: "Drop",
+    gate: "Gate",
+    yearFiveThousand: "Year Five Thousand from the Creation of the World",
+  }),
+});
+
+
+===== docs/about/content/en.html — HEADINGS + LEAD PARAGRAPHS =====
+14:   <h2>What makes up a Pastafari date?</h2>
+15:   <p>Every Pastafari date has <strong>exactly five parts</strong>:</p>
+23:   <p>A generic example would be: <strong>year 5000, cutlet A, day 417 in the cutlet, month B, day 83 in the month.</strong></p>
+29:   <h2>Why is a day of working needed?</h2>
+30:   <p>In an ordinary calendar we tend to think that a date simply “belongs” to a day. Here it belongs to a relationship between two days.</p>
+31:   <p>Changing <code>t</code> means asking about a different day. Changing <code>c</code> goes deeper: it can alter the calendar structure in which the question is asked—year boundaries, cutlets, months, their names, and the way the months are woven together.</p>
+37:   <h2>Same day, different date</h2>
+38:   <p>Two ideas need to be kept separate. <strong>Day identity</strong> is a day's stable position on the timeline. Its <strong>Pastafari representation</strong> is the five-field result obtained when that same day is viewed under a particular day of working.</p>
+39:   <p>In the product and API, the first can be thought of as a <code>day-id</code>: a chronological identity that does not change when the display context changes. By contrast,</p>
+51:   <h2>Year 5000</h2>
+52:   <p>Whenever the day of working and the queried day are the same,</p>
+54:   <p>the year is always</p>
+67:   <h2>Years and gates</h2>
+68:   <p>A Pastafari year can contain anywhere from</p>
+70:   <p>days. These are canonical limits of the system, not averages observed in an experiment.</p>
+77:   <h2>Cutlets</h2>
+78:   <p>Every year is divided into <strong>6 to 17 cutlets</strong>. A cutlet is one continuous chronological segment.</p>
+79:   <p>If today is day 250 of a cutlet, tomorrow is day 251 of that cutlet—unless today is its final day.</p>
+88:   <h2>Months and weaving</h2>
+89:   <p>A year contains</p>
+91:   <p>structural months, and each month has</p>
+102:   <h2>The months are woven through one another</h2>
+103:   <p>It helps to picture the months as threads woven along the year. Every day belongs to exactly one month, but tomorrow may belong to another; later the first month can return and continue with its next number.</p>
+104:   <p>The weave is not ruleless. In particular, there are constraints on the orders in which months first and last appear. There is nevertheless no requirement that one month finish before another begins.</p>
+115:   <h2>The next day in a month is not necessarily tomorrow</h2>
+116:   <p>If today is day 17 of some month, day 18 of that month is <strong>that month's next occurrence</strong>. It might be tomorrow; it might be much later.</p>
+117:   <p>So <strong>tomorrow</strong> means the next chronological day, while <strong>the next day in the month</strong> means the next time that month appears.</p>
+123:   <h2>There are no weeks</h2>
+124:   <p>The current canonical specification <strong>does not define a week system</strong>. There is no canonical seven-day super-unit, no Pastafari weekday names, and no rule making one day the “same weekday” as another.</p>
+125:   <p>A civil week system can of course be overlaid from outside. It simply is not part of the Pastafari date.</p>
+130:   <h2>Names</h2>
+131:   <p>The calendar has 17 canonical cutlet names and 47 canonical month names. Within a year, each name occurs at most once within its own family.</p>
+132:   <p>A name's identity is canonical and semantic; it is not decided by a vote among spellings, translations, or implementations. The Hebrew Scroll is the highest authority for the names' meanings. Translation and transliteration are display layers.</p>
+138:   <h2>A small fact about months</h2>
+139:   <p>There are 47 month names, and a month can reach at most day 123. That gives</p>
+141:   <p>syntactically possible pairs of the form:</p>
+152:   <h2>How is the calendar calculated?</h2>
+153:   <p>The internal calculation is called <strong>the sauce</strong>. At its center is</p>
+155:   <p>which is prime.</p>
+167:   <h2>Short Choice and Wide Choice</h2>
+168:   <p><strong>Short Choice</strong> is used when the system must select from a relatively small option space. It uses rejection sampling to avoid the bias of a simple modulo operation.</p>
+169:   <p>Very large choice spaces use <strong>Wide Choice</strong>. It is important not to give Wide Choice properties that the specification does not give it.</p>
+176:   <h2>The Structural Atlas</h2>
+177:   <p>The rules above are rules of the calendar. The numbers in this box are something else: <strong>empirical findings</strong> from a large computational sample.</p>
+178:   <p>The atlas was built with engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code>. It contains:</p>
+225:   <h2>Birthdays and anniversaries</h2>
+226:   <p>“The same day every year” needs a more careful definition in a Pastafari calendar. At least two natural structural coordinates can be held fixed: a <strong>month anniversary</strong>, meaning the same month name and day in month, or a <strong>cutlet anniversary</strong>, meaning the same cutlet name and day in cutlet. Combined conditions are possible too.</p>
+227:   <p>A Pastafari birthday is therefore not simply equivalent to <code>RRULE:FREQ=YEARLY</code>. One must search for the next year in which the chosen recurrence condition is satisfied. The original event itself is not automatically counted as its own “next occurrence”.</p>
+239:   <h2>How do you arrange a meeting?</h2>
+240:   <p>If two people want to set the meeting day using a Pastafari date, they must agree at least on the five-field Pastafari tuple and the day of working used to calculate it. Together, these specify the Pastafari day, not necessarily an exact moment within it. Preferably, that day of working should itself be stored as a stable day identity rather than as the word “today”; otherwise the two people may calculate different calendars.</p>
+241:   <p>Ordinary phrases also need precision:</p>
+254:   <h2>Travel and all-day events</h2>
+255:   <p>An event is not the same thing as the local label displayed for it. A scheduled event should be anchored to a stable chronological instant. Travel does not move the event in time, but it can change the local Pastafari date shown at that instant, because the definition of the “local day” depends on location.</p>
+256:   <p>The difference is even more important for an <strong>all-day</strong> event. A civil all-day event normally runs from one civil midnight to the next. A Pastafari all-day event should run from one local Pastafari day boundary to the next. Those are generally not the same instants.</p>
+262:   <h2>When does the day change?</h2>
+263:   <p>The local Pastafari day does not change at midnight. Its boundary is defined by the <strong>topocentric lower meridian transit of the center of Venus across the local meridian</strong>.</p>
+264:   <p>In other words, the transition from one Pastafari day to the next is a local astronomical event and depends on location. Accordingly, the change of day:</p>
+277:   <h2>Printed calendars and hand calculation</h2>
+278:   <p>You can print a Pastafari calendar. Just state which day of working it is for. A calendar prepared under one day of working shows the structure of time from that day's point of view; when the day of working changes, a new calendar may be needed. The printer thus remains relevant.</p>
+279:   <p>Everything can also be calculated by hand. The specification is deterministic and complete. Calculate the input counters, perform 7 hidden drops and 46 visible ones, update six bowls, carry out 12 final stirs, produce the answers, build gates, choose years and cutlets, perform the combinatorial choices, select names, and weave the months.</p>
+285:   <h2>What is Seer?</h2>
+286:   <p>Alongside the canonical implementation there is a fast engine called <strong>Pastafarian Calendar Seer</strong>. Seer is not a source of authority: the Scroll sets the rules, and the canonical calculation derives the date from them. Seer is meant to return the same answer. If Seer disagrees with a correct canonical calculation, Seer is wrong.</p>
+287:   <p>Its purpose is to answer the same questions quickly and in a form that is easy to integrate into products.</p>
+307:   <h2>Origin, Foundation Day, and Tablets Day</h2>
+308:   <p>The calendar's fixed computational anchors are distinct from its origin and history of re-delivery.</p>
+311:     <h3>The anchors</h3>
+312:     <p>The system has a fixed reference day called <strong>Foundation Day</strong>. In the proleptic Gregorian calendar it is <strong>22 December 41,222 BCE</strong>.</p>
+313:     <p>Foundation Day is not “the beginning of time”. It is a computational anchor.</p>
+323:     <h3>The calendar's origin and re-delivery</h3>
+324:     <p>The Pastafari Calendar is part of creation. Humanity used it without fully realizing it was doing so until its modern re-delivery.</p>
+325:     <p>The Scroll does not set out every detail of this history; anything it does not state explicitly is not part of the Scroll's text.</p>
+332:   <h2>Advanced: reverse conversion</h2>
+333:   <p>When the day of working <code>c</code> is known, reverse conversion is very strong. Inside a known Pastafari year,</p>
+335:   <p>identifies at most one day. So does</p>
+360:     <h3>Structure far out in time</h3>
+361:     <p>Derived mathematical work has also established an exact asymptotic structure. For a <strong>fixed day of working</strong> <code>c</code>, sufficiently far down the past tail there is affine periodicity.</p>
+362:     <p>If</p>
+375:   <h2>Advanced: how much history does the sauce retain?</h2>
+376:   <p>The sauce looks like a very aggressive mixer, but algebraic research found that it preserves considerably more information than its outward appearance suggests. This is research derived from the specification, not an additional calendar rule.</p>
+377:   <p>On visible stages 3 through 46, generic injectivity has been established on the relevant asymptotic branch: generically, the state retains enough information to recover the relevant history of the inputs and bowl orders.</p>
+387:   <h2>So what is the Pastafari Calendar, really?</h2>
+388:   <p>It is a deterministic calendar in which a date is not a function of a queried day alone, but of the <strong>day of working and the queried day together</strong>.</p>
+389:   <p>A date has exactly five fields. The self-present is always in year 5000, although year 5000 itself changes with the day of working. Years can be extremely long; cutlets are continuous; months need not be continuous at all; and there is no canonical week system.</p>
+
+===== docs/i18n/runtime.js — USER-VISIBLE LOCALIZATION/FALLBACK TOUCHPOINTS =====
+43:     option.value = locale.code;
+44:     option.textContent = locale.displayName;
+45:     option.lang = locale.code;
+…
+55:   if (!documentElement) throw new TypeError("A document-like root with documentElement is required.");
+56:   documentElement.lang = locale.code;
+57:   documentElement.dir = locale.dir;
+58:   for (const element of root.querySelectorAll("[data-i18n]")) {
+59:     element.textContent = translate(locale, element.dataset.i18n);
+60:   }
+61:   for (const element of root.querySelectorAll("[data-i18n-attr]")) {
+62:     const bindings = element.dataset.i18nAttr.split(";").map((part) => part.trim()).filter(Boolean);
+…
+64:       const separator = binding.indexOf(":");
+65:       if (separator <= 0) throw new SyntaxError(`Invalid data-i18n-attr binding: ${binding}`);
+66:       const attribute = binding.slice(0, separator).trim();
+67:       const key = binding.slice(separator + 1).trim();
+68:       element.setAttribute(attribute, translate(locale, key));
+69:     }
+
+===== docs/i18n/registry.js — TARGET REGISTRATION =====
+3: import { CUTLETS, MONTHS } from "./calendar-identifiers.js?v=9-canonical-names";
+4: 
+5: export const DEFAULT_LOCALE = "en";
+6: export const SUPPORT_LEVELS = Object.freeze(["complete", "partial", "experimental"]);
+7: 
+…
+27: export const LOCALES = Object.freeze([
+28:   defineLocale("he", "עברית", "rtl", "he-IL", "complete", () => import("./locales/he.js?v=19-about-i18n")),
+29:   defineLocale("en", "English", "ltr", "en-US", "complete", () => import("./locales/en.js?v=19-about-i18n")),
+30:   defineLocale("af", "Afrikaans", "ltr", "af-ZA", "partial", () => import("./locales/af.js?v=19-about-i18n")),
+31:   defineLocale("ar", "العربية", "rtl", "ar", "partial", () => import("./locales/ar.js?v=19-about-i18n")),
+…
+190:   }
+191: 
+192:   return Object.freeze({ locale: byCode.get(canonicalTag(DEFAULT_LOCALE)), source: "fallback" });
+193: }
+194: 
+195: export function getLocale(code) {
+196:   return matchSupportedLocale(code) ?? byCode.get(canonicalTag(DEFAULT_LOCALE));
+197: }
+198: 
+…
+328:   assertLoadedLocaleMatchesMetadata(resource, metadata);
+329:   validateLocaleResourceShape(resource, metadata.code);
+330:   validateLocaleResourceShape(englishBaseline, DEFAULT_LOCALE);
+331:   if (!SUPPORT_LEVELS.includes(metadata.support)) throw new RangeError(`Locale ${metadata.code} has invalid support status.`);
+332:   if (!["ltr", "rtl"].includes(metadata.dir)) throw new RangeError(`Locale ${metadata.code} has invalid direction.`);
+…
+393:     const resource = await loadLocaleSource(metadata.code);
+394:     if (metadata.support === "complete") return wrapCompleteLocaleSource(resource);
+395:     const english = await loadLocaleSource(DEFAULT_LOCALE);
+396:     return materializeLocaleResources(resource, metadata, english);
+397:   })();
+…
+485:     return [source?.code, source];
+486:   }));
+487:   const english = sourceByCode.get(DEFAULT_LOCALE);
+488:   if (!english) throw new RangeError("English baseline locale is required for audit.");
+489:   const englishGroups = localGroups(english);
+…
+495:     const groups = localGroups(source);
+496:     const resourceGroups = {
+497:       messages: analyzeGroup(groups.messages, englishGroups.messages, "messages", { checkEnglishLeakage: metadata.code !== DEFAULT_LOCALE }),
+498:       terminology: analyzeGroup(groups.terminology, englishGroups.terminology, "terminology", { checkEnglishLeakage: metadata.code !== DEFAULT_LOCALE }),
+499:       cutlets: analyzeGroup(groups.cutlets, englishGroups.cutlets, "cutlets", { checkEnglishLeakage: metadata.code !== DEFAULT_LOCALE }),
+500:       months: analyzeGroup(groups.months, englishGroups.months, "months", { checkEnglishLeakage: metadata.code !== DEFAULT_LOCALE }),
+501:     };
+502: 
+…
+543:     sourceByCode.set(source.code, source);
+544:   }
+545:   const english = sourceByCode.get(DEFAULT_LOCALE);
+546:   if (!english) throw new RangeError("English baseline locale is required for validation.");
+547:   if (sources.length !== LOCALES.length) throw new RangeError(`Expected ${LOCALES.length} locale resources, received ${sources.length}.`);
+
+===== docs/i18n/registry.js — LOCALE LOAD/FALLBACK FUNCTIONS =====
+218: export async function loadLocaleSource(code) {
+219:   const metadata = getLocale(code);
+220:   const existing = loadedSources.get(metadata.code);
+221:   if (existing) return existing;
+222: 
+223:   const loading = metadata.loader().then((module) => assertLoadedLocaleMatchesMetadata(module.default, metadata));
+224:   loadedSources.set(metadata.code, loading);
+225:   try {
+226:     return await loading;
+227:   } catch (error) {
+228:     if (loadedSources.get(metadata.code) === loading) loadedSources.delete(metadata.code);
+229:     throw error;
+230:   }
+231: }
+
+362: export function materializeLocaleResources(resource, metadata, englishBaseline) {
+363:   validateLocaleSourceContract(resource, metadata, englishBaseline);
+364:   const local = localGroups(resource);
+365:   const fallback = localGroups(englishBaseline);
+366:   const result = {
+367:     ...resource,
+368:     messages: mergeGroup(fallback.messages, local.messages),
+369:     terminology: mergeGroup(fallback.terminology, local.terminology),
+370:     calendar: Object.freeze({
+371:       ...ownRecord(englishBaseline?.calendar),
+372:       ...ownRecord(resource?.calendar),
+373:       cutlets: mergeGroup(fallback.cutlets, local.cutlets),
+374:       months: mergeGroup(fallback.months, local.months),
+375:     }),
+376:   };
+377:   Object.defineProperty(result, LOCAL_SOURCE, { value: resource, enumerable: false });
+378:   return Object.freeze(result);
+379: }
+
+387: export async function loadLocale(code) {
+388:   const metadata = getLocale(code);
+389:   const existing = loadedLocales.get(metadata.code);
+390:   if (existing) return existing;
+391: 
+392:   const loading = (async () => {
+393:     const resource = await loadLocaleSource(metadata.code);
+394:     if (metadata.support === "complete") return wrapCompleteLocaleSource(resource);
+395:     const english = await loadLocaleSource(DEFAULT_LOCALE);
+396:     return materializeLocaleResources(resource, metadata, english);
+397:   })();
+398:   loadedLocales.set(metadata.code, loading);
+399:   try {
+400:     return await loading;
+401:   } catch (error) {
+402:     if (loadedLocales.get(metadata.code) === loading) loadedLocales.delete(metadata.code);
+403:     throw error;
+404:   }
+405: }
+
+===== docs/about/about.js — USER-VISIBLE ARTICLE LOCALIZATION/FALLBACK TOUCHPOINTS =====
+6: } from "../i18n/registry.js?v=20-about-i18n";
+7: import {
+8:   applyDocumentLocale,
+9:   persistLanguage,
+10:   populateLanguageSelector,
+…
+13: } from "../i18n/runtime.js?v=20-about-i18n";
+14: import {
+15:   ARTICLE_FALLBACK_LOCALE,
+16:   resolveArticleLocale,
+17: } from "./content/registry.js?v=5-about-i18n-polish";
+…
+21: );
+22: 
+23: let activeLocale = await loadLocale(resolveBrowserLocale().locale.code);
+24: let activeArticleCode = null;
+25: 
+…
+35: 
+36: function applyActiveLocale() {
+37:   applyDocumentLocale(activeLocale);
+38:   populateLanguageSelector(elements["language-selector"], activeLocale.code);
+39:   syncCalendarLinks();
+…
+49: function renderArticle(articleLocale, html) {
+50:   elements["article-content"].innerHTML = html;
+51:   elements["article-content"].lang = articleLocale.lang;
+52:   elements["article-content"].dir = articleLocale.dir;
+53:   activeArticleCode = articleLocale.code;
+54:   updateLanguageNotice(articleLocale.code);
+…
+66:   }
+67: 
+68:   elements["article-content"].setAttribute("aria-busy", "true");
+69:   elements["about-load-error"].hidden = true;
+70: 
+…
+75:       html = await fetchArticle(articleLocale);
+76:     } catch (selectedError) {
+77:       if (articleLocale.code === ARTICLE_FALLBACK_LOCALE) throw selectedError;
+78:       console.warn(`Falling back from article locale ${articleLocale.code} to ${ARTICLE_FALLBACK_LOCALE}.`, selectedError);
+79:       articleLocale = resolveArticleLocale(ARTICLE_FALLBACK_LOCALE);
+80:       html = await fetchArticle(articleLocale);
+81:     }
+…
+87:     elements["about-language-notice"].hidden = true;
+88:     elements["about-load-error"].hidden = false;
+89:     elements["about-load-error"].textContent = t("about.loadError");
+90:     elements["about-toc-list"].replaceChildren();
+91:   } finally {
+92:     elements["article-content"].setAttribute("aria-busy", "false");
+93:   }
+94: }
+…
+118:     const link = document.createElement("a");
+119:     link.href = `#${section.id}`;
+120:     link.textContent = heading.textContent.trim();
+121:     if (elements["article-content"].contains(section)) {
+122:       link.lang = elements["article-content"].lang;
+123:       link.dir = elements["article-content"].dir;
+124:     }
+125:     item.append(link);
+…
+146: 
+147: async function chooseLanguage(code) {
+148:   const locale = await loadLocale(code);
+149:   persistLanguage(locale.code);
+150:   const url = urlWithLanguage(location.href, locale.code);
+…
+177:     return;
+178:   }
+179:   loadLocale(resolved.locale.code)
+180:     .then(async (locale) => {
+181:       activeLocale = locale;
+
+===== docs/app.js — HARD-CODED DISPLAY + LOCALE-LOAD TOUCHPOINTS =====
+29: import {
+30:   applyDocumentLocale,
+31:   persistLanguage,
+…
+45: let requestId = 0;
+46: let activeLocale = await loadLocale(resolveBrowserLocale().locale.code);
+47: let numberFormatter = null;
+48: let dateFormatter = null;
+49: let lastVisibleErrorKey = null;
+50: let viewLoadSequence = 0;
+…
+362:   });
+363:   elements["calendar-grid"].setAttribute("aria-label", t("calendar.daysAria", { cutletName: viewCutletName }));
+364:   const targetIsInView = state.targetJdn >= view.startJdn && state.targetJdn <= view.endJdn;
+…
+376:     card.dataset.target = String(isTarget);
+377:     card.setAttribute("aria-label", dateAria(day));
+378:     card.style.setProperty("--month-bg", colors.background);
+…
+401:   elements["next-cutlet"].disabled = false;
+402:   lastVisibleErrorKey = null;
+403: 
+…
+566:   cell.className = "comparison-date-cell";
+567:   cell.setAttribute("aria-label", dateAria(day));
+568:   cell.append(...makeDateLines(day, "comparison-date-line"));
+…
+688:   const key = error?.translationKey || "error.engineFailed";
+689:   lastVisibleErrorKey = key;
+690:   elements["loading-panel"].hidden = true;
+…
+882:   rebuildFormatters();
+883:   applyDocumentLocale(activeLocale);
+884:   populateLanguageSelector(elements["language-selector"], activeLocale.code);
+…
+897:   }
+898:   if (lastVisibleErrorKey && !elements["error-panel"].hidden) {
+899:     elements["error-message"].textContent = t(lastVisibleErrorKey);
+900:   }
+…
+906:   if (resolved.locale.code === activeLocale.code) return;
+907:   activeLocale = await loadLocale(resolved.locale.code);
+908:   applyActiveLocale({ rerender });
+…
+912:   const metadata = getLocale(code);
+913:   const locale = metadata.code === activeLocale.code ? activeLocale : await loadLocale(metadata.code);
+914:   persistLanguage(metadata.code);
+
+===== docs/reverse-ui.js — HARD-CODED DISPLAY TOUCHPOINTS =====
+941:     this.status.textContent = this.rt("reverse.status.running");
+942:     this.progress.textContent = "";
+943:     this.setRunning(true);
+…
+1051:     this.renderVisibleErrorMessage();
+1052:     this.status.textContent = "";
+1053:   }
+…
+1081:     this.output.hidden = true;
+1082:     this.status.textContent = "";
+1083:     this.progress.textContent = "";
+1084:     this.error.hidden = true;
+
+===== docs/about/content/en.html — FULL TARGET ABOUT ARTICLE =====
+<!-- English explanation translated from the Hebrew semantic master. -->
+<!-- Stable section IDs are a public deep-link contract; do not derive them from translated headings. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>The Pastafari Calendar is the calendar in which time was created. Its mechanics are specified exactly.</p>
+  <p>A day does not map to one permanent Pastafari “label”. To determine a date, two days are required: the <strong>day of working</strong>, from which the calculation is performed, and the <strong>queried day</strong>, the day whose date you want to know.</p>
+  <p>Write the day of working as <code>c</code> and the queried day as <code>t</code>. The date is therefore</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>not <code>F(t)</code>. The same queried day can consequently have a different Pastafari date when it is calculated from another day of working.</p>
+  <p>That is not a bug. It is the calendar.</p>
+  <hr>
+</div>
+
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>What makes up a Pastafari date?</h2>
+  <p>Every Pastafari date has <strong>exactly five parts</strong>:</p>
+  <ol>
+    <li>the year number;</li>
+    <li>the cutlet name;</li>
+    <li>the day in that cutlet;</li>
+    <li>the month name;</li>
+    <li>the day in that month.</li>
+  </ol>
+  <p>A generic example would be: <strong>year 5000, cutlet A, day 417 in the cutlet, month B, day 83 in the month.</strong></p>
+  <p>The day of working, observer location, chronological day identity, and other technical information may be displayed alongside the date. None of them is a sixth date field.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>Why is a day of working needed?</h2>
+  <p>In an ordinary calendar we tend to think that a date simply “belongs” to a day. Here it belongs to a relationship between two days.</p>
+  <p>Changing <code>t</code> means asking about a different day. Changing <code>c</code> goes deeper: it can alter the calendar structure in which the question is asked—year boundaries, cutlets, months, their names, and the way the months are woven together.</p>
+  <p>An almanac calculated today is therefore not guaranteed to be the right almanac tomorrow. This neatly avoids the undesirable situation in which a printed calendar remains useful for an entire year.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>Same day, different date</h2>
+  <p>Two ideas need to be kept separate. <strong>Day identity</strong> is a day's stable position on the timeline. Its <strong>Pastafari representation</strong> is the five-field result obtained when that same day is viewed under a particular day of working.</p>
+  <p>In the product and API, the first can be thought of as a <code>day-id</code>: a chronological identity that does not change when the display context changes. By contrast,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre>
+  <p>and</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>need not be equal.</p>
+  <p>Manually changing the day of working can therefore change the displayed date of the same day without moving that day anywhere on the timeline.</p>
+  <p>The same principle applies to events. A meeting, a birth, or a historical event should remain anchored to a stable chronological identity; its Pastafari date can then be rendered again for the context in which somebody is viewing it.</p>
+  <p>The label may change. The event does not.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>Year 5000</h2>
+  <p>Whenever the day of working and the queried day are the same,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>the year is always</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>So the self-present is always in year 5000. But year 5000 is not one fixed historical period: it is selected afresh relative to the day of working.</p>
+  <p>The day of working lies inside year 5000, and other days in that same year do too. Hence <strong>being in year 5000 is not a test that <code>t=c</code>.</strong></p>
+  <p>The year number does, however, determine direction:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre>
+  <p>and</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p>Year <strong>0</strong> also exists, and years farther into the past have negative numbers.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>Years and gates</h2>
+  <p>A Pastafari year can contain anywhere from</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ to }5778</code></pre>
+  <p>days. These are canonical limits of the system, not averages observed in an experiment.</p>
+  <p>A year may therefore be shorter than a solar year or last for more than fifteen solar years.</p>
+  <p>Year boundaries are built from a system of <strong>gates</strong>; cutlet boundaries also come from that gate system. A year does not have to end with a season, an orbit of Earth around the Sun, a lunar cycle, or any practical desire to get the year over with.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>Cutlets</h2>
+  <p>Every year is divided into <strong>6 to 17 cutlets</strong>. A cutlet is one continuous chronological segment.</p>
+  <p>If today is day 250 of a cutlet, tomorrow is day 251 of that cutlet—unless today is its final day.</p>
+  <p>Cutlet boundaries are gates, and a cutlet is at least</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
+  <p>days long.</p>
+  <p>The system has 17 canonical cutlet names, with no repeated cutlet name inside one year. A name does not determine length: a particular name does not make its cutlet inherently longer, shorter, earlier, or later.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>Months and weaving</h2>
+  <p>A year contains</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ to }47</code></pre>
+  <p>structural months, and each month has</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ to }123</code></pre>
+  <p>days assigned to it.</p>
+  <p>A Pastafari month, however, <strong>need not occupy one continuous stretch of time</strong>. A chronological run can look like this:</p>
+  <blockquote><p>Month A — day 14<br>Month B — day 9<br>Month A — day 15</p></blockquote>
+  <p>That is a perfectly valid structure. Day 15 of month A is the next day <strong>of that month</strong>, even though a day belonging to another month occurred in between.</p>
+  <p>“Day in month” therefore does not count elapsed days since the month first appeared. It is the ordinal occurrence of that month within the year. If a date says day 48 of a month, it means the forty-eighth day assigned to that month—not that 47 chronological days have passed since its first appearance.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>The months are woven through one another</h2>
+  <p>It helps to picture the months as threads woven along the year. Every day belongs to exactly one month, but tomorrow may belong to another; later the first month can return and continue with its next number.</p>
+  <p>The weave is not ruleless. In particular, there are constraints on the orders in which months first and last appear. There is nevertheless no requirement that one month finish before another begins.</p>
+  <p>Cutlets and months are thus two different coordinate systems over the same days:</p>
+  <ul>
+    <li>a cutlet measures position inside a continuous chronological segment;</li>
+    <li>a month measures membership in a structural thread that can disappear and return.</li>
+  </ul>
+  <p>A month can pass through several cutlets, and a cutlet can contain occurrences from many months. The beginning or end of a cutlet need not coincide with the beginning or end of a month.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>The next day in a month is not necessarily tomorrow</h2>
+  <p>If today is day 17 of some month, day 18 of that month is <strong>that month's next occurrence</strong>. It might be tomorrow; it might be much later.</p>
+  <p>So <strong>tomorrow</strong> means the next chronological day, while <strong>the next day in the month</strong> means the next time that month appears.</p>
+  <p>Likewise, “the end of the month” need not be chronologically close. A 120-day month can be at day 119 while its day 120 lies far ahead in the year.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>There are no weeks</h2>
+  <p>The current canonical specification <strong>does not define a week system</strong>. There is no canonical seven-day super-unit, no Pastafari weekday names, and no rule making one day the “same weekday” as another.</p>
+  <p>A civil week system can of course be overlaid from outside. It simply is not part of the Pastafari date.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>Names</h2>
+  <p>The calendar has 17 canonical cutlet names and 47 canonical month names. Within a year, each name occurs at most once within its own family.</p>
+  <p>A name's identity is canonical and semantic; it is not decided by a vote among spellings, translations, or implementations. The Hebrew Scroll is the highest authority for the names' meanings. Translation and transliteration are display layers.</p>
+  <p>Nor is a name a concealed code for unit length. No rule says that one cutlet name implies a longer cutlet or one month name a shorter month.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>A small fact about months</h2>
+  <p>There are 47 month names, and a month can reach at most day 123. That gives</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>syntactically possible pairs of the form:</p>
+  <blockquote><p>month name + day number in that month.</p></blockquote>
+  <p>Every day in a year realizes exactly one such pair. If the year's length is <code>L</code>, exactly <code>L</code> pairs occur. But</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>so every year must omit at least</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre>
+  <p>possible month-name/day-number pairs. Even the longest year does not contain enough days to use all of them.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>How is the calendar calculated?</h2>
+  <p>The internal calculation is called <strong>the sauce</strong>. At its center is</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>which is prime.</p>
+  <p>The process includes five input counters, 7 hidden drops, 46 visible drops, 6 bowls, changing bowl orders, 12 final stirs, seals that produce different answers, combinatorial selection mechanisms, gate generation, year selection, cutlet partitioning, name selection, month creation, and the weaving of month days.</p>
+  <p>The final updates are <strong>synchronous</strong>: on every stir, all six new bowl values are computed from the same old state, and only then are the six bowls replaced together.</p>
+  <p>The 12 final stirs contain one especially important canonical detail. If <code>S</code> is the sum of the six old bowls and the stir number is <code>r</code>, the system computes</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p>This is the <strong>saved sum</strong>. It is <code>R</code>, not raw <code>S</code>, that participates both in choosing the bowl order and in the stir's internal update.</p>
+  <p>Older versions that fed the raw sum into that update do not describe the current canonical semantics. Any example derived from the old rule is obsolete unless it has been verified again.</p>
+  <p>After the stirs, the answer ring also continues in the order locked at visible drop 46; it must not automatically be replaced by the order of the last stir.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice and Wide Choice</h2>
+  <p><strong>Short Choice</strong> is used when the system must select from a relatively small option space. It uses rejection sampling to avoid the bias of a simple modulo operation.</p>
+  <p>Very large choice spaces use <strong>Wide Choice</strong>. It is important not to give Wide Choice properties that the specification does not give it.</p>
+  <p>Wide Choice is not equivalent to generating independent, uniform base-<code>Q</code> digits until an index appears. It therefore does not follow that every legal option necessarily receives the same positive probability. In sufficiently large spaces, legal options can even exist that this particular selection mechanism cannot reach at all.</p>
+  <p>The calendar itself is completely deterministic. “Choice” names a stage of the algorithm, not a lottery held while the calendar is being used.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>The Structural Atlas</h2>
+  <p>The rules above are rules of the calendar. The numbers in this box are something else: <strong>empirical findings</strong> from a large computational sample.</p>
+  <p>The atlas was built with engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code>. It contains:</p>
+  <ul>
+    <li>4,096 days of working;</li>
+    <li>years 4990–5010 for every day of working;</li>
+    <li>86,016 year structures;</li>
+    <li>625,437 cutlets;</li>
+    <li>3,535,422 structural months;</li>
+    <li>more than 356 million contiguous month runs;</li>
+    <li>more than 364 million transitions from day <code>n</code> to day <code>n+1</code> of the same month.</li>
+  </ul>
+  <p>These describe that corpus. They are not canonical laws.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Measured structural-atlas data">
+    <table class="about-table">
+      <thead><tr><th scope="col">Measured quantity</th><th scope="col">Result in the sample</th></tr></thead>
+      <tbody>
+        <tr><td>Mean year length</td><td>4,275.182 days</td></tr>
+        <tr><td>Median year length</td><td>4,343</td></tr>
+        <tr><td>Observed minimum / maximum</td><td>716 / 5,778</td></tr>
+        <tr><td>Mean cutlets per year</td><td>7.271</td></tr>
+        <tr><td>Years with exactly 6 cutlets</td><td>42.00%</td></tr>
+        <tr><td>Years with 6–8 cutlets</td><td>81.29%</td></tr>
+        <tr><td>Mean cutlet length</td><td>587.963 days</td></tr>
+        <tr><td>Median cutlet length</td><td>560</td></tr>
+        <tr><td>Mean months per year</td><td>41.102</td></tr>
+        <tr><td>Median month count</td><td>43</td></tr>
+        <tr><td>Years with 47 months</td><td>15.63%</td></tr>
+        <tr><td>Years with at least 45 months</td><td>36.81%</td></tr>
+        <tr><td>Mean structural-month length</td><td>104.014 days</td></tr>
+        <tr><td>Median month length</td><td>115</td></tr>
+        <tr><td>Mean contiguous runs per month</td><td>100.897</td></tr>
+        <tr><td>Share of month runs one day long</td><td>97.482%</td></tr>
+        <tr><td>Share of adjacent-day pairs in the same month</td><td>2.9976%</td></tr>
+        <tr><td>Mean foreign days between month day <code>n</code> and <code>n+1</code></td><td>40.408</td></tr>
+        <tr><td>Mean span from a month's first to last occurrence</td><td>4,266.653 days</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>In practical terms, a month containing roughly a hundred days can be spread across nearly an entire Pastafari year.</p>
+  <p>The same atlas also showed a natural length bias around year 5000. A “regular” year in the sample averaged about 4,262 days. Weight years by the number of days they contain and the mean rises to about 4,466 days. The self year 5000 averaged about 4,499 days.</p>
+  <p>The reason is straightforward: year 5000 must contain the day of working. A longer year has more days on which it can be the year containing that day.</p>
+  <p>The association between a unit's name and its length was also extremely weak in the sample. That is not a mathematical proof of complete independence, but the atlas gives no practical sign that names were intended to encode length.</p>
+  <p>Finally, the 86,016 year structures are not 86,016 wholly independent samples. They contain only 24,786 distinct start-to-end gate intervals; neighboring days of working can select the same year interval while still producing a different internal structure.</p>
+  <p>The atlas is therefore very good evidence about the measured implementation's behavior, not a probability theorem about every possible calendar universe.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>Birthdays and anniversaries</h2>
+  <p>“The same day every year” needs a more careful definition in a Pastafari calendar. At least two natural structural coordinates can be held fixed: a <strong>month anniversary</strong>, meaning the same month name and day in month, or a <strong>cutlet anniversary</strong>, meaning the same cutlet name and day in cutlet. Combined conditions are possible too.</p>
+  <p>A Pastafari birthday is therefore not simply equivalent to <code>RRULE:FREQ=YEARLY</code>. One must search for the next year in which the chosen recurrence condition is satisfied. The original event itself is not automatically counted as its own “next occurrence”.</p>
+  <p>Again, keep the event separate from its representation: changing the day of working for display must not change a person's identity, birth instant, or age.</p>
+  <p>There are useful empirical results as well. In an exact scan of 4,096 self-dates, every successive Pastafari year was checked forward and backward for up to 250,000 years in each direction:</p>
+  <ul>
+    <li>For recurrence by <code>(month name, day in month)</code>, the median first recurrence was 1 Pastafari year; 77.56% were already in the adjacent year, 93.77% within two years, 99.44% within five, and the observed maximum was 21 years.</li>
+    <li>For recurrence by <code>(cutlet name, day in cutlet)</code>, the median was 3 years; 88.89% were found within 10 years, but the distribution had a very heavy tail and the observed maximum reached 51,954 Pastafari years.</li>
+  </ul>
+  <p>Those are <strong>empirical results for the corpus that was tested</strong>. They neither prove that every possible anniversary must recur nor promise a maximum waiting time. They do show why an “annual birthday” needs a definition before it becomes a calendar rule.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>How do you arrange a meeting?</h2>
+  <p>If two people want to set the meeting day using a Pastafari date, they must agree at least on the five-field Pastafari tuple and the day of working used to calculate it. Together, these specify the Pastafari day, not necessarily an exact moment within it. Preferably, that day of working should itself be stored as a stable day identity rather than as the word “today”; otherwise the two people may calculate different calendars.</p>
+  <p>Ordinary phrases also need precision:</p>
+  <ul>
+    <li>“tomorrow” is the next chronological day;</li>
+    <li>“the next day in the month” is that month's next occurrence;</li>
+    <li>“the end of the month” is its final occurrence;</li>
+    <li>“a whole month” can mean either the set of the month's days or the entire chronological span from its first occurrence to its last;</li>
+    <li>“next year” refers to the calendar built under the chosen day of working.</li>
+  </ul>
+  <p>For an especially important meeting, the absolute chronological day or instant can be stored as well. The calendar will not take offence.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>Travel and all-day events</h2>
+  <p>An event is not the same thing as the local label displayed for it. A scheduled event should be anchored to a stable chronological instant. Travel does not move the event in time, but it can change the local Pastafari date shown at that instant, because the definition of the “local day” depends on location.</p>
+  <p>The difference is even more important for an <strong>all-day</strong> event. A civil all-day event normally runs from one civil midnight to the next. A Pastafari all-day event should run from one local Pastafari day boundary to the next. Those are generally not the same instants.</p>
+  <p>Blindly exporting a Pastafari event as a civil “all-day event” can therefore change its meaning. To preserve it exactly, keep the chronological anchor and the relevant location/day-boundary context, not merely an <code>all-day</code> checkbox.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>When does the day change?</h2>
+  <p>The local Pastafari day does not change at midnight. Its boundary is defined by the <strong>topocentric lower meridian transit of the center of Venus across the local meridian</strong>.</p>
+  <p>In other words, the transition from one Pastafari day to the next is a local astronomical event and depends on location. Accordingly, the change of day:</p>
+  <ul>
+    <li>need not occur at 00:00;</li>
+    <li>is not set by the civil time zone;</li>
+    <li>does not move merely because daylight-saving time begins or ends;</li>
+    <li>does not require Venus to be visible to the naked eye.</li>
+  </ul>
+  <p>Location can thus affect the answer to “which Pastafari day is it now?”. At the same physical instant, two places can lie on opposite sides of their respective local day boundaries.</p>
+  <p>If the system has no usable location for the user, the product's fallback location is <strong>Kisurra</strong>.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>Printed calendars and hand calculation</h2>
+  <p>You can print a Pastafari calendar. Just state which day of working it is for. A calendar prepared under one day of working shows the structure of time from that day's point of view; when the day of working changes, a new calendar may be needed. The printer thus remains relevant.</p>
+  <p>Everything can also be calculated by hand. The specification is deterministic and complete. Calculate the input counters, perform 7 hidden drops and 46 visible ones, update six bowls, carry out 12 final stirs, produce the answers, build gates, choose years and cutlets, perform the combinatorial choices, select names, and weave the months.</p>
+  <p>This saves you the trouble of remembering that February sometimes has 28 days and sometimes 29.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>What is Seer?</h2>
+  <p>Alongside the canonical implementation there is a fast engine called <strong>Pastafarian Calendar Seer</strong>. Seer is not a source of authority: the Scroll sets the rules, and the canonical calculation derives the date from them. Seer is meant to return the same answer. If Seer disagrees with a correct canonical calculation, Seer is wrong.</p>
+  <p>Its purpose is to answer the same questions quickly and in a form that is easy to integrate into products.</p>
+  <p>At the live verification on 21 September 2026, Seer included, among other things:</p>
+  <ul>
+    <li>date queries and a “now” calculation;</li>
+    <li>batch queries and day ranges;</li>
+    <li>reverse conversion from a Pastafari date to a queried day;</li>
+    <li>year-structure retrieval and active-day-of-working resolution;</li>
+    <li>a Node API, a browser/HTTP client, and a CLI;</li>
+    <li>an HTTP v1 service and an OpenAPI 3.1 contract;</li>
+    <li>native implementations, distribution packages, and a verified container deployment.</li>
+  </ul>
+  <p>Seer has a public API, with an explicit, stable HTTP v1 contract that includes endpoints for date, range, batch, year, reverse conversion, day of working, metadata, locales, and status.</p>
+  <p>On 21 September 2026, a public HTTPS deployment on Render was also tested in practice: exact queries, a large range, restart, cold wake, and behavior under load were exercised against the live service.</p>
+  <p>The tested public deployment is a beta/evaluation deployment, not a promise of a permanent production service with an SLA. The server address, hosting provider, and version number are not part of the calendar and are not canonical constants.</p>
+  <p>Seer may use precomputation, specialized representations, SIMD, algebra, and other shortcuts. It need not replay every computational step of the canonical implementation so long as it performs the same semantic operation and returns the same answer.</p>
+  <p>Optimization is not an alternative source of authority.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>Origin, Foundation Day, and Tablets Day</h2>
+  <p>The calendar's fixed computational anchors are distinct from its origin and history of re-delivery.</p>
+
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>The anchors</h3>
+    <p>The system has a fixed reference day called <strong>Foundation Day</strong>. In the proleptic Gregorian calendar it is <strong>22 December 41,222 BCE</strong>.</p>
+    <p>Foundation Day is not “the beginning of time”. It is a computational anchor.</p>
+    <p>Days around it use a positive odd/even encoding. Foundation Day is 1; the following days are 3, 5, and so on. Going into the past, the day immediately before Foundation Day is 2, then 4, then 6, and so on. Both sides of the anchor can thus be encoded without negative day numbers in this count.</p>
+    <p>A second anchor is <strong>Tablets Day</strong>: <strong>15 June 763 BCE in the proleptic Julian calendar</strong>, which is <strong>7 June 763 BCE in the proleptic Gregorian calendar</strong>.</p>
+    <p>The exact distance from Foundation Day to Tablets Day is</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
+    <p>days.</p>
+    <p>These are fixed anchors on the timeline. The Pastafari date displayed for either one still depends on the day of working from which it is queried.</p>
+  </section>
+
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>The calendar's origin and re-delivery</h3>
+    <p>The Pastafari Calendar is part of creation. Humanity used it without fully realizing it was doing so until its modern re-delivery.</p>
+    <p>The Scroll does not set out every detail of this history; anything it does not state explicitly is not part of the Scroll's text.</p>
+    <p>The re-delivery is a fixed historical event. Its <strong>Pastafari date</strong> depends on the relevant day of working and can therefore differ when computed from a different day of working.</p>
+    <hr>
+  </section>
+</section>
+
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>Advanced: reverse conversion</h2>
+  <p>When the day of working <code>c</code> is known, reverse conversion is very strong. Inside a known Pastafari year,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{cutlet name},\text{day in cutlet})</code></pre>
+  <p>identifies at most one day. So does</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{month name},\text{day in month})</code></pre>
+  <p>A full date therefore identifies the queried day uniquely when the day of working is known.</p>
+  <p>Some coarse upper bounds on the number of candidates within a known year are:</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Reverse-conversion candidate bounds">
+    <table class="about-table">
+      <thead><tr><th scope="col">Additional information known about the day</th><th scope="col">Maximum candidates</th></tr></thead>
+      <tbody>
+        <tr><td>No non-year field</td><td>5,778</td></tr>
+        <tr><td>Cutlet name only</td><td>5,568</td></tr>
+        <tr><td>Day in cutlet only</td><td>17</td></tr>
+        <tr><td>Month name only</td><td>123</td></tr>
+        <tr><td>Day in month only</td><td>47</td></tr>
+        <tr><td>Cutlet name + day in cutlet</td><td>1</td></tr>
+        <tr><td>Month name + day in month</td><td>1</td></tr>
+        <tr><td>Any three non-year fields</td><td>1</td></tr>
+        <tr><td>All four non-year fields</td><td>1</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Without the day of working, the situation changes. The same five-field tuple can occur under different working days, and explicit examples show the same full date occurring at different distances from the day of working.</p>
+  <p>Even in year 5000, the direction relative to the day of working is not always determined by the five-field tuple: the same full date can occur before the day of working in one context and after it in another.</p>
+  <p>A full Pastafari date is therefore not an absolute address on the timeline unless we also know which calendar—in other words, which <code>c</code>—was used to calculate it.</p>
+
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>Structure far out in time</h3>
+    <p>Derived mathematical work has also established an exact asymptotic structure. For a <strong>fixed day of working</strong> <code>c</code>, sufficiently far down the past tail there is affine periodicity.</p>
+    <p>If</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>then, for that same <code>c</code>, there are a shift size <code>H_c</code>, a year decrement <code>p_c</code>, and a sufficiently remote threshold such that beyond that threshold</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>The four non-year fields repeat while the year number changes by a fixed amount.</p>
+    <p>This theorem is about fixed <code>c</code>. It does not imply a global statement of the form</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>and whether the eventual asymptotic slope actually differs between different days of working remains an open question.</p>
+    <hr>
+  </section>
+</section>
+
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>Advanced: how much history does the sauce retain?</h2>
+  <p>The sauce looks like a very aggressive mixer, but algebraic research found that it preserves considerably more information than its outward appearance suggests. This is research derived from the specification, not an additional calendar rule.</p>
+  <p>On visible stages 3 through 46, generic injectivity has been established on the relevant asymptotic branch: generically, the state retains enough information to recover the relevant history of the inputs and bowl orders.</p>
+  <p>The information does not immediately disappear during the 12 final stirs either. For the first five stirs after visible drop 46, generic invertibility has been proved on the relevant canonical union without additional side information. For the remaining stirs, strong constructive bounds are known on how much side information is sufficient for reconstruction.</p>
+  <p>Whether <strong>the final six bowls alone</strong> are always generically sufficient remains open.</p>
+  <p>Some results were proved symbolically; others were verified by exact finite arithmetic checks. Symbolic strengthening greatly reduced the computational kernel that must be trusted, but did not eliminate it completely.</p>
+  <p>One surprise was that spaces that initially looked as if they would require traversing enormous numbers of paths collapsed to much smaller finite structures, including 180-state and 9-state automata and symmetries of the six bowls.</p>
+  <p>Beneath the mixing lies a rigid algebraic structure. None of this is required just to find today's date.</p>
+  <hr>
+</section>
+
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>So what is the Pastafari Calendar, really?</h2>
+  <p>It is a deterministic calendar in which a date is not a function of a queried day alone, but of the <strong>day of working and the queried day together</strong>.</p>
+  <p>A date has exactly five fields. The self-present is always in year 5000, although year 5000 itself changes with the day of working. Years can be extremely long; cutlets are continuous; months need not be continuous at all; and there is no canonical week system.</p>
+  <p>Day <code>n+1</code> in a month is not necessarily tomorrow. The same chronological day may have a different Pastafari label tomorrow. The same physical instant may fall in different local Pastafari days at two different locations. An all-day event need not run from midnight to midnight. And an annual birthday is a search problem before it is a calendar problem.</p>
+  <p>But once the day of working and the queried day are both given, there is no ambiguity: there is one exact answer.</p>
+  <p>In the end, that is all a calendar needs to do.</p>
+</section>
+
+
+===== docs/manifest.webmanifest — FALLBACK + TARGET LOCALE =====
+1: {
+2:   "id": "./",
+3:   "name": "Pastafari Calendar",
+4:   "name_localized": {
+5:     "he": {
+6:       "value": "לוח השנה הפסטפרי",
+7:       "lang": "he",
+8:       "dir": "rtl"
+9:     },
+10:     "en": {
+11:       "value": "Pastafari Calendar",
+12:       "lang": "en",
+13:       "dir": "ltr"
+14:     },
+15:     "af": {
+…
+368:     "he": {
+369:       "value": "פסטפרי",
+370:       "lang": "he",
+371:       "dir": "rtl"
+372:     },
+373:     "en": {
+374:       "value": "Pastafari",
+375:       "lang": "en",
+376:       "dir": "ltr"
+377:     },
+378:     "af": {
+…
+731:     "he": {
+732:       "value": "לוח־שנה פסטפרי לחיפוש ולהשוואת תאריכים",
+733:       "lang": "he",
+734:       "dir": "rtl"
+735:     },
+736:     "en": {
+737:       "value": "A Pastafari calendar with date search and comparison.",
+738:       "lang": "en",
+739:       "dir": "ltr"
+740:     },
+741:     "af": {
+
+===== docs/index.html — RAW METADATA/A11Y/FALLBACK =====
+2: <html lang="en" dir="ltr">
+…
+4:     <meta charset="utf-8">
+5:     <meta name="viewport" content="width=device-width, initial-scale=1">
+6:     <noscript><meta http-equiv="refresh" content="0; url=./no-js/"></noscript>
+7:     <meta name="theme-color" content="#672013">
+8:     <meta name="description" content="A local, deterministic Pastafari calendar." data-i18n-attr="content:meta.description">
+9:     <meta name="color-scheme" content="light">
+10:     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; worker-src 'self'; manifest-src 'self'">
+11:     <title data-i18n="app.title">Pastafari Calendar</title>
+…
+37:       <section class="search-panel" id="search-panel" aria-labelledby="search-heading">
+…
+95:       <section class="reverse-panel" id="reverse-panel" aria-labelledby="reverse-heading">
+…
+99:       <section class="status-panel" id="loading-panel" aria-labelledby="loading-heading" aria-live="polite" aria-busy="true">
+100:         <span class="loader" aria-hidden="true"></span>
+…
+107:       <section class="status-panel error-panel" id="error-panel" aria-labelledby="error-heading" role="alert" hidden>
+…
+114:       <section class="calendar-workspace" id="calendar-workspace" aria-labelledby="cutlet-heading" hidden>
+115:         <article class="target-beacon" id="target-beacon" aria-live="polite">
+…
+127:           <div class="toolbar-actions" role="group" data-i18n-attr="aria-label:calendar.toolbarAria">
+…
+137:         <section class="year-overview" id="year-overview" aria-labelledby="year-overview-heading">
+…
+158:                 <ol class="structure-list" id="year-cutlet-list" tabindex="0" aria-labelledby="year-cutlets-summary"></ol>
+…
+162:                 <ol class="structure-list month-structure-list" id="year-month-list" tabindex="0" aria-labelledby="year-months-summary"></ol>
+…
+169:       <section class="comparison-workspace" id="comparison-workspace" aria-labelledby="comparison-heading" hidden>
+…
+176:         <div class="comparison-scroll" role="region" tabindex="0" data-i18n-attr="aria-label:comparison.scrollAria">
+…
+198:     <noscript>
+
+===== docs/about/index.html — RAW METADATA/A11Y/FALLBACK =====
+2: <html lang="en" dir="ltr">
+…
+4:     <meta charset="utf-8">
+5:     <meta name="viewport" content="width=device-width, initial-scale=1">
+6:     <noscript><meta http-equiv="refresh" content="0; url=../no-js/"></noscript>
+7:     <meta name="theme-color" content="#672013">
+8:     <meta name="description" content="An explanation of the Pastafari Calendar." data-i18n-attr="content:about.metaDescription">
+9:     <meta name="color-scheme" content="light">
+10:     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; worker-src 'self'; manifest-src 'self'">
+11:     <title data-i18n="about.title">About the Pastafari Calendar</title>
+…
+41:         <nav data-i18n-attr="aria-label:about.toc">
+…
+47:         <article id="article-content" class="about-article" aria-busy="true" tabindex="-1"></article>
+…
+50:         <section class="about-site-usage" id="site-usage" aria-labelledby="guide-heading" data-toc-section data-toc-level="2">
+…
+76:     <noscript>

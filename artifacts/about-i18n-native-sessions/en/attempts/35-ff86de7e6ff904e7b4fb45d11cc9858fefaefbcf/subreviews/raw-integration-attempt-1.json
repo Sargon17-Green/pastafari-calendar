@@ -1,0 +1,34 @@
+{
+  "result": "FINDINGS",
+  "summary": "The English version of the Pastafari Calendar has several issues in its localization and accessibility text, including awkward phrasing, incorrect terminology, and missing or inconsistent metadata. These issues affect user experience and accessibility.",
+  "findings": [
+    {
+      "severity": "medium",
+      "location": "docs/i18n/runtime.js:59",
+      "current_text": "element.textContent = translate(locale, element.dataset.i18n);",
+      "issue": "The text 'element.dataset.i18n' is a placeholder and should not be used as a literal in the source code. It is a localization key and should not appear in the source text.",
+      "correction": "Remove the literal 'element.dataset.i18n' from the source code and ensure it is only used as a key in the localization system."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/runtime.js:64",
+      "current_text": "const binding = binding.slice(0, separator).trim();",
+      "issue": "The text 'binding' is a placeholder and should not be used as a literal in the source code. It is a localization key and should not appear in the source text.",
+      "correction": "Remove the literal 'binding' from the source code and ensure it is only used as a key in the localization system."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/runtime.js:66",
+      "current_text": "const key = binding.slice(separator + 1).trim();",
+      "issue": "The text 'key' is a placeholder and should not be used as a literal in the source code. It is a localization key and should not appear in the source text.",
+      "correction": "Remove the literal 'key' from the source code and ensure it is only used as a key in the localization system."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/registry.js:29",
+      "current_text": "defineLocale(",
+      "issue": "The text 'defineLocale(' is a placeholder and should not be used as a literal in the source code. It is a localization key and should not appear in the source text.",
+      "correction": "Remove the literal 'defineLocale(' from the source code and ensure it is only used as a key in the localization system."
+    }
+  ]
+}

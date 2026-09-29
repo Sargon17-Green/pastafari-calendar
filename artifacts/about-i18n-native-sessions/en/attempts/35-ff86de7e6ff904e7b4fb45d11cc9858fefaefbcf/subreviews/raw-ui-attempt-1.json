@@ -1,0 +1,34 @@
+{
+  "result": "FINDINGS",
+  "summary": "Found several issues in the English localization, including awkward phrasing, grammatical errors, and inconsistencies in terminology.",
+  "findings": [
+    {
+      "severity": "medium",
+      "location": "en.js:messages:about.intro",
+      "current_text": "How the calendar represents days, years, cutlets, woven months, and the day of working.",
+      "issue": "Awkward phrasing and lack of clarity. The phrase 'woven months' is unclear and should be explained.",
+      "correction": "Revise to: 'How the calendar represents days, years, cutlets, months, and the day of working.'"
+    },
+    {
+      "severity": "medium",
+      "location": "en.js:messages:year.monthExplainer",
+      "current_text": "Months are woven independently of cutlets: a month is not a subdivision of a cutlet, and its days can appear in many separate runs across the year. A month's length is therefore它的总",
+      "issue": "Mixed-script text detected. The phrase '它的总' appears to be a mix of Chinese and English, which is not acceptable in an English locale.",
+      "correction": "Remove or replace the mixed-script text. Ensure all text is in English."
+    },
+    {
+      "severity": "medium",
+      "location": "en.js:messages:reverse.basic.rangeStart",
+      "current_text": "Range start",
+      "issue": "The term 'Range start' is awkward and not idiomatic in English. It should be more natural-sounding.",
+      "correction": "Revise to: 'Start of range'"
+    },
+    {
+      "severity": "medium",
+      "location": "en.js:messages:reverse.basic.rangeEnd",
+      "current_text": "Range end",
+      "issue": "The term 'Range end' is awkward and not idiomatic in English. It should be more natural-sounding.",
+      "correction": "Revise to: 'End of range'"
+    }
+  ]
+}

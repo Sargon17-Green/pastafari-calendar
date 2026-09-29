@@ -1,0 +1,497 @@
+===== docs/i18n/locales/en.js — FULL TARGET LOCALE =====
+"use strict";
+
+export default Object.freeze({
+  code: "en",
+  displayName: "English",
+  dir: "ltr",
+  intlLocale: "en-US",
+  messages: Object.freeze({
+    "meta.description": "A Pastafari calendar with date search and comparison.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
+    "app.title": "Pastafari Calendar",
+    "app.brand": "PASTAFARI",
+    "nav.skip": "Skip to date search",
+    "app.intro": "Find a day in any available calendar, then see its complete Pastafari date and the cutlet that contains it.",
+    "guide.open": "How do I use this site?",
+    "guide.openShort": "How to use this site",
+    "about.open": "About the calendar",
+    "about.openShort": "About the calendar",
+    "about.title": "About the Pastafari Calendar",
+    "about.metaDescription": "An explanation of the Pastafari Calendar: its two-day calculation, years, cutlets, woven months, day boundary, and advanced mechanics.",
+    "about.intro": "How the calendar represents days, years, cutlets, woven months, and the day of working.",
+    "about.skip": "Skip to the calendar explanation",
+    "about.back": "Back to the calendar",
+    "about.tocKicker": "On this page",
+    "about.toc": "Contents",
+    "about.fallbackNotice": "The explanation is not available in the selected language right now, so the default version is shown.",
+    "about.loadError": "The calendar explanation could not be loaded.",
+    "language.label": "Language",
+    "day.staleWarning": "The current day changed from {previousDate} to {currentDate}. Because the day of working was the current day, the displayed dates are no longer up to date. They will be recalculated after you dismiss this message.",
+    "location.assumption": "(In the absence of contrary information, the device is assumed to be in Kisurra.)",
+    "location.useDevice": "Use device location",
+
+    "search.kicker": "Date search",
+    "search.heading": "Which day would you like to find?",
+    "search.intro": "Choose a calendar, enter a date, and select “Show date.” The current Pastafari day is filled in by default.",
+    "search.calendarLabel": "Calendar used for input",
+    "search.submit": "Show date",
+    "search.invalid": "That date could not be recognized. Check that every field is complete and that the date exists in the selected calendar.",
+
+    "settings.summary": "Calculation and comparison options",
+    "settings.heading": "Change the day of working",
+    "settings.intro": "The day of working is the calculation's point of departure. By default, the site uses the current Pastafari day determined for the active observer location.",
+    "settings.actionCalendarLabel": "Calendar used to enter the day of working",
+    "settings.apply": "Apply day of working",
+    "settings.reset": "Reset to current Pastafari day",
+    "settings.invalid": "The day of working is invalid. Check the date and try again.",
+
+    "comparison.toggle": "Compare two calculations side by side",
+    "comparison.toggleHelp": "Available on desktop. Each row will be the same queried day under two days of working.",
+    "comparison.secondActionLabel": "Calendar used to enter the second day of working",
+    "comparison.apply": "Update comparison",
+    "comparison.kicker": "Comparison aligned by day",
+    "comparison.heading": "The same days, two days of working",
+    "comparison.intro": "Every row contains the same queried day. Only the day of working changes between the first and second columns.",
+    "comparison.sameDay": "Day shared by both calculations",
+    "comparison.actionHeading": "Day of working: {date}",
+    "comparison.summary": "Showing {count} days — from the first through the last day of the cutlet opened by the first calculation.",
+    "comparison.scrollAria": "Comparison table of the same days under two calculations",
+    "comparison.desktopOnly": "The full comparison table is available on a wide desktop screen.",
+    "comparison.invalid": "The second day of working is invalid. Check the date and try again.",
+
+    "field.year": "Year",
+    "field.month": "Month",
+    "field.day": "Day",
+    "field.relatedYear": "Related Gregorian year",
+    "field.leapMonth": "Leap month",
+    "field.era": "Era",
+    "field.eraYear": "Year in era",
+    "field.ayyamiHa": "Ayyám-i-Há",
+    "field.baktun": "Baktun",
+    "field.katun": "Katun",
+    "field.tun": "Tun",
+    "field.uinal": "Uinal",
+    "field.kin": "Kin",
+    "field.correlation": "Correlation number",
+    "era.meiji": "Meiji",
+    "era.taisho": "Taishō",
+    "era.showa": "Shōwa",
+    "era.heisei": "Heisei",
+    "era.reiwa": "Reiwa",
+
+    "calendarInput.gregorian": "Gregorian",
+    "calendarInput.julian": "Julian",
+    "calendarInput.hebrew": "Hebrew",
+    "calendarInput.islamicCivil": "Islamic civil",
+    "calendarInput.islamicUmmAlQura": "Umm al-Qura",
+    "calendarInput.solarHijriOfficial": "Solar Hijri — official",
+    "calendarInput.solarHijriArithmetic": "Solar Hijri — arithmetic 2,820",
+    "calendarInput.chinese": "Chinese",
+    "calendarInput.hinduOldSolar": "Old Hindu — solar",
+    "calendarInput.hinduOldLunar": "Old Hindu — lunar",
+    "calendarInput.saka": "Saka",
+    "calendarInput.thaiBuddhist": "Thai Buddhist",
+    "calendarInput.ethiopic": "Ethiopic",
+    "calendarInput.coptic": "Coptic",
+    "calendarInput.japaneseImperial": "Japanese imperial",
+    "calendarInput.minguo": "Minguo",
+    "calendarInput.bahaiTehran": "Bahá’í — Tehran equinox",
+    "calendarInput.bahaiWestern": "Bahá’í — western arithmetic",
+    "calendarInput.mayaLongCount": "Maya Long Count",
+    "calendarHelp.hebrew": "Months are selected by name. Year and day accept decimal digits or Hebrew numeral letters, for example תשפ״ו or י״ד; a letter-form year with no thousands mark is interpreted with 5,000 added.",
+    "calendarHelp.intl": "This conversion uses calendar support built into your browser. If the browser cannot represent the date, the site reports that explicitly.",
+    "calendarHelp.chinese": "Enter the Gregorian year associated with the Chinese year, and mark “Leap month” only for the repeated month.",
+    "calendarHelp.hindu": "Enter the year and day in the old Hindu count and choose the month by name. The lunar form can also mark a leap month.",
+    "calendarHelp.japanese": "Year 1 begins on the first day of the era; you may also enter 元 or 元年 for the first year. A date before its beginning or after its end is rejected.",
+    "calendarHelp.bahai": "Choose the month by name or Ayyám-i-Há. The Tehran-equinox form supports the conventional Gregorian range 1844–3000.",
+    "calendarHelp.maya": "The default correlation is GMT 584,283. You can change it if you use a different correlation.",
+
+    "loading.kicker": "Calculated locally",
+    "loading.title": "Finding the cutlet and date…",
+    "error.kicker": "Unable to display the calendar",
+    "error.title": "The calculation engine did not load",
+    "error.reload": "Reload",
+    "error.timeout": "The calculation is taking too long.",
+    "error.engineFailed": "The calculation engine failed.",
+    "error.engineLoadFailed": "The calculation engine could not be loaded.",
+
+    "calendar.toolbarAria": "Cutlet navigation",
+    "calendar.previous": "Previous cutlet",
+    "calendar.today": "Back to today",
+    "calendar.next": "Next cutlet",
+    "calendar.daysAria": "Days in the cutlet {cutletName}",
+    "calendar.currentCutlet": "Year {year} · cutlet",
+    "calendar.cutletDescription": "{count} days · day of working: {actionDate}",
+    "calendar.targetOutside": "The date you searched for is not in the cutlet currently on screen. You can keep browsing or search for another date.",
+
+    "year.kicker": "Year at a glance",
+    "year.heading": "Structure of year {year}",
+    "year.context": "This structure is calculated for the day of working {actionDate}. Changing the day of working can rebuild the year's boundaries, cutlets, and months.",
+    "year.loading": "Building the full year structure…",
+    "year.error": "The full year structure could not be built. The cutlet view is still available.",
+    "year.lengthLabel": "Year length",
+    "year.cutletCountLabel": "Cutlets",
+    "year.monthCountLabel": "Months",
+    "year.rangeLabel": "Gregorian span",
+    "year.daysValue": "{count} days",
+    "year.rangeValue": "{startDate} to {endDate}",
+    "year.displayedCutletPosition": "The displayed cutlet occupies days {start}–{end} of the year.",
+    "year.targetPosition": "The date you searched for is day {day} of {length} in this year.",
+    "year.monthExplainer": "Months are woven independently of cutlets: a month is not a subdivision of a cutlet, and its days can appear in many separate runs across the year. A month's length is therefore its total number of assigned days, not necessarily one continuous span.",
+    "year.cutletsSummary": "Cutlets in this year ({count})",
+    "year.monthsSummary": "Months in this year ({count})",
+    "year.numberedName": "{number}. {name}",
+    "year.cutletMeta": "Length: {length} days · position in year: days {start}–{end}",
+    "year.monthMeta": "Days: {length} · continuous runs: {runs} · first occurrence: day {first} · last: day {last}",
+
+    "target.today": "This is today",
+    "target.searched": "This is the date you searched for",
+    "target.context": "Queried date: {targetDate} · day of working: {actionDate}",
+    "target.notInView": "Your searched date remains saved; the cutlet currently displayed is different.",
+    "date.aria": "Year {year} from the Creation of the World, day {dayInCutlet} in the cutlet {cutletName}, day {dayInMonth} in the month {monthName}",
+    "date.yearLine": "Year {year} from the Creation of the World",
+    "date.cutletLine": "Day {dayInCutlet} in the cutlet {cutletName}",
+    "date.monthLine": "Day {dayInMonth} in the month {monthName}",
+
+    "guide.eyebrow": "User guide",
+    "guide.heading": "What can you do here, and how?",
+    "guide.intro": "The site shows a complete Pastafari date for any day, accepts searches in many calendars, and can compare the effect of the day of working on desktop.",
+    "guide.1.heading": "Open the site and get today",
+    "guide.1.body": "As soon as the link opens, the site determines the current Pastafari day for the active observer location and displays the cutlet containing it. The day boundary is the location-dependent lower meridian transit of Venus described in ASTRONOMICAL-DAY.md; it is not civil midnight. There is no registration, sign-in, or date sent to a calculation server.",
+    "guide.2.heading": "Search in any available calendar",
+    "guide.2.body": "In “Which day would you like to find?”, choose a calendar, fill its fields, and select “Show date.” The choices include Gregorian, Hebrew, Julian, Islamic, Persian, Chinese, Hindu, Saka, Thai, Ethiopic, Coptic, Japanese, Minguo, Bahá’í, and the Maya Long Count.",
+    "guide.3.heading": "Read the date",
+    "guide.3.body": "Every tile has three fixed lines: year from the Creation of the World; the day number in the cutlet and its name; then the day in the month and its name. No single number represents the whole date. The month name determines the tile's color.",
+    "guide.4.heading": "Browse without selecting by accident",
+    "guide.4.body": "“Previous cutlet” and “Next cutlet” move to neighboring cutlets. Other day tiles are not buttons because clicking them has no action. “Back to today” resets both the search and the day of working to the current Pastafari day.",
+    "guide.5.heading": "Change the day of working",
+    "guide.5.body": "Open “Calculation and comparison options” below the search. There you can choose a calendar and enter another day of working. Further searches use it until you reset to the current Pastafari day. This advanced control remains available without crowding the normal view.",
+    "guide.6.heading": "Compare the same days twice",
+    "guide.6.body": "On desktop, enable comparison in the same area. Each row contains exactly the same queried day; the first column uses the first day of working and the second uses the second. Today versus tomorrow is the default, making every changed Pastafari date easy to identify.",
+    "guide.7.heading": "Inspect the whole year",
+    "guide.7.body": "Below the cutlet view, the site shows the structure of the displayed year: its length and span, every cutlet and its length, and every month. Months also show their number of continuous runs and their first and last occurrence, making the year-wide weaving visible.",
+    "guide.note": "Rows and columns in the tile grid are only visual arrangement, not weeks. In the comparison table, however, alignment is meaningful: each row is the same queried day.",
+    "guide.back": "Back to search and calendar",
+    "footer.local": "Calculation happens on your device; this site has no user account and no tracking code.",
+    "footer.open": "The link is public and loads directly, including in a private-browsing window.",
+    "reverse.kicker": "Reverse search",
+    "reverse.heading": "Find a day from its Pastafari date",
+    "reverse.intro": "Enter a complete Pastafari date and define its day of working. The search runs locally on this device.",
+    "reverse.mode.basic": "Single date",
+    "reverse.mode.advanced": "Constraint system",
+    "reverse.basic.heading": "Single-date reverse search",
+    "reverse.basic.dateHeading": "Pastafari date to find",
+    "reverse.field.year": "Year",
+    "reverse.field.cutlet": "Cutlet",
+    "reverse.field.dayInCutlet": "Day in cutlet",
+    "reverse.field.month": "Month",
+    "reverse.field.dayInMonth": "Day in month",
+    "reverse.basic.calculationHeading": "Day of working",
+    "reverse.basic.calculationMode": "How is the day of working defined?",
+    "reverse.basic.calculation.active": "Use the site's active day of working",
+    "reverse.basic.calculation.absolute": "Use another known date",
+    "reverse.basic.calculation.same": "The day of working is the queried day (c = t)",
+    "reverse.basic.calculation.pastafari": "The day of working is itself Pastafari / depends on other dates",
+    "reverse.basic.activeValue": "Active day of working: {date}",
+    "reverse.basic.absoluteHeading": "Known day of working",
+    "reverse.basic.sameHeading": "Finite search range for c = t",
+    "reverse.basic.rangeStart": "Range start",
+    "reverse.basic.rangeEnd": "Range end",
+    "reverse.basic.toAdvanced": "Continue in the constraint-system editor",
+    "reverse.basic.toAdvancedHelp": "Recursive Pastafari calculation days are represented as variables and constraints so the chain can be extended without an artificial depth limit.",
+    "reverse.action.solve": "Search",
+    "reverse.action.cancel": "Cancel search",
+    "reverse.action.open": "Open in calendar",
+    "reverse.action.addVariable": "Add date variable",
+    "reverse.action.addConstraint": "Add constraint",
+    "reverse.action.remove": "Remove",
+    "reverse.action.clear": "Clear results",
+    "reverse.progress.reverse": "Resolving Pastafari relations",
+    "reverse.progress.verify": "Verifying candidate solutions",
+    "reverse.progress.done": "Search finished",
+    "reverse.progress.scanned": "Work units completed: {count}",
+    "reverse.status.running": "Searching locally…",
+    "reverse.status.cancelled": "Search cancelled.",
+    "reverse.status.superseded": "A newer search replaced this search.",
+    "reverse.status.completeEmpty": "No solution exists in the completely searched domain.",
+    "reverse.status.completeSolutions": "Search complete. All {count} solutions in the domain are shown.",
+    "reverse.status.partialEmpty": "The search stopped before completion. No solution has been found yet.",
+    "reverse.status.partialSolutions": "{count} verified solutions are shown, but the search stopped before completion and more may exist.",
+    "reverse.status.stale": "These results used a previous active day of working. Run the search again to use the current one.",
+    "reverse.status.rangeRequired": "This problem cannot be searched exhaustively until a finite range or fixed date is added.",
+    "reverse.status.timeout": "The search reached its time limit before completion.",
+    "reverse.status.failed": "The reverse-search engine failed.",
+    "reverse.result.heading": "Solutions",
+    "reverse.result.solution": "Solution {index}",
+    "reverse.result.target": "Queried day",
+    "reverse.result.calculation": "Day of working",
+    "reverse.result.jdn": "JDN {jdn}",
+    "reverse.result.complete": "Complete search",
+    "reverse.result.partial": "Partial search",
+    "reverse.advanced.heading": "Constraint-system solver",
+    "reverse.advanced.intro": "Define date variables and relationships between them. Cycles are allowed when the system is reduced to finite domains.",
+    "reverse.variables.heading": "Date variables",
+    "reverse.variable.label": "Display name",
+    "reverse.variable.defaultName": "Date {index}",
+    "reverse.variable.domain": "Domain",
+    "reverse.variable.domain.unknown": "Unknown (must be bounded by other constraints)",
+    "reverse.variable.domain.exact": "Exact known date",
+    "reverse.variable.domain.range": "Finite date range",
+    "reverse.constraint.heading": "Constraints",
+    "reverse.constraint.type": "Constraint type",
+    "reverse.constraint.pastafari": "Pastafari date",
+    "reverse.constraint.equal": "Same absolute day",
+    "reverse.constraint.order": "Chronological order",
+    "reverse.constraint.difference": "Difference in days",
+    "reverse.constraint.left": "Left date",
+    "reverse.constraint.right": "Right date",
+    "reverse.constraint.target": "Queried date variable",
+    "reverse.constraint.calculationMode": "Day-of-working source",
+    "reverse.constraint.calculation.variable": "Another date variable",
+    "reverse.constraint.calculation.absolute": "Known absolute date",
+    "reverse.constraint.calculation.same": "Same as queried date (c = t)",
+    "reverse.constraint.calculationVariable": "Day-of-working variable",
+    "reverse.constraint.orderOp": "Relation",
+    "reverse.constraint.differenceMode": "Difference rule",
+    "reverse.constraint.differenceExact": "Exact difference",
+    "reverse.constraint.differenceRange": "Difference range",
+    "reverse.constraint.equals": "Exact days (left − right)",
+    "reverse.constraint.min": "Minimum days (left − right)",
+    "reverse.constraint.max": "Maximum days (left − right)",
+    "reverse.options.heading": "Search limits",
+    "reverse.options.intro": "Leave a limit blank for no limit. A limit is never applied silently.",
+    "reverse.options.maxSolutions": "Stop after this many verified solutions",
+    "reverse.options.maxScanned": "Stop after this many work units",
+    "reverse.options.timeout": "Time limit in milliseconds",
+    "reverse.advanced.emptyVariables": "Add at least one date variable.",
+    "reverse.advanced.emptyConstraints": "A system may contain no constraints, but every remaining variable must still have a finite domain.",
+    "reverse.error.input": "Some reverse-search fields are missing or invalid.",
+    "reverse.error.limitPositive": "{field} must be positive.",
+    "reverse.error.limitSafeInteger": "{field} is outside the safe integer range.",
+    "reverse.error.absoluteDateField": "Invalid absolute date field.",
+    "reverse.error.range": "The range end must not precede the range start.",
+    "reverse.error.variable": "Each constraint must refer to an existing date variable.",
+    "reverse.error.pastafari": "Enter all five Pastafari date fields.",
+    "reverse.calendar.label": "Calendar used for this absolute date",
+
+  }),
+  calendar: Object.freeze({
+    cutlets: Object.freeze({
+      bronze: "Bronze", fox: "Fox", kidney: "Kidney", lagash: "Lagash", thought: "Thought",
+      fourPartsOfNine: "Four Parts of Nine", palgurash: "Palgurash", papyrusSedge: "Papyrus Sedge",
+      cluster: "Cluster", scorpion: "Scorpion", ash: "Ash", wheat: "Wheat", river: "River",
+      laughter: "Laughter", akkad: "Akkad", horn: "Horn", theEmptyJar: "The Empty Jar",
+    }),
+    months: Object.freeze({
+      clay: "Clay", pomegranate: "Pomegranate", elbow: "Elbow", envy: "Envy", eridu: "Eridu",
+      toothpaste: "Toothpaste", threePartsOfFive: "Three Parts of Five", karshumav: "Karshumav",
+      leopard: "Leopard", tin: "Tin", mist: "Mist", frankincense: "Frankincense", spindle: "Spindle",
+      rib: "Rib", carob: "Carob", uruk: "Uruk", shame: "Shame", camel: "Camel", copper: "Copper",
+      well: "Well", yolk: "Yolk", star: "Star", honey: "Honey", spleen: "Spleen", limestone: "Limestone",
+      joy: "Joy", fig: "Fig", nineveh: "Nineveh", frog: "Frog", pitch: "Pitch", lamp: "Lamp",
+      theClosedDoor: "The Closed Door", sesame: "Sesame", nape: "Nape", silver: "Silver", susa: "Susa",
+      storm: "Storm", donkey: "Donkey", flour: "Flour", regret: "Regret", babylon: "Babylon", tongue: "Tongue",
+      flax: "Flax", salt: "Salt", pear: "Pear", bow: "Bow", sand: "Sand",
+    }),
+  }),
+  terminology: Object.freeze({
+    foundationDay: "Foundation Day",
+    workingNumber: "Working Number",
+    queryNumber: "Query Number",
+    distanceNumber: "Distance Number",
+    sumNumber: "Sum Number",
+    directionNumber: "Direction Number",
+    bowl: "Bowl",
+    drop: "Drop",
+    gate: "Gate",
+    yearFiveThousand: "Year Five Thousand from the Creation of the World",
+  }),
+});
+
+
+===== docs/index.html — I18N KEY INVENTORY =====
+about.open
+about.openShort
+app.brand
+app.intro
+app.title
+aria-label:calendar.toolbarAria
+aria-label:comparison.scrollAria
+calendar.next
+calendar.previous
+calendar.targetOutside
+calendar.today
+comparison.apply
+comparison.desktopOnly
+comparison.heading
+comparison.intro
+comparison.kicker
+comparison.sameDay
+comparison.secondActionLabel
+comparison.toggle
+comparison.toggleHelp
+content:meta.description
+error.kicker
+error.reload
+error.title
+footer.local
+footer.open
+language.label
+loading.kicker
+loading.title
+nav.skip
+search.calendarLabel
+search.heading
+search.intro
+search.kicker
+search.submit
+settings.actionCalendarLabel
+settings.apply
+settings.heading
+settings.intro
+settings.reset
+settings.summary
+year.cutletCountLabel
+year.kicker
+year.lengthLabel
+year.loading
+year.monthCountLabel
+year.monthExplainer
+year.rangeLabel
+
+===== docs/index.html — RAW METADATA/A11Y/FALLBACK =====
+2: <html lang="en" dir="ltr">
+…
+4:     <meta charset="utf-8">
+5:     <meta name="viewport" content="width=device-width, initial-scale=1">
+6:     <noscript><meta http-equiv="refresh" content="0; url=./no-js/"></noscript>
+7:     <meta name="theme-color" content="#672013">
+8:     <meta name="description" content="A local, deterministic Pastafari calendar." data-i18n-attr="content:meta.description">
+9:     <meta name="color-scheme" content="light">
+10:     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; worker-src 'self'; manifest-src 'self'">
+11:     <title data-i18n="app.title">Pastafari Calendar</title>
+…
+37:       <section class="search-panel" id="search-panel" aria-labelledby="search-heading">
+…
+95:       <section class="reverse-panel" id="reverse-panel" aria-labelledby="reverse-heading">
+…
+99:       <section class="status-panel" id="loading-panel" aria-labelledby="loading-heading" aria-live="polite" aria-busy="true">
+100:         <span class="loader" aria-hidden="true"></span>
+…
+107:       <section class="status-panel error-panel" id="error-panel" aria-labelledby="error-heading" role="alert" hidden>
+…
+114:       <section class="calendar-workspace" id="calendar-workspace" aria-labelledby="cutlet-heading" hidden>
+115:         <article class="target-beacon" id="target-beacon" aria-live="polite">
+…
+127:           <div class="toolbar-actions" role="group" data-i18n-attr="aria-label:calendar.toolbarAria">
+…
+137:         <section class="year-overview" id="year-overview" aria-labelledby="year-overview-heading">
+…
+158:                 <ol class="structure-list" id="year-cutlet-list" tabindex="0" aria-labelledby="year-cutlets-summary"></ol>
+…
+162:                 <ol class="structure-list month-structure-list" id="year-month-list" tabindex="0" aria-labelledby="year-months-summary"></ol>
+…
+169:       <section class="comparison-workspace" id="comparison-workspace" aria-labelledby="comparison-heading" hidden>
+…
+176:         <div class="comparison-scroll" role="region" tabindex="0" data-i18n-attr="aria-label:comparison.scrollAria">
+…
+198:     <noscript>
+
+===== docs/about/index.html — I18N KEY INVENTORY =====
+about.back
+about.fallbackNotice
+about.intro
+about.loadError
+about.skip
+about.title
+about.toc
+about.tocKicker
+app.brand
+aria-label:about.toc
+content:about.metaDescription
+footer.local
+footer.open
+guide.1.body
+guide.1.heading
+guide.2.body
+guide.2.heading
+guide.3.body
+guide.3.heading
+guide.4.body
+guide.4.heading
+guide.5.body
+guide.5.heading
+guide.6.body
+guide.6.heading
+guide.7.body
+guide.7.heading
+guide.back
+guide.eyebrow
+guide.heading
+guide.intro
+guide.note
+guide.open
+language.label
+
+===== docs/about/index.html — RAW METADATA/A11Y/FALLBACK =====
+2: <html lang="en" dir="ltr">
+…
+4:     <meta charset="utf-8">
+5:     <meta name="viewport" content="width=device-width, initial-scale=1">
+6:     <noscript><meta http-equiv="refresh" content="0; url=../no-js/"></noscript>
+7:     <meta name="theme-color" content="#672013">
+8:     <meta name="description" content="An explanation of the Pastafari Calendar." data-i18n-attr="content:about.metaDescription">
+9:     <meta name="color-scheme" content="light">
+10:     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; worker-src 'self'; manifest-src 'self'">
+11:     <title data-i18n="about.title">About the Pastafari Calendar</title>
+…
+41:         <nav data-i18n-attr="aria-label:about.toc">
+…
+47:         <article id="article-content" class="about-article" aria-busy="true" tabindex="-1"></article>
+…
+50:         <section class="about-site-usage" id="site-usage" aria-labelledby="guide-heading" data-toc-section data-toc-level="2">
+…
+76:     <noscript>
+
+===== docs/manifest.webmanifest — FALLBACK + TARGET LOCALE =====
+1: {
+2:   "id": "./",
+3:   "name": "Pastafari Calendar",
+4:   "name_localized": {
+5:     "he": {
+6:       "value": "לוח השנה הפסטפרי",
+7:       "lang": "he",
+8:       "dir": "rtl"
+9:     },
+10:     "en": {
+11:       "value": "Pastafari Calendar",
+12:       "lang": "en",
+13:       "dir": "ltr"
+14:     },
+15:     "af": {
+…
+368:     "he": {
+369:       "value": "פסטפרי",
+370:       "lang": "he",
+371:       "dir": "rtl"
+372:     },
+373:     "en": {
+374:       "value": "Pastafari",
+375:       "lang": "en",
+376:       "dir": "ltr"
+377:     },
+378:     "af": {
+…
+731:     "he": {
+732:       "value": "לוח־שנה פסטפרי לחיפוש ולהשוואת תאריכים",
+733:       "lang": "he",
+734:       "dir": "rtl"
+735:     },
+736:     "en": {
+737:       "value": "A Pastafari calendar with date search and comparison.",
+738:       "lang": "en",
+739:       "dir": "ltr"
+740:     },
+741:     "af": {

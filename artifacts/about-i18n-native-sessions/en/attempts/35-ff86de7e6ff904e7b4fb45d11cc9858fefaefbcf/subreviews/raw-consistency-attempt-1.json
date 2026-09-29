@@ -1,0 +1,34 @@
+{
+  "result": "FINDINGS",
+  "summary": "Found several terminology inconsistencies between the `/about/` page and the UI, including mismatched terms for 'day of working', 'query number', and 'working number'. Some terms in the `/about/` content are not reflected in the UI terminology, and vice versa.",
+  "findings": [
+    {
+      "severity": "medium",
+      "location": "docs/about/content/en.html",
+      "current_text": "day of working",
+      "issue": "The term 'day of working' is used in the `/about/` content but is not present in the UI terminology. The UI uses 'day of working' in the settings and comparison sections, but the terminology object does not include it.",
+      "correction": "Add 'day of working' to the terminology object in `docs/i18n/locales/en.js`."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/about/content/en.html",
+      "current_text": "query number",
+      "issue": "The term 'query number' is used in the `/about/` content but is not present in the UI terminology. The UI does not use this term, and it is not listed in the terminology object.",
+      "correction": "Add 'query number' to the terminology object in `docs/i18n/locales/en.js`."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/about/content/en.html",
+      "current_text": "working number",
+      "issue": "The term 'working number' is used in the `/about/` content but is not present in the UI terminology. The UI does not use this term, and it is not listed in the terminology object.",
+      "correction": "Add 'working number' to the terminology object in `docs/i18n/locales/en.js`."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/locales/en.js",
+      "current_text": "queryNumber",
+      "issue": "The term 'queryNumber' is used in the UI terminology but is not reflected in the `/about/` content. The `/about/` content uses 'query number' as a term, but the UI uses 'queryNumber' as a key in the terminology object.",
+      "correction": "Update the `/about/` content to use 'queryNumber' or ensure that 'query number' is consistently used across all UI and content."
+    }
+  ]
+}
