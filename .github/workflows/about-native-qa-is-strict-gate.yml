@@ -199,7 +199,7 @@ jobs:
           current_chars = 0
           for item in deduped:
               encoded_len = len(json.dumps(item, ensure_ascii=False))
-              if current and current_chars + encoded_len > 30000:
+              if current and current_chars + encoded_len > 45000:
                   chunks.append(current)
                   current = []
                   current_chars = 0
@@ -420,71 +420,69 @@ jobs:
 
           Vélrænar GREYNIR_VIÐVARANIR eru hjálpargögn, ekki sjálfkrafa sannleikur.
           Fyrir HVERJA viðvörun sem fylgir þessum hluta verður að skila einni warning_decision með sama id:
-          RAUNVERULEGUR_GALLI ef hún bendir á raunverulegan galla, annars FALSK_JÁKVÆÐ, með stuttri íslenskri ástæðu.
+          RAUNVERULEGUR_GALLI ef hún bendir á raunverulegan galla, annars FALSK_JÁKVÆÐ.
           Þú mátt einnig finna raunveruleg vandamál sem GreynirCorrect fann ekki.
 
           Skilaðu aðeins JSON samkvæmt schema. result er CLEAN ef findings er tómt og FINDINGS ef findings er ekki tómt.
-          summary verður stutt íslensk samantekt. Ekki endursegja allt inntakið.
+          Ef enginn raunverulegur galli er til staðar á að skila CLEAN án frjálsrar samantektar.
           """.strip()
 
-          schema = {
-              "type": "object",
-              "properties": {
-                  "result": {"type": "string", "enum": ["CLEAN", "FINDINGS"]},
-                  "summary": {"type": "string", "minLength": 40, "maxLength": 500},
-                  "warning_decisions": {
+          def build_schema(expected_warning_ids):
+              warning_ids = sorted(expected_warning_ids)
+              if warning_ids:
+                  warning_schema = {
                       "type": "array",
+                      "minItems": len(warning_ids),
+                      "maxItems": len(warning_ids),
                       "items": {
                           "type": "object",
                           "properties": {
-                              "id": {"type": "string"},
+                              "id": {"type": "string", "enum": warning_ids},
                               "decision": {"type": "string", "enum": ["RAUNVERULEGUR_GALLI", "FALSK_JÁKVÆÐ"]},
-                              "reason": {"type": "string", "minLength": 8, "maxLength": 220},
                           },
-                          "required": ["id", "decision", "reason"],
+                          "required": ["id", "decision"],
                           "additionalProperties": False,
                       },
-                  },
-                  "findings": {
+                  }
+              else:
+                  warning_schema = {
                       "type": "array",
-                      "maxItems": 8,
-                      "items": {
-                          "type": "object",
-                          "properties": {
-                              "severity": {"type": "string", "enum": ["critical", "high", "medium", "low"]},
-                              "location": {"type": "string"},
-                              "current_text": {"type": "string", "minLength": 1, "maxLength": 240},
-                              "issue": {"type": "string", "minLength": 15, "maxLength": 360},
-                              "correction": {"type": "string", "minLength": 2, "maxLength": 360},
+                      "maxItems": 0,
+                      "items": {"type": "object"},
+                  }
+
+              return {
+                  "type": "object",
+                  "properties": {
+                      "result": {"type": "string", "enum": ["CLEAN", "FINDINGS"]},
+                      "warning_decisions": warning_schema,
+                      "findings": {
+                          "type": "array",
+                          "maxItems": 8,
+                          "items": {
+                              "type": "object",
+                              "properties": {
+                                  "severity": {"type": "string", "enum": ["critical", "high", "medium", "low"]},
+                                  "location": {"type": "string"},
+                                  "current_text": {"type": "string", "minLength": 1, "maxLength": 240},
+                                  "issue": {"type": "string", "minLength": 15, "maxLength": 360},
+                                  "correction": {"type": "string", "minLength": 2, "maxLength": 360},
+                              },
+                              "required": ["severity", "location", "current_text", "issue", "correction"],
+                              "additionalProperties": False,
                           },
-                          "required": ["severity", "location", "current_text", "issue", "correction"],
-                          "additionalProperties": False,
                       },
                   },
-              },
-              "required": ["result", "summary", "warning_decisions", "findings"],
-              "additionalProperties": False,
-          }
+                  "required": ["result", "warning_decisions", "findings"],
+                  "additionalProperties": False,
+              }
 
-          def repeated(text):
-              words = str(text).split()
-              if len(words) < 20:
-                  return False
-              for size in (2,3,4):
-                  seen = {}
-                  for i in range(len(words)-size+1):
-                      p = tuple(words[i:i+size])
-                      seen[p] = seen.get(p, 0) + 1
-                      if seen[p] >= 4:
-                          return True
-              return False
-
-          def call(message):
+          def call(message, schema):
               payload = {
                   "messages": [{"role": "user", "content": message}],
                   "temperature": 0.05,
                   "top_p": 0.85,
-                  "max_tokens": 950,
+                  "max_tokens": 700,
                   "reasoning_effort": "none",
                   "chat_template_kwargs": {"enable_thinking": False},
                   "stream": False,
@@ -517,8 +515,9 @@ jobs:
                   locations.setdefault(item["location"], []).append(item["text"])
               expected_warning_ids = {w["id"] for w in chunk_warnings}
 
-              source = json.dumps(chunk, ensure_ascii=False, indent=2)
-              warn = json.dumps(chunk_warnings, ensure_ascii=False, indent=2)
+              source = json.dumps(chunk, ensure_ascii=False, separators=(",", ":"))
+              warn = json.dumps(chunk_warnings, ensure_ascii=False, separators=(",", ":"))
+              schema = build_schema(expected_warning_ids)
               message = (
                   base_prompt
                   + f"\n\nHLUTI={idx}/{len(chunks)}"
@@ -541,7 +540,7 @@ jobs:
                           + "\nLEIÐRÉTTING_VERÐUR_AÐ_BREYTA_TEXTA=TRUE"
                           + "\nRÝNISVAR_VERÐUR_AÐ_VERA_EÐLILEG_ÍSLENSKA=TRUE"
                       )
-                  raw = call(attempt_message)
+                  raw = call(attempt_message, schema)
                   attempts.append({"attempt": attempt, "raw": raw})
                   ev.joinpath(f"chunk-{idx:02d}-attempt-{attempt}.json").write_text(raw + "\n", encoding="utf-8")
                   try:
@@ -553,7 +552,6 @@ jobs:
                   findings = parsed.get("findings")
                   decisions = parsed.get("warning_decisions")
                   result = parsed.get("result")
-                  summary = str(parsed.get("summary","")).strip()
                   if result not in {"CLEAN","FINDINGS"} or not isinstance(findings, list) or not isinstance(decisions, list):
                       last_error = "ÓGILD_UPPBYGGING"
                       continue
@@ -563,10 +561,6 @@ jobs:
                   if result == "FINDINGS" and not findings:
                       last_error = "FINDINGS_ÁN_FINDINGS"
                       continue
-                  if repeated(summary):
-                      last_error = "ENDURTEKNING"
-                      continue
-
                   decision_ids = [str(d.get("id","")) for d in decisions if isinstance(d, dict)]
                   if len(decision_ids) != len(set(decision_ids)) or set(decision_ids) != expected_warning_ids:
                       last_error = "VIÐVARANIR_EKKI_FULLMETNAR"
@@ -609,9 +603,8 @@ jobs:
                       continue
 
                   # The reviewer's own Icelandic must also be intelligible and grammatical.
-                  reviewer_texts = [summary]
-                  reviewer_texts += [str(d.get("reason","")) for d in decisions]
-                  reviewer_texts += [str(f.get("issue","")) for f in findings]
+                  reviewer_texts = [str(f.get("issue","")) for f in findings]
+                  reviewer_texts += [str(f.get("correction","")) for f in findings]
                   bad_reviewer_prose = False
                   for reviewer_text in reviewer_texts:
                       reviewer_text = reviewer_text.strip()
@@ -645,7 +638,6 @@ jobs:
               all_results.append({
                   "chunk": idx,
                   "result": accepted["result"],
-                  "summary": accepted["summary"],
                   "warning_decisions": accepted["warning_decisions"],
               })
               all_findings.extend(accepted["findings"])
@@ -689,9 +681,9 @@ jobs:
                       f"Tillaga: {f['correction']}",
                       "",
                   ]
-          lines += ["## Samantektir hluta", ""]
+          lines += ["## Niðurstöður hluta", ""]
           for r in all_results:
-              lines += [f"### Hluti {r['chunk']} — {r['result']}", "", str(r["summary"]).strip(), ""]
+              lines += [f"- Hluti {r['chunk']}: {r['result']}"]
           ev.joinpath("review.md").write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
           print(final_result)
           PY
