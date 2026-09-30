@@ -1,0 +1,332 @@
+name: Afrikaans strict native-language whole-site gate
+
+on:
+  push:
+    branches:
+      - feature/about-i18n-72-locales
+    paths:
+      - .github/workflows/about-native-qa-af-strict-gate.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: afrikaans-strict-native-\${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  strict-af:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 1
+
+      - name: Install pinned llama.cpp runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/af-strict/llama /tmp/af-strict/evidence
+          curl -fL --retry 3 \
+            https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz \
+            -o /tmp/af-strict/llama.tar.gz
+          echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/af-strict/llama.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/af-strict/llama.tar.gz -C /tmp/af-strict/llama
+          git rev-parse HEAD > /tmp/af-strict/evidence/reviewed-head.txt
+
+      - name: Extract auditable Afrikaans website text
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          from html.parser import HTMLParser
+          import json, re
+
+          items=[]
+
+          locale_text=Path("docs/i18n/locales/af.js").read_text(encoding="utf-8")
+          for key, raw in re.findall(r'"([^"]+)"\s*:\s*("(?:\\.|[^"\\])*")', locale_text):
+              try:
+                  value=json.loads(raw)
+              except Exception:
+                  continue
+              if not isinstance(value,str) or not value.strip():
+                  continue
+              if key in {"code","displayName","dir","intlLocale"}:
+                  continue
+              items.append({"location":f"docs/i18n/locales/af.js#{key}","text":value.strip()})
+
+          class VisibleTextParser(HTMLParser):
+              wanted={"p","li","h1","h2","h3","h4","h5","h6","th","td","caption","blockquote"}
+              def __init__(self):
+                  super().__init__(convert_charrefs=True)
+                  self.sections=[]
+                  self.current=None
+              def handle_starttag(self,tag,attrs):
+                  attrs=dict(attrs)
+                  if tag=="br" and self.current is not None:
+                      self.current["parts"].append(". ")
+                  if tag=="section":
+                      self.sections.append(attrs.get("id",""))
+                  if tag in self.wanted:
+                      self.current={
+                          "tag":tag,
+                          "id":attrs.get("id",""),
+                          "section":next((x for x in reversed(self.sections) if x),""),
+                          "parts":[],
+                      }
+              def handle_endtag(self,tag):
+                  if self.current is not None and self.current["tag"]==tag:
+                      text=re.sub(r"\s+"," ","".join(self.current["parts"])).strip()
+                      if text:
+                          ident=self.current["id"] or self.current["section"] or tag
+                          items.append({"location":f"docs/about/content/af.html#{ident}","text":text})
+                      self.current=None
+                  if tag=="section" and self.sections:
+                      self.sections.pop()
+              def handle_data(self,data):
+                  if self.current is not None:
+                      self.current["parts"].append(data)
+
+          p=VisibleTextParser()
+          p.feed(Path("docs/about/content/af.html").read_text(encoding="utf-8"))
+
+          manifest=json.loads(Path("docs/manifest.webmanifest").read_text(encoding="utf-8"))
+          for field in ("name_localized","short_name_localized","description_localized"):
+              value=manifest.get(field,{}).get("af",{}).get("value")
+              if isinstance(value,str) and value.strip():
+                  items.append({"location":f"docs/manifest.webmanifest#{field}.af.value","text":value.strip()})
+
+          registry=Path("docs/i18n/registry.js").read_text(encoding="utf-8")
+          m=re.search(r'defineLocale\("af",\s*"([^"]+)"',registry)
+          if m:
+              items.append({"location":"docs/i18n/registry.js#locale-af-display-name","text":m.group(1)})
+
+          seen=set(); out=[]
+          for item in items:
+              pair=(item["location"],item["text"])
+              if pair in seen: continue
+              seen.add(pair)
+              item["id"]=f"A{len(out):04d}"
+              out.append(item)
+
+          Path("/tmp/af-strict/evidence/items.json").write_text(
+              json.dumps(out,ensure_ascii=False,indent=2)+"\n",encoding="utf-8"
+          )
+          print("review_items="+str(len(out)))
+          print("chars="+str(len(json.dumps(out,ensure_ascii=False,separators=(',',':')))))
+          PY
+
+      - name: Start isolated Afrikaans Gemma 4 reviewer
+        shell: bash
+        run: |
+          set -euo pipefail
+          SERVER="$(find /tmp/af-strict/llama -type f -name llama-server | head -n 1)"
+          test -x "$SERVER"
+          "$SERVER" \
+            -hf ggml-org/gemma-4-E4B-it-GGUF:Q4_0 \
+            --reasoning auto --chat-template-kwargs '{"enable_thinking":false}' \
+            -c 32768 -t 4 --host 127.0.0.1 --port 8080 \
+            > /tmp/af-strict/evidence/server.log 2>&1 &
+          echo "$!" > /tmp/af-strict/server.pid
+          for _ in $(seq 1 600); do
+            curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8080/health >/dev/null
+
+      - name: Hidden qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json, urllib.request
+
+          cases=[
+              ("g1","Kies ’n datum en probeer weer.","NATUURLIK"),
+              ("g2","Die volgende dag van die maand is nie noodwendig môre nie.","NATUURLIK"),
+              ("g3","Die aksiedag is die uitgangspunt van die berekening.","NATUURLIK"),
+              ("g4","Die kalender gebruik verweefde maande wat nie chronologies aaneenlopend hoef te wees nie.","NATUURLIK"),
+              ("b1","Ga naar datum soek.","REGSTEL"),
+              ("b2","Die jaar het verskeie Koteletten.","REGSTEL"),
+              ("b3","Hierdie datum is geldige.","REGSTEL"),
+              ("b4","Deze site gebruiken.","REGSTEL"),
+          ]
+          prompt=(
+              "Jy is ’n streng moedertaal-Afrikaanse taalresensent. Beoordeel slegs die gegewe teksfragment. "
+              "Kontroleer natuurlike moderne Afrikaans, grammatika, kongruensie, sintaksis, idiomatiese formulering "
+              "en of die teks werklik Afrikaans is eerder as Nederlands of ’n mengsel. "
+              "Die projek gebruik domeinterme soos ‘aksiedag’, ‘gevraagde dag’, ‘kotelet’ en ‘verweefde maande’; "
+              "moenie ’n grammatiese sin bloot weens dié terme afkeur nie. "
+              "Die eerste reël moet presies ‘OORDEEL: NATUURLIK’ of ‘OORDEEL: REGSTEL’ wees. "
+              "Gee op die tweede reël een kort rede in Afrikaans."
+          )
+          results=[]
+          for case_id,fragment,expected in cases:
+              payload={
+                  "messages":[{"role":"user","content":prompt+"\n\nFRAGMENT: "+json.dumps(fragment,ensure_ascii=False)}],
+                  "temperature":0.0,"max_tokens":120,"reasoning_effort":"none",
+                  "chat_template_kwargs":{"enable_thinking":False},"stream":False,
+              }
+              req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",
+                  data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),
+                  headers={"Content-Type":"application/json"},method="POST")
+              with urllib.request.urlopen(req,timeout=900) as resp:
+                  data=json.load(resp)
+              answer=data["choices"][0]["message"]["content"].strip()
+              first=answer.splitlines()[0].strip() if answer else ""
+              actual="NATUURLIK" if first=="OORDEEL: NATUURLIK" else "REGSTEL" if first=="OORDEEL: REGSTEL" else "ONGELDIG"
+              passed=actual==expected
+              results.append({"id":case_id,"expected":expected,"actual":actual,"passed":passed,"answer":answer})
+              print(case_id,results[-1])
+          Path("/tmp/af-strict/evidence/qualification.json").write_text(
+              json.dumps(results,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          failed=[r["id"] for r in results if not r["passed"]]
+          if failed: raise SystemExit("Afrikaans reviewer qualification failed: "+", ".join(failed))
+          PY
+
+      - name: Run strict Afrikaans whole-site review
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json, urllib.request
+
+          ev=Path("/tmp/af-strict/evidence")
+          items=json.loads(ev.joinpath("items.json").read_text(encoding="utf-8"))
+          by_location={}
+          for item in items:
+              by_location.setdefault(item["location"],[]).append(item["text"])
+
+          prompt=(
+              "Jy is ’n onafhanklike, streng moedertaal-Afrikaanse taal- en gebruikerskoppelvlakresensent "
+              "vir die Afrikaanse weergawe van die Pastafari-kalender. ALLE gewone beoordelingskommunikasie "
+              "moet in natuurlike moderne Afrikaans wees. Beoordeel die HELE verskafde korpus van sigbare en "
+              "toeganklikheidsgerigte webwerfteks as een samehangende ervaring. Soek aktief na Nederlandse of "
+              "Engelse taallekkasie, mengtaal, vertaaltaal, onnatuurlike Afrikaans, grammatika-, sintaksis-, "
+              "kongruensie-, register-, spelling-, leesteken- en tipografiese foute, terminologiese "
+              "teenstrydighede, verkeerde placeholder-rolle en onnatuurlike metadata/manifest-/a11y-teks. "
+              "Die domeinterme ‘aksiedag’, ‘gevraagde dag’, ‘kotelet’ en ‘verweefde maande’ is doelbewus; "
+              "moenie hulle bloot omdat hulle ongewoon is vervang nie. Kanonieke formules, code literals, hashes, "
+              "API-identifiseerders, stable section-ID’s, eiename en kalendername is vrygestel. "
+              "Elke finding MOET ’n presiese location uit die verskafde items gebruik en current_text MOET ’n "
+              "presiese aaneenlopende substring van die teks by dieselfde location wees. Moenie bronliggings uitdink, "
+              "kode as gebruikersinhoud rapporteer of ’n correction gee wat identies aan current_text is nie. "
+              "Rapporteer slegs werklike regstellingswaardige probleme. As niks oorbly nie, gee CLEAN met ’n leë "
+              "findings-lys. Gee slegs JSON volgens die schema."
+          )
+          message=prompt+"\n\nWEBWERFTEKS_ITEMS_JSON:\n"+json.dumps(items,ensure_ascii=False,separators=(",",":"))
+          schema={
+              "type":"object",
+              "properties":{
+                  "result":{"type":"string","enum":["CLEAN","FINDINGS"]},
+                  "findings":{
+                      "type":"array","maxItems":16,
+                      "items":{
+                          "type":"object",
+                          "properties":{
+                              "severity":{"type":"string","enum":["critical","high","medium","low"]},
+                              "location":{"type":"string"},
+                              "current_text":{"type":"string","minLength":1,"maxLength":280},
+                              "issue":{"type":"string","minLength":15,"maxLength":420},
+                              "correction":{"type":"string","minLength":2,"maxLength":420}
+                          },
+                          "required":["severity","location","current_text","issue","correction"],
+                          "additionalProperties":False
+                      }
+                  }
+              },
+              "required":["result","findings"],
+              "additionalProperties":False
+          }
+          payload={
+              "messages":[{"role":"user","content":message}],
+              "temperature":0.05,"top_p":0.85,"max_tokens":1900,
+              "reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,
+              "response_format":{"type":"json_schema","json_schema":{"name":"afrikaans_whole_site_review","strict":True,"schema":schema}}
+          }
+
+          accepted=None; last_error=""
+          for attempt in (1,2):
+              msg=message if attempt==1 else message+"\n\nMEGANIESE_HERPROBEER=WAAR\nREDE="+last_error+"\nGEE_VOLLEDIGE_JSON=WAAR"
+              payload["messages"]=[{"role":"user","content":msg}]
+              req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",
+                  data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),
+                  headers={"Content-Type":"application/json"},method="POST")
+              with urllib.request.urlopen(req,timeout=3000) as resp:
+                  data=json.load(resp)
+              raw=data["choices"][0]["message"]["content"].strip()
+              ev.joinpath(f"raw-attempt-{attempt}.json").write_text(raw+"\n",encoding="utf-8")
+              try: parsed=json.loads(raw)
+              except Exception:
+                  last_error="ONGELDIGE_JSON"; continue
+              result=parsed.get("result"); findings=parsed.get("findings")
+              if result not in {"CLEAN","FINDINGS"} or not isinstance(findings,list):
+                  last_error="ONGELDIGE_STRUKTUUR"; continue
+              if result=="CLEAN" and findings:
+                  last_error="CLEAN_MET_FINDINGS"; continue
+              if result=="FINDINGS" and not findings:
+                  last_error="FINDINGS_SONDER_FINDINGS"; continue
+
+              seen=set(); good=True
+              for f in findings:
+                  loc=str(f.get("location","")).strip()
+                  cur=str(f.get("current_text","")).strip()
+                  corr=str(f.get("correction","")).strip()
+                  pair=(loc,cur)
+                  if loc not in by_location:
+                      last_error="ONBEKENDE_LOCATION"; good=False; break
+                  if not cur or not any(cur in text for text in by_location[loc]):
+                      last_error="CURRENT_TEXT_NIE_BY_LOCATION"; good=False; break
+                  if cur==corr:
+                      last_error="GEEN_WERKLIKE_VERANDERING"; good=False; break
+                  if pair in seen:
+                      last_error="DUBBELE_FINDING"; good=False; break
+                  seen.add(pair)
+              if not good: continue
+              accepted=parsed; break
+
+          if accepted is None:
+              raise SystemExit("Afrikaanse whole-site review ongeldig ná herprobeer: "+last_error)
+
+          final_result="PASS" if accepted["result"]=="CLEAN" else "FAIL"
+          final={"result":final_result,"reviewed_head":ev.joinpath("reviewed-head.txt").read_text().strip(),"findings":accepted["findings"]}
+          ev.joinpath("final.json").write_text(json.dumps(final,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          lines=[f"NATIVE_QA_RESULT: {final_result}",""]
+          if final_result=="PASS":
+              lines+=["Die streng Afrikaanse whole-site taalbeoordeling het geen bevestigde regstellingswaardige gebrek gevind nie.",""]
+          else:
+              lines+=["Die streng Afrikaanse whole-site taalbeoordeling het bevestigde regstellingswaardige gebreke gevind.",""]
+              for i,f in enumerate(accepted["findings"],1):
+                  lines += [f"### {i}. {f['severity']}","",f["location"],"",f"> {f['current_text']}","",f["issue"],"","Voorgestelde regstelling: "+f["correction"],""]
+          ev.joinpath("review.md").write_text("\n".join(lines).rstrip()+"\n",encoding="utf-8")
+          print(final_result)
+          PY
+
+      - name: Verify verdict
+        shell: bash
+        run: |
+          set -euo pipefail
+          head -n 1 /tmp/af-strict/evidence/review.md | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)$'
+
+      - name: Stop reviewer
+        if: always()
+        shell: bash
+        run: |
+          if [ -f /tmp/af-strict/server.pid ]; then
+            kill "$(cat /tmp/af-strict/server.pid)" 2>/dev/null || true
+          fi
+
+      - name: Upload strict Afrikaans evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: afrikaans-strict-native-whole-site
+          path: /tmp/af-strict/evidence/
+          if-no-files-found: warn
+          retention-days: 90
