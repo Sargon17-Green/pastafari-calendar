@@ -12,7 +12,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | code | Intl locale | dir | site support | article status |
 |---|---|---|---|---|
 | he | he-IL | rtl | complete | semantic master / existing |
-| en | en-US | ltr | complete | semantic QA |
+| en | en-US | ltr | complete | linguistic QA |
 | af | af-ZA | ltr | partial | semantic QA |
 | ar | ar | rtl | partial | semantic QA |
 | az | az-AZ | ltr | partial | semantic QA |
@@ -106,7 +106,7 @@ Status progression for target locales: `not started → draft → semantic QA �
 
 - `fy-NL`: locale-wide language finding: prominent UI copy is Dutch rather than Frisian (`Werkdei wijzigen`, `uitgangspunt van de berekening`, `Deze site gebruiken`).
 
-- `is-IS`: historical locale-wide language finding: the locale was largely Danish with Icelandic-looking substitutions (`Skift arbejdsdaguren`, `beregningens udgangspunkt`, `Sådan ...`). A broad Icelandic repair replaced those strings. The strict Icelandic SAGA + Greynir whole-site gate in workflow run `36550435224` passed: hidden qualification 6/6, all six site chunks CLEAN, zero GreynirCorrect site warnings and zero confirmed findings. Immutable evidence is stored under `artifacts/about-i18n-native-sessions/is/strict-36550435224/`. The locale is therefore promoted to `linguistic QA`; rendered/visual and final integration gates remain separate.
+- `is-IS`: historical locale-wide language finding: the locale was largely Danish with Icelandic-looking substitutions (`Skift arbejdsdaguren`, `beregningens udgangspunkt`, `Sådan ...`). A broad Icelandic repair replaced those strings. The evidence-hygiene strict SAGA + Greynir whole-site run `36555762016` passed: hidden qualification 6/6, 3/3 chunks CLEAN, zero GreynirCorrect site warnings and zero confirmed findings. Immutable evidence is stored under `artifacts/about-i18n-native-sessions/is/strict-36555762016/`. The locale is therefore at `linguistic QA`; rendered/visual and final integration gates remain separate.
 
 - `sl-SI`: locale-wide language finding: prominent UI copy is Croatian/Bosnian/Serbian rather than idiomatic Slovenian (`Promijeni dan delovanja`, `polazišna je točka`, `u kotletu`).
 
@@ -125,6 +125,8 @@ Status progression for target locales: `not started → draft → semantic QA �
 - `nn-NO`: locale-wide variant finding: the existing locale substantially mixes Bokmål with Nynorsk (e.g. `Endre arbeidsdagen`, `Grunnleggelsesdagen`, alongside `brukar`). It requires native Nynorsk repair before serving as a terminology oracle.
 
 - `sr-RS`: locale-wide language finding: the existing locale is Croatian-leaning rather than standard Serbian (e.g. `Promijeni`, `djelovanja`, `Zdjela`). It requires native Serbian repair before serving as a terminology oracle.
+
+- `en-US`: strict English Gemma 4 whole-site gate run `36580966998` passed after a 9/9 hidden qualification over canonical domain terminology, grammatical controls, and wrong-language leakage. The grounded whole-site corpus contained 525 user-visible/accessibility-facing items and produced zero confirmed findings. Evidence is stored under `artifacts/about-i18n-native-sessions/en/strict-36580966998/`. The earlier Qwen run `36559167329` remains historical INVALID evidence and is not a linguistic verdict.
 
 ## Draft-completion mechanical checkpoint — 2026-09-25
 
