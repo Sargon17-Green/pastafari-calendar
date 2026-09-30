@@ -1,0 +1,34 @@
+{
+  "result": "FINDINGS",
+  "summary": "Die Afrikaanse weergawe van die Pastafari-kalender het enkele teks- en toeganklikheidprobleme wat behoefte het van regstelling. Die meeste van die probleme is verwant aan onverwagte Engelse teks, onnatuurlike Afrikaanse formulering, en onvolledige toeganklikheidsteks.",
+  "findings": [
+    {
+      "severity": "medium",
+      "location": "docs/i18n/runtime.js",
+      "current_text": "element.textContent = translate(locale, element.dataset.i18n);",
+      "issue": "Die gebruik van `element.dataset.i18n` bevat Engelse teks wat nie in Afrikaans vertaal is nie. Hierdie teks moet in Afrikaans wees om die toeganklikheid te verseker.",
+      "correction": "Vervang `element.dataset.i18n` met Afrikaanse teks wat in die vertaalproses ingesluit word."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/runtime.js",
+      "current_text": "element.setAttribute(attribute, translate(locale, key));",
+      "issue": "Die `translate(locale, key)`-funksie gebruik Engelse sleutels wat nie in Afrikaans vertaal is nie. Hierdie sleutels moet in Afrikaans wees vir korrekte toeganklikheid.",
+      "correction": "Vervang Engelse sleutels met Afrikaanse sleutels wat in die vertaalproses ingesluit word."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/registry.js",
+      "current_text": "defineLocale(\"af\", \"Afrikaans\", \"ltr\", \"af-ZA\", \"partial\", () => import(\"./locales/af.js?v=19-about-i18n\"))",
+      "issue": "Die `defineLocale`-funksie bevat Engelse teks in die `description`-veld wat nie in Afrikaans vertaal is nie. Hierdie teks moet in Afrikaans wees vir korrekte toeganklikheid.",
+      "correction": "Vervang Engelse teks met Afrikaanse teks wat in die vertaalproses ingesluit word."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/about/about.js",
+      "current_text": "elements[\"article-content\"].lang = articleLocale.lang;",
+      "issue": "Die `lang`-attribuut word gebruik sonder enige Afrikaanse teks. Hierdie attribuut moet in Afrikaans wees vir korrekte toeganklikheid.",
+      "correction": "Vervang `lang` met Afrikaanse teks wat in die vertaalproses ingesluit word."
+    }
+  ]
+}

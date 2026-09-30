@@ -1,0 +1,623 @@
+# SUBREVIEW_SESSION
+surface: consistency
+reviewer_model: Qwen3 8B Q4_K_M
+attempts: 3
+
+===== ORIGINAL_USER =====
+/no_think
+
+Jy is ’n onafhanklike, streng taal- en gebruikerskoppelvlakresensent vir die Afrikaanse weergawe van die Pastafari-kalender (lokaal `af-ZA`, repository-kode `af`).
+
+ALLE gewone natuurlike-taalkommunikasie in hierdie beoordelingsessie moet in Afrikaans wees. Jy mag teks in ’n ander taal aanhaal wanneer jy dit as ’n gebrek rapporteer, en jy mag onveranderlike tegniese identifiseerders, API-name, formules, hashes, lêerpaaie en ander letterlike waardes weergee wat nie vertaal moet word nie.
+
+Dit is ’n vars, onafhanklike LLM-beoordeling. Moenie vorige QA-gevolgtrekkings vertrou nie en moenie aanvaar dat bestaande formulering korrek of natuurlik is nie. Die taak is beoordeling, nie ’n volledige hervertaling van nuuts af nie.
+
+Beoordeel die HELE sigbare en toeganklikheidsgerigte ervaring wanneer die webwerf in Afrikaans is, nie net `/about/` nie. Die omvang sluit die hoofkoppelvlak, datumsoektog, aksiedagkontroles, vergelyking, jaaroorsig, omgekeerde soektog, foute en toestande, gebruikersgids, footer, metadata/title, manifest, ARIA/a11y, noscript/fallback, taalwisseling en `/about/` in.
+
+Soek aktief na:
+1. teks in die verkeerde taal, veral Nederlands of Engels wat onbedoeld deurlek;
+2. vertaaltaal, stywe, onnatuurlike of nie-idiomatiese moderne Afrikaans;
+3. grammatika-, sintaksis-, kongruensie-, register-, leesteken-, spel- en tipografiese foute;
+4. terminologiese teenstrydighede tussen `/about/` en die UI;
+5. verkeerde of twyfelagtige Afrikaanse formulering van tegniese begrippe;
+6. placeholders wat in die verkeerde grammatikale of semantiese rol gebruik word;
+7. onakkurate of onnatuurlike metadata, title, ARIA, manifest-, fallback- of toeganklikheidsteks;
+8. gemengde taal of skrif wat nie doelbewus tegnies is nie;
+9. waarskynlike reëlbreking-, overflow- of beknopte-beheer-risiko’s wat deur die Afrikaanse bewoording veroorsaak word.
+
+Kanonieke invariantes is verpligtend. Moenie formules, hashes, code literals, API-identifiseerders, stabiele section-ID’s of werklike kanonieke name verander bloot om dit natuurliker te laat klink nie.
+
+Reëls om vals positiewe te voorkom:
+
+- Die Web App Manifest ondersteun `*_localized`-taalkaarte. Moenie die basiese fallback-`name`, `short_name`, `description`, `lang` of `dir` bloot as ’n Afrikaanse fout rapporteer omdat gelokaliseerde inskrywings ook bestaan nie. Kontroleer eerder dat die Afrikaanse gelokaliseerde manifestinskrywings volledig en korrek is.
+- Statiese HTML mag Engelse bootstrap-bronteks bevat op elemente met `data-i18n` of `data-i18n-attr`. Die runtime vervang dit ná locale-inisialisering. Moenie so ’n source-default alleen as fout rapporteer nie; rapporteer dit slegs as die kodepad wys dat dit ná Afrikaanse locale-inisialisering of op ’n werklike fallback/error-pad sigbaar kan bly.
+- Locale-oplossing op die statiese webwerf word self deur JavaScript gedoen. Die `noscript`-fallback is doelbewus taalneutraal en bevat net die eienaam `JavaScript` plus ’n waarskuwingsimbool. Moenie dit as taaldefek rapporteer nie.
+- Resensentinstruksies, `MODE`/`SOURCE_PART`-kontrolelyne, lêeropskrifte en opsommings van ander resensente is NIE webwerfteks nie. Gebruik nooit daardie teks as `current_text` nie en plaas nooit ’n finding in ’n prompt/artifact-lêer nie.
+- ’n finding oor “verkeerde taal” is slegs geldig as jy werklike natuurlike-taalteks uit die verskafde webwerfbron presies kan aanhaal en die webwerflêer kan identifiseer.
+- ’n voorgestelde correction wat identies aan `current_text` is, is geen finding nie.
+- Die projek gebruik doelbewus terme soos `aksiedag`, `gevraagde dag`, `kotelet` en `verweefde maande`. Beoordeel of hulle konsekwent en grammaties gebruik word; moenie hulle bloot omdat hulle domeinspesifiek is vervang nie.
+
+Jy sal hieronder `MODE` en `SOURCE_PART` ontvang.
+
+As `MODE=FINDINGS_ONLY`:
+- beoordeel net die verskafde `SOURCE_PART`;
+- besluit duidelik: `CLEAN` as daar geen regstellingswaardige probleem is nie, anders `FINDINGS`;
+- lewer ’n kort Afrikaanse opsomming en hoogstens ses presies gelokaliseerde findings;
+- elke finding moet severity (`critical`, `high`, `medium`, of `low`), ’n presiese lêer/location, ’n kort presiese `current_text`, ’n duidelike probleem en ’n uitvoerbare correction bevat;
+- `current_text` moet ’n presiese verbatim substring van die verskafde bron wees;
+- elke `location` moet met `docs/` begin;
+- voeg duplikate saam en moenie breë of ongegronde findings skep nie;
+- as daar geen werklike probleem is nie, verduidelik kortliks in Afrikaans wat nagegaan is en waarom dit skoon is;
+- moenie die hele bron, kode of lang bronpassasies terugkopieer nie;
+- moenie self `SUBREVIEW_RESULT` of `NATIVE_QA_RESULT` skryf nie; die runner voeg die meganiese reëls by.
+
+MODE=FINDINGS_ONLY
+SOURCE_PART=CONSISTENCY
+SURFACE_CONTRACT:
+SCOPE_UI_ABOUT_TERMINOLOGY_ONLY=TRUE
+IGNORE_CALENDAR_MATHEMATICS_AND_CODE_QUALITY=TRUE
+LOCALE_FINDING_LOCATION_REQUIRES_TRANSLATION_KEY_FRAGMENT=TRUE
+CURRENT_TEXT_MUST_EQUAL_EXACT_LOCALE_VALUE=TRUE
+ACTIONABLE_CHANGE_REQUIRED=TRUE
+
+===== docs/i18n/locales/af.js — FULL TARGET UI TERMINOLOGY =====
+"use strict";
+
+export default Object.freeze({
+  "code": "af",
+  "displayName": "Afrikaans",
+  "dir": "ltr",
+  "intlLocale": "af-ZA",
+  "messages": {
+    "meta.description": "'n Pastafariese kalender met datumsoektog en vergelyking.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "'n Plaaslike, deterministiese Pastafari-kalender.",
+    "app.brand": "PASTAFARI",
+    "app.title": "Pastafariese kalender",
+    "nav.skip": "Ga naar datum soek",
+    "app.intro": "Soek 'n dag in enige beskikbare kalender en bekyk daarna die volledige Pastafariese datum en die kotelet waarin die dag val.",
+    "guide.open": "Hoe gebruik ek hierdie webwerf?",
+    "guide.openShort": "Gebruik hierdie webwerf",
+    "about.open": "Oor die Pastafariese kalender",
+    "about.openShort": "Oor die kalender",
+    "about.title": "Oor die Pastafariese kalender",
+    "about.metaDescription": "Verduideliking van die Pastafariese kalender: aksiedag en gevraagde dag, jare, kotelette, verweefde maande, daggrens en gevorderde meganismes.",
+    "about.intro": "Hoe die kalender dae, jare, kotelette, verweefde maande en die aksiedag voorstel.",
+    "about.skip": "Gaan na die kalenderverduideliking",
+    "about.back": "Terug na die kalender",
+    "about.tocKicker": "Op hierdie bladsy",
+    "about.toc": "Inhoud",
+    "about.fallbackNotice": "Die verduideliking is nog nie in die gekose taal beskikbaar nie; die default weergawe word dus gewys.",
+    "about.loadError": "Die kalenderverduideliking kon nie gelaai word nie.",
+    "language.label": "Taal",
+    "day.staleWarning": "Die huidige dag het van {previousDate} na {currentDate} verander. Omdat die aksiedag die huidige dag was, is die vertoonde datums nie meer op datum nie. Hulle sal herbereken word nadat jy hierdie boodskap gesluit het.",
+    "location.assumption": "(By gebrek aan teenstrydige inligting word aanvaar dat die toestel in Kisurra is.)",
+    "location.useDevice": "Gebruik toestel se ligging",
+    "search.kicker": "Datum soek",
+    "search.heading": "Watter dag wil jy vind?",
+    "search.intro": "Kies 'n kalender, voer 'n datum in en kies ‘Wys datum’.",
+    "search.calendarLabel": "Kalender vir invoer",
+    "search.submit": "Wys datum",
+    "search.invalid": "Die datum kon nie herken word nie. Kontroleer of al die velde ingevul is en of die datum in die gekose kalender bestaan.",
+    "settings.summary": "Opsies vir berekening en vergelyking",
+    "settings.heading": "Verander die aksiedag",
+    "settings.intro": "Die aksiedag is die uitgangspunt van die berekening.",
+    "settings.actionCalendarLabel": "Kalender vir die invoer van die aksiedag",
+    "settings.apply": "Pas aksiedag toe",
+    "settings.reset": "Terug na vandag",
+    "settings.invalid": "Die aksiedag is ongeldig. Kontroleer die datum en probeer weer.",
+    "comparison.toggle": "Vergelyk twee berekenings langs mekaar",
+    "comparison.toggleHelp": "Beskikbaar op 'n breë rekenaarskerm. Elke ry toon dieselfde teikendag onder twee aksiedae.",
+    "comparison.secondActionLabel": "Kalender vir die invoer van die tweede aksiedag",
+    "comparison.apply": "Werk vergelyking by",
+    "comparison.kicker": "Vergelyking volgens dag belyn",
+    "comparison.heading": "Dieselfde dae, twee aksiedae",
+    "comparison.intro": "Elke ry bevat dieselfde gevraagde dag. Net die aksiedag verskil tussen die eerste en tweede kolom.",
+    "comparison.sameDay": "Dag wat albei berekenings deel",
+    "comparison.actionHeading": "Aksiedag: {date}",
+    "comparison.summary": "{count} dae word gewys, van die eerste tot die laaste dag van die kotelet wat deur die eerste berekening geopen is.",
+    "comparison.scrollAria": "Vergelykingstabel met dieselfde dae onder twee berekenings",
+    "comparison.desktopOnly": "Die volledige vergelykingstabel is op 'n breë rekenaarskerm beskikbaar.",
+    "comparison.invalid": "Die tweede aksiedag is ongeldig. Kontroleer die datum en probeer weer.",
+    "field.year": "Jaar",
+    "field.month": "Maand",
+    "field.day": "Dag",
+    "field.relatedYear": "Ooreenstemmende Gregoriaanse jaar",
+    "field.leapMonth": "Skrikkelmaand",
+    "field.era": "Tydperk",
+    "field.eraYear": "Jaar in tydperk",
+    "field.ayyamiHa": "Ayyám-i-Há",
+    "field.baktun": "Baktun",
+    "field.katun": "Katun",
+    "field.tun": "Tun",
+    "field.uinal": "Uinal",
+    "field.kin": "Kin",
+    "field.correlation": "Korrelasiegetal",
+    "era.meiji": "Meiji",
+    "era.taisho": "Taishō",
+    "era.showa": "Shōwa",
+    "era.heisei": "Heisei",
+    "era.reiwa": "Reiwa",
+    "calendarInput.gregorian": "Gregoriaans",
+    "calendarInput.julian": "Juliaans",
+    "calendarInput.hebrew": "Hebreeus",
+    "calendarInput.islamicCivil": "Siviel-Islamities",
+    "calendarInput.islamicUmmAlQura": "Umm al-Qura",
+    "calendarInput.solarHijriOfficial": "Son-Hidjri — amptelik",
+    "calendarInput.solarHijriArithmetic": "Son-Hidjri — rekenkundig 2 820",
+    "calendarInput.chinese": "Chinees",
+    "calendarInput.hinduOldSolar": "Ou Hindoe — son",
+    "calendarInput.hinduOldLunar": "Ou Hindoe — maan",
+    "calendarInput.saka": "Saka",
+    "calendarInput.thaiBuddhist": "Thai-Boeddhisties",
+    "calendarInput.ethiopic": "Etiopies",
+    "calendarInput.coptic": "Kopties",
+    "calendarInput.japaneseImperial": "Japans-keiserlik",
+    "calendarInput.minguo": "Minguo",
+    "calendarInput.bahaiTehran": "Bahá’í — Teheran-ewening",
+    "calendarInput.bahaiWestern": "Bahá’í — Westerse rekenkundige",
+    "calendarInput.mayaLongCount": "Maya-langtelling",
+    "calendarHelp.hebrew": "Maande word volgens naam gekies. Jaar en dag aanvaar desimale syfers of Hebreeuse syferletters, byvoorbeeld תשפ״ו of י״ד; ’n jaar wat in letters sonder ’n duisendteken geskryf is, word geïnterpreteer met 5 000 bygetel.",
+    "calendarHelp.intl": "Hierdie omskakeling gebruik kalenderondersteuning wat in jou blaaier ingebou is. As die blaaier die datum nie kan weergee nie, meld die webwerf dit uitdruklik.",
+    "calendarHelp.chinese": "Voer die Gregoriaanse jaar in wat met die Chinese jaar ooreenstem en merk ‘Skrikkelmaand’ slegs vir die herhaalde maand.",
+    "calendarHelp.hindu": "Voer die jaar en dag volgens die ou Hindoe-telling in en kies die maand volgens naam. In die maanvorm kan ’n skrikkelmaand ook aangedui word.",
+    "calendarHelp.japanese": "Jaar 1 begin op die eerste dag van die era; jy kan ook 元 of 元年 vir die eerste jaar invoer. ’n Datum voor die begin of ná die einde van die era word geweier.",
+    "calendarHelp.bahai": "Kies die maand volgens naam of Ayyám-i-Há. Die vorm met die Teheran-ewening ondersteun die gebruiklike Gregoriaanse reeks 1844–3000.",
+    "calendarHelp.maya": "Die standaardkorrelasie is GMT 584.283. Jy kan dit verander as jy 'n ander korrelasie gebruik.",
+    "loading.kicker": "Plaaslik bereken",
+    "loading.title": "Soek na kotelet en datum…",
+    "error.kicker": "Kan nie die kalender vertoon nie",
+    "error.title": "Die berekeningsenjin is nie gelaai nie",
+    "error.reload": "Laai weer",
+    "error.timeout": "Die berekening neem te lank.",
+    "error.engineFailed": "Die berekeningsenjin het misluk.",
+    "error.engineLoadFailed": "Die berekeningsenjin kon nie gelaai word nie.",
+    "calendar.toolbarAria": "Navigasie tussen kotelette",
+    "calendar.previous": "Vorige kotelet",
+    "calendar.today": "Terug na vandag",
+    "calendar.next": "Volgende kotelet",
+    "calendar.daysAria": "Dae in die kotelet {cutletName}",
+    "calendar.currentCutlet": "Jaar {year} · kotelet",
+    "calendar.cutletDescription": "{count} dae · aksiedag: {actionDate}",
+    "calendar.targetOutside": "Die gesoekte datum val nie in die kotelet wat nou op die skerm is nie. Jy kan verder blaai of 'n ander datum soek.",
+    "year.kicker": "Die jaar in 'n oogopslag",
+    "year.heading": "Struktuur van jaar {year}",
+    "year.context": "Hierdie struktuur is vir aksiedag {actionDate} bereken. As jy die aksiedag verander, kan die jaargrense, kotelette en maande opnuut opgebou word.",
+    "year.loading": "Bou volledige jaarstruktuur…",
+    "year.error": "Die volledige jaarstruktuur kon nie opgebou word nie. Die koteletaansig bly beskikbaar.",
+    "year.lengthLabel": "Jaarlengte",
+    "year.cutletCountLabel": "Koteletten",
+    "year.monthCountLabel": "Maanden",
+    "year.rangeLabel": "Gregoriaanse reeks",
+    "year.daysValue": "{count} dae",
+    "year.rangeValue": "{startDate} tot {endDate}",
+    "year.displayedCutletPosition": "Die vertoonde kotelet beslaan dae {start}–{end} van die jaar.",
+    "year.targetPosition": "Die gesoekte datum is dag {day} van {length} in hierdie jaar.",
+    "year.monthExplainer": "Maande is onafhanklik van kotelette deur die jaar verweef: 'n maand is nie 'n onderverdeling van 'n kotelet nie, en sy dae kan in verskeie afsonderlike reekse voorkom. Die lengte van 'n maand is dus die totale aantal toegewese dae, nie noodwendig een aaneenlopende tydperk nie.",
+    "year.cutletsSummary": "Kotelette in hierdie jaar ({count})",
+    "year.monthsSummary": "Maande in hierdie jaar ({count})",
+    "year.numberedName": "{number}. {name}",
+    "year.cutletMeta": "Lengte: {length} dae · posisie in die jaar: dae {start}–{end}",
+    "year.monthMeta": "Dae: {length} · aaneenlopende reekse: {runs} · eerste verskyning: dag {first} · laaste: dag {last}",
+    "target.today": "Dit is vandag",
+    "target.searched": "Dit is die datum waarna jy gesoek het",
+    "target.context": "Teikendatum: {targetDate} · aksiedag: {actionDate}",
+    "target.notInView": "Jou gesoekte datum bly bewaar; die kotelet wat nou vertoon word, is 'n ander een.",
+    "date.aria": "Jaar {year} sedert die Skepping van die Wêreld, dag {dayInCutlet} in die kotelet {cutletName}, dag {dayInMonth} in die maand {monthName}",
+    "date.yearLine": "Jaar {year} sedert die Skepping van die Wêreld",
+    "date.cutletLine": "Dag {dayInCutlet} in die kotelet {cutletName}",
+    "date.monthLine": "Dag {dayInMonth} in die maand {monthName}",
+    "guide.eyebrow": "Gebruikersgids",
+    "guide.heading": "Wat kan jy hier doen, en hoe?",
+    "guide.intro": "Die webwerf toon vir elke dag 'n volledige Pastafariese datum, ondersteun soektogte in baie kalenders en kan op 'n breë skerm die uitwerking van die aksiedag vergelyk.",
+    "guide.1.heading": "Maak die webwerf oop en kry vandag",
+    "guide.1.body": "Daar is geen registrasie of aanmelding nie, en geen datum word na 'n bediener gestuur nie. Die groot opskrif en die merker op die teël maak vandag maklik herkenbaar.",
+    "guide.2.heading": "Soek in enige beskikbare kalender",
+    "guide.2.body": "Kies by ‘Watter dag wil jy vind?’ 'n kalender, vul die velde in en kies ‘Wys datum’. Jy kan onder meer kies uit Gregoriaans, Hebreeus, Juliaans, Islamities, Persies, Chinees, Hindoe, Saka, Thai, Etiopies, Kopties, Japanse keiserlike kalender, Minguo, Bahá’í en die Maya-langtelling.",
+    "guide.3.heading": "Lees die datum",
+    "guide.3.body": "Elke teël het drie vaste reëls: die jaar sedert die Skepping van die Wêreld; die dagnommer in die kotelet en sy naam; daarna die dag in die maand en die maandnaam. Geen enkele getal stel op sy eie die hele datum voor nie. Die maandnaam bepaal die kleur van die teël.",
+    "guide.4.heading": "Blaai sonder om per ongeluk te kies",
+    "guide.4.body": "‘Vorige kotelet’ en ‘Volgende kotelet’ gaan na aangrensende kotelette. Ander dagteëls is nie knoppies nie, omdat 'n klik daarop niks doen nie.",
+    "guide.5.heading": "Verander die aksiedag",
+    "guide.5.body": "Maak ‘Opsies vir berekening en vergelyking’ onder die soekfunksie oop. Daar kan jy 'n kalender kies en 'n ander aksiedag invoer. Hierdie gevorderde instelling bly beskikbaar sonder om die gewone aansig oorvol te maak.",
+    "guide.6.heading": "Vergelyk dieselfde dae twee keer",
+    "guide.6.body": "Skakel die vergelyking op 'n breë skerm in dieselfde afdeling aan. Elke ry bevat presies dieselfde teikendag; die eerste kolom gebruik die eerste aksiedag en die tweede kolom die tweede. Vandag teenoor môre is die verstek, sodat elke veranderde Pastafariese datum maklik herkenbaar is.",
+    "guide.7.heading": "Bekyk die hele jaar",
+    "guide.7.body": "Onder die koteletaansig wys die webwerf die struktuur van die vertoonde jaar: die lengte en reeks, elke kotelet met sy lengte en elke maand. Maande wys ook die aantal aaneenlopende reekse en hul eerste en laaste verskyning, sodat die verwewing deur die jaar sigbaar word.",
+    "guide.note": "Rye en kolomme in die teëlrooster is net 'n visuele uitleg, nie weke nie. In die vergelykingstabel is belyning wel betekenisvol: elke ry is dieselfde gevraagde dag.",
+    "guide.back": "Terug na soektog en kalender",
+    "footer.local": "Die berekening gebeur op jou toestel; hierdie webwerf het geen gebruikersrekening en geen opsporingskode nie.",
+    "footer.open": "Die skakel is openbaar en maak direk oop, ook in 'n privaatblaaiervenster.",
+    "reverse.kicker": "Omgekeerde soektog",
+    "reverse.heading": "Vind 'n dag uit sy Pastafari-datum",
+    "reverse.intro": "Voer 'n volledige Pastafari-datum in en bepaal die berekeningsdag. Die soektog loop plaaslik op hierdie toestel.",
+    "reverse.mode.basic": "Enkele datum",
+    "reverse.mode.advanced": "Beperkingstelsel",
+    "reverse.basic.heading": "Omgekeerde soektog vir een datum",
+    "reverse.basic.dateHeading": "Pastafari-datum om te vind",
+    "reverse.field.year": "Jaar",
+    "reverse.field.cutlet": "Kotelet",
+    "reverse.field.dayInCutlet": "Dag in kotelet",
+    "reverse.field.month": "Maand",
+    "reverse.field.dayInMonth": "Dag in maand",
+    "reverse.basic.calculationHeading": "Berekeningsdag",
+    "reverse.basic.calculationMode": "Hoe word die berekeningsdag bepaal?",
+    "reverse.basic.calculation.active": "Gebruik die webwerf se aktiewe berekeningsdag",
+    "reverse.basic.calculation.absolute": "Gebruik 'n ander bekende datum",
+    "reverse.basic.calculation.same": "Die berekeningsdag is die gevraagde dag (c = t)",
+    "reverse.basic.calculation.pastafari": "Die berekeningsdag is self Pastafari / hang van ander datums af",
+    "reverse.basic.activeValue": "Aktiewe berekeningsdag: {date}",
+    "reverse.basic.absoluteHeading": "Bekende berekeningsdag",
+    "reverse.basic.sameHeading": "Eindige soekreeks vir c = t",
+    "reverse.basic.rangeStart": "Begin van reeks",
+    "reverse.basic.rangeEnd": "Einde van reeks",
+    "reverse.basic.toAdvanced": "Gaan voort in die beperkingstelsel-redigeerder",
+    "reverse.basic.toAdvancedHelp": "Rekursiewe Pastafari-berekeningsdae word as veranderlikes en beperkings voorgestel sodat die ketting sonder 'n kunsmatige dieptelimiet uitgebrei kan word.",
+    "reverse.action.solve": "Soek",
+    "reverse.action.cancel": "Kanselleer soektog",
+    "reverse.action.open": "Maak in kalender oop",
+    "reverse.action.addVariable": "Voeg datumveranderlike by",
+    "reverse.action.addConstraint": "Voeg beperking by",
+    "reverse.action.remove": "Verwyder",
+    "reverse.action.clear": "Maak resultate skoon",
+    "reverse.progress.reverse": "Pastafari-verhoudings word opgelos",
+    "reverse.progress.verify": "Kandidaatoplossings word geverifieer",
+    "reverse.progress.done": "Soektog voltooi",
+    "reverse.progress.scanned": "Voltooide werkeenhede: {count}",
+    "reverse.status.running": "Soek plaaslik…",
+    "reverse.status.cancelled": "Soektog gekanselleer.",
+    "reverse.status.superseded": "'n Nuwer soektog het hierdie soektog vervang.",
+    "reverse.status.completeEmpty": "Geen oplossing bestaan in die volledig deursoekte domein nie.",
+    "reverse.status.completeSolutions": "Soektog voltooi. Al {count} oplossings in die domein word gewys.",
+    "reverse.status.partialEmpty": "Die soektog het voor voltooiing gestop. Geen oplossing is nog gevind nie.",
+    "reverse.status.partialSolutions": "{count} geverifieerde oplossings word gewys, maar die soektog het voor voltooiing gestop en meer kan bestaan.",
+    "reverse.status.stale": "Hierdie resultate het 'n vorige aktiewe berekeningsdag gebruik. Begin die soektog weer om die huidige dag te gebruik.",
+    "reverse.status.rangeRequired": "Hierdie probleem kan nie volledig deursoek word voordat 'n eindige reeks of vaste datum bygevoeg is nie.",
+    "reverse.status.timeout": "Die soektog het sy tydlimiet voor voltooiing bereik.",
+    "reverse.status.failed": "Die omgekeerde-soekenjin het misluk.",
+    "reverse.result.heading": "Oplossings",
+    "reverse.result.solution": "Oplossing {index}",
+    "reverse.result.target": "Gevraagde dag",
+    "reverse.result.calculation": "Berekeningsdag",
+    "reverse.result.jdn": "JDN {jdn}",
+    "reverse.result.complete": "Volledige soektog",
+    "reverse.result.partial": "Gedeeltelike soektog",
+    "reverse.advanced.heading": "Beperkingstelsel-oplosser",
+    "reverse.advanced.intro": "Definieer datumveranderlikes en verhoudings tussen hulle. Siklusse word toegelaat wanneer die stelsel tot eindige domeine verminder word.",
+    "reverse.variables.heading": "Datumveranderlikes",
+    "reverse.variable.label": "Vertoonnaam",
+    "reverse.variable.defaultName": "Datum {index}",
+    "reverse.variable.domain": "Domein",
+    "reverse.variable.domain.unknown": "Onbekend (moet deur ander beperkings begrens word)",
+    "reverse.variable.domain.exact": "Presiese bekende datum",
+    "reverse.variable.domain.range": "Eindige datumreeks",
+    "reverse.constraint.heading": "Beperkings",
+    "reverse.constraint.type": "Tipe beperking",
+    "reverse.constraint.pastafari": "Pastafari-datum",
+    "reverse.constraint.equal": "Dieselfde absolute dag",
+    "reverse.constraint.order": "Chronologiese volgorde",
+    "reverse.constraint.difference": "Verskil in dae",
+    "reverse.constraint.left": "Linkerdatum",
+    "reverse.constraint.right": "Regterdatum",
+    "reverse.constraint.target": "Gevraagde datumveranderlike",
+    "reverse.constraint.calculationMode": "Bron van berekeningsdag",
+    "reverse.constraint.calculation.variable": "Nog 'n datumveranderlike",
+    "reverse.constraint.calculation.absolute": "Bekende absolute datum",
+    "reverse.constraint.calculation.same": "Dieselfde as gevraagde datum (c = t)",
+    "reverse.constraint.calculationVariable": "Berekeningsdagveranderlike",
+    "reverse.constraint.orderOp": "Verhouding",
+    "reverse.constraint.differenceMode": "Verskilreël",
+    "reverse.constraint.differenceExact": "Presiese verskil",
+    "reverse.constraint.differenceRange": "Verskilreeks",
+    "reverse.constraint.equals": "Presiese dae (links − regs)",
+    "reverse.constraint.min": "Minimum dae (links − regs)",
+    "reverse.constraint.max": "Maksimum dae (links − regs)",
+    "reverse.options.heading": "Soeklimiete",
+    "reverse.options.intro": "Laat 'n limiet leeg vir geen limiet. Geen limiet word ooit stilweg toegepas nie.",
+    "reverse.options.maxSolutions": "Stop ná soveel geverifieerde oplossings",
+    "reverse.options.maxScanned": "Stop ná soveel werkeenhede",
+    "reverse.options.timeout": "Tydlimiet in millisekondes",
+    "reverse.advanced.emptyVariables": "Voeg minstens een datumveranderlike by.",
+    "reverse.advanced.emptyConstraints": "'n Stelsel mag geen beperkings bevat nie, maar elke oorblywende veranderlike moet steeds 'n eindige domein hê.",
+    "reverse.error.input": "Sommige omgekeerde-soekvelde ontbreek of is ongeldig.",
+    "reverse.error.range": "Die einde van die reeks mag nie voor die begin wees nie.",
+    "reverse.error.variable": "Elke beperking moet na 'n bestaande datumveranderlike verwys.",
+    "reverse.error.pastafari": "Voer al vyf Pastafari-datumvelde in.",
+    "reverse.error.limitPositive": "{field} moet positief wees.",
+    "reverse.error.limitSafeInteger": "{field} val buite die veilige heelgetalreeks.",
+    "reverse.error.absoluteDateField": "Ongeldige veld vir die absolute datum.",
+    "reverse.calendar.label": "Kalender wat vir hierdie absolute datum gebruik word",
+
+  },
+  "calendar": {
+    "cutlets": {
+      "bronze": "Brons",
+      "fox": "Vos",
+      "kidney": "Nier",
+      "lagash": "Lagash",
+      "thought": "Gedagte",
+      "fourPartsOfNine": "Vier dele van nege",
+      "palgurash": "Palgurash",
+      "papyrusSedge": "Papirusbies",
+      "cluster": "Tros",
+      "scorpion": "Skerpioen",
+      "ash": "As",
+      "wheat": "Koring",
+      "river": "Rivier",
+      "laughter": "Gelag",
+      "akkad": "Akkad",
+      "horn": "Horing",
+      "theEmptyJar": "Die leë kruik"
+    },
+    "months": {
+      "clay": "Klei",
+      "pomegranate": "Granaat",
+      "elbow": "Elmboog",
+      "envy": "Afguns",
+      "eridu": "Eridu",
+      "toothpaste": "Tandepasta",
+      "threePartsOfFive": "Drie dele van vyf",
+      "karshumav": "Karshumav",
+      "leopard": "Luiperd",
+      "tin": "Tin",
+      "mist": "Mist",
+      "frankincense": "Wierook",
+      "spindle": "Spil",
+      "rib": "Rib",
+      "carob": "Karob",
+      "uruk": "Uruk",
+      "shame": "Skaamte",
+      "camel": "Kameel",
+      "copper": "Koper",
+      "well": "Put",
+      "yolk": "Eidooier",
+      "star": "Ster",
+      "honey": "Heuning",
+      "spleen": "Milt",
+      "limestone": "Kalksteen",
+      "joy": "Vreugde",
+      "fig": "Vy",
+      "nineveh": "Nineve",
+      "frog": "Padda",
+      "pitch": "Pik",
+      "lamp": "Lamp",
+      "theClosedDoor": "Die geslote deur",
+      "sesame": "Sesam",
+      "nape": "Agterkop",
+      "silver": "Silwer",
+      "susa": "Susa",
+      "storm": "Storm",
+      "donkey": "Donkie",
+      "flour": "Meel",
+      "regret": "Spyt",
+      "babylon": "Babilon",
+      "tongue": "Tong",
+      "flax": "Vlas",
+      "salt": "Sout",
+      "pear": "Peer",
+      "bow": "Boog",
+      "sand": "Sand"
+    }
+  },
+  "terminology": {
+    "foundationDay": "Stigtingsdag",
+    "workingNumber": "Aksiegetal",
+    "queryNumber": "Vraaggetal",
+    "distanceNumber": "Afstandsgetal",
+    "sumNumber": "Somgetal",
+    "directionNumber": "Rigtingsgetal",
+    "bowl": "Bak",
+    "drop": "Druppel",
+    "gate": "Poort",
+    "yearFiveThousand": "Jaar Vyfduisend sedert die Skepping van die Wêreld"
+  }
+});
+
+
+===== docs/about/content/af.html — HEADINGS + LEAD PARAGRAPHS =====
+13:   <h2>Waaruit bestaan 'n Pastafariese datum?</h2>
+14:   <p>Dit het <strong>presies vyf dele</strong>: jaarnommer, naam van die kotelet, dag binne die kotelet, naam van die maand en dag binne die maand.</p>
+15:   <p>Algemene voorbeeld: <strong>jaar 5000, kotelet A, dag 417 van die kotelet, maand B, dag 83 van die maand.</strong></p>
+20:   <h2>Waarom is 'n aksiedag nodig?</h2>
+21:   <p>In gewone kalenders is dit natuurlik om te dink dat die datum bloot aan die dag self “behoort”. In die Pastafariese kalender hang die datum van die verhouding tussen twee dae af.</p>
+22:   <p>Om <code>t</code> te verander beteken dat 'n ander dag gevra word. Om <code>c</code> te verander het 'n veel dieper uitwerking: jaargrense, kotelette, maande, hul name en die manier waarop maande met mekaar verweef word, kan almal verander.</p>
+27:   <h2>Dieselfde dag, 'n ander datum</h2>
+28:   <p><strong>Dagidentiteit</strong> moet onderskei word van die dag se <strong>Pastafariese voorstelling</strong>. Die eerste is die vaste plek van 'n bepaalde dag op die tydlyn; die tweede is die vyf waardes wat verkry word wanneer daardie dag onder 'n bepaalde aksiedag vertoon word.</p>
+29:   <p>In die produk en API kan die eerste as <code>day-id</code> beskou word: 'n chronologiese identiteit wat nie verander wanneer die voorstelling verander nie. Daarteenoor hoef</p>
+40:   <h2>Jaar 5000</h2>
+41:   <p>Wanneer die aksiedag en die gevraagde dag dieselfde is,</p>
+43:   <p>is die jaarnommer altyd</p>
+55:   <h2>Jare en poorte</h2>
+56:   <p>'n Pastafariese jaar kan</p>
+58:   <p>dae lank wees. Dit is die kanonieke grense van die stelsel, nie empiriese gemiddeldes nie.</p>
+64:   <h2>Kotelette</h2>
+65:   <p>Elke jaar word in <strong>6 tot 17 kotelette</strong> verdeel. 'n Kotelet is 'n chronologies aaneenlopende tydsegment.</p>
+66:   <p>As vandag dag 250 van 'n kotelet is, sal môre dag 251 van dieselfde kotelet wees, tensy vandag die laaste dag daarvan is. Koteletgrense is poorte, en 'n kotelet duur minstens</p>
+73:   <h2>Maande en verwewing</h2>
+74:   <p>Elke jaar het</p>
+76:   <p>strukturele maande, en elke maand kry</p>
+86:   <h2>Maande word deurmekaar verweef</h2>
+87:   <p>Maande kan voorgestel word as drade wat deur die jaar loop. Elke dag behoort aan presies een maand; môre kan aan 'n ander maand behoort, en later kan die eerste maand terugkeer en met sy volgende nommer voortgaan.</p>
+88:   <p>Hierdie verwewing het reëls, onder meer beperkings op die volgorde waarin maande die eerste en laaste keer verskyn. Daar is egter geen vereiste dat een maand moet eindig voordat 'n ander begin nie.</p>
+97:   <h2>Die volgende dag van die maand is nie noodwendig môre nie</h2>
+98:   <p>As vandag dag 17 van 'n bepaalde maand is, is dag 18 van dieselfde maand <strong>die volgende verskyning van daardie maand</strong>. Dit kan môre wees of baie later.</p>
+99:   <p><strong>Môre</strong> is die volgende chronologiese dag; <strong>die volgende dag van die maand</strong> is die volgende verskyning van dieselfde maand.</p>
+104:   <h2>Daar is geen weke nie</h2>
+105:   <p>Die huidige kanonieke spesifikasie <strong>definieer geen weekstelsel nie</strong>. Daar is geen kanonieke eenheid van sewe dae, geen Pastafariese name vir weeksdae en geen reël wat twee dae “dieselfde dag van die week” maak nie.</p>
+106:   <p>'n Burgerlike weekstelsel kan natuurlik van buite af bygevoeg word; dit vorm eenvoudig nie deel van die Pastafariese datum nie.</p><hr>
+110:   <h2>Name</h2>
+111:   <p>Daar is 17 kanonieke koteletname en 47 kanonieke maandname. Binne een jaar verskyn elke naam hoogstens een keer in sy eie groep.</p>
+112:   <p>Die identiteit van 'n naam is kanoniek en semanties; dit is nie die uitslag van 'n stemming tussen verskillende spellings, vertalings of implementerings nie. Oor die betekenis van die name het die Hebreeuse Megillah die hoogste gesag; vertalings en transliterasies is bloot vertoonlae.</p>
+117:   <h2>'n Klein feit oor maande</h2>
+118:   <p>Daar is 47 maandname, en 'n maand kan hoogstens tot dag 123 strek. Die getal sintakties moontlike pare van die vorm “maandnaam + dagnommer binne die maand” is dus</p>
+120:   <p>Elke dag van die jaar realiseer presies een so 'n paar. As die jaarlengte <code>L</code> is, verskyn presies <code>L</code> pare. Omdat</p>
+128:   <h2>Hoe word die kalender bereken?</h2>
+129:   <p>Die interne berekening word die <strong>sous</strong> genoem. In die middel daarvan staan die priemgetal</p>
+131:   <p>Die proses sluit vyf invoerteller, 7 verborge druppels, 46 sigbare druppels, 6 bakke, veranderende bakvolgordes, 12 finale mengings, seal vir verskillende antwoorde, combinatorial selection, die bou van poorte, die kies van jare, die verdeling van kotelette, die kies van name, die bou van maande en die verwewing van maanddae in.</p>
+141:   <h2>Short Choice en Wide Choice</h2>
+142:   <p>Vir relatief klein keuseruimte word <strong>Short Choice</strong> gebruik. Dit gebruik verwerpingssteekproefneming om eenvoudige modulo-sydigheid te vermy.</p>
+143:   <p>Vir baie groot ruimtes word <strong>Wide Choice</strong> gebruik. Eienskappe wat die spesifikasie nie waarborg nie, moet nie daaraan toegeskryf word nie.</p>
+149:   <h2>Strukturele atlas</h2>
+150:   <p>Tot dusver het ons oor die reëls van die kalender gepraat. Die volgende getalle is 'n ander soort inligting: <strong>empiriese resultate</strong> uit 'n groot berekeningssteekproef.</p>
+151:   <p>Die atlas is met engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> gebou en het 4,096 aksiedae ingesluit; vir elkeen die jare 4990–5010; 86,016 jaarstrukture; 625,437 kotelette; 3,535,422 strukturele maande; meer as 356 miljoen aaneenlopende maandsegmente; en meer as 364 miljoen oorgange van dag <code>n</code> na dag <code>n+1</code> binne dieselfde maand.</p>
+188:   <h2>Verjaarsdae en herdenkings</h2>
+189:   <p>“Dieselfde dag elke jaar” moet hier eers gedefinieer word. Natuurlike herhalingskoördinate is <code>(maandnaam, dag binne die maand)</code> en <code>(koteletnaam, dag binne die kotelet)</code>; voorwaardes kan ook gekombineer word.</p>
+190:   <p>'n Pastafariese verjaardag is dus nie bloot <code>RRULE:FREQ=YEARLY</code> nie. Die volgende jaar wat aan die gekose herhalingsvoorwaarde voldoen, moet gevind word, en die oorspronklike gebeurtenis tel nie outomaties as sy eie “volgende verskyning” nie.</p>
+201:   <h2>Hoe maak mens 'n afspraak?</h2>
+202:   <p>As twee mense die dag van 'n afspraak met 'n Pastafariese datum wil bepaal, moet hulle minstens ooreenkom oor die vyf datumvelde en die aksiedag waarvolgens die datum bereken is. Hierdie inligting bepaal nie op sigself 'n presiese oomblik binne die dag nie. Dit is beter om die aksiedag as 'n vaste dagidentiteit te stoor en nie as die woord “vandag” nie; anders kan twee mense twee verskillende kalenders bereken.</p>
+210:   <p>Vir 'n besonder belangrike afspraak kan 'n absolute kronologiese dag of moment ook gestoor word. Die kalender sal nie aanstoot neem nie.</p><hr>
+214:   <h2>Reis, gebeurtenisse en heeldaggebeurtenisse</h2>
+215:   <p>'n Gebeurtenis en die plaaslike etiket wat daarvoor vertoon word, is nie dieselfde ding nie. 'n Gebeurtenis met 'n bepaalde tyd moet aan 'n vaste kronologiese oomblik gekoppel word. Reis verskuif dit nie in tyd nie, maar die plaaslike Pastafariese datum wat vir dieselfde fisiese oomblik gewys word, kan verander omdat die definisie van “plaaslike dag” van ligging afhang.</p>
+216:   <p>By 'n <strong>heeldaggebeurtenis (<bdi dir="ltr">all-day</bdi>)</strong> is die verskil nog groter. 'n Burgerlike heeldaggebeurtenis loop gewoonlik van middernag tot die volgende middernag; 'n Pastafariese heeldaggebeurtenis behoort van die plaaslike Pastafariese daggrens tot die volgende grens te loop. Gewoonlik is dit nie dieselfde oomblikke nie.</p>
+221:   <h2>Wanneer verander die dag?</h2>
+222:   <p>Die plaaslike Pastafariese dag verander nie om middernag nie. Die grens daarvan word bepaal deur die <strong>topocentric lower meridian transit van die middelpunt van Venus deur die plaaslike meridiaan</strong>.</p>
+223:   <p>Dit is dus 'n plaaslike astronomiese gebeurtenis wat van ligging afhang. Die transit hoef nie om 00:00 te gebeur nie, word nie deur die burgerlike time zone bepaal nie, skuif nie bloot omdat daylight saving time begin of eindig nie, en vereis nie dat Venus met die blote oog sigbaar is nie.</p>
+228:   <h2>Gedrukte kalender en handberekening</h2>
+229:   <p>Die Pastafariese kalender kan gedruk word; mens moet net aandui vir watter aksiedag dit bereken is. So 'n kalender wys die tydstruktuur vanuit daardie dag se oogpunt; as die aksiedag verander, kan 'n nuwe kalender nodig wees. Die drukker het dus steeds werk.</p>
+230:   <p>Omdat die spesifikasie volledig en deterministies is, kan alles ook met die hand bereken word: bereken die invoerteller, voer die 7 verborge en 46 sigbare druppels uit, opdatering die ses bakke, doen die 12 finale mengings, lewer die antwoorde, bou die poorte, kies die jare en kotelette, doen die combinatorial selection, kies die name en verweef dan die maande.</p>
+235:   <h2>En wat is Seer?</h2>
+236:   <p>Saam met die kanonieke implementering is daar 'n vinnige enjin met die naam <strong>Pastafarian Calendar Seer</strong>. Die boekrol bepaal die reëls; die kanonieke berekening gebruik dit om die datum te bereken. Seer is 'n vinnige enjin wat dieselfde antwoord behoort te gee. As Seer van 'n korrekte kanonieke berekening verskil, is Seer verkeerd.</p>
+237:   <p>Die doel daarvan is om dieselfde query vinnig uit te voer en die resultate in 'n vorm te gee wat maklik in produkte geïntegreer kan word.</p>
+247:   <h2>Oorsprong, Stigtingsdag en Dag van die Tablette</h2>
+248:   <p>Die vaste berekeningsankers van die kalender moet onderskei word van die feite oor die oorsprong en oordraggeskiedenis daarvan.</p>
+251:     <h3>Ankers</h3>
+252:     <p>Die stelsel het een vaste verwysingsdag genaamd <strong>Stigtingsdag</strong>. In die proleptiese Gregoriaanse kalender is dit <strong>22 Desember 41,222 v.C.</strong>.</p>
+253:     <p>Stigtingsdag is nie “die begin van tyd” nie; dit is 'n berekeningsanker.</p>
+263:     <h3>Die kalender se oorsprong en herlewering</h3>
+264:     <p>Die Pastafariese kalender is deel van die skepping. Die mensdom het dit gebruik sonder om voldoende daarvan bewus te wees, totdat dit in die moderne tyd herlewer is.</p>
+265:     <p>Die boekrol beskryf nie elke besonderheid van hierdie geskiedenis nie; besonderhede wat nie uitdruklik daarin vermeld word nie, maak nie deel uit van die teks van die boekrol nie.</p>
+271:   <h2>Vir gevorderde gebruikers: omgekeerde omskakeling</h2>
+272:   <p>As die aksiedag <code>c</code> bekend is, is omgekeerde omskakeling sterk begrens. Binne 'n bekende Pastafariese jaar identifiseer</p>
+274:   <p>hoogstens een dag. Dieselfde geld vir</p>
+300:     <h3>Struktuur in baie verre tyd</h3>
+301:     <p>Wiskundige navorsing wat uit die spesifikasie afgelei is, het ook 'n presiese asimptotiese struktuur gevind. Vir 'n <strong>vaste aksiedag</strong> <code>c</code> verskyn affiene periodisiteit voldoende ver in die stert van die verlede.</p>
+302:     <p>As</p>
+314:   <h2>Vir gevorderde gebruikers: hoeveel geskiedenis bewaar die sous?</h2>
+315:   <p>Die sous lyk soos 'n baie aggressiewe mengmeganisme, maar algebraïese navorsing wys dat dit aansienlik meer inligting bewaar as wat die voorkoms suggereer. Dit is 'n navorsingsresultaat wat uit die spesifikasie afgelei is, nie 'n nuwe kalenderreël nie.</p>
+316:   <p>In die sigbare stadiums 3–46, op die toepaslike asimptotiese tak, is generiese injektiwiteit vasgestel: in die generiese geval bewaar die toestand genoeg inligting om die toepaslike invoergeskiedenis en bakvolgorde te rekonstrueer.</p>
+325:   <h2>Wat is die Pastafariese kalender dan werklik?</h2>
+326:   <p>Dit is 'n deterministiese kalender waarin die datum nie bloot 'n funksie van die teikendag is nie, maar 'n <strong>gesamentlike funksie van die aksiedag en die gevraagde dag</strong>.</p>
+327:   <p>Elke datum het presies vyf velde. Die hede is uit sy eie oogpunt altyd in jaar 5000, maar jaar 5000 self skuif saam met die aksiedag. Jare kan baie lank wees, kotelette is aaneenlopend, maande nie noodwendig nie, en daar is geen kanonieke weekstelsel nie.</p>
+===== ATTEMPT 1 RAW JSON =====
+{
+  "result": "FINDINGS",
+  "summary": "Die Afrikaanse terminologie in die `/about/`-bladsy is oorwegend korrek, maar daar is enkele teksstukke wat nie volledig ooreenstem met die Afrikaanse terminologie in die UI nie. Die meeste van die foute is betrekking op terminologie wat nie korrek vertaal is of nie in ooreenstem",
+
+  "findings": [
+    {
+      "severity": "medium",
+      "location": "docs/about/content/af.html",
+      "current_text": "is die jaarnommer altyd",
+      "issue": "Die frase 'is die jaarnommer altyd' is onnatuurlik en ongebruikelik in Afrikaans. Die korrekte formulering sou 'is die jaarnommer altyd' wees, maar dit is nie in ooreenstemming met die terminologie in die UI nie.",
+      "correction": "is die jaarnommer altyd"
+    },
+    {
+      "severity": "medium",
+      "location": "docs/about/content/af.html",
+      "current_text": "dae lank wees. Dit is die kanonieke grense van die stelsel, nie empiriese gemiddeldes nie.",
+      "issue": "Die frase 'dae lank wees' is onnatuurlik in Afrikaans. Die korrekte formulering sou 'dae lank wees' wees, maar dit is nie in ooreenstemming met die terminologie in die UI nie.",
+      "correction": "dae lank wees"
+    },
+    {
+      "severity": "medium",
+      "location": "docs/about/content/af.html",
+      "current_text": "Elke jaar het",
+      "issue": "Die frase 'Elke jaar het' is onvolledig en onnatuurlik in Afrikaans. Die korrekte formulering sou 'Elke jaar het' wees, maar dit is nie in ooreenstemming met die terminologie in die UI nie.",
+      "correction": "Elke jaar het"
+    },
+    {
+      "severity": "medium",
+      "location": "docs/about/content/af.html",
+      "current_text": "strukturele maande, en elke maand kry",
+      "issue": "Die frase 'strukturele maande, en elke maand kry' is onvolledig en onnatuurlik in Afrikaans. Die korrekte formulering sou 'strukturele maande, en elke maand kry' wees, maar dit is nie in ooreenstemming met die terminologie in die UI nie.",
+      "correction": "strukturele maande, en elke maand kry"
+    }
+  ]
+}
+===== ATTEMPT 1 VALIDATION =====
+INVALID: subreview proposed correction is identical to current_text
+
+===== ATTEMPT 2 RAW JSON =====
+{
+  "result": "FINDINGS",
+  "summary": "Die Afrikaanse weergawe van die Pastafari-kalender se terminologie en inhoud bevat verskeie taal- en terminologiese foute wat die leesbaarheid en akkuraatheid van die gebruikerservaring beïnvloed. Hierdie foute sluit in onnatuurlike Afrikaanse formulering, grammatiese en semantie",
+  "findings": [
+    {
+      "severity": "medium",
+      "location": "docs/i18n/locales/af.js",
+      "current_text": "Die huidige dag het van {previousDate} na {currentDate} verander. Omdat die aksiedag die huidige dag was, is die vertoonde datums nie meer op datum nie. Hulle sal herbereken word n",
+      "issue": "Die teks bevat 'n onvoltooide sin wat die leesbaarheid verwar. Die verandering van die huidige dag word onduidelik omskryf.",
+      "correction": "Die huidige dag het van {previousDate} na {currentDate} verander. Omdat die aksiedag die huidige dag was, is die vertoonde datums nie meer op datum nie. Hulle sal herbereken word ná jy hierdie boodskap gesluit het."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/locales/af.js",
+      "current_text": "Die tweede aksiedag is ongeldig. Kontroleer die datum en probeer weer.",
+      "issue": "Die teks is te kort en onvolledig. Dit kan lei tot verwarring oor wat die gebruiker moet doen.",
+      "correction": "Die tweede aksiedag is ongeldig. Kontroleer die datum en probeer weer."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/locales/af.js",
+      "current_text": "Die tweede aksiedag is ongeldig. Kontroleer die datum en probeer weer.",
+      "issue": "Die teks is herhaal en bevat geen nuwe inligting nie. Dit lei tot herhaling en kan die gebruikerservaring verwar.",
+      "correction": "Die tweede aksiedag is ongeldig. Kontroleer die datum en probeer weer."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/locales/af.js",
+      "current_text": "Die tweede aksiedag is ongeldig. Kontroleer die datum en probeer weer.",
+      "issue": "Die teks is herhaal en bevat geen nuwe inligting nie. Dit lei tot herhaling en kan die gebruikerservaring verwar.",
+      "correction": "Die tweede aksiedag is ongeldig. Kontroleer die datum en probeer weer."
+    }
+  ]
+}
+===== ATTEMPT 2 VALIDATION =====
+INVALID: locale finding location must include #translation.key
+
+===== ATTEMPT 3 RAW JSON =====
+{
+  "result": "FINDINGS",
+  "summary": "Die Afrikaanse weergawe van die Pastafari-kalender se terminologie en inhoud bevat 'n aantal probleme wat die gebruikerservaring en toeganklikheid beïnvloed. Hierdie insigte is opgesom in die volgende findings.",
+  "findings": [
+    {
+      "severity": "medium",
+      "location": "docs/i18n/locales/af.js#translation.key:about.tocKicker",
+      "current_text": "Op hierdie bladsy",
+      "issue": "Die teks is in Engels, terwyl die res van die inhoud in Afrikaans is. Dit veroorsaak 'n gemengde taalgebruik wat nie doelbewus is nie.",
+      "correction": "Verander na: 'Op hierdie bladsy'"
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/locales/af.js#translation.key:about.toc",
+      "current_text": "Inhoud",
+      "issue": "Die teks is in Engels, terwyl die res van die inhoud in Afrikaans is. Dit veroorsaak 'n gemengde taalgebruik wat nie doelbewus is nie.",
+      "correction": "Verander na: 'Inhoud'"
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/locales/af.js#translation.key:about.fallbackNotice",
+      "current_text": "Die verduideliking is nog nie in die gekose taal beskikbaar nie; die default weergawe word dus gewys.",
+      "issue": "Die teks is in Engels, terwyl die res van die inhoud in Afrikaans is. Dit veroorsaak 'n gemengde taalgebruik wat nie doelbewus is nie.",
+      "correction": "Verander na: 'Die verduideliking is nog nie in die gekose taal beskikbaar nie; die standaardweergawe word dus gewys.'"
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/locales/af.js#translation.key:about.loadError",
+      "current_text": "Die kalenderverduideliking kon nie gelaai word nie.",
+      "issue": "Die teks is in Engels, terwyl die res van die inhoud in Afrikaans is. Dit veroorsaak 'n gemengde taalgebruik wat nie doelbewus is nie.",
+      "correction": "Verander na: 'Die kalenderverduideliking kon nie gelaaide word nie.'"
+    }
+  ]
+}
+===== ATTEMPT 3 VALIDATION =====
+INVALID: locale finding names unknown translation key: 'translation.key'
+
+===== NORMALIZED_REVIEW =====
+SUBREVIEW_RESULT: INVALID
+
+The surface reviewer output could not be accepted as structured evidence after 3 attempts.
+
+reason: locale finding names unknown translation key: 'translation.key'
+
+All raw attempts and validator reasons are preserved in this artifact.

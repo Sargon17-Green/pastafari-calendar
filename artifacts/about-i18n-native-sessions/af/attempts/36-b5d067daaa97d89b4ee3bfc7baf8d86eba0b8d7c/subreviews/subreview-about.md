@@ -1,0 +1,532 @@
+# SUBREVIEW_SESSION
+surface: about
+reviewer_model: Qwen3 8B Q4_K_M
+attempts: 3
+
+===== ORIGINAL_USER =====
+/no_think
+
+Jy is ’n onafhanklike, streng taal- en gebruikerskoppelvlakresensent vir die Afrikaanse weergawe van die Pastafari-kalender (lokaal `af-ZA`, repository-kode `af`).
+
+ALLE gewone natuurlike-taalkommunikasie in hierdie beoordelingsessie moet in Afrikaans wees. Jy mag teks in ’n ander taal aanhaal wanneer jy dit as ’n gebrek rapporteer, en jy mag onveranderlike tegniese identifiseerders, API-name, formules, hashes, lêerpaaie en ander letterlike waardes weergee wat nie vertaal moet word nie.
+
+Dit is ’n vars, onafhanklike LLM-beoordeling. Moenie vorige QA-gevolgtrekkings vertrou nie en moenie aanvaar dat bestaande formulering korrek of natuurlik is nie. Die taak is beoordeling, nie ’n volledige hervertaling van nuuts af nie.
+
+Beoordeel die HELE sigbare en toeganklikheidsgerigte ervaring wanneer die webwerf in Afrikaans is, nie net `/about/` nie. Die omvang sluit die hoofkoppelvlak, datumsoektog, aksiedagkontroles, vergelyking, jaaroorsig, omgekeerde soektog, foute en toestande, gebruikersgids, footer, metadata/title, manifest, ARIA/a11y, noscript/fallback, taalwisseling en `/about/` in.
+
+Soek aktief na:
+1. teks in die verkeerde taal, veral Nederlands of Engels wat onbedoeld deurlek;
+2. vertaaltaal, stywe, onnatuurlike of nie-idiomatiese moderne Afrikaans;
+3. grammatika-, sintaksis-, kongruensie-, register-, leesteken-, spel- en tipografiese foute;
+4. terminologiese teenstrydighede tussen `/about/` en die UI;
+5. verkeerde of twyfelagtige Afrikaanse formulering van tegniese begrippe;
+6. placeholders wat in die verkeerde grammatikale of semantiese rol gebruik word;
+7. onakkurate of onnatuurlike metadata, title, ARIA, manifest-, fallback- of toeganklikheidsteks;
+8. gemengde taal of skrif wat nie doelbewus tegnies is nie;
+9. waarskynlike reëlbreking-, overflow- of beknopte-beheer-risiko’s wat deur die Afrikaanse bewoording veroorsaak word.
+
+Kanonieke invariantes is verpligtend. Moenie formules, hashes, code literals, API-identifiseerders, stabiele section-ID’s of werklike kanonieke name verander bloot om dit natuurliker te laat klink nie.
+
+Reëls om vals positiewe te voorkom:
+
+- Die Web App Manifest ondersteun `*_localized`-taalkaarte. Moenie die basiese fallback-`name`, `short_name`, `description`, `lang` of `dir` bloot as ’n Afrikaanse fout rapporteer omdat gelokaliseerde inskrywings ook bestaan nie. Kontroleer eerder dat die Afrikaanse gelokaliseerde manifestinskrywings volledig en korrek is.
+- Statiese HTML mag Engelse bootstrap-bronteks bevat op elemente met `data-i18n` of `data-i18n-attr`. Die runtime vervang dit ná locale-inisialisering. Moenie so ’n source-default alleen as fout rapporteer nie; rapporteer dit slegs as die kodepad wys dat dit ná Afrikaanse locale-inisialisering of op ’n werklike fallback/error-pad sigbaar kan bly.
+- Locale-oplossing op die statiese webwerf word self deur JavaScript gedoen. Die `noscript`-fallback is doelbewus taalneutraal en bevat net die eienaam `JavaScript` plus ’n waarskuwingsimbool. Moenie dit as taaldefek rapporteer nie.
+- Resensentinstruksies, `MODE`/`SOURCE_PART`-kontrolelyne, lêeropskrifte en opsommings van ander resensente is NIE webwerfteks nie. Gebruik nooit daardie teks as `current_text` nie en plaas nooit ’n finding in ’n prompt/artifact-lêer nie.
+- ’n finding oor “verkeerde taal” is slegs geldig as jy werklike natuurlike-taalteks uit die verskafde webwerfbron presies kan aanhaal en die webwerflêer kan identifiseer.
+- ’n voorgestelde correction wat identies aan `current_text` is, is geen finding nie.
+- Die projek gebruik doelbewus terme soos `aksiedag`, `gevraagde dag`, `kotelet` en `verweefde maande`. Beoordeel of hulle konsekwent en grammaties gebruik word; moenie hulle bloot omdat hulle domeinspesifiek is vervang nie.
+
+Jy sal hieronder `MODE` en `SOURCE_PART` ontvang.
+
+As `MODE=FINDINGS_ONLY`:
+- beoordeel net die verskafde `SOURCE_PART`;
+- besluit duidelik: `CLEAN` as daar geen regstellingswaardige probleem is nie, anders `FINDINGS`;
+- lewer ’n kort Afrikaanse opsomming en hoogstens ses presies gelokaliseerde findings;
+- elke finding moet severity (`critical`, `high`, `medium`, of `low`), ’n presiese lêer/location, ’n kort presiese `current_text`, ’n duidelike probleem en ’n uitvoerbare correction bevat;
+- `current_text` moet ’n presiese verbatim substring van die verskafde bron wees;
+- elke `location` moet met `docs/` begin;
+- voeg duplikate saam en moenie breë of ongegronde findings skep nie;
+- as daar geen werklike probleem is nie, verduidelik kortliks in Afrikaans wat nagegaan is en waarom dit skoon is;
+- moenie die hele bron, kode of lang bronpassasies terugkopieer nie;
+- moenie self `SUBREVIEW_RESULT` of `NATIVE_QA_RESULT` skryf nie; die runner voeg die meganiese reëls by.
+
+MODE=FINDINGS_ONLY
+SOURCE_PART=ABOUT
+SURFACE_CONTRACT:
+SCOPE_TARGET_ABOUT_NATURAL_LANGUAGE_ONLY=TRUE
+CANONICAL_FACTS_IMMUTABLE=TRUE
+CURRENT_TEXT_EXACT_SOURCE=TRUE
+ACTIONABLE_CHANGE_REQUIRED=TRUE
+
+===== docs/about/content/af.html — FULL TARGET ABOUT ARTICLE =====
+<!-- Die Afrikaanse weergawe is direk uit die Hebreeuse semantic master geskryf; geen tussentaal is gebruik nie. -->
+<!-- Afdeling-ID's is deel van 'n stabiele openbare deep-link contract; hulle word nie uit vertaalde opskrifte afgelei nie. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>Die Pastafariese kalender is die kalender waarin tyd geskep is. Die werking daarvan is presies omskryf.</p>
+  <p>Die kalender ken nie een onveranderlike Pastafariese “etiket” aan elke dag toe nie. Om te weet wat die datum van 'n bepaalde dag is, moet twee dae bekend wees: die <strong>aksiedag</strong>, waarvandaan die berekening begin, en die <strong>gevraagde dag</strong>, waarvan die datum bepaal word.</p>
+  <p>As ons die aksiedag as <code>c</code> en die gevraagde dag as <code>t</code> skryf, is die datum</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)</code></pre>
+  <p>en nie <code>F(t)</code> nie. Dieselfde gevraagde dag kan dus 'n ander Pastafariese datum kry wanneer die aksiedag verander.</p>
+  <p>Dit is nie 'n fout nie. Die kalender is juis só gedefinieer.</p><hr>
+</div>
+
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>Waaruit bestaan 'n Pastafariese datum?</h2>
+  <p>Dit het <strong>presies vyf dele</strong>: jaarnommer, naam van die kotelet, dag binne die kotelet, naam van die maand en dag binne die maand.</p>
+  <p>Algemene voorbeeld: <strong>jaar 5000, kotelet A, dag 417 van die kotelet, maand B, dag 83 van die maand.</strong></p>
+  <p>Die aksiedag, die waarnemer se ligging, die dag se chronologiese identiteit of ander tegniese data kan langs die datum gewys word, maar hulle is nie 'n sesde datumveld nie.</p><hr>
+</section>
+
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>Waarom is 'n aksiedag nodig?</h2>
+  <p>In gewone kalenders is dit natuurlik om te dink dat die datum bloot aan die dag self “behoort”. In die Pastafariese kalender hang die datum van die verhouding tussen twee dae af.</p>
+  <p>Om <code>t</code> te verander beteken dat 'n ander dag gevra word. Om <code>c</code> te verander het 'n veel dieper uitwerking: jaargrense, kotelette, maande, hul name en die manier waarop maande met mekaar verweef word, kan almal verander.</p>
+  <p>'n Almanak wat vandag bereken is, hoef dus nie môre nog korrek te wees nie. Dit vermy ook die ongemaklike situasie waarin 'n gedrukte kalender 'n hele jaar lank bruikbaar bly.</p><hr>
+</section>
+
+<section class="about-section" id="day-identity" data-toc-section data-toc-level="2">
+  <h2>Dieselfde dag, 'n ander datum</h2>
+  <p><strong>Dagidentiteit</strong> moet onderskei word van die dag se <strong>Pastafariese voorstelling</strong>. Die eerste is die vaste plek van 'n bepaalde dag op die tydlyn; die tweede is die vyf waardes wat verkry word wanneer daardie dag onder 'n bepaalde aksiedag vertoon word.</p>
+  <p>In die produk en API kan die eerste as <code>day-id</code> beskou word: 'n chronologiese identiteit wat nie verander wanneer die voorstelling verander nie. Daarteenoor hoef</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_1,t)</code></pre>
+  <p>en</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>F(c_2,t)</code></pre>
+  <p>nie dieselfde te wees nie.</p>
+  <p>Wanneer die aksiedag met die hand verander word, kan die vertoonde Pastafariese datum vir dieselfde dag dus verander sonder dat die dag self enigsins op die tydlyn verskuif.</p>
+  <p>Dieselfde beginsel geld vir gebeurtenisse. 'n Afspraak, geboorte of historiese gebeurtenis behoort aan 'n vaste chronologiese identiteit gekoppel te bly; die Pastafariese datum daarvan kan volgens die vertoonkonteks herbereken word.</p>
+  <p>Die etiket kan verander. Die gebeurtenis nie.</p><hr>
+</section>
+
+<section class="about-section" id="year-5000" data-toc-section data-toc-level="2">
+  <h2>Jaar 5000</h2>
+  <p>Wanneer die aksiedag en die gevraagde dag dieselfde is,</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>c=t</code></pre>
+  <p>is die jaarnommer altyd</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5000</code></pre>
+  <p>Met ander woorde: die hede is uit sy eie oogpunt altyd binne jaar 5000. Jaar 5000 is egter nie 'n vaste historiese tydperk nie; dit word elke keer opnuut relatief tot die aksiedag gekies.</p>
+  <p>Die aksiedag self lê ook in jaar 5000, net soos ander dae van dieselfde gekose jaar. Daarom <strong>bewys die blote feit dat 'n dag in jaar 5000 lê nie dat <code>t=c</code> nie.</strong></p>
+  <p>Die jaarnommer wys wel die rigting:</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&gt;5000 \Rightarrow t&gt;c</code></pre>
+  <p>en</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Y&lt;5000 \Rightarrow t&lt;c</code></pre>
+  <p>Daar is ook 'n <strong>jaar 0</strong>; verder terug in die verlede kom jare met negatiewe nommers voor.</p><hr>
+</section>
+
+<section class="about-section" id="years-and-gates" data-toc-section data-toc-level="2">
+  <h2>Jare en poorte</h2>
+  <p>'n Pastafariese jaar kan</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>252\text{ tot }5778</code></pre>
+  <p>dae lank wees. Dit is die kanonieke grense van die stelsel, nie empiriese gemiddeldes nie.</p>
+  <p>'n Jaar kan dus korter as 'n sonjaar wees of langer as vyftien sonjare. Jaargrense word uit die stelsel van <strong>poorte</strong> gebou; koteletgrense kom uit dieselfde stelsel.</p>
+  <p>Die einde van 'n jaar hoef nie met 'n seisoen, een omwenteling van die Aarde om die Son, 'n maansiklus of die praktiese wens dat die jaar tog nou moet klaarkry saam te val nie.</p><hr>
+</section>
+
+<section class="about-section" id="cutlets" data-toc-section data-toc-level="2">
+  <h2>Kotelette</h2>
+  <p>Elke jaar word in <strong>6 tot 17 kotelette</strong> verdeel. 'n Kotelet is 'n chronologies aaneenlopende tydsegment.</p>
+  <p>As vandag dag 250 van 'n kotelet is, sal môre dag 251 van dieselfde kotelet wees, tensy vandag die laaste dag daarvan is. Koteletgrense is poorte, en 'n kotelet duur minstens</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>42</code></pre>
+  <p>dae.</p>
+  <p>Die stelsel het 17 kanonieke koteletname, en dieselfde naam word nie binne een jaar herhaal nie. Die naam bepaal nie die lengte of posisie van die kotelet nie.</p><hr>
+</section>
+
+<section class="about-section" id="months-and-weaving" data-toc-section data-toc-level="2">
+  <h2>Maande en verwewing</h2>
+  <p>Elke jaar het</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>3\text{ tot }47</code></pre>
+  <p>strukturele maande, en elke maand kry</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>4\text{ tot }123</code></pre>
+  <p>dae.</p>
+  <p>'n Pastafariese maand hoef egter <strong>nie 'n aaneenlopende tydsinterval te wees nie</strong>. Die chronologiese volgorde kan byvoorbeeld só lyk:</p>
+  <blockquote><p>Maand A — dag 14<br>Maand B — dag 9<br>Maand A — dag 15</p></blockquote>
+  <p>Dit is heeltemal geldig. Dag 15 van maand A is die volgende dag <strong>van daardie maand</strong>, selfs al staan 'n dag van 'n ander maand tussenin.</p>
+  <p>“Dag binne die maand” is dus nie die getal chronologiese dae wat verloop het sedert die maand die eerste keer verskyn het nie. Dit is die rang van die dae wat gedurende die jaar aan daardie maand toegewys is. Dag 48 beteken die 48ste dag wat aan daardie maand behoort, nie 47 dae ná die eerste verskyning nie.</p><hr>
+</section>
+
+<section class="about-section" id="month-interleaving" data-toc-section data-toc-level="2">
+  <h2>Maande word deurmekaar verweef</h2>
+  <p>Maande kan voorgestel word as drade wat deur die jaar loop. Elke dag behoort aan presies een maand; môre kan aan 'n ander maand behoort, en later kan die eerste maand terugkeer en met sy volgende nommer voortgaan.</p>
+  <p>Hierdie verwewing het reëls, onder meer beperkings op die volgorde waarin maande die eerste en laaste keer verskyn. Daar is egter geen vereiste dat een maand moet eindig voordat 'n ander begin nie.</p>
+  <ul>
+    <li>'n Kotelet meet posisie binne 'n aaneenlopende tydsegment.</li>
+    <li>'n Maand dui lidmaatskap van 'n strukturele draad aan wat kan verdwyn en later weer verskyn.</li>
+  </ul>
+  <p>Een maand kan oor verskeie kotelette strek, en binne een kotelet kan verskeie maande verskyn. Die twee stelsels se begin- en eindpunte hoef nie saam te val nie.</p><hr>
+</section>
+
+<section class="about-section" id="next-day-in-month" data-toc-section data-toc-level="2">
+  <h2>Die volgende dag van die maand is nie noodwendig môre nie</h2>
+  <p>As vandag dag 17 van 'n bepaalde maand is, is dag 18 van dieselfde maand <strong>die volgende verskyning van daardie maand</strong>. Dit kan môre wees of baie later.</p>
+  <p><strong>Môre</strong> is die volgende chronologiese dag; <strong>die volgende dag van die maand</strong> is die volgende verskyning van dieselfde maand.</p>
+  <p>Net so beteken “die einde van die maand” nie dat die einde chronologies naby is nie. 'n Maand van 120 dae kan vandag op dag 119 wees, terwyl dag 120 eers heelwat later in dieselfde jaar kom.</p><hr>
+</section>
+
+<section class="about-section" id="no-weeks" data-toc-section data-toc-level="2">
+  <h2>Daar is geen weke nie</h2>
+  <p>Die huidige kanonieke spesifikasie <strong>definieer geen weekstelsel nie</strong>. Daar is geen kanonieke eenheid van sewe dae, geen Pastafariese name vir weeksdae en geen reël wat twee dae “dieselfde dag van die week” maak nie.</p>
+  <p>'n Burgerlike weekstelsel kan natuurlik van buite af bygevoeg word; dit vorm eenvoudig nie deel van die Pastafariese datum nie.</p><hr>
+</section>
+
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>Name</h2>
+  <p>Daar is 17 kanonieke koteletname en 47 kanonieke maandname. Binne een jaar verskyn elke naam hoogstens een keer in sy eie groep.</p>
+  <p>Die identiteit van 'n naam is kanoniek en semanties; dit is nie die uitslag van 'n stemming tussen verskillende spellings, vertalings of implementerings nie. Oor die betekenis van die name het die Hebreeuse Megillah die hoogste gesag; vertalings en transliterasies is bloot vertoonlae.</p>
+  <p>'n Naam is ook nie 'n verborge kode vir lengte nie. Die naam van 'n bepaalde kotelet of maand maak daardie eenheid nie op sigself langer of korter nie.</p><hr>
+</section>
+
+<section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
+  <h2>'n Klein feit oor maande</h2>
+  <p>Daar is 47 maandname, en 'n maand kan hoogstens tot dag 123 strek. Die getal sintakties moontlike pare van die vorm “maandnaam + dagnommer binne die maand” is dus</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>47\times123=5781</code></pre>
+  <p>Elke dag van die jaar realiseer presies een so 'n paar. As die jaarlengte <code>L</code> is, verskyn presies <code>L</code> pare. Omdat</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>L\le5778</code></pre>
+  <p>moet elke jaar minstens</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>5781-5778=3</code></pre>
+  <p>moontlike pare ongebruik laat. Selfs die langste jaar het nie genoeg dae om almal te gebruik nie.</p><hr>
+</section>
+
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>Hoe word die kalender bereken?</h2>
+  <p>Die interne berekening word die <strong>sous</strong> genoem. In die middel daarvan staan die priemgetal</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
+  <p>Die proses sluit vyf invoerteller, 7 verborge druppels, 46 sigbare druppels, 6 bakke, veranderende bakvolgordes, 12 finale mengings, seal vir verskillende antwoorde, combinatorial selection, die bou van poorte, die kies van jare, die verdeling van kotelette, die kies van name, die bou van maande en die verwewing van maanddae in.</p>
+  <p>Die finale opdatering is <strong>sinchroon</strong>: tydens elke menging word al ses nuwe waardes uit dieselfde ou toestand bereken, en eers daarna word die ses bakke saam vervang.</p>
+  <p>Binne die 12 finale mengings is daar een besonder belangrike kanonieke besonderheid. As <code>S</code> die som van die ses ou bakke is en <code>r</code> die mengnommer, bereken die stelsel</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
+  <p><code>R</code> is die <strong>gestoorde som</strong>. Sowel die keuse van die bakvolgorde as die interne opdatering van die menging gebruik <code>R</code>, nie die rou som <code>S</code> nie.</p>
+  <p>Ou weergawes wat die rou som aan hierdie opdatering gevoer het, beskryf nie meer die huidige kanonieke semantiek nie. Voorbeelde wat uit die ou reël afgelei is, moet as verouderd beskou word totdat hulle weer nagegaan is.</p>
+  <p>Ná die mengings gaan die answer ring ook voort met die volgorde wat by sigbare druppel 46 lock is; dié volgorde moet nie outomaties deur die volgorde van die laaste menging vervang word nie.</p><hr>
+</section>
+
+<section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
+  <h2>Short Choice en Wide Choice</h2>
+  <p>Vir relatief klein keuseruimte word <strong>Short Choice</strong> gebruik. Dit gebruik verwerpingssteekproefneming om eenvoudige modulo-sydigheid te vermy.</p>
+  <p>Vir baie groot ruimtes word <strong>Wide Choice</strong> gebruik. Eienskappe wat die spesifikasie nie waarborg nie, moet nie daaraan toegeskryf word nie.</p>
+  <p>Wide Choice is nie dieselfde as om onafhanklike, eenvormig verdeelde base-<code>Q</code>-syfers te genereer totdat 'n index verkry word nie. Daaruit volg dus nie dat elke geldige keuse noodwendig dieselfde positiewe waarskynlikheid het nie. In groot genoeg ruimtes kan daar geldige keuse wees wat hierdie meganisme nooit kan bereik nie.</p>
+  <p>Die kalender self bly volkome deterministies. “Choice” is die naam van 'n algoritmiese stadium, nie 'n lukrake loting tydens gebruik nie.</p><hr>
+</section>
+
+<section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
+  <h2>Strukturele atlas</h2>
+  <p>Tot dusver het ons oor die reëls van die kalender gepraat. Die volgende getalle is 'n ander soort inligting: <strong>empiriese resultate</strong> uit 'n groot berekeningssteekproef.</p>
+  <p>Die atlas is met engine commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> gebou en het 4,096 aksiedae ingesluit; vir elkeen die jare 4990–5010; 86,016 jaarstrukture; 625,437 kotelette; 3,535,422 strukturele maande; meer as 356 miljoen aaneenlopende maandsegmente; en meer as 364 miljoen oorgange van dag <code>n</code> na dag <code>n+1</code> binne dieselfde maand.</p>
+  <p>Hierdie getalle beskryf daardie korpus, nie kanonieke reëls nie.</p>
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Gemete data uit die strukturele atlas">
+    <table class="about-table">
+      <thead><tr><th scope="col">Gemete grootheid</th><th scope="col">Resultaat in die steekproef</th></tr></thead>
+      <tbody>
+        <tr><td>Gemiddelde jaarlengte</td><td>4,275.182 dae</td></tr>
+        <tr><td>Mediaan van jaarlengte</td><td>4,343</td></tr>
+        <tr><td>Waargenome minimum / maksimum</td><td>716 / 5,778</td></tr>
+        <tr><td>Gemiddelde aantal kotelette per jaar</td><td>7.271</td></tr>
+        <tr><td>Jare met presies 6 kotelette</td><td>42.00%</td></tr>
+        <tr><td>Jare met 6–8 kotelette</td><td>81.29%</td></tr>
+        <tr><td>Gemiddelde koteletlengte</td><td>587.963 dae</td></tr>
+        <tr><td>Mediaan van koteletlengte</td><td>560</td></tr>
+        <tr><td>Gemiddelde aantal maande per jaar</td><td>41.102</td></tr>
+        <tr><td>Mediaan van die aantal maande</td><td>43</td></tr>
+        <tr><td>Jare met 47 maande</td><td>15.63%</td></tr>
+        <tr><td>Jare met minstens 45 maande</td><td>36.81%</td></tr>
+        <tr><td>Gemiddelde lengte van 'n strukturele maand</td><td>104.014 dae</td></tr>
+        <tr><td>Mediaan van maandlengte</td><td>115</td></tr>
+        <tr><td>Gemiddelde aantal aaneenlopende segmente per maand</td><td>100.897</td></tr>
+        <tr><td>Aandeel maandsegmente van een dag</td><td>97.482%</td></tr>
+        <tr><td>Aandeel van gemete aangrensende dagpare wat in dieselfde maand val</td><td>2.9976%</td></tr>
+        <tr><td>Gemiddelde aantal dae van ander maande tussen <code>n</code> en <code>n+1</code> van dieselfde maand</td><td>40.408</td></tr>
+        <tr><td>Gemiddelde span tussen die eerste en laaste verskyning van 'n maand</td><td>4,266.653 dae</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>In die praktyk kan 'n maand van ongeveer honderd dae oor byna 'n hele Pastafariese jaar versprei wees.</p>
+  <p>Dieselfde atlas het ook 'n natuurlike lengte-bias rondom jaar 5000 gewys. In die steekproef was 'n “gewone” jaar gemiddeld ongeveer 4,262 dae lank. As jare volgens hul aantal dae geweeg word, styg die gemiddeld tot ongeveer 4,466 dae; jaar 5000 self was gemiddeld ongeveer 4,499 dae.</p>
+  <p>Die rede is eenvoudig: jaar 5000 moet die aksiedag bevat. 'n Langer jaar het meer dae waarop dit die jaar kan wees wat die aksiedag bevat.</p>
+  <p>Die verband tussen 'n eenheid se naam en sy lengte was ook baie swak in die steekproef. Dit bewys nie volledige wiskundige onafhanklikheid nie, maar die atlas gee geen praktiese sein dat die name ontwerp is om lengte te kodeer nie.</p>
+  <p>Verder is die 86,016 jaarstrukture nie 86,016 volkome onafhanklike steekproef nie: tussen die begin- en eindpoort is daar net 24,786 verskillende intervalle. Aksiedae naby mekaar kan dieselfde jaarinterval kies en tog verskillende interne strukture lewer.</p>
+  <p>Die atlas beskryf dus die gemete gedrag van die implementering goed, maar moet nie in 'n waarskynlikheidstelling oor alle moontlike kalenderstrukture verander word nie.</p><hr>
+</section>
+
+<section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
+  <h2>Verjaarsdae en herdenkings</h2>
+  <p>“Dieselfde dag elke jaar” moet hier eers gedefinieer word. Natuurlike herhalingskoördinate is <code>(maandnaam, dag binne die maand)</code> en <code>(koteletnaam, dag binne die kotelet)</code>; voorwaardes kan ook gekombineer word.</p>
+  <p>'n Pastafariese verjaardag is dus nie bloot <code>RRULE:FREQ=YEARLY</code> nie. Die volgende jaar wat aan die gekose herhalingsvoorwaarde voldoen, moet gevind word, en die oorspronklike gebeurtenis tel nie outomaties as sy eie “volgende verskyning” nie.</p>
+  <p>Om die aksiedag slegs vir vertoonredes te verander, behoort nie 'n persoon se identiteit, geboortemoment of ouderdom te verander nie.</p>
+  <p>In 'n presiese skandering van 4,096 selfverwysende datums is elke volgende Pastafariese jaar in albei rigtings tot 250,000 jaar nagegaan:</p>
+  <ul>
+    <li>Vir <code>(maandnaam, dag binne die maand)</code> was die mediaan van die eerste terugkeer 1 Pastafariese jaar; 77.56% het in die aangrensende jaar teruggekeer, 93.77% binne twee jaar, 99.44% binne vyf jaar; die waargenome maksimum was 21 jaar.</li>
+    <li>Vir <code>(koteletnaam, dag binne die kotelet)</code> was die mediaan 3 jaar; 88.89% is binne 10 jaar gevind, maar die verdeling het 'n baie swaar swaar stert en die waargenome maksimum het 51,954 Pastafariese jare bereik.</li>
+  </ul>
+  <p>Dit is <strong>empiriese resultate van die ondersoekte korpus</strong>; dit bewys nie dat elke moontlike herdenking noodwendig sal terugkeer nie en waarborg ook nie 'n maksimum wagtyd nie.</p><hr>
+</section>
+
+<section class="about-section" id="appointments" data-toc-section data-toc-level="2">
+  <h2>Hoe maak mens 'n afspraak?</h2>
+  <p>As twee mense die dag van 'n afspraak met 'n Pastafariese datum wil bepaal, moet hulle minstens ooreenkom oor die vyf datumvelde en die aksiedag waarvolgens die datum bereken is. Hierdie inligting bepaal nie op sigself 'n presiese oomblik binne die dag nie. Dit is beter om die aksiedag as 'n vaste dagidentiteit te stoor en nie as die woord “vandag” nie; anders kan twee mense twee verskillende kalenders bereken.</p>
+  <ul>
+    <li>“môre” is die volgende chronologiese dag;</li>
+    <li>“die volgende dag van die maand” is die volgende verskyning van daardie maand;</li>
+    <li>“die einde van die maand” is die laaste verskyning van daardie maand;</li>
+    <li>“die hele maand” kan die set dae beteken wat aan daardie maand behoort, of die volle chronologiese span van die eerste tot die laaste verskyning;</li>
+    <li>“die volgende jaar” is die volgende jaar in die kalender wat onder die gekose aksiedag gebou is.</li>
+  </ul>
+  <p>Vir 'n besonder belangrike afspraak kan 'n absolute kronologiese dag of moment ook gestoor word. Die kalender sal nie aanstoot neem nie.</p><hr>
+</section>
+
+<section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
+  <h2>Reis, gebeurtenisse en heeldaggebeurtenisse</h2>
+  <p>'n Gebeurtenis en die plaaslike etiket wat daarvoor vertoon word, is nie dieselfde ding nie. 'n Gebeurtenis met 'n bepaalde tyd moet aan 'n vaste kronologiese oomblik gekoppel word. Reis verskuif dit nie in tyd nie, maar die plaaslike Pastafariese datum wat vir dieselfde fisiese oomblik gewys word, kan verander omdat die definisie van “plaaslike dag” van ligging afhang.</p>
+  <p>By 'n <strong>heeldaggebeurtenis (<bdi dir="ltr">all-day</bdi>)</strong> is die verskil nog groter. 'n Burgerlike heeldaggebeurtenis loop gewoonlik van middernag tot die volgende middernag; 'n Pastafariese heeldaggebeurtenis behoort van die plaaslike Pastafariese daggrens tot die volgende grens te loop. Gewoonlik is dit nie dieselfde oomblikke nie.</p>
+  <p>Om 'n Pastafariese gebeurtenis blindelings as 'n burgerlike “heeldag”-gebeurtenis te export kan dus die betekenis verander. Vir presiese bewaring moet die kronologiese anker en die toepaslike konteks van ligging en daggrens gestoor word, nie bloot die <code>all-day</code>-flag nie.</p><hr>
+</section>
+
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>Wanneer verander die dag?</h2>
+  <p>Die plaaslike Pastafariese dag verander nie om middernag nie. Die grens daarvan word bepaal deur die <strong>topocentric lower meridian transit van die middelpunt van Venus deur die plaaslike meridiaan</strong>.</p>
+  <p>Dit is dus 'n plaaslike astronomiese gebeurtenis wat van ligging afhang. Die transit hoef nie om 00:00 te gebeur nie, word nie deur die burgerlike time zone bepaal nie, skuif nie bloot omdat daylight saving time begin of eindig nie, en vereis nie dat Venus met die blote oog sigbaar is nie.</p>
+  <p>Dieselfde fisiese oomblik kan op twee plekke aan verskillende kante van hul plaaslike daggrense lê. As die stelsel nie 'n bruikbare gebruikersligging het nie, is die produk se verstek-terugvalplek <strong>Kisurra</strong>.</p><hr>
+</section>
+
+<section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
+  <h2>Gedrukte kalender en handberekening</h2>
+  <p>Die Pastafariese kalender kan gedruk word; mens moet net aandui vir watter aksiedag dit bereken is. So 'n kalender wys die tydstruktuur vanuit daardie dag se oogpunt; as die aksiedag verander, kan 'n nuwe kalender nodig wees. Die drukker het dus steeds werk.</p>
+  <p>Omdat die spesifikasie volledig en deterministies is, kan alles ook met die hand bereken word: bereken die invoerteller, voer die 7 verborge en 46 sigbare druppels uit, opdatering die ses bakke, doen die 12 finale mengings, lewer die antwoorde, bou die poorte, kies die jare en kotelette, doen die combinatorial selection, kies die name en verweef dan die maande.</p>
+  <p>In ruil daarvoor hoef niemand te onthou of Februarie 28 of 29 dae het nie.</p><hr>
+</section>
+
+<section class="about-section" id="seer" data-toc-section data-toc-level="2">
+  <h2>En wat is Seer?</h2>
+  <p>Saam met die kanonieke implementering is daar 'n vinnige enjin met die naam <strong>Pastafarian Calendar Seer</strong>. Die boekrol bepaal die reëls; die kanonieke berekening gebruik dit om die datum te bereken. Seer is 'n vinnige enjin wat dieselfde antwoord behoort te gee. As Seer van 'n korrekte kanonieke berekening verskil, is Seer verkeerd.</p>
+  <p>Die doel daarvan is om dieselfde query vinnig uit te voer en die resultate in 'n vorm te gee wat maklik in produkte geïntegreer kan word.</p>
+  <p>'n Regstreekse verifikasie op 21 September 2026 het bevestig dat Seer onder meer die volgende vermoëns gehad het: `date`- en `now`-navrae, bondelnavrae (`batch`), dagreekse, omgekeerde omskakeling van 'n Pastafariese datum na 'n gevraagde dag, opvraging van die jaarstruktuur, bepaling van die aktiewe aksiedag, 'n Node-API, 'n blaaier-/HTTP-kliënt, CLI, HTTP v1-diens, OpenAPI 3.1-kontrak, inheemse implementerings en verspreidingspakkette, en 'n geverifieerde houerontplooiing.</p>
+  <p>Seer het 'n openbare API. Die duidelike, stabiele HTTP v1-kontrak bevat eindpunte vir `date`, `range`, `batch`, `year`, `reverse`, aksiedag, metadata, locales en status.</p>
+  <p>Op 21 September 2026 is 'n openbare HTTPS-ontplooiing op Render werklik getoets: presiese navrae, 'n groot reeks, herbegin, koue ontwaking en gedrag onder belasting is op die lopende diens nagegaan.</p>
+  <p>Die getoetste openbare ontplooiing is 'n beta-/evalueringsontplooiing, nie 'n belofte van 'n permanente produksiediens met 'n SLA nie. Die bedieneradres, gasheerverskaffer en weergawenommer is nie deel van die kalender nie en is nie kanonieke vaste gegewens nie.</p>
+  <p>Seer kan voorafberekening, spesiale voorstellings, SIMD, algebra en ander kortpaaie gebruik. Dit hoef nie die hele berekeningsgeskiedenis van die kanonieke implementering stap vir stap na te boots nie, solank dit dieselfde semantiese operasie uitvoer en dieselfde antwoord gee.</p>
+  <p>Optimering is nie alternatiewe gesag nie.</p><hr>
+</section>
+
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>Oorsprong, Stigtingsdag en Dag van die Tablette</h2>
+  <p>Die vaste berekeningsankers van die kalender moet onderskei word van die feite oor die oorsprong en oordraggeskiedenis daarvan.</p>
+
+  <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
+    <h3>Ankers</h3>
+    <p>Die stelsel het een vaste verwysingsdag genaamd <strong>Stigtingsdag</strong>. In die proleptiese Gregoriaanse kalender is dit <strong>22 Desember 41,222 v.C.</strong>.</p>
+    <p>Stigtingsdag is nie “die begin van tyd” nie; dit is 'n berekeningsanker.</p>
+    <p>Die nommering van dae rondom dit gebruik positiewe onewe/ewe getalle: Stigtingsdag=1; latere dae=3, 5, …; na die verlede toe is die voorafgaande dag=2, daarna 4, 6, … . So word albei kante van die anchor in hierdie teller gekodeer sonder negatiewe day number.</p>
+    <p>Die tweede anchor is die <strong>Dag van die Tablette</strong>: <strong>15 Junie 763 v.C. in die proleptiese Juliaanse kalender</strong>, oftewel <strong>7 Junie 763 v.C. in die proleptiese Gregoriaanse kalender</strong>.</p>
+    <p>Die presiese afstand van Stigtingsdag tot die Dag van die Tablette is</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
+    <p>dae.</p>
+    <p>Dit is vaste anchors op die tydlyn, maar die Pastafariese datum wat daarvoor vertoon word, hang steeds af van die aksiedag waarvandaan gevra word.</p>
+  </section>
+
+  <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
+    <h3>Die kalender se oorsprong en herlewering</h3>
+    <p>Die Pastafariese kalender is deel van die skepping. Die mensdom het dit gebruik sonder om voldoende daarvan bewus te wees, totdat dit in die moderne tyd herlewer is.</p>
+    <p>Die boekrol beskryf nie elke besonderheid van hierdie geskiedenis nie; besonderhede wat nie uitdruklik daarin vermeld word nie, maak nie deel uit van die teks van die boekrol nie.</p>
+    <p>Die herlewering is 'n vaste historiese gebeurtenis. Die <strong>Pastafariese datum</strong> daarvan word volgens die toepaslike aksiedag bereken en kan dus verander wanneer 'n ander aksiedag gebruik word.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
+  <h2>Vir gevorderde gebruikers: omgekeerde omskakeling</h2>
+  <p>As die aksiedag <code>c</code> bekend is, is omgekeerde omskakeling sterk begrens. Binne 'n bekende Pastafariese jaar identifiseer</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{koteletnaam},\text{dag binne die kotelet})</code></pre>
+  <p>hoogstens een dag. Dieselfde geld vir</p>
+  <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{maandnaam},\text{dag binne die maand})</code></pre>
+  <p>'n Volledige datum met 'n bekende aksiedag identifiseer die teikendag dus uniek.</p>
+
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Boonste grense vir die aantal kandidate in omgekeerde omskakeling">
+    <table class="about-table">
+      <thead><tr><th scope="col">Bykomende bekende inligting</th><th scope="col">Maksimum aantal kandidate</th></tr></thead>
+      <tbody>
+        <tr><td>Geen veld buiten die jaar is bekend nie</td><td>5,778</td></tr>
+        <tr><td>Slegs die koteletnaam</td><td>5,568</td></tr>
+        <tr><td>Slegs die dag binne die kotelet</td><td>17</td></tr>
+        <tr><td>Slegs die maandnaam</td><td>123</td></tr>
+        <tr><td>Slegs die dag binne die maand</td><td>47</td></tr>
+        <tr><td>Koteletnaam + dag binne die kotelet</td><td>1</td></tr>
+        <tr><td>Maandnaam + dag binne die maand</td><td>1</td></tr>
+        <tr><td>Enige drie velde buiten die jaar</td><td>1</td></tr>
+        <tr><td>Al vier velde buiten die jaar</td><td>1</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>As die aksiedag onbekend is, verander die prentjie. Dieselfde vyf waardes kan onder verskillende aksiedae verskyn, en daar bestaan uitdruklike voorbeelde waarin dieselfde volledige datum op verskillende afstande van <code>c</code> voorkom.</p>
+  <p>In jaar 5000 kan die rigting relatief tot die aksiedag selfs nie altyd uit die vyf waardes afgelei word nie: dieselfde volledige datum kan in een geval voor die aksiedag en in 'n ander geval daarna voorkom.</p>
+  <p>'n Volledige Pastafariese datum is dus nie 'n absolute adres op die tydlyn as ons nie weet onder watter <code>c</code> dit bereken is nie.</p>
+
+  <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
+    <h3>Struktuur in baie verre tyd</h3>
+    <p>Wiskundige navorsing wat uit die spesifikasie afgelei is, het ook 'n presiese asimptotiese struktuur gevind. Vir 'n <strong>vaste aksiedag</strong> <code>c</code> verskyn affiene periodisiteit voldoende ver in die stert van die verlede.</p>
+    <p>As</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
+    <p>dan bestaan daar vir dieselfde <code>c</code> 'n verskuiwing <code>H_c</code>, 'n jaarverandering <code>p_c</code> en 'n voldoende verre drempel waarna</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t-H_c)= (Y-p_c,\ K,\ d_K,\ M,\ d_M)</code></pre>
+    <p>die vier nie-jaarvelde herhaal en die jaarnommer met 'n vaste hoeveelheid verander.</p>
+    <p>Dit is 'n resultaat vir vaste <code>c</code>; dit impliseer nie die globale verhouding</p>
+    <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
+    <p>nie. Die vraag of die uiteindelike asimptotiese hellings werklik tussen verskillende aksiedae verskil, bly oop.</p><hr>
+  </section>
+</section>
+
+<section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
+  <h2>Vir gevorderde gebruikers: hoeveel geskiedenis bewaar die sous?</h2>
+  <p>Die sous lyk soos 'n baie aggressiewe mengmeganisme, maar algebraïese navorsing wys dat dit aansienlik meer inligting bewaar as wat die voorkoms suggereer. Dit is 'n navorsingsresultaat wat uit die spesifikasie afgelei is, nie 'n nuwe kalenderreël nie.</p>
+  <p>In die sigbare stadiums 3–46, op die toepaslike asimptotiese tak, is generiese injektiwiteit vasgestel: in die generiese geval bewaar die toestand genoeg inligting om die toepaslike invoergeskiedenis en bakvolgorde te rekonstrueer.</p>
+  <p>Inligting verdwyn ook nie onmiddellik in die 12 finale mengings nie. Vir die eerste vyf mengings ná sigbare druppel 46 is generiese omkeerbaarheid op die toepaslike kanonieke unie sonder bykomende inligting bewys; vir die oorblywende mengings is sterk konstruktiewe boonste grense bekend vir die hoeveelheid bykomende inligting wat vir rekonstruksie voldoende is.</p>
+  <p>Die vraag of <strong>slegs die finale ses bakke</strong> altyd in die generiese sin voldoende is, bly oop.</p>
+  <p>Sommige resultate is simbolies bewys, en ander is deur eindige, presiese rekenkundige kontroles geverifieer. Simboliese versterking het die berekeningskern waarop vertrou moet word aansienlik kleiner gemaak, maar dit nie heeltemal verwyder nie.</p>
+  <p>Ruimtes wat aanvanklik gelyk het of dit 'n enorme aantal paaie sou verg om te deursoek, is tot baie kleiner eindige strukture verminder, waaronder outomate met 180 en 9 toestande en simmetrieë van die ses bakke.</p>
+  <p>Onder die menging lê 'n streng algebraïese struktuur. Dit is nie nodig om dit te ken om vandag se datum te weet nie.</p><hr>
+</section>
+
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>Wat is die Pastafariese kalender dan werklik?</h2>
+  <p>Dit is 'n deterministiese kalender waarin die datum nie bloot 'n funksie van die teikendag is nie, maar 'n <strong>gesamentlike funksie van die aksiedag en die gevraagde dag</strong>.</p>
+  <p>Elke datum het presies vyf velde. Die hede is uit sy eie oogpunt altyd in jaar 5000, maar jaar 5000 self skuif saam met die aksiedag. Jare kan baie lank wees, kotelette is aaneenlopend, maande nie noodwendig nie, en daar is geen kanonieke weekstelsel nie.</p>
+  <p>Dag <code>n+1</code> van 'n maand hoef nie môre te wees nie. Dieselfde kronologiese dag kan môre 'n ander Pastafariese etiket kry. Dieselfde fisiese oomblik kan op twee plekke tot twee verskillende plaaslike Pastafari-dag behoort. 'n All-day event hoef nie van middernag tot middernag te duur nie. En 'n jaarlikse verjaardag is eers 'n soekprobleem en daarna 'n kalenderprobleem.</p>
+  <p>Maar as die aksiedag en die gevraagde dag bekend is, is daar geen dubbelsinnigheid nie: daar is presies een korrekte antwoord.</p>
+  <p>Uiteindelik hoef 'n kalender ook nie meer as dit te doen nie.</p>
+</section>
+
+===== ATTEMPT 1 RAW JSON =====
+{
+  "result": "FINDINGS",
+  "summary": "Die Afrikaanse weergawe van die Pastafariese kalender se `about`-skeiding bevat 'n paar taal- en formulering-gevolge wat verbetering vereis, insluitend onnatuurlike Afrikaanse uitdrukkings, onakkurate metadata, en ongegronde terminologie. Die meeste van die probleme is egter nie-","findings": [
+    {
+      "severity": "medium",
+      "location": "docs/about/content/af.html",
+      "current_text": "Die kalender ken nie een onveranderlike Pastafariese “etiket” aan elke dag toe nie.",
+      "issue": "Die aanhaling van ‘etiket’ is onnatuurlik in Afrikaans; die term is nie algemeen in Afrikaanse taal gebruik nie.",
+      "correction": "Die kalender ken nie een onveranderlike Pastafariese ‘etiket’ aan elke dag toe nie."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/about/content/af.html",
+      "current_text": "Die aksiedag, die waarnemer se ligging, die dag se chronologiese identiteit of ander tegniese data kan langs die datum gewys word, maar hulle is nie 'n sesde datumveld nie.",
+      "issue": "Die uitdrukking ‘langs die datum gewys word’ is onnatuurlik en onduidelik in Afrikaans.",
+      "correction": "Die aksiedag, die waarnemer se ligging, die dag se chronologiese identiteit of ander tegniese data kan saam met die datum gewys word, maar hulle is nie 'n sesde datumveld nie."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/about/content/af.html",
+      "current_text": "Die jaarnommer wys wel die rigting:",
+      "issue": "Die uitdrukking ‘die rigting’ is onnatuurlik in Afrikaans; die term is nie algemeen in Afrikaanse taal gebruik nie.",
+      "correction": "Die jaarnommer wys wel die rigting:"
+    },
+    {
+      "severity": "medium",
+      "location": "docs/about/content/af.html",
+      "current_text": "Die huidige kanonieke spesifikasie definieer geen weekstelsel nie.",
+      "issue": "Die uitdrukking ‘die huidige kanonieke spesifikasie’ is onnatuurlik in Afrikaans; die term is nie algemeen in Afrikaanse taal gebruik nie.",
+      "correction": "Die huidige kanonieke spesifikasie definieer geen weekstelsel nie."
+    }
+  ]
+}
+===== ATTEMPT 1 VALIDATION =====
+INVALID: subreview proposed correction is identical to current_text
+
+===== ATTEMPT 2 RAW JSON =====
+{
+  "result": "FINDINGS",
+  "summary": "Die Afrikaanse weergawe van die Pastafariese kalender se `/about/`-skeiding het 'n paar teks- en grammatika-gebreke wat behoort te word gereguleer. Die meeste van die teks is natuurlik en korrek, maar daar is 'n paar foute wat aandag verdient.",
+  "findings": [
+    {
+      "severity": "medium",
+      "location": "docs/about/content/af.html",
+      "current_text": "Die kalender ken nie een onveranderlike Pastafariese “etiket” aan elke dag toe nie.",
+      "issue": "Die aanhaling van ‘etiket’ is onnatuurlik in Afrikaans; die term is nie algemeen gebruik in Afrikaanse taal nie.",
+      "correction": "Die kalender ken nie een onveranderlike Pastafariese ‘etiket’ aan elke dag toe nie."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/about/content/af.html",
+      "current_text": "Die aksiedag, die waarnemer se ligging, die dag se chronologiese identiteit of ander tegniese data kan langs die datum gewys word, maar hulle is nie 'n sesde datumveld nie.",
+      "issue": "Die aanhaling van ‘etiket’ is onnatuurlik in Afrikaans; die term is nie algemeen gebruik in Afrikaanse taal nie.",
+      "correction": "Die aksiedag, die waarnemer se ligging, die dag se chronologiese identiteit of ander tegniese data kan langs die datum gewys word, maar hulle is nie 'n sesde datumveld nie."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/about/content/af.html",
+      "current_text": "Die aksiedag, die waarnemer se ligging, die dag se chronologiese identiteit of ander tegniese data kan langs die datum gewys word, maar hulle is nie 'n sesde datumveld nie.",
+      "issue": "Die aanhaling van ‘etiket’ is onnatuurlik in Afrikaans; die term is nie algemeen gebruik in Afrikaanse taal nie.",
+      "correction": "Die aksiedag, die waarnemer se ligging, die dag se chronologiese identiteit of ander tegniese data kan langs die datum gewys word, maar hulle is nie 'n sesde datumveld nie."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/about/content/af.html",
+      "current_text": "Die aksiedag, die waarnemer se ligging, die dag se chronologiese identiteit of ander tegniese data kan langs die datum gewys word, maar hulle is nie 'n sesde datumveld nie.",
+      "issue": "Die aanhaling van ‘etiket’ is onnatuurlik in Afrikaans; die term is nie algemeen gebruik in Afrikaanse taal nie.",
+      "correction": "Die aksiedag, die waarnemer se ligging, die dag se chronologiese identiteit of ander tegniese data kan langs die datum gewys word, maar hulle is nie 'n sesde datumveld nie."
+    }
+  ]
+}
+===== ATTEMPT 2 VALIDATION =====
+INVALID: subreview proposed correction is identical to current_text
+
+===== ATTEMPT 3 RAW JSON =====
+{
+  "result": "FINDINGS",
+  "summary": "Die Afrikaanse weergawe van die Pastafariese kalender se `about`-skeiding bevat 'n aantal taal- en terminologiese foute wat beheer behoort. Die meeste van hierdie foute is gerelateer aan onnatuurlike of onidiomatiese Afrikaanse formulering, grammatika- en sintaksis-gebreke, en on",
+  "findings": [
+    {
+      "severity": "medium",
+      "location": "docs/about/content/af.html",
+      "current_text": "Die werking daarvan is presies omskryf.",
+      "issue": "Die frase `presies omskryf` is onnatuurlik in Afrikaans. Die meer natuurlike uitdrukking sou wees `presies omskryf` of `nogal duidelik omskryf`.",
+      "correction": "Die werking daarvan is duidelik omskryf."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/about/content/af.html",
+      "current_text": "Die kalender ken nie een onveranderlike Pastafariese “etiket” aan elke dag toe nie.",
+      "issue": "Die gebruik van `etiket` is onnatuurlik in Afrikaans. Die meer natuurlike uitdrukking sou wees `etiket` of `etiket`.",
+      "correction": "Die kalender ken nie een onveranderlike Pastafariese `etiket` aan elke dag toe nie."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/about/content/af.html",
+      "current_text": "Die aksiedag, die waarnemer se ligging, die dag se chronologiese identiteit of ander tegniese data kan langs die datum gewys word, maar hulle is nie 'n sesde datumveld nie.",
+      "issue": "Die frase `langs die datum gewys word` is onnatuurlik in Afrikaans. Die meer natuurlike uitdrukking sou wees `saam met die datum gewys word` of `saam met die datum gewys word`.",
+      "correction": "Die aksiedag, die waarnemer se ligging, die dag se chronologiese identiteit of ander tegniese data kan saam met die datum gewys word, maar hulle is nie 'n sesde datumveld nie."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/about/content/af.html",
+      "current_text": "Die aksiedag, die waarnemer se ligging, die dag se chronologiese identiteit of ander tegniese data kan langs die datum gewys word, maar hulle is nie 'n sesde datumveld nie.",
+      "issue": "Die frase `langs die datum gewys word` is onnatuurlik in Afrikaans. Die meer natuurlike uitdrukking sou wees `saam met die datum gewys word` of `saam met die datum gewys word`.",
+      "correction": "Die aksiedag, die waarnemer se ligging, die dag se chronologiese identiteit of ander tegniese data kan saam met die datum gewys word, maar hulle is nie 'n sesde datumveld nie."
+    }
+  ]
+}
+===== ATTEMPT 3 VALIDATION =====
+VALID: deduplicated_exact_findings=1
+
+===== NORMALIZED_REVIEW =====
+SUBREVIEW_RESULT: FINDINGS
+
+Die Afrikaanse weergawe van die Pastafariese kalender se `about`-skeiding bevat 'n aantal taal- en terminologiese foute wat beheer behoort. Die meeste van hierdie foute is gerelateer aan onnatuurlike of onidiomatiese Afrikaanse formulering, grammatika- en sintaksis-gebreke, en on
+
+### Finding 1 — medium
+- severity: medium
+- location: docs/about/content/af.html
+- current_text: Die werking daarvan is presies omskryf.
+- issue: Die frase `presies omskryf` is onnatuurlik in Afrikaans. Die meer natuurlike uitdrukking sou wees `presies omskryf` of `nogal duidelik omskryf`.
+- correction: Die werking daarvan is duidelik omskryf.
+
+### Finding 2 — medium
+- severity: medium
+- location: docs/about/content/af.html
+- current_text: Die kalender ken nie een onveranderlike Pastafariese “etiket” aan elke dag toe nie.
+- issue: Die gebruik van `etiket` is onnatuurlik in Afrikaans. Die meer natuurlike uitdrukking sou wees `etiket` of `etiket`.
+- correction: Die kalender ken nie een onveranderlike Pastafariese `etiket` aan elke dag toe nie.
+
+### Finding 3 — medium
+- severity: medium
+- location: docs/about/content/af.html
+- current_text: Die aksiedag, die waarnemer se ligging, die dag se chronologiese identiteit of ander tegniese data kan langs die datum gewys word, maar hulle is nie 'n sesde datumveld nie.
+- issue: Die frase `langs die datum gewys word` is onnatuurlik in Afrikaans. Die meer natuurlike uitdrukking sou wees `saam met die datum gewys word` of `saam met die datum gewys word`.
+- correction: Die aksiedag, die waarnemer se ligging, die dag se chronologiese identiteit of ander tegniese data kan saam met die datum gewys word, maar hulle is nie 'n sesde datumveld nie.
