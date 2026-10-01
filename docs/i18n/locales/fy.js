@@ -27,7 +27,7 @@ export default Object.freeze({
     "about.back": "Werom nei de kalinder",
     "about.tocKicker": "Op dizze side",
     "about.toc": "Ynhâld",
-    "about.fallbackNotice": "De útlis is noch net beskikber yn de keazen taal, dêrom wurdt de default ferzje toand.",
+    "about.fallbackNotice": "De útlis is noch net beskikber yn de keazen taal, dêrom wurdt de standertferzje toand.",
     "about.loadError": "De kalinderútlis koe net laden wurde.",
     "language.label": "Taal",
     "day.staleWarning": "De hjoeddeiske dei is feroare fan {previousDate} nei {currentDate}. Omdat de hannelingsdei de hjoeddeiske dei wie, binne de werjûne datums net mear aktueel. Se wurde opnij berekkene neidat jo dit berjocht sletten hawwe.",
