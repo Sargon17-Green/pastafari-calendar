@@ -31,12 +31,12 @@ Allowed strict-session states: `pending` → `reviewed PASS` or `reviewed FAIL` 
 | fo | fo-FO | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/fo/strict-36916698702/` — authoritative repaired strict run `36916698702`; qualification 8/8, 567 items, 0 findings; manual scan clean |
 | fr | fr-FR | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/fr/strict-36916698902/` — strict run `36916698902`; qualification 8/8, 581 items, 0 findings; manual scan clean |
 | fy | fy-NL | ltr | linguistic QA | pending | — |
-| gl | gl-ES | ltr | linguistic QA | pending | — |
+| gl | gl-ES | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/gl/strict-36923026456/` — repaired strict Gemma 4 rerun `36923026456`; hidden qualification 8/8, 567 grounded text items, 0 findings; manual post-run scan clean |
 | gu | gu-IN | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/gu/strict-36916698771/` — strict run `36916698771`; qualification 8/8, 567 items, 0 findings; manual scan clean |
 | ha | ha-NG | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/ha/strict-36916698764/` — strict run `36916698764`; qualification 8/8, 568 items, 0 findings; manual scan clean |
 | hi | hi-IN | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/hi/strict-36916698925/` — strict run `36916698925`; qualification 8/8, 567 items, 0 findings; manual scan clean |
 | hr | hr-HR | ltr | semantic QA | pending | — |
-| ht | ht-HT | ltr | linguistic QA | pending | — |
+| ht | ht-HT | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/ht/strict-36923264928/` — strict Gemma 4 run `36923264928`; hidden qualification 8/8, 567 grounded text items, 0 findings; manual post-run scan clean |
 | hu | hu-HU | ltr | semantic QA | pending | — |
 | hy | hy-AM | ltr | semantic QA | pending | — |
 | id | id-ID | ltr | semantic QA | pending | — |

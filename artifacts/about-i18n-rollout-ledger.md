@@ -34,12 +34,12 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | fo | fo-FO | ltr | partial | linguistic QA |
 | fr | fr-FR | ltr | partial | linguistic QA |
 | fy | fy-NL | ltr | partial | semantic QA |
-| gl | gl-ES | ltr | partial | semantic QA |
+| gl | gl-ES | ltr | partial | linguistic QA |
 | gu | gu-IN | ltr | partial | linguistic QA |
 | ha | ha-NG | ltr | partial | linguistic QA |
 | hi | hi-IN | ltr | partial | linguistic QA |
 | hr | hr-HR | ltr | partial | semantic QA |
-| ht | ht-HT | ltr | partial | semantic QA |
+| ht | ht-HT | ltr | partial | linguistic QA |
 | hu | hu-HU | ltr | partial | semantic QA |
 | hy | hy-AM | ltr | partial | semantic QA |
 | id | id-ID | ltr | partial | semantic QA |
@@ -127,6 +127,8 @@ Status progression for target locales: `not started → draft → semantic QA �
 - `gu-IN`: strict run `36916698771` passed qualification 8/8 over 567 grounded items with zero findings; manual post-run scanning was clean.
 - `ha-NG`: strict run `36916698764` passed qualification 8/8 over 568 grounded items with zero findings; manual post-run scanning was clean.
 - `hi-IN`: strict run `36916698925` passed qualification 8/8 over 567 grounded items with zero findings; manual post-run scanning was clean.
+- `gl-ES`: earlier Galician source contained Portuguese/mixed forms and the first strict PASS was manually rechecked. After the final repair, strict rerun `36923026456` passed qualification 8/8 over 567 grounded items with zero findings; manual post-run scanning was clean and later drift did not touch Galician sources. Evidence: `artifacts/about-i18n-native-sessions/gl/strict-36923026456/`.
+- `ht-HT`: strict run `36923264928` passed qualification 8/8 over 567 grounded items with zero findings; manual post-run scanning was clean. Drift after the reviewed HEAD was checksum-only. Evidence: `artifacts/about-i18n-native-sessions/ht/strict-36923264928/`.
 - `sl-SI`: locale-wide language finding: prominent UI copy is Croatian/Bosnian/Serbian rather than idiomatic Slovenian (`Promijeni dan delovanja`, `polazišna je točka`, `u kotletu`).
 
 - `sr-Latn-RS`: locale-wide variant finding: the existing UI uses predominantly Ijekavian Bosnian/Croatian forms (`Promijeni`, `djelovanja`, `mjesecu`, `zdjela`) despite the registered Serbia Latin variant; review the whole locale against sr-Latn-RS.
