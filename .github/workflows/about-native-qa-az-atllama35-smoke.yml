@@ -1,0 +1,107 @@
+name: Azerbaijani Atllama v3.5 reviewer qualification
+
+on:
+  push:
+    branches:
+      - feature/about-i18n-72-locales
+    paths:
+      - .github/workflows/about-native-qa-az-atllama-smoke.yml
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - name: Install pinned llama.cpp runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/az-atllama35/llama
+          curl -fL --retry 3 \
+            https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz \
+            -o /tmp/az-atllama35/llama.tar.gz
+          echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/az-atllama35/llama.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/az-atllama35/llama.tar.gz -C /tmp/az-atllama35/llama
+
+      - name: Qualify Azerbaijani Atllama v3.5 reviewer on hidden controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          SERVER="$(find /tmp/az-atllama35/llama -type f -name llama-server | head -n 1)"
+          test -x "$SERVER"
+          "$SERVER" \
+            -hf mradermacher/atllama.v3.5-GGUF:Q4_K_M \
+            -c 8192 -t 4 --host 127.0.0.1 --port 8080 \
+            > /tmp/az-atllama35/server.log 2>&1 &
+          PID=$!
+          trap 'kill "$PID" 2>/dev/null || true' EXIT
+          for _ in $(seq 1 900); do
+            curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8080/health >/dev/null
+
+          python - <<'PY'
+          from pathlib import Path
+          import json, urllib.request
+
+          cases = [
+              ("g1", "Tarix seçin və yenidən cəhd edin.", "TƏBİİ"),
+              ("g2", "Əməl günü hesablamanın başlanğıc nöqtəsidir.", "TƏBİİ"),
+              ("g3", "Əvvəlki kotlet", "TƏBİİ"),
+              ("g4", "Aylar il boyu bir-birinə hörülə bilər.", "TƏBİİ"),
+              ("b1", "İşlem gününü değiştir.", "DÜZƏLT"),
+              ("b2", "Bu site nasıl kullanılır?", "DÜZƏLT"),
+              ("b3", "Tarix arama ve müqayisə özellikli bir təqvim.", "DÜZƏLT"),
+              ("b4", "Bu tarix etibarlıdılar.", "DÜZƏLT"),
+          ]
+          prompt=(
+              "Sən ana dili səviyyəsində Azərbaycan dili redaktorusan. Yalnız verilmiş mətn parçasını qiymətləndir. "
+              "Müasir təbii Azərbaycan dilini, qrammatikanı, uzlaşmanı, sintaksisi, idiomatik ifadəni və mətnin "
+              "türk dili və ya qarışıq dil yox, həqiqətən Azərbaycan dili olub-olmadığını yoxla. "
+              "Layihədə ‘əməl günü’, ‘soruşulan gün’, ‘kotlet’ və ‘bir-birinə hörülmüş aylar’ kanonik domen terminləridir; "
+              "qrammatik cümləni sırf bu terminlərə görə səhv sayma. "
+              "Birinci sətir dəqiq olaraq ya ‘QƏRAR: TƏBİİ’, ya da ‘QƏRAR: DÜZƏLT’ olmalıdır. "
+              "İkinci sətirdə Azərbaycan dilində bir qısa səbəb yaz."
+          )
+          results=[]
+          for case_id,fragment,expected in cases:
+              payload={
+                  "messages":[{"role":"user","content":prompt+"\n\nMƏTN: "+json.dumps(fragment,ensure_ascii=False)}],
+                  "temperature":0.0,"max_tokens":140,"stream":False,
+              }
+              req=urllib.request.Request(
+                  "http://127.0.0.1:8080/v1/chat/completions",
+                  data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),
+                  headers={"Content-Type":"application/json"},method="POST")
+              with urllib.request.urlopen(req,timeout=1200) as resp:
+                  data=json.load(resp)
+              answer=data["choices"][0]["message"]["content"].strip()
+              first=answer.splitlines()[0].strip() if answer else ""
+              actual="TƏBİİ" if first=="QƏRAR: TƏBİİ" else "DÜZƏLT" if first=="QƏRAR: DÜZƏLT" else "ETİBARSIZ"
+              passed=actual==expected
+              results.append({"id":case_id,"fragment":fragment,"expected":expected,"actual":actual,"passed":passed,"answer":answer})
+              print(case_id,results[-1])
+          Path("/tmp/az-atllama35/qualification.json").write_text(
+              json.dumps(results,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          failed=[r["id"] for r in results if not r["passed"]]
+          if failed:
+              raise SystemExit("Azerbaijani Atllama v3.5 qualification failed: "+", ".join(failed))
+          PY
+
+      - name: Upload qualification evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: azerbaijani-atllama35-reviewer-qualification
+          path: |
+            /tmp/az-atllama35/qualification.json
+            /tmp/az-atllama35/server.log
+          if-no-files-found: warn
+          retention-days: 30
