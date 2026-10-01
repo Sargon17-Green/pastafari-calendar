@@ -98,7 +98,7 @@ export default Object.freeze({
     "calendarInput.bahaiWestern": "Bahá’í — vesturlendskur aritmetiskur",
     "calendarInput.mayaLongCount": "Langteljing Maya",
     "calendarHelp.hebrew": "Mánaðir verða valdir eftir navni. Ár og dagur kunnu skrivast við desimaltølum ella hebraiskum talstavum, til dømis תשפ״ו ella י״ד; eitt ár skrivað við stavum uttan túsundamerki verður tulkað við 5.000 lagt afturat.",
-    "calendarHelp.intl": "Denne konvertering notandí daguratalunderstøttelse, der er indbygget i din browser. Hvis browseren ikke kan repræsentere dagursetningen, oplyser heimasíðaet det tydeligt.",
+    "calendarHelp.intl": "Henda umrokningin brúkar kalendarastuðul, sum er innbygdur í kagan. Um kagin ikki kann umboða dagfestingina, boðar heimasíðan týðiliga frá tí.",
     "calendarHelp.chinese": "Skriva gregorianska árið, sum hoyrir til kinesiska árið, og merk bara „Skotmánaður“, tá mánaðurin verður endurtikin.",
     "calendarHelp.hindu": "Skriva ár og dag eftir gomlu hinduisku tíðarrokningini og vel mánaðin eftir navni. Í mánasniðinum kann eisini merkjast ein skotmánaði.",
     "calendarHelp.japanese": "Ár 1 byrjar fyrsta dagin í tíðarskeiðinum; til fyrsta árið kanst tú eisini skriva 元 ella 元年. Ein dagfesting undan byrjanini ella eftir endanum verður vrakað.",
