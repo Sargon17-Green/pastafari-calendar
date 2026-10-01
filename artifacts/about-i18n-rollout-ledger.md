@@ -31,13 +31,13 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | fa | fa-IR | rtl | partial | linguistic QA |
 | fi | fi-FI | ltr | partial | linguistic QA |
 | fil | fil-PH | ltr | partial | semantic QA |
-| fo | fo-FO | ltr | partial | semantic QA |
-| fr | fr-FR | ltr | partial | semantic QA |
+| fo | fo-FO | ltr | partial | linguistic QA |
+| fr | fr-FR | ltr | partial | linguistic QA |
 | fy | fy-NL | ltr | partial | semantic QA |
 | gl | gl-ES | ltr | partial | semantic QA |
-| gu | gu-IN | ltr | partial | semantic QA |
-| ha | ha-NG | ltr | partial | semantic QA |
-| hi | hi-IN | ltr | partial | semantic QA |
+| gu | gu-IN | ltr | partial | linguistic QA |
+| ha | ha-NG | ltr | partial | linguistic QA |
+| hi | hi-IN | ltr | partial | linguistic QA |
 | hr | hr-HR | ltr | partial | semantic QA |
 | ht | ht-HT | ltr | partial | semantic QA |
 | hu | hu-HU | ltr | partial | semantic QA |
@@ -122,6 +122,11 @@ Status progression for target locales: `not started → draft → semantic QA �
 - `eo`: an initial strict PASS was manually rejected because ordinary English `commit` remained in visible Esperanto prose. After repair, rerun `36910105174` passed qualification 8/8 over 493 grounded items with zero findings; the post-rerun manual scan was clean. Evidence: `artifacts/about-i18n-native-sessions/eo/strict-36910105174/`.
 - `es-ES`: an initial strict PASS was manually rejected because ordinary English `commit` remained in visible Spanish prose. After repair, rerun `36910105206` passed qualification 8/8 over 562 grounded items with zero findings; the post-rerun manual scan was clean apart from protected code literals such as `RRULE:FREQ=YEARLY`. Evidence: `artifacts/about-i18n-native-sessions/es/strict-36910105206/`.
 - `et-EE`: an initial strict PASS was manually rejected because a Finnish heading remained in the Estonian UI. After repair, rerun `36910105248` passed qualification 8/8 over 568 grounded items with zero findings; the post-rerun Finnish/English/Russian leakage scan was clean. Evidence: `artifacts/about-i18n-native-sessions/et/strict-36910105248/`.
+- `fo-FO`: earlier model CLEAN results were manually rejected after Danish/English leakage. After repairs, strict run `36916698702` passed qualification 8/8 over 567 grounded items with zero findings; manual post-run scanning was clean.
+- `fr-FR`: strict run `36916698902` passed qualification 8/8 over 581 grounded items with zero findings; manual post-run scanning was clean.
+- `gu-IN`: strict run `36916698771` passed qualification 8/8 over 567 grounded items with zero findings; manual post-run scanning was clean.
+- `ha-NG`: strict run `36916698764` passed qualification 8/8 over 568 grounded items with zero findings; manual post-run scanning was clean.
+- `hi-IN`: strict run `36916698925` passed qualification 8/8 over 567 grounded items with zero findings; manual post-run scanning was clean.
 - `sl-SI`: locale-wide language finding: prominent UI copy is Croatian/Bosnian/Serbian rather than idiomatic Slovenian (`Promijeni dan delovanja`, `polazišna je točka`, `u kotletu`).
 
 - `sr-Latn-RS`: locale-wide variant finding: the existing UI uses predominantly Ijekavian Bosnian/Croatian forms (`Promijeni`, `djelovanja`, `mjesecu`, `zdjela`) despite the registered Serbia Latin variant; review the whole locale against sr-Latn-RS.

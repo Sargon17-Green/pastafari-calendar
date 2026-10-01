@@ -28,13 +28,13 @@ Allowed strict-session states: `pending` → `reviewed PASS` or `reviewed FAIL` 
 | fa | fa-IR | rtl | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/fa/strict-36901794288/` — strict Gemma 4 whole-site run `36901794288`; hidden qualification 8/8, 569 grounded text items, 0 findings |
 | fi | fi-FI | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/fi/strict-36901793882/` — strict Gemma 4 whole-site run `36901793882`; hidden qualification 8/8, 568 grounded text items, 0 findings |
 | fil | fil-PH | ltr | semantic QA | pending | — |
-| fo | fo-FO | ltr | linguistic QA | pending | — |
-| fr | fr-FR | ltr | semantic QA | pending | — |
+| fo | fo-FO | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/fo/strict-36916698702/` — authoritative repaired strict run `36916698702`; qualification 8/8, 567 items, 0 findings; manual scan clean |
+| fr | fr-FR | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/fr/strict-36916698902/` — strict run `36916698902`; qualification 8/8, 581 items, 0 findings; manual scan clean |
 | fy | fy-NL | ltr | linguistic QA | pending | — |
 | gl | gl-ES | ltr | linguistic QA | pending | — |
-| gu | gu-IN | ltr | semantic QA | pending | — |
-| ha | ha-NG | ltr | semantic QA | pending | — |
-| hi | hi-IN | ltr | semantic QA | pending | — |
+| gu | gu-IN | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/gu/strict-36916698771/` — strict run `36916698771`; qualification 8/8, 567 items, 0 findings; manual scan clean |
+| ha | ha-NG | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/ha/strict-36916698764/` — strict run `36916698764`; qualification 8/8, 568 items, 0 findings; manual scan clean |
+| hi | hi-IN | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/hi/strict-36916698925/` — strict run `36916698925`; qualification 8/8, 567 items, 0 findings; manual scan clean |
 | hr | hr-HR | ltr | semantic QA | pending | — |
 | ht | ht-HT | ltr | linguistic QA | pending | — |
 | hu | hu-HU | ltr | semantic QA | pending | — |

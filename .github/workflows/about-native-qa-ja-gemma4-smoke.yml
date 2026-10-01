@@ -1,0 +1,60 @@
+name: Japanese Gemma4 reviewer qualification
+
+on:
+  push:
+    branches: [feature/about-i18n-72-locales]
+    paths: [.github/workflows/about-native-qa-ja-gemma4-smoke.yml]
+
+permissions: {contents: read}
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Install pinned llama.cpp runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/ja-gemma/llama
+          curl -fL --retry 3 https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz -o /tmp/ja-gemma/llama.tar.gz
+          echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/ja-gemma/llama.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/ja-gemma/llama.tar.gz -C /tmp/ja-gemma/llama
+      - name: Qualify Japanese reviewer
+        shell: bash
+        run: |
+          set -euo pipefail
+          SERVER="$(find /tmp/ja-gemma/llama -type f -name llama-server | head -n 1)"
+          "$SERVER" -hf ggml-org/gemma-4-E4B-it-GGUF:Q4_0 --reasoning auto --chat-template-kwargs '{"enable_thinking":false}' -c 4096 -t 4 --host 127.0.0.1 --port 8080 > /tmp/ja-gemma/server.log 2>&1 &
+          PID=$!; trap 'kill "$PID" 2>/dev/null || true' EXIT
+          for _ in $(seq 1 600); do curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break; sleep 1; done
+          python - <<'PY'
+          from pathlib import Path
+          import json,urllib.request
+          cases=[{"id":"g1","text":"日付を選んでもう一度試してください。","expected":"自然"},{"id":"g2","text":"作業日は計算の出発点です。","expected":"自然"},{"id":"g3","text":"前のカツレツ","expected":"自然"},{"id":"g4","text":"月は一年の中で互いに織り合わされることがあります。","expected":"自然"},{"id":"b1","text":"Click here して続行してください。","expected":"修正"},{"id":"b2","text":"working day を変更してください。","expected":"修正"},{"id":"b3","text":"Измените 作業日。","expected":"修正"},{"id":"b4","text":"Cambiar la fecha を選択してください。","expected":"修正"}]
+          ids=[x["id"] for x in cases]
+          prompt="あなたは現代標準日本語の厳格な母語話者編集者です。自然さ、文法、および英語・ロシア語・スペイン語などの意図しない混在を確認してください。「作業日」「照会日」「カツレツ」および織り合わされた月は、このプロジェクトで意図された用語です。 Return only JSON; verdict must be exactly 自然 or 修正."+"\n\n"+json.dumps(cases,ensure_ascii=False)
+          schema={"type":"object","properties":{"decisions":{"type":"array","minItems":8,"maxItems":8,"items":{"type":"object","properties":{"id":{"type":"string","enum":ids},"verdict":{"type":"string","enum":["自然","修正"]}},"required":["id","verdict"],"additionalProperties":False}}},"required":["decisions"],"additionalProperties":False}
+          payload={"messages":[{"role":"user","content":prompt}],"temperature":0.0,"max_tokens":420,"reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"ja_qualification","strict":True,"schema":schema}}}
+          req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),headers={"Content-Type":"application/json"},method="POST")
+          with urllib.request.urlopen(req,timeout=2400) as resp: data=json.load(resp)
+          raw=data["choices"][0]["message"]["content"].strip(); ds=json.loads(raw).get("decisions",[])
+          actual={d["id"]:d["verdict"] for d in ds}; results=[]; failed=[]
+          for x in cases:
+            ok=actual.get(x["id"])==x["expected"]; results.append({**x,"actual":actual.get(x["id"]),"passed":ok})
+            if not ok: failed.append(x["id"])
+          Path("/tmp/ja-gemma/qualification.json").write_text(json.dumps(results,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          Path("/tmp/ja-gemma/qualification-raw.json").write_text(raw+"\n",encoding="utf-8")
+          if len(ds)!=8 or failed: raise SystemExit("qualification failed")
+          PY
+      - name: Upload qualification evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: ja-gemma4-reviewer-qualification
+          path: |
+            /tmp/ja-gemma/qualification.json
+            /tmp/ja-gemma/qualification-raw.json
+            /tmp/ja-gemma/server.log
+          retention-days: 30
