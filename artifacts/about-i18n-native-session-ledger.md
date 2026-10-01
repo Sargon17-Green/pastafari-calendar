@@ -44,13 +44,13 @@ Allowed strict-session states: `pending` → `reviewed PASS` or `reviewed FAIL` 
 | it | it-IT | ltr | semantic QA | pending | — |
 | ja | ja-JP | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/ja/strict-36929093624/` — corrected strict Gemma 4 run `36929093624`; hidden qualification 8/8, 569 grounded text items, 0 findings; manual post-run scan clean |
 | jv | jv-ID | ltr | semantic QA | pending | — |
-| ka | ka-GE | ltr | semantic QA | pending | — |
+| ka | ka-GE | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/ka/strict-36934843022/` — strict Gemma 4 run `36934843022`; hidden qualification 8/8, 567 grounded text items, 0 findings; manual post-run scan clean |
 | kk | kk-KZ | ltr | semantic QA | pending | — |
 | ko | ko-KR | ltr | semantic QA | pending | — |
 | lb | lb-LU | ltr | semantic QA | pending | — |
-| lt | lt-LT | ltr | semantic QA | pending | — |
+| lt | lt-LT | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/lt/strict-36934489600/` — strict Gemma 4 run `36934489600`; hidden qualification 8/8, 567 grounded text items, 0 findings; manual post-run scan clean |
 | lv | lv-LV | ltr | semantic QA | pending | — |
-| mk | mk-MK | ltr | semantic QA | pending | — |
+| mk | mk-MK | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/mk/strict-36935042477/` — repaired strict Gemma 4 run `36935042477`; hidden qualification 8/8, 567 grounded text items, 0 findings; manual post-run scan clean |
 | mr | mr-IN | ltr | semantic QA | pending | — |
 | ms | ms-MY | ltr | semantic QA | pending | — |
 | nb | nb-NO | ltr | semantic QA | pending | — |

@@ -47,13 +47,13 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | it | it-IT | ltr | partial | semantic QA |
 | ja | ja-JP | ltr | partial | linguistic QA |
 | jv | jv-ID | ltr | partial | semantic QA |
-| ka | ka-GE | ltr | partial | semantic QA |
+| ka | ka-GE | ltr | partial | linguistic QA |
 | kk | kk-KZ | ltr | partial | semantic QA |
 | ko | ko-KR | ltr | partial | semantic QA |
 | lb | lb-LU | ltr | partial | semantic QA |
-| lt | lt-LT | ltr | partial | semantic QA |
+| lt | lt-LT | ltr | partial | linguistic QA |
 | lv | lv-LV | ltr | partial | semantic QA |
-| mk | mk-MK | ltr | partial | semantic QA |
+| mk | mk-MK | ltr | partial | linguistic QA |
 | mr | mr-IN | ltr | partial | semantic QA |
 | ms | ms-MY | ltr | partial | semantic QA |
 | nb | nb-NO | ltr | partial | semantic QA |
@@ -156,6 +156,9 @@ Status progression for target locales: `not started → draft → semantic QA �
 
 - `LOCALES` at this branch contains **72 locales**: Hebrew plus 71 target locales.
 - `docs/about/content/` now contains **72 locale articles**, exactly one for every registered locale.
+- `ka-GE`: strict run `36934843022` passed qualification 8/8 over 567 grounded items with zero findings; manual post-run wrong-language scan was clean and staleness checking found no later Georgian source change. Evidence: `artifacts/about-i18n-native-sessions/ka/strict-36934843022/`.
+- `lt-LT`: strict run `36934489600` passed qualification 8/8 over 567 grounded items with zero findings; manual post-run wrong-language scan was clean and staleness checking found no later Lithuanian source change. Evidence: `artifacts/about-i18n-native-sessions/lt/strict-36934489600/`.
+- `mk-MK`: after the Macedonian English-prose cleanup, strict run `36935042477` passed qualification 8/8 over 567 grounded items with zero findings; manual post-run wrong-language scan was clean and staleness checking found no later Macedonian source change. Evidence: `artifacts/about-i18n-native-sessions/mk/strict-36935042477/`.
 - All 71 target locales have complete article drafts. Native-language whole-site text QA is now complete for `af-ZA`, `az-AZ`, `be-BY`, `bg-BG`, `bn-BD`, `bs-BA`, `ca-ES`, `cs-CZ`, `da-DK`, `et-EE`, `fo-FO`, `fy-NL`, `gl-ES`, and `ht-HT`; these 14 target locales are at `linguistic QA`, while the remaining 57 target locales remain at `draft` pending the same native-language pass.
 - Full mechanical audit was run in batches across every target locale. Each article has exactly the canonical 29 stable IDs, no duplicate IDs, both semantic tables with 19 and 9 body rows respectively, all required hard literals/formulas/hashes, no unintended Hebrew leakage, and its locale module has exactly 11 `about.*` shell keys.
 - During closure, the first audit helper exposed a real test bug: it matched only two-letter locale codes and therefore missed `fil`. The audit was corrected to accept 2–3 letter registry codes, `fil` was added and verified, and the final audit covered all 72 locales.
