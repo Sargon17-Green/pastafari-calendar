@@ -1,0 +1,133 @@
+name: Belarusian Gemma3 12B reviewer qualification
+
+on:
+  push:
+    branches:
+      - feature/about-i18n-72-locales
+    paths:
+      - .github/workflows/about-native-qa-be-gemma3-12b-smoke.yml
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - name: Install pinned llama.cpp runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/be-gemma12/llama
+          curl -fL --retry 3 \
+            https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz \
+            -o /tmp/be-gemma12/llama.tar.gz
+          echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/be-gemma12/llama.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/be-gemma12/llama.tar.gz -C /tmp/be-gemma12/llama
+
+      - name: Qualify Belarusian Gemma 3 12B reviewer
+        shell: bash
+        run: |
+          set -euo pipefail
+          SERVER="$(find /tmp/be-gemma12/llama -type f -name llama-server | head -n 1)"
+          test -x "$SERVER"
+          "$SERVER" \
+            -hf ggml-org/gemma-3-12b-it-GGUF:Q4_K_M \
+            -c 4096 -t 4 --host 127.0.0.1 --port 8080 \
+            > /tmp/be-gemma12/server.log 2>&1 &
+          PID=$!
+          trap 'kill "$PID" 2>/dev/null || true' EXIT
+          for _ in $(seq 1 900); do
+            curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8080/health >/dev/null
+
+          python - <<'PY'
+          from pathlib import Path
+          import json, urllib.request
+
+          cases=[
+              {"id":"g1","text":"Выберыце дату і паспрабуйце яшчэ раз.","expected":"НАТУРАЛЬНА"},
+              {"id":"g2","text":"Дзень дзеяння — пункт адліку вылічэння.","expected":"НАТУРАЛЬНА"},
+              {"id":"g3","text":"Папярэдняя катлета","expected":"НАТУРАЛЬНА"},
+              {"id":"g4","text":"Месяцы могуць пераплятацца на працягу года.","expected":"НАТУРАЛЬНА"},
+              {"id":"b1","text":"Змінити дзень дії.","expected":"ВЫПРАВІЦЬ"},
+              {"id":"b2","text":"Дзень у котлеті.","expected":"ВЫПРАВІЦЬ"},
+              {"id":"b3","text":"У гэтым годзе некалькі місяці.","expected":"ВЫПРАВІЦЬ"},
+              {"id":"b4","text":"Как пользоваться этим сайтом?","expected":"ВЫПРАВІЦЬ"}
+          ]
+          ids=[c["id"] for c in cases]
+          prompt=(
+              "Ты строгі рэдактар беларускай мовы на ўзроўні носьбіта. Ацані кожны з васьмі фрагментаў асобна. "
+              "Правярай натуральную сучасную беларускую мову, граматыку, узгадненне, сінтаксіс, ідыяматычнасць "
+              "і тое, ці не з'яўляецца тэкст рускай, украінскай або змяшанай мовай. "
+              "У гэтым праекце «дзень дзеяння», «запытаны дзень», «катлета», «пераплеценыя месяцы» і выраз "
+              "«месяцы могуць пераплятацца» з'яўляюцца кананічнымі даменнымі тэрмінамі/фармулёўкамі; "
+              "не адхіляй іх толькі з-за незвычайнасці. "
+              "Вярні толькі JSON. Для кожнага id verdict можа быць толькі НАТУРАЛЬНА або ВЫПРАВІЦЬ.\n\n"
+              + json.dumps(cases,ensure_ascii=False)
+          )
+          schema={
+              "type":"object",
+              "properties":{
+                  "decisions":{
+                      "type":"array","minItems":8,"maxItems":8,
+                      "items":{
+                          "type":"object",
+                          "properties":{
+                              "id":{"type":"string","enum":ids},
+                              "verdict":{"type":"string","enum":["НАТУРАЛЬНА","ВЫПРАВІЦЬ"]}
+                          },
+                          "required":["id","verdict"],"additionalProperties":False
+                      }
+                  }
+              },
+              "required":["decisions"],"additionalProperties":False
+          }
+          payload={
+              "messages":[{"role":"user","content":prompt}],
+              "temperature":0.0,"max_tokens":420,"stream":False,
+              "response_format":{"type":"json_schema","json_schema":{"name":"be_qualification","strict":True,"schema":schema}}
+          }
+          req=urllib.request.Request(
+              "http://127.0.0.1:8080/v1/chat/completions",
+              data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),
+              headers={"Content-Type":"application/json"},method="POST")
+          with urllib.request.urlopen(req,timeout=2400) as resp:
+              data=json.load(resp)
+          raw=data["choices"][0]["message"]["content"].strip()
+          Path("/tmp/be-gemma12/qualification-raw.json").write_text(raw+"\n",encoding="utf-8")
+          parsed=json.loads(raw)
+          decisions=parsed.get("decisions",[])
+          if len(decisions)!=8 or len({d.get("id") for d in decisions})!=8:
+              raise SystemExit("Belarusian qualification returned incomplete/duplicate decisions")
+          actual={d["id"]:d["verdict"] for d in decisions}
+          results=[]; failed=[]
+          for c in cases:
+              passed=actual.get(c["id"])==c["expected"]
+              results.append({**c,"actual":actual.get(c["id"]),"passed":passed})
+              if not passed: failed.append(c["id"])
+          Path("/tmp/be-gemma12/qualification.json").write_text(
+              json.dumps(results,ensure_ascii=False,indent=2)+"\n",encoding="utf-8"
+          )
+          print(json.dumps(results,ensure_ascii=False,indent=2))
+          if failed:
+              raise SystemExit("Belarusian Gemma 3 12B qualification failed: "+", ".join(failed))
+          PY
+
+      - name: Upload qualification evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: belarusian-gemma3-12b-reviewer-qualification
+          path: |
+            /tmp/be-gemma12/qualification.json
+            /tmp/be-gemma12/qualification-raw.json
+            /tmp/be-gemma12/server.log
+          if-no-files-found: warn
+          retention-days: 30
