@@ -17,7 +17,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | ar | ar | rtl | partial | linguistic QA |
 | az | az-AZ | ltr | partial | linguistic QA |
 | be | be-BY | ltr | partial | linguistic QA |
-| bg | bg-BG | ltr | partial | semantic QA |
+| bg | bg-BG | ltr | partial | linguistic QA |
 | bn | bn-BD | ltr | partial | semantic QA |
 | bs | bs-BA | ltr | partial | semantic QA |
 | ca | ca-ES | ltr | partial | semantic QA |
@@ -96,7 +96,7 @@ Status progression for target locales: `not started → draft → semantic QA �
 
 - `et-EE`: locale-wide language finding: prominent existing UI strings are Finnish rather than Estonian (for example `Vaihda työpäevä`, `Sivuston käyttö`). Do not use those strings as a terminology oracle for the article; native Estonian review must repair the whole locale.
 
-- `bg-BG`: locale-wide language finding: prominent existing UI strings are Russian or mixed Russian/Bulgarian rather than idiomatic Bulgarian (for example `Изменить ден на действието`, `Как пользоваться сайтом`). Do not use those strings as a terminology oracle for the article; native Bulgarian review must repair the whole locale.
+- `bg-BG`: historical locale-wide language finding: prominent existing UI strings had contained Russian or mixed Russian/Bulgarian wording (for example `Изменить ден на действието`, `Как пользоваться сайтом`). The locale was repaired before the final gate. Strict Gemma 4 whole-site run `36859362965` then passed after an 8/8 Bulgarian qualification covering natural Bulgarian and Russian/mixed-language controls; 567 grounded user-visible/accessibility-facing items produced zero confirmed findings. Evidence is stored under `artifacts/about-i18n-native-sessions/bg/strict-36859362965/`. The locale is therefore at `linguistic QA`; rendered/visual and final integration gates remain separate.
 
 - `ms-MY`: locale-wide language finding: the existing locale mixes Malay and Indonesian rather than being consistently idiomatic Malay (for example Malay `tarikh`/`mesej` alongside Indonesian `situs`, `perhitungan`, `Terapkan`, `coba lagi`). Do not use it as a terminology oracle for the Malay article; native Malay review must repair the whole locale.
 
