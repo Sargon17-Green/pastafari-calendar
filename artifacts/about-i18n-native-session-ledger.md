@@ -20,7 +20,7 @@ Allowed strict-session states: `pending` → `reviewed PASS` or `reviewed FAIL` 
 | ca | ca-ES | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/ca/strict-36881822658/` — repaired strict Gemma 4 whole-site rerun `36881822658`; hidden qualification 8/8, 567 grounded text items, 0 findings; prior run 36876585823 rejected as false-negative PASS after manual leakage audit |
 | cs | cs-CZ | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/cs/strict-36886900641/` — corrected strict Gemma 4 whole-site run `36886900641`; hidden qualification 8/8, 568 grounded text items, 0 findings |
 | da | da-DK | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/da/strict-36891008084/` — strict Gemma 4 whole-site run `36891008084`; hidden qualification 8/8, 562 grounded text items, 0 findings |
-| de | de-DE | ltr | semantic QA | pending | — |
+| de | de-DE | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/de/strict-36896960363/` — strict Gemma 4 whole-site run `36896960363`; hidden qualification 8/8, 569 grounded text items, 0 findings |
 | el | el-GR | ltr | semantic QA | pending | — |
 | eo | eo | ltr | semantic QA | pending | — |
 | es | es-ES | ltr | semantic QA | pending | — |

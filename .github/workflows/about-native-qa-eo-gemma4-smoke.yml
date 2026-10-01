@@ -1,0 +1,61 @@
+name: Esperanto Gemma4 reviewer qualification
+
+on:
+  push:
+    branches: [feature/about-i18n-72-locales]
+    paths: [.github/workflows/about-native-qa-eo-gemma4-smoke.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Install pinned llama.cpp runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/eo-gemma/llama
+          curl -fL --retry 3 https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz -o /tmp/eo-gemma/llama.tar.gz
+          echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/eo-gemma/llama.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/eo-gemma/llama.tar.gz -C /tmp/eo-gemma/llama
+      - name: Qualify Esperanto reviewer on hidden controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          SERVER="$(find /tmp/eo-gemma/llama -type f -name llama-server | head -n 1)"
+          "$SERVER" -hf ggml-org/gemma-4-E4B-it-GGUF:Q4_0 --reasoning auto --chat-template-kwargs '{"enable_thinking":false}' -c 4096 -t 4 --host 127.0.0.1 --port 8080 > /tmp/eo-gemma/server.log 2>&1 &
+          PID=$!; trap 'kill "$PID" 2>/dev/null || true' EXIT
+          for _ in $(seq 1 600); do curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break; sleep 1; done
+          python - <<'PY'
+          from pathlib import Path
+          import json, urllib.request
+          cases=[{"id":"g1","text":"Elektu daton kaj reprovu.","expected":"NATURA"},{"id":"g2","text":"La tago de laboro estas la deirpunkto de la kalkulo.","expected":"NATURA"},{"id":"g3","text":"Antaŭa kotleto","expected":"NATURA"},{"id":"g4","text":"La monatoj povas interplektiĝi dum la jaro.","expected":"NATURA"},{"id":"b1","text":"Cambiar el día de trabajo.","expected":"KOREKTU"},{"id":"b2","text":"Click here por daŭrigi.","expected":"KOREKTU"},{"id":"b3","text":"Vaihda työpäivä.","expected":"KOREKTU"},{"id":"b4","text":"Как пользоваться ĉi tiun retejon?","expected":"KOREKTU"}]
+          ids=[x["id"] for x in cases]
+          prompt="Vi estas strikta denaska redaktoro de moderna norma Esperanto. Kontrolu naturecon, gramatikon kaj ĉu la teksto estas hazarde hispana, angla, finna, rusa aŭ miksita. La terminoj ‘tago de laboro’, ‘pridemandata tago’, ‘kotleto’ kaj interplektitaj monatoj estas intencaj kanonaj terminoj. Return only JSON. For each id, verdict must be exactly NATURA or KOREKTU."+"\n\n"+json.dumps(cases,ensure_ascii=False)
+          schema={"type":"object","properties":{"decisions":{"type":"array","minItems":8,"maxItems":8,"items":{"type":"object","properties":{"id":{"type":"string","enum":ids},"verdict":{"type":"string","enum":["NATURA","KOREKTU"]}},"required":["id","verdict"],"additionalProperties":False}}},"required":["decisions"],"additionalProperties":False}
+          payload={"messages":[{"role":"user","content":prompt}],"temperature":0.0,"max_tokens":420,"reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"eo_qualification","strict":True,"schema":schema}}}
+          req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),headers={"Content-Type":"application/json"},method="POST")
+          with urllib.request.urlopen(req,timeout=2400) as resp: data=json.load(resp)
+          raw=data["choices"][0]["message"]["content"].strip(); parsed=json.loads(raw); decisions=parsed.get("decisions",[])
+          actual={d["id"]:d["verdict"] for d in decisions}; results=[]; failed=[]
+          for x in cases:
+            ok=actual.get(x["id"])==x["expected"]; results.append({**x,"actual":actual.get(x["id"]),"passed":ok})
+            if not ok: failed.append(x["id"])
+          Path("/tmp/eo-gemma/qualification.json").write_text(json.dumps(results,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          Path("/tmp/eo-gemma/qualification-raw.json").write_text(raw+"\n",encoding="utf-8")
+          if len(decisions)!=8 or failed: raise SystemExit("qualification failed")
+          PY
+      - name: Upload qualification evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: eo-gemma4-reviewer-qualification
+          path: |
+            /tmp/eo-gemma/qualification.json
+            /tmp/eo-gemma/qualification-raw.json
+            /tmp/eo-gemma/server.log
+          retention-days: 30
