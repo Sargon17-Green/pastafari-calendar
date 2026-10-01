@@ -33,19 +33,19 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | fil | fil-PH | ltr | partial | semantic QA |
 | fo | fo-FO | ltr | partial | linguistic QA |
 | fr | fr-FR | ltr | partial | linguistic QA |
-| fy | fy-NL | ltr | partial | semantic QA |
+| fy | fy-NL | ltr | partial | linguistic QA |
 | gl | gl-ES | ltr | partial | linguistic QA |
 | gu | gu-IN | ltr | partial | linguistic QA |
 | ha | ha-NG | ltr | partial | linguistic QA |
 | hi | hi-IN | ltr | partial | linguistic QA |
 | hr | hr-HR | ltr | partial | semantic QA |
 | ht | ht-HT | ltr | partial | linguistic QA |
-| hu | hu-HU | ltr | partial | semantic QA |
+| hu | hu-HU | ltr | partial | linguistic QA |
 | hy | hy-AM | ltr | partial | semantic QA |
 | id | id-ID | ltr | partial | semantic QA |
 | is | is-IS | ltr | partial | linguistic QA |
 | it | it-IT | ltr | partial | semantic QA |
-| ja | ja-JP | ltr | partial | semantic QA |
+| ja | ja-JP | ltr | partial | linguistic QA |
 | jv | jv-ID | ltr | partial | semantic QA |
 | ka | ka-GE | ltr | partial | semantic QA |
 | kk | kk-KZ | ltr | partial | semantic QA |
@@ -129,6 +129,9 @@ Status progression for target locales: `not started → draft → semantic QA �
 - `hi-IN`: strict run `36916698925` passed qualification 8/8 over 567 grounded items with zero findings; manual post-run scanning was clean.
 - `gl-ES`: earlier Galician source contained Portuguese/mixed forms and the first strict PASS was manually rechecked. After the final repair, strict rerun `36923026456` passed qualification 8/8 over 567 grounded items with zero findings; manual post-run scanning was clean and later drift did not touch Galician sources. Evidence: `artifacts/about-i18n-native-sessions/gl/strict-36923026456/`.
 - `ht-HT`: strict run `36923264928` passed qualification 8/8 over 567 grounded items with zero findings; manual post-run scanning was clean. Drift after the reviewed HEAD was checksum-only. Evidence: `artifacts/about-i18n-native-sessions/ht/strict-36923264928/`.
+- `fy-NL`: earlier model CLEAN results were manually rejected after Dutch/English leakage. After the final repairs, strict rerun `36928557891` passed qualification 8/8 over 567 grounded items with zero findings; the manual post-run scan was clean and later drift did not touch Frisian sources. Evidence: `artifacts/about-i18n-native-sessions/fy/strict-36928557891/`.
+- `ja-JP`: the first strict attempt was invalid because an inherited Croatian enum constrained the qualification schema. After correcting the workflow, strict run `36929093624` passed qualification 8/8 over 569 grounded items with zero findings; manual post-run scanning was clean and later drift was checksum-only. Evidence: `artifacts/about-i18n-native-sessions/ja/strict-36929093624/`.
+- `hu-HU`: after pre-strict repair of obvious English technical leakage, strict run `36929093742` passed qualification 8/8 over 568 grounded items with zero findings; manual post-run scanning was clean and later drift was checksum-only. Evidence: `artifacts/about-i18n-native-sessions/hu/strict-36929093742/`.
 - `sl-SI`: locale-wide language finding: prominent UI copy is Croatian/Bosnian/Serbian rather than idiomatic Slovenian (`Promijeni dan delovanja`, `polazišna je točka`, `u kotletu`).
 
 - `sr-Latn-RS`: locale-wide variant finding: the existing UI uses predominantly Ijekavian Bosnian/Croatian forms (`Promijeni`, `djelovanja`, `mjesecu`, `zdjela`) despite the registered Serbia Latin variant; review the whole locale against sr-Latn-RS.
