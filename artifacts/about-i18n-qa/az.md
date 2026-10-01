@@ -43,3 +43,19 @@ Dil turu zamanı əvvəlki bir düzəlişin üç stabil deep-link ID-ni səhvən
 ## Status
 
 Semantik və linqvistik mətn QA-si tamamlanıb. Vizual/render QA və yekun `PASS` ayrıca növbəti mərhələdir.
+
+
+## Sərt whole-site dil qapısı
+
+Geniş Azərbaycan dili təmirindən sonra mənbənin üzərində yeni, müstəqil Gemma 3 12B whole-site dil yoxlaması aparıldı.
+
+- workflow run: `36847382810`
+- reviewed HEAD: `19853c531ccf4d48a97eb5da4488956740d8a344`
+- gizli kvalifikasiya: **10/10**
+- grounded görünən/əlçatanlıq yönümlü mətn vahidləri: **567**
+- strukturlaşdırılmış nəticə: `CLEAN`
+- təsdiqlənmiş findings: **0**
+- yekun nəticə: `NATIVE_QA_RESULT: PASS`
+- evidence: `artifacts/about-i18n-native-sessions/az/strict-36847382810/`
+
+Kvalifikasiya təbii Azərbaycan dili nümunələrini qəbul etdi, Türkiyə türkcəsi sızmasını, qarışıq türk/Azərbaycan dilini, uzlaşma xətasını və Türkiyə türkcəsi leksik qalıqlarını rədd etdi. Reviewed HEAD-dən sonra Azərbaycan dili mənbə faylları dəyişməyib; drift yalnız checksum və tarixi Qwen evidence faylları ilə məhdud qalıb.
