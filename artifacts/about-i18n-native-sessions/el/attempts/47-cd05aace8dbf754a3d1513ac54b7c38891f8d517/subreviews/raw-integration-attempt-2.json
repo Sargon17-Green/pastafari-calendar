@@ -1,0 +1,34 @@
+{
+  "result": "FINDINGS",
+  "summary": "Εντοπίστηκαν προβλήματα στην ελληνική επικοινωνία του ιστοτόπου. Τα προβλήματα αφορούν σε λάθος γλώσσα, μεταφραστικά καλκ, γραμματικά και συμφωνίας λάθη, κακούς τεχνικούς όρους και ασυνεπή ορολογία. Τα προβλήματα είναι κρίτικα και υψηλής σοβαρότητας.",
+  "findings": [
+    {
+      "severity": "critical",
+      "location": "docs/i18n/runtime.js",
+      "current_text": "locale.displayName",
+      "issue": "Η τιμή `locale.displayName` είναι σε αγγλικά και όχι στα ελληνικά. Αυτό είναι αντίθετο με την προδιαγραφή της ελληνικής επικοινωνίας.",
+      "correction": "Η τιμή πρέπει να είναι στα ελληνικά, π.χ. `Ελληνικά`."
+    },
+    {
+      "severity": "high",
+      "location": "docs/i18n/runtime.js",
+      "current_text": "locale.code",
+      "issue": "Η τιμή `locale.code` είναι σε αγγλικά και όχι στα ελληνικά. Αυτό είναι αντίθετο με την προδιαγραφή της ελληνικής επικοινωνίας.",
+      "correction": "Η τιμή πρέπει να είναι στα ελληνικά, π.χ. `Ελληνικά`."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/registry.js",
+      "current_text": "defineLocale(\"el\", \"Ελληνικά\", \"ltr\", \"el-GR\", \"partial\", () => import(\"./locales/el.js?v=19-about-i18n\"))",
+      "issue": "Η τιμή `locale.displayName` είναι στα ελληνικά, αλλά η τιμή `locale.code` είναι σε αγγλικά. Αυτό είναι αντίθετο με την προδιαγραφή της ελληνικής επικοινωνίας.",
+      "correction": "Η τιμή `locale.code` πρέπει να είναι στα ελληνικά, π.χ. `Ελληνικά`."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/registry.js",
+      "current_text": "defineLocale(\"el\", \"Ελληνικά\", \"ltr\", \"el-GR\", \"partial\", () => import(\"./locales/el.js?v=19-about-i18n\"))",
+      "issue": "Η τιμή `locale.displayName` είναι στα ελληνικά, αλλά η τιμή `locale.code` είναι σε αγγλικά. Αυτό είναι αντίθετο με την προδιαγραφή της ελληνικής επικοινωνίας.",
+      "correction": "Η τιμή `locale.code` πρέπει να είναι στα ελληνικά, π.χ. `Ελληνικά`."
+    }
+  ]
+}

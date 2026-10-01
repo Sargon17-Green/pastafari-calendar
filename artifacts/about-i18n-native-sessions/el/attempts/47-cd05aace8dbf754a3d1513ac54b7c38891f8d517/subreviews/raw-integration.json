@@ -1,0 +1,34 @@
+{
+  "result": "FINDINGS",
+  "summary": "Εντοπίστηκαν προβλήματα στην ελληνική επικοινωνία του ιστοτόπου. Τα προβλήματα περιλαμβάνουν λάθος γλώσσα, μεταφραστικά καλκ, γραμματικά και συμφωνίας λάθη, ασυνεπή ορολογία, κακούς τεχνικούς όρους, placeholders σε λάθος θέση, αφύσικα metadata, ARIA και accessibility κείμενα, ακο",
+  "findings": [
+    {
+      "severity": "critical",
+      "location": "docs/i18n/runtime.js",
+      "current_text": "locale.displayName",
+      "issue": "Η μεταφραστική τιμή `locale.displayName` είναι σε αγγλικά, αντί για ελληνικά. Αυτό είναι απαραίτητο για την επικοινωνία του χρήστη.",
+      "correction": "Αντικαταστήστε την τιμή `locale.displayName` με την ελληνική έκδοση, π.χ. `Ελληνικά`."
+    },
+    {
+      "severity": "high",
+      "location": "docs/i18n/runtime.js",
+      "current_text": "locale.code",
+      "issue": "Η τιμή `locale.code` είναι σε αγγλικά, αντί για ελληνικά. Αυτό είναι απαραίτητο για την επικοινωνία του χρήστη.",
+      "correction": "Αντικαταστήστε την τιμή `locale.code` με την ελληνική έκδοση, π.χ. `el-GR`."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/registry.js",
+      "current_text": "defineLocale(\"el\", \"Ελληνικά\", \"ltr\", \"el-GR\", \"partial\", () => import(\"./locales/el.js?v=19-about-i18n\"))",
+      "issue": "Η τιμή `\"Ελληνικά\"` είναι σε ελληνικά, αλλά η τιμή `\"el-GR\"` είναι σε αγγλικά. Αυτό είναι απαραίτητο για την επικοινωνία του χρήστη.",
+      "correction": "Αντικαταστήστε την τιμή `\"el-GR\"` με την ελληνική έκδοση, π.χ. `\"el-GR\"` (είναι ήδη σωστή)."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/registry.js",
+      "current_text": "defineLocale(\"el\", \"Ελληνικά\", \"ltr\", \"el-GR\", \"partial\", () => import(\"./locales/el.js?v=19-about-i18n\"))",
+      "issue": "Η τιμή `\"Ελληνικά\"` είναι σε ελληνικά, αλλά η τιμή `\"el-GR\"` είναι σε αγγλικά. Αυτό είναι απαραίτητο για την επικοινωνία του χρήστη.",
+      "correction": "Αντικαταστήστε την τιμή `\"el-GR\"` με την ελληνική έκδοση, π.χ. `\"el-GR\"` (είναι ήδη σωστή)."
+    }
+  ]
+}

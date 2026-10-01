@@ -1,0 +1,34 @@
+{
+  "result": "FINDINGS",
+  "summary": "Εντοπίστηκαν προβλήματα στην ελληνική επικοινωνία του ιστοτόπου. Τα προβλήματα συνδέονται με την χρήση αγγλικών όρων, λανθασμένης γραμματικής, ασυνεπούς ορολογίας και αφύσικων ελληνικών τεχνικών όρων.",
+  "findings": [
+    {
+      "severity": "high",
+      "location": "docs/i18n/runtime.js",
+      "current_text": "locale.displayName",
+      "issue": "Η τιμή `locale.displayName` είναι σε αγγλικά, αντί για ελληνικά. Αυτό είναι απαραίτητο για την επικοινωνία με τον χρήστη στην ελληνική γλώσσα.",
+      "correction": "Αντικαταστήστε την τιμή `locale.displayName` με την ελληνική έκδοση του ονόματος της γλώσσας, π.χ. `Ελληνικά`."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/registry.js",
+      "current_text": "defineLocale(\"el\", \"Ελληνικά\", \"ltr\", \"el-GR\", \"partial\", () => import(\"./locales/el.js?v=19-about-i18n\"))",
+      "issue": "Η τιμή `locale.displayName` είναι σωστή, αλλά η χρήση του `\"el-GR\"` είναι ασυνήθιστη και μπορεί να προκαλέσει σύγχυση. Συνήθως χρησιμοποιείται `el` για την ελληνική γλώσσα.",
+      "correction": "Αντικαταστήστε το `\"el-GR\"` με `\"el\"` για να είναι συνεπής με τις συνήθειες της κοινής χρήσης."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/about/about.js",
+      "current_text": "t(\"about.loadError\")",
+      "issue": "Η τιμή `\"about.loadError\"` είναι σε αγγλικά, αντί για ελληνικά. Αυτό είναι απαραίτητο για την επικοινωνία με τον χρήστη στην ελληνική γλώσσα.",
+      "correction": "Αντικαταστήστε την τιμή `\"about.loadError\"` με την ελληνική έκδοση του μηνύματος, π.χ. `\"about.loadError\"` μπορεί να είναι `\"Πρόβλημα φόρτωσης\"`."
+    },
+    {
+      "severity": "low",
+      "location": "docs/reverse-ui.js",
+      "current_text": "this.rt(\"reverse.status.running\")",
+      "issue": "Η τιμή `\"reverse.status.running\"` είναι σε αγγλικά, αντί για ελληνικά. Αυτό είναι απαραίτητο για την επικοινωνία με τον χρήστη στην ελληνική γλώσσα.",
+      "correction": "Αντικαταστήστε την τιμή `\"reverse.status.running\"` με την ελληνική έκδοση του μηνύματος, π.χ. `\"reverse.status.running\"` μπορεί να είναι `\"Εκτέλεση\"`."
+    }
+  ]
+}
