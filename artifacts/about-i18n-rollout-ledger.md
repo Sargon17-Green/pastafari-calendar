@@ -18,7 +18,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | az | az-AZ | ltr | partial | linguistic QA |
 | be | be-BY | ltr | partial | linguistic QA |
 | bg | bg-BG | ltr | partial | linguistic QA |
-| bn | bn-BD | ltr | partial | semantic QA |
+| bn | bn-BD | ltr | partial | linguistic QA |
 | bs | bs-BA | ltr | partial | semantic QA |
 | ca | ca-ES | ltr | partial | semantic QA |
 | cs | cs-CZ | ltr | partial | semantic QA |
@@ -98,6 +98,8 @@ Status progression for target locales: `not started → draft → semantic QA �
 
 - `bg-BG`: historical locale-wide language finding: prominent existing UI strings had contained Russian or mixed Russian/Bulgarian wording (for example `Изменить ден на действието`, `Как пользоваться сайтом`). The locale was repaired before the final gate. Strict Gemma 4 whole-site run `36859362965` then passed after an 8/8 Bulgarian qualification covering natural Bulgarian and Russian/mixed-language controls; 567 grounded user-visible/accessibility-facing items produced zero confirmed findings. Evidence is stored under `artifacts/about-i18n-native-sessions/bg/strict-36859362965/`. The locale is therefore at `linguistic QA`; rendered/visual and final integration gates remain separate.
 
+- `bn-BD`: strict Gemma 4 whole-site run `36863774024` passed after an 8/8 Bengali qualification; all 567 grounded user-visible/accessibility-facing items produced zero confirmed findings. A manual promotion check verified that the English `manifest.defaultDescription` source key is not a Bengali localized manifest output: `description_localized.bn` is generated from Bengali `meta.description`, and equality on that contract key is explicitly allowed. Evidence is stored under `artifacts/about-i18n-native-sessions/bn/strict-36863774024/`. The locale is therefore at `linguistic QA`; rendered/visual and final integration gates remain separate.
+
 - `ms-MY`: locale-wide language finding: the existing locale mixes Malay and Indonesian rather than being consistently idiomatic Malay (for example Malay `tarikh`/`mesej` alongside Indonesian `situs`, `perhitungan`, `Terapkan`, `coba lagi`). Do not use it as a terminology oracle for the Malay article; native Malay review must repair the whole locale.
 
 - `ar`: strict Arabic Gemma 4 whole-site gate run `36836953854` passed after an 8/8 Arabic qualification covering Modern Standard Arabic, agreement, wrong-language leakage, and Latin c/t variables in technical context. The grounded whole-site corpus contained 583 user-visible/accessibility-facing items and produced zero confirmed findings. Evidence is stored under `artifacts/about-i18n-native-sessions/ar/strict-36836953854/`. The locale is therefore at `linguistic QA`; rendered/visual and final integration gates remain separate.
@@ -134,7 +136,7 @@ Status progression for target locales: `not started → draft → semantic QA �
 
 - `LOCALES` at this branch contains **72 locales**: Hebrew plus 71 target locales.
 - `docs/about/content/` now contains **72 locale articles**, exactly one for every registered locale.
-- All 71 target locales have complete article drafts. Native-language whole-site text QA is now complete through `ht-HT`: `af-ZA`, `az-AZ`, `be-BY`, `bg-BG`, `et-EE`, `fo-FO`, `fy-NL`, `gl-ES`, and `ht-HT` are at `linguistic QA`; the remaining 62 target locales remain at `draft` pending the same native-language pass.
+- All 71 target locales have complete article drafts. Native-language whole-site text QA is now complete for `af-ZA`, `az-AZ`, `be-BY`, `bg-BG`, `bn-BD`, `et-EE`, `fo-FO`, `fy-NL`, `gl-ES`, and `ht-HT`; these 10 target locales are at `linguistic QA`, while the remaining 61 target locales remain at `draft` pending the same native-language pass.
 - Full mechanical audit was run in batches across every target locale. Each article has exactly the canonical 29 stable IDs, no duplicate IDs, both semantic tables with 19 and 9 body rows respectively, all required hard literals/formulas/hashes, no unintended Hebrew leakage, and its locale module has exactly 11 `about.*` shell keys.
 - During closure, the first audit helper exposed a real test bug: it matched only two-letter locale codes and therefore missed `fil`. The audit was corrected to accept 2–3 letter registry codes, `fil` was added and verified, and the final audit covered all 72 locales.
 - Native-language whole-site LLM QA remains pending by design. The required next phase is one locale at a time, with the reviewing conversation itself conducted in that locale and explicitly searching the whole site for unnatural language, foreign-language leakage, terminology drift, BiDi/layout issues where relevant, and semantic discrepancies.

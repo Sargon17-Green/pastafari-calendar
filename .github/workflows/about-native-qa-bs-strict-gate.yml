@@ -1,0 +1,382 @@
+name: Bosnian strict native-language whole-site gate
+
+on:
+  push:
+    branches:
+      - feature/about-i18n-72-locales
+    paths:
+      - .github/workflows/about-native-qa-bn-strict-gate.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bosnian-strict-native-\${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  strict-bs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 1
+
+      - name: Install pinned llama.cpp runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/bs-strict/llama /tmp/bs-strict/evidence
+          curl -fL --retry 3 \
+            https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz \
+            -o /tmp/bs-strict/llama.tar.gz
+          echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/bs-strict/llama.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/bs-strict/llama.tar.gz -C /tmp/bs-strict/llama
+          git rev-parse HEAD > /tmp/bs-strict/evidence/reviewed-head.txt
+
+      - name: Extract grounded Bosnian website corpus
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          from html.parser import HTMLParser
+          import json, re
+
+          items=[]
+
+          locale=Path("docs/i18n/locales/bs.js").read_text(encoding="utf-8")
+          for key, raw in re.findall(r'"([^"]+)"\s*:\s*("(?:\\.|[^"\\])*")', locale):
+              try:
+                  value=json.loads(raw)
+              except Exception:
+                  continue
+              if not isinstance(value,str) or not value.strip():
+                  continue
+              if key in {"code","dir","intlLocale"}:
+                  continue
+              items.append({"location":f"docs/i18n/locales/bs.js#{key}","text":value.strip()})
+
+          class Parser(HTMLParser):
+              wanted={"p","li","h1","h2","h3","h4","h5","h6","th","td","caption","blockquote"}
+              attrs_wanted={"aria-label","aria-description","title","alt"}
+              def __init__(self):
+                  super().__init__(convert_charrefs=True)
+                  self.sections=[]
+                  self.current=None
+                  self.attr_counter=0
+              def handle_starttag(self,tag,attrs):
+                  attrs=dict(attrs)
+                  if tag=="br" and self.current is not None:
+                      self.current["parts"].append(". ")
+                  if tag=="section":
+                      self.sections.append(attrs.get("id",""))
+                  section=next((x for x in reversed(self.sections) if x),"")
+                  ident=attrs.get("id") or section or tag
+                  for name in self.attrs_wanted:
+                      value=attrs.get(name)
+                      if value and value.strip():
+                          items.append({
+                              "location":f"docs/about/content/bs.html#{ident}@{name}-{self.attr_counter}",
+                              "text":value.strip()
+                          })
+                          self.attr_counter+=1
+                  if tag in self.wanted:
+                      self.current={"tag":tag,"id":attrs.get("id",""),"section":section,"parts":[]}
+              def handle_endtag(self,tag):
+                  if self.current is not None and self.current["tag"]==tag:
+                      text=re.sub(r"\s+"," ","".join(self.current["parts"])).strip()
+                      if text:
+                          ident=self.current["id"] or self.current["section"] or self.current["tag"]
+                          items.append({"location":f"docs/about/content/bs.html#{ident}","text":text})
+                      self.current=None
+                  if tag=="section" and self.sections:
+                      self.sections.pop()
+              def handle_data(self,data):
+                  if self.current is not None:
+                      self.current["parts"].append(data)
+
+          parser=Parser()
+          parser.feed(Path("docs/about/content/bs.html").read_text(encoding="utf-8"))
+
+          manifest=json.loads(Path("docs/manifest.webmanifest").read_text(encoding="utf-8"))
+          for field in ("name_localized","short_name_localized","description_localized"):
+              value=manifest.get(field,{}).get("bs",{}).get("value")
+              if isinstance(value,str) and value.strip():
+                  items.append({"location":f"docs/manifest.webmanifest#{field}.bs.value","text":value.strip()})
+
+          registry=Path("docs/i18n/registry.js").read_text(encoding="utf-8")
+          m=re.search(r'defineLocale\("bs",\s*"([^"]+)"',registry)
+          if m:
+              items.append({"location":"docs/i18n/registry.js#locale-bs-display-name","text":m.group(1)})
+
+          seen=set(); out=[]
+          for item in items:
+              pair=(item["location"],item["text"])
+              if pair in seen:
+                  continue
+              seen.add(pair)
+              item["id"]=f"BS{len(out):04d}"
+              out.append(item)
+
+          Path("/tmp/bs-strict/evidence/items.json").write_text(
+              json.dumps(out,ensure_ascii=False,indent=2)+"\n",encoding="utf-8"
+          )
+          compact=json.dumps(out,ensure_ascii=False,separators=(",",":"))
+          Path("/tmp/bs-strict/corpus.json").write_text(compact,encoding="utf-8")
+          print(f"items={len(out)} chars={len(compact)}")
+          if len(compact)>100000:
+              raise SystemExit("Bosnian corpus unexpectedly exceeds one-shot review budget")
+          PY
+
+      - name: Start isolated Bosnian Gemma 4 reviewer
+        shell: bash
+        run: |
+          set -euo pipefail
+          SERVER="$(find /tmp/bs-strict/llama -type f -name llama-server | head -n 1)"
+          test -x "$SERVER"
+          "$SERVER" \
+            -hf ggml-org/gemma-4-E4B-it-GGUF:Q4_0 \
+            --reasoning auto --chat-template-kwargs '{"enable_thinking":false}' \
+            -c 32768 -t 4 --host 127.0.0.1 --port 8080 \
+            > /tmp/bs-strict/evidence/server.log 2>&1 &
+          echo "$!" > /tmp/bs-strict/server.pid
+          for _ in $(seq 1 900); do
+            curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8080/health >/dev/null
+
+      - name: Batched hidden Bosnian reviewer qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json, urllib.request
+
+          cases=[
+              {"id":"g1","text":"Izaberite datum i pokušajte ponovo.","expected":"PRIRODNO"},
+              {"id":"g2","text":"Dan djelovanja polazna je tačka izračuna.","expected":"PRIRODNO"},
+              {"id":"g3","text":"Prethodni kotlet","expected":"PRIRODNO"},
+              {"id":"g4","text":"Mjeseci se mogu preplitati tokom godine.","expected":"PRIRODNO"},
+              {"id":"b1","text":"Promeni dan delovanja.","expected":"ISPRAVI"},
+              {"id":"b2","text":"Click here da nastavite.","expected":"ISPRAVI"},
+              {"id":"b3","text":"U ovoj godini ima nekoliko meseci.","expected":"ISPRAVI"},
+              {"id":"b4","text":"Kako пользоваться ovom stranicom?","expected":"ISPRAVI"}
+          ]
+          ids=[c["id"] for c in cases]
+          prompt=(
+              "Ti si strogi jezički urednik savremenog standardnog bosanskog jezika na nivou izvornog govornika. "
+              "Ocijeni svih osam fragmenata zasebno. Provjeravaj prirodnost, gramatiku, slaganje, sintaksu, pravopis i "
+              "da tekst nije nenamjerno na srpskom ekavskom, ruskom, engleskom ili miješanom jeziku. "
+              "U ovom projektu izrazi ‘dan djelovanja’, ‘upitani dan’, ‘kotlet’ i ideja da se mjeseci mogu preplitati "
+              "namjerni su kanonski domenski termini/konstrukcije; nemoj ih odbaciti samo zato što su neobični. "
+              "Vrati samo JSON. Za svaki id verdict smije biti samo PRIRODNO ili ISPRAVI.\n\n"
+              + json.dumps(cases,ensure_ascii=False)
+          )
+          schema={
+              "type":"object",
+              "properties":{
+                  "decisions":{
+                      "type":"array","minItems":8,"maxItems":8,
+                      "items":{
+                          "type":"object",
+                          "properties":{
+                              "id":{"type":"string","enum":ids},
+                              "verdict":{"type":"string","enum":["PRIRODNO","ISPRAVI"]}
+                          },
+                          "required":["id","verdict"],"additionalProperties":False
+                      }
+                  }
+              },
+              "required":["decisions"],"additionalProperties":False
+          }
+          payload={
+              "messages":[{"role":"user","content":prompt}],
+              "temperature":0.0,"max_tokens":420,"reasoning_effort":"none",
+              "chat_template_kwargs":{"enable_thinking":False},"stream":False,
+              "response_format":{"type":"json_schema","json_schema":{"name":"bs_qualification","strict":True,"schema":schema}}
+          }
+          req=urllib.request.Request(
+              "http://127.0.0.1:8080/v1/chat/completions",
+              data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),
+              headers={"Content-Type":"application/json"},method="POST")
+          with urllib.request.urlopen(req,timeout=2400) as resp:
+              data=json.load(resp)
+          raw=data["choices"][0]["message"]["content"].strip()
+          ev=Path("/tmp/bs-strict/evidence")
+          ev.joinpath("qualification-raw.json").write_text(raw+"\n",encoding="utf-8")
+          parsed=json.loads(raw)
+          decisions=parsed.get("decisions",[])
+          if len(decisions)!=8 or len({d.get("id") for d in decisions})!=8:
+              raise SystemExit("Bosnian qualification returned incomplete/duplicate decisions")
+          actual={d["id"]:d["verdict"] for d in decisions}
+          results=[]; failed=[]
+          for c in cases:
+              passed=actual.get(c["id"])==c["expected"]
+              results.append({**c,"actual":actual.get(c["id"]),"passed":passed})
+              if not passed:
+                  failed.append(c["id"])
+          ev.joinpath("qualification.json").write_text(
+              json.dumps(results,ensure_ascii=False,indent=2)+"\n",encoding="utf-8"
+          )
+          print(json.dumps(results,ensure_ascii=False,indent=2))
+          if failed:
+              raise SystemExit("Bosnian reviewer qualification failed: "+", ".join(failed))
+          PY
+
+      - name: Strict whole-site Bosnian review
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json, urllib.request
+
+          ev=Path("/tmp/bs-strict/evidence")
+          items=json.loads(ev.joinpath("items.json").read_text(encoding="utf-8"))
+          by_location={}
+          for item in items:
+              by_location.setdefault(item["location"],[]).append(item["text"])
+
+          prompt=(
+              "Ti si nezavisan, strog jezički urednik na nivou izvornog govornika za bosansku verziju Pastafarijanskog kalendara. "
+              "Pregledaj sav dostavljeni vidljivi i accessibility-facing tekst kao jednu whole-site jezičku cjelinu. "
+              "Aktivno traži nenamjerno curenje srpske ekavice, ruskog, engleskog ili drugih jezika, kalkove, neprirodan savremeni bosanski, "
+              "gramatičke, sintaktičke, kongruencijske, pravopisne, interpunkcijske i terminološke probleme, uključujući metadata, manifest i accessibility tekst. "
+              "Domena termini ‘dan djelovanja’, ‘upitani dan’, ‘kotlet’, ‘isprepleteni mjeseci’ i ideja da se mjeseci mogu preplitati namjerni su kanonski termini/konstrukcije; "
+              "nemoj ih odbaciti samo zato što su neobični. Formula, API/endpoint nazivi, code literals, hash vrijednosti, HTTP, CLI, OpenAPI, SIMD, SLA, all-day i prava vlastita imena "
+              "mogu ostati tehnički tekst. Svaki finding mora koristiti tačan location iz dostavljenih stavki, a current_text mora biti doslovan contiguous substring teksta na toj lokaciji. "
+              "Ne prijavljuj code ili upute recenzentu kao tekst sajta. Correction ne smije biti identičan current_text. "
+              "Web App Manifest ima localized mape: bazna fallback polja nisu bosanska greška ako je bosanski localized entry ispravan. "
+              "Statičke engleske bootstrap vrijednosti u data-i18n/data-i18n-attr elementima nisu finding ako ih runtime zamjenjuje prije korisničkog prikaza. "
+              "Prijavi samo stvarne probleme koji zahtijevaju ispravku. Ako ih nema, vrati CLEAN i praznu listu findings. Vrati samo JSON prema schemi.\n\n"
+              "WEBSITE_TEXT_ITEMS_JSON:\n"
+              + Path("/tmp/bs-strict/corpus.json").read_text(encoding="utf-8")
+          )
+          schema={
+              "type":"object",
+              "properties":{
+                  "result":{"type":"string","enum":["CLEAN","FINDINGS"]},
+                  "findings":{
+                      "type":"array","maxItems":14,
+                      "items":{
+                          "type":"object",
+                          "properties":{
+                              "severity":{"type":"string","enum":["critical","high","medium","low"]},
+                              "location":{"type":"string"},
+                              "current_text":{"type":"string","minLength":1,"maxLength":280},
+                              "issue":{"type":"string","minLength":15,"maxLength":420},
+                              "correction":{"type":"string","minLength":2,"maxLength":420}
+                          },
+                          "required":["severity","location","current_text","issue","correction"],
+                          "additionalProperties":False
+                      }
+                  }
+              },
+              "required":["result","findings"],"additionalProperties":False
+          }
+          payload={
+              "messages":[{"role":"user","content":prompt}],
+              "temperature":0.05,"top_p":0.85,"max_tokens":1900,"reasoning_effort":"none",
+              "chat_template_kwargs":{"enable_thinking":False},"stream":False,
+              "response_format":{"type":"json_schema","json_schema":{"name":"bs_whole_site_review","strict":True,"schema":schema}}
+          }
+
+          last_error=""
+          accepted=None
+          for attempt in (1,2):
+              msg=prompt if attempt==1 else prompt+"\n\nMEHANIČKI_PONOVNI_POKUŠAJ=TRUE\nRAZLOG="+last_error+"\nVRATI_POTPUNI_JSON=TRUE"
+              payload["messages"]=[{"role":"user","content":msg}]
+              req=urllib.request.Request(
+                  "http://127.0.0.1:8080/v1/chat/completions",
+                  data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),
+                  headers={"Content-Type":"application/json"},method="POST")
+              with urllib.request.urlopen(req,timeout=3600) as resp:
+                  data=json.load(resp)
+              raw=data["choices"][0]["message"]["content"].strip()
+              ev.joinpath(f"raw-review-attempt-{attempt}.json").write_text(raw+"\n",encoding="utf-8")
+              try:
+                  parsed=json.loads(raw)
+              except Exception:
+                  last_error="NEVAŽEĆI_JSON"; continue
+              result=parsed.get("result"); findings=parsed.get("findings")
+              if result not in {"CLEAN","FINDINGS"} or not isinstance(findings,list):
+                  last_error="NEVAŽEĆA_STRUKTURA"; continue
+              if result=="CLEAN" and findings:
+                  last_error="CLEAN_S_FINDINGS"; continue
+              if result=="FINDINGS" and not findings:
+                  last_error="FINDINGS_PRAZAN"; continue
+
+              seen=set(); good=True
+              for f in findings:
+                  loc=str(f.get("location","")).strip()
+                  cur=str(f.get("current_text","")).strip()
+                  corr=str(f.get("correction","")).strip()
+                  pair=(loc,cur)
+                  if loc not in by_location:
+                      last_error="NEPOZNAT_LOCATION"; good=False; break
+                  if not cur or not any(cur in text for text in by_location[loc]):
+                      last_error="CURRENT_TEXT_NIJE_NA_LOCATION"; good=False; break
+                  if cur==corr:
+                      last_error="NO_OP_CORRECTION"; good=False; break
+                  if pair in seen:
+                      last_error="DUPLIKAT"; good=False; break
+                  seen.add(pair)
+              if not good:
+                  continue
+              accepted=parsed
+              break
+
+          if accepted is None:
+              raise SystemExit("Bosnian whole-site review invalid after retries: "+last_error)
+
+          final_result="PASS" if accepted["result"]=="CLEAN" else "FAIL"
+          final={
+              "result":final_result,
+              "reviewed_head":ev.joinpath("reviewed-head.txt").read_text().strip(),
+              "findings":accepted["findings"]
+          }
+          ev.joinpath("final.json").write_text(
+              json.dumps(final,ensure_ascii=False,indent=2)+"\n",encoding="utf-8"
+          )
+          lines=[f"NATIVE_QA_RESULT: {final_result}",""]
+          if final_result=="PASS":
+              lines+=["Stroga bosanska whole-site jezička provjera nije pronašla nijedan potvrđen problem koji zahtijeva ispravku.",""]
+          else:
+              lines+=["Stroga bosanska whole-site jezička provjera pronašla je potvrđene probleme koji zahtijevaju ispravku.",""]
+              for i,f in enumerate(accepted["findings"],1):
+                  lines += [
+                      f"### {i}. {f['severity']}","",f["location"],"",
+                      f"> {f['current_text']}","",f["issue"],"",
+                      "Predložena ispravka: "+f["correction"],""
+                  ]
+          ev.joinpath("review.md").write_text("\n".join(lines).rstrip()+"\n",encoding="utf-8")
+          print(final_result)
+          PY
+
+      - name: Verify verdict
+        shell: bash
+        run: |
+          set -euo pipefail
+          head -n 1 /tmp/bs-strict/evidence/review.md | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)$'
+
+      - name: Stop reviewer
+        if: always()
+        shell: bash
+        run: |
+          if [ -f /tmp/bs-strict/server.pid ]; then
+            kill "$(cat /tmp/bs-strict/server.pid)" 2>/dev/null || true
+          fi
+
+      - name: Upload strict Bosnian evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: bosnian-strict-native-whole-site
+          path: /tmp/bs-strict/evidence/
+          if-no-files-found: warn
+          retention-days: 90
