@@ -129,7 +129,7 @@
 <section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
   <h2>Strukturální atlas</h2>
   <p>Dosud šlo o pravidla kalendáře. Následující čísla jsou jiného druhu: <strong>empirické výsledky</strong> rozsáhlého výpočetního vzorku.</p>
-  <p>Atlas byl vytvořen pomocí engine commitu <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> a obsahoval 4,096 dní činnosti; roky 4990–5010 pro každý z nich; 86,016 struktur roku; 625,437 řízků; 3,535,422 strukturálních měsíců; přes 356 milionů souvislých měsíčních úseků; a přes 364 milionů přechodů z dne <code>n</code> na den <code>n+1</code> stejného měsíce.</p>
+  <p>Atlas byl vytvořen s revizí výpočetního jádra <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> a obsahoval 4,096 dní činnosti; roky 4990–5010 pro každý z nich; 86,016 struktur roku; 625,437 řízků; 3,535,422 strukturálních měsíců; přes 356 milionů souvislých měsíčních úseků; a přes 364 milionů přechodů z dne <code>n</code> na den <code>n+1</code> stejného měsíce.</p>
   <p>To jsou popisy tohoto korpusu, nikoli kanonické zákony.</p>
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Naměřená data strukturálního atlasu"><table class="about-table">
     <thead><tr><th scope="col">Měřená veličina</th><th scope="col">Výsledek ve vzorku</th></tr></thead><tbody>
@@ -184,11 +184,11 @@
 </section>
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>A co je Seer?</h2>
-  <p>Vedle kanonické implementace existuje rychlý engine <strong>Pastafarian Calendar Seer</strong>. Megillah stanoví pravidla a kanonický výpočet podle nich určuje datum. Seer je rychlý engine, který má vracet stejnou odpověď. Pokud se Seer neshoduje se správným kanonickým výpočtem, mýlí se Seer.</p>
+  <p>Vedle kanonické implementace existuje rychlý výpočetní modul <strong>Pastafarian Calendar Seer</strong>. Megillah stanoví pravidla a kanonický výpočet podle nich určuje datum. Seer je rychlý výpočetní modul, který má vracet stejnou odpověď. Pokud se Seer neshoduje se správným kanonickým výpočtem, mýlí se Seer.</p>
   <p>Jeho úkolem je provádět stejné dotazy rychle a ve formě vhodné pro integraci do produktů.</p>
-  <p>Při živém ověření dne 21. září 2026 Seer zahrnoval mimo jiné dotazy na datum a „teď“, batch, rozsahy dní, zpětný převod z pastafariánského data na cílový den, získání struktury roku, určení aktivního dne činnosti, Node API, prohlížečový/HTTP klient, CLI, službu HTTP v1, kontrakt OpenAPI 3.1, native implementace a distribuční balíčky a ověřené container nasazení.</p>
+  <p>Při živém ověření dne 21. září 2026 Seer zahrnoval mimo jiné dotazy na datum a „teď“, dávkové zpracování, rozsahy dní, zpětný převod z pastafariánského data na cílový den, získání struktury roku, určení aktivního dne činnosti, Node API, prohlížečový/HTTP klient, CLI, službu HTTP v1, kontrakt OpenAPI 3.1, nativní implementace a distribuční balíčky a ověřené nasazení v kontejneru.</p>
   <p>Seer má veřejné API. Existuje výslovný stabilní kontrakt HTTP v1 s koncovými body pro <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, den činnosti, <code>metadata</code>, <code>locales</code> a <code>status</code>.</p>
-  <p>Dne 21. září 2026 bylo prakticky otestováno i veřejné HTTPS nasazení na Renderu: na živé službě byly ověřeny přesné dotazy, velký rozsah, restart, <code>cold wake</code> a chování pod zátěží.</p>
+  <p>Dne 21. září 2026 bylo prakticky otestováno i veřejné HTTPS nasazení na Renderu: na živé službě byly ověřeny přesné dotazy, velký rozsah, restart, probuzení služby po nečinnosti a chování pod zátěží.</p>
   <p>Ověřené veřejné nasazení je ve fázi beta/evaluace, nikoli trvalou hostovanou produkční službou se SLA. Adresa serveru, poskytovatel hostingu ani číslo verze nejsou součástí kalendáře ani jeho pevnými kanonickými prvky.</p>
   <p>Seer smí používat předvýpočty, zvláštní reprezentace, SIMD, algebru a jiné zkratky. Nemusí krok za krokem opakovat celou výpočetní historii kanonické implementace, pokud provádí tutéž sémantickou operaci a vrací tutéž odpověď.</p>
   <p>Optimalizace není alternativní autorita.</p><hr>
