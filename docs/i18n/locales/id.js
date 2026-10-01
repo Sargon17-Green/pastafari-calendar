@@ -151,7 +151,7 @@ export default Object.freeze({
     "guide.heading": "Apa yang dapat dilakukan di sini, dan bagaimana caranya?",
     "guide.intro": "Situs menampilkan tanggal Pastafari lengkap untuk hari apa pun, menerima pencarian dalam banyak kalender, dan di desktop dapat membandingkan pengaruh hari kerja.",
     "guide.1.heading": "Buka situs dan dapatkan hari ini",
-    "guide.1.body": "Begitu tautan dibuka, situs menentukan hari Pastafari saat ini untuk lokasi pengamat aktif dan menampilkan kotlet yang memuatnya. Batas hari adalah transit bawah pusat Venus melalui meridian lokal, bergantung pada lokasi dan dijelaskan dalam ASTRONOMICAL-DAY.md; itu bukan tengah malam sipil. Tidak diperlukan pendaftaran atau masuk akun, dan tidak ada tanggal yang dikirim ke server perhitungan.",
+    "guide.1.body": "Begitu tautan dibuka, situs menentukan hari Pastafari saat ini untuk lokasi pengamat aktif dan menampilkan kotlet yang memuatnya. Batas hari adalah transit bawah pusat Venus melalui meridian lokal, bergantung pada lokasi dan dijelaskan dalam ASTRONOMICAL-DAY.md; itu bukan tengah malam sipil. Tidak diperlukan pendaftaran atau masuk akun, dan tidak ada tanggal yang dikirim ke peladen perhitungan.",
     "guide.2.heading": "Cari dalam kalender apa pun yang tersedia",
     "guide.2.body": "Di “Hari mana yang ingin Anda cari?”, pilih kalender, isi bidangnya, lalu pilih “Tampilkan tanggal”. Pilihannya mencakup Gregorian, Ibrani, Julian, Islam, Persia, Tionghoa, Hindu, Saka, Thailand, Etiopia, Koptik, Jepang, Minguo, Bahá’í, dan Hitungan Panjang Maya.",
     "guide.3.heading": "Baca tanggal",

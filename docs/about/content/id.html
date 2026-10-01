@@ -149,7 +149,7 @@
 <section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
   <h2>Atlas struktural</h2>
   <p>Sampai di sini kita membahas aturan kalender. Angka berikut berbeda sifatnya: ini adalah <strong>hasil empiris</strong> dari sampel komputasi yang besar.</p>
-  <p>Atlas dibangun dengan commit engine <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> dan mencakup 4,096 hari kerja; tahun 4990–5010 untuk masing-masingnya; 86,016 struktur tahun; 625,437 kotlet; 3,535,422 bulan struktural; lebih dari 356 juta segmen bulan berkesinambungan; dan lebih dari 364 juta transisi dari hari <code>n</code> ke hari <code>n+1</code> dalam bulan yang sama.</p>
+  <p>Atlas dibangun dengan revisi mesin <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> dan mencakup 4,096 hari kerja; tahun 4990–5010 untuk masing-masingnya; 86,016 struktur tahun; 625,437 kotlet; 3,535,422 bulan struktural; lebih dari 356 juta segmen bulan berkesinambungan; dan lebih dari 364 juta transisi dari hari <code>n</code> ke hari <code>n+1</code> dalam bulan yang sama.</p>
   <p>Angka-angka itu menggambarkan corpus tersebut, bukan hukum kanonis.</p>
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Data terukur atlas struktural">
     <table class="about-table">
@@ -237,7 +237,7 @@
   <p>Di samping implementasi kanonis ada mesin cepat bernama <strong>Pastafarian Calendar Seer</strong>. Seer bukan sumber otoritas: Megillah menetapkan aturan, dan perhitungan kanonis menghasilkan tanggal menurut aturan tersebut. Jika Seer tidak cocok dengan perhitungan kanonis yang benar, Seer-lah yang salah.</p>
   <p>Tugasnya adalah menjalankan pertanyaan yang sama dengan cepat dan dalam bentuk yang mudah diintegrasikan ke produk.</p>
   <p>Dalam verifikasi langsung yang dilakukan pada 21 September 2026, Seer antara lain mencakup kueri tanggal dan “sekarang”, batch, rentang hari, konversi balik dari tanggal Pastafari ke hari yang ditanyakan, pengambilan struktur tahun, penentuan hari kerja aktif, Node API, klien browser/HTTP, CLI, layanan HTTP v1, kontrak OpenAPI 3.1, implementasi asli dan paket distribusi, serta penerapan kontainer yang telah diverifikasi.</p>
-  <p>Seer memiliki API publik. Ada kontrak HTTP v1 yang eksplisit dan stabil dengan endpoint untuk <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, hari kerja, <code>metadata</code>, <code>locales</code>, dan <code>status</code>.</p>
+  <p>Seer memiliki API publik. Ada kontrak HTTP v1 yang eksplisit dan stabil dengan titik akhir untuk <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, hari kerja, <code>metadata</code>, <code>locales</code>, dan <code>status</code>.</p>
   <p>Pada 21 September 2026, penerapan HTTPS publik di Render benar-benar diuji: kueri tepat, rentang besar, mulai ulang, <code>cold wake</code>, dan perilaku di bawah beban diuji pada layanan yang hidup.</p>
   <p>Penerapan publik yang telah diverifikasi adalah penerapan beta/evaluasi, bukan pengumuman layanan produksi terhosting permanen dengan SLA. Alamat server, penyedia hosting, dan nomor versi bukan bagian dari kalender dan bukan konstanta kanonis.</p>
   <p>Seer boleh menggunakan prakomputasi, representasi khusus, SIMD, aljabar, dan jalan pintas lain. Ia tidak harus meniru seluruh riwayat komputasi implementasi kanonis langkah demi langkah selama menjalankan operasi semantis yang sama dan mengembalikan jawaban yang sama.</p>
