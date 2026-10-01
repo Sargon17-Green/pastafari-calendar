@@ -15,7 +15,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | en | en-US | ltr | complete | linguistic QA |
 | af | af-ZA | ltr | partial | linguistic QA |
 | ar | ar | rtl | partial | linguistic QA |
-| az | az-AZ | ltr | partial | semantic QA |
+| az | az-AZ | ltr | partial | linguistic QA |
 | be | be-BY | ltr | partial | semantic QA |
 | bg | bg-BG | ltr | partial | semantic QA |
 | bn | bn-BD | ltr | partial | semantic QA |
@@ -102,7 +102,7 @@ Status progression for target locales: `not started → draft → semantic QA �
 
 - `ar`: strict Arabic Gemma 4 whole-site gate run `36836953854` passed after an 8/8 Arabic qualification covering Modern Standard Arabic, agreement, wrong-language leakage, and Latin c/t variables in technical context. The grounded whole-site corpus contained 583 user-visible/accessibility-facing items and produced zero confirmed findings. Evidence is stored under `artifacts/about-i18n-native-sessions/ar/strict-36836953854/`. The locale is therefore at `linguistic QA`; rendered/visual and final integration gates remain separate.
 
-- `az-AZ`: locale-wide language finding: prominent existing UI copy is Turkish rather than idiomatic Azerbaijani (`İşlem gününü değiştir`, `Bu site nasıl kullanılır`, `köftesinde`). Do not use it as an Azerbaijani terminology oracle.
+- `az-AZ`: historical locale-wide language finding: prominent existing UI copy had been Turkish rather than idiomatic Azerbaijani (`İşlem gününü değiştir`, `Bu site nasıl kullanılır`, `köftesinde`). The locale and article were repaired, including Turkish residues and ordinary English technical prose. Strict Gemma 3 12B whole-site run `36847382810` then passed after a 10/10 Azerbaijani qualification; 567 grounded user-visible/accessibility-facing items produced zero confirmed findings. Evidence is stored under `artifacts/about-i18n-native-sessions/az/strict-36847382810/`. The locale is therefore at `linguistic QA`; rendered/visual and final integration gates remain separate.
 
 - `fo-FO`: locale-wide language finding: the existing locale is a Faroese/Danish hybrid (`Skift arbejdsdaguren`, `beregningens udgangspunkt`, `Sådan ...`), not idiomatic Faroese.
 
