@@ -1,0 +1,34 @@
+{
+  "result": "FINDINGS",
+  "summary": "Намерени проблеми в българската локализация на Пастафарианския календар, включително грешки в текста, граматика, терминология и технически термини.",
+  "findings": [
+    {
+      "severity": "medium",
+      "location": "docs/i18n/runtime.js",
+      "current_text": "option.textContent = locale.displayName;",
+      "issue": "Използване на английски код в `locale.displayName` за българска локализация, което не е съответствие с правилата за текстови източници.",
+      "correction": "Използвайте български текст за `locale.displayName` вместо английски."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/runtime.js",
+      "current_text": "element.textContent = translate(locale, element.dataset.i18n);",
+      "issue": "Използване на английски текст в `element.dataset.i18n` за българска локализация, което не е съответствие с правилата за текстови източници.",
+      "correction": "Използвайте български текст за `element.dataset.i18n` вместо английски."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/runtime.js",
+      "current_text": "element.setAttribute(attribute, translate(locale, key));",
+      "issue": "Използване на английски текст в `key` за българска локализация, което не е съответствие с правилата за текстови източници.",
+      "correction": "Използвайте български текст за `key` вместо английски."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/registry.js",
+      "current_text": "defineLocale(\"bg\", \"Български\", \"ltr\", \"bg-BG\", \"partial\", () => import(\"./locales/bg.js?v=19-about-i18n\"))",
+      "issue": "Използване на английски текст в `defineLocale` за българска локализация, което не е съответствие с правилата за текстови източници.",
+      "correction": "Използвайте български текст за `defineLocale` вместо английски."
+    }
+  ]
+}
