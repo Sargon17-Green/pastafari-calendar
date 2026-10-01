@@ -1,0 +1,31 @@
+SUBREVIEW_RESULT: FINDINGS
+
+Provjereno je ponašanje i UI za bosansku lokalizaciju u okviru integracije, uključujući lokalizaciju, a11y, greške, promjenu jezika i druge aspekte. Ponašanje je u skladu s kanonskim invarijantima, ali su pronađeni neki jezički i tehnički problemi.
+
+### Finding 1 — medium
+- severity: medium
+- location: docs/i18n/runtime.js
+- current_text: locale.displayName
+- issue: Koristi se 'locale.displayName' kao ključ za prikaz, što može biti problem ako se ne pravilno lokalizira.
+- correction: Provjeriti da li je 'locale.displayName' pravilno lokaliziran u datoteci 'bs.js' ili drugim lokalizacijskim datotekama.
+
+### Finding 2 — medium
+- severity: medium
+- location: docs/i18n/registry.js
+- current_text: Bosanski
+- issue: Neprirodna ili neidiomatska terminologija u 'Bosanski' za lokalizaciju.
+- correction: Provjeriti da li se 'Bosanski' koristi kao pravilni lokalni naziv u kontekstu i da li se u skladu s kanonskim invarijantima.
+
+### Finding 3 — medium
+- severity: medium
+- location: docs/i18n/registry.js
+- current_text: bs-BA
+- issue: Kod 'bs-BA' je pravilan, ali treba provjeriti da li se koristi u skladu s kanonskim invarijantima i da li se pravilno lokalizira.
+- correction: Provjeriti da li se 'bs-BA' koristi kao pravilan kod za lokalizaciju i da li se pravilno lokalizira u svim relevantnim dijelovima koda.
+
+### Finding 4 — medium
+- severity: medium
+- location: docs/about/about.js
+- current_text: t("about.loadError")
+- issue: Koristi se 't()' za prikaz greške, što može biti problem ako se ne pravilno lokalizira.
+- correction: Provjeriti da li je 'about.loadError' pravilno lokaliziran u datoteci 'bs.js' ili drugim lokalizacijskim datotekama.

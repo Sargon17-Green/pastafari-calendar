@@ -1,0 +1,34 @@
+{
+  "result": "FINDINGS",
+  "summary": "Provjereno je UI iskustvo i accessibility-facing tekstovi za bosansku lokalizaciju (`bs-BA`). Ponašanje je u skladu s kanonskim invariantima, ali su pronađeni neki jezički i terminološki nedostaci.",
+  "findings": [
+    {
+      "severity": "medium",
+      "location": "docs/i18n/locales/bs.js",
+      "current_text": "Pastafarijanski kalendar s pretraživanjem datuma i usporedbom.",
+      "issue": "Tekst nije u skladu s terminologijom korištenom u `/about/` i UI-ju. U `/about/` koristi se „Pastafarijanski kalendar“, dok je ovdje „Pastafarijanski kalendar“.",
+      "correction": "Promijeni tekst u `meta.description` u `bs.js` u „Pastafarijanski kalendar s pretraživanjem datuma i poređenjem.“"
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/locales/bs.js",
+      "current_text": "Pastafari",
+      "issue": "U `manifest.shortName` i `manifest.defaultDescription` koristi se „Pastafari“ u mališanom obliku, dok je u `app.brand` i drugim mjestima koristio „PASTAFARI“ u velikim slovima. To može dovesti do nedosljednosti u vizualnom identitetu.",
+      "correction": "Promijeni `manifest.shortName` i `manifest.defaultDescription` u „PASTAFARI“ kako bi se dosljedno podudaralo s `app.brand` i drugim mjestima."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/locales/bs.js",
+      "current_text": "Pronađite dan u bilo kojem dostupnom kalendaru, zatim pogledajte njegov potpuni pastafarijanski datum i kotlet koji ga sadrži.",
+      "issue": "Riječ „kalendaru“ je u mališanom obliku, dok je u drugim dijelovima korišten „kalendar“ u velikim slovima. To može dovesti do nedosljednosti u terminologiji.",
+      "correction": "Promijeni „kalendaru“ u „Kalendaru“ kako bi se dosljedno podudaralo s drugim mjestima."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/locales/bs.js",
+      "current_text": "Kalendar za unos",
+      "issue": "Riječ „kalendar“ je u mališanom obliku, dok je u drugim dijelovima korišten „kalendar“ u velikim slovima. To može dovesti do nedosljednosti u terminologiji.",
+      "correction": "Promijeni „kalendar“ u „Kalendar“ kako bi se dosljedno podudaralo s drugim mjestima."
+    }
+  ]
+}

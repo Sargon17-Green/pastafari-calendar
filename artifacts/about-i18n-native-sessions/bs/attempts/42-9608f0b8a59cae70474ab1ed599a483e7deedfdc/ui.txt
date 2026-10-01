@@ -1,0 +1,547 @@
+===== docs/i18n/locales/bs.js — FULL TARGET LOCALE =====
+"use strict";
+
+export default Object.freeze({
+  "code": "bs",
+  "displayName": "Bosanski",
+  "dir": "ltr",
+  "intlLocale": "bs-BA",
+  "messages": {
+    "meta.description": "Pastafarijanski kalendar s pretraživanjem datuma i poređenjem.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
+    "app.title": "Pastafarijanski kalendar",
+    "nav.skip": "Preskoči na pretraživanje datuma",
+    "app.intro": "Pronađite dan u bilo kojem dostupnom kalendaru, zatim pogledajte njegov potpuni pastafarijanski datum i kotlet koji ga sadrži.",
+    "guide.open": "Kako se koristi ova stranica?",
+    "guide.openShort": "Kako koristiti ovu stranicu",
+    "app.brand": "PASTAFARI",
+    "reverse.error.absoluteDateField": "Apsolutni datum sadrži nevažeće polje.",
+    "reverse.error.limitSafeInteger": "{field} je izvan opsega sigurnih cijelih brojeva.",
+    "reverse.error.limitPositive": "{field} mora biti pozitivan.",
+    "about.open": "O Pastafarijanskom kalendaru",
+    "about.openShort": "O kalendaru",
+    "about.title": "O Pastafarijanskom kalendaru",
+    "about.metaDescription": "Objašnjenje Pastafarijanskog kalendara: dan djelovanja i upitani dan, godine, kotleti, isprepleteni mjeseci, granica dana i napredni mehanizmi.",
+    "about.intro": "Kako kalendar predstavlja dane, godine, kotlete, isprepletene mjesece i dan djelovanja.",
+    "about.skip": "Preskoči na objašnjenje kalendara",
+    "about.back": "Nazad na kalendar",
+    "about.tocKicker": "Na ovoj stranici",
+    "about.toc": "Sadržaj",
+    "about.fallbackNotice": "Objašnjenje trenutno nije dostupno na izabranom jeziku, pa se prikazuje zadana verzija.",
+    "about.loadError": "Objašnjenje kalendara nije se moglo učitati.",
+    "language.label": "Jezik",
+    "day.staleWarning": "Trenutni dan promijenio se sa {previousDate} na {currentDate}. Budući da je dan djelovanja bio trenutni dan, prikazani datumi više nisu ažurni. Ponovo će se izračunati nakon što zatvorite ovu poruku.",
+    "location.assumption": "(Ako nema podataka koji upućuju na suprotno, pretpostavlja se da se uređaj nalazi u Kisurri.)",
+    "location.useDevice": "Koristi lokaciju uređaja",
+    "search.kicker": "Pretraživanje datuma",
+    "search.heading": "Koji dan želite pronaći?",
+    "search.intro": "Izaberite kalendar, unesite datum i izaberite „Prikaži datum”. Podrazumijevano su polja popunjena trenutnim danom Pastafari.",
+    "search.calendarLabel": "Kalendar za unos",
+    "search.submit": "Prikaži datum",
+    "search.invalid": "Taj datum nije moguće prepoznati. Provjerite jesu li sva polja popunjena i postoji li datum u izabranom kalendaru.",
+    "settings.summary": "Mogućnosti izračuna i poređenja",
+    "settings.heading": "Promijeni dan djelovanja",
+    "settings.intro": "Dan djelovanja polazna je tačka izračuna. Podrazumijevano stranica koristi trenutni dan Pastafari određen za aktivnu lokaciju posmatrača.",
+    "settings.actionCalendarLabel": "Kalendar za unos dana djelovanja",
+    "settings.apply": "Primijeni dan djelovanja",
+    "settings.reset": "Nazad na danas",
+    "settings.invalid": "Dan djelovanja nije valjan. Provjerite datum i pokušajte ponovno.",
+    "comparison.toggle": "Usporedi dva izračuna jedan uz drugi",
+    "comparison.toggleHelp": "Dostupno na računaru. Svaki red prikazuje isti upitani dan pod dva dana djelovanja.",
+    "comparison.secondActionLabel": "Kalendar za unos drugog dana djelovanja",
+    "comparison.apply": "Ažuriraj poređenje",
+    "comparison.kicker": "Poređenje poravnato po danu",
+    "comparison.heading": "Isti dani, dva dana djelovanja",
+    "comparison.intro": "Svaki red sadrži isti upitani dan. Između prvog i drugog stupca mijenja se samo dan djelovanja.",
+    "comparison.sameDay": "Dan zajednički obama izračunima",
+    "comparison.actionHeading": "Dan djelovanja: {date}",
+    "comparison.summary": "Prikazuje se {count} dana — od prvog do posljednjeg dana kotleta otvorenog prvim izračunom.",
+    "comparison.scrollAria": "Tabela poređenja istih dana u dva izračuna",
+    "comparison.desktopOnly": "Potpuna tabela poređenja dostupna je na širokom ekranu računara.",
+    "comparison.invalid": "Drugi dan djelovanja nije valjan. Provjerite datum i pokušajte ponovno.",
+    "field.year": "Godina",
+    "field.month": "Mjesec",
+    "field.day": "Dan",
+    "field.relatedYear": "Povezana gregorijanska godina",
+    "field.leapMonth": "Prestupni mjesec",
+    "field.era": "Era",
+    "field.eraYear": "Godina u eri",
+    "field.ayyamiHa": "Ayyám-i-Há",
+    "field.baktun": "Baktun",
+    "field.katun": "Katun",
+    "field.tun": "Tun",
+    "field.uinal": "Uinal",
+    "field.kin": "Kin",
+    "field.correlation": "Korelacijski broj",
+    "era.meiji": "Meiji",
+    "era.taisho": "Taishō",
+    "era.showa": "Shōwa",
+    "era.heisei": "Heisei",
+    "era.reiwa": "Reiwa",
+    "calendarInput.gregorian": "Gregorijanski",
+    "calendarInput.julian": "Julijanski",
+    "calendarInput.hebrew": "Hebrejski",
+    "calendarInput.islamicCivil": "Islamski građanski",
+    "calendarInput.islamicUmmAlQura": "Umm al-Qura",
+    "calendarInput.solarHijriOfficial": "Solarni hidžretski — službeni",
+    "calendarInput.solarHijriArithmetic": "Solarni hidžretski — aritmetički 2.820",
+    "calendarInput.chinese": "Kineski",
+    "calendarInput.hinduOldSolar": "Stari hinduistički — solarni",
+    "calendarInput.hinduOldLunar": "Stari hinduistički — lunarni",
+    "calendarInput.saka": "Saka",
+    "calendarInput.thaiBuddhist": "Tajlandski budistički",
+    "calendarInput.ethiopic": "Etiopski",
+    "calendarInput.coptic": "Koptski",
+    "calendarInput.japaneseImperial": "Japanski carski",
+    "calendarInput.minguo": "Minguo",
+    "calendarInput.bahaiTehran": "Bahá’í — teheranska ravnodnevnica",
+    "calendarInput.bahaiWestern": "Bahá’í — zapadni aritmetički",
+    "calendarInput.mayaLongCount": "Majanski dugi račun",
+    "calendarHelp.hebrew": "Mjeseci se biraju po nazivu. Za godinu i dan mogu se unijeti decimalne cifre ili hebrejska brojčana slova, na primjer תשפ״ו ili י״ד; godina zapisana slovima bez oznake hiljada tumači se uz dodatih 5.000.",
+    "calendarHelp.intl": "Ova pretvorba koristi podršku za kalendare ugrađenu u vaš preglednik. Ako preglednik ne može prikazati datum, stranica to izričito prijavljuje.",
+    "calendarHelp.chinese": "Unesite gregorijansku godinu povezanu s kineskom godinom i označite „Prestupni mjesec” samo za ponovljeni mjesec.",
+    "calendarHelp.hindu": "Unesite godinu i dan prema starom hinduističkom računanju, a mjesec izaberite po nazivu. Lunarni oblik može označiti i prestupni mjesec.",
+    "calendarHelp.japanese": "Godina 1 počinje prvog dana ere; za prvu godinu možete unijeti i 元 ili 元年. Datum prije početka ili nakon završetka ere odbija se.",
+    "calendarHelp.bahai": "Izaberite mjesec po nazivu ili Ayyám-i-Há. Oblik s teheranskom ravnodnevnicom podržava uobičajeni gregorijanski raspon 1844–3000.",
+    "calendarHelp.maya": "Zadana korelacija je GMT 584.283. Možete je promijeniti ako koristite drugu korelaciju.",
+    "loading.kicker": "Izračunato lokalno",
+    "loading.title": "Traženje kotleta i datuma…",
+    "error.kicker": "Nije moguće prikazati kalendar",
+    "error.title": "Mehanizam izračuna nije učitan",
+    "error.reload": "Ponovno učitaj",
+    "error.timeout": "Izračun traje predugo.",
+    "error.engineFailed": "Mehanizam izračuna nije uspio.",
+    "error.engineLoadFailed": "Mehanizam izračuna nije se mogao učitati.",
+    "calendar.toolbarAria": "Navigacija kotletima",
+    "calendar.previous": "Prethodni kotlet",
+    "calendar.today": "Nazad na danas",
+    "calendar.next": "Sljedeći kotlet",
+    "calendar.daysAria": "Dani u kotletu {cutletName}",
+    "calendar.currentCutlet": "Godina {year} · kotlet",
+    "calendar.cutletDescription": "{count} dana · dan djelovanja: {actionDate}",
+    "calendar.targetOutside": "Datum koji ste tražili nije u kotletu koji je trenutno na ekranu. Možete nastaviti pregledavati ili potražiti drugi datum.",
+    "year.kicker": "Godina ukratko",
+    "year.heading": "Struktura godine {year}",
+    "year.context": "Ova se struktura izračunava za dan djelovanja {actionDate}. Promjena dana djelovanja može ponovno izgraditi granice godine, kotlete i mjesece.",
+    "year.loading": "Izgradnja potpune strukture godine…",
+    "year.error": "Potpunu strukturu godine nije bilo moguće izgraditi. Prikaz kotleta i dalje je dostupan.",
+    "year.lengthLabel": "Dužina godine",
+    "year.cutletCountLabel": "Kotleti",
+    "year.monthCountLabel": "Mjeseci",
+    "year.rangeLabel": "Gregorijanski raspon",
+    "year.daysValue": "{count} dana",
+    "year.rangeValue": "Od {startDate} do {endDate}",
+    "year.displayedCutletPosition": "Prikazani kotlet zauzima dane {start}–{end} godine.",
+    "year.targetPosition": "Datum koji ste tražili jest {day}. dan od {length} u ovoj godini.",
+    "year.monthExplainer": "Mjeseci su isprepleteni nezavisno od kotleta: mjesec nije pododjeljak kotleta, a njegovi se dani mogu pojaviti u mnogim odvojenim nizovima tokom godine. Dužina mjeseca zato je ukupan broj dodijeljenih dana, a ne nužno jedan neprekinuti raspon.",
+    "year.cutletsSummary": "Kotleti u ovoj godini ({count})",
+    "year.monthsSummary": "Mjeseci u ovoj godini ({count})",
+    "year.numberedName": "{number}. {name}",
+    "year.cutletMeta": "Dužina: {length} dana · položaj u godini: dani {start}–{end}",
+    "year.monthMeta": "Dani: {length} · neprekinuti nizovi: {runs} · prvo pojavljivanje: dan {first} · posljednje: dan {last}",
+    "target.today": "Ovo je danas",
+    "target.searched": "Ovo je datum koji ste tražili",
+    "target.context": "Upitani datum: {targetDate} · dan djelovanja: {actionDate}",
+    "target.notInView": "Traženi datum ostaje spremljen; trenutno prikazani kotlet je drugi.",
+    "date.aria": "Godina {year} od Stvaranja svijeta, dan {dayInCutlet} u kotletu {cutletName}, dan {dayInMonth} u mjesecu {monthName}",
+    "date.yearLine": "Godina {year} od Stvaranja svijeta",
+    "date.cutletLine": "Dan {dayInCutlet} u kotletu {cutletName}",
+    "date.monthLine": "Dan {dayInMonth} u mjesecu {monthName}",
+    "guide.eyebrow": "Korisnički vodič",
+    "guide.heading": "Što se ovdje može raditi i kako?",
+    "guide.intro": "Stranica prikazuje potpuni pastafarijanski datum za bilo koji dan, prihvata pretraživanja u mnogim kalendarima i na računaru može porediti učinak dana djelovanja.",
+    "guide.1.heading": "Otvorite stranicu i dobijte današnji datum",
+    "guide.1.body": "Čim se veza otvori, stranica određuje trenutni dan Pastafari za aktivnu lokaciju posmatrača i prikazuje kotlet koji ga sadrži. Granica dana je od lokacije zavisan donji prolaz centra Venere preko lokalnog meridijana opisan u ASTRONOMICAL-DAY.md; nije građanska ponoć. Registracija i prijava nisu potrebne i nijedan datum se ne šalje serveru za izračun.",
+    "guide.2.heading": "Pretražujte u bilo kojem dostupnom kalendaru",
+    "guide.2.body": "U odjeljku „Koji dan želite pronaći?” izaberite kalendar, popunite njegova polja i izaberite „Prikaži datum”. Dostupni su gregorijanski, hebrejski, julijanski, islamski, perzijski, kineski, hinduistički, Saka, tajlandski, etiopski, koptski, japanski, Minguo, Bahá’í i Majanski dugi račun.",
+    "guide.3.heading": "Pročitajte datum",
+    "guide.3.body": "Svaka pločica ima tri stalna retka: godinu od Stvaranja svijeta; broj dana u kotletu i njegovo ime; zatim dan u mjesecu i njegovo ime. Nijedan pojedinačni broj ne predstavlja cijeli datum. Ime mjeseca određuje boju pločice.",
+    "guide.4.heading": "Pregledavajte bez slučajnog odabira",
+    "guide.4.body": "„Prethodni kotlet” i „Sljedeći kotlet” prelaze na susjedne kotlete. Ostale pločice dana nisu dugmad jer klik na njih nema nikakvu radnju. „Nazad na danas” vraća i pretragu i dan djelovanja na trenutni dan Pastafari.",
+    "guide.5.heading": "Promijenite dan djelovanja",
+    "guide.5.body": "Otvorite „Mogućnosti izračuna i poređenja” ispod pretraživanja. Tamo možete izabrati kalendar i unijeti drugi dan djelovanja. Naredne pretrage nastavljaju koristiti taj dan dok ga ne vratite na trenutni dan Pastafari. Ova napredna kontrola ostaje dostupna bez zatrpavanja uobičajenog prikaza.",
+    "guide.6.heading": "Usporedite iste dane dvaput",
+    "guide.6.body": "Na računaru uključite poređenje u istom području. Svaki red sadrži tačno isti upitani dan; prva kolona koristi prvi dan djelovanja, a druga drugi. Podrazumijevano se porede danas i sutra, pa je lako uočiti promijenjene datume Pastafari.",
+    "guide.7.heading": "Pregledajte cijelu godinu",
+    "guide.7.body": "Ispod prikaza kotleta stranica prikazuje strukturu prikazane godine: njenu dužinu i raspon, svaki kotlet i njegovu dužinu te svaki mjesec. Mjeseci također prikazuju broj neprekinutih nizova i svoje prvo i posljednje pojavljivanje, čime se vidi isprepletenost kroz cijelu godinu.",
+    "guide.note": "Redovi i kolone u mreži pločica samo su vizuelni raspored, a ne sedmice. U tabeli poređenja poravnanje ipak ima značenje: svaki red predstavlja isti upitani dan.",
+    "guide.back": "Nazad na pretraživanje i kalendar",
+    "footer.local": "Izračun se odvija na vašem uređaju; ova stranica nema korisnički račun ni kod za praćenje.",
+    "footer.open": "Veza je javna i učitava se direktno, uključujući i prozor privatnog pregledavanja.",
+    "reverse.kicker": "Obrnuta pretraga",
+    "reverse.heading": "Pronađi dan prema njegovom pastafarijanskom datumu",
+    "reverse.intro": "Unesite potpuni pastafarijanski datum i odredite njegov dan djelovanja. Pretraga se izvršava lokalno na ovom uređaju.",
+    "reverse.mode.basic": "Jedan datum",
+    "reverse.mode.advanced": "Sistem ograničenja",
+    "reverse.basic.heading": "Obrnuta pretraga jednog datuma",
+    "reverse.basic.dateHeading": "Traženi pastafarijanski datum",
+    "reverse.field.year": "Godina",
+    "reverse.field.cutlet": "Kotlet",
+    "reverse.field.dayInCutlet": "Dan u kotletu",
+    "reverse.field.month": "Mjesec",
+    "reverse.field.dayInMonth": "Dan u mjesecu",
+    "reverse.basic.calculationHeading": "Dan djelovanja",
+    "reverse.basic.calculationMode": "Kako je definiran dan djelovanja?",
+    "reverse.basic.calculation.active": "Koristi aktivni dan djelovanja stranice",
+    "reverse.basic.calculation.absolute": "Koristi drugi poznati datum",
+    "reverse.basic.calculation.same": "Dan djelovanja je isti kao traženi dan (c = t)",
+    "reverse.basic.calculation.pastafari": "Dan djelovanja je i sam pastafarijanski / zavisi od drugih datuma",
+    "reverse.basic.activeValue": "Aktivni dan djelovanja: {date}",
+    "reverse.basic.absoluteHeading": "Poznati dan djelovanja",
+    "reverse.basic.sameHeading": "Konačni raspon pretrage za c = t",
+    "reverse.basic.rangeStart": "Početak raspona",
+    "reverse.basic.rangeEnd": "Kraj raspona",
+    "reverse.basic.toAdvanced": "Nastavi u uređivaču sistema ograničenja",
+    "reverse.basic.toAdvancedHelp": "Rekurzivni pastafarijanski dani djelovanja predstavljeni su kao varijable i ograničenja, pa se lanac može proširivati bez umjetnog ograničenja dubine.",
+    "reverse.action.solve": "Pretraži",
+    "reverse.action.cancel": "Otkaži pretragu",
+    "reverse.action.open": "Otvori u kalendaru",
+    "reverse.action.addVariable": "Dodaj varijablu datuma",
+    "reverse.action.addConstraint": "Dodaj ograničenje",
+    "reverse.action.remove": "Ukloni",
+    "reverse.action.clear": "Očisti rezultate",
+    "reverse.progress.reverse": "Rješavanje pastafarijanskih veza",
+    "reverse.progress.verify": "Provjera kandidata za rješenje",
+    "reverse.progress.done": "Pretraga završena",
+    "reverse.progress.scanned": "Završene radne jedinice: {count}",
+    "reverse.status.running": "Lokalna pretraga…",
+    "reverse.status.cancelled": "Pretraga je otkazana.",
+    "reverse.status.superseded": "Novija pretraga zamijenila je ovu.",
+    "reverse.status.completeEmpty": "U potpuno pretraženoj domeni ne postoji rješenje.",
+    "reverse.status.completeSolutions": "Pretraga je završena. Prikazana su sva {count} rješenja u domeni.",
+    "reverse.status.partialEmpty": "Pretraga je zaustavljena prije završetka. Još nije pronađeno rješenje.",
+    "reverse.status.partialSolutions": "Prikazano je {count} provjerenih rješenja, ali pretraga je zaustavljena prije završetka i mogu postojati dodatna.",
+    "reverse.status.stale": "Ovi rezultati koristili su raniji aktivni dan djelovanja. Pokrenite pretragu ponovo da biste koristili trenutni.",
+    "reverse.status.rangeRequired": "Ovaj problem se ne može iscrpno pretražiti dok se ne doda konačni raspon ili fiksni datum.",
+    "reverse.status.timeout": "Pretraga je dostigla vremensko ograničenje prije završetka.",
+    "reverse.status.failed": "Mehanizam obrnute pretrage nije uspio.",
+    "reverse.result.heading": "Rješenja",
+    "reverse.result.solution": "Rješenje {index}",
+    "reverse.result.target": "Traženi dan",
+    "reverse.result.calculation": "Dan djelovanja",
+    "reverse.result.jdn": "JDN {jdn}",
+    "reverse.result.complete": "Potpuna pretraga",
+    "reverse.result.partial": "Djelimična pretraga",
+    "reverse.advanced.heading": "Rješavač sistema ograničenja",
+    "reverse.advanced.intro": "Definirajte varijable datuma i odnose između njih. Ciklusi su dozvoljeni kada se sistem svede na konačne domene.",
+    "reverse.variables.heading": "Varijable datuma",
+    "reverse.variable.label": "Naziv za prikaz",
+    "reverse.variable.defaultName": "Datum {index}",
+    "reverse.variable.domain": "Domena",
+    "reverse.variable.domain.unknown": "Nepoznato (mora biti ograničeno drugim uvjetima)",
+    "reverse.variable.domain.exact": "Tačno poznat datum",
+    "reverse.variable.domain.range": "Konačni raspon datuma",
+    "reverse.constraint.heading": "Ograničenja",
+    "reverse.constraint.type": "Vrsta ograničenja",
+    "reverse.constraint.pastafari": "Pastafarijanski datum",
+    "reverse.constraint.equal": "Isti apsolutni dan",
+    "reverse.constraint.order": "Hronološki redoslijed",
+    "reverse.constraint.difference": "Razlika u danima",
+    "reverse.constraint.left": "Lijevi datum",
+    "reverse.constraint.right": "Desni datum",
+    "reverse.constraint.target": "Varijabla traženog dana",
+    "reverse.constraint.calculationMode": "Izvor dana djelovanja",
+    "reverse.constraint.calculation.variable": "Druga varijabla datuma",
+    "reverse.constraint.calculation.absolute": "Poznati apsolutni datum",
+    "reverse.constraint.calculation.same": "Isto kao traženi dan (c = t)",
+    "reverse.constraint.calculationVariable": "Varijabla dana djelovanja",
+    "reverse.constraint.orderOp": "Odnos",
+    "reverse.constraint.differenceMode": "Pravilo razlike",
+    "reverse.constraint.differenceExact": "Tačna razlika",
+    "reverse.constraint.differenceRange": "Raspon razlike",
+    "reverse.constraint.equals": "Tačan broj dana (lijevo − desno)",
+    "reverse.constraint.min": "Najmanje dana (lijevo − desno)",
+    "reverse.constraint.max": "Najviše dana (lijevo − desno)",
+    "reverse.options.heading": "Ograničenja pretrage",
+    "reverse.options.intro": "Ostavite ograničenje prazno da ga ne primijenite. Nijedno ograničenje se ne primjenjuje skriveno.",
+    "reverse.options.maxSolutions": "Zaustavi nakon ovog broja provjerenih rješenja",
+    "reverse.options.maxScanned": "Zaustavi nakon ovog broja radnih jedinica",
+    "reverse.options.timeout": "Vremensko ograničenje u milisekundama",
+    "reverse.advanced.emptyVariables": "Dodajte barem jednu varijablu datuma.",
+    "reverse.advanced.emptyConstraints": "Sistem može biti bez ograničenja, ali svaka preostala varijabla ipak mora imati konačnu domenu.",
+    "reverse.error.input": "Neka polja obrnute pretrage nedostaju ili nisu važeća.",
+    "reverse.error.range": "Kraj raspona ne može biti prije njegovog početka.",
+    "reverse.error.variable": "Svako ograničenje mora upućivati na postojeću varijablu datuma.",
+    "reverse.error.pastafari": "Unesite svih pet polja pastafarijanskog datuma.",
+    "reverse.calendar.label": "Kalendar za ovaj apsolutni datum",
+
+  },
+  "calendar": {
+    "cutlets": {
+      "bronze": "Bronca",
+      "fox": "Lisica",
+      "kidney": "Bubreg",
+      "lagash": "Lagash",
+      "thought": "Misao",
+      "fourPartsOfNine": "Četiri dijela od devet",
+      "palgurash": "Palgurash",
+      "papyrusSedge": "Papirusov šaš",
+      "cluster": "Grozd",
+      "scorpion": "Škorpion",
+      "ash": "Pepeo",
+      "wheat": "Pšenica",
+      "river": "Rijeka",
+      "laughter": "Smijeh",
+      "akkad": "Akkad",
+      "horn": "Rog",
+      "theEmptyJar": "Prazni vrč"
+    },
+    "months": {
+      "clay": "Glina",
+      "pomegranate": "Nar",
+      "elbow": "Lakat",
+      "envy": "Zavist",
+      "eridu": "Eridu",
+      "toothpaste": "Pasta za zube",
+      "threePartsOfFive": "Tri dijela od pet",
+      "karshumav": "Karshumav",
+      "leopard": "Leopard",
+      "tin": "Kositar",
+      "mist": "Magla",
+      "frankincense": "Tamjan",
+      "spindle": "Vreteno",
+      "rib": "Rebro",
+      "carob": "Rogač",
+      "uruk": "Uruk",
+      "shame": "Sram",
+      "camel": "Deva",
+      "copper": "Bakar",
+      "well": "Bunar",
+      "yolk": "Žumanjak",
+      "star": "Zvijezda",
+      "honey": "Med",
+      "spleen": "Slezena",
+      "limestone": "Vapnenac",
+      "joy": "Radost",
+      "fig": "Smokva",
+      "nineveh": "Nineveh",
+      "frog": "Žaba",
+      "pitch": "Smola",
+      "lamp": "Svjetiljka",
+      "theClosedDoor": "Zatvorena vrata",
+      "sesame": "Sezam",
+      "nape": "Zatiljak",
+      "silver": "Srebro",
+      "susa": "Susa",
+      "storm": "Oluja",
+      "donkey": "Magarac",
+      "flour": "Brašno",
+      "regret": "Žaljenje",
+      "babylon": "Babylon",
+      "tongue": "Jezik",
+      "flax": "Lan",
+      "salt": "Sol",
+      "pear": "Kruška",
+      "bow": "Luk",
+      "sand": "Pijesak"
+    }
+  },
+  "terminology": {
+    "foundationDay": "Dan utemeljenja",
+    "workingNumber": "Broj djelovanja",
+    "queryNumber": "Broj upita",
+    "distanceNumber": "Broj udaljenosti",
+    "sumNumber": "Broj zbroja",
+    "directionNumber": "Broj smjera",
+    "bowl": "Zdjela",
+    "drop": "Kap",
+    "gate": "Vrata",
+    "yearFiveThousand": "Godina pet tisuća od Stvaranja svijeta"
+  }
+});
+
+
+===== docs/index.html — I18N KEY INVENTORY =====
+about.open
+about.openShort
+app.brand
+app.intro
+app.title
+aria-label:calendar.toolbarAria
+aria-label:comparison.scrollAria
+calendar.next
+calendar.previous
+calendar.targetOutside
+calendar.today
+comparison.apply
+comparison.desktopOnly
+comparison.heading
+comparison.intro
+comparison.kicker
+comparison.sameDay
+comparison.secondActionLabel
+comparison.toggle
+comparison.toggleHelp
+content:meta.description
+error.kicker
+error.reload
+error.title
+footer.local
+footer.open
+language.label
+loading.kicker
+loading.title
+nav.skip
+search.calendarLabel
+search.heading
+search.intro
+search.kicker
+search.submit
+settings.actionCalendarLabel
+settings.apply
+settings.heading
+settings.intro
+settings.reset
+settings.summary
+year.cutletCountLabel
+year.kicker
+year.lengthLabel
+year.loading
+year.monthCountLabel
+year.monthExplainer
+year.rangeLabel
+
+===== docs/index.html — RAW METADATA/A11Y/FALLBACK =====
+2: <html lang="en" dir="ltr">
+…
+4:     <meta charset="utf-8">
+5:     <meta name="viewport" content="width=device-width, initial-scale=1">
+6:     <noscript><meta http-equiv="refresh" content="0; url=./no-js/"></noscript>
+7:     <meta name="theme-color" content="#672013">
+8:     <meta name="description" content="A local, deterministic Pastafari calendar." data-i18n-attr="content:meta.description">
+9:     <meta name="color-scheme" content="light">
+10:     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; worker-src 'self'; manifest-src 'self'">
+11:     <title data-i18n="app.title">Pastafari Calendar</title>
+…
+37:       <section class="search-panel" id="search-panel" aria-labelledby="search-heading">
+…
+95:       <section class="reverse-panel" id="reverse-panel" aria-labelledby="reverse-heading">
+…
+99:       <section class="status-panel" id="loading-panel" aria-labelledby="loading-heading" aria-live="polite" aria-busy="true">
+100:         <span class="loader" aria-hidden="true"></span>
+…
+107:       <section class="status-panel error-panel" id="error-panel" aria-labelledby="error-heading" role="alert" hidden>
+…
+114:       <section class="calendar-workspace" id="calendar-workspace" aria-labelledby="cutlet-heading" hidden>
+115:         <article class="target-beacon" id="target-beacon" aria-live="polite">
+…
+127:           <div class="toolbar-actions" role="group" data-i18n-attr="aria-label:calendar.toolbarAria">
+…
+137:         <section class="year-overview" id="year-overview" aria-labelledby="year-overview-heading">
+…
+158:                 <ol class="structure-list" id="year-cutlet-list" tabindex="0" aria-labelledby="year-cutlets-summary"></ol>
+…
+162:                 <ol class="structure-list month-structure-list" id="year-month-list" tabindex="0" aria-labelledby="year-months-summary"></ol>
+…
+169:       <section class="comparison-workspace" id="comparison-workspace" aria-labelledby="comparison-heading" hidden>
+…
+176:         <div class="comparison-scroll" role="region" tabindex="0" data-i18n-attr="aria-label:comparison.scrollAria">
+…
+198:     <noscript>
+
+===== docs/about/index.html — I18N KEY INVENTORY =====
+about.back
+about.fallbackNotice
+about.intro
+about.loadError
+about.skip
+about.title
+about.toc
+about.tocKicker
+app.brand
+aria-label:about.toc
+content:about.metaDescription
+footer.local
+footer.open
+guide.1.body
+guide.1.heading
+guide.2.body
+guide.2.heading
+guide.3.body
+guide.3.heading
+guide.4.body
+guide.4.heading
+guide.5.body
+guide.5.heading
+guide.6.body
+guide.6.heading
+guide.7.body
+guide.7.heading
+guide.back
+guide.eyebrow
+guide.heading
+guide.intro
+guide.note
+guide.open
+language.label
+
+===== docs/about/index.html — RAW METADATA/A11Y/FALLBACK =====
+2: <html lang="en" dir="ltr">
+…
+4:     <meta charset="utf-8">
+5:     <meta name="viewport" content="width=device-width, initial-scale=1">
+6:     <noscript><meta http-equiv="refresh" content="0; url=../no-js/"></noscript>
+7:     <meta name="theme-color" content="#672013">
+8:     <meta name="description" content="An explanation of the Pastafari Calendar." data-i18n-attr="content:about.metaDescription">
+9:     <meta name="color-scheme" content="light">
+10:     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; worker-src 'self'; manifest-src 'self'">
+11:     <title data-i18n="about.title">About the Pastafari Calendar</title>
+…
+41:         <nav data-i18n-attr="aria-label:about.toc">
+…
+47:         <article id="article-content" class="about-article" aria-busy="true" tabindex="-1"></article>
+…
+50:         <section class="about-site-usage" id="site-usage" aria-labelledby="guide-heading" data-toc-section data-toc-level="2">
+…
+76:     <noscript>
+
+===== docs/manifest.webmanifest — FALLBACK + TARGET LOCALE =====
+1: {
+2:   "id": "./",
+3:   "name": "Pastafari Calendar",
+4:   "name_localized": {
+5:     "he": {
+6:       "value": "לוח השנה הפסטפרי",
+7:       "lang": "he",
+8:       "dir": "rtl"
+9:     },
+10:     "en": {
+11:       "value": "Pastafari Calendar",
+12:       "lang": "en",
+…
+40:     "bn": {
+41:       "value": "পাস্তাফারি ক্যালেন্ডার",
+42:       "lang": "bn",
+43:       "dir": "ltr"
+44:     },
+45:     "bs": {
+46:       "value": "Pastafarijanski kalendar",
+47:       "lang": "bs",
+48:       "dir": "ltr"
+49:     },
+50:     "ca": {
+…
+403:     "bn": {
+404:       "value": "Pastafari",
+405:       "lang": "bn",
+406:       "dir": "ltr"
+407:     },
+408:     "bs": {
+409:       "value": "Pastafari",
+410:       "lang": "bs",
+411:       "dir": "ltr"
+412:     },
+413:     "ca": {
+…
+766:     "bn": {
+767:       "value": "তারিখ খোঁজা ও তুলনাসহ একটি পাস্তাফারি ক্যালেন্ডার।",
+768:       "lang": "bn",
+769:       "dir": "ltr"
+770:     },
+771:     "bs": {
+772:       "value": "Pastafarijanski kalendar s pretraživanjem datuma i usporedbom.",
+773:       "lang": "bs",
+774:       "dir": "ltr"
+775:     },
+776:     "ca": {
