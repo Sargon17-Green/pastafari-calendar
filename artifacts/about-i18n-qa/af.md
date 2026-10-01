@@ -41,3 +41,19 @@ Hulle is nou eksplisiet in die locale teenwoordig.
 ## Status
 
 Semantiese en linguistiese QA van die teks is voltooi. Visuele/render-QA en finale PASS bly afsonderlike volgende fases.
+
+
+## Streng whole-site lokapoort
+
+Ná die breë herstel is ’n vars, onafhanklike Gemma 4 whole-site taalbeoordeling op die herstelde bron uitgevoer.
+
+- workflow run: `36707310645`
+- reviewed HEAD: `b9e1a12273b32b40c417cbecb0ed6187c81708a1`
+- versteekte kwalifikasie: **8/8**
+- gegronde sigbare/toeganklikheidsgerigte items: **564**
+- gestruktureerde resultaat: `CLEAN`
+- bevestigde findings: **0**
+- finale resultaat: `NATIVE_QA_RESULT: PASS`
+- evidence: `artifacts/about-i18n-native-sessions/af/strict-36707310645/`
+
+Die kwalifikasie het natuurlike Afrikaans aanvaar en doelbewuste Nederlandse/mengtaal-, kongruensie- en woordvormfoute verwerp. Ná die reviewed HEAD het geen Afrikaanse bronlêer verander nie; latere drift was tot checksum- en QA/evidence-lêers beperk.
