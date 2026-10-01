@@ -1,0 +1,134 @@
+name: Greek Gemma4 reviewer qualification
+
+on:
+  push:
+    branches:
+      - feature/about-i18n-72-locales
+    paths:
+      - .github/workflows/about-native-qa-el-gemma4-smoke.yml
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - name: Install pinned llama.cpp runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/el-gemma/llama
+          curl -fL --retry 3 \
+            https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz \
+            -o /tmp/el-gemma/llama.tar.gz
+          echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/el-gemma/llama.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/el-gemma/llama.tar.gz -C /tmp/el-gemma/llama
+
+      - name: Qualify Greek reviewer on hidden controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          SERVER="$(find /tmp/el-gemma/llama -type f -name llama-server | head -n 1)"
+          test -x "$SERVER"
+          "$SERVER" \
+            -hf ggml-org/gemma-4-E4B-it-GGUF:Q4_0 \
+            --reasoning auto --chat-template-kwargs '{"enable_thinking":false}' \
+            -c 4096 -t 4 --host 127.0.0.1 --port 8080 \
+            > /tmp/el-gemma/server.log 2>&1 &
+          PID=$!
+          trap 'kill "$PID" 2>/dev/null || true' EXIT
+          for _ in $(seq 1 600); do
+            curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8080/health >/dev/null
+
+          python - <<'PY'
+          from pathlib import Path
+          import json, urllib.request
+
+          cases=[
+              {"id":"g1","text":"Επιλέξτε μια ημερομηνία και δοκιμάστε ξανά.","expected":"ΦΥΣΙΚΟ"},
+              {"id":"g2","text":"Η ημέρα πράξης είναι το σημείο εκκίνησης του υπολογισμού.","expected":"ΦΥΣΙΚΟ"},
+              {"id":"g3","text":"Προηγούμενη κοτολέτα","expected":"ΦΥΣΙΚΟ"},
+              {"id":"g4","text":"Οι μήνες μπορούν να πλέκονται μεταξύ τους μέσα στο έτος.","expected":"ΦΥΣΙΚΟ"},
+              {"id":"b1","text":"Αλλάξτε την working day.","expected":"ΔΙΟΡΘΩΣΗ"},
+              {"id":"b2","text":"Click here για να συνεχίσετε.","expected":"ΔΙΟΡΘΩΣΗ"},
+              {"id":"b3","text":"В этом году υπάρχουν πολλοί μήνες.","expected":"ΔΙΟΡΘΩΣΗ"},
+              {"id":"b4","text":"Πώς χρησιμοποιώ this website;","expected":"ΔΙΟΡΘΩΣΗ"}
+          ]
+          ids=[c["id"] for c in cases]
+          prompt=(
+              "Είσαι αυστηρός γλωσσικός επιμελητής σύγχρονων κοινών ελληνικών επιπέδου φυσικού ομιλητή. "
+              "Αξιολόγησε τα οκτώ αποσπάσματα ξεχωριστά. Έλεγξε φυσικότητα, γραμματική, συμφωνία, σύνταξη, ορθογραφία "
+              "και αν το κείμενο είναι ακούσια αγγλικό, ρωσικό, τουρκικό ή μικτό. "
+              "Στο έργο αυτό οι όροι ‘ημέρα πράξης’, ‘ζητούμενη ημέρα’, ‘κοτολέτα’ και η ιδέα πλεγμένων μηνών "
+              "είναι σκόπιμοι κανονικοί όροι/κατασκευές· μην τους απορρίψεις μόνο επειδή είναι ασυνήθιστοι. "
+              "Επέστρεψε μόνο JSON. Για κάθε id το verdict μπορεί να είναι μόνο ΦΥΣΙΚΟ ή ΔΙΟΡΘΩΣΗ.\n\n"
+              + json.dumps(cases,ensure_ascii=False)
+          )
+          schema={
+              "type":"object",
+              "properties":{
+                  "decisions":{
+                      "type":"array","minItems":8,"maxItems":8,
+                      "items":{
+                          "type":"object",
+                          "properties":{
+                              "id":{"type":"string","enum":ids},
+                              "verdict":{"type":"string","enum":["ΦΥΣΙΚΟ","ΔΙΟΡΘΩΣΗ"]}
+                          },
+                          "required":["id","verdict"],"additionalProperties":False
+                      }
+                  }
+              },
+              "required":["decisions"],"additionalProperties":False
+          }
+          payload={
+              "messages":[{"role":"user","content":prompt}],
+              "temperature":0.0,"max_tokens":420,"reasoning_effort":"none",
+              "chat_template_kwargs":{"enable_thinking":False},"stream":False,
+              "response_format":{"type":"json_schema","json_schema":{"name":"el_qualification","strict":True,"schema":schema}}
+          }
+          req=urllib.request.Request(
+              "http://127.0.0.1:8080/v1/chat/completions",
+              data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),
+              headers={"Content-Type":"application/json"},method="POST")
+          with urllib.request.urlopen(req,timeout=2400) as resp:
+              data=json.load(resp)
+          raw=data["choices"][0]["message"]["content"].strip()
+          parsed=json.loads(raw)
+          decisions=parsed.get("decisions",[])
+          if len(decisions)!=8 or len({d.get("id") for d in decisions})!=8:
+              raise SystemExit("Greek qualification returned incomplete/duplicate decisions")
+          actual={d["id"]:d["verdict"] for d in decisions}
+          results=[]; failed=[]
+          for c in cases:
+              passed=actual.get(c["id"])==c["expected"]
+              results.append({**c,"actual":actual.get(c["id"]),"passed":passed})
+              if not passed:
+                  failed.append(c["id"])
+          Path("/tmp/el-gemma/qualification.json").write_text(
+              json.dumps(results,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          Path("/tmp/el-gemma/qualification-raw.json").write_text(raw+"\n",encoding="utf-8")
+          print(json.dumps(results,ensure_ascii=False,indent=2))
+          if failed:
+              raise SystemExit("Greek reviewer qualification failed: "+", ".join(failed))
+          PY
+
+      - name: Upload qualification evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: greek-gemma4-reviewer-qualification
+          path: |
+            /tmp/el-gemma/qualification.json
+            /tmp/el-gemma/qualification-raw.json
+            /tmp/el-gemma/server.log
+          if-no-files-found: warn
+          retention-days: 30
