@@ -14,7 +14,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | he | he-IL | rtl | complete | semantic master / existing |
 | en | en-US | ltr | complete | linguistic QA |
 | af | af-ZA | ltr | partial | linguistic QA |
-| ar | ar | rtl | partial | semantic QA |
+| ar | ar | rtl | partial | linguistic QA |
 | az | az-AZ | ltr | partial | semantic QA |
 | be | be-BY | ltr | partial | semantic QA |
 | bg | bg-BG | ltr | partial | semantic QA |
@@ -99,6 +99,8 @@ Status progression for target locales: `not started → draft → semantic QA �
 - `bg-BG`: locale-wide language finding: prominent existing UI strings are Russian or mixed Russian/Bulgarian rather than idiomatic Bulgarian (for example `Изменить ден на действието`, `Как пользоваться сайтом`). Do not use those strings as a terminology oracle for the article; native Bulgarian review must repair the whole locale.
 
 - `ms-MY`: locale-wide language finding: the existing locale mixes Malay and Indonesian rather than being consistently idiomatic Malay (for example Malay `tarikh`/`mesej` alongside Indonesian `situs`, `perhitungan`, `Terapkan`, `coba lagi`). Do not use it as a terminology oracle for the Malay article; native Malay review must repair the whole locale.
+
+- `ar`: strict Arabic Gemma 4 whole-site gate run `36836953854` passed after an 8/8 Arabic qualification covering Modern Standard Arabic, agreement, wrong-language leakage, and Latin c/t variables in technical context. The grounded whole-site corpus contained 583 user-visible/accessibility-facing items and produced zero confirmed findings. Evidence is stored under `artifacts/about-i18n-native-sessions/ar/strict-36836953854/`. The locale is therefore at `linguistic QA`; rendered/visual and final integration gates remain separate.
 
 - `az-AZ`: locale-wide language finding: prominent existing UI copy is Turkish rather than idiomatic Azerbaijani (`İşlem gününü değiştir`, `Bu site nasıl kullanılır`, `köftesinde`). Do not use it as an Azerbaijani terminology oracle.
 
