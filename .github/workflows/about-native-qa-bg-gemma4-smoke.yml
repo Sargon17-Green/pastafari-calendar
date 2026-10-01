@@ -1,0 +1,110 @@
+name: Bulgarian Gemma4 reviewer qualification
+
+on:
+  push:
+    branches:
+      - feature/about-i18n-72-locales
+    paths:
+      - .github/workflows/about-native-qa-bg-gemma4-smoke.yml
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - name: Install pinned llama.cpp runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/bg-gemma/llama
+          curl -fL --retry 3 \
+            https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz \
+            -o /tmp/bg-gemma/llama.tar.gz
+          echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/bg-gemma/llama.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/bg-gemma/llama.tar.gz -C /tmp/bg-gemma/llama
+
+      - name: Qualify Bulgarian reviewer on hidden controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          SERVER="$(find /tmp/bg-gemma/llama -type f -name llama-server | head -n 1)"
+          test -x "$SERVER"
+          "$SERVER" \
+            -hf ggml-org/gemma-4-E4B-it-GGUF:Q4_0 \
+            --reasoning auto --chat-template-kwargs '{"enable_thinking":false}' \
+            -c 4096 -t 4 --host 127.0.0.1 --port 8080 \
+            > /tmp/bg-gemma/server.log 2>&1 &
+          PID=$!
+          trap 'kill "$PID" 2>/dev/null || true' EXIT
+          for _ in $(seq 1 600); do
+            curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8080/health >/dev/null
+
+          python - <<'PY'
+          from pathlib import Path
+          import json, urllib.request
+
+          cases = [
+              ("g1", "Изберете дата и опитайте отново.", "ЕСТЕСТВЕНО"),
+              ("g2", "Денят на действието е отправната точка на изчислението.", "ЕСТЕСТВЕНО"),
+              ("g3", "Предишно кюфте", "ЕСТЕСТВЕНО"),
+              ("g4", "Месеците могат да се преплитат през годината.", "ЕСТЕСТВЕНО"),
+              ("b1", "Изменить день действия.", "КОРИГИРАЙ"),
+              ("b2", "Денят в котлета.", "КОРИГИРАЙ"),
+              ("b3", "В тази година има няколко месяци.", "КОРИГИРАЙ"),
+              ("b4", "Как пользоваться этим сайтом?", "КОРИГИРАЙ"),
+          ]
+          prompt=(
+              "Ти си строг редактор на съвременен книжовен български език на ниво носител. "
+              "Оцени всеки фрагмент самостоятелно. Проверявай естествеността, граматиката, "
+              "съгласуването, синтаксиса, правописа и дали текстът не е руски, украински "
+              "или смесен с друг език. В този проект „ден на действието“, „запитван ден“, "
+              "„кюфте“, „преплетени месеци“ и формулировката „месеците могат да се преплитат“ "
+              "са умишлени канонични терминологични конструкции; не ги отхвърляй само защото са необичайни. "
+              "Първият ред трябва да бъде точно „ПРИСЪДА: ЕСТЕСТВЕНО“ или „ПРИСЪДА: КОРИГИРАЙ“. "
+              "На втория ред дай кратка причина на български."
+          )
+          results=[]
+          for case_id,fragment,expected in cases:
+              payload={
+                  "messages":[{"role":"user","content":prompt+"\n\nФрагмент: "+json.dumps(fragment,ensure_ascii=False)}],
+                  "temperature":0.0,"max_tokens":120,"reasoning_effort":"none",
+                  "chat_template_kwargs":{"enable_thinking":False},"stream":False,
+              }
+              req=urllib.request.Request(
+                  "http://127.0.0.1:8080/v1/chat/completions",
+                  data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),
+                  headers={"Content-Type":"application/json"},method="POST")
+              with urllib.request.urlopen(req,timeout=900) as resp:
+                  data=json.load(resp)
+              answer=data["choices"][0]["message"]["content"].strip()
+              first=answer.splitlines()[0].strip() if answer else ""
+              actual="ЕСТЕСТВЕНО" if first=="ПРИСЪДА: ЕСТЕСТВЕНО" else "КОРИГИРАЙ" if first=="ПРИСЪДА: КОРИГИРАЙ" else "НЕВАЛИДНО"
+              passed=actual==expected
+              results.append({"id":case_id,"fragment":fragment,"expected":expected,"actual":actual,"passed":passed,"answer":answer})
+              print(case_id,results[-1])
+          Path("/tmp/bg-gemma/qualification.json").write_text(
+              json.dumps(results,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          failed=[r["id"] for r in results if not r["passed"]]
+          if failed:
+              raise SystemExit("Bulgarian reviewer qualification failed: "+", ".join(failed))
+          PY
+
+      - name: Upload qualification evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: bulgarian-gemma4-reviewer-qualification
+          path: |
+            /tmp/bg-gemma/qualification.json
+            /tmp/bg-gemma/server.log
+          if-no-files-found: warn
+          retention-days: 30
