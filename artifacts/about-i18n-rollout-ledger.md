@@ -16,7 +16,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | af | af-ZA | ltr | partial | linguistic QA |
 | ar | ar | rtl | partial | linguistic QA |
 | az | az-AZ | ltr | partial | linguistic QA |
-| be | be-BY | ltr | partial | semantic QA |
+| be | be-BY | ltr | partial | linguistic QA |
 | bg | bg-BG | ltr | partial | semantic QA |
 | bn | bn-BD | ltr | partial | semantic QA |
 | bs | bs-BA | ltr | partial | semantic QA |
@@ -116,7 +116,7 @@ Status progression for target locales: `not started → draft → semantic QA �
 
 - `lb-LU`: locale-wide language finding: the existing locale is predominantly German rather than Luxembourgish (e.g. `Dag der Ausführung ändern`, `Ausgangspunkt der Berechnung`, `Schale`, `Tropfen`). Do not use it as a Luxembourgish terminology oracle.
 
-- `be-BY`: locale-wide language finding: the existing locale mixes Belarusian with Ukrainian forms (e.g. `Змінити дзень дії`, `котлеті`, `місяці`). It requires native Belarusian repair before serving as a terminology oracle.
+- `be-BY`: historical locale-wide language finding: the original locale mixed Belarusian with Ukrainian forms (e.g. `Змінити дзень дії`, `котлеті`, `місяці`). The locale was repaired before the final gate. Strict Gemma 3 12B whole-site run `36852565213` then passed after an 8/8 Belarusian qualification covering natural Belarusian and Russian/Ukrainian leakage controls; 567 grounded user-visible/accessibility-facing items produced zero confirmed findings. Evidence is stored under `artifacts/about-i18n-native-sessions/be/strict-36852565213/`. The locale is therefore at `linguistic QA`; rendered/visual and final integration gates remain separate.
 
 - `ht-HT`: locale-wide language finding: the existing locale is French rather than Haitian Creole (e.g. `Changer le jou de travail`, `Comment utiliser ce site`, `Goutte`, `Porte`). Do not use it as a Haitian Creole terminology oracle.
 

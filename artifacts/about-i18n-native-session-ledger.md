@@ -13,7 +13,7 @@ Allowed strict-session states: `pending` → `reviewed PASS` or `reviewed FAIL` 
 | af | af-ZA | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/af/strict-36707310645/` — strict Gemma 4 whole-site run `36707310645`; hidden qualification 8/8, 564 grounded text items, 0 findings after Dutch-leakage repairs |
 | ar | ar | rtl | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/ar/strict-36836953854/` — strict Gemma 4 whole-site run `36836953854`; hidden qualification 8/8, 583 grounded text items, 0 findings |
 | az | az-AZ | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/az/strict-36847382810/` — strict Gemma 3 12B whole-site run `36847382810`; hidden qualification 10/10, 567 grounded text items, 0 findings |
-| be | be-BY | ltr | linguistic QA | pending | — |
+| be | be-BY | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/be/strict-36852565213/` — strict Gemma 3 12B whole-site run `36852565213`; hidden qualification 8/8, 567 grounded text items, 0 findings |
 | bg | bg-BG | ltr | linguistic QA | pending | — |
 | bn | bn-BD | ltr | semantic QA | pending | — |
 | bs | bs-BA | ltr | semantic QA | pending | — |

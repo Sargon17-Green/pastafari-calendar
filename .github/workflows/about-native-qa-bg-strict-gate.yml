@@ -1,0 +1,382 @@
+name: Bulgarian strict native-language whole-site gate
+
+on:
+  push:
+    branches:
+      - feature/about-i18n-72-locales
+    paths:
+      - .github/workflows/about-native-qa-bg-strict-gate.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bulgarian-strict-native-\${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  strict-bg:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 1
+
+      - name: Install pinned llama.cpp runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/bg-strict/llama /tmp/bg-strict/evidence
+          curl -fL --retry 3 \
+            https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz \
+            -o /tmp/bg-strict/llama.tar.gz
+          echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/bg-strict/llama.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/bg-strict/llama.tar.gz -C /tmp/bg-strict/llama
+          git rev-parse HEAD > /tmp/bg-strict/evidence/reviewed-head.txt
+
+      - name: Extract grounded Bulgarian website corpus
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          from html.parser import HTMLParser
+          import json, re
+
+          items=[]
+
+          locale=Path("docs/i18n/locales/bg.js").read_text(encoding="utf-8")
+          for key, raw in re.findall(r'"([^"]+)"\s*:\s*("(?:\\.|[^"\\])*")', locale):
+              try:
+                  value=json.loads(raw)
+              except Exception:
+                  continue
+              if not isinstance(value,str) or not value.strip():
+                  continue
+              if key in {"code","dir","intlLocale"}:
+                  continue
+              items.append({"location":f"docs/i18n/locales/bg.js#{key}","text":value.strip()})
+
+          class Parser(HTMLParser):
+              wanted={"p","li","h1","h2","h3","h4","h5","h6","th","td","caption","blockquote"}
+              attrs_wanted={"aria-label","aria-description","title","alt"}
+              def __init__(self):
+                  super().__init__(convert_charrefs=True)
+                  self.sections=[]
+                  self.current=None
+                  self.attr_counter=0
+              def handle_starttag(self,tag,attrs):
+                  attrs=dict(attrs)
+                  if tag=="br" and self.current is not None:
+                      self.current["parts"].append(". ")
+                  if tag=="section":
+                      self.sections.append(attrs.get("id",""))
+                  section=next((x for x in reversed(self.sections) if x),"")
+                  ident=attrs.get("id") or section or tag
+                  for name in self.attrs_wanted:
+                      value=attrs.get(name)
+                      if value and value.strip():
+                          items.append({
+                              "location":f"docs/about/content/bg.html#{ident}@{name}-{self.attr_counter}",
+                              "text":value.strip()
+                          })
+                          self.attr_counter+=1
+                  if tag in self.wanted:
+                      self.current={"tag":tag,"id":attrs.get("id",""),"section":section,"parts":[]}
+              def handle_endtag(self,tag):
+                  if self.current is not None and self.current["tag"]==tag:
+                      text=re.sub(r"\s+"," ","".join(self.current["parts"])).strip()
+                      if text:
+                          ident=self.current["id"] or self.current["section"] or self.current["tag"]
+                          items.append({"location":f"docs/about/content/bg.html#{ident}","text":text})
+                      self.current=None
+                  if tag=="section" and self.sections:
+                      self.sections.pop()
+              def handle_data(self,data):
+                  if self.current is not None:
+                      self.current["parts"].append(data)
+
+          parser=Parser()
+          parser.feed(Path("docs/about/content/bg.html").read_text(encoding="utf-8"))
+
+          manifest=json.loads(Path("docs/manifest.webmanifest").read_text(encoding="utf-8"))
+          for field in ("name_localized","short_name_localized","description_localized"):
+              value=manifest.get(field,{}).get("bg",{}).get("value")
+              if isinstance(value,str) and value.strip():
+                  items.append({"location":f"docs/manifest.webmanifest#{field}.bg.value","text":value.strip()})
+
+          registry=Path("docs/i18n/registry.js").read_text(encoding="utf-8")
+          m=re.search(r'defineLocale\("bg",\s*"([^"]+)"',registry)
+          if m:
+              items.append({"location":"docs/i18n/registry.js#locale-bg-display-name","text":m.group(1)})
+
+          seen=set(); out=[]
+          for item in items:
+              pair=(item["location"],item["text"])
+              if pair in seen:
+                  continue
+              seen.add(pair)
+              item["id"]=f"BG{len(out):04d}"
+              out.append(item)
+
+          Path("/tmp/bg-strict/evidence/items.json").write_text(
+              json.dumps(out,ensure_ascii=False,indent=2)+"\n",encoding="utf-8"
+          )
+          compact=json.dumps(out,ensure_ascii=False,separators=(",",":"))
+          Path("/tmp/bg-strict/corpus.json").write_text(compact,encoding="utf-8")
+          print(f"items={len(out)} chars={len(compact)}")
+          if len(compact)>100000:
+              raise SystemExit("Bulgarian corpus unexpectedly exceeds one-shot review budget")
+          PY
+
+      - name: Start isolated Bulgarian Gemma 4 reviewer
+        shell: bash
+        run: |
+          set -euo pipefail
+          SERVER="$(find /tmp/bg-strict/llama -type f -name llama-server | head -n 1)"
+          test -x "$SERVER"
+          "$SERVER" \
+            -hf ggml-org/gemma-4-E4B-it-GGUF:Q4_0 \
+            --reasoning auto --chat-template-kwargs '{"enable_thinking":false}' \
+            -c 32768 -t 4 --host 127.0.0.1 --port 8080 \
+            > /tmp/bg-strict/evidence/server.log 2>&1 &
+          echo "$!" > /tmp/bg-strict/server.pid
+          for _ in $(seq 1 900); do
+            curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8080/health >/dev/null
+
+      - name: Batched hidden reviewer qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json, urllib.request
+
+          cases=[
+              {"id":"g1","text":"Изберете дата и опитайте отново.","expected":"ЕСТЕСТВЕНО"},
+              {"id":"g2","text":"Денят на действието е отправната точка на изчислението.","expected":"ЕСТЕСТВЕНО"},
+              {"id":"g3","text":"Предишно кюфте","expected":"ЕСТЕСТВЕНО"},
+              {"id":"g4","text":"Месеците могат да се преплитат през годината.","expected":"ЕСТЕСТВЕНО"},
+              {"id":"b1","text":"Изменить день действия.","expected":"КОРИГИРАЙ"},
+              {"id":"b2","text":"Денят в котлета.","expected":"КОРИГИРАЙ"},
+              {"id":"b3","text":"В тази година има няколко месяци.","expected":"КОРИГИРАЙ"},
+              {"id":"b4","text":"Как пользоваться этим сайтом?","expected":"КОРИГИРАЙ"}
+          ]
+          ids=[c["id"] for c in cases]
+          prompt=(
+              "Ти си строг редактор на съвременен книжовен български език на ниво носител. Оцени всеки от осемте фрагмента отделно. "
+              "Проверявай естествеността, граматиката, съгласуването, синтаксиса, идиоматичността и дали текстът не е руски, "
+              "украински или смесен с друг език. В този проект „ден на действието“, „запитван ден“, „кюфте“, "
+              "„преплетени месеци“ и изразът „месеците могат да се преплитат“ са умишлени канонични доменни термини/формулировки; "
+              "не ги отхвърляй само защото са необичайни. Върни само JSON. За всеки id verdict може да бъде само "
+              "ЕСТЕСТВЕНО или КОРИГИРАЙ.\n\n"
+              + json.dumps(cases,ensure_ascii=False)
+          )
+          schema={
+              "type":"object",
+              "properties":{
+                  "decisions":{
+                      "type":"array","minItems":8,"maxItems":8,
+                      "items":{
+                          "type":"object",
+                          "properties":{
+                              "id":{"type":"string","enum":ids},
+                              "verdict":{"type":"string","enum":["ЕСТЕСТВЕНО","КОРИГИРАЙ"]}
+                          },
+                          "required":["id","verdict"],"additionalProperties":False
+                      }
+                  }
+              },
+              "required":["decisions"],"additionalProperties":False
+          }
+          payload={
+              "messages":[{"role":"user","content":prompt}],
+              "temperature":0.0,"max_tokens":420,"reasoning_effort":"none",
+              "chat_template_kwargs":{"enable_thinking":False},"stream":False,
+              "response_format":{"type":"json_schema","json_schema":{"name":"bg_qualification","strict":True,"schema":schema}}
+          }
+          req=urllib.request.Request(
+              "http://127.0.0.1:8080/v1/chat/completions",
+              data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),
+              headers={"Content-Type":"application/json"},method="POST")
+          with urllib.request.urlopen(req,timeout=2400) as resp:
+              data=json.load(resp)
+          raw=data["choices"][0]["message"]["content"].strip()
+          ev=Path("/tmp/bg-strict/evidence")
+          ev.joinpath("qualification-raw.json").write_text(raw+"\n",encoding="utf-8")
+          parsed=json.loads(raw)
+          decisions=parsed.get("decisions",[])
+          if len(decisions)!=8 or len({d.get("id") for d in decisions})!=8:
+              raise SystemExit("Bulgarian qualification returned incomplete/duplicate decisions")
+          actual={d["id"]:d["verdict"] for d in decisions}
+          results=[]; failed=[]
+          for c in cases:
+              passed=actual.get(c["id"])==c["expected"]
+              results.append({**c,"actual":actual.get(c["id"]),"passed":passed})
+              if not passed:
+                  failed.append(c["id"])
+          ev.joinpath("qualification.json").write_text(
+              json.dumps(results,ensure_ascii=False,indent=2)+"\n",encoding="utf-8"
+          )
+          print(json.dumps(results,ensure_ascii=False,indent=2))
+          if failed:
+              raise SystemExit("Bulgarian reviewer qualification failed: "+", ".join(failed))
+          PY
+
+      - name: Strict whole-site Bulgarian review
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json, urllib.request
+
+          ev=Path("/tmp/bg-strict/evidence")
+          items=json.loads(ev.joinpath("items.json").read_text(encoding="utf-8"))
+          by_location={}
+          for item in items:
+              by_location.setdefault(item["location"],[]).append(item["text"])
+
+          prompt=(
+              "Ти си независим и строг редактор на български език на ниво носител за българската версия на Пастафарианския календар. "
+              "Провери целия предоставен видим и accessibility-facing корпус като единна whole-site езикова система. "
+              "Търси активно руски, украински или английски течове, калки, неестествен български, граматични, синтактични, "
+              "съгласувателни, правописни, пунктуационни и терминологични грешки. Проверявай също metadata, manifest и accessibility текста. "
+              "В проекта „ден на действието“, „запитван ден“, „кюфте“, „преплетени месеци“, както и формулировката "
+              "„месеците могат да се преплитат“ са умишлени канонични доменни термини/конструкции. Не ги отхвърляй само заради необичайността им. "
+              "Формули, API/endpoint имена, code literals, hashes, HTTP, CLI, OpenAPI, SIMD, SLA, all-day и истински собствени имена "
+              "могат да останат технически текст. За всеки finding location трябва да бъде един от предоставените location, а current_text — "
+              "точен последователен substring от текста в този location. Не представяй код или инструкции към рецензента като текст на сайта. "
+              "Correction не може да бъде идентична с current_text. Докладвай само реални проблеми, които изискват поправка. "
+              "Ако няма проблеми, върни CLEAN и празен findings. Върни само JSON по schema.\n\n"
+              "WEBSITE_TEXT_ITEMS_JSON:\n"
+              + Path("/tmp/bg-strict/corpus.json").read_text(encoding="utf-8")
+          )
+          schema={
+              "type":"object",
+              "properties":{
+                  "result":{"type":"string","enum":["CLEAN","FINDINGS"]},
+                  "findings":{
+                      "type":"array","maxItems":14,
+                      "items":{
+                          "type":"object",
+                          "properties":{
+                              "severity":{"type":"string","enum":["critical","high","medium","low"]},
+                              "location":{"type":"string"},
+                              "current_text":{"type":"string","minLength":1,"maxLength":280},
+                              "issue":{"type":"string","minLength":15,"maxLength":420},
+                              "correction":{"type":"string","minLength":2,"maxLength":420}
+                          },
+                          "required":["severity","location","current_text","issue","correction"],
+                          "additionalProperties":False
+                      }
+                  }
+              },
+              "required":["result","findings"],"additionalProperties":False
+          }
+          payload={
+              "messages":[{"role":"user","content":prompt}],
+              "temperature":0.05,"top_p":0.85,"max_tokens":1900,"reasoning_effort":"none",
+              "chat_template_kwargs":{"enable_thinking":False},"stream":False,
+              "response_format":{"type":"json_schema","json_schema":{"name":"bg_whole_site_review","strict":True,"schema":schema}}
+          }
+
+          last_error=""
+          accepted=None
+          for attempt in (1,2):
+              msg=prompt if attempt==1 else prompt+"\n\nМЕХАНИЧЕН_ПОВТОРЕН_ОПИТ=TRUE\nПРИЧИНА="+last_error+"\nВЪРНИ_ПЪЛЕН_JSON=TRUE"
+              payload["messages"]=[{"role":"user","content":msg}]
+              req=urllib.request.Request(
+                  "http://127.0.0.1:8080/v1/chat/completions",
+                  data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),
+                  headers={"Content-Type":"application/json"},method="POST")
+              with urllib.request.urlopen(req,timeout=3600) as resp:
+                  data=json.load(resp)
+              raw=data["choices"][0]["message"]["content"].strip()
+              ev.joinpath(f"raw-review-attempt-{attempt}.json").write_text(raw+"\n",encoding="utf-8")
+              try:
+                  parsed=json.loads(raw)
+              except Exception:
+                  last_error="НЕВАЛИДЕН_JSON"; continue
+              result=parsed.get("result"); findings=parsed.get("findings")
+              if result not in {"CLEAN","FINDINGS"} or not isinstance(findings,list):
+                  last_error="НЕВАЛИДНА_СТРУКТУРА"; continue
+              if result=="CLEAN" and findings:
+                  last_error="CLEAN_С_FINDINGS"; continue
+              if result=="FINDINGS" and not findings:
+                  last_error="FINDINGS_ПРАЗЕН"; continue
+
+              seen=set(); good=True
+              for f in findings:
+                  loc=str(f.get("location","")).strip()
+                  cur=str(f.get("current_text","")).strip()
+                  corr=str(f.get("correction","")).strip()
+                  pair=(loc,cur)
+                  if loc not in by_location:
+                      last_error="НЕПОЗНАТ_LOCATION"; good=False; break
+                  if not cur or not any(cur in text for text in by_location[loc]):
+                      last_error="CURRENT_TEXT_НЕ_Е_В_LOCATION"; good=False; break
+                  if cur==corr:
+                      last_error="NO_OP_CORRECTION"; good=False; break
+                  if pair in seen:
+                      last_error="ДУБЛИКАТ"; good=False; break
+                  seen.add(pair)
+              if not good:
+                  continue
+              accepted=parsed
+              break
+
+          if accepted is None:
+              raise SystemExit("Bulgarian whole-site review invalid after retries: "+last_error)
+
+          final_result="PASS" if accepted["result"]=="CLEAN" else "FAIL"
+          final={
+              "result":final_result,
+              "reviewed_head":ev.joinpath("reviewed-head.txt").read_text().strip(),
+              "findings":accepted["findings"]
+          }
+          ev.joinpath("final.json").write_text(
+              json.dumps(final,ensure_ascii=False,indent=2)+"\n",encoding="utf-8"
+          )
+          lines=[f"NATIVE_QA_RESULT: {final_result}",""]
+          if final_result=="PASS":
+              lines+=["Строгата българска whole-site езикова проверка не откри потвърдени проблеми, които изискват поправка.",""]
+          else:
+              lines+=["Строгата българска whole-site езикова проверка откри потвърдени проблеми, които изискват поправка.",""]
+              for i,f in enumerate(accepted["findings"],1):
+                  lines += [
+                      f"### {i}. {f['severity']}","",f["location"],"",
+                      f"> {f['current_text']}","",f["issue"],"",
+                      "Препоръчана поправка: "+f["correction"],""
+                  ]
+          ev.joinpath("review.md").write_text("\n".join(lines).rstrip()+"\n",encoding="utf-8")
+          print(final_result)
+          PY
+
+      - name: Verify verdict
+        shell: bash
+        run: |
+          set -euo pipefail
+          head -n 1 /tmp/bg-strict/evidence/review.md | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)$'
+
+      - name: Stop reviewer
+        if: always()
+        shell: bash
+        run: |
+          if [ -f /tmp/bg-strict/server.pid ]; then
+            kill "$(cat /tmp/bg-strict/server.pid)" 2>/dev/null || true
+          fi
+
+      - name: Upload strict Bulgarian evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: bulgarian-strict-native-whole-site
+          path: /tmp/bg-strict/evidence/
+          if-no-files-found: warn
+          retention-days: 90
