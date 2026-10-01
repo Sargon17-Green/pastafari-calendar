@@ -24,7 +24,7 @@ export default Object.freeze({
     "about.back": "Təqvimə qayıt",
     "about.tocKicker": "Bu səhifədə",
     "about.toc": "Mündəricat",
-    "about.fallbackNotice": "İzah hələ seçilmiş dildə mövcud deyil, ona görə default versiya göstərilir.",
+    "about.fallbackNotice": "İzah hələ seçilmiş dildə mövcud deyil, ona görə standart versiya göstərilir.",
     "about.loadError": "Təqvim izahını yükləmək mümkün olmadı.",
     "language.label": "Dil",
     "day.staleWarning": "Cari gün {previousDate} tarixindən {currentDate} tarixinə dəyişdi. Əməl günü cari gün olduğuna görə göstərilən tarixlər artıq aktual deyil. Bu bildirişi bağladıqdan sonra onlar yenidən hesablanacaq.",
