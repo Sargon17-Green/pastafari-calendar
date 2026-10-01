@@ -1,0 +1,107 @@
+name: Bengali Gemma4 reviewer qualification
+
+on:
+  push:
+    branches:
+      - feature/about-i18n-72-locales
+    paths:
+      - .github/workflows/about-native-qa-bn-gemma4-smoke.yml
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - name: Install pinned llama.cpp runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/bn-gemma/llama
+          curl -fL --retry 3 \
+            https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz \
+            -o /tmp/bn-gemma/llama.tar.gz
+          echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/bn-gemma/llama.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/bn-gemma/llama.tar.gz -C /tmp/bn-gemma/llama
+
+      - name: Qualify Bengali reviewer on hidden controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          SERVER="$(find /tmp/bn-gemma/llama -type f -name llama-server | head -n 1)"
+          test -x "$SERVER"
+          "$SERVER" \
+            -hf ggml-org/gemma-4-E4B-it-GGUF:Q4_0 \
+            --reasoning auto --chat-template-kwargs '{"enable_thinking":false}' \
+            -c 4096 -t 4 --host 127.0.0.1 --port 8080 \
+            > /tmp/bn-gemma/server.log 2>&1 &
+          PID=$!
+          trap 'kill "$PID" 2>/dev/null || true' EXIT
+          for _ in $(seq 1 600); do
+            curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8080/health >/dev/null
+
+          python - <<'PY'
+          from pathlib import Path
+          import json, urllib.request
+
+          cases = [
+              ("g1", "তারিখ যাচাই করে আবার চেষ্টা করুন।", "স্বাভাবিক"),
+              ("g2", "কর্মদিবস হিসাবের সূচনাবিন্দু।", "স্বাভাবিক"),
+              ("g3", "আগের কাটলেট", "স্বাভাবিক"),
+              ("g4", "মাসগুলো বছরজুড়ে পরস্পর বোনা থাকতে পারে।", "স্বাভাবিক"),
+              ("b1", "तारीख चुनें और फिर कोशिश करें।", "সংশোধন"),
+              ("b2", "Click here করে চালিয়ে যান।", "সংশোধন"),
+              ("b3", "এই তারিখটি বৈধ নয় আছে।", "সংশোধন"),
+              ("b4", "কর্মদিবস হিসাবের точка отсчёта।", "সংশোধন"),
+          ]
+          prompt=(
+              "আপনি আধুনিক প্রমিত বাংলা ভাষার একজন কঠোর, মাতৃভাষী-স্তরের সম্পাদক। প্রতিটি খণ্ড আলাদাভাবে মূল্যায়ন করুন। "
+              "স্বাভাবিকতা, ব্যাকরণ, বাক্যগঠন, শব্দচয়ন, বানান এবং অনিচ্ছাকৃত হিন্দি, ইংরেজি, রুশ বা অন্য ভাষার মিশ্রণ পরীক্ষা করুন। "
+              "এই প্রকল্পে ‘কর্মদিবস’, ‘জিজ্ঞাসিত দিন’, ‘কাটলেট’ এবং ‘পরস্পর-বোনা মাস’ ইচ্ছাকৃত ক্যানোনিক্যাল ডোমেইন পরিভাষা; "
+              "শুধু অস্বাভাবিক শোনার কারণে এগুলো প্রত্যাখ্যান করবেন না। প্রথম লাইনটি অবশ্যই হুবহু "
+              "‘রায়: স্বাভাবিক’ অথবা ‘রায়: সংশোধন’ হবে। দ্বিতীয় লাইনে বাংলায় সংক্ষিপ্ত কারণ দিন।"
+          )
+          results=[]
+          for case_id,fragment,expected in cases:
+              payload={
+                  "messages":[{"role":"user","content":prompt+"\n\nখণ্ড: "+json.dumps(fragment,ensure_ascii=False)}],
+                  "temperature":0.0,"max_tokens":120,"reasoning_effort":"none",
+                  "chat_template_kwargs":{"enable_thinking":False},"stream":False,
+              }
+              req=urllib.request.Request(
+                  "http://127.0.0.1:8080/v1/chat/completions",
+                  data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),
+                  headers={"Content-Type":"application/json"},method="POST")
+              with urllib.request.urlopen(req,timeout=900) as resp:
+                  data=json.load(resp)
+              answer=data["choices"][0]["message"]["content"].strip()
+              first=answer.splitlines()[0].strip() if answer else ""
+              actual="স্বাভাবিক" if first=="রায়: স্বাভাবিক" else "সংশোধন" if first=="রায়: সংশোধন" else "অবৈধ"
+              passed=actual==expected
+              results.append({"id":case_id,"fragment":fragment,"expected":expected,"actual":actual,"passed":passed,"answer":answer})
+              print(case_id,results[-1])
+          Path("/tmp/bn-gemma/qualification.json").write_text(
+              json.dumps(results,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          failed=[r["id"] for r in results if not r["passed"]]
+          if failed:
+              raise SystemExit("Bengali reviewer qualification failed: "+", ".join(failed))
+          PY
+
+      - name: Upload qualification evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: bengali-gemma4-reviewer-qualification
+          path: |
+            /tmp/bn-gemma/qualification.json
+            /tmp/bn-gemma/server.log
+          if-no-files-found: warn
+          retention-days: 30
