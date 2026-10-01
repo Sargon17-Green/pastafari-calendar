@@ -128,11 +128,11 @@
   <h2>Hvussu verður kalendarin roknaður?</h2>
   <p>Innara útrokningin eitur <strong>sósin</strong>. Í miðjuni stendur frumtalið</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
-  <p>Tilgongdin fevnir um fimm input counter, 7 fjaldar dropar, 46 sjónligar dropar, 6 skálir, skiftandi skálaraðfylgjur, 12 endaligar blandingar, seal fyri ymisk svar, combinatorial selection, bygging av portum, val av árum, býti av kotelettum, val av nøvnum, bygging av mánaðum og flætting av mánaðardøgum.</p>
-  <p>Endaligu update eru <strong>samstundis</strong>: í hvørjari blanding verða øll seks nýggj virðini roknað út frá sama gamla state, og fyrst síðani verða allar seks skálirnar skiftar í einum.</p>
+  <p>Tilgongdin fevnir um fimm inntaksteljarar, 7 fjaldar dropar, 46 sjónligar dropar, 6 skálir, skiftandi skálaraðfylgjur, 12 endaligar blandingar, innsigli fyri ymisk svar, kombinatoriskt val, bygging av portum, val av árum, býti av kotelettum, val av nøvnum, bygging av mánaðum og flætting av mánaðardøgum.</p>
+  <p>Endaligu dagføringarnar eru <strong>samstundis</strong>: í hvørjari blanding verða øll seks nýggj virðini roknað út frá somu gomlu støðu, og fyrst síðani verða allar seks skálirnar skiftar í einum.</p>
   <p>Í teimum 12 endaligu blandingunum er ein serliga týdningarmikil canonical smálutur. Um <code>S</code> er summurin av teimum seks gomlu skálunum, og <code>r</code> er blandingarnummarið, roknar skipanin</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
-  <p><code>R</code> er <strong>goymdi summurin</strong>. Bæði valið av skálaraðfylgjuni og innara update í blandingini brúka <code>R</code>, ikki ráa summan <code>S</code>.</p>
+  <p><code>R</code> er <strong>goymdi summurin</strong>. Bæði valið av skálaraðfylgjuni og innara dagføringin í blandingini brúka <code>R</code>, ikki ráa summan <code>S</code>.</p>
   <p>Eldri útgávur, sum lótu ráa summan inn í hetta update, lýsa ikki longur núverandi kanonisku merkingina. Dømi, sum eru fingin úr gomlu regluni, eiga at verða mett sum gomul, til tey eru sannroynd av nýggjum.</p>
   <p>Eftir blandingarnar heldur answer ring eisini fram við raðfylgjuni, sum varð lock við sjónliga dropa 46; hon skal ikki sjálvvirkandi skiftast út við raðfylgjuna í síðstu blanding.</p><hr>
 </section>
@@ -147,7 +147,7 @@
 
 <section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
   <h2>Bygnaðar-atlas</h2>
-  <p>Higartil hava vit tosað um reglurnar í kalendaranum. Tølini niðanfyri eru ein annar slag av upplýsing: <strong>empirisk úrslit</strong> úr einari stórari computational sample.</p>
+  <p>Higartil hava vit tosað um reglurnar í kalendaranum. Tølini niðanfyri eru ein annar slag av upplýsing: <strong>empirisk úrslit</strong> úr einum stórum útrokningarúrtaki.</p>
   <p>Atlasin varð bygdur við motorrevisjónini <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> og fevndi um 4,096 gerðardagar; fyri hvønn teirra árini 4990–5010; 86,016 ársskipanir; 625,437 kotelettir; 3,535,422 bygnaðarligar mánaðir; meira enn 356 milliónir samanhangandi mánaðarsegment; og meira enn 364 milliónir skifti frá degi <code>n</code> til dag <code>n+1</code> í sama mánaði.</p>
   <p>Hesi tøl lýsa tann corpus, ikki kanoniskar reglur.</p>
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Mátaðar upplýsingar úr bygnaðar-atlasinum">
@@ -172,15 +172,15 @@
         <tr><td>Partur av eindags mánaðarsektorum</td><td>97.482%</td></tr>
         <tr><td>Partur av grannadøgum, sum vóru í sama mánaði</td><td>2.9976%</td></tr>
         <tr><td>Miðal talið av døgum úr øðrum mánaðum millum <code>n</code> og <code>n+1</code> í sama mánaði</td><td>40.408</td></tr>
-        <tr><td>Miðal span frá fyrstu til seinastu framkomu hjá mánaðinum</td><td>4,266.653 dagar</td></tr>
+        <tr><td>Miðal frástøða frá fyrstu til seinastu framkomu hjá mánaðinum</td><td>4,266.653 dagar</td></tr>
       </tbody>
     </table>
   </div>
   <p>Í praksis kann ein mánaður við umleið hundrað døgum vera spjaddur yvir næstan alt eitt Pastafari-ár.</p>
-  <p>Sami atlas vísti eisini ein natúrligan bias í longd kring ár 5000. Í úrtakinum var eitt “vanligt” ár í miðal umleið 4,262 dagar. Tá ár verða weight eftir talinum av døgum í teimum, hækkar miðaltalið til umleið 4,466 dagar; ár 5000 sjálvt var í miðal umleið 4,499 dagar.</p>
+  <p>Sami atlas vísti eisini ein natúrligan skeivleika í longd kring ár 5000. Í úrtakinum var eitt “vanligt” ár í miðal umleið 4,262 dagar. Tá ár verða vektað eftir talinum av døgum í teimum, hækkar miðaltalið til umleið 4,466 dagar; ár 5000 sjálvt var í miðal umleið 4,499 dagar.</p>
   <p>Orsøkin er einføld: ár 5000 skal innihalda gerðardagin. Eitt longri ár hevur fleiri dagar, har tað kann vera árið, sum inniheldur gerðardagin.</p>
-  <p>Sambandið millum navn á eind og longd var eisini sera veikt í úrtakinum. Hetta prógvar ikki fulla mathematical independence, men atlasin gevur einki praktiskt signal um, at nøvnini eru gjørd til at encode longd.</p>
-  <p>Harumframt eru 86,016 ársskipanir ikki 86,016 fullkomiliga independent sample: millum byrjunar- og endaportun eru bert 24,786 ymisk interval. Gerðardagar, sum liggja tætt, kunnu velja sama ársbil og kortini skapa ymisk innaru structure.</p>
+  <p>Sambandið millum navn á eind og longd var eisini sera veikt í úrtakinum. Hetta prógvar ikki fullkomið støddfrøðiligt óheftni, men atlasin gevur onga praktiska ábending um, at nøvnini eru gjørd til at koda longd.</p>
+  <p>Harumframt eru 86,016 ársskipanir ikki 86,016 fullkomiliga óheft úrtøk: millum byrjunar- og endaportun eru bert 24,786 ymisk bil. Gerðardagar, sum liggja tætt, kunnu velja sama ársbil og kortini skapa ymiskan innara bygnað.</p>
   <p>Atlasin lýsir tí væl mátaða atburðin hjá íverksetingini, men hann skal ikki gerast til eina sannlíkindasetning um allar møguligar kalendarbygnaðir.</p><hr>
 </section>
 
@@ -214,7 +214,7 @@
   <h2>Ferðing og hendingar, sum vara allan dagin</h2>
   <p>Ein hending og staðbundna merkið, sum verður víst fyri hana, eru ikki tað sama. Ein hending við føstum klokkusletti eigur at vera knýtt at einari fastari kronologiskari løtu. Ferðing flytur hana ikki í tíð, men staðbundna Pastafari-dagfestingin fyri sama fysiska løta kann broytast, tí skilmarkingin av “staðbundnum degi” er treytað av staði.</p>
   <p>Við einari <strong>hending, sum varir allan dagin (<bdi dir="ltr">all-day</bdi>)</strong> er munurin enn størri. Ein borgarlig hending, sum varir allan dagin, gongur vanliga frá einari borgarligari miðnátt til ta næstu; ein Pastafari-hending, sum varir allan dagin, eigur at vara frá staðbundna Pastafari-dagamarkinum til næsta staðbundna dagamark. Vanliga eru hetta ikki somu tíðspunkt.</p>
-  <p>Tí kann ein blind export av einari Pastafari-hending sum borgarlig hending, ið varir allan dagin, broyta merkingina. Fyri at varðveita hana rætt má goymast chronological anchor og hóskandi location/day-boundary context, ikki bara <code>all-day</code> flag.</p><hr>
+  <p>Tí kann ein blindur útflutningur av einari Pastafari-hending sum borgarlig hending, ið varir allan dagin, broyta merkingina. Fyri at varðveita hana rætt má goymast eitt fast kronologiskt festipunkt og hóskandi stað-/dagamarks-samhengi, ikki bara <code>all-day</code>-merki.</p><hr>
 </section>
 
 <section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
@@ -227,7 +227,7 @@
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
   <h2>Prentaður kalendari og útrokning við hond</h2>
   <p>Pastafari-kalendarin kann prentast; ein skal bara siga, fyri hvønn gerðardag hann er roknaður. Ein slíkur kalendari vísir tíðarskipanina frá sjónarhorninum hjá tí degnum; um gerðardagurin broytist, kann ein nýggjur kalendari vera neyðugur. Prentarin hevur sostatt framvegis arbeiði.</p>
-  <p>Av tí at forskriftin er fullfíggjað og deterministisk, kann alt eisini roknast við hond: rokna input counter, koyr 7 fjaldar og 46 sjónligar dropar, update seks skálir, ger 12 endaligu blandingarnar, ger svarini, bygg portrini, vel ár og kotelettir, ger combinatorial selection, vel nøvnini og flætta síðani mánaðirnar.</p>
+  <p>Av tí at forskriftin er fullfíggjað og deterministisk, kann alt eisini roknast við hond: rokna inntaksteljararnar, koyr 7 fjaldar og 46 sjónligar dropar, dagfør seks skálir, ger 12 endaligu blandingarnar, ger svarini, bygg portrini, vel ár og kotelettir, ger kombinatoriskt val, vel nøvnini og flætta síðani mánaðirnar.</p>
   <p>Afturfyri nýtist eingin at minnast, nær februar hevur 28 dagar og nær 29.</p><hr>
 </section>
 
@@ -249,14 +249,14 @@
 
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>Festipunkt</h3>
-    <p>Skipanin hevur ein fastan reference day, sum eitur <strong>Stovningardagurin</strong>. Í proleptiska gregorianska kalendaranum er hann <strong>22. desember 41,222 f.Kr.</strong>.</p>
-    <p>Stovningardagurin er ikki “byrjanin á tíðini”; hann er ein computational anchor.</p>
-    <p>Dagatalingin rundan um hann brúkar positiv ómakatal/makatal: Stovningardagurin=1; seinni dagar=3, 5, …; móti fortíðini er undanfarni dagur=2, síðani 4, 6, … . Soleiðis verða báðar síður av anchor encode í hesum counter uttan negativ day number.</p>
-    <p>Seinni anchor er <strong>Talvudagurin</strong>: <strong>15. juni 763 f.Kr. í proleptiska julianska kalendaranum</strong>, t.e. <strong>7. juni 763 f.Kr. í proleptiska gregorianska kalendaranum</strong>.</p>
+    <p>Skipanin hevur ein fastan tilvísingardag, sum eitur <strong>Stovningardagurin</strong>. Í proleptiska gregorianska kalendaranum er hann <strong>22. desember 41,222 f.Kr.</strong>.</p>
+    <p>Stovningardagurin er ikki “byrjanin á tíðini”; hann er eitt útrokningarligt festipunkt.</p>
+    <p>Dagatalingin rundan um hann brúkar positiv ómakatal/makatal: Stovningardagurin=1; seinni dagar=3, 5, …; móti fortíðini er undanfarni dagur=2, síðani 4, 6, … . Soleiðis verða báðar síður av festipunktinum kodaðar í hesum teljara uttan negativt dagatal.</p>
+    <p>Seinna festipunktið er <strong>Talvudagurin</strong>: <strong>15. juni 763 f.Kr. í proleptiska julianska kalendaranum</strong>, t.e. <strong>7. juni 763 f.Kr. í proleptiska gregorianska kalendaranum</strong>.</p>
     <p>Neyva frástøðan frá Stovningardegnum til Talvudagin er</p>
     <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
     <p>dagar.</p>
-    <p>Hetta eru føst anchor á tíðarlínuni, men Pastafari-dagfestingin, sum verður víst fyri tey, veldst framvegis um gerðardagin, haðani spurt verður.</p>
+    <p>Hetta eru føst festipunkt á tíðarlínuni, men Pastafari-dagfestingin, sum verður víst fyri tey, veldst framvegis um gerðardagin, haðani spurt verður.</p>
   </section>
 
   <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
@@ -314,7 +314,7 @@
   <h2>Fyri framkomnar brúkarar: hvussu nógv søgu varðveitir sósin?</h2>
   <p>Sósin sær út sum ein sera aggressivur blandingarháttur, men algebraisk gransking vísir, at hon varðveitir munandi meira upplýsing enn útsjóndin bendir á. Hetta er eitt granskingarúrslit leitt út úr forskriftini, ikki ein nýggj kalenderregla.</p>
   <p>Í sjónligu stigunum 3–46, á viðkomandi asymptotiska grein, er injektivitetur í almenna førinum staðfest: í vanliga førinum goymir støðan nóg mikið av upplýsing til at endurskapa viðkomandi inntakssøguna og skálaraðfylgjuna.</p>
-  <p>Upplýsing hvørvur heldur ikki beinanvegin í teimum 12 endaligu blandingunum. Fyri fyrstu fimm blandingarnar eftir sjónliga dropa 46 er vendiligheit í almenna førinum prógvað á viðkomandi kanoniska økinum uttan eyka upplýsingar; fyri restina eru strong konstruktiv ovara mørk kend fyri, hvussu nógv eyka upplýsing er nóg mikið til endurskapan.</p>
+  <p>Upplýsing hvørvur heldur ikki beinanvegin í teimum 12 endaligu blandingunum. Fyri fyrstu fimm blandingarnar eftir sjónliga dropa 46 er vendiligheit í almenna førinum prógvað á viðkomandi kanoniska økinum uttan eyka upplýsingar; fyri restina eru sterk konstruktiv ovara mørk kend fyri, hvussu nógv eyka upplýsing er nóg mikið til endurskapan.</p>
   <p>Spurningurin, um <strong>bara tær seks endaligu skálirnar</strong> altíð eru nóg mikið í vanliga førinum, er framvegis opin.</p>
   <p>Nøkur úrslit vórðu prógvað symboliskt, onnur vórðu váttað við endaligum, nágreiniligum aritmetiskum kanningum. Symbolisk styrking minkaði nógv um útrokningarkjarnan, sum ein má líta á, men tók hann ikki heilt burtur.</p>
   <p>Rúm, sum fyrst sóu út til at krevja leiting ígjøgnum eitt øgiligt tal av leiðum, vórðu minkað niður í nógv smærri endaligar bygnaðir, m.a. automatar við 180 og 9 støðum og symmetri hjá teimum seks skálunum.</p>

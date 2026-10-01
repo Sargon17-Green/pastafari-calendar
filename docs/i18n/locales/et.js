@@ -152,7 +152,7 @@ export default Object.freeze({
     "guide.intro": "Sait näitab täielikku Pastafari kuupäeva mis tahes päevale, võtab otsingus vastu mitme kalendri kuupäevi ning võimaldab töölauavaates võrrelda toimingupäeva mõju.",
     "guide.1.heading": "Ava sait ja vaata tänast päeva",
     "guide.1.body": "Rekisteröitymistä tai kirjautumista ei ole, eikä kuupäevä lähetetä palvelimelle. Suuri otsikko ja ruudun merkki tekevät tästä päevstä selvästi tunnistettavan.",
-    "guide.2.heading": "Hae mistä tahansa käytettävissä olevasta kalendersta",
+    "guide.2.heading": "Otsi mis tahes saadaolevast kalendrist",
     "guide.2.body": "Jaotises „Millist päeva soovid leida?” vali kalender, täida väljad ja vali „Näita kuupäeva”. Valikute hulgas on Gregoriuse, heebrea, Juliuse, islami, pärsia, Hiina, hindu, Saka, Tai, Etioopia, kopti, Jaapani, Minguo, Bahá’í ja maiade pikk loendus.",
     "guide.3.heading": "Lue kuupäev",
     "guide.3.body": "Igal kaardil on kolm püsirida: aasta maailma loomisest; päeva number kotletis ja kotleti nimi; seejärel päev kuus ja kuu nimi. Ükski üksik number ei esinda kogu kuupäeva. Kuu nimi määrab kaardi värvi.",

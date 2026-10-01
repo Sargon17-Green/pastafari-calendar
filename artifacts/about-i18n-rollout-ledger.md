@@ -24,12 +24,12 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | cs | cs-CZ | ltr | partial | linguistic QA |
 | da | da-DK | ltr | partial | linguistic QA |
 | de | de-DE | ltr | partial | linguistic QA |
-| el | el-GR | ltr | partial | semantic QA |
+| el | el-GR | ltr | partial | linguistic QA |
 | eo | eo | ltr | partial | semantic QA |
 | es | es-ES | ltr | partial | semantic QA |
 | et | et-EE | ltr | partial | semantic QA |
-| fa | fa-IR | rtl | partial | semantic QA |
-| fi | fi-FI | ltr | partial | semantic QA |
+| fa | fa-IR | rtl | partial | linguistic QA |
+| fi | fi-FI | ltr | partial | linguistic QA |
 | fil | fil-PH | ltr | partial | semantic QA |
 | fo | fo-FO | ltr | partial | semantic QA |
 | fr | fr-FR | ltr | partial | semantic QA |
@@ -116,6 +116,9 @@ Status progression for target locales: `not started → draft → semantic QA �
 - `cs-CZ`: before strict review, six obvious ordinary-English fragments in the Czech article were repaired. The first Czech strict workflow instance was superseded because its registry extractor still matched `bs` rather than `cs`; the corrected strict Gemma 4 run `36886900641` then passed after an 8/8 Czech qualification. The corrected corpus contained 568 grounded user-visible/accessibility-facing items and produced zero findings. A manual post-run scan found no remaining ordinary English, Slovak, Polish, or Cyrillic-language leakage. Evidence is stored under `artifacts/about-i18n-native-sessions/cs/strict-36886900641/`. The locale is therefore at `linguistic QA`; rendered/visual and final integration gates remain separate.
 - `da-DK`: before strict review, three ordinary-English or mixed technical phrases in the Danish article were repaired. Strict Gemma 4 run `36891008084` passed after an 8/8 Danish qualification; 562 grounded user-visible/accessibility-facing items produced zero findings. Manual post-run scanning found no remaining ordinary English, Norwegian, Swedish, German, or Cyrillic-language leakage. Evidence is stored under `artifacts/about-i18n-native-sessions/da/strict-36891008084/`. The locale is therefore at `linguistic QA`; rendered/visual and final integration gates remain separate.
 - `de-DE`: before strict review, six clear language issues in the German article were repaired. Strict Gemma 4 run `36896960363` passed after an 8/8 German qualification; 569 grounded user-visible/accessibility-facing items produced zero findings. Manual post-run scanning found no remaining ordinary English, Dutch, Danish, or Cyrillic-language leakage. Evidence is stored under `artifacts/about-i18n-native-sessions/de/strict-36896960363/`. The locale is therefore at `linguistic QA`; rendered/visual and final integration gates remain separate.
+- `el-GR`: strict Gemma 4 whole-site run `36900599800` passed after an 8/8 Greek qualification; 569 grounded items produced zero findings. Manual post-run scanning found no remaining ordinary foreign-language leakage, and post-review drift did not touch Greek website sources. Evidence: `artifacts/about-i18n-native-sessions/el/strict-36900599800/`. The locale is at `linguistic QA`; rendered/visual and final integration remain separate.
+- `fa-IR`: strict Gemma 4 whole-site run `36901794288` passed after an 8/8 Persian qualification; 569 grounded items produced zero findings. Manual post-run scanning found no remaining ordinary English/Turkish/Russian leakage, and post-review drift did not touch Persian website sources. Evidence: `artifacts/about-i18n-native-sessions/fa/strict-36901794288/`. The locale is at `linguistic QA`; rendered/visual and final integration remain separate.
+- `fi-FI`: strict Gemma 4 whole-site run `36901793882` passed after an 8/8 Finnish qualification; 568 grounded items produced zero findings. Manual post-run scanning found no remaining ordinary Estonian/Swedish/English/Russian leakage, and post-review drift did not touch Finnish website sources. Evidence: `artifacts/about-i18n-native-sessions/fi/strict-36901793882/`. The locale is at `linguistic QA`; rendered/visual and final integration remain separate.
 - `sl-SI`: locale-wide language finding: prominent UI copy is Croatian/Bosnian/Serbian rather than idiomatic Slovenian (`Promijeni dan delovanja`, `polazišna je točka`, `u kotletu`).
 
 - `sr-Latn-RS`: locale-wide variant finding: the existing UI uses predominantly Ijekavian Bosnian/Croatian forms (`Promijeni`, `djelovanja`, `mjesecu`, `zdjela`) despite the registered Serbia Latin variant; review the whole locale against sr-Latn-RS.

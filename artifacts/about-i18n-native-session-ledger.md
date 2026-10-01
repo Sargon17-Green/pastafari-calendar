@@ -21,12 +21,12 @@ Allowed strict-session states: `pending` → `reviewed PASS` or `reviewed FAIL` 
 | cs | cs-CZ | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/cs/strict-36886900641/` — corrected strict Gemma 4 whole-site run `36886900641`; hidden qualification 8/8, 568 grounded text items, 0 findings |
 | da | da-DK | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/da/strict-36891008084/` — strict Gemma 4 whole-site run `36891008084`; hidden qualification 8/8, 562 grounded text items, 0 findings |
 | de | de-DE | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/de/strict-36896960363/` — strict Gemma 4 whole-site run `36896960363`; hidden qualification 8/8, 569 grounded text items, 0 findings |
-| el | el-GR | ltr | semantic QA | pending | — |
+| el | el-GR | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/el/strict-36900599800/` — strict Gemma 4 whole-site run `36900599800`; hidden qualification 8/8, 569 grounded text items, 0 findings |
 | eo | eo | ltr | semantic QA | pending | — |
 | es | es-ES | ltr | semantic QA | pending | — |
 | et | et-EE | ltr | linguistic QA | pending | — |
-| fa | fa-IR | rtl | semantic QA | pending | — |
-| fi | fi-FI | ltr | semantic QA | pending | — |
+| fa | fa-IR | rtl | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/fa/strict-36901794288/` — strict Gemma 4 whole-site run `36901794288`; hidden qualification 8/8, 569 grounded text items, 0 findings |
+| fi | fi-FI | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/fi/strict-36901793882/` — strict Gemma 4 whole-site run `36901793882`; hidden qualification 8/8, 568 grounded text items, 0 findings |
 | fil | fil-PH | ltr | semantic QA | pending | — |
 | fo | fo-FO | ltr | linguistic QA | pending | — |
 | fr | fr-FR | ltr | semantic QA | pending | — |
