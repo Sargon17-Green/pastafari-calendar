@@ -1,0 +1,34 @@
+{
+  "result": "FINDINGS",
+  "summary": "বাংলা ভাষার সংস্করণে কিছু ভাষা-লিক এবং অপ্রচলিত বাংলা ব্যবহার করা হয়েছে। এছাড়াও কিছু অস্বাভাবিক বাক্যগঠন এবং অপ্রচলিত প্রমিত বাংলা দেখা দিয়েছে।",
+  "findings": [
+    {
+      "severity": "high",
+      "location": "docs/i18n/runtime.js",
+      "current_text": "locale.displayName",
+      "issue": "ইংরেজি ভাষার `locale.displayName` ব্যবহার করা হয়েছে যেখানে বাংলা ভাষা প্রয়োজন।",
+      "correction": "বাংলা ভাষায় `locale.displayName` ব্যবহার করুন, যেমন `বাংলা`।"
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/runtime.js",
+      "current_text": "locale.code",
+      "issue": "ইংরেজি ভাষার `locale.code` ব্যবহার করা হয়েছে যেখানে বাংলা ভাষা প্রয়োজন।",
+      "correction": "বাংলা ভাষায় `locale.code` ব্যবহার করুন, যেমন `bn-BD`।"
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/registry.js",
+      "current_text": "বাংলা",
+      "issue": "বাংলা ভাষার প্রতিটি প্রবন্ধে বাংলা ভাষার ব্যবহার করা হয়েছে যেখানে ইংরেজি ভাষার প্রয়োজন ছিল।",
+      "correction": "ইংরেজি ভাষার প্রতিটি প্রবন্ধে ইংরেজি ভাষার ব্যবহার করুন, যেমন `en`।"
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/registry.js",
+      "current_text": "বাংলা",
+      "issue": "বাংলা ভাষার প্রতিটি প্রবন্ধে বাংলা ভাষার ব্যবহার করা হয়েছে যেখানে ইংরেজি ভাষার প্রয়োজন ছিল।",
+      "correction": "ইংরেজি ভাষার প্রতিটি প্রবন্ধে ইংরেজি ভাষার ব্যবহার করুন, যেমন `en`।"
+    }
+  ]
+}

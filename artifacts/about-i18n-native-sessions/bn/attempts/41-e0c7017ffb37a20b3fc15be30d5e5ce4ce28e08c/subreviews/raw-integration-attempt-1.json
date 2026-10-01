@@ -1,0 +1,34 @@
+{
+  "result": "FINDINGS",
+  "summary": "বাংলা ভাষার স্থানীয়করণ পরীক্ষা করার পর কয়েকটি সমস্যা পাওয়া গেছে। এগুলো বিশেষ করে ভাষার লেখা এবং বাক্যগঠনে সমস্যা।",
+  "findings": [
+    {
+      "severity": "medium",
+      "location": "docs/i18n/runtime.js",
+      "current_text": "locale.displayName",
+      "issue": "ইংরেজি ভাষার লেখা ব্যবহার করা হয়েছে যা বাংলা ভাষার স্থানীয়করণ প্রক্রিয়ায় অপ্রাসঙ্গিক।",
+      "correction": "বাংলা ভাষার প্রদত্ত নাম ব্যবহার করুন, যেমন 'বাংলা' বা 'বাংলাদেশী বাংলা'।"
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/registry.js",
+      "current_text": "defineLocale(\"bn\", \"বাংলা\", \"ltr\", \"bn-BD\", \"partial\", () => import(\"./locales/bn.js?v=19-about-i18n\"))",
+      "issue": "বাংলা ভাষার প্রদত্ত নাম ব্যবহার করা হয়েছে, কিন্তু বাক্যগঠন এবং বানান অস্বাভাবিক।",
+      "correction": "বাংলা ভাষার প্রদত্ত নাম ব্যবহার করুন এবং বাক্যগঠন সঠিক করুন।"
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/registry.js",
+      "current_text": "const english = await loadLocaleSource(DEFAULT_LOCALE);",
+      "issue": "ইংরেজি ভাষার লেখা ব্যবহার করা হয়েছে যা বাংলা ভাষার স্থানীয়করণ প্রক্রিয়ায় অপ্রাসঙ্গিক।",
+      "correction": "বাংলা ভাষার প্রদত্ত নাম ব্যবহার করুন, যেমন 'বাংলা' বা 'বাংলাদেশী বাংলা'।"
+    },
+    {
+      "severity": "medium",
+      "location": "docs/about/about.js",
+      "current_text": "elements[\"article-content\"].lang = articleLocale.lang;",
+      "issue": "বাংলা ভাষার প্রদত্ত নাম ব্যবহার করা হয়েছে, কিন্তু বাক্যগঠন এবং বানান অস্বাভাবিক।",
+      "correction": "বাংলা ভাষার প্রদত্ত নাম ব্যবহার করুন এবং বাক্যগঠন সঠিক করুন।"
+    }
+  ]
+}
