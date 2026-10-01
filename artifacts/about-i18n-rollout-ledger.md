@@ -22,7 +22,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | bs | bs-BA | ltr | partial | linguistic QA |
 | ca | ca-ES | ltr | partial | linguistic QA |
 | cs | cs-CZ | ltr | partial | linguistic QA |
-| da | da-DK | ltr | partial | semantic QA |
+| da | da-DK | ltr | partial | linguistic QA |
 | de | de-DE | ltr | partial | semantic QA |
 | el | el-GR | ltr | partial | semantic QA |
 | eo | eo | ltr | partial | semantic QA |
@@ -114,6 +114,7 @@ Status progression for target locales: `not started → draft → semantic QA �
 - `is-IS`: historical locale-wide language finding: the locale was largely Danish with Icelandic-looking substitutions (`Skift arbejdsdaguren`, `beregningens udgangspunkt`, `Sådan ...`). A broad Icelandic repair replaced those strings. The evidence-hygiene strict SAGA + Greynir whole-site run `36555762016` passed: hidden qualification 6/6, 3/3 chunks CLEAN, zero GreynirCorrect site warnings and zero confirmed findings. Immutable evidence is stored under `artifacts/about-i18n-native-sessions/is/strict-36555762016/`. The locale is therefore at `linguistic QA`; rendered/visual and final integration gates remain separate.
 
 - `cs-CZ`: before strict review, six obvious ordinary-English fragments in the Czech article were repaired. The first Czech strict workflow instance was superseded because its registry extractor still matched `bs` rather than `cs`; the corrected strict Gemma 4 run `36886900641` then passed after an 8/8 Czech qualification. The corrected corpus contained 568 grounded user-visible/accessibility-facing items and produced zero findings. A manual post-run scan found no remaining ordinary English, Slovak, Polish, or Cyrillic-language leakage. Evidence is stored under `artifacts/about-i18n-native-sessions/cs/strict-36886900641/`. The locale is therefore at `linguistic QA`; rendered/visual and final integration gates remain separate.
+- `da-DK`: before strict review, three ordinary-English or mixed technical phrases in the Danish article were repaired. Strict Gemma 4 run `36891008084` passed after an 8/8 Danish qualification; 562 grounded user-visible/accessibility-facing items produced zero findings. Manual post-run scanning found no remaining ordinary English, Norwegian, Swedish, German, or Cyrillic-language leakage. Evidence is stored under `artifacts/about-i18n-native-sessions/da/strict-36891008084/`. The locale is therefore at `linguistic QA`; rendered/visual and final integration gates remain separate.
 - `sl-SI`: locale-wide language finding: prominent UI copy is Croatian/Bosnian/Serbian rather than idiomatic Slovenian (`Promijeni dan delovanja`, `polazišna je točka`, `u kotletu`).
 
 - `sr-Latn-RS`: locale-wide variant finding: the existing UI uses predominantly Ijekavian Bosnian/Croatian forms (`Promijeni`, `djelovanja`, `mjesecu`, `zdjela`) despite the registered Serbia Latin variant; review the whole locale against sr-Latn-RS.
@@ -138,7 +139,7 @@ Status progression for target locales: `not started → draft → semantic QA �
 
 - `LOCALES` at this branch contains **72 locales**: Hebrew plus 71 target locales.
 - `docs/about/content/` now contains **72 locale articles**, exactly one for every registered locale.
-- All 71 target locales have complete article drafts. Native-language whole-site text QA is now complete for `af-ZA`, `az-AZ`, `be-BY`, `bg-BG`, `bn-BD`, `bs-BA`, `ca-ES`, `cs-CZ`, `et-EE`, `fo-FO`, `fy-NL`, `gl-ES`, and `ht-HT`; these 13 target locales are at `linguistic QA`, while the remaining 58 target locales remain at `draft` pending the same native-language pass.
+- All 71 target locales have complete article drafts. Native-language whole-site text QA is now complete for `af-ZA`, `az-AZ`, `be-BY`, `bg-BG`, `bn-BD`, `bs-BA`, `ca-ES`, `cs-CZ`, `da-DK`, `et-EE`, `fo-FO`, `fy-NL`, `gl-ES`, and `ht-HT`; these 14 target locales are at `linguistic QA`, while the remaining 57 target locales remain at `draft` pending the same native-language pass.
 - Full mechanical audit was run in batches across every target locale. Each article has exactly the canonical 29 stable IDs, no duplicate IDs, both semantic tables with 19 and 9 body rows respectively, all required hard literals/formulas/hashes, no unintended Hebrew leakage, and its locale module has exactly 11 `about.*` shell keys.
 - During closure, the first audit helper exposed a real test bug: it matched only two-letter locale codes and therefore missed `fil`. The audit was corrected to accept 2–3 letter registry codes, `fil` was added and verified, and the final audit covered all 72 locales.
 - Native-language whole-site LLM QA remains pending by design. The required next phase is one locale at a time, with the reviewing conversation itself conducted in that locale and explicitly searching the whole site for unnatural language, foreign-language leakage, terminology drift, BiDi/layout issues where relevant, and semantic discrepancies.
