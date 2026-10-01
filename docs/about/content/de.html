@@ -117,7 +117,7 @@
 <section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
   <h2>Der Strukturatlas</h2>
   <p>Bis hierhin ging es um Regeln des Kalenders. Die folgenden Zahlen sind etwas anderes: <strong>empirische Befunde</strong> aus einer großen Berechnungsstichprobe.</p>
-  <p>Der Atlas wurde mit Engine-Commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> erstellt und umfasst 4,096 Tage der Ausführung, die Jahre 4990–5010 für jeden davon, 86,016 Jahresstrukturen, 625,437 Schnitzel, 3,535,422 strukturelle Monate, mehr als 356 Millionen zusammenhängende Monatsabschnitte und mehr als 364 Millionen Übergänge von Monatstag <code>n</code> zu <code>n+1</code>.</p>
+  <p>Der Atlas wurde mit dem Rechenkern-Commit <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> erstellt und umfasst 4,096 Tage der Ausführung, die Jahre 4990–5010 für jeden davon, 86,016 Jahresstrukturen, 625,437 Schnitzel, 3,535,422 strukturelle Monate, mehr als 356 Millionen zusammenhängende Monatsabschnitte und mehr als 364 Millionen Übergänge von Monatstag <code>n</code> zu <code>n+1</code>.</p>
   <p>Das sind Beschreibungen dieses Korpus, keine kanonischen Gesetze.</p>
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Messdaten des Strukturatlas"><table class="about-table">
     <thead><tr><th scope="col">Gemessene Größe</th><th scope="col">Ergebnis in der Stichprobe</th></tr></thead><tbody>
@@ -172,11 +172,11 @@
 </section>
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Und was ist Seer?</h2>
-  <p>Neben der kanonischen Implementierung gibt es eine schnelle Engine namens <strong>Pastafarian Calendar Seer</strong>. Seer ist keine Autoritätsquelle: Die Megillah legt die Regeln fest, und die kanonische Berechnung ermittelt das Datum nach diesen Regeln. Seer soll dieselbe Antwort liefern; weicht er von einer korrekten kanonischen Berechnung ab, liegt Seer falsch.</p>
+  <p>Neben der kanonischen Implementierung gibt es eine schnelle Rechenkomponente namens <strong>Pastafarian Calendar Seer</strong>. Seer ist keine Autoritätsquelle: Die Megillah legt die Regeln fest, und die kanonische Berechnung ermittelt das Datum nach diesen Regeln. Seer soll dieselbe Antwort liefern; weicht er von einer korrekten kanonischen Berechnung ab, liegt Seer falsch.</p>
   <p>Sein Zweck ist, dieselben Anfragen schnell und produktfreundlich zu beantworten.</p>
-  <p>Bei der Live-Prüfung am 21. September 2026 umfasste Seer unter anderem Datums- und »Jetzt«-Abfragen, Batch-Abfragen, Tagesbereiche, Rückumrechnung in einen abgefragten Tag, Abruf der Jahresstruktur, Auflösung des aktiven Tags der Ausführung, Node-API, Browser-/HTTP-Client, CLI, HTTP-v1-Dienst, OpenAPI-3.1-Vertrag, native Implementierungen und Distributionspakete sowie ein verifiziertes Container-Bereitstellung.</p>
+  <p>Bei der Live-Prüfung am 21. September 2026 umfasste Seer unter anderem Datums- und »Jetzt«-Abfragen, Stapelabfragen, Tagesbereiche, Rückumrechnung in einen abgefragten Tag, Abruf der Jahresstruktur, Auflösung des aktiven Tags der Ausführung, Node-API, Browser-/HTTP-Client, CLI, HTTP-v1-Dienst, OpenAPI-3.1-Vertrag, plattformnahe Implementierungen und Distributionspakete sowie eine verifizierte Bereitstellung in einem Container.</p>
   <p>Seer hat eine öffentliche API mit einem ausdrücklichen, stabilen HTTP-v1-Vertrag und Endpunkten für <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, Tag der Ausführung, <code>metadata</code>, <code>locales</code> und <code>status</code>.</p>
-  <p>Am 21. September 2026 wurde außerdem ein öffentliche HTTPS-Bereitstellung auf Render praktisch geprüft: exakte Abfragen, ein großer Bereich, Neustart, <code>cold wake</code> und Verhalten unter Last wurden am laufenden Dienst getestet.</p>
+  <p>Am 21. September 2026 wurde außerdem eine öffentliche HTTPS-Bereitstellung auf Render praktisch geprüft: exakte Abfragen, ein großer Bereich, Neustart, Aufwecken nach Inaktivität und Verhalten unter Last wurden am laufenden Dienst getestet.</p>
   <p>Die geprüfte öffentliche Bereitstellung ist eine Beta-/Evaluierungsbereitstellung und keine Zusage eines dauerhaft gehosteten Produktionsdienstes mit SLA. Serveradresse, Hostinganbieter und Versionsnummer sind keine Bestandteile des Kalenders und nicht kanonisch festgelegt.</p>
   <p>Seer darf Vorberechnung, Spezialdarstellungen, SIMD, Algebra und andere Abkürzungen einsetzen. Es muss die Rechengeschichte der kanonischen Implementierung nicht Schritt für Schritt nachspielen, solange es dieselbe semantische Operation ausführt und dieselbe Antwort liefert.</p>
   <p>Optimierung ist keine alternative Autorität.</p><hr>
