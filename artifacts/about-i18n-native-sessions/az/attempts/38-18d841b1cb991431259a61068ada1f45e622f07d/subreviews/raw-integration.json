@@ -1,0 +1,34 @@
+{
+  "result": "FINDINGS",
+  "summary": "Azərbaycan dilində mətn və terminlər arasında qeyri-təbii və ya sərt ifadələr, qrammatik və ya semantik xətalar, termin uyğunsuzluqlar və dil sızması aşkar edildi. Əsas problem, `docs/i18n/registry.js` və `docs/about/about.js` fayllarında Azərbaycan dilində tərcümə qoxusu və sərt",
+  "findings": [
+    {
+      "severity": "high",
+      "location": "docs/i18n/registry.js",
+      "current_text": "Azərbaycanca",
+      "issue": "Tərcümə qoxusu və sərt ifadə. `Azərbaycanca` termini təbii və ya idiomatik olmayan formada istifadə olunub.",
+      "correction": "Azərbaycan dilində təbii və ya idiomatik olmayan formada istifadə olunub. `Azərbaycan dili` kimi ifadə daha təbii olardı."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/registry.js",
+      "current_text": "az-AZ",
+      "issue": "Kanonik sabitlər dəyişdirilə bilməz. `az-AZ` kodu təbii dil mətnindən fərqlənən bir sabitdir və təbii dil mətnində istifadə olunmamalıdır.",
+      "correction": "Kanonik sabitlər dəyişdirilə bilməz. `az-AZ` kodu təbii dil mətnindən fərqlənən bir sabitdir və təbii dil mətnində istifadə olunmamalıdır."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/registry.js",
+      "current_text": "partial",
+      "issue": "Tərcümə qoxusu və sərt ifadə. `partial` termini təbii və ya idiomatik olmayan formada istifadə olunub.",
+      "correction": "Azərbaycan dilində təbii və ya idiomatik olmayan formada istifadə olunub. `Tələbə` kimi ifadə daha təbii olardı."
+    },
+    {
+      "severity": "medium",
+      "location": "docs/about/about.js",
+      "current_text": "t(\"about.loadError\")",
+      "issue": "Tərcümə qoxusu və sərt ifadə. `t(\"about.loadError\")` kimi ifadə təbii və ya idiomatik olmayan formada istifadə olunub.",
+      "correction": "Azərbaycan dilində təbii və ya idiomatik olmayan formada istifadə olunub. `Tərcümə` kimi ifadə daha təbii olardı."
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "result": "FINDINGS",
+  "summary": "Azərbaycan dilində tərcümə qoxusu və qrammatik xətalar aşkar edildi. Əsas problem, tərcümədə qeyri-təbii və idiomatik olmayan ifadələr və qrammatik xətalar idi.",
+  "findings": [
+    {
+      "severity": "medium",
+      "location": "docs/i18n/runtime.js",
+      "current_text": "locale.displayName",
+      "issue": "Tərcümədə qeyri-təbii və idiomatik olmayan ifadə. 'displayName' termini Azərbaycan dilində tərcümə edilməyib.",
+      "correction": "locale.adi"
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/runtime.js",
+      "current_text": "element.textContent = translate(locale, element.dataset.i18n);",
+      "issue": "Tərcümədə qeyri-təbii və idiomatik olmayan ifadə. 'textContent' və 'dataset' terminləri Azərbaycan dilində tərcümə edilməyib.",
+      "correction": "element.mətni = translate(locale, element.dataset.i18n);"
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/registry.js",
+      "current_text": "defineLocale(\"az\", \"Azərbaycanca\", \"ltr\", \"az-AZ\", \"partial\", () => import(\"./locales/az.js?v=19-about-i18n\"))",
+      "issue": "Tərcümədə qeyri-təbii və idiomatik olmayan ifadə. 'Azərbaycanca' termini Azərbaycan dilində tərcümə edilməyib.",
+      "correction": "defineLocale(\"az\", \"Azərbaycan dili\", \"ltr\", \"az-AZ\", \"partial\", () => import(\"./locales/az.js?v=19-about-i18n\"))"
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/registry.js",
+      "current_text": "const resource = await loadLocaleSource(metadata.code);",
+      "issue": "Tərcümədə qeyri-təbii və idiomatik olmayan ifadə. 'loadLocaleSource' termini Azərbaycan dilində tərcümə edilməyib.",
+      "correction": "const resource = await yüklə(localeKaynağı, metadata.code);"
+    }
+  ]
+}

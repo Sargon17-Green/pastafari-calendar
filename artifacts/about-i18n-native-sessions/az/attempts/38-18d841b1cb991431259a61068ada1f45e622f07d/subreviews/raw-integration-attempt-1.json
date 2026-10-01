@@ -1,0 +1,33 @@
+{
+  "result": "FINDINGS",
+  "summary": "Azərbaycan dili ilə işləyən saytın lokalizasiya və dil dəyişmə prosesində tərcümə qoxusu, sərt və qeyri-təbii ifadələr, qrammatika və tipografiya xətaları, termin uyğunsuzluqları və digər dil sızması növləri aşkar edildi. Əsas problem - tərcümə qoxusu və sərt ifadələr, qrammatika", "findings": [
+    {
+      "severity": "high",
+      "location": "docs/i18n/registry.js",
+      "current_text": "Azərbaycanca",
+      "issue": "Tərcümə qoxusu və sərt ifadə. 'Azərbaycanca' termini tərcümə qoxusu kimi işlənir və sərt ifadədir. Azərbaycan dilində 'Azərbaycanca' termini təbii və ya idiomatik olaraq istifadə olunmamışdır.",
+      "correction": "Azərbaycan"
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/registry.js",
+      "current_text": "az-AZ",
+      "issue": "Kanonik sabitlər dəyişdirilə bilməz. 'az-AZ' kodu təbii dilin kodu kimi qəbul edilir və dəyişdirilməlidir.",
+      "correction": "az-AZ"
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/runtime.js",
+      "current_text": "translate(locale, element.dataset.i18n)",
+      "issue": "Tərcümə prosesi təqdim edilən mətnin təbii dilinə uyğun olmayan ifadələrə dəstək vermir. 'element.dataset.i18n' mətni təbii dilinə uyğun olmayan ifadələrə dəstək vermir.",
+      "correction": "translate(locale, element.dataset.i18n)"
+    },
+    {
+      "severity": "medium",
+      "location": "docs/i18n/runtime.js",
+      "current_text": "element.textContent = translate(locale, element.dataset.i18n);",
+      "issue": "Tərcümə prosesi təqdim edilən mətnin təbii dilinə uyğun olmayan ifadələrə dəstək vermir. 'element.textContent' mətni təbii dilinə uyğun olmayan ifadələrə dəstək vermir.",
+      "correction": "element.textContent = translate(locale, element.dataset.i18n);"
+    }
+  ]
+}
