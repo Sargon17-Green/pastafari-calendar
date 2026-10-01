@@ -27,7 +27,7 @@ Allowed strict-session states: `pending` → `reviewed PASS` or `reviewed FAIL` 
 | et | et-EE | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/et/strict-36910105248/` — repaired strict Gemma 4 rerun `36910105248`; hidden qualification 8/8, 568 grounded text items, 0 findings; prior PASS rejected after manual Finnish-leakage audit |
 | fa | fa-IR | rtl | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/fa/strict-36901794288/` — strict Gemma 4 whole-site run `36901794288`; hidden qualification 8/8, 569 grounded text items, 0 findings |
 | fi | fi-FI | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/fi/strict-36901793882/` — strict Gemma 4 whole-site run `36901793882`; hidden qualification 8/8, 568 grounded text items, 0 findings |
-| fil | fil-PH | ltr | semantic QA | pending | — |
+| fil | fil-PH | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/fil/strict-36937587092/` — repaired strict Gemma 4 run `36937587092`; hidden qualification 8/8, 567 grounded text items, 0 findings; manual post-run scan clean |
 | fo | fo-FO | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/fo/strict-36916698702/` — authoritative repaired strict run `36916698702`; qualification 8/8, 567 items, 0 findings; manual scan clean |
 | fr | fr-FR | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/fr/strict-36916698902/` — strict run `36916698902`; qualification 8/8, 581 items, 0 findings; manual scan clean |
 | fy | fy-NL | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/fy/strict-36928557891/` — repaired strict Gemma 4 rerun `36928557891`; hidden qualification 8/8, 567 grounded text items, 0 findings; manual post-run scan clean |
@@ -38,15 +38,15 @@ Allowed strict-session states: `pending` → `reviewed PASS` or `reviewed FAIL` 
 | hr | hr-HR | ltr | semantic QA | pending | — |
 | ht | ht-HT | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/ht/strict-36923264928/` — strict Gemma 4 run `36923264928`; hidden qualification 8/8, 567 grounded text items, 0 findings; manual post-run scan clean |
 | hu | hu-HU | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/hu/strict-36929093742/` — strict Gemma 4 run `36929093742`; hidden qualification 8/8, 568 grounded text items, 0 findings; manual post-run scan clean |
-| hy | hy-AM | ltr | semantic QA | pending | — |
-| id | id-ID | ltr | semantic QA | pending | — |
+| hy | hy-AM | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/hy/strict-36937821477/` — repaired strict Gemma 4 run `36937821477`; hidden qualification 8/8, 567 grounded text items, 0 findings; manual post-run scan clean |
+| id | id-ID | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/id/strict-36936824308/` — repaired strict Gemma 4 run `36936824308`; hidden qualification 8/8, 568 grounded text items, 0 findings; manual post-run scan clean |
 | is | is-IS | ltr | semantic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/is/strict-36555762016/` — evidence-hygiene strict SAGA + Greynir run `36555762016`; hidden qualification 6/6, 3/3 chunks CLEAN, 0 site warnings, 0 findings |
 | it | it-IT | ltr | semantic QA | pending | — |
 | ja | ja-JP | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/ja/strict-36929093624/` — corrected strict Gemma 4 run `36929093624`; hidden qualification 8/8, 569 grounded text items, 0 findings; manual post-run scan clean |
 | jv | jv-ID | ltr | semantic QA | pending | — |
 | ka | ka-GE | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/ka/strict-36934843022/` — strict Gemma 4 run `36934843022`; hidden qualification 8/8, 567 grounded text items, 0 findings; manual post-run scan clean |
 | kk | kk-KZ | ltr | semantic QA | pending | — |
-| ko | ko-KR | ltr | semantic QA | pending | — |
+| ko | ko-KR | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/ko/strict-36937704797/` — repaired strict Gemma 4 run `36937704797`; hidden qualification 8/8, 569 grounded text items, 0 findings; manual post-run scan clean |
 | lb | lb-LU | ltr | semantic QA | pending | — |
 | lt | lt-LT | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/lt/strict-36934489600/` — strict Gemma 4 run `36934489600`; hidden qualification 8/8, 567 grounded text items, 0 findings; manual post-run scan clean |
 | lv | lv-LV | ltr | semantic QA | pending | — |

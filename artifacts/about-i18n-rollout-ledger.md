@@ -30,7 +30,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | et | et-EE | ltr | partial | linguistic QA |
 | fa | fa-IR | rtl | partial | linguistic QA |
 | fi | fi-FI | ltr | partial | linguistic QA |
-| fil | fil-PH | ltr | partial | semantic QA |
+| fil | fil-PH | ltr | partial | linguistic QA |
 | fo | fo-FO | ltr | partial | linguistic QA |
 | fr | fr-FR | ltr | partial | linguistic QA |
 | fy | fy-NL | ltr | partial | linguistic QA |
@@ -41,15 +41,15 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | hr | hr-HR | ltr | partial | semantic QA |
 | ht | ht-HT | ltr | partial | linguistic QA |
 | hu | hu-HU | ltr | partial | linguistic QA |
-| hy | hy-AM | ltr | partial | semantic QA |
-| id | id-ID | ltr | partial | semantic QA |
+| hy | hy-AM | ltr | partial | linguistic QA |
+| id | id-ID | ltr | partial | linguistic QA |
 | is | is-IS | ltr | partial | linguistic QA |
 | it | it-IT | ltr | partial | semantic QA |
 | ja | ja-JP | ltr | partial | linguistic QA |
 | jv | jv-ID | ltr | partial | semantic QA |
 | ka | ka-GE | ltr | partial | linguistic QA |
 | kk | kk-KZ | ltr | partial | semantic QA |
-| ko | ko-KR | ltr | partial | semantic QA |
+| ko | ko-KR | ltr | partial | linguistic QA |
 | lb | lb-LU | ltr | partial | semantic QA |
 | lt | lt-LT | ltr | partial | linguistic QA |
 | lv | lv-LV | ltr | partial | semantic QA |
@@ -159,7 +159,11 @@ Status progression for target locales: `not started → draft → semantic QA �
 - `ka-GE`: strict run `36934843022` passed qualification 8/8 over 567 grounded items with zero findings; manual post-run wrong-language scan was clean and staleness checking found no later Georgian source change. Evidence: `artifacts/about-i18n-native-sessions/ka/strict-36934843022/`.
 - `lt-LT`: strict run `36934489600` passed qualification 8/8 over 567 grounded items with zero findings; manual post-run wrong-language scan was clean and staleness checking found no later Lithuanian source change. Evidence: `artifacts/about-i18n-native-sessions/lt/strict-36934489600/`.
 - `mk-MK`: after the Macedonian English-prose cleanup, strict run `36935042477` passed qualification 8/8 over 567 grounded items with zero findings; manual post-run wrong-language scan was clean and staleness checking found no later Macedonian source change. Evidence: `artifacts/about-i18n-native-sessions/mk/strict-36935042477/`.
-- All 71 target locales have complete article drafts. Native-language whole-site text QA is now complete for `af-ZA`, `az-AZ`, `be-BY`, `bg-BG`, `bn-BD`, `bs-BA`, `ca-ES`, `cs-CZ`, `da-DK`, `et-EE`, `fo-FO`, `fy-NL`, `gl-ES`, and `ht-HT`; these 14 target locales are at `linguistic QA`, while the remaining 57 target locales remain at `draft` pending the same native-language pass.
+- `fil-PH`: after removal of the remaining English prose leakage, strict run `36937587092` passed qualification 8/8 over 567 grounded items with zero findings; manual post-run wrong-language scan was clean and staleness checking found no later Filipino source change. Evidence: `artifacts/about-i18n-native-sessions/fil/strict-36937587092/`.
+- `hy-AM`: after the Armenian prose/accessibility cleanup and the 65536-context rerun path, strict run `36937821477` passed qualification 8/8 over 567 grounded items with zero findings; manual post-run wrong-language scan was clean and staleness checking found no later Armenian source change. Evidence: `artifacts/about-i18n-native-sessions/hy/strict-36937821477/`.
+- `id-ID`: after removal of non-native terminology leakage, strict run `36936824308` passed qualification 8/8 over 568 grounded items with zero findings; manual post-run wrong-language scan was clean and staleness checking found no later Indonesian source change. Evidence: `artifacts/about-i18n-native-sessions/id/strict-36936824308/`.
+- `ko-KR`: after removal of the English astronomy gloss, strict run `36937704797` passed qualification 8/8 over 569 grounded items with zero findings; manual post-run wrong-language scan was clean and staleness checking found no later Korean source change. Evidence: `artifacts/about-i18n-native-sessions/ko/strict-36937704797/`.
+- All 71 target locales have complete article drafts. Native-language whole-site text QA is now complete for `af-ZA`, `az-AZ`, `be-BY`, `bg-BG`, `bn-BD`, `bs-BA`, `ca-ES`, `cs-CZ`, `da-DK`, `et-EE`, `fil-PH`, `fo-FO`, `fy-NL`, `gl-ES`, `ht-HT`, `hu-HU`, `hy-AM`, `id-ID`, `ja-JP`, `ka-GE`, `ko-KR`, `lt-LT`, and `mk-MK`; these 23 target locales are at `linguistic QA`, while the remaining 48 target locales remain at `draft` pending the same native-language pass.
 - Full mechanical audit was run in batches across every target locale. Each article has exactly the canonical 29 stable IDs, no duplicate IDs, both semantic tables with 19 and 9 body rows respectively, all required hard literals/formulas/hashes, no unintended Hebrew leakage, and its locale module has exactly 11 `about.*` shell keys.
 - During closure, the first audit helper exposed a real test bug: it matched only two-letter locale codes and therefore missed `fil`. The audit was corrected to accept 2–3 letter registry codes, `fil` was added and verified, and the final audit covered all 72 locales.
 - Native-language whole-site LLM QA remains pending by design. The required next phase is one locale at a time, with the reviewing conversation itself conducted in that locale and explicitly searching the whole site for unnatural language, foreign-language leakage, terminology drift, BiDi/layout issues where relevant, and semantic discrepancies.
