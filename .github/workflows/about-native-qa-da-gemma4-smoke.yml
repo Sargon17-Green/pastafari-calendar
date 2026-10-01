@@ -1,0 +1,109 @@
+name: Danish Gemma4 reviewer qualification
+
+on:
+  push:
+    branches:
+      - feature/about-i18n-72-locales
+    paths:
+      - .github/workflows/about-native-qa-da-gemma4-smoke.yml
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - name: Install pinned llama.cpp runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/da-gemma/llama
+          curl -fL --retry 3 \
+            https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz \
+            -o /tmp/da-gemma/llama.tar.gz
+          echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/da-gemma/llama.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/da-gemma/llama.tar.gz -C /tmp/da-gemma/llama
+
+      - name: Qualify Danish reviewer on hidden controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          SERVER="$(find /tmp/da-gemma/llama -type f -name llama-server | head -n 1)"
+          test -x "$SERVER"
+          "$SERVER" \
+            -hf ggml-org/gemma-4-E4B-it-GGUF:Q4_0 \
+            --reasoning auto --chat-template-kwargs '{"enable_thinking":false}' \
+            -c 4096 -t 4 --host 127.0.0.1 --port 8080 \
+            > /tmp/da-gemma/server.log 2>&1 &
+          PID=$!
+          trap 'kill "$PID" 2>/dev/null || true' EXIT
+          for _ in $(seq 1 600); do
+            curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8080/health >/dev/null
+
+          python - <<'PY'
+          from pathlib import Path
+          import json, urllib.request
+
+          cases = [
+              ("g1", "Vælg en dato, og prøv igen.", "NATURLIGT"),
+              ("g2", "Arbejdsdagen er beregningens udgangspunkt.", "NATURLIGT"),
+              ("g3", "Forrige kotelet", "NATURLIGT"),
+              ("g4", "Månederne kan være vævet ind i hinanden gennem året.", "NATURLIGT"),
+              ("b1", "Endre arbeidsdagen.", "RET"),
+              ("b2", "Klicka här for at fortsætte.", "RET"),
+              ("b3", "In diesem Jahr gibt es mehrere Monate.", "RET"),
+              ("b4", "Hvordan пользоваться dette websted?", "RET"),
+          ]
+          prompt=(
+              "Du er en streng sproglig redaktør af moderne standarddansk på modersmålsniveau. "
+              "Vurder hvert fragment separat. Kontrollér naturlighed, grammatik, kongruens, syntaks, stavning og om teksten "
+              "utilsigtet er norsk, svensk, tysk, russisk, engelsk eller blandet. "
+              "I dette projekt er udtrykkene ‘arbejdsdag’, ‘forespurgt dag’, ‘kotelet’ og idéen om, at måneder kan være vævet ind i hinanden, "
+              "tilsigtede kanoniske domæneord/konstruktioner; afvis dem ikke blot fordi de er usædvanlige. "
+              "Første linje skal være præcis ‘DOM: NATURLIGT’ eller ‘DOM: RET’. "
+              "På anden linje gives en kort begrundelse på dansk."
+          )
+          results=[]
+          for case_id,fragment,expected in cases:
+              payload={
+                  "messages":[{"role":"user","content":prompt+"\n\nFragment: "+json.dumps(fragment,ensure_ascii=False)}],
+                  "temperature":0.0,"max_tokens":120,"reasoning_effort":"none",
+                  "chat_template_kwargs":{"enable_thinking":False},"stream":False,
+              }
+              req=urllib.request.Request(
+                  "http://127.0.0.1:8080/v1/chat/completions",
+                  data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),
+                  headers={"Content-Type":"application/json"},method="POST")
+              with urllib.request.urlopen(req,timeout=900) as resp:
+                  data=json.load(resp)
+              answer=data["choices"][0]["message"]["content"].strip()
+              first=answer.splitlines()[0].strip() if answer else ""
+              actual="NATURLIGT" if first=="DOM: NATURLIGT" else "RET" if first=="DOM: RET" else "UGYLDIGT"
+              passed=actual==expected
+              results.append({"id":case_id,"fragment":fragment,"expected":expected,"actual":actual,"passed":passed,"answer":answer})
+              print(case_id,results[-1])
+          Path("/tmp/da-gemma/qualification.json").write_text(
+              json.dumps(results,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          failed=[r["id"] for r in results if not r["passed"]]
+          if failed:
+              raise SystemExit("Danish reviewer qualification failed: "+", ".join(failed))
+          PY
+
+      - name: Upload qualification evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: danish-gemma4-reviewer-qualification
+          path: |
+            /tmp/da-gemma/qualification.json
+            /tmp/da-gemma/server.log
+          if-no-files-found: warn
+          retention-days: 30
