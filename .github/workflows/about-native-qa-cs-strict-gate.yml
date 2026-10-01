@@ -112,7 +112,7 @@ jobs:
                   items.append({"location":f"docs/manifest.webmanifest#{field}.cs.value","text":value.strip()})
 
           registry=Path("docs/i18n/registry.js").read_text(encoding="utf-8")
-          m=re.search(r'defineLocale\("bs",\s*"([^"]+)"',registry)
+          m=re.search(r'defineLocale\("cs",\s*"([^"]+)"',registry)
           if m:
               items.append({"location":"docs/i18n/registry.js#locale-cs-display-name","text":m.group(1)})
 
