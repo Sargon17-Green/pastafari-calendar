@@ -1,0 +1,109 @@
+name: German Gemma4 reviewer qualification
+
+on:
+  push:
+    branches:
+      - feature/about-i18n-72-locales
+    paths:
+      - .github/workflows/about-native-qa-de-gemma4-smoke.yml
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - name: Install pinned llama.cpp runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/de-gemma/llama
+          curl -fL --retry 3 \
+            https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz \
+            -o /tmp/de-gemma/llama.tar.gz
+          echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/de-gemma/llama.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/de-gemma/llama.tar.gz -C /tmp/de-gemma/llama
+
+      - name: Qualify German reviewer on hidden controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          SERVER="$(find /tmp/de-gemma/llama -type f -name llama-server | head -n 1)"
+          test -x "$SERVER"
+          "$SERVER" \
+            -hf ggml-org/gemma-4-E4B-it-GGUF:Q4_0 \
+            --reasoning auto --chat-template-kwargs '{"enable_thinking":false}' \
+            -c 4096 -t 4 --host 127.0.0.1 --port 8080 \
+            > /tmp/de-gemma/server.log 2>&1 &
+          PID=$!
+          trap 'kill "$PID" 2>/dev/null || true' EXIT
+          for _ in $(seq 1 600); do
+            curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8080/health >/dev/null
+
+          python - <<'PY'
+          from pathlib import Path
+          import json, urllib.request
+
+          cases = [
+              ("g1", "Wähle ein Datum und versuche es erneut.", "NATÜRLICH"),
+              ("g2", "Der Tag der Ausführung ist der Ausgangspunkt der Berechnung.", "NATÜRLICH"),
+              ("g3", "Vorheriges Schnitzel", "NATÜRLICH"),
+              ("g4", "Die Monate können im Verlauf des Jahres miteinander verwoben sein.", "NATÜRLICH"),
+              ("b1", "Wijzig de uitvoeringsdag.", "KORRIGIEREN"),
+              ("b2", "Klik her for at fortsætte.", "KORRIGIEREN"),
+              ("b3", "Click here, um fortzufahren.", "KORRIGIEREN"),
+              ("b4", "Wie пользоваться dieser Website?", "KORRIGIEREN"),
+          ]
+          prompt=(
+              "Du bist ein strenger muttersprachlicher Redakteur für modernes Standarddeutsch. "
+              "Bewerte jedes Fragment einzeln. Prüfe Natürlichkeit, Grammatik, Kongruenz, Syntax, Rechtschreibung und ob der Text "
+              "unbeabsichtigt Niederländisch, Dänisch, Englisch, Russisch oder gemischt ist. "
+              "In diesem Projekt sind ‘Tag der Ausführung’, ‘abgefragter Tag’, ‘Schnitzel’ und die Vorstellung verwobener Monate "
+              "beabsichtigte kanonische Domänenbegriffe/Konstruktionen; lehne sie nicht allein wegen ihrer Ungewöhnlichkeit ab. "
+              "Die erste Zeile muss exakt ‘URTEIL: NATÜRLICH’ oder ‘URTEIL: KORRIGIEREN’ lauten. "
+              "In der zweiten Zeile kurz auf Deutsch begründen."
+          )
+          results=[]
+          for case_id,fragment,expected in cases:
+              payload={
+                  "messages":[{"role":"user","content":prompt+"\n\nFragment: "+json.dumps(fragment,ensure_ascii=False)}],
+                  "temperature":0.0,"max_tokens":120,"reasoning_effort":"none",
+                  "chat_template_kwargs":{"enable_thinking":False},"stream":False,
+              }
+              req=urllib.request.Request(
+                  "http://127.0.0.1:8080/v1/chat/completions",
+                  data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),
+                  headers={"Content-Type":"application/json"},method="POST")
+              with urllib.request.urlopen(req,timeout=900) as resp:
+                  data=json.load(resp)
+              answer=data["choices"][0]["message"]["content"].strip()
+              first=answer.splitlines()[0].strip() if answer else ""
+              actual="NATÜRLICH" if first=="URTEIL: NATÜRLICH" else "KORRIGIEREN" if first=="URTEIL: KORRIGIEREN" else "UNGÜLTIG"
+              passed=actual==expected
+              results.append({"id":case_id,"fragment":fragment,"expected":expected,"actual":actual,"passed":passed,"answer":answer})
+              print(case_id,results[-1])
+          Path("/tmp/de-gemma/qualification.json").write_text(
+              json.dumps(results,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          failed=[r["id"] for r in results if not r["passed"]]
+          if failed:
+              raise SystemExit("German reviewer qualification failed: "+", ".join(failed))
+          PY
+
+      - name: Upload qualification evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: german-gemma4-reviewer-qualification
+          path: |
+            /tmp/de-gemma/qualification.json
+            /tmp/de-gemma/server.log
+          if-no-files-found: warn
+          retention-days: 30
