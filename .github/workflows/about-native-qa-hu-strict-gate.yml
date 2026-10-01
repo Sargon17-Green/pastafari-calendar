@@ -1,12 +1,12 @@
-name: Japanese strict native-language whole-site gate
+name: Hungarian strict native-language whole-site gate
 
 on:
   push:
     branches: [feature/about-i18n-72-locales]
     paths:
-      - .github/workflows/about-native-qa-ja-strict-gate.yml
-      - docs/i18n/locales/ja.js
-      - docs/about/content/ja.html
+      - .github/workflows/about-native-qa-hu-strict-gate.yml
+      - docs/i18n/locales/hu.js
+      - docs/about/content/hu.html
       - docs/manifest.webmanifest
       - docs/i18n/registry.js
 
@@ -14,11 +14,11 @@ permissions:
   contents: read
 
 concurrency:
-  group: ja-strict-native-${{ github.ref }}
+  group: hu-strict-native-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  strict-ja:
+  strict-hu:
     runs-on: ubuntu-latest
     timeout-minutes: 150
     steps:
@@ -28,12 +28,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p /tmp/ja-strict/llama /tmp/ja-strict/evidence
-          curl -fL --retry 3 https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz -o /tmp/ja-strict/llama.tar.gz
-          echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/ja-strict/llama.tar.gz" | sha256sum -c -
-          tar -xzf /tmp/ja-strict/llama.tar.gz -C /tmp/ja-strict/llama
-          git rev-parse HEAD > /tmp/ja-strict/evidence/reviewed-head.txt
-      - name: Extract grounded Japanese website corpus
+          mkdir -p /tmp/hu-strict/llama /tmp/hu-strict/evidence
+          curl -fL --retry 3 https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz -o /tmp/hu-strict/llama.tar.gz
+          echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/hu-strict/llama.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/hu-strict/llama.tar.gz -C /tmp/hu-strict/llama
+          git rev-parse HEAD > /tmp/hu-strict/evidence/reviewed-head.txt
+      - name: Extract grounded Hungarian website corpus
         shell: bash
         run: |
           set -euo pipefail
@@ -42,12 +42,12 @@ jobs:
           from html.parser import HTMLParser
           import json,re
           items=[]
-          locale=Path("docs/i18n/locales/ja.js").read_text(encoding="utf-8")
+          locale=Path("docs/i18n/locales/hu.js").read_text(encoding="utf-8")
           for key,raw in re.findall(r'"([^"]+)"\s*:\s*("(?:\\.|[^"\\])*")',locale):
             try: value=json.loads(raw)
             except Exception: continue
             if isinstance(value,str) and value.strip() and key not in {"code","dir","intlLocale"}:
-              items.append({"location":f"docs/i18n/locales/ja.js#{key}","text":value.strip()})
+              items.append({"location":f"docs/i18n/locales/hu.js#{key}","text":value.strip()})
           class P(HTMLParser):
             wanted={"p","li","h1","h2","h3","h4","h5","h6","th","td","caption","blockquote"}; attrs={"aria-label","aria-description","title","alt"}
             def __init__(self): super().__init__(convert_charrefs=True); self.sections=[]; self.current=None; self.n=0
@@ -58,59 +58,59 @@ jobs:
               sec=next((x for x in reversed(self.sections) if x),""); ident=attrs.get("id") or sec or tag
               for a in self.attrs:
                 v=attrs.get(a)
-                if v and v.strip(): items.append({"location":f"docs/about/content/ja.html#{ident}@{a}-{self.n}","text":v.strip()}); self.n+=1
+                if v and v.strip(): items.append({"location":f"docs/about/content/hu.html#{ident}@{a}-{self.n}","text":v.strip()}); self.n+=1
               if tag in self.wanted: self.current={"tag":tag,"id":attrs.get("id",""),"section":sec,"parts":[]}
             def handle_endtag(self,tag):
               if self.current is not None and self.current["tag"]==tag:
                 txt=re.sub(r"\s+"," ","".join(self.current["parts"])).strip()
                 if txt:
                   ident=self.current["id"] or self.current["section"] or self.current["tag"]
-                  items.append({"location":f"docs/about/content/ja.html#{ident}","text":txt})
+                  items.append({"location":f"docs/about/content/hu.html#{ident}","text":txt})
                 self.current=None
               if tag=="section" and self.sections: self.sections.pop()
             def handle_data(self,data):
               if self.current is not None: self.current["parts"].append(data)
-          p=P(); p.feed(Path("docs/about/content/ja.html").read_text(encoding="utf-8"))
+          p=P(); p.feed(Path("docs/about/content/hu.html").read_text(encoding="utf-8"))
           manifest=json.loads(Path("docs/manifest.webmanifest").read_text(encoding="utf-8"))
           for field in ("name_localized","short_name_localized","description_localized"):
-            v=manifest.get(field,{}).get("ja",{}).get("value")
-            if isinstance(v,str) and v.strip(): items.append({"location":f"docs/manifest.webmanifest#{field}.ja.value","text":v.strip()})
+            v=manifest.get(field,{}).get("hu",{}).get("value")
+            if isinstance(v,str) and v.strip(): items.append({"location":f"docs/manifest.webmanifest#{field}.hu.value","text":v.strip()})
           registry=Path("docs/i18n/registry.js").read_text(encoding="utf-8")
-          m=re.search(r'defineLocale\("ja",\s*"([^"]+)"',registry)
-          if m: items.append({"location":"docs/i18n/registry.js#locale-ja-display-name","text":m.group(1)})
+          m=re.search(r'defineLocale\("hu",\s*"([^"]+)"',registry)
+          if m: items.append({"location":"docs/i18n/registry.js#locale-hu-display-name","text":m.group(1)})
           seen=set(); out=[]
           for item in items:
             pair=(item["location"],item["text"])
             if pair in seen: continue
-            seen.add(pair); item["id"]=f"JA{len(out):04d}"; out.append(item)
-          Path("/tmp/ja-strict/evidence/items.json").write_text(json.dumps(out,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-          compact=json.dumps(out,ensure_ascii=False,separators=(",",":")); Path("/tmp/ja-strict/corpus.json").write_text(compact,encoding="utf-8")
+            seen.add(pair); item["id"]=f"HU{len(out):04d}"; out.append(item)
+          Path("/tmp/hu-strict/evidence/items.json").write_text(json.dumps(out,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          compact=json.dumps(out,ensure_ascii=False,separators=(",",":")); Path("/tmp/hu-strict/corpus.json").write_text(compact,encoding="utf-8")
           if len(compact)>100000: raise SystemExit("corpus exceeds review budget")
           PY
-      - name: Start isolated Japanese Gemma 4 reviewer
+      - name: Start isolated Hungarian Gemma 4 reviewer
         shell: bash
         run: |
           set -euo pipefail
-          SERVER="$(find /tmp/ja-strict/llama -type f -name llama-server | head -n 1)"
-          "$SERVER" -hf ggml-org/gemma-4-E4B-it-GGUF:Q4_0 --reasoning auto --chat-template-kwargs '{"enable_thinking":false}' -c 32768 -t 4 --host 127.0.0.1 --port 8080 > /tmp/ja-strict/evidence/server.log 2>&1 &
-          echo "$!" > /tmp/ja-strict/server.pid
+          SERVER="$(find /tmp/hu-strict/llama -type f -name llama-server | head -n 1)"
+          "$SERVER" -hf ggml-org/gemma-4-E4B-it-GGUF:Q4_0 --reasoning auto --chat-template-kwargs '{"enable_thinking":false}' -c 32768 -t 4 --host 127.0.0.1 --port 8080 > /tmp/hu-strict/evidence/server.log 2>&1 &
+          echo "$!" > /tmp/hu-strict/server.pid
           for _ in $(seq 1 900); do curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break; sleep 1; done
           curl -fsS http://127.0.0.1:8080/health >/dev/null
-      - name: Batched hidden Japanese reviewer qualification
+      - name: Batched hidden Hungarian reviewer qualification
         shell: bash
         run: |
           set -euo pipefail
           python - <<'PY'
           from pathlib import Path
           import json,urllib.request
-          cases=[{"id":"g1","text":"日付を選んでもう一度試してください。","expected":"自然"},{"id":"g2","text":"作業日は計算の出発点です。","expected":"自然"},{"id":"g3","text":"前のカツレツ","expected":"自然"},{"id":"g4","text":"月は一年の中で互いに織り合わされることがあります。","expected":"自然"},{"id":"b1","text":"Click here して続行してください。","expected":"修正"},{"id":"b2","text":"working day を変更してください。","expected":"修正"},{"id":"b3","text":"Измените 作業日。","expected":"修正"},{"id":"b4","text":"Cambiar la fecha を選択してください。","expected":"修正"}]
+          cases=[{"id":"g1","text":"Válasszon egy dátumot, és próbálja újra.","expected":"TERMÉSZETES"},{"id":"g2","text":"A műveleti nap a számítás kiindulópontja.","expected":"TERMÉSZETES"},{"id":"g3","text":"Előző szelet","expected":"TERMÉSZETES"},{"id":"g4","text":"A hónapok az év során összefonódhatnak egymással.","expected":"TERMÉSZETES"},{"id":"b1","text":"Click here a folytatáshoz.","expected":"JAVÍTANDÓ"},{"id":"b2","text":"Change the working day.","expected":"JAVÍTANDÓ"},{"id":"b3","text":"Promenite radni dan.","expected":"JAVÍTANDÓ"},{"id":"b4","text":"Как használjam ezt az oldalt?","expected":"JAVÍTANDÓ"}]
           ids=[x["id"] for x in cases]
-          prompt="あなたは現代標準日本語の厳格な母語話者編集者です。8つの断片を個別に判定してください。自然さ、文法、および英語・ロシア語・スペイン語などの意図しない混在を確認してください。「作業日」「照会日」「カツレツ」「織り合わされた月」は意図された用語です。JSONのみを返し、verdict は必ず「自然」または「修正」にしてください。"+"\n\n"+json.dumps(cases,ensure_ascii=False)
-          schema={"type":"object","properties":{"decisions":{"type":"array","minItems":8,"maxItems":8,"items":{"type":"object","properties":{"id":{"type":"string","enum":ids},"verdict":{"type":"string","enum":["自然","修正"]}},"required":["id","verdict"],"additionalProperties":False}}},"required":["decisions"],"additionalProperties":False}
-          payload={"messages":[{"role":"user","content":prompt}],"temperature":0.0,"max_tokens":420,"reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"ja_qualification","strict":True,"schema":schema}}}
+          prompt="Ön a mai standard magyar nyelv szigorú anyanyelvi szerkesztője. A nyolc részletet külön-külön értékelje. Ellenőrizze a természetességet, a nyelvtant, valamint az angol, szerb, orosz vagy kevert nyelvi maradványokat. A „műveleti nap”, „lekérdezett nap”, „szelet” és az összefonódó hónapok szándékos szakterminusok. Csak JSON-t adjon vissza; a verdict pontosan TERMÉSZETES vagy JAVÍTANDÓ legyen."+"\n\n"+json.dumps(cases,ensure_ascii=False)
+          schema={"type":"object","properties":{"decisions":{"type":"array","minItems":8,"maxItems":8,"items":{"type":"object","properties":{"id":{"type":"string","enum":ids},"verdict":{"type":"string","enum":["TERMÉSZETES","JAVÍTANDÓ"]}},"required":["id","verdict"],"additionalProperties":False}}},"required":["decisions"],"additionalProperties":False}
+          payload={"messages":[{"role":"user","content":prompt}],"temperature":0.0,"max_tokens":420,"reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"hu_qualification","strict":True,"schema":schema}}}
           req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),headers={"Content-Type":"application/json"},method="POST")
           with urllib.request.urlopen(req,timeout=2400) as resp: data=json.load(resp)
-          raw=data["choices"][0]["message"]["content"].strip(); ev=Path("/tmp/ja-strict/evidence"); ev.joinpath("qualification-raw.json").write_text(raw+"\n",encoding="utf-8")
+          raw=data["choices"][0]["message"]["content"].strip(); ev=Path("/tmp/hu-strict/evidence"); ev.joinpath("qualification-raw.json").write_text(raw+"\n",encoding="utf-8")
           ds=json.loads(raw).get("decisions",[]); actual={d["id"]:d["verdict"] for d in ds}; results=[]; failed=[]
           for x in cases:
             ok=actual.get(x["id"])==x["expected"]; results.append({**x,"actual":actual.get(x["id"]),"passed":ok})
@@ -119,18 +119,18 @@ jobs:
           if len(ds)!=8 or failed: raise SystemExit("qualification failed")
           PY
 
-      - name: Strict whole-site Japanese review
+      - name: Strict whole-site Hungarian review
         shell: bash
         run: |
           set -euo pipefail
           python - <<'PY'
           from pathlib import Path
           import json,urllib.request
-          ev=Path("/tmp/ja-strict/evidence"); items=json.loads(ev.joinpath("items.json").read_text(encoding="utf-8")); by={}
+          ev=Path("/tmp/hu-strict/evidence"); items=json.loads(ev.joinpath("items.json").read_text(encoding="utf-8")); by={}
           for item in items: by.setdefault(item["location"],[]).append(item["text"])
-          prompt="あなたはパスタファリ暦の日本語版を担当する、独立した厳格な母語話者の言語編集者です。サイト全体の可視テキストとアクセシビリティ向けテキストを一つの言語体験として確認してください。英語・ロシア語・スペイン語など他言語の残り、直訳調、不自然な日本語、文法・表記・句読点・用語の問題を、metadata、manifest、accessibility テキストも含めて探してください。日本語本文中の通常の英語技術語は、実際の code literal、API名、proper name でない限り問題です。安定したID、数式、hash、API/endpoint名、HTTP、CLI、OpenAPI、SIMD、SLA、all-day、Short Choice、Wide Choiceはそのままで構いません。各 finding は与えられた正確な location を使い、current_text はその場所に実在する連続した文字列でなければなりません。問題がなければ CLEAN と空の findings を返してください。JSONのみを返してください。"+"\n\nWEBSITE_TEXT_ITEMS_JSON:\n"+Path("/tmp/ja-strict/corpus.json").read_text(encoding="utf-8")
+          prompt="Ön a Pastafari-naptár magyar változatának független és szigorú anyanyelvi nyelvi szerkesztője. A webhely teljes látható és akadálymentesítési célú szövegét egyetlen nyelvi egységként ellenőrizze. Keresse az angol, szerb, orosz vagy más nyelvi maradványokat, tükörfordításokat, természetellenes magyart, valamint nyelvtani, helyesírási, központozási és terminológiai hibákat, beleértve a metadata, manifest és accessibility szöveget. A magyar prózában szereplő hétköznapi angol technikai szavak problémának számítanak, kivéve ha valódi code literal, API-név vagy tulajdonnév. A stabil ID-k, képletek, hash-ek, API/endpoint nevek, HTTP, CLI, OpenAPI, SIMD, SLA, all-day, Short Choice és Wide Choice maradhatnak. Minden finding pontosan a megadott location értéket használja, a current_text pedig ott szó szerint szereplő összefüggő részszöveg legyen. Ha nincs valódi probléma, adjon vissza CLEAN eredményt üres findings listával. Csak JSON-t adjon vissza."+"\n\nWEBSITE_TEXT_ITEMS_JSON:\n"+Path("/tmp/hu-strict/corpus.json").read_text(encoding="utf-8")
           schema={"type":"object","properties":{"result":{"type":"string","enum":["CLEAN","FINDINGS"]},"findings":{"type":"array","maxItems":14,"items":{"type":"object","properties":{"severity":{"type":"string","enum":["critical","high","medium","low"]},"location":{"type":"string"},"current_text":{"type":"string","minLength":1,"maxLength":280},"issue":{"type":"string","minLength":15,"maxLength":420},"correction":{"type":"string","minLength":2,"maxLength":420}},"required":["severity","location","current_text","issue","correction"],"additionalProperties":False}}},"required":["result","findings"],"additionalProperties":False}
-          payload={"messages":[{"role":"user","content":prompt}],"temperature":0.05,"top_p":0.85,"max_tokens":1900,"reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"ja_whole_site_review","strict":True,"schema":schema}}}
+          payload={"messages":[{"role":"user","content":prompt}],"temperature":0.05,"top_p":0.85,"max_tokens":1900,"reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"hu_whole_site_review","strict":True,"schema":schema}}}
           accepted=None
           for attempt in (1,2):
             req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),headers={"Content-Type":"application/json"},method="POST")
@@ -150,7 +150,7 @@ jobs:
           final_result="PASS" if accepted["result"]=="CLEAN" else "FAIL"
           final={"result":final_result,"reviewed_head":ev.joinpath("reviewed-head.txt").read_text().strip(),"findings":accepted["findings"]}
           ev.joinpath("final.json").write_text(json.dumps(final,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-          lines=[f"NATIVE_QA_RESULT: {final_result}","","日本語版サイト全体の厳格な言語レビューでは、修正が必要な確認済みの問題は見つかりませんでした。" if final_result=="PASS" else "日本語版サイト全体の厳格な言語レビューで、修正が必要な確認済みの問題が見つかりました。",""]
+          lines=[f"NATIVE_QA_RESULT: {final_result}","","A teljes magyar webhely szigorú nyelvi ellenőrzése nem talált javítást igénylő, megerősített problémát." if final_result=="PASS" else "A teljes magyar webhely szigorú nyelvi ellenőrzése javítást igénylő, megerősített problémákat talált.",""]
           if final_result=="FAIL":
             for i,f in enumerate(accepted["findings"],1): lines += [f"### {i}. {f['severity']}","",f["location"],"",f"> {f['current_text']}","",f["issue"],"","Correction: "+f["correction"],""]
           ev.joinpath("review.md").write_text("\n".join(lines).rstrip()+"\n",encoding="utf-8")
@@ -160,17 +160,17 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          head -n 1 /tmp/ja-strict/evidence/review.md | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)$'
+          head -n 1 /tmp/hu-strict/evidence/review.md | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)$'
       - name: Stop reviewer
         if: always()
         shell: bash
         run: |
-          [ ! -f /tmp/ja-strict/server.pid ] || kill "$(cat /tmp/ja-strict/server.pid)" 2>/dev/null || true
-      - name: Upload strict Japanese evidence
+          [ ! -f /tmp/hu-strict/server.pid ] || kill "$(cat /tmp/hu-strict/server.pid)" 2>/dev/null || true
+      - name: Upload strict Hungarian evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: ja-strict-native-whole-site
-          path: /tmp/ja-strict/evidence/
+          name: hu-strict-native-whole-site
+          path: /tmp/hu-strict/evidence/
           if-no-files-found: warn
           retention-days: 90
