@@ -13,7 +13,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 |---|---|---|---|---|
 | he | he-IL | rtl | complete | semantic master / existing |
 | en | en-US | ltr | complete | linguistic QA |
-| af | af-ZA | ltr | partial | semantic QA |
+| af | af-ZA | ltr | partial | linguistic QA |
 | ar | ar | rtl | partial | semantic QA |
 | az | az-AZ | ltr | partial | semantic QA |
 | be | be-BY | ltr | partial | semantic QA |
@@ -88,7 +88,7 @@ Status progression for target locales: `not started → draft → semantic QA �
 
 ## Findings requiring locale-wide review
 
-- `af-ZA`: locale-wide language finding discovered during terminology audit: prominent existing UI strings are Dutch rather than Afrikaans (for example `Werkdag wijzigen`, `Deze site gebruiken`). Treat as a whole-site locale defect for the native-language QA phase; do not silently normalize canonical terminology from those strings while drafting the article.
+- `af-ZA`: historical locale-wide language finding: the original UI contained substantial Dutch/mixed Afrikaans. Before the final gate, remaining unambiguous leakage (`Ga naar datum soek`, `default`, `Koteletten`, `Maanden`) and the malformed localized manifest description were repaired. Strict Gemma 4 whole-site run `36707310645` then passed after an 8/8 Afrikaans qualification over natural Afrikaans, Dutch leakage, and grammar controls; 564 grounded text items produced zero confirmed findings. Evidence is stored under `artifacts/about-i18n-native-sessions/af/strict-36707310645/`. The locale is therefore at `linguistic QA`; rendered/visual and final integration gates remain separate.
 
 - `ca-ES`: locale-wide language finding: prominent existing UI strings contain Spanish/mixed Catalan rather than idiomatic Catalan (for example `Cambiar el dia de trabajo`, `Cómo usar este lloc`). Do not use those strings as a terminology oracle for the article; native Catalan review must repair the whole locale.
 
