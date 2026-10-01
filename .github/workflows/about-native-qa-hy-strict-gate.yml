@@ -1,0 +1,176 @@
+name: Armenian strict native-language whole-site gate
+
+on:
+  push:
+    branches: [feature/about-i18n-72-locales]
+    paths:
+      - .github/workflows/about-native-qa-hy-strict-gate.yml
+      - docs/i18n/locales/hy.js
+      - docs/about/content/hy.html
+      - docs/manifest.webmanifest
+      - docs/i18n/registry.js
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hy-strict-native-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  strict-hy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with: {fetch-depth: 1}
+      - name: Install pinned llama.cpp runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/hy-strict/llama /tmp/hy-strict/evidence
+          curl -fL --retry 3 https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz -o /tmp/hy-strict/llama.tar.gz
+          echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/hy-strict/llama.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/hy-strict/llama.tar.gz -C /tmp/hy-strict/llama
+          git rev-parse HEAD > /tmp/hy-strict/evidence/reviewed-head.txt
+      - name: Extract grounded Armenian website corpus
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          from html.parser import HTMLParser
+          import json,re
+          items=[]
+          locale=Path("docs/i18n/locales/hy.js").read_text(encoding="utf-8")
+          for key,raw in re.findall(r'"([^"]+)"\s*:\s*("(?:\\.|[^"\\])*")',locale):
+            try: value=json.loads(raw)
+            except Exception: continue
+            if isinstance(value,str) and value.strip() and key not in {"code","dir","intlLocale"}:
+              items.append({"location":f"docs/i18n/locales/hy.js#{key}","text":value.strip()})
+          class P(HTMLParser):
+            wanted={"p","li","h1","h2","h3","h4","h5","h6","th","td","caption","blockquote"}; attrs={"aria-label","aria-description","title","alt"}
+            def __init__(self): super().__init__(convert_charrefs=True); self.sections=[]; self.current=None; self.n=0
+            def handle_starttag(self,tag,attrs):
+              attrs=dict(attrs)
+              if tag=="br" and self.current is not None: self.current["parts"].append(". ")
+              if tag=="section": self.sections.append(attrs.get("id",""))
+              sec=next((x for x in reversed(self.sections) if x),""); ident=attrs.get("id") or sec or tag
+              for a in self.attrs:
+                v=attrs.get(a)
+                if v and v.strip(): items.append({"location":f"docs/about/content/hy.html#{ident}@{a}-{self.n}","text":v.strip()}); self.n+=1
+              if tag in self.wanted: self.current={"tag":tag,"id":attrs.get("id",""),"section":sec,"parts":[]}
+            def handle_endtag(self,tag):
+              if self.current is not None and self.current["tag"]==tag:
+                txt=re.sub(r"\s+"," ","".join(self.current["parts"])).strip()
+                if txt:
+                  ident=self.current["id"] or self.current["section"] or self.current["tag"]
+                  items.append({"location":f"docs/about/content/hy.html#{ident}","text":txt})
+                self.current=None
+              if tag=="section" and self.sections: self.sections.pop()
+            def handle_data(self,data):
+              if self.current is not None: self.current["parts"].append(data)
+          p=P(); p.feed(Path("docs/about/content/hy.html").read_text(encoding="utf-8"))
+          manifest=json.loads(Path("docs/manifest.webmanifest").read_text(encoding="utf-8"))
+          for field in ("name_localized","short_name_localized","description_localized"):
+            v=manifest.get(field,{}).get("hy",{}).get("value")
+            if isinstance(v,str) and v.strip(): items.append({"location":f"docs/manifest.webmanifest#{field}.hy.value","text":v.strip()})
+          registry=Path("docs/i18n/registry.js").read_text(encoding="utf-8")
+          m=re.search(r'defineLocale\("hy",\s*"([^"]+)"',registry)
+          if m: items.append({"location":"docs/i18n/registry.js#locale-hy-display-name","text":m.group(1)})
+          seen=set(); out=[]
+          for item in items:
+            pair=(item["location"],item["text"])
+            if pair in seen: continue
+            seen.add(pair); item["id"]=f"HY{len(out):04d}"; out.append(item)
+          Path("/tmp/hy-strict/evidence/items.json").write_text(json.dumps(out,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          compact=json.dumps(out,ensure_ascii=False,separators=(",",":")); Path("/tmp/hy-strict/corpus.json").write_text(compact,encoding="utf-8")
+          if len(compact)>100000: raise SystemExit("corpus exceeds review budget")
+          PY
+      - name: Start isolated Armenian Gemma 4 reviewer
+        shell: bash
+        run: |
+          set -euo pipefail
+          SERVER="$(find /tmp/hy-strict/llama -type f -name llama-server | head -n 1)"
+          "$SERVER" -hf ggml-org/gemma-4-E4B-it-GGUF:Q4_0 --reasoning auto --chat-template-kwargs '{"enable_thinking":false}' -c 32768 -t 4 --host 127.0.0.1 --port 8080 > /tmp/hy-strict/evidence/server.log 2>&1 &
+          echo "$!" > /tmp/hy-strict/server.pid
+          for _ in $(seq 1 900); do curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break; sleep 1; done
+          curl -fsS http://127.0.0.1:8080/health >/dev/null
+      - name: Batched hidden Armenian reviewer qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json,urllib.request
+          cases=[{"id":"g1","text":"Ընտրեք ամսաթիվը և կրկին փորձեք։","expected":"ԲՆԱԿԱՆ"},{"id":"g2","text":"Գործողության օրը հաշվարկի մեկնակետն է։","expected":"ԲՆԱԿԱՆ"},{"id":"g3","text":"Նախորդ կոտլետը","expected":"ԲՆԱԿԱՆ"},{"id":"g4","text":"Ամիսները տարվա ընթացքում կարող են իրար հետ միահյուսվել։","expected":"ԲՆԱԿԱՆ"},{"id":"b1","text":"Click here և շարունակեք։","expected":"ՈՒՂՂԵԼ"},{"id":"b2","text":"working day-ը փոխեք։","expected":"ՈՒՂՂԵԼ"},{"id":"b3","text":"Измените գործողության օրը։","expected":"ՈՒՂՂԵԼ"},{"id":"b4","text":"Tarihi seçin և կրկին փորձեք։","expected":"ՈՒՂՂԵԼ"}]
+          ids=[x["id"] for x in cases]
+          prompt="Դուք ժամանակակից գրական հայերենի խիստ մայրենի խմբագիր եք։ Ութ հատվածները գնահատեք առանձին։ Ստուգեք բնականությունը, քերականությունը և անգլերենի, ռուսերենի, թուրքերենի կամ խառը լեզվի անցանկալի ներթափանցումը։ «գործողության օր», «հարցվող օր», «կոտլետ» և միահյուսված ամիսներ ձևակերպումները դիտավորյալ տերմիններ են։ Վերադարձրեք միայն JSON. verdict-ը պետք է լինի ճիշտ ԲՆԱԿԱՆ կամ ՈՒՂՂԵԼ։"+"\n\n"+json.dumps(cases,ensure_ascii=False)
+          schema={"type":"object","properties":{"decisions":{"type":"array","minItems":8,"maxItems":8,"items":{"type":"object","properties":{"id":{"type":"string","enum":ids},"verdict":{"type":"string","enum":["PRIRODNO","ISPRAVITI"]}},"required":["id","verdict"],"additionalProperties":False}}},"required":["decisions"],"additionalProperties":False}
+          payload={"messages":[{"role":"user","content":prompt}],"temperature":0.0,"max_tokens":420,"reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"hy_qualification","strict":True,"schema":schema}}}
+          req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),headers={"Content-Type":"application/json"},method="POST")
+          with urllib.request.urlopen(req,timeout=2400) as resp: data=json.load(resp)
+          raw=data["choices"][0]["message"]["content"].strip(); ev=Path("/tmp/hy-strict/evidence"); ev.joinpath("qualification-raw.json").write_text(raw+"\n",encoding="utf-8")
+          ds=json.loads(raw).get("decisions",[]); actual={d["id"]:d["verdict"] for d in ds}; results=[]; failed=[]
+          for x in cases:
+            ok=actual.get(x["id"])==x["expected"]; results.append({**x,"actual":actual.get(x["id"]),"passed":ok})
+            if not ok: failed.append(x["id"])
+          ev.joinpath("qualification.json").write_text(json.dumps(results,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          if len(ds)!=8 or failed: raise SystemExit("qualification failed")
+          PY
+
+      - name: Strict whole-site Armenian review
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json,urllib.request
+          ev=Path("/tmp/hy-strict/evidence"); items=json.loads(ev.joinpath("items.json").read_text(encoding="utf-8")); by={}
+          for item in items: by.setdefault(item["location"],[]).append(item["text"])
+          prompt="Դուք Pastafari օրացույցի հայերեն տարբերակի անկախ և խիստ մայրենի լեզվական խմբագիր եք։ Ստուգեք կայքի ամբողջ տեսանելի և մատչելիությանը վերաբերող տեքստը որպես մեկ լեզվական ամբողջություն։ Փնտրեք անգլերեն, ռուսերեն, թուրքերեն կամ այլ լեզուների մնացորդներ, բառացի թարգմանություններ, անբնական հայերեն, քերականական, ուղղագրական, կետադրական և տերմինաբանական խնդիրներ, ներառյալ metadata, manifest և accessibility տեքստերը։ Սովորական անգլերեն տեխնիկական բառերը հայերեն շարադրանքում խնդիր են, եթե դրանք իրական code literal, API name կամ proper name չեն։ Կայուն ID-ները, բանաձևերը, hash-երը, API/endpoint անունները, HTTP, CLI, OpenAPI, SIMD, SLA, all-day, Short Choice և Wide Choice կարող են մնալ։ Յուրաքանչյուր finding պետք է օգտագործի տրված ճշգրիտ location-ը, իսկ current_text-ը պետք է բառացի շարունակական ենթատող լինի այնտեղ։ Եթե իրական խնդիր չկա, վերադարձրեք CLEAN և դատարկ findings։ Վերադարձրեք միայն JSON։"+"\n\nWEBSITE_TEXT_ITEMS_JSON:\n"+Path("/tmp/hy-strict/corpus.json").read_text(encoding="utf-8")
+          schema={"type":"object","properties":{"result":{"type":"string","enum":["CLEAN","FINDINGS"]},"findings":{"type":"array","maxItems":14,"items":{"type":"object","properties":{"severity":{"type":"string","enum":["critical","high","medium","low"]},"location":{"type":"string"},"current_text":{"type":"string","minLength":1,"maxLength":280},"issue":{"type":"string","minLength":15,"maxLength":420},"correction":{"type":"string","minLength":2,"maxLength":420}},"required":["severity","location","current_text","issue","correction"],"additionalProperties":False}}},"required":["result","findings"],"additionalProperties":False}
+          payload={"messages":[{"role":"user","content":prompt}],"temperature":0.05,"top_p":0.85,"max_tokens":1900,"reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"hy_whole_site_review","strict":True,"schema":schema}}}
+          accepted=None
+          for attempt in (1,2):
+            req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),headers={"Content-Type":"application/json"},method="POST")
+            with urllib.request.urlopen(req,timeout=3600) as resp: data=json.load(resp)
+            raw=data["choices"][0]["message"]["content"].strip(); ev.joinpath(f"raw-review-attempt-{attempt}.json").write_text(raw+"\n",encoding="utf-8")
+            try: p=json.loads(raw)
+            except Exception: continue
+            result=p.get("result"); findings=p.get("findings")
+            if result not in {"CLEAN","FINDINGS"} or not isinstance(findings,list) or (result=="CLEAN" and findings) or (result=="FINDINGS" and not findings): continue
+            seen=set(); good=True
+            for f in findings:
+              loc=str(f.get("location","")).strip(); cur=str(f.get("current_text","")).strip(); corr=str(f.get("correction","")).strip()
+              if loc not in by or not cur or not any(cur in t for t in by[loc]) or cur==corr or (loc,cur) in seen: good=False; break
+              seen.add((loc,cur))
+            if good: accepted=p; break
+          if accepted is None: raise SystemExit("review invalid")
+          final_result="PASS" if accepted["result"]=="CLEAN" else "FAIL"
+          final={"result":final_result,"reviewed_head":ev.joinpath("reviewed-head.txt").read_text().strip(),"findings":accepted["findings"]}
+          ev.joinpath("final.json").write_text(json.dumps(final,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          lines=[f"NATIVE_QA_RESULT: {final_result}","","Հայերեն ամբողջ կայքի խիստ լեզվական ստուգումը չի գտել հաստատված խնդիր, որը պահանջում է ուղղում։" if final_result=="PASS" else "Հայերեն ամբողջ կայքի խիստ լեզվական ստուգումը գտել է հաստատված խնդիրներ, որոնք պահանջում են ուղղում։",""]
+          if final_result=="FAIL":
+            for i,f in enumerate(accepted["findings"],1): lines += [f"### {i}. {f['severity']}","",f["location"],"",f"> {f['current_text']}","",f["issue"],"","Correction: "+f["correction"],""]
+          ev.joinpath("review.md").write_text("\n".join(lines).rstrip()+"\n",encoding="utf-8")
+          PY
+
+      - name: Verify verdict
+        shell: bash
+        run: |
+          set -euo pipefail
+          head -n 1 /tmp/hy-strict/evidence/review.md | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)$'
+      - name: Stop reviewer
+        if: always()
+        shell: bash
+        run: |
+          [ ! -f /tmp/hy-strict/server.pid ] || kill "$(cat /tmp/hy-strict/server.pid)" 2>/dev/null || true
+      - name: Upload strict Armenian evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: hy-strict-native-whole-site
+          path: /tmp/hy-strict/evidence/
+          if-no-files-found: warn
+          retention-days: 90
