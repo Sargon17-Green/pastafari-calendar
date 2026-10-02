@@ -1,0 +1,174 @@
+name: Yoruba strict native-language whole-site gate
+
+on:
+  push:
+    branches: [feature/about-i18n-72-locales]
+    paths:
+      - .github/workflows/about-native-qa-yo-strict-gate.yml
+      - docs/i18n/locales/yo.js
+      - docs/about/content/yo.html
+      - docs/manifest.webmanifest
+      - docs/i18n/registry.js
+
+permissions:
+  contents: read
+
+concurrency:
+  group: yo-strict-native-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  strict-yo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with: {fetch-depth: 1}
+      - name: Install pinned llama.cpp runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/yo-strict/llama /tmp/yo-strict/evidence
+          curl -fL --retry 3 https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz -o /tmp/yo-strict/llama.tar.gz
+          echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/yo-strict/llama.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/yo-strict/llama.tar.gz -C /tmp/yo-strict/llama
+          git rev-parse HEAD > /tmp/yo-strict/evidence/reviewed-head.txt
+      - name: Extract grounded Yoruba website corpus
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          from html.parser import HTMLParser
+          import json,re
+          items=[]
+          locale=Path("docs/i18n/locales/yo.js").read_text(encoding="utf-8")
+          for key,raw in re.findall(r'"([^"]+)"\s*:\s*("(?:\\.|[^"\\])*")',locale):
+            try: value=json.loads(raw)
+            except Exception: continue
+            if isinstance(value,str) and value.strip() and key not in {"code","dir","intlLocale"}:
+              items.append({"location":f"docs/i18n/locales/yo.js#{key}","text":value.strip()})
+          class P(HTMLParser):
+            wanted={"p","li","h1","h2","h3","h4","h5","h6","th","td","caption","blockquote"}; attrs={"aria-label","aria-description","title","alt"}
+            def __init__(self): super().__init__(convert_charrefs=True); self.sections=[]; self.current=None; self.n=0
+            def handle_starttag(self,tag,attrs):
+              attrs=dict(attrs)
+              if tag=="br" and self.current is not None: self.current["parts"].append(". ")
+              if tag=="section": self.sections.append(attrs.get("id",""))
+              sec=next((x for x in reversed(self.sections) if x),""); ident=attrs.get("id") or sec or tag
+              for a in self.attrs:
+                v=attrs.get(a)
+                if v and v.strip(): items.append({"location":f"docs/about/content/yo.html#{ident}@{a}-{self.n}","text":v.strip()}); self.n+=1
+              if tag in self.wanted: self.current={"tag":tag,"id":attrs.get("id",""),"section":sec,"parts":[]}
+            def handle_endtag(self,tag):
+              if self.current is not None and self.current["tag"]==tag:
+                txt=re.sub(r"\s+"," ","".join(self.current["parts"])).strip()
+                if txt:
+                  ident=self.current["id"] or self.current["section"] or self.current["tag"]
+                  items.append({"location":f"docs/about/content/yo.html#{ident}","text":txt})
+                self.current=None
+              if tag=="section" and self.sections: self.sections.pop()
+            def handle_data(self,data):
+              if self.current is not None: self.current["parts"].append(data)
+          p=P(); p.feed(Path("docs/about/content/yo.html").read_text(encoding="utf-8"))
+          manifest=json.loads(Path("docs/manifest.webmanifest").read_text(encoding="utf-8"))
+          for field in ("name_localized","short_name_localized","description_localized"):
+            v=manifest.get(field,{}).get("yo",{}).get("value")
+            if isinstance(v,str) and v.strip(): items.append({"location":f"docs/manifest.webmanifest#{field}.uz.value","text":v.strip()})
+          registry=Path("docs/i18n/registry.js").read_text(encoding="utf-8")
+          m=re.search(r'defineLocale\("yo",\s*"([^"]+)"',registry)
+          if m: items.append({"location":"docs/i18n/registry.js#locale-yo-display-name","text":m.group(1)})
+          seen=set(); out=[]
+          for item in items:
+            pair=(item["location"],item["text"])
+            if pair in seen: continue
+            seen.add(pair); item["id"]=f"YO{len(out):04d}"; out.append(item)
+          Path("/tmp/yo-strict/evidence/items.json").write_text(json.dumps(out,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          compact=json.dumps(out,ensure_ascii=False,separators=(",",":")); Path("/tmp/yo-strict/corpus.json").write_text(compact,encoding="utf-8")
+          if len(compact)>100000: raise SystemExit("corpus exceeds review budget")
+          PY
+      - name: Start isolated Yoruba Gemma 4 reviewer
+        shell: bash
+        run: |
+          set -euo pipefail
+          SERVER="$(find /tmp/yo-strict/llama -type f -name llama-server | head -n 1)"
+          "$SERVER" -hf ggml-org/gemma-4-E4B-it-GGUF:Q4_0 --reasoning auto --chat-template-kwargs '{"enable_thinking":false}' -c 32768 -t 4 --host 127.0.0.1 --port 8080 > /tmp/yo-strict/evidence/server.log 2>&1 &
+          echo "$!" > /tmp/yo-strict/server.pid
+          for _ in $(seq 1 900); do curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break; sleep 1; done
+          curl -fsS http://127.0.0.1:8080/health >/dev/null
+      - name: Batched hidden Yoruba reviewer qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json,urllib.request
+          cases=[{"id":"g1","text":"A kò lè mọ ọjọ́ yẹn. Ṣàyẹ̀wò pé gbogbo ààyè ti kun àti pé ọjọ́ náà wà nínú kalẹ́ńdà tí o yan.","expected":"OK"},{"id":"g2","text":"Ọjọ́ ìṣiṣẹ́ ni ibi tí ìṣirò ti bẹ̀rẹ̀.","expected":"OK"},{"id":"g3","text":"Kotleti tó ṣáájú","expected":"OK"},{"id":"g4","text":"Báwo ni mo ṣe lo ojúlé yìí?","expected":"OK"},{"id":"b1","text":"Click here kí o sì tẹ̀síwájú.","expected":"FIX"},{"id":"b2","text":"Change the working day.","expected":"FIX"},{"id":"b3","text":"Tafadhali chagua tarehe hii.","expected":"FIX"},{"id":"b4","text":"Bawo ni mo ṣe lo website yii?","expected":"FIX"}]
+          ids=[x["id"] for x in cases]
+          prompt="Ìwọ jẹ́ olootu abinibi tó muna fún Yorùbá àgbàdéédé òde òní. Ṣàyẹ̀wò ọkọọkan àwọn apá mẹ́jọ tó tẹ̀ lé lọ́tọ̀ọ̀tọ̀. Wo bó ṣe jẹ́ adayeba, gírámà, àti àwọn àṣẹku Gẹ̀ẹ́sì, Kiswahili tàbí èdè míì tí kò yẹ, pẹ̀lú àdàlù èdè. Àwọn ọ̀rọ̀ «ọjọ́ ìṣiṣẹ́», «ọjọ́ tí a ń béèrè», «kotleti» àti àwọn oṣù tó ń hun pọ̀ jẹ́ ọ̀rọ̀ domain tí a mọ̀ọ́mọ̀ lò. Return only JSON; verdict must be exactly OK or FIX."+"\\n\\n"+json.dumps(cases,ensure_ascii=False)
+          schema={"type":"object","properties":{"decisions":{"type":"array","minItems":8,"maxItems":8,"items":{"type":"object","properties":{"id":{"type":"string","enum":ids},"verdict":{"type":"string","enum":["OK","FIX"]}},"required":["id","verdict"],"additionalProperties":False}}},"required":["decisions"],"additionalProperties":False}
+          payload={"messages":[{"role":"user","content":prompt}],"temperature":0.0,"max_tokens":420,"reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"yo_qualification","strict":True,"schema":schema}}}
+          req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),headers={"Content-Type":"application/json"},method="POST")
+          with urllib.request.urlopen(req,timeout=2400) as resp: data=json.load(resp)
+          raw=data["choices"][0]["message"]["content"].strip(); ev=Path("/tmp/yo-strict/evidence"); ev.joinpath("qualification-raw.json").write_text(raw+"\n",encoding="utf-8")
+          ds=json.loads(raw).get("decisions",[]); actual={d["id"]:d["verdict"] for d in ds}; results=[]; failed=[]
+          for x in cases:
+            ok=actual.get(x["id"])==x["expected"]; results.append({**x,"actual":actual.get(x["id"]),"passed":ok})
+            if not ok: failed.append(x["id"])
+          ev.joinpath("qualification.json").write_text(json.dumps(results,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          if len(ds)!=8 or failed: raise SystemExit("qualification failed")
+          PY
+      - name: Strict whole-site Yoruba review
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json,urllib.request
+          ev=Path("/tmp/yo-strict/evidence"); items=json.loads(ev.joinpath("items.json").read_text(encoding="utf-8")); by={}
+          for item in items: by.setdefault(item["location"],[]).append(item["text"])
+          prompt="Ìwọ jẹ́ olootu abinibi Yorùbá tó dá lórí ara rẹ̀, tó sì muna fún ẹ̀dà Yorùbá ti Kalẹ́ńdà Pastafari. Ṣàyẹ̀wò gbogbo ọrọ̀ tí olumulo ń rí àti ọrọ̀ accessibility lórí ojúlé gẹ́gẹ́ bí irírí èdè kan ṣoṣo. Wá àṣẹku Gẹ̀ẹ́sì, Kiswahili tàbí èdè mìíràn tí kò yẹ, ìtumọ̀ lẹ́tà-lẹ́tà, Yorùbá tí kò ṣe adayeba, àti ìṣòro gírámà, akọtọ̀, àmì ìkọ̀wé àti ọ̀rọ̀ amọ̀ja, pẹ̀lú metadata, manifest àti ọrọ̀ accessibility. Ọ̀rọ̀ imọ̀ Gẹ̀ẹ́sì tí ó wọ́pọ̀ nínú àkọsílẹ̀ Yorùbá jẹ́ ìṣòro, àfi bí ó bá jẹ́ code literal gidi, orúkọ API tàbí proper name. ID tó dúró ṣinṣin, fọ́ọ̀mùlà, hash, orúkọ API/endpoint, HTTP, CLI, OpenAPI, SIMD, SLA, all-day, Short Choice àti Wide Choice lè dúró. Ṣàyẹ̀wò ní pàtàkì àwọn àṣẹku tí a rí lọ́wọ́: “topocentric lower meridian transit”, “daylight saving time”, “heavy tail”, “shift”, “algorithm” àti “corpus”. Bí wọ́n kò bá jẹ́ literal tàbí proper name gidi, wọ́n gbọdọ̀ jẹ́ findings pẹ̀lú àtúnṣe Yorùbá. Gbogbo finding gbọ́dọ̀ lo location tí a fún ní gangan; current_text gbọ́dọ̀ jẹ́ ọ̀rọ̀ tó ń tẹ̀síwájú tí ó wà níbẹ̀ gan-an. Bí kò bá sí ìṣòro gidi, dá CLEAN àti àkójọ findings tó ṣofo padà. Dá JSON nìkan padà."+"\n\nWEBSITE_TEXT_ITEMS_JSON:\n"+Path("/tmp/yo-strict/corpus.json").read_text(encoding="utf-8")
+          schema={"type":"object","properties":{"result":{"type":"string","enum":["CLEAN","FINDINGS"]},"findings":{"type":"array","maxItems":14,"items":{"type":"object","properties":{"severity":{"type":"string","enum":["critical","high","medium","low"]},"location":{"type":"string"},"current_text":{"type":"string","minLength":1,"maxLength":280},"issue":{"type":"string","minLength":15,"maxLength":420},"correction":{"type":"string","minLength":2,"maxLength":420}},"required":["severity","location","current_text","issue","correction"],"additionalProperties":False}}},"required":["result","findings"],"additionalProperties":False}
+          payload={"messages":[{"role":"user","content":prompt}],"temperature":0.05,"top_p":0.85,"max_tokens":1900,"reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"yo_whole_site_review","strict":True,"schema":schema}}}
+          accepted=None
+          for attempt in (1,2):
+            req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),headers={"Content-Type":"application/json"},method="POST")
+            with urllib.request.urlopen(req,timeout=3600) as resp: data=json.load(resp)
+            raw=data["choices"][0]["message"]["content"].strip(); ev.joinpath(f"raw-review-attempt-{attempt}.json").write_text(raw+"\n",encoding="utf-8")
+            try: p=json.loads(raw)
+            except Exception: continue
+            result=p.get("result"); findings=p.get("findings")
+            if result not in {"CLEAN","FINDINGS"} or not isinstance(findings,list) or (result=="CLEAN" and findings) or (result=="FINDINGS" and not findings): continue
+            seen=set(); good=True
+            for f in findings:
+              loc=str(f.get("location","")).strip(); cur=str(f.get("current_text","")).strip(); corr=str(f.get("correction","")).strip()
+              if loc not in by or not cur or not any(cur in t for t in by[loc]) or cur==corr or (loc,cur) in seen: good=False; break
+              seen.add((loc,cur))
+            if good: accepted=p; break
+          if accepted is None: raise SystemExit("review invalid")
+          final_result="PASS" if accepted["result"]=="CLEAN" else "FAIL"
+          final={"result":final_result,"reviewed_head":ev.joinpath("reviewed-head.txt").read_text().strip(),"findings":accepted["findings"]}
+          ev.joinpath("final.json").write_text(json.dumps(final,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          lines=[f"NATIVE_QA_RESULT: {final_result}","","Lẹ́yìn àyẹ̀wò èdè tó muna lórí gbogbo ojúlé Yorùbá, a kò rí ìṣòro tí a ti jẹ́rìí sí tí ó nílò àtúnṣe." if final_result=="PASS" else "Lẹ́yìn àyẹ̀wò èdè tó muna lórí gbogbo ojúlé Yorùbá, a rí àwọn ìṣòro tí a ti jẹ́rìí sí tí ó nílò àtúnṣe.",""]
+          if final_result=="FAIL":
+            for i,f in enumerate(accepted["findings"],1): lines += [f"### {i}. {f['severity']}","",f["location"],"",f"> {f['current_text']}","",f["issue"],"","Correction: "+f["correction"],""]
+          ev.joinpath("review.md").write_text("\n".join(lines).rstrip()+"\n",encoding="utf-8")
+          PY
+      - name: Verify verdict
+        shell: bash
+        run: |
+          set -euo pipefail
+          head -n 1 /tmp/yo-strict/evidence/review.md | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)$'
+      - name: Stop reviewer
+        if: always()
+        shell: bash
+        run: |
+          [ ! -f /tmp/yo-strict/server.pid ] || kill "$(cat /tmp/yo-strict/server.pid)" 2>/dev/null || true
+      - name: Upload strict Yoruba evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: yo-strict-native-whole-site
+          path: /tmp/yo-strict/evidence/
+          if-no-files-found: warn
+          retention-days: 90
