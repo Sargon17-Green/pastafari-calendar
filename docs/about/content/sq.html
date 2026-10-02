@@ -142,7 +142,7 @@
   <p>Për hapësira relativisht të vogla zgjedhjeje përdoret <strong>Short Choice</strong>. Ai përdor kampionim me refuzim për të shmangur anshmëri modulo të thjeshtë.</p>
   <p>Për hapësira shumë të mëdha përdoret <strong>Wide Choice</strong>. Nuk duhet t’i atribuohen veti që specifikimi nuk i garanton.</p>
   <p>Wide Choice nuk është e barasvlershme me prodhimin e shifrave base-<code>Q</code> të pavarura dhe të shpërndara njëtrajtshëm derisa të merret një indeks. Prandaj nuk del përfundimi se çdo choice i vlefshëm ka domosdoshmërisht të njëjtën probabilitet pozitiv. Në hapësira mjaft të mëdha mund të ketë choice të vlefshme që ky mekanizëm nuk i arrin kurrë.</p>
-  <p>Vetë kalendari mbetet plotësisht determinist. “Choice” është emri i një faze algoritmike, jo një short random gjatë përdorimit.</p><hr>
+  <p>Vetë kalendari mbetet plotësisht determinist. “Choice” është emri i një faze algoritmike, jo një lotari gjatë përdorimit.</p><hr>
 </section>
 
 <section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
@@ -214,13 +214,13 @@
   <h2>Udhëtimi, ngjarjet dhe gjithëditor</h2>
   <p>Një ngjarje dhe etiketa lokale që i shfaqet nuk janë e njëjta gjë. Një ngjarje me kohë të caktuar duhet të lidhet me një çast kronologjik të qëndrueshëm. Udhëtimi nuk e lëviz në kohë, por data lokale pastafariane e të njëjtit çast fizik mund të ndryshojë, sepse përkufizimi i “ditës lokale” varet nga vendndodhja.</p>
   <p>Te një ngjarje <strong>gjithëditor</strong> ndryshimi është edhe më i madh. Një ngjarje civile gjithëditore zakonisht zgjat nga mesnata në mesnatën tjetër; një ngjarje gjithëditore pastafariane duhet të zgjasë nga kufiri lokal i ditës pastafariane deri në kufirin tjetër. Zakonisht këto nuk janë të njëjtat çaste.</p>
-  <p>Prandaj eksportimi pa menduar i një ngjarjeje pastafariane si ngjarje civile “gjithëditore” mund t’ia ndryshojë kuptimin. Për ta ruajtur saktë duhet ruajtur ankora kronologjike dhe konteksti përkatës i location/day-boundary, jo vetëm flag-u <code>all-day</code>.</p><hr>
+  <p>Prandaj eksportimi pa menduar i një ngjarjeje pastafariane si ngjarje civile “gjithëditore” mund t’ia ndryshojë kuptimin. Për ta ruajtur saktë duhet ruajtur ankora kronologjike dhe konteksti përkatës i vendndodhjes/kufirit të ditës, jo vetëm kutia e zgjedhjes <code>all-day</code>.</p><hr>
 </section>
 
 <section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
   <h2>Kur ndryshon dita?</h2>
   <p>Dita lokale pastafariane nuk ndryshon në mesnatë. Kufiri i saj përcaktohet nga <strong>kalim topocentrik i poshtëm në meridian i qendrës së Venusit përmes meridianit lokal</strong>.</p>
-  <p>Pra kjo është një ngjarje astronomike lokale që varet nga vendndodhja. Transit nuk ka pse të ndodhë në 00:00, nuk përcaktohet nga zona civile e orës, nuk zhvendoset thjesht sepse nis ose mbaron ora verore dhe nuk kërkon që Venusi të jetë i dukshëm me sy të lirë.</p>
+  <p>Pra kjo është një ngjarje astronomike lokale që varet nga vendndodhja. Kalimi nuk ka pse të ndodhë në 00:00, nuk përcaktohet nga zona civile e orës, nuk zhvendoset thjesht sepse nis ose mbaron ora verore dhe nuk kërkon që Venusi të jetë i dukshëm me sy të lirë.</p>
   <p>I njëjti çast fizik mund të jetë në anë të ndryshme të kufirit lokal të ditës në dy vende të ndryshme. Nëse sistemi nuk ka një vendndodhje përdoruesi të përdorshme, vendndodhje rezervë parazgjedhjeje i produktit është <strong>Kisurra</strong>.</p><hr>
 </section>
 
@@ -312,7 +312,7 @@
 
 <section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
   <h2>Për përdorues të avancuar: sa histori ruan salca?</h2>
-  <p>Salca duket si një mechanism shumë agresiv përzierjeje, por kërkimi algjebrik tregon se ajo ruan shumë më tepër informacion sesa sugjeron pamja. Ky është rezultat kërkimor i nxjerrë nga specifikimi, jo rregull i ri i kalendarit.</p>
+  <p>Salca duket si një mekanizëm shumë agresiv përzierjeje, por kërkimi algjebrik tregon se ajo ruan shumë më tepër informacion sesa sugjeron pamja. Ky është rezultat kërkimor i nxjerrë nga specifikimi, jo rregull i ri i kalendarit.</p>
   <p>Në fazat e dukshme 3–46, në degën përkatëse asimptotike, është vendosur injektivitet i përgjithshëm: në rastin generic, gjendje ruan informacion të mjaftueshëm për të rindërtuar histori hyrjesh përkatëse dhe rendin e tasave.</p>
   <p>As në 12 përzierjet përfundimtare informacioni nuk humbet menjëherë. Për pesë përzierjet e para pas pikës së dukshme 46, në unionin kanonik përkatës është vendosur përmbysje e përgjithshme pa informacion anësor shtesë; për pjesën e mbetur njihen kufij të sipërm konstruktivë të fortë për sasinë e informacion anësor që mjafton për rindërtim.</p>
   <p>Mbetet e hapur pyetja nëse <strong>vetëm gjashtë tasat përfundimtarë</strong> mjaftojnë gjithmonë në kuptimin generic.</p>
