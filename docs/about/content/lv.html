@@ -233,13 +233,13 @@
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Kas tad ir Seer?</h2>
-  <p>Līdzās kanoniskajai implementācijai ir ātrs engine ar nosaukumu <strong>Pastafarian Calendar Seer</strong>. Seer nav autoritātes avots: Megillah nosaka noteikumus, bet kanoniskais aprēķins pēc tiem iegūst datumu. Ja Seer nesakrīt ar pareizu kanonisko aprēķinu, kļūdās Seer.</p>
+  <p>Līdzās kanoniskajai implementācijai ir ātrs skaitļošanas dzinis ar nosaukumu <strong>Pastafarian Calendar Seer</strong>. Seer nav autoritātes avots: Megillah nosaka noteikumus, bet kanoniskais aprēķins pēc tiem iegūst datumu. Ja Seer nesakrīt ar pareizu kanonisko aprēķinu, kļūdās Seer.</p>
   <p>Tā uzdevums ir ātri izpildīt tos pašus vaicājumus un darīt to formā, ko ērti integrēt produktos.</p>
   <p>2026. gada 21. septembrī veiktajā tiešajā pārbaudē Seer cita starpā ietvēra <code>date</code> un <code>now</code> vaicājumus, <code>batch</code>, dienu diapazonus, apgriezto pārveidi no Pastafari datuma uz vaicājuma dienu, gada struktūras iegūšanu, aktīvās darbības dienas noteikšanu, Node API, pārlūka/HTTP klientu, CLI, HTTP v1 pakalpojumu, OpenAPI 3.1 līgumu, vietējās implementācijas un izplatīšanas pakotnes, kā arī pārbaudītu konteinera izvietojumu.</p>
   <p>Seer ir publiska API. Ir skaidrs un stabils HTTP v1 līgums ar galapunktiem <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, darbības dienai, <code>metadata</code>, <code>locales</code> un <code>status</code>.</p>
   <p>2026. gada 21. septembrī publisks HTTPS izvietojums Render platformā tika patiešām pārbaudīts: darbīgajā servisā tika testēti precīzi vaicājumi, liels diapazons, restartēšana, <code>cold wake</code> un uzvedība slodzes apstākļos.</p>
   <p>Pārbaudītais publiskais izvietojums ir beta/novērtēšanas izvietojums, nevis paziņojums par pastāvīgu mitinātu ražošanas servisu ar SLA. Servera adrese, mitināšanas pakalpojuma sniedzējs un versijas numurs nav kalendāra daļa un nav kanoniskas konstantes.</p>
-  <p>Seer drīkst izmantot precomputation, īpašas reprezentācijas, SIMD, algebru un citus saīsinājumus. Tam nav soli pa solim jāatdarina visa kanoniskās implementācijas aprēķinu vēsture, ja vien tas veic to pašu semantisko darbību un atgriež to pašu atbildi.</p>
+  <p>Seer drīkst izmantot iepriekšējus aprēķinus, īpašas reprezentācijas, SIMD, algebru un citus saīsinājumus. Tam nav soli pa solim jāatdarina visa kanoniskās implementācijas aprēķinu vēsture, ja vien tas veic to pašu semantisko darbību un atgriež to pašu atbildi.</p>
   <p>Optimizācija nav alternatīva autoritāte.</p><hr>
 </section>
 
@@ -275,7 +275,7 @@
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{mēneša nosaukums},\text{diena mēnesī})</code></pre>
   <p>Tāpēc pilns datums ar zināmu darbības dienu viennozīmīgi identificē vaicājuma dienu.</p>
 
-  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Kandidātu skaita augšējās robežas reverse conversion laikā">
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Kandidātu skaita augšējās robežas apgrieztās pārveides laikā">
     <table class="about-table">
       <thead><tr><th scope="col">Papildu zināmā informācija</th><th scope="col">Lielākais kandidātu skaits</th></tr></thead>
       <tbody>
