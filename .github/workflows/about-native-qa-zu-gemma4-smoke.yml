@@ -1,4 +1,5 @@
-name: Zulu Gemma4 reviewer qualification
+# repair workflow trigger v1
+name: Zulu confirmed-residue repair
 
 on:
   push:
@@ -27,7 +28,7 @@ jobs:
         run: |
           set -euo pipefail
           SERVER="$(find /tmp/zu-gemma/llama -type f -name llama-server | head -n 1)"
-          "$SERVER" -hf ggml-org/gemma-4-E4B-it-GGUF:Q4_0 --reasoning auto --chat-template-kwargs '{"enable_thinking":false}' -c 4096 -t 4 --host 127.0.0.1 --port 8080 > /tmp/zu-gemma/server.log 2>&1 &
+          "$SERVER" -hf ggml-org/gemma-4-E4B-it-GGUF:Q4_0 --reasoning auto --chat-template-kwargs '{"enable_thinking":false}' -c 16384 -t 4 --host 127.0.0.1 --port 8080 > /tmp/zu-gemma/server.log 2>&1 &
           PID=$!; trap 'kill "$PID" 2>/dev/null || true' EXIT
           for _ in $(seq 1 600); do curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break; sleep 1; done
           python - <<'PY'
@@ -48,14 +49,35 @@ jobs:
           Path("/tmp/zu-gemma/qualification.json").write_text(json.dumps(results,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
           Path("/tmp/zu-gemma/qualification-raw.json").write_text(raw+"\n",encoding="utf-8")
           if len(ds)!=8 or failed: raise SystemExit("qualification failed")
+          repair_cases=[{"id":"r1","location":"docs/about/content/zu.html#short-and-wide-choice","text":"Ikhalenda uqobo lihlala lideterministiki ngokuphelele. “Choice” igama lesigaba se-algorithm, akusikho ukubheja okwenziwa ngesikhathi sokusebenzisa.","markers":["algorithm"]},{"id":"r2","location":"docs/about/content/zu.html#anniversaries","text":"Ku-(igama lekhothlethi, usuku ekhothlethini), imidiyeni yayiyiminyaka 3; 88.89% yatholakala phakathi kweminyaka 10, kodwa ukusabalala kune-heavy tail enzima kakhulu, futhi inani elikhulu elabonwa lafika eminyakeni 51,954 ye-Pastafari.","markers":["heavy tail"]},{"id":"r3","location":"docs/about/content/zu.html#structural-atlas","text":"Lezi zinombolo zichaza leyo corpus, hhayi imithetho yekanonikhi.","markers":["corpus"]},{"id":"r4","location":"docs/about/content/zu.html#anniversaries","text":"Lena imiphumela yokuhlola ye-corpus eyahlolwa, hhayi ubufakazi bokuthi zonke izikhumbuzo ezingaba khona nakanjani ziyobuya, futhi akusona isiqinisekiso sesikhathi sokulinda esiphezulu.","markers":["corpus"]}]
+          repair_ids=[x["id"] for x in repair_cases]
+          repair_prompt="Lezi zingcezu ziqukethe izinsalela zolimi eziqinisekisiwe. Bhala kabusha umbhalo ngamunye njengombhalo ophelele, wemvelo nowesimanje wesiZulu. Gcina incazelo, izinombolo, amagama e-Pastafari, izimpawu ezifana no-H_c no-p_c, kanye nama-literal wangempela afana no-Choice, Wide Choice, Short Choice, all-day, API/HTTP/CLI/OpenAPI/SIMD/SLA. Susa kuphela izinsalela ezikhonjwe ku-markers futhi ulungise uhlelo lolimi oludingekayo ukuze umusho ube wemvelo. Ungafinyezi futhi ungashiyi imininingwane. Buyisa i-JSON kuphela."+"\\n\\n"+json.dumps(repair_cases,ensure_ascii=False)
+          repair_schema={"type":"object","properties":{"repairs":{"type":"array","minItems":4,"maxItems":4,"items":{"type":"object","properties":{"id":{"type":"string","enum":repair_ids},"replacement":{"type":"string","minLength":1,"maxLength":1600}},"required":["id","replacement"],"additionalProperties":False}}},"required":["repairs"],"additionalProperties":False}
+          repair_payload={"messages":[{"role":"user","content":repair_prompt}],"temperature":0.15,"top_p":0.9,"max_tokens":3500,"reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"zu_confirmed_residue_repair","strict":True,"schema":repair_schema}}}
+          repair_req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",data=json.dumps(repair_payload,ensure_ascii=False).encode("utf-8"),headers={"Content-Type":"application/json"},method="POST")
+          with urllib.request.urlopen(repair_req,timeout=2400) as resp: repair_data=json.load(resp)
+          repair_raw=repair_data["choices"][0]["message"]["content"].strip()
+          Path("/tmp/zu-gemma/repair-raw.json").write_text(repair_raw+"\\n",encoding="utf-8")
+          repairs=json.loads(repair_raw).get("repairs",[])
+          by_id={r.get("id"):r for r in repairs}; output=[]; bad=[]
+          for x in repair_cases:
+            r=by_id.get(x["id"],{}); repl=str(r.get("replacement","")).strip()
+            ok=bool(repl) and repl!=x["text"] and not any(m.casefold() in repl.casefold() for m in x["markers"])
+            if "{index}" in x["text"] and "{index}" not in repl: ok=False
+            output.append({**x,"replacement":repl,"passed":ok})
+            if not ok: bad.append(x["id"])
+          Path("/tmp/zu-gemma/repair.json").write_text(json.dumps(output,ensure_ascii=False,indent=2)+"\\n",encoding="utf-8")
+          if len(repairs)!=len(repair_cases) or len(by_id)!=len(repair_cases) or bad: raise SystemExit("repair validation failed: "+",".join(bad))
           PY
       - name: Upload qualification evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: zu-gemma4-reviewer-qualification
+          name: zu-confirmed-residue-repair
           path: |
             /tmp/zu-gemma/qualification.json
             /tmp/zu-gemma/qualification-raw.json
+            /tmp/zu-gemma/repair.json
+            /tmp/zu-gemma/repair-raw.json
             /tmp/zu-gemma/server.log
           retention-days: 30
