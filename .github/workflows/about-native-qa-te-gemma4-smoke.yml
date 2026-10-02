@@ -1,0 +1,61 @@
+name: Telugu Gemma4 reviewer qualification
+
+on:
+  push:
+    branches: [feature/about-i18n-72-locales]
+    paths: [.github/workflows/about-native-qa-te-gemma4-smoke.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Install pinned llama.cpp runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/te-gemma/llama
+          curl -fL --retry 3 https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz -o /tmp/te-gemma/llama.tar.gz
+          echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/te-gemma/llama.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/te-gemma/llama.tar.gz -C /tmp/te-gemma/llama
+      - name: Qualify Telugu reviewer
+        shell: bash
+        run: |
+          set -euo pipefail
+          SERVER="$(find /tmp/te-gemma/llama -type f -name llama-server | head -n 1)"
+          "$SERVER" -hf ggml-org/gemma-4-E4B-it-GGUF:Q4_0 --reasoning auto --chat-template-kwargs '{"enable_thinking":false}' -c 4096 -t 4 --host 127.0.0.1 --port 8080 > /tmp/te-gemma/server.log 2>&1 &
+          PID=$!; trap 'kill "$PID" 2>/dev/null || true' EXIT
+          for _ in $(seq 1 600); do curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break; sleep 1; done
+          python - <<'PY'
+          from pathlib import Path
+          import json,urllib.request
+          cases=[{"id":"g1","text":"ఆ తేదీని గుర్తించలేకపోయాం. అన్ని ఫీల్డ్‌లు పూర్తిగా ఉన్నాయో, ఎంపిక చేసిన క్యాలెండర్‌లో ఆ తేదీ ఉందో తనిఖీ చేయండి.","expected":"OK"},{"id":"g2","text":"చర్య దినం లెక్కింపుకు ప్రారంభ బిందువు.","expected":"OK"},{"id":"g3","text":"మునుపటి కట్లెట్","expected":"OK"},{"id":"g4","text":"ఈ సైట్‌ను ఎలా ఉపయోగించాలి?","expected":"OK"},{"id":"b1","text":"Click here చేసి కొనసాగండి.","expected":"FIX"},{"id":"b2","text":"Change the working day.","expected":"FIX"},{"id":"b3","text":"यह तारीख ఎంచుకోండి.","expected":"FIX"},{"id":"b4","text":"Как ఈ సైట్‌ను ఉపయోగించాలి?","expected":"FIX"}]
+          ids=[x["id"] for x in cases]
+          prompt="మీరు ఆధునిక ప్రామాణిక తెలుగు భాషకు కఠినమైన మాతృభాషా సంపాదకులు. క్రింద ఉన్న ఎనిమిది భాగాల్లో ప్రతిదాన్ని విడిగా మూల్యాంకనం చేయండి. సహజత్వం, వ్యాకరణం మరియు అనుకోకుండా మిగిలిన ఇంగ్లీష్, హిందీ, రష్యన్ లేదా మిశ్రమ భాషను పరిశీలించండి. «చర్య దినం», «అడిగిన రోజు», «కట్లెట్» మరియు పరస్పరం అల్లుకున్న నెలలు ఉద్దేశపూర్వక డొమైన్ పదాలు. Faqat JSON qaytaring / Return only JSON; verdict must be exactly OK or FIX."+"\n\n"+json.dumps(cases,ensure_ascii=False)
+          schema={"type":"object","properties":{"decisions":{"type":"array","minItems":8,"maxItems":8,"items":{"type":"object","properties":{"id":{"type":"string","enum":ids},"verdict":{"type":"string","enum":["OK","FIX"]}},"required":["id","verdict"],"additionalProperties":False}}},"required":["decisions"],"additionalProperties":False}
+          payload={"messages":[{"role":"user","content":prompt}],"temperature":0.0,"max_tokens":420,"reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"te_qualification","strict":True,"schema":schema}}}
+          req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),headers={"Content-Type":"application/json"},method="POST")
+          with urllib.request.urlopen(req,timeout=2400) as resp: data=json.load(resp)
+          raw=data["choices"][0]["message"]["content"].strip(); ds=json.loads(raw).get("decisions",[])
+          actual={d["id"]:d["verdict"] for d in ds}; results=[]; failed=[]
+          for x in cases:
+            ok=actual.get(x["id"])==x["expected"]; results.append({**x,"actual":actual.get(x["id"]),"passed":ok})
+            if not ok: failed.append(x["id"])
+          Path("/tmp/te-gemma/qualification.json").write_text(json.dumps(results,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          Path("/tmp/te-gemma/qualification-raw.json").write_text(raw+"\n",encoding="utf-8")
+          if len(ds)!=8 or failed: raise SystemExit("qualification failed")
+          PY
+      - name: Upload qualification evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: te-gemma4-reviewer-qualification
+          path: |
+            /tmp/te-gemma/qualification.json
+            /tmp/te-gemma/qualification-raw.json
+            /tmp/te-gemma/server.log
+          retention-days: 30
