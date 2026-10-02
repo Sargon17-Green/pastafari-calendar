@@ -57,7 +57,7 @@ Allowed strict-session states: `pending` → `reviewed PASS` or `reviewed FAIL` 
 | ne | ne-NP | ltr | semantic QA | pending | — |
 | nl | nl-NL | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/nl/strict-36944982324/` — strict Gemma 4 run `36944982324`; hidden qualification 8/8, 562 grounded text items, 0 findings; manual post-run scan clean; staleness clean |
 | nn | nn-NO | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/nn/strict-36987353817/` — strict Gemma 4 run `36987353817`; hidden qualification 8/8, 567 grounded text items, 0 findings; manual post-run scan clean; staleness clean |
-| pa | pa-IN | ltr | semantic QA | pending | — |
+| pa | pa-IN | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/pa/strict-36995008057/` — strict Gemma 4 run `36995008057`; hidden qualification 8/8, 567 grounded text items, 0 findings; manual post-run scan clean; staleness clean |
 | pl | pl-PL | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/pl/strict-36944857649/` — strict Gemma 4 run `36944857649`; hidden qualification 8/8, 568 grounded text items, 0 findings; manual post-run scan clean; staleness clean |
 | pt | pt-BR | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/pt/strict-36944857655/` — strict Gemma 4 run `36944857655`; hidden qualification 8/8, 569 grounded text items, 0 findings; manual post-run scan clean; staleness clean |
 | ro | ro-RO | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/ro/strict-36991873900/` — strict Gemma 4 run `36991873900`; hidden qualification 8/8, 568 grounded text items, 0 findings; manual post-run scan clean; staleness clean |
@@ -69,8 +69,8 @@ Allowed strict-session states: `pending` → `reviewed PASS` or `reviewed FAIL` 
 | sr | sr-Latn-RS | ltr | semantic QA | pending | — |
 | sv | sv-SE | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/sv/strict-36944857866/` — strict Gemma 4 run `36944857866`; hidden qualification 8/8, 562 grounded text items, 0 findings; manual post-run scan clean; staleness clean |
 | sw | sw-TZ | ltr | semantic QA | pending | — |
-| ta | ta-IN | ltr | semantic QA | pending | — |
-| te | te-IN | ltr | semantic QA | pending | — |
+| ta | ta-IN | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/ta/strict-36994230580/` — strict Gemma 4 run `36994230580`; hidden qualification 8/8, 567 grounded text items, 0 findings; manual post-run scan clean; staleness clean |
+| te | te-IN | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/te/strict-36994022277/` — strict Gemma 4 run `36994022277`; hidden qualification 8/8, 567 grounded text items, 0 findings; manual post-run scan clean; staleness clean |
 | th | th-TH | ltr | semantic QA | pending | — |
 | tr | tr-TR | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/tr/strict-36944857656/` — strict Gemma 4 run `36944857656`; hidden qualification 8/8, 569 grounded text items, 0 findings; manual post-run scan clean; staleness clean |
 | uk | uk-UA | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/uk/strict-36944857700/` — strict Gemma 4 run `36944857700`; hidden qualification 8/8, 567 grounded text items, 0 findings; manual post-run scan clean; staleness clean |
