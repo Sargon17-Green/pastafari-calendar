@@ -205,7 +205,7 @@ test("message templates support locale-specific word order", async () => {
   );
 });
 
-test("runtime notices and fallback-only UI errors use the canonical message path", async () => {
+test("runtime notices and localized UI errors use the canonical message path", async () => {
   const en = await loadLocale("en");
   const he = await loadLocale("he");
   const af = await loadLocale("af");
@@ -215,7 +215,7 @@ test("runtime notices and fallback-only UI errors use the canonical message path
     translate(en, "day.staleWarning", { previousDate: "A", currentDate: "B" }),
     "The current day changed from A to B. Because the day of working was the current day, the displayed dates are no longer up to date. They will be recalculated after you dismiss this message.",
   );
-  assert.equal(translate(af, "reverse.error.limitPositive", { field: "maxSolutions" }), "maxSolutions must be positive.");
+  assert.equal(translate(af, "reverse.error.limitPositive", { field: "maxSolutions" }), "maxSolutions moet positief wees.");
 });
 
 test("engine results are locale-invariant across a large real cutlet view", async () => {
