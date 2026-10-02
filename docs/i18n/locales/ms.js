@@ -27,7 +27,7 @@ export default Object.freeze({
     "about.back": "Kembali ke kalendar",
     "about.tocKicker": "Pada halaman ini",
     "about.toc": "Kandungan",
-    "about.fallbackNotice": "Penerangan belum tersedia dalam bahasa yang dipilih, jadi versi default dipaparkan.",
+    "about.fallbackNotice": "Penerangan belum tersedia dalam bahasa yang dipilih, jadi versi lalai dipaparkan.",
     "about.loadError": "Penerangan kalendar tidak dapat dimuatkan.",
     "language.label": "Bahasa",
     "day.staleWarning": "Hari semasa berubah daripada {previousDate} kepada {currentDate}. Oleh sebab hari tindakan ialah hari semasa, tarikh yang dipaparkan tidak lagi terkini. Tarikh tersebut akan dikira semula selepas anda menutup mesej ini.",
