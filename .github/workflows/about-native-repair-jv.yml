@@ -1,0 +1,82 @@
+name: Javanese confirmed-residue repair
+
+on:
+  push:
+    branches: [feature/about-i18n-72-locales]
+    paths: [.github/workflows/about-native-qa-jv-gemma4-smoke.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Install pinned llama.cpp runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/jv-gemma/llama
+          curl -fL --retry 3 https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz -o /tmp/jv-gemma/llama.tar.gz
+          echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/jv-gemma/llama.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/jv-gemma/llama.tar.gz -C /tmp/jv-gemma/llama
+      - name: Qualify Javanese reviewer
+        shell: bash
+        run: |
+          set -euo pipefail
+          SERVER="$(find /tmp/jv-gemma/llama -type f -name llama-server | head -n 1)"
+          "$SERVER" -hf ggml-org/gemma-4-E4B-it-GGUF:Q4_0 --reasoning auto --chat-template-kwargs '{"enable_thinking":false}' -c 16384 -t 4 --host 127.0.0.1 --port 8080 > /tmp/jv-gemma/server.log 2>&1 &
+          PID=$!; trap 'kill "$PID" 2>/dev/null || true' EXIT
+          for _ in $(seq 1 600); do curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break; sleep 1; done
+          python - <<'PY'
+          from pathlib import Path
+          import json,urllib.request
+          cases=[{"id":"g1","text":"Tanggal kuwi ora bisa dingertèni. Priksa manawa kabèh kolom wis kebak lan tanggal kasebut pancèn ana ing kalèndher sing dipilih.","expected":"OK"},{"id":"g2","text":"Dina tumindak yaiku titik wiwitan pangétungan.","expected":"OK"},{"id":"g3","text":"Kotlet sadurungé","expected":"OK"},{"id":"g4","text":"Kepiyé carané nganggo situs iki?","expected":"OK"},{"id":"b1","text":"Click here banjur terusna.","expected":"FIX"},{"id":"b2","text":"Change the working day.","expected":"FIX"},{"id":"b3","text":"Ubah hari kerja.","expected":"FIX"},{"id":"b4","text":"Silakan pilih tanggal ini.","expected":"FIX"}]
+          ids=[x["id"] for x in cases]
+          prompt="Sampeyan panyunting basa Jawa baku modern sing ketat. Taksirana saben wolung cuplikan ing ngisor iki kanthi kapisah. Priksa kewajaran basa, tata basa, lan sisa basa Inggris utawa basa Indonesia sing ora disengaja, kalebu campuran basa. Tembung «dina tumindak», «dina sing ditakokaké», «kotlet» lan wulan sing saling anyam iku istilah domain sing disengaja. Return only JSON; verdict must be exactly OK or FIX."+"\\n\\n"+json.dumps(cases,ensure_ascii=False)
+          schema={"type":"object","properties":{"decisions":{"type":"array","minItems":8,"maxItems":8,"items":{"type":"object","properties":{"id":{"type":"string","enum":ids},"verdict":{"type":"string","enum":["OK","FIX"]}},"required":["id","verdict"],"additionalProperties":False}}},"required":["decisions"],"additionalProperties":False}
+          payload={"messages":[{"role":"user","content":prompt}],"temperature":0.0,"max_tokens":420,"reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"jv_qualification","strict":True,"schema":schema}}}
+          req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),headers={"Content-Type":"application/json"},method="POST")
+          with urllib.request.urlopen(req,timeout=2400) as resp: data=json.load(resp)
+          raw=data["choices"][0]["message"]["content"].strip(); ds=json.loads(raw).get("decisions",[])
+          actual={d["id"]:d["verdict"] for d in ds}; results=[]; failed=[]
+          for x in cases:
+            ok=actual.get(x["id"])==x["expected"]; results.append({**x,"actual":actual.get(x["id"]),"passed":ok})
+            if not ok: failed.append(x["id"])
+          Path("/tmp/jv-gemma/qualification.json").write_text(json.dumps(results,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          Path("/tmp/jv-gemma/qualification-raw.json").write_text(raw+"\n",encoding="utf-8")
+          if len(ds)!=8 or failed: raise SystemExit("qualification failed")
+          repair_cases=[{"id":"r1","location":"docs/i18n/locales/jv.js#reverse.result.heading","text":"Solusi","markers":["Solusi"]},{"id":"r2","location":"docs/i18n/locales/jv.js#reverse.result.solution","text":"Solusi {index}","markers":["Solusi"]},{"id":"r3","location":"docs/i18n/locales/jv.js#reverse.variables.heading","text":"Variabel tanggal","markers":["Variabel tanggal"]},{"id":"r4","location":"docs/i18n/locales/jv.js#reverse.constraint.target","text":"Variabel tanggal sing ditakokaké","markers":["Variabel tanggal"]},{"id":"r5","location":"docs/i18n/locales/jv.js#reverse.constraint.calculation.variable","text":"Variabel tanggal liya","markers":["Variabel tanggal"]},{"id":"r6","location":"docs/i18n/locales/jv.js#reverse.constraint.order","text":"Urutan kronologis","markers":["Urutan kronologis"]}]
+          repair_ids=[x["id"] for x in repair_cases]
+          repair_prompt="Cuplikan iki nduwèni sisa basa sing wis dikonfirmasi. Tulis maneh saben teks dadi basa Jawa baku modern sing alami, kanthi njaga kabèh teges, placeholder kaya {index}, angka, istilah Pastafari, lan literal sing pancèn disengaja kayata Choice, Wide Choice, Short Choice, all-day, API/HTTP/CLI/OpenAPI/SIMD/SLA. Busak marker basa Indonesia/asing sing dikonfirmasi lan benakna tata basa yen perlu. Aja nyepetaké utawa ngilangaké informasi. Balèkaké mung JSON."+"\\n\\n"+json.dumps(repair_cases,ensure_ascii=False)
+          repair_schema={"type":"object","properties":{"repairs":{"type":"array","minItems":6,"maxItems":6,"items":{"type":"object","properties":{"id":{"type":"string","enum":repair_ids},"replacement":{"type":"string","minLength":1,"maxLength":1600}},"required":["id","replacement"],"additionalProperties":False}}},"required":["repairs"],"additionalProperties":False}
+          repair_payload={"messages":[{"role":"user","content":repair_prompt}],"temperature":0.15,"top_p":0.9,"max_tokens":3500,"reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"jv_confirmed_residue_repair","strict":True,"schema":repair_schema}}}
+          repair_req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",data=json.dumps(repair_payload,ensure_ascii=False).encode("utf-8"),headers={"Content-Type":"application/json"},method="POST")
+          with urllib.request.urlopen(repair_req,timeout=2400) as resp: repair_data=json.load(resp)
+          repair_raw=repair_data["choices"][0]["message"]["content"].strip()
+          Path("/tmp/jv-gemma/repair-raw.json").write_text(repair_raw+"\\n",encoding="utf-8")
+          repairs=json.loads(repair_raw).get("repairs",[])
+          by_id={r.get("id"):r for r in repairs}; output=[]; bad=[]
+          for x in repair_cases:
+            r=by_id.get(x["id"],{}); repl=str(r.get("replacement","")).strip()
+            ok=bool(repl) and repl!=x["text"] and not any(m.casefold() in repl.casefold() for m in x["markers"])
+            if "{index}" in x["text"] and "{index}" not in repl: ok=False
+            output.append({**x,"replacement":repl,"passed":ok})
+            if not ok: bad.append(x["id"])
+          Path("/tmp/jv-gemma/repair.json").write_text(json.dumps(output,ensure_ascii=False,indent=2)+"\\n",encoding="utf-8")
+          if len(repairs)!=len(repair_cases) or len(by_id)!=len(repair_cases) or bad: raise SystemExit("repair validation failed: "+",".join(bad))
+          PY
+      - name: Upload qualification evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: jv-confirmed-residue-repair
+          path: |
+            /tmp/jv-gemma/qualification.json
+            /tmp/jv-gemma/qualification-raw.json
+            /tmp/jv-gemma/repair.json
+            /tmp/jv-gemma/repair-raw.json
+            /tmp/jv-gemma/server.log
+          retention-days: 30
