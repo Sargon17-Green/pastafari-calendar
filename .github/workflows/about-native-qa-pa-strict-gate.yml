@@ -1,0 +1,174 @@
+name: Punjabi strict native-language whole-site gate
+
+on:
+  push:
+    branches: [feature/about-i18n-72-locales]
+    paths:
+      - .github/workflows/about-native-qa-pa-strict-gate.yml
+      - docs/i18n/locales/pa.js
+      - docs/about/content/pa.html
+      - docs/manifest.webmanifest
+      - docs/i18n/registry.js
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pa-strict-native-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  strict-pa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with: {fetch-depth: 1}
+      - name: Install pinned llama.cpp runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/pa-strict/llama /tmp/pa-strict/evidence
+          curl -fL --retry 3 https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz -o /tmp/pa-strict/llama.tar.gz
+          echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/pa-strict/llama.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/pa-strict/llama.tar.gz -C /tmp/pa-strict/llama
+          git rev-parse HEAD > /tmp/pa-strict/evidence/reviewed-head.txt
+      - name: Extract grounded Punjabi website corpus
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          from html.parser import HTMLParser
+          import json,re
+          items=[]
+          locale=Path("docs/i18n/locales/pa.js").read_text(encoding="utf-8")
+          for key,raw in re.findall(r'"([^"]+)"\s*:\s*("(?:\\.|[^"\\])*")',locale):
+            try: value=json.loads(raw)
+            except Exception: continue
+            if isinstance(value,str) and value.strip() and key not in {"code","dir","intlLocale"}:
+              items.append({"location":f"docs/i18n/locales/pa.js#{key}","text":value.strip()})
+          class P(HTMLParser):
+            wanted={"p","li","h1","h2","h3","h4","h5","h6","th","td","caption","blockquote"}; attrs={"aria-label","aria-description","title","alt"}
+            def __init__(self): super().__init__(convert_charrefs=True); self.sections=[]; self.current=None; self.n=0
+            def handle_starttag(self,tag,attrs):
+              attrs=dict(attrs)
+              if tag=="br" and self.current is not None: self.current["parts"].append(". ")
+              if tag=="section": self.sections.append(attrs.get("id",""))
+              sec=next((x for x in reversed(self.sections) if x),""); ident=attrs.get("id") or sec or tag
+              for a in self.attrs:
+                v=attrs.get(a)
+                if v and v.strip(): items.append({"location":f"docs/about/content/pa.html#{ident}@{a}-{self.n}","text":v.strip()}); self.n+=1
+              if tag in self.wanted: self.current={"tag":tag,"id":attrs.get("id",""),"section":sec,"parts":[]}
+            def handle_endtag(self,tag):
+              if self.current is not None and self.current["tag"]==tag:
+                txt=re.sub(r"\s+"," ","".join(self.current["parts"])).strip()
+                if txt:
+                  ident=self.current["id"] or self.current["section"] or self.current["tag"]
+                  items.append({"location":f"docs/about/content/pa.html#{ident}","text":txt})
+                self.current=None
+              if tag=="section" and self.sections: self.sections.pop()
+            def handle_data(self,data):
+              if self.current is not None: self.current["parts"].append(data)
+          p=P(); p.feed(Path("docs/about/content/pa.html").read_text(encoding="utf-8"))
+          manifest=json.loads(Path("docs/manifest.webmanifest").read_text(encoding="utf-8"))
+          for field in ("name_localized","short_name_localized","description_localized"):
+            v=manifest.get(field,{}).get("pa",{}).get("value")
+            if isinstance(v,str) and v.strip(): items.append({"location":f"docs/manifest.webmanifest#{field}.pa.value","text":v.strip()})
+          registry=Path("docs/i18n/registry.js").read_text(encoding="utf-8")
+          m=re.search(r'defineLocale\("pa",\s*"([^"]+)"',registry)
+          if m: items.append({"location":"docs/i18n/registry.js#locale-pa-display-name","text":m.group(1)})
+          seen=set(); out=[]
+          for item in items:
+            pair=(item["location"],item["text"])
+            if pair in seen: continue
+            seen.add(pair); item["id"]=f"PA{len(out):04d}"; out.append(item)
+          Path("/tmp/pa-strict/evidence/items.json").write_text(json.dumps(out,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          compact=json.dumps(out,ensure_ascii=False,separators=(",",":")); Path("/tmp/pa-strict/corpus.json").write_text(compact,encoding="utf-8")
+          if len(compact)>100000: raise SystemExit("corpus exceeds review budget")
+          PY
+      - name: Start isolated Punjabi Gemma 4 reviewer
+        shell: bash
+        run: |
+          set -euo pipefail
+          SERVER="$(find /tmp/pa-strict/llama -type f -name llama-server | head -n 1)"
+          "$SERVER" -hf ggml-org/gemma-4-E4B-it-GGUF:Q4_0 --reasoning auto --chat-template-kwargs '{"enable_thinking":false}' -c 32768 -t 4 --host 127.0.0.1 --port 8080 > /tmp/pa-strict/evidence/server.log 2>&1 &
+          echo "$!" > /tmp/pa-strict/server.pid
+          for _ in $(seq 1 900); do curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break; sleep 1; done
+          curl -fsS http://127.0.0.1:8080/health >/dev/null
+      - name: Batched hidden Punjabi reviewer qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json,urllib.request
+          cases=[{"id":"g1","text":"ਇਹ ਤਾਰੀਖ ਪਛਾਣੀ ਨਹੀਂ ਜਾ ਸਕੀ। ਜਾਂਚੋ ਕਿ ਸਾਰੇ ਖੇਤਰ ਪੂਰੇ ਹਨ ਅਤੇ ਤਾਰੀਖ ਚੁਣੇ ਕੈਲੰਡਰ ਵਿੱਚ ਮੌਜੂਦ ਹੈ।","expected":"OK"},{"id":"g2","text":"ਕਾਰਵਾਈ ਦਾ ਦਿਨ ਗਣਨਾ ਦਾ ਸ਼ੁਰੂਆਤੀ ਬਿੰਦੂ ਹੈ।","expected":"OK"},{"id":"g3","text":"ਪਿਛਲੀ ਕਟਲੈਟ","expected":"OK"},{"id":"g4","text":"ਇਹ ਸਾਈਟ ਕਿਵੇਂ ਵਰਤਾਂ?","expected":"OK"},{"id":"b1","text":"Click here ਅਤੇ ਅੱਗੇ ਵਧੋ।","expected":"FIX"},{"id":"b2","text":"Change the working day.","expected":"FIX"},{"id":"b3","text":"यह तारीख ਚੁਣੋ।","expected":"FIX"},{"id":"b4","text":"Как ਇਹ ਸਾਈਟ ਵਰਤਾਂ?","expected":"FIX"}]
+          ids=[x["id"] for x in cases]
+          prompt="ਤੁਸੀਂ ਆਧੁਨਿਕ ਮਿਆਰੀ ਪੰਜਾਬੀ ਦੇ ਸਖ਼ਤ ਮਾਤਭਾਸ਼ੀ ਸੰਪਾਦਕ ਹੋ। ਹੇਠਲੇ ਅੱਠ ਹਿੱਸਿਆਂ ਵਿੱਚੋਂ ਹਰ ਇੱਕ ਦਾ ਵੱਖਰੇ ਤੌਰ ਤੇ ਮੁਲਾਂਕਣ ਕਰੋ। ਕੁਦਰਤੀ ਭਾਸ਼ਾ, ਵਿਆਕਰਣ ਅਤੇ ਅਣਚਾਹੇ ਅੰਗਰੇਜ਼ੀ, ਹਿੰਦੀ, ਰੂਸੀ ਜਾਂ ਮਿਲੀ-ਜੁਲੀ ਭਾਸ਼ਾ ਦੇ ਅੰਸ਼ ਜਾਂਚੋ। «ਕਾਰਵਾਈ ਦਾ ਦਿਨ», «ਪੁੱਛਿਆ ਦਿਨ», «ਕਟਲੈਟ» ਅਤੇ ਆਪਸ ਵਿੱਚ ਗੁੰਥੇ ਮਹੀਨੇ ਜਾਣਬੁੱਝ ਕੇ ਵਰਤੇ ਡੋਮੇਨ ਸ਼ਬਦ ਹਨ। Return only JSON; verdict must be exactly OK or FIX."+"\n\n"+json.dumps(cases,ensure_ascii=False)
+          schema={"type":"object","properties":{"decisions":{"type":"array","minItems":8,"maxItems":8,"items":{"type":"object","properties":{"id":{"type":"string","enum":ids},"verdict":{"type":"string","enum":["OK","FIX"]}},"required":["id","verdict"],"additionalProperties":False}}},"required":["decisions"],"additionalProperties":False}
+          payload={"messages":[{"role":"user","content":prompt}],"temperature":0.0,"max_tokens":420,"reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"pa_qualification","strict":True,"schema":schema}}}
+          req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),headers={"Content-Type":"application/json"},method="POST")
+          with urllib.request.urlopen(req,timeout=2400) as resp: data=json.load(resp)
+          raw=data["choices"][0]["message"]["content"].strip(); ev=Path("/tmp/pa-strict/evidence"); ev.joinpath("qualification-raw.json").write_text(raw+"\n",encoding="utf-8")
+          ds=json.loads(raw).get("decisions",[]); actual={d["id"]:d["verdict"] for d in ds}; results=[]; failed=[]
+          for x in cases:
+            ok=actual.get(x["id"])==x["expected"]; results.append({**x,"actual":actual.get(x["id"]),"passed":ok})
+            if not ok: failed.append(x["id"])
+          ev.joinpath("qualification.json").write_text(json.dumps(results,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          if len(ds)!=8 or failed: raise SystemExit("qualification failed")
+          PY
+      - name: Strict whole-site Punjabi review
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json,urllib.request
+          ev=Path("/tmp/pa-strict/evidence"); items=json.loads(ev.joinpath("items.json").read_text(encoding="utf-8")); by={}
+          for item in items: by.setdefault(item["location"],[]).append(item["text"])
+          prompt="ਤੁਸੀਂ Pastafari ਕੈਲੰਡਰ ਦੇ ਪੰਜਾਬੀ ਸੰਸਕਰਣ ਲਈ ਇੱਕ ਸੁਤੰਤਰ ਅਤੇ ਸਖ਼ਤ ਮਾਤਭਾਸ਼ੀ ਸੰਪਾਦਕ ਹੋ। ਵੈੱਬਸਾਈਟ ਦੇ ਸਾਰੇ ਦਿਖਾਈ ਦੇਣ ਵਾਲੇ ਪਾਠ ਅਤੇ accessibility ਲਈ ਪਾਠ ਨੂੰ ਇੱਕੋ ਭਾਸ਼ਾਈ ਅਨੁਭਵ ਵਜੋਂ ਸਮੀਖਿਆ ਕਰੋ। ਅਣਚਾਹੇ ਅੰਗਰੇਜ਼ੀ, ਹਿੰਦੀ, ਰੂਸੀ ਜਾਂ ਹੋਰ ਭਾਸ਼ਾਵਾਂ ਦੇ ਅੰਸ਼, ਸ਼ਾਬਦਿਕ ਤਰਜਮੇ, ਅਕੁਦਰਤੀ ਪੰਜਾਬੀ ਅਤੇ ਵਿਆਕਰਣ, ਸ਼ਬਦ-ਜੋੜ, ਵਿਸ਼ਰਾਮ-ਚਿੰਨ੍ਹ ਅਤੇ ਪਰਿਭਾਸ਼ਾ ਦੀਆਂ ਸਮੱਸਿਆਵਾਂ ਲੱਭੋ; metadata, manifest ਅਤੇ accessibility ਪਾਠ ਵੀ ਸ਼ਾਮਲ ਕਰੋ। ਪੰਜਾਬੀ ਗੱਥ ਵਿੱਚ ਆਮ ਅੰਗਰੇਜ਼ੀ ਤਕਨੀਕੀ ਸ਼ਬਦ ਸਮੱਸਿਆ ਹਨ ਜਦ ਤੱਕ ਉਹ ਅਸਲੀ code literal, API ਨਾਮ ਜਾਂ proper name ਨਾ ਹੋਣ। ਸਥਿਰ ID, ਫਾਰਮੂਲੇ, hash, API/endpoint ਨਾਮ, HTTP, CLI, OpenAPI, SIMD, SLA, all-day, Short Choice ਅਤੇ Wide Choice ਰਹਿ ਸਕਦੇ ਹਨ। ਹਰ finding ਨੂੰ ਦਿੱਤਾ location ਬਿਲਕੁਲ ਵਰਤਣਾ ਹੈ ਅਤੇ current_text ਉਸ ਥਾਂ ਮੌਜੂਦ ਲਗਾਤਾਰ ਸ਼ਾਬਦਿਕ ਟੁਕੜਾ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ। ਜੇ ਅਸਲੀ ਸਮੱਸਿਆ ਨਾ ਹੋਵੇ ਤਾਂ CLEAN ਅਤੇ ਖਾਲੀ findings ਸੂਚੀ ਵਾਪਸ ਕਰੋ। ਸਿਰਫ਼ JSON ਵਾਪਸ ਕਰੋ।"+"\n\nWEBSITE_TEXT_ITEMS_JSON:\n"+Path("/tmp/pa-strict/corpus.json").read_text(encoding="utf-8")
+          schema={"type":"object","properties":{"result":{"type":"string","enum":["CLEAN","FINDINGS"]},"findings":{"type":"array","maxItems":14,"items":{"type":"object","properties":{"severity":{"type":"string","enum":["critical","high","medium","low"]},"location":{"type":"string"},"current_text":{"type":"string","minLength":1,"maxLength":280},"issue":{"type":"string","minLength":15,"maxLength":420},"correction":{"type":"string","minLength":2,"maxLength":420}},"required":["severity","location","current_text","issue","correction"],"additionalProperties":False}}},"required":["result","findings"],"additionalProperties":False}
+          payload={"messages":[{"role":"user","content":prompt}],"temperature":0.05,"top_p":0.85,"max_tokens":1900,"reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"pa_whole_site_review","strict":True,"schema":schema}}}
+          accepted=None
+          for attempt in (1,2):
+            req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),headers={"Content-Type":"application/json"},method="POST")
+            with urllib.request.urlopen(req,timeout=3600) as resp: data=json.load(resp)
+            raw=data["choices"][0]["message"]["content"].strip(); ev.joinpath(f"raw-review-attempt-{attempt}.json").write_text(raw+"\n",encoding="utf-8")
+            try: p=json.loads(raw)
+            except Exception: continue
+            result=p.get("result"); findings=p.get("findings")
+            if result not in {"CLEAN","FINDINGS"} or not isinstance(findings,list) or (result=="CLEAN" and findings) or (result=="FINDINGS" and not findings): continue
+            seen=set(); good=True
+            for f in findings:
+              loc=str(f.get("location","")).strip(); cur=str(f.get("current_text","")).strip(); corr=str(f.get("correction","")).strip()
+              if loc not in by or not cur or not any(cur in t for t in by[loc]) or cur==corr or (loc,cur) in seen: good=False; break
+              seen.add((loc,cur))
+            if good: accepted=p; break
+          if accepted is None: raise SystemExit("review invalid")
+          final_result="PASS" if accepted["result"]=="CLEAN" else "FAIL"
+          final={"result":final_result,"reviewed_head":ev.joinpath("reviewed-head.txt").read_text().strip(),"findings":accepted["findings"]}
+          ev.joinpath("final.json").write_text(json.dumps(final,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          lines=[f"NATIVE_QA_RESULT: {final_result}","","ਪੂਰੀ ਪੰਜਾਬੀ ਵੈੱਬਸਾਈਟ ਦੀ ਸਖ਼ਤ ਭਾਸ਼ਾਈ ਸਮੀਖਿਆ ਵਿੱਚ ਕੋਈ ਪੁਸ਼ਟੀ ਕੀਤੀ ਸਮੱਸਿਆ ਨਹੀਂ ਮਿਲੀ ਜਿਸ ਨੂੰ ਠੀਕ ਕਰਨ ਦੀ ਲੋੜ ਹੋਵੇ।" if final_result=="PASS" else "ਪੂਰੀ ਪੰਜਾਬੀ ਵੈੱਬਸਾਈਟ ਦੀ ਸਖ਼ਤ ਭਾਸ਼ਾਈ ਸਮੀਖਿਆ ਵਿੱਚ ਪੁਸ਼ਟੀ ਕੀਤੀਆਂ ਸਮੱਸਿਆਵਾਂ ਮਿਲੀਆਂ ਜਿਨ੍ਹਾਂ ਨੂੰ ਠੀਕ ਕਰਨ ਦੀ ਲੋੜ ਹੈ।",""]
+          if final_result=="FAIL":
+            for i,f in enumerate(accepted["findings"],1): lines += [f"### {i}. {f['severity']}","",f["location"],"",f"> {f['current_text']}","",f["issue"],"","Correction: "+f["correction"],""]
+          ev.joinpath("review.md").write_text("\n".join(lines).rstrip()+"\n",encoding="utf-8")
+          PY
+      - name: Verify verdict
+        shell: bash
+        run: |
+          set -euo pipefail
+          head -n 1 /tmp/pa-strict/evidence/review.md | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)$'
+      - name: Stop reviewer
+        if: always()
+        shell: bash
+        run: |
+          [ ! -f /tmp/pa-strict/server.pid ] || kill "$(cat /tmp/pa-strict/server.pid)" 2>/dev/null || true
+      - name: Upload strict Punjabi evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: pa-strict-native-whole-site
+          path: /tmp/pa-strict/evidence/
+          if-no-files-found: warn
+          retention-days: 90

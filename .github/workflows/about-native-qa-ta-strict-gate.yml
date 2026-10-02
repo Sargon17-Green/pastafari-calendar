@@ -1,0 +1,174 @@
+name: Tamil strict native-language whole-site gate
+
+on:
+  push:
+    branches: [feature/about-i18n-72-locales]
+    paths:
+      - .github/workflows/about-native-qa-ta-strict-gate.yml
+      - docs/i18n/locales/ta.js
+      - docs/about/content/ta.html
+      - docs/manifest.webmanifest
+      - docs/i18n/registry.js
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ta-strict-native-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  strict-ta:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with: {fetch-depth: 1}
+      - name: Install pinned llama.cpp runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/ta-strict/llama /tmp/ta-strict/evidence
+          curl -fL --retry 3 https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz -o /tmp/ta-strict/llama.tar.gz
+          echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/ta-strict/llama.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/ta-strict/llama.tar.gz -C /tmp/ta-strict/llama
+          git rev-parse HEAD > /tmp/ta-strict/evidence/reviewed-head.txt
+      - name: Extract grounded Tamil website corpus
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          from html.parser import HTMLParser
+          import json,re
+          items=[]
+          locale=Path("docs/i18n/locales/ta.js").read_text(encoding="utf-8")
+          for key,raw in re.findall(r'"([^"]+)"\s*:\s*("(?:\\.|[^"\\])*")',locale):
+            try: value=json.loads(raw)
+            except Exception: continue
+            if isinstance(value,str) and value.strip() and key not in {"code","dir","intlLocale"}:
+              items.append({"location":f"docs/i18n/locales/ta.js#{key}","text":value.strip()})
+          class P(HTMLParser):
+            wanted={"p","li","h1","h2","h3","h4","h5","h6","th","td","caption","blockquote"}; attrs={"aria-label","aria-description","title","alt"}
+            def __init__(self): super().__init__(convert_charrefs=True); self.sections=[]; self.current=None; self.n=0
+            def handle_starttag(self,tag,attrs):
+              attrs=dict(attrs)
+              if tag=="br" and self.current is not None: self.current["parts"].append(". ")
+              if tag=="section": self.sections.append(attrs.get("id",""))
+              sec=next((x for x in reversed(self.sections) if x),""); ident=attrs.get("id") or sec or tag
+              for a in self.attrs:
+                v=attrs.get(a)
+                if v and v.strip(): items.append({"location":f"docs/about/content/ta.html#{ident}@{a}-{self.n}","text":v.strip()}); self.n+=1
+              if tag in self.wanted: self.current={"tag":tag,"id":attrs.get("id",""),"section":sec,"parts":[]}
+            def handle_endtag(self,tag):
+              if self.current is not None and self.current["tag"]==tag:
+                txt=re.sub(r"\s+"," ","".join(self.current["parts"])).strip()
+                if txt:
+                  ident=self.current["id"] or self.current["section"] or self.current["tag"]
+                  items.append({"location":f"docs/about/content/ta.html#{ident}","text":txt})
+                self.current=None
+              if tag=="section" and self.sections: self.sections.pop()
+            def handle_data(self,data):
+              if self.current is not None: self.current["parts"].append(data)
+          p=P(); p.feed(Path("docs/about/content/ta.html").read_text(encoding="utf-8"))
+          manifest=json.loads(Path("docs/manifest.webmanifest").read_text(encoding="utf-8"))
+          for field in ("name_localized","short_name_localized","description_localized"):
+            v=manifest.get(field,{}).get("ta",{}).get("value")
+            if isinstance(v,str) and v.strip(): items.append({"location":f"docs/manifest.webmanifest#{field}.ta.value","text":v.strip()})
+          registry=Path("docs/i18n/registry.js").read_text(encoding="utf-8")
+          m=re.search(r'defineLocale\("ta",\s*"([^"]+)"',registry)
+          if m: items.append({"location":"docs/i18n/registry.js#locale-ta-display-name","text":m.group(1)})
+          seen=set(); out=[]
+          for item in items:
+            pair=(item["location"],item["text"])
+            if pair in seen: continue
+            seen.add(pair); item["id"]=f"TA{len(out):04d}"; out.append(item)
+          Path("/tmp/ta-strict/evidence/items.json").write_text(json.dumps(out,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          compact=json.dumps(out,ensure_ascii=False,separators=(",",":")); Path("/tmp/ta-strict/corpus.json").write_text(compact,encoding="utf-8")
+          if len(compact)>100000: raise SystemExit("corpus exceeds review budget")
+          PY
+      - name: Start isolated Tamil Gemma 4 reviewer
+        shell: bash
+        run: |
+          set -euo pipefail
+          SERVER="$(find /tmp/ta-strict/llama -type f -name llama-server | head -n 1)"
+          "$SERVER" -hf ggml-org/gemma-4-E4B-it-GGUF:Q4_0 --reasoning auto --chat-template-kwargs '{"enable_thinking":false}' -c 32768 -t 4 --host 127.0.0.1 --port 8080 > /tmp/ta-strict/evidence/server.log 2>&1 &
+          echo "$!" > /tmp/ta-strict/server.pid
+          for _ in $(seq 1 900); do curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break; sleep 1; done
+          curl -fsS http://127.0.0.1:8080/health >/dev/null
+      - name: Batched hidden Tamil reviewer qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json,urllib.request
+          cases=[{"id":"g1","text":"இந்தத் தேதியை அறிய முடியவில்லை. எல்லா புலங்களும் முழுமையாக உள்ளனவா, தேர்ந்தெடுத்த நாட்காட்டியில் தேதி உள்ளதா என்று சரிபார்க்கவும்.","expected":"OK"},{"id":"g2","text":"செயல் நாள் கணக்கீட்டின் தொடக்கப் புள்ளி.","expected":"OK"},{"id":"g3","text":"முந்தைய கட்லெட்","expected":"OK"},{"id":"g4","text":"இந்தத் தளத்தை எப்படி பயன்படுத்துவது?","expected":"OK"},{"id":"b1","text":"Click here செய்து தொடரவும்.","expected":"FIX"},{"id":"b2","text":"Change the working day.","expected":"FIX"},{"id":"b3","text":"यह तारीख தேர்ந்தெடுக்கவும்.","expected":"FIX"},{"id":"b4","text":"Как இந்தத் தளத்தை பயன்படுத்துவது?","expected":"FIX"}]
+          ids=[x["id"] for x in cases]
+          prompt="நீங்கள் நவீன தரத் தமிழின் கடுமையான தாய்மொழி ஆசிரியர். கீழுள்ள எட்டு உரைத்துண்டுகளையும் தனித்தனியாக மதிப்பீடு செய்யுங்கள். இயல்பான மொழிநடை, இலக்கணம் மற்றும் தவறுதலாக மீந்துள்ள ஆங்கிலம், இந்தி, ரஷ்யம் அல்லது கலப்பு மொழியைச் சரிபார்க்கவும். «செயல் நாள்», «கேட்கப்பட்ட நாள்», «கட்லெட்» மற்றும் ஒன்றோடொன்று பின்னிய மாதங்கள் திட்டமிட்ட துறைச் சொற்கள். Return only JSON; verdict must be exactly OK or FIX."+"\n\n"+json.dumps(cases,ensure_ascii=False)
+          schema={"type":"object","properties":{"decisions":{"type":"array","minItems":8,"maxItems":8,"items":{"type":"object","properties":{"id":{"type":"string","enum":ids},"verdict":{"type":"string","enum":["OK","FIX"]}},"required":["id","verdict"],"additionalProperties":False}}},"required":["decisions"],"additionalProperties":False}
+          payload={"messages":[{"role":"user","content":prompt}],"temperature":0.0,"max_tokens":420,"reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"ta_qualification","strict":True,"schema":schema}}}
+          req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),headers={"Content-Type":"application/json"},method="POST")
+          with urllib.request.urlopen(req,timeout=2400) as resp: data=json.load(resp)
+          raw=data["choices"][0]["message"]["content"].strip(); ev=Path("/tmp/ta-strict/evidence"); ev.joinpath("qualification-raw.json").write_text(raw+"\n",encoding="utf-8")
+          ds=json.loads(raw).get("decisions",[]); actual={d["id"]:d["verdict"] for d in ds}; results=[]; failed=[]
+          for x in cases:
+            ok=actual.get(x["id"])==x["expected"]; results.append({**x,"actual":actual.get(x["id"]),"passed":ok})
+            if not ok: failed.append(x["id"])
+          ev.joinpath("qualification.json").write_text(json.dumps(results,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          if len(ds)!=8 or failed: raise SystemExit("qualification failed")
+          PY
+      - name: Strict whole-site Tamil review
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json,urllib.request
+          ev=Path("/tmp/ta-strict/evidence"); items=json.loads(ev.joinpath("items.json").read_text(encoding="utf-8")); by={}
+          for item in items: by.setdefault(item["location"],[]).append(item["text"])
+          prompt="நீங்கள் Pastafari நாட்காட்டியின் தமிழ் பதிப்பிற்கான சுயாதீனமான, கடுமையான தாய்மொழி ஆசிரியர். தளத்தில் தெரியும் அனைத்து உரையையும் accessibility உரையையும் ஒரே மொழி அனுபவமாக ஆய்வு செய்யுங்கள். தவறுதலாக மீந்துள்ள ஆங்கிலம், இந்தி, ரஷ்யம் அல்லது பிற மொழி பகுதிகள், நேரடி மொழிபெயர்ப்பு வாசம், இயல்பற்ற தமிழ், இலக்கணம், எழுத்துப்பிழை, நிறுத்தக்குறி மற்றும் சொல்லியல் சிக்கல்களை metadata, manifest மற்றும் accessibility உரையுடன் சேர்த்து தேடுங்கள். தமிழ் உரைநடையில் உள்ள சாதாரண ஆங்கிலத் தொழில்நுட்பச் சொற்கள் உண்மையான code literal, API பெயர் அல்லது proper name அல்லாவிட்டால் சிக்கலாகக் கருதப்பட வேண்டும். நிலையான IDகள், சூத்திரங்கள், hashகள், API/endpoint பெயர்கள், HTTP, CLI, OpenAPI, SIMD, SLA, all-day, Short Choice மற்றும் Wide Choice அப்படியே இருக்கலாம். ஒவ்வொரு finding-மும் கொடுக்கப்பட்ட location மதிப்பை அப்படியே பயன்படுத்த வேண்டும்; current_text அந்த இடத்தில் உண்மையில் உள்ள தொடர்ச்சியான சொற்படி துண்டாக இருக்க வேண்டும். உண்மையான சிக்கல் இல்லையெனில் CLEAN மற்றும் காலியான findings பட்டியலைத் திருப்புங்கள். JSON மட்டும் திருப்புங்கள்."+"\n\nWEBSITE_TEXT_ITEMS_JSON:\n"+Path("/tmp/ta-strict/corpus.json").read_text(encoding="utf-8")
+          schema={"type":"object","properties":{"result":{"type":"string","enum":["CLEAN","FINDINGS"]},"findings":{"type":"array","maxItems":14,"items":{"type":"object","properties":{"severity":{"type":"string","enum":["critical","high","medium","low"]},"location":{"type":"string"},"current_text":{"type":"string","minLength":1,"maxLength":280},"issue":{"type":"string","minLength":15,"maxLength":420},"correction":{"type":"string","minLength":2,"maxLength":420}},"required":["severity","location","current_text","issue","correction"],"additionalProperties":False}}},"required":["result","findings"],"additionalProperties":False}
+          payload={"messages":[{"role":"user","content":prompt}],"temperature":0.05,"top_p":0.85,"max_tokens":1900,"reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"ta_whole_site_review","strict":True,"schema":schema}}}
+          accepted=None
+          for attempt in (1,2):
+            req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),headers={"Content-Type":"application/json"},method="POST")
+            with urllib.request.urlopen(req,timeout=3600) as resp: data=json.load(resp)
+            raw=data["choices"][0]["message"]["content"].strip(); ev.joinpath(f"raw-review-attempt-{attempt}.json").write_text(raw+"\n",encoding="utf-8")
+            try: p=json.loads(raw)
+            except Exception: continue
+            result=p.get("result"); findings=p.get("findings")
+            if result not in {"CLEAN","FINDINGS"} or not isinstance(findings,list) or (result=="CLEAN" and findings) or (result=="FINDINGS" and not findings): continue
+            seen=set(); good=True
+            for f in findings:
+              loc=str(f.get("location","")).strip(); cur=str(f.get("current_text","")).strip(); corr=str(f.get("correction","")).strip()
+              if loc not in by or not cur or not any(cur in t for t in by[loc]) or cur==corr or (loc,cur) in seen: good=False; break
+              seen.add((loc,cur))
+            if good: accepted=p; break
+          if accepted is None: raise SystemExit("review invalid")
+          final_result="PASS" if accepted["result"]=="CLEAN" else "FAIL"
+          final={"result":final_result,"reviewed_head":ev.joinpath("reviewed-head.txt").read_text().strip(),"findings":accepted["findings"]}
+          ev.joinpath("final.json").write_text(json.dumps(final,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          lines=[f"NATIVE_QA_RESULT: {final_result}","","முழு தமிழ் தளத்தின் கடுமையான மொழி ஆய்வில் திருத்தம் தேவைப்படும் உறுதிப்படுத்தப்பட்ட சிக்கல் எதுவும் கண்டுபிடிக்கப்படவில்லை." if final_result=="PASS" else "முழு தமிழ் தளத்தின் கடுமையான மொழி ஆய்வில் திருத்தம் தேவைப்படும் உறுதிப்படுத்தப்பட்ட சிக்கல்கள் கண்டுபிடிக்கப்பட்டன.",""]
+          if final_result=="FAIL":
+            for i,f in enumerate(accepted["findings"],1): lines += [f"### {i}. {f['severity']}","",f["location"],"",f"> {f['current_text']}","",f["issue"],"","Correction: "+f["correction"],""]
+          ev.joinpath("review.md").write_text("\n".join(lines).rstrip()+"\n",encoding="utf-8")
+          PY
+      - name: Verify verdict
+        shell: bash
+        run: |
+          set -euo pipefail
+          head -n 1 /tmp/ta-strict/evidence/review.md | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)$'
+      - name: Stop reviewer
+        if: always()
+        shell: bash
+        run: |
+          [ ! -f /tmp/ta-strict/server.pid ] || kill "$(cat /tmp/ta-strict/server.pid)" 2>/dev/null || true
+      - name: Upload strict Tamil evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: ta-strict-native-whole-site
+          path: /tmp/ta-strict/evidence/
+          if-no-files-found: warn
+          retention-days: 90
