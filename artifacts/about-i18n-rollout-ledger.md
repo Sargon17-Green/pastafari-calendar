@@ -54,7 +54,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | lt | lt-LT | ltr | partial | linguistic QA |
 | lv | lv-LV | ltr | partial | linguistic QA |
 | mk | mk-MK | ltr | partial | linguistic QA |
-| mr | mr-IN | ltr | partial | semantic QA |
+| mr | mr-IN | ltr | partial | linguistic QA |
 | ms | ms-MY | ltr | partial | semantic QA |
 | nb | nb-NO | ltr | partial | linguistic QA |
 | ne | ne-NP | ltr | partial | semantic QA |
@@ -81,7 +81,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | uz | uz-UZ | ltr | partial | linguistic QA |
 | vi | vi-VN | ltr | partial | linguistic QA |
 | yo | yo-NG | ltr | partial | semantic QA |
-| zh | zh-CN | ltr | partial | semantic QA |
+| zh | zh-CN | ltr | partial | linguistic QA |
 | zu | zu-ZA | ltr | partial | semantic QA |
 
 Status progression for target locales: `not started → draft → semantic QA → linguistic QA → integrated → rendered → PASS`.
