@@ -139,17 +139,17 @@
 
 <section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
   <h2>Short Choice i Wide Choice</h2>
-  <p>Za relativno male prostor izbora koristi se <strong>Short Choice</strong>. On koristi uzorkovanje odbacivanjem kako bi izbegao jednostavan pristrasnost modula.</p>
+  <p>Za relativno male prostore izbora koristi se <strong>Short Choice</strong>. On koristi uzorkovanje odbacivanjem kako bi izbegao jednostavnu pristrasnost modula.</p>
   <p>Za veoma veliki prostor koristi se <strong>Wide Choice</strong>. Ne treba mu pripisivati osobine koje specifikacija ne garantuje.</p>
-  <p>Wide Choice nije isto što i generisanje nezavisnih, ravnomerno raspoređenih base-<code>Q</code> cifara sve dok se ne dobije index. Zato ne sledi da svaki važeći izbor nužno ima istu pozitivnu verovatnoću. U dovoljno velikim prostorima mogu postojati važeći izbori do kojih ovaj mehanizam nikada ne stiže.</p>
-  <p>Sam kalendar ostaje potpuno deterministički. “Choice” je naziv algoritamska faza, a ne nasumična lutrija tokom korišćenja.</p><hr>
+  <p>Wide Choice nije isto što i generisanje nezavisnih, ravnomerno raspoređenih cifara u bazi <code>Q</code> sve dok se ne dobije indeks. Zato ne sledi da svaki važeći izbor nužno ima istu pozitivnu verovatnoću. U dovoljno velikim prostorima mogu postojati važeći izbori do kojih ovaj mehanizam nikada ne stiže.</p>
+  <p>Sam kalendar ostaje potpuno deterministički. „Choice“ je naziv faze algoritma, a ne nasumično izvlačenje tokom korišćenja.</p><hr>
 </section>
 
 <section class="about-section" id="structural-atlas" data-toc-section data-toc-level="2">
   <h2>Strukturni atlas</h2>
   <p>Do sada smo govorili o pravilima kalendara. Sledeći brojevi su druga vrsta informacije: <strong>empirijski rezultati</strong> iz velikog računskog uzorka.</p>
   <p>Atlas je izgrađen uz commit mehanizma <code>8e155fa4198ea7bcfeb16138ac5d6662706f4d93</code> i obuhvatio je 4,096 dana radnje; za svaki od njih godine 4990–5010; 86,016 struktura godina; 625,437 kotleta; 3,535,422 strukturna meseca; više od 356 miliona neprekidnih mesečnih segmenata; i više od 364 miliona prelaza sa dana <code>n</code> na dan <code>n+1</code> istog meseca.</p>
-  <p>Ti brojevi opisuju taj korpus, a ne kanonski zakone.</p>
+  <p>Ti brojevi opisuju taj korpus, a ne kanonske zakone.</p>
   <div class="about-table-scroll" role="region" tabindex="0" aria-label="Izmereni podaci iz strukturnog atlasa">
     <table class="about-table">
       <thead><tr><th scope="col">Merena veličina</th><th scope="col">Rezultat u uzorku</th></tr></thead>
@@ -177,11 +177,11 @@
     </table>
   </div>
   <p>U praksi mesec od oko sto dana može biti rasut preko gotovo cele pastafarijanske godine.</p>
-  <p>Isti atlas pokazao je i prirodni bias dužine oko godine 5000. U uzorku je „obična“ godina prosečno trajala oko 4,262 dana. Kada se godine weight prema broju dana koje sadrže, prosek raste na oko 4,466 dana; sama godina 5000 trajala je prosečno oko 4,499 dana.</p>
+  <p>Isti atlas pokazao je i prirodnu pristrasnost dužine oko godine 5000. U uzorku je „obična“ godina prosečno trajala oko 4,262 dana. Kada se godine ponderišu prema broju dana koje sadrže, prosek raste na oko 4,466 dana; sama godina 5000 trajala je prosečno oko 4,499 dana.</p>
   <p>Razlog je jednostavan: godina 5000 mora da sadrži dan radnje. Duža godina ima više dana u kojima može da bude upravo godina koja sadrži dan radnje.</p>
-  <p>Veza između imena jedinice i njene dužine takođe je bila veoma slaba u uzorku. To ne dokazuje potpunu mathematical independence, ali atlas ne daje praktičan signal da su imena osmišljena tako da encode dužinu.</p>
-  <p>Pored toga, 86,016 struktura godina nije 86,016 potpuno independent sample: između početnih i završnih vrata postoje samo 24,786 različita interval. Bliski dani radnje mogu izabrati isti year interval, a ipak dati različite unutrašnje structure.</p>
-  <p>Zato atlas dobro opisuje izmereno ponašanje implementacija, ali ne treba da se pretvara u teorema verovatnoće o svim mogućim kalendarskim strukturama.</p><hr>
+  <p>Veza između imena jedinice i njene dužine takođe je bila veoma slaba u uzorku. To ne dokazuje potpunu matematičku nezavisnost, ali atlas ne daje praktičan signal da su imena osmišljena tako da kodiraju dužinu.</p>
+  <p>Pored toga, 86,016 struktura godina ne predstavlja 86,016 potpuno nezavisnih uzoraka: između početnih i završnih vrata postoje samo 24,786 različitih intervala. Bliski dani radnje mogu izabrati isti godišnji interval, a ipak dati različite unutrašnje strukture.</p>
+  <p>Zato atlas dobro opisuje izmereno ponašanje implementacija, ali ne treba da se pretvara u teoremu verovatnoće o svim mogućim kalendarskim strukturama.</p><hr>
 </section>
 
 <section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
@@ -211,17 +211,17 @@
 </section>
 
 <section class="about-section" id="travel-and-all-day" data-toc-section data-toc-level="2">
-  <h2>Putovanja, događaji i celodnevni</h2>
+  <h2>Putovanja i celodnevni događaji</h2>
   <p>Događaj i lokalna oznaka koja se za njega prikazuje nisu ista stvar. Događaj sa određenim vremenom treba da bude vezan za stabilan hronološki trenutak. Putovanje ga ne pomera kroz vreme, ali lokalni pastafarijanski datum za isti fizički trenutak može da se promeni, jer definicija „lokalnog dana“ zavisi od lokacije.</p>
-  <p>Kod <strong>celodnevni</strong> događaja razlika je još veća. Građanski celodnevni događaj obično traje od ponoći do sledeće ponoći; pastafarijanski celodnevni događaj treba da traje od lokalne granice pastafarijanskog dana do sledeće granice. To obično nisu isti trenuci.</p>
-  <p>Zato slepi export pastafarijanskog događaja kao građanskog „celodnevnog“ događaja može promeniti njegovo značenje. Za precizno očuvanje treba sačuvati hronološko sidro i odgovarajući kontekst lokacije/granice dana, a ne samo oznaku <code>all-day</code>.</p><hr>
+  <p>Kod <strong>celodnevnog</strong> događaja razlika je još veća. Građanski celodnevni događaj obično traje od ponoći do sledeće ponoći; pastafarijanski celodnevni događaj treba da traje od lokalne granice pastafarijanskog dana do sledeće granice. To obično nisu isti trenuci.</p>
+  <p>Zato slepi izvoz pastafarijanskog događaja kao građanskog „celodnevnog“ događaja može promeniti njegovo značenje. Za precizno očuvanje treba sačuvati hronološko sidro i odgovarajući kontekst lokacije/granice dana, a ne samo oznaku <code>all-day</code>.</p><hr>
 </section>
 
 <section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
   <h2>Kada se menja dan?</h2>
   <p>Lokalni pastafarijanski dan ne menja se u ponoć. Njegovu granicu određuje <strong>topocentrični donji prolaz kroz meridijan centra Venere preko lokalnog meridijana</strong>.</p>
-  <p>To je, dakle, lokalni astronomski događaj koji zavisi od lokacije. Transit ne mora da se dogodi u 00:00, ne određuje ga građanski vremenska zona, ne pomera se samo zato što počinje ili se završava letnje računanje vremena i ne zahteva da Venera bude vidljiva golim okom.</p>
-  <p>Isti fizički trenutak može na dve lokacije biti na različitim stranama njihovih lokalnih granica dana. Ako sistem nema upotrebljiv lokacija korisnika, podrazumevana rezervna lokacija proizvoda je <strong>Kisurra</strong>.</p><hr>
+  <p>To je, dakle, lokalni astronomski događaj koji zavisi od lokacije. Prolaz ne mora da se dogodi u 00:00, ne određuje ga građanska vremenska zona, ne pomera se samo zato što počinje ili se završava letnje računanje vremena i ne zahteva da Venera bude vidljiva golim okom.</p>
+  <p>Isti fizički trenutak može na dve lokacije biti na različitim stranama njihovih lokalnih granica dana. Ako sistem nema upotrebljivu lokaciju korisnika, podrazumevana rezervna lokacija proizvoda je <strong>Kisurra</strong>.</p><hr>
 </section>
 
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
@@ -249,14 +249,14 @@
 
   <section class="about-subsection" id="anchors" data-toc-section data-toc-level="3">
     <h3>Sidra</h3>
-    <p>Sistem ima jedan fiksni reference day koji se zove <strong>Dan osnivanja</strong>. U proleptičkom gregorijanskom kalendaru to je <strong>22. decembar 41,222. p. n. e.</strong>.</p>
-    <p>Dan osnivanja nije „početak vremena“; on je computational anchor.</p>
-    <p>Numerisanje dana oko njega koristi pozitivne neparne/parne brojeve: Dan osnivanja=1; kasniji dani=3, 5, …; ka prošlosti prethodni dan=2, zatim 4, 6, … . Tako se obe strane anchor encode u ovom counter bez negativnih day number.</p>
-    <p>Drugi anchor je <strong>Dan ploča</strong>: <strong>15. jun 763. p. n. e. u proleptičkom julijanskom kalendaru</strong>, odnosno <strong>7. jun 763. p. n. e. u proleptičkom gregorijanskom kalendaru</strong>.</p>
+    <p>Sistem ima jedan fiksni referentni dan koji se zove <strong>Dan osnivanja</strong>. U proleptičkom gregorijanskom kalendaru to je <strong>22. decembar 41,222. p. n. e.</strong>.</p>
+    <p>Dan osnivanja nije „početak vremena“; on je računsko sidro.</p>
+    <p>Numerisanje dana oko njega koristi pozitivno neparno/parno kodiranje: Dan osnivanja=1; kasniji dani=3, 5, …; ka prošlosti prethodni dan=2, zatim 4, 6, … . Tako se obe strane sidra mogu kodirati u ovom brojanju bez negativnih brojeva dana.</p>
+    <p>Drugo sidro je <strong>Dan ploča</strong>: <strong>15. jun 763. p. n. e. u proleptičkom julijanskom kalendaru</strong>, odnosno <strong>7. jun 763. p. n. e. u proleptičkom gregorijanskom kalendaru</strong>.</p>
     <p>Tačno rastojanje od Dana osnivanja do Dana ploča iznosi</p>
     <pre class="math-block" dir="ltr" tabindex="0"><code>14{,}777{,}149</code></pre>
     <p>dana.</p>
-    <p>To su fiksni anchor na vremenskoj osi, ali pastafarijanski datum koji im se prikazuje i dalje zavisi od dana radnje iz kojeg ih pitamo.</p>
+    <p>To su fiksna sidra na vremenskoj osi, ali pastafarijanski datum koji im se prikazuje i dalje zavisi od dana radnje iz kojeg ih pitamo.</p>
   </section>
 
   <section class="about-subsection" id="site-story" data-toc-section data-toc-level="3">
@@ -269,13 +269,14 @@
 
 <section class="about-section" id="reverse-conversion" data-toc-section data-toc-level="2">
   <h2>Za napredne korisnike: obrnuta konverzija</h2>
-  <p>Ako je dan radnje <code>c</code> poznat, obrnuta konverzija je veoma strogo ograničen. Unutar poznate pastafarijanske godine</p>
+  <p>Ako je dan radnje <code>c</code> poznat, obrnuta konverzija je veoma snažno određena. Unutar poznate pastafarijanske godine</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{ime kotleta},\text{dan u kotletu})</code></pre>
   <p>određuje najviše jedan dan. Isto važi i za</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>(\text{ime meseca},\text{dan u mesecu})</code></pre>
   <p>Zato potpun datum sa poznatim danom radnje jednoznačno određuje upitani dan.</p>
+  <p>Neke grube gornje granice broja kandidata unutar poznate godine su:</p>
 
-  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Gornje granice broja kandidata u reverse conversion">
+  <div class="about-table-scroll" role="region" tabindex="0" aria-label="Gornje granice broja kandidata u obrnutoj konverziji">
     <table class="about-table">
       <thead><tr><th scope="col">Poznate dodatne informacije</th><th scope="col">Maksimalan broj kandidata</th></tr></thead>
       <tbody>
@@ -298,7 +299,7 @@
 
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
     <h3>Struktura u veoma dalekom vremenu</h3>
-    <p>Matematičko istraživanje izvedeno iz specifikacija pronašlo je i tačnu asymptotic structure. Za <strong>fiksni dan radnje</strong> <code>c</code>, dovoljno daleko u rep prošlosti pojavljuje se afina periodičnost.</p>
+    <p>Matematičko istraživanje izvedeno iz specifikacija pronašlo je i tačnu asimptotsku strukturu. Za <strong>fiksni dan radnje</strong> <code>c</code>, dovoljno daleko u rep prošlosti pojavljuje se afina periodičnost.</p>
     <p>Ako je</p>
     <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
     <p>onda za isti <code>c</code> postoje pomeraj <code>H_c</code>, promena godine <code>p_c</code> i dovoljno udaljen prag, posle kojeg</p>
@@ -306,7 +307,7 @@
     <p>četiri polja osim godine ponavljaju se, dok se broj godine menja za fiksnu veličinu.</p>
     <p>To je rezultat za fiksni <code>c</code>; iz njega ne sledi globalni odnos</p>
     <pre class="math-block" dir="ltr" tabindex="0"><code>F(c+T,t+T)=F(c,t)</code></pre>
-    <p>Pitanje da li se konačni asimptotski nagib zaista razlikuju između različitih dana radnje ostaje otvoreno.</p><hr>
+    <p>Pitanje da li se konačni asimptotski nagib zaista razlikuje između različitih dana radnje ostaje otvoreno.</p><hr>
   </section>
 </section>
 
