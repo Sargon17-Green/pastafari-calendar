@@ -141,7 +141,7 @@
   <h2>Short Choice i Wide Choice</h2>
   <p>Za relativno male prostor izbora koristi se <strong>Short Choice</strong>. On koristi uzorkovanje odbacivanjem kako bi izbegao jednostavan pristrasnost modula.</p>
   <p>Za veoma veliki prostor koristi se <strong>Wide Choice</strong>. Ne treba mu pripisivati osobine koje specifikacija ne garantuje.</p>
-  <p>Wide Choice nije isto što i generisanje nezavisnih, ravnomerno raspoređenih base-<code>Q</code> cifara sve dok se ne dobije index. Zato ne sledi da svaki valid choice nužno ima istu pozitivnu verovatnoću. U dovoljno velikim space mogu postojati valid choice do kojih ovaj mechanism nikada ne stiže.</p>
+  <p>Wide Choice nije isto što i generisanje nezavisnih, ravnomerno raspoređenih base-<code>Q</code> cifara sve dok se ne dobije index. Zato ne sledi da svaki važeći izbor nužno ima istu pozitivnu verovatnoću. U dovoljno velikim prostorima mogu postojati važeći izbori do kojih ovaj mehanizam nikada ne stiže.</p>
   <p>Sam kalendar ostaje potpuno deterministički. “Choice” je naziv algoritamska faza, a ne nasumična lutrija tokom korišćenja.</p><hr>
 </section>
 
@@ -194,7 +194,7 @@
     <li>Za <code>(ime meseca, dan u mesecu)</code> medijana prvog povratka bila je 1 pastafarijanska godina; 77.56% se vratilo u susednoj godini, 93.77% u roku od dve godine, 99.44% u roku od pet; posmatrani maksimum bio je 21 godina.</li>
     <li>Za <code>(ime kotleta, dan u kotletu)</code> medijana je bila 3 godine; 88.89% je pronađeno u roku od 10 godina, ali distribucija ima veoma težak rep, a posmatrani maksimum je dostigao 51,954 pastafarijanske godine.</li>
   </ul>
-  <p>To su <strong>empirijski rezultati proveravanog korpus</strong>; ne dokazuju da će se svaka moguća godišnjica nužno vratiti i ne daju guarantee za maksimalno vreme čekanja.</p><hr>
+  <p>To su <strong>empirijski rezultati proveravanog korpus</strong>; ne dokazuju da će se svaka moguća godišnjica nužno vratiti i ne daju garanciju za maksimalno vreme čekanja.</p><hr>
 </section>
 
 <section class="about-section" id="appointments" data-toc-section data-toc-level="2">
@@ -214,7 +214,7 @@
   <h2>Putovanja, događaji i celodnevni</h2>
   <p>Događaj i lokalna oznaka koja se za njega prikazuje nisu ista stvar. Događaj sa određenim vremenom treba da bude vezan za stabilan hronološki trenutak. Putovanje ga ne pomera kroz vreme, ali lokalni pastafarijanski datum za isti fizički trenutak može da se promeni, jer definicija „lokalnog dana“ zavisi od lokacije.</p>
   <p>Kod <strong>celodnevni</strong> događaja razlika je još veća. Građanski celodnevni događaj obično traje od ponoći do sledeće ponoći; pastafarijanski celodnevni događaj treba da traje od lokalne granice pastafarijanskog dana do sledeće granice. To obično nisu isti trenuci.</p>
-  <p>Zato slepi export pastafarijanskog događaja kao građanskog „celodnevnog“ događaja može promeniti njegovo značenje. Za precizno očuvanje treba sačuvati chronological anchor i odgovarajući kontekst lokacije/granice dana, a ne samo <code>all-day</code> flag.</p><hr>
+  <p>Zato slepi export pastafarijanskog događaja kao građanskog „celodnevnog“ događaja može promeniti njegovo značenje. Za precizno očuvanje treba sačuvati hronološko sidro i odgovarajući kontekst lokacije/granice dana, a ne samo oznaku <code>all-day</code>.</p><hr>
 </section>
 
 <section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
