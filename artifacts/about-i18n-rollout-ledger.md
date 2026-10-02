@@ -19,7 +19,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | be | be-BY | ltr | partial | semantic QA |
 | bg | bg-BG | ltr | partial | semantic QA |
 | bn | bn-BD | ltr | partial | linguistic QA |
-| bs | bs-BA | ltr | partial | semantic QA |
+| bs | bs-BA | ltr | partial | linguistic QA |
 | ca | ca-ES | ltr | partial | semantic QA |
 | cs | cs-CZ | ltr | partial | linguistic QA |
 | da | da-DK | ltr | partial | linguistic QA |
