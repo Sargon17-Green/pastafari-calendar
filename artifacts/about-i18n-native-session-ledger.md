@@ -65,7 +65,7 @@ Allowed strict-session states: `pending` → `reviewed PASS` or `reviewed FAIL` 
 | sk | sk-SK | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/sk/strict-36987353831/` — strict Gemma 4 run `36987353831`; hidden qualification 8/8, 568 grounded text items, 0 findings; manual post-run scan clean; staleness clean |
 | sl | sl-SI | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/sl/strict-37002466755/` — strict Gemma 4 run `37002466755`; hidden qualification 8/8, 567 grounded text items, 0 findings; manual post-run scan clean; staleness clean |
 | so | so-SO | ltr | semantic QA | pending | — |
-| sq | sq-AL | ltr | semantic QA | pending | — |
+| sq | sq-AL | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/sq/strict-37052333983/` — strict Gemma 4 run `37052333983`; hidden qualification 8/8, 568 grounded text items, 0 findings; manual post-run scan clean after Albanian terminology repairs; staleness clean |
 | sr | sr-Latn-RS | ltr | semantic QA | pending | — |
 | sv | sv-SE | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/sv/strict-36944857866/` — strict Gemma 4 run `36944857866`; hidden qualification 8/8, 562 grounded text items, 0 findings; manual post-run scan clean; staleness clean |
 | sw | sw-TZ | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/sw/strict-37001417848/` — strict Gemma 4 run `37001417848`; hidden qualification 8/8, 568 grounded text items, 0 findings; manual post-run scan clean; staleness clean |
