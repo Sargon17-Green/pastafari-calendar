@@ -1,5 +1,5 @@
 # repair workflow trigger v1
-name: Somali confirmed-residue repair
+name: Somali phrase-only residue repair
 
 on:
   push:
@@ -28,7 +28,7 @@ jobs:
         run: |
           set -euo pipefail
           SERVER="$(find /tmp/so-gemma/llama -type f -name llama-server | head -n 1)"
-          "$SERVER" -hf ggml-org/gemma-3-12b-it-GGUF:Q4_K_M -c 16384 -t 4 --host 127.0.0.1 --port 8080 > /tmp/so-gemma/server.log 2>&1 &
+          "$SERVER" -hf ggml-org/gemma-3-12b-it-GGUF:Q4_K_M -c 32768 -t 4 --host 127.0.0.1 --port 8080 > /tmp/so-gemma/server.log 2>&1 &
           PID=$!; trap 'kill "$PID" 2>/dev/null || true' EXIT
           for _ in $(seq 1 900); do curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break; sleep 1; done
           python - <<'PY'
@@ -38,7 +38,7 @@ jobs:
           ids=[x["id"] for x in cases]
           prompt="Waxaad tahay tifaftire adag oo af-Soomaali casri ah oo heer ah. Mid kasta oo ka mid ah siddeedda qaybood ee hoose si gooni ah u qiimee. Hubi dabiicinnimada, naxwaha, iyo hadhaaga aan ula kac ahayn ee Ingiriisiga, Sawaaxiliga, Carabiga ama luqad isku dhafan. Erayada «maalinta hawsha», «maalinta la weydiiyey», «kotlet» iyo bilaha is dhexgala waa erayo domain oo si ula kac ah loo adeegsaday. Return only JSON; verdict must be exactly OK or FIX."+"\\n\\n"+json.dumps(cases,ensure_ascii=False)
           schema={"type":"object","properties":{"decisions":{"type":"array","minItems":8,"maxItems":8,"items":{"type":"object","properties":{"id":{"type":"string","enum":ids},"verdict":{"type":"string","enum":["OK","FIX"]}},"required":["id","verdict"],"additionalProperties":False}}},"required":["decisions"],"additionalProperties":False}
-          payload={"messages":[{"role":"user","content":prompt}],"temperature":0.0,"max_tokens":420,"reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"so_qualification","strict":True,"schema":schema}}}
+          payload={"messages":[{"role":"user","content":prompt}],"temperature":0.0,"max_tokens":420,"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"so_qualification","strict":True,"schema":schema}}}
           req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),headers={"Content-Type":"application/json"},method="POST")
           with urllib.request.urlopen(req,timeout=2400) as resp: data=json.load(resp)
           raw=data["choices"][0]["message"]["content"].strip(); ds=json.loads(raw).get("decisions",[])
@@ -49,25 +49,25 @@ jobs:
           Path("/tmp/so-gemma/qualification.json").write_text(json.dumps(results,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
           Path("/tmp/so-gemma/qualification-raw.json").write_text(raw+"\n",encoding="utf-8")
           if len(ds)!=8 or failed: raise SystemExit("qualification failed")
-          repair_cases=[{"id":"r1","location":"docs/about/content/so.html#short-and-wide-choice","text":"Kalandarka laftiisu waa go'aansan buuxa. “Choice” waa magaca tallaabo algorithm ah, ma aha bakhtiyaa-nasiib marka la isticmaalayo.","markers":["tallaabo algorithm ah"]}]
-          repair_ids=[x["id"] for x in repair_cases]
-          repair_prompt="Qoraalka hoose waxaa ku jira hal hadhaag Ingiriisi oo la xaqiijiyey. Beddel KELIYA weedha ku jirta markers una beddel Soomaali dabiici ah oo macne ahaan u dhiganta. Dhammaan erayada kale, ‘Choice’, macnaha ah in tani aysan ahayn bakhtiyaa-nasiib marka la isticmaalayo, iyo qaabka jumladda waa in la ilaaliyaa; wax kale ha dib u qorin marka laga reebo hagaajin naxwe oo aad u yar oo khasab ah si weedha cusub ugu habboonaato. Ha ku darin Ingiriisi sharaxaad ahaan ama qawsyo. Soo celi JSON oo keliya."+"\\n\\n"+json.dumps(repair_cases,ensure_ascii=False)
-          repair_schema={"type":"object","properties":{"repairs":{"type":"array","minItems":1,"maxItems":1,"items":{"type":"object","properties":{"id":{"type":"string","enum":repair_ids},"replacement":{"type":"string","minLength":1,"maxLength":1600}},"required":["id","replacement"],"additionalProperties":False}}},"required":["repairs"],"additionalProperties":False}
-          repair_payload={"messages":[{"role":"user","content":repair_prompt}],"temperature":0.15,"top_p":0.9,"max_tokens":3500,"reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"so_confirmed_residue_repair","strict":True,"schema":repair_schema}}}
-          repair_req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",data=json.dumps(repair_payload,ensure_ascii=False).encode("utf-8"),headers={"Content-Type":"application/json"},method="POST")
-          with urllib.request.urlopen(repair_req,timeout=2400) as resp: repair_data=json.load(resp)
-          repair_raw=repair_data["choices"][0]["message"]["content"].strip()
-          Path("/tmp/so-gemma/repair-raw.json").write_text(repair_raw+"\\n",encoding="utf-8")
-          repairs=json.loads(repair_raw).get("repairs",[])
+          phrase_cases=[{"id":"p1","source_phrase":"tallaabo algorithm ah","context":"“Choice” waa magaca tallaabo algorithm ah, ma aha bakhtiyaa-nasiib marka la isticmaalayo.","meaning":"a stage of the algorithm; Choice is the name of an algorithm stage, not a lottery at runtime","forbidden":["algorithm"]}]
+          phrase_ids=[x["id"] for x in phrase_cases]
+          phrase_prompt="Waxaad tahay tifaftire af-Soomaali ah. Kiis kasta wuxuu bixiyaa HAL weedh qalaad oo ku jirta jumlad af-Soomaali ah iyo macnaheeda saxda ah ee Ingiriisiga. Soo celi KELIYA beddelka gaaban ee weedhaas, ee af-Soomaali dabiici ah, si uu si naxwe ahaan sax ah ugu galo isla meesha. Ha dib u qorin jumladda oo dhan, ha sharxin, hana ku darin qawsyo ama Ingiriisi. Ilaali erayada domain-ka sida Choice oo aan qayb ka ahayn source_phrase."+"\\n\\n"+json.dumps(phrase_cases,ensure_ascii=False)
+          phrase_schema={"type":"object","properties":{"repairs":{"type":"array","minItems":1,"maxItems":1,"items":{"type":"object","properties":{"id":{"type":"string","enum":phrase_ids},"replacement":{"type":"string","minLength":1,"maxLength":160}},"required":["id","replacement"],"additionalProperties":False}}},"required":["repairs"],"additionalProperties":False}
+          phrase_payload={"messages":[{"role":"user","content":phrase_prompt}],"temperature":0.0,"max_tokens":1200,"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"so_phrase_residue_repair","strict":True,"schema":phrase_schema}}}
+          phrase_req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",data=json.dumps(phrase_payload,ensure_ascii=False).encode("utf-8"),headers={"Content-Type":"application/json"},method="POST")
+          with urllib.request.urlopen(phrase_req,timeout=2400) as resp: phrase_data=json.load(resp)
+          phrase_raw=phrase_data["choices"][0]["message"]["content"].strip()
+          Path("/tmp/so-gemma/repair-raw.json").write_text(phrase_raw+"\n",encoding="utf-8")
+          repairs=json.loads(phrase_raw).get("repairs",[])
           by_id={r.get("id"):r for r in repairs}; output=[]; bad=[]
-          for x in repair_cases:
+          for x in phrase_cases:
             r=by_id.get(x["id"],{}); repl=str(r.get("replacement","")).strip()
-            ok=bool(repl) and repl!=x["text"] and not any(m.casefold() in repl.casefold() for m in x["markers"])
-            if "{index}" in x["text"] and "{index}" not in repl: ok=False
+            ok=bool(repl) and repl.casefold()!=x["source_phrase"].casefold() and "\n" not in repl and len(repl)<=160
+            if any(term.casefold() in repl.casefold() for term in x["forbidden"]): ok=False
             output.append({**x,"replacement":repl,"passed":ok})
             if not ok: bad.append(x["id"])
-          Path("/tmp/so-gemma/repair.json").write_text(json.dumps(output,ensure_ascii=False,indent=2)+"\\n",encoding="utf-8")
-          if len(repairs)!=len(repair_cases) or len(by_id)!=len(repair_cases) or bad: raise SystemExit("repair validation failed: "+",".join(bad))
+          Path("/tmp/so-gemma/repair.json").write_text(json.dumps(output,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          if len(repairs)!=len(phrase_cases) or len(by_id)!=len(phrase_cases) or bad: raise SystemExit("phrase repair validation failed: "+",".join(bad))
           PY
       - name: Upload qualification evidence
         if: always()
