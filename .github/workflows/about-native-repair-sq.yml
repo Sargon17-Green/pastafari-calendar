@@ -1,0 +1,82 @@
+name: Albanian confirmed-residue repair
+
+on:
+  push:
+    branches: [feature/about-i18n-72-locales]
+    paths: [.github/workflows/about-native-qa-sq-gemma4-smoke.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Install pinned llama.cpp runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/sq-gemma/llama
+          curl -fL --retry 3 https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz -o /tmp/sq-gemma/llama.tar.gz
+          echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/sq-gemma/llama.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/sq-gemma/llama.tar.gz -C /tmp/sq-gemma/llama
+      - name: Qualify Albanian reviewer
+        shell: bash
+        run: |
+          set -euo pipefail
+          SERVER="$(find /tmp/sq-gemma/llama -type f -name llama-server | head -n 1)"
+          "$SERVER" -hf ggml-org/gemma-4-E4B-it-GGUF:Q4_0 --reasoning auto --chat-template-kwargs '{"enable_thinking":false}' -c 16384 -t 4 --host 127.0.0.1 --port 8080 > /tmp/sq-gemma/server.log 2>&1 &
+          PID=$!; trap 'kill "$PID" 2>/dev/null || true' EXIT
+          for _ in $(seq 1 600); do curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break; sleep 1; done
+          python - <<'PY'
+          from pathlib import Path
+          import json,urllib.request
+          cases=[{"id":"g1","text":"Ajo datë nuk mund të njihej. Kontrolloni që çdo fushë të jetë plotësuar dhe që data të ekzistojë në kalendarin e zgjedhur.","expected":"OK"},{"id":"g2","text":"Dita e veprimit është pika e nisjes së llogaritjes.","expected":"OK"},{"id":"g3","text":"Kotleta e mëparshme","expected":"OK"},{"id":"g4","text":"Si përdoret kjo faqe?","expected":"OK"},{"id":"b1","text":"Click here dhe vazhdo.","expected":"FIX"},{"id":"b2","text":"Change the working day.","expected":"FIX"},{"id":"b3","text":"Seleziona questa data.","expected":"FIX"},{"id":"b4","text":"Kako se koristi ova stranica?","expected":"FIX"}]
+          ids=[x["id"] for x in cases]
+          prompt="Jeni redaktor i rreptë amtare i shqipes standarde bashkëkohore. Vlerësoni veçmas secilin nga tetë fragmentet e mëposhtme. Kontrolloni natyrshmërinë, gramatikën dhe mbetjet e paqëllimshme të anglishtes, italishtes, serbishtes ose gjuhës së përzier. Termat «dita e veprimit», «dita e pyetur», «kotleta» dhe muajt e ndërthurur janë terma të qëllimshëm të domenit. Return only JSON; verdict must be exactly OK or FIX."+"\\n\\n"+json.dumps(cases,ensure_ascii=False)
+          schema={"type":"object","properties":{"decisions":{"type":"array","minItems":8,"maxItems":8,"items":{"type":"object","properties":{"id":{"type":"string","enum":ids},"verdict":{"type":"string","enum":["OK","FIX"]}},"required":["id","verdict"],"additionalProperties":False}}},"required":["decisions"],"additionalProperties":False}
+          payload={"messages":[{"role":"user","content":prompt}],"temperature":0.0,"max_tokens":420,"reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"sq_qualification","strict":True,"schema":schema}}}
+          req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),headers={"Content-Type":"application/json"},method="POST")
+          with urllib.request.urlopen(req,timeout=2400) as resp: data=json.load(resp)
+          raw=data["choices"][0]["message"]["content"].strip(); ds=json.loads(raw).get("decisions",[])
+          actual={d["id"]:d["verdict"] for d in ds}; results=[]; failed=[]
+          for x in cases:
+            ok=actual.get(x["id"])==x["expected"]; results.append({**x,"actual":actual.get(x["id"]),"passed":ok})
+            if not ok: failed.append(x["id"])
+          Path("/tmp/sq-gemma/qualification.json").write_text(json.dumps(results,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          Path("/tmp/sq-gemma/qualification-raw.json").write_text(raw+"\n",encoding="utf-8")
+          if len(ds)!=8 or failed: raise SystemExit("qualification failed")
+          repair_cases=[{"id":"r1","location":"docs/i18n/locales/sq.js#about.fallbackNotice","text":"Shpjegimi nuk është ende i disponueshëm në gjuhën e zgjedhur, ndaj po shfaqet versioni default.","markers":["versioni default"]},{"id":"r2","location":"docs/about/content/sq.html#anniversaries","text":"Për (emri i kotletës, dita në kotletë), mediana ishte 3 vite; 88.89% u gjetën brenda 10 viteve, por distribution ka një bisht i rëndë shumë të rëndë, dhe maksimumi i vëzhguar arriti 51,954 vite pastafariane.","markers":["distribution"]},{"id":"r3","location":"docs/about/content/sq.html#anniversaries","text":"Këto janë rezultate empirike të korpus-it të kontrolluar; nuk provojnë se çdo përvjetor i mundshëm do të rikthehet patjetër dhe nuk japin një guarantee për kohën maksimale të pritjes.","markers":["guarantee"]},{"id":"r4","location":"docs/about/content/sq.html#short-and-wide-choice","text":"Wide Choice nuk është e barasvlershme me prodhimin e shifrave base-Q të pavarura dhe të shpërndara njëtrajtshëm derisa të merret një index. Prandaj nuk del përfundimi se çdo choice i vlefshëm ka domosdoshmërisht të njëjtën probabilitet pozitiv. Në hapësira mjaft të mëdha mund të ketë choice të vlefshme që ky mechanism nuk i arrin kurrë.","markers":["mechanism"]},{"id":"r5","location":"docs/about/content/sq.html#sauce-history","text":"Salca duket si një mechanism shumë agresiv përzierjeje, por kërkimi algjebrik tregon se ajo ruan shumë më tepër informacion sesa sugjeron pamja. Ky është rezultat kërkimor i nxjerrë nga specifikimi, jo rregull i ri i kalendarit.","markers":["mechanism"]},{"id":"r6","location":"docs/about/content/sq.html#short-and-wide-choice","text":"Vetë kalendari mbetet plotësisht determinist. “Choice” është emri i një faze algoritmike, jo një short random gjatë përdorimit.","markers":["short random"]},{"id":"r7","location":"docs/about/content/sq.html#travel-and-all-day","text":"Prandaj eksportimi pa menduar i një ngjarjeje pastafariane si ngjarje civile “gjithëditore” mund t’ia ndryshojë kuptimin. Për ta ruajtur saktë duhet ruajtur ankora kronologjike dhe konteksti përkatës i location/day-boundary, jo vetëm flag-u all-day.","markers":["location/day-boundary","flag-u"]},{"id":"r8","location":"docs/about/content/sq.html#day-boundary","text":"Pra kjo është një ngjarje astronomike lokale që varet nga vendndodhja. Transit nuk ka pse të ndodhë në 00:00, nuk përcaktohet nga zona civile e orës, nuk zhvendoset thjesht sepse nis ose mbaron ora verore dhe nuk kërkon që Venusi të jetë i dukshëm me sy të lirë.","markers":["Transit"]}]
+          repair_ids=[x["id"] for x in repair_cases]
+          repair_prompt="Këto fragmente përmbajnë mbetje të konfirmuara të gjuhës së huaj në prozën shqipe. Rishkruani secilin tekst të plotë në shqipe standarde moderne dhe natyrore. Ruani të gjithë kuptimin, numrat, termat Pastafari, shenjat matematikore dhe literalet e vërteta si Choice, Wide Choice, Short Choice, all-day, API/HTTP/CLI/OpenAPI/SIMD/SLA. Hiqni markerët e konfirmuar dhe rregulloni gramatikën aq sa duhet që i gjithë fragmenti të tingëllojë natyrshëm. Mos shkurtoni dhe mos humbni informacion. Ktheni vetëm JSON."+"\\n\\n"+json.dumps(repair_cases,ensure_ascii=False)
+          repair_schema={"type":"object","properties":{"repairs":{"type":"array","minItems":8,"maxItems":8,"items":{"type":"object","properties":{"id":{"type":"string","enum":repair_ids},"replacement":{"type":"string","minLength":1,"maxLength":1800}},"required":["id","replacement"],"additionalProperties":False}}},"required":["repairs"],"additionalProperties":False}
+          repair_payload={"messages":[{"role":"user","content":repair_prompt}],"temperature":0.15,"top_p":0.9,"max_tokens":4200,"reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"sq_confirmed_residue_repair","strict":True,"schema":repair_schema}}}
+          repair_req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",data=json.dumps(repair_payload,ensure_ascii=False).encode("utf-8"),headers={"Content-Type":"application/json"},method="POST")
+          with urllib.request.urlopen(repair_req,timeout=2400) as resp: repair_data=json.load(resp)
+          repair_raw=repair_data["choices"][0]["message"]["content"].strip()
+          Path("/tmp/sq-gemma/repair-raw.json").write_text(repair_raw+"\\n",encoding="utf-8")
+          repairs=json.loads(repair_raw).get("repairs",[])
+          by_id={r.get("id"):r for r in repairs}; output=[]; bad=[]
+          for x in repair_cases:
+            r=by_id.get(x["id"],{}); repl=str(r.get("replacement","")).strip()
+            ok=bool(repl) and repl!=x["text"] and not any(m.casefold() in repl.casefold() for m in x["markers"])
+            if "{index}" in x["text"] and "{index}" not in repl: ok=False
+            output.append({**x,"replacement":repl,"passed":ok})
+            if not ok: bad.append(x["id"])
+          Path("/tmp/sq-gemma/repair.json").write_text(json.dumps(output,ensure_ascii=False,indent=2)+"\\n",encoding="utf-8")
+          if len(repairs)!=len(repair_cases) or len(by_id)!=len(repair_cases) or bad: raise SystemExit("repair validation failed: "+",".join(bad))
+          PY
+      - name: Upload qualification evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: sq-confirmed-residue-repair
+          path: |
+            /tmp/sq-gemma/qualification.json
+            /tmp/sq-gemma/qualification-raw.json
+            /tmp/sq-gemma/repair.json
+            /tmp/sq-gemma/repair-raw.json
+            /tmp/sq-gemma/server.log
+          retention-days: 30
