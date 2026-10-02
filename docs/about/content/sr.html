@@ -128,13 +128,13 @@
   <h2>Kako se kalendar računa?</h2>
   <p>Unutrašnje računanje zove se <strong>sos</strong>. U njegovom središtu nalazi se prost broj</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>Q=2^{127}-1</code></pre>
-  <p>Postupak obuhvata pet ulazni brojač, 7 skrivenih kapi, 46 vidljivih kapi, 6 činija, promenljive redoslede činija, 12 završnih mešanja, seal za različite odgovore, kombinatorni izbor, izgradnju vrata, izbor godina, podelu kotleta, izbor imena, izgradnju meseci i preplitanje dana u mesecima.</p>
+  <p>Postupak obuhvata pet ulazni brojač, 7 skrivenih kapi, 46 vidljivih kapi, 6 činija, promenljive redoslede činija, 12 završnih mešanja, pečate za različite odgovore, kombinatorni izbor, izgradnju vrata, izbor godina, podelu kotleta, izbor imena, izgradnju meseci i preplitanje dana u mesecima.</p>
   <p>Završni ažuriranje su <strong>sinhroni</strong>: pri svakom mešanju svih šest novih vrednosti računa se iz istog starog stanje, a tek potom se svih šest činija menja zajedno.</p>
   <p>U 12 završnih mešanja postoji jedan posebno važan kanonski detalj. Ako je <code>S</code> zbir šest starih činija, a <code>r</code> broj mešanja, sistem računa</p>
   <pre class="math-block" dir="ltr" tabindex="0"><code>R=\operatorname{SAVE}(S+149r)</code></pre>
   <p><code>R</code> je <strong>sačuvani zbir</strong>. I izbor redosleda činija i unutrašnji ažuriranje mešanja koriste <code>R</code>, a ne sirovi zbir <code>S</code>.</p>
   <p>Starije verzije koje su ovom ažuriranje davale sirovi zbir više ne opisuju trenutnu kanonska semantika. Primere izvedene iz starog pravila treba smatrati zastarelim dok se ponovo ne provere.</p>
-  <p>Posle mešanja prsten odgovora takođe nastavlja redosled koji je lock na vidljivoj kapi 46; taj redosled ne treba automatski zameniti redosledom poslednjeg mešanja.</p><hr>
+  <p>Posle mešanja prsten odgovora takođe nastavlja redosled koji je zaključan na vidljivoj kapi 46; taj redosled ne treba automatski zameniti redosledom poslednjeg mešanja.</p><hr>
 </section>
 
 <section class="about-section" id="short-and-wide-choice" data-toc-section data-toc-level="2">
