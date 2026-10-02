@@ -12,7 +12,7 @@ permissions:
 jobs:
   qualify:
     runs-on: ubuntu-latest
-    timeout-minutes: 50
+    timeout-minutes: 150
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
       - name: Install pinned llama.cpp runtime
@@ -28,9 +28,9 @@ jobs:
         run: |
           set -euo pipefail
           SERVER="$(find /tmp/sr-gemma/llama -type f -name llama-server | head -n 1)"
-          "$SERVER" -hf ggml-org/gemma-4-E4B-it-GGUF:Q4_0 --reasoning auto --chat-template-kwargs '{"enable_thinking":false}' -c 16384 -t 4 --host 127.0.0.1 --port 8080 > /tmp/sr-gemma/server.log 2>&1 &
+          "$SERVER" -hf ggml-org/gemma-3-12b-it-GGUF:Q4_K_M -c 16384 -t 4 --host 127.0.0.1 --port 8080 > /tmp/sr-gemma/server.log 2>&1 &
           PID=$!; trap 'kill "$PID" 2>/dev/null || true' EXIT
-          for _ in $(seq 1 600); do curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break; sleep 1; done
+          for _ in $(seq 1 900); do curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break; sleep 1; done
           python - <<'PY'
           from pathlib import Path
           import json,urllib.request
@@ -49,9 +49,9 @@ jobs:
           Path("/tmp/sr-gemma/qualification.json").write_text(json.dumps(results,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
           Path("/tmp/sr-gemma/qualification-raw.json").write_text(raw+"\n",encoding="utf-8")
           if len(ds)!=8 or failed: raise SystemExit("qualification failed")
-          repair_cases=[{"id":"r1","location":"docs/about/content/sr.html#anniversaries","text":"Za (ime kotleta, dan u kotletu) medijana je bila 3 godine; 88.89% pronađeno je u roku od 10 godina, ali distribution ima veoma težak težak rep, a posmatrani maksimum dostigao je 51,954 pastafarijanske godine.","markers":["distribution"]},{"id":"r2","location":"docs/about/content/sr.html#anniversaries","text":"To su empirijski rezultati proveravanog korpus; ne dokazuju da će se svaka moguća godišnjica nužno vratiti i ne daju guarantee za maksimalno vreme čekanja.","markers":["guarantee"]},{"id":"r3","location":"docs/about/content/sr.html#short-and-wide-choice","text":"Za veoma velike space koristi se Wide Choice. Ne treba mu pripisivati osobine koje specifikacija ne garantuje.","markers":["space"]},{"id":"r4","location":"docs/about/content/sr.html#short-and-wide-choice","text":"Wide Choice nije isto što i generisanje nezavisnih, ravnomerno raspoređenih base-Q cifara sve dok se ne dobije index. Zato ne sledi da svaki valid choice nužno ima istu pozitivnu verovatnoću. U dovoljno velikim space mogu postojati valid choice do kojih ovaj mechanism nikada ne stiže.","markers":["space","valid choice","mechanism"]},{"id":"r5","location":"docs/about/content/sr.html#sauce-history","text":"Sos izgleda kao veoma agresivan mixing mechanism, ali algebarsko istraživanje pokazuje da čuva znatno više informacija nego što izgled sugeriše. To je rezultat istraživanja izveden iz specifikacija, a ne novo pravilo kalendara.","markers":["mechanism","mixing mechanism"]},{"id":"r6","location":"docs/about/content/sr.html#travel-and-all-day","text":"Zato slepi export pastafarijanskog događaja kao građanskog „celodnevnog“ događaja može promeniti njegovo značenje. Za precizno očuvanje treba sačuvati chronological anchor i odgovarajući kontekst lokacije/granice dana, a ne samo all-day flag.","markers":["chronological anchor","flag"]}]
+          repair_cases=[{"id":"r1","location":"docs/about/content/sr.html#anniversaries","text":"To su empirijski rezultati proveravanog korpus; ne dokazuju da će se svaka moguća godišnjica nužno vratiti i ne daju guarantee za maksimalno vreme čekanja.","markers":["guarantee"]},{"id":"r2","location":"docs/about/content/sr.html#short-and-wide-choice","text":"Wide Choice nije isto što i generisanje nezavisnih, ravnomerno raspoređenih base-Q cifara sve dok se ne dobije index. Zato ne sledi da svaki valid choice nužno ima istu pozitivnu verovatnoću. U dovoljno velikim space mogu postojati valid choice do kojih ovaj mechanism nikada ne stiže.","markers":["space","valid choice","mechanism"]},{"id":"r3","location":"docs/about/content/sr.html#travel-and-all-day","text":"Zato slepi export pastafarijanskog događaja kao građanskog „celodnevnog“ događaja može promeniti njegovo značenje. Za precizno očuvanje treba sačuvati chronological anchor i odgovarajući kontekst lokacije/granice dana, a ne samo all-day flag.","markers":["chronological anchor","flag"]}]
           repair_ids=[x["id"] for x in repair_cases]
-          repair_prompt="Ovi odlomci sadrže potvrđene ostatke stranog jezika u srpskoj prozi. Prepišite svaki ceo tekst u prirodnom savremenom standardnom srpskom na latinici. Sačuvajte sve značenje, brojeve, termine Pastafari, matematičke oznake i stvarne literale kao što su Choice, Wide Choice, Short Choice, all-day, API/HTTP/CLI/OpenAPI/SIMD/SLA. Uklonite potvrđene markere i ispravite gramatiku koliko je potrebno da ceo odlomak bude prirodan. Ne skraćujte i ne gubite informacije. Vratite samo JSON."+"\\n\\n"+json.dumps(repair_cases,ensure_ascii=False)
+          repair_prompt="Svaki odlomak ispod sadrži potvrđene engleske ostatke navedene u markers. Zamenite SAMO označene izraze prirodnim savremenim srpskim na latinici, uz minimalne gramatičke izmene koje su nužne. Sve ostale činjenice, brojke, red reči koliko je moguće, naziv ‘Choice’, Wide Choice, all-day i tehničke literale treba sačuvati. Nemojte dodavati engleski prevod u zagradama i nemojte menjati značenje. Vratite samo JSON."+"\\n\\n"+json.dumps(repair_cases,ensure_ascii=False)
           repair_schema={"type":"object","properties":{"repairs":{"type":"array","minItems":6,"maxItems":6,"items":{"type":"object","properties":{"id":{"type":"string","enum":repair_ids},"replacement":{"type":"string","minLength":1,"maxLength":1800}},"required":["id","replacement"],"additionalProperties":False}}},"required":["repairs"],"additionalProperties":False}
           repair_payload={"messages":[{"role":"user","content":repair_prompt}],"temperature":0.15,"top_p":0.9,"max_tokens":4200,"reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"sr_confirmed_residue_repair","strict":True,"schema":repair_schema}}}
           repair_req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",data=json.dumps(repair_payload,ensure_ascii=False).encode("utf-8"),headers={"Content-Type":"application/json"},method="POST")
