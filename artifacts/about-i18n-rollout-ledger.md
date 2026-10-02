@@ -63,7 +63,7 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | pa | pa-IN | ltr | partial | semantic QA |
 | pl | pl-PL | ltr | partial | linguistic QA |
 | pt | pt-BR | ltr | partial | linguistic QA |
-| ro | ro-RO | ltr | partial | semantic QA |
+| ro | ro-RO | ltr | partial | linguistic QA |
 | ru | ru-RU | ltr | partial | linguistic QA |
 | sk | sk-SK | ltr | partial | linguistic QA |
 | sl | sl-SI | ltr | partial | semantic QA |
