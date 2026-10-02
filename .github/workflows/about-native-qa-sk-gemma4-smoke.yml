@@ -1,0 +1,61 @@
+name: Slovak Gemma4 reviewer qualification
+
+on:
+  push:
+    branches: [feature/about-i18n-72-locales]
+    paths: [.github/workflows/about-native-qa-sk-gemma4-smoke.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Install pinned llama.cpp runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/sk-gemma/llama
+          curl -fL --retry 3 https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz -o /tmp/sk-gemma/llama.tar.gz
+          echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/sk-gemma/llama.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/sk-gemma/llama.tar.gz -C /tmp/sk-gemma/llama
+      - name: Qualify Slovak reviewer
+        shell: bash
+        run: |
+          set -euo pipefail
+          SERVER="$(find /tmp/sk-gemma/llama -type f -name llama-server | head -n 1)"
+          "$SERVER" -hf ggml-org/gemma-4-E4B-it-GGUF:Q4_0 --reasoning auto --chat-template-kwargs '{"enable_thinking":false}' -c 4096 -t 4 --host 127.0.0.1 --port 8080 > /tmp/sk-gemma/server.log 2>&1 &
+          PID=$!; trap 'kill "$PID" 2>/dev/null || true' EXIT
+          for _ in $(seq 1 600); do curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break; sleep 1; done
+          python - <<'PY'
+          from pathlib import Path
+          import json,urllib.request
+          cases=[{"id":"g1","text":"Dátum sa nepodarilo rozpoznať. Skontrolujte, či sú všetky polia vyplnené a či dátum vo vybranom kalendári existuje.","expected":"PRIRODZENÉ"},{"id":"g2","text":"Deň činnosti je východiskovým bodom výpočtu.","expected":"PRIRODZENÉ"},{"id":"g3","text":"Predchádzajúci rezeň","expected":"PRIRODZENÉ"},{"id":"g4","text":"Ako používať túto stránku?","expected":"PRIRODZENÉ"},{"id":"b1","text":"Click here a pokračujte.","expected":"OPRAVIŤ"},{"id":"b2","text":"Change the working day.","expected":"OPRAVIŤ"},{"id":"b3","text":"Změňte deň činnosti.","expected":"OPRAVIŤ"},{"id":"b4","text":"Как používať túto stránku?","expected":"OPRAVIŤ"}]
+          ids=[x["id"] for x in cases]
+          prompt="Ste prísny rodený redaktor modernej spisovnej slovenčiny. Každý z ôsmich úryvkov posúďte samostatne. Kontrolujte prirodzenosť, gramatiku a nechcené české, anglické, ruské alebo zmiešané jazykové prvky. „deň činnosti“, „dopytovaný deň“, „rezeň“ a prepletené mesiace sú zámerné doménové termíny. Vráťte/Return only JSON; verdict must be exactly PRIRODZENÉ or OPRAVIŤ."+"\n\n"+json.dumps(cases,ensure_ascii=False)
+          schema={"type":"object","properties":{"decisions":{"type":"array","minItems":8,"maxItems":8,"items":{"type":"object","properties":{"id":{"type":"string","enum":ids},"verdict":{"type":"string","enum":["PRIRODZENÉ","OPRAVIŤ"]}},"required":["id","verdict"],"additionalProperties":False}}},"required":["decisions"],"additionalProperties":False}
+          payload={"messages":[{"role":"user","content":prompt}],"temperature":0.0,"max_tokens":420,"reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"sk_qualification","strict":True,"schema":schema}}}
+          req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),headers={"Content-Type":"application/json"},method="POST")
+          with urllib.request.urlopen(req,timeout=2400) as resp: data=json.load(resp)
+          raw=data["choices"][0]["message"]["content"].strip(); ds=json.loads(raw).get("decisions",[])
+          actual={d["id"]:d["verdict"] for d in ds}; results=[]; failed=[]
+          for x in cases:
+            ok=actual.get(x["id"])==x["expected"]; results.append({**x,"actual":actual.get(x["id"]),"passed":ok})
+            if not ok: failed.append(x["id"])
+          Path("/tmp/sk-gemma/qualification.json").write_text(json.dumps(results,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          Path("/tmp/sk-gemma/qualification-raw.json").write_text(raw+"\n",encoding="utf-8")
+          if len(ds)!=8 or failed: raise SystemExit("qualification failed")
+          PY
+      - name: Upload qualification evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: sk-gemma4-reviewer-qualification
+          path: |
+            /tmp/sk-gemma/qualification.json
+            /tmp/sk-gemma/qualification-raw.json
+            /tmp/sk-gemma/server.log
+          retention-days: 30
