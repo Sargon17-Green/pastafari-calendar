@@ -27,7 +27,7 @@ export default Object.freeze({
     "about.back": "Kthehu te kalendari",
     "about.tocKicker": "Në këtë faqe",
     "about.toc": "Përmbajtja",
-    "about.fallbackNotice": "Shpjegimi nuk është ende i disponueshëm në gjuhën e zgjedhur, ndaj po shfaqet versioni default.",
+    "about.fallbackNotice": "Shpjegimi nuk është ende i disponueshëm në gjuhën e zgjedhur, ndaj po shfaqet versioni i parazgjedhur.",
     "about.loadError": "Shpjegimi i kalendarit nuk mund të ngarkohej.",
     "language.label": "Gjuha",
     "day.staleWarning": "Dita aktuale ndryshoi nga {previousDate} në {currentDate}. Meqë dita e veprimit ishte dita aktuale, datat e shfaqura nuk janë më të përditësuara. Ato do të rillogariten pasi ta mbyllni këtë mesazh.",
