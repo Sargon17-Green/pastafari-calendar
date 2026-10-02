@@ -8,7 +8,7 @@ export default Object.freeze({
   messages: Object.freeze({
     "meta.description": "לוח־שנה פסטפרי לחיפוש ולהשוואת תאריכים",
     "manifest.shortName": "פסטפרי",
-    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
+    "manifest.defaultDescription": "לוח שנה פסטפרי מקומי ודטרמיניסטי.",
     "app.title": "לוח השנה הפסטפרי",
     "app.brand": "PASTAFARI",
     "nav.skip": "דלגו לחיפוש תאריך",
