@@ -141,7 +141,7 @@
   <h2>Short Choice dhe Wide Choice</h2>
   <p>Për hapësira relativisht të vogla zgjedhjeje përdoret <strong>Short Choice</strong>. Ai përdor kampionim me refuzim për të shmangur anshmëri modulo të thjeshtë.</p>
   <p>Për hapësira shumë të mëdha përdoret <strong>Wide Choice</strong>. Nuk duhet t’i atribuohen veti që specifikimi nuk i garanton.</p>
-  <p>Wide Choice nuk është e barasvlershme me prodhimin e shifrave base-<code>Q</code> të pavarura dhe të shpërndara njëtrajtshëm derisa të merret një indeks. Prandaj nuk del përfundimi se çdo choice i vlefshëm ka domosdoshmërisht të njëjtën probabilitet pozitiv. Në hapësira mjaft të mëdha mund të ketë choice të vlefshme që ky mekanizëm nuk i arrin kurrë.</p>
+  <p>Wide Choice nuk është e barasvlershme me prodhimin e shifrave me bazë <code>Q</code> të pavarura dhe të shpërndara njëtrajtshëm derisa të merret një indeks. Prandaj nuk del përfundimi se çdo zgjedhje e vlefshme ka domosdoshmërisht të njëjtën probabilitet pozitiv. Në hapësira mjaft të mëdha mund të ketë zgjedhje të vlefshme që ky mekanizëm nuk i arrin kurrë.</p>
   <p>Vetë kalendari mbetet plotësisht determinist. “Choice” është emri i një faze algoritmike, jo një lotari gjatë përdorimit.</p><hr>
 </section>
 
@@ -186,10 +186,10 @@
 
 <section class="about-section" id="anniversaries" data-toc-section data-toc-level="2">
   <h2>Ditëlindjet dhe përvjetorët</h2>
-  <p>Këtu shprehja “e njëjta ditë çdo vit” duhet së pari të përkufizohet. Koordinatat natyrore të recurrence janë <code>(emri i muajit, dita në muaj)</code> dhe <code>(emri i kotletës, dita në kotletë)</code>; kushtet mund edhe të kombinohen.</p>
-  <p>Prandaj një ditëlindje pastafariane nuk është thjesht <code>RRULE:FREQ=YEARLY</code>. Duhet gjetur viti i ardhshëm që plotëson kushtin e zgjedhur të recurrence, dhe ngjarja fillestare nuk llogaritet automatikisht si “paraqitja e ardhshme” e vetvetes.</p>
+  <p>Këtu shprehja “e njëjta ditë çdo vit” duhet së pari të përkufizohet. Koordinatat natyrore të përsëritjes janë <code>(emri i muajit, dita në muaj)</code> dhe <code>(emri i kotletës, dita në kotletë)</code>; kushtet mund edhe të kombinohen.</p>
+  <p>Prandaj një ditëlindje pastafariane nuk është thjesht <code>RRULE:FREQ=YEARLY</code>. Duhet gjetur viti i ardhshëm që plotëson kushtin e zgjedhur të përsëritjes, dhe ngjarja fillestare nuk llogaritet automatikisht si “paraqitja e ardhshme” e vetvetes.</p>
   <p>Ndryshimi i ditës së veprimit vetëm për paraqitje nuk duhet të ndryshojë identitetin e personit, çastin e lindjes apo moshën.</p>
-  <p>Në një skanim exact të 4,096 datave self-referential, çdo vit i ardhshëm pastafarian u kontrollua deri në 250,000 vite në secilin drejtim:</p>
+  <p>Në një skanim të saktë të 4,096 datave vetëreferenciale, çdo vit i ardhshëm pastafarian u kontrollua deri në 250,000 vite në secilin drejtim:</p>
   <ul>
     <li>Për <code>(emri i muajit, dita në muaj)</code>, mediana e rikthimit të parë ishte 1 vit pastafarian; 77.56% u kthyen në vitin fqinj, 93.77% brenda dy viteve, 99.44% brenda pesë viteve; maksimumi i vëzhguar ishte 21 vite.</li>
     <li>Për <code>(emri i kotletës, dita në kotletë)</code>, mediana ishte 3 vite; 88.89% u gjetën brenda 10 viteve, por shpërndarja ka një bisht shumë të rëndë, dhe maksimumi i vëzhguar arriti 51,954 vite pastafariane.</li>
@@ -298,7 +298,7 @@
 
   <section class="about-subsection" id="far-time-structure" data-toc-section data-toc-level="3">
     <h3>Struktura në kohë shumë të largët</h3>
-    <p>Kërkimi matematikor i nxjerrë nga specifikimi ka gjetur edhe një strukturë asimptotike exact. Për një <strong>ditë veprimi të fiksuar</strong> <code>c</code>, mjaft larg në bishtin e së kaluarës shfaqet periodicitet afin.</p>
+    <p>Kërkimi matematikor i nxjerrë nga specifikimi ka gjetur edhe një strukturë asimptotike e saktë. Për një <strong>ditë veprimi të fiksuar</strong> <code>c</code>, mjaft larg në bishtin e së kaluarës shfaqet periodicitet afin.</p>
     <p>Nëse</p>
     <pre class="math-block" dir="ltr" tabindex="0"><code>F(c,t)=(Y,K,d_K,M,d_M)</code></pre>
     <p>atëherë, për po atë <code>c</code>, ekzistojnë një zhvendosje <code>H_c</code>, një ndryshim viti <code>p_c</code> dhe një prag mjaft i largët, pas të cilit</p>
@@ -313,11 +313,11 @@
 <section class="about-section" id="sauce-history" data-toc-section data-toc-level="2">
   <h2>Për përdorues të avancuar: sa histori ruan salca?</h2>
   <p>Salca duket si një mekanizëm shumë agresiv përzierjeje, por kërkimi algjebrik tregon se ajo ruan shumë më tepër informacion sesa sugjeron pamja. Ky është rezultat kërkimor i nxjerrë nga specifikimi, jo rregull i ri i kalendarit.</p>
-  <p>Në fazat e dukshme 3–46, në degën përkatëse asimptotike, është vendosur injektivitet i përgjithshëm: në rastin generic, gjendje ruan informacion të mjaftueshëm për të rindërtuar histori hyrjesh përkatëse dhe rendin e tasave.</p>
+  <p>Në fazat e dukshme 3–46, në degën përkatëse asimptotike, është vendosur injektivitet i përgjithshëm: në rastin gjenerik, gjendje ruan informacion të mjaftueshëm për të rindërtuar histori hyrjesh përkatëse dhe rendin e tasave.</p>
   <p>As në 12 përzierjet përfundimtare informacioni nuk humbet menjëherë. Për pesë përzierjet e para pas pikës së dukshme 46, në unionin kanonik përkatës është vendosur përmbysje e përgjithshme pa informacion anësor shtesë; për pjesën e mbetur njihen kufij të sipërm konstruktivë të fortë për sasinë e informacion anësor që mjafton për rindërtim.</p>
-  <p>Mbetet e hapur pyetja nëse <strong>vetëm gjashtë tasat përfundimtarë</strong> mjaftojnë gjithmonë në kuptimin generic.</p>
+  <p>Mbetet e hapur pyetja nëse <strong>vetëm gjashtë tasat përfundimtarë</strong> mjaftojnë gjithmonë në kuptimin gjenerik.</p>
   <p>Disa rezultate u provuan simbolikisht, të tjera u verifikuan me kontrolle aritmetike të fundme dhe të sakta. Forcimi simbolik e zvogëloi ndjeshëm bërthamën llogaritëse ku duhet mbështetur besimi, por nuk e hoqi plotësisht.</p>
-  <p>Hapësira që në fillim dukeshin sikur kërkonin kërkim në një numër të jashtëzakonshëm rrugë-ësh u reduktuan në struktura finite shumë më të vogla, përfshirë automate me 180 dhe 9 gjendje dhe simetri të gjashtë tasave.</p>
+  <p>Hapësira që në fillim dukeshin sikur kërkonin kërkim në një numër të jashtëzakonshëm rrugë-ësh u reduktuan në struktura të fundme shumë më të vogla, përfshirë automate me 180 dhe 9 gjendje dhe simetri të gjashtë tasave.</p>
   <p>Nën përzierje ka një strukturë të rreptë algjebrike. Nuk duhet ta dini për të ditur datën e sotme.</p><hr>
 </section>
 
@@ -325,7 +325,7 @@
   <h2>Pra, çfarë është në të vërtetë Kalendari Pastafarian?</h2>
   <p>Është një kalendar determinist ku data nuk është vetëm funksion e dita e pyetur, por <strong>funksion e përbashkët e ditës së veprimit dhe ditës së pyetur</strong>.</p>
   <p>Çdo datë ka saktësisht pesë fusha. E tashmja, parë nga vetvetja, është gjithmonë në vitin 5000, por vetë viti 5000 lëviz bashkë me ditën e veprimit. Vitet mund të jenë shumë të gjata, kotletat janë të pandërprera, muajt jo domosdoshmërisht, dhe nuk ka sistem kanonik javësh.</p>
-  <p>Dita <code>n+1</code> e muajit nuk është domosdoshmërisht nesër. E njëjta dita kronologjike mund të marrë nesër një label tjetër pastafarian. I njëjti çast fizik mund t’u përkasë dy ditë lokale Pastafari të ndryshme në dy vende. Një ngjarje gjithëditore nuk ka pse të zgjasë nga mesnata në mesnatë. Dhe një ditëlindje vjetore është fillimisht problem kërkimi, pastaj problem kalendarik.</p>
+  <p>Dita <code>n+1</code> e muajit nuk është domosdoshmërisht nesër. E njëjta dita kronologjike mund të marrë nesër një etiketë tjetër pastafariane. I njëjti çast fizik mund t’u përkasë dy ditë lokale Pastafari të ndryshme në dy vende. Një ngjarje gjithëditore nuk ka pse të zgjasë nga mesnata në mesnatë. Dhe një ditëlindje vjetore është fillimisht problem kërkimi, pastaj problem kalendarik.</p>
   <p>Por kur dita e veprimit dhe dita e pyetur dihen, nuk ka paqartësi: përgjigjja e saktë është vetëm një.</p>
   <p>Në fund të fundit, nuk kërkohet më shumë nga një kalendar.</p>
 </section>
