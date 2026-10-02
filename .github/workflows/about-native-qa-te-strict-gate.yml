@@ -1,0 +1,174 @@
+name: Telugu strict native-language whole-site gate
+
+on:
+  push:
+    branches: [feature/about-i18n-72-locales]
+    paths:
+      - .github/workflows/about-native-qa-te-strict-gate.yml
+      - docs/i18n/locales/te.js
+      - docs/about/content/te.html
+      - docs/manifest.webmanifest
+      - docs/i18n/registry.js
+
+permissions:
+  contents: read
+
+concurrency:
+  group: te-strict-native-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  strict-te:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with: {fetch-depth: 1}
+      - name: Install pinned llama.cpp runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/te-strict/llama /tmp/te-strict/evidence
+          curl -fL --retry 3 https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz -o /tmp/te-strict/llama.tar.gz
+          echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/te-strict/llama.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/te-strict/llama.tar.gz -C /tmp/te-strict/llama
+          git rev-parse HEAD > /tmp/te-strict/evidence/reviewed-head.txt
+      - name: Extract grounded Telugu website corpus
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          from html.parser import HTMLParser
+          import json,re
+          items=[]
+          locale=Path("docs/i18n/locales/te.js").read_text(encoding="utf-8")
+          for key,raw in re.findall(r'"([^"]+)"\s*:\s*("(?:\\.|[^"\\])*")',locale):
+            try: value=json.loads(raw)
+            except Exception: continue
+            if isinstance(value,str) and value.strip() and key not in {"code","dir","intlLocale"}:
+              items.append({"location":f"docs/i18n/locales/te.js#{key}","text":value.strip()})
+          class P(HTMLParser):
+            wanted={"p","li","h1","h2","h3","h4","h5","h6","th","td","caption","blockquote"}; attrs={"aria-label","aria-description","title","alt"}
+            def __init__(self): super().__init__(convert_charrefs=True); self.sections=[]; self.current=None; self.n=0
+            def handle_starttag(self,tag,attrs):
+              attrs=dict(attrs)
+              if tag=="br" and self.current is not None: self.current["parts"].append(". ")
+              if tag=="section": self.sections.append(attrs.get("id",""))
+              sec=next((x for x in reversed(self.sections) if x),""); ident=attrs.get("id") or sec or tag
+              for a in self.attrs:
+                v=attrs.get(a)
+                if v and v.strip(): items.append({"location":f"docs/about/content/te.html#{ident}@{a}-{self.n}","text":v.strip()}); self.n+=1
+              if tag in self.wanted: self.current={"tag":tag,"id":attrs.get("id",""),"section":sec,"parts":[]}
+            def handle_endtag(self,tag):
+              if self.current is not None and self.current["tag"]==tag:
+                txt=re.sub(r"\s+"," ","".join(self.current["parts"])).strip()
+                if txt:
+                  ident=self.current["id"] or self.current["section"] or self.current["tag"]
+                  items.append({"location":f"docs/about/content/te.html#{ident}","text":txt})
+                self.current=None
+              if tag=="section" and self.sections: self.sections.pop()
+            def handle_data(self,data):
+              if self.current is not None: self.current["parts"].append(data)
+          p=P(); p.feed(Path("docs/about/content/te.html").read_text(encoding="utf-8"))
+          manifest=json.loads(Path("docs/manifest.webmanifest").read_text(encoding="utf-8"))
+          for field in ("name_localized","short_name_localized","description_localized"):
+            v=manifest.get(field,{}).get("te",{}).get("value")
+            if isinstance(v,str) and v.strip(): items.append({"location":f"docs/manifest.webmanifest#{field}.te.value","text":v.strip()})
+          registry=Path("docs/i18n/registry.js").read_text(encoding="utf-8")
+          m=re.search(r'defineLocale\("te",\s*"([^"]+)"',registry)
+          if m: items.append({"location":"docs/i18n/registry.js#locale-te-display-name","text":m.group(1)})
+          seen=set(); out=[]
+          for item in items:
+            pair=(item["location"],item["text"])
+            if pair in seen: continue
+            seen.add(pair); item["id"]=f"TE{len(out):04d}"; out.append(item)
+          Path("/tmp/te-strict/evidence/items.json").write_text(json.dumps(out,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          compact=json.dumps(out,ensure_ascii=False,separators=(",",":")); Path("/tmp/te-strict/corpus.json").write_text(compact,encoding="utf-8")
+          if len(compact)>100000: raise SystemExit("corpus exceeds review budget")
+          PY
+      - name: Start isolated Telugu Gemma 4 reviewer
+        shell: bash
+        run: |
+          set -euo pipefail
+          SERVER="$(find /tmp/te-strict/llama -type f -name llama-server | head -n 1)"
+          "$SERVER" -hf ggml-org/gemma-4-E4B-it-GGUF:Q4_0 --reasoning auto --chat-template-kwargs '{"enable_thinking":false}' -c 32768 -t 4 --host 127.0.0.1 --port 8080 > /tmp/te-strict/evidence/server.log 2>&1 &
+          echo "$!" > /tmp/te-strict/server.pid
+          for _ in $(seq 1 900); do curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break; sleep 1; done
+          curl -fsS http://127.0.0.1:8080/health >/dev/null
+      - name: Batched hidden Telugu reviewer qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json,urllib.request
+          cases=[{"id":"g1","text":"ఆ తేదీని గుర్తించలేకపోయాం. అన్ని ఫీల్డ్‌లు పూర్తిగా ఉన్నాయో, ఎంపిక చేసిన క్యాలెండర్‌లో ఆ తేదీ ఉందో తనిఖీ చేయండి.","expected":"OK"},{"id":"g2","text":"చర్య దినం లెక్కింపుకు ప్రారంభ బిందువు.","expected":"OK"},{"id":"g3","text":"మునుపటి కట్లెట్","expected":"OK"},{"id":"g4","text":"ఈ సైట్‌ను ఎలా ఉపయోగించాలి?","expected":"OK"},{"id":"b1","text":"Click here చేసి కొనసాగండి.","expected":"FIX"},{"id":"b2","text":"Change the working day.","expected":"FIX"},{"id":"b3","text":"यह तारीख ఎంచుకోండి.","expected":"FIX"},{"id":"b4","text":"Как ఈ సైట్‌ను ఉపయోగించాలి?","expected":"FIX"}]
+          ids=[x["id"] for x in cases]
+          prompt="మీరు ఆధునిక ప్రామాణిక తెలుగు భాషకు కఠినమైన మాతృభాషా సంపాదకులు. క్రింద ఉన్న ఎనిమిది భాగాల్లో ప్రతిదాన్ని విడిగా మూల్యాంకనం చేయండి. సహజత్వం, వ్యాకరణం మరియు అనుకోకుండా మిగిలిన ఇంగ్లీష్, హిందీ, రష్యన్ లేదా మిశ్రమ భాషను పరిశీలించండి. «చర్య దినం», «అడిగిన రోజు», «కట్లెట్» మరియు పరస్పరం అల్లుకున్న నెలలు ఉద్దేశపూర్వక డొమైన్ పదాలు. Return only JSON; verdict must be exactly OK or FIX."+"\n\n"+json.dumps(cases,ensure_ascii=False)
+          schema={"type":"object","properties":{"decisions":{"type":"array","minItems":8,"maxItems":8,"items":{"type":"object","properties":{"id":{"type":"string","enum":ids},"verdict":{"type":"string","enum":["OK","FIX"]}},"required":["id","verdict"],"additionalProperties":False}}},"required":["decisions"],"additionalProperties":False}
+          payload={"messages":[{"role":"user","content":prompt}],"temperature":0.0,"max_tokens":420,"reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"te_qualification","strict":True,"schema":schema}}}
+          req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),headers={"Content-Type":"application/json"},method="POST")
+          with urllib.request.urlopen(req,timeout=2400) as resp: data=json.load(resp)
+          raw=data["choices"][0]["message"]["content"].strip(); ev=Path("/tmp/te-strict/evidence"); ev.joinpath("qualification-raw.json").write_text(raw+"\n",encoding="utf-8")
+          ds=json.loads(raw).get("decisions",[]); actual={d["id"]:d["verdict"] for d in ds}; results=[]; failed=[]
+          for x in cases:
+            ok=actual.get(x["id"])==x["expected"]; results.append({**x,"actual":actual.get(x["id"]),"passed":ok})
+            if not ok: failed.append(x["id"])
+          ev.joinpath("qualification.json").write_text(json.dumps(results,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          if len(ds)!=8 or failed: raise SystemExit("qualification failed")
+          PY
+      - name: Strict whole-site Telugu review
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json,urllib.request
+          ev=Path("/tmp/te-strict/evidence"); items=json.loads(ev.joinpath("items.json").read_text(encoding="utf-8")); by={}
+          for item in items: by.setdefault(item["location"],[]).append(item["text"])
+          prompt="మీరు Pastafari క్యాలెండర్ తెలుగు సంచికకు స్వతంత్ర, కఠినమైన మాతృభాషా సంపాదకులు. వెబ్‌సైట్‌లో కనిపించే మొత్తం పాఠ్యాన్ని మరియు accessibility కోసం ఉన్న పాఠ్యాన్ని ఒకే భాషా అనుభవంగా సమీక్షించండి. అనుకోకుండా మిగిలిన ఇంగ్లీష్, హిందీ, రష్యన్ లేదా ఇతర భాషల భాగాలు, పదేపదే అనువాదపు వాసన, అసహజ తెలుగు, అలాగే వ్యాకరణం, వర్ణక్రమం, విరామచిహ్నాలు మరియు పదజాల సమస్యలను metadata, manifest మరియు accessibility పాఠ్యంతో సహా వెతకండి. తెలుగు గద్యంలోని సాధారణ ఇంగ్లీష్ సాంకేతిక పదాలు నిజమైన code literal, API పేరు లేదా proper name కాకపోతే సమస్య. స్థిర IDలు, సూత్రాలు, hashలు, API/endpoint పేర్లు, HTTP, CLI, OpenAPI, SIMD, SLA, all-day, Short Choice మరియు Wide Choice అలాగే ఉండవచ్చు. ప్రతి finding ఇచ్చిన location విలువను యథాతథంగా ఉపయోగించాలి; current_text ఆ స్థానంలో నిజంగా ఉన్న నిరంతర అక్షర శ్రేణి కావాలి. నిజమైన సమస్య లేకపోతే CLEAN మరియు ఖాళీ findings జాబితాను ఇవ్వండి. JSON మాత్రమే ఇవ్వండి."+"\n\nWEBSITE_TEXT_ITEMS_JSON:\n"+Path("/tmp/te-strict/corpus.json").read_text(encoding="utf-8")
+          schema={"type":"object","properties":{"result":{"type":"string","enum":["CLEAN","FINDINGS"]},"findings":{"type":"array","maxItems":14,"items":{"type":"object","properties":{"severity":{"type":"string","enum":["critical","high","medium","low"]},"location":{"type":"string"},"current_text":{"type":"string","minLength":1,"maxLength":280},"issue":{"type":"string","minLength":15,"maxLength":420},"correction":{"type":"string","minLength":2,"maxLength":420}},"required":["severity","location","current_text","issue","correction"],"additionalProperties":False}}},"required":["result","findings"],"additionalProperties":False}
+          payload={"messages":[{"role":"user","content":prompt}],"temperature":0.05,"top_p":0.85,"max_tokens":1900,"reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"te_whole_site_review","strict":True,"schema":schema}}}
+          accepted=None
+          for attempt in (1,2):
+            req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),headers={"Content-Type":"application/json"},method="POST")
+            with urllib.request.urlopen(req,timeout=3600) as resp: data=json.load(resp)
+            raw=data["choices"][0]["message"]["content"].strip(); ev.joinpath(f"raw-review-attempt-{attempt}.json").write_text(raw+"\n",encoding="utf-8")
+            try: p=json.loads(raw)
+            except Exception: continue
+            result=p.get("result"); findings=p.get("findings")
+            if result not in {"CLEAN","FINDINGS"} or not isinstance(findings,list) or (result=="CLEAN" and findings) or (result=="FINDINGS" and not findings): continue
+            seen=set(); good=True
+            for f in findings:
+              loc=str(f.get("location","")).strip(); cur=str(f.get("current_text","")).strip(); corr=str(f.get("correction","")).strip()
+              if loc not in by or not cur or not any(cur in t for t in by[loc]) or cur==corr or (loc,cur) in seen: good=False; break
+              seen.add((loc,cur))
+            if good: accepted=p; break
+          if accepted is None: raise SystemExit("review invalid")
+          final_result="PASS" if accepted["result"]=="CLEAN" else "FAIL"
+          final={"result":final_result,"reviewed_head":ev.joinpath("reviewed-head.txt").read_text().strip(),"findings":accepted["findings"]}
+          ev.joinpath("final.json").write_text(json.dumps(final,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          lines=[f"NATIVE_QA_RESULT: {final_result}","","మొత్తం తెలుగు సైట్‌పై చేసిన కఠిన భాషా సమీక్ష సరిచేయాల్సిన ధృవీకరించిన సమస్యను కనుగొనలేదు." if final_result=="PASS" else "మొత్తం తెలుగు సైట్‌పై చేసిన కఠిన భాషా సమీక్ష సరిచేయాల్సిన ధృవీకరించిన సమస్యలను కనుగొంది.",""]
+          if final_result=="FAIL":
+            for i,f in enumerate(accepted["findings"],1): lines += [f"### {i}. {f['severity']}","",f["location"],"",f"> {f['current_text']}","",f["issue"],"","Correction: "+f["correction"],""]
+          ev.joinpath("review.md").write_text("\n".join(lines).rstrip()+"\n",encoding="utf-8")
+          PY
+      - name: Verify verdict
+        shell: bash
+        run: |
+          set -euo pipefail
+          head -n 1 /tmp/te-strict/evidence/review.md | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)$'
+      - name: Stop reviewer
+        if: always()
+        shell: bash
+        run: |
+          [ ! -f /tmp/te-strict/server.pid ] || kill "$(cat /tmp/te-strict/server.pid)" 2>/dev/null || true
+      - name: Upload strict Telugu evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: te-strict-native-whole-site
+          path: /tmp/te-strict/evidence/
+          if-no-files-found: warn
+          retention-days: 90
