@@ -49,9 +49,9 @@ jobs:
           Path("/tmp/so-gemma/qualification.json").write_text(json.dumps(results,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
           Path("/tmp/so-gemma/qualification-raw.json").write_text(raw+"\n",encoding="utf-8")
           if len(ds)!=8 or failed: raise SystemExit("qualification failed")
-          phrase_cases=[{"id":"p1","source_phrase":"tallaabo algorithm ah","context":"“Choice” waa magaca tallaabo algorithm ah, ma aha bakhtiyaa-nasiib marka la isticmaalayo.","meaning":"a stage of the algorithm; Choice is the name of an algorithm stage, not a lottery at runtime","forbidden":["algorithm"]}]
+          phrase_cases=[{"id":"p1","source_phrase":"tallaabo algorithm ah","context":"“Choice” waa magaca tallaabo algorithm ah, ma aha bakhtiyaa-nasiib marka la isticmaalayo.","meaning":"a stage of the algorithm; replace the algorithm concept with the Somali term hab-raac in the grammatically correct form","forbidden":["algorithm"],"must_include_any":["habraac","hab-raac"]}]
           phrase_ids=[x["id"] for x in phrase_cases]
-          phrase_prompt="Waxaad tahay tifaftire af-Soomaali ah. Kiis kasta wuxuu bixiyaa HAL weedh qalaad oo ku jirta jumlad af-Soomaali ah iyo macnaheeda saxda ah ee Ingiriisiga. Soo celi KELIYA beddelka gaaban ee weedhaas, ee af-Soomaali dabiici ah, si uu si naxwe ahaan sax ah ugu galo isla meesha. Ha dib u qorin jumladda oo dhan, ha sharxin, hana ku darin qawsyo ama Ingiriisi. Ilaali erayada domain-ka sida Choice oo aan qayb ka ahayn source_phrase."+"\\n\\n"+json.dumps(phrase_cases,ensure_ascii=False)
+          phrase_prompt="Waxaad tahay tifaftire af-Soomaali ah. Kiiskan source_phrase-ku wuxuu ka dhigan yahay “a stage of the algorithm”. Erayga algorithm halkan ku beddel erayga af-Soomaaliga ah hab-raac (ama qaabkiisa naxwe ahaan saxda ah), adigoo soo celinaya KELIYA weedha gaaban ee si toos ah ugu beddeli karta source_phrase. Waa in macnaha “stage of the algorithm” si buuxda u sii jiraa. Ha dib u qorin jumladda oo dhan, ha sharxin, hana ku darin qawsyo ama Ingiriisi. “Choice” waa literal domain oo bannaanka source_phrase ah."+"\\n\\n"+json.dumps(phrase_cases,ensure_ascii=False)
           phrase_schema={"type":"object","properties":{"repairs":{"type":"array","minItems":1,"maxItems":1,"items":{"type":"object","properties":{"id":{"type":"string","enum":phrase_ids},"replacement":{"type":"string","minLength":1,"maxLength":160}},"required":["id","replacement"],"additionalProperties":False}}},"required":["repairs"],"additionalProperties":False}
           phrase_payload={"messages":[{"role":"user","content":phrase_prompt}],"temperature":0.0,"max_tokens":1200,"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"so_phrase_residue_repair","strict":True,"schema":phrase_schema}}}
           phrase_req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",data=json.dumps(phrase_payload,ensure_ascii=False).encode("utf-8"),headers={"Content-Type":"application/json"},method="POST")
@@ -64,6 +64,7 @@ jobs:
             r=by_id.get(x["id"],{}); repl=str(r.get("replacement","")).strip()
             ok=bool(repl) and repl.casefold()!=x["source_phrase"].casefold() and "\n" not in repl and len(repl)<=160
             if any(term.casefold() in repl.casefold() for term in x["forbidden"]): ok=False
+            if x.get("must_include_any") and not any(term.casefold() in repl.casefold() for term in x["must_include_any"]): ok=False
             output.append({**x,"replacement":repl,"passed":ok})
             if not ok: bad.append(x["id"])
           Path("/tmp/so-gemma/repair.json").write_text(json.dumps(output,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
