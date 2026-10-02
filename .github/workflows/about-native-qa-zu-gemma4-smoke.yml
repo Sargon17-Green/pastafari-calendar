@@ -1,5 +1,5 @@
 # repair workflow trigger v1
-name: Zulu confirmed-residue repair
+name: Zulu phrase-only residue repair
 
 on:
   push:
@@ -28,7 +28,7 @@ jobs:
         run: |
           set -euo pipefail
           SERVER="$(find /tmp/zu-gemma/llama -type f -name llama-server | head -n 1)"
-          "$SERVER" -hf ggml-org/gemma-3-12b-it-GGUF:Q4_K_M -c 16384 -t 4 --host 127.0.0.1 --port 8080 > /tmp/zu-gemma/server.log 2>&1 &
+          "$SERVER" -hf ggml-org/gemma-3-12b-it-GGUF:Q4_K_M -c 32768 -t 4 --host 127.0.0.1 --port 8080 > /tmp/zu-gemma/server.log 2>&1 &
           PID=$!; trap 'kill "$PID" 2>/dev/null || true' EXIT
           for _ in $(seq 1 900); do curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break; sleep 1; done
           python - <<'PY'
@@ -38,7 +38,7 @@ jobs:
           ids=[x["id"] for x in cases]
           prompt="Ungumhleli oqinile wolimi lwesiZulu olujwayelekile lwanamuhla. Hlola izingcezu eziyisishiyagalombili ezilandelayo ngayinye ngokwehlukana. Bheka ubunjalo bolimi, uhlelo lolimi, kanye nezinsalela ezingahlosiwe zesiNgisi, isiXhosa, isiBhunu noma ulimi oluxubile. Amagama athi “usuku lokusebenza”, “usuku olubuzwayo”, “ikhothlethi” kanye nezinyanga ezilukene ayimigomo yesizinda esetshenziswa ngenhloso. Return only JSON; verdict must be exactly OK or FIX."+"\\n\\n"+json.dumps(cases,ensure_ascii=False)
           schema={"type":"object","properties":{"decisions":{"type":"array","minItems":8,"maxItems":8,"items":{"type":"object","properties":{"id":{"type":"string","enum":ids},"verdict":{"type":"string","enum":["OK","FIX"]}},"required":["id","verdict"],"additionalProperties":False}}},"required":["decisions"],"additionalProperties":False}
-          payload={"messages":[{"role":"user","content":prompt}],"temperature":0.0,"max_tokens":420,"reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"zu_qualification","strict":True,"schema":schema}}}
+          payload={"messages":[{"role":"user","content":prompt}],"temperature":0.0,"max_tokens":420,"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"zu_qualification","strict":True,"schema":schema}}}
           req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),headers={"Content-Type":"application/json"},method="POST")
           with urllib.request.urlopen(req,timeout=2400) as resp: data=json.load(resp)
           raw=data["choices"][0]["message"]["content"].strip(); ds=json.loads(raw).get("decisions",[])
@@ -49,25 +49,25 @@ jobs:
           Path("/tmp/zu-gemma/qualification.json").write_text(json.dumps(results,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
           Path("/tmp/zu-gemma/qualification-raw.json").write_text(raw+"\n",encoding="utf-8")
           if len(ds)!=8 or failed: raise SystemExit("qualification failed")
-          repair_cases=[{"id":"r1","location":"docs/about/content/zu.html#short-and-wide-choice","text":"Ikhalenda uqobo lihlala lideterministiki ngokuphelele. “Choice” igama lesigaba se-algorithm, akusikho ukubheja okwenziwa ngesikhathi sokusebenzisa.","markers":["algorithm"]},{"id":"r2","location":"docs/about/content/zu.html#anniversaries","text":"Ku-(igama lekhothlethi, usuku ekhothlethini), imidiyeni yayiyiminyaka 3; 88.89% yatholakala phakathi kweminyaka 10, kodwa ukusabalala kune-heavy tail enzima kakhulu, futhi inani elikhulu elabonwa lafika eminyakeni 51,954 ye-Pastafari.","markers":["heavy tail"]},{"id":"r3","location":"docs/about/content/zu.html#structural-atlas","text":"Lezi zinombolo zichaza leyo corpus, hhayi imithetho yekanonikhi.","markers":["corpus"]},{"id":"r4","location":"docs/about/content/zu.html#anniversaries","text":"Lena imiphumela yokuhlola ye-corpus eyahlolwa, hhayi ubufakazi bokuthi zonke izikhumbuzo ezingaba khona nakanjani ziyobuya, futhi akusona isiqinisekiso sesikhathi sokulinda esiphezulu.","markers":["corpus"]}]
-          repair_ids=[x["id"] for x in repair_cases]
-          repair_prompt="Umbhalo ngamunye ongezansi unezinsalela zesiNgisi eziqinisekisiwe ezisemkhakheni markers. Shintsha KUPHELA lezo zingxenye zibe isiZulu semvelo esilingana nencazelo. Gcina wonke amanye amagama, izinombolo, amagama e-Pastafari, ‘Choice’, nomqondo wokuqala njengoba unjalo; yenza kuphela ushintsho oluncane lohlelo lolimi oludingekayo ukuze ukufakwa okusha kulunge. Ungangezi isiNgisi njengencazelo noma phakathi kwabakhonkwane. Buyisa i-JSON kuphela."+"\\n\\n"+json.dumps(repair_cases,ensure_ascii=False)
-          repair_schema={"type":"object","properties":{"repairs":{"type":"array","minItems":4,"maxItems":4,"items":{"type":"object","properties":{"id":{"type":"string","enum":repair_ids},"replacement":{"type":"string","minLength":1,"maxLength":1600}},"required":["id","replacement"],"additionalProperties":False}}},"required":["repairs"],"additionalProperties":False}
-          repair_payload={"messages":[{"role":"user","content":repair_prompt}],"temperature":0.15,"top_p":0.9,"max_tokens":3500,"reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"zu_confirmed_residue_repair","strict":True,"schema":repair_schema}}}
-          repair_req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",data=json.dumps(repair_payload,ensure_ascii=False).encode("utf-8"),headers={"Content-Type":"application/json"},method="POST")
-          with urllib.request.urlopen(repair_req,timeout=2400) as resp: repair_data=json.load(resp)
-          repair_raw=repair_data["choices"][0]["message"]["content"].strip()
-          Path("/tmp/zu-gemma/repair-raw.json").write_text(repair_raw+"\\n",encoding="utf-8")
-          repairs=json.loads(repair_raw).get("repairs",[])
+          phrase_cases=[{"id":"p1","source_phrase":"se-algorithm","context":"“Choice” igama lesigaba se-algorithm, akusikho ukubheja okwenziwa ngesikhathi sokusebenzisa.","meaning":"of the algorithm; 'Choice' is the name of a stage of the algorithm","forbidden":["algorithm"]},{"id":"p2","source_phrase":"kune-heavy tail enzima kakhulu","context":"kodwa ukusabalala kune-heavy tail enzima kakhulu","meaning":"the distribution has a very heavy statistical tail","forbidden":["heavy tail"]},{"id":"p3","source_phrase":"leyo corpus","context":"Lezi zinombolo zichaza leyo corpus, hhayi imithetho yekanonikhi.","meaning":"that corpus / that tested body of computational data","forbidden":["corpus"]},{"id":"p4","source_phrase":"ye-corpus eyahlolwa","context":"imiphumela yokuhlola ye-corpus eyahlolwa","meaning":"of the corpus that was tested / for the tested corpus","forbidden":["corpus"]}]
+          phrase_ids=[x["id"] for x in phrase_cases]
+          phrase_prompt="Ungumhleli womdabu wesiZulu wanamuhla. Icala ngalinye linengxenye emfushane yesiNgisi esele ngaphakathi kombhalo wesiZulu. Buyisa KUPHELA ibinzana elifushane lesiZulu elizothatha indawo ye-source_phrase kuleyo ndawo, ngaphandle kokubhala kabusha umusho wonke. Gcina incazelo yesayensi noma yobuchwepheshe enikeziwe. Ungangezi incazelo, amabakaki noma isiNgisi. Amagama e-domain anjenge Choice, Pastafari nezinye izinto ezingaphandle kwe-source_phrase kufanele angashintshi."+"\\n\\n"+json.dumps(phrase_cases,ensure_ascii=False)
+          phrase_schema={"type":"object","properties":{"repairs":{"type":"array","minItems":4,"maxItems":4,"items":{"type":"object","properties":{"id":{"type":"string","enum":phrase_ids},"replacement":{"type":"string","minLength":1,"maxLength":180}},"required":["id","replacement"],"additionalProperties":False}}},"required":["repairs"],"additionalProperties":False}
+          phrase_payload={"messages":[{"role":"user","content":phrase_prompt}],"temperature":0.0,"max_tokens":1200,"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"zu_phrase_residue_repair","strict":True,"schema":phrase_schema}}}
+          phrase_req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",data=json.dumps(phrase_payload,ensure_ascii=False).encode("utf-8"),headers={"Content-Type":"application/json"},method="POST")
+          with urllib.request.urlopen(phrase_req,timeout=2400) as resp: phrase_data=json.load(resp)
+          phrase_raw=phrase_data["choices"][0]["message"]["content"].strip()
+          Path("/tmp/zu-gemma/repair-raw.json").write_text(phrase_raw+"\n",encoding="utf-8")
+          repairs=json.loads(phrase_raw).get("repairs",[])
           by_id={r.get("id"):r for r in repairs}; output=[]; bad=[]
-          for x in repair_cases:
+          for x in phrase_cases:
             r=by_id.get(x["id"],{}); repl=str(r.get("replacement","")).strip()
-            ok=bool(repl) and repl!=x["text"] and not any(m.casefold() in repl.casefold() for m in x["markers"])
-            if "{index}" in x["text"] and "{index}" not in repl: ok=False
+            ok=bool(repl) and repl.casefold()!=x["source_phrase"].casefold() and "\n" not in repl and len(repl)<=180
+            if any(term.casefold() in repl.casefold() for term in x["forbidden"]): ok=False
             output.append({**x,"replacement":repl,"passed":ok})
             if not ok: bad.append(x["id"])
-          Path("/tmp/zu-gemma/repair.json").write_text(json.dumps(output,ensure_ascii=False,indent=2)+"\\n",encoding="utf-8")
-          if len(repairs)!=len(repair_cases) or len(by_id)!=len(repair_cases) or bad: raise SystemExit("repair validation failed: "+",".join(bad))
+          Path("/tmp/zu-gemma/repair.json").write_text(json.dumps(output,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          if len(repairs)!=len(phrase_cases) or len(by_id)!=len(phrase_cases) or bad: raise SystemExit("phrase repair validation failed: "+",".join(bad))
           PY
       - name: Upload qualification evidence
         if: always()
