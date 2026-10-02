@@ -8,7 +8,7 @@ Allowed strict-session states: `pending` → `reviewed PASS` or `reviewed FAIL` 
 
 | code | locale | dir | rollout status | strict native-session QA | evidence |
 |---|---|---|---|---|---|
-| he | he-IL | rtl | semantic master / existing | pending | — |
+| he | he-IL | rtl | semantic master / existing | reviewed PASS | `artifacts/about-i18n-native-sessions/he/strict-37008974782/` — strict Gemma 4 run `37008974782`; hidden qualification 8/8, 683 grounded text items, 0 findings; manual post-run scan clean after manifest repair; staleness clean |
 | en | en-US | ltr | semantic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/en/strict-36580966998/` — strict Gemma 4 whole-site run `36580966998`; hidden qualification 9/9, 525 grounded text items, 0 findings |
 | af | af-ZA | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/af/strict-36707310645/` — strict Gemma 4 whole-site run `36707310645`; hidden qualification 8/8, 564 grounded text items, 0 findings after Dutch-leakage repairs |
 | ar | ar | rtl | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/ar/strict-36836953854/` — strict Gemma 4 whole-site run `36836953854`; hidden qualification 8/8, 583 grounded text items, 0 findings |
