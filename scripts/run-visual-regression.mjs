@@ -856,7 +856,7 @@ async function aboutPageSmoke(browser, baseURL, state) {
       await page.goto(url.href, { waitUntil: "domcontentloaded" });
       await page.locator("#day-boundary").waitFor({ state: "visible", timeout: 30_000 });
       assert.equal(await page.locator("html").getAttribute("dir"), "rtl");
-      assert.equal(await page.locator("html").getAttribute("lang"), "he-IL");
+      assert.equal(await page.locator("html").getAttribute("lang"), "he");
       assert.equal(await page.locator("#article-content").getAttribute("lang"), "he-IL");
       assert.equal(await page.locator("#calendar-workspace").count(), 0, "About page must not load calendar UI");
       assert.ok(await page.locator("#about-toc-list a").count() >= 29, "About page TOC is incomplete");
