@@ -75,7 +75,7 @@ Allowed strict-session states: `pending` → `reviewed PASS` or `reviewed FAIL` 
 | tr | tr-TR | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/tr/strict-36944857656/` — strict Gemma 4 run `36944857656`; hidden qualification 8/8, 569 grounded text items, 0 findings; manual post-run scan clean; staleness clean |
 | uk | uk-UA | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/uk/strict-36944857700/` — strict Gemma 4 run `36944857700`; hidden qualification 8/8, 567 grounded text items, 0 findings; manual post-run scan clean; staleness clean |
 | ur | ur-PK | rtl | semantic QA | pending | — |
-| uz | uz-UZ | ltr | semantic QA | pending | — |
+| uz | uz-UZ | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/uz/strict-36992080976/` — strict Gemma 4 run `36992080976`; hidden qualification 8/8, 567 grounded text items, 0 findings; manual post-run scan clean; staleness clean |
 | vi | vi-VN | ltr | linguistic QA | reviewed PASS | `artifacts/about-i18n-native-sessions/vi/strict-36944857730/` — strict Gemma 4 run `36944857730`; hidden qualification 8/8, 568 grounded text items, 0 findings; manual post-run scan clean; staleness clean |
 | yo | yo-NG | ltr | semantic QA | pending | — |
 | zh | zh-CN | ltr | semantic QA | pending | — |
