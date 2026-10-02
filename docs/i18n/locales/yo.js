@@ -263,7 +263,7 @@ export default Object.freeze({
     "reverse.error.range": "Òpin ààlà kò gbọ́dọ̀ wà ṣáájú ìbẹ̀rẹ̀.",
     "reverse.error.variable": "Gbogbo ìdíwọ̀n gbọ́dọ̀ tọ́ka sí oníyípadà ọjọ́ tó wà.",
     "reverse.error.pastafari": "Tẹ gbogbo pápá márùn-ún ti ọjọ́ Pastafari wọlé.",
-    "reverse.calendar.label": "Kálẹ́ńdà tí a lò fún ọjọ́ absolute yìí",
+    "reverse.calendar.label": "Kálẹ́ńdà tí a lò fún ọjọ́ gangan yìí",
 
   },
   "calendar": {
