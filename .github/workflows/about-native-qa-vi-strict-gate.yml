@@ -1,0 +1,174 @@
+name: Vietnamese strict native-language whole-site gate
+
+on:
+  push:
+    branches: [feature/about-i18n-72-locales]
+    paths:
+      - .github/workflows/about-native-qa-vi-strict-gate.yml
+      - docs/i18n/locales/vi.js
+      - docs/about/content/vi.html
+      - docs/manifest.webmanifest
+      - docs/i18n/registry.js
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vi-strict-native-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  strict-vi:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with: {fetch-depth: 1}
+      - name: Install pinned llama.cpp runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/vi-strict/llama /tmp/vi-strict/evidence
+          curl -fL --retry 3 https://github.com/ggml-org/llama.cpp/releases/download/b10982/llama-b10982-bin-ubuntu-x64.tar.gz -o /tmp/vi-strict/llama.tar.gz
+          echo "b6e27d8fb4c6d35084cba3c36accc059b4b4f468372956730295577f05066789  /tmp/vi-strict/llama.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/vi-strict/llama.tar.gz -C /tmp/vi-strict/llama
+          git rev-parse HEAD > /tmp/vi-strict/evidence/reviewed-head.txt
+      - name: Extract grounded Vietnamese website corpus
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          from html.parser import HTMLParser
+          import json,re
+          items=[]
+          locale=Path("docs/i18n/locales/vi.js").read_text(encoding="utf-8")
+          for key,raw in re.findall(r'"([^"]+)"\s*:\s*("(?:\\.|[^"\\])*")',locale):
+            try: value=json.loads(raw)
+            except Exception: continue
+            if isinstance(value,str) and value.strip() and key not in {"code","dir","intlLocale"}:
+              items.append({"location":f"docs/i18n/locales/vi.js#{key}","text":value.strip()})
+          class P(HTMLParser):
+            wanted={"p","li","h1","h2","h3","h4","h5","h6","th","td","caption","blockquote"}; attrs={"aria-label","aria-description","title","alt"}
+            def __init__(self): super().__init__(convert_charrefs=True); self.sections=[]; self.current=None; self.n=0
+            def handle_starttag(self,tag,attrs):
+              attrs=dict(attrs)
+              if tag=="br" and self.current is not None: self.current["parts"].append(". ")
+              if tag=="section": self.sections.append(attrs.get("id",""))
+              sec=next((x for x in reversed(self.sections) if x),""); ident=attrs.get("id") or sec or tag
+              for a in self.attrs:
+                v=attrs.get(a)
+                if v and v.strip(): items.append({"location":f"docs/about/content/vi.html#{ident}@{a}-{self.n}","text":v.strip()}); self.n+=1
+              if tag in self.wanted: self.current={"tag":tag,"id":attrs.get("id",""),"section":sec,"parts":[]}
+            def handle_endtag(self,tag):
+              if self.current is not None and self.current["tag"]==tag:
+                txt=re.sub(r"\s+"," ","".join(self.current["parts"])).strip()
+                if txt:
+                  ident=self.current["id"] or self.current["section"] or self.current["tag"]
+                  items.append({"location":f"docs/about/content/vi.html#{ident}","text":txt})
+                self.current=None
+              if tag=="section" and self.sections: self.sections.pop()
+            def handle_data(self,data):
+              if self.current is not None: self.current["parts"].append(data)
+          p=P(); p.feed(Path("docs/about/content/vi.html").read_text(encoding="utf-8"))
+          manifest=json.loads(Path("docs/manifest.webmanifest").read_text(encoding="utf-8"))
+          for field in ("name_localized","short_name_localized","description_localized"):
+            v=manifest.get(field,{}).get("vi",{}).get("value")
+            if isinstance(v,str) and v.strip(): items.append({"location":f"docs/manifest.webmanifest#{field}.vi.value","text":v.strip()})
+          registry=Path("docs/i18n/registry.js").read_text(encoding="utf-8")
+          m=re.search(r'defineLocale\("vi",\s*"([^"]+)"',registry)
+          if m: items.append({"location":"docs/i18n/registry.js#locale-vi-display-name","text":m.group(1)})
+          seen=set(); out=[]
+          for item in items:
+            pair=(item["location"],item["text"])
+            if pair in seen: continue
+            seen.add(pair); item["id"]=f"VI{len(out):04d}"; out.append(item)
+          Path("/tmp/vi-strict/evidence/items.json").write_text(json.dumps(out,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          compact=json.dumps(out,ensure_ascii=False,separators=(",",":")); Path("/tmp/vi-strict/corpus.json").write_text(compact,encoding="utf-8")
+          if len(compact)>100000: raise SystemExit("corpus exceeds review budget")
+          PY
+      - name: Start isolated Vietnamese Gemma 4 reviewer
+        shell: bash
+        run: |
+          set -euo pipefail
+          SERVER="$(find /tmp/vi-strict/llama -type f -name llama-server | head -n 1)"
+          "$SERVER" -hf ggml-org/gemma-4-E4B-it-GGUF:Q4_0 --reasoning auto --chat-template-kwargs '{"enable_thinking":false}' -c 32768 -t 4 --host 127.0.0.1 --port 8080 > /tmp/vi-strict/evidence/server.log 2>&1 &
+          echo "$!" > /tmp/vi-strict/server.pid
+          for _ in $(seq 1 900); do curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break; sleep 1; done
+          curl -fsS http://127.0.0.1:8080/health >/dev/null
+      - name: Batched hidden Vietnamese reviewer qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json,urllib.request
+          cases=[{"id":"g1","text":"Không thể nhận dạng ngày đó. Hãy kiểm tra mọi trường đã được điền đầy đủ và ngày đó tồn tại trong lịch đã chọn.","expected":"TỰ NHIÊN"},{"id":"g2","text":"Ngày thao tác là điểm xuất phát của phép tính.","expected":"TỰ NHIÊN"},{"id":"g3","text":"Cốt-lết trước","expected":"TỰ NHIÊN"},{"id":"g4","text":"Dùng trang này như thế nào?","expected":"TỰ NHIÊN"},{"id":"b1","text":"Click here để tiếp tục.","expected":"SỬA"},{"id":"b2","text":"Change the working day.","expected":"SỬA"},{"id":"b3","text":"Ubah ngày thao tác.","expected":"SỬA"},{"id":"b4","text":"Как dùng trang này?","expected":"SỬA"}]
+          ids=[x["id"] for x in cases]
+          prompt="Bạn là biên tập viên bản ngữ nghiêm ngặt của tiếng Việt chuẩn hiện đại. Hãy đánh giá riêng từng đoạn trong tám đoạn. Kiểm tra độ tự nhiên, ngữ pháp và các phần tiếng Anh, tiếng Indonesia, tiếng Nga hoặc ngôn ngữ pha trộn ngoài ý muốn. “ngày thao tác”, “ngày được hỏi”, “cốt-lết” và các tháng đan xen là thuật ngữ miền có chủ ý. Trả/Return only JSON; verdict must be exactly TỰ NHIÊN or SỬA."+"\n\n"+json.dumps(cases,ensure_ascii=False)
+          schema={"type":"object","properties":{"decisions":{"type":"array","minItems":8,"maxItems":8,"items":{"type":"object","properties":{"id":{"type":"string","enum":ids},"verdict":{"type":"string","enum":["TỰ NHIÊN","SỬA"]}},"required":["id","verdict"],"additionalProperties":False}}},"required":["decisions"],"additionalProperties":False}
+          payload={"messages":[{"role":"user","content":prompt}],"temperature":0.0,"max_tokens":420,"reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"vi_qualification","strict":True,"schema":schema}}}
+          req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),headers={"Content-Type":"application/json"},method="POST")
+          with urllib.request.urlopen(req,timeout=2400) as resp: data=json.load(resp)
+          raw=data["choices"][0]["message"]["content"].strip(); ev=Path("/tmp/vi-strict/evidence"); ev.joinpath("qualification-raw.json").write_text(raw+"\n",encoding="utf-8")
+          ds=json.loads(raw).get("decisions",[]); actual={d["id"]:d["verdict"] for d in ds}; results=[]; failed=[]
+          for x in cases:
+            ok=actual.get(x["id"])==x["expected"]; results.append({**x,"actual":actual.get(x["id"]),"passed":ok})
+            if not ok: failed.append(x["id"])
+          ev.joinpath("qualification.json").write_text(json.dumps(results,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          if len(ds)!=8 or failed: raise SystemExit("qualification failed")
+          PY
+      - name: Strict whole-site Vietnamese review
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json,urllib.request
+          ev=Path("/tmp/vi-strict/evidence"); items=json.loads(ev.joinpath("items.json").read_text(encoding="utf-8")); by={}
+          for item in items: by.setdefault(item["location"],[]).append(item["text"])
+          prompt="Bạn là biên tập viên ngôn ngữ bản ngữ độc lập và nghiêm ngặt cho phiên bản tiếng Việt của Lịch Pastafari. Hãy xem toàn bộ văn bản hiển thị và văn bản dành cho khả năng truy cập trên trang như một trải nghiệm ngôn ngữ thống nhất. Tìm các phần sót lại của tiếng Anh, tiếng Indonesia, tiếng Nga hoặc ngôn ngữ khác, lối dịch sát chữ, tiếng Việt thiếu tự nhiên, cùng các vấn đề ngữ pháp, chính tả, dấu câu và thuật ngữ, kể cả metadata, manifest và văn bản trợ năng. Các từ kỹ thuật tiếng Anh thông thường trong văn xuôi tiếng Việt là vấn đề trừ khi đó là literal mã thật, tên API hoặc tên riêng. ID ổn định, công thức, hash, tên API/endpoint, HTTP, CLI, OpenAPI, SIMD, SLA, all-day, Short Choice và Wide Choice có thể giữ nguyên. Mỗi finding phải dùng đúng giá trị location đã cho, còn current_text phải là một chuỗi con liên tục, nguyên văn, thực sự tồn tại tại vị trí đó. Nếu không có vấn đề thật, hãy trả về CLEAN và danh sách findings rỗng. Chỉ trả về JSON."+"\n\nWEBSITE_TEXT_ITEMS_JSON:\n"+Path("/tmp/vi-strict/corpus.json").read_text(encoding="utf-8")
+          schema={"type":"object","properties":{"result":{"type":"string","enum":["CLEAN","FINDINGS"]},"findings":{"type":"array","maxItems":14,"items":{"type":"object","properties":{"severity":{"type":"string","enum":["critical","high","medium","low"]},"location":{"type":"string"},"current_text":{"type":"string","minLength":1,"maxLength":280},"issue":{"type":"string","minLength":15,"maxLength":420},"correction":{"type":"string","minLength":2,"maxLength":420}},"required":["severity","location","current_text","issue","correction"],"additionalProperties":False}}},"required":["result","findings"],"additionalProperties":False}
+          payload={"messages":[{"role":"user","content":prompt}],"temperature":0.05,"top_p":0.85,"max_tokens":1900,"reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"vi_whole_site_review","strict":True,"schema":schema}}}
+          accepted=None
+          for attempt in (1,2):
+            req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",data=json.dumps(payload,ensure_ascii=False).encode("utf-8"),headers={"Content-Type":"application/json"},method="POST")
+            with urllib.request.urlopen(req,timeout=3600) as resp: data=json.load(resp)
+            raw=data["choices"][0]["message"]["content"].strip(); ev.joinpath(f"raw-review-attempt-{attempt}.json").write_text(raw+"\n",encoding="utf-8")
+            try: p=json.loads(raw)
+            except Exception: continue
+            result=p.get("result"); findings=p.get("findings")
+            if result not in {"CLEAN","FINDINGS"} or not isinstance(findings,list) or (result=="CLEAN" and findings) or (result=="FINDINGS" and not findings): continue
+            seen=set(); good=True
+            for f in findings:
+              loc=str(f.get("location","")).strip(); cur=str(f.get("current_text","")).strip(); corr=str(f.get("correction","")).strip()
+              if loc not in by or not cur or not any(cur in t for t in by[loc]) or cur==corr or (loc,cur) in seen: good=False; break
+              seen.add((loc,cur))
+            if good: accepted=p; break
+          if accepted is None: raise SystemExit("review invalid")
+          final_result="PASS" if accepted["result"]=="CLEAN" else "FAIL"
+          final={"result":final_result,"reviewed_head":ev.joinpath("reviewed-head.txt").read_text().strip(),"findings":accepted["findings"]}
+          ev.joinpath("final.json").write_text(json.dumps(final,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          lines=[f"NATIVE_QA_RESULT: {final_result}","","Bản rà soát ngôn ngữ nghiêm ngặt trên toàn bộ trang tiếng Việt không tìm thấy vấn đề đã xác nhận nào cần sửa." if final_result=="PASS" else "Bản rà soát ngôn ngữ nghiêm ngặt trên toàn bộ trang tiếng Việt đã tìm thấy các vấn đề đã xác nhận cần sửa.",""]
+          if final_result=="FAIL":
+            for i,f in enumerate(accepted["findings"],1): lines += [f"### {i}. {f['severity']}","",f["location"],"",f"> {f['current_text']}","",f["issue"],"","Correction: "+f["correction"],""]
+          ev.joinpath("review.md").write_text("\n".join(lines).rstrip()+"\n",encoding="utf-8")
+          PY
+      - name: Verify verdict
+        shell: bash
+        run: |
+          set -euo pipefail
+          head -n 1 /tmp/vi-strict/evidence/review.md | grep -Eq '^NATIVE_QA_RESULT: (PASS|FAIL)$'
+      - name: Stop reviewer
+        if: always()
+        shell: bash
+        run: |
+          [ ! -f /tmp/vi-strict/server.pid ] || kill "$(cat /tmp/vi-strict/server.pid)" 2>/dev/null || true
+      - name: Upload strict Vietnamese evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: vi-strict-native-whole-site
+          path: /tmp/vi-strict/evidence/
+          if-no-files-found: warn
+          retention-days: 90
