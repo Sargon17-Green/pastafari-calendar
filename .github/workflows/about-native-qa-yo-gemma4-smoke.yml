@@ -12,7 +12,7 @@ permissions:
 jobs:
   qualify:
     runs-on: ubuntu-latest
-    timeout-minutes: 50
+    timeout-minutes: 150
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
       - name: Install pinned llama.cpp runtime
@@ -28,9 +28,9 @@ jobs:
         run: |
           set -euo pipefail
           SERVER="$(find /tmp/yo-gemma/llama -type f -name llama-server | head -n 1)"
-          "$SERVER" -hf ggml-org/gemma-4-E4B-it-GGUF:Q4_0 --reasoning auto --chat-template-kwargs '{"enable_thinking":false}' -c 16384 -t 4 --host 127.0.0.1 --port 8080 > /tmp/yo-gemma/server.log 2>&1 &
+          "$SERVER" -hf ggml-org/gemma-3-12b-it-GGUF:Q4_K_M -c 16384 -t 4 --host 127.0.0.1 --port 8080 > /tmp/yo-gemma/server.log 2>&1 &
           PID=$!; trap 'kill "$PID" 2>/dev/null || true' EXIT
-          for _ in $(seq 1 600); do curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break; sleep 1; done
+          for _ in $(seq 1 900); do curl -fsS http://127.0.0.1:8080/health >/dev/null 2>&1 && break; sleep 1; done
           python - <<'PY'
           from pathlib import Path
           import json,urllib.request
@@ -51,7 +51,7 @@ jobs:
           if len(ds)!=8 or failed: raise SystemExit("qualification failed")
           repair_cases=[{"id":"r1","location":"docs/about/content/yo.html#day-boundary","text":"Ọjọ́ Pastafari agbègbè kò yí padà ní ọ̀gànjọ́. Ààlà rẹ̀ ni topocentric lower meridian transit ti àárín Venus kọjá meridian agbègbè ń pinnu.","markers":["topocentric lower meridian transit"]},{"id":"r2","location":"docs/about/content/yo.html#day-boundary","text":"Nítorí náà, èyí jẹ́ ìṣẹ̀lẹ̀ ìràwọ̀ agbègbè tó dá lórí ibi. Transit náà kò pọn dandan kí ó ṣẹlẹ̀ ní 00:00, aago agbègbè ìjọba kò pinnu rẹ̀, kò yí padà torí daylight saving time bẹ̀rẹ̀ tàbí parí nìkan, kò sì nílò kí a lè rí Venus pẹ̀lú ojú lasan.","markers":["daylight saving time"]},{"id":"r3","location":"docs/about/content/yo.html#anniversaries","text":"Fún (orúkọ kotleti, ọjọ́ nínú kotleti), median jẹ́ ọdún 3; 88.89% ni a rí nínú ọdún 10, ṣùgbọ́n pinpin náà ní heavy tail tó wuwo gan-an, iye tó pọ̀ jù tí a sì rí dé ọdún Pastafari 51,954.","markers":["heavy tail"]},{"id":"r4","location":"docs/about/content/yo.html#far-time-structure","text":"nígbà náà, fún c kan náà, shift H_c, ìyípadà ọdún p_c, àti ààlà tó jìn tó wà, tí lẹ́yìn rẹ̀","markers":["shift"]},{"id":"r5","location":"docs/about/content/yo.html#short-and-wide-choice","text":"Kalẹ́ńdà fúnra rẹ̀ ṣì jẹ́ deterministiki patapata. “Choice” jẹ́ orúkọ ìpele algorithm, kì í ṣe lotiri tí a ń ṣe nígbà lílo.","markers":["algorithm"]},{"id":"r6","location":"docs/about/content/yo.html#structural-atlas","text":"Àwọn nọ́mbà wọ̀nyí ṣàlàyé corpus yẹn, kì í ṣe òfin kánónìkì.","markers":["corpus"]},{"id":"r7","location":"docs/about/content/yo.html#anniversaries","text":"Àwọn wọ̀nyí jẹ́ abajade ìdánwò corpus tí a ṣàyẹ̀wò, kì í ṣe ẹ̀rí pé gbogbo ọjọ́ ìrántí tó ṣeé ṣe gbọ́dọ̀ tún ṣẹlẹ̀, bẹ́ẹ̀ sì ni kì í ṣe ìlérí àkókò ìdúró tó pọ̀ jù.","markers":["corpus"]}]
           repair_ids=[x["id"] for x in repair_cases]
-          repair_prompt="Àwọn apá wọ̀nyí ní àṣẹku èdè àjèjì tí a ti jẹ́rìí sí nínú àkọsílẹ̀ Yorùbá. Tún ọkọọkan kọ sí Yorùbá àgbàdéédé òde òní tó dára, kí o sì pa gbogbo ìtumọ̀, àwọn nọ́mbà, àwọn ọ̀rọ̀ Pastafari, àmì ìṣirò àti àwọn literal gidi bí Choice, Wide Choice, Short Choice, all-day, API/HTTP/CLI/OpenAPI/SIMD/SLA mọ́. Yọ àwọn marker tí a ti jẹ́rìí sí, kí o sì tún gírámà ṣe bí ó ṣe yẹ kí gbogbo gbolohun jẹ́ adayeba. Má ṣe kuru un, má sì sọ ìsọfúnni nù. Dá JSON nìkan padà."+"\\n\\n"+json.dumps(repair_cases,ensure_ascii=False)
+          repair_prompt="Apá kọọkan ní àṣẹku èdè àjèjì tí a ti jẹ́rìí sí, tí a tọ́ka sí nínú markers. Rọ́pò KÌKÌ àwọn gbolohun marker náà pẹ̀lú Yorùbá àgbàdéédé òde òní tó dára, kí o sì ṣe àtúnṣe gírámà tó kéré jù lọ tí ó ṣe pàtàkì. Pa gbogbo òtítọ́, nọ́mbà, àwọn àmì ìṣirò bí H_c àti p_c, ‘Choice’, Wide Choice, all-day, Venus àti gbogbo ìtumọ̀ míì mọ́. Má ṣe fi Gẹ̀ẹ́sì sínú àlàyé tàbí akọmọ, má sì yí ìtumọ̀ pa dà. Dá JSON nìkan padà."+"\\n\\n"+json.dumps(repair_cases,ensure_ascii=False)
           repair_schema={"type":"object","properties":{"repairs":{"type":"array","minItems":7,"maxItems":7,"items":{"type":"object","properties":{"id":{"type":"string","enum":repair_ids},"replacement":{"type":"string","minLength":1,"maxLength":1800}},"required":["id","replacement"],"additionalProperties":False}}},"required":["repairs"],"additionalProperties":False}
           repair_payload={"messages":[{"role":"user","content":repair_prompt}],"temperature":0.15,"top_p":0.9,"max_tokens":4200,"reasoning_effort":"none","chat_template_kwargs":{"enable_thinking":False},"stream":False,"response_format":{"type":"json_schema","json_schema":{"name":"yo_confirmed_residue_repair","strict":True,"schema":repair_schema}}}
           repair_req=urllib.request.Request("http://127.0.0.1:8080/v1/chat/completions",data=json.dumps(repair_payload,ensure_ascii=False).encode("utf-8"),headers={"Content-Type":"application/json"},method="POST")
