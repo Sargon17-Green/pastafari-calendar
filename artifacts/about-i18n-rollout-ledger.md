@@ -44,28 +44,28 @@ The authoritative locale set is the `LOCALES` array in `docs/i18n/registry.js` a
 | hy | hy-AM | ltr | partial | linguistic QA |
 | id | id-ID | ltr | partial | linguistic QA |
 | is | is-IS | ltr | partial | linguistic QA |
-| it | it-IT | ltr | partial | semantic QA |
+| it | it-IT | ltr | partial | linguistic QA |
 | ja | ja-JP | ltr | partial | linguistic QA |
 | jv | jv-ID | ltr | partial | semantic QA |
 | ka | ka-GE | ltr | partial | linguistic QA |
-| kk | kk-KZ | ltr | partial | semantic QA |
+| kk | kk-KZ | ltr | partial | linguistic QA |
 | ko | ko-KR | ltr | partial | linguistic QA |
-| lb | lb-LU | ltr | partial | semantic QA |
+| lb | lb-LU | ltr | partial | linguistic QA |
 | lt | lt-LT | ltr | partial | linguistic QA |
-| lv | lv-LV | ltr | partial | semantic QA |
+| lv | lv-LV | ltr | partial | linguistic QA |
 | mk | mk-MK | ltr | partial | linguistic QA |
 | mr | mr-IN | ltr | partial | semantic QA |
 | ms | ms-MY | ltr | partial | semantic QA |
-| nb | nb-NO | ltr | partial | semantic QA |
+| nb | nb-NO | ltr | partial | linguistic QA |
 | ne | ne-NP | ltr | partial | semantic QA |
 | nl | nl-NL | ltr | partial | linguistic QA |
-| nn | nn-NO | ltr | partial | semantic QA |
+| nn | nn-NO | ltr | partial | linguistic QA |
 | pa | pa-IN | ltr | partial | semantic QA |
 | pl | pl-PL | ltr | partial | linguistic QA |
 | pt | pt-BR | ltr | partial | linguistic QA |
 | ro | ro-RO | ltr | partial | semantic QA |
-| ru | ru-RU | ltr | partial | semantic QA |
-| sk | sk-SK | ltr | partial | semantic QA |
+| ru | ru-RU | ltr | partial | linguistic QA |
+| sk | sk-SK | ltr | partial | linguistic QA |
 | sl | sl-SI | ltr | partial | semantic QA |
 | so | so-SO | ltr | partial | semantic QA |
 | sq | sq-AL | ltr | partial | semantic QA |
@@ -171,7 +171,15 @@ Status progression for target locales: `not started → draft → semantic QA �
 - `tr-TR`: strict Gemma 4 whole-site run `36944857656` passed qualification 8/8 over 569 grounded user-visible/accessibility-facing items with zero confirmed findings. Manual post-run wrong-language scan and staleness checks were clean. Artifact `11202218473`, zip SHA-256 `f5aff7bed1f73961aaa1175c9680c4c5b2ae766fa4391f0623ddea39992c0c6b` (23536 bytes). Evidence: `artifacts/about-i18n-native-sessions/tr/strict-36944857656/`.
 - `uk-UA`: strict Gemma 4 whole-site run `36944857700` passed qualification 8/8 over 567 grounded user-visible/accessibility-facing items with zero confirmed findings. Manual post-run wrong-language scan and staleness checks were clean. Artifact `11201729827`, zip SHA-256 `0a251f9f22f643c01f4497ad9d3593d7183c20443994cbc6bb1648210f5cd97f` (27178 bytes). Evidence: `artifacts/about-i18n-native-sessions/uk/strict-36944857700/`.
 - `vi-VN`: strict Gemma 4 whole-site run `36944857730` passed qualification 8/8 over 568 grounded user-visible/accessibility-facing items with zero confirmed findings. Manual post-run wrong-language scan and staleness checks were clean. Artifact `11203035703`, zip SHA-256 `bf5451822c8b51eda98f4acfadada6b39e7a3f8f540cf57251d5abdd66da0093` (24311 bytes). Evidence: `artifacts/about-i18n-native-sessions/vi/strict-36944857730/`.
-- All 71 target locales have complete article drafts. Native-language whole-site text QA is now complete for `af-ZA`, `az-AZ`, `be-BY`, `bg-BG`, `bn-BD`, `bs-BA`, `ca-ES`, `cs-CZ`, `da-DK`, `et-EE`, `fil-PH`, `fo-FO`, `fy-NL`, `gl-ES`, `hr-HR`, `ht-HT`, `hu-HU`, `hy-AM`, `id-ID`, `ja-JP`, `ka-GE`, `ko-KR`, `lt-LT`, `mk-MK`, `nl-NL`, `pl-PL`, `pt-BR`, `sv-SE`, `tr-TR`, `uk-UA`, and `vi-VN`; these 31 target locales are at `linguistic QA`, while the remaining 40 target locales remain at `draft` pending the same native-language pass.
+- `it-IT`: strict Gemma 4 whole-site run `36987353933` passed qualification 8/8 over 563 grounded user-visible/accessibility-facing items with zero confirmed findings. Manual post-run wrong-language scan and staleness checks were clean. Artifact `11218674303`, zip SHA-256 `2efc8be1dd3999bb3e1bef557eb50a7795c7888211e3b2f2010346500e2a7dc9` (23440 bytes). Evidence: `artifacts/about-i18n-native-sessions/it/strict-36987353933/`.
+- `kk-KZ`: strict Gemma 4 whole-site run `36987353962` passed qualification 8/8 over 567 grounded user-visible/accessibility-facing items with zero confirmed findings. Manual post-run wrong-language scan and staleness checks were clean. Artifact `11219552817`, zip SHA-256 `96b2ff198f0e10c75f2eb009c9b681a61d83b26ab4b06ad1bcd4e1c79b32411b` (26212 bytes). Evidence: `artifacts/about-i18n-native-sessions/kk/strict-36987353962/`.
+- `lb-LU`: strict Gemma 4 whole-site run `36987353902` passed qualification 8/8 over 567 grounded user-visible/accessibility-facing items with zero confirmed findings. Manual post-run wrong-language scan and staleness checks were clean. Artifact `11218648958`, zip SHA-256 `5ea9402a471c861bbd65f5e0bd24cf3dd12f168f2085c36a87db43e68ad2f2ab` (25077 bytes). Evidence: `artifacts/about-i18n-native-sessions/lb/strict-36987353902/`.
+- `lv-LV`: strict Gemma 4 whole-site run `36987078453` passed qualification 8/8 over 567 grounded user-visible/accessibility-facing items with zero confirmed findings. Manual post-run wrong-language scan and staleness checks were clean. Artifact `11219656427`, zip SHA-256 `db6076c33f4dcb1ab2dca113828224741c2803e91deae2cb1cd8dcf2989309b8` (24471 bytes). Evidence: `artifacts/about-i18n-native-sessions/lv/strict-36987078453/`.
+- `nb-NO`: strict Gemma 4 whole-site run `36987353810` passed qualification 8/8 over 562 grounded user-visible/accessibility-facing items with zero confirmed findings. Manual post-run wrong-language scan and staleness checks were clean. Artifact `11219321703`, zip SHA-256 `d7e5ed2c981b48735255518e5c534ab3b57069442a9d83aef780f0e41338c4a0` (22533 bytes). Evidence: `artifacts/about-i18n-native-sessions/nb/strict-36987353810/`.
+- `nn-NO`: strict Gemma 4 whole-site run `36987353817` passed qualification 8/8 over 567 grounded user-visible/accessibility-facing items with zero confirmed findings. Manual post-run wrong-language scan and staleness checks were clean. Artifact `11218527269`, zip SHA-256 `9b0b13bb121bf3c6557ea7d737ce593dcefff9e4666118bd7750f52e98110b8c` (23831 bytes). Evidence: `artifacts/about-i18n-native-sessions/nn/strict-36987353817/`.
+- `ru-RU`: strict Gemma 4 whole-site run `36987353903` passed qualification 8/8 over 567 grounded user-visible/accessibility-facing items with zero confirmed findings. Manual post-run wrong-language scan and staleness checks were clean. Artifact `11218947588`, zip SHA-256 `eac9820f18517819abc5dd94a25e5ae2ba52c30334d29e313a3c5cd70b6f0f01` (27544 bytes). Evidence: `artifacts/about-i18n-native-sessions/ru/strict-36987353903/`.
+- `sk-SK`: strict Gemma 4 whole-site run `36987353831` passed qualification 8/8 over 568 grounded user-visible/accessibility-facing items with zero confirmed findings. Manual post-run wrong-language scan and staleness checks were clean. Artifact `11219157675`, zip SHA-256 `484171182cf80b906c8f6ad877aa03279fde4c20b20588fbf8eeaf9b3e2ec018` (24733 bytes). Evidence: `artifacts/about-i18n-native-sessions/sk/strict-36987353831/`.
+- All 71 target locales have complete article drafts. Native-language whole-site text QA is now complete for `af-ZA`, `az-AZ`, `be-BY`, `bg-BG`, `bn-BD`, `bs-BA`, `ca-ES`, `cs-CZ`, `da-DK`, `et-EE`, `fil-PH`, `fo-FO`, `fy-NL`, `gl-ES`, `hr-HR`, `ht-HT`, `hu-HU`, `hy-AM`, `id-ID`, `it-IT`, `ja-JP`, `ka-GE`, `kk-KZ`, `ko-KR`, `lb-LU`, `lt-LT`, `lv-LV`, `mk-MK`, `nb-NO`, `nl-NL`, `nn-NO`, `pl-PL`, `pt-BR`, `ru-RU`, `sk-SK`, `sv-SE`, `tr-TR`, `uk-UA`, `vi-VN`; these 39 target locales are at `linguistic QA`, while the remaining 32 target locales remain at `draft` pending the same native-language pass.
 - Full mechanical audit was run in batches across every target locale. Each article has exactly the canonical 29 stable IDs, no duplicate IDs, both semantic tables with 19 and 9 body rows respectively, all required hard literals/formulas/hashes, no unintended Hebrew leakage, and its locale module has exactly 11 `about.*` shell keys.
 - During closure, the first audit helper exposed a real test bug: it matched only two-letter locale codes and therefore missed `fil`. The audit was corrected to accept 2–3 letter registry codes, `fil` was added and verified, and the final audit covered all 72 locales.
 - Native-language whole-site LLM QA remains pending by design. The required next phase is one locale at a time, with the reviewing conversation itself conducted in that locale and explicitly searching the whole site for unnatural language, foreign-language leakage, terminology drift, BiDi/layout issues where relevant, and semantic discrepancies.
