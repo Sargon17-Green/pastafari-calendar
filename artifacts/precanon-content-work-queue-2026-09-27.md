@@ -117,8 +117,12 @@ Branch-local propagation preparation is now complete:
 Do not repeat duplicate discovery unless a target blob/ref changes.
 
 Current next useful work before whole-corpus freeze:
-- apply the 59 branch patch sets only if/when explicit propagation is authorized; otherwise keep them staged;
-- resolve the two older manual authority-terminology review cases independently of the now-closed name-form audit;
+- canonical language-form propagation is now executed: 59/59 target witnesses passed post-apply SHA/lock replay; the protected Maltese default-branch update is prepared in PR #16 and cannot merge while the repository's active "Freeze main ? no updates or merges" ruleset forbids all main updates;
+- the two older manual terminology review cases are resolved: Fortran+English now uses "adopted English display names", a test-only reference oracle that is not a parallel authority, and explicit noncanonical astronomy-profile wording; the x86-64 Assembly+Coptic README is a preserved historical Stage log whose "authoritative/normative/oracle" wording is not a current parallel-authority assertion and should not be retroactively rewritten;
+- JavaScript+Interlingue received the adopted `cyperus`/locale-form delta plus Megillah source-provenance terminology; targeted browser-i18n/reverse tests pass locally;
+- the bounded /about/ canonical-authority delta is actively rolling out to the 71 non-Hebrew locales, guarded to `canonical-names`, `printed-calendar`, and `seer` only;
+- Seer authority wording is merged; Seer English/Hebrew adopted period-name catalogs are in PR #44 with the full local query test suite passing (102 tests: 95 PASS / 7 SKIP / 0 FAIL) while repository CI remains an external merge gate;
+- App authority wording remains in PR #46; its required CI failures are baseline/unrelated failures in persistence/application/dependency-fitness surfaces, not failures caused by the authority-text delta;
 - diff the corpus adopted-rule layer whenever `source_revision` changes.
 
 ## Continuation triggers
@@ -131,7 +135,7 @@ Do not manufacture another pre-canon prose pass merely to keep this branch movin
 - a new Pastafarian product/document surface is discovered and needs inventorying;
 - a result from the separate native-language QA workstream materially changes the evidence snapshot used here.
 
-The first trigger has now occurred through the working nonfrozen corpus snapshot. Whole-corpus freeze remains the trigger for converting BLOCKED dispositions into final alignment decisions and for public propagation.
+The first trigger has now occurred through the working nonfrozen corpus snapshot. Whole-corpus freeze remains the trigger for converting still-BLOCKED dispositions into final alignment decisions. Public propagation of already-closed adopted rules/language forms is no longer globally deferred; it is proceeding only where the relevant rule is already explicit and downstream QA/branch rules permit publication.
 
 ## Deferred until the corpus is ready
 
@@ -178,3 +182,15 @@ Protected-repository publication is in review:
 - App PR #46
 
 Do not publish still-BLOCKED astronomy/theology/origin/absence claims merely because publication has begun for the closed subset.
+
+
+## Publication/progress addendum — 2026-10-03 later pass
+
+- Independent canonical language forms: 59/59 replay PASS. Artifact: `INDEPENDENT_LANGUAGE_FORM_POSTAPPLY_REPLAY_2026-10-03.json`.
+- `JavaScript+Interlingue`: combined adopted language-form + Megillah provenance commit `458651e1e291f6bb346800b14cd01e4df6d14035`; local targeted Node tests PASS.
+- Megillah audit branch `fix/megillah-live-source-audit` was also aligned to the adopted language forms so a future merge cannot reintroduce the stale cutlet-8 key.
+- Seer authority PR #43 merged as `ec251e06f8fa951d0baf275d66554b25ab06e172`.
+- Seer adopted English/Hebrew naming PR #44 is open; local `query/test/*.test.mjs` result: 102 total / 95 pass / 7 skip / 0 fail.
+- Pastafarian-Calendar Maltese default-branch publication PR #16 has a successful Canonical Names Lock check and one approval, but cannot merge because repository ruleset 24045727 (`Freeze main ? no updates or merges`) actively forbids updates to `refs/heads/main`, with no bypass actors.
+- /about/ Hebrew completeness wording is published on `main` and the 72-locale feature branch. A new bounded semantic-delta workflow is rolling the three closed meanings to all 71 non-Hebrew locales without restarting translation/native QA.
+- App PR #46 remains unmerged because required CI fails on pre-existing unrelated build/fitness defects (SQLDelight `Bootstrap.sq`, unresolved application references, dependency-fitness findings). Do not expand this canon-alignment workstream into unrelated App repair merely to force that PR green.
