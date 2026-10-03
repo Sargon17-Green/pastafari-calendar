@@ -93,7 +93,7 @@
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
   <h2>Názvy</h2>
   <p>Existuje 17 kanonických názvov rezňov a 47 kanonických názvov mesiacov. V jednom roku sa každý názov vo svojej rodine objaví najviac raz.</p>
-  <p>Identita názvu je kanonická a sémantická, nie výsledok hlasovania medzi pravopismi, prekladmi alebo implementáciami. Pre význam názvov je najvyššou autoritou hebrejská Megillah; preklad a transliterácia sú prezentačné vrstvy.</p>
+  <p>O tom, ktoré názvové entity a jazykové podoby sú kanonické či štandardné, rozhoduje kanonický korpus. Medzi kanonickými vydaniami Megilly nie je hierarchia. Preklad ani transliterácia nemenia identitu entity; jazyková podoba však môže byť štandardná, ak ju korpus výslovne prijíma alebo sa na ňu vzťahuje kanonické jazykové pravidlo, ktoré korpus prijal.</p>
   <p>Názov nie je skrytý kód dĺžky. Žiadny konkrétny názov sám osebe neurčuje, že rezeň má byť dlhší alebo mesiac kratší.</p><hr>
 </section>
 <section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
@@ -179,12 +179,12 @@
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
   <h2>Tlačený kalendár a ručný výpočet</h2>
   <p>Pastafariánsky kalendár sa dá vytlačiť, ak sa uvedie, pre ktorý deň činnosti bol vypočítaný. Ukazuje štruktúru času z pohľadu tohto dňa; po zmene dňa činnosti môže byť potrebný nový kalendár. Tlačiareň teda zostáva dôležitá.</p>
-  <p>Všetko možno vypočítať aj ručne, keďže špecifikácia je úplná a deterministická: spočítať vstupné počítadlá, vykonať 7 skrytých a 46 viditeľných kvapiek, aktualizovať šesť mís, urobiť 12 záverečných miešaní, získať odpovede, postaviť brány, vybrať roky a rezne, vykonať kombinatorické voľby, vybrať názvy a prepliesť mesiace.</p>
+  <p>Všetko možno vypočítať aj ručne. Diskrétny algoritmus kalendára je deterministický a výslovne definovaný. Prevod fyzikálneho okamihu na pastafariánsky deň v súčasnosti využíva astronomický model implementácie; samotný číselný astronomický profil ešte nie je kanonický. Treba spočítať vstupné počítadlá, vykonať 7 skrytých a 46 viditeľných kvapiek, aktualizovať šesť mís, urobiť 12 záverečných miešaní, získať odpovede, postaviť brány, vybrať roky a rezne, vykonať kombinatorické voľby, vybrať názvy a prepliesť mesiace.</p>
   <p>Na oplátku si netreba pamätať, že február má niekedy 28 a inokedy 29 dní.</p><hr>
 </section>
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>A čo je Seer?</h2>
-  <p>Popri kanonickej implementácii existuje rýchly engine <strong>Pastafarian Calendar Seer</strong>. Seer nie je zdrojom autority: Megillah určuje pravidlá a kanonický výpočet podľa nich vytvára dátum. Ak sa Seer nezhoduje so správnym kanonickým výpočtom, mýli sa Seer.</p>
+  <p>Popri kanonickom algoritme existuje rýchly engine <strong>Pastafarian Calendar Seer</strong>. Seer však nie je kanonickou autoritou; autoritou pre záväzný obsah je kanonický korpus. Štandardná implementácia vykonáva kanonický algoritmus vo všetkých jeho fázach. Seer sám nie je štandardnou implementáciou; ak vráti výsledok, ktorý je v rozpore s výsledkom vyžadovaným kanonickým korpusom, Seer sa mýli.</p>
   <p>Jeho účelom je vykonávať tie isté dotazy rýchlo a vo forme vhodnej na integráciu do produktov.</p>
   <p>Pri živom overení 21. septembra 2026 Seer zahŕňal okrem iného dotazy na dátum a „teraz“, batch, rozsahy dní, spätnú konverziu pastafariánskeho dátumu na cieľový deň, získanie štruktúry roka, určenie aktívneho dňa činnosti, Node API, prehliadačový/HTTP klient, CLI, službu HTTP v1, kontrakt OpenAPI 3.1, native implementácie a distribučné balíky a overené container nasadenie.</p>
   <p>Seer má verejné API. Existuje výslovný stabilný kontrakt HTTP v1 s koncovými bodmi pre <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, deň činnosti, <code>metadata</code>, <code>locales</code> a <code>status</code>.</p>
