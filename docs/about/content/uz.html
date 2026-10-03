@@ -109,7 +109,7 @@
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
   <h2>Nomlar</h2>
   <p>17 ta kanonik kotlet nomi va 47 ta kanonik oy nomi mavjud. Bir yil ichida har bir nom o‘z toifasida ko‘pi bilan bir marta paydo bo‘ladi.</p>
-  <p>Nomning identifikatori kanonik va semantikdir; u turli yozilishlar, tarjimalar yoki implementatsiyalar orasidagi “ovoz berish” natijasi emas. Nomlar ma’nosi bo‘yicha ibroniycha Megillah eng yuqori vakolatga ega; tarjima va transliteratsiya esa faqat ko‘rsatish qatlamlaridir.</p>
+  <p>Nomning identifikatori kanonik-semantik bo‘lib, turli yozilishlar, tarjimalar yoki implementatsiyalar orasidagi “ovoz berish” natijasi emas. Kanonik korpus qaysi nom obyektlari va til shakllari kanonik yoki me’yoriy ekanini belgilaydi; Megillahning kanonik nashrlari o‘zaro ierarxik tartibga ega emas. Tarjima yoki transliteratsiya obyekt identifikatorini o‘zgartirmaydi; biroq til shakli korpusda aniq qabul qilingan yoki unda qabul qilingan kanonik qoida bilan qamrab olingan bo‘lsa, o‘zi me’yoriy bo‘lishi mumkin.</p>
   <p>Nom uzunlikning yashirin kodi ham emas. Muayyan kotlet yoki oy nomi o‘z-o‘zidan bu birlikni uzunroq yoki qisqaroq qilmaydi.</p><hr>
 </section>
 
@@ -227,13 +227,13 @@
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
   <h2>Chop etilgan taqvim va qo‘lda hisoblash</h2>
   <p>Pastafari taqvimini chop etish mumkin; faqat u qaysi amal kuni uchun hisoblanganini ko‘rsatish kerak. Bunday taqvim vaqt tuzilishini shu kun nuqtai nazaridan ko‘rsatadi; amal kuni o‘zgarsa, yangi taqvim kerak bo‘lishi mumkin. Demak, printer hali ham ishli.</p>
-  <p>Spetsifikatsiya to‘liq va deterministik bo‘lgani uchun hammasini qo‘lda ham hisoblash mumkin: kirish hisoblagichlarini hisoblang, 7 yashirin va 46 ko‘rinadigan tomchini bajaring, olti kosani yangilang, 12 yakuniy aralashtirishni bajaring, javoblarni yarating, darvozalarni quring, yillar va kotletlarni tanlang, kombinatorik tanlovlarni bajaring, nomlarni tanlang va keyin oylarni o‘ring.</p>
+  <p>Taqvimning diskret algoritmi deterministik va aniq belgilangan. Fizik lahzani Pastafari kuniga aylantirishda hozircha amalga oshirishning astronomik modelidan foydalaniladi; astronomik profilning sonli qiymatlari hali kanonik emas. Hammasini qo‘lda ham hisoblash mumkin: kirish hisoblagichlarini hisoblang, 7 yashirin va 46 ko‘rinadigan tomchini bajaring, olti kosani yangilang, 12 yakuniy aralashtirishni bajaring, javoblarni yarating, darvozalarni quring, yillar va kotletlarni tanlang, kombinatorik tanlovlarni bajaring, nomlarni tanlang va keyin oylarni o‘ring.</p>
   <p>Buning evaziga fevral ba’zan 28, ba’zan 29 kun bo‘lishini eslab yurish shart emas.</p><hr>
 </section>
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Unda Seer nima?</h2>
-  <p>Kanonik amalga oshirish yonida <strong>Pastafarian Calendar Seer</strong> deb ataladigan tezkor hisoblash dvigateli bor. Seer vakolat manbai emas: Megillah qoidalarni belgilaydi, kanonik hisob esa shu qoidalarga ko‘ra sanani hisoblaydi. Agar Seer to‘g‘ri kanonik hisobga mos kelmasa, xato Seer’da.</p>
+  <p>Kanonik algoritm bilan bir qatorda <strong>Pastafarian Calendar Seer</strong> deb ataladigan tezkor hisoblash dvigateli mavjud. Seer vakolat manbai emas. Majburiy mazmun uchun vakolat manbai kanonik korpusdir. Standart implementatsiya kanonik algoritmni uning barcha bosqichlaridan o‘tkazib bajaradi. Seerning o‘zi standart implementatsiya emas; agar u kanonik korpus talab qilgan natijaga zid natija qaytarsa, xato Seerda.</p>
   <p>Uning vazifasi xuddi shu savollarni tez bajarish va mahsulotlarga qo‘shish uchun qulay shaklda javob berish.</p>
   <p>2026-yil 21-sentabrda o‘tkazilgan bevosita tekshiruvda Seer, jumladan, <code>date</code> va <code>now</code> so‘rovlarini, <code>batch</code>ni, kun diapazonlarini, Pastafari sanasidan so‘ralgan kunga teskari o‘girishni, yil tuzilmasini olishni, faol amal kunini aniqlashni, Node API’ni, brauzer/HTTP mijozini, CLI’ni, HTTP v1 xizmatini, OpenAPI 3.1 shartnomasini, mahalliy amalga oshirishlar va tarqatish paketlarini hamda tekshirilgan konteyner joylashtirishni qamrab olgan.</p>
   <p>Seer’da ommaviy API bor. <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, amal kuni, <code>metadata</code>, <code>locales</code> va <code>status</code> yakuniy nuqtalariga ega aniq va barqaror HTTP v1 shartnomasi bor.</p>
