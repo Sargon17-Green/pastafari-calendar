@@ -86,7 +86,7 @@
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
   <h2>Nomes</h2>
   <p>O calendário tem 17 nomes canônicos de almôndegas e 47 nomes canônicos de meses. Dentro de um ano, cada nome aparece no máximo uma vez em sua família.</p>
-  <p>A identidade do nome é canônica e semântica, não o resultado de uma votação entre grafias, traduções ou implementações. A Meguilá hebraica é a autoridade superior para o significado dos nomes; tradução e transliteração são camadas de apresentação.</p>
+  <p>A identidade do nome é canônica e semântica, não o resultado de uma votação entre grafias, traduções ou implementações. O corpus canônico determina quais entidades e formas linguísticas são canônicas ou padronizadas. As edições canônicas da Meguilá não têm hierarquia entre si. A tradução ou a transliteração não altera a identidade da entidade; ainda assim, uma forma linguística pode ser padronizada se tiver sido explicitamente admitida no corpus ou estiver abrangida por uma regra linguística canônica adotada pelo corpus.</p>
   <p>O nome também não é um código secreto de comprimento: nenhum nome de almôndega força uma almôndega maior, e nenhum nome de mês força um mês menor.</p><hr>
 </section>
 <section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
@@ -167,12 +167,12 @@
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
   <h2>Calendário impresso e cálculo à mão</h2>
   <p>É possível imprimir um calendário pastafari; basta indicar para qual dia de trabalho ele foi calculado. Esse calendário mostra a estrutura do tempo a partir da perspectiva daquele dia. Quando o dia de trabalho muda, pode ser preciso um novo calendário. A impressora continua relevante.</p>
-  <p>Também dá para calcular tudo à mão, pois a especificação é completa e determinística: calcular os contadores de entrada, executar 7 gotas ocultas e 46 visíveis, atualizar seis tigelas, fazer 12 mexidas finais, produzir respostas, construir portões, escolher anos e almôndegas, executar escolhas combinatórias, selecionar nomes e tecer os meses.</p>
+  <p>Também dá para calcular tudo à mão. O algoritmo discreto do calendário é determinístico e está explicitamente definido. A conversão de um instante físico em um dia pastafari usa atualmente um modelo astronômico da implementação; o próprio perfil numérico astronômico ainda não é canônico. Para isso, calculam-se os contadores de entrada, executam-se 7 gotas ocultas e 46 visíveis, atualizam-se seis tigelas, fazem-se 12 mexidas finais, produzem-se respostas, constroem-se portões, escolhem-se anos e almôndegas, executam-se escolhas combinatórias, selecionam-se nomes e tecem-se os meses.</p>
   <p>Assim evita-se a necessidade de lembrar que fevereiro às vezes tem 28 dias e às vezes 29.</p><hr>
 </section>
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>E o Seer?</h2>
-  <p>Ao lado da implementação canônica existe um motor rápido chamado <strong>Pastafarian Calendar Seer</strong>. Seer não é fonte de autoridade: a Meguilá estabelece as regras, e o cálculo canônico produz a data de acordo com essas regras. Se Seer divergir de um cálculo canônico correto, Seer está errado.</p>
+  <p>Ao lado do algoritmo canônico existe um mecanismo rápido chamado <strong>Pastafarian Calendar Seer</strong>. Seer não é uma autoridade canônica. O corpus canônico é a autoridade para o conteúdo vinculante. Uma implementação padrão executa o algoritmo canônico em todas as suas etapas; o próprio Seer não é uma implementação padrão. Se o Seer retornar um resultado que contradiga o resultado exigido pelo corpus canônico, o Seer está errado.</p>
   <p>Seu objetivo é responder às mesmas consultas rapidamente e de forma conveniente para integração em produtos.</p>
   <p>Na verificação ao vivo realizada em 21 de setembro de 2026, Seer incluía consultas de data e de “agora”, consultas em lote, intervalos de dias, conversão reversa para o dia consultado, recuperação da estrutura do ano, resolução do dia de trabalho ativo, API para Node, cliente de navegador/HTTP, CLI, serviço HTTP v1, contrato OpenAPI 3.1, implementações nativas e pacotes de distribuição, além de implantação verificada em contêiner.</p>
   <p>Seer tem uma API pública. Há um contrato HTTP v1 explícito e estável, com endpoints para <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, dia de trabalho, <code>metadata</code>, <code>locales</code> e <code>status</code>.</p>
