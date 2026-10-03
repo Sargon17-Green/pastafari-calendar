@@ -1,0 +1,39 @@
+{
+  "schema": "independent-language-form-postapply-replay/v1",
+  "created": "2026-10-03",
+  "repository": "Sargon17-Green/Pastafarian-Calendar",
+  "canonical_source_revision": "4247068cd43314da12e09b0ad05b76df7c592c345960b3b71720cc7ca6f7abc0",
+  "patchset": "artifacts/INDEPENDENT_LANGUAGE_FORM_BRANCH_PATCHSETS_2026-10-03.json",
+  "method": [
+    "Fresh clone/fetch of all live refs after propagation.",
+    "For each of 59 target witnesses, read every patchset operation from the live ref.",
+    "Recompute SHA-256 for every file named by CANONICAL_NAMES_LOCK.sha256 and compare to the lock.",
+    "Verify the adopted cutlet-8 form is present in the authoritative source catalog.",
+    "Verify supersession/replacement operations and JavaScript multi-locale special case."
+  ],
+  "result": {
+    "total": 59,
+    "pass": 59,
+    "fail": 0
+  },
+  "main": {
+    "target_branch": "main",
+    "protected": true,
+    "replay_ref": "chore/publish-maltese-cutlet8-2026-10-03",
+    "pull_request": 16,
+    "candidate_commit": "2034c192f472ea00c85eeeec88d908b1691dd134",
+    "status": "PASS_ON_CANDIDATE_PENDING_REQUIRED_CHECK_AND_MERGE"
+  },
+  "javascript_interlingue": {
+    "commit": "458651e1e291f6bb346800b14cd01e4df6d14035",
+    "checks": [
+      "source key cyperus",
+      "admitted locale values for ie/en/he/ar/de/es/it/cs",
+      "Russian/French preserved only as presentation data",
+      "Megillah public source URL terminology + legacy compatibility alias",
+      "Karshumav README correction",
+      "canonical names lock"
+    ]
+  },
+  "conclusion": "The language-form propagation itself is internally consistent across all 59 target witnesses. Only protected main publication remains gated by PR #16."
+}
