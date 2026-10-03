@@ -277,11 +277,11 @@
       "canonical_display": true,
       "physical_gap": true,
       "authority_hits": [],
-      "disposition": "REVIEW_LANGUAGE_FORM_TERMINOLOGY",
+      "disposition": "ALIGNED_AFTER_LIVE_TERMINOLOGY_UPDATE",
       "notes": [
-        "Uses normative oracle/reference terminology; treat as test-tool terminology, not a parallel canonical source.",
-        "README uses canonical display/text/name terminology; verify the exact language form against the corpus language registry before final propagation.",
-        "README mentions physical/astronomy/ephemeris scope; inspect against GAP-ASTRO-MODEL if this branch ever implements instant-to-day projection."
+        "Live README now says adopted English display names rather than treating repository language forms as an independent canonical source.",
+        "The test-only reference oracle is explicitly described as a verification tool, not a parallel canonical authority.",
+        "Physical-instant conversion is explicitly not implemented because the current corpus does not yet define a canonical numerical astronomy profile."
       ]
     },
     {
@@ -822,13 +822,19 @@
           "text": "Ⲡ`oldJumpGuess(.../365...)` ⲟⲩⲏϩ ⲁϫⲛ ⲟⲩϣⲓⲃⲉ ⲁⲩⲱ ⲉϥⲙⲟⲩⲧⲉ ⲉⲣⲟϥ ⲛⲟⲩⲙⲉ ⲛtelemetry. Ⲡresult ⲙⲡguess ⲛϥⲣ ⲁⲛ ⲛⲟⲩsemantic authority."
         }
       ],
-      "disposition": "REVIEW_LANGUAGE_AND_HISTORICAL_AUTHORITY_TERMINOLOGY",
+      "disposition": "HISTORICAL_STAGE_TERMINOLOGY_PRESERVE",
       "notes": [
-        "Uses normative oracle/reference terminology; treat as test-tool terminology, not a parallel canonical source.",
         "canonicalIndex terminology is compatible with rule.names.identity and should be preserved.",
-        "README uses canonical display/text/name terminology; verify the exact language form against the corpus language registry before final propagation.",
-        "The matched Coptic line says the old jump guess is not a semantic authority; this is compatible. Other historical phrases such as authoritative specification/normative scroll should be mapped to corpus terminology only if they are current assertions rather than preserved stage history."
+        "The README is a chronological Stage/monster repair log. Its 'authoritative', 'normative', and 'oracle' labels describe historical stage-local comparison routes and test references, not a current parallel canonical source.",
+        "Do not retroactively rewrite the Stage log merely to normalize present-day authority terminology; doing so would alter historical evidence.",
+        "The explicit statement that oldJumpGuess is not a semantic authority is compatible with the current corpus model."
       ]
     }
-  ]
+  ],
+  "manual_review_resolution": {
+    "resolved_at": "2026-10-03",
+    "unresolved_count": 0,
+    "fortran": "resolved by live README terminology already present on branch",
+    "assembly_coptic": "resolved as preserved historical-stage terminology; no prose rewrite required"
+  }
 }
