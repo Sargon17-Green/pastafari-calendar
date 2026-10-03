@@ -1,0 +1,204 @@
+{
+  "schema": "pastafarian-cross-surface-invalidation-map/v1",
+  "created": "2026-10-03",
+  "corpus_source_revision": "4247068cd43314da12e09b0ad05b76df7c592c345960b3b71720cc7ca6f7abc0",
+  "state": "STAGING_ONLY",
+  "changes": [
+    {
+      "id": "ABOUT.AUTHORITY_AND_NAMES",
+      "target": "pastafari-calendar /about/",
+      "findings": [
+        "NAMES.HEBREW_SCROLL_SUPREME",
+        "NAMES.TRANSLATION_PRESENTATION",
+        "SEER.SCROLL_RULES_CANONICAL_CALC",
+        "SEER.CANONICAL_IMPLEMENTATION_SINGULAR"
+      ],
+      "invalidates": [
+        "Hebrew semantic review of affected paragraphs",
+        "bounded semantic-delta translation review for 71 non-Hebrew /about/ locales",
+        "native-language QA only for changed segments plus global terminology consistency checks",
+        "render/a11y smoke for changed paragraphs if DOM structure changes"
+      ],
+      "does_not_invalidate": [
+        "calendar engine",
+        "unchanged Structural Atlas data",
+        "unrelated /about/ formulas/tables",
+        "full translation restart"
+      ]
+    },
+    {
+      "id": "ABOUT.COMPLETENESS",
+      "target": "pastafari-calendar /about/#printed-calendar",
+      "findings": [
+        "HAND_CALC.FULL_DETERMINISTIC"
+      ],
+      "invalidates": [
+        "Hebrew semantic review",
+        "bounded translation delta for the one completeness statement",
+        "astronomy terminology consistency check"
+      ],
+      "does_not_invalidate": [
+        "discrete engine outputs",
+        "existing arithmetic tests"
+      ]
+    },
+    {
+      "id": "SEER.AUTHORITY_DOCS",
+      "target": "Pastafarian-Calendar-Seer",
+      "files": [
+        "README.md",
+        "docs/CONFORMANCE.md",
+        "docs/TERMINOLOGY.md",
+        "docs/RELATION_TO_THE_MONSTER.md",
+        "docs/PUBLIC_API_ARCHITECTURE.md"
+      ],
+      "invalidates": [
+        "documentation cross-link/lint checks",
+        "tests or snapshots that assert literal metadata/documentation strings",
+        "manual consistency review of all authority statements"
+      ],
+      "does_not_invalidate": [
+        "Seer numerical engine",
+        "HTTP response schema solely due to prose changes",
+        "presentation='canonical' API mode"
+      ]
+    },
+    {
+      "id": "SEER.VECTOR_TERMINOLOGY",
+      "target": "Pastafarian-Calendar-Seer",
+      "files": [
+        "docs/CONFORMANCE.md",
+        "docs/DATA_PROVENANCE.md",
+        "README.md where applicable"
+      ],
+      "invalidates": [
+        "documentation terminology audit",
+        "any test that expects literal fixture labels if labels are renamed"
+      ],
+      "cautions": [
+        "Do not rename stable filenames, API identifiers or historical digests merely for terminology.",
+        "If a filename/API identity contains canonical, classify compatibility impact before renaming."
+      ],
+      "does_not_invalidate": [
+        "vector numeric content",
+        "gate data bytes",
+        "engine conformance results"
+      ]
+    },
+    {
+      "id": "SEER.LOCALIZATION_AUTHORITY",
+      "target": "Pastafarian-Calendar-Seer/docs/LOCALIZATION.md",
+      "invalidates": [
+        "documentation semantic review"
+      ],
+      "does_not_invalidate": [
+        "locale computation invariance",
+        "he proper-name pack until explicit admitted forms are mapped",
+        "canonical indices"
+      ]
+    },
+    {
+      "id": "APP.ASTRONOMY_AUTHORITY_COMMENTS",
+      "target": "Pastafarian-Calendar-App",
+      "files": [
+        "shared/temporal/.../VenusLowerTransitBoundaryModel.kt",
+        "shared/temporal/.../ReferenceLocation.kt"
+      ],
+      "invalidates": [
+        "source/docs terminology review",
+        "lint/build only if comments/messages are edited in executable source"
+      ],
+      "does_not_invalidate": [
+        "numerical Venus algorithm",
+        "temporal vectors",
+        "Kisurra coordinate value"
+      ],
+      "future_trigger": "GAP-ASTRO-MODEL closure would separately invalidate numerical temporal tests and require differential astronomy validation."
+    },
+    {
+      "id": "APP.KISURRA_HEBREW",
+      "target": "Pastafarian-Calendar-App localization + public /about/",
+      "status": "BLOCKED",
+      "invalidates_when_resolved": [
+        "Hebrew localization strings containing Kisurra",
+        "generated Android/Apple/web/pseudolocale outputs derived from source catalog",
+        "RTL/render smoke for changed strings"
+      ],
+      "does_not_invalidate": [
+        "calendar arithmetic",
+        "reference-location coordinate"
+      ]
+    },
+    {
+      "id": "APP.TODAY_PERIOD_NAMES",
+      "target": "Pastafarian-Calendar-App ws13.today.date",
+      "status": "BLOCKED",
+      "invalidates_when_resolved": [
+        "Today presentation/domain adapter tests",
+        "localization placeholder schema if integer placeholders become name/entity fields",
+        "RTL/a11y/render tests"
+      ],
+      "does_not_invalidate": [
+        "canonicalIndex internal identity if preserved"
+      ]
+    },
+    {
+      "id": "MEGILLAH.URL_PROVENANCE_TERM",
+      "target": "Pastafarian-Calendar fix/megillah-live-source-audit",
+      "change": "MEGILLAH_CANONICAL_URL -> source/public-source terminology",
+      "invalidates": [
+        "JavaScript tests/imports referencing the constant name",
+        "live-stage source/provenance tests",
+        "bundle/build if identifier is exported"
+      ],
+      "does_not_invalidate": [
+        "URL value",
+        "16 exact quotation strings",
+        "calendar engine"
+      ]
+    },
+    {
+      "id": "JAVASCRIPT_INTERLINGUE.KARSHUMAV_README",
+      "target": "Pastafarian-Calendar JavaScript+Interlingue",
+      "change": "README Karshumb -> Karshumab must become Karshumb -> Karshumav",
+      "invalidates": [
+        "README/prose audit only"
+      ],
+      "already_compatible": [
+        "src/source-language-catalog.js month index 8 = Karshumav",
+        "tests/source-language-normative-names.js requires Karshumav and rejects Karshumab/Karshumb"
+      ],
+      "does_not_invalidate": [
+        "source name catalog",
+        "focused test behavior"
+      ]
+    },
+    {
+      "id": "FSM.METADATA_STATUS",
+      "target": "fsm control artifacts",
+      "change": "Treat prior approved-project-theology status as historical provenance, not automatic current canon",
+      "invalidates": [
+        "control-document terminology where wording could imply present canonicality"
+      ],
+      "does_not_invalidate": [
+        "recovered historical text",
+        "external source audit",
+        "real-world science QA",
+        "public article because no public patch is yet authorized"
+      ]
+    },
+    {
+      "id": "INDEPENDENT.UMBRELLA_AUTHORITY_NOTE",
+      "target": "60 independent implementation branches",
+      "invalidates": [
+        "only branch READMEs/docs that explicitly present an oracle/reference/source-language form as canonical authority"
+      ],
+      "does_not_invalidate": [
+        "canonicalIndex fields",
+        "test-only oracle code merely because it is named normative",
+        "all 60 branches as a mass code rewrite"
+      ],
+      "rule": "Apply branch-local deltas only after exact corpus mapping; do not merge branches into main."
+    }
+  ]
+}
