@@ -109,7 +109,7 @@
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
   <h2>Imena</h2>
   <p>Postoji 17 kanonskih imena kotleta i 47 kanonskih imena meseci. U jednoj godini svako ime pojavljuje se najviše jednom u svojoj grupi.</p>
-  <p>Identitet imena je kanonski i semantički; nije rezultat glasanja između različitih načina pisanja, prevoda ili implementacije. Za značenje imena najviši autoritet ima hebrejski Megillah; prevodi i transliteracije samo su slojevi prikaza.</p>
+  <p>Kanonski korpus određuje koja su imena kao entiteti i koji su njihovi jezički oblici kanonski ili standardni. Kanonska izdanja Megile nisu međusobno hijerarhijski uređena. Prevod ili transliteracija ne menjaju identitet entiteta; ipak, jezički oblik može biti standardan ako je izričito prihvaćen u korpusu ili obuhvaćen kanonskim pravilom koje je korpus usvojio.</p>
   <p>Ime takođe nije skriveni kod za dužinu. Ime određenog kotleta ili meseca samo po sebi ne čini tu jedinicu dužom ili kraćom.</p><hr>
 </section>
 
@@ -227,13 +227,13 @@
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
   <h2>Štampani kalendar i ručno računanje</h2>
   <p>Pastafarijanski kalendar može da se odštampa; samo treba navesti za koji dan radnje je izračunat. Takav kalendar prikazuje strukturu vremena iz perspektive tog dana; ako se dan radnje promeni, možda će biti potreban novi kalendar. Štampač, dakle, i dalje ima posla.</p>
-  <p>Pošto je specifikacija potpuna i deterministička, sve se može izračunati i ručno: izračunajte ulazni brojač, prođite kroz 7 skrivenih i 46 vidljivih kapi, ažurirajte šest činija, izvedite 12 završnih mešanja, proizvedite odgovore, izgradite vrata, izaberite godine i kotlete, izvedite kombinatorni izbor, izaberite imena i zatim prepletite mesece.</p>
+  <p>Diskretni algoritam kalendara je deterministički i izričito definisan. Pretvaranje fizičkog trenutka u pastafarijanski dan trenutno se zasniva na astronomskom modelu implementacije; sam numerički astronomski profil još nije kanonski. Sve se može izračunati i ručno: izračunajte ulazni brojač, prođite kroz 7 skrivenih i 46 vidljivih kapi, ažurirajte šest činija, izvedite 12 završnih mešanja, proizvedite odgovore, izgradite vrata, izaberite godine i kotlete, izvedite kombinatorni izbor, izaberite imena i zatim prepletite mesece.</p>
   <p>Zauzvrat ne morate pamtiti kada februar ima 28, a kada 29 dana.</p><hr>
 </section>
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>A šta je Seer?</h2>
-  <p>Pored kanonske implementacije postoji brzi mehanizam pod imenom <strong>Pastafarian Calendar Seer</strong>. Seer nije izvor autoriteta: Megillah određuje pravila, a kanonski proračun prema tim pravilima daje datum. Ako se Seer ne slaže sa ispravnim kanonskim proračunom, greška je u Seeru.</p>
+  <p>Uz kanonski algoritam postoji brz mehanizam pod imenom <strong>Pastafarian Calendar Seer</strong>.</p><p>Seer nije kanonski autoritet. Kanonski korpus jeste autoritet za obavezujući sadržaj.</p><p>Standardna implementacija izvršava kanonski algoritam kroz sve njegove kanonske faze. Sam Seer nije standardna implementacija; ako vrati rezultat koji je u suprotnosti s rezultatom koji zahteva kanonski korpus, Seer greši.</p>
   <p>Njegov posao je da brzo izvršava iste upite i vrati rezultat u obliku koji se lako može integrisati u proizvode.</p>
   <p>U direktnoj proveri obavljenoj 21. septembra 2026, Seer je između ostalog podržavao upite <code>date</code> i <code>now</code>, <code>batch</code>, raspone dana, obrnutu konverziju iz pastafarijanskog datuma u upitani dan, preuzimanje strukture godine, određivanje aktivnog dana radnje, Node API, pregledač/HTTP klijent, CLI, HTTP v1 servis, OpenAPI 3.1 ugovor, izvorne implementacije i distribucione pakete, kao i provereno kontejnersko postavljanje.</p>
   <p>Seer ima javni API. Postoji jasan i stabilan HTTP v1 ugovor sa krajnjim tačkama za <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, dan radnje, <code>metadata</code>, <code>locales</code> i <code>status</code>.</p>
