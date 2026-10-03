@@ -217,11 +217,28 @@
         "independent branch history",
         "other branches through merge"
       ],
-      "apply_guard": "Require exact source blob from INDEPENDENT_LANGUAGE_FORM_PATCH_MANIFEST_2026-10-03.json; on mismatch stop and re-audit.",
+      "apply_guard": "Use the complete branch patchsets. Re-fetch each ref and require every recorded expected blob SHA. The earlier source-only manifest is insufficient for application.",
       "no_patch_branches": [
         "Dart+עברית",
         "x86-64-Assembly+ϯⲙⲉⲧⲣⲉⲙⲛ̀ⲭⲏⲙⲓ"
-      ]
+      ],
+      "duplicate_discovery_status": "COMPLETE",
+      "direct_hit_files": 115,
+      "complete_patch_operations": 174,
+      "patchsets": "artifacts/INDEPENDENT_LANGUAGE_FORM_BRANCH_PATCHSETS_2026-10-03.json",
+      "special_cases": {
+        "historical_notes": [
+          "APL+Deutsch",
+          "BASIC+ਪੰਜਾਬੀ",
+          "Python+Türkçe"
+        ],
+        "current_rule_override": [
+          "Shakespeare-Programming-Language+മലയാളം"
+        ],
+        "multi_locale_bundle": [
+          "JavaScript+Interlingue"
+        ]
+      }
     }
   ]
 }
