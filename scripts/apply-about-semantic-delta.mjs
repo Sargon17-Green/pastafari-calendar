@@ -11,7 +11,7 @@ const EXPECTED_IDS = Object.freeze([
   "far-time-structure", "sauce-history", "summary",
 ]);
 
-const ALLOWED_IDS = new Set([
+const DEFAULT_ALLOWED_IDS = Object.freeze([
   "about-calendar", "months-and-weaving", "calculation", "structural-atlas",
   "appointments", "travel-and-all-day", "seer", "foundation-and-tablets",
   "site-story", "reverse-conversion", "far-time-structure", "sauce-history",
@@ -22,6 +22,19 @@ function arg(name) {
   if (index < 0 || index + 1 >= process.argv.length) throw new Error("Missing " + name);
   return process.argv[index + 1];
 }
+
+function optionalArg(name) {
+  const index = process.argv.indexOf(name);
+  if (index < 0) return null;
+  if (index + 1 >= process.argv.length) throw new Error("Missing value for " + name);
+  return process.argv[index + 1];
+}
+
+const allowedIds = optionalArg("--allowed-ids")
+  ? optionalArg("--allowed-ids").split(",").map((value) => value.trim()).filter(Boolean)
+  : [...DEFAULT_ALLOWED_IDS];
+for (const id of allowedIds) assert.ok(EXPECTED_IDS.includes(id), "Unknown allowed section: " + id);
+const ALLOWED_IDS = new Set(allowedIds);
 
 function idsIn(html) {
   return [...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]).filter((id) => EXPECTED_IDS.includes(id));
