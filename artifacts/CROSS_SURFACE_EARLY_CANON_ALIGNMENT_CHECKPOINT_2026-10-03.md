@@ -328,3 +328,49 @@ Human summary:
 The earlier `INDEPENDENT_LANGUAGE_FORM_PATCH_MANIFEST_2026-10-03.json` is now explicitly source-only and must **not** be used by itself for application.
 
 No target implementation branch was modified.
+
+
+## Authorized publication pass — 2026-10-03
+
+The user explicitly authorized publishing already-closed changes that do not depend on unfinished/future canon material.
+
+Published directly:
+- `Sargon17-Green/pastafari-calendar` `main`
+- `docs/about/content/he.html`
+- commit `585142a7e9a72633ff937b223f3d039261f31780`
+- published changes:
+  - canonical corpus replaces Hebrew Scroll supremacy for name authority;
+  - admitted Scroll editions have no automatic hierarchy;
+  - translation/transliteration no longer implies that no linguistic form can itself be standard;
+  - Seer description now points to the canonical corpus/canonical algorithm rather than a singular “canonical implementation”.
+
+The corresponding feature branch was updated as well:
+- `feature/about-i18n-72-locales`
+- commit `bad0546affcc0cb711bb74be271e8a6e3b044359`
+
+Not included in this publication subset:
+- the public “specification is deterministic and complete” sentence, because its replacement should be coordinated with the still-open astronomy-model wording;
+- theology/origin/absence claims still BLOCKED by the nonfrozen corpus;
+- numerical astronomy behavior.
+
+Protected repositories require PRs rather than direct writes.
+
+Seer:
+- PR #43: `Align published authority and localization terminology with canon`
+- head branch: `chore/publish-canon-authority-2026-10-03`
+- changes only authority/localization/vector/provenance documentation;
+- no arithmetic/runtime/vector bytes/theology/astronomy behavior changed.
+- merge waits on required repository checks; no protection bypass used.
+
+App:
+- PR #46: `Stop attributing canonical authority to App astronomy/fallback data`
+- head branch: `chore/publish-canon-authority-2026-10-03`
+- terminology-only changes:
+  - the current Venus numerical profile is no longer described as canonical;
+  - Kisurra fallback coordinate is described as an App fallback coordinate, not canon.
+- no numerical behavior or coordinate value changed.
+- merge waits on required repository checks; no protection bypass used.
+
+This authorization does **not** convert still-BLOCKED semantic items into publishable canon. Continue to distinguish:
+- already-closed terminology/authority corrections → may publish;
+- unfinished algorithm/astronomy/theology/absence claims → remain staged until their own gate closes.
