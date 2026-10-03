@@ -112,7 +112,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   const articleAssets = coreAssets.filter((entry) => entry.startsWith("./about/content/") && entry.endsWith(".html?v=5-about-i18n-polish"));
   assert.deepEqual(articleAssets, ["./about/content/he.html?v=5-about-i18n-polish"], "Only the fallback article may be eagerly precached");
 
-  assert.match(source, /const VERSION = "pastafari-static-pwa-hardening-22-about-i18n-polish";/);
+  assert.match(source, /const VERSION = "pastafari-static-pwa-hardening-23-nojs-i18n";/);
   assert.match(source, /const RUNTIME_CACHE = "pastafari-runtime-assets";/);
   assert.match(source, /const OPTIONAL_LOCALE_PATH = \/\^\\\/i18n\\\/locales/);
   assert.match(source, /const OPTIONAL_ARTICLE_PATH = \/\^\\\/about\\\/content/);
@@ -141,7 +141,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
 
   const html = await readFile(path.join(DOCS, "index.html"), "utf8");
   for (const entry of [
-    "./styles.css?v=15-about-review",
+    "./styles.css?v=16-about-polish",
     "./app.js?v=24-about-i18n",
     "./manifest.webmanifest?v=9-canonical-names",
     "./icons/icon.svg?v=9-canonical-names",
@@ -156,8 +156,8 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
 
 test("direct locale browser audit injects axe before navigation", async () => {
   const source = await readFile(path.join(ROOT, "scripts", "run-i18n-browser-audit.mjs"), "utf8");
-  const directAudit = source.match(/async function auditDirectLocale[\\s\\S]*?const tracker = installBrowserEventCollector\\(page\\);/)?.[0] ?? "";
-  assert.match(directAudit, /const page = await context\\.newPage\\(\\);\\s*await page\\.addInitScript\\(\\{ content: axe\\.source \\}\\);/);
+  const directAudit = source.match(/async function auditDirectLocale[\s\S]*?const tracker = installBrowserEventCollector\(page\);/)?.[0] ?? "";
+  assert.match(directAudit, /const page = await context\.newPage\(\);\s*await page\.addInitScript\(\{ content: axe\.source \}\);/);
 });
 
 test("registry contains only dynamic locale imports", async () => {
