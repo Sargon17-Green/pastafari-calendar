@@ -109,7 +109,7 @@
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
   <h2>Nimm</h2>
   <p>Et ginn 17 kanonesch Kotelettennimm a 47 kanonesch Mountsnimm. Bannent engem Joer kënnt all Numm a senger Grupp héchstens eng Kéier vir.</p>
-  <p>D'Identitéit vum Numm ass kanonesch a semantesch; si ass net d'Resultat vun enger Ofstëmmung tëscht verschiddene Schreifweisen, Iwwersetzungen oder Implementatiounen. Fir d'Bedeitung vun den Nimm huet déi hebräesch Megillah déi héchst Autoritéit; Iwwersetzungen an Translitteratioune sinn nëmme Schichte vun der Duerstellung.</p>
+  <p>D'Identitéit vun enger Entitéit ännert sech net duerch Iwwersetzung oder Translitteratioun. De kanonesche Korpus bestëmmt, wéi eng Entitéiten a sproochlech Forme kanonesch oder standardiséiert sinn; tëscht de kanoneschen Ausgaben vun der Megillah gëtt et keng Hierarchie. Eng sproochlech Form kann awer selwer standardiséiert sinn, wann de Korpus si ausdrécklech zougelooss huet oder eng kanonesch Reegel, déi en ugeholl huet, op si zoutrëfft.</p>
   <p>Den Numm ass och kee verstoppten Code fir d'Längt. Den Numm vun enger bestëmmter Kotelett oder engem Mount mécht déi Eenheet net vu sech aus méi laang oder méi kuerz.</p><hr>
 </section>
 
@@ -227,13 +227,13 @@
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
   <h2>Gedréckte Kalenner an Handberechnung</h2>
   <p>De Pastafari-Kalenner kann gedréckt ginn; et muss just dobäi stoen, fir wéi en Aktiounsdag en berechent gouf. Esou e Kalenner weist d'Struktur vun der Zäit aus der Siicht vun deem Dag; wann den Aktiounsdag ännert, kann en neie Kalenner néideg sinn. De Printer huet also nach ëmmer Aarbecht.</p>
-  <p>Well d'Spezifikatioun komplett an deterministesch ass, kann alles och mat der Hand berechent ginn: d'Agabezieler berechnen, déi 7 verstoppt an 46 sichtbar Drëpsen duerchlafen, déi sechs Schosselen aktualiséieren, déi 12 Schlussmëschunge maachen, Äntwerte produzéieren, Paarten bauen, Joren a Koteletten auswielen, kombinatoresch Wiel maachen, Nimm auswielen an duerno d'Méint verflichten.</p>
+  <p>Den diskreten Algorithmus vum Kalenner ass deterministesch an explizitt definéiert. D'Ëmrechnung vun engem physeschen Zäitpunkt op e Pastafari-Dag benotzt aktuell en astronomesche Modell vun der Implementatioun; den numereschen astronomesche Profil selwer ass nach net kanonesch. Déi diskret Schrëtt kann een och mat der Hand berechnen: d'Agabezieler berechnen, déi 7 verstoppt an 46 sichtbar Drëpsen duerchlafen, déi sechs Schosselen aktualiséieren, déi 12 Schlussmëschunge maachen, Äntwerte produzéieren, Paarten bauen, Joren a Koteletten auswielen, kombinatoresch Wiel maachen, Nimm auswielen an duerno d'Méint verflichten.</p>
   <p>Am Géigenzuch muss ee sech net mierken, wéini de Februar 28 an wéini 29 Deeg huet.</p><hr>
 </section>
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>A wat ass dann de Seer?</h2>
-  <p>Niewent der kanonescher Implementatioun gëtt et eng séier Maschinn mam Numm <strong>Pastafarian Calendar Seer</strong>. De Seer ass keng Autoritéitsquell: d'Megillah leet d'Reegele fest, an déi kanonesch Berechnung berechent den Datum no dëse Reegelen. Wann de Seer enger korrekter kanonescher Berechnung widdersprécht, läit de Feeler beim Seer.</p>
+  <p>Nieft dem kanoneschen Algorithmus gëtt et e séiert Rechensystem mam Numm <strong>Pastafarian Calendar Seer</strong>. De Seer ass keng kanonesch Autoritéit; fir de verbindlechen Inhalt ass de kanonesche Korpus maßgeblech. Eng standardiséiert Implementatioun setzt den kanoneschen Algorithmus duerch all seng Etappen ëm. De Seer selwer ass keng standardiséiert Implementatioun. Wann e Resultat vum Seer dem vum kanonesche Korpus virgeschriwwene Resultat widdersprécht, ass de Seer falsch.</p>
   <p>Seng Aufgab ass et, déi selwecht Ufro séier auszeféieren an d'Resultat an enger Form zeréckzeginn, déi einfach a Produkter integréiert ka ginn.</p>
   <p>An der direkter Verifikatioun vum 21. September 2026 huet de Seer ënner anerem <code>date</code>- an <code>now</code>-Ufroen, <code>batch</code>, Dagsberäicher, Réckkonversioun vun engem Pastafari-Datum op de gefroten Dag, d'Ofruffe vun der Joeresstruktur, d'Bestëmmung vum aktiven Aktiounsdag, Node API, Browser-/HTTP-Client, CLI, HTTP v1-Service, OpenAPI 3.1-Kontrakt, nativ Implementatiounen a Verdeelungspäck, souwéi eng verifizéiert Container-Bereetstellung ëmfaasst.</p>
   <p>De Seer huet eng ëffentlech API. Et gëtt e kloeren a stabile HTTP v1-Kontrakt mat Endpunkte fir <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, Aktiounsdag, <code>metadata</code>, <code>locales</code> a <code>status</code>.</p>
