@@ -93,7 +93,7 @@
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
   <h2>Adlar</h2>
   <p>17 kanonik köfte adı ve 47 kanonik ay adı vardır. Bir yıl içinde her ad kendi ailesinde en fazla bir kez görünür.</p>
-  <p>Adın kimliği kanonik ve anlamsaldır; farklı yazımlar, çeviriler veya uygulamalar arasında oylamayla oluşmaz. Adların anlamı konusunda en üst kaynak İbranice Megillah'dır; çeviri ve transliterasyon yalnızca sunum katmanlarıdır.</p>
+  <p>Adın kimliği kanonik ve anlamsaldır; farklı yazımlar, çeviriler veya uygulamalar arasında oylamayla oluşmaz. Kanonik külliyat, hangi ad varlıklarının ve dil biçimlerinin kanonik ya da standart sayılacağını belirler; Megillah'nın kanonik baskıları arasında bir hiyerarşi yoktur. Çeviri ya da transliterasyon varlığın kimliğini değiştirmez; ancak bir dil biçimi, külliyatta açıkça kabul edilmişse veya külliyatın benimsediği kanonik bir kuralın kapsamındaysa kendisi de standart olabilir.</p>
   <p>Ad, uzunluğun gizli kodu da değildir. Belirli bir köfte ya da ay adı tek başına o birimi daha uzun veya daha kısa yapmaz.</p><hr>
 </section>
 <section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
@@ -180,12 +180,12 @@
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
   <h2>Basılı takvim ve elle hesap</h2>
   <p>Pastafari takvimi basılabilir; yalnızca hangi işlem günü için hesaplandığı belirtilmelidir. Böyle bir takvim zamanı o günün bakış açısından gösterir. İşlem günü değiştiğinde yeni bir takvim gerekebilir. Böylece yazıcı önemini korur.</p>
-  <p>Spesifikasyon tam ve deterministik olduğu için tüm hesap elle de yapılabilir: giriş sayaçlarını hesaplayın, 7 gizli ve 46 görünür damlayı yürütün, altı kâseyi güncelleyin, 12 son karıştırmayı uygulayın, cevapları ve kapıları üretin, yılları ve köfteleri seçin, kombinatorik seçimleri yapın, adları seçip ayları örün.</p>
+  <p>Takvimin ayrık algoritması deterministiktir ve açıkça tanımlanmıştır. Fiziksel bir andan Pastafari gününe dönüşüm şu anda uygulamanın astronomi modelini kullanır; astronomik sayısal profilin kendisi henüz kanonik değildir.</p>
   <p>Böylece şubatın bazen 28, bazen 29 gün çektiğini hatırlamak zorunda kalmazsınız.</p><hr>
 </section>
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Peki Seer nedir?</h2>
-  <p>Kanonik uygulamanın yanında <strong>Pastafarian Calendar Seer</strong> adlı hızlı bir motor bulunur. Seer yetki kaynağı değildir: Megillah kuralları belirler, kanonik hesap ise tarihi bu kurallara göre üretir. Seer doğru bir kanonik hesapla çelişirse yanlış olan Seer'dır.</p>
+  <p>Kanonik algoritmanın yanında <strong>Pastafarian Calendar Seer</strong> adlı hızlı bir motor vardır; ancak Seer kanonik bir otorite değildir. Bağlayıcı içerik konusunda yetkili kaynak kanonik külliyattır. Standart bir uygulama kanonik algoritmayı tüm aşamalarından geçirerek uygular. Seer'ın kendisi standart bir uygulama değildir; kanonik külliyatın gerektirdiği sonuçla çelişen bir sonuç döndürürse Seer yanlıştır.</p>
   <p>Görevi aynı sorguları hızlı ve ürünlere entegre edilmesi kolay biçimde çalıştırmaktır.</p>
   <p>21 Eylül 2026'da yapılan canlı doğrulamada Seer; tarih ve “şimdi” sorguları, toplu sorgular, gün aralıkları, Pastafari tarihinden sorgulanan güne ters dönüşüm, yıl yapısını getirme, aktif işlem gününü çözme, Node API, tarayıcı/HTTP istemcisi, CLI, HTTP v1 hizmeti, OpenAPI 3.1 sözleşmesi, yerel uygulamalar ve dağıtım paketleri ile doğrulanmış konteyner dağıtımı içeriyordu.</p>
   <p>Seer'ın genel bir API'si vardır. <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, işlem günü, <code>metadata</code>, <code>locales</code> ve <code>status</code> uç noktalarını içeren açık ve kararlı bir HTTP v1 sözleşmesi vardır.</p>
