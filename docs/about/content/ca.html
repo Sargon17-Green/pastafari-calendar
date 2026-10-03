@@ -109,7 +109,7 @@
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
   <h2>Els noms</h2>
   <p>Hi ha 17 noms canònics de croqueta i 47 noms canònics de mes. Dins d'un any, cada nom apareix com a màxim una vegada dins del seu grup.</p>
-  <p>La identitat del nom és canònica i semàntica; no és el resultat d'una votació entre grafies, traduccions o implementacions diferents. Pel que fa al significat dels noms, la Megillah en hebreu té la màxima autoritat; les traduccions i transliteracions són només capes de presentació.</p>
+  <p>El corpus canònic determina quines entitats i formes lingüístiques dels noms són canòniques o estàndard. Les edicions canòniques de la Megillah no tenen cap jerarquia entre elles. La traducció o la transliteració no canvien la identitat de l'entitat; tanmateix, una forma lingüística pot ser estàndard si el corpus l'ha admès explícitament o si queda coberta per una regla lingüística canònica que el corpus hagi adoptat.</p>
   <p>El nom tampoc no és un codi ocult de longitud. El nom d'una croqueta o d'un mes concret no fa, per si sol, que aquella unitat sigui més llarga o més curta.</p><hr>
 </section>
 
@@ -227,15 +227,15 @@
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
   <h2>Calendari imprès i càlcul manual</h2>
   <p>El Calendari Pastafari es pot imprimir; només cal indicar per a quin dia d'acció s'ha calculat. Un calendari així mostra l'estructura del temps des del punt de vista d'aquell dia; si canvia el dia d'acció, pot caldre un calendari nou. Així, la impressora encara té feina.</p>
-  <p>Com que l'especificació és completa i determinista, també es pot calcular tot a mà: calculeu els comptadors d'entrada, feu passar les 7 gotes ocultes i les 46 visibles, actualitzeu els sis bols, executeu les 12 mescles finals, obteniu les respostes, construïu les portes, seleccioneu anys i croquetes, feu la selecció combinatòria, trieu els noms i finalment entreteixiu els mesos.</p>
+  <p>L'algoritme discret del calendari és determinista i està definit explícitament, així que també es pot calcular tot a mà: calculeu els comptadors d'entrada, feu passar les 7 gotes ocultes i les 46 visibles, actualitzeu els sis bols, executeu les 12 mescles finals, obteniu les respostes, construïu les portes, seleccioneu anys i croquetes, feu la selecció combinatòria, trieu els noms i finalment entreteixiu els mesos. La conversió d'un instant físic a un dia pastafari utilitza actualment un model astronòmic de la implementació; el perfil numèric astronòmic encara no és canònic.</p>
   <p>A canvi, no cal recordar si el febrer té 28 dies o 29.</p><hr>
 </section>
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>I què és Seer?</h2>
-  <p>Al costat de la implementació canònica hi ha un motor ràpid anomenat <strong>Pastafarian Calendar Seer</strong>. La Megillah estableix les regles i el càlcul canònic n'obté la data; Seer ha de donar la mateixa resposta. Si Seer discrepa d'un càlcul canònic correcte, s'equivoca.</p>
-  <p>La seva funció és executar ràpidament les mateixes consultes i retornar el resultat en una forma fàcil d'integrar en productes.</p>
-  <p>En una verificació en viu feta el 21 de setembre de 2026, Seer cobria, entre altres coses, les consultes <code>date</code> i <code>now</code>, <code>batch</code>, intervals de dies, conversió inversa d'una data pastafariana cap al dia consultat, obtenció de l'estructura de l'any, determinació del dia d'acció actiu, Node API, client de navegador/HTTP, CLI, servei HTTP v1, contracte OpenAPI 3.1, implementacions natives i paquets de distribució, i un desplegament verificat en contenidor.</p>
+  <p>Al costat de l'algoritme canònic hi ha un motor ràpid anomenat <strong>Pastafarian Calendar Seer</strong>.</p>
+  <p>Seer no és una autoritat canònica. El corpus canònic és l'autoritat pel que fa al contingut vinculant.</p>
+  <p>Una implementació estàndard executa l'algoritme canònic en totes les seves etapes. Seer no és, en si mateix, una implementació estàndard; si retorna un resultat que contradiu el que exigeix el corpus canònic, s'equivoca.</p>
   <p>Seer disposa d'una API pública i d'un contracte HTTP v1 clar i estable amb punts finals per a <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, dia d'acció, <code>metadata</code>, <code>locales</code> i <code>status</code>.</p>
   <p>El 21 de setembre de 2026 es va provar realment un desplegament HTTPS públic a Render: al servei actiu es van verificar consultes exactes, un interval gran, reinici, una reactivació en fred i el comportament sota càrrega.</p>
   <p>El desplegament públic verificat és una versió beta/d'avaluació, no pas una promesa d'un servei de producció allotjat de manera permanent amb un SLA. L'adreça del servidor, el proveïdor d'allotjament i el número de versió no formen part del calendari ni són constants canòniques.</p>
