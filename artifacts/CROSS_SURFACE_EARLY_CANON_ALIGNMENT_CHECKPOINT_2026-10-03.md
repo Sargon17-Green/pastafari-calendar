@@ -275,3 +275,56 @@ Staged propagation manifest:
 It contains 59 blob-guarded source edits and explicitly does **not** authorize applying them. Any target blob drift requires re-audit first.
 
 No implementation branch was modified by this pass.
+
+
+## Branch-local duplicate discovery and complete guarded patch sets — completed 2026-10-03
+
+The 59 staged cutlet-8 changes were scanned against each live branch ref with a full tracked-file git grep, not only the known catalog path.
+
+Replay:
+- target branches: **59**
+- source blob guards: **59/59 PASS**
+- scan errors: **0**
+- case-only stale variants: **0**
+- tracked files containing the old cutlet-8 literal directly: **115**
+- content-file patch operations after manual review: **115**
+- SHA-lock refresh operations: **59**
+- total guarded file operations: **174**
+
+Direct-hit classification before manual closure:
+- 59 authoritative/source catalog files
+- 15 tests/fixtures
+- 33 current catalog/README docs
+- 4 other current code/audit-table copies
+- 4 prose files requiring contextual review
+
+All 59 branches use `CANONICAL_NAMES_LOCK.sha256` that must be refreshed. `WAT+Español` locks two changed files; the other 58 branches lock one changed source file each.
+
+The four contextual reviews were closed without rewriting history:
+- `APL+Deutsch/KANONISCHE_NAMENSKORREKTUR_DE.md`: preserve the dated 13-Sep correction and append the 27-Sep `Papyrusstaude -> Zypergras` supersession.
+- `BASIC+ਪੰਜਾਬੀ/CANONICAL_NAME_CORRECTION_NOTE_PA.md`: preserve the earlier correction chain and append `ਪੈਪੀਰਸ ਸੇਜ -> ਮੋਥਾ`.
+- `Python+Türkçe/KANONIK_KAYNAK_ADI_DUZELTME_NOTU.md`: preserve the dated `Papirüs -> Papirüs bitkisi` correction and append `Papirüs bitkisi -> topalak`.
+- `Shakespeare-Programming-Language+മലയാളം/SOURCE_LANGUAGE_RULES.md`: this is current rule text, so replace the obsolete Papyrus-Sedge rationale with the explicit adopted `മുത്തങ്ങ` override.
+
+### JavaScript+Interlingue special case
+
+The branch contains a multi-locale browser bundle. A blind `papirus -> cyperus` replacement would be incomplete.
+
+The complete staged patch:
+- changes the source lookup key to `cyperus`;
+- applies explicitly adopted values for `ie`, `en`, `he`, `ar`, `de`, `es`, `it`, `cs`;
+- preserves Russian and French strings only as noncanonical presentation data because no corresponding admitted form exists in the 60-language registry;
+- changes the locale-matrix test consistently;
+- replaces the old comment that implied repository translations themselves carried semantic/canonical authority.
+
+No Russian or French canonical form is invented.
+
+Complete machine patch set:
+`INDEPENDENT_LANGUAGE_FORM_BRANCH_PATCHSETS_2026-10-03.json`
+
+Human summary:
+`INDEPENDENT_LANGUAGE_FORM_DUPLICATE_DISCOVERY_2026-10-03.md`
+
+The earlier `INDEPENDENT_LANGUAGE_FORM_PATCH_MANIFEST_2026-10-03.json` is now explicitly source-only and must **not** be used by itself for application.
+
+No target implementation branch was modified.
