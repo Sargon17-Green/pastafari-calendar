@@ -83,7 +83,7 @@
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
   <h2>Nimet</h2>
   <p>Kanonisia leikenimiä on 17 ja kuukausinimiä 47. Saman vuoden sisällä kukin nimi esiintyy omassa ryhmässään korkeintaan kerran.</p>
-  <p>Nimen identiteetti on kanoninen ja semanttinen, ei äänestystulos eri kirjoitusasujen, käännösten tai toteutusten välillä. Nimen merkityksessä hepreankielinen Megillah on ylin auktoriteetti; käännös ja translitterointi ovat esitystasoja.</p>
+  <p>Nimen identiteetti on kanoninen ja semanttinen, ei äänestystulos eri kirjoitusasujen, käännösten tai toteutusten välillä. Kanoninen korpus määrittää, mitkä ajanjaksojen nimientiteetit ja kielelliset muodot ovat kanonisia tai norminmukaisia. Megillan kanonisten laitosten välillä ei ole hierarkiaa. Käännös tai translitterointi ei muuta entiteetin identiteettiä. Kielellinen muoto voi silti olla itsessään norminmukainen, jos korpus on nimenomaisesti hyväksynyt sen tai jos sitä koskee korpuksessa hyväksytty kanoninen kielisääntö.</p>
   <p>Nimi ei myöskään ole pituuden piilokoodi. Mikään nimi ei yksin pakota leikettä pidemmäksi tai kuukautta lyhyemmäksi.</p><hr>
 </section>
 <section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
@@ -162,12 +162,12 @@
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
   <h2>Painettu kalenteri ja käsinlasku</h2>
   <p>Pastafarikalenterin voi painaa, kunhan ilmoitetaan, minkä työpäivän suhteen se on laskettu. Se näyttää ajan rakenteen tuon päivän näkökulmasta, ja työpäivän vaihtuessa uusi kalenteri voi olla tarpeen. Tulostimelle jää siis tehtävää.</p>
-  <p>Kaiken voi laskea myös käsin, koska määrittely on täydellinen ja deterministinen: laske syöttölaskurit, suorita 7 piilopisaraa ja 46 näkyvää pisaraa, päivitä kuusi kulhoa, suorita 12 lopullista sekoitusta, muodosta vastaukset, rakenna portit, valitse vuodet ja leikkeet, tee kombinatoriset valinnat, valitse nimet ja puno kuukaudet.</p>
+  <p>Kalenterin diskreetti algoritmi on deterministinen ja täsmällisesti määritelty. Fysikaalisen hetken muuntaminen pastafaripäiväksi käyttää tällä hetkellä toteutuksen astronomista mallia; astronominen numeerinen profiili ei itsessään ole vielä kanoninen. Diskreetin algoritmin voi laskea myös käsin: laske syöttölaskurit, suorita 7 piilopisaraa ja 46 näkyvää pisaraa, päivitä kuusi kulhoa, suorita 12 lopullista sekoitusta, muodosta vastaukset, rakenna portit, valitse vuodet ja leikkeet, tee kombinatoriset valinnat, valitse nimet ja puno kuukaudet.</p>
   <p>Vastineeksi ei tarvitse muistaa, että helmikuussa on joskus 28 ja joskus 29 päivää.</p><hr>
 </section>
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Entä Seer?</h2>
-  <p>Kanonisen toteutuksen rinnalla on nopea moottori nimeltä <strong>Pastafarian Calendar Seer</strong>. Seer ei ole auktoriteetin lähde. Megillah määrää säännöt, ja kanoninen laskenta tuottaa päivämäärän niiden mukaan. Seerin kuuluu antaa sama vastaus; jos Seer on eri mieltä oikean kanonisen laskennan kanssa, Seer on väärässä.</p>
+  <p>Kanonisen algoritmin rinnalla toimii nopea moottori nimeltä <strong>Pastafarian Calendar Seer</strong>. Seer ei ole auktoriteetti; sitovan sisällön auktoriteetti on kanoninen korpus. Standardinmukainen toteutus suorittaa kanonisen algoritmin kaikki kanoniset vaiheet. Seer itse ei ole standardinmukainen toteutus; jos sen tulos on ristiriidassa kanonisen korpuksen edellyttämän tuloksen kanssa, Seer on väärässä.</p>
   <p>Sen tehtävä on vastata samoihin kyselyihin nopeasti ja tuotteisiin helposti liitettävässä muodossa.</p>
   <p>21. syyskuuta 2026 tehdyssä reaaliaikaisessa tarkistuksessa Seer sisälsi muun muassa päivämäärä- ja “nyt”-kyselyt, <code>batch</code>-kyselyt, päiväalueet, käänteisen muunnoksen pastafaripäivämäärästä kysytyksi päiväksi, vuosirakenteen noudon, aktiivisen työpäivän ratkaisun, Node API:n, selain-/HTTP-asiakkaan, CLI:n, HTTP v1 -palvelun, OpenAPI 3.1 -sopimuksen, alustakohtaisia toteutuksia ja jakelupaketteja sekä varmennetun konttijulkaisun.</p>
   <p>Seerillä on julkinen API ja nimenomainen, vakaa HTTP v1 -sopimus, jossa on rajapintapisteet <code>date</code>-, <code>range</code>-, <code>batch</code>-, <code>year</code>- ja <code>reverse</code>-toiminnoille sekä työpäivälle, <code>metadata</code>-, <code>locales</code>- ja <code>status</code>-tiedoille.</p>
