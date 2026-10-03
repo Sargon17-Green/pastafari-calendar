@@ -92,10 +92,22 @@ Completed after the /about/ pass:
 - Cross-surface matrix and invalidation map created.
 - checkpoint: `CROSS_SURFACE_EARLY_CANON_ALIGNMENT_CHECKPOINT_2026-10-03.md`.
 
+Canonical language-form extraction and live implementation comparison are now complete:
+- canonical registry located at `canon/languages.json`: 60 normative languages / 3,840 adopted labels;
+- owner change isolated to cutlet canonical index 8: 58 language changes, Hebrew + Sahidic Coptic unchanged;
+- 61 live catalog witnesses checked: 59 CHANGE / 2 MATCH / 0 unresolved;
+- exact blob-guarded 59-entry patch manifest staged;
+- no live branch modified.
+
+Artifacts:
+- `CANONICAL_LANGUAGE_FORM_REGISTRY_2026-10-03.json`
+- `INDEPENDENT_LANGUAGE_FORM_LIVE_DRIFT_2026-10-03.json`
+- `INDEPENDENT_LANGUAGE_FORM_LIVE_DRIFT_2026-10-03.md`
+- `INDEPENDENT_LANGUAGE_FORM_PATCH_MANIFEST_2026-10-03.json`
+
 Current next useful work before whole-corpus freeze:
-- extract the corpus's admitted language-form registry into a machine-readable cross-language map;
-- resolve the two manual terminology-review cases from the 60-branch scan if a file-level patch manifest is desired;
-- prepare exact patch manifests (not live patches) for closed CHANGE findings;
+- only when propagation preparation is desired, perform branch-local duplicate discovery for the 59 staged source changes (docs/tests/generated copies), without reopening lexical adjudication;
+- resolve the two older manual authority-terminology review cases independently of the now-closed name-form audit;
 - diff the corpus adopted-rule layer whenever `source_revision` changes.
 
 ## Continuation triggers
