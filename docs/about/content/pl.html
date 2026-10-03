@@ -93,7 +93,7 @@
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
   <h2>Nazwy</h2>
   <p>Istnieje 17 kanonicznych nazw kotletów i 47 kanonicznych nazw miesięcy. W obrębie jednego roku każda nazwa pojawia się w swojej rodzinie najwyżej raz.</p>
-  <p>Tożsamość nazwy jest kanoniczna i semantyczna; nie wynika z głosowania między różnymi pisowniami, tłumaczeniami czy implementacjami. W kwestii znaczenia nazw najwyższym źródłem jest hebrajska Megillah; tłumaczenie i transliteracja należą do warstwy prezentacji.</p>
+  <p>Tożsamość nazwy jest kanoniczna i semantyczna; nie wynika z głosowania między różnymi pisowniami, tłumaczeniami czy implementacjami. Korpus kanoniczny określa, które encje i formy językowe są kanoniczne lub standardowe; między kanonicznymi wydaniami Megilli nie ma hierarchii. Tłumaczenie ani transliteracja nie zmieniają tożsamości encji; forma językowa może jednak sama być standardowa, jeśli została wyraźnie dopuszczona w korpusie lub jest objęta przyjętą w nim regułą kanoniczną.</p>
   <p>Nazwa nie jest też ukrytym kodem długości. Żaden konkretny kotlet ani miesiąc nie staje się dłuższy czy krótszy wyłącznie z powodu nazwy.</p><hr>
 </section>
 <section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
@@ -179,12 +179,12 @@
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
   <h2>Kalendarz drukowany i obliczenia ręczne</h2>
   <p>Kalendarz pastafariański można wydrukować; trzeba tylko podać, dla jakiego dnia działania został obliczony. Taki kalendarz pokazuje strukturę czasu z perspektywy tego dnia, a po zmianie dnia działania może być potrzebny nowy kalendarz. Drukarka zachowuje więc swoją rolę.</p>
-  <p>Całość można też obliczyć ręcznie, bo specyfikacja jest kompletna i deterministyczna: obliczyć liczniki wejściowe, wykonać 7 ukrytych i 46 widocznych kropli, aktualizować sześć mis, przeprowadzić 12 końcowych mieszań, uzyskać odpowiedzi, zbudować bramy, wybrać lata i kotlety, wykonać wybory kombinatoryczne, wybrać nazwy i przepleść miesiące.</p>
+  <p>Całość można też obliczyć ręcznie: dyskretny algorytm kalendarza jest deterministyczny i jawnie określony. Konwersja fizycznej chwili na dzień pastafariański korzysta obecnie z modelu astronomicznego używanego przez implementację; jego profil liczbowy nie jest jeszcze kanoniczny. Trzeba obliczyć liczniki wejściowe, wykonać 7 ukrytych i 46 widocznych kropli, aktualizować sześć mis, przeprowadzić 12 końcowych mieszań, uzyskać odpowiedzi, zbudować bramy, wybrać lata i kotlety, wykonać wybory kombinatoryczne, wybrać nazwy i przepleść miesiące.</p>
   <p>W zamian nie trzeba pamiętać, że luty ma czasem 28, a czasem 29 dni.</p><hr>
 </section>
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>A czym jest Seer?</h2>
-  <p>Obok implementacji kanonicznej istnieje szybki silnik <strong>Pastafarian Calendar Seer</strong>. Seer nie jest źródłem autorytetu: Megillah ustala reguły, a obliczenie kanoniczne wyznacza datę zgodnie z tymi regułami. Jeśli Seer nie zgadza się z poprawnym obliczeniem kanonicznym, błędny jest Seer.</p>
+  <p>Obok kanonicznego algorytmu działa szybki silnik <strong>Pastafarian Calendar Seer</strong>, który nie jest źródłem autorytetu. Korpus kanoniczny jest źródłem autorytetu w sprawach treści wiążących. Implementacja zgodna ze standardem wykonuje kanoniczny algorytm na wszystkich jego etapach; sam Seer nie jest implementacją zgodną ze standardem. Jeśli zwraca wynik sprzeczny z wynikiem wymaganym przez korpus, Seer się myli.</p>
   <p>Jego zadaniem jest szybkie wykonywanie tych samych zapytań w formie wygodnej do integracji z produktami.</p>
   <p>Podczas żywej weryfikacji przeprowadzonej 21 września 2026 roku Seer obejmował między innymi zapytania o datę i „teraz”, zapytania wsadowe, zakresy dni, odwrotne przekształcenie daty pastafariańskiej na zapytany dzień, pobieranie struktury roku, ustalanie aktywnego dnia działania, Node API, klienta przeglądarkowego/HTTP, CLI, usługę HTTP v1, kontrakt OpenAPI 3.1, implementacje natywne i pakiety dystrybucyjne oraz zweryfikowane wdrożenie kontenerowe.</p>
   <p>Seer ma publiczne API. Istnieje jawny i stabilny kontrakt HTTP v1 z punktami końcowymi dla <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, dnia działania, <code>metadata</code>, <code>locales</code> i <code>status</code>.</p>
