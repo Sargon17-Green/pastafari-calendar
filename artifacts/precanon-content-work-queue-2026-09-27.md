@@ -58,7 +58,7 @@ Current local status: **early reconciliation active against a nonfrozen corpus v
 
 - [x] Exact live semantic-alignment evidence snapshot preserved in `about-precanon-evidence-snapshot-2026-09-27.json`: 72 article resources, 71/71 non-Hebrew semantic targets aligned, 71 per-locale semantic evidence files, with blob SHAs and source HEAD.
 - [x] No-restart rule is now encoded in transition/checkpoint/evidence artifacts: future corpus changes use a bounded delta and preserve prior native-language fixes.
-- [~] Live native QA continues independently on `feature/about-i18n-72-locales`; this workstream snapshots its control/evidence without interfering. At the latest capture the live control was Icelandic (`is-IS`), sequence 14.
+- [~] Live/native QA remains an independent evidence layer on `feature/about-i18n-72-locales`. The new bounded canonical-authority semantic delta is being applied only to `canonical-names`, `printed-calendar`, and `seer`; completed native fixes are preserved and completed locales are not restarted.
 - [x] Evidence-layer separation is explicitly preserved in the transition docs and machine-readable evidence snapshot/schema; semantic alignment must never be promoted to render/a11y/PWA PASS.
 - [x] The 29 stable `/about/` IDs are captured in the reconciliation inventory/claim register and protected as the current deep-link contract pending an explicit corpus-driven structural decision.
 
