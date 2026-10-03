@@ -298,3 +298,41 @@ Important current rule:
 - sections 1–20 of the algorithm remain under formal review and therefore stay BLOCKED from final closure;
 - canonical absence claims remain BLOCKED until whole-corpus freeze;
 - no public semantic delta is applied merely because this early reconciliation exists.
+
+
+## 13. Full /about/ early reconciliation continuation
+
+### `about-p1-early-reconciliation-2026-10-03.json`
+P1 semantic/product classification:
+- CHANGE: 1
+- BLOCKED: 3
+- NOT-CANON: 9
+
+The CHANGE finding is the unqualified public completeness claim `HAND_CALC.FULL_DETERMINISTIC`, because the working corpus explicitly retains `GAP-ASTRO-MODEL`.
+
+### `about-p2-dependency-reconciliation-2026-10-03.json`
+P2 theorem/empirical dependency classification.
+
+Exact arithmetic checks:
+- 47 × 123 = 5781 — PASS
+- 5781 − 5778 = 3 — PASS
+
+### `about-p3-p4-research-summary-reconciliation-2026-10-03.json`
+Research/open-question classification plus summary deferral.
+
+### `about-hebrew-staged-delta-from-corpus-2026-10-03.md`
+Blob-guarded, staged-only Hebrew patch for the five current CHANGE findings. Not applied publicly.
+
+### `EARLY_CANON_RECONCILIATION_CHECKPOINT_2026-10-03.md`
+Current safe continuation checkpoint.
+
+Aggregate early /about/ state:
+- original claims: 84
+- newly discovered claims: 1
+- total: 85
+- MATCH: 6
+- CHANGE: 5
+- BLOCKED: 48
+- NOT-CANON: 26
+
+The /about/ classification pass is therefore complete at the early-reconciliation level. Final closure of BLOCKED claims still requires the relevant corpus freeze.
