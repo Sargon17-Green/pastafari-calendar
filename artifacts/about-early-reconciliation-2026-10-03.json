@@ -1,0 +1,601 @@
+{
+  "schema": "pastafarian-about-early-reconciliation/v1",
+  "created": "2026-10-03",
+  "status": "EARLY_RECONCILIATION_NONFROZEN_CORPUS",
+  "finality": "not final; no public semantic edits authorized by this artifact alone",
+  "corpus": {
+    "display_file": "Pastafarian_Canon_Draft_for_Editing.md",
+    "source_revision": "4247068cd43314da12e09b0ad05b76df7c592c345960b3b71720cc7ca6f7abc0",
+    "state": "derived editing view; whole corpus explicitly not frozen",
+    "algorithm_formalization": "sections 1-20 retained unchanged but still under review and marked noncanonical as wording",
+    "explicit_canonical_rules_used": [
+      "rule.names.identity",
+      "rule.locale.rendering",
+      "rule.corpus.transition",
+      "rule.megillah.editions",
+      "rule.implementation.standardness",
+      "rule.vectors.adoption",
+      "rule.algorithm.constants"
+    ]
+  },
+  "about_source": {
+    "branch": "feature/about-i18n-72-locales",
+    "head": "e9251ca35b9ef029b46e6679c5966283a160db2d",
+    "article": "docs/about/content/he.html",
+    "blob": "926bfe4b997772b695982af77f0862fbe8e192da",
+    "previous_blob": "954f82559e618a091bb338c65a61be9e50d48331",
+    "drift_from_previous": "one non-semantic Seer wording cleanup only"
+  },
+  "scope": {
+    "priority": "P0",
+    "registered_claims": 56,
+    "newly_registered_findings": 1,
+    "total": 57
+  },
+  "status_counts": {
+    "BLOCKED": 42,
+    "NOT-CANON": 7,
+    "MATCH": 4,
+    "CHANGE": 4
+  },
+  "policy": {
+    "MATCH": "supported by explicitly canonical material already adopted in this nonfrozen corpus view",
+    "CHANGE": "current public meaning/provenance conflicts with an explicitly adopted canonical rule and a bounded future delta can already be staged",
+    "BLOCKED": "looks compatible or potentially divergent, but final disposition depends on still-unfrozen algorithm/astronomy/origin content or on exhaustive-corpus absence",
+    "NOT_CANON": "product/editorial/historical material outside canon; review separately for truth and compatibility"
+  },
+  "entries": [
+    {
+      "id": "ABOUT.FUNCTION_TWO_INPUTS",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.day.counters",
+        "draft header"
+      ],
+      "note": "The working formalization explicitly uses ordered input (c,t) and P(c,t), but sections 1–20 are still noncanonical as wording and the whole corpus is not frozen.",
+      "next": "Close after algorithm formalization is frozen; no public edit needed unless semantics change."
+    },
+    {
+      "id": "ABOUT.SAME_TARGET_DIFFERENT_C",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.day.counters",
+        "rule.years",
+        "rule.structure"
+      ],
+      "note": "Current algorithm draft is compatible with c-dependent representation, but final canonical wording is not yet frozen.",
+      "next": "Close from frozen algorithm; retain current explanatory wording if no semantic delta appears."
+    },
+    {
+      "id": "ABOUT.TIME_CREATED_IN_CALENDAR",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.corpus.transition",
+        "nonfrozen corpus omission"
+      ],
+      "note": "The current derived corpus draft does not independently adopt this creation claim; because the full corpus is not frozen, present silence cannot yet be used as a canonical absence finding.",
+      "next": "Reconcile against the frozen theology/origin content before retaining or deleting."
+    },
+    {
+      "id": "DATE.EXACTLY_FIVE_FIELDS",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.date"
+      ],
+      "note": "The draft formalization returns exactly five ordered components, matching the article, but rule.date is still noncanonical as wording.",
+      "next": "Close when algorithm formalization is frozen."
+    },
+    {
+      "id": "DATE.METADATA_NOT_SIXTH_FIELD",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.date"
+      ],
+      "note": "The draft says trace, context, location, versions and diagnostics are outside the five-tuple, matching the article, but the formalization is not yet frozen.",
+      "next": "Close when rule.date is frozen."
+    },
+    {
+      "id": "WORKING_DAY.CHANGES_STRUCTURE",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.years",
+        "rule.structure"
+      ],
+      "note": "The inherited algorithm keeps c fixed through year/structure construction and uses it in selection; this supports the premise but the formalization remains under review.",
+      "next": "Close on frozen algorithm."
+    },
+    {
+      "id": "WORKING_DAY.PRINTED_ALMANAC_EPHEMERAL",
+      "status": "NOT-CANON",
+      "evidence": [
+        "article editorial consequence"
+      ],
+      "note": "This is an editorial/product joke derived from c-dependent semantics, not canonical content.",
+      "next": "Retain only if the frozen semantics still support it; no corpus adoption required."
+    },
+    {
+      "id": "YEAR5000.DIAGONAL",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.years",
+        "rule.algorithm.constants"
+      ],
+      "note": "OriginCandidates(c) assigns canonical constant origin_year=5000 to a year containing c, so c=t implies Year 5000 under the current draft; rule.years is not yet frozen.",
+      "next": "Close after algorithm formalization freezes."
+    },
+    {
+      "id": "YEAR5000.CONVERSE_FALSE",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.years"
+      ],
+      "note": "This is a derived property of the selected origin year rather than an explicitly adopted canonical statement.",
+      "next": "Reprove after freeze."
+    },
+    {
+      "id": "YEAR5000.DIRECTION_BY_YEAR",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.years"
+      ],
+      "note": "Direction follows from sequential adjacent-year construction in the current formalization, which is still under review.",
+      "next": "Reprove after freeze."
+    },
+    {
+      "id": "YEAR5000.ZERO_NEGATIVE_YEARS",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.years"
+      ],
+      "note": "The draft explicitly says year numbers range over Z without skipping zero; wording is not yet canonical.",
+      "next": "Close after freeze."
+    },
+    {
+      "id": "YEAR.LENGTH_BOUNDS",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.algorithm.constants",
+        "rule.years"
+      ],
+      "note": "252 and 5778 are explicitly canonical constant values, but the behavioral statement that every valid year is bounded by them is expressed in the still-unfrozen rule.years formalization.",
+      "next": "Close when rule.years freezes."
+    },
+    {
+      "id": "YEAR.GATE_BOUNDARIES",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.gates",
+        "rule.years",
+        "rule.structure"
+      ],
+      "note": "The current formalization builds years and cutlets from gates, matching the article; these algorithm sections are still noncanonical as wording.",
+      "next": "Close after freeze."
+    },
+    {
+      "id": "YEAR.NOT_ASTRONOMICAL",
+      "status": "NOT-CANON",
+      "evidence": [
+        "editorial consequence"
+      ],
+      "note": "This is explanatory prose about what the algorithm does not align to, not an independent canonical rule.",
+      "next": "Retain if compatible with frozen semantics."
+    },
+    {
+      "id": "CUTLET.COUNT_RANGE",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.algorithm.constants",
+        "rule.structure"
+      ],
+      "note": "Canonical constants are 6..17 and the draft uses them for K, but the behavioral formalization is not frozen.",
+      "next": "Close after freeze."
+    },
+    {
+      "id": "CUTLET.CONTIGUOUS",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.structure"
+      ],
+      "note": "The draft materializes consecutive cutlets as gate intervals, matching the claim, but rule.structure is not frozen.",
+      "next": "Close after freeze."
+    },
+    {
+      "id": "CUTLET.MIN_LENGTH",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.algorithm.constants",
+        "rule.gates",
+        "rule.structure"
+      ],
+      "note": "gap_min=42 is canonical and cutlets use consecutive gates in the draft; final behavioral closure waits for frozen formalization.",
+      "next": "Close after freeze."
+    },
+    {
+      "id": "CUTLET.NAME_COUNT",
+      "status": "BLOCKED",
+      "evidence": [
+        "canonical entity catalog",
+        "rule.structure"
+      ],
+      "note": "There are 17 canonical cutlet entities, but no within-year repetition depends on distinct-name selection in still-unfrozen rule.structure.",
+      "next": "Split if useful later: count can close now, uniqueness closes after freeze."
+    },
+    {
+      "id": "MONTH.COUNT_RANGE",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.algorithm.constants",
+        "rule.structure"
+      ],
+      "note": "The draft yields 3..47 in the current bounded construction; rule.structure is not frozen.",
+      "next": "Close after freeze."
+    },
+    {
+      "id": "MONTH.LENGTH_RANGE",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.algorithm.constants",
+        "rule.structure"
+      ],
+      "note": "month_days_min=4 and month_days_max=123 are canonical values, but the behavioral use is still in unfrozen rule.structure.",
+      "next": "Close after freeze."
+    },
+    {
+      "id": "MONTH.NONCONTIGUOUS",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.family.weaving",
+        "rule.date"
+      ],
+      "note": "The current weaving/date formalization supports noncontiguous structural months and ordinal day-in-month, but those algorithm sections remain unfrozen.",
+      "next": "Close after freeze."
+    },
+    {
+      "id": "MONTH.INTERLEAVING",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.family.weaving",
+        "rule.date"
+      ],
+      "note": "Current formalization supports interleaving with exactly one structural month ID at each year position; final closure waits for freeze.",
+      "next": "Close after freeze."
+    },
+    {
+      "id": "MONTH.FIRST_LAST_ORDER_CONSTRAINTS",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.family.weaving"
+      ],
+      "note": "The draft explicitly imposes increasing first- and last-occurrence constraints, but the formalization remains under review.",
+      "next": "Close after freeze."
+    },
+    {
+      "id": "MONTH.CUTLET_COORDINATES_DISTINCT",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.structure",
+        "rule.date"
+      ],
+      "note": "This is a derived explanation of two coordinate systems supported by current draft semantics.",
+      "next": "Revalidate after freeze."
+    },
+    {
+      "id": "WEEK.NO_CANONICAL_WEEK_SYSTEM",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.corpus.transition",
+        "nonfrozen corpus omission"
+      ],
+      "note": "No week rule appears in the current derived corpus, but canonical absence can only be inferred from an exhaustive frozen corpus; the draft explicitly says the full corpus is not frozen.",
+      "next": "Close only after whole-corpus freeze."
+    },
+    {
+      "id": "WEEK.EXTERNAL_CIVIL_WEEK_ALLOWED",
+      "status": "NOT-CANON",
+      "evidence": [
+        "product/editorial overlay"
+      ],
+      "note": "This is product guidance, not a canonical rule.",
+      "next": "Retain if it does not imply a canonical week system."
+    },
+    {
+      "id": "NAMES.COUNTS",
+      "status": "MATCH",
+      "evidence": [
+        "canonical entity catalog",
+        "rule.algorithm.constants"
+      ],
+      "note": "The corpus contains 17 canonical cutlet entities and 47 canonical month entities/index space.",
+      "next": "No semantic change required."
+    },
+    {
+      "id": "NAMES.SEMANTIC_IDENTITY",
+      "status": "MATCH",
+      "evidence": [
+        "rule.names.identity"
+      ],
+      "note": "The corpus explicitly canonizes period-name entities as semantic concepts with inherited period kind and canonical index; technical spelling/identifier wording does not define meaning.",
+      "next": "Retain core idea; later wording may be sharpened."
+    },
+    {
+      "id": "NAMES.HEBREW_SCROLL_SUPREME",
+      "status": "CHANGE",
+      "evidence": [
+        "rule.corpus.transition",
+        "rule.megillah.editions"
+      ],
+      "note": "The article says the Hebrew Scroll is the supreme authority for name meaning. The corpus instead makes the final corpus exhaustive and allows multiple canonical Scroll editions without hierarchy.",
+      "next": "Replace the supremacy sentence with corpus-based authority wording."
+    },
+    {
+      "id": "NAMES.TRANSLATION_PRESENTATION",
+      "status": "CHANGE",
+      "evidence": [
+        "rule.names.identity",
+        "rule.locale.rendering"
+      ],
+      "note": "The article's blanket statement that translation/transliteration is merely presentation is too strong. A linguistic form can itself be canonically standard when explicitly admitted; rendering rules can also be canonical.",
+      "next": "State that translation/transliteration does not change entity identity, while an explicitly admitted linguistic form may itself be standard."
+    },
+    {
+      "id": "SAUCE.Q",
+      "status": "MATCH",
+      "evidence": [
+        "rule.algorithm.constants"
+      ],
+      "note": "The canonical modulus value is 170141183460469231731687303715884105727 = 2^127-1.",
+      "next": "No value change required; 'central' remains explanatory wording."
+    },
+    {
+      "id": "SAUCE.COUNTERS_DROPS_BOWLS_STIRS",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.day.counters",
+        "rule.algorithm.constants",
+        "rules sauce.hidden/sauce.visible/sauce.bowls/sauce.post-stir"
+      ],
+      "note": "The canonical table fixes 46 stones, seven hidden coefficient rows, six bowls and 12 post-stirs, and the draft has five WorkCounts; the operational formalization is still under review.",
+      "next": "Close after algorithm freeze."
+    },
+    {
+      "id": "SAUCE.SYNCHRONOUS_UPDATE",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.sauce.bowls",
+        "rule.sauce.post-stir"
+      ],
+      "note": "The current draft explicitly uses immutable old snapshots and simultaneous replacement, matching the article; wording is not yet canonical.",
+      "next": "Close after freeze."
+    },
+    {
+      "id": "SAUCE.SAVED_SUM_R",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.sauce.post-stir"
+      ],
+      "note": "The draft explicitly uses R=SAVE(S+149*r) as permutation input and additive term, matching the article; formalization remains unfrozen.",
+      "next": "Close after freeze."
+    },
+    {
+      "id": "SAUCE.OLD_RAW_SUM_SUPERSEDED",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.sauce.post-stir",
+        "historical evidence"
+      ],
+      "note": "The current draft matches the saved-sum rule, but final historical supersession wording should be anchored after formalization freezes.",
+      "next": "Preserve history; close semantics after freeze."
+    },
+    {
+      "id": "CHOICE.SHORT_REJECTION",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.selection.rank"
+      ],
+      "note": "The draft uses rejection against limit=floor(space/N)*N, matching the no-simple-modulo-bias explanation; formalization is not frozen.",
+      "next": "Close after freeze."
+    },
+    {
+      "id": "CHOICE.WIDE_NOT_UNIFORM_DIGITS",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.selection.rank"
+      ],
+      "note": "The draft says wide rejection advances the assembled scalar and explicitly does not assert uniformity; final negative wording should wait for freeze.",
+      "next": "Close after freeze."
+    },
+    {
+      "id": "CHOICE.WIDE_UNREACHABLE_LEGAL_OPTIONS",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.selection.rank",
+        "derived property"
+      ],
+      "note": "Unreachability is a derived property of the exact wide mechanism, not stated as canonical content in the adopted part of the corpus.",
+      "next": "Reprove after freeze; also replace legal-sounding 'חוקית' with admissibility wording in the eventual article delta."
+    },
+    {
+      "id": "BOUNDARY.VENUS_LOWER_CULMINATION",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.day.physical-boundary",
+        "GAP-ASTRO-MODEL"
+      ],
+      "note": "The current draft keeps the lower meridian passage of Venus's center at the observer location, but explicitly leaves observer model, ephemeris/time scales and numerical profile unresolved. The article's stronger 'topocentric' wording cannot yet be closed as canonical.",
+      "next": "Do not strengthen or propagate boundary wording until GAP-ASTRO-MODEL is adjudicated."
+    },
+    {
+      "id": "BOUNDARY.NOT_MIDNIGHT_TIMEZONE_DST_VISIBILITY",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.day.physical-boundary"
+      ],
+      "note": "These negatives match the current draft, but the physical-boundary rule remains part of unfinished formalization.",
+      "next": "Close after astronomy/model freeze."
+    },
+    {
+      "id": "BOUNDARY.LOCATION_DEPENDENT",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.day.physical-boundary"
+      ],
+      "note": "Location dependence is supported by the current physical-boundary draft, whose numerical model is still incomplete.",
+      "next": "Close after astronomy/model freeze."
+    },
+    {
+      "id": "BOUNDARY.KISURRA_FALLBACK",
+      "status": "NOT-CANON",
+      "evidence": [
+        "live Hebrew article blob 926bfe4b...",
+        "product behavior"
+      ],
+      "note": "The live article says Kisurra, not Caesarea. The old claim-register label was stale and has been corrected. The fallback is product behavior, not canon.",
+      "next": "Reverify live product behavior separately before publication."
+    },
+    {
+      "id": "SEER.NOT_AUTHORITY",
+      "status": "MATCH",
+      "evidence": [
+        "rule.corpus.transition",
+        "rule.implementation.standardness"
+      ],
+      "note": "The final corpus, not implementations, is the canonical source; Seer is explicitly nonstandard and therefore cannot be a canonical authority.",
+      "next": "Keep non-authority message."
+    },
+    {
+      "id": "SEER.SCROLL_RULES_CANONICAL_CALC",
+      "status": "CHANGE",
+      "evidence": [
+        "rule.corpus.transition",
+        "rule.megillah.editions",
+        "rule.implementation.standardness"
+      ],
+      "note": "The article says the Scroll sets the rules and a canonical calculation produces the date. The corpus makes the final corpus exhaustive; canonical Scroll editions have no hierarchy, and standardness belongs to implementations performing the canonical algorithm rather than to one privileged 'canonical calculation'.",
+      "next": "Rewrite authority referent to final corpus/canonical algorithm and standard implementation terminology."
+    },
+    {
+      "id": "SEER.CAPABILITY_LIST_2026_09_21",
+      "status": "NOT-CANON",
+      "evidence": [
+        "time-stamped product evidence"
+      ],
+      "note": "Capability inventory is product state, outside canon.",
+      "next": "Reverify live Seer state separately."
+    },
+    {
+      "id": "SEER.PUBLIC_BETA_RENDER",
+      "status": "NOT-CANON",
+      "evidence": [
+        "time-stamped product evidence"
+      ],
+      "note": "Deployment status is product evidence, outside canon.",
+      "next": "Reverify separately if retained."
+    },
+    {
+      "id": "ANCHORS.DISTINCT_FROM_PROVENANCE",
+      "status": "NOT-CANON",
+      "evidence": [
+        "editorial classification"
+      ],
+      "note": "Separating computational anchors from origin narrative is an explanatory organization choice, not itself canonical content.",
+      "next": "Retain if useful and compatible."
+    },
+    {
+      "id": "FOUNDATION.GREGORIAN_DATE",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.algorithm.constants",
+        "rule.day.gregorian"
+      ],
+      "note": "foundation=-15055671 is an explicitly canonical value; the Gregorian labeling rule is still in the unfrozen algorithm formalization.",
+      "next": "Arithmetic/date-label check can be prepared now; final canonical closure waits for freeze."
+    },
+    {
+      "id": "FOUNDATION.NOT_BEGINNING_OF_TIME",
+      "status": "BLOCKED",
+      "evidence": [
+        "nonfrozen corpus omission",
+        "rule.corpus.transition"
+      ],
+      "note": "The current derived corpus does not independently adopt this negative ontology claim. Because the whole corpus is not frozen, absence is not yet dispositive.",
+      "next": "Check frozen origin/theology content."
+    },
+    {
+      "id": "FOUNDATION.ODD_EVEN_ENCODING",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.day.identity"
+      ],
+      "note": "The draft defines positive odd/even D(q) around Foundation, matching the article; rule.day.identity is not frozen as wording.",
+      "next": "Close after freeze."
+    },
+    {
+      "id": "TABLETS.DATE",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.algorithm.constants",
+        "rule.day.gregorian"
+      ],
+      "note": "tablets=-278522 is an explicitly canonical value; civil-date labeling still depends on unfrozen rule.day.gregorian.",
+      "next": "Close after freeze."
+    },
+    {
+      "id": "FOUNDATION_TABLETS.DISTANCE",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.algorithm.constants",
+        "arithmetic consequence"
+      ],
+      "note": "The two canonical coordinates differ by 14,777,149 days, matching the article, but the article presents this as an anchor fact within an unfrozen corpus context.",
+      "next": "Record arithmetic PASS now; close final status on freeze."
+    },
+    {
+      "id": "ORIGIN.CALENDAR_PART_OF_CREATION",
+      "status": "BLOCKED",
+      "evidence": [
+        "nonfrozen corpus omission"
+      ],
+      "note": "No standalone canonical adoption was located in the current derived corpus; silence is not yet canonical absence because the corpus is not frozen.",
+      "next": "Reconcile against final origin/theology content."
+    },
+    {
+      "id": "ORIGIN.HUMANITY_UNAWARE_USE",
+      "status": "BLOCKED",
+      "evidence": [
+        "nonfrozen corpus omission"
+      ],
+      "note": "Current derived corpus does not close this project-history narrative and is not yet exhaustive in its working state.",
+      "next": "Reconcile after freeze."
+    },
+    {
+      "id": "ORIGIN.SCROLL_NOT_EXHAUSTIVE",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.corpus.transition",
+        "rule.megillah.editions"
+      ],
+      "note": "The final corpus is exhaustive as to canon, while individual Scroll editions are canonical texts and external apparatus is not canon unless adopted. The article's sentence about what the Scroll omits needs reframing against that hierarchy, but final origin content is not yet frozen.",
+      "next": "Likely rewrite to distinguish edition text from exhaustive corpus rather than treating Scroll silence as project-canon silence."
+    },
+    {
+      "id": "REDELIVERY.FIXED_EVENT_DYNAMIC_PASTAFARIAN_DATE",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.day.counters",
+        "nonfrozen origin content"
+      ],
+      "note": "Dynamic representation follows P(c,t) if the fixed event is retained, but the event's canonical historical status is not closed by the current nonfrozen corpus.",
+      "next": "Keep implementation plan staged; do not publish until event identity is frozen."
+    },
+    {
+      "id": "SEER.CANONICAL_IMPLEMENTATION_SINGULAR",
+      "status": "CHANGE",
+      "evidence": [
+        "rule.implementation.standardness",
+        "live Hebrew article blob 926bfe4b..."
+      ],
+      "note": "The live article opens with 'לצד המימוש הקאנוני', implying one privileged canonical implementation. The corpus defines standardness by performing the canonical algorithm and does not canonize one implementation as the unique authority.",
+      "next": "Change to 'לצד מימוש תקני/מימוש האלגוריתם הקאנוני' as appropriate; do not imply a singular canonical implementation."
+    }
+  ]
+}
