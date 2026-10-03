@@ -93,7 +93,7 @@
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
   <h2>Nevek</h2>
   <p>17 kanonikus szeletnév és 47 kanonikus hónapnév létezik. Egy éven belül minden név legfeljebb egyszer jelenik meg a saját családjában.</p>
-  <p>A név azonossága kanonikus és szemantikai, nem különböző írásmódok, fordítások vagy implementációk közötti szavazás eredménye. A nevek jelentésében a héber Megillah a legfelsőbb forrás; a fordítás és a transliteráció megjelenítési réteg.</p>
+  <p>A kanonikus korpusz határozza meg, hogy mely entitások és nyelvi formák kanonikusak vagy szabványosak. A Megillah kanonikus kiadásai között nincs hierarchia. A fordítás vagy átírás nem változtatja meg az entitás azonosságát; egy nyelvi forma azonban szabványos lehet, ha a korpusz kifejezetten elfogadta, vagy ha a korpuszban elfogadott kanonikus nyelvi szabály vonatkozik rá.</p>
   <p>A név nem rejtett hossz-kód. Egyetlen szelet- vagy hónapnév sem kényszerít ki önmagában meghatározott hosszúságot.</p><hr>
 </section>
 <section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
@@ -179,12 +179,12 @@
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
   <h2>Nyomtatott naptár és kézi számítás</h2>
   <p>A pastafari naptár kinyomtatható, csak fel kell tüntetni, melyik műveleti napra számolták ki. Az ilyen naptár az idő szerkezetét annak a napnak a nézőpontjából mutatja; a műveleti nap változásakor új naptárra lehet szükség. A nyomtató így továbbra is fontos.</p>
-  <p>Minden kézzel is kiszámolható, mert a specifikáció teljes és determinisztikus: ki kell számítani a bemeneti számlálókat, végre kell hajtani 7 rejtett és 46 látható cseppet, frissíteni kell a hat tálat, végrehajtani 12 végső keverést, előállítani a válaszokat, megépíteni a kapukat, kiválasztani az éveket és a szeleteket, végrehajtani a kombinatorikus választásokat, kiválasztani a neveket és összeszőni a hónapokat.</p>
+  <p>A naptár diszkrét algoritmusa determinisztikus és kifejezetten meghatározott. A fizikai pillanat pastafari nappá alakításához jelenleg az implementáció csillagászati modelljét használjuk; maga a numerikus csillagászati profil még nem kanonikus. Kézi számításhoz ki kell számítani a bemeneti számlálókat, végre kell hajtani 7 rejtett és 46 látható cseppet, frissíteni kell a hat tálat, végrehajtani 12 végső keverést, előállítani a válaszokat, megépíteni a kapukat, kiválasztani az éveket és a szeleteket, végrehajtani a kombinatorikus választásokat, kiválasztani a neveket és összeszőni a hónapokat.</p>
   <p>Cserébe nem kell észben tartani, hogy február néha 28, néha 29 napos.</p><hr>
 </section>
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>És mi az a Seer?</h2>
-  <p>A kanonikus implementáció mellett létezik egy gyors motor, a <strong>Pastafarian Calendar Seer</strong>. A Seer nem tekintélyforrás: a Megillah rögzíti a szabályokat, a kanonikus számítás pedig ezek alapján állítja elő a dátumot. Ha a Seer eltér egy helyes kanonikus számítástól, a Seer téved.</p>
+  <p>A kanonikus algoritmus mellett létezik egy gyors motor, a <strong>Pastafarian Calendar Seer</strong>. A Seer nem kanonikus tekintély; a kötelező, kanonikus tartalom tekintetében a kanonikus korpusz a mérvadó. A szabványos implementáció a kanonikus algoritmust annak minden szakaszán végrehajtja. Maga a Seer nem szabványos implementáció; ha olyan eredményt ad, amely ellentmond a kanonikus korpusz által megkövetelt eredménynek, a Seer téved.</p>
   <p>Feladata ugyanazokat a lekérdezéseket gyorsan és termékbe könnyen integrálható formában végrehajtani.</p>
   <p>A 2026. szeptember 21-én végzett élő ellenőrzéskor a Seer többek között dátum- és „most” lekérdezést, kötegelt feldolgozást, naptartományokat, pastafari dátumból célnapra történő visszafelé történő átalakítást, évstruktúra-lekérést, aktív műveleti nap feloldását, Node API-t, böngésző/HTTP klienst, CLI-t, HTTP v1 szolgáltatást, OpenAPI 3.1 szerződést, platformspecifikus megvalósításokat és terjesztési csomagokat, valamint ellenőrzött konténeres telepítést tartalmazott.</p>
   <p>A Seernek van nyilvános API-ja. Létezik kifejezett és stabil HTTP v1 szerződés <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, műveleti nap, <code>metadata</code>, <code>locales</code> és <code>status</code> végpontokkal.</p>
