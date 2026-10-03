@@ -109,7 +109,7 @@
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
   <h2>Nosaukumi</h2>
   <p>Pastāv 17 kanoniski kotlešu nosaukumi un 47 kanoniski mēnešu nosaukumi. Vienā gadā katrs nosaukums savā grupā parādās ne vairāk kā vienu reizi.</p>
-  <p>Nosaukuma identitāte ir kanoniska un semantiska; tā nav balsojuma rezultāts starp dažādiem rakstījumiem, tulkojumiem vai implementācijām. Nosaukumu nozīmes jautājumā augstākā autoritāte ir ebreju Megillah; tulkojumi un transliterācijas ir tikai attēlojuma slāņi.</p>
+  <p>Kanoniskais korpuss nosaka, kuras periodu nosaukumu vienības un valodu formas ir kanoniskas vai normatīvas. Megillas kanoniskajiem izdevumiem nav savstarpējas hierarhijas. Tulkojums vai transliterācija nemaina vienības identitāti; tomēr valodas forma pati var būt normatīva, ja tā ir skaidri iekļauta korpusā vai uz to attiecas tajā pieņemts kanonisks valodas noteikums.</p>
   <p>Nosaukums nav arī slēpts garuma kods. Neviens konkrēts kotletes vai mēneša nosaukums pats par sevi nepadara šo vienību garāku vai īsāku.</p><hr>
 </section>
 
@@ -227,13 +227,13 @@
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
   <h2>Drukāts kalendārs un aprēķins ar roku</h2>
   <p>Pastafari kalendāru var izdrukāt; tikai jānorāda, kurai darbības dienai tas aprēķināts. Šāds kalendārs rāda laika struktūru no šīs dienas skatpunkta; mainoties darbības dienai, var būt vajadzīgs jauns kalendārs. Tātad printerim joprojām ir darbs.</p>
-  <p>Visu var aprēķināt arī ar roku, jo specifikācija ir pilnīga un deterministiska: aprēķiniet ievades skaitītājus, izpildiet 7 slēptos un 46 redzamos pilienus, atjauniniet sešas bļodas, veiciet 12 noslēdzošās maisīšanas, izveidojiet atbildes, uzbūvējiet vārtus, izvēlieties gadus un kotletes, veiciet kombinatoriskās izvēles, izvēlieties nosaukumus un pēc tam savijiet mēnešus.</p>
+  <p>Visu var aprēķināt arī ar roku. Kalendāra diskrētais algoritms ir deterministisks un skaidri definēts. Lai fizisku mirkli pārvērstu par Pastafari dienu, pašlaik tiek izmantots implementācijas astronomiskais modelis; pats astronomiskais skaitliskais profils vēl nav kanonisks. Aprēķiniet ievades skaitītājus, izpildiet 7 slēptos un 46 redzamos pilienus, atjauniniet sešas bļodas, veiciet 12 noslēdzošās maisīšanas, izveidojiet atbildes, uzbūvējiet vārtus, izvēlieties gadus un kotletes, veiciet kombinatoriskās izvēles, izvēlieties nosaukumus un pēc tam savijiet mēnešus.</p>
   <p>Toties nav jāatceras, ka februārī dažreiz ir 28, bet dažreiz 29 dienas.</p><hr>
 </section>
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Kas tad ir Seer?</h2>
-  <p>Līdzās kanoniskajai implementācijai ir ātrs skaitļošanas dzinis ar nosaukumu <strong>Pastafarian Calendar Seer</strong>. Seer nav autoritātes avots: Megillah nosaka noteikumus, bet kanoniskais aprēķins pēc tiem iegūst datumu. Ja Seer nesakrīt ar pareizu kanonisko aprēķinu, kļūdās Seer.</p>
+  <p>Līdzās kanoniskajam algoritmam darbojas ātrs skaitļošanas dzinis <strong>Pastafarian Calendar Seer</strong>, taču Seer nav kanoniska autoritāte. Kanoniskais korpuss ir autoritāte jautājumos par saistošu saturu. Standarta implementācija izpilda kanonisko algoritmu visos tā kanoniskajos posmos; Seer nav standarta implementācija. Ja Seer atgriež rezultātu, kas ir pretrunā ar kanoniskā korpusa prasīto rezultātu, Seer kļūdās.</p>
   <p>Tā uzdevums ir ātri izpildīt tos pašus vaicājumus un darīt to formā, ko ērti integrēt produktos.</p>
   <p>2026. gada 21. septembrī veiktajā tiešajā pārbaudē Seer cita starpā ietvēra <code>date</code> un <code>now</code> vaicājumus, <code>batch</code>, dienu diapazonus, apgriezto pārveidi no Pastafari datuma uz vaicājuma dienu, gada struktūras iegūšanu, aktīvās darbības dienas noteikšanu, Node API, pārlūka/HTTP klientu, CLI, HTTP v1 pakalpojumu, OpenAPI 3.1 līgumu, vietējās implementācijas un izplatīšanas pakotnes, kā arī pārbaudītu konteinera izvietojumu.</p>
   <p>Seer ir publiska API. Ir skaidrs un stabils HTTP v1 līgums ar galapunktiem <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, darbības dienai, <code>metadata</code>, <code>locales</code> un <code>status</code>.</p>
