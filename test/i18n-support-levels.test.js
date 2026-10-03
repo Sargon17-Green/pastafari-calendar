@@ -204,43 +204,17 @@ test("runtime notices are ordinary message resources in every current locale", a
   }
 });
 
-test("current partial locales use English fallback only for message keys they still omit", async () => {
+test("current partial locales are structurally complete without English fallback", async () => {
   const sources = await loadAllLocaleSources();
   const report = auditLocaleResources(sources);
   assert.equal(report.length, LOCALES.length);
 
-  const sourceByCode = new Map(sources.map((locale) => [locale.code, locale]));
-  const aboutKeys = [
-    "about.back",
-    "about.fallbackNotice",
-    "about.intro",
-    "about.loadError",
-    "about.metaDescription",
-    "about.open",
-    "about.openShort",
-    "about.skip",
-    "about.title",
-    "about.toc",
-    "about.tocKicker",
-  ];
-  const alwaysFallbackKeys = [
-    "app.brand",
-    "reverse.error.absoluteDateField",
-    "reverse.error.limitPositive",
-    "reverse.error.limitSafeInteger",
-  ];
-
   const partial = report.filter(({ status }) => status === "partial");
   assert.equal(partial.length, 70);
   for (const locale of partial) {
-    const source = sourceByCode.get(locale.code);
-    const expectedMissingMessages = [
-      ...alwaysFallbackKeys,
-      ...aboutKeys.filter((key) => typeof source.messages?.[key] !== "string"),
-    ].sort();
-    assert.deepEqual(locale.resourceGroups.messages.missingKeys, expectedMissingMessages, `${locale.code} fallback set changed`);
-    assert.equal(locale.fallbackKeys, expectedMissingMessages.length);
-    assert.equal(locale.proposedStructuralStatus, "partial");
+    assert.deepEqual(locale.resourceGroups.messages.missingKeys, [], `${locale.code} must not rely on message fallback`);
+    assert.equal(locale.fallbackKeys, 0, `${locale.code} must not rely on English fallback`);
+    assert.equal(locale.proposedStructuralStatus, "complete-candidate");
   }
 
   for (const locale of report.filter(({ status }) => status === "complete")) {
