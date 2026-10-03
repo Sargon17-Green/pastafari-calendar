@@ -109,7 +109,7 @@
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
   <h2>Tên</h2>
   <p>Có 17 tên cốt-lết chính tắc và 47 tên tháng chính tắc. Trong một năm, mỗi tên xuất hiện nhiều nhất một lần trong họ của nó.</p>
-  <p>Định danh của tên là chính tắc và mang tính ngữ nghĩa; nó không phải kết quả bỏ phiếu giữa các cách viết, bản dịch hay cách triển khai khác nhau. Về ý nghĩa của tên, Megillah tiếng Hebrew là nguồn có thẩm quyền cao nhất; dịch thuật và chuyển tự chỉ thuộc lớp trình bày.</p>
+  <p>Định danh của tên mang tính chính tắc-ngữ nghĩa, không phải kết quả bỏ phiếu giữa các cách viết, bản dịch hay cách triển khai. Kho ngữ liệu chính tắc xác định những thực thể tên và hình thức ngôn ngữ nào là chính tắc hoặc chuẩn tắc; các ấn bản chính tắc của Megillah không có thứ bậc. Việc dịch hoặc chuyển tự không làm thay đổi định danh thực thể; tuy nhiên, một hình thức ngôn ngữ có thể là chuẩn tắc nếu được kho ngữ liệu chấp nhận rõ ràng hoặc thuộc phạm vi của một quy tắc ngôn ngữ chính tắc được kho ngữ liệu thông qua.</p>
   <p>Tên cũng không phải mã ẩn cho độ dài. Không tên cốt-lết hay tháng cụ thể nào tự nó buộc đơn vị đó dài hơn hay ngắn hơn.</p><hr>
 </section>
 
@@ -230,13 +230,13 @@
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
   <h2>Lịch in và tính bằng tay</h2>
   <p>Lịch Pastafari có thể được in; chỉ cần ghi rõ nó được tính cho ngày thao tác nào. Một lịch như vậy biểu diễn cấu trúc thời gian từ góc nhìn của ngày đó; khi ngày thao tác đổi, có thể cần một cuốn lịch mới. Vì thế máy in vẫn giữ vai trò của mình.</p>
-  <p>Mọi thứ cũng có thể tính bằng tay vì đặc tả đầy đủ và xác định: tính các bộ đếm đầu vào, chạy 7 giọt ẩn và 46 giọt thấy được, cập nhật sáu bát, thực hiện 12 lần khuấy cuối, tạo các câu trả lời, dựng các cổng, chọn năm và cốt-lết, thực hiện các lựa chọn tổ hợp, chọn tên và đan các tháng.</p>
+  <p>Thuật toán rời rạc của lịch là tất định và được định nghĩa tường minh. Việc chuyển đổi từ một thời điểm vật lý sang ngày Pastafari hiện sử dụng mô hình thiên văn của bản triển khai; bản thân bộ tham số thiên văn dạng số vẫn chưa mang tính chính tắc. Có thể tính phần thuật toán bằng tay: tính các bộ đếm đầu vào, chạy 7 giọt ẩn và 46 giọt thấy được, cập nhật sáu bát, thực hiện 12 lần khuấy cuối, tạo các câu trả lời, dựng các cổng, chọn năm và cốt-lết, thực hiện các lựa chọn tổ hợp, chọn tên và đan các tháng.</p>
   <p>Đổi lại, không cần nhớ rằng tháng Hai khi thì có 28 ngày, khi thì có 29.</p><hr>
 </section>
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Vậy Seer là gì?</h2>
-  <p>Bên cạnh cách triển khai chính tắc có một bộ máy tính nhanh tên là <strong>Pastafarian Calendar Seer</strong>. Seer không phải nguồn thẩm quyền: Megillah đặt ra các quy tắc, còn phép tính chính tắc tạo ra ngày theo các quy tắc đó. Nếu Seer không khớp với một phép tính chính tắc đúng, Seer là bên sai.</p>
+  <p>Đã có thuật toán chính tắc; bên cạnh đó là một công cụ tính nhanh tên là <strong>Pastafarian Calendar Seer</strong>. Seer không phải là nguồn thẩm quyền; kho ngữ liệu chính tắc là nguồn thẩm quyền về nội dung có tính ràng buộc. Một bản triển khai chuẩn thực hiện thuật toán chính tắc qua tất cả các giai đoạn chính tắc. Bản thân Seer không phải là một bản triển khai chuẩn; nếu Seer trả về kết quả trái với kết quả mà kho ngữ liệu chính tắc yêu cầu, thì Seer sai.</p>
   <p>Nhiệm vụ của nó là thực hiện cùng các truy vấn thật nhanh và dưới dạng thuận tiện để tích hợp vào sản phẩm.</p>
   <p>Trong lần xác minh trực tiếp ngày 21 tháng 9 năm 2026, Seer bao gồm, trong số những thứ khác, các truy vấn <code>date</code> và <code>now</code>, <code>batch</code>, khoảng ngày, chuyển đổi ngược từ ngày Pastafari sang ngày được hỏi, lấy cấu trúc năm, xác định ngày thao tác đang hoạt động, Node API, máy khách trình duyệt/HTTP, CLI, dịch vụ HTTP v1, hợp đồng OpenAPI 3.1, các triển khai gốc và gói phân phối, cùng việc triển khai trong container đã được xác minh.</p>
   <p>Seer có API công khai. Hiện có một hợp đồng HTTP v1 rõ ràng và ổn định với điểm cuối cho <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, ngày thao tác, <code>metadata</code>, <code>locales</code> và <code>status</code>.</p>
