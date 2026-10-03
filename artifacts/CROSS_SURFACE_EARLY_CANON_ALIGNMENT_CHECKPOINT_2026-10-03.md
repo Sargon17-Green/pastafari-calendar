@@ -226,3 +226,52 @@ Remaining useful pre-freeze work:
 4. monitor corpus `source_revision`; if it changes, diff the adopted-rule layer before carrying these dispositions forward.
 
 Final semantic application still waits for the relevant freeze/authorization gate.
+
+
+## Canonical language-form registry and live drift — completed 2026-10-03
+
+The full adopted 60-language / 3,840-label registry was recovered from the canonical corpus package at:
+`Pastafarian-Canon/canon/languages.json`
+
+Registry SHA-256:
+`e0d69e7f7723607b91f50af01798066c06e4a66831b926e8666f7c0df08add62`
+
+Control artifact:
+`CANONICAL_LANGUAGE_FORM_REGISTRY_2026-10-03.json`
+
+Important scope distinction:
+- 60 normative 64-name catalogs are present;
+- this is **not** equivalent to 60 complete locale profiles;
+- productive grammar, metadata, accessibility and numeral profiles remain `GAP-LOCALE-PROFILES`.
+
+The owner incorporation changed exactly cutlet canonical index 8:
+- 58 canonical languages received a new adopted form;
+- Hebrew `גומא` and Sahidic Coptic `ϫⲟⲟⲩϥ` were retained;
+- the other 3,780 labels were explicitly preserved.
+
+Live audit scope:
+- 61 current catalog witnesses in `Sargon17-Green/Pastafarian-Calendar`;
+- 60 canonical languages;
+- the extra witness is the second independent Latin implementation.
+
+Live result:
+- **59 CHANGE**
+- **2 MATCH**
+- **0 unresolved/unreadable**
+
+The MATCH witnesses are:
+- `Dart+עברית` — `גומא`
+- `x86-64-Assembly+ϯⲙⲉⲧⲣⲉⲙⲛ̀ⲭⲏⲙⲓ` — `ϫⲟⲟⲩϥ`
+
+All other live catalog witnesses still carry the pre-27.9 cutlet-8 form.
+
+Evidence:
+- `INDEPENDENT_LANGUAGE_FORM_LIVE_DRIFT_2026-10-03.json`
+- `INDEPENDENT_LANGUAGE_FORM_LIVE_DRIFT_2026-10-03.md`
+
+Staged propagation manifest:
+`INDEPENDENT_LANGUAGE_FORM_PATCH_MANIFEST_2026-10-03.json`
+
+It contains 59 blob-guarded source edits and explicitly does **not** authorize applying them. Any target blob drift requires re-audit first.
+
+No implementation branch was modified by this pass.
