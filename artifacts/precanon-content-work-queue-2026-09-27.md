@@ -79,14 +79,14 @@ Completed:
 - bounded Hebrew patch staged for all five current CHANGE findings;
 - fresh checkpoint: `EARLY_CANON_RECONCILIATION_CHECKPOINT_2026-10-03.md`.
 
-No public semantic edit has been applied.
+Public application has now begun for the explicitly authorized, already-closed subset. See the 2026-10-03 publication note below.
 
 The requested cross-surface authority/terminology pass is now complete.
 
 Completed after the /about/ pass:
 - FSM: 15/15 canon-decision items classified against the working corpus; all remain BLOCKED from canonical adoption, with prior approvals preserved as historical decision evidence.
-- Seer live `main`: authority, vector-status and localization terminology delta staged; no Seer edit applied.
-- App live `main`: astronomy/Kisurra authority terminology delta staged; no App behavior or source changed.
+- Seer: publication PR #43 opened from `chore/publish-canon-authority-2026-10-03`; protected `main` is unchanged until required checks/merge rules permit merge.
+- App: publication PR #46 opened from `chore/publish-canon-authority-2026-10-03`; protected `main` is unchanged until required checks/merge rules permit merge.
 - Megillah/live cooking: source-URL provenance correction and JavaScript+Interlingue `Karshumav` README correction staged; exact quotations untouched.
 - Independent implementations: 60/60 branch READMEs scanned; 0 unavailable; no confirmed direct authority conflict; no mass rewrite required.
 - Cross-surface matrix and invalidation map created.
@@ -158,3 +158,23 @@ At that point:
 8. rerun only QA invalidated by the delta plus global gates;
 9. publish/merge only after evidence is complete.
 
+
+
+## Authorized publication subset — 2026-10-03
+
+The user explicitly authorized publishing closed changes that do not depend on unfinished/future canon material.
+
+Already published directly to `pastafari-calendar/main`:
+- `docs/about/content/he.html`
+- commit `585142a7e9a72633ff937b223f3d039261f31780`
+- Hebrew Scroll supremacy wording removed;
+- canonical corpus/canonical algorithm authority wording published;
+- singular “canonical implementation” wording for Seer removed.
+
+The matching feature branch was updated at `bad0546affcc0cb711bb74be271e8a6e3b044359`.
+
+Protected-repository publication is in review:
+- Seer PR #43
+- App PR #46
+
+Do not publish still-BLOCKED astronomy/theology/origin/absence claims merely because publication has begun for the closed subset.
