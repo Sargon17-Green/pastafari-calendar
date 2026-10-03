@@ -1,0 +1,151 @@
+{
+  "schema": "pastafarian-about-early-reconciliation-p1/v1",
+  "created": "2026-10-03",
+  "status": "EARLY_RECONCILIATION_NONFROZEN_CORPUS",
+  "corpus_source_revision": "4247068cd43314da12e09b0ad05b76df7c592c345960b3b71720cc7ca6f7abc0",
+  "about_blob": "926bfe4b997772b695982af77f0862fbe8e192da",
+  "scope": {
+    "priority": "P1",
+    "total": 13
+  },
+  "status_counts": {
+    "BLOCKED": 3,
+    "NOT-CANON": 9,
+    "CHANGE": 1
+  },
+  "entries": [
+    {
+      "id": "IDENTITY.DAY_ID_STABLE",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.day.identity",
+        "rule.day.counters"
+      ],
+      "note": "The working formalization explicitly separates chronological day identity from P(c,t) representation, matching the article, but the relevant algorithm sections remain noncanonical as wording.",
+      "next": "Close after algorithm formalization freeze."
+    },
+    {
+      "id": "IDENTITY.EVENT_ANCHOR_STABLE",
+      "status": "NOT-CANON",
+      "evidence": [
+        "product guidance",
+        "rule.day.counters compatibility"
+      ],
+      "note": "Stable event anchoring is a product/domain-model recommendation, not a canonical calendar rule.",
+      "next": "Retain if compatible with frozen day-identity semantics."
+    },
+    {
+      "id": "MONTH.NEXT_OCCURRENCE_NOT_TOMORROW",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.family.weaving",
+        "rule.date"
+      ],
+      "note": "The current weaving/date formalization supports ordinal next occurrence rather than chronological next day, but those sections remain under review.",
+      "next": "Revalidate after freeze."
+    },
+    {
+      "id": "MONTH.END_NOT_CHRONOLOGICALLY_NEAR",
+      "status": "BLOCKED",
+      "evidence": [
+        "rule.family.weaving",
+        "rule.date"
+      ],
+      "note": "This is a derived consequence of interleaving and ordinal month membership.",
+      "next": "Revalidate after freeze."
+    },
+    {
+      "id": "ANNIVERSARY.MULTIPLE_COORDINATE_DEFINITIONS",
+      "status": "NOT-CANON",
+      "evidence": [
+        "product/derived recurrence model"
+      ],
+      "note": "Choosing month/day, cutlet/day or combined recurrence semantics is product/editorial policy built on calendar fields, not canon.",
+      "next": "Retain classification; revalidate field semantics after freeze."
+    },
+    {
+      "id": "ANNIVERSARY.NOT_SIMPLE_RRULE",
+      "status": "NOT-CANON",
+      "evidence": [
+        "product guidance"
+      ],
+      "note": "This is scheduling guidance, not canonical content.",
+      "next": "Retain only if frozen semantics still make structural recurrence nontrivial."
+    },
+    {
+      "id": "ANNIVERSARY.EMPIRICAL_SCAN",
+      "status": "NOT-CANON",
+      "evidence": [
+        "empirical result"
+      ],
+      "note": "Scan horizons/distributions are empirical evidence tied to a specific engine/workload, never canon.",
+      "next": "Track invalidation if algorithm semantics change; otherwise preserve dated provenance."
+    },
+    {
+      "id": "APPOINTMENT.NEEDS_DATE_PLUS_WORKING_DAY",
+      "status": "NOT-CANON",
+      "evidence": [
+        "product guidance",
+        "rule.day.counters compatibility"
+      ],
+      "note": "Scheduling protocol is not canon. Its premise is compatible with c-dependent representation but final product wording should follow frozen semantics.",
+      "next": "Revalidate after P(c,t) closure."
+    },
+    {
+      "id": "APPOINTMENT.SAVE_ABSOLUTE_ANCHOR",
+      "status": "NOT-CANON",
+      "evidence": [
+        "product guidance"
+      ],
+      "note": "Absolute-anchor storage is product best practice, not canon.",
+      "next": "Keep outside canonical claims."
+    },
+    {
+      "id": "TRAVEL.EVENT_STABLE_LABEL_LOCAL",
+      "status": "NOT-CANON",
+      "evidence": [
+        "product model",
+        "rule.day.physical-boundary compatibility"
+      ],
+      "note": "Stable instant/event anchoring with location-sensitive display is product semantics; the physical boundary model itself remains unfinished.",
+      "next": "Reverify after GAP-ASTRO-MODEL closes."
+    },
+    {
+      "id": "ALLDAY.PASTAFARIAN_BOUNDARY_TO_BOUNDARY",
+      "status": "NOT-CANON",
+      "evidence": [
+        "product semantic rule",
+        "rule.day.physical-boundary compatibility"
+      ],
+      "note": "All-day span semantics are a product choice derived from the Pastafarian boundary, not a canonical date-field rule.",
+      "next": "Do not finalize export guidance until physical-boundary model freezes."
+    },
+    {
+      "id": "PRINTED.CALENDAR_SCOPED_TO_WORKING_DAY",
+      "status": "NOT-CANON",
+      "evidence": [
+        "derived product guidance"
+      ],
+      "note": "Printed-calendar scoping is explanatory/product guidance based on c-dependent semantics.",
+      "next": "Retain if P(c,t) semantics close unchanged."
+    },
+    {
+      "id": "HAND_CALC.FULL_DETERMINISTIC",
+      "status": "CHANGE",
+      "evidence": [
+        "rule.day.physical-boundary",
+        "GAP-ASTRO-MODEL",
+        "draft header"
+      ],
+      "note": "The public sentence 'המפרט דטרמיניסטי ומלא' is unqualified. The corpus explicitly says the numerical physical-time projection is incomplete and the whole corpus is not frozen. The discrete algorithm can still be described as deterministic.",
+      "next": "Qualify the public claim to the discrete algorithm and avoid claiming whole-spec completeness until the astronomy gap is closed."
+    }
+  ],
+  "staged_change": {
+    "claim_id": "HAND_CALC.FULL_DETERMINISTIC",
+    "current": "המפרט דטרמיניסטי ומלא.",
+    "candidate": "האלגוריתם הבדיד של הלוח דטרמיניסטי ומוגדר במפורש. המודל הנומרי המלא להשלכת גבול היום הפיזיקלי עדיין כפוף להשלמת מודל האסטרונומיה הקאנוני.",
+    "apply_now": false,
+    "note": "Candidate is staging only; final wording should be revisited when GAP-ASTRO-MODEL closes."
+  }
+}
