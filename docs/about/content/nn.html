@@ -109,7 +109,7 @@
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
   <h2>Namn</h2>
   <p>Det finst 17 kanonisk kotelettnamn og 47 kanonisk månadsnamn. I eitt år kjem kvart namn høgst éin gong i si eiga gruppe.</p>
-  <p>Identiteten til namnet er kanonisk og semantisk; han er ikkje resultatet av ei avrøysting mellom ulike skrivemåtar, omsetjingar eller implementasjonar. Når det gjeld tydinga av namna, har den hebraiske Megillah høgast autoritet; omsetjingar og translitterasjonar er berre visingslag.</p>
+  <p>Det kanoniske korpuset avgjer kva for namneentitetar og språklege former som er kanoniske eller standardiserte. Kanoniske utgåver av Megillah har ikkje noko innbyrdes hierarki. Omsetjing eller translitterasjon endrar ikkje identiteten til ein namneentitet; ei språkleg form kan likevel sjølv vere standardisert dersom ho uttrykkeleg er teken inn i korpuset eller er omfatta av ein kanonisk språkregel som korpuset har vedteke.</p>
   <p>Namnet er heller ikkje ein skjult kode for lengd. Namnet på ein bestemt kotelett eller månad gjer ikkje i seg sjølv eininga lengre eller kortare.</p><hr>
 </section>
 
@@ -227,13 +227,13 @@
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
   <h2>Trykt kalender og manuell utrekning</h2>
   <p>Pastafari-kalenderen kan skrivast ut; ein må berre opplyse kva handlingsdag han vart rekna for. Ein slik kalender viser tidsstrukturen frå perspektivet til den dagen; når handlingsdagen endrar seg, kan ein ny kalender vere nødvendig. Skrivaren har altså framleis arbeid.</p>
-  <p>Sidan spesifikasjonen er fullstendig og deterministisk, kan alt òg reknast ut for hand: rekn ut inngangsteljar, køyr dei 7 gøymde og 46 synlege dropane, oppdateringa dei seks skålene, gjer dei 12 avsluttande blandingane, produser svara, bygg portane, vel år og kotelettar, utfør kombinatorisk val, vel namna og flett deretter månadene.</p>
+  <p>Den diskrete kalenderalgoritmen er deterministisk og uttrykkeleg definert. Omrekninga frå eit fysisk tidspunkt til ein Pastafari-dag nyttar for tida den astronomiske modellen i implementasjonen; den numeriske astronomiprofilen er enno ikkje kanonisk. Alt kan òg reknast ut for hand: rekn ut inngangsteljar, køyr dei 7 gøymde og 46 synlege dropane, oppdateringa dei seks skålene, gjer dei 12 avsluttande blandingane, produser svara, bygg portane, vel år og kotelettar, utfør kombinatorisk val, vel namna og flett deretter månadene.</p>
   <p>Til gjengjeld treng ein ikkje hugse når februar har 28 dagar og når han har 29.</p><hr>
 </section>
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Kva er så Seer?</h2>
-  <p>Ved sida av den kanoniske implementasjonen finst ein rask engine som heiter <strong>Pastafarian Calendar Seer</strong>. Seer er ikkje ei autoritetskjelde: Megillah fastset reglane, og den kanoniske utrekninga finn datoen etter desse reglane. Viss Seer ikkje stemmer med ei korrekt kanonisk utrekning, ligg feilen i Seer.</p>
+  <p>Det finst ein kanonisk algoritme, og ved sida av han finst den raske motoren <strong>Pastafarian Calendar Seer</strong>. Seer er ikkje ei kanonisk autoritetskjelde; det kanoniske korpuset er autoritativt for det bindande innhaldet. Ei standardimplementering gjennomfører den kanoniske algoritmen gjennom alle dei kanoniske stega. Seer sjølv er ikkje ei standardimplementering; dersom Seer kjem med eit resultat som strir mot resultatet det kanoniske korpuset krev, tek Seer feil.</p>
   <p>Oppgåva hans er å køyre dei same query raskt og returnere resultatet i ei form som er lett å integrate i produkt.</p>
   <p>I den direkte verifiseringa 21. september 2026 omfatta Seer mellom anna <code>date</code>- og <code>now</code>-spørjingar, <code>batch</code>, dagsintervall, omvend konvertering frå ein Pastafari-dato til spørjedagen, henting av årsstruktur, fastsetjing av aktiv handlingsdag, Node API, nettlesar-/HTTP-klient, CLI, HTTP v1-teneste, OpenAPI 3.1-kontrakt, plattformnære implementasjonar og distribusjonspakkar, i tillegg til verifisert containerutrulling.</p>
   <p>Seer har eit offentleg API. Det finst ein tydeleg og stabil HTTP v1-kontrakt med endepunkt for <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, handlingsdag, <code>metadata</code>, <code>locales</code> og <code>status</code>.</p>
