@@ -109,7 +109,7 @@
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
   <h2>Nazivi</h2>
   <p>Postoji 17 kanonskih naziva kotleta i 47 kanonskih naziva mjeseci. Unutar jedne godine svaki se naziv u svojoj porodici pojavljuje najviše jednom.</p>
-  <p>Identitet naziva kanonski je i semantički; nije rezultat glasanja između različitih pravopisa, prijevoda ili implementacija. Za značenje naziva hebrejska Megillah ima najviši autoritet; prijevodi i transliteracije samo su slojevi prikaza.</p>
+  <p>Kanonski korpus određuje koji su entiteti naziva i jezički oblici kanonski ili standardni; među kanonskim izdanjima Megille nema hijerarhije. Prijevod ili transliteracija ne mijenjaju identitet entiteta; ipak, jezički oblik može biti standardan ako je izričito prihvaćen u korpusu ili obuhvaćen kanonskim jezičkim pravilom koje je korpus usvojio.</p>
   <p>Naziv nije ni skriveni kod za dužinu. Nijedan određeni naziv kotleta ili mjeseca sam po sebi ne čini tu jedinicu dužom ili kraćom.</p><hr>
 </section>
 
@@ -228,13 +228,13 @@
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
   <h2>Štampani kalendar i ručni račun</h2>
   <p>Pastafarijanski kalendar može se štampati; samo treba navesti za koji je dan djelovanja izračunat. Takav kalendar prikazuje strukturu vremena iz perspektive tog dana; kada se dan djelovanja promijeni, možda će trebati novi kalendar. Dakle, štampač ipak ostaje koristan.</p>
-  <p>Sve se može izračunati i ručno jer je specifikacija potpuna i deterministična: izračunajte ulazne brojače, provedite 7 skrivenih i 46 vidljivih kapi, ažurirajte šest zdjela, izvedite 12 završnih miješanja, proizvedite odgovore, izgradite vrata, izaberite godine i kotlete, izvršite kombinatorne izbore, odaberite nazive, a zatim isprepletite mjesece.</p>
+  <p>Diskretni algoritam kalendara je determinističan i izričito definisan. Pretvaranje fizičkog trenutka u pastafarijanski dan trenutno se oslanja na astronomski model implementacije; sam numerički astronomski profil još nije kanonski. Izračunajte ulazne brojače, provedite 7 skrivenih i 46 vidljivih kapi, ažurirajte šest zdjela, izvedite 12 završnih miješanja, proizvedite odgovore, izgradite vrata, izaberite godine i kotlete, izvršite kombinatorne izbore, odaberite nazive, a zatim isprepletite mjesece.</p>
   <p>Zauzvrat ne morate pamtiti da februar ponekad ima 28, a ponekad 29 dana.</p><hr>
 </section>
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>A šta je onda Seer?</h2>
-  <p>Uz kanonsku implementaciju postoji brzi mehanizam pod nazivom <strong>Pastafarian Calendar Seer</strong>. Megillah određuje pravila, a kanonski račun prema njima izračunava datum; Seer treba vratiti isti odgovor. Ako se Seer ne slaže s ispravnim kanonskim računom, Seer griješi.</p>
+  <p>Uz kanonski algoritam postoji brzi mehanizam pod nazivom <strong>Pastafarian Calendar Seer</strong>. Seer nije izvor autoriteta; kanonski korpus je izvor autoriteta za obavezujući sadržaj. Standardna implementacija provodi kanonski algoritam kroz sve njegove faze. Seer sam nije standardna implementacija; ako vrati rezultat koji je u suprotnosti s rezultatom koji zahtijeva kanonski korpus, Seer griješi.</p>
   <p>Njegov zadatak je izvršavati iste upite brzo i u obliku pogodnom za integraciju u proizvode.</p>
   <p>U direktnoj provjeri obavljenoj 21. septembra 2026. godine, Seer je, između ostalog, uključivao upite <code>date</code> i <code>now</code>, <code>batch</code>, raspone dana, obrnutu konverziju iz pastafarijanskog datuma u upitani dan, dohvat strukture godine, određivanje aktivnog dana djelovanja, Node API, klijent za preglednik/HTTP, CLI, HTTP v1 servis, OpenAPI 3.1 ugovor, izvorne implementacije i distribucijske pakete, kao i provjereno postavljanje u kontejneru.</p>
   <p>Seer ima javni API i eksplicitan, stabilan HTTP v1 ugovor s krajnjim tačkama za <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, dan djelovanja, <code>metadata</code>, <code>locales</code> i <code>status</code>.</p>
