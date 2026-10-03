@@ -89,7 +89,7 @@
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
   <h2>Nombres</h2>
   <p>El calendario tiene 17 nombres canónicos de croquetas y 47 de meses. Dentro de un año, cada nombre aparece como máximo una vez en su propia familia.</p>
-  <p>La identidad del nombre es canónica y semántica, no el resultado de votar entre grafías, traducciones o implementaciones. La Meguilá hebrea es la autoridad superior sobre el significado de esos nombres; traducción y transliteración son capas de presentación.</p>
+  <p>El corpus canónico determina qué entidades de nombres y formas lingüísticas son canónicas o estándar. No existe jerarquía entre las ediciones canónicas de la Meguilá. La traducción o transliteración no cambia la identidad de la entidad; sin embargo, una forma lingüística puede ser estándar si el corpus la admite expresamente o si está contemplada por una regla lingüística canónica adoptada en él.</p>
   <p>Tampoco son códigos secretos de longitud: ningún nombre obliga por sí mismo a una croqueta más larga o a un mes más corto.</p><hr>
 </section>
 <section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
@@ -173,12 +173,12 @@
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
   <h2>Calendario impreso y cálculo manual</h2>
   <p>Se puede imprimir un calendario pastafari; basta indicar a qué día de trabajo corresponde. Describe el tiempo desde el punto de vista de ese día y, cuando cambia el día de trabajo, puede hacer falta otro calendario. La impresora sigue teniendo una función.</p>
-  <p>También puede calcularse todo a mano porque la especificación es completa y determinista: contadores de entrada, 7 gotas ocultas, 46 visibles, seis cuencos, 12 agitaciones finales, respuestas, puertas, selección de años y croquetas, elecciones combinatorias, nombres y tejido de meses.</p>
+  <p>El algoritmo discreto del calendario es determinista y está definido explícitamente. La conversión de un instante físico a un día pastafari utiliza actualmente un modelo astronómico de la implementación; el perfil numérico astronómico aún no es canónico. El cálculo manual implica contadores de entrada, 7 gotas ocultas, 46 visibles, seis cuencos, 12 agitaciones finales, respuestas, puertas, selección de años y croquetas, elecciones combinatorias, nombres y tejido de meses.</p>
   <p>Así se ahorra uno recordar que febrero unas veces tiene 28 días y otras 29.</p><hr>
 </section>
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>¿Y qué es Seer?</h2>
-  <p>Junto a la implementación canónica existe un motor rápido llamado <strong>Pastafarian Calendar Seer</strong>. La Meguilá establece las reglas y el cálculo canónico produce la fecha conforme a ellas; Seer debe devolver esa misma respuesta. Si discrepa del cálculo canónico correcto, Seer se equivoca.</p>
+  <p>Junto al algoritmo canónico hay un motor rápido llamado <strong>Pastafarian Calendar Seer</strong>. Seer no es una autoridad canónica: el corpus canónico es la autoridad sobre el contenido vinculante. Una implementación estándar ejecuta el algoritmo canónico en todas sus etapas. Seer no es una implementación estándar; si devuelve un resultado que contradice el exigido por el corpus canónico, Seer se equivoca.</p>
   <p>Su función es responder las mismas consultas con rapidez y de forma cómoda para integrarlas en productos.</p>
   <p>En la verificación en vivo del 21 de septiembre de 2026, Seer incluía consultas de fecha y de «ahora», <code>batch</code>, rangos de días, conversión inversa a un día consultado, estructura de año, resolución del día de trabajo activo, API para Node, cliente de navegador/HTTP, CLI, servicio HTTP v1, contrato OpenAPI 3.1, implementaciones nativas y paquetes de distribución, además de despliegue verificado en contenedor.</p>
   <p>Seer tiene una API pública. Existe un contrato HTTP v1 explícito y estable con puntos finales para <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, día de trabajo, <code>metadata</code>, <code>locales</code> y <code>status</code>.</p>
