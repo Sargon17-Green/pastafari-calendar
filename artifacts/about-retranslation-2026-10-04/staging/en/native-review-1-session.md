@@ -1,4 +1,44 @@
-<<<ABOUT_HTML>>>
+# Copilot CLI Session
+
+> [!NOTE]
+> - **Session ID:** `2abc7d0a-8178-4336-98da-60ff7eb65688`  
+> - **Started:** 10/3/2026, 10:53:13 PM  
+> - **Duration:** 40s  
+> - **Exported:** 10/3/2026, 10:53:53 PM  
+
+---
+
+<sub>1s</sub>
+
+### User
+
+You are an independent native-language linguistic reviewer for locale en-US. Review the entire text and final report only in natural, idiomatic American English. Another language may appear only when quoting unintended leakage or immutable names, identifiers, paths, formulas, or code literals.
+
+Review both complete candidates:
+- artifacts/about-retranslation-2026-10-04/staging/en/about.html
+- artifacts/about-retranslation-2026-10-04/staging/en/monster.html
+
+You may inspect docs/i18n/locales/en.js only to confirm established terminology and canonical localized calendar names. Do not treat an older About translation as authoritative, and do not modify any files.
+
+Actively look for translationese; grammar, syntax, agreement, morphology, spelling, punctuation, and typography problems; unnatural collocations; inappropriate register; Hebrew/English leakage; incorrect handling of proper names; awkward literal calques; broken dry humor; ambiguity introduced by translation; unnecessarily long or poorly wrapped wording. Pay particular attention to all 64 expandable calendar-name explanations, the deliberately absurd numeric and Spleen notes, the sales-pitch section, and the complete penguin appendix.
+
+Report every real finding with file, section/name, reason, and an exact replacement in en-US when practical. If any substantive linguistic problem remains, fail. End with exactly one machine-readable line:
+or
+NATIVE_QA_RESULT: PASS
+NATIVE_QA_RESULT: FAIL
+
+
+---
+
+<sub>4s</sub>
+
+### `view`
+
+**view the file at /home/runner/work/pastafari-calendar/pastafari-calendar/artifacts/about-retranslation-2026-10-04/staging/en/about.html.**
+
+/home/runner/work/pastafari-calendar/pastafari-calendar/artifacts/about-retranslation-2026-10-04/staging/en/about.html (lines 1--1)
+
+```
 <!-- Hebrew semantic-master candidate, rebuilt for an external reader. -->
 <div class="about-section about-lead" id="about-calendar">
   <p><strong>The Pastafari Calendar</strong> is an unintuitive calendar with an intentionally unusual structure: a day's date depends not only on the day being described, but also on the day from which the calculation is made.</p>
@@ -553,7 +593,7 @@
   <p>The Monster can create matter, living creatures, celestial bodies, and very complicated mechanisms. This ability does not require it to prepare a carefully organized plan before starting work. Often it starts on one thing, moves on to another, discovers that the first needs fixing, and decides whether to fix it. Sometimes it does.</p>
   <p>This image—creation built layer upon layer, with repairs, exceptions, and rules left in place—is also the literary backdrop for the calendar. Unlike the story, the calculation is not improvised: given the inputs, the algorithm returns one defined answer.</p>
   <p>The Pastafari story is much broader than the calendar and includes, among other things, pirates, carbohydrates, prayer, “I Really Rather You Didn’t,” and other traditions.</p>
-  <p class="about-actions"><a class="guide-link" href="./monster/">A longer explanation of the Monster</a></p>
+  <p class="about-actions"><a class="guide-link" href="./monster/en.html">A longer explanation of the Monster</a></p>
 </section>
 
 <section class="about-section" id="authority" data-toc-section data-toc-level="2">
@@ -570,10 +610,26 @@
   <p>Behind the unusual structure is a precise algorithm; around it is a Pastafari story about a Flying Spaghetti Monster, creation piled up in layers, and an unreasonable amount of carbohydrates.</p>
   <p>Given the day of working, the query day, and the location context, there is one answer.</p>
 </section>
-<<<END_ABOUT_HTML>>>
-<<<MONSTER_HTML>>>
+
+```
+
+
+---
+
+<sub>4s</sub>
+
+### `view`
+
+**view the file at /home/runner/work/pastafari-calendar/pastafari-calendar/artifacts/about-retranslation-2026-10-04/staging/en/monster.html.**
+
+/home/runner/work/pastafari-calendar/pastafari-calendar/artifacts/about-retranslation-2026-10-04/staging/en/monster.html (lines 1--1)
+
+<details>
+<summary>523 lines</summary>
+
+```
 <!doctype html>
-<html lang="he" dir="rtl">
+<html lang="en-US" dir="ltr">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -587,7 +643,7 @@
         <p class="eyebrow">PASTAFARI</p>
         <h1>About the Flying Spaghetti Monster</h1>
         <p class="intro">The full story of the Monster, creation, gravity, carbohydrates, pirates, and other matters.</p>
-        <a class="guide-link" href="../">Back to the page about the calendar</a>
+        <a class="guide-link" href="../?lang=en">Back to the page about the calendar</a>
       </div>
     </header>
     <main>
@@ -1096,5 +1152,505 @@ humans.</p>
   </div>
 </body> 
 </html>
-<<<END_MONSTER_HTML>>>
+```
 
+</details>
+
+
+---
+
+<sub>4s</sub>
+
+### `view`
+
+**view the file at /home/runner/work/pastafari-calendar/pastafari-calendar/docs/i18n/locales/en.js.**
+
+/home/runner/work/pastafari-calendar/pastafari-calendar/docs/i18n/locales/en.js (lines 1--1)
+
+<details>
+<summary>298 lines</summary>
+
+```
+"use strict";
+
+export default Object.freeze({
+  code: "en",
+  displayName: "English",
+  dir: "ltr",
+  intlLocale: "en-US",
+  messages: Object.freeze({
+    "meta.description": "A Pastafari calendar with date search and comparison.",
+    "manifest.shortName": "Pastafari",
+    "manifest.defaultDescription": "A local, deterministic Pastafari calendar.",
+    "app.title": "Pastafari Calendar",
+    "app.brand": "PASTAFARI",
+    "nav.skip": "Skip to date search",
+    "app.intro": "Find a day in any available calendar, then see its complete Pastafari date and the cutlet that contains it.",
+    "guide.open": "How do I use this site?",
+    "guide.openShort": "How to use this site",
+    "about.open": "About the calendar",
+    "about.openShort": "About the calendar",
+    "about.title": "About the Pastafari Calendar",
+    "about.metaDescription": "An explanation of the Pastafari Calendar: its two-day calculation, years, cutlets, woven months, day boundary, and advanced mechanics.",
+    "about.intro": "How the calendar represents days, years, cutlets, woven months, and the day of working.",
+    "about.skip": "Skip to the calendar explanation",
+    "about.back": "Back to the calendar",
+    "about.tocKicker": "On this page",
+    "about.toc": "Contents",
+    "about.hebrewOnly": "The explanation itself is currently available in Hebrew only. The site controls can still use your selected language.",
+    "about.loadError": "The calendar explanation could not be loaded.",
+    "language.label": "Language",
+    "day.staleWarning": "The current day changed from {previousDate} to {currentDate}. Because the day of working was the current day, the displayed dates are no longer up to date. They will be recalculated after you dismiss this message.",
+    "location.assumption": "(In the absence of contrary information, the device is assumed to be in Kisurra.)",
+    "location.useDevice": "Use device location",
+
+    "search.kicker": "Date search",
+    "search.heading": "Which day would you like to find?",
+    "search.intro": "Choose a calendar, enter a date, and select “Show date.” The current Pastafari day is filled in by default.",
+    "search.calendarLabel": "Calendar used for input",
+    "search.submit": "Show date",
+    "search.invalid": "That date could not be recognized. Check that every field is complete and that the date exists in the selected calendar.",
+
+    "settings.summary": "Calculation and comparison options",
+    "settings.heading": "Change the day of working",
+    "settings.intro": "The day of working is the calculation's point of departure. By default, the site uses the current Pastafari day determined for the active observer location.",
+    "settings.actionCalendarLabel": "Calendar used to enter the day of working",
+    "settings.apply": "Apply day of working",
+    "settings.reset": "Reset to current Pastafari day",
+    "settings.invalid": "The day of working is invalid. Check the date and try again.",
+
+    "comparison.toggle": "Compare two calculations side by side",
+    "comparison.toggleHelp": "Available on desktop. Each row will be the same target day under two days of working.",
+    "comparison.secondActionLabel": "Calendar used to enter the second day of working",
+    "comparison.apply": "Update comparison",
+    "comparison.kicker": "Comparison aligned by day",
+    "comparison.heading": "The same days, two days of working",
+    "comparison.intro": "Every row contains the same queried day. Only the day of working changes between the first and second columns.",
+    "comparison.sameDay": "Day shared by both calculations",
+    "comparison.actionHeading": "Day of working: {date}",
+    "comparison.summary": "Showing {count} days — from the first through the last day of the cutlet opened by the first calculation.",
+    "comparison.scrollAria": "Comparison table of the same days under two calculations",
+    "comparison.desktopOnly": "The full comparison table is available on a wide desktop screen.",
+    "comparison.invalid": "The second day of working is invalid. Check the date and try again.",
+
+    "field.year": "Year",
+    "field.month": "Month",
+    "field.day": "Day",
+    "field.relatedYear": "Related Gregorian year",
+    "field.leapMonth": "Leap month",
+    "field.era": "Era",
+    "field.eraYear": "Year in era",
+    "field.ayyamiHa": "Ayyám-i-Há",
+    "field.baktun": "Baktun",
+    "field.katun": "Katun",
+    "field.tun": "Tun",
+    "field.uinal": "Uinal",
+    "field.kin": "Kin",
+    "field.correlation": "Correlation number",
+    "era.meiji": "Meiji",
+    "era.taisho": "Taishō",
+    "era.showa": "Shōwa",
+    "era.heisei": "Heisei",
+    "era.reiwa": "Reiwa",
+
+    "calendarInput.gregorian": "Gregorian",
+    "calendarInput.julian": "Julian",
+    "calendarInput.hebrew": "Hebrew",
+    "calendarInput.islamicCivil": "Islamic civil",
+    "calendarInput.islamicUmmAlQura": "Umm al-Qura",
+    "calendarInput.solarHijriOfficial": "Solar Hijri — official",
+    "calendarInput.solarHijriArithmetic": "Solar Hijri — arithmetic 2,820",
+    "calendarInput.chinese": "Chinese",
+    "calendarInput.hinduOldSolar": "Old Hindu — solar",
+    "calendarInput.hinduOldLunar": "Old Hindu — lunar",
+    "calendarInput.saka": "Saka",
+    "calendarInput.thaiBuddhist": "Thai Buddhist",
+    "calendarInput.ethiopic": "Ethiopic",
+    "calendarInput.coptic": "Coptic",
+    "calendarInput.japaneseImperial": "Japanese imperial",
+    "calendarInput.minguo": "Minguo",
+    "calendarInput.bahaiTehran": "Bahá’í — Tehran equinox",
+    "calendarInput.bahaiWestern": "Bahá’í — western arithmetic",
+    "calendarInput.mayaLongCount": "Maya Long Count",
+    "calendarHelp.hebrew": "Months are selected by name. Year and day accept decimal digits or Hebrew numeral letters, for example תשפ״ו or י״ד; a letter-form year with no thousands mark is interpreted with 5,000 added.",
+    "calendarHelp.intl": "This conversion uses calendar support built into your browser. If the browser cannot represent the date, the site reports that explicitly.",
+    "calendarHelp.chinese": "Enter the Gregorian year associated with the Chinese year, and mark “Leap month” only for the repeated month.",
+    "calendarHelp.hindu": "Enter the year and day in the old Hindu count and choose the month by name. The lunar form can also mark a leap month.",
+    "calendarHelp.japanese": "Year 1 begins on the first day of the era; you may also enter 元 or 元年 for the first year. A date before its beginning or after its end is rejected.",
+    "calendarHelp.bahai": "Choose the month by name or Ayyám-i-Há. The Tehran-equinox form supports the conventional Gregorian range 1844–3000.",
+    "calendarHelp.maya": "The default correlation is GMT 584,283. You can change it if you use a different correlation.",
+
+    "loading.kicker": "Calculated locally",
+    "loading.title": "Finding the cutlet and date…",
+    "error.kicker": "Unable to display the calendar",
+    "error.title": "The calculation engine did not load",
+    "error.reload": "Reload",
+    "error.timeout": "The calculation is taking too long.",
+    "error.engineFailed": "The calculation engine failed.",
+    "error.engineLoadFailed": "The calculation engine could not be loaded.",
+
+    "calendar.toolbarAria": "Cutlet navigation",
+    "calendar.previous": "Previous cutlet",
+    "calendar.today": "Back to today",
+    "calendar.next": "Next cutlet",
+    "calendar.daysAria": "Days in the cutlet {cutletName}",
+    "calendar.currentCutlet": "Year {year} · cutlet",
+    "calendar.cutletDescription": "{count} days · day of working: {actionDate}",
+    "calendar.targetOutside": "The date you searched for is not in the cutlet currently on screen. You can keep browsing or search for another date.",
+
+    "year.kicker": "Year at a glance",
+    "year.heading": "Structure of year {year}",
+    "year.context": "This structure is calculated for the day of working {actionDate}. Changing the day of working can rebuild the year's boundaries, cutlets, and months.",
+    "year.loading": "Building the full year structure…",
+    "year.error": "The full year structure could not be built. The cutlet view is still available.",
+    "year.lengthLabel": "Year length",
+    "year.cutletCountLabel": "Cutlets",
+    "year.monthCountLabel": "Months",
+    "year.rangeLabel": "Gregorian span",
+    "year.daysValue": "{count} days",
+    "year.rangeValue": "{startDate} to {endDate}",
+    "year.displayedCutletPosition": "The displayed cutlet occupies days {start}–{end} of the year.",
+    "year.targetPosition": "The date you searched for is day {day} of {length} in this year.",
+    "year.monthExplainer": "Months are woven independently of cutlets: a month is not a subdivision of a cutlet, and its days can appear in many separate runs across the year. A month's length is therefore its total number of assigned days, not necessarily one continuous span.",
+    "year.cutletsSummary": "Cutlets in this year ({count})",
+    "year.monthsSummary": "Months in this year ({count})",
+    "year.numberedName": "{number}. {name}",
+    "year.cutletMeta": "Length: {length} days · position in year: days {start}–{end}",
+    "year.monthMeta": "Days: {length} · continuous runs: {runs} · first occurrence: day {first} · last: day {last}",
+
+    "target.today": "This is today",
+    "target.searched": "This is the date you searched for",
+    "target.context": "Target date: {targetDate} · day of working: {actionDate}",
+    "target.notInView": "Your searched date remains saved; the cutlet currently displayed is different.",
+    "date.aria": "Year {year} from the Creation of the World, day {dayInCutlet} in the cutlet {cutletName}, day {dayInMonth} in the month {monthName}",
+    "date.yearLine": "Year {year} from the Creation of the World",
+    "date.cutletLine": "Day {dayInCutlet} in the cutlet {cutletName}",
+    "date.monthLine": "Day {dayInMonth} in the month {monthName}",
+
+    "guide.eyebrow": "User guide",
+    "guide.heading": "What can you do here, and how?",
+    "guide.intro": "The site shows a complete Pastafari date for any day, accepts searches in many calendars, and can compare the effect of the day of working on desktop.",
+    "guide.1.heading": "Open the site and get today",
+    "guide.1.body": "As soon as the link opens, the site determines the current Pastafari day for the active observer location and displays the cutlet containing it. The day boundary is the location-dependent lower meridian transit of Venus described in ASTRONOMICAL-DAY.md; it is not civil midnight. There is no registration, sign-in, or date sent to a calculation server.",
+    "guide.2.heading": "Search in any available calendar",
+    "guide.2.body": "In “Which day would you like to find?”, choose a calendar, fill its fields, and select “Show date.” The choices include Gregorian, Hebrew, Julian, Islamic, Persian, Chinese, Hindu, Saka, Thai, Ethiopic, Coptic, Japanese, Minguo, Bahá’í, and the Maya Long Count.",
+    "guide.3.heading": "Read the date",
+    "guide.3.body": "Every tile has three fixed lines: year from the Creation of the World; the day number in the cutlet and its name; then the day in the month and its name. No single number represents the whole date. The month name determines the tile's color.",
+    "guide.4.heading": "Browse without selecting by accident",
+    "guide.4.body": "“Previous cutlet” and “Next cutlet” move to neighboring cutlets. Other day tiles are not buttons because clicking them has no action. “Back to today” resets both the search and the day of working to the current Pastafari day.",
+    "guide.5.heading": "Change the day of working",
+    "guide.5.body": "Open “Calculation and comparison options” below the search. There you can choose a calendar and enter another day of working. Further searches use it until you reset to the current Pastafari day. This advanced control remains available without crowding the normal view.",
+    "guide.6.heading": "Compare the same days twice",
+    "guide.6.body": "On desktop, enable comparison in the same area. Each row contains exactly the same target day; the first column uses the first day of working and the second uses the second. Today versus tomorrow is the default, making every changed Pastafari date easy to identify.",
+    "guide.7.heading": "Inspect the whole year",
+    "guide.7.body": "Below the cutlet view, the site shows the structure of the displayed year: its length and span, every cutlet and its length, and every month. Months also show their number of continuous runs and their first and last occurrence, making the year-wide weaving visible.",
+    "guide.note": "Rows and columns in the tile grid are only visual arrangement, not weeks. In the comparison table, however, alignment is meaningful: each row is the same queried day.",
+    "guide.back": "Back to search and calendar",
+    "footer.local": "Calculation happens on your device; this site has no user account and no tracking code.",
+    "footer.open": "The link is public and loads directly, including in a private-browsing window.",
+    "reverse.kicker": "Reverse search",
+    "reverse.heading": "Find a day from its Pastafari date",
+    "reverse.intro": "Enter a complete Pastafari date and define its day of working. The search runs locally on this device.",
+    "reverse.mode.basic": "Single date",
+    "reverse.mode.advanced": "Constraint system",
+    "reverse.basic.heading": "Single-date reverse search",
+    "reverse.basic.dateHeading": "Pastafari date to find",
+    "reverse.field.year": "Year",
+    "reverse.field.cutlet": "Cutlet",
+    "reverse.field.dayInCutlet": "Day in cutlet",
+    "reverse.field.month": "Month",
+    "reverse.field.dayInMonth": "Day in month",
+    "reverse.basic.calculationHeading": "Day of working",
+    "reverse.basic.calculationMode": "How is the day of working defined?",
+    "reverse.basic.calculation.active": "Use the site's active day of working",
+    "reverse.basic.calculation.absolute": "Use another known date",
+    "reverse.basic.calculation.same": "The day of working is the queried day (c = t)",
+    "reverse.basic.calculation.pastafari": "The day of working is itself Pastafari / depends on other dates",
+    "reverse.basic.activeValue": "Active day of working: {date}",
+    "reverse.basic.absoluteHeading": "Known day of working",
+    "reverse.basic.sameHeading": "Finite search range for c = t",
+    "reverse.basic.rangeStart": "Range start",
+    "reverse.basic.rangeEnd": "Range end",
+    "reverse.basic.toAdvanced": "Continue in the constraint-system editor",
+    "reverse.basic.toAdvancedHelp": "Recursive Pastafari calculation days are represented as variables and constraints so the chain can be extended without an artificial depth limit.",
+    "reverse.action.solve": "Search",
+    "reverse.action.cancel": "Cancel search",
+    "reverse.action.open": "Open in calendar",
+    "reverse.action.addVariable": "Add date variable",
+    "reverse.action.addConstraint": "Add constraint",
+    "reverse.action.remove": "Remove",
+    "reverse.action.clear": "Clear results",
+    "reverse.progress.reverse": "Resolving Pastafari relations",
+    "reverse.progress.verify": "Verifying candidate solutions",
+    "reverse.progress.done": "Search finished",
+    "reverse.progress.scanned": "Work units completed: {count}",
+    "reverse.status.running": "Searching locally…",
+    "reverse.status.cancelled": "Search cancelled.",
+    "reverse.status.superseded": "A newer search replaced this search.",
+    "reverse.status.completeEmpty": "No solution exists in the completely searched domain.",
+    "reverse.status.completeSolutions": "Search complete. All {count} solutions in the domain are shown.",
+    "reverse.status.partialEmpty": "The search stopped before completion. No solution has been found yet.",
+    "reverse.status.partialSolutions": "{count} verified solutions are shown, but the search stopped before completion and more may exist.",
+    "reverse.status.stale": "These results used a previous active day of working. Run the search again to use the current one.",
+    "reverse.status.rangeRequired": "This problem cannot be searched exhaustively until a finite range or fixed date is added.",
+    "reverse.status.timeout": "The search reached its time limit before completion.",
+    "reverse.status.failed": "The reverse-search engine failed.",
+    "reverse.result.heading": "Solutions",
+    "reverse.result.solution": "Solution {index}",
+    "reverse.result.target": "Queried day",
+    "reverse.result.calculation": "Day of working",
+    "reverse.result.jdn": "JDN {jdn}",
+    "reverse.result.complete": "Complete search",
+    "reverse.result.partial": "Partial search",
+    "reverse.advanced.heading": "Constraint-system solver",
+    "reverse.advanced.intro": "Define date variables and relationships between them. Cycles are allowed when the system is reduced to finite domains.",
+    "reverse.variables.heading": "Date variables",
+    "reverse.variable.label": "Display name",
+    "reverse.variable.defaultName": "Date {index}",
+    "reverse.variable.domain": "Domain",
+    "reverse.variable.domain.unknown": "Unknown (must be bounded by other constraints)",
+    "reverse.variable.domain.exact": "Exact known date",
+    "reverse.variable.domain.range": "Finite date range",
+    "reverse.constraint.heading": "Constraints",
+    "reverse.constraint.type": "Constraint type",
+    "reverse.constraint.pastafari": "Pastafari date",
+    "reverse.constraint.equal": "Same absolute day",
+    "reverse.constraint.order": "Chronological order",
+    "reverse.constraint.difference": "Difference in days",
+    "reverse.constraint.left": "Left date",
+    "reverse.constraint.right": "Right date",
+    "reverse.constraint.target": "Queried date variable",
+    "reverse.constraint.calculationMode": "Day-of-working source",
+    "reverse.constraint.calculation.variable": "Another date variable",
+    "reverse.constraint.calculation.absolute": "Known absolute date",
+    "reverse.constraint.calculation.same": "Same as queried date (c = t)",
+    "reverse.constraint.calculationVariable": "Day-of-working variable",
+    "reverse.constraint.orderOp": "Relation",
+    "reverse.constraint.differenceMode": "Difference rule",
+    "reverse.constraint.differenceExact": "Exact difference",
+    "reverse.constraint.differenceRange": "Difference range",
+    "reverse.constraint.equals": "Exact days (left − right)",
+    "reverse.constraint.min": "Minimum days (left − right)",
+    "reverse.constraint.max": "Maximum days (left − right)",
+    "reverse.options.heading": "Search limits",
+    "reverse.options.intro": "Leave a limit blank for no limit. A limit is never applied silently.",
+    "reverse.options.maxSolutions": "Stop after this many verified solutions",
+    "reverse.options.maxScanned": "Stop after this many work units",
+    "reverse.options.timeout": "Time limit in milliseconds",
+    "reverse.advanced.emptyVariables": "Add at least one date variable.",
+    "reverse.advanced.emptyConstraints": "A system may contain no constraints, but every remaining variable must still have a finite domain.",
+    "reverse.error.input": "Some reverse-search fields are missing or invalid.",
+    "reverse.error.limitPositive": "{field} must be positive.",
+    "reverse.error.limitSafeInteger": "{field} is outside the safe integer range.",
+    "reverse.error.absoluteDateField": "Invalid absolute date field.",
+    "reverse.error.range": "The range end must not precede the range start.",
+    "reverse.error.variable": "Each constraint must refer to an existing date variable.",
+    "reverse.error.pastafari": "Enter all five Pastafari date fields.",
+    "reverse.calendar.label": "Calendar used for this absolute date",
+
+  }),
+  calendar: Object.freeze({
+    cutlets: Object.freeze({
+      bronze: "Bronze", fox: "Fox", kidney: "Kidney", lagash: "Lagash", thought: "Thought",
+      fourPartsOfNine: "Four Parts of Nine", palgurash: "Palgurash", papyrusSedge: "Papyrus Sedge",
+      cluster: "Cluster", scorpion: "Scorpion", ash: "Ash", wheat: "Wheat", river: "River",
+      laughter: "Laughter", akkad: "Akkad", horn: "Horn", theEmptyJar: "The Empty Jar",
+    }),
+    months: Object.freeze({
+      clay: "Clay", pomegranate: "Pomegranate", elbow: "Elbow", envy: "Envy", eridu: "Eridu",
+      toothpaste: "Toothpaste", threePartsOfFive: "Three Parts of Five", karshumav: "Karshumav",
+      leopard: "Leopard", tin: "Tin", mist: "Mist", frankincense: "Frankincense", spindle: "Spindle",
+      rib: "Rib", carob: "Carob", uruk: "Uruk", shame: "Shame", camel: "Camel", copper: "Copper",
+      well: "Well", yolk: "Yolk", star: "Star", honey: "Honey", spleen: "Spleen", limestone: "Limestone",
+      joy: "Joy", fig: "Fig", nineveh: "Nineveh", frog: "Frog", pitch: "Pitch", lamp: "Lamp",
+      theClosedDoor: "The Closed Door", sesame: "Sesame", nape: "Nape", silver: "Silver", susa: "Susa",
+      storm: "Storm", donkey: "Donkey", flour: "Flour", regret: "Regret", babylon: "Babylon", tongue: "Tongue",
+      flax: "Flax", salt: "Salt", pear: "Pear", bow: "Bow", sand: "Sand",
+    }),
+  }),
+  terminology: Object.freeze({
+    foundationDay: "Foundation Day",
+    workingNumber: "Working Number",
+    queryNumber: "Query Number",
+    distanceNumber: "Distance Number",
+    sumNumber: "Sum Number",
+    directionNumber: "Direction Number",
+    bowl: "Bowl",
+    drop: "Drop",
+    gate: "Gate",
+    yearFiveThousand: "Year Five Thousand from the Creation of the World",
+  }),
+});
+```
+
+</details>
+
+
+---
+
+<sub>16s</sub>
+
+### `grep`
+
+**[\x{0590}-\x{05FF}]|[\p{Hebrew}]**
+
+"[\x{0590}-\x{05FF}]|[\p{Hebrew}]" (artifacts/about-retranslation-2026-10-04/staging/en)
+
+<details>
+<summary>27 matches</summary>
+
+```
+[grep content: 278 matches across 1 file(s) under /home/runner/work/pastafari-calendar/pastafari-calendar/artifacts]
+
+about-retranslation (278 match(es)):
+  2026- 10-04/staging/en/monster.html:<section id="זכר-נקבה-או-פחמימה" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="איך-היא-נראית" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="תחילת-הבריאה" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="העולם-שנוצר" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="כיצד-פועלת-הכבידה-בפועל" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="גילו-של-העולם" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="הפחמימות" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="אנטיפסטי-והגיהנום" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="למה-ארוחה-צריכה-להיות-ארוחה" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="סימנים-שהמפלצת-משאירה" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="תפילות-שנענו" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="פיראטים" class="level2">
+  ... 254 more match(es) omitted in this file
+  2026- 10-04/staging/en/translation-session.md:  <p>יום פסטפרי מקומי אינו מתחלף בחצות. הגבול שלו נקבע לפי <strong>המעבר התחתון של מרכז נוגה במרידיאן המקומי</strong>: הרגע שבו מרכז נוגה עובר על המרידיאן של מקום הצופה בצדו שמתחת לאופק.</p>
+  2026- 10-04/staging/en/translation-session.md:  <p>לכן מיקום הצופה חשוב. שני אנשים שנמצאים במקומות שונים יכולים, באותו רגע פיזיקלי, להיות משויכים לשני ימים פסטפריים מקומיים שונים. כאשר עוברים לעיר אחרת, אין ממשיכים להשתמש בגבול היום של העיר הקודמת.</p>
+  2026- 10-04/staging/en/translation-session.md:  <p>הגבול תלוי בחישוב מסלול נוגה ולא בכך שהצופה רואה אותו בפועל. עננים, קירות או העובדה שנוגה נמצא מתחת לאופק אינם עוצרים את מסלולו.</p>
+  2026- 10-04/staging/en/translation-session.md:  <p>האלגוריתם הבדיד של הלוח מוגדר במדויק: אותם קלטים, כשהם עוברים באותם כללים, מחזירים אותה תוצאה. לעומת זאת, ההמרה מרגע פיזיקלי ליום פסטפרי משתמשת כיום במודל אסטרונומי של המימוש; הפרופיל הנומרי האסטרונומי עצמו עדיין אינו חלק קאנוני סגור.</p>
+  2026- 10-04/staging/en/translation-session.md:  <h2>מעלותיו הבולטות של הלוח</h2>
+  2026- 10-04/staging/en/translation-session.md:    <li><strong>תאריך שאפשר לחשב שוב ושוב:</strong> אותו יום מן העבר יכול לקבל מחר תאריך פסטפרי אחר, מפני שגם יום המעשה התקדם. אין צורך להסתפק בתאריך ישן שנשאר שימושי לאורך זמן.</li>
+  2026- 10-04/staging/en/translation-session.md:    <li><strong>שנים מרווחות:</strong> שנה יכולה להגיע ל־5,778 ימים, ולכן מי שממתין לשנה הבאה עשוי לקבל תקופת המתנה ארוכה בהרבה מן המקובל.</li>
+  2026- 10-04/staging/en/translation-session.md:    <li><strong>חודשים שמחייבים תשומת לב:</strong> הידיעה שהיום הוא יום 119 בחודש אינה אומרת שהיום ה־120 שלו יחול מחר, בשבוע הבא או אפילו בקרוב. את המועד הבא צריך לחשב.</li>
+  2026- 10-04/staging/en/translation-session.md:    <li><strong>רגישות גאוגרפית:</strong> אותו רגע יכול להשתייך לימים פסטפריים מקומיים שונים במקומות שונים. נסיעה לעיר אחרת מוסיפה אפוא עוד פרט שראוי לזכור בעת תיאום.</li>
+  2026- 10-04/staging/en/translation-session.md:    <li><strong>לוחות מודפסים אינם נעשים שאננים:</strong> לוח שהוכן מראש עלול להפסיק לייצג את החישוב הנכון לאחר שיום המעשה השתנה, ולכן אין סכנה שמישהו יסתפק באותו דף נייר במשך שנים.</li>
+  2026- 10-04/staging/en/translation-session.md:    <li><strong>שימוש מועיל בכוח מחשוב:</strong> במקום להסתפק בטבלה פשוטה שאפשר להבין במבט, הלוח נותן למחשב הזדמנות לבצע חישוב ממשי בכל פעם שרוצים תשובה.</li>
+  2026- 10-04/staging/en/translation-session.md:    <li><strong>יש בו ימים:</strong> הלוח עוסק בימים. זו תכונה שהוא חולק עם כל לוח־שנה באשר הוא, והיא מבטיחה שהמשתמש לא ייאלץ לנהל לוח־שנה שאין בו ימים.</li>
+```
+
+</details>
+
+
+---
+
+<sub>27s</sub>
+
+### `grep`
+
+**[\x{0590}-\x{05FF}]**
+
+"[\x{0590}-\x{05FF}]" (artifacts/about-retranslation-2026-10-04/staging/en/monster.html)
+
+<details>
+<summary>41 matches</summary>
+
+```
+[grep content: 39 matches across 1 file(s) under /home/runner/work/pastafari-calendar/pastafari-calendar/artifacts]
+
+about-retranslation (39 match(es)):
+  2026- 10-04/staging/en/monster.html:<section id="זכר-נקבה-או-פחמימה" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="איך-היא-נראית" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="תחילת-הבריאה" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="העולם-שנוצר" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="כיצד-פועלת-הכבידה-בפועל" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="גילו-של-העולם" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="הפחמימות" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="אנטיפסטי-והגיהנום" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="למה-ארוחה-צריכה-להיות-ארוחה" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="סימנים-שהמפלצת-משאירה" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="תפילות-שנענו" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="פיראטים" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="בני-האדם" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="עבודה-שכחה-ותיקונים" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="המבול" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="מה-אפשר-לדעת-מתוצאות" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="צירופי-מקרים" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="התערבות-בעולם" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="תפילה" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="פולחן" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="אני-ממש-מעדיף-שלא" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="אמונה-וספק" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="האם-יש-ראיות-נגדיות" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="מסורת-זיכרון-ודיוק" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="כך-הדבר-עובד" class="level2">
+  2026- 10-04/staging/en/monster.html:<section id="נספח-מדוע-אין-להפקיד-ביתחרושת-לדודישמש-בידי-פינגווינים"
+  2026- 10-04/staging/en/monster.html:<section id="מבנה-הגוף" class="level3">
+  2026- 10-04/staging/en/monster.html:<section id="תקשורת" class="level3">
+  2026- 10-04/staging/en/monster.html:<section id="קריאה-כתיבה-וחישוב" class="level3">
+  2026- 10-04/staging/en/monster.html:<section id="בקרת-איכות" class="level3">
+  2026- 10-04/staging/en/monster.html:<section id="בטיחות" class="level3">
+  2026- 10-04/staging/en/monster.html:<section id="אקלים" class="level3">
+  2026- 10-04/staging/en/monster.html:<section id="חומרי-גלם" class="level3">
+  2026- 10-04/staging/en/monster.html:<section id="לוגיסטיקה" class="level3">
+  2026- 10-04/staging/en/monster.html:<section id="משאבי-אנוש" class="level3">
+  2026- 10-04/staging/en/monster.html:<section id="אחריות-משפטית" class="level3">
+  2026- 10-04/staging/en/monster.html:<section id="שאלת-הניסיון" class="level3">
+  2026- 10-04/staging/en/monster.html:<section id="יתרונות-אפשריים" class="level3">
+  2026- 10-04/staging/en/monster.html:<section id="מסקנה" class="level3">
+```
+
+</details>
+
+
+---
+
+<sub>40s</sub>
+
+### Copilot
+
+I reviewed both candidate pages. The English copy in about.html is generally idiomatic and consistent with en-US. The substantive problem is in monster.html: the page’s section IDs are still in Hebrew, which is not acceptable in an English locale and is a clear source-language leak.
+
+Finding 1
+File: artifacts/about-retranslation-2026-10-04/staging/en/monster.html
+Section/name: all section anchors in the document (for example, “Male, female, or carbohydrate,” “What it looks like,” “The beginning of creation,” and the appendix heading)
+Reason: The HTML id attributes remain in Hebrew throughout the page, e.g. id="זכר-נקבה-או-פחמימה", id="איך-היא-נראית", id="תחילת-הבריאה", id="נספח-מדוע-אין-להפקיד-ביתחרושת-לדודישמש-בידי-פינגווינים", and many more. This is unintended leakage from the source language, it breaks English-only document structure, and it makes the en-US build visibly non-localized. The visible headings are English, but the anchor IDs are not.
+Replacement: Use English ASCII slugs consistently, for example:
+- "male-female-or-carbohydrate"
+- "what-it-looks-like"
+- "the-beginning-of-creation"
+- "the-world-that-was-created"
+- "how-gravity-works-in-practice"
+- "the-age-of-the-world"
+- "carbohydrates"
+- "antipasti-and-hell"
+- "why-a-meal-needs-to-be-a-meal"
+- "signs-the-monster-leaves-behind"
+- "answered-prayers"
+- "pirates"
+- "human-beings"
+- "work-forgetting-and-repairs"
+- "the-flood"
+- "what-can-be-known-from-results"
+- "coincidences"
+- "intervention-in-the-world"
+- "prayer"
+- "worship"
+- "i-really-rather-you-didnt"
+- "faith-and-doubt"
+- "is-there-any-contrary-evidence"
+- "tradition-memory-and-accuracy"
+- "how-it-works"
+- "appendix-why-a-solar-water-heater-factory-should-not-be-put-in-the-hands-of-penguins"
+- "body-structure"
+- "communication"
+- "reading-writing-and-arithmetic"
+- "quality-control"
+- "safety"
+- "climate"
+- "raw-materials"
+- "logistics"
+- "human-resources"
+- "legal-responsibility"
+- "the-experience-question"
+- "possible-advantages"
+- "conclusion"
+
+This is a substantive en-US localization failure, so the candidate fails.
+
+NATIVE_QA_RESULT: FAIL
+
+---
+
+<sub>Generated by [GitHub Copilot CLI](https://github.com/features/copilot/cli)</sub>

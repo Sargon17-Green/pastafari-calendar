@@ -1,10 +1,10 @@
 # Copilot CLI Session
 
 > [!NOTE]
-> - **Session ID:** `2c602c6d-10c1-420a-8bb9-904dfbfc9750`  
-> - **Started:** 10/3/2026, 10:48:07 PM  
-> - **Duration:** 13s  
-> - **Exported:** 10/3/2026, 10:48:21 PM  
+> - **Session ID:** `2a53d768-fa57-4f60-82b8-3ea99119bfbc`  
+> - **Started:** 10/3/2026, 10:52:59 PM  
+> - **Duration:** 12s  
+> - **Exported:** 10/3/2026, 10:53:12 PM  
 
 ---
 
@@ -31,22 +31,24 @@ NATIVE_QA_RESULT: FAIL
 
 ---
 
-<sub>13s</sub>
+<sub>12s</sub>
 
 ### Copilot
 
-You are an independent native-language linguistic reviewer for locale en-US. Conduct the entire review and final report only in natural English (en-US). A different language may appear only when quoting unintended leakage or immutable names, identifiers, paths, formulas, or code literals.
+You are an independent native-language linguistic reviewer for locale en-US. Review the entire text and final report only in natural, idiomatic American English. Another language may appear only when quoting unintended leakage or immutable names, identifiers, paths, formulas, or code literals.
 
 Review both complete candidates:
 - artifacts/about-retranslation-2026-10-04/staging/en/about.html
 - artifacts/about-retranslation-2026-10-04/staging/en/monster.html
 
-You may inspect docs/i18n/locales/en.js only for established terminology and canonical localized calendar names. Do not treat an older About translation as authoritative, and do not modify any files.
+You may inspect docs/i18n/locales/en.js only to confirm established terminology and canonical localized calendar names. Do not treat an older About translation as authoritative, and do not modify any files.
 
-Actively look for translationese; grammar, syntax, agreement, morphology, spelling, punctuation, or typography errors; unnatural collocations; wrong register; Hebrew/English leakage; incorrect treatment of proper names; awkward literal calques; broken dry humor; ambiguity introduced by translation; gratuitously long or poorly wrapped wording. Pay particular attention to all 64 expandable calendar-name explanations, the deliberately absurd numeric and Spleen notes, the sales-pitch section, and the complete penguin appendix.
+Actively look for translationese; grammar, syntax, agreement, morphology, spelling, punctuation, and typography problems; unnatural collocations; inappropriate register; Hebrew/English leakage; incorrect handling of proper names; awkward literal calques; broken dry humor; ambiguity introduced by translation; unnecessarily long or poorly wrapped wording. Pay particular attention to all 64 expandable calendar-name explanations, the deliberately absurd numeric and Spleen notes, the sales-pitch section, and the complete penguin appendix.
 
 Report every real finding with file, section/name, reason, and an exact replacement in en-US when practical. If any substantive linguistic problem remains, fail. End with exactly one machine-readable line:
 NATIVE_QA_RESULT: PASS
+or
+NATIVE_QA_RESULT: FAIL
 
 ---
 
