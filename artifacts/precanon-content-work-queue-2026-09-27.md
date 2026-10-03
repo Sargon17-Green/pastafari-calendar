@@ -105,8 +105,19 @@ Artifacts:
 - `INDEPENDENT_LANGUAGE_FORM_LIVE_DRIFT_2026-10-03.md`
 - `INDEPENDENT_LANGUAGE_FORM_PATCH_MANIFEST_2026-10-03.json`
 
+Branch-local propagation preparation is now complete:
+- full duplicate discovery across all 59 target refs;
+- 115 direct stale-literal files located;
+- 59/59 source blob guards PASS;
+- 115 content operations + 59 lock refreshes = 174 guarded file operations;
+- 4 contextual prose cases resolved;
+- JavaScript multi-locale exception handled without inventing Russian/French canonical forms;
+- complete machine patch set: `INDEPENDENT_LANGUAGE_FORM_BRANCH_PATCHSETS_2026-10-03.json`.
+
+Do not repeat duplicate discovery unless a target blob/ref changes.
+
 Current next useful work before whole-corpus freeze:
-- only when propagation preparation is desired, perform branch-local duplicate discovery for the 59 staged source changes (docs/tests/generated copies), without reopening lexical adjudication;
+- apply the 59 branch patch sets only if/when explicit propagation is authorized; otherwise keep them staged;
 - resolve the two older manual authority-terminology review cases independently of the now-closed name-form audit;
 - diff the corpus adopted-rule layer whenever `source_revision` changes.
 
