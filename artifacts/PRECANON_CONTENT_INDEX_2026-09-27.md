@@ -439,3 +439,19 @@ Complete staged branch-local patch set:
 This machine artifact supersedes the earlier source-only patch manifest **for application purposes**. The source-only manifest remains useful provenance but must not be applied by itself.
 
 No implementation branch was modified during preparation.
+
+
+## 17. Authorized publication pass — 2026-10-03
+
+Publication authorization now exists for already-closed changes that do not depend on unfinished canon work.
+
+Published:
+- `pastafari-calendar/main` `docs/about/content/he.html`
+- commit: `585142a7e9a72633ff937b223f3d039261f31780`
+- corresponding feature-branch update: `bad0546affcc0cb711bb74be271e8a6e3b044359`
+
+Protected-repository PRs:
+- Seer PR #43 — authority/localization/vector/provenance terminology only
+- App PR #46 — terminology-only removal of canonical authority from the current Venus model and Kisurra fallback coordinate
+
+The public completeness sentence, numerical astronomy behavior, FSM theology/origin and canonical-absence claims remain outside the authorized subset until their own gates close.
