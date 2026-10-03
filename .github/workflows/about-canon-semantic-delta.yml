@@ -1,0 +1,197 @@
+name: About canonical-authority semantic delta
+
+on:
+  push:
+    branches:
+      - feature/about-i18n-72-locales
+    paths:
+      - artifacts/about-canon-semantic-delta-trigger.json
+
+permissions:
+  contents: write
+  copilot-requests: write
+
+concurrency:
+  group: about-canon-semantic-delta-rollout
+  cancel-in-progress: false
+
+jobs:
+  edit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: feature/about-i18n-72-locales
+          fetch-depth: 0
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm install -g @github/copilot@1.0.88
+
+      - name: Apply bounded canonical-authority delta
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p artifacts/about-canon-semantic-delta-runs
+
+          BATCH="$(node -e 'const t=require("./artifacts/about-canon-semantic-delta-trigger.json"); if(!Array.isArray(t.locales)||!t.locales.length) throw new Error("trigger.locales must be a non-empty array"); process.stdout.write(t.locales.join(","));')"
+          IFS=',' read -ra LOCALES <<< "$BATCH"
+
+          for LOCALE in "${LOCALES[@]}"; do
+            echo "=== canonical semantic delta: $LOCALE ==="
+            git pull --rebase origin feature/about-i18n-72-locales
+            TARGET="docs/about/content/$LOCALE.html"
+            test -s "$TARGET"
+            BEFORE_BLOB="$(git hash-object "$TARGET")"
+
+            META="$(LOCALE="$LOCALE" node --input-type=module <<'NODE'
+          import { LOCALES } from "./docs/i18n/registry.js";
+          const item=LOCALES.find((entry)=>entry.code===process.env.LOCALE);
+          if(!item) throw new Error("Unknown locale "+process.env.LOCALE);
+          process.stdout.write(JSON.stringify({code:item.code,tag:item.intlLocale,name:item.displayName}));
+          NODE
+            )"
+            TARGET_NAME="$(META="$META" node -p 'JSON.parse(process.env.META).name')"
+            TARGET_TAG="$(META="$META" node -p 'JSON.parse(process.env.META).tag')"
+
+            cat > "/tmp/$LOCALE.prompt.md" <<EOF
+          אתה עורך לשוני־סמנטי של דף /about/ בלוח השנה הפסטפרי.
+
+          שפת היעד היא $TARGET_NAME ($TARGET_TAG), וקובץ היעד היחיד הוא $TARGET.
+
+          קרא את:
+          - docs/about/content/he.html — המאסטר הסמנטי העברי הנוכחי;
+          - artifacts/about-canon-semantic-delta-2026-10-03-he.md — מפרט הדלתא המחייב;
+          - $TARGET — הגרסה המקומית הנוכחית;
+          - artifacts/about-i18n-qa/$LOCALE.md אם היא קיימת — כדי לשמר תיקוני native QA.
+
+          זו אינה משימת תרגום מחדש.
+          השווה ישירות בין העברית לשפת היעד; אין להשתמש באנגלית כשפת pivot.
+          מותר לשנות רק את המקטעים canonical-names, printed-calendar, seer.
+          שמור כל ניסוח מקומי טוב וכל תיקון QA קיים שאינם נחוצים לדלתא.
+          אל תשנה stable IDs, נוסחאות, מספרים, hashes או ליטרלים טכניים.
+
+          אם שלושת המקטעים כבר תואמים במלואם, החזר שורה אחת בלבד:
+          SEMANTIC_DELTA_RESULT: ALREADY_ALIGNED
+
+          אחרת:
+          SEMANTIC_DELTA_RESULT: CHANGED
+
+          ואחריה בלוק אחד או יותר, ללא Markdown וללא הסבר:
+          <<<REPLACEMENT>>>
+          <<<OLD>>>
+          שורה פיזית שלמה שקיימת עכשיו בדיוק פעם אחת בקובץ
+          <<<NEW>>>
+          שורה חלופית אחת, טבעית בשפת היעד
+          <<<END>>>
+
+          OLD חייב להיות byte-for-byte מן הקובץ הנוכחי.
+          NEW חייב לשמור את אותו תפקיד HTML.
+          אל תחזיר שום טקסט מחוץ לפורמט.
+          EOF
+
+            FINAL_ALIGNED=0
+            for PASS in 1 2 3 4 5 6; do
+              if [ "$PASS" -eq 1 ]; then
+                cp "/tmp/$LOCALE.prompt.md" "/tmp/$LOCALE.pass$PASS.prompt.md"
+              else
+                {
+                  echo "זהו סבב אימות חוזר. קרא מחדש את שלושת המקטעים canonical-names, printed-calendar, seer ואת מפרט הדלתא. החזר ALREADY_ALIGNED רק אם כל המשמעויות המחייבות קיימות כעת; אחרת החזר החלפות מדויקות נוספות."
+                  cat "/tmp/$LOCALE.prompt.md"
+                } > "/tmp/$LOCALE.pass$PASS.prompt.md"
+              fi
+
+              APPLY_OK=0
+              for ATTEMPT in 1 2 3; do
+                cp "/tmp/$LOCALE.pass$PASS.prompt.md" "/tmp/$LOCALE.pass$PASS.attempt$ATTEMPT.prompt.md"
+                if [ "$ATTEMPT" -gt 1 ]; then
+                  {
+                    echo "ההצעה הקודמת לא הייתה ישימה. קרא מחדש את קובץ היעד; OLD חייב להיות שורה פיזית אחת שקיימת בדיוק פעם אחת."
+                    cat "/tmp/$LOCALE.pass$PASS.prompt.md"
+                  } > "/tmp/$LOCALE.pass$PASS.attempt$ATTEMPT.prompt.md"
+                fi
+
+                copilot --no-custom-instructions --no-ask-user --no-color \
+                  --allow-tool='shell(cat:*),shell(grep:*),shell(find:*),shell(sed:*),shell(head:*),shell(tail:*),shell(wc:*),shell(ls:*),shell(pwd:*),shell(rg:*),shell(awk:*),shell(sort:*),shell(uniq:*),shell(git status:*),shell(git diff:*),shell(git show:*),shell(git rev-parse:*)' \
+                  -s < "/tmp/$LOCALE.pass$PASS.attempt$ATTEMPT.prompt.md" \
+                  > "/tmp/$LOCALE.pass$PASS.attempt$ATTEMPT.response.txt"
+
+                set +e
+                PASS_VERDICT="$(node scripts/apply-about-semantic-delta.mjs \
+                  --allowed-ids canonical-names,printed-calendar,seer \
+                  --file "$TARGET" \
+                  --response "/tmp/$LOCALE.pass$PASS.attempt$ATTEMPT.response.txt" \
+                  --report "artifacts/about-canon-semantic-delta-runs/$LOCALE.pass$PASS.json")"
+                APPLY_EXIT=$?
+                set -e
+                if [ "$APPLY_EXIT" -eq 0 ]; then
+                  APPLY_OK=1
+                  break
+                fi
+              done
+
+              if [ "$APPLY_OK" -ne 1 ]; then
+                echo "$LOCALE pass $PASS produced no applicable proposal" >&2
+                exit 1
+              fi
+              if [ "$PASS_VERDICT" = "ALREADY_ALIGNED" ]; then
+                FINAL_ALIGNED=1
+                break
+              fi
+            done
+
+            if [ "$FINAL_ALIGNED" -ne 1 ]; then
+              echo "$LOCALE did not reach ALREADY_ALIGNED" >&2
+              exit 1
+            fi
+
+            node --test test/about-page.test.js
+            git diff --check
+            AFTER_BLOB="$(git hash-object "$TARGET")"
+
+            LOCALE="$LOCALE" TARGET_TAG="$TARGET_TAG" BEFORE_BLOB="$BEFORE_BLOB" AFTER_BLOB="$AFTER_BLOB" node <<'NODE'
+          const fs=require("node:fs");
+          const path="artifacts/about-canon-semantic-delta-status.json";
+          const data=fs.existsSync(path)?JSON.parse(fs.readFileSync(path,"utf8")):{schema_version:1,source:"docs/about/content/he.html",delta:"2026-10-03-canonical-authority",locales:{}};
+          data.locales[process.env.LOCALE]={
+            locale_tag:process.env.TARGET_TAG,
+            before_blob:process.env.BEFORE_BLOB,
+            after_blob:process.env.AFTER_BLOB,
+            final_verified_aligned:true
+          };
+          fs.writeFileSync(path,JSON.stringify(data,null,2)+"\n");
+          NODE
+
+            git add "$TARGET" artifacts/about-canon-semantic-delta-status.json artifacts/about-canon-semantic-delta-runs/
+            if git diff --cached --quiet; then
+              echo "$LOCALE already aligned; no commit"
+              continue
+            fi
+            git commit -m "about($LOCALE): apply canonical semantic delta [skip ci]"
+            for TRY in 1 2 3; do
+              git fetch origin feature/about-i18n-72-locales
+              if git rebase origin/feature/about-i18n-72-locales && git push origin HEAD:feature/about-i18n-72-locales; then
+                break
+              fi
+              git rebase --abort || true
+              if [ "$TRY" -eq 3 ]; then exit 1; fi
+              sleep 3
+            done
+          done
+
+      - name: Upload delta evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: about-canon-semantic-delta-${{ github.run_id }}
+          path: artifacts/about-canon-semantic-delta-runs/
+          if-no-files-found: warn
+          retention-days: 14
