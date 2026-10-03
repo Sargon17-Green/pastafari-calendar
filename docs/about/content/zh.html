@@ -83,7 +83,7 @@
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
   <h2>名称</h2>
   <p>共有17个规范肉排名和47个规范月份名。在同一年内，每个名称在自己的类别中最多出现一次。</p>
-  <p>名称身份是规范的、语义性的，不由不同拼写、译名或实现之间“投票”产生。关于名称意义，以希伯来文 Megillah 为最高权威；翻译和转写属于显示层。</p>
+  <p>名称身份是规范的、语义性的，不由不同拼写、译名或实现之间“投票”产生。规范语料决定哪些名称实体及语言形式属于规范或标准；《Megillah》的规范版本之间没有等级之分。翻译或转写不会改变实体身份；不过，若某种语言形式已被规范语料明确接纳，或受其采纳的规范语言规则涵盖，该形式本身也可以是标准形式。</p>
   <p>名称也不是长度的隐藏编码。没有规则要求某个肉排名必然更长，或某个月名必然更短。</p><hr>
 </section>
 <section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
@@ -162,14 +162,14 @@
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
   <h2>纸质日历与手算</h2>
   <p>Pastafari 历当然可以打印，只需注明它对应哪个作业日。它展示的是从那个作业日看出的时间结构；作业日变化以后，也许就得换一份新日历。打印机因此仍有用武之地。</p>
-  <p>规范完整且确定，所以也可以全部手算：计算输入计数器，执行7滴隐藏滴、46滴可见滴，更新6只碗，进行12次最终搅拌，生成答案，构造门，选择年份与肉排，执行组合选择，选名称并编织月份。</p>
+  <p>历法的离散算法是确定的，并有明确规定。将物理时刻转换为 Pastafari 日，目前使用的是实现所采用的天文学模型；天文学数值参数本身尚未成为规范。因此，离散算法的各步骤仍可全部手算：计算输入计数器，执行7滴隐藏滴、46滴可见滴，更新6只碗，进行12次最终搅拌，生成答案，构造门，选择年份与肉排，执行组合选择，选名称并编织月份。</p>
   <p>这样就不用记二月有时28天、有时29天了。</p><hr>
 </section>
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Seer 是什么？</h2>
-  <p>规范实现之外还有高速引擎 <strong>Pastafarian Calendar Seer</strong>。Seer 不是权威来源；Megillah 规定规则，规范计算依照这些规则算出日期。若 Seer 与正确的规范计算冲突，错的是 Seer。</p>
-  <p>它的任务是快速执行同一类查询，并方便集成进产品。</p>
-  <p>在2026年9月21日进行的实时验证中，Seer 已包括日期查询、“现在”计算、批量查询、日范围、从 Pastafari 日期到被查询日的反向转换、年份结构获取、活动作业日解析、Node API、浏览器/HTTP客户端、CLI、HTTP v1服务、OpenAPI 3.1契约、原生实现与发布包，以及经过验证的容器部署。</p>
+  <p>历法有一套规范算法；此外还有名为 <strong>Pastafarian Calendar Seer</strong> 的高速引擎。</p>
+  <p>Seer 并非规范权威；规范语料才是具有约束力内容的权威来源。</p>
+  <p>标准实现会完整执行规范算法的所有阶段。Seer 本身不是标准实现；如果 Seer 给出的结果与规范语料所要求的结果冲突，Seer 就是错的。</p>
   <p>Seer 有公开 API。它有明确、稳定的 HTTP v1 契约，包含 <code>date</code>、<code>range</code>、<code>batch</code>、<code>year</code>、<code>reverse</code>、作业日、<code>metadata</code>、<code>locales</code>、<code>status</code> 等端点。</p>
   <p>2026年9月21日还实际测试了 Render 上的公开 HTTPS 部署：精确查询、大范围、重启、<code>cold wake</code> 和负载下行为都在活服务上验证过。</p>
   <p>经过验证的公开部署是 beta/评估部署，并不是对具有 SLA 的永久托管生产服务的声明。服务器地址、托管商和版本号都不是历法的一部分，也不是规范常量。</p>
