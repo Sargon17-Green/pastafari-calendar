@@ -1,7 +1,7 @@
 # Pre-canon content work — artifact index
 Date: 2026-09-27
 Branch: `work/about-canon-transition-2026-09-27`
-Status: staging/index only; canonical corpus remains future authority
+Status: early reconciliation staging; canonical corpus is now available as a nonfrozen working view, while final whole-corpus freeze remains pending
 
 ## 1. Authority transition and /about/ reconciliation
 
@@ -217,7 +217,7 @@ Items whose final substantive status must be reconciled when the new corpus is p
 ## 9. Control/checkpoint files
 
 ### `precanon-content-work-queue-2026-09-27.md`
-Operational queue of safe work versus blocked work. The current state is **quiescent pending a trigger**: no useful canon-independent content/recovery task remains open at the present evidence limit.
+Operational queue of safe work versus blocked work. As of 2026-10-03 the queue is **early reconciliation active** against the nonfrozen corpus view `source_revision 4247068c…`.
 
 ### `precanon-content-checkpoint-2026-09-27.md`
 Narrative state checkpoint.
@@ -275,3 +275,26 @@ Three staged Hebrew formulations of the specification/conformance versus legal-p
 
 ### `redelivery-dynamic-display-plan-2026-09-27.md`
 Implementation-ready design for a live Pastafarian representation of the fixed modern re-delivery event using the existing browser worker `convert` operation, while deliberately leaving event identity/current-day context to the corpus gate.
+
+
+## 12. Early corpus reconciliation — opened 2026-10-03
+
+### `about-early-reconciliation-2026-10-03.json`
+Machine-readable P0 disposition against `source_revision 4247068cd43314da12e09b0ad05b76df7c592c345960b3b71720cc7ca6f7abc0`.
+
+Scope: 57 tracked P0 items (56 registered claims + one newly discovered Seer terminology claim).
+
+Current counts:
+- MATCH: 4
+- CHANGE: 4
+- BLOCKED: 42
+- NOT-CANON: 7
+
+### `about-p0-early-reconciliation-2026-10-03.md`
+Human-readable findings and staged future wording for the four already-closed CHANGE items.
+
+Important current rule:
+- explicitly adopted canonical material in the working corpus may already justify MATCH/CHANGE;
+- sections 1–20 of the algorithm remain under formal review and therefore stay BLOCKED from final closure;
+- canonical absence claims remain BLOCKED until whole-corpus freeze;
+- no public semantic delta is applied merely because this early reconciliation exists.
