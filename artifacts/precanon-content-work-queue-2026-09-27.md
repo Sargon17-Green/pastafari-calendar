@@ -68,13 +68,23 @@ P0 /about/ reconciliation is now recorded in:
 - `about-early-reconciliation-2026-10-03.json`;
 - `about-p0-early-reconciliation-2026-10-03.md`.
 
-Current P0 disposition: 57 tracked items = 4 MATCH / 4 CHANGE / 42 BLOCKED / 7 NOT-CANON. No public semantic edit has been applied.
+The complete /about/ claim space has now been classified at early-reconciliation level: 85 tracked items = 6 MATCH / 5 CHANGE / 48 BLOCKED / 26 NOT-CANON. This consists of the 84 original claims plus one newly registered Seer terminology/authority finding.
+
+Completed:
+- P0 direct canon/authority pass;
+- P1 semantic/product boundary pass;
+- P2 derived/empirical dependency pass;
+- P3 research classification;
+- P4 summary disposition;
+- bounded Hebrew patch staged for all five current CHANGE findings;
+- fresh checkpoint: `EARLY_CANON_RECONCILIATION_CHECKPOINT_2026-10-03.md`.
+
+No public semantic edit has been applied.
 
 Next useful work before whole-corpus freeze:
-- P1 semantic/product boundary classification;
-- P2 dependency analysis for derived/empirical material;
 - FSM comparison only against explicitly adopted canonical material;
-- prepare, but do not apply, the bounded Hebrew patch for already-closed CHANGE findings.
+- cross-surface authority terminology audit/delta preparation;
+- downstream invalidation map for the five staged Hebrew changes.
 
 ## Continuation triggers
 
