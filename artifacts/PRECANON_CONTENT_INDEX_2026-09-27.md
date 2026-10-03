@@ -378,3 +378,38 @@ Raw scan batches:
 - `independent-readme-authority-scan-2026-10-03-b04.json`
 
 Global rule from this pass: **do not globally replace the word “canonical”**. Preserve domain-qualified uses such as `canonicalIndex`, API canonical presentation, App canonical domain state and canonical textual edition; change only uses that incorrectly assert calendar-semantic authority.
+
+
+## 15. Canonical language forms and live independent-implementation drift — 2026-10-03
+
+### `CANONICAL_LANGUAGE_FORM_REGISTRY_2026-10-03.json`
+Machine-readable manifest of the adopted language-form registry:
+- canonical source: `Pastafarian-Canon/canon/languages.json`;
+- registry SHA-256: `e0d69e7f7723607b91f50af01798066c06e4a66831b926e8666f7c0df08add62`;
+- 60 normative language entries;
+- 3,840 adopted period-name labels;
+- explicit mapping of each language's adopted cutlet-8 form and source-catalog provenance.
+
+The full 140,663-byte canonical registry remains single-sourced in the corpus package rather than being duplicated into migration artifacts.
+
+### `INDEPENDENT_LANGUAGE_FORM_LIVE_DRIFT_2026-10-03.json`
+Current live comparison of all 61 implementation catalog witnesses:
+- 59 CHANGE;
+- 2 MATCH;
+- 0 unresolved/unreadable;
+- exact branch/path/blob SHA/current/adopted value recorded per witness.
+
+The two MATCH witnesses are Hebrew and Sahidic Coptic, exactly the forms that the owner adjudication left unchanged.
+
+### `INDEPENDENT_LANGUAGE_FORM_LIVE_DRIFT_2026-10-03.md`
+Human-readable audit summary, evidence discipline and propagation rules.
+
+### `INDEPENDENT_LANGUAGE_FORM_PATCH_MANIFEST_2026-10-03.json`
+Staged-only migration manifest:
+- 59 exact source edits;
+- blob guard per target;
+- no patch for Hebrew or Sahidic Coptic;
+- duplicate-discovery and branch-native focused tests required before any actual propagation;
+- no branch merge shortcut.
+
+This closes the canonical-name live-drift **research/audit** task. Do not reopen the other 3,780 labels absent a concrete new finding. Productive locale grammar remains a separate `GAP-LOCALE-PROFILES` concern.
