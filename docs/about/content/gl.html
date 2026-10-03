@@ -109,7 +109,7 @@
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
   <h2>Nomes</h2>
   <p>Hai 17 nomes canónico de croqueta e 47 nomes canónico de mes. Dentro dun ano, cada nome aparece como máximo unha vez no seu grupo.</p>
-  <p>A identidade do nome é canónico e semántica; non é o resultado dunha votación entre diferentes grafías, traducións ou implementacións. Sobre o significado dos nomes, a Megillah en hebreo ten a máxima autoridade; as traducións e transliteracións son só capas de presentación.</p>
+  <p>A identidade do nome é canónica e semántica; non é o resultado dunha votación entre diferentes grafías, traducións ou implementacións. O corpus canónico determina que entidades e formas lingüísticas dos nomes son canónicas ou normativas. As edicións canónicas da Megillah non teñen xerarquía entre si. Traducir ou transliterar non cambia a identidade da entidade; con todo, unha forma lingüística pode ser normativa se foi admitida expresamente no corpus ou está amparada por unha regra lingüística canónica adoptada nel.</p>
   <p>O nome tampouco é un código oculto de lonxitude. O nome dunha croqueta ou dun mes concreto non fai por si só que esa unidade sexa máis longa ou máis curta.</p><hr>
 </section>
 
@@ -227,13 +227,13 @@
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
   <h2>Calendario impreso e cálculo manual</h2>
   <p>O Calendario Pastafari pódese imprimir; só hai que indicar para que día de acción foi calculado. Un calendario así mostra a estrutura do tempo desde o punto de vista dese día; se cambia o día de acción, pode facer falta un calendario novo. Así que a impresora aínda ten traballo.</p>
-  <p>Como a especificación é completa e determinista, todo pode calcularse tamén á man: calcule os contadores de entrada, pase polas 7 gotas ocultas e as 46 visibles, faga actualización das seis cuncas, execute as 12 mesturas finais, produza as respostas, constrúa as portas, escolla anos e croquetas, realice a selección combinatoria, escolla os nomes e despois entreteza os meses.</p>
+  <p>O algoritmo discreto do calendario é determinista e está definido explicitamente. A conversión dun instante físico nun día pastafari emprega actualmente un modelo astronómico da implementación; o perfil numérico astronómico en si aínda non é canónico. Todo pode calcularse tamén á man: calcule os contadores de entrada, pase polas 7 gotas ocultas e as 46 visibles, faga actualización das seis cuncas, execute as 12 mesturas finais, produza as respostas, constrúa as portas, escolla anos e croquetas, realice a selección combinatoria, escolla os nomes e despois entreteza os meses.</p>
   <p>A cambio, non hai que lembrar cando febreiro ten 28 días e cando 29.</p><hr>
 </section>
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>E que é Seer?</h2>
-  <p>Pastafarian Calendar Seer é un motor rápido que acompaña o cálculo canónico, non unha fonte de autoridade: o rolo establece as regras e o cálculo canónico obtén delas a data; Seer debe devolver esa mesma resposta. Se discrepa dun cálculo canónico correcto, Seer equivócase.</p>
+  <p>Pastafarian Calendar Seer é un motor rápido que acompaña o algoritmo canónico, pero non é unha autoridade canónica. O corpus canónico é a autoridade para o contido vinculante. Unha implementación estándar executa o algoritmo canónico en todas as súas etapas; o propio Seer non é unha implementación estándar. Se Seer devolve un resultado que contradí o esixido polo corpus canónico, equivócase.</p>
   <p>A súa tarefa é executar rapidamente as mesmas consultas e devolver o resultado nunha forma fácil de integrar en produtos.</p>
   <p>Na verificación en directo do 21 de setembro de 2026, Seer incluía, entre outras cousas, consultas <code>date</code> e <code>now</code>, <code>batch</code>, intervalos de días, conversión inversa dunha data pastafari ao día consultado, obtención da estrutura do ano, determinación do día de acción activo, Node API, cliente de navegador/HTTP, CLI, servizo HTTP v1, contrato OpenAPI 3.1, native implementacións e paquetes de distribución, ademais de despregamento verificado en contedor.</p>
   <p>Seer ten unha API pública e un contrato HTTP v1 claro e estable, con rutas para date, range, <code>batch</code>, year, reverse, día de acción, metadata, locales e status.</p>
