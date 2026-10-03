@@ -336,3 +336,45 @@ Aggregate early /about/ state:
 - NOT-CANON: 26
 
 The /about/ classification pass is therefore complete at the early-reconciliation level. Final closure of BLOCKED claims still requires the relevant corpus freeze.
+
+
+## 14. Cross-surface early canon alignment — 2026-10-03
+
+### `CROSS_SURFACE_EARLY_CANON_ALIGNMENT_CHECKPOINT_2026-10-03.md`
+Current safe continuation checkpoint after the authority/terminology pass across /about/, Seer, App, Megillah/live cooking, FSM and all 60 independent implementation branches.
+
+### `CROSS_SURFACE_EARLY_CANON_ALIGNMENT_2026-10-03.json`
+Machine-readable surface matrix with live refs/HEADs, staged changes, preserved qualified uses of “canonical”, blocked items and apply gates.
+
+### `CROSS_SURFACE_CANON_INVALIDATION_MAP_2026-10-03.json`
+Records exactly which QA/testing surfaces an eventual delta invalidates and which it does not.
+
+### `seer-early-corpus-alignment-delta-2026-10-03.md`
+Staged-only Seer authority/terminology corrections. Live Seer `main` was inspected at `6f385e48ac0b0bd647d33705b2bb7bc54cded595`; no Seer repository edit was made.
+
+### `app-live-early-corpus-alignment-delta-2026-10-03.md`
+Staged-only App findings from live `main` `4e94b3e15f21294e0c573ee6c3552c52880de214`. In particular, the existing Venus numerical implementation and Kisurra fallback coordinate must not acquire canonical authority merely from implementation history while `GAP-ASTRO-MODEL` remains open.
+
+### `megillah-live-cooking-early-corpus-alignment-2026-10-03.md`
+Separates canonical textual-edition content from website/source-location provenance, preserves exact audited quotations, and closes the JavaScript+Interlingue month-8 prose anomaly as `Karshumav`.
+
+### `fsm-early-corpus-reconciliation-2026-10-03.json`
+All 15 existing FSM canon-decision items remain blocked from current canonical status in the nonfrozen corpus view. Prior explicit project approvals are preserved as historical decision evidence rather than silently discarded or promoted.
+
+### `independent-implementations-early-corpus-alignment-2026-10-03.json`
+Consolidated 60/60 README authority scan:
+- unavailable: 0
+- confirmed direct authority conflicts: 0
+- normative oracle/reference terminology: 32
+- `canonicalIndex` terminology: 45
+- manual terminology review: 2
+- concrete README change: 1 (`JavaScript+Interlingue` month 8)
+- no direct authority conflict found: 57
+
+Raw scan batches:
+- `independent-readme-authority-scan-2026-10-03-b01.json`
+- `independent-readme-authority-scan-2026-10-03-b02.json`
+- `independent-readme-authority-scan-2026-10-03-b03.json`
+- `independent-readme-authority-scan-2026-10-03-b04.json`
+
+Global rule from this pass: **do not globally replace the word “canonical”**. Preserve domain-qualified uses such as `canonicalIndex`, API canonical presentation, App canonical domain state and canonical textual edition; change only uses that incorrectly assert calendar-semantic authority.
