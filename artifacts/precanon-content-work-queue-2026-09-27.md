@@ -6,7 +6,7 @@ Continue everything that can be completed without deciding unsettled canonical c
 
 Work branch: `work/about-canon-transition-2026-09-27`.
 
-Current local status: **quiescent pending a trigger**. All content/recovery/QA work that is both useful and independent of unsettled canon has been completed to the currently available evidence limit. The remaining items are blocked on a new source, the pinned corpus, or an explicitly separate live QA workstream.
+Current local status: **early reconciliation active against a nonfrozen corpus view**. The trigger occurred on 2026-10-03: `Pastafarian_Canon_Draft_for_Editing.md` is available with `source_revision 4247068cd43314da12e09b0ad05b76df7c592c345960b3b71720cc7ca6f7abc0`. The whole corpus is explicitly not frozen, so explicitly adopted canonical rules may already close MATCH/CHANGE findings, while unfinished formalization and canonical-absence claims remain BLOCKED.
 
 ## Completed in this branch
 
@@ -62,9 +62,23 @@ Current local status: **quiescent pending a trigger**. All content/recovery/QA w
 - [x] Evidence-layer separation is explicitly preserved in the transition docs and machine-readable evidence snapshot/schema; semantic alignment must never be promoted to render/a11y/PWA PASS.
 - [x] The 29 stable `/about/` IDs are captured in the reconciliation inventory/claim register and protected as the current deep-link contract pending an explicit corpus-driven structural decision.
 
+## Early reconciliation opened 2026-10-03
+
+P0 /about/ reconciliation is now recorded in:
+- `about-early-reconciliation-2026-10-03.json`;
+- `about-p0-early-reconciliation-2026-10-03.md`.
+
+Current P0 disposition: 57 tracked items = 4 MATCH / 4 CHANGE / 42 BLOCKED / 7 NOT-CANON. No public semantic edit has been applied.
+
+Next useful work before whole-corpus freeze:
+- P1 semantic/product boundary classification;
+- P2 dependency analysis for derived/empirical material;
+- FSM comparison only against explicitly adopted canonical material;
+- prepare, but do not apply, the bounded Hebrew patch for already-closed CHANGE findings.
+
 ## Continuation triggers
 
-Do not manufacture another pre-canon prose pass merely to keep this branch moving. Resume substantive work here only when at least one of these happens:
+Do not manufacture another pre-canon prose pass merely to keep this branch moving. Resume or deepen substantive work when at least one of these happens:
 
 - a stable canonical-corpus snapshot is available;
 - a new lawful primary source makes the Gospel page-level gap actually closable;
@@ -72,7 +86,7 @@ Do not manufacture another pre-canon prose pass merely to keep this branch movin
 - a new Pastafarian product/document surface is discovered and needs inventorying;
 - a result from the separate native-language QA workstream materially changes the evidence snapshot used here.
 
-Absent one of those triggers, the correct state of this workstream is to remain quiescent.
+The first trigger has now occurred through the working nonfrozen corpus snapshot. Whole-corpus freeze remains the trigger for converting BLOCKED dispositions into final alignment decisions and for public propagation.
 
 ## Deferred until the corpus is ready
 
