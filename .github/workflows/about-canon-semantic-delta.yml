@@ -95,6 +95,7 @@ jobs:
 
           OLD חייב להיות byte-for-byte מן הקובץ הנוכחי.
           NEW חייב לשמור את אותו תפקיד HTML.
+          אם המקטע ממוזער כך שכל <section id="..."> והתוכן שלו נמצאים בשורה פיזית אחת, מותר להשתמש בכל שורת ה-section כ-OLD וכ-NEW; במקרה כזה חובה לשמר בדיוק את אותו stable id ואת wrapper ה-section, ולשנות רק את הטקסט הנדרש לדלתא.
           אל תחזיר שום טקסט מחוץ לפורמט.
           EOF
 
@@ -114,7 +115,7 @@ jobs:
                 cp "/tmp/$LOCALE.pass$PASS.prompt.md" "/tmp/$LOCALE.pass$PASS.attempt$ATTEMPT.prompt.md"
                 if [ "$ATTEMPT" -gt 1 ]; then
                   {
-                    echo "ההצעה הקודמת לא הייתה ישימה. קרא מחדש את קובץ היעד; OLD חייב להיות שורה פיזית אחת שקיימת בדיוק פעם אחת."
+                    echo "ההצעה הקודמת לא הייתה ישימה. קרא מחדש את קובץ היעד; OLD חייב להיות שורה פיזית אחת שקיימת בדיוק פעם אחת. אם התוכן הרלוונטי נמצא בשורת section ממוזערת אחת, החלף את השורה השלמה ושמר בדיוק את אותו stable id ואת wrapper ה-section."
                     cat "/tmp/$LOCALE.pass$PASS.prompt.md"
                   } > "/tmp/$LOCALE.pass$PASS.attempt$ATTEMPT.prompt.md"
                 fi
