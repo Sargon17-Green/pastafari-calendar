@@ -109,7 +109,7 @@
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
   <h2>Name</h2>
   <p>Daar is 17 kanonieke koteletname en 47 kanonieke maandname. Binne een jaar verskyn elke naam hoogstens een keer in sy eie groep.</p>
-  <p>Die identiteit van 'n naam is kanoniek en semanties; dit is nie die uitslag van 'n stemming tussen verskillende spellings, vertalings of implementerings nie. Oor die betekenis van die name het die Hebreeuse Megillah die hoogste gesag; vertalings en transliterasies is bloot vertoonlae.</p>
+  <p>Die identiteit van 'n naam is kanoniek en semanties; dit is nie die uitslag van 'n stemming tussen verskillende spellings, vertalings of implementerings nie. Die kanonieke korpus bepaal watter entiteite en taalvorme kanoniek of standaard is. Kanonieke uitgawes van die boekrol vorm nie 'n rangorde nie. Vertaling of transliterasie verander nie die identiteit van die entiteit nie; 'n taalvorm kan egter self standaard wees as dit uitdruklik in die korpus aanvaar is of gedek word deur 'n kanonieke taalreël wat daarin aanvaar is.</p>
   <p>'n Naam is ook nie 'n verborge kode vir lengte nie. Die naam van 'n bepaalde kotelet of maand maak daardie eenheid nie op sigself langer of korter nie.</p><hr>
 </section>
 
@@ -227,13 +227,13 @@
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
   <h2>Gedrukte kalender en handberekening</h2>
   <p>Die Pastafariese kalender kan gedruk word; mens moet net aandui vir watter aksiedag dit bereken is. So 'n kalender wys die tydstruktuur vanuit daardie dag se oogpunt; as die aksiedag verander, kan 'n nuwe kalender nodig wees. Die drukker het dus steeds werk.</p>
-  <p>Omdat die spesifikasie volledig en deterministies is, kan alles ook met die hand bereken word: bereken die invoerteller, voer die 7 verborge en 46 sigbare druppels uit, werk die ses bakke by, doen die 12 finale mengings, lewer die antwoorde, bou die poorte, kies die jare en kotelette, doen die kombinatoriese seleksie, kies die name en verweef dan die maande.</p>
+  <p>Die diskrete kalenderalgoritme is deterministies en uitdruklik omskryf. Om 'n fisiese oomblik na 'n Pastafariese dag om te skakel, gebruik tans 'n astronomiese model van die implementering; die numeriese astronomiese profiel self is nog nie kanoniek nie. Daarom kan alles ook met die hand bereken word: bereken die invoerteller, voer die 7 verborge en 46 sigbare druppels uit, werk die ses bakke by, doen die 12 finale mengings, lewer die antwoorde, bou die poorte, kies die jare en kotelette, doen die kombinatoriese seleksie, kies die name en verweef dan die maande.</p>
   <p>In ruil daarvoor hoef niemand te onthou of Februarie 28 of 29 dae het nie.</p><hr>
 </section>
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>En wat is Seer?</h2>
-  <p>Saam met die kanonieke implementering is daar 'n vinnige enjin met die naam <strong>Pastafarian Calendar Seer</strong>. Die boekrol bepaal die reëls; die kanonieke berekening gebruik dit om die datum te bereken. Seer is 'n vinnige enjin wat dieselfde antwoord behoort te gee. As Seer van 'n korrekte kanonieke berekening verskil, is Seer verkeerd.</p>
+  <p>Naas die kanonieke algoritme is daar 'n vinnige enjin met die naam <strong>Pastafarian Calendar Seer</strong>. Seer is nie 'n gesagsbron nie; die kanonieke korpus is die gesagsbron vir bindende inhoud. 'n Standaardimplementering voer die kanonieke algoritme in al sy kanonieke stadiums uit. Seer self is nie 'n standaardimplementering nie; as dit 'n resultaat lewer wat strydig is met wat die kanonieke korpus vereis, is Seer verkeerd.</p>
   <p>Die doel daarvan is om dieselfde query vinnig uit te voer en die resultate in 'n vorm te gee wat maklik in produkte geïntegreer kan word.</p>
   <p>'n Regstreekse verifikasie op 21 September 2026 het bevestig dat Seer onder meer die volgende vermoëns gehad het: `date`- en `now`-navrae, bondelnavrae (`batch`), dagreekse, omgekeerde omskakeling van 'n Pastafariese datum na 'n gevraagde dag, opvraging van die jaarstruktuur, bepaling van die aktiewe aksiedag, 'n Node-API, 'n blaaier-/HTTP-kliënt, CLI, HTTP v1-diens, OpenAPI 3.1-kontrak, inheemse implementerings en verspreidingspakkette, en 'n geverifieerde houerontplooiing.</p>
   <p>Seer het 'n openbare API. Die duidelike, stabiele HTTP v1-kontrak bevat eindpunte vir `date`, `range`, `batch`, `year`, `reverse`, aksiedag, metadata, locales en status.</p>
