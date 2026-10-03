@@ -111,7 +111,7 @@
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
   <h2>Les noms</h2>
   <p>Le calendrier comporte 17 noms canoniques de boulettes et 47 noms canoniques de mois. Dans une année, chaque nom apparaît au plus une fois dans sa propre famille.</p>
-  <p>L'identité d'un nom est canonique et sémantique ; elle ne résulte pas d'un vote entre orthographes, traductions ou implémentations. La Megillah hébraïque est l'autorité suprême quant au sens des noms ; traductions et translittérations relèvent de l'affichage.</p>
+  <p>Le corpus canonique détermine quels noms de périodes et quelles formes linguistiques sont canoniques ou font référence. Les éditions canoniques de la Megillah ne sont pas hiérarchisées entre elles. Traduire ou translittérer un nom ne change pas l'identité de l'entité qu'il désigne ; une forme linguistique peut toutefois être elle-même normative si elle est explicitement admise par le corpus ou couverte par une règle linguistique canonique adoptée par celui-ci.</p>
   <p>Le nom ne code pas secrètement la longueur de l'unité : aucun nom de boulette n'impose une boulette plus longue, ni aucun nom de mois un mois plus court.</p>
   <hr>
 </section>
@@ -242,13 +242,13 @@
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
   <h2>Calendrier imprimé et calcul à la main</h2>
   <p>Un calendrier pastafari peut être imprimé ; il suffit d'indiquer à quel jour de travail il se rapporte. Il montre alors la structure du temps depuis le point de vue de ce jour. Si le jour de travail change, un nouveau calendrier peut devenir nécessaire. L'imprimante conserve donc toute son utilité.</p>
-  <p>On peut également tout calculer à la main : la spécification est complète et déterministe. Il faut calculer les compteurs d'entrée, effectuer les 7 gouttes cachées puis les 46 visibles, mettre à jour six bols, réaliser les 12 brassages finaux, produire les réponses, construire les portes, sélectionner années et boulettes, effectuer les choix combinatoires, choisir les noms et tisser les mois.</p>
+  <p>On peut également tout calculer à la main : l'algorithme discret du calendrier est déterministe et défini explicitement. La conversion d'un instant physique en jour pastafari repose actuellement sur un modèle astronomique propre à l'implémentation ; le profil numérique astronomique lui-même n'est pas encore canonique. Il faut calculer les compteurs d'entrée, effectuer les 7 gouttes cachées puis les 46 visibles, mettre à jour six bols, réaliser les 12 brassages finaux, produire les réponses, construire les portes, sélectionner années et boulettes, effectuer les choix combinatoires, choisir les noms et tisser les mois.</p>
   <p>On évite ainsi d'avoir à retenir que février compte tantôt 28 jours, tantôt 29.</p>
   <hr>
 </section>
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Et Seer ?</h2>
-  <p>À côté de l'implémentation canonique existe un moteur rapide appelé <strong>Pastafarian Calendar Seer</strong>. La Megillah fixe les règles, et le calcul canonique produit la date en les appliquant ; Seer est un moteur rapide qui doit renvoyer la même réponse. Si Seer diverge d'un calcul canonique correct, c'est Seer qui se trompe.</p>
+  <p>À côté de l'algorithme canonique existe un moteur rapide appelé <strong>Pastafarian Calendar Seer</strong>. Seer n'est pas une autorité canonique : le corpus canonique fait autorité pour le contenu contraignant. Une implémentation standard exécute l'algorithme canonique à toutes ses étapes. Seer lui-même n'est pas une implémentation standard ; s'il renvoie un résultat contraire à celui qu'exige le corpus canonique, Seer se trompe.</p>
   <p>Son rôle est d'effectuer les mêmes requêtes rapidement et sous une forme pratique pour l'intégration dans des produits.</p>
   <p>Lors d'une vérification en conditions réelles le 21 septembre 2026, Seer proposait notamment les requêtes de date et de « maintenant », les lots et plages de jours, la conversion inverse vers un jour cible, la structure d'une année, la résolution du jour de travail actif, une API Node, un client navigateur/HTTP, une CLI, un service HTTP v1, un contrat OpenAPI 3.1, des implémentations natives et paquets de distribution, ainsi qu'un déploiement conteneurisé vérifié.</p>
   <p>Seer dispose d'une API publique. Son contrat HTTP v1 explicite et stable comprend des points d’accès pour <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, le jour de travail, <code>metadata</code>, <code>locales</code> et <code>status</code>.</p>
