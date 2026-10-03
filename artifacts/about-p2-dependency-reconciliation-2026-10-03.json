@@ -1,0 +1,107 @@
+{
+  "schema": "pastafarian-about-early-reconciliation-p2/v1",
+  "created": "2026-10-03",
+  "corpus_source_revision": "4247068cd43314da12e09b0ad05b76df7c592c345960b3b71720cc7ca6f7abc0",
+  "about_blob": "926bfe4b997772b695982af77f0862fbe8e192da",
+  "scope": {
+    "priority": "P2",
+    "total": 7
+  },
+  "status_counts": {
+    "NOT-CANON": 3,
+    "MATCH": 1,
+    "BLOCKED": 3
+  },
+  "entries": [
+    {
+      "id": "MONTH.PAIR_COUNT_5781",
+      "status": "NOT-CANON",
+      "validation": "PASS",
+      "evidence": [
+        "canonical entity count 47",
+        "rule.algorithm.constants month_days_max=123",
+        "exact arithmetic"
+      ],
+      "note": "47×123=5781. This is a derived combinatorial count, not canon.",
+      "next": "No corpus edit; retain as theorem/explanation."
+    },
+    {
+      "id": "MONTH.AT_LEAST_3_PAIRS_MISSING",
+      "status": "NOT-CANON",
+      "validation": "PASS",
+      "evidence": [
+        "5781 syntactic pairs",
+        "rule.algorithm.constants year_max=5778",
+        "exact arithmetic"
+      ],
+      "note": "5781−5778=3, so at least three syntactic month/day pairs are absent if the structural premises close unchanged. The arithmetic is exact and the numeric constants are explicitly canonical.",
+      "next": "Final theorem closure still depends on frozen month/year semantics, but no numerical discrepancy exists."
+    },
+    {
+      "id": "ATLAS.NOT_CANON",
+      "status": "MATCH",
+      "validation": "PASS",
+      "evidence": [
+        "rule.corpus.transition",
+        "rule.vectors.adoption"
+      ],
+      "note": "The article correctly separates empirical/computed results from canon. Existence in tests/releases does not canonize outputs.",
+      "next": "Retain this epistemic classification."
+    },
+    {
+      "id": "ATLAS.VERSION_AND_SAMPLE",
+      "status": "NOT-CANON",
+      "validation": "DATED_EVIDENCE",
+      "evidence": [
+        "empirical engine/workload metadata"
+      ],
+      "note": "Engine ID, sample size and observed statistics are dated empirical evidence, not canonical content.",
+      "next": "Do not regenerate unless aligned semantics invalidate the old engine/workload or the article is refreshed for current research."
+    },
+    {
+      "id": "REVERSE.UNIQUE_WITH_C_AND_PAIR",
+      "status": "BLOCKED",
+      "validation": "REPROVE_AFTER_FREEZE",
+      "evidence": [
+        "rule.structure",
+        "rule.date",
+        "distinct-name selection"
+      ],
+      "note": "The current formalization strongly supports uniqueness with known c and a consistent pair, but the relevant algorithm sections remain unfrozen.",
+      "next": "Reprove mechanically after freeze."
+    },
+    {
+      "id": "REVERSE.CANDIDATE_BOUNDS",
+      "status": "BLOCKED",
+      "validation": "RECOMPUTE_AFTER_FREEZE",
+      "evidence": [
+        "year/cutlet/month structural bounds"
+      ],
+      "note": "Candidate-count bounds are derived from structural maxima and uniqueness rules, not canon.",
+      "next": "Recompute after frozen structure; do not preserve numbers by inertia."
+    },
+    {
+      "id": "REVERSE.WITHOUT_C_NOT_ABSOLUTE",
+      "status": "BLOCKED",
+      "validation": "REPROVE_AFTER_FREEZE",
+      "evidence": [
+        "rule.day.counters",
+        "c-dependent year/structure construction"
+      ],
+      "note": "The current draft remains compatible with the central claim that a five-field date without c is not an absolute chronological address, but final proof depends on frozen c-dependent semantics.",
+      "next": "Reprove after freeze; this is a high-value explanatory theorem, not an independent rule."
+    }
+  ],
+  "arithmetic_checks": [
+    {
+      "expression": "47*123",
+      "result": 5781,
+      "status": "PASS"
+    },
+    {
+      "expression": "5781-5778",
+      "result": 3,
+      "status": "PASS"
+    }
+  ]
+}
