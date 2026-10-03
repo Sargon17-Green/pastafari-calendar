@@ -63,7 +63,7 @@
 </section>
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2"><h2>Nomi</h2>
   <p>Il calendario ha 17 nomi canonici di cotolette e 47 nomi canonici di mesi. In un anno ciascun nome compare al massimo una volta all'interno della propria famiglia.</p>
-  <p>L'identità del nome è canonica sul piano semantico; non è il risultato di una votazione tra grafie, traduzioni o implementazioni. La Megillah ebraica è l'autorità superiore per il significato dei nomi; traduzione e traslitterazione appartengono allo strato di visualizzazione.</p>
+  <p>Il corpus canonico stabilisce quali entità e forme linguistiche sono canoniche o standard. Le edizioni canoniche della Megillah non hanno gerarchia tra loro. La traduzione o la traslitterazione non cambiano l'identità dell'entità; una forma linguistica può tuttavia essere standard se è stata adottata esplicitamente nel corpus o è contemplata da una regola linguistica canonica da esso adottata.</p>
   <p>Il nome non è nemmeno un codice nascosto della lunghezza: nessun nome impone una cotoletta più lunga o un mese più corto.</p><hr>
 </section>
 <section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2"><h2>Un piccolo fatto sui mesi</h2>
@@ -129,11 +129,11 @@
 </section>
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2"><h2>Calendario stampato e calcolo manuale</h2>
   <p>Un calendario pastafari si può stampare: basta indicare il giorno di lavoro a cui si riferisce. Mostra la struttura del tempo vista da quel giorno; quando il giorno di lavoro cambia, può servire un nuovo calendario. La stampante resta quindi importante.</p>
-  <p>Tutto si può anche calcolare a mano, perché la specifica è completa e deterministica: contatori d'ingresso, 7 gocce nascoste, 46 visibili, sei ciotole, 12 mescolamenti finali, risposte, porte, anni e cotolette, scelte combinatorie, nomi e intreccio dei mesi.</p>
+  <p>Tutto si può anche calcolare a mano: l'algoritmo discreto del calendario è deterministico e definito esplicitamente. La conversione da un istante fisico a un giorno pastafariano usa attualmente il modello astronomico dell'implementazione; il profilo numerico astronomico non è ancora canonico. Il calcolo comprende contatori d'ingresso, 7 gocce nascoste, 46 visibili, sei ciotole, 12 mescolamenti finali, risposte, porte, anni e cotolette, scelte combinatorie, nomi e intreccio dei mesi.</p>
   <p>Così non occorre ricordare che febbraio a volte ha 28 giorni e a volte 29.</p><hr>
 </section>
 <section class="about-section" id="seer" data-toc-section data-toc-level="2"><h2>E Seer?</h2>
-  <p>Accanto all'implementazione canonica esiste un motore veloce chiamato <strong>Pastafarian Calendar Seer</strong>. Seer non è una fonte d'autorità: la Megillah stabilisce le regole e il calcolo canonico produce la data secondo quelle regole. Se Seer contraddice un calcolo canonico corretto, è Seer a sbagliare.</p>
+  <p>Accanto all'algoritmo canonico esiste un motore veloce chiamato <strong>Pastafarian Calendar Seer</strong>. Seer non è un'autorità canonica: il corpus canonico fa autorità per il contenuto vincolante. Un'implementazione standard esegue l'algoritmo canonico in tutte le sue fasi; Seer stesso non è un'implementazione standard. Se Seer restituisce un risultato in conflitto con quello richiesto dal corpus canonico, Seer sbaglia.</p>
   <p>Serve a rispondere alle stesse domande rapidamente e in una forma comoda da integrare nei prodotti.</p>
   <p>Nella verifica dal vivo svolta il 21 settembre 2026, Seer comprendeva richieste <code>date</code> e <code>now</code>, <code>batch</code>, intervalli di giorni, conversione inversa verso un giorno richiesto, struttura annuale, risoluzione del giorno di lavoro attivo, API Node, client per browser/HTTP, CLI, servizio HTTP v1, contratto OpenAPI 3.1, implementazioni native e pacchetti di distribuzione, oltre a una distribuzione in container verificata.</p>
   <p>Seer ha un'API pubblica. Esiste un contratto HTTP v1 esplicito e stabile con endpoint per <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, giorno di lavoro, <code>metadata</code>, <code>locales</code> e <code>status</code>.</p>
