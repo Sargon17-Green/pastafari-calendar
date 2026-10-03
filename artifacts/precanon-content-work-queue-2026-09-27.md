@@ -81,10 +81,22 @@ Completed:
 
 No public semantic edit has been applied.
 
-Next useful work before whole-corpus freeze:
-- FSM comparison only against explicitly adopted canonical material;
-- cross-surface authority terminology audit/delta preparation;
-- downstream invalidation map for the five staged Hebrew changes.
+The requested cross-surface authority/terminology pass is now complete.
+
+Completed after the /about/ pass:
+- FSM: 15/15 canon-decision items classified against the working corpus; all remain BLOCKED from canonical adoption, with prior approvals preserved as historical decision evidence.
+- Seer live `main`: authority, vector-status and localization terminology delta staged; no Seer edit applied.
+- App live `main`: astronomy/Kisurra authority terminology delta staged; no App behavior or source changed.
+- Megillah/live cooking: source-URL provenance correction and JavaScript+Interlingue `Karshumav` README correction staged; exact quotations untouched.
+- Independent implementations: 60/60 branch READMEs scanned; 0 unavailable; no confirmed direct authority conflict; no mass rewrite required.
+- Cross-surface matrix and invalidation map created.
+- checkpoint: `CROSS_SURFACE_EARLY_CANON_ALIGNMENT_CHECKPOINT_2026-10-03.md`.
+
+Current next useful work before whole-corpus freeze:
+- extract the corpus's admitted language-form registry into a machine-readable cross-language map;
+- resolve the two manual terminology-review cases from the 60-branch scan if a file-level patch manifest is desired;
+- prepare exact patch manifests (not live patches) for closed CHANGE findings;
+- diff the corpus adopted-rule layer whenever `source_revision` changes.
 
 ## Continuation triggers
 
