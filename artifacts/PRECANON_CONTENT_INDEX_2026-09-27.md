@@ -413,3 +413,29 @@ Staged-only migration manifest:
 - no branch merge shortcut.
 
 This closes the canonical-name live-drift **research/audit** task. Do not reopen the other 3,780 labels absent a concrete new finding. Productive locale grammar remains a separate `GAP-LOCALE-PROFILES` concern.
+
+
+## 16. Complete branch-local canonical-name patch preparation — 2026-10-03
+
+### `INDEPENDENT_LANGUAGE_FORM_DUPLICATE_DISCOVERY_2026-10-03.md`
+Human-readable closure of the 59-branch duplicate-discovery pass:
+- 59/59 source blob guards PASS;
+- 115 direct stale-literal files;
+- 0 scan errors;
+- 0 case-only stale variants;
+- 4 contextual prose cases manually classified and resolved.
+
+### `INDEPENDENT_LANGUAGE_FORM_BRANCH_PATCHSETS_2026-10-03.json`
+Complete staged branch-local patch set:
+- 59 branches;
+- 115 content-file operations;
+- 59 `CANONICAL_NAMES_LOCK.sha256` refreshes;
+- 174 guarded file operations total;
+- exact expected blob SHA per operation;
+- historical supersession handling for APL+Deutsch, BASIC+ਪੰਜਾਬੀ and Python+Türkçe;
+- current-rule override for Shakespeare-Programming-Language+മലയാളം;
+- JavaScript+Interlingue multi-locale handling with admitted values only and no invented Russian/French standard forms.
+
+This machine artifact supersedes the earlier source-only patch manifest **for application purposes**. The source-only manifest remains useful provenance but must not be applied by itself.
+
+No implementation branch was modified during preparation.
