@@ -109,7 +109,7 @@
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
   <h2>Nama</h2>
   <p>Ada 17 nama kotlet kanonis dan 47 nama bulan kanonis. Dalam satu tahun, setiap nama muncul paling banyak sekali di keluarganya.</p>
-  <p>Identitas nama bersifat kanonis dan semantis; bukan hasil pemungutan suara antara ejaan, terjemahan, atau implementasi yang berbeda. Untuk makna nama, Megillah bahasa Ibrani adalah sumber tertinggi; terjemahan dan transliterasi hanyalah lapisan penyajian.</p>
+  <p>Identitas nama bersifat kanonis dan semantis; bukan hasil pemungutan suara antara ejaan, terjemahan, atau implementasi yang berbeda. Korpus kanonis menentukan entitas nama periode dan bentuk bahasa mana yang kanonis atau baku. Edisi kanonis Megillah tidak memiliki hierarki satu sama lain. Penerjemahan atau alih aksara tidak mengubah identitas entitas; namun, suatu bentuk bahasa dapat menjadi bentuk baku jika secara eksplisit diakui dalam korpus atau tercakup dalam kaidah bahasa kanonis yang diadopsi di dalamnya.</p>
   <p>Nama juga bukan kode tersembunyi untuk panjang. Tidak ada nama kotlet atau bulan tertentu yang dengan sendirinya membuat unit itu lebih panjang atau lebih pendek.</p><hr>
 </section>
 
@@ -228,13 +228,13 @@
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
   <h2>Kalender cetak dan perhitungan manual</h2>
   <p>Kalender Pastafari dapat dicetak; kita hanya perlu menyatakan untuk hari kerja mana kalender itu dihitung. Kalender seperti itu menunjukkan struktur waktu dari sudut pandang hari tersebut; ketika hari kerja berubah, kalender baru mungkin diperlukan. Jadi printer tetap punya peran.</p>
-  <p>Semuanya juga dapat dihitung dengan tangan karena spesifikasinya lengkap dan deterministik: hitung penghitung masukan, jalankan 7 tetes tersembunyi dan 46 tetes terlihat, perbarui enam mangkuk, lakukan 12 pengadukan akhir, hasilkan jawaban, bangun gerbang, pilih tahun dan kotlet, lakukan pilihan kombinatorial, pilih nama, lalu anyam bulan-bulannya.</p>
+  <p>Semuanya juga dapat dihitung dengan tangan. Algoritme diskret kalender bersifat deterministik dan didefinisikan secara eksplisit. Konversi dari suatu saat fisik ke hari Pastafari saat ini menggunakan model astronomi dalam implementasi; profil numerik astronominya sendiri belum kanonis. Untuk menghitungnya, hitung penghitung masukan, jalankan 7 tetes tersembunyi dan 46 tetes terlihat, perbarui enam mangkuk, lakukan 12 pengadukan akhir, hasilkan jawaban, bangun gerbang, pilih tahun dan kotlet, lakukan pilihan kombinatorial, pilih nama, lalu anyam bulan-bulannya.</p>
   <p>Sebagai gantinya, Anda tidak perlu mengingat bahwa Februari kadang memiliki 28 hari dan kadang 29.</p><hr>
 </section>
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Lalu apa itu Seer?</h2>
-  <p>Di samping implementasi kanonis ada mesin cepat bernama <strong>Pastafarian Calendar Seer</strong>. Seer bukan sumber otoritas: Megillah menetapkan aturan, dan perhitungan kanonis menghasilkan tanggal menurut aturan tersebut. Jika Seer tidak cocok dengan perhitungan kanonis yang benar, Seer-lah yang salah.</p>
+  <p>Di samping algoritme kanonis, ada mesin cepat bernama <strong>Pastafarian Calendar Seer</strong>. Seer bukan otoritas kanonis. Korpus kanonis adalah sumber yang berwenang untuk konten yang mengikat. Implementasi standar menjalankan algoritme kanonis melalui seluruh tahapnya; Seer sendiri bukan implementasi standar. Jika Seer menghasilkan jawaban yang bertentangan dengan hasil yang diwajibkan oleh korpus kanonis, Seer keliru.</p>
   <p>Tugasnya adalah menjalankan pertanyaan yang sama dengan cepat dan dalam bentuk yang mudah diintegrasikan ke produk.</p>
   <p>Dalam verifikasi langsung yang dilakukan pada 21 September 2026, Seer antara lain mencakup kueri tanggal dan “sekarang”, pemrosesan kelompok, rentang hari, konversi balik dari tanggal Pastafari ke hari yang ditanyakan, pengambilan struktur tahun, penentuan hari kerja aktif, Node API, klien peramban/HTTP, CLI, layanan HTTP v1, kontrak OpenAPI 3.1, implementasi asli dan paket distribusi, serta penerapan kontainer yang telah diverifikasi.</p>
   <p>Seer memiliki API publik. Ada kontrak HTTP v1 yang eksplisit dan stabil dengan titik akhir untuk <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, hari kerja, <code>metadata</code>, <code>locales</code>, dan <code>status</code>.</p>
