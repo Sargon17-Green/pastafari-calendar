@@ -109,7 +109,7 @@
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
   <h2>Pavadinimai</h2>
   <p>Yra 17 kanoninių kotletų pavadinimų ir 47 kanoniniai mėnesių pavadinimai. Tais pačiais metais kiekvienas pavadinimas savo grupėje pasirodo daugiausia vieną kartą.</p>
-  <p>Pavadinimo tapatybė yra kanoninė ir semantinė; ji nėra balsavimo tarp skirtingų rašybų, vertimų ar įgyvendinimų rezultatas. Pavadinimų reikšmės klausimu aukščiausią autoritetą turi hebrajiška Megillah; vertimai ir transliteracijos tėra pateikimo sluoksniai.</p>
+  <p>Pavadinimo tapatybė yra kanoninė ir semantinė, o ne skirtingų rašybų, vertimų ar įgyvendinimų balsavimo rezultatas. Kanoninis korpusas nustato, kurios kalendorinių laikotarpių pavadinimų esybės ir kalbinės formos yra kanoninės arba norminės; kanoninės Megillah laidos tarpusavyje nėra hierarchizuotos. Vertimas ar transliteracija nekeičia esybės tapatybės, tačiau kalbinė forma gali būti norminė, jei ji aiškiai įtraukta į korpusą arba jai taikoma jame priimta kanoninė kalbos taisyklė.</p>
   <p>Pavadinimas taip pat nėra paslėptas ilgio kodas. Joks konkretus kotleto ar mėnesio pavadinimas savaime nepadaro to vieneto ilgesnio ar trumpesnio.</p><hr>
 </section>
 
@@ -227,13 +227,13 @@
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
   <h2>Spausdintas kalendorius ir skaičiavimas ranka</h2>
   <p>Pastafari kalendorių galima spausdinti; tereikia nurodyti, kokiai veikimo dienai jis apskaičiuotas. Toks kalendorius rodo laiko struktūrą iš tos dienos perspektyvos; veikimo dienai pasikeitus gali prireikti naujo kalendoriaus. Taigi spausdintuvas vis dar turi ką veikti.</p>
-  <p>Viską galima apskaičiuoti ir ranka, nes specifikacija yra išsami ir deterministinė: apskaičiuokite įvesties skaitiklius, atlikite 7 paslėptus ir 46 matomus lašus, atnaujinkite šešis dubenis, atlikite 12 galutinių maišymų, sugeneruokite atsakymus, sudarykite vartus, parinkite metus ir kotletus, atlikite kombinatorinius pasirinkimus, parinkite pavadinimus, o tada supinkite mėnesius.</p>
+  <p>Viską galima apskaičiuoti ir ranka, nes kalendoriaus diskretusis algoritmas yra deterministinis ir aiškiai apibrėžtas. Fiziniam momentui konvertuoti į Pastafari dieną šiuo metu naudojamas įgyvendinimo astronominis modelis; pats skaitinis astronominis profilis dar nėra kanoninis: apskaičiuokite įvesties skaitiklius, atlikite 7 paslėptus ir 46 matomus lašus, atnaujinkite šešis dubenis, atlikite 12 galutinių maišymų, sugeneruokite atsakymus, sudarykite vartus, parinkite metus ir kotletus, atlikite kombinatorinius pasirinkimus, parinkite pavadinimus, o tada supinkite mėnesius.</p>
   <p>Mainais nereikia prisiminti, kad vasaris kartais turi 28, o kartais 29 dienas.</p><hr>
 </section>
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>O kas yra Seer?</h2>
-  <p>Šalia kanoninio įgyvendinimo yra greitas engine, vadinamas <strong>Pastafarian Calendar Seer</strong>. Seer nėra autoriteto šaltinis: Megillah nustato taisykles, o kanoninis skaičiavimas pagal jas apskaičiuoja datą. Jei Seer nesutampa su teisingu kanoniniu skaičiavimu, klysta Seer.</p>
+  <p>Šalia kanoninio algoritmo veikia greitas variklis <strong>Pastafarian Calendar Seer</strong>. Seer nėra kanoninis autoritetas: privalomą kanoninį turinį nustato kanoninis korpusas. Standartinis įgyvendinimas vykdo kanoninį algoritmą per visus jo etapus, tačiau pats Seer nėra standartinis įgyvendinimas. Jei Seer pateikia rezultatą, prieštaraujantį kanoninio korpuso reikalaujamam rezultatui, Seer klysta.</p>
   <p>Jo paskirtis — greitai vykdyti tas pačias užklausas ir pateikti rezultatą forma, patogia integruoti į produktus.</p>
   <p>2026 m. rugsėjo 21 d. atliktos tiesioginės patikros metu Seer, be kita ko, apėmė <code>date</code> ir <code>now</code> užklausas, <code>batch</code>, dienų intervalus, atvirkštinį konvertavimą iš Pastafari datos į užklaustą dieną, metų struktūros gavimą, aktyvios veikimo dienos nustatymą, Node API, naršyklės/HTTP klientą, CLI, HTTP v1 paslaugą, OpenAPI 3.1 sutartį, savąsias įgyvendinimo versijas ir platinimo paketus bei patikrintą konteinerio diegimą.</p>
   <p>Seer turi viešą API. Yra aiški ir stabili HTTP v1 sutartis su galiniais taškais <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, veikimo dienai, <code>metadata</code>, <code>locales</code> ir <code>status</code>.</p>
