@@ -455,3 +455,22 @@ Protected-repository PRs:
 - App PR #46 — terminology-only removal of canonical authority from the current Venus model and Kisurra fallback coordinate
 
 The public completeness sentence, numerical astronomy behavior, FSM theology/origin and canonical-absence claims remain outside the authorized subset until their own gates close.
+
+
+## 14. Canon publication progress
+
+### `INDEPENDENT_LANGUAGE_FORM_POSTAPPLY_REPLAY_2026-10-03.json`
+Post-apply verification of the 59 language-form witnesses:
+- 59/59 PASS;
+- adopted source form present;
+- SHA-256 lock entries recomputed and matched;
+- protected default-branch witness verified on its PR candidate.
+
+### `CANON_PUBLICATION_PROGRESS_CHECKPOINT_2026-10-03.md`
+Current safe continuation point after authorized publication work:
+- Hebrew /about/ closed authority/completeness changes published;
+- Seer authority + English/Hebrew adopted name catalogs merged;
+- independent language-form propagation verified;
+- 71-locale bounded semantic rollout status;
+- exact blockers for App PR #46 and frozen Pastafarian-Calendar PR #16;
+- whole-corpus/Gospel gaps kept separate from executable work.
