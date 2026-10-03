@@ -199,6 +199,29 @@
         "all 60 branches as a mass code rewrite"
       ],
       "rule": "Apply branch-local deltas only after exact corpus mapping; do not merge branches into main."
+    },
+    {
+      "id": "INDEPENDENT.CUTLET8_CANONICAL_FORM_PROPAGATION",
+      "target": "Sargon17-Green/Pastafarian-Calendar — 59 live catalog witnesses",
+      "status": "STAGED_NOT_APPLIED",
+      "canonical_change": "cutlet canonical index 8 only",
+      "invalidates": [
+        "branch-local source-language catalog focused tests",
+        "current-facing docs/tests that duplicate the old cutlet-8 form",
+        "generated artifacts derived from the authoritative catalog source where present"
+      ],
+      "does_not_invalidate": [
+        "canonicalIndex assignments",
+        "the other 63 name labels per language absent a new finding",
+        "calendar arithmetic or Sauce",
+        "independent branch history",
+        "other branches through merge"
+      ],
+      "apply_guard": "Require exact source blob from INDEPENDENT_LANGUAGE_FORM_PATCH_MANIFEST_2026-10-03.json; on mismatch stop and re-audit.",
+      "no_patch_branches": [
+        "Dart+עברית",
+        "x86-64-Assembly+ϯⲙⲉⲧⲣⲉⲙⲛ̀ⲭⲏⲙⲓ"
+      ]
     }
   ]
 }
