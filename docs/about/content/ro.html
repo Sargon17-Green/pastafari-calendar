@@ -93,7 +93,7 @@
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
   <h2>Nume</h2>
   <p>Există 17 nume canonice de șnițele și 47 de nume canonice de luni. Într-un an, fiecare nume apare cel mult o dată în familia sa.</p>
-  <p>Identitatea numelui este canonică și semantică, nu rezultatul unui vot între ortografii, traduceri sau implementări. Pentru sensul numelor, Megillah în ebraică este autoritatea supremă; traducerea și transliterarea țin de stratul de prezentare.</p>
+  <p>Identitatea numelui este canonică și semantică, nu rezultatul unui vot între ortografii, traduceri sau implementări. Corpusul canonic stabilește care entități desemnate de numele perioadelor și care forme lingvistice sunt canonice sau standard. Edițiile canonice ale Megillah nu au între ele o ierarhie. Traducerea sau transliterarea nu schimbă identitatea entității; totuși, o formă lingvistică poate fi ea însăși standard dacă este admisă explicit de corpus sau este acoperită de o regulă lingvistică canonică adoptată în corpus.</p>
   <p>Numele nu este nici un cod ascuns al lungimii: niciun nume de șnițel sau de lună nu impune, prin el însuși, o lungime anume.</p><hr>
 </section>
 <section class="about-section" id="month-day-pairs" data-toc-section data-toc-level="2">
@@ -179,12 +179,12 @@
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
   <h2>Calendar tipărit și calcul manual</h2>
   <p>Un calendar pastafarian poate fi tipărit, cu condiția să se indice ziua de lucru pentru care a fost calculat. El arată structura timpului din perspectiva acelei zile; când ziua de lucru se schimbă, poate fi nevoie de un calendar nou. Imprimanta își păstrează astfel utilitatea.</p>
-  <p>Totul se poate calcula și manual, fiindcă specificația este completă și deterministă: se calculează contoarele de intrare, se execută 7 picături ascunse și 46 vizibile, se actualizează șase boluri, se fac 12 amestecări finale, se generează răspunsurile, se construiesc porțile, se aleg anii și șnițelele, se execută selecțiile combinatorii, se aleg numele și se întrețes lunile.</p>
+  <p>Totul se poate calcula și manual: algoritmul discret al calendarului este determinist și definit explicit. Conversia unui moment fizic într-o zi pastafariană folosește în prezent un model astronomic al implementării; profilul numeric astronomic în sine nu este încă canonic. Se calculează contoarele de intrare, se execută 7 picături ascunse și 46 vizibile, se actualizează șase boluri, se fac 12 amestecări finale, se generează răspunsurile, se construiesc porțile, se aleg anii și șnițelele, se execută selecțiile combinatorii, se aleg numele și se întrețes lunile.</p>
   <p>În schimb, nu mai trebuie ținut minte că februarie are uneori 28 de zile și alteori 29.</p><hr>
 </section>
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Și ce este Seer?</h2>
-  <p>Pe lângă implementarea canonică există un motor rapid numit <strong>Pastafarian Calendar Seer</strong>. Seer nu este o sursă de autoritate: Megillah stabilește regulile, iar calculul canonic produce data conform acelor reguli. Dacă Seer contrazice un calcul canonic corect, Seer greșește.</p>
+  <p>Pe lângă algoritmul canonic, există un motor rapid numit <strong>Pastafarian Calendar Seer</strong>. Seer nu este o autoritate canonică; corpusul canonic este autoritatea pentru conținutul canonic și obligatoriu. O implementare standard execută algoritmul canonic în toate etapele sale; Seer însuși nu este o implementare standard. Dacă Seer returnează un rezultat care contrazice rezultatul cerut de corpusul canonic, Seer greșește.</p>
   <p>Rolul lui este să execute aceleași interogări rapid și într-o formă ușor de integrat în produse.</p>
   <p>În verificarea live făcută la 21 septembrie 2026, Seer includea, printre altele, interogări de dată și „acum”, batch, intervale de zile, conversie inversă din dată pastafariană în zi-țintă, obținerea structurii anului, rezolvarea zilei de lucru active, Node API, client de browser/HTTP, CLI, serviciu HTTP v1, contract OpenAPI 3.1, implementări native și pachete de distribuție, precum și o implementare în container verificată.</p>
   <p>Seer are un API public. Există un contract HTTP v1 explicit și stabil, cu endpointuri pentru <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, ziua de lucru, <code>metadata</code>, <code>locales</code> și <code>status</code>.</p>
