@@ -109,7 +109,7 @@
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
   <h2>Adlar</h2>
   <p>17 kanonik kotlet adı və 47 kanonik ay adı var. Bir il ərzində hər ad öz qrupunda ən çox bir dəfə görünür.</p>
-  <p>Adın kimliyi kanonik və semantikdir; müxtəlif yazılışlar, tərcümələr və ya reallaşdırmalar arasında səsvermənin nəticəsi deyil. Adların mənası barədə ivrit dilindəki Megillah ən yüksək səlahiyyətə malikdir; tərcümə və transliterasiya sadəcə göstərim qatlarıdır.</p>
+  <p>Kanonik korpus hansı ad vahidlərinin və dil formalarının kanonik və ya standart olduğunu müəyyən edir. Megillanın kanonik nəşrləri arasında iyerarxiya yoxdur. Tərcümə və ya transliterasiya ad vahidinin kimliyini dəyişmir; bununla belə, dil forması korpusda açıq şəkildə qəbul edilibsə və ya korpusda qəbul edilmiş kanonik qayda ilə əhatə olunursa, özü standart forma ola bilər.</p>
   <p>Ad uzunluğun gizli kodu da deyil. Müəyyən kotlet və ya ay adı öz-özlüyündə həmin vahidi uzun və ya qısa etmir.</p><hr>
 </section>
 
@@ -227,13 +227,13 @@
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
   <h2>Çap edilmiş təqvim və əl ilə hesablama</h2>
   <p>Pastafari təqvimini çap etmək olar; sadəcə onun hansı əməl günü üçün hesablandığını qeyd etmək lazımdır. Belə təqvim zamanı həmin günün baxış bucağından göstərir; əməl günü dəyişəndə yeni təqvim lazım ola bilər. Deməli, printer hələ işsiz qalmır.</p>
-  <p>Spesifikasiya tam və deterministik olduğuna görə hər şeyi əl ilə də hesablamaq olar: giriş sayğaclarını hesablayın, 7 gizli və 46 görünən damcını işlədin, altı kasanı yeniləyin, 12 son qarışdırmanı yerinə yetirin, cavabları çıxarın, qapıları qurun, illəri və kotletləri seçin, kombinator seçimi həyata keçirin, adları seçin və sonra ayları hörün.</p>
+  <p>Təqvimin diskret alqoritmi deterministikdir və açıq şəkildə müəyyən edilib. Fiziki andan Pastafari gününə çevirmə hazırda reallaşdırmanın astronomik modelindən istifadə edir; astronomik ədədi profilin özü isə hələ kanonik deyil. Diskret alqoritmə əsasən hesablamanı əl ilə də aparmaq olar: giriş sayğaclarını hesablayın, 7 gizli və 46 görünən damcını işlədin, altı kasanı yeniləyin, 12 son qarışdırmanı yerinə yetirin, cavabları çıxarın, qapıları qurun, illəri və kotletləri seçin, kombinator seçimi həyata keçirin, adları seçin və sonra ayları hörün.</p>
   <p>Əvəzində fevralın nə vaxt 28, nə vaxt 29 gün olduğunu yadda saxlamağa ehtiyac yoxdur.</p><hr>
 </section>
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Bəs Seer nədir?</h2>
-  <p>Kanonik hesablamanın yanında <strong>Pastafarian Calendar Seer</strong> adlı sürətli mühərrik də var. Megillah qaydaları müəyyən edir, kanonik hesablama isə həmin qaydalara əsasən tarixi hesablayır; Seer də eyni cavabı qaytarmalıdır. Seer düzgün kanonik hesablamadan fərqli cavab verirsə, səhv Seer-dədir.</p>
+  <p>Kanonik alqoritmlə yanaşı <strong>Pastafarian Calendar Seer</strong> adlı sürətli mühərrik də mövcuddur, lakin Seer kanonik səlahiyyət sahibi deyil. Məcburi məzmun üzrə səlahiyyətli mənbə kanonik korpusdur. Standart reallaşdırma kanonik alqoritmi bütün kanonik mərhələlərdən keçirərək icra edir; Seer özü standart reallaşdırma deyil. Seer-in nəticəsi kanonik korpusun tələb etdiyi nəticə ilə ziddiyyət təşkil edərsə, səhv Seer-dədir.</p>
   <p>Onun işi eyni sorğuları sürətlə yerinə yetirmək və nəticəni məhsullara asanlıqla inteqrasiya edilə bilən formada qaytarmaqdır.</p>
   <p>21 sentyabr 2026-cı ildə aparılmış canlı yoxlamada Seer-in imkanları arasında <code>date</code> və <code>now</code> sorğuları, <code>batch</code>, gün aralığı, Pastafari tarixindən hədəf günə tərs çevirmə, il quruluşunun alınması, aktiv əməl gününün müəyyənləşdirilməsi, Node API-si, brauzer/HTTP müştərisi, CLI, HTTP v1 xidməti, OpenAPI 3.1 müqaviləsi, yerli reallaşdırmalar və paylama paketi, həmçinin yoxlanmış konteyner yerləşdirməsi var idi.</p>
   <p>Seer-in ictimai API-si var və <code>date</code>, <code>range</code>, <code>batch</code>, <code>year</code>, <code>reverse</code>, əməl günü, metadata, locales və status üçün son nöqtələri əhatə edən aydın, sabit HTTP v1 müqaviləsi mövcuddur.</p>
