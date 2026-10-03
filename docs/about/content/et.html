@@ -109,7 +109,7 @@
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
   <h2>Nimed</h2>
   <p>On 17 kanoonilist kotletinime ja 47 kanoonilist kuunime. Ühe aasta jooksul ilmub iga nimi oma rühmas kõige rohkem ühe korra.</p>
-  <p>Nime identiteet on kanooniline ja semantiline; see ei ole hääletustulemus erinevate kirjapiltide, tõlgete või teostuste vahel. Nimede tähenduse küsimuses on kõrgeim autoriteet heebreakeelsel Megillah'l; tõlked ja transliteratsioonid on vaid kuvakihid.</p>
+  <p>Nime identiteet on kanooniline ja semantiline; see ei ole hääletustulemus erinevate kirjapiltide, tõlgete või teostuste vahel. Kanooniline korpus määrab, millised üksused ja keelelised vormid on kanoonilised või standarditud; kanooniliste Megillah väljaannete vahel puudub hierarhia. Tõlge või transliteratsioon ei muuda üksuse identiteeti, kuid keeleline vorm võib ise olla standardne, kui korpus on selle sõnaselgelt vastu võtnud või kui seda hõlmab korpuses vastu võetud kanooniline reegel.</p>
   <p>Nimi ei ole ka varjatud pikkusekood. Konkreetse kotleti või kuu nimi ei muuda seda üksust iseenesest pikemaks ega lühemaks.</p><hr>
 </section>
 
@@ -227,13 +227,13 @@
 <section class="about-section" id="printed-calendar" data-toc-section data-toc-level="2">
   <h2>Trükitud kalender ja käsitsi arvutamine</h2>
   <p>Pastafari kalendri võib välja printida; vaja on ainult märkida, millise toimingupäeva jaoks see arvutati. Selline kalender näitab aja struktuuri selle päeva vaatepunktist; toimingupäeva muutudes võib olla vaja uut kalendrit. Seega on printeril endiselt tööd.</p>
-  <p>Kuna spetsifikatsioon on täielik ja deterministlik, saab kõike arvutada ka käsitsi: arvutage input counter'id, läbige 7 peidetud ja 46 nähtavat tilka, update'ige kuus kaussi, tehke 12 lõplikku segamist, koostage vastused, ehitage väravad, valige aastad ja kotletid, tehke combinatorial selection, valige nimed ja seejärel põimige kuud.</p>
+  <p>Kalendri diskreetne algoritm on deterministlik ja selgesõnaliselt määratletud. Füüsilise hetke teisendamisel pastafari päevaks kasutatakse praegu teostuse astronoomilist mudelit; arvuline astronoomiline profiil ise ei ole veel kanooniline. Kõike saab arvutada ka käsitsi: arvutage input counter'id, läbige 7 peidetud ja 46 nähtavat tilka, update'ige kuus kaussi, tehke 12 lõplikku segamist, koostage vastused, ehitage väravad, valige aastad ja kotletid, tehke combinatorial selection, valige nimed ja seejärel põimige kuud.</p>
   <p>Vastutasuks ei pea meeles pidama, millal veebruaril on 28 ja millal 29 päeva.</p><hr>
 </section>
 
 <section class="about-section" id="seer" data-toc-section data-toc-level="2">
   <h2>Mis asi on siis Seer?</h2>
-  <p>Kanoonilise teostuse kõrval on kiire arvutusmootor nimega <strong>Pastafarian Calendar Seer</strong>. Megillah määrab reeglid ja kanooniline arvutus arvutab nende järgi kuupäeva; Seer peaks tagastama sama vastuse. Kui Seer annab korrektsest kanoonilisest arvutusest erineva vastuse, eksib Seer.</p>
+  <p>Kanoonilise algoritmi kõrval on kiire arvutusmootor nimega <strong>Pastafarian Calendar Seer</strong>. Seer ei ole kanooniline autoriteet; siduva sisu autoriteet on kanooniline korpus. Standardne teostus rakendab kanoonilist algoritmi kõigis selle etappides. Seer ise ei ole standardne teostus; kui Seer tagastab tulemuse, mis on vastuolus kanoonilise korpuse nõutava tulemusega, on Seer vale.</p>
   <p>Selle ülesanne on käivitada samad päringud kiiresti ja tagastada tulemus kujul, mida on lihtne toodetesse integreerida.</p>
   <p>21. septembril 2026 tehtud reaalajas kontrolli järgi toetab Seer muu hulgas päringuid <code>date</code> ja <code>now</code>, hulgipäringuid, päevavahemikke, pöördteisendust pastafari kuupäevast sihtpäevaks, aasta struktuuri hankimist ja aktiivse toimingupäeva leidmist ning Node API-t, brauseri/HTTP klienti, CLI-d, HTTP v1 teenust, OpenAPI 3.1 lepingut, natiivseid teostusi, levipakette ja kontrollitud konteinerjuurutust.</p>
   <p>Seeril on avalik API ning selge ja stabiilne HTTP v1 leping. Selle otspunktid hõlmavad <code>date</code>-, <code>range</code>-, <code>batch</code>-, <code>year</code>- ja <code>reverse</code>-päringuid ning toimingupäeva, metaandmete, lokaatide ja olekuga seotud päringuid.</p>
