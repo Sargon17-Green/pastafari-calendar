@@ -132,9 +132,14 @@ def make_native(repo,d,code,tag):
     raw=d/'native-prompt-translation.txt'
     if copilot(req,repo,raw,d/'native-prompt-translator-session.md',900)!=0: return False
     text=raw.read_text(encoding='utf-8')
-    ok='NATIVE_QA_RESULT: PASS' in text and 'NATIVE_QA_RESULT: FAIL' in text
-    if ok:(d/'native-review-prompt.txt').write_text(text,encoding='utf-8')
-    return ok
+    # The natural-language translator may copy only one of the two immutable
+    # verdict options. Keep its translated prose, but install both machine
+    # tokens mechanically so the reviewer contract never depends on that copy step.
+    tokens={'NATIVE_QA_RESULT: PASS','NATIVE_QA_RESULT: FAIL'}
+    lines=[line for line in text.splitlines() if line.strip() not in tokens]
+    text='\n'.join(lines).rstrip()+'\nNATIVE_QA_RESULT: PASS\nNATIVE_QA_RESULT: FAIL\n'
+    (d/'native-review-prompt.txt').write_text(text,encoding='utf-8')
+    return True
 
 def review(repo,d,cycle,kind,code,tag):
     if kind=='native':
