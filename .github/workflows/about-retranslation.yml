@@ -93,12 +93,7 @@ jobs:
               --max-cycles 3
             INITIAL_RC=$?
             set -e
-            if python - "$STAGING/status.json" <<'PY'
-import json, pathlib, sys
-p=pathlib.Path(sys.argv[1])
-raise SystemExit(0 if p.exists() and json.loads(p.read_text(encoding="utf-8")).get("publishable") else 1)
-PY
-            then
+            if python -c 'import json,pathlib,sys; p=pathlib.Path(sys.argv[1]); raise SystemExit(0 if p.exists() and json.loads(p.read_text(encoding="utf-8")).get("publishable") else 1)' "$STAGING/status.json"; then
               exit 0
             fi
             echo "Initial three-cycle pass did not converge (exit $INITIAL_RC); continuing from staged candidate."
