@@ -260,7 +260,7 @@ def main() -> int:
     # Translate the native-review protocol once, then reuse the target-language prompt for every repair cycle.
     native_prompt_path = outdir / "native-review-prompt.md"
     prompt_session = outdir / "native-review-prompt-translation-session.md"
-    rc = run_copilot(prompt_translation_request(tag), native_prompt_path, prompt_session, tools=False)
+    rc = run_copilot(prompt_translation_request(tag), native_prompt_path, prompt_session)
     if rc != 0 or not native_prompt_path.exists() or native_prompt_path.stat().st_size == 0:
         write_status(outdir, {"code": code, "tag": tag, "state": "FAIL", "stage": "PROMPT_TRANSLATION"})
         return 2
