@@ -57,15 +57,16 @@ def shape(text: str) -> ShapeParser:
     return p
 
 
-def copilot(prompt: str, out: Path, share: Path | None = None, timeout: int = 1800) -> int:
+def copilot(prompt: str, out: Path, share: Path | None = None, tools: bool = True, timeout: int = 1800) -> int:
     cmd = [
         "copilot",
         "--no-custom-instructions",
         "--no-ask-user",
         "--no-color",
-        "--allow-tool", READ_TOOLS,
-        "-s",
     ]
+    if tools:
+        cmd += ["--allow-tool", READ_TOOLS]
+    cmd += ["-s"]
     if share is not None:
         cmd.append(f"--share={share}")
     proc = subprocess.run(
@@ -81,7 +82,6 @@ def copilot(prompt: str, out: Path, share: Path | None = None, timeout: int = 18
     out.write_text(proc.stdout, encoding="utf-8")
     out.with_suffix(out.suffix + ".stderr.log").write_text(proc.stderr, encoding="utf-8")
     return proc.returncode
-
 
 def exact_verdict(path: Path, token: str) -> str | None:
     lines = [line.strip() for line in path.read_text(encoding="utf-8", errors="replace").splitlines()]
