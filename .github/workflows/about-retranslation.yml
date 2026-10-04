@@ -69,13 +69,45 @@ jobs:
       - name: Run from-scratch translation and dual QA
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          CODE: ${{ matrix.locale.code }}
+          TAG: ${{ matrix.locale.tag }}
+          DIRECTION: ${{ matrix.locale.dir }}
+        shell: bash
         run: |
-          python scripts/about-retranslation-worker.py \
-            --locale "${{ matrix.locale.code }}" \
-            --tag "${{ matrix.locale.tag }}" \
-            --dir "${{ matrix.locale.dir }}" \
-            --resume \
-            --max-cycles 8
+          set -euo pipefail
+          STAGING="artifacts/about-retranslation-2026-10-04/staging/$CODE"
+          if [ -s "$STAGING/about.html" ] && [ -s "$STAGING/monster.html" ] && [ -s "$STAGING/native-review-prompt.md" ]; then
+            echo "Existing candidate found; continuing QA/repair cycles."
+            python scripts/about-retranslation-resume.py \
+              --locale "$CODE" \
+              --tag "$TAG" \
+              --dir "$DIRECTION" \
+              --max-cycle 8
+          else
+            echo "No candidate found; creating a fresh translation directly from Hebrew."
+            set +e
+            python scripts/about-retranslation-worker.py \
+              --locale "$CODE" \
+              --tag "$TAG" \
+              --dir "$DIRECTION" \
+              --max-cycles 3
+            INITIAL_RC=$?
+            set -e
+            if python - "$STAGING/status.json" <<'PY'
+import json, pathlib, sys
+p=pathlib.Path(sys.argv[1])
+raise SystemExit(0 if p.exists() and json.loads(p.read_text(encoding="utf-8")).get("publishable") else 1)
+PY
+            then
+              exit 0
+            fi
+            echo "Initial three-cycle pass did not converge (exit $INITIAL_RC); continuing from staged candidate."
+            python scripts/about-retranslation-resume.py \
+              --locale "$CODE" \
+              --tag "$TAG" \
+              --dir "$DIRECTION" \
+              --max-cycle 8
+          fi
       - name: Upload immutable locale evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
