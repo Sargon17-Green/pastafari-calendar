@@ -74,7 +74,8 @@ jobs:
             --locale "${{ matrix.locale.code }}" \
             --tag "${{ matrix.locale.tag }}" \
             --dir "${{ matrix.locale.dir }}" \
-            --max-cycles 3
+            --resume \
+            --max-cycles 8
       - name: Upload immutable locale evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
