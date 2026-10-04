@@ -186,10 +186,7 @@ The desired voice is clear public explanatory prose. Straight calendar mechanics
 
 Report every real finding with file, section/name entry, reason, and an exact suggested replacement in {{TAG}} when practical. If there is any substantive linguistic problem, fail.
 
-End with exactly one machine-readable line:
-NATIVE_QA_RESULT: PASS
-or
-NATIVE_QA_RESULT: FAIL
+At the very end, choose exactly one final verdict. Choose PASS only if no substantive linguistic problem remains; otherwise choose FAIL. The workflow will append the two exact machine-readable choices to this prompt after translation, and you must copy exactly one of those two lines as the final line of your report.
 """
 
 def prompt_translation_request(tag: str) -> str:
@@ -197,7 +194,7 @@ def prompt_translation_request(tag: str) -> str:
     return textwrap.dedent(f"""
 Translate the reviewer protocol below into the natural language of BCP 47 locale {tag}. This translated protocol will be the ONLY user prompt in a fresh reviewer session.
 
-All ordinary instruction prose must be in the target language. Preserve repository paths, placeholders {{CODE}}, technical tokens, and the exact machine-readable verdict lines NATIVE_QA_RESULT: PASS and NATIVE_QA_RESULT: FAIL. Do not add commentary, a preface, code fences, or translator notes. Output only the translated reviewer prompt.
+All ordinary instruction prose must be in the target language. Preserve repository paths, placeholders {{CODE}}, and technical tokens. Do not invent a verdict and do not add commentary, a preface, code fences, or translator notes. Output only the translated reviewer prompt body.
 
 --- PROTOCOL ---
 {source}
@@ -306,8 +303,12 @@ def main() -> int:
         return 2
     native_prompt_text = native_prompt_path.read_text(encoding="utf-8")
     native_prompt_text = native_prompt_text.replace("{{CODE}}", code).replace("{{TAG}}", tag)
+    # Machine tokens are protocol, not translatable prose. Remove any eager choice the prompt-translator
+    # may have emitted, then append both choices mechanically so every locale receives an intact protocol.
+    native_prompt_text = re.sub(r"(?m)^\\s*NATIVE_QA_RESULT:\\s*(?:PASS|FAIL)\\s*$", "", native_prompt_text).rstrip()
+    native_prompt_text += "\\n\\nNATIVE_QA_RESULT: PASS\\nNATIVE_QA_RESULT: FAIL\\n"
     native_prompt_path.write_text(native_prompt_text, encoding="utf-8")
-    if "NATIVE_QA_RESULT: PASS" not in native_prompt_text or "NATIVE_QA_RESULT: FAIL" not in native_prompt_text:
+    if native_prompt_text.count("NATIVE_QA_RESULT: PASS") != 1 or native_prompt_text.count("NATIVE_QA_RESULT: FAIL") != 1:
         write_status(outdir, {"code": code, "tag": tag, "state": "FAIL", "stage": "PROMPT_TRANSLATION_FORMAT"})
         return 2
 
