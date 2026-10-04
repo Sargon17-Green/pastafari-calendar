@@ -6,6 +6,7 @@ import json
 import os
 import re
 import subprocess
+import shutil
 import textwrap
 from html.parser import HTMLParser
 from pathlib import Path
@@ -109,27 +110,39 @@ def normalize_monster(text: str, code: str, tag: str, direction: str) -> str:
     text = text.replace("href='../'", f"href='../?lang={code}'", 1)
     return text
 
-def structural_errors(about: str, monster: str, code: str, tag: str, direction: str) -> list[str]:
+def single_page_structural_errors(value: str, which: str, code: str, tag: str, direction: str) -> list[str]:
     errors = []
-    sa, ca = shape(SOURCE_ABOUT.read_text(encoding="utf-8")), shape(about)
-    sm, cm = shape(SOURCE_MONSTER.read_text(encoding="utf-8")), shape(monster)
-    if sa.events != ca.events:
-        errors.append("About HTML structure differs from Hebrew source")
-    if sa.ids != ca.ids:
-        errors.append("About id sequence differs from Hebrew source")
-    if ca.details != 64:
-        errors.append(f"About expected 64 details elements, got {ca.details}")
-    if sm.events != cm.events:
+    if which == "about":
+        source = shape(SOURCE_ABOUT.read_text(encoding="utf-8"))
+        current = shape(value)
+        if source.events != current.events:
+            errors.append("About HTML structure differs from Hebrew source")
+        if source.ids != current.ids:
+            errors.append("About id sequence differs from Hebrew source")
+        if current.details != 64:
+            errors.append(f"About expected 64 details elements, got {current.details}")
+        if f'href="./monster/{code}.html"' not in value and f"href='./monster/{code}.html'" not in value:
+            errors.append("About does not link to locale-specific monster page")
+        return errors
+
+    source = shape(SOURCE_MONSTER.read_text(encoding="utf-8"))
+    current = shape(value)
+    if source.events != current.events:
         errors.append("Monster HTML structure differs from Hebrew source")
-    if sm.ids != cm.ids:
+    if source.ids != current.ids:
         errors.append("Monster id sequence differs from Hebrew source")
-    if not re.search(rf'<html\s+lang="{re.escape(tag)}"\s+dir="{re.escape(direction)}">', monster, flags=re.I):
+    if not re.search(rf'<html\s+lang="{re.escape(tag)}"\s+dir="{re.escape(direction)}">', value, flags=re.I):
         errors.append("Monster lang/dir metadata is incorrect")
-    if f'href="./monster/{code}.html"' not in about and f"href='./monster/{code}.html'" not in about:
-        errors.append("About does not link to locale-specific monster page")
-    if f'href="../?lang={code}"' not in monster and f"href='../?lang={code}'" not in monster:
+    if f'href="../?lang={code}"' not in value and f"href='../?lang={code}'" not in value:
         errors.append("Monster does not link back to same-locale About page")
     return errors
+
+
+def structural_errors(about: str, monster: str, code: str, tag: str, direction: str) -> list[str]:
+    return (
+        single_page_structural_errors(about, "about", code, tag, direction)
+        + single_page_structural_errors(monster, "monster", code, tag, direction)
+    )
 
 def page_translation_prompt(code: str, tag: str, direction: str, which: str, notes: str = "") -> str:
     source = "docs/about/content/he.html" if which == "about" else "docs/about/monster/index.html"
@@ -259,13 +272,36 @@ No preface, analysis, Markdown fence, or notes.
 
 
 def repair_page(code: str, tag: str, direction: str, which: str, outdir: Path, cycle: int, report_path: Path, gate: str) -> str:
-    raw = outdir / f"{which}-{gate}-repair-{cycle}.txt"
-    session = outdir / f"{which}-{gate}-repair-{cycle}-session.md"
-    rc = run_copilot(repair_page_prompt(code, tag, direction, which, report_path, gate), raw, session)
-    if rc != 0:
-        raise RuntimeError(f"{which} {gate} repair exited {rc}")
-    value = extract_translation(raw.read_text(encoding="utf-8", errors="replace"))
-    return normalize_about(value, code) if which == "about" else normalize_monster(value, code, tag, direction)
+    last_problem = "unknown repair failure"
+    for attempt in range(1, 4):
+        raw = outdir / f"{which}-{gate}-repair-{cycle}-attempt-{attempt}.txt"
+        session = outdir / f"{which}-{gate}-repair-{cycle}-attempt-{attempt}-session.md"
+        prompt = repair_page_prompt(code, tag, direction, which, report_path, gate)
+        if attempt > 1:
+            prompt += (
+                "\n\nIMPORTANT: The previous repair attempt was rejected before installation because "
+                + last_problem
+                + " Preserve the candidate's exact HTML structure. Change reader-facing wording only."
+            )
+        rc = run_copilot(prompt, raw, session)
+        if rc != 0:
+            last_problem = f"Copilot exited {rc}"
+            continue
+        try:
+            value = extract_translation(raw.read_text(encoding="utf-8", errors="replace"))
+        except Exception as exc:
+            last_problem = f"output format was invalid: {exc}"
+            continue
+        value = normalize_about(value, code) if which == "about" else normalize_monster(value, code, tag, direction)
+        errors = single_page_structural_errors(value, which, code, tag, direction)
+        (outdir / f"{which}-{gate}-repair-{cycle}-attempt-{attempt}-structure.json").write_text(
+            json.dumps(errors, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        if not errors:
+            return value
+        last_problem = "; ".join(errors)
+    raise RuntimeError(f"{which} {gate} repair rejected after 3 attempts: {last_problem}")
 
 
 def translate_page(code: str, tag: str, direction: str, which: str, outdir: Path, attempt: int) -> str:
@@ -291,6 +327,10 @@ def main() -> int:
 
     code, tag, direction = args.code, args.tag, args.dir
     outdir = BASE / "staging" / code
+    # Every run is a fresh translation cycle. Never inherit stale candidate or QA evidence
+    # from an earlier pilot committed on the branch.
+    if outdir.exists():
+        shutil.rmtree(outdir)
     outdir.mkdir(parents=True, exist_ok=True)
     write_status(outdir, {"code": code, "tag": tag, "state": "RUNNING", "source": os.environ.get("GITHUB_SHA")})
 
@@ -329,18 +369,14 @@ def main() -> int:
         errors = structural_errors(about, monster, code, tag, direction)
         (outdir / f"structural-{cycle}.json").write_text(json.dumps(errors, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         if errors:
-            report = outdir / f"structural-repair-{cycle}.txt"
-            report.write_text("Structural validation failures:\n- " + "\n- ".join(errors) + "\n", encoding="utf-8")
-            try:
-                about = repair_page(code, tag, direction, "about", outdir, cycle, report, "structural")
-                monster = repair_page(code, tag, direction, "monster", outdir, cycle, report, "structural")
-                (outdir / "about.html").write_text(about, encoding="utf-8")
-                (outdir / "monster.html").write_text(monster, encoding="utf-8")
-            except Exception as exc:
-                (outdir / "worker-error.txt").write_text(str(exc) + "\n", encoding="utf-8")
-                write_status(outdir, {"code": code, "tag": tag, "state": "FAIL", "stage": "STRUCTURAL_REPAIR", "cycle": cycle})
-                return 3
-            continue
+            # Reaching this branch means an invalid page somehow escaped the guarded translation/repair paths.
+            # Fail closed rather than asking an LLM to rewrite markup.
+            (outdir / "worker-error.txt").write_text(
+                "Unexpected structural drift after guarded write:\n- " + "\n- ".join(errors) + "\n",
+                encoding="utf-8",
+            )
+            write_status(outdir, {"code": code, "tag": tag, "state": "FAIL", "stage": "STRUCTURAL_DRIFT", "cycle": cycle})
+            return 3
 
         native_report = outdir / f"native-qa-{cycle}.md"
         native_session = outdir / f"native-qa-{cycle}-session.md"
