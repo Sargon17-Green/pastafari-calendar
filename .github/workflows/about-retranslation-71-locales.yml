@@ -161,9 +161,9 @@ jobs:
               for name in keep:
                   p=src/name
                   if p.exists(): shutil.copy2(p,dst/name)
-              native=sorted(src.glob("native-qa-*.md"))
-              semantic=sorted(src.glob("hebrew-compare-*.md"))
-              structural=sorted(src.glob("structural-*.json"))
+              native=sorted(src.glob("native-qa-[0-9]*.md"))
+              semantic=sorted(src.glob("hebrew-compare-[0-9]*.md"))
+              structural=sorted(src.glob("structural-[0-9]*.json"))
               if native: shutil.copy2(native[-1],dst/"native-qa-final.md")
               if semantic: shutil.copy2(semantic[-1],dst/"hebrew-compare-final.md")
               if structural: shutil.copy2(structural[-1],dst/"structural-final.json")
