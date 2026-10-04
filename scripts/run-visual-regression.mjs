@@ -858,15 +858,16 @@ async function aboutPageSmoke(browser, baseURL, state) {
       assert.equal(await page.locator("html").getAttribute("dir"), "rtl");
       assert.equal(await page.locator("#article-content").getAttribute("lang"), "he");
       assert.equal(await page.locator("#calendar-workspace").count(), 0, "About page must not load calendar UI");
-      assert.ok(await page.locator("#about-toc-list a").count() >= 29, "About page TOC is incomplete");
+      assert.ok(await page.locator("#about-toc-list a").count() >= 15, "Rebuilt About page TOC is incomplete");
       const tocOpen = await page.locator("#about-toc").evaluate((element) => element.open);
       assert.equal(tocOpen, name === "desktop", `About-page TOC default state is wrong for ${name}`);
       await assertNoPageOverflow(page, `about page ${name}`);
       await assertVisibleAndSized(page, [".about-toc", "#article-content", "#site-usage"]);
       const readingWidth = await page.locator("#article-content p").first().evaluate((element) => element.getBoundingClientRect().width);
       assert.ok(readingWidth <= 850, `About-page reading measure is too wide at ${name}: ${readingWidth}px`);
-      const kvOverflow = await page.locator(".about-kv-table-wrap").first().evaluate((element) => element.scrollWidth - element.clientWidth);
-      assert.ok(kvOverflow <= 1, `Key/value table should not require horizontal scrolling at ${name}: ${kvOverflow}px`);
+      assert.equal(await page.locator("#article-content details.about-name-details").count(), 64, "About page must retain all 64 expandable name explanations");
+      const disclosureOverflow = await page.locator("#article-content details.about-name-details").first().evaluate((element) => element.scrollWidth - element.clientWidth);
+      assert.ok(disclosureOverflow <= 1, `Name disclosure should not require horizontal scrolling at ${name}: ${disclosureOverflow}px`);
       state.layoutChecks.push({ page: "about", viewport: name, deepLink: "#day-boundary", result: "PASS" });
     }, state);
   }
