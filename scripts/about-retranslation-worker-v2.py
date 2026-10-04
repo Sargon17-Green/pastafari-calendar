@@ -156,7 +156,7 @@ Semantic source of truth:
 
 Read the complete Hebrew source file. Translate directly from Hebrew into natural, publication-quality {tag}. Do not use English or any other language as a semantic pivot. Do not search for, read, imitate, or repair an older About translation. The article was rebuilt and any older prose is obsolete.
 
-You MAY read {locale} only for already-established target-language UI terminology and canonical localized forms of the 17 cutlet names and 47 month names. Those established name forms control. Preserve the source's dry satire, deliberate absurdity, intentionally unnecessary over-explanations, enthusiastic sales-pitch tone, and the arbitrary Spleen extension instead of rationalizing them.
+You MAY read {locale} only for already-established target-language UI terminology and canonical localized forms of the 17 cutlet names and 47 month names. Those established name forms control. Preserve the source's dry satire, deliberate absurdity, intentionally unnecessary over-explanations, enthusiastic sales-pitch tone, and the arbitrary Spleen extension instead of rationalizing them. The deliberately excessive explanations corresponding to "The Empty Jar" and "The Closed Door" MUST remain conspicuously long and reasoned even though their conclusions are obvious. For name explanations, preserve the exact intended referent but adapt Hebrew-specific homonym disambiguations when the target language does not share the ambiguity; do not mechanically explain that an unambiguous target-language word does not mean an unrelated Hebrew homonym. When the page discusses grammatical gender or pronoun conventions in the target language, make actual pronoun usage elsewhere on the translated page consistent with the convention stated there.
 {page_rules}
 {notes}
 
@@ -177,6 +177,10 @@ Review BOTH complete candidates:
 For established site terminology and canonical localized calendar names, you may inspect docs/i18n/locales/{{CODE}}.js. Do not treat any older About translation as authority and do not review from memory.
 
 This is strict linguistic QA. Actively look for translationese, grammar, syntax, agreement, morphology, spelling, punctuation, typography, unnatural collocations, wrong register, awkward literal Hebrew calques, inconsistent terminology, wrong script, unintended Hebrew or English leakage, bad treatment of names and proper nouns, ambiguity introduced by translation, and humor that stopped working because the wording became stiff or explanatory. Pay special attention to all 64 expandable calendar-name explanations and to the complete penguin appendix.
+
+Two conspicuously long explanations of obvious facts are DELIBERATE: the entries corresponding to "The Empty Jar" and "The Closed Door". Their unnecessary detail is part of the requested joke. Do NOT flag them merely for being obvious, verbose, over-explained, or unnecessary, and do not recommend shortening them. Flag only actual target-language defects while preserving their deliberately elaborate character.
+
+For calendar-name explanations, judge whether the exact intended referent is clear in the target language. A Hebrew-only homonym disambiguation need not be copied literally when the target-language canonical name has no such ambiguity; adapting that note is correct so long as the underlying identity is preserved. Numerical bounds, the Leopard-versus-tiger identity where relevant, and the arbitrary Spleen extension remain substantive content.
 
 The desired voice is clear public explanatory prose. Straight calendar mechanics must remain easy to understand. Satire must remain dry and matter-of-fact, not be rewritten as winking commentary. Do not make the calendar sound more sensible than the source does. Do not modify files.
 
@@ -213,7 +217,7 @@ Candidates:
 
 Also inspect docs/i18n/locales/{code}.js only for established localized UI terms and canonical calendar-name forms.
 
-Compare section by section and name entry by name entry. Find any omission, addition, semantic drift, reversal, softened or rationalized joke, wrong number, wrong bound, wrong formula, wrong date, lost caveat, changed relationship, wrong canonical calendar-name identity, altered Spleen-extension condition, altered 4/9 or 3/5 permitted-bound statement, lost sales-pitch absurdity, or missing/changed detail in the full penguin appendix. The two intentionally over-explained obvious points must remain intentionally over-explained. The "advantages" section must still consist only of disadvantages enthusiastically sold as advantages plus characteristics common to calendars in general; do not accept a newly invented genuine virtue.
+Compare section by section and name entry by name entry. Find any omission, addition, semantic drift, reversal, softened or rationalized joke, wrong number, wrong bound, wrong formula, wrong date, lost caveat, changed relationship, wrong canonical calendar-name identity, altered Spleen-extension condition, altered 4/9 or 3/5 permitted-bound statement, lost sales-pitch absurdity, or missing/changed detail in the full penguin appendix. The two intentionally over-explained obvious points corresponding to "The Empty Jar" and "The Closed Door" must remain intentionally and conspicuously over-explained; do not accept shortening them into ordinary concise glosses. The "advantages" section must still consist only of disadvantages enthusiastically sold as advantages plus characteristics common to calendars in general; do not accept a newly invented genuine virtue. A Hebrew-only homonym clarification in a name explanation may be adapted or omitted when the canonical target-language name has no corresponding ambiguity, provided the exact intended entity or referent remains unambiguous. Do not mistake such localization for semantic loss.
 
 Do not modify files. Report every substantive mismatch with source section, candidate section, explanation, and exact correction guidance. If any substantive mismatch exists, fail.
 
@@ -223,23 +227,59 @@ or
 HEBREW_COMPARE_RESULT: FAIL
 """).strip() + "\n"
 
-def repair_notes(native_report: Path | None, semantic_report: Path | None) -> str:
-    parts = []
-    if native_report and native_report.exists():
-        parts.append("Native-language QA findings that must be fixed:\n" + native_report.read_text(encoding="utf-8", errors="replace"))
-    if semantic_report and semantic_report.exists():
-        parts.append("Direct Hebrew-source comparison findings that must be fixed:\n" + semantic_report.read_text(encoding="utf-8", errors="replace"))
-    if not parts:
-        return ""
-    return "\n\n".join(parts) + "\n\nRegenerate this page from the Hebrew source while fixing all applicable findings. Do not make unrelated semantic changes."
+def repair_page_prompt(code: str, tag: str, direction: str, which: str, report_path: Path, gate: str) -> str:
+    candidate = f"artifacts/about-retranslation-2026-10-04/staging/{code}/{which}.html"
+    source = "docs/about/content/he.html" if which == "about" else "docs/about/monster/index.html"
+    shape_rules = (
+        "Preserve the exact About HTML tag/order/id/class/data-* structure and all 64 details/summary disclosures."
+        if which == "about"
+        else "Preserve the exact Monster-page tag/order/id/class structure, including the complete penguin appendix."
+    )
+    return textwrap.dedent(f"""
+Revise the EXISTING {tag} candidate, using the review report as a surgical correction list.
 
-def translate_page(code: str, tag: str, direction: str, which: str, outdir: Path, attempt: int, notes: str) -> str:
+Candidate:
+- {candidate}
+
+Hebrew semantic authority:
+- {source}
+
+Review findings:
+- {report_path.as_posix()}
+
+Read the candidate, Hebrew source, and report. Apply every report finding that applies to this page while preserving passages the report did not challenge. This is a repair pass, NOT a fresh translation: do not rewrite unaffected prose merely for variety. Do not read or imitate older About translations. You may inspect docs/i18n/locales/{code}.js only for established target-language terminology and canonical localized calendar-name forms.
+
+{shape_rules}
+The two deliberately over-explained obvious name entries corresponding to "The Empty Jar" and "The Closed Door" must remain conspicuously long; never shorten them merely because their conclusions are obvious. Preserve the enthusiastic sales-pitch absurdity, numerical bounds, arbitrary Spleen extension, dry jokes, and target-language pronoun convention. Hebrew-only homonym clarifications may be adapted when the target-language canonical name has no such ambiguity.
+This repair follows the {gate} review. A fresh native-language QA will run again before anything can pass.
+
+Return ONLY:
+{START}
+[complete corrected HTML]
+{END}
+No preface, analysis, Markdown fence, or notes.
+""").strip() + "\n"
+
+
+def repair_page(code: str, tag: str, direction: str, which: str, outdir: Path, cycle: int, report_path: Path, gate: str) -> str:
+    raw = outdir / f"{which}-{gate}-repair-{cycle}.txt"
+    session = outdir / f"{which}-{gate}-repair-{cycle}-session.md"
+    rc = run_copilot(repair_page_prompt(code, tag, direction, which, report_path, gate), raw, session)
+    if rc != 0:
+        raise RuntimeError(f"{which} {gate} repair exited {rc}")
+    value = extract_translation(raw.read_text(encoding="utf-8", errors="replace"))
+    return normalize_about(value, code) if which == "about" else normalize_monster(value, code, tag, direction)
+
+
+def translate_page(code: str, tag: str, direction: str, which: str, outdir: Path, attempt: int) -> str:
     raw = outdir / f"{which}-translation-attempt-{attempt}.txt"
     session = outdir / f"{which}-translation-attempt-{attempt}-session.md"
-    rc = run_copilot(page_translation_prompt(code, tag, direction, which, notes), raw, session)
+    rc = run_copilot(page_translation_prompt(code, tag, direction, which, ""), raw, session)
     if rc != 0:
         raise RuntimeError(f"{which} translator exited {rc}")
-    return extract_translation(raw.read_text(encoding="utf-8", errors="replace"))
+    value = extract_translation(raw.read_text(encoding="utf-8", errors="replace"))
+    return normalize_about(value, code) if which == "about" else normalize_monster(value, code, tag, direction)
+
 
 def write_status(outdir: Path, data: dict) -> None:
     (outdir / "status.json").write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -249,7 +289,7 @@ def main() -> int:
     ap.add_argument("--code", required=True)
     ap.add_argument("--tag", required=True)
     ap.add_argument("--dir", required=True, choices=["ltr", "rtl"])
-    ap.add_argument("--max-cycles", type=int, default=3)
+    ap.add_argument("--max-cycles", type=int, default=6)
     args = ap.parse_args()
 
     code, tag, direction = args.code, args.tag, args.dir
@@ -271,24 +311,34 @@ def main() -> int:
         write_status(outdir, {"code": code, "tag": tag, "state": "FAIL", "stage": "PROMPT_TRANSLATION_FORMAT"})
         return 2
 
-    notes = ""
-    for cycle in range(1, args.max_cycles + 1):
-        try:
-            about = translate_page(code, tag, direction, "about", outdir, cycle, notes)
-            monster = translate_page(code, tag, direction, "monster", outdir, cycle, notes)
-            about = normalize_about(about, code)
-            monster = normalize_monster(monster, code, tag, direction)
-            (outdir / "about.html").write_text(about, encoding="utf-8")
-            (outdir / "monster.html").write_text(monster, encoding="utf-8")
-        except Exception as exc:
-            (outdir / "worker-error.txt").write_text(str(exc) + "\n", encoding="utf-8")
-            write_status(outdir, {"code": code, "tag": tag, "state": "FAIL", "stage": "TRANSLATION", "cycle": cycle})
-            return 3
+    # Translate from Hebrew exactly once. Failed gates repair the existing candidate instead of regenerating unrelated prose.
+    try:
+        about = translate_page(code, tag, direction, "about", outdir, 1)
+        monster = translate_page(code, tag, direction, "monster", outdir, 1)
+        (outdir / "about.html").write_text(about, encoding="utf-8")
+        (outdir / "monster.html").write_text(monster, encoding="utf-8")
+    except Exception as exc:
+        (outdir / "worker-error.txt").write_text(str(exc) + "\n", encoding="utf-8")
+        write_status(outdir, {"code": code, "tag": tag, "state": "FAIL", "stage": "TRANSLATION"})
+        return 3
 
+    for cycle in range(1, args.max_cycles + 1):
+        about = (outdir / "about.html").read_text(encoding="utf-8")
+        monster = (outdir / "monster.html").read_text(encoding="utf-8")
         errors = structural_errors(about, monster, code, tag, direction)
         (outdir / f"structural-{cycle}.json").write_text(json.dumps(errors, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         if errors:
-            notes = "Structural validation failed. Regenerate while preserving exact source markup. Failures:\n- " + "\n- ".join(errors)
+            report = outdir / f"structural-repair-{cycle}.txt"
+            report.write_text("Structural validation failures:\n- " + "\n- ".join(errors) + "\n", encoding="utf-8")
+            try:
+                about = repair_page(code, tag, direction, "about", outdir, cycle, report, "structural")
+                monster = repair_page(code, tag, direction, "monster", outdir, cycle, report, "structural")
+                (outdir / "about.html").write_text(about, encoding="utf-8")
+                (outdir / "monster.html").write_text(monster, encoding="utf-8")
+            except Exception as exc:
+                (outdir / "worker-error.txt").write_text(str(exc) + "\n", encoding="utf-8")
+                write_status(outdir, {"code": code, "tag": tag, "state": "FAIL", "stage": "STRUCTURAL_REPAIR", "cycle": cycle})
+                return 3
             continue
 
         native_report = outdir / f"native-qa-{cycle}.md"
@@ -296,7 +346,15 @@ def main() -> int:
         rc = run_copilot(native_prompt_text, native_report, native_session)
         nv = exact_verdict(native_report, "NATIVE_QA_RESULT") if rc == 0 else None
         if nv != "PASS":
-            notes = repair_notes(native_report, None)
+            try:
+                about = repair_page(code, tag, direction, "about", outdir, cycle, native_report, "native")
+                monster = repair_page(code, tag, direction, "monster", outdir, cycle, native_report, "native")
+                (outdir / "about.html").write_text(about, encoding="utf-8")
+                (outdir / "monster.html").write_text(monster, encoding="utf-8")
+            except Exception as exc:
+                (outdir / "worker-error.txt").write_text(str(exc) + "\n", encoding="utf-8")
+                write_status(outdir, {"code": code, "tag": tag, "state": "FAIL", "stage": "NATIVE_REPAIR", "cycle": cycle})
+                return 3
             continue
 
         semantic_report = outdir / f"hebrew-compare-{cycle}.md"
@@ -316,8 +374,16 @@ def main() -> int:
             })
             return 0
 
-        # Any semantic repair must return through native-language QA on the next cycle.
-        notes = repair_notes(None, semantic_report)
+        # Any semantic repair returns through native-language QA on the next cycle.
+        try:
+            about = repair_page(code, tag, direction, "about", outdir, cycle, semantic_report, "semantic")
+            monster = repair_page(code, tag, direction, "monster", outdir, cycle, semantic_report, "semantic")
+            (outdir / "about.html").write_text(about, encoding="utf-8")
+            (outdir / "monster.html").write_text(monster, encoding="utf-8")
+        except Exception as exc:
+            (outdir / "worker-error.txt").write_text(str(exc) + "\n", encoding="utf-8")
+            write_status(outdir, {"code": code, "tag": tag, "state": "FAIL", "stage": "SEMANTIC_REPAIR", "cycle": cycle})
+            return 3
 
     write_status(outdir, {
         "code": code,
