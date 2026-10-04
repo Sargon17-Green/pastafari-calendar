@@ -76,7 +76,7 @@ test("full Hebrew monster page includes the complete penguin appendix", async ()
   const html = await readFile(path.join(DOCS, "about", "monster", "index.html"), "utf8");
   assert.match(html, /אודות מפלצת הספגטי המעופפת/);
   assert.match(html, /נספח: מדוע אין להפקיד בית־חרושת לדודי־שמש בידי פינגווינים/);
-  assert.match(html, /את הפינגווינים עדיף להשאיר בתפקידים שבהם העובדה שהם פינגווינים מהווה יתרון/);
+  assert.match(html, /את הפינגווינים עדיף להשאיר בתפקידים שבהם העובדה שהם\\s+פינגווינים מהווה\\s+יתרון/);
 });
 
 test("article registry always has a Hebrew fallback and registered assets are locale-specific", async () => {
