@@ -19,6 +19,26 @@ START = "<<<TRANSLATION_HTML>>>"
 END = "<<<END_TRANSLATION_HTML>>>"
 READ_TOOLS = "shell(cat:*),shell(grep:*),shell(rg:*),shell(sed:*),shell(head:*),shell(tail:*),shell(wc:*),shell(find:*),shell(ls:*),shell(pwd:*)"
 
+class CopilotQuotaError(RuntimeError):
+    pass
+
+
+def copilot_stderr(out: Path) -> str:
+    path = out.with_suffix(out.suffix + ".stderr.log")
+    if not path.exists():
+        return ""
+    return path.read_text(encoding="utf-8", errors="replace")
+
+
+def raise_for_copilot_failure(out: Path, rc: int, label: str) -> None:
+    if rc == 0:
+        return
+    stderr = copilot_stderr(out)
+    if "exceeded your monthly quota" in stderr.lower():
+        raise CopilotQuotaError(f"{label}: GitHub Copilot monthly quota exceeded")
+    detail = stderr.strip().splitlines()[-1] if stderr.strip() else f"exit code {rc}"
+    raise RuntimeError(f"{label}: {detail}")
+
 class ShapeParser(HTMLParser):
     def __init__(self):
         super().__init__(convert_charrefs=False)
@@ -285,8 +305,13 @@ def repair_page(code: str, tag: str, direction: str, which: str, outdir: Path, c
             )
         rc = run_copilot(prompt, raw, session)
         if rc != 0:
-            last_problem = f"Copilot exited {rc}"
-            continue
+            try:
+                raise_for_copilot_failure(raw, rc, f"{which} {gate} repair")
+            except CopilotQuotaError:
+                raise
+            except Exception as exc:
+                last_problem = str(exc)
+                continue
         try:
             value = extract_translation(raw.read_text(encoding="utf-8", errors="replace"))
         except Exception as exc:
@@ -308,8 +333,7 @@ def translate_page(code: str, tag: str, direction: str, which: str, outdir: Path
     raw = outdir / f"{which}-translation-attempt-{attempt}.txt"
     session = outdir / f"{which}-translation-attempt-{attempt}-session.md"
     rc = run_copilot(page_translation_prompt(code, tag, direction, which, ""), raw, session)
-    if rc != 0:
-        raise RuntimeError(f"{which} translator exited {rc}")
+    raise_for_copilot_failure(raw, rc, f"{which} translator")
     value = extract_translation(raw.read_text(encoding="utf-8", errors="replace"))
     return normalize_about(value, code) if which == "about" else normalize_monster(value, code, tag, direction)
 
@@ -338,8 +362,14 @@ def main() -> int:
     native_prompt_path = outdir / "native-review-prompt.md"
     prompt_session = outdir / "native-review-prompt-translation-session.md"
     rc = run_copilot(prompt_translation_request(tag), native_prompt_path, prompt_session)
-    if rc != 0 or not native_prompt_path.exists() or native_prompt_path.stat().st_size == 0:
-        write_status(outdir, {"code": code, "tag": tag, "state": "FAIL", "stage": "PROMPT_TRANSLATION"})
+    if rc != 0:
+        if "exceeded your monthly quota" in copilot_stderr(native_prompt_path).lower():
+            write_status(outdir, {"code": code, "tag": tag, "state": "BLOCKED", "stage": "COPILOT_QUOTA", "operation": "PROMPT_TRANSLATION"})
+            return 5
+        write_status(outdir, {"code": code, "tag": tag, "state": "FAIL", "stage": "PROMPT_TRANSLATION_TRANSPORT"})
+        return 2
+    if not native_prompt_path.exists() or native_prompt_path.stat().st_size == 0:
+        write_status(outdir, {"code": code, "tag": tag, "state": "FAIL", "stage": "PROMPT_TRANSLATION_EMPTY"})
         return 2
     native_prompt_text = native_prompt_path.read_text(encoding="utf-8")
     native_prompt_text = native_prompt_text.replace("{{CODE}}", code).replace("{{TAG}}", tag)
@@ -358,6 +388,10 @@ def main() -> int:
         monster = translate_page(code, tag, direction, "monster", outdir, 1)
         (outdir / "about.html").write_text(about, encoding="utf-8")
         (outdir / "monster.html").write_text(monster, encoding="utf-8")
+    except CopilotQuotaError as exc:
+        (outdir / "worker-error.txt").write_text(str(exc) + "\n", encoding="utf-8")
+        write_status(outdir, {"code": code, "tag": tag, "state": "BLOCKED", "stage": "COPILOT_QUOTA", "operation": "TRANSLATION"})
+        return 5
     except Exception as exc:
         (outdir / "worker-error.txt").write_text(str(exc) + "\n", encoding="utf-8")
         write_status(outdir, {"code": code, "tag": tag, "state": "FAIL", "stage": "TRANSLATION"})
@@ -381,13 +415,26 @@ def main() -> int:
         native_report = outdir / f"native-qa-{cycle}.md"
         native_session = outdir / f"native-qa-{cycle}-session.md"
         rc = run_copilot(native_prompt_text, native_report, native_session)
-        nv = exact_verdict(native_report, "NATIVE_QA_RESULT") if rc == 0 else None
+        if rc != 0:
+            if "exceeded your monthly quota" in copilot_stderr(native_report).lower():
+                write_status(outdir, {"code": code, "tag": tag, "state": "BLOCKED", "stage": "COPILOT_QUOTA", "operation": "NATIVE_QA", "cycle": cycle})
+                return 5
+            write_status(outdir, {"code": code, "tag": tag, "state": "FAIL", "stage": "NATIVE_QA_TRANSPORT", "cycle": cycle})
+            return 5
+        nv = exact_verdict(native_report, "NATIVE_QA_RESULT")
+        if nv is None:
+            write_status(outdir, {"code": code, "tag": tag, "state": "FAIL", "stage": "NATIVE_QA_PROTOCOL", "cycle": cycle})
+            return 5
         if nv != "PASS":
             try:
                 about = repair_page(code, tag, direction, "about", outdir, cycle, native_report, "native")
                 monster = repair_page(code, tag, direction, "monster", outdir, cycle, native_report, "native")
                 (outdir / "about.html").write_text(about, encoding="utf-8")
                 (outdir / "monster.html").write_text(monster, encoding="utf-8")
+            except CopilotQuotaError as exc:
+                (outdir / "worker-error.txt").write_text(str(exc) + "\n", encoding="utf-8")
+                write_status(outdir, {"code": code, "tag": tag, "state": "BLOCKED", "stage": "COPILOT_QUOTA", "operation": "NATIVE_REPAIR", "cycle": cycle})
+                return 5
             except Exception as exc:
                 (outdir / "worker-error.txt").write_text(str(exc) + "\n", encoding="utf-8")
                 write_status(outdir, {"code": code, "tag": tag, "state": "FAIL", "stage": "NATIVE_REPAIR", "cycle": cycle})
@@ -397,7 +444,16 @@ def main() -> int:
         semantic_report = outdir / f"hebrew-compare-{cycle}.md"
         semantic_session = outdir / f"hebrew-compare-{cycle}-session.md"
         rc = run_copilot(semantic_prompt(code, tag), semantic_report, semantic_session)
-        sv = exact_verdict(semantic_report, "HEBREW_COMPARE_RESULT") if rc == 0 else None
+        if rc != 0:
+            if "exceeded your monthly quota" in copilot_stderr(semantic_report).lower():
+                write_status(outdir, {"code": code, "tag": tag, "state": "BLOCKED", "stage": "COPILOT_QUOTA", "operation": "HEBREW_COMPARE", "cycle": cycle})
+                return 5
+            write_status(outdir, {"code": code, "tag": tag, "state": "FAIL", "stage": "HEBREW_COMPARE_TRANSPORT", "cycle": cycle})
+            return 5
+        sv = exact_verdict(semantic_report, "HEBREW_COMPARE_RESULT")
+        if sv is None:
+            write_status(outdir, {"code": code, "tag": tag, "state": "FAIL", "stage": "HEBREW_COMPARE_PROTOCOL", "cycle": cycle})
+            return 5
         if sv == "PASS":
             write_status(outdir, {
                 "code": code,
@@ -417,6 +473,10 @@ def main() -> int:
             monster = repair_page(code, tag, direction, "monster", outdir, cycle, semantic_report, "semantic")
             (outdir / "about.html").write_text(about, encoding="utf-8")
             (outdir / "monster.html").write_text(monster, encoding="utf-8")
+        except CopilotQuotaError as exc:
+            (outdir / "worker-error.txt").write_text(str(exc) + "\n", encoding="utf-8")
+            write_status(outdir, {"code": code, "tag": tag, "state": "BLOCKED", "stage": "COPILOT_QUOTA", "operation": "SEMANTIC_REPAIR", "cycle": cycle})
+            return 5
         except Exception as exc:
             (outdir / "worker-error.txt").write_text(str(exc) + "\n", encoding="utf-8")
             write_status(outdir, {"code": code, "tag": tag, "state": "FAIL", "stage": "SEMANTIC_REPAIR", "cycle": cycle})
