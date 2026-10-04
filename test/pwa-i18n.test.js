@@ -139,7 +139,9 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
     "./styles.css?v=16-about-polish",
     "./app.js?v=23-about-page",
     "./manifest.webmanifest?v=9-canonical-names",
-    "./icons/icon.svg?v=9-canonical-names",
+    "./icons/favicon-32x32.png?v=spaghetti-calendar-2",
+    "./icons/favicon-16x16.png?v=spaghetti-calendar-2",
+    "./icons/icon-192.png?v=spaghetti-calendar-2",
   ]) {
     assert.ok(html.includes(entry), `index.html must request the revisioned asset ${entry}`);
   }
