@@ -1,7 +1,7 @@
 <div class="about-section about-lead" id="about-calendar">
-  <p><strong>The Pastafari Calendar</strong> is a deliberately unintuitive calendar with an intentionally unusual structure: the date of a day does not depend only on the day it is meant to describe, but also on the day from which the calculation is made.</p>
-  <p>It has years, cutlets, and months — but the years are not of fixed length, the cutlets and months are not the same kind of division, the months can disappear and return throughout the year, and there are no canonical weeks.</p>
-  <p>This page is meant to explain what the calendar is, how a date is read, and what the practical meaning of its structure is. The mathematical and cryptographic implementation details exist in the technical documentation, but they are not a requirement for understanding the calendar.</p>
+  <p><strong>Pastafari Calendar</strong> is a deliberately non-intuitive calendar with an intentionally unusual structure: the date of a day does not depend only on the day being described, but also on the day from which the calculation is performed.</p>
+  <p>It has years, cutlets, and months — but the years are not fixed-length, the cutlets and months are not the same kind of division, the months can disappear and return during the year, and there are no canonical weeks.</p>
+  <p>This page is meant to explain what the calendar is, how to read a date, and what the practical meaning of its structure is. The detailed mathematical and cryptographic implementation details are in the technical documentation, but they are not a prerequisite for understanding the calendar.</p>
 </div>
 
 <section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
@@ -14,79 +14,79 @@
     <li><strong>Month name</strong>;</li>
     <li><strong>Day in the month</strong>.</li>
   </ol>
-  <p>In other words, a full date tells us in which year the day is found, in which cutlet it lies and where it stands within it, and which month it belongs to and how many times it has appeared in that month.</p>
-  <p>The day of working, the observer’s location, and other technical details may be essential to <em>calculate</em> the date, but they are not a sixth, seventh, or eighth part of the date itself.</p>
-  <p>Even the presentation does not change the number of parts. If the site prints the five pieces across three lines, it is still five pieces; a line break is typographic behavior, not the birth of a new calendrical field.</p>
+  <p>In other words, a full date tells you in which year the day is found, in which cutlet it sits and where it stands within it, and which month it belongs to and what occurrence number it has in that month.</p>
+  <p>The actual transaction day, the observer’s location, and other technical details can be essential to <em>calculate</em> the date, but they are not a sixth, seventh, or eighth part of the date itself.</p>
+  <p>Even the display form does not change the number of parts. If the site prints the five data points across three lines, it is still five data points; a line break is typographic behavior, not the birth of a new calendrical field.</p>
 </section>
 
 <section class="about-section" id="working-day" data-toc-section data-toc-level="2">
-  <h2>Why can the same day get a different date?</h2>
+  <h2>Why can the same day have a different date?</h2>
   <p>In every calculation there are two days:</p>
   <ul>
     <li><strong>Day of working</strong> — the day from which the calculation is performed;</li>
     <li><strong>Queried day</strong> — the day whose date you want to know.</li>
   </ul>
-  <p>If we mark the day of working as <code>c</code> and the queried day as <code>t</code>, the date is <code>F(c,t)</code>, not <code>F(t)</code>.</p>
+  <p>If the day of working is marked as <code>c</code> and the queried day as <code>t</code>, then the date is <code>F(c,t)</code>, not <code>F(t)</code>.</p>
   <p>Therefore, the same chronological day can receive a different Pastafari representation when the day of working changes. The day itself does not move; only its Pastafari description changes.</p>
-  <p>When <code>c=t</code>, the day is always in year <strong>5000</strong>. Year 5000 is not a fixed historical period: it is rebuilt relative to the day of working, so additional days around the day of working can also belong to it.</p>
-  <p>For example: if a certain day is the day of working for itself, it is in year 5000. If the next day is recalculated when the next day has become the new day of working, that next day is also in year 5000. There is no contradiction here about the same “historical year”; each calculation chooses a new base year.</p>
-  <p>Years numbered above 5000 are in the future relative to the day of working, and years numbered below 5000 are in the past. There is also year 0, followed by years with negative numbers.</p>
+  <p>When <code>c=t</code>, the day is always in year <strong>5000</strong>. Year 5000 is not a fixed historical period: it is rebuilt relative to the day of working, so additional days around the day of working may also belong to it.</p>
+  <p>For example: if a certain day is the day of working for itself, it is in year 5000. If the next day is calculated again when the next day becomes the new day of working, that next day is also in year 5000. There is no contradiction here about the same “historical year”; each calculation selects a new base year.</p>
+  <p>Years numbered greater than 5000 lie in the future relative to the day of working, while years numbered less than 5000 lie in the past. There is also year 0, followed by years with negative numbers.</p>
 </section>
 
 <section class="about-section" id="year-structure" data-toc-section data-toc-level="2">
   <h2>How is a year built?</h2>
-  <p>A Pastafari year can contain between <strong>252</strong> and <strong>5,778</strong> days. Both endpoints are included: a 252-day year is valid, and so is a 5,778-day year; a 251-day or 5,779-day year is not valid under the current canonical rules.</p>
-  <p>These limits are part of the calendar. The year does not try to match the solar year, lunar year, season, school year, or the patience of anyone waiting for the next New Year.</p>
-  <p>Each year is divided into two different systems:</p>
+  <p>A Pastafari year can contain between <strong>252</strong> and <strong>5,778</strong> days. Both extremes are included: a 252-day year is valid, and a 5,778-day year is valid; a 251-day or 5,779-day year is not valid under the currently canonical rules.</p>
+  <p>These limits are part of the calendar. The year does not try to conform to the solar year, lunar year, season, school year, or the patience of anyone waiting for next New Year.</p>
+  <p>Every year is divided into two different systems:</p>
   <ul>
-    <li><strong>6–17 cutlets</strong>. Each cutlet is a continuous section of days, with a length of at least 42 days.</li>
-    <li><strong>3–47 structural months</strong>. Each month has 4–123 days assigned to it, but those days do not have to be contiguous.</li>
+    <li><strong>6–17 cutlets</strong>. Every cutlet is a continuous segment of days, at least 42 days long.</li>
+    <li><strong>3–47 structural months</strong>. Each month has 4–123 assigned days, but those days are not required to be contiguous.</li>
   </ul>
-  <p>There is no canonical week system in the calendar. The rows and columns that appear on the site are only a display device; the fact that two days are shown next to each other does not make them “the same Pastafari week.”</p>
+  <p>There is no canonical week system in the calendar. The rows and columns that appear on the site are a display convention only; the fact that two days appear next to each other does not make them members of the same “Pastafari week.”</p>
 </section>
 
 <section class="about-section" id="woven-months" data-toc-section data-toc-level="2">
   <h2>What does “woven month” mean?</h2>
   <p>A cutlet is a sequence: if today is day 250 in the cutlet and tomorrow is still in the same cutlet, tomorrow is day 251.</p>
-  <p>A month works differently. Day 18 of a certain month is <strong>the 18th time that this month appears during the year</strong>. It does not have to come one day after day 17.</p>
+  <p>A month works differently. Day 18 in a certain month is <strong>the 18th time that this month appears during the year</strong>. It does not have to fall one day after day 17.</p>
   <blockquote>
     <p>Month A — day 14<br>
     Month B — day 9<br>
     Month A — day 15</p>
   </blockquote>
-  <p>Therefore, a month can be spread across a large part of the year, pass through several cutlets, and be woven through other months. One cutlet can, at the same time, contain days belonging to many months.</p>
-  <p>The length of a month is the total number of days assigned to it, not the number of days that have elapsed between its most recent and next appearance. A month of 104 days can therefore stretch chronologically across thousands of days.</p>
+  <p>Therefore a month can span a large part of the year, pass through several cutlets, and be woven through other months. One cutlet can, in the same way, contain days belonging to many months.</p>
+  <p>A month’s length is the total number of days assigned to it, not the number of days that have passed since its most recent first occurrence. So a month of 104 days may thus stretch chronologically across thousands of days.</p>
   <aside class="about-note">
-    <h3>Why is day 15 after day 14?</h3>
-    <p>Because 15 is the next whole number after 14. The fact that another month’s day has appeared between the two occurrences does not change the count: the first month already had 14 appearances; its next appearance is the 15th, so it is numbered 15.</p>
-    <p>In the same way, if four days from other months appear after day 15 of that month, the next appearance of the original month will still be day 16 of that month. Those four intervening days are counted chronologically in the calendar, but they do not belong to that month and therefore do not increase its day counter <em>for itself</em>. This is exactly why “the next day in the month” and “tomorrow” are two different concepts.</p>
+    <h3>Why does day 15 come after day 14?</h3>
+    <p>Because 15 is the next whole number after 14. The fact that four days of another month fall between two appearances of this month does not change the counting: the first month already had 14 appearances; its next appearance is its 15th appearance, and so it is numbered 15.</p>
+    <p>In the same way, if after day 15 of that month there are four days belonging to other months, the next appearance of the original month is still day 16 of that month. Those four days are counted chronologically in the calendar, but they do not belong to that month, and so they do not increase the counter for <em>its</em> days. This is exactly why “the next day in the month” and “tomorrow” are two different concepts.</p>
   </aside>
-  <p>From this it also follows that the end of a month is not necessarily close in time. A month can be on day 119 out of 120, and yet day 120 of that month may appear much later.</p>
+  <p>From this it also follows that the end of a month is not necessarily close in time. A month can be on day 119 out of 120, and yet its day 120 may appear much later.</p>
 </section>
 
 <section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
   <h2>Cutlet and month names</h2>
-  <p>The calendar has <strong>17 cutlet names</strong> and <strong>47 month names</strong>. Within a year, a name does not repeat twice in the same family. Not every name has to appear in every year: a year may use only part of the catalog.</p>
-  <p>The lists show the names only. Clicking a name or the opening symbol next to it shows the exact meaning and relevant canonical notes. The name is not a code for the unit or a prediction of what will happen during it.</p>
+  <p>The calendar has <strong>17 cutlet names</strong> and <strong>47 month names</strong>. Within a year, a name does not repeat twice in the same family. Not all names must appear in every year: a year can use only part of the catalog.</p>
+  <p>The lists show the names only. Clicking a name or the opening symbol next to it reveals the exact meaning and the relevant canonical notes. The name is not a code for the unit, and it is not a prediction of what will happen within it.</p>
 
   <h3>17 cutlets</h3>
   <ul class="about-name-list about-name-disclosure-list">
     <li>
       <details class="about-name-details">
         <summary>Bronze</summary>
-        <p>An alloy of metal, consisting mainly of copper and tin. Here it is the name of the material, not merely a color.</p>
+        <p>The metal alloy bronze, made mainly of copper and tin. Here it is a material name, not just a color.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Fox</summary>
-        <p>A fox, a mammal in the dog family. The name does not designate a specific species of fox.</p>
+        <p>A fox, a mammal of the dog family. The name does not indicate a particular species of fox.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Kidney</summary>
-        <p>The kidney organ, which filters blood and participates in the regulation of fluid and salt balance in the body.</p>
+        <p>The kidney, the organ that filters blood and helps regulate the body’s fluid and salt balance.</p>
       </details>
     </li>
     <li>
@@ -104,31 +104,31 @@
     <li>
       <details class="about-name-details">
         <summary>Four Parts of Nine</summary>
-        <p>The fraction 4/9 — four equal parts out of nine. The whole expression is a single name. The central numerical meaning is exactly 4/9; at the lexical layer, a numeric value x satisfying <code>|x − 4/9| ≤ e/103</code> is allowed as a loose implementation, including the boundary. The expression <code>e/103</code> is preserved exactly and not replaced with a decimal approximation. This allowance does not change counts, indices, identity, or any calculation of the calendar.</p>
+        <p>The fraction 4/9 — four equal parts out of nine. The entire expression is a single name. The central numerical meaning is exactly 4/9; only in the lexical layer is a numerical value x satisfying <code>|x − 4/9| ≤ e/103</code> also permitted, including the limit. The expression <code>e/103</code> is preserved exactly and is not replaced by a decimal approximation. This permission does not alter numerators, indices, identities, or any calculation of the calendar.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Palgurash</summary>
-        <p>A sequence of invented syllables. It has no additional literal meaning to interpret; this is the name itself.</p>
+        <p>An invented sequence of syllables. It has no additional lexical meaning to be interpreted; it is the name itself.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Papyrus Sedge</summary>
-        <p>Papyrus sedge — the plant from which papyrus was made in antiquity.</p>
+        <p>Papyrus sedge, the plant from which papyrus was made in antiquity.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Cluster</summary>
-        <p>A bunch of grapes; more generally, a dense group of items.</p>
+        <p>A dense grouping or bunch of things; in Hebrew, the word is especially associated with a cluster of grapes.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Scorpion</summary>
-        <p>A scorpion, an arachnid with claws and a sting in the tail.</p>
+        <p>A scorpion, an arachnid with claws and a sting at its tail.</p>
       </details>
     </li>
     <li>
@@ -140,7 +140,7 @@
     <li>
       <details class="about-name-details">
         <summary>Wheat</summary>
-        <p>The cereal grain wheat, whose grains are used in part to make flour.</p>
+        <p>The wheat plant, whose grains are used, among other things, to produce flour.</p>
       </details>
     </li>
     <li>
@@ -152,25 +152,25 @@
     <li>
       <details class="about-name-details">
         <summary>Laughter</summary>
-        <p>A vocal and bodily reaction generally associated with amusement, joy, or humor.</p>
+        <p>A vocal and physical reaction typically associated with amusement, joy, or humor.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Akkad</summary>
-        <p>Akkad, the ancient Mesopotamian city after which the Akkadian Empire and region were also named; the exact location of the city has not been definitively identified.</p>
+        <p>Akkad, the ancient Mesopotamian city after which the Akkadian empire and region were also named; the exact location of the city remains uncertain.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Horn</summary>
-        <p>The hard, pointed growth on the head of certain animals.</p>
+        <p>Horn in the sense of the hard protrusion that grows from the heads of certain animals, not a ray of light.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>The Empty Jar</summary>
-        <p>A jar with no contents. “Empty” describes what is inside the jar — namely nothing — and does not abolish the jar’s existence. An empty jar can still be a whole jar, with walls, a base, and an opening; it is simply not full of water, wine, oil, or any other substance. In the same way, the name does not mean that the cutlet is empty of days: a cutlet called “The Empty Jar” still has days like any other cutlet, and only the jar in the name is empty.</p>
+        <p>A jar with no contents. “Empty” describes what is inside the jar — namely, nothing — and does not cancel the jar’s existence. An empty jar can still be a complete jar, with walls, a base, and an opening; it is simply not filled with water, wine, oil, or any other substance. In the same way, the name does not mean the cutlet is empty of days: a cutlet named “The Empty Jar” has days like any other cutlet; only the jar in the name is empty. The point is not to deny the jar, but to deny its contents. This is a useful distinction because a thing may be present and still be vacant. A vessel may be structurally intact and yet be empty in precisely the way a name says; the presence of an empty vessel is not the same as the absence of the vessel itself. To say that a jar is empty is to allow the jar to remain in full formal being while refusing the material or substance that would otherwise fill it. The name therefore captures a relation between object and content, not a statement that the object vanishes or somehow ceases to be itself. In a calendar, that is a sound and consistent way to describe a category, and it is more precise than a vague claim that “nothing is there.” If the jar is empty, there are still walls, an aperture, a volume, and a recognizable container. What is absent is only the occupying matter; the jar remains whole, and the wording has not accidentally described an empty space instead of an actual object. A cutlet called “The Empty Jar” therefore enjoys all the ordinary calendaric reality of any other cutlet, while being defined chiefly by the absence of content within its symbolic vessel. It is an empty jar, not a void, and not the obliteration of a jar by a philosophical trick. The distinction is not ornamental; it is the whole point. If it were otherwise, the phrase would be a category error, and the name would end up describing an event rather than an object — which would be a very poor way to name a cutlet, even one with a grand tradition of absurd names behind it.</p>
       </details>
     </li>
   </ul>
@@ -180,25 +180,25 @@
     <li>
       <details class="about-name-details">
         <summary>Clay</summary>
-        <p>Fine-grained earth that becomes plastic when wet and hardens when dried or fired.</p>
+        <p>Fine-grained earth material that becomes plastic when wet and hardens when dried or fired.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Pomegranate</summary>
-        <p>The pomegranate fruit, a round fruit with a tough rind and many juicy seeds.</p>
+        <p>The pomegranate fruit, a round fruit with a hard rind and many juicy seeds.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Elbow</summary>
-        <p>The joint connecting the arm and forearm.</p>
+        <p>The joint connecting the upper arm and forearm.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Envy</summary>
-        <p>Resentment or dissatisfaction at another person’s advantage, achievement, or good fortune, often accompanied by a desire to have it oneself.</p>
+        <p>Sorrow or discomfort at the advantage, achievement, or good fortune of another, and sometimes a desire to possess it oneself.</p>
       </details>
     </li>
     <li>
@@ -210,25 +210,25 @@
     <li>
       <details class="about-name-details">
         <summary>Toothpaste</summary>
-        <p>A cleaning substance used to clean teeth during brushing. The name refers to the paste itself, not the toothbrush or the act of brushing.</p>
+        <p>A cleaning substance used for brushing the teeth. The name refers to the paste itself, not the toothbrush or the act of brushing.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Three Parts of Five</summary>
-        <p>The fraction 3/5 — three equal parts out of five. The whole expression is a single name. The central numerical meaning is exactly 3/5; at the lexical layer, a numeric value x satisfying <code>|x − 3/5| ≤ 1/367</code> is allowed, including the boundary. The boundary is an exact value, not a decimal approximation. This allowance does not change counts, indices, identities, or any calculation of the calendar.</p>
+        <p>The fraction 3/5 — three equal parts out of five. The entire expression is a single name. The central numerical meaning is exactly 3/5; only in the lexical layer is a numerical value x satisfying <code>|x − 3/5| ≤ 1/367</code> also permitted, including the limit. The limit is a precise value, not a decimal approximation. This permission does not alter numerators, indices, identities, or any calculation of the calendar.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Karshumav</summary>
-        <p>A sequence of invented syllables. It has no hidden literal meaning; this is the name itself.</p>
+        <p>An invented string of syllables. It has no hidden lexical meaning; it is the name itself.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Leopard</summary>
-        <p>The spotted big cat; it is not meant to be a tiger.</p>
+        <p>The spotted big cat, the leopard; it does not refer to a tiger.</p>
       </details>
     </li>
     <li>
@@ -240,13 +240,13 @@
     <li>
       <details class="about-name-details">
         <summary>Mist</summary>
-        <p>A concentration of tiny droplets of water in the air near the ground; it is not smoke.</p>
+        <p>A concentration of tiny water droplets in the air near the ground; it is not smoke.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Frankincense</summary>
-        <p>An aromatic resin obtained from trees of the genus Boswellia and used in perfumes and incense.</p>
+        <p>An aromatic resin harvested from trees of the boswellia family and used in incense and perfumery.</p>
       </details>
     </li>
     <li>
@@ -270,19 +270,19 @@
     <li>
       <details class="about-name-details">
         <summary>Uruk</summary>
-        <p>Uruk, an ancient Sumerian city in Mesopotamia.</p>
+        <p>Uruk, the ancient Sumerian city in Mesopotamia.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Shame</summary>
-        <p>A feeling of discomfort or pain arising from the perception of a flaw, failure, or embarrassing behavior.</p>
+        <p>A feeling of discomfort or pain caused by the perception of a defect, failure, or embarrassing behavior.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Camel</summary>
-        <p>The domesticated mammal camel, adapted to life in arid regions.</p>
+        <p>The domesticated mammal known as the camel, adapted to life in arid regions.</p>
       </details>
     </li>
     <li>
@@ -294,7 +294,7 @@
     <li>
       <details class="about-name-details">
         <summary>Well</summary>
-        <p>A shaft sunk into the ground to reach an underground source of water.</p>
+        <p>A shaft or pit dug to reach an underground source of water so it can be drawn.</p>
       </details>
     </li>
     <li>
@@ -306,19 +306,19 @@
     <li>
       <details class="about-name-details">
         <summary>Star</summary>
-        <p>A celestial body such as the sun, which emits energy through physical processes occurring within it.</p>
+        <p>A celestial body such as the sun, which emits energy through physical processes occurring inside it.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Honey</summary>
-        <p>The sweet substance produced by bees from nectar or plant secretions.</p>
+        <p>The sweet substance produced by bees from flower nectar or plant secretions.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Spleen</summary>
-        <p>The organ spleen, belonging in part to the immune system and to the filtration of blood. In addition to the ordinary meaning, there is a deliberate canonical extension that has no biological, etymological, or cultural connection to the spleen and should not be invented as such: the name also includes a single-horned goat’s milk associated with the first offspring of the animal, milked after a seemingly normal sunset and before the sun’s center reaches a geometric altitude of <code>−6°</code>, before the offspring was standing on its own. Earlier pregnancies that ended in miscarriage or stillbirth do not disqualify the condition; if the offspring dies before standing on its own, the condition is not fulfilled on that basis. The vessel must be ceramic, with red glaze, and a capacity of 180–220 mL, including both capacity limits. There is no requirement that the milking be done directly from the udder into the vessel, and the capacity of the vessel — not the amount of milk actually collected — is the numerical test. Regarding the inclusion of the boundary moments of the time window itself, a deliberate canonical uncertainty remains.</p>
+        <p>The organ known as the spleen, part of the immune system and blood filtration. In addition to the ordinary meaning, there is a deliberate canonical extension whose relation to anatomy, etymology, or culture is not biological or historical: the name also includes a single-humped female camel’s milk associated with her first offspring, milking that occurs after a seemingly ordinary sunset and before the sun’s center reaches a geometric altitude of <code>−6°</code>, and before the offspring is standing on its own. Earlier pregnancies that ended in miscarriage or stillbirth do not disqualify the condition; if the offspring dies before standing on its own, the condition is not satisfied by that fact. The vessel must be ceramic, with red glaze and a capacity of 180–220 mL, including both capacity limits. There is no requirement that the milking be directly from the udder into the vessel, and the capacity of the vessel — not the amount actually collected — is the numerical test. A canonical intentional uncertainty remains regarding whether the boundary moments of the time window itself are included.</p>
       </details>
     </li>
     <li>
@@ -330,170 +330,170 @@
     <li>
       <details class="about-name-details">
         <summary>Joy</summary>
-        <p>A positive emotion of happiness, satisfaction, or delight.</p>
+        <p>A positive feeling of happiness, satisfaction, or delight.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Fig</summary>
-        <p>The fruit of the fig tree or the fig tree itself.</p>
+        <p>The fig fruit or the fig tree.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Nineveh</summary>
-        <p>Nineveh, the ancient Assyrian city that lay on the Tigris opposite modern Mosul.</p>
+        <p>Nineveh, the ancient Assyrian city that lay opposite modern Mosul on the Tigris River.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Frog</summary>
-        <p>An amphibian without a tail from the group that includes frogs and toads.</p>
+        <p>An amphibian without a tail, in the group that includes frogs and toads.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Pitch</summary>
-        <p>A dark, viscous substance used in part for sealing; the reference is to a thick tar-like substance, not a generic name for all asphalt.</p>
+        <p>A dark, viscous substance used for sealing, among other things; it refers to a thick tar-like material, not a general name for asphalt.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Lamp</summary>
-        <p>A source of light.</p>
+        <p>A source of light. It does not have to be a wax candle with a wick.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>The Closed Door</summary>
-        <p>A door that is in the closed state. A closed door remains a door: it does not become a wall, it does not disappear, and it is not necessarily locked. “Closed” means that the opening it is meant to open is currently blocked by the door; “locked” is an additional claim not included in the name. Therefore, even a door that has been shut without turning a key still fits the name “The Closed Door” perfectly.</p>
+        <p>A door that is in the closed state. A closed door remains a door: it is not transformed into a wall, does not disappear, and is not necessarily locked. “Closed” means that the opening it is intended to open is currently blocked by the door itself; “locked” is an additional claim that is not part of the name. Therefore, a door that has been shut without turning a key still fits the phrase “The Closed Door” perfectly. A closed door is not an absent door, and it is not a door that has ceased to be a door by some merely rhetorical trick. It is a door whose path is presently obstructed by its own form, and that is all the name requires. If one were to make “closed” mean “locked,” the name would become needlessly specific and would lose the broad practical applicability that makes it useful. The same principle applies to a cutlet named “The Closed Door”: it is still a cutlet, still a calendaric unit, and still a valid object with all the ordinary internal geometry and counting rules. The distinguishing feature is not that it ceases to exist, but that its opening is blocked. That is the whole point. If the door were really not a door, the phrase would be a mistake in category rather than a description. Such a confusion would be only a small philosophical embarrassment, but in a naming system of 47 months and 17 cutlets, category errors are exactly the kind of thing that must be prevented from creeping in under cover of bright metaphors. In ordinary life, one does not call a door “gone” just because it is shut. One calls it closed. The same law of language and reason applies here: a door remains a door even when it impedes passage. The name is therefore not a denial of the door’s identity; it is a statement about its state. A calendar month by that name may be just as real as any other month, and just as counted, but it belongs to the class defined by its current closedness. This is a profound and highly practical distinction, which is why it is worth saying slowly: there are objects, there are conditions, and a name may refer to either. “The Closed Door” refers to the condition as applied to a door, not to a metaphysical disappearance of the door itself. This is, again, exactly the point of using a good name and a good description instead of feeding a deceptive paradox into the machinery.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Sesame</summary>
-        <p>The sesame plant or its seeds, from which sesame oil is extracted among other things.</p>
+        <p>The sesame plant or its seeds, from which sesame oil is extracted.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Nape</summary>
-        <p>The back part of the neck.</p>
+        <p>The back of the neck.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Silver</summary>
-        <p>The chemical element silver. It does not refer to money as a means of payment.</p>
+        <p>The chemical element silver. It is not money.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Susa</summary>
-        <p>Susa, the ancient city in Elam and Persia.</p>
+        <p>Susa, the ancient city in Elam and Persia. It is not a flower.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Storm</summary>
-        <p>A weather condition with strong wind and often precipitation, lightning, or related phenomena.</p>
+        <p>A violent weather condition, usually with strong winds and sometimes precipitation, lightning, or associated phenomena.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Donkey</summary>
-        <p>The domesticated mammal donkey.</p>
+        <p>The domesticated mammal known as the donkey.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Flour</summary>
-        <p>Powder obtained by grinding grains or similar plant material; in the usual sense, cereal flour.</p>
+        <p>A powder obtained by grinding grains or similar plant material; in the usual sense, flour made from cereals.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Regret</summary>
-        <p>Sorrow over a past action, choice, or outcome.</p>
+        <p>Sorrow over a past act, choice, or outcome.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Babylon</summary>
-        <p>Babylon, the ancient Mesopotamian city on the Euphrates; here it is the place name.</p>
+        <p>Babylon, the ancient Mesopotamian city on the Euphrates River; here it is a place name.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Tongue</summary>
-        <p>The muscular organ in the mouth. It does not mean “language” in the sense of a spoken tongue.</p>
+        <p>The muscular organ in the mouth. It is not “language” in the sense of a spoken language.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Flax</summary>
-        <p>The flax plant and its fibers, used in part to make cloth.</p>
+        <p>The flax plant and its fibers, used in the production of cloth.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Salt</summary>
-        <p>The common seasoning, made mainly of sodium chloride.</p>
+        <p>The salty substance used in food, especially sodium chloride in everyday usage. It is not “sailor,” the person who works on a ship.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Pear</summary>
-        <p>The pear fruit.</p>
+        <p>The fruit of the pear tree.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Bow</summary>
-        <p>A weapon made of a bent piece of material and a string, used to shoot arrows.</p>
+        <p>A weapon that draws a string to fire an arrow. It is not a rainbow.</p>
       </details>
     </li>
     <li>
       <details class="about-name-details">
         <summary>Sand</summary>
-        <p>Granular material made up of small particles of rock and minerals.</p>
+        <p>Loose granular material made of small particles of rocks and minerals. It is not “sand” as opposed to “sacred,” nor is it a workday in the sense of a weekday.</p>
       </details>
     </li>
   </ul>
 
-  <p>In translation into other languages, a standard alternative form of the same name may be used. Translation or transliteration does not create new cutlets or months; it displays the same linguistic entity in another form. The canonical forms are set by the canon and the language rules adopted within it.</p>
+  <p>In translations into other languages, it is possible to use a different canonical form of the same name. A translation or transliteration does not create new cutlets or months; it presents the same linguistic entity in another form. The canonical forms are fixed according to the canon and the language rules adopted within it.</p>
 </section>
 
 <section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
-  <h2>When does the day change?</h2>
-  <p>A local Pastafari day does not change at midnight. Its boundary is defined by <strong>the lower meridian transit of Venus at the observer’s location</strong>: the moment when the center of Venus passes over the observer’s meridian on the side below the horizon.</p>
-  <p>Therefore, the observer’s location matters. Two people in different places can, at the same physical moment, belong to two different local Pastafari days. When moving to another city, one does not continue using the previous city’s day boundary.</p>
-  <p>The boundary depends on the computed orbit of Venus, not on the observer actually seeing it. Clouds, walls, or the fact that Venus is below the horizon do not stop its motion.</p>
-  <p>The calendar’s discrete algorithm is defined precisely: the same inputs, under the same rules, always return the same result. By contrast, the conversion from a physical moment to a Pastafari day currently uses the astronomical model of the implementation; the specific astronomical model has not yet been finalized as part of the canon.</p>
+  <h2>When does a day change?</h2>
+  <p>A local Pastafari day does not turn over at midnight. Its boundary is defined by <strong>the lower transit of Venus across the local meridian</strong>: the moment when the center of Venus crosses the local meridian on the side below the horizon.</p>
+  <p>For that reason, the observer’s location matters. Two people in different places can, at the same physical moment, belong to two different local Pastafari days. When moving to another city, one does not continue using the previous city’s day boundary.</p>
+  <p>The boundary depends on the calculation of Venus’s path, not on whether the observer actually sees it. Clouds, walls, or the fact that Venus is below the horizon do not stop its path.</p>
+  <p>The calendar’s discrete algorithm is defined precisely: the same inputs, passed through the same rules, return the same result. By contrast, the conversion from a physical instant to a Pastafari day uses the astronomical model of the implementation currently in use; the numerical astronomical profile itself is still not a closed canonical part.</p>
 </section>
 
 <section class="about-section" id="advantages" data-toc-section data-toc-level="2">
-  <h2>The calendar’s notable strengths</h2>
+  <h2>Notable advantages of the calendar</h2>
   <ul>
-    <li><strong>A date that can be calculated again and again:</strong> the same day from the past can receive a different Pastafari date tomorrow because the day of working has also advanced. There is no need to settle for an old date that remains “useful” over time.</li>
-    <li><strong>Long years:</strong> a year can reach 5,778 days, so someone waiting for the next year may find themselves waiting for much longer than usual.</li>
-    <li><strong>Months that demand attention:</strong> knowing that the day is day 119 in a month does not mean that day 120 will occur tomorrow, next week, or even soon. The next date must be calculated.</li>
-    <li><strong>Geographic sensitivity:</strong> the same instant can belong to different local Pastafari days in different places. A trip to another city therefore adds another detail worth remembering when arranging plans.</li>
-    <li><strong>Printed calendars do not become complacent:</strong> a calendar prepared in advance can stop representing the correct calculation after the day of working changes, so there is no danger of someone relying on the same sheet of paper for years.</li>
-    <li><strong>Putting computing power to work:</strong> instead of settling for a simple table that can be understood at a glance, the calendar gives the computer an opportunity to perform a real calculation every time an answer is needed.</li>
-    <li><strong>It contains days:</strong> the calendar deals in days. This is a trait it shares with every calendar in general, and it ensures that the user is not forced to manage a calendar with no days in it.</li>
-    <li><strong>The days appear in order:</strong> an earlier day comes before a later day. This is a basic achievement of calendars, and in this case it is available without extra charge.</li>
-    <li><strong>It can be used to specify dates:</strong> the calendar allows a day to be assigned a calendrical description. This is exactly what calendars are for, but there is no reason not to point out a useful feature when it exists.</li>
+    <li><strong>A date that can be calculated over and over:</strong> the same day from the past can receive a different Pastafari date tomorrow because the day of working has advanced. There is no need to settle for an old date that remains “useful” over time.</li>
+    <li><strong>Long, spread-out years:</strong> a year can extend to 5,778 days, so someone waiting for the next year may have a very long period of anticipation compared with the ordinary case.</li>
+    <li><strong>Months that require attention:</strong> knowing that the day is day 119 in a month does not mean that day 120 will happen tomorrow, next week, or even soon. The next occurrence must be calculated.</li>
+    <li><strong>Geographic sensitivity:</strong> the same moment can belong to different local Pastafari days in different places. Traveling to another city therefore adds another fact worth remembering when coordinating events.</li>
+    <li><strong>Printed calendars do not get lazy:</strong> a calendar prepared in advance may cease to represent the correct calculation after the day of working changes, so there is no danger of someone relying on the same paper sheet for years.</li>
+    <li><strong>Useful use of computing power:</strong> instead of settling for a simple table that can be understood at a glance, the calendar gives a computer the opportunity to perform a real calculation whenever an answer is needed.</li>
+    <li><strong>There are days in it:</strong> the calendar deals in days. This is a property it shares with any calendar, and it ensures the user is not forced to manage a calendar with no days at all.</li>
+    <li><strong>The days appear in order:</strong> an early day comes before a later day. This is a basic achievement of calendars, and in this case it is available without extra charge.</li>
+    <li><strong>It can be used to specify dates:</strong> the calendar allows one to assign a calendrical description to a day. This is precisely what calendars are for, but there is no reason not to note a useful property when it exists.</li>
   </ul>
-  <p>All of these features are available together in a single calendar.</p>
+  <p>And all of the above comes together in a single calendar, as when several features belong to the same calendar.</p>
 </section>
 
 <section class="about-section" id="practical-consequences" data-toc-section data-toc-level="2">
   <h2>What does this mean in practice?</h2>
-  <p><strong>A printed calendar becomes obsolete.</strong> A change in the day of working can change the boundaries of the years, cutlets, and months. A calendar book that is correct today is not necessarily the correct calendar book tomorrow.</p>
-  <p><strong>An event remains the same event.</strong> A meeting, a birth, or a historical event should be anchored to a stable chronological day or moment; only afterward can a Pastafari date be displayed according to the day of working and observer location. Changing the label does not move the event in time.</p>
-  <p><strong>A Pastafari birthday is not “once a year” by default.</strong> To find the next appearance of the same month name and day in month — or the same cutlet name and day in cutlet — one must search the calendar. A neighboring year may contain no instance of the needed name at all, or may contain a unit too short to reach the required day number.</p>
-  <p><strong>An all-day event is not necessarily from midnight to midnight.</strong> If the event is defined by a local Pastafari day, its boundary is the local Venus boundary. A naïve export to a civil diary as a midnight-to-midnight event can change its meaning.</p>
+  <p><strong>A printed calendar becomes outdated.</strong> A change in the day of working can change the boundaries of years, cutlets, and months. An almanac calculated today is not necessarily the correct almanac for tomorrow.</p>
+  <p><strong>An event remains the same event.</strong> A meeting, birth, or historical event should be anchored to a stable chronological day or instant; only afterward can it be given a Pastafari date according to the day of working and observer location. Changing the label does not move the event in time.</p>
+  <p><strong>A Pastafari birthday is not “once a year” in any simple sense.</strong> To find the next occurrence of a given month name and day-in-month, or the same cutlet name and day-in-cutlet, one must search the calendar. A nearby year may not contain the required name at all, or may contain it in a form too short to reach the required day number.</p>
+  <p><strong>An all-day event is not necessarily from midnight to midnight.</strong> If the event is defined by a local Pastafari day, its boundary is the local Venus-based day boundary. A naïve export to a civil diary as a midnight-to-midnight event may change its meaning.</p>
 </section>
 
 <section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
@@ -506,65 +506,65 @@
     <dd>15 June 763 BCE in the Julian calendar extended backward, which is 7 June 763 BCE in the Gregorian calendar extended backward.</dd>
   </dl>
   <p>The distance between them is 14,777,149 days. Foundation Day is a computational anchor; it is not “the first day of time,” and the calendar continues even before it.</p>
-  <p>Tablet Day is linked to the tradition of the transmission of the tablets and the historical calculation associated with the day of the eclipse in the Bor-Sagelle period. Both anchors remain fixed even when the day of working changes.</p>
+  <p>Tablet Day is tied to the tradition of the transmission of the tablets and the historical calculation associated with the solar eclipse in the Būr-Saggala period. Both anchors remain fixed even when the day of working changes.</p>
 </section>
 
 <section class="about-section" id="calendar-math" data-toc-section data-toc-level="2">
   <h2>A few simple mathematical facts</h2>
-  <p>There are 47 month names, and each month can reach at most day 123. Therefore there are <strong>5,781</strong> possible combinations of the form “month name + day in month.”</p>
-  <p>A year can contain at most 5,778 days, and every day realizes one of these combinations. Therefore <strong>in every year at least three of the possible combinations are missing</strong>. There are not enough days even in the longest year to realize all of them.</p>
-  <p>When the day of working and the year are known, a complete pair of “cutlet name + day in cutlet” or “month name + day in month” points to at most one day within that year. Therefore a complete Pastafari date, together with the day of working, identifies the queried day unambiguously.</p>
-  <p>On the other hand, without knowing the day of working, a complete Pastafari date is not necessarily enough to identify a single distance on the timeline by itself. The same five-part combination can occur in different calculation contexts.</p>
+  <p>There are 47 month names, and each month can reach at most day 123. Therefore there are <strong>5,781</strong> possible pairs of the form “month name + day in month.”</p>
+  <p>A year can contain at most 5,778 days, and every day instantiates one such pair. Therefore <strong>every year is missing at least three of the possible combinations</strong>. There are not enough days even in the longest year to realize all of them.</p>
+  <p>When the day of working and the year are known, a full pair of “cutlet name + day in cutlet” or “month name + day in month” points to at most one day within that year. Therefore a full Pastafari date, together with the day of working, identifies the queried day unambiguously.</p>
+  <p>By contrast, without knowing the day of working, a full Pastafari date is not necessarily enough to identify a single point on the timeline by itself. The same five-part date can appear in different contexts of calculation.</p>
 </section>
 
 <section class="about-section" id="research" data-toc-section data-toc-level="2">
   <h2>What have computational studies found about the calendar?</h2>
   <p>In addition to testing the rules themselves, large computational studies have been performed on the calendar. The following are <strong>empirical findings from a sample</strong>, not canonical laws.</p>
-  <p>In an atlas of structures built from 4,096 days of working and 86,016 year structures tested:</p>
+  <p>In a structural atlas built from 4,096 working days and tested on 86,016 year structures:</p>
   <ul>
-    <li>The average year length in the sample was about 4,275 days, and the median was 4,343 days;</li>
+    <li>The average year length in the sample was about 4,275 days, with a median of 4,343 days;</li>
     <li>The average number of cutlets per year was about 7.27;</li>
     <li>The average number of structural months per year was about 41.1;</li>
     <li>A month contained on average about 104 days assigned to it, but usually stretched almost across the whole year;</li>
-    <li>97.482% of continuous segments of a month were exactly one day long;</li>
-    <li>The measured probability that two adjacent chronological days would belong to the same month was only about 2.998%.</li>
+    <li>97.482% of continuous runs of a month had length one day only;</li>
+    <li>The measured probability that two neighboring chronological days would belong to the same month was only about 2.998%.</li>
   </ul>
-  <p>In a separate study of “day-year” recurrences, 4,096 self-dates were tested in all directions:</p>
+  <p>In a separate study of “day-year” recurrences, tested across 4,096 self-dates in all directions:</p>
   <ul>
-    <li>The median time to a repeated match of <strong>month name + day in month</strong> was only one Pastafari year; 77.56% of matches occurred in the neighboring year;</li>
-    <li>Repeated matching of <strong>cutlet name + day in cutlet</strong> was far less predictable: the median time to a match was three Pastafari years, but the average was influenced by a very long tail;</li>
-    <li>In the sample, an extreme case appeared in which the first future return of “Akkad 3063” was 51,954 Pastafari years away.</li>
+    <li>Recurring matches of <strong>month name + day in month</strong> appeared by median within one Pastafari year; 77.56% of matches were in the adjacent year;</li>
+    <li>Recurring matches of <strong>cutlet name + day in cutlet</strong> were much less predictable: the median was three Pastafari years, but the average was heavily influenced by a very long tail;</li>
+    <li>In the sample, an extreme case appeared where the first future return of “Akkad 3063” was 51,954 Pastafari years away.</li>
   </ul>
-  <p>These findings are useful for understanding what the calendar tends to do. They do not make an average into a law: the fact that the average year in the sample had a certain length does not require any particular year to be near the average, and a result found in all 4,096 cases is not, by itself, a mathematical proof for all possible inputs.</p>
+  <p>These findings are useful for understanding what the calendar tends to do. They do not turn averages into laws: the fact that the average year in the sample had a certain length does not require any given year to be near the average, and a result found in all 4,096 cases is not, by itself, a mathematical proof for every possible input.</p>
 </section>
 
 <section class="about-section" id="calculation" data-toc-section data-toc-level="2">
   <h2>How is the calendar calculated?</h2>
-  <p>Behind the date is a discrete algorithm defined exactly. It takes the day of working and the queried day, produces a sequence of numbers, passes them through a scrambling mechanism called <strong>the Rotb</strong>, creates gates, selects the year and cutlet boundaries, chooses names, creates months, and finally weaves the month days through the year.</p>
-  <p>The exact details include large numbers, drops, bowls, stirring, seals, and combinatorial selection mechanisms. They are important for implementation and formal checking, but they are not required to understand the meaning of the date, so they are not detailed here.</p>
-  <p>Alongside the algorithm there is a fast engine called <strong>Pastafarian Calendar Seer</strong>. The Seer is meant to calculate quickly; it is not an authority, and it is not itself a canonical implementation of the algorithm in every detail. If its result conflicts with the result required by the canon, the Seer is wrong.</p>
+  <p>Behind the date is a discrete and precisely defined algorithm. It takes the day of working and the queried day, produces a sequence of numbers, passes them through a mechanism of confusion called <strong>the rotub</strong>, creates gates, chooses the year and cutlet boundaries, selects names, creates months, and finally weaves the days of the months through the year.</p>
+  <p>The exact details include large numbers, drops, bowls, stirring, seals, and combinatorial selection mechanisms. They are important for implementation and formal testing, but they are not required to understand the meaning of the date, and so they are not spelled out here.</p>
+  <p>Alongside the algorithm there is a fast engine called <strong>Pastafarian Calendar Seer</strong>. The Seer is intended to calculate quickly; it is not the authority, and it is not itself a standard implementation of the algorithm at every stage. If its output contradicts the output required by the canon, the Seer is wrong.</p>
 </section>
 
 <section class="about-section" id="about-the-monster" data-toc-section data-toc-level="2">
-  <h2>About the Monster</h2>
-  <p>In the Pastafari story, the <strong>Flying Spaghetti Monster</strong> is the being that created the world and most of the things in it. Its body is made of spaghetti and meatballs, and it is capable of flying, passing through ordinary matter, and remaining invisible when that is convenient.</p>
-  <p>The Monster can create matter, living creatures, celestial bodies, and highly complex mechanisms. This ability does not require it to prepare a tidy plan before beginning work. Often it starts with one thing, moves to another, discovers that the earlier one needs fixing, and decides whether to fix it. Sometimes it does.</p>
-  <p>This image — a creation built layer by layer, with repairs, exceptions, and rules left in place — is also the literary background of the calendar. Unlike the story, the calculation itself is not improvised: when the inputs are given, the algorithm returns one defined answer.</p>
-  <p>The Pastafari story is much broader than the calendar and includes pirates, carbohydrates, prayer, “I really would prefer not to,” and other traditions.</p>
-  <p class="about-actions"><a class="guide-link" href="./monster/en.html">An expanded explanation of the Monster</a></p>
+  <h2>About the monster</h2>
+  <p>Within the Pastafari story, the <strong>Flying Spaghetti Monster</strong> is the being that created the world and most of the things in it. Its body is made of spaghetti and meatballs, and it can fly, pass through ordinary matter, and remain invisible when that is convenient.</p>
+  <p>The monster can create matter, living beings, celestial bodies, and very complex mechanisms. This ability does not require it to prepare a tidy plan before starting work. Often it starts with one thing, moves to another, discovers that the first needs repair, and decides whether to fix it. Sometimes it does fix it.</p>
+  <p>This image — a being built layer by layer, with repairs, exceptions, and rules left in place — is also the literary background of the calendar. Unlike the story, the calculation itself is not improvised: when the inputs are given, the algorithm returns one defined answer.</p>
+  <p>The Pastafari story is much broader than the calendar and includes, among other things, pirates, carbohydrates, prayer, “I really prefer not to,” and other traditions.</p>
+  <p class="about-actions"><a class="guide-link" href="./monster/en.html">For the expanded explanation of the monster</a></p>
 </section>
 
 <section class="about-section" id="authority" data-toc-section data-toc-level="2">
-  <h2>What is canonical, and what is only explanation?</h2>
-  <p>This page is a <strong>page of explanation</strong>. It does not create a new rule merely because a sentence appears on it.</p>
-  <p>The canonical content is fixed by the canonical corpus and the rules adopted within it. Canonical editions of the scripture do not have an automatic hierarchy over one another, and software implementation is not made authoritative merely because it is fast or common.</p>
-  <p>A canonical implementation executes the canonical algorithm in all of its stages. A computational study may describe a phenomenon, find a pattern, or prove a theorem about the algorithm; when it is based on a sample and not a general proof, this is stated explicitly.</p>
+  <h2>What is canonical and what is only explanation?</h2>
+  <p>This page is a <strong>reference page</strong>. It does not create a new rule just because a sentence appears here.</p>
+  <p>The canonical content is determined by the canonical corpus and the rules adopted within it. Canonical editions of the scripture do not have an automatic hierarchy over one another, and software implementation is not made authoritative merely because it is fast or widespread.</p>
+  <p>A standard implementation performs the canonical algorithm at every stage. A computational study may describe a phenomenon, find a pattern, or prove a theorem about the algorithm; when it is based on a sample and not a full proof, that fact is stated explicitly.</p>
 </section>
 
 <section class="about-section" id="summary" data-toc-section data-toc-level="2">
   <h2>In brief</h2>
-  <p>The Pastafari Calendar is a deliberately unintuitive calendar in which the date depends both on the day being asked about and on the day from which the question is asked.</p>
-  <p>Year 5000 is constructed around the day of working. Cutlets are continuous sections. Months are groups of days that can be woven through one another. There are no canonical weeks. The local day changes according to Venus, not at midnight.</p>
-  <p>Behind the unusual structure is an exact algorithm; around it is the Pastafari story of the Flying Spaghetti Monster, a creation built in layers and with an absurd amount of carbohydrates.</p>
-  <p>When the day of working, the queried day, and the location are given — there is one answer.</p>
+  <p>The Pastafari calendar is a non-intuitive calendar in which the date depends both on the day being asked about and on the day from which the question is asked.</p>
+  <p>Year 5000 is built around the day of working. Cutlets are continuous segments. Months are groups of days that can be woven together. There are no canonical weeks. The local day changes according to Venus, not at midnight.</p>
+  <p>Behind this unusual structure is a precise algorithm; around it stands the Pastafari story of a spaghetti monster, a being built in layers and made of an improbable quantity of carbohydrates.</p>
+  <p>When the day of working, the queried day, and the place are given — there is one answer.</p>
 </section>
