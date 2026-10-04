@@ -1,0 +1,197 @@
+name: About retranslation 71 locales
+
+on:
+  push:
+    branches:
+      - feature/about-retranslation-71-locales
+    paths:
+      - artifacts/about-retranslation-2026-10-04/control.json
+      - .github/workflows/about-retranslation-71-locales.yml
+      - scripts/about-retranslation-worker-v2.py
+
+permissions:
+  contents: write
+  copilot-requests: write
+
+concurrency:
+  group: about-retranslation-71-locales
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      locales: ${{ steps.matrix.outputs.locales }}
+      publish: ${{ steps.matrix.outputs.publish }}
+      batch: ${{ steps.matrix.outputs.batch }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+      - id: matrix
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs = require("node:fs");
+          const control = JSON.parse(fs.readFileSync("artifacts/about-retranslation-2026-10-04/control.json","utf8"));
+          const manifest = JSON.parse(fs.readFileSync("artifacts/about-retranslation-2026-10-04/locales.json","utf8"));
+          const allowed = new Set(manifest.locales.map(x => x.code));
+          const locales = control.locales === "ALL" ? manifest.locales.map(x => x.code) : control.locales;
+          if (!Array.isArray(locales) || locales.length < 1) throw new Error("No locales requested");
+          for (const code of locales) if (!allowed.has(code)) throw new Error("Unknown locale " + code);
+          const publish = Boolean(control.publish);
+          const batch = String(control.batch || "manual").replace(/[^A-Za-z0-9_.-]/g,"_");
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, "locales=" + JSON.stringify(locales) + "\n");
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, "publish=" + String(publish) + "\n");
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, "batch=" + batch + "\n");
+          NODE
+
+  translate-and-review:
+    needs: prepare
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        code: ${{ fromJSON(needs.prepare.outputs.locales) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24"
+
+      - name: Install pinned Copilot CLI
+        run: |
+          npm install -g @github/copilot@1.0.88
+          copilot --version
+
+      - name: Resolve locale metadata
+        id: locale
+        env:
+          CODE: ${{ matrix.code }}
+        run: |
+          node <<'NODE'
+          const fs = require("node:fs");
+          const manifest = JSON.parse(fs.readFileSync("artifacts/about-retranslation-2026-10-04/locales.json","utf8"));
+          const row = manifest.locales.find(x => x.code === process.env.CODE);
+          if (!row) throw new Error("Locale metadata missing");
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, "tag=" + row.tag + "\n");
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, "dir=" + row.dir + "\n");
+          NODE
+
+      - name: Validate worker syntax
+        run: python -m py_compile scripts/about-retranslation-worker-v2.py
+
+      - name: Translate from Hebrew and run both LLM QA gates
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          python scripts/about-retranslation-worker-v2.py             --code "${{ matrix.code }}"             --tag "${{ steps.locale.outputs.tag }}"             --dir "${{ steps.locale.outputs.dir }}"             --max-cycles 3
+
+      - name: Show final status
+        if: always()
+        run: |
+          cat "artifacts/about-retranslation-2026-10-04/staging/${{ matrix.code }}/status.json" || true
+
+      - name: Upload complete locale evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: about-retranslation-${{ matrix.code }}
+          path: artifacts/about-retranslation-2026-10-04/staging/${{ matrix.code }}/
+          if-no-files-found: error
+          retention-days: 90
+
+  aggregate:
+    if: ${{ always() }}
+    needs:
+      - prepare
+      - translate-and-review
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: feature/about-retranslation-71-locales
+          fetch-depth: 0
+
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: about-retranslation-*
+          path: /tmp/about-retranslation
+          merge-multiple: false
+
+      - name: Install compact persistent evidence
+        id: aggregate
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE="artifacts/about-retranslation-2026-10-04/staging"
+          mkdir -p "$BASE"
+          requested='${{ needs.prepare.outputs.locales }}'
+          REQUESTED="$requested" python <<'PY'
+          import json, os, pathlib, shutil, glob
+          requested=json.loads(os.environ["REQUESTED"])
+          srcroot=pathlib.Path("/tmp/about-retranslation")
+          dstroot=pathlib.Path("artifacts/about-retranslation-2026-10-04/staging")
+          summary=[]
+          all_pass=True
+          for code in requested:
+              hits=list(srcroot.glob("about-retranslation-"+code))
+              if len(hits)!=1:
+                  summary.append({"code":code,"state":"MISSING_ARTIFACT"})
+                  all_pass=False
+                  continue
+              src=hits[0]
+              status_path=src/"status.json"
+              if not status_path.exists():
+                  summary.append({"code":code,"state":"MISSING_STATUS"})
+                  all_pass=False
+                  continue
+              status=json.loads(status_path.read_text(encoding="utf-8"))
+              summary.append(status)
+              if status.get("state")!="PASS":
+                  all_pass=False
+              dst=dstroot/code
+              if dst.exists():
+                  shutil.rmtree(dst)
+              dst.mkdir(parents=True)
+              keep=["about.html","monster.html","native-review-prompt.md","status.json"]
+              for name in keep:
+                  p=src/name
+                  if p.exists(): shutil.copy2(p,dst/name)
+              native=sorted(src.glob("native-qa-*.md"))
+              semantic=sorted(src.glob("hebrew-compare-*.md"))
+              structural=sorted(src.glob("structural-*.json"))
+              if native: shutil.copy2(native[-1],dst/"native-qa-final.md")
+              if semantic: shutil.copy2(semantic[-1],dst/"hebrew-compare-final.md")
+              if structural: shutil.copy2(structural[-1],dst/"structural-final.json")
+          report={"requested":requested,"all_pass":all_pass,"results":summary}
+          pathlib.Path("artifacts/about-retranslation-2026-10-04/BATCH_STATUS.json").write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          pathlib.Path("/tmp/all_pass").write_text("true" if all_pass else "false")
+          PY
+          echo "all_pass=$(cat /tmp/all_pass)" >> "$GITHUB_OUTPUT"
+
+      - name: Commit staging evidence to feature branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add artifacts/about-retranslation-2026-10-04/
+          if git diff --cached --quiet; then
+            echo "No evidence changes to commit."
+          else
+            git commit -m "qa(about-i18n): record ${{ needs.prepare.outputs.batch }} retranslation evidence"
+            git pull --rebase origin feature/about-retranslation-71-locales
+            git push origin HEAD:feature/about-retranslation-71-locales
+          fi
+
+      - name: Enforce batch gate
+        if: ${{ steps.aggregate.outputs.all_pass != 'true' }}
+        run: |
+          echo "One or more requested locales did not pass both QA gates." >&2
+          exit 1
+
+      - name: Publication remains disabled in pilot
+        if: ${{ needs.prepare.outputs.publish != 'true' }}
+        run: echo "QA batch passed; publication flag is false."
