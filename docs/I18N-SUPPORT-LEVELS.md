@@ -52,7 +52,7 @@ The validator still rejects:
 
 At runtime the selected partial source is merged over the English baseline. Local values always win. Missing values are therefore explicit and measurable by the coverage audit rather than becoming `undefined`.
 
-There is no arbitrary percentage threshold for `partial`. Coverage is reported as data, not used as a substitute for linguistic review.
+There is no arbitrary percentage threshold for `partial`. Coverage is reported as data, not treated as a linguistic-quality score.
 
 ## `experimental`
 
@@ -105,7 +105,7 @@ The report records local values that are identical to English and contain Latin 
 
 ### `experimental` → `partial`
 
-Promotion requires meaningful local UI translation, valid metadata and resource keys, no runtime failures and human confirmation that the locale is useful as an actual translated interface. A numeric coverage percentage alone is insufficient.
+Promotion requires meaningful local UI translation, valid metadata and resource keys, and no runtime failures. A numeric coverage percentage alone is insufficient.
 
 ### `partial` → `complete`
 
@@ -121,7 +121,7 @@ A structurally complete audit result may be described by the audit as a `complet
 
 ## Demotion policy
 
-If a new feature adds English UI text and a complete locale cannot be updated reliably, either supply a reviewed translation or explicitly change that locale to `partial`. Do not add a hidden English fallback while leaving the registry status as `complete`.
+If a new feature adds English UI text and a complete locale cannot be updated reliably, either supply a local translation or explicitly change that locale to `partial`. Do not add a hidden English fallback while leaving the registry status as `complete`.
 
 ## Adding a locale
 
