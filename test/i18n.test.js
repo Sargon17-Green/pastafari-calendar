@@ -34,7 +34,7 @@ function fakeStorage(initial = {}) {
 }
 
 test("registry import is metadata-only and does not eagerly load locale resources", () => {
-  assert.equal(LOCALES.length, 72);
+  assert.equal(LOCALES.length, 73);
   for (const locale of LOCALES) {
     assert.equal("messages" in locale, false);
     assert.equal("calendar" in locale, false);
@@ -46,9 +46,9 @@ test("registry import is metadata-only and does not eagerly load locale resource
   assert.equal(isLocaleLoaded("he"), false);
 });
 
-test("registry contains 72 supported locales and no removed experimental or Biblical Hebrew locales", () => {
+test("registry contains 73 supported locales and no removed experimental or Biblical Hebrew locales", () => {
   const removedExperimentalLocales = ["akk", "ang", "cop", "cu", "got", "grc", "ia", "io", "jbo", "la", "lzh", "non", "sa", "sux", "tlh", "tok", "vo"];
-  assert.equal(LOCALES.length, 72);
+  assert.equal(LOCALES.length, 73);
   assert.equal(LOCALES.some(({ code }) => code === "hbo"), false);
   assert.equal(matchSupportedLocale("hbo"), null);
   for (const code of removedExperimentalLocales) {
@@ -109,6 +109,7 @@ test("locale matching normalizes region tags without assuming all locales are tw
   assert.equal(matchSupportedLocale("en-US")?.code, "en");
   assert.equal(matchSupportedLocale("en-GB")?.code, "en");
   assert.equal(matchSupportedLocale("he-IL")?.code, "he");
+  assert.equal(matchSupportedLocale("ky-KG")?.code, "ky");
   assert.equal(matchSupportedLocale("EN-us")?.code, "en");
   assert.equal(matchSupportedLocale("not_a_locale"), null);
 });

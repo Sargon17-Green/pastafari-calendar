@@ -92,7 +92,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   assert.equal(coreAssets.length, 24);
 
   const requiredOptional = [
-    "./manifest.webmanifest?v=9-canonical-names",
+    "./manifest.webmanifest?v=10-kyrgyz",
     "./icons/icon.svg?v=9-canonical-names",
     "./icons/icon-192.png",
     "./icons/icon-512.png",
@@ -106,10 +106,10 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
 
   const localeAssets = coreAssets.filter((entry) => entry.startsWith("./i18n/locales/"));
   assert.deepEqual(localeAssets, ["./i18n/locales/en.js?v=18-about-page"]);
-  assert.equal(LOCALES.length, 72, "PWA accounting expects the current 72 registered locales");
-  assert.equal(LOCALES.filter(({ code }) => code !== "en").length, 71, "Every non-English locale is optional/on-demand");
+  assert.equal(LOCALES.length, 73, "PWA accounting expects the current 73 registered locales");
+  assert.equal(LOCALES.filter(({ code }) => code !== "en").length, 72, "Every non-English locale is optional/on-demand");
 
-  assert.match(source, /const VERSION = "pastafari-static-pwa-hardening-22-about-polish";/);
+  assert.match(source, /const VERSION = "pastafari-static-pwa-hardening-23-kyrgyz";/);
   assert.match(source, /const RUNTIME_CACHE = "pastafari-runtime-assets";/);
   assert.match(source, /const OPTIONAL_LOCALE_PATH = \/\^\\\/i18n\\\/locales/);
   assert.match(source, /url\.search === LOCALE_REVISION_SEARCH/);
@@ -138,7 +138,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   for (const entry of [
     "./styles.css?v=16-about-polish",
     "./app.js?v=23-about-page",
-    "./manifest.webmanifest?v=9-canonical-names",
+    "./manifest.webmanifest?v=10-kyrgyz",
     "./icons/icon.svg?v=9-canonical-names",
   ]) {
     assert.ok(html.includes(entry), `index.html must request the revisioned asset ${entry}`);

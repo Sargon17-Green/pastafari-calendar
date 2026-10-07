@@ -44,13 +44,13 @@ const english = sourceFor(enMetadata, {
 
 test("registry is the single source of truth for explicit support levels", () => {
   assert.deepEqual(SUPPORT_LEVELS, ["complete", "partial", "experimental"]);
-  assert.equal(LOCALES.length, 72);
+  assert.equal(LOCALES.length, 73);
   for (const locale of LOCALES) {
     assert(SUPPORT_LEVELS.includes(locale.support), `${locale.code} has no valid support status`);
     assert.equal(locale.experimental === true, locale.support === "experimental");
   }
   assert.deepEqual(LOCALES.filter(({ support }) => support === "complete").map(({ code }) => code), ["he", "en"]);
-  assert.equal(LOCALES.filter(({ support }) => support === "partial").length, 70);
+  assert.equal(LOCALES.filter(({ support }) => support === "partial").length, 71);
   assert.equal(LOCALES.filter(({ support }) => support === "experimental").length, 0);
 });
 
@@ -204,7 +204,7 @@ test("runtime notices are ordinary message resources in every current locale", a
   }
 });
 
-test("current partial locales use English fallback for the intentionally untranslated about-page UI plus existing fallback keys", async () => {
+test("partial locales preserve explicit fallback provenance while Kyrgyz is a full local complete-candidate", async () => {
   const report = auditLocaleResources(await loadAllLocaleSources());
   assert.equal(report.length, LOCALES.length);
   const expectedMissingMessages = [
@@ -225,8 +225,17 @@ test("current partial locales use English fallback for the intentionally untrans
     "reverse.error.limitSafeInteger",
   ].sort();
   const partial = report.filter(({ status }) => status === "partial");
-  assert.equal(partial.length, 70);
-  for (const locale of partial) {
+  assert.equal(partial.length, 71);
+
+  const kyrgyz = partial.find(({ code }) => code === "ky");
+  assert(kyrgyz, "Kyrgyz locale must be present as a partial locale pending linguistic approval.");
+  assert.deepEqual(kyrgyz.resourceGroups.messages.missingKeys, []);
+  assert.equal(kyrgyz.fallbackKeys, 0);
+  assert.equal(kyrgyz.proposedStructuralStatus, "complete-candidate");
+
+  const fallbackPartials = partial.filter(({ code }) => code !== "ky");
+  assert.equal(fallbackPartials.length, 70);
+  for (const locale of fallbackPartials) {
     assert.deepEqual(locale.resourceGroups.messages.missingKeys, expectedMissingMessages, `${locale.code} fallback set changed`);
     assert.equal(locale.fallbackKeys, expectedMissingMessages.length);
     assert.equal(locale.proposedStructuralStatus, "partial");

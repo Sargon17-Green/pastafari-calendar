@@ -13,7 +13,7 @@ const ROOT = path.resolve(SCRIPT_DIR, "..");
 const DOCS = path.join(ROOT, "docs");
 const FIXED_QUERY = "t=2461266&v=2461266&c=2461266";
 const TIMEOUT_MS = 60_000;
-const EXPECTED_LOCALE_COUNT = 72;
+const EXPECTED_LOCALE_COUNT = 73;
 const requestedBrowsers = process.argv.slice(2).flatMap((arg) => arg.startsWith("--browser=") ? [arg.slice("--browser=".length)] : []);
 const browserNames = requestedBrowsers.length ? requestedBrowsers : ["chromium", "firefox"];
 for (const name of browserNames) {

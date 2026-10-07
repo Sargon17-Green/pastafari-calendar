@@ -1,6 +1,6 @@
 "use strict";
 
-const VERSION = "pastafari-static-pwa-hardening-22-about-polish";
+const VERSION = "pastafari-static-pwa-hardening-23-kyrgyz";
 const CORE_CACHE = `${VERSION}-core`;
 const RUNTIME_CACHE = "pastafari-runtime-assets";
 const CACHE_PREFIX = "pastafari-static-";
@@ -35,7 +35,7 @@ const CORE_ASSETS = [
 ];
 
 const OPTIONAL_ASSETS = Object.freeze([
-  "./manifest.webmanifest?v=9-canonical-names",
+  "./manifest.webmanifest?v=10-kyrgyz",
   "./icons/icon.svg?v=9-canonical-names",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
