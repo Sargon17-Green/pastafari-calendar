@@ -1,0 +1,506 @@
+name: One-shot Kyrgyz complete-status policy fix
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: one-shot-kyrgyz-complete-policy-fix
+  cancel-in-progress: false
+
+jobs:
+  apply-verify-and-self-delete:
+    if: github.repository == 'Sargon17-Green/pastafari-calendar' && github.ref_name == 'main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Apply idempotent Kyrgyz complete-status correction
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          import re
+
+          ROOT = Path(".")
+
+          def read(path):
+              return (ROOT / path).read_text(encoding="utf-8")
+
+          def write(path, text):
+              (ROOT / path).write_text(text, encoding="utf-8", newline="\n")
+
+          def replace_known(text, old, new, label):
+              if new in text:
+                  return text
+              if old not in text:
+                  raise SystemExit(f"[ERROR] {label}: neither old nor corrected form was found")
+              return text.replace(old, new, 1)
+
+          # 1. Registry.
+          path = "docs/i18n/registry.js"
+          s = read(path)
+          s = replace_known(
+              s,
+              'defineLocale("ky", "Кыргызча", "ltr", "ky-KG", "partial", () => import("./locales/ky.js?v=18-about-page"))',
+              'defineLocale("ky", "Кыргызча", "ltr", "ky-KG", "complete", () => import("./locales/ky.js?v=18-about-page"))',
+              "registry ky support",
+          )
+          write(path, s)
+
+          # 2. Support-level policy.
+          path = "docs/I18N-SUPPORT-LEVELS.md"
+          s = read(path)
+          pairs = [
+              (
+                  "A `complete` locale is self-contained for every required resource group and has been approved by project policy.",
+                  "A `complete` locale is self-contained for every required resource group.",
+                  "complete definition",
+              ),
+              (
+                  "`complete` means structurally complete and approved by project policy. Automated validation cannot prove that the language itself is idiomatic or correct.",
+                  "`complete` means structurally complete under this support contract. It is not a certification that every translation is idiomatic, stylistically optimal, or independently reviewed by a native speaker.",
+                  "complete meaning",
+              ),
+              (
+                  "A `partial` locale contains meaningful local translation resources and may use English fallback for missing entries. A partial locale may also currently be structurally complete but remain `partial` until linguistic review and promotion are explicit.",
+                  "A `partial` locale contains meaningful local translation resources and may use English fallback for missing entries. In the current policy, `partial` is used when one or more required resources are still supplied by fallback rather than by the locale itself.",
+                  "partial definition",
+              ),
+              (
+                  "There is no arbitrary percentage threshold for `partial`. Coverage is reported as data, not used as a substitute for linguistic review.",
+                  "There is no arbitrary percentage threshold for `partial`. Coverage is reported as data, not treated as a linguistic-quality score.",
+                  "partial threshold wording",
+              ),
+              (
+                  "In the current 73-locale set, Hebrew and English are `complete` and the 71 non-English/non-Hebrew locales remain `partial`. The coverage audit is authoritative for the exact local/fallback key counts: most existing partial locales currently use the normal English fallback for some newly introduced messages, while a partial locale may also supply every current resource locally and remain `partial` until explicit linguistic review. Structural completeness of the resolved runtime object is therefore not evidence of project approval as `complete`.",
+                  "In the current 73-locale set, Hebrew, English and Kyrgyz are `complete`; the other 70 registered locales remain `partial`. The coverage audit is authoritative for the exact local/fallback key counts: current partial locales use the normal English fallback for some newly introduced messages. A locale with zero fallback and all required resources supplied locally satisfies the structural `complete` contract; that status does not by itself certify linguistic quality.",
+                  "current support counts",
+              ),
+              (
+                  "Promotion requires meaningful local UI translation, valid metadata and resource keys, no runtime failures and human confirmation that the locale is useful as an actual translated interface. A numeric coverage percentage alone is insufficient.",
+                  "Promotion requires meaningful local UI translation, valid metadata and resource keys, and no runtime failures. A numeric coverage percentage alone is insufficient.",
+                  "experimental promotion wording",
+              ),
+              (
+                  "- human review of linguistic quality.",
+                  "- an explicit registry change that records the locale as `complete`.",
+                  "partial-to-complete gate",
+              ),
+              (
+                  "A structurally complete audit result may be described as a `complete-candidate`; it is not an automatic promotion.",
+                  "A structurally complete audit result may be described by the audit as a `complete-candidate`; the audit does not mutate registry status automatically, and no separate native-speaker-review gate is implied by that label.",
+                  "complete-candidate wording",
+              ),
+              (
+                  "If a new feature adds English UI text and a complete locale cannot be updated reliably, either supply a reviewed translation or explicitly change that locale to `partial`. Do not add a hidden English fallback while leaving the registry status as `complete`.",
+                  "If a new feature adds English UI text and a complete locale cannot be updated reliably, either supply a local translation or explicitly change that locale to `partial`. Do not add a hidden English fallback while leaving the registry status as `complete`.",
+                  "demotion wording",
+              ),
+              (
+                  "Do not invent translations, copy English text into a locale merely to reach 100%, create a broad English allowlist, or promote a locale solely because every key exists. Ancient, reconstructed or rare languages may legitimately remain `partial` or `experimental` when modern UI vocabulary cannot be translated reliably.",
+                  "Do not invent translations, copy English text into a locale merely to reach 100%, or create a broad English allowlist to hide genuine gaps. Ancient, reconstructed or rare languages may legitimately remain `partial` or `experimental` when modern UI vocabulary cannot be translated reliably.",
+                  "anti-gaming wording",
+              ),
+              (
+                  "Structural completeness is machine-checkable: keys, types, metadata, fallback provenance and inventory can be validated deterministically. Linguistic quality is not. Human review remains required for claims about correctness, naturalness, terminology and appropriate register.",
+                  "Structural completeness is machine-checkable: keys, types, metadata, fallback provenance and inventory can be validated deterministically. Linguistic quality is not. Human review can strengthen claims about correctness, naturalness, terminology and appropriate register, but it is not a formal prerequisite for the `complete` support status.",
+                  "quality disclaimer",
+              ),
+          ]
+          for old, new, label in pairs:
+              s = replace_known(s, old, new, label)
+          write(path, s)
+
+          # 3. Architecture documentation.
+          path = "docs/I18N.md"
+          s = read(path)
+          pairs = [
+              (
+                  "- `complete`: every required user-facing resource is local and the locale has been explicitly approved; English fallback is forbidden for normal runtime resources.",
+                  "- `complete`: every required user-facing resource is local; English fallback is forbidden for normal runtime resources.",
+                  "I18N complete definition",
+              ),
+              (
+                  "- `partial`: meaningful local translation exists, but English fallback is permitted. A structurally complete locale can remain `partial` until linguistic review is explicit.",
+                  "- `partial`: meaningful local translation exists, but one or more required resources may still rely on English fallback.",
+                  "I18N partial definition",
+              ),
+              (
+                  "The current policy marks Hebrew and English as `complete`; the other 71 registered locales remain `partial`. The three newly surfaced reverse-input error messages and the invariant masthead brand text had previously been hard-coded in the UI. English and Hebrew define them locally with the exact text that was already displayed. Partial locales may use the normal English fallback for those keys; Kyrgyz defines all current resource keys locally while remaining `partial` pending explicit linguistic review. Existing translated runtime notices remain local and are not replaced.",
+                  "The current policy marks Hebrew, English and Kyrgyz as `complete`; the other 70 registered locales remain `partial`. The three newly surfaced reverse-input error messages and the invariant masthead brand text had previously been hard-coded in the UI. English and Hebrew define them locally with the exact text that was already displayed. Partial locales may use the normal English fallback for those keys; Kyrgyz defines all current resource keys locally and therefore does not require English fallback. Existing translated runtime notices remain local and are not replaced.",
+                  "I18N current policy",
+              ),
+          ]
+          for old, new, label in pairs:
+              s = replace_known(s, old, new, label)
+          write(path, s)
+
+          # 4. Generated/current support counts.
+          path = "docs/DOCUMENTATION-CONSISTENCY.md"
+          s = read(path)
+          s = replace_known(
+              s,
+              "- Registered locale resources: **73**. Support status: complete **2**, partial **71**, experimental **0**. These are registry policy/status facts, not a linguistic-quality certification.",
+              "- Registered locale resources: **73**. Support status: complete **3**, partial **70**, experimental **0**. These are registry policy/status facts, not a linguistic-quality certification.",
+              "documentation support counts",
+          )
+          write(path, s)
+
+
+          # 5. Support-level unit tests.
+          path = "test/i18n-support-levels.test.js"
+          s = read(path)
+          s = replace_known(
+              s,
+              'assert.deepEqual(LOCALES.filter(({ support }) => support === "complete").map(({ code }) => code), ["he", "en"]);',
+              'assert.deepEqual(LOCALES.filter(({ support }) => support === "complete").map(({ code }) => code), ["he", "en", "ky"]);',
+              "complete locale list test",
+          )
+          s = replace_known(
+              s,
+              'assert.equal(LOCALES.filter(({ support }) => support === "partial").length, 71);',
+              'assert.equal(LOCALES.filter(({ support }) => support === "partial").length, 70);',
+              "partial locale count test",
+          )
+
+          old_test = '''test("partial locales preserve explicit fallback provenance while Kyrgyz is a full local complete-candidate", async () => {
+            const report = auditLocaleResources(await loadAllLocaleSources());
+            assert.equal(report.length, LOCALES.length);
+            const expectedMissingMessages = [
+              "about.back",
+              "about.hebrewOnly",
+              "about.intro",
+              "about.loadError",
+              "about.metaDescription",
+              "about.open",
+              "about.openShort",
+              "about.skip",
+              "about.title",
+              "about.toc",
+              "about.tocKicker",
+              "app.brand",
+              "reverse.error.absoluteDateField",
+              "reverse.error.limitPositive",
+              "reverse.error.limitSafeInteger",
+            ].sort();
+            const partial = report.filter(({ status }) => status === "partial");
+            assert.equal(partial.length, 71);
+
+            const kyrgyz = partial.find(({ code }) => code === "ky");
+            assert(kyrgyz, "Kyrgyz locale must be present as a partial locale pending linguistic approval.");
+            assert.deepEqual(kyrgyz.resourceGroups.messages.missingKeys, []);
+            assert.equal(kyrgyz.fallbackKeys, 0);
+            assert.equal(kyrgyz.proposedStructuralStatus, "complete-candidate");
+
+            const fallbackPartials = partial.filter(({ code }) => code !== "ky");
+            assert.equal(fallbackPartials.length, 70);
+            for (const locale of fallbackPartials) {
+              assert.deepEqual(locale.resourceGroups.messages.missingKeys, expectedMissingMessages, `${locale.code} fallback set changed`);
+              assert.equal(locale.fallbackKeys, expectedMissingMessages.length);
+              assert.equal(locale.proposedStructuralStatus, "partial");
+            }
+            for (const locale of report.filter(({ status }) => status === "complete")) {
+              assert.equal(locale.fallbackKeys, 0, `${locale.code} complete locale must not use fallback`);
+              assert.equal(locale.proposedStructuralStatus, "complete-candidate");
+            }
+          });'''
+
+          new_test = '''test("current partial locales preserve explicit fallback provenance while complete locales use no fallback", async () => {
+            const report = auditLocaleResources(await loadAllLocaleSources());
+            assert.equal(report.length, LOCALES.length);
+            const expectedMissingMessages = [
+              "about.back",
+              "about.hebrewOnly",
+              "about.intro",
+              "about.loadError",
+              "about.metaDescription",
+              "about.open",
+              "about.openShort",
+              "about.skip",
+              "about.title",
+              "about.toc",
+              "about.tocKicker",
+              "app.brand",
+              "reverse.error.absoluteDateField",
+              "reverse.error.limitPositive",
+              "reverse.error.limitSafeInteger",
+            ].sort();
+            const partial = report.filter(({ status }) => status === "partial");
+            assert.equal(partial.length, 70);
+            for (const locale of partial) {
+              assert.deepEqual(locale.resourceGroups.messages.missingKeys, expectedMissingMessages, `${locale.code} fallback set changed`);
+              assert.equal(locale.fallbackKeys, expectedMissingMessages.length);
+              assert.equal(locale.proposedStructuralStatus, "partial");
+            }
+
+            const kyrgyz = report.find(({ code }) => code === "ky");
+            assert(kyrgyz && kyrgyz.status === "complete", "Kyrgyz locale must be registered as complete.");
+            assert.deepEqual(kyrgyz.resourceGroups.messages.missingKeys, []);
+            assert.equal(kyrgyz.fallbackKeys, 0);
+            assert.equal(kyrgyz.proposedStructuralStatus, "complete-candidate");
+
+            for (const locale of report.filter(({ status }) => status === "complete")) {
+              assert.equal(locale.fallbackKeys, 0, `${locale.code} complete locale must not use fallback`);
+              assert.equal(locale.proposedStructuralStatus, "complete-candidate");
+            }
+          });'''
+
+          if new_test not in s:
+              if old_test not in s:
+                  raise SystemExit("[ERROR] support-level audit test: neither old nor corrected block was found")
+              s = s.replace(old_test, new_test, 1)
+          write(path, s)
+
+          # 6. Browser support-level smoke.
+          path = "scripts/run-i18n-support-smoke.mjs"
+          s = read(path)
+          s = replace_known(
+              s,
+              'assert(kyrgyz && kyrgyz.support === "partial" && kyrgyz.dir === "ltr", "Kyrgyz must be registered as an LTR partial locale.");',
+              'assert(kyrgyz && kyrgyz.support === "complete" && kyrgyz.dir === "ltr", "Kyrgyz must be registered as an LTR complete locale.");',
+              "Kyrgyz browser smoke status",
+          )
+          write(path, s)
+
+          # 7. Documentation consistency guard.
+          path = "scripts/docs-consistency.mjs"
+          s = read(path)
+          s = replace_known(
+              s,
+              'const completePhrasePresent = /marks Hebrew and English as `complete`/u.test(i18n);',
+              'const completePhrasePresent = /marks Hebrew, English and Kyrgyz as `complete`/u.test(i18n);',
+              "docs complete phrase guard",
+          )
+          s = replace_known(
+              s,
+              '''if (!completePhrasePresent || expectedComplete !== "en,he") {
+                issues.push(issue("docs/I18N.md", `documented complete-locale claim is Hebrew+English; registry complete locale codes are ${JSON.stringify([...facts.completeLocaleCodes].sort())}.`, "docs/i18n/registry.js (LOCALES[].support)"));
+              }''',
+              '''if (!completePhrasePresent || expectedComplete !== "en,he,ky") {
+                issues.push(issue("docs/I18N.md", `documented complete-locale claim is Hebrew+English+Kyrgyz; registry complete locale codes are ${JSON.stringify([...facts.completeLocaleCodes].sort())}.`, "docs/i18n/registry.js (LOCALES[].support)"));
+              }''',
+              "docs complete-code guard",
+          )
+          s = replace_known(
+              s,
+              'pattern: /(?:The|the)\\s+(\\d+)\\s+non-English\\/non-Hebrew locales remain `partial`/u',
+              'pattern: /(?:The|the)\\s+other\\s+(\\d+)\\s+registered locales remain `partial`/u',
+              "docs partial-count guard",
+          )
+          write(path, s)
+
+          # 8. Documentation-consistency fixture.
+          path = "test/docs-consistency.test.js"
+          s = read(path)
+          fixture_pairs = [
+              (
+                  '  defineLocale("he", "עברית", "rtl", "he-IL", "complete", () => import("./locales/he.js?v=1")),\n]);',
+                  '  defineLocale("he", "עברית", "rtl", "he-IL", "complete", () => import("./locales/he.js?v=1")),\n  defineLocale("ky", "Кыргызча", "ltr", "ky-KG", "complete", () => import("./locales/ky.js?v=1")),\n]);',
+                  "fixture registry",
+              ),
+              (
+                  '  await put(root, "docs/i18n/locales/he.js");',
+                  '  await put(root, "docs/i18n/locales/he.js");\n  await put(root, "docs/i18n/locales/ky.js");',
+                  "fixture ky module",
+              ),
+              (
+                  'await put(root, "docs/README.md", "רשומים בו 2 משאבי locale. כל 2 ה-locales.\\n");',
+                  'await put(root, "docs/README.md", "רשומים בו 3 משאבי locale. כל 3 ה-locales.\\n");',
+                  "fixture README count",
+              ),
+              (
+                  'await put(root, "docs/I18N.md", "The current policy marks Hebrew and English as `complete`; the other 0 registered locales remain `partial`.\\n");',
+                  'await put(root, "docs/I18N.md", "The current policy marks Hebrew, English and Kyrgyz as `complete`; the other 0 registered locales remain `partial`.\\n");',
+                  "fixture I18N policy",
+              ),
+              (
+                  'await put(root, "docs/I18N-SUPPORT-LEVELS.md", "In the current 2-locale set, Hebrew and English are `complete` and the 0 non-English/non-Hebrew locales remain `partial`.\\n");',
+                  'await put(root, "docs/I18N-SUPPORT-LEVELS.md", "In the current 3-locale set, Hebrew, English and Kyrgyz are `complete`; the other 0 registered locales remain `partial`.\\n");',
+                  "fixture support policy",
+              ),
+              (
+                  'assert.match(messages(result), /documented value 99; actual value 2/u);',
+                  'assert.match(messages(result), /documented value 99; actual value 3/u);',
+                  "fixture mismatch expectation",
+              ),
+              (
+                  'original.replace("Registered locale resources: **2**", "Registered locale resources: **999**")',
+                  'original.replace("Registered locale resources: **3**", "Registered locale resources: **999**")',
+                  "fixture generated-count drift",
+              ),
+              (
+                  'await put(root, "docs/I18N-SUPPORT-LEVELS.md", "In the current 2-locale set, Hebrew and English are `complete` and the 99 non-English/non-Hebrew locales remain `partial`.\\n");',
+                  'await put(root, "docs/I18N-SUPPORT-LEVELS.md", "In the current 3-locale set, Hebrew, English and Kyrgyz are `complete`; the other 99 registered locales remain `partial`.\\n");',
+                  "fixture support mismatch",
+              ),
+          ]
+          for old, new, label in fixture_pairs:
+              s = replace_known(s, old, new, label)
+          write(path, s)
+
+          # 9. Refresh docs-level SHA256SUMS first.
+          docs_manifest = ROOT / "docs/SHA256SUMS.txt"
+          docs_text = docs_manifest.read_text(encoding="utf-8")
+          docs_targets = [
+              "DOCUMENTATION-CONSISTENCY.md",
+              "I18N-SUPPORT-LEVELS.md",
+              "I18N.md",
+              "i18n/registry.js",
+          ]
+          for rel in docs_targets:
+              digest = hashlib.sha256((ROOT / "docs" / rel).read_bytes()).hexdigest()
+              pattern = re.compile(rf"^[0-9a-f]{{64}}  \./{re.escape(rel)}$", re.M)
+              if not pattern.search(docs_text):
+                  raise SystemExit(f"[ERROR] docs/SHA256SUMS.txt lacks ./{rel}")
+              docs_text = pattern.sub(f"{digest}  ./{rel}", docs_text, count=1)
+          docs_manifest.write_text(docs_text, encoding="utf-8", newline="\n")
+
+          # 10. Refresh root SHA256SUMS, including docs/SHA256SUMS.txt itself.
+          root_manifest = ROOT / "SHA256SUMS.txt"
+          root_text = root_manifest.read_text(encoding="utf-8")
+          root_targets = [
+              "docs/DOCUMENTATION-CONSISTENCY.md",
+              "docs/I18N-SUPPORT-LEVELS.md",
+              "docs/I18N.md",
+              "docs/SHA256SUMS.txt",
+              "docs/i18n/registry.js",
+              "scripts/docs-consistency.mjs",
+              "scripts/run-i18n-support-smoke.mjs",
+              "test/docs-consistency.test.js",
+              "test/i18n-support-levels.test.js",
+          ]
+          for rel in root_targets:
+              digest = hashlib.sha256((ROOT / rel).read_bytes()).hexdigest()
+              pattern = re.compile(rf"^[0-9a-f]{{64}}  \./{re.escape(rel)}$", re.M)
+              if not pattern.search(root_text):
+                  raise SystemExit(f"[ERROR] SHA256SUMS.txt lacks ./{rel}")
+              root_text = pattern.sub(f"{digest}  ./{rel}", root_text, count=1)
+
+          # The one-shot workflow is itself a tracked file while this run is active,
+          # so manifest completeness requires a temporary entry for it.
+          self_rel = ".github/workflows/one-shot-kyrgyz-complete-policy-fix.yml"
+          self_digest = hashlib.sha256((ROOT / self_rel).read_bytes()).hexdigest()
+          self_pattern = re.compile(rf"^[0-9a-f]{{64}}  \./{re.escape(self_rel)}$", re.M)
+          if self_pattern.search(root_text):
+              root_text = self_pattern.sub(f"{self_digest}  ./{self_rel}", root_text, count=1)
+          else:
+              entries = [line for line in root_text.splitlines() if line.strip()]
+              entries.append(f"{self_digest}  ./{self_rel}")
+              entries.sort(key=lambda line: line.split("  ", 1)[1] if "  " in line else line)
+              root_text = "\n".join(entries) + "\n"
+
+          root_manifest.write_text(root_text, encoding="utf-8", newline="\n")
+
+          # Strong postconditions.
+          registry = read("docs/i18n/registry.js")
+          if 'defineLocale("ky", "Кыргызча", "ltr", "ky-KG", "complete"' not in registry:
+              raise SystemExit("[ERROR] postcondition failed: ky is not complete")
+          if "complete **3**, partial **70**, experimental **0**" not in read("docs/DOCUMENTATION-CONSISTENCY.md"):
+              raise SystemExit("[ERROR] postcondition failed: documented support counts are not 3/70/0")
+
+          print("[PASS] One-shot source updates and checksum refresh completed.")
+          PY
+
+      - name: Run focused unit tests
+        run: |
+          set -euo pipefail
+          node --test \
+            test/docs-consistency.test.js \
+            test/i18n-support-levels.test.js
+
+      - name: Run documentation and i18n gates
+        run: |
+          set -euo pipefail
+          npm run docs:check
+          npm run check:reverse-i18n
+          npm run check:i18n
+
+      - name: Install Chromium for i18n browser smoke
+        run: ./node_modules/.bin/playwright install --with-deps chromium
+
+      - name: Run i18n browser smoke
+        run: npm run test:i18n-support
+
+      - name: Verify checksum manifests
+        run: |
+          set -euo pipefail
+          sha256sum -c SHA256SUMS.txt
+          node scripts/check-sha-manifest-completeness.mjs
+
+      - name: Show final diff before commit
+        run: |
+          set -euo pipefail
+          git status --short
+          git diff --check
+          git diff -- \
+            docs/i18n/registry.js \
+            docs/I18N-SUPPORT-LEVELS.md \
+            docs/I18N.md \
+            docs/DOCUMENTATION-CONSISTENCY.md \
+            scripts/docs-consistency.mjs \
+            scripts/run-i18n-support-smoke.mjs \
+            test/docs-consistency.test.js \
+            test/i18n-support-levels.test.js \
+            docs/SHA256SUMS.txt \
+            SHA256SUMS.txt
+
+      - name: Self-delete and commit the completed one-shot update
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          SELF=".github/workflows/one-shot-kyrgyz-complete-policy-fix.yml"
+          test -f "$SELF"
+
+          # Delete only after every update and QA step above has passed.
+          rm -- "$SELF"
+
+          # Remove the temporary checksum entry for the one-shot workflow.
+          python3 - <<'PY'
+          from pathlib import Path
+
+          manifest = Path("SHA256SUMS.txt")
+          target = "  ./.github/workflows/one-shot-kyrgyz-complete-policy-fix.yml"
+          lines = manifest.read_text(encoding="utf-8").splitlines()
+          filtered = [line for line in lines if not line.endswith(target)]
+          if len(filtered) != len(lines) - 1:
+              raise SystemExit("[ERROR] expected exactly one temporary workflow checksum entry")
+          manifest.write_text("\n".join(filtered) + "\n", encoding="utf-8", newline="\n")
+          PY
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Stage the deletion before completeness verification so git ls-files
+          # reflects the intended final repository state.
+          git add -A
+
+          sha256sum -c SHA256SUMS.txt
+          node scripts/check-sha-manifest-completeness.mjs
+          git diff --cached --check
+
+          git commit -m "Apply Kyrgyz complete-status policy fix and remove one-shot updater"
+          git push origin HEAD:main
+
+          echo "[PASS] Updates pushed to main; one-shot workflow and its temporary checksum entry were removed."
