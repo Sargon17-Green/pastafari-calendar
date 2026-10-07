@@ -196,17 +196,17 @@ async function checkFactClaims(root, facts, issues) {
   const i18n = await readOptional(root, "docs/I18N.md");
   if (i18n !== null) {
     checkNumericClaim({ file: "docs/I18N.md", source: i18n, pattern: /other\s+(\d+)\s+registered locales remain `partial`/u, expected: facts.localeSupportCounts.partial ?? 0, label: "partial locale count", sourceOfTruth: "docs/i18n/registry.js (LOCALES[].support)", issues });
-    const completePhrasePresent = /marks Hebrew and English as `complete`/u.test(i18n);
+    const completePhrasePresent = /marks Hebrew, English and Kyrgyz as `complete`/u.test(i18n);
     const expectedComplete = [...facts.completeLocaleCodes].sort().join(",");
-    if (!completePhrasePresent || expectedComplete !== "en,he") {
-      issues.push(issue("docs/I18N.md", `documented complete-locale claim is Hebrew+English; registry complete locale codes are ${JSON.stringify([...facts.completeLocaleCodes].sort())}.`, "docs/i18n/registry.js (LOCALES[].support)"));
+    if (!completePhrasePresent || expectedComplete !== "en,he,ky") {
+      issues.push(issue("docs/I18N.md", `documented complete-locale claim is Hebrew+English+Kyrgyz; registry complete locale codes are ${JSON.stringify([...facts.completeLocaleCodes].sort())}.`, "docs/i18n/registry.js (LOCALES[].support)"));
     }
   }
 
   const supportLevelsDoc = await readOptional(root, "docs/I18N-SUPPORT-LEVELS.md");
   if (supportLevelsDoc !== null) {
     checkNumericClaim({ file: "docs/I18N-SUPPORT-LEVELS.md", source: supportLevelsDoc, pattern: /current\s+(\d+)-locale set/u, expected: facts.localeCount, label: "support-policy locale count", sourceOfTruth: "docs/i18n/registry.js (LOCALES)", issues });
-    checkNumericClaim({ file: "docs/I18N-SUPPORT-LEVELS.md", source: supportLevelsDoc, pattern: /(?:The|the)\s+(\d+)\s+non-English\/non-Hebrew locales remain `partial`/u, expected: facts.localeSupportCounts.partial ?? 0, label: "support-policy partial locale count", sourceOfTruth: "docs/i18n/registry.js (LOCALES[].support)", issues });
+    checkNumericClaim({ file: "docs/I18N-SUPPORT-LEVELS.md", source: supportLevelsDoc, pattern: /(?:The|the)\s+other\s+(\d+)\s+registered locales remain `partial`/u, expected: facts.localeSupportCounts.partial ?? 0, label: "support-policy partial locale count", sourceOfTruth: "docs/i18n/registry.js (LOCALES[].support)", issues });
   }
 
   const browserReadme = await readOptional(root, "browser/README.md");

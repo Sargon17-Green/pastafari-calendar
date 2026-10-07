@@ -24,7 +24,7 @@ The block below is generated from repository sources of truth. Edit the surround
 <!-- BEGIN GENERATED: project-facts -->
 - Current package version: `1.4.1`.
 - Minimum Node.js requirement: `>=18`.
-- Registered locale resources: **73**. Support status: complete **2**, partial **71**, experimental **0**. These are registry policy/status facts, not a linguistic-quality certification.
+- Registered locale resources: **73**. Support status: complete **3**, partial **70**, experimental **0**. These are registry policy/status facts, not a linguistic-quality certification.
 - Package entry points: `.`, `./reverse`, `./constraints`, `./browser/*`, `./package.json`.
 - Canonically accepted independent implementations: **5** (C++20, Python 3, C17, Java 17+, Ruby).
 - Normative source path: `../sources/מגילת העיתים.md`; declared SHA-256: `d36b0c944b4685d1aa1d89bb20a8dd530ee3167c897dcdf85161a7ec0dde9c96`.

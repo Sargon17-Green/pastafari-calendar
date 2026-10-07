@@ -34,10 +34,12 @@ function defineLocale() {}
 export const LOCALES = Object.freeze([
   defineLocale("en", "English", "ltr", "en-US", "complete", () => import("./locales/en.js?v=1")),
   defineLocale("he", "עברית", "rtl", "he-IL", "complete", () => import("./locales/he.js?v=1")),
+  defineLocale("ky", "Кыргызча", "ltr", "ky-KG", "complete", () => import("./locales/ky.js?v=1")),
 ]);
 `);
   await put(root, "docs/i18n/locales/en.js");
   await put(root, "docs/i18n/locales/he.js");
+  await put(root, "docs/i18n/locales/ky.js");
   await put(root, "implementations/implementations.json", JSON.stringify({
     normativeSourcePath: "../sources/source.md",
     normativeSourceSha256: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
@@ -49,9 +51,9 @@ export const LOCALES = Object.freeze([
   await put(root, "implementations/python/README.md", "# Python\n");
   await put(root, "sources/source.md", "source\n");
   await put(root, "sources/SHA256SUMS.txt", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  ./source.md\n");
-  await put(root, "docs/README.md", "רשומים בו 2 משאבי locale. כל 2 ה-locales.\n");
-  await put(root, "docs/I18N.md", "The current policy marks Hebrew and English as `complete`; the other 0 registered locales remain `partial`.\n");
-  await put(root, "docs/I18N-SUPPORT-LEVELS.md", "In the current 2-locale set, Hebrew and English are `complete` and the 0 non-English/non-Hebrew locales remain `partial`.\n");
+  await put(root, "docs/README.md", "רשומים בו 3 משאבי locale. כל 3 ה-locales.\n");
+  await put(root, "docs/I18N.md", "The current policy marks Hebrew, English and Kyrgyz as `complete`; the other 0 registered locales remain `partial`.\n");
+  await put(root, "docs/I18N-SUPPORT-LEVELS.md", "In the current 3-locale set, Hebrew, English and Kyrgyz are `complete`; the other 0 registered locales remain `partial`.\n");
   await put(root, "browser/README.md", "לדוגמה `v1.3.0`\n`pastafari-date.js` and `pastafari-date.min.js`\n");
   await put(root, "implementations/docs/LANGUAGES.md", "contains **84 required targets\ncontributes **1/84 final-spec-certified\n| Python 3 | Yes |\n");
   await put(root, "docs/DOCUMENTATION-CONSISTENCY.md", `# Documentation consistency\n\n<!-- BEGIN GENERATED: project-facts -->\nstale\n<!-- END GENERATED: project-facts -->\n`);
@@ -72,7 +74,7 @@ test("locale-count mismatch fails deterministically", async () => {
   await withFixture(async (root) => {
     await put(root, "docs/README.md", "רשומים בו 99 משאבי locale. כל 99 ה-locales.\n");
     const result = await runDocumentationChecks({ root, currentDocs: [], historicalDocs: [] });
-    assert.match(messages(result), /documented value 99; actual value 2/u);
+    assert.match(messages(result), /documented value 99; actual value 3/u);
   });
 });
 
@@ -104,7 +106,7 @@ test("generated section drift fails and generator repairs it", async () => {
   await withFixture(async (root) => {
     const file = path.join(root, "docs/DOCUMENTATION-CONSISTENCY.md");
     const original = await readFile(file, "utf8");
-    await writeFile(file, original.replace("Registered locale resources: **2**", "Registered locale resources: **999**"), "utf8");
+    await writeFile(file, original.replace("Registered locale resources: **3**", "Registered locale resources: **999**"), "utf8");
     let result = await runDocumentationChecks({ root, currentDocs: [], historicalDocs: [] });
     assert.match(messages(result), /generated project-facts section is stale/u);
     await runDocumentationChecks({ root, write: true, currentDocs: [], historicalDocs: [] });
@@ -141,7 +143,7 @@ test("package subpath import must exist in package.json exports", async () => {
 
 test("support-level count mismatch fails deterministically", async () => {
   await withFixture(async (root) => {
-    await put(root, "docs/I18N-SUPPORT-LEVELS.md", "In the current 2-locale set, Hebrew and English are `complete` and the 99 non-English/non-Hebrew locales remain `partial`.\n");
+    await put(root, "docs/I18N-SUPPORT-LEVELS.md", "In the current 3-locale set, Hebrew, English and Kyrgyz are `complete`; the other 99 registered locales remain `partial`.\n");
     const result = await runDocumentationChecks({ root, currentDocs: [], historicalDocs: [] });
     assert.match(messages(result), /documented value 99; actual value 0/u);
   });

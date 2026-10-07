@@ -84,7 +84,7 @@ const kyrgyz = LOCALES.find(({ code }) => code === "ky") ?? null;
 assert(completeLtr, "At least one complete LTR locale is required for the support-level smoke test.");
 assert(completeRtl, "At least one complete RTL locale is required for the support-level smoke test.");
 assert(partial, "At least one partial locale is required for the current support-level smoke test.");
-assert(kyrgyz && kyrgyz.support === "partial" && kyrgyz.dir === "ltr", "Kyrgyz must be registered as an LTR partial locale.");
+assert(kyrgyz && kyrgyz.support === "complete" && kyrgyz.dir === "ltr", "Kyrgyz must be registered as an LTR complete locale.");
 
 const server = await startServer();
 const browser = await chromium.launch({ headless: true });
