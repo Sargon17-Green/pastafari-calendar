@@ -26,7 +26,7 @@ The three runtime notices are ordinary message keys (`day.staleWarning`, `locati
 
 ## `complete`
 
-A `complete` locale is self-contained for every required resource group and has been approved by project policy. Validation fails if it has any of the following:
+A `complete` locale is self-contained for every required resource group. Validation fails if it has any of the following:
 
 - a missing required message, terminology entry, cutlet name or month name;
 - an unknown resource key;
@@ -36,11 +36,11 @@ A `complete` locale is self-contained for every required resource group and has 
 
 A complete locale does not load English merely to render the UI. Adding a new English baseline key therefore requires every complete locale to add that key before `npm run check:i18n` passes.
 
-`complete` means structurally complete and approved by project policy. Automated validation cannot prove that the language itself is idiomatic or correct.
+`complete` means structurally complete under this support contract. It is not a certification that every translation is idiomatic, stylistically optimal, or independently reviewed by a native speaker.
 
 ## `partial`
 
-A `partial` locale contains meaningful local translation resources and may use English fallback for missing entries. A partial locale may also currently be structurally complete but remain `partial` until linguistic review and promotion are explicit.
+A `partial` locale contains meaningful local translation resources and may use English fallback for missing entries. In the current policy, `partial` is used when one or more required resources are still supplied by fallback rather than by the locale itself.
 
 The validator still rejects:
 
@@ -68,7 +68,7 @@ English is the fallback baseline. Complete locales do not need English at runtim
 
 The loader retains the original local source internally. `auditLocaleResources()` and `npm run i18n:coverage` inspect that source, so a fallback value is not misreported as a local translation merely because the final runtime object contains a string.
 
-In the current 73-locale set, Hebrew and English are `complete` and the 71 non-English/non-Hebrew locales remain `partial`. The coverage audit is authoritative for the exact local/fallback key counts: most existing partial locales currently use the normal English fallback for some newly introduced messages, while a partial locale may also supply every current resource locally and remain `partial` until explicit linguistic review. Structural completeness of the resolved runtime object is therefore not evidence of project approval as `complete`.
+In the current 73-locale set, Hebrew, English and Kyrgyz are `complete`; the other 70 registered locales remain `partial`. The coverage audit is authoritative for the exact local/fallback key counts: current partial locales use the normal English fallback for some newly introduced messages. A locale with zero fallback and all required resources supplied locally satisfies the structural `complete` contract; that status does not by itself certify linguistic quality.
 
 The existing locale-selection priority is unchanged:
 
@@ -115,9 +115,9 @@ Promotion requires:
 - zero unintended English fallback;
 - passing `npm run check:i18n`;
 - passing representative browser smoke tests;
-- human review of linguistic quality.
+- an explicit registry change that records the locale as `complete`.
 
-A structurally complete audit result may be described as a `complete-candidate`; it is not an automatic promotion.
+A structurally complete audit result may be described by the audit as a `complete-candidate`; the audit does not mutate registry status automatically, and no separate native-speaker-review gate is implied by that label.
 
 ## Demotion policy
 
@@ -137,8 +137,8 @@ A new file without a registry entry fails validation, as does a registry entry w
 
 ## What validation must not be gamed with
 
-Do not invent translations, copy English text into a locale merely to reach 100%, create a broad English allowlist, or promote a locale solely because every key exists. Ancient, reconstructed or rare languages may legitimately remain `partial` or `experimental` when modern UI vocabulary cannot be translated reliably.
+Do not invent translations, copy English text into a locale merely to reach 100%, or create a broad English allowlist to hide genuine gaps. Ancient, reconstructed or rare languages may legitimately remain `partial` or `experimental` when modern UI vocabulary cannot be translated reliably.
 
 ## Structural completeness vs. linguistic quality
 
-Structural completeness is machine-checkable: keys, types, metadata, fallback provenance and inventory can be validated deterministically. Linguistic quality is not. Human review remains required for claims about correctness, naturalness, terminology and appropriate register.
+Structural completeness is machine-checkable: keys, types, metadata, fallback provenance and inventory can be validated deterministically. Linguistic quality is not. Human review can strengthen claims about correctness, naturalness, terminology and appropriate register, but it is not a formal prerequisite for the `complete` support status.
