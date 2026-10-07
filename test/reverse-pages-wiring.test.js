@@ -52,7 +52,7 @@ test("reverse-search resources obey the declared support-level contract", async 
   const english = sources.find(({ code }) => code === "en");
   const keys = Object.keys(english.messages).filter((key) => key.startsWith("reverse.")).sort();
   assert.equal(keys.length, 99);
-  assert.equal(LOCALES.length, 72);
+  assert.equal(LOCALES.length, 73);
 
   for (const metadata of LOCALES) {
     const sourceText = await read(`docs/i18n/locales/${metadata.code}.js`);
