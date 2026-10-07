@@ -80,14 +80,16 @@ const completeLtr = representative("complete", "ltr");
 const completeRtl = representative("complete", "rtl");
 const partial = representative("partial");
 const experimental = representative("experimental");
+const kyrgyz = LOCALES.find(({ code }) => code === "ky") ?? null;
 assert(completeLtr, "At least one complete LTR locale is required for the support-level smoke test.");
 assert(completeRtl, "At least one complete RTL locale is required for the support-level smoke test.");
 assert(partial, "At least one partial locale is required for the current support-level smoke test.");
+assert(kyrgyz && kyrgyz.support === "partial" && kyrgyz.dir === "ltr", "Kyrgyz must be registered as an LTR partial locale.");
 
 const server = await startServer();
 const browser = await chromium.launch({ headless: true });
 try {
-  for (const metadata of [completeLtr, completeRtl, partial, experimental].filter(Boolean)) {
+  for (const metadata of [completeLtr, completeRtl, partial, kyrgyz, experimental].filter(Boolean)) {
     const context = await browser.newContext({ serviceWorkers: "block", locale: "en-US" });
     const page = await context.newPage();
     const pageErrors = [];
@@ -116,6 +118,11 @@ try {
     assert.equal(typeof probe.cutlet, "string"); assert(probe.cutlet.trim());
     assert.equal(typeof probe.runtimeNotice, "string"); assert(probe.runtimeNotice.trim());
     assert.equal(probe.bodyHasUndefined, false);
+    if (metadata.code === "ky") {
+      assert.equal(probe.message, "Бүгүнкү күнгө кайтуу");
+      assert.equal(probe.cutlet, "Коло");
+      assert.equal(probe.runtimeNotice, "Түзмөктүн жайгашкан жерин колдонуу");
+    }
     assert.deepEqual(pageErrors, []);
     assert(localeRequests.includes(`${metadata.code}.js`), `${metadata.code} locale module was not requested`);
     if (metadata.support === "partial" || metadata.support === "experimental") {

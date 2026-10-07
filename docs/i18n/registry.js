@@ -64,6 +64,7 @@ export const LOCALES = Object.freeze([
   defineLocale("ka", "ქართული", "ltr", "ka-GE", "partial", () => import("./locales/ka.js?v=18-about-page")),
   defineLocale("kk", "Қазақша", "ltr", "kk-KZ", "partial", () => import("./locales/kk.js?v=18-about-page")),
   defineLocale("ko", "한국어", "ltr", "ko-KR", "partial", () => import("./locales/ko.js?v=18-about-page")),
+  defineLocale("ky", "Кыргызча", "ltr", "ky-KG", "partial", () => import("./locales/ky.js?v=18-about-page")),
   defineLocale("lb", "Lëtzebuergesch", "ltr", "lb-LU", "partial", () => import("./locales/lb.js?v=18-about-page")),
   defineLocale("lt", "Lietuvių", "ltr", "lt-LT", "partial", () => import("./locales/lt.js?v=18-about-page")),
   defineLocale("lv", "Latviešu", "ltr", "lv-LV", "partial", () => import("./locales/lv.js?v=18-about-page")),
