@@ -69,7 +69,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
     "./about/content/registry.js?v=4-about-polish",
     "./about/content/he.html?v=4-about-polish",
     "./styles.css?v=16-about-polish",
-    "./app.js?v=23-about-page",
+    "./app.js?v=24-worker-recovery",
     "./reverse-ui.js?v=20-about-page",
     "./reverse-search-controller.js",
     "./calendar-input-conventions.js?v=9-calendar-input-conventions",
@@ -79,7 +79,8 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
     "./venus-day-boundary.js?v=10-venus-day-boundary",
     "./engine/pastafari-diagnostics.js",
     "./engine/pastafari-calendar-fast.js",
-    "./engine/pastafari-fast-worker.js?v=9-worker-api-sync",
+    "./engine/pastafari-calendar-fast.js?v=10-worker-recovery",
+    "./engine/pastafari-fast-worker.js?v=10-worker-recovery",
     "./engine/pastafari-constraints-client.js",
     "./engine/pastafari-constraints.js",
     "./engine/pastafari-reverse-worker.js",
@@ -89,7 +90,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
     "./i18n/locales/en.js?v=18-about-page",
   ];
   assert.deepEqual(coreAssets, requiredCore, "CORE_ASSETS must describe the complete deterministic offline application shell");
-  assert.equal(coreAssets.length, 24);
+  assert.equal(coreAssets.length, 25);
 
   const requiredOptional = [
     "./manifest.webmanifest?v=10-kyrgyz",
@@ -109,7 +110,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   assert.equal(LOCALES.length, 73, "PWA accounting expects the current 73 registered locales");
   assert.equal(LOCALES.filter(({ code }) => code !== "en").length, 72, "Every non-English locale is optional/on-demand");
 
-  assert.match(source, /const VERSION = "pastafari-static-pwa-hardening-23-kyrgyz";/);
+  assert.match(source, /const VERSION = "pastafari-static-pwa-hardening-24-worker-recovery";/);
   assert.match(source, /const RUNTIME_CACHE = "pastafari-runtime-assets";/);
   assert.match(source, /const OPTIONAL_LOCALE_PATH = \/\^\\\/i18n\\\/locales/);
   assert.match(source, /url\.search === LOCALE_REVISION_SEARCH/);
@@ -137,7 +138,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   const html = await readFile(path.join(DOCS, "index.html"), "utf8");
   for (const entry of [
     "./styles.css?v=16-about-polish",
-    "./app.js?v=23-about-page",
+    "./app.js?v=24-worker-recovery",
     "./manifest.webmanifest?v=10-kyrgyz",
     "./icons/icon.svg?v=9-canonical-names",
   ]) {
@@ -145,6 +146,13 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   }
   const app = await readFile(path.join(DOCS, "app.js"), "utf8");
   assert.ok(app.includes("./engine/pastafari-fast-worker.js?v=${ASSET_REVISION}"));
+  assert.match(app, /const ASSET_REVISION = "10-worker-recovery";/);
+  assert.match(app, /const WORKER_STARTUP_RETRIES = 1;/);
+  assert.match(app, /message\?\.kind === "ready"/);
+  assert.match(app, /message\.degraded/);
+  assert.match(app, /await ensureWorkerReady\(\)/);
+  const workerSource = await readFile(path.join(DOCS, "engine", "pastafari-fast-worker.js"), "utf8");
+  assert.match(workerSource, /pastafari-calendar-fast\.js\?v=10-worker-recovery/);
   assert.match(app, /document\.readyState === "complete"\) registerServiceWorker\(\)/);
   assert.match(app, /addEventListener\("load", registerServiceWorker, \{ once: true \}\)/);
 });

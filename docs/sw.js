@@ -1,6 +1,6 @@
 "use strict";
 
-const VERSION = "pastafari-static-pwa-hardening-23-kyrgyz";
+const VERSION = "pastafari-static-pwa-hardening-24-worker-recovery";
 const CORE_CACHE = `${VERSION}-core`;
 const RUNTIME_CACHE = "pastafari-runtime-assets";
 const CACHE_PREFIX = "pastafari-static-";
@@ -14,7 +14,7 @@ const CORE_ASSETS = [
   "./about/content/registry.js?v=4-about-polish",
   "./about/content/he.html?v=4-about-polish",
   "./styles.css?v=16-about-polish",
-  "./app.js?v=23-about-page",
+  "./app.js?v=24-worker-recovery",
   "./reverse-ui.js?v=20-about-page",
   "./reverse-search-controller.js",
   "./calendar-input-conventions.js?v=9-calendar-input-conventions",
@@ -24,7 +24,11 @@ const CORE_ASSETS = [
   "./venus-day-boundary.js?v=10-venus-day-boundary",
   "./engine/pastafari-diagnostics.js",
   "./engine/pastafari-calendar-fast.js",
-  "./engine/pastafari-fast-worker.js?v=9-worker-api-sync",
+  // The forward Worker uses a revisioned URL so an older controlling Service
+  // Worker cannot satisfy a new Worker with stale engine bytes. Keep the
+  // unrevisioned entry above for reverse/constraints imports and offline use.
+  "./engine/pastafari-calendar-fast.js?v=10-worker-recovery",
+  "./engine/pastafari-fast-worker.js?v=10-worker-recovery",
   "./engine/pastafari-constraints-client.js",
   "./engine/pastafari-constraints.js",
   "./engine/pastafari-reverse-worker.js",

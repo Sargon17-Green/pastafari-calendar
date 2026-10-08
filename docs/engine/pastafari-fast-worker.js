@@ -13,7 +13,7 @@ import {
   monthIndexFromInternalName,
 } from "../i18n/calendar-identifiers.js?v=9-canonical-names";
 
-const FAST_MODULE_URL = new URL("./pastafari-calendar-fast.js", import.meta.url);
+const FAST_MODULE_URL = new URL("./pastafari-calendar-fast.js?v=10-worker-recovery", import.meta.url);
 const MAX_RANGE_DAYS = 18_000;
 const MAX_CUTLET_DAYS = 6_000;
 const MAX_YEAR_DAYS = 5_778;

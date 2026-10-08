@@ -35,14 +35,15 @@ import {
 } from "./i18n/runtime.js?v=19-about-page";
 
 
-const ASSET_REVISION = "9-worker-api-sync";
+const ASSET_REVISION = "10-worker-recovery";
+const WORKER_READY_TIMEOUT_MS = 45_000;
+const WORKER_STARTUP_RETRIES = 1;
 const DESKTOP_COMPARISON_QUERY = "(min-width: 1000px)";
-const worker = new Worker(
-  new URL(`./engine/pastafari-fast-worker.js?v=${ASSET_REVISION}`, import.meta.url),
-  { type: "module", name: "pastafari-fast" },
-);
 const pending = new Map();
 let requestId = 0;
+let workerGeneration = 0;
+let workerState = null;
+let workerControllerPromise = null;
 let activeLocale = await loadLocale(resolveBrowserLocale().locale.code);
 let numberFormatter = null;
 let dateFormatter = null;
@@ -121,32 +122,170 @@ function localizedError(key, cause = null) {
   return error;
 }
 
-function workerRequest(operation, payload, timeoutMs = 120_000) {
+function workerLoadError(cause) {
+  return localizedError("error.engineLoadFailed", cause);
+}
+
+function rejectPendingForGeneration(generation, error) {
+  for (const [id, entry] of pending) {
+    if (entry.generation !== generation) continue;
+    pending.delete(id);
+    clearTimeout(entry.timer);
+    entry.reject(error);
+  }
+}
+
+function invalidateActiveWorker(state, cause) {
+  const error = cause?.translationKey ? cause : workerLoadError(cause);
+  if (!state.failed) {
+    state.failed = true;
+    try {
+      state.worker.terminate();
+    } catch {}
+  }
+  rejectPendingForGeneration(state.generation, error);
+  if (workerState === state) {
+    workerState = null;
+    workerControllerPromise = null;
+  }
+  return error;
+}
+
+function createWorkerState() {
+  const generation = ++workerGeneration;
+  const instance = new Worker(
+    new URL(`./engine/pastafari-fast-worker.js?v=${ASSET_REVISION}`, import.meta.url),
+    { type: "module", name: "pastafari-fast" },
+  );
+  let readySettled = false;
+  let resolveReady;
+  let rejectReady;
+  const readyPromise = new Promise((resolve, reject) => {
+    resolveReady = resolve;
+    rejectReady = reject;
+  });
+  const state = {
+    generation,
+    worker: instance,
+    readyPromise,
+    failed: false,
+  };
+  let startupTimer = null;
+  const settleReady = (error = null) => {
+    if (readySettled) return;
+    readySettled = true;
+    if (startupTimer !== null) clearTimeout(startupTimer);
+    if (error) {
+      state.failed = true;
+      rejectReady(error);
+    } else {
+      resolveReady();
+    }
+  };
+  startupTimer = setTimeout(() => {
+    settleReady(workerLoadError(new Error("Pastafari fast Worker startup timed out.")));
+  }, WORKER_READY_TIMEOUT_MS);
+
+  instance.addEventListener("message", (event) => {
+    const message = event.data;
+    if (message?.kind === "ready") {
+      if (message.degraded) {
+        console.error("Pastafari fast Worker preload failed.", message.error);
+        settleReady(workerLoadError(message.error));
+      } else {
+        settleReady();
+      }
+      return;
+    }
+    if (!Number.isSafeInteger(message?.id)) return;
+    const entry = pending.get(message.id);
+    if (!entry || entry.generation !== generation) return;
+    pending.delete(message.id);
+    clearTimeout(entry.timer);
+    if (message.ok) {
+      entry.resolve(message.result);
+    } else {
+      console.error(`Pastafari fast Worker operation ${entry.operation} failed.`, message.error);
+      entry.reject(localizedError("error.engineFailed", message.error));
+    }
+  });
+
+  instance.addEventListener("error", (event) => {
+    const error = workerLoadError(event.error ?? event.message);
+    if (!readySettled) {
+      settleReady(error);
+      return;
+    }
+    invalidateActiveWorker(state, error);
+  });
+
+  instance.addEventListener("messageerror", (event) => {
+    const error = workerLoadError(event.data ?? new Error("Pastafari fast Worker message decoding failed."));
+    if (!readySettled) {
+      settleReady(error);
+      return;
+    }
+    invalidateActiveWorker(state, error);
+  });
+
+  return state;
+}
+
+async function startWorkerWithRecovery() {
+  let lastError = null;
+  for (let attempt = 0; attempt <= WORKER_STARTUP_RETRIES; attempt += 1) {
+    let state = null;
+    try {
+      state = createWorkerState();
+      await state.readyPromise;
+      if (state.failed) throw workerLoadError(new Error("Pastafari fast Worker became unavailable during startup."));
+      workerState = state;
+      return state;
+    } catch (cause) {
+      lastError = cause?.translationKey ? cause : workerLoadError(cause);
+      if (state) {
+        try {
+          state.worker.terminate();
+        } catch {}
+      }
+      if (attempt < WORKER_STARTUP_RETRIES) {
+        console.warn("Retrying Pastafari fast Worker startup after a preload or transport failure.", lastError.cause ?? lastError);
+      }
+    }
+  }
+  throw lastError ?? workerLoadError(new Error("Pastafari fast Worker did not become ready."));
+}
+
+function ensureWorkerReady() {
+  if (workerState && !workerState.failed) return Promise.resolve(workerState);
+  if (!workerControllerPromise) {
+    const controller = startWorkerWithRecovery();
+    workerControllerPromise = controller;
+    controller.catch(() => {
+      if (workerControllerPromise === controller) workerControllerPromise = null;
+    });
+  }
+  return workerControllerPromise;
+}
+
+async function workerRequest(operation, payload, timeoutMs = 120_000) {
+  const state = await ensureWorkerReady();
   const id = ++requestId;
   return new Promise((resolve, reject) => {
     const timer = setTimeout(() => {
       pending.delete(id);
       reject(localizedError("error.timeout"));
     }, timeoutMs);
-    pending.set(id, { resolve, reject, timer });
-    worker.postMessage({ id, operation, payload });
+    pending.set(id, { resolve, reject, timer, generation: state.generation, operation });
+    try {
+      state.worker.postMessage({ id, operation, payload });
+    } catch (cause) {
+      pending.delete(id);
+      clearTimeout(timer);
+      reject(invalidateActiveWorker(state, cause));
+    }
   });
 }
-
-worker.addEventListener("message", (event) => {
-  const message = event.data;
-  if (!Number.isSafeInteger(message?.id)) return;
-  const entry = pending.get(message.id);
-  if (!entry) return;
-  pending.delete(message.id);
-  clearTimeout(entry.timer);
-  if (message.ok) entry.resolve(message.result);
-  else entry.reject(localizedError("error.engineFailed", message.error));
-});
-
-worker.addEventListener("error", (event) => {
-  showError(localizedError("error.engineLoadFailed", event.message));
-});
 
 function currentDaySnapshot(now = new Date()) {
   const snapshot = currentDayAt(now, observerLocation);
