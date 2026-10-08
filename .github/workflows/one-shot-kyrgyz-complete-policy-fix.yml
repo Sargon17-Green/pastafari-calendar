@@ -41,6 +41,7 @@ jobs:
           from pathlib import Path
           import hashlib
           import re
+          import subprocess
 
           ROOT = Path(".")
 
@@ -221,7 +222,7 @@ jobs:
             }
             for (const locale of report.filter(({ status }) => status === "complete")) {
               assert.equal(locale.fallbackKeys, 0, `${locale.code} complete locale must not use fallback`);
-                            assert.equal(locale.proposedStructuralStatus, "complete-candidate");
+              assert.equal(locale.proposedStructuralStatus, "complete-candidate");
             }
           });'''
 
@@ -270,7 +271,6 @@ jobs:
                   raise SystemExit("[ERROR] support-level audit test: neither old nor corrected block was found")
               s = s.replace(old_test, new_test, 1)
           write(path, s)
-
           # 6. Browser support-level smoke.
           path = "scripts/run-i18n-support-smoke.mjs"
           s = read(path)
@@ -358,89 +358,41 @@ jobs:
               s = replace_known(s, old, new, label)
           write(path, s)
 
-          # 9. Refresh docs-level SHA256SUMS first.
+          # 9. Rebuild docs/SHA256SUMS.txt from the actual tracked docs tree.
+          # This closes both stale-hash drift and missing-entry drift in one deterministic pass.
+          def tracked_paths(*pathspecs):
+              cmd = ["git", "ls-files", "-z"]
+              if pathspecs:
+                  cmd += ["--", *pathspecs]
+              raw = subprocess.check_output(cmd)
+              return sorted(p for p in raw.decode("utf-8").split("\0") if p)
+
           docs_manifest = ROOT / "docs/SHA256SUMS.txt"
-          docs_text = docs_manifest.read_text(encoding="utf-8")
-          docs_targets = [
-              "DOCUMENTATION-CONSISTENCY.md",
-              "I18N-SUPPORT-LEVELS.md",
-              "I18N.md",
-              "i18n/registry.js",
-              # Pre-existing checksum drift detected by the first one-shot run.
-              # These files are not modified here; only their manifest hashes
-              # are refreshed to match the already-tracked canonical contents.
-              "about/content/he.html",
-              "about/index.html",
-              "icons/icon-192.png",
-              "icons/icon-512.png",
-              # Tracked docs files that were missing entirely from both SHA manifests.
-              "about/monster/index.html",
-              "api/seer-now.json",
-              "icons/favicon-16x16.png",
-              "icons/favicon-32x32.png",
-          ]
-          for rel in docs_targets:
-              digest = hashlib.sha256((ROOT / "docs" / rel).read_bytes()).hexdigest()
-              pattern = re.compile(rf"^[0-9a-f]{{64}}  \./{re.escape(rel)}$", re.M)
-              if pattern.search(docs_text):
-                  docs_text = pattern.sub(f"{digest}  ./{rel}", docs_text, count=1)
-              else:
-                  entries = [line for line in docs_text.splitlines() if line.strip()]
-                  entries.append(f"{digest}  ./{rel}")
-                  entries.sort(key=lambda line: line.split("  ", 1)[1] if "  " in line else line)
-                  docs_text = "\n".join(entries) + "\n"
-          docs_manifest.write_text(docs_text, encoding="utf-8", newline="\n")
+          docs_entries = []
+          for repo_rel in tracked_paths("docs"):
+              if repo_rel == "docs/SHA256SUMS.txt":
+                  continue
+              rel = repo_rel.removeprefix("docs/")
+              file_path = ROOT / repo_rel
+              if not file_path.is_file():
+                  raise SystemExit(f"[ERROR] tracked docs path is not a regular file: {repo_rel}")
+              digest = hashlib.sha256(file_path.read_bytes()).hexdigest()
+              docs_entries.append(f"{digest}  ./{rel}")
+          docs_manifest.write_text("\n".join(docs_entries) + "\n", encoding="utf-8", newline="\n")
 
-          # 10. Refresh root SHA256SUMS, including docs/SHA256SUMS.txt itself.
+          # 10. Rebuild the root SHA256SUMS.txt from every actually tracked file.
+          # The one-shot workflow is still tracked at this point, so it is covered automatically.
           root_manifest = ROOT / "SHA256SUMS.txt"
-          root_text = root_manifest.read_text(encoding="utf-8")
-          root_targets = [
-              "docs/DOCUMENTATION-CONSISTENCY.md",
-              "docs/I18N-SUPPORT-LEVELS.md",
-              "docs/I18N.md",
-              "docs/SHA256SUMS.txt",
-              "docs/i18n/registry.js",
-              "scripts/docs-consistency.mjs",
-              "scripts/run-i18n-support-smoke.mjs",
-              "test/docs-consistency.test.js",
-              "test/i18n-support-levels.test.js",
-              # Mirror the four already-tracked files whose stale entries were
-              # identified by the failed checksum gate.
-              "docs/about/content/he.html",
-              "docs/about/index.html",
-              "docs/icons/icon-192.png",
-              "docs/icons/icon-512.png",
-              # Mirror the four tracked docs files that had no root-manifest entries.
-              "docs/about/monster/index.html",
-              "docs/api/seer-now.json",
-              "docs/icons/favicon-16x16.png",
-              "docs/icons/favicon-32x32.png",
-          ]
-          for rel in root_targets:
-              digest = hashlib.sha256((ROOT / rel).read_bytes()).hexdigest()
-              pattern = re.compile(rf"^[0-9a-f]{{64}}  \./{re.escape(rel)}$", re.M)
-              if pattern.search(root_text):
-                  root_text = pattern.sub(f"{digest}  ./{rel}", root_text, count=1)
-              else:
-                  entries = [line for line in root_text.splitlines() if line.strip()]
-                  entries.append(f"{digest}  ./{rel}")
-                  entries.sort(key=lambda line: line.split("  ", 1)[1] if "  " in line else line)
-                  root_text = "\n".join(entries) + "\n"
-
-          # The one-shot workflow is itself a tracked file while this run is active,
-          # so manifest completeness requires a temporary entry for it.
-          self_rel = ".github/workflows/one-shot-kyrgyz-complete-policy-fix.yml"
-          self_digest = hashlib.sha256((ROOT / self_rel).read_bytes()).hexdigest()
-          self_pattern = re.compile(rf"^[0-9a-f]{{64}}  \./{re.escape(self_rel)}$", re.M)
-          if self_pattern.search(root_text):
-              root_text = self_pattern.sub(f"{self_digest}  ./{self_rel}", root_text, count=1)
-          else:
-              entries = [line for line in root_text.splitlines() if line.strip()]
-              entries.append(f"{self_digest}  ./{self_rel}")
-              entries.sort(key=lambda line: line.split("  ", 1)[1] if "  " in line else line)
-              root_text = "\n".join(entries) + "\n"
-
-          root_manifest.write_text(root_text, encoding="utf-8", newline="\n")
+          root_entries = []
+          for rel in tracked_paths():
+              if rel == "SHA256SUMS.txt":
+                  continue
+              file_path = ROOT / rel
+              if not file_path.is_file():
+                  raise SystemExit(f"[ERROR] tracked path is not a regular file: {rel}")
+              digest = hashlib.sha256(file_path.read_bytes()).hexdigest()
+              root_entries.append(f"{digest}  ./{rel}")
+          root_manifest.write_text("\n".join(root_entries) + "\n", encoding="utf-8", newline="\n")
 
           # Strong postconditions.
           registry = read("docs/i18n/registry.js")
@@ -506,25 +458,42 @@ jobs:
           # Delete only after every update and QA step above has passed.
           rm -- "$SELF"
 
-          # Remove the temporary checksum entry for the one-shot workflow.
-          python3 - <<'PY'
-          from pathlib import Path
-
-          manifest = Path("SHA256SUMS.txt")
-          target = "  ./.github/workflows/one-shot-kyrgyz-complete-policy-fix.yml"
-          lines = manifest.read_text(encoding="utf-8").splitlines()
-          filtered = [line for line in lines if not line.endswith(target)]
-          if len(filtered) != len(lines) - 1:
-              raise SystemExit("[ERROR] expected exactly one temporary workflow checksum entry")
-          manifest.write_text("\n".join(filtered) + "\n", encoding="utf-8", newline="\n")
-          PY
-
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          # Stage the deletion before completeness verification so git ls-files
-          # reflects the intended final repository state.
+          # Stage the deletion first so git ls-files reflects the intended final state.
           git add -A
+
+          # Rebuild the root manifest from the staged final tracked-file set.
+          # This automatically removes the one-shot workflow's temporary entry and
+          # prevents future "new tracked file missing from manifest" loops.
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          import subprocess
+
+          root = Path(".")
+          raw = subprocess.check_output(["git", "ls-files", "-z"])
+          tracked = sorted(p for p in raw.decode("utf-8").split("\0") if p)
+
+          entries = []
+          for rel in tracked:
+              if rel == "SHA256SUMS.txt":
+                  continue
+              path = root / rel
+              if not path.is_file():
+                  raise SystemExit(f"[ERROR] final tracked path is not a regular file: {rel}")
+              entries.append(f"{hashlib.sha256(path.read_bytes()).hexdigest()}  ./{rel}")
+
+          Path("SHA256SUMS.txt").write_text(
+              "\n".join(entries) + "\n",
+              encoding="utf-8",
+              newline="\n",
+          )
+          PY
+
+          # Stage the regenerated final manifest too.
+          git add SHA256SUMS.txt
 
           sha256sum -c SHA256SUMS.txt
           node scripts/check-sha-manifest-completeness.mjs
@@ -533,5 +502,6 @@ jobs:
           git commit -m "Apply Kyrgyz complete-status policy fix and remove one-shot updater"
           git push origin HEAD:main
 
-          echo "[PASS] Updates pushed to main; one-shot workflow and its temporary checksum entry were removed."
+          echo "[PASS] Updates pushed to main; one-shot workflow removed and final checksum manifest rebuilt."
+
 
