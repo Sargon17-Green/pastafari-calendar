@@ -4,7 +4,7 @@ Date: 2026-10-04
 
 ## Scope
 
-Rebuild all 71 non-Hebrew public About translations directly from the current Hebrew master, including:
+Rebuild all 72 non-Hebrew public About translations directly from the current Hebrew master, including:
 
 - `docs/about/content/he.html`
 - `docs/about/monster/index.html`
@@ -46,7 +46,7 @@ The worker has been hardened as follows:
 7. Hebrew-only homonym disambiguations may be adapted where the target language has no corresponding ambiguity.
 8. An LLM repair is rejected before installation if it changes the expected HTML tag/order/id/class structure.
 9. The aggregate step copies only current numbered QA reports and cannot mistake a stale `*-final` file for current evidence.
-10. The installer refuses publication unless all 71 non-Hebrew locales have:
+10. The installer refuses publication unless all 72 non-Hebrew locales have:
    - `state=PASS`
    - `native_qa=PASS`
    - `hebrew_compare=PASS`
@@ -110,10 +110,20 @@ When usable LLM inference becomes available again, the next action is:
 
 1. trigger a clean English pilot by changing `control.json`;
 2. require structural PASS + native-language PASS + direct-Hebrew semantic PASS;
-3. if English passes, set `locales` to all 71 entries from `locales.json` with `publish=false`;
+3. if English passes, set `locales` to all 72 entries from `locales.json` with `publish=false`;
 4. run the full matrix and repair only failing locales;
-5. install only after 71/71 dual PASS;
+5. install only after 72/72 dual PASS;
 6. run repository CI, accessibility, visual and PWA/offline checks;
 7. publish only after all gates are green.
 
 Do not reuse the obsolete 72-locale article prose as a semantic source. The Hebrew master remains the translation source.
+
+## Completion-contract expansion — 2026-10-08
+
+The canonical completion contract is now `COMPLETION_CONTRACT_V2.md`.
+
+This is a continuation of the same program, not a restart. It adds Kyrgyz (`ky`) to the non-Hebrew About/Monster set, making the target 72 non-Hebrew locales / 73 registered locales total.
+
+Final publication is additionally blocked on whole-site localization completeness (zero unintended English/Hebrew fallback, including all `about.*`, `app.brand` and `reverse.error.*` resources), same-locale About/Monster routing, accessibility closure, PWA/offline closure, automated visual/layout tests, human visual review, full integrated release verification, and an explicit calendar-algorithm freeze.
+
+The manual temporary-chat translation/QA work already completed outside this branch remains valid evidence and must not be restarted merely because the completion contract expanded. It still needs to be staged into the branch before final installation.
