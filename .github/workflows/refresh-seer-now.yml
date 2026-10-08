@@ -1,6 +1,11 @@
 name: Refresh canonical Seer 'today' cache
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/refresh-seer-now.yml'
+      - 'scripts/refresh-seer-date-cache.py'
   schedule:
     - cron: '*/5 * * * *'
   workflow_dispatch:
