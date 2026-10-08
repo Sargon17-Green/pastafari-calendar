@@ -162,15 +162,15 @@ def patch_pwa_test() -> None:
 def main() -> int:
     manifest = json.loads(read(MANIFEST))
     locales = manifest["locales"]
-    require(len(locales) == 71, f"Expected 71 non-Hebrew locales, got {len(locales)}")
-    require(len({row["code"] for row in locales}) == 71, "Locale codes are not unique")
+    require(len(locales) == 72, f"Expected 72 non-Hebrew locales, got {len(locales)}")
+    require(len({row["code"] for row in locales}) == 72, "Locale codes are not unique")
     verify_all(locales)
     install_pages(locales)
     write(ROOT / "docs/about/content/registry.js", registry_source(locales))
     patch_about_runtime()
     patch_service_worker()
     patch_pwa_test()
-    print("Installed 71 translated About pages and 71 translated Monster pages behind a 72-locale registry.")
+    print("Installed 72 translated About pages and 72 translated Monster pages behind a 73-locale registry.")
     return 0
 
 if __name__ == "__main__":
