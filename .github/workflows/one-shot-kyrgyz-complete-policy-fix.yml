@@ -221,7 +221,7 @@ jobs:
             }
             for (const locale of report.filter(({ status }) => status === "complete")) {
               assert.equal(locale.fallbackKeys, 0, `${locale.code} complete locale must not use fallback`);
-              assert.equal(locale.proposedStructuralStatus, "complete-candidate");
+                            assert.equal(locale.proposedStructuralStatus, "complete-candidate");
             }
           });'''
 
@@ -373,13 +373,22 @@ jobs:
               "about/index.html",
               "icons/icon-192.png",
               "icons/icon-512.png",
+              # Tracked docs files that were missing entirely from both SHA manifests.
+              "about/monster/index.html",
+              "api/seer-now.json",
+              "icons/favicon-16x16.png",
+              "icons/favicon-32x32.png",
           ]
           for rel in docs_targets:
               digest = hashlib.sha256((ROOT / "docs" / rel).read_bytes()).hexdigest()
               pattern = re.compile(rf"^[0-9a-f]{{64}}  \./{re.escape(rel)}$", re.M)
-              if not pattern.search(docs_text):
-                  raise SystemExit(f"[ERROR] docs/SHA256SUMS.txt lacks ./{rel}")
-              docs_text = pattern.sub(f"{digest}  ./{rel}", docs_text, count=1)
+              if pattern.search(docs_text):
+                  docs_text = pattern.sub(f"{digest}  ./{rel}", docs_text, count=1)
+              else:
+                  entries = [line for line in docs_text.splitlines() if line.strip()]
+                  entries.append(f"{digest}  ./{rel}")
+                  entries.sort(key=lambda line: line.split("  ", 1)[1] if "  " in line else line)
+                  docs_text = "\n".join(entries) + "\n"
           docs_manifest.write_text(docs_text, encoding="utf-8", newline="\n")
 
           # 10. Refresh root SHA256SUMS, including docs/SHA256SUMS.txt itself.
@@ -401,13 +410,22 @@ jobs:
               "docs/about/index.html",
               "docs/icons/icon-192.png",
               "docs/icons/icon-512.png",
+              # Mirror the four tracked docs files that had no root-manifest entries.
+              "docs/about/monster/index.html",
+              "docs/api/seer-now.json",
+              "docs/icons/favicon-16x16.png",
+              "docs/icons/favicon-32x32.png",
           ]
           for rel in root_targets:
               digest = hashlib.sha256((ROOT / rel).read_bytes()).hexdigest()
               pattern = re.compile(rf"^[0-9a-f]{{64}}  \./{re.escape(rel)}$", re.M)
-              if not pattern.search(root_text):
-                  raise SystemExit(f"[ERROR] SHA256SUMS.txt lacks ./{rel}")
-              root_text = pattern.sub(f"{digest}  ./{rel}", root_text, count=1)
+              if pattern.search(root_text):
+                  root_text = pattern.sub(f"{digest}  ./{rel}", root_text, count=1)
+              else:
+                  entries = [line for line in root_text.splitlines() if line.strip()]
+                  entries.append(f"{digest}  ./{rel}")
+                  entries.sort(key=lambda line: line.split("  ", 1)[1] if "  " in line else line)
+                  root_text = "\n".join(entries) + "\n"
 
           # The one-shot workflow is itself a tracked file while this run is active,
           # so manifest completeness requires a temporary entry for it.
