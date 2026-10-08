@@ -1,0 +1,40 @@
+name: Refresh canonical Seer 'today' cache
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-seer-now-main
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    if: github.repository == 'Sargon17-Green/pastafari-calendar'
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+      - name: Validate and refresh only when date changes
+        run: python3 scripts/refresh-seer-date-cache.py
+      - name: Commit changed date snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- docs/api/seer-now.json; then
+            echo 'No new calendar day; no commit.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- docs/api/seer-now.json
+          git commit -m 'chore(seer): refresh current Pastafarian date snapshot'
+          git push origin HEAD:main
