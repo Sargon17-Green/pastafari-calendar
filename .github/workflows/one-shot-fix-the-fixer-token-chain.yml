@@ -1,0 +1,181 @@
+name: One-shot fixer for the Kyrgyz fixer
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: one-shot-fix-the-fixer-token-chain
+  cancel-in-progress: false
+
+jobs:
+  patch-second-fixer-and-self-delete:
+    if: github.repository == 'Sargon17-Green/pastafari-calendar' && github.ref_name == 'main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Require workflow-capable token
+        shell: bash
+        env:
+          WORKFLOW_PATCH_TOKEN: ${{ secrets.WORKFLOW_PATCH_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "${WORKFLOW_PATCH_TOKEN:-}" ]; then
+            echo "[ERROR] Repository secret WORKFLOW_PATCH_TOKEN is missing." >&2
+            echo "[ERROR] It must be a token that can write repository contents AND workflow files." >&2
+            exit 1
+          fi
+          echo "[PASS] WORKFLOW_PATCH_TOKEN is present."
+
+      - name: Check out main with workflow-capable token
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: true
+          token: ${{ secrets.WORKFLOW_PATCH_TOKEN }}
+
+      - name: Patch only the second fixer
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          TARGET=".github/workflows/one-shot-fix-kyrgyz-finish-staging.yml"
+          test -f "$TARGET"
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          target = Path(".github/workflows/one-shot-fix-kyrgyz-finish-staging.yml")
+          text = target.read_text(encoding="utf-8")
+
+          # 1. Make the second fixer itself check out with the workflow-capable token.
+          old_checkout = (
+              "      - name: Check out main\n"
+              "        uses: actions/checkout@v4\n"
+              "        with:\n"
+              "          ref: main\n"
+              "          fetch-depth: 0\n"
+              "          persist-credentials: true\n"
+          )
+          new_checkout = (
+              "      - name: Check out main\n"
+              "        uses: actions/checkout@v4\n"
+              "        with:\n"
+              "          ref: main\n"
+              "          fetch-depth: 0\n"
+              "          persist-credentials: true\n"
+              "          token: ${{ secrets.WORKFLOW_PATCH_TOKEN }}\n"
+          )
+
+          if new_checkout not in text:
+              count = text.count(old_checkout)
+              if count != 1:
+                  raise SystemExit(
+                      f"[ERROR] expected exactly one unpatched checkout block in second fixer, found {count}"
+                  )
+              text = text.replace(old_checkout, new_checkout, 1)
+
+          # 2. Teach the second fixer to inject the same workflow-capable token
+          #    into the original updater that it patches.
+          marker = (
+              '          target = Path(".github/workflows/one-shot-kyrgyz-complete-policy-fix.yml")\n'
+              '          text = target.read_text(encoding="utf-8")\n'
+          )
+
+          injection = (
+              marker
+              + "\n"
+              + "          checkout_old = (\n"
+              + '              "      - name: Check out main\\n"\n'
+              + '              "        uses: actions/checkout@v4\\n"\n'
+              + '              "        with:\\n"\n'
+              + '              "          ref: main\\n"\n'
+              + '              "          fetch-depth: 0\\n"\n'
+              + '              "          persist-credentials: true\\n"\n'
+              + "          )\n"
+              + "          checkout_new = (\n"
+              + '              "      - name: Check out main\\n"\n'
+              + '              "        uses: actions/checkout@v4\\n"\n'
+              + '              "        with:\\n"\n'
+              + '              "          ref: main\\n"\n'
+              + '              "          fetch-depth: 0\\n"\n'
+              + '              "          persist-credentials: true\\n"\n'
+              + '              "          token: ${{ secrets.WORKFLOW_PATCH_TOKEN }}\\n"\n'
+              + "          )\n"
+              + "\n"
+              + "          if checkout_new not in text:\n"
+              + "              checkout_count = text.count(checkout_old)\n"
+              + "              if checkout_count != 1:\n"
+              + "                  raise SystemExit(\n"
+              + '                      f"[ERROR] expected exactly one original-updater checkout block, found {checkout_count}"\n'
+              + "                  )\n"
+              + "              text = text.replace(checkout_old, checkout_new, 1)\n"
+          )
+
+          if 'token: ${{ secrets.WORKFLOW_PATCH_TOKEN }}' not in text.split(
+              'target = Path(".github/workflows/one-shot-kyrgyz-complete-policy-fix.yml")', 1
+          )[1]:
+              if marker not in text:
+                  raise SystemExit("[ERROR] original-updater patch marker not found in second fixer")
+              text = text.replace(marker, injection, 1)
+
+          target.write_text(text, encoding="utf-8", newline="\n")
+
+          final = target.read_text(encoding="utf-8")
+          if final.count("token: ${{ secrets.WORKFLOW_PATCH_TOKEN }}") < 2:
+              raise SystemExit(
+                  "[ERROR] second fixer does not contain both required workflow-token uses"
+              )
+          if "checkout_count = text.count(checkout_old)" not in final:
+              raise SystemExit(
+                  "[ERROR] second fixer is not prepared to patch the original updater checkout"
+              )
+
+          print("[PASS] Second fixer now carries the workflow-capable token chain.")
+          PY
+
+          git diff --check -- "$TARGET"
+          git diff -- "$TARGET"
+
+      - name: Commit patched second fixer and remove this third fixer
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          TARGET=".github/workflows/one-shot-fix-kyrgyz-finish-staging.yml"
+          SELF=".github/workflows/one-shot-fix-the-fixer-token-chain.yml"
+
+          test -f "$TARGET"
+          test -f "$SELF"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add -- "$TARGET"
+          rm -- "$SELF"
+          git add -u -- "$SELF"
+
+          STAGED="$(git diff --cached --name-only)"
+          printf '%s\n' "$STAGED"
+
+          unexpected="$(
+            printf '%s\n' "$STAGED" |
+              grep -v -x -F "$TARGET" |
+              grep -v -x -F "$SELF" || true
+          )"
+
+          if [ -n "$unexpected" ]; then
+            echo "[ERROR] third fixer staged unexpected paths:" >&2
+            printf '%s\n' "$unexpected" >&2
+            exit 1
+          fi
+
+          git diff --cached --check
+          git commit -m "Teach Kyrgyz fixer to use workflow-capable token"
+          git push origin HEAD:main
+
+          echo "[PASS] Second fixer patched; third fixer removed from main."
