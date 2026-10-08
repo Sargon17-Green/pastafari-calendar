@@ -1,0 +1,131 @@
+name: One-shot fixer for Kyrgyz finish staging
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: one-shot-fix-kyrgyz-finish-staging
+  cancel-in-progress: false
+
+jobs:
+  patch-the-patcher-and-self-delete:
+    if: github.repository == 'Sargon17-Green/pastafari-calendar' && github.ref_name == 'main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Patch only the existing one-shot workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          TARGET=".github/workflows/one-shot-kyrgyz-complete-policy-fix.yml"
+          test -f "$TARGET"
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          target = Path(".github/workflows/one-shot-kyrgyz-complete-policy-fix.yml")
+          text = target.read_text(encoding="utf-8")
+
+          old = (
+              "          # Stage the deletion first so git ls-files reflects the intended final state.\n"
+              "          git add -A\n"
+          )
+
+          new = (
+              "          # Stage the deletion first so git ls-files reflects the intended final state.\n"
+              "          # npm ci / Playwright may create or modify files under node_modules; those\n"
+              "          # are execution artifacts and must never enter this one-shot commit.\n"
+              "          git add -A -- . ':(exclude)node_modules' ':(exclude)node_modules/**'\n"
+              "          git reset -- node_modules 2>/dev/null || true\n"
+              "\n"
+              "          if git diff --cached --name-only | grep -q '^node_modules/'; then\n"
+              "            echo \"[ERROR] node_modules unexpectedly entered the staged change set.\" >&2\n"
+              "            git diff --cached --name-only -- node_modules >&2 || true\n"
+              "            exit 1\n"
+              "          fi\n"
+          )
+
+          if new in text:
+              print("[PASS] Target workflow already contains the corrected staging guard.")
+          else:
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(
+                      f"[ERROR] expected exactly one unpatched staging block, found {count}"
+                  )
+              text = text.replace(old, new, 1)
+              target.write_text(text, encoding="utf-8", newline="\n")
+              print("[PASS] Patched exactly one final-staging block.")
+
+          final = target.read_text(encoding="utf-8")
+          checks = [
+              "git add -A -- . ':(exclude)node_modules' ':(exclude)node_modules/**'",
+              "git reset -- node_modules 2>/dev/null || true",
+              "grep -q '^node_modules/'",
+          ]
+          missing = [item for item in checks if item not in final]
+          if missing:
+              raise SystemExit(f"[ERROR] target postconditions missing: {missing}")
+
+          print("[PASS] Target workflow postconditions verified.")
+          PY
+
+          git diff --check -- "$TARGET"
+          git diff -- "$TARGET"
+
+      - name: Commit the patch and remove this fixer
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          TARGET=".github/workflows/one-shot-kyrgyz-complete-policy-fix.yml"
+          SELF=".github/workflows/one-shot-fix-kyrgyz-finish-staging.yml"
+
+          test -f "$TARGET"
+          test -f "$SELF"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Stage only the target workflow and this fixer's deletion.
+          git add -- "$TARGET"
+          rm -- "$SELF"
+          git add -u -- "$SELF"
+
+          STAGED="$(git diff --cached --name-only)"
+          printf '%s\n' "$STAGED"
+
+          if printf '%s\n' "$STAGED" | grep -q '^node_modules/'; then
+            echo "[ERROR] fixer staged node_modules unexpectedly." >&2
+            exit 1
+          fi
+
+          unexpected="$(
+            printf '%s\n' "$STAGED" |
+              grep -v -x -F "$TARGET" |
+              grep -v -x -F "$SELF" || true
+          )"
+
+          if [ -n "$unexpected" ]; then
+            echo "[ERROR] fixer staged unexpected paths:" >&2
+            printf '%s\n' "$unexpected" >&2
+            exit 1
+          fi
+
+          git diff --cached --check
+          git commit -m "Fix final staging in Kyrgyz one-shot updater"
+          git push origin HEAD:main
+
+          echo "[PASS] Existing updater patched; fixer removed from main."
