@@ -65,8 +65,8 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   const requiredCore = [
     "./index.html",
     "./about/index.html",
-    "./about/about.js?v=4-about-polish",
-    "./about/content/registry.js?v=4-about-polish",
+    "./about/about.js?v=20261009-approved12",
+    "./about/content/registry.js?v=20261009-approved12",
     "./about/content/he.html?v=4-about-polish",
     "./styles.css?v=16-about-polish",
     "./app.js?v=24-worker-recovery",
@@ -98,8 +98,14 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
     "./icons/icon-192.png",
     "./icons/icon-512.png",
   ];
-  assert.deepEqual(optionalAssets, requiredOptional, "OPTIONAL_ASSETS should contain non-bootstrap PWA metadata/icons only");
-  assert.equal(optionalAssets.length, 4);
+  const approvedTranslations = ["en", "af", "ar", "az", "be", "bg", "bn", "bs", "ca", "cs", "da", "de"];
+  const translationAssets = approvedTranslations.flatMap((code) => [
+    "./about/content/" + code + ".html?v=20261009-approved12",
+    "./about/monster/" + code + ".html",
+  ]);
+  assert.deepEqual(optionalAssets, [...requiredOptional, ...translationAssets],
+    "OPTIONAL_ASSETS must contain the four metadata/icons and exactly the 24 approved translation pages");
+  assert.equal(optionalAssets.length, 28);
   assert.deepEqual(coreAssets.filter((entry) => optionalAssets.includes(entry)), [], "Core and optional lists must not overlap");
 
   await assertDeclaredAssetsExist(coreAssets);
@@ -110,7 +116,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   assert.equal(LOCALES.length, 73, "PWA accounting expects the current 73 registered locales");
   assert.equal(LOCALES.filter(({ code }) => code !== "en").length, 72, "Every non-English locale is optional/on-demand");
 
-  assert.match(source, /const VERSION = "pastafari-static-pwa-hardening-24-worker-recovery";/);
+  assert.match(source, /const VERSION = "pastafari-static-pwa-about-approved12-20261009-approved12";/);
   assert.match(source, /const RUNTIME_CACHE = "pastafari-runtime-assets";/);
   assert.match(source, /const OPTIONAL_LOCALE_PATH = \/\^\\\/i18n\\\/locales/);
   assert.match(source, /url\.search === LOCALE_REVISION_SEARCH/);
