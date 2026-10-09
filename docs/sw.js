@@ -1,6 +1,6 @@
 "use strict";
 
-const VERSION = "pastafari-static-pwa-hardening-24-worker-recovery";
+const VERSION = "pastafari-static-pwa-about-approved12-20261009-approved12";
 const CORE_CACHE = `${VERSION}-core`;
 const RUNTIME_CACHE = "pastafari-runtime-assets";
 const CACHE_PREFIX = "pastafari-static-";
@@ -10,8 +10,8 @@ const CACHE_PREFIX = "pastafari-static-";
 const CORE_ASSETS = [
   "./index.html",
   "./about/index.html",
-  "./about/about.js?v=4-about-polish",
-  "./about/content/registry.js?v=4-about-polish",
+  "./about/about.js?v=20261009-approved12",
+  "./about/content/registry.js?v=20261009-approved12",
   "./about/content/he.html?v=4-about-polish",
   "./styles.css?v=16-about-polish",
   "./app.js?v=24-worker-recovery",
@@ -43,6 +43,30 @@ const OPTIONAL_ASSETS = Object.freeze([
   "./icons/icon.svg?v=9-canonical-names",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
+  "./about/content/en.html?v=20261009-approved12",
+  "./about/monster/en.html",
+  "./about/content/af.html?v=20261009-approved12",
+  "./about/monster/af.html",
+  "./about/content/ar.html?v=20261009-approved12",
+  "./about/monster/ar.html",
+  "./about/content/az.html?v=20261009-approved12",
+  "./about/monster/az.html",
+  "./about/content/be.html?v=20261009-approved12",
+  "./about/monster/be.html",
+  "./about/content/bg.html?v=20261009-approved12",
+  "./about/monster/bg.html",
+  "./about/content/bn.html?v=20261009-approved12",
+  "./about/monster/bn.html",
+  "./about/content/bs.html?v=20261009-approved12",
+  "./about/monster/bs.html",
+  "./about/content/ca.html?v=20261009-approved12",
+  "./about/monster/ca.html",
+  "./about/content/cs.html?v=20261009-approved12",
+  "./about/monster/cs.html",
+  "./about/content/da.html?v=20261009-approved12",
+  "./about/monster/da.html",
+  "./about/content/de.html?v=20261009-approved12",
+  "./about/monster/de.html",
 ]);
 const OPTIONAL_LOCALE_PATH = /^\/i18n\/locales\/[A-Za-z0-9-]+\.js$/;
 const SCOPE_URL = new URL(self.registration.scope);
@@ -232,6 +256,11 @@ self.addEventListener("fetch", (event) => {
   if (url.origin !== SCOPE_URL.origin) return;
 
   if (event.request.mode === "navigate") {
+    const approvedTranslation = OPTIONAL_BY_URL.get(url.href);
+    if (approvedTranslation) {
+      event.respondWith(runtimeResponse(event.request, url, approvedTranslation));
+      return;
+    }
     event.respondWith(fetch(event.request).catch(async () => {
       const fallbackEntry = navigationFallbackEntry(url);
       return fallbackEntry

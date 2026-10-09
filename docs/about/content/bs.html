@@ -1,0 +1,554 @@
+
+<div class="about-section about-lead" id="about-calendar">
+<p><strong>Pastafarijanski kalendar</strong> je kalendar koji prkosi intuiciji i namjerno ima neobičnu strukturu: datum ne zavisi samo od dana koji želimo opisati nego i od dana iz kojeg računamo.</p>
+<p>Ima godine, kotlete i mjesece, ali godine nisu jednake dužine, kotleti i mjeseci nisu ista podjela, mjeseci mogu nestajati i ponovo se pojavljivati tokom godine, a kanonskih sedmica nema.</p>
+<p>Ova stranica objašnjava šta je ovaj kalendar, kako se čita datum i kakve praktične posljedice ima njegova struktura. Matematički i kriptografski detalji implementacije nalaze se u tehničkoj dokumentaciji, ali nisu potrebni da bi se kalendar razumio.</p>
+</div>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="date-parts">
+<h2>Kako izgleda pastafarijanski datum?</h2>
+<p>Pastafarijanski datum ima tačno pet dijelova:</p>
+<ol>
+<li><strong>godina od Stvaranja svijeta</strong>;</li>
+<li><strong>naziv kotleta</strong>;</li>
+<li><strong>dan u kotletu</strong>;</li>
+<li><strong>naziv mjeseca</strong>;</li>
+<li><strong>dan u mjesecu</strong>.</li>
+</ol>
+<p>Drugim riječima, puni datum govori kojoj godini dan pripada, kojem kotletu pripada i koji je po redu u njemu te kojem mjesecu pripada i koje je po redu pojavljivanje tog mjeseca tokom godine.</p>
+<p>Dan djelovanja, položaj posmatrača i drugi tehnički podaci mogu biti neophodni za <em>izračunavanje</em> datuma, ali nisu šesti, sedmi ili osmi dio samog datuma.</p>
+<p>Ni način prikaza ne mijenja broj dijelova. Ako stranica ispiše pet podataka u tri reda, podataka i dalje ima pet; prijelom reda je tipografski postupak, a ne rođenje novog kalendarskog polja.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="working-day">
+<h2>Zašto isti dan može imati različit datum?</h2>
+<p>U svakom izračunu učestvuju dva dana:</p>
+<ul>
+<li><strong>dan djelovanja</strong> – dan iz kojeg se obavlja izračun;</li>
+<li><strong>traženi dan</strong> – dan čiji datum želimo saznati.</li>
+</ul>
+<p>Ako dan djelovanja označimo sa <code>c</code>, a traženi dan sa <code>t</code>, onda je datum <code>F(c,t)</code>, a ne <code>F(t)</code>.</p>
+<p>Zato isti hronološki dan može dobiti drugačiji pastafarijanski prikaz kada se promijeni dan djelovanja. Sam dan nije se pomjerio; promijenio se samo njegov pastafarijanski opis.</p>
+<p>Kada je <code>c=t</code>, dan je uvijek u Godini <strong>5000</strong>. Godina 5000 nije jedno nepromjenjivo historijsko razdoblje: iznova se određuje u odnosu na dan djelovanja, pa i drugi dani oko dana djelovanja mogu pripadati toj godini.</p>
+<p>Naprimjer, ako je neki dan sam sebi dan djelovanja, nalazi se u Godini 5000. Ako sutradan ponovimo izračun i sutrašnji dan postane novi dan djelovanja, i taj sutrašnji dan bit će u Godini 5000. To nisu dvije protivrječne tvrdnje o istoj „historijskoj godini”; pri svakom izračunu bira se nova polazna godina.</p>
+<p>Godine s brojem većim od 5000 usmjerene su prema budućnosti u odnosu na dan djelovanja, a one s brojem manjim od 5000 prema prošlosti. Postoji i Godina 0, a iza nje godine s negativnim brojevima.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="year-structure">
+<h2>Kako je organizovana godina?</h2>
+<p>Pastafarijanska godina može imati od <strong>252</strong> do <strong>5.778</strong> dana. Obje su granice uključene: godina od 252 dana i godina od 5.778 dana dopuštene su; godina od 251 ili 5.779 dana nije dopuštena prema sadašnjim kanonskim pravilima.</p>
+<p>Te su granice dio kalendara. Godina se ne nastoji uskladiti sa solarnom ni lunarnom godinom, godišnjim dobom, školskom godinom, pa ni strpljenjem onoga ko čeka sljedeću Novu godinu.</p>
+<p>Svaka godina ima dvije različite vrste podjele:</p>
+<ul>
+<li><strong>6–17 kotleta</strong>. Svaki je kotlet neprekinut niz dana i traje najmanje 42 dana.</li>
+<li><strong>3–47 strukturnih mjeseci</strong>. Svakom mjesecu pripada 4–123 dana, ali oni ne moraju biti uzastopni.</li>
+</ul>
+<p>U kalendaru ne postoji kanonski sistem sedmica. Redovi i kolone na stranici služe samo za prikaz; činjenica da su dva dana prikazana jedan do drugog ne čini ih dijelom iste „pastafarijanske sedmice”.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="woven-months">
+<h2>Šta znači „isprepleteni mjesec”?</h2>
+<p>Kotlet je neprekinut: ako je danas 250. dan kotleta, a sutra i dalje pripada istom kotletu, sutra će biti njegov 251. dan.</p>
+<p>Mjesec funkcioniše drugačije. Dan 18 nekog mjeseca jeste <strong>18. pojavljivanje tog mjeseca tokom godine</strong>. Ne mora nastupiti dan poslije njegovog 17. dana.</p>
+<blockquote>
+<p>Mjesec A – dan 14<br/>
+    Mjesec B – dan 9<br/>
+    Mjesec A – dan 15</p>
+</blockquote>
+<p>Zato mjesec može biti razvučen kroz veliki dio godine, protezati se kroz više kotleta i preplitati se s drugim mjesecima. Isto tako, jedan kotlet može sadržavati dane koji pripadaju mnogim mjesecima.</p>
+<p>Dužina mjeseca označava ukupan broj dana koji mu pripadaju, a ne broj proteklih dana između njegovog prvog i posljednjeg pojavljivanja. Mjesec sa 104 dana zato se hronološki može protezati kroz hiljade dana.</p>
+<aside class="about-note">
+<h3>Zašto poslije dana broj 14 dolazi dan broj 15?</h3>
+<p>Zato što je 15 prvi cijeli broj nakon 14. To što se između dva pojavljivanja jednog mjeseca umetnuo dan drugog mjeseca ne mijenja račun: prvi mjesec već se pojavio 14 puta; sljedeće pojavljivanje bit će mu 15. po redu, pa zato nosi broj 15.</p>
+<p>Jednako tako, ako poslije 15. dana tog mjeseca uslijede četiri dana drugih mjeseci, naredno pojavljivanje prvobitnog mjeseca i dalje će biti njegov 16. dan. Četiri dana između njih hronološki se računaju u kalendaru, ali ne pripadaju tom mjesecu i zato ne povećavaju broj <em>njegovih</em> dana. Upravo se zato „sljedeći dan u mjesecu” i „sutra” odnose na dvije različite stvari.</p>
+</aside>
+<p>Otuda ni kraj mjeseca ne mora biti blizu. Mjesec može biti na 119. od ukupno 120 dana, a da se njegov 120. dan pojavi mnogo kasnije.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="canonical-names">
+<h2>Nazivi kotleta i mjeseci</h2>
+<p>Kalendar ima <strong>17 naziva kotleta</strong> i <strong>47 naziva mjeseci</strong>. U jednoj godini isti se naziv ne ponavlja dvaput unutar iste skupine. Ne moraju se svake godine pojaviti svi nazivi: može se pojaviti samo dio spiska.</p>
+<p>Na spiskovima su prikazani samo nazivi. Klikom na naziv ili simbol za otvaranje pored njega prikazuje se tačno značenje i relevantne kanonske napomene. Naziv nije šifra za dužinu jedinice niti predviđanje onoga što će se u njoj dogoditi.</p>
+<h3>17 kotleta</h3>
+<ul class="about-name-list about-name-disclosure-list">
+<li>
+<details class="about-name-details">
+<summary>Bronza</summary>
+<p>Bronza je metalna legura sastavljena pretežno od bakra i kalaja. Ovdje je riječ o materijalu, a ne samo o boji.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Lisica</summary>
+<p>Lisica, sisar iz porodice pasa. Naziv ne označava neku određenu vrstu lisice.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Bubreg</summary>
+<p>Bubreg je organ koji filtrira krv i učestvuje u regulaciji ravnoteže tečnosti i soli u organizmu.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Lagaš</summary>
+<p>Lagaš, drevni sumerski grad-država u južnoj Mezopotamiji.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Misao</summary>
+<p>Misao, odnosno sadržaj razmišljanja ili sam čin razmišljanja.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Četiri devetine</summary>
+<p>Razlomak 4/9, četiri od devet jednakih dijelova. Cijeli izraz čini jedno ime. Njegova središnja brojčana vrijednost iznosi tačno 4/9; samo na leksičkom nivou dopušten je i brojčani prikaz x koji zadovoljava <code>|x − 4/9| ≤ e/103</code>, uključujući samu granicu. Izraz <code>e/103</code> ostaje u tačnom obliku i ne zamjenjuje se decimalnom približnom vrijednošću. Ovo dopuštenje ne mijenja brojače, indekse, identitet ni bilo koji kalendarski izračun.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Palguraš</summary>
+<p>Izmišljeni niz slogova. Nema dodatnog rječničkog značenja koje bi trebalo tumačiti; sam taj niz jeste ime.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Papirus</summary>
+<p>Biljka papirus, od koje se u starom vijeku izrađivao materijal za pisanje istog imena.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Grozd</summary>
+<p>Zbijena skupina ili svežanj predmeta; hebrejska riječ posebno se povezuje s grozdom grožđa, ali značenje nije ograničeno na grožđe.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Škorpion</summary>
+<p>Škorpion, člankonožac iz reda paučnjaka, s kliještima i žalcem na repu.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Pepeo</summary>
+<p>Praškasti ostatak nakon sagorijevanja.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Pšenica</summary>
+<p>Pšenica je žitarica od čijeg se zrna, između ostalog, proizvodi brašno.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Rijeka</summary>
+<p>Razmjerno velik prirodni tok vode koji teče koritom.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Smijeh</summary>
+<p>Glasovna i tjelesna reakcija koja se obično povezuje sa zabavom, radošću ili humorom.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Akad</summary>
+<p>Akad, drevni mezopotamski grad po kojem su ime dobili Akadsko carstvo i oblast; tačna lokacija grada još nije pouzdano utvrđena.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Rog</summary>
+<p>Tvrdi izrastaj na glavi nekih životinja.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Prazan vrč</summary>
+<p>Vrč bez sadržaja. „Prazan” opisuje ono što se nalazi u vrču, odnosno ništa, a ne poriče da vrč postoji. Prazan vrč i dalje može biti čitav vrč, sa stijenkama, dnom i otvorom; jednostavno nije napunjen vodom, vinom, uljem ili nekom drugom materijom. Isto tako, naziv ne znači da je kotlet bez dana: kotlet koji se zove „Prazan vrč” ima dane kao i svaki drugi kotlet, a prazan je samo vrč iz njegovog naziva.</p>
+</details>
+</li>
+</ul>
+<h3>47 mjeseci</h3>
+<ul class="about-name-list about-name-disclosure-list">
+<li>
+<details class="about-name-details">
+<summary>Glina</summary>
+<p>Sitnozrnasti zemljani materijal koji postaje plastičan kad se navlaži, a stvrdnjava se sušenjem ili pečenjem.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Nar</summary>
+<p>Plod nara, okruglo voće s čvrstom korom i mnoštvom sočnih sjemenki.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Lakat</summary>
+<p>Zglob koji spaja nadlakticu s podlakticom.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Zavist</summary>
+<p>Nezadovoljstvo ili bol zbog tuđe prednosti, uspjeha ili nečega dobrog što drugi posjeduje, ponekad praćeni željom da to ima i zavidnik.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Eridu</summary>
+<p>Eridu, drevni sumerski grad u južnoj Mezopotamiji.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Pasta za zube</summary>
+<p>Pastozna materija za čišćenje zuba prilikom pranja. Naziv se odnosi na samu pastu, a ne na četkicu niti na čin pranja zuba.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Tri petine</summary>
+<p>Razlomak 3/5, tri od pet jednakih dijelova. Cijeli izraz čini jedno ime. Njegova središnja brojčana vrijednost iznosi tačno 3/5; samo na leksičkom nivou dopušten je i brojčani prikaz x koji zadovoljava <code>|x − 3/5| ≤ 1/367</code>, uključujući samu granicu. Granica je tačna vrijednost, a ne decimalna aproksimacija. Ovo dopuštenje ne mijenja brojače, indekse, identitet ni bilo koji kalendarski izračun.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Karšumav</summary>
+<p>Izmišljeni niz slogova. Nema skrivenog rječničkog značenja; sam taj niz jeste ime.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Leopard</summary>
+<p>Leopard je velika pjegava mačka; nije riječ o tigru.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Kalaj</summary>
+<p>Hemijski element kalaj.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Magla</summary>
+<p>Koncentracija sitnih kapljica vode u zraku blizu tla; nije riječ o dimu.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Tamjan</summary>
+<p>Mirisna smola dobijena od stabala tamjanovca, koja se koristi za mirise i kađenje.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Vreteno</summary>
+<p>Sprava za predenje vlakana u nit.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Rebro</summary>
+<p>Jedna od kostiju grudnog koša.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Rogač</summary>
+<p>Drvo rogača ili njegov plod.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Uruk</summary>
+<p>Uruk, drevni sumerski grad u Mezopotamiji.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Stid</summary>
+<p>Osjećaj nelagode ili bola usljed doživljaja vlastite mane, neuspjeha ili neugodnog postupka.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Deva</summary>
+<p>Deva, sisar prilagođen životu u sušnim područjima.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Bakar</summary>
+<p>Hemijski element bakar.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Bunar</summary>
+<p>Iskopana jama ili okno koje dopire do podzemne vode radi njenog zahvatanja.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Žumance</summary>
+<p>Žuti dio kokošijeg jajeta.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Zvijezda</summary>
+<p>Nebesko tijelo poput Sunca koje oslobađa energiju fizičkim procesima u svojoj unutrašnjosti.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Med</summary>
+<p>Slatka materija koju pčele proizvode od nektara ili biljnih izlučevina.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Slezena</summary>
+<p>Slezena je organ koji, između ostalog, učestvuje u radu imunološkog sistema i filtriranju krvi. Pored uobičajenog značenja postoji i namjerno kanonsko proširenje, koje nema nikakve biološke, etimološke ili kulturne veze sa slezenom, pa takvu vezu ne treba izmišljati: naziv obuhvata i mlijeko ženke jednogrbe deve (dromedara) povezano s njenim prvim živim potomkom, pomuženo nakon uobičajenog vidljivog zalaska Sunca, a prije nego što središte Sunca dosegne geometrijsku visinu od <code>−6°</code>, i prije nego što je mladunče prvi put samostalno stalo na noge. Ranije trudnoće završene spontanim pobačajem, namjernim prekidom trudnoće ili rođenjem mrtvog mladunčeta ne poništavaju uslov; ako mladunče ugine prije nego što je prvi put samostalno stalo na noge, taj uslov time ostaje otvoren. Posuda mora biti keramička, s crvenom glazurom i zapreminom od 180 do 220 ml, uključujući obje granice zapremine. Ne zahtijeva se da mlijeko ide direktno iz vimena u posudu; brojčani kriterij je zapremina posude, a ne stvarna količina prikupljenog mlijeka. Pitanje jesu li uključeni sami krajnji trenuci vremenskog prozora namjerno je ostavljeno kanonski neriješenim.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Krečnjak</summary>
+<p>Sedimentna stijena sastavljena pretežno od kalcijevog karbonata.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Radost</summary>
+<p>Pozitivan osjećaj sreće, zadovoljstva ili veselja.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Smokva</summary>
+<p>Plod smokve ili drvo smokve.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Niniva</summary>
+<p>Niniva, drevni asirski grad na obali Tigrisa, nasuprot današnjem Mosulu.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Žaba</summary>
+<p>Bezrepi vodozemac iz skupine koja uključuje žabe i krastače.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Katran</summary>
+<p>Tamna, viskozna materija koja se, između ostalog, koristi za zaptivanje; riječ je o gustoj katranskoj materiji, ne o općem nazivu za svaki asfalt.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Svjetiljka</summary>
+<p>Rasvjetno sredstvo. Ne mora biti voštana svijeća s fitiljem.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Zatvorena vrata</summary>
+<p>Vrata koja su u zatvorenom položaju. Zatvorena vrata i dalje su vrata: ne pretvaraju se u zid, ne nestaju i ne moraju biti zaključana. „Zatvorena” znači da je prolaz na kojem se nalaze trenutno zaklonjen samim vratima; „zaključana” je dodatna tvrdnja koja nije sadržana u imenu. Zato i vrata zatvorena bez okretanja ključa sasvim odgovaraju nazivu „Zatvorena vrata”.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Susam</summary>
+<p>Biljka susam ili njene sjemenke, od kojih se, između ostalog, dobija susamovo ulje.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Zatiljak</summary>
+<p>Stražnji dio vrata, odnosno dio vrata neposredno ispod potiljka.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Srebro</summary>
+<p>Hemijski element srebro.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Suza</summary>
+<p>Suza, drevni grad u Elamu i Perziji.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Oluja</summary>
+<p>Olujno vrijeme, obično s jakim vjetrom, ponekad i padavinama, munjama ili drugim pratećim pojavama.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Magarac</summary>
+<p>Pripitomljeni sisar magarac.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Brašno</summary>
+<p>Prah dobijen mljevenjem zrna ili sličnog biljnog materijala; u uobičajenom značenju, brašno od žitarica.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Kajanje</summary>
+<p>Žaljenje zbog nekadašnjeg postupka, izbora ili ishoda.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Babilon</summary>
+<p>Babilon, drevni mezopotamski grad na Eufratu; ovdje je riječ o nazivu mjesta.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Jezik</summary>
+<p>Mišićni organ u ustima. Ne misli se na jezik kao sistem sporazumijevanja.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Lan</summary>
+<p>Biljka lan i njena vlakna, koja se, između ostalog, koriste za izradu tkanine.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>So</summary>
+<p>Slana materija koja se, između ostalog, koristi u prehrani, a u svakodnevnom značenju najčešće natrijev hlorid.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Kruška</summary>
+<p>Plod kruške.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Luk</summary>
+<p>Oružje čija se tetiva zateže radi ispaljivanja strijele.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Pijesak</summary>
+<p>Zrnasta materija sastavljena od sitnih čestica stijena i minerala.</p>
+</details>
+</li>
+</ul>
+<p>Pri prevođenju na druge jezike može se koristiti drugačiji standardni oblik istog imena. Prijevod ili transliteracija ne stvaraju novi kotlet ili mjesec, nego istu jezičku jedinicu prikazuju u drugom obliku. Standardni oblici određuju se prema kanonu i jezičkim pravilima usvojenim u njemu.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="day-boundary">
+<h2>Kada se dan mijenja?</h2>
+<p>Lokalni pastafarijanski dan ne završava u ponoć. Njegovu granicu određuje <strong>donja kulminacija središta Venere na lokalnom meridijanu</strong>: trenutak kada središte Venere prelazi lokalni meridijan posmatrača ispod horizonta.</p>
+<p>Zato je položaj posmatrača važan. Dvije osobe na različitim mjestima mogu u istom fizičkom trenutku pripadati dvama različitim lokalnim pastafarijanskim danima. Kad se otputuje u drugi grad, ne nastavlja se koristiti granica dana iz prethodnog grada.</p>
+<p>Granica zavisi od izračunatog kretanja Venere, a ne od toga vidi li je posmatrač zaista. Oblaci, zidovi ni činjenica da je Venera ispod horizonta ne zaustavljaju njeno kretanje.</p>
+<p>Diskretni algoritam kalendara precizno je definiran: isti ulazni podaci, obrađeni po istim pravilima, daju isti rezultat. Nasuprot tome, pretvaranje fizičkog trenutka u pastafarijanski dan zasad koristi astronomski model implementacije; sam astronomski numerički profil još nije konačno kanonski utvrđen.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="advantages">
+<h2>Istaknute prednosti kalendara</h2>
+<ul>
+<li><strong>Datum koji se uvijek može ponovo izračunati:</strong> Isti dan iz prošlosti sutra može dobiti drugačiji pastafarijanski datum jer se i dan djelovanja pomjerio. Nema potrebe zadovoljiti se starim datumom koji dugo ostaje upotrebljiv.</li>
+<li><strong>Prostrane godine:</strong> Godina može imati čak 5.778 dana, pa onoga ko čeka sljedeću godinu može zadesiti znatno duže čekanje nego inače.</li>
+<li><strong>Mjeseci koji traže pažnju:</strong> Podatak da je danas 119. dan nekog mjeseca ne znači da će njegov 120. dan nastupiti sutra, sljedeće sedmice ili čak uskoro. Sljedeći datum potrebno je izračunati.</li>
+<li><strong>Geografska osjetljivost:</strong> Isti trenutak na različitim mjestima može pripadati različitim lokalnim pastafarijanskim danima. Putovanje u drugi grad tako dodaje još jedan podatak koji valja imati na umu pri dogovaranju.</li>
+<li><strong>Štampani kalendari ne mogu se uljuljkati:</strong> Unaprijed pripremljen kalendar može prestati prikazivati tačan izračun čim se promijeni dan djelovanja, pa nema opasnosti da se neko godinama zadovoljava istim listom papira.</li>
+<li><strong>Korisno iskorištavanje računarske snage:</strong> Umjesto da se zadovolji jednostavnom tabelom koja se može razumjeti jednim pogledom, kalendar pruža računaru priliku da obavi pravi izračun svaki put kada se zatraži odgovor.</li>
+<li><strong>Ima dane:</strong> Kalendar se bavi danima. To svojstvo dijeli sa svakim kalendarom i osigurava da korisnik neće biti prisiljen voditi kalendar bez dana.</li>
+<li><strong>Dani idu redom:</strong> Raniji dan nalazi se prije kasnijeg. To je temeljno postignuće kalendara, a ovdje je dostupno bez dodatne naknade.</li>
+<li><strong>Njime se mogu označavati datumi:</strong> Kalendar omogućava da se danu pridruži kalendarski opis. Istina, to je upravo ono čemu kalendari služe, ali nema razloga prešutjeti korisno svojstvo kada ga već imaju.</li>
+</ul>
+<p>A sve navedeno dobija se zajedno u jednom kalendaru, kao što se i inače dešava kad nekoliko svojstava pripada istom kalendaru.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="practical-consequences">
+<h2>Šta to znači u praksi?</h2>
+<p><strong>Štampani kalendar loše stari.</strong> Promjena dana djelovanja može izmijeniti granice godina, kotleta i mjeseci. Almanah izračunat danas ne mora biti ispravan almanah za sutra.</p>
+<p><strong>Događaj ostaje isti događaj.</strong> Sastanak, rođenje ili historijski događaj treba vezati za stabilan hronološki dan ili trenutak; potom mu se može prikazati pastafarijanski datum prema danu djelovanja i položaju posmatrača. Promjena oznake ne pomjera događaj kroz vrijeme.</p>
+<p><strong>Pastafarijanski rođendan nije po pravilu „jednom godišnje”.</strong> Da bi se pronašlo sljedeće pojavljivanje istog naziva mjeseca i dana u mjesecu, ili istog naziva kotleta i dana u kotletu, potrebno je pretražiti kalendar. Susjedna godina možda uopće nema potreban naziv ili ima jedinicu prekratku da bi dosegla traženi broj dana.</p>
+<p><strong>Cjelodnevni događaj ne mora trajati od ponoći do ponoći.</strong> Ako je događaj definiran lokalnim pastafarijanskim danom, njegove granice određuje lokalni prijelaz Venere. Ako se u građanski kalendar neoprezno prenese kao događaj od ponoći do ponoći, može mu se promijeniti značenje.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="foundation-and-tablets">
+<h2>Dan osnivanja i Dan ploča</h2>
+<p>Kalendar ima dva važna nepomična uporišta:</p>
+<dl>
+<dt><strong>Dan osnivanja</strong></dt>
+<dd>22. decembra 41.222. godine prije nove ere prema proleptičkom gregorijanskom kalendaru.</dd>
+<dt><strong>Dan ploča</strong></dt>
+<dd>15. juna 763. godine prije nove ere prema proleptičkom julijanskom kalendaru, što odgovara 7. junu 763. godine prije nove ere prema proleptičkom gregorijanskom kalendaru.</dd>
+</dl>
+<p>Između njih je 14.777.149 dana. Dan osnivanja računsko je uporište, a ne „prvi dan vremena”; kalendar se proteže i prije njega.</p>
+<p>Dan ploča tradicionalno je vezan za predaju ploča, a u historijskom proračunu poistovjećuje se s danom pomračenja Sunca u vrijeme Bur-Sagalea. Oba uporišta ostaju nepromijenjena čak i kad se promijeni dan djelovanja.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="calendar-math">
+<h2>Nekoliko jednostavnih matematičkih činjenica</h2>
+<p>Postoji 47 naziva mjeseci, a svaki mjesec može doseći najviše 123. dan. Zato postoji <strong>5.781</strong> mogućih kombinacija oblika „naziv mjeseca + dan u mjesecu”.</p>
+<p>Godina može imati najviše 5.778 dana, a svaki dan ostvaruje jednu takvu kombinaciju. Zato <strong>u svakoj godini nedostaju najmanje tri moguće kombinacije</strong>. Čak ni najduža godina nema dovoljno dana da ostvari sve kombinacije.</p>
+<p>Kad su dan djelovanja i godina poznati, puni par „naziv kotleta + dan u kotletu” ili „naziv mjeseca + dan u mjesecu” označava najviše jedan dan u toj godini. Zato puni pastafarijanski datum, zajedno s danom djelovanja, jednoznačno određuje traženi dan.</p>
+<p>Nasuprot tome, bez poznavanja dana djelovanja puni pastafarijanski datum sam po sebi ne mora određivati jednu jedinstvenu udaljenost na vremenskoj osi. Ista petorka može se pojaviti u različitim okolnostima izračuna.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="research">
+<h2>Šta su pokazala računarska istraživanja kalendara?</h2>
+<p>Pored provjeravanja samih pravila provedena su i opsežna računarska istraživanja kalendara. Sljedeći podaci su <strong>empirijski nalazi dobijeni na uzorku</strong>, a ne kanonski zakoni.</p>
+<p>U strukturnom atlasu sastavljenom na osnovu 4.096 dana djelovanja analizirano je 86.016 struktura godina:</p>
+<ul>
+<li>prosječna dužina godine u uzorku iznosila je oko 4.275 dana, a medijan 4.343 dana;</li>
+<li>prosječan broj kotleta po godini bio je oko 7,27;</li>
+<li>prosječan broj strukturnih mjeseci iznosio je oko 41,1;</li>
+<li>mjesecu su u prosjeku pripadala oko 104 dana, iako se obično protezao gotovo preko cijele godine;</li>
+<li>97,482% neprekinutih odsječaka jednog mjeseca trajalo je samo jedan dan;</li>
+<li>izmjerena vjerovatnoća da dva hronološki susjedna dana pripadaju istom mjesecu iznosila je samo oko 2,998%.</li>
+</ul>
+<p>U odvojenom istraživanju ponavljanja „dana u godini” ispitano je 4.096 datuma u kojima je traženi dan ujedno i dan djelovanja, u oba vremenska smjera:</p>
+<ul>
+<li>kod ponovnog poklapanja para <strong>naziv mjeseca + dan u mjesecu</strong> medijan je iznosio jednu pastafarijansku godinu; 77,56% poklapanja bilo je u susjednoj godini;</li>
+<li>ponovno poklapanje para <strong>naziv kotleta + dan u kotletu</strong> bilo je mnogo manje predvidljivo: medijan je iznosio tri pastafarijanske godine, ali na prosjek je snažno utjecao veoma dugačak rep raspodjele;</li>
+<li>u uzorku je zabilježen krajnji slučaj u kojem se „Akad 3063” prvi put ponovio u budućnosti tek nakon 51.954 pastafarijanske godine.</li>
+</ul>
+<p>Ovi nalazi pomažu da razumijemo uobičajeno ponašanje kalendara. Ne pretvaraju prosjek u zakon: činjenica da je prosječna godina u uzorku imala određenu dužinu ne obavezuje pojedinačnu godinu da bude blizu prosjeka, a rezultat koji vrijedi u svih 4.096 slučajeva sam po sebi nije matematički dokaz za sve moguće ulaze.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="calculation">
+<h2>Kako se računa kalendar?</h2>
+<p>Iza datuma stoji precizno definiran diskretni algoritam. Iz dana djelovanja i traženog dana izvodi niz brojača, propušta ih kroz mehanizam miješanja poznat kao <strong>Umak</strong>, stvara prolaze, bira granice godine i kotleta, dodjeljuje nazive, oblikuje mjesece i naposljetku isprepliće dane mjeseci kroz godinu.</p>
+<p>Tačni detalji uključuju velike brojeve, kapi, zdjele, miješanja, pečate i kombinatorne mehanizme izbora. Važni su za implementaciju i formalnu provjeru, ali nisu potrebni za razumijevanje značenja datuma te ovdje nisu izloženi.</p>
+<p>Uz algoritam postoji i brzi programski mehanizam nazvan <strong>Pastafarian Calendar Seer</strong>. Seer služi za brzo računanje; nije izvor autoriteta i sam po sebi nije standardna implementacija algoritma sa svim njegovim koracima. Ako je njegov rezultat u suprotnosti s kanonski propisanim rezultatom, pogriješio je Seer.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="about-the-monster">
+<h2>O Čudovištu</h2>
+<p>U pastafarijanskoj priči, <strong>Leteće Špageti Čudovište</strong> je biće koje je stvorilo svijet i većinu stvari u njemu. Tijelo mu je sačinjeno od rezanaca i mesnih okruglica; može letjeti, prolaziti kroz običnu materiju i ostajati nevidljivo kada mu to odgovara.</p>
+<p>Čudovište može stvarati materiju, živa bića, nebeska tijela i veoma složene mehanizme. Ta sposobnost ne zahtijeva da prije početka posla pripremi uredan plan. Često započne jedno, pređe na drugo, otkrije da prvo treba popraviti i odluči hoće li ga popraviti. Ponekad ga zaista i popravi.</p>
+<p>Ta slika stvaranja koje nastaje sloj po sloj, s popravkama, izuzecima i pravilima koja ostaju na snazi, predstavlja i književnu pozadinu kalendara. Za razliku od priče, sam izračun nije improviziran: kad su ulazni podaci zadani, algoritam vraća jedan jasno određen odgovor.</p>
+<p>Pastafarijanska priča mnogo je šira od kalendara; obuhvata, između ostalog, gusare, ugljikohidrate, molitvu, „Zaista bih više voljelo da to ne radite” i druge tradicije.</p>
+<p class="about-actions"><a class="guide-link" href="./monster/bs.html">Opširnije o Letećem Špageti Čudovištu</a></p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="authority">
+<h2>Šta je kanonsko, a šta samo objašnjenje?</h2>
+<p>Ova stranica je <strong>stranica s objašnjenjima</strong>. Sama činjenica da se neka rečenica pojavila na njoj ne stvara novo pravilo.</p>
+<p>Kanonski sadržaj određuju kanonski korpus i pravila prihvaćena u njemu. Kanonska izdanja svitka nemaju automatski utvrđenu hijerarhiju jedno nad drugim, a softverska implementacija ne postaje izvor autoriteta samo zato što je brza ili široko korištena.</p>
+<p>Standardna implementacija provodi kanonski algoritam kroz sve njegove korake. Računarsko istraživanje može opisati pojavu, otkriti obrazac ili dokazati tvrdnju o algoritmu; kada je riječ o uzorku, a ne o dokazanom pravilu, to je izričito naznačeno.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="summary">
+<h2>Ukratko</h2>
+<p>Pastafarijanski kalendar prkosi intuiciji jer datum zavisi i od dana za koji pitamo i od dana iz kojeg postavljamo pitanje.</p>
+<p>Godina 5000 izgrađuje se oko dana djelovanja. Kotleti su neprekinuti odsječci. Mjeseci su skupovi dana koji se mogu međusobno preplitati. Nema kanonskih sedmica. Lokalni dan mijenja se prema Veneri, a ne u ponoć.</p>
+<p>Iza neobične strukture stoji precizan algoritam, a oko nje pastafarijanska priča o Špageti Čudovištu, stvaranju koje se gomilalo u slojevima i nerazumno velikoj količini ugljikohidrata.</p>
+<p>Kad su poznati dan djelovanja, traženi dan i prostorni kontekst, postoji samo jedan odgovor.</p>
+</section>
+

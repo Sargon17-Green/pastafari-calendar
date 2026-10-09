@@ -1,0 +1,552 @@
+
+<div class="about-section about-lead" id="about-calendar">
+<p><strong>Pastafariánský kalendář</strong> je nezvyklý kalendář se záměrně neintuitivní strukturou. Pastafariánské datum nezávisí jen na dni, který chceme popsat, ale také na dni, z něhož výpočet provádíme.</p>
+<p>Má roky, řízky a měsíce. Roky však nemají pevnou délku, řízky a měsíce představují dvě různá členění, měsíce mohou během roku mizet a znovu se objevovat a kalendář nemá žádné kanonické týdny.</p>
+<p>Tato stránka vysvětluje, co je to za kalendář, jak číst jeho datum a jaké praktické důsledky má jeho uspořádání. Matematické a kryptografické podrobnosti implementace jsou popsány v technické dokumentaci, ale k pochopení kalendáře nejsou nutné.</p>
+</div>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="date-parts">
+<h2>Jak vypadá pastafariánské datum?</h2>
+<p>Pastafariánské datum má přesně pět částí:</p>
+<ol>
+<li><strong>rok od Stvoření světa</strong>;</li>
+<li><strong>název řízku</strong>;</li>
+<li><strong>den v řízku</strong>;</li>
+<li><strong>název měsíce</strong>;</li>
+<li><strong>den v měsíci</strong>.</li>
+</ol>
+<p>Úplné datum tedy říká, do kterého roku den patří, ve kterém řízku se nachází a kolikátý je v něm, a také kterému měsíci náleží a o kolikátý výskyt tohoto měsíce jde.</p>
+<p>Den výpočtu, poloha pozorovatele a další technické údaje mohou být nezbytné pro <em>výpočet</em> data, nejsou však jeho šestou, sedmou ani osmou součástí.</p>
+<p>Počet částí nezávisí ani na způsobu zobrazení. Když web vypíše pět údajů na tři řádky, pořád jde o pět údajů. Zalomením řádku vzniká typografická úprava, nikoli nové kalendářní pole.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="working-day">
+<h2>Proč může mít tentýž den různé datum?</h2>
+<p>Při každém výpočtu vystupují dva dny:</p>
+<ul>
+<li><strong>den výpočtu</strong> – den, z něhož výpočet provádíme;</li>
+<li><strong>cílový den</strong> – den, pro který datum zjišťujeme.</li>
+</ul>
+<p>Označíme-li den výpočtu jako <code>c</code> a cílový den jako <code>t</code>, je datum funkcí <code>F(c,t)</code>, nikoli <code>F(t)</code>.</p>
+<p>Tentýž chronologický den tak může získat jiné pastafariánské datum, pokud změníme den výpočtu. Samotný den se nikam neposune; mění se jen jeho pastafariánský popis.</p>
+<p>Jestliže <code>c=t</code>, připadá daný den vždy na <strong>Rok 5000</strong>. Rok 5000 není pevně vymezené historické období. S každým dnem výpočtu se vytváří znovu, a proto do něj mohou patřit i další dny kolem dne výpočtu.</p>
+<p>Například: je-li určitý den současně dnem výpočtu, leží v Roku 5000. Když provedeme nový výpočet zítra, kdy se zítřek stane novým dnem výpočtu, i zítřek leží v Roku 5000. Nejde o dvě protichůdná tvrzení o témže „historickém roce“; každý výpočet si volí nový výchozí rok.</p>
+<p>Roky s číslem větším než 5000 leží vůči dni výpočtu směrem do budoucnosti a roky s číslem menším než 5000 směrem do minulosti. Existuje také Rok 0 a po něm roky se zápornými čísly.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="year-structure">
+<h2>Jak je uspořádán rok?</h2>
+<p>Pastafariánský rok může mít <strong>252</strong> až <strong>5 778</strong> dnů. Obě krajní hodnoty jsou zahrnuty: rok s 252 dny i rok s 5 778 dny jsou přípustné; rok s 251 nebo 5 779 dny současná kanonická pravidla nepřipouštějí.</p>
+<p>Tyto meze jsou součástí kalendáře. Rok se nesnaží přizpůsobit slunečnímu ani lunárnímu roku, ročnímu období, školnímu roku ani trpělivosti člověka, který čeká na další Nový rok.</p>
+<p>Každý rok se dělí dvěma různými způsoby:</p>
+<ul>
+<li><strong>6–17 řízků.</strong> Každý řízek tvoří souvislý úsek nejméně 42 dnů.</li>
+<li><strong>3–47 strukturálních měsíců.</strong> Ke každému měsíci patří 4–123 dnů, které však nemusí následovat po sobě.</li>
+</ul>
+<p>Kalendář nemá žádnou kanonickou soustavu týdnů. Řádky a sloupce na webu jsou jen způsobem zobrazení. To, že jsou dva dny zobrazeny vedle sebe, z nich nedělá dny téhož „pastafariánského týdne“.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="woven-months">
+<h2>Co znamená „propletený měsíc“?</h2>
+<p>Řízek je souvislá posloupnost: je-li dnes 250. den řízku a zítřek do téhož řízku stále patří, bude zítra jeho 251. den.</p>
+<p>U měsíců to funguje jinak. Den 18 určitého měsíce znamená <strong>osmnáctý výskyt tohoto měsíce během roku</strong>. Nemusí nastat hned den po jeho 17. výskytu.</p>
+<blockquote>
+<p>Měsíc A – den 14<br/>Měsíc B – den 9<br/>Měsíc A – den 15</p>
+</blockquote>
+<p>Měsíc se proto může táhnout přes velkou část roku, zasahovat do několika řízků a prolínat se s jinými měsíci. A stejně tak mohou do jediného řízku spadat dny mnoha různých měsíců.</p>
+<p>Délka měsíce je celkový počet dnů, které do něj patří, nikoli počet dnů uplynulých mezi jeho prvním a posledním výskytem. Měsíc o 104 dnech tak může chronologicky zabírat tisíce dnů.</p>
+<aside class="about-note">
+<h3>Proč po dni 14 následuje den 15?</h3>
+<p>Protože 15 je celé číslo následující po 14. Na tomto výpočtu nic nemění ani to, že se mezi dvěma výskyty daného měsíce objevil den jiného měsíce: první měsíc se již vyskytl čtrnáctkrát a jeho příští výskyt bude patnáctý, a proto dostane číslo 15.</p>
+<p>Stejně tak, když po dni 15 téhož měsíce přijdou čtyři dny jiných měsíců, bude příští výskyt původního měsíce stále jeho dnem 16. Čtyři mezilehlé dny se chronologicky do kalendáře počítají, ale do tohoto měsíce nepatří, a proto nezvyšují počitadlo <em>jeho</em> dnů. Právě proto jsou „příští den v měsíci“ a „zítra“ dva různé pojmy.</p>
+</aside>
+<p>Z toho také plyne, že konec měsíce nemusí být časově blízko. Měsíc může mít právě za sebou 119 ze 120 dnů, a přesto se jeho 120. den může objevit až mnohem později.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="canonical-names">
+<h2>Názvy řízků a měsíců</h2>
+<p>Kalendář má <strong>17 názvů řízků</strong> a <strong>47 názvů měsíců</strong>. V rámci jednoho roku se žádný název v téže skupině neopakuje. Nemusí se ovšem každý rok použít všechny názvy; rok může čerpat jen z části jejich soupisu.</p>
+<p>V seznamech jsou vidět samotné názvy. Kliknutím na název nebo na symbol rozbalení vedle něj se zobrazí jeho přesný význam a příslušné kanonické poznámky. Název není kódem délky dané jednotky ani předpovědí, co se v ní stane.</p>
+<h3>17 řízků</h3>
+<ul class="about-name-list about-name-disclosure-list">
+<li>
+<details class="about-name-details">
+<summary>Bronz</summary>
+<p>Kovová slitina bronz, tvořená především mědí a cínem. Zde jde o název materiálu, nikoli pouze barvy.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Liška</summary>
+<p>Liška, savec z čeledi psovitých. Název neurčuje žádný konkrétní druh lišky.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Ledvina</summary>
+<p>Ledvina, orgán filtrující krev a podílející se na regulaci množství tekutin a solí v těle.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Lagaš</summary>
+<p>Lagaš, starověký sumerský městský stát v jižní Mezopotámii.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Myšlenka</summary>
+<p>Myšlenka, tedy obsah myšlení nebo samotný myšlenkový děj.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Čtyři devítiny</summary>
+<p>Zlomek 4/9, tedy čtyři stejné díly z devíti. Celý výraz tvoří jediný název. Jeho základní číselná hodnota je přesně 4/9; výhradně v lexikální rovině je přípustná také číselná hodnota x, pro kterou platí <code>|x − 4/9| ≤ e/103</code>, včetně obou krajních hodnot. Výraz <code>e/103</code> zůstává v této přesné podobě a nenahrazuje se desetinným přiblížením. Toto povolení nemění počitadla, indexy, totožnost ani žádný kalendářní výpočet.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Palguraš</summary>
+<p>Vymyšlená posloupnost slabik. Nemá žádný další slovníkový význam, který by bylo třeba vykládat; jde o samotný název.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Papyrus</summary>
+<p>Papyrus, rostlina, z níž se ve starověku vyráběl materiál stejného jména.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Shluk</summary>
+<p>Hustá skupina či seskupení předmětů; hebrejské slovo bývá spojováno zejména s hroznem vína.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Štír</summary>
+<p>Štír, členovec ze skupiny pavoukovců s klepety a žihadlem na konci ocasu.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Popel</summary>
+<p>Práškovitý zbytek, který zůstává po hoření.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Pšenice</summary>
+<p>Obilnina pšenice, z jejíchž zrn se mimo jiné vyrábí mouka.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Řeka</summary>
+<p>Poměrně velký přirozený vodní tok protékající korytem.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Smích</summary>
+<p>Hlasový a tělesný projev obvykle spojený s pobavením, radostí nebo humorem.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Akkad</summary>
+<p>Akkad, starověké mezopotámské město, po němž byla pojmenována také Akkadská říše a tamní oblast. Přesná poloha města dosud nebyla spolehlivě určena.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Roh</summary>
+<p>Roh jako tvrdý výrůstek na hlavě některých zvířat.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Prázdný džbán</summary>
+<p>Džbán, v němž nic není. „Prázdný“ popisuje, co se nachází uvnitř džbánu, tedy vůbec nic, a nepopírá existenci džbánu. Prázdný džbán může být stále zcela neporušeným džbánem se stěnami, dnem a hrdlem; jen není naplněn vodou, vínem, olejem ani jinou látkou. Stejně tak název neříká, že by řízek neobsahoval žádné dny. Řízek jménem „Prázdný džbán“ má dny jako každý jiný řízek. Prázdný je pouze džbán v názvu.</p>
+</details>
+</li>
+</ul>
+<h3>47 měsíců</h3>
+<ul class="about-name-list about-name-disclosure-list">
+<li>
+<details class="about-name-details">
+<summary>Jíl</summary>
+<p>Jemnozrnný zemitý materiál, který za mokra získává tvárnost a při vysychání nebo vypalování tvrdne.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Granátové jablko</summary>
+<p>Plod granátovníku, kulaté ovoce s pevnou slupkou a množstvím šťavnatých semen.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Loket</summary>
+<p>Kloub spojující paži a předloktí.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Závist</summary>
+<p>Zármutek nebo nelibost vyvolaná výhodou, úspěchem či něčím dobrým, co má jiný člověk, někdy provázená touhou mít to také.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Eridu</summary>
+<p>Eridu, starověké sumerské město v jižní Mezopotámii.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Zubní pasta</summary>
+<p>Pastovitá hmota používaná při čištění zubů kartáčkem. Název označuje samotnou pastu, nikoli kartáček ani čištění.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Tři pětiny</summary>
+<p>Zlomek 3/5, tedy tři stejné díly z pěti. Celý výraz tvoří jediný název. Jeho základní číselná hodnota je přesně 3/5; výhradně v lexikální rovině je přípustná také číselná hodnota x, pro kterou platí <code>|x − 3/5| ≤ 1/367</code>, včetně obou krajních hodnot. Mez je přesná, nikoli desetinné přiblížení. Toto povolení nemění počitadla, indexy, totožnost ani žádný kalendářní výpočet.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Karšumav</summary>
+<p>Vymyšlená posloupnost slabik. Nemá žádný skrytý slovníkový význam; jde o samotný název.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Levhart</summary>
+<p>Skvrnitý levhart, nikoli tygr.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Cín</summary>
+<p>Chemický prvek cín.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Mlha</summary>
+<p>Nahromadění drobných kapiček vody ve vzduchu blízko zemského povrchu; nejedná se o kouř.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Kadidlo</summary>
+<p>Aromatická pryskyřice získávaná ze stromů rodu kadidlovník, používaná k ovonění a vykuřování.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Vřeteno</summary>
+<p>Nástroj používaný při spřádání vláken do příze.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Žebro</summary>
+<p>Jedna z kostí hrudního koše.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Rohovník</summary>
+<p>Strom rohovník nebo jeho plod.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Uruk</summary>
+<p>Uruk, starověké sumerské město v Mezopotámii.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Stud</summary>
+<p>Nepříjemný až bolestný pocit pramenící z vnímaného nedostatku, selhání nebo trapného chování.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Velbloud</summary>
+<p>Velbloud, savec přizpůsobený životu v suchých oblastech.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Měď</summary>
+<p>Chemický prvek měď.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Studna</summary>
+<p>Jáma nebo šachta vyhloubená k čerpání podzemní vody.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Žloutek</summary>
+<p>Žlutá část slepičího vejce.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Hvězda</summary>
+<p>Nebeské těleso, například Slunce, které vyzařuje energii díky fyzikálním procesům ve svém nitru.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Med</summary>
+<p>Sladká látka vytvářená včelami z nektaru nebo rostlinných výměšků.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Slezina</summary>
+<p>Slezina, orgán, který je mimo jiné součástí imunitního systému a podílí se na filtraci krve. Vedle běžného významu existuje záměrné kanonické rozšíření, které se slezinou nemá žádnou biologickou, etymologickou ani kulturní souvislost a žádnou takovou souvislost není dovoleno vymýšlet: název zahrnuje také mléko samice dromedára spojené s jejím prvním živě narozeným mládětem, nadojené po běžném pozorovatelném západu Slunce, avšak dříve, než střed Slunce dosáhne geometrické výšky <code>−6°</code>, a předtím, než se mládě poprvé samo postaví na nohy. Předchozí březosti zakončené potratem nebo porodem mrtvého mláděte podmínku nevylučují. Pokud mládě uhyne dříve, než se samo postaví, podmínka se tím neuzavírá. Nádoba musí být keramická, s červenou glazurou a kapacitou 180–220 ml včetně obou mezí. Mléko se nemusí do nádoby dojit přímo z vemene; číselné kritérium se vztahuje ke kapacitě nádoby, nikoli ke skutečně odebranému množství mléka. Kánon záměrně ponechává otevřenou otázku, zda jsou zahrnuty i samotné krajní okamžiky tohoto časového okna.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Vápenec</summary>
+<p>Usazená hornina tvořená převážně uhličitanem vápenatým.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Radost</summary>
+<p>Kladná emoce spojená se štěstím, uspokojením či potěšením.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Fík</summary>
+<p>Plod fíkovníku nebo samotný fíkovník.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Ninive</summary>
+<p>Ninive, starověké asyrské město na břehu Tigridu naproti dnešnímu Mosulu.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Žába</summary>
+<p>Bezocasý obojživelník ze skupiny zahrnující žáby a ropuchy.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Dehet</summary>
+<p>Tmavá viskózní hmota používaná mimo jiné k utěsňování; jde o hustou dehtovitou látku, nikoli o obecný název pro jakýkoli asfalt.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Lampa</summary>
+<p>Osvětlovací zařízení. Nemusí jít právě o voskovou svíčku s knotem.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Zavřené dveře</summary>
+<p>Dveře, které jsou zavřené. Zavřené dveře zůstávají dveřmi: nestávají se zdí, nemizí a nemusejí být zamčené. „Zavřené“ znamená, že dveře právě uzavírají průchod, který lze jejich otevřením zpřístupnit; „zamčené“ je další tvrzení, které název neobsahuje. Proto i dveře, které někdo zavřel, aniž otočil klíčem, naprosto vyhovují názvu „Zavřené dveře“.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Sezam</summary>
+<p>Rostlina sezam nebo její semena, z nichž se mimo jiné získává sezamový olej.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Zátylek</summary>
+<p>Zadní část krku.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Stříbro</summary>
+<p>Chemický prvek stříbro.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Súsy</summary>
+<p>Súsy, starověké město v Elamu a Persii.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Bouře</summary>
+<p>Bouřlivé počasí, zpravidla se silným větrem a někdy také se srážkami, blesky či dalšími jevy.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Osel</summary>
+<p>Osel, zdomácnělý savec z čeledi koňovitých.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Mouka</summary>
+<p>Prášek získaný mletím zrn nebo obdobného rostlinného materiálu; v běžném významu především obilná mouka.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Lítost</summary>
+<p>Zármutek nad minulým činem, rozhodnutím nebo jeho následkem.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Babylon</summary>
+<p>Babylon, starověké mezopotámské město na řece Eufratu; jde zde o zeměpisný název.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Jazyk</summary>
+<p>Svalnatý orgán v ústech, nikoli jazyk jako soustava dorozumívání.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Len</summary>
+<p>Rostlina len a její vlákna používaná mimo jiné k výrobě tkanin.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Sůl</summary>
+<p>Slaná látka používaná mimo jiné v potravinářství; v běžném významu především chlorid sodný.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Hruška</summary>
+<p>Plod hrušně.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Luk</summary>
+<p>Zbraň, v níž napnutá tětiva slouží k vystřelení šípu.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Písek</summary>
+<p>Zrnitá hmota tvořená drobnými úlomky hornin a minerálů.</p>
+</details>
+</li>
+</ul>
+<p>V překladech do jiných jazyků lze pro tentýž název použít jinou standardní podobu. Překladem ani přepisem nevzniká nový řízek nebo měsíc; stejná jazyková jednotka se pouze vyjadřuje jinak. Standardní podoby stanoví kánon a v něm přijatá jazyková pravidla.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="day-boundary">
+<h2>Kdy se střídají dny?</h2>
+<p>Místní pastafariánský den se nemění o půlnoci. Jeho hranici určuje <strong>dolní průchod středu Venuše místním poledníkem</strong>: okamžik, kdy střed Venuše prochází poledníkem pozorovatele na jeho úseku pod obzorem.</p>
+<p>Záleží tedy na poloze pozorovatele. Dva lidé na různých místech mohou v témže fyzikálním okamžiku patřit do dvou různých místních pastafariánských dnů. Kdo odjede do jiného města, nemůže dál používat hranici dne z předchozího města.</p>
+<p>Hranice závisí na výpočtu dráhy Venuše, nikoli na tom, zda ji pozorovatel skutečně vidí. Mraky, zdi ani skutečnost, že je Venuše pod obzorem, její pohyb nezastaví.</p>
+<p>Diskrétní algoritmus kalendáře je přesně definován: stejné vstupy zpracované podle stejných pravidel dávají stejný výsledek. Naproti tomu převod fyzikálního okamžiku na pastafariánský den dnes používá astronomický model dané implementace; samotný numerický astronomický profil dosud není uzavřenou součástí kánonu.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="advantages">
+<h2>Výrazné přednosti kalendáře</h2>
+<ul>
+<li><strong>Datum, které lze počítat znovu a znovu:</strong> Tentýž den v minulosti může mít zítra jiné pastafariánské datum, protože se mezitím posunul i den výpočtu. Není třeba spokojit se se starým datem, které by zůstávalo dlouho použitelné.</li>
+<li><strong>Velkoryse dlouhé roky:</strong> Rok může mít až 5 778 dnů, takže čekání na další rok může trvat podstatně déle, než bývá zvykem.</li>
+<li><strong>Měsíce vyžadující pozornost:</strong> Vědět, že je dnes 119. den měsíce, ještě neznamená, že jeho 120. den přijde zítra, příští týden nebo vůbec v dohledné době. Termín je třeba spočítat.</li>
+<li><strong>Zeměpisná citlivost:</strong> Tentýž okamžik může na různých místech patřit do různých místních pastafariánských dnů. Cesta do jiného města tak při domlouvání termínů přidává další údaj, na který je dobré pamatovat.</li>
+<li><strong>Tištěné kalendáře neusínají na vavřínech:</strong> Kalendář připravený předem může po změně dne výpočtu přestat odpovídat správnému výsledku. Nehrozí tedy, že se někdo bude celé roky spoléhat na jeden list papíru.</li>
+<li><strong>Smysluplné využití výpočetního výkonu:</strong> Místo jednoduché tabulky, do které se stačí jednou podívat, nabízí kalendář počítači možnost provést skutečný výpočet pokaždé, když potřebujeme odpověď.</li>
+<li><strong>Obsahuje dny:</strong> Kalendář se zabývá dny. Tuto vlastnost sdílí se všemi kalendáři bez výjimky a zaručuje uživateli, že nebude muset používat kalendář bez dnů.</li>
+<li><strong>Dny jsou seřazené:</strong> Dřívější den předchází pozdějšímu. Jde o zásadní úspěch kalendářů, který je zde navíc k dispozici bez příplatku.</li>
+<li><strong>Umožňuje označovat data:</strong> Kalendář umožňuje přiřadit dni kalendářní označení. To je sice přesně to, k čemu kalendáře slouží, ale není důvod neuvést užitečnou vlastnost, když ji máme.</li>
+</ul>
+<p>Všechny uvedené vlastnosti navíc získáte společně v jediném kalendáři, jak tomu bývá, když několik vlastností náleží jednomu kalendáři.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="practical-consequences">
+<h2>Co to znamená v praxi?</h2>
+<p><strong>Tištěný kalendář špatně stárne.</strong> Změna dne výpočtu může změnit hranice roků, řízků i měsíců. Almanach vypočtený dnes nemusí být správným almanachem pro zítřek.</p>
+<p><strong>Událost zůstává touž událostí.</strong> Schůzka, narození či historická událost musí být ukotveny ke stabilnímu chronologickému dni nebo okamžiku. Pastafariánské datum jim lze následně přiřadit podle dne výpočtu a polohy pozorovatele. Změna označení neposouvá událost v čase.</p>
+<p><strong>Pastafariánské narozeniny rozhodně neznamenají „jednou ročně“.</strong> Chceme-li najít další výskyt téhož názvu měsíce a dne v měsíci nebo téhož názvu řízku a dne v řízku, musíme v kalendáři hledat. Sousední rok nemusí požadovaný název obsahovat vůbec, případně může mít příslušná jednotka příliš málo dnů, aby dosáhla hledaného čísla.</p>
+<p><strong>Celodenní událost nemusí trvat od půlnoci do půlnoci.</strong> Je-li definována podle místního pastafariánského dne, řídí se místní hranicí určenou Venuší. Bezmyšlenkovitý převod do občanského kalendáře na událost od jedné půlnoci do další může změnit její význam.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="foundation-and-tablets">
+<h2>Den založení a Den desek</h2>
+<p>Kalendář má dvě důležité pevné časové kotvy:</p>
+<dl>
+<dt><strong>Den založení</strong></dt>
+<dd>22. prosince 41 222 př. n. l. v proleptickém gregoriánském kalendáři.</dd>
+<dt><strong>Den desek</strong></dt>
+<dd>15. června 763 př. n. l. v proleptickém juliánském kalendáři, což odpovídá 7. červnu 763 př. n. l. v proleptickém gregoriánském kalendáři.</dd>
+</dl>
+<p>Dělí je 14 777 149 dnů. Den založení je početní kotva, nikoli „první den času“; kalendář sahá i do doby před ním.</p>
+<p>Den desek je podle tradice spojen s předáním desek a v historickém výpočtu se ztotožňuje se dnem zatmění Slunce za Bur-Sagaleho. Obě kotvy zůstávají pevné i při změně dne výpočtu.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="calendar-math">
+<h2>Několik jednoduchých matematických skutečností</h2>
+<p>Existuje 47 názvů měsíců a každý měsíc může mít nejvýše 123 dnů. Je tedy možných <strong>5 781</strong> kombinací „název měsíce + den v měsíci“.</p>
+<p>Rok může mít nejvýše 5 778 dnů a každý den představuje jednu takovou kombinaci. Proto <strong>v každém roce chybějí nejméně tři možné kombinace</strong>. Ani nejdelší rok nemá dost dnů na to, aby se v něm vyskytly všechny.</p>
+<p>Známe-li den výpočtu a rok, označuje úplná dvojice „název řízku + den v řízku“ nebo „název měsíce + den v měsíci“ nejvýše jeden den daného roku. Úplné pastafariánské datum tedy společně se dnem výpočtu jednoznačně určuje cílový den.</p>
+<p>Bez znalosti dne výpočtu však úplné pastafariánské datum samo o sobě nemusí určit jedinou polohu na časové ose. Tatáž pětice údajů se může objevit v různých výpočetních souvislostech.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="research">
+<h2>Co zjistily výpočetní studie kalendáře?</h2>
+<p>Vedle ověřování samotných pravidel proběhly také rozsáhlé výpočetní studie. Následující údaje jsou <strong>empirická zjištění ze vzorku</strong>, nikoli kanonické zákony.</p>
+<p>Ve strukturálním atlasu sestaveném ze 4 096 dnů výpočtu bylo prozkoumáno 86 016 struktur roků:</p>
+<ul>
+<li>Průměrná délka roku ve vzorku činila přibližně 4 275 dnů a medián 4 343 dnů;</li>
+<li>průměrný počet řízků v roce byl přibližně 7,27;</li>
+<li>průměrný počet strukturálních měsíců byl přibližně 41,1;</li>
+<li>měsíc měl v průměru kolem 104 dnů, které do něj patřily, ale obvykle se rozprostíral téměř přes celý rok;</li>
+<li>97,482 % souvislých úseků jednoho měsíce bylo dlouhých pouhý den;</li>
+<li>naměřená pravděpodobnost, že dva chronologicky sousedící dny patří do téhož měsíce, činila jen asi 2,998 %.</li>
+</ul>
+<p>Samostatná studie opakování „dne v roce“ sledovala 4 096 vlastních dat v obou časových směrech:</p>
+<ul>
+<li>Opakování kombinace <strong>název měsíce + den v měsíci</strong> nastalo v mediánu již po jediném pastafariánském roce; 77,56 % shod připadalo na sousední rok;</li>
+<li>Opakování kombinace <strong>název řízku + den v řízku</strong> bylo mnohem méně předvídatelné: medián činil tři pastafariánské roky, avšak průměr výrazně ovlivňoval velmi dlouhý chvost rozdělení;</li>
+<li>ve vzorku nastal extrémní případ, kdy první budoucí opakování kombinace „Akkad 3063“ leželo ve vzdálenosti 51 954 pastafariánských roků.</li>
+</ul>
+<p>Tato zjištění pomáhají pochopit, jak se kalendář obvykle chová. Nedělají však z průměru zákon: skutečnost, že průměrný rok ve vzorku měl určitou délku, neznamená, že každý konkrétní rok musí být průměru blízký. A ani výsledek potvrzený ve všech 4 096 případech není sám o sobě matematickým důkazem pro všechny možné vstupy.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="calculation">
+<h2>Jak se kalendář počítá?</h2>
+<p>Za každým datem stojí přesně definovaný diskrétní algoritmus. Ze dne výpočtu a cílového dne vytvoří řadu počitadlových hodnot, provede jejich promíchání mechanismem označovaným jako <strong>omáčka</strong>, vytvoří brány, vybere hranice roku a řízků, přidělí názvy, vytvoří měsíce a nakonec proplete dny jednotlivých měsíců napříč rokem.</p>
+<p>Podrobný postup zahrnuje velká čísla, kapky, mísy, míchání, pečeti a kombinatorické výběrové mechanismy. Jsou důležité pro implementaci i formální ověřování, ale k pochopení významu data je nepotřebujeme, a proto je zde nerozebíráme.</p>
+<p>Vedle algoritmu existuje rychlý výpočetní nástroj jménem <strong>Pastafarian Calendar Seer</strong>. Seer slouží k rychlému počítání; není zdrojem autority ani sám nepředstavuje standardní implementaci všech kroků algoritmu. Odporuje-li jeho výsledek kanonickým pravidlům, mýlí se Seer.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="about-the-monster">
+<h2>O Monstru</h2>
+<p>V pastafariánském vyprávění je <strong>Létající špagetové monstrum</strong> bytostí, která stvořila svět a většinu věcí v něm. Jeho tělo tvoří těstoviny a masové kuličky. Umí létat, procházet běžnou hmotou a zůstávat neviditelné, když se mu to hodí.</p>
+<p>Monstrum dokáže stvořit hmotu, živé tvory, nebeská tělesa i velmi složité mechanismy. To však neznamená, že si musí před zahájením práce připravit podrobný plán. Často začne něco dělat, přejde k něčemu jinému, zjistí, že původní výtvor potřebuje opravit, a rozmyslí si, zda jej opraví. Někdy jej skutečně opraví.</p>
+<p>Tento obraz stvoření vznikajícího vrstvu po vrstvě, s opravami, výjimkami a pravidly, která přetrvávají, tvoří také literární pozadí kalendáře. Na rozdíl od příběhu však samotný výpočet improvizovaný není: při daných vstupech vrací algoritmus jedinou určenou odpověď.</p>
+<p>Pastafariánské vyprávění sahá mnohem dál než kalendář a zahrnuje mimo jiné piráty, sacharidy, modlitbu, zásady „Opravdu bych byl raději, kdybys ne…“ a další tradice.</p>
+<p class="about-actions"><a class="guide-link" href="./monster/cs.html">Podrobnější vysvětlení o Monstru</a></p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="authority">
+<h2>Co je kanonické a co je jen vysvětlení?</h2>
+<p>Tato stránka je <strong>vysvětlující text</strong>. Žádná věta zde sama o sobě nevytváří nové pravidlo jen proto, že byla zveřejněna.</p>
+<p>Kanonický obsah určuje soubor kanonických textů a pravidel, které byly v jeho rámci přijaty. Kanonická vydání svitku nejsou automaticky hierarchicky nadřazena jedno druhému a softwarová implementace nezískává autoritu jen tím, že je rychlá nebo rozšířená.</p>
+<p>Standardní implementace vykonává kanonický algoritmus se všemi jeho kroky. Výpočetní výzkum může popsat jev, odhalit vzorec nebo dokázat tvrzení o algoritmu; jde-li však o výsledek získaný ze vzorku, nikoli o dokázané pravidlo, je to výslovně uvedeno.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="summary">
+<h2>Stručně řečeno</h2>
+<p>Pastafariánský kalendář má neintuitivní pravidla: datum závisí jak na cílovém dni, tak na dni výpočtu.</p>
+<p>Rok 5000 vzniká kolem dne výpočtu. Řízky tvoří souvislé úseky. Měsíce jsou skupiny dnů, které se mohou vzájemně proplétat. Kanonické týdny neexistují. Místní den se mění podle Venuše, ne o půlnoci.</p>
+<p>Za neobvyklou strukturou stojí přesný algoritmus; kolem něj se rozvíjí pastafariánský příběh o špagetovém monstru, stvoření navršeném do vrstev a nepřiměřeném množství sacharidů.</p>
+<p>Jakmile známe den výpočtu, cílový den a místní kontext, existuje jediná odpověď.</p>
+</section>
+

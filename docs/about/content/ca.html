@@ -1,0 +1,551 @@
+
+<div class="about-section about-lead" id="about-calendar">
+<p>El <strong>Calendari pastafari</strong> és un calendari deliberadament poc intuïtiu i d'estructura insòlita: la data d'un dia no depèn només del dia que volem descriure, sinó també del dia des del qual fem el càlcul.</p>
+<p>Té anys, croquetes i mesos, però els anys no tenen una durada fixa, les croquetes i els mesos són dues divisions diferents, els mesos poden desaparèixer i reaparèixer al llarg de l'any i no hi ha setmanes canòniques.</p>
+<p>Aquesta pàgina explica què és el calendari, com es llegeix una data i quines conseqüències pràctiques té la seva estructura. Els detalls matemàtics i criptogràfics de la implementació es troben a la documentació tècnica, però no cal conèixer-los per entendre el calendari.</p>
+</div>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="date-parts">
+<h2>Com és una data pastafari?</h2>
+<p>Una data pastafari té exactament cinc components:</p>
+<ol>
+<li><strong>Any des de la Creació del món</strong>;</li>
+<li><strong>Nom de la croqueta</strong>;</li>
+<li><strong>Dia dins de la croqueta</strong>;</li>
+<li><strong>Nom del mes</strong>;</li>
+<li><strong>Dia dins del mes</strong>.</li>
+</ol>
+<p>És a dir, una data completa indica a quin any pertany el dia, en quina croqueta es troba i quina posició hi ocupa, i a quin mes pertany i quin número d'aparició li correspon.</p>
+<p>El dia de càlcul, la ubicació de l'observador i altres detalls tècnics poden ser imprescindibles per <em>calcular</em> la data, però no constitueixen un sisè, un setè ni un vuitè component de la data mateixa.</p>
+<p>Tampoc no importa com es presenti visualment. Si el web mostra les cinc dades repartides en tres línies, continuen sent cinc dades: un salt de línia és un recurs tipogràfic, no el naixement d'un camp calendàric nou.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="working-day">
+<h2>Per què un mateix dia pot tenir dates diferents?</h2>
+<p>En cada càlcul intervenen dos dies:</p>
+<ul>
+<li><strong>Dia de càlcul</strong>: el dia des del qual es fa el càlcul;</li>
+<li><strong>Dia consultat</strong>: el dia del qual volem saber la data.</li>
+</ul>
+<p>Si representem el dia de càlcul amb <code>c</code> i el dia consultat amb <code>t</code>, la data és <code>F(c,t)</code>, no <code>F(t)</code>.</p>
+<p>Així, un mateix dia cronològic pot tenir una representació pastafari diferent si canviem el dia de càlcul. El dia no es mou; només canvia la manera pastafari de descriure'l.</p>
+<p>Quan <code>c=t</code>, el dia sempre pertany a l'<strong>Any 5000</strong>. L'Any 5000 no és un període històric fix: es construeix de nou en relació amb el dia de càlcul, i per això també hi poden pertànyer altres dies del seu voltant.</p>
+<p>Per exemple, si un dia és el seu propi dia de càlcul, pertany a l'Any 5000. Si l'endemà tornem a fer el càlcul i aquell dia passa a ser el nou dia de càlcul, també serà a l'Any 5000. No són dues afirmacions contradictòries sobre un mateix «any històric»: a cada càlcul es tria un nou any de referència.</p>
+<p>Els anys amb un número superior a 5000 se situen cap al futur respecte del dia de càlcul, i els que tenen un número inferior a 5000, cap al passat. També existeix l'Any 0, seguit d'anys amb números negatius.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="year-structure">
+<h2>Com s'estructura un any?</h2>
+<p>Un any pastafari pot tenir entre <strong>252</strong> i <strong>5.778</strong> dies. Tots dos extrems estan inclosos: un any de 252 dies és vàlid, i un de 5.778 també; en canvi, un any de 251 o de 5.779 dies no és vàlid segons les regles canòniques actuals.</p>
+<p>Aquests límits formen part del calendari. L'any no intenta ajustar-se a l'any solar, a l'any lunar, a les estacions, al curs escolar ni a la paciència de qui espera que arribi l'any següent.</p>
+<p>Cada any es divideix en dos sistemes diferents:</p>
+<ul>
+<li><strong>6–17 croquetes</strong>. Cada croqueta és un tram continu de dies i dura almenys 42 dies.</li>
+<li><strong>3–47 mesos estructurals</strong>. Cada mes té entre 4 i 123 dies que li pertanyen, però no han de ser consecutius.</li>
+</ul>
+<p>El calendari no té cap sistema de setmanes canònic. Les files i columnes que apareixen al web només són una forma de presentació; que dos dies apareguin de costat no els converteix en membres d'una mateixa «setmana pastafari».</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="woven-months">
+<h2>Què vol dir «mes entrellaçat»?</h2>
+<p>Una croqueta és una seqüència contínua: si avui és el dia 250 d'una croqueta i demà encara som a la mateixa croqueta, demà serà el dia 251.</p>
+<p>Els mesos funcionen d'una altra manera. El dia 18 d'un mes determinat és <strong>l'aparició número 18 d'aquest mes durant l'any</strong>. No ha de venir necessàriament l'endemà del dia 17.</p>
+<blockquote>
+<p>Mes A: dia 14<br/>Mes B: dia 9<br/>Mes A: dia 15</p>
+</blockquote>
+<p>Per tant, un mes pot estendre's per bona part de l'any, travessar diverses croquetes i entrellaçar-se amb altres mesos. Igualment, una sola croqueta pot contenir dies que pertanyen a molts mesos diferents.</p>
+<p>La durada d'un mes és el nombre total de dies que li pertanyen, no els dies transcorreguts entre la primera i l'última aparició. Així, un mes de 104 dies es pot estendre cronològicament al llarg de milers de dies.</p>
+<aside class="about-note">
+<h3>Per què el dia 15 va després del dia 14?</h3>
+<p>Perquè 15 és el nombre enter que ve després de 14. Que entre aquestes dues aparicions del mes s'hi hagi intercalat un dia d'un altre mes no altera el recompte: el primer mes ja havia aparegut 14 vegades; la seva aparició següent és la número 15 i, per tant, porta el número 15.</p>
+<p>De la mateixa manera, si després del dia 15 d'aquell mes apareixen quatre dies d'altres mesos, la següent aparició del mes original continuarà sent el seu dia 16. Els quatre dies intermedis compten en la cronologia del calendari, però no pertanyen a aquell mes i, per tant, no incrementen el seu <em>propi</em> comptador. És precisament per això que «el dia següent d'aquell mes» i «demà» són dos conceptes diferents.</p>
+</aside>
+<p>D'aquí també es desprèn que el final d'un mes no ha de ser necessàriament proper en el temps. Un mes pot haver arribat al dia 119 d'un total de 120 i, malgrat això, el seu dia 120 pot aparèixer molt més endavant.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="canonical-names">
+<h2>Noms de les croquetes i dels mesos</h2>
+<p>El calendari té <strong>17 noms de croquetes</strong> i <strong>47 noms de mesos</strong>. Dins d'un any, un nom no es repeteix en una mateixa família. No cal que cada any hi apareguin tots els noms: un any en pot fer servir només una part del repertori.</p>
+<p>Les llistes mostren únicament els noms. Si premeu un nom o la icona per desplegar-lo, en podreu veure el significat exacte i les notes canòniques pertinents. El nom no és un codi de la durada de la unitat ni una predicció del que hi passarà.</p>
+<h3>Les 17 croquetes</h3>
+<ul class="about-name-list about-name-disclosure-list">
+<li>
+<details class="about-name-details">
+<summary>Bronze</summary>
+<p>Aliatge metàl·lic format principalment per coure i estany. Aquí el nom designa el material, no tan sols un color.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Guineu</summary>
+<p>Mamífer de la família dels cànids. El nom no fa referència a cap espècie concreta de guineu.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Ronyó</summary>
+<p>Òrgan que filtra la sang i intervé en la regulació de l'equilibri de líquids i sals de l'organisme.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Lagaix</summary>
+<p>Antiga ciutat estat sumèria del sud de Mesopotàmia.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Pensament</summary>
+<p>Un pensament, és a dir, el contingut d'allò que es pensa o el mateix acte de pensar.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Quatre parts de nou</summary>
+<p>La fracció 4/9: quatre parts iguals d'un total de nou. Tota l'expressió constitueix un únic nom. El seu valor numèric central és exactament 4/9; únicament en el pla lèxic s'admet també un valor numèric x que compleixi <code>|x − 4/9| ≤ e/103</code>, inclòs el límit. L'expressió <code>e/103</code> es conserva exactament i no se substitueix per cap aproximació decimal. Aquesta tolerància no modifica els comptadors, els índexs, la identitat ni cap càlcul del calendari.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Palguraix</summary>
+<p>Seqüència inventada de síl·labes. No té cap altre significat lèxic que calgui interpretar: és el nom mateix.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Papir</summary>
+<p>La planta del papir, a partir de la qual s'elaborava el papir a l'antiguitat.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Ramell</summary>
+<p>Conjunt compacte o agrupació d'elements. En hebreu, la paraula s'associa especialment a un ramell de raïm.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Escorpí</summary>
+<p>Artròpode de la classe dels aràcnids, amb pinces i un fibló a la cua.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Cendra</summary>
+<p>Residus pulverulents que queden després d'una combustió.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Blat</summary>
+<p>Cereal dels grans del qual s'obté, entre altres productes, farina.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Riu</summary>
+<p>Corrent natural d'aigua relativament gran que flueix per una llera.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Rialla</summary>
+<p>Reacció vocal i corporal habitualment associada a la diversió, l'alegria o l'humor.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Accad</summary>
+<p>Antiga ciutat mesopotàmica que va donar nom a l'Imperi accadi i a la regió. Encara no se n'ha identificat amb certesa l'emplaçament exacte.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Banya</summary>
+<p>Protuberància dura que surt del cap de determinats animals.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Gerro buit</summary>
+<p>Un gerro que no conté res. «Buit» descriu allò que hi ha a dins del gerro, és a dir, res, i no n'anul·la l'existència. Un gerro buit pot continuar sent un gerro sencer, amb parets, fons i obertura; simplement no és ple d'aigua, vi, oli ni cap altra substància. Igualment, el nom no vol dir que la croqueta no contingui dies: una croqueta anomenada «Gerro buit» té dies com qualsevol altra croqueta, i el que és buit és només el gerro del nom.</p>
+</details>
+</li>
+</ul>
+<h3>Els 47 mesos</h3>
+<ul class="about-name-list about-name-disclosure-list">
+<li>
+<details class="about-name-details">
+<summary>Argila</summary>
+<p>Material terrós de gra fi que es torna plàstic quan és humit i s'endureix en assecar-se o coure's.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Magrana</summary>
+<p>Fruit del magraner, rodó, de pell dura i amb moltes llavors envoltades de polpa sucosa.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Colze</summary>
+<p>Articulació que uneix el braç amb l'avantbraç.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Enveja</summary>
+<p>Malestar o disgust davant d'un avantatge, un assoliment o una cosa bona que té una altra persona, de vegades acompanyat també del desig de posseir-ho.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Èridu</summary>
+<p>Antiga ciutat sumèria del sud de Mesopotàmia.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Pasta de dents</summary>
+<p>Substància pastosa que es fa servir per netejar les dents quan ens les raspallem. El nom designa la pasta mateixa, no el raspall ni l'acció de raspallar-se les dents.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Tres parts de cinc</summary>
+<p>La fracció 3/5: tres parts iguals d'un total de cinc. Tota l'expressió constitueix un únic nom. El seu valor numèric central és exactament 3/5; únicament en el pla lèxic s'admet també un valor numèric x que compleixi <code>|x − 3/5| ≤ 1/367</code>, inclòs el límit. El límit és un valor exacte, no una aproximació decimal. Aquesta tolerància no modifica els comptadors, els índexs, la identitat ni cap càlcul del calendari.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Carxumav</summary>
+<p>Seqüència inventada de síl·labes. No amaga cap significat lèxic; és el nom mateix.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Lleopard</summary>
+<p>El felí de pelatge tacat conegut com a lleopard, no el tigre.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Estany</summary>
+<p>L'element químic estany.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Boira</summary>
+<p>Concentració de gotetes d'aigua en suspensió a l'aire, prop de la superfície terrestre; no es tracta de fum.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Encens</summary>
+<p>Resina aromàtica obtinguda d'arbres productors d'encens i utilitzada en perfumeria i per fer fum aromàtic.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Fus</summary>
+<p>Instrument que serveix per filar fibres i convertir-les en fil.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Costella</summary>
+<p>Un dels ossos de la caixa toràcica.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Garrofa</summary>
+<p>El garrofer o el seu fruit.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Uruk</summary>
+<p>Antiga ciutat sumèria de Mesopotàmia.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Vergonya</summary>
+<p>Sentiment de malestar o dolor provocat per la percepció d'un defecte, un fracàs o una conducta comprometedora.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Camell</summary>
+<p>Mamífer adaptat a la vida en zones àrides.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Coure</summary>
+<p>L'element químic coure.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Pou</summary>
+<p>Excavació o conducte vertical fins a una font subterrània d'aigua, fet per extreure'n.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Rovell</summary>
+<p>Part groga d'un ou d'ocell.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Estrella</summary>
+<p>Cos celeste com el Sol, que emet energia produïda per processos físics que tenen lloc al seu interior.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Mel</summary>
+<p>Substància dolça que les abelles elaboren a partir del nèctar o de secrecions vegetals.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Melsa</summary>
+<p>Òrgan que, entre altres funcions, intervé en el sistema immunitari i en la filtració de la sang. A més del significat habitual, hi ha una extensió canònica deliberada que no té cap relació biològica, etimològica ni cultural amb la melsa, i no se n'ha d'inventar cap: el nom també inclou la llet vinculada al primer descendent nascut viu d'una femella de dromedari, munyida després de la posta de sol aparent ordinària i abans que el centre del Sol arribi a una altura geomètrica de <code>−6°</code>, i abans que aquest descendent s'hagi sostingut dret per si mateix. Els embarassos anteriors acabats en avortament o amb el naixement d'una cria morta no invaliden la condició; si el descendent mor abans d'haver-se sostingut dret sense ajuda, això tampoc no dona per acabada la condició. El recipient ha de ser de ceràmica, amb esmalt vermell i una capacitat de 180–220 ml, ambdós límits inclosos. No cal munyir directament del braguer al recipient; el criteri numèric és la capacitat del recipient, no el volum de llet efectivament recollit. El cànon deixa expressament sense resoldre si els instants extrems de la finestra temporal també s'hi inclouen.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Calcària</summary>
+<p>Roca sedimentària formada majoritàriament per carbonat de calci.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Alegria</summary>
+<p>Emoció positiva de felicitat, satisfacció o joia.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Figa</summary>
+<p>El fruit de la figuera o la figuera mateixa.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Nínive</summary>
+<p>Antiga ciutat assíria situada a la riba del Tigris, davant de l'actual Mossul.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Granota</summary>
+<p>Amfibi sense cua del grup que inclou granotes i gripaus.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Quitrà</summary>
+<p>Substància fosca i viscosa que es fa servir, entre altres coses, per impermeabilitzar; es tracta d'un material quitranós espès, no d'una designació genèrica de qualsevol asfalt.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Llàntia</summary>
+<p>Dispositiu d'il·luminació. No ha de ser necessàriament una espelma de cera amb ble.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Porta tancada</summary>
+<p>Una porta que es troba en posició tancada. Una porta tancada continua sent una porta: no es converteix en una paret, no desapareix ni ha d'estar necessàriament tancada amb clau. «Tancada» vol dir que la porta obstrueix en aquell moment l'obertura que deixa lliure quan és oberta; «tancada amb clau» seria una afirmació addicional que el nom no inclou. Per això una porta que s'ha tancat sense girar cap clau també respon perfectament al nom «Porta tancada».</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Sèsam</summary>
+<p>La planta del sèsam o les seves llavors, de les quals s'obté, entre altres coses, oli de sèsam.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Clatell</summary>
+<p>Part posterior del coll.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Plata</summary>
+<p>L'element químic plata.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Susa</summary>
+<p>Antiga ciutat de l'Elam i de Pèrsia.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Tempesta</summary>
+<p>Situació meteorològica agitada, generalment amb vents forts i, de vegades, precipitacions, llamps o altres fenòmens associats.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Ase</summary>
+<p>Mamífer domèstic conegut com a ase.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Farina</summary>
+<p>Pols obtinguda de moldre grans o materials vegetals semblants; habitualment, farina de cereals.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Penediment</summary>
+<p>Tristesa o recança per una acció, una decisió o un resultat del passat.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Babilònia</summary>
+<p>Antiga ciutat mesopotàmica situada a la vora de l'Eufrates. Aquí és un topònim.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Llengua</summary>
+<p>Òrgan muscular situat a la boca, no una llengua com a sistema de comunicació.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Lli</summary>
+<p>Planta del lli i les seves fibres, que es fan servir, entre altres coses, per fabricar teixits.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Sal</summary>
+<p>Substància salada emprada, entre altres usos, en l'alimentació; en l'ús quotidià designa sobretot el clorur de sodi.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Pera</summary>
+<p>Fruit de la perera.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Arc</summary>
+<p>Arma amb una corda tensada per disparar fletxes; no és l'arc de Sant Martí.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Sorra</summary>
+<p>Material granular format per partícules petites de roques i minerals.</p>
+</details>
+</li>
+</ul>
+<p>Quan es tradueix a altres llengües, es pot fer servir una altra forma normativa del mateix nom. La traducció o transliteració no crea cap croqueta ni cap mes nou; simplement representa la mateixa entitat lingüística d'una altra manera. Les formes normatives les determinen el cànon i les regles lingüístiques que s'hi han adoptat.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="day-boundary">
+<h2>Quan canvia el dia?</h2>
+<p>Un dia pastafari local no canvia a mitjanit. El límit el marca el <strong>pas inferior del centre de Venus pel meridià local</strong>: l'instant en què el centre de Venus travessa el meridià de l'observador pel costat que queda sota l'horitzó.</p>
+<p>Per això importa on es troba l'observador. Dues persones en llocs diferents poden pertànyer, en el mateix instant físic, a dos dies pastafaris locals diferents. Quan ens traslladem a una altra ciutat, no continuem fent servir el límit del dia de la ciutat anterior.</p>
+<p>Aquest límit depèn del càlcul de l'òrbita de Venus, no del fet que l'observador el pugui veure. Els núvols, les parets o el fet que Venus estigui sota l'horitzó no n'aturen el moviment.</p>
+<p>L'algorisme discret del calendari està definit amb precisió: les mateixes entrades, processades amb les mateixes regles, donen el mateix resultat. En canvi, la conversió d'un instant físic a un dia pastafari fa servir actualment un model astronòmic de la implementació; el perfil numèric astronòmic encara no està fixat del tot pel cànon.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="advantages">
+<h2>Els grans avantatges del calendari</h2>
+<ul>
+<li><strong>Una data que es pot tornar a calcular tantes vegades com calgui:</strong> demà, un mateix dia del passat pot rebre una data pastafari diferent, perquè el dia de càlcul també haurà avançat. No ens hem de conformar amb una data antiga que continuï sent útil durant molt de temps.</li>
+<li><strong>Anys espaiosos:</strong> un any pot arribar a tenir 5.778 dies, de manera que qui esperi l'any següent pot gaudir d'una espera força més llarga del que és habitual.</li>
+<li><strong>Mesos que reclamen atenció:</strong> saber que avui és el dia 119 d'un mes no vol dir que el dia 120 arribi demà, la setmana vinent ni tan sols aviat. Cal calcular quan vindrà.</li>
+<li><strong>Sensibilitat geogràfica:</strong> un mateix instant pot pertànyer a dies pastafaris locals diferents segons el lloc. Així, un viatge a una altra ciutat afegeix un detall més que convé recordar a l'hora de coordinar-se.</li>
+<li><strong>Els calendaris impresos no s'acomoden:</strong> un calendari preparat amb antelació pot deixar de representar el càlcul correcte quan canvia el dia de càlcul, de manera que no hi ha perill que algú es conformi durant anys amb el mateix full de paper.</li>
+<li><strong>Un ús profitós de la potència de càlcul:</strong> en lloc de limitar-se a una taula senzilla que es pugui entendre d'un cop d'ull, el calendari ofereix a l'ordinador l'oportunitat de fer un càlcul de debò cada vegada que volem una resposta.</li>
+<li><strong>Té dies:</strong> el calendari tracta de dies. És una propietat que comparteix amb qualsevol calendari i que garanteix que ningú no hagi de gestionar un calendari sense dies.</li>
+<li><strong>Els dies apareixen ordenats:</strong> un dia anterior va abans que un de posterior. És un assoliment fonamental dels calendaris i, en aquest cas, està disponible sense cap suplement.</li>
+<li><strong>Permet indicar dates:</strong> el calendari permet assignar una descripció calendària a un dia. Certament, és exactament allò per a què serveixen els calendaris, però no hi ha motiu per no esmentar una característica útil quan existeix.</li>
+</ul>
+<p>Tot això s'ofereix junt en un únic calendari, com passa quan diverses propietats pertanyen al mateix calendari.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="practical-consequences">
+<h2>Què implica a la pràctica?</h2>
+<p><strong>Un calendari imprès envelleix malament.</strong> Un canvi del dia de càlcul pot alterar els límits dels anys, les croquetes i els mesos. Un almanac calculat avui no serà necessàriament correcte demà.</p>
+<p><strong>Un esdeveniment continua sent el mateix esdeveniment.</strong> Una reunió, un naixement o un fet històric s'han de vincular a un dia o instant cronològic estable; després se'n pot mostrar la data pastafari segons el dia de càlcul i la ubicació de l'observador. Canviar-ne l'etiqueta no desplaça l'esdeveniment en el temps.</p>
+<p><strong>Un aniversari pastafari no segueix la regla «un cop l'any».</strong> Per trobar la pròxima aparició del mateix nom de mes i dia dins del mes, o del mateix nom de croqueta i dia dins de la croqueta, cal buscar-la al calendari. És possible que l'any adjacent ni tan sols contingui el nom necessari o que inclogui una unitat massa curta per arribar al número de dia desitjat.</p>
+<p><strong>Un esdeveniment de dia sencer no va necessàriament de mitjanit a mitjanit.</strong> Si es defineix segons el dia pastafari local, el seu límit és el pas local de Venus. Traslladar-lo directament a una agenda civil com un esdeveniment de mitjanit a mitjanit en pot alterar el significat.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="foundation-and-tablets">
+<h2>Dia de la Fundació i Dia de les Tauletes</h2>
+<p>El calendari té dues fites fixes importants:</p>
+<dl>
+<dt><strong>Dia de la Fundació</strong></dt>
+<dd>22 de desembre de l'any 41.222 aC del calendari gregorià prolèptic.</dd>
+<dt><strong>Dia de les Tauletes</strong></dt>
+<dd>15 de juny de l'any 763 aC del calendari julià prolèptic, que correspon al 7 de juny de l'any 763 aC del calendari gregorià prolèptic.</dd>
+</dl>
+<p>La distància entre tots dos és de 14.777.149 dies. El Dia de la Fundació és una fita de càlcul: no és «el primer dia del temps», i el calendari també s'estén abans d'aquest dia.</p>
+<p>El Dia de les Tauletes està vinculat, segons la tradició, al lliurament de les tauletes i, en el càlcul històric, s'identifica amb el dia d'un eclipsi solar a l'època de Bur-Sagale. Totes dues fites continuen fixes encara que canviï el dia de càlcul.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="calendar-math">
+<h2>Algunes dades matemàtiques senzilles</h2>
+<p>Hi ha 47 noms de mesos, i cada mes pot arribar com a màxim al dia 123. Per tant, hi ha <strong>5.781</strong> combinacions possibles del tipus «nom del mes + dia dins del mes».</p>
+<p>Un any pot tenir com a màxim 5.778 dies, i cada dia correspon a una d'aquestes combinacions. Per això <strong>a cada any hi falten almenys tres de les combinacions possibles</strong>. Ni tan sols l'any més llarg no té prou dies per incloure-les totes.</p>
+<p>Quan es coneixen el dia de càlcul i l'any, una parella completa «nom de la croqueta + dia dins de la croqueta» o «nom del mes + dia dins del mes» assenyala, com a màxim, un únic dia d'aquell any. Així, una data pastafari completa, juntament amb el dia de càlcul, identifica inequívocament el dia consultat.</p>
+<p>En canvi, si no se sap quin és el dia de càlcul, una data pastafari completa no identifica necessàriament, per si sola, una única distància sobre l'eix temporal. La mateixa combinació de cinc components pot aparèixer en contextos de càlcul diferents.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="research">
+<h2>Què han descobert els estudis computacionals del calendari?</h2>
+<p>A més de comprovar les regles, s'han fet estudis computacionals a gran escala. Les dades següents són <strong>resultats empírics obtinguts a partir d'una mostra</strong>, no lleis canòniques.</p>
+<p>En un atles estructural construït a partir de 4.096 dies de càlcul, on es van examinar 86.016 estructures anuals:</p>
+<ul>
+<li>La durada mitjana dels anys de la mostra va ser d'uns 4.275 dies, i la mediana, de 4.343 dies;</li>
+<li>La mitjana de croquetes per any va ser d'aproximadament 7,27;</li>
+<li>La mitjana de mesos estructurals va ser d'aproximadament 41,1;</li>
+<li>Cada mes contenia de mitjana uns 104 dies que li pertanyien, però habitualment s'estenia per gairebé tot l'any;</li>
+<li>El 97,482 % dels trams consecutius d'un mes tenien una durada d'un sol dia;</li>
+<li>La probabilitat mesurada que dos dies cronològicament consecutius pertanyessin al mateix mes va ser de només el 2,998 %.</li>
+</ul>
+<p>En un estudi independent sobre la repetició de dates d'aniversari, que va examinar 4.096 dates pròpies en totes dues direccions:</p>
+<ul>
+<li>La reaparició d'una combinació de <strong>nom del mes + dia dins del mes</strong> tenia una mediana de només un any pastafari; el 77,56 % de les coincidències es donaven l'any adjacent;</li>
+<li>La reaparició d'una combinació de <strong>nom de la croqueta + dia dins de la croqueta</strong> era molt menys previsible: la mediana era de tres anys pastafaris, però la mitjana estava condicionada per una cua molt llarga;</li>
+<li>A la mostra es va trobar un cas extrem en què la primera reaparició futura d'«Accad 3063» es trobava a 51.954 anys pastafaris de distància.</li>
+</ul>
+<p>Aquestes troballes ajuden a entendre què tendeix a fer el calendari. No converteixen una mitjana en una llei: que l'any mitjà de la mostra tingués una determinada durada no obliga cap any concret a acostar-s'hi, i un resultat observat en els 4.096 casos tampoc no constitueix, per si sol, una demostració matemàtica vàlida per a totes les entrades possibles.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="calculation">
+<h2>Com es calcula el calendari?</h2>
+<p>Darrere de la data hi ha un algorisme discret definit amb exactitud. A partir del dia de càlcul i del dia consultat obté una sèrie de recomptes, els fa passar pel mecanisme de barreja anomenat <strong>la Salsa</strong>, crea portes, selecciona els límits de l'any i de les croquetes, tria noms, genera mesos i, finalment, entrellaça els dies dels mesos al llarg de l'any.</p>
+<p>Els detalls exactes inclouen nombres grans, gotes, bols, remenades, segells i mecanismes combinatoris de selecció. Són importants per a la implementació i la verificació formal, però no calen per entendre el significat de la data i per això no s'exposen aquí.</p>
+<p>A banda de l'algorisme, existeix un motor ràpid anomenat <strong>Pastafarian Calendar Seer</strong>. El Seer està pensat per calcular de pressa; no és una font d'autoritat ni tampoc una implementació normativa de l'algorisme en totes les seves etapes. Si un resultat seu contradiu el que exigeix el cànon, qui s'equivoca és el Seer.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="about-the-monster">
+<h2>Sobre el Monstre</h2>
+<p>Dins del relat pastafari, el <strong>Monstre d'Espagueti Volador</strong> és l'ésser que va crear el món i la majoria de coses que hi ha. Té el cos format per fideus i mandonguilles, pot volar, travessar la matèria ordinària i tornar-se invisible quan li convé.</p>
+<p>El Monstre pot crear matèria, éssers vius, cossos celestes i mecanismes extremament complexos. Aquesta capacitat no l'obliga a preparar un pla ordenat abans de posar-se a treballar. Sovint comença una cosa, passa a una altra, descobreix que la primera necessita una reparació i decideix si l'arregla. De vegades, efectivament, l'arregla.</p>
+<p>Aquesta imatge d'una creació feta per capes, amb reparacions, excepcions i regles que es queden on són, constitueix també el rerefons literari del calendari. A diferència del relat, el càlcul no és improvisat: amb unes entrades determinades, l'algorisme dona una única resposta definida.</p>
+<p>El relat pastafari va molt més enllà del calendari i inclou, entre altres coses, pirates, hidrats de carboni, pregàries, els «Preferiria de debò que no» i altres tradicions.</p>
+<p class="about-actions"><a class="guide-link" href="./monster/ca.html">Una explicació més extensa sobre el Monstre</a></p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="authority">
+<h2>Què és canònic i què és només una explicació?</h2>
+<p>Aquesta és una <strong>pàgina explicativa</strong>. El simple fet que hi aparegui una frase no crea cap regla nova.</p>
+<p>El contingut canònic el determina el corpus canònic i les regles que s'hi han adoptat. Les edicions canòniques del pergamí no tenen automàticament cap jerarquia entre elles, i una implementació informàtica no esdevé font d'autoritat pel sol fet de ser ràpida o popular.</p>
+<p>Una implementació normativa executa l'algorisme canònic amb totes les seves etapes. Un estudi computacional pot descriure un fenomen, trobar una pauta o demostrar un teorema sobre l'algorisme; quan es tracta d'una mostra i no d'una regla demostrada, s'indica expressament.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="summary">
+<h2>En resum</h2>
+<p>El Calendari pastafari és un calendari poc intuïtiu en què la data depèn tant del dia consultat com del dia des del qual fem la consulta.</p>
+<p>L'Any 5000 es construeix al voltant del dia de càlcul. Les croquetes són trams continus. Els mesos són conjunts de dies que es poden entrellaçar. No hi ha setmanes canòniques. El dia local canvia segons Venus, no a mitjanit.</p>
+<p>Darrere d'aquesta estructura insòlita hi ha un algorisme precís i, al seu voltant, un relat pastafari sobre un monstre d'espagueti, una creació acumulada per capes i una quantitat poc raonable d'hidrats de carboni.</p>
+<p>Si coneixem el dia de càlcul, el dia consultat i el context geogràfic, hi ha una única resposta.</p>
+</section>

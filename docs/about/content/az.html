@@ -1,0 +1,570 @@
+<div class="about-section about-lead" id="about-calendar">
+  <p><strong>Pastafari Təqvimi</strong> qəsdən qeyri-adi qurulmuş, intuitiv olmayan bir təqvimdir: bir günün tarixi təkcə təsvir etmək istədiyiniz gündən deyil, hesablamanın hansı gündən aparıldığından da asılıdır.</p>
+  <p>Burada illər, kotletlər və aylar var, amma illərin uzunluğu sabit deyil, kotletlər və aylar eyni bölgünü təşkil etmir, aylar il ərzində yoxa çıxıb yenidən qayıda bilər və kanonik həftələr yoxdur.</p>
+  <p>Bu səhifə təqvimin nə olduğunu, tarixin necə oxunduğunu və onun quruluşunun praktik olaraq nə demək olduğunu izah etmək üçündür. Riyazi və kriptoqrafik reallaşdırmanın təfərrüatları texniki sənədlərdə var, amma təqvimi başa düşmək üçün onları bilmək şərt deyil.</p>
+</div>
+
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>Pastafari tarixi necə görünür?</h2>
+  <p>Pastafari tarixinin düz beş hissəsi var:</p>
+  <ol>
+    <li><strong>Dünyanın Yaradılışından etibarən il</strong>;</li>
+    <li><strong>kotletin adı</strong>;</li>
+    <li><strong>kotletdəki gün</strong>;</li>
+    <li><strong>ayın adı</strong>;</li>
+    <li><strong>aydakı gün</strong>.</li>
+  </ol>
+  <p>Yəni tam tarix günün hansı ildə olduğunu, hansı kotletə düşdüyünü və həmin kotletdəki yerini, eləcə də hansı aya aid olduğunu və həmin ayın il ərzində neçənci dəfə göründüyünü bildirir.</p>
+  <p>Əməl günü, müşahidəçinin yeri və başqa texniki təfərrüatlar tarixi <em>hesablamaq</em> üçün vacib ola bilər, amma tarixin özünün altıncı, yeddinci və ya səkkizinci hissəsi deyil.</p>
+  <p>Göstərilmə forması da hissələrin sayını dəyişmir. Sayt beş məlumatı üç sətirdə çap edirsə, yenə də beş məlumat var; sətirə keçid tipoqrafik əməliyyatdır, yeni təqvim sahəsinin doğulması deyil.</p>
+</section>
+
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>Niyə eyni gün başqa tarix ala bilər?</h2>
+  <p>Hər hesablamada iki gün var:</p>
+  <ul>
+    <li><strong>əməl günü</strong> – hesablamanın aparıldığı gün;</li>
+    <li><strong>soruşulan gün</strong> – tarixini bilmək istədiyimiz gün.</li>
+  </ul>
+  <p>Əməl gününü <code>c</code>, soruşulan günü isə <code>t</code> ilə işarə etsək, tarix <code>F(c,t)</code>-dir, <code>F(t)</code> deyil.</p>
+  <p>Buna görə də əməl günü dəyişdirildikdə eyni xronoloji gün fərqli Pastafari təsviri ala bilər. Günün özü yerindən tərpənmir; yalnız onun Pastafari təsviri dəyişir.</p>
+  <p><code>c=t</code> olduqda gün həmişə <strong>5000-ci ildə</strong> olur. 5000-ci il sabit tarixi dövr deyil: hər dəfə əməl gününə nəzərən yenidən qurulur, buna görə əməl gününün ətrafındakı başqa günlər də həmin ilə düşə bilər.</p>
+  <p>Məsələn, müəyyən bir gün özünün əməl günüdürsə, o, 5000-ci ildədir. Ertəsi gün hesab yenidən aparılır və həmin gün yeni əməl günü olursa, o da 5000-ci ildədir. Burada eyni “tarixi il” haqqında bir-birinə zidd iki iddia yoxdur; hər hesablamada yeni baza ili seçilir.</p>
+  <p>Nömrəsi 5000-dən böyük olan illər əməl günündən gələcəyə doğru, nömrəsi 5000-dən kiçik olan illər isə keçmişə doğru uzanır. 0-cı il də mövcuddur və ondan sonra mənfi nömrəli illər gəlir.</p>
+</section>
+
+<section class="about-section" id="year-structure" data-toc-section data-toc-level="2">
+  <h2>İl necə qurulur?</h2>
+  <p>Pastafari ili <strong>252</strong> gündən <strong>5,778</strong> günədək ola bilər. Hər iki sərhəd daxildir: 252 günlük il də qaydalara uyğundur, 5,778 günlük il də; 251 və ya 5,779 günlük il isə hazırkı kanonik qaydalara uyğun deyil.</p>
+  <p>Bu sərhədlər təqvimin özünün bir hissəsidir. İl Günəş ilinə, Ay ilinə, fəsilə, tədris ilinə və ya növbəti yeni ili gözləyən adamın səbrinə uyğunlaşmağa çalışmır.</p>
+  <p>Hər il iki müxtəlif sistemə bölünür:</p>
+  <ul>
+    <li><strong>6–17 kotlet</strong>. Hər kotlet ardıcıl günlərdən ibarət bir hissədir və uzunluğu ən azı 42 gündür.</li>
+    <li><strong>3–47 struktur ay</strong>. Hər aya 4–123 gün aid olur, amma həmin günlərin ardıcıl olması vacib deyil.</li>
+  </ul>
+  <p>Təqvimdə kanonik həftə sistemi yoxdur. Saytda görünən sətir və sütunlar yalnız göstərilmə üsuludur; iki günün yanaşı göstərilməsi onları eyni “Pastafari həftəsi”nin üzvlərinə çevirmir.</p>
+</section>
+
+<section class="about-section" id="woven-months" data-toc-section data-toc-level="2">
+  <h2>“Toxunmuş ay” nə deməkdir?</h2>
+  <p>Kotlet ardıcıl günlərdən ibarətdir: bu gün kotletin 250-ci günüdürsə və sabah da həmin kotletdədirsə, sabah 251-ci gündür.</p>
+  <p>Ay başqa cür işləyir. Müəyyən ayın 18-ci günü <strong>həmin ayın il ərzində 18-ci dəfə görünməsidir</strong>. O, 17-ci gündən bir gün sonra gəlməyə məcbur deyil.</p>
+  <blockquote>
+    <p>A ayı – 14-cü gün<br>
+    B ayı – 9-cu gün<br>
+    A ayı – 15-ci gün</p>
+  </blockquote>
+  <p>Buna görə ay ilin böyük hissəsinə yayıla, bir neçə kotletdən keçə və başqa aylarla iç-içə keçə bilər. Eyni qaydada bir kotlet də bir çox aya aid günləri ehtiva edə bilər.</p>
+  <p>Ayın uzunluğu ilk və son görünməsi arasında keçən günlərin sayı deyil, ona aid olan günlərin ümumi sayıdır. Buna görə 104 günlük ay xronoloji olaraq minlərlə günə yayıla bilər.</p>
+  <aside class="about-note">
+    <h3>Niyə 15-ci gün 14-cü gündən sonra gəlir?</h3>
+    <p>Çünki 15, 14-dən sonra gələn tam ədəddir. Ayın bu iki görünməsi arasına başqa ayın bir gününün girməsi hesabı dəyişmir: birinci ay artıq 14 dəfə görünüb; onun növbəti görünməsi 15-ci görünmədir və buna görə nömrəsi 15-dir.</p>
+    <p>Eyni qayda ilə, həmin ayın 15-ci günündən sonra başqa aylara aid dörd gün görünsə, ilkin ayın növbəti görünməsi yenə də onun 16-cı günü olacaq. Aradakı dörd gün təqvimdə xronoloji olaraq sayılır, amma həmin aya aid deyil və buna görə <em>onun</em> gün sayğacını artırmır. Məhz buna görə “ayda növbəti gün” və “sabah” iki ayrı anlayışdır.</p>
+  </aside>
+  <p>Buradan o da çıxır ki, ayın sonu zaman baxımından mütləq yaxın deyil. Ay 119-cu gündə ola bilər, halbuki ümumilikdə 120 günü var; buna baxmayaraq onun 120-ci günü xeyli sonra görünə bilər.</p>
+</section>
+
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>Kotletlərin və ayların adları</h2>
+  <p>Təqvimdə <strong>17 kotlet adı</strong> və <strong>47 ay adı</strong> var. Bir ilin daxilində eyni ailədə eyni ad iki dəfə təkrarlanmır. Hər ilin bütün adlardan istifadə etməsi də vacib deyil: il kataloqun yalnız bir hissəsini işlədə bilər.</p>
+  <p>Siyahılarda yalnız adlar göstərilir. Ada və ya yanındakı açma işarəsinə basdıqda onun dəqiq mənası və müvafiq kanonik qeydlər görünür. Ad vahidin uzunluğunun kodu və orada nə baş verəcəyinin proqnozu deyil.</p>
+
+  <h3>17 kotlet</h3>
+  <ul class="about-name-list about-name-disclosure-list">
+    <li>
+      <details class="about-name-details">
+        <summary>Bürünc</summary>
+        <p>Əsasən mis və qalaydan ibarət olan bürünc metal ərintisi. Burada söhbət sadəcə rəngdən deyil, materialın özündən gedir.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Tülkü</summary>
+        <p>Tülkü, itkimilər fəsiləsindən olan məməli. Ad müəyyən bir tülkü növünü bildirmir.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Böyrək</summary>
+        <p>Qanı süzən və bədəndə maye ilə duz balansının tənzimlənməsində iştirak edən böyrək orqanı.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Laqaş</summary>
+        <p>Laqaş, Cənubi Mesopotamiyada yerləşmiş qədim Şumer şəhər-dövləti.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Düşüncə</summary>
+        <p>Düşüncə, yəni təfəkkürün məzmunu və ya düşünmə fəaliyyətinin özü.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Doqquzda dörd</summary>
+        <p>4/9 kəsri, yəni doqquz bərabər hissədən dördü. Bütün ifadə bir addır. Əsas ədədi məna dəqiq olaraq 4/9-dur; yalnız leksik qatda adın <code>|x − 4/9| ≤ e/103</code> şərtini ödəyən x qiyməti ilə ifadə olunmasına da, sərhəd daxil olmaqla, icazə verilir. <code>e/103</code> ifadəsi dəqiq saxlanılır və onluq yaxınlaşma ilə əvəz edilmir. Bu icazə sayğacları, indeksləri, eyniliyi və ya təqvimin heç bir hesablamasını dəyişmir.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Palguraş</summary>
+        <p>Uydurma heca ardıcıllığıdır. Şərh edilməli əlavə lüğəvi mənası yoxdur; ad elə özüdür.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Papirus</summary>
+        <p>Qədim dövrdə papirus adlı yazı materialını hazırlamaq üçün istifadə olunan bitki.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Topa</summary>
+        <p>Bir-birinə sıx yığılmış əşyalar qrupu və ya dəstəsi.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Əqrəb</summary>
+        <p>Əqrəb hörümçəkkimilərdən olan, qısqacları və quyruğunda iynəsi olan buğumayaqlıdır.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Kül</summary>
+        <p>Yanma başa çatdıqdan sonra qalan toz halındakı qalıq.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Buğda</summary>
+        <p>Dənlərindən, başqa şeylərlə yanaşı, un hazırlanan taxıl bitkisi.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Çay</summary>
+        <p>Məcrada axan nisbətən böyük təbii su axını.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Gülüş</summary>
+        <p>Adətən əyləncə, sevinc və ya yumorla əlaqələndirilən səs və bədən hərəkətləri ilə ifadə olunan reaksiya.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Akkad</summary>
+        <p>Akkad həm Akkad imperiyasına, həm də bölgəyə adını vermiş qədim Mesopotamiya şəhəridir; şəhərin dəqiq yeri hələ də qəti müəyyənləşdirilməyib.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Buynuz</summary>
+        <p>Bəzi heyvanların başında olan sərt çıxıntı.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Boş küp</summary>
+        <p>İçində heç nə olmayan küp. “Boş” sözü küpün daxilinin vəziyyətini, yəni içində heç nə olmadığını bildirir və küpün mövcudluğunu ləğv etmir. Boş küp yenə də bütöv, divarları, dibi və ağzı olan bir küp ola bilər; sadəcə su, şərab, yağ və ya başqa maddə ilə dolu deyil. Eyni qaydada ad kotletin günlərdən boş olduğunu da demir: “Boş küp” adlı kotletin hər başqa kotlet kimi günləri var, boş olan yalnız addakı küpdür.</p>
+      </details>
+    </li>
+  </ul>
+
+  <h3>47 ay</h3>
+  <ul class="about-name-list about-name-disclosure-list">
+    <li>
+      <details class="about-name-details">
+        <summary>Gil</summary>
+        <p>Yaş olduqda plastikləşən, quruduqda və ya bişirildikdə sərtləşən xırda dənəli torpaq materialı.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Nar</summary>
+        <p>Sərt qabıqlı və çoxlu şirəli dənəsi olan dairəvi meyvə.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Dirsək</summary>
+        <p>Bazu ilə saidi birləşdirən oynaq.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Paxıllıq</summary>
+        <p>Başqasının üstünlüyü, nailiyyəti və ya sahib olduğu yaxşı bir şey qarşısında yaranan narahatlıq və ya məyusluq, bəzən də həmin şeyə sahib olmaq istəyi.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Eridu</summary>
+        <p>Eridu, Cənubi Mesopotamiyada yerləşmiş qədim Şumer şəhəri.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Diş məcunu</summary>
+        <p>Dişləri fırçalayarkən təmizləmək üçün istifadə olunan məcunvari maddə. Ad diş fırçasına və ya fırçalama hərəkətinə deyil, məcunun özünə aiddir.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Beşdə üç</summary>
+        <p>3/5 kəsri, yəni beş bərabər hissədən üçü. Bütün ifadə bir addır. Əsas ədədi məna dəqiq olaraq 3/5-dir; yalnız leksik qatda adın <code>|x − 3/5| ≤ 1/367</code> şərtini ödəyən x qiyməti ilə ifadə olunmasına da, sərhəd daxil olmaqla, icazə verilir. Sərhəd dəqiq qiymətdir, onluq yaxınlaşma deyil. Bu icazə sayğacları, indeksləri, eyniliyi və ya təqvimin heç bir hesablamasını dəyişmir.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Karşumav</summary>
+        <p>Uydurma heca ardıcıllığıdır. Gizli lüğəvi mənası yoxdur; ad elə özüdür.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Bəbir</summary>
+        <p>Xallı bəbir; pələng nəzərdə tutulmur.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Qalay</summary>
+        <p>Qalay kimyəvi elementi.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Duman</summary>
+        <p>Yer səthinə yaxın havada xırda su damcılarının toplanması; tüstü nəzərdə tutulmur.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Kündür</summary>
+        <p>Kündür ağacları fəsiləsinə aid ağaclardan alınan və ətirləndirmə və tüstülətmə üçün istifadə edilən ətirli qatran.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Əyirmə mili</summary>
+        <p>Lifləri ipə əyirmək üçün istifadə olunan milşəkilli alət.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Qabırğa</summary>
+        <p>Döş qəfəsinin sümüklərindən biri.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Keçibuynuzu</summary>
+        <p>Keçibuynuzu ağacı və ya onun meyvəsi.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Uruk</summary>
+        <p>Uruk, Mesopotamiyada yerləşmiş qədim Şumer şəhəri.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Utanc</summary>
+        <p>Qüsur, uğursuzluq və ya xəcalət doğuran davranışın dərk edilməsindən yaranan narahatlıq və ya ağrı hissi.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Dəvə</summary>
+        <p>Quraq ərazilərdə yaşamağa uyğunlaşmış məməli olan dəvə.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Mis</summary>
+        <p>Mis kimyəvi elementi.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Quyu</summary>
+        <p>Su çıxarmaq üçün yeraltı su mənbəyinə qədər qazılmış çuxur və ya şaxta.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Yumurta sarısı</summary>
+        <p>Quş yumurtasının sarı hissəsi.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Ulduz</summary>
+        <p>Günəş kimi, daxilində gedən fiziki proseslərdən enerji yayan göy cismi.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Bal</summary>
+        <p>Arıların nektardan və ya bitki ifrazatlarından hazırladığı şirin maddə.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Dalaq</summary>
+        <p>Dalaq, başqa funksiyalarla yanaşı, immun sisteminin fəaliyyəti və qanın süzülməsi ilə bağlı orqandır. Adi mənadan əlavə qəsdən yaradılmış, dalaqla bioloji, etimoloji və ya mədəni əlaqəsi olmayan kanonik genişlənmə də var və belə bir əlaqə uydurmaq olmaz: ad həm də birhürgüclü dişi dəvənin ilk canlı balası ilə əlaqəli südünü əhatə edir; bu süd adi görünən günbatımından sonra, Günəşin mərkəzi həndəsi olaraq <code>−6°</code> hündürlüyə çatmazdan əvvəl və bala köməksiz şəkildə ayağa qalxmazdan əvvəl sağılmalıdır. Əvvəlki hamiləliklərin düşük, abort və ya ölü doğuşla bitməsi şərti pozmur; bala öz gücü ilə ayağa qalxmazdan əvvəl ölərsə, təkcə buna görə həmin şərt qüvvədən düşmüş sayılmır. Qab keramika olmalı, qırmızı şirlə örtülməli və tutumu 180–220 ml olmalıdır; tutumun hər iki sərhədi daxildir. Südün birbaşa yelindən həmin qaba sağılması tələb olunmur və ədədi meyar faktiki toplanmış südün miqdarı deyil, qabın tutumudur. Vaxt pəncərəsinin sərhəd anlarının özlərinin daxil olub-olmaması barədə qəsdən açıq saxlanmış kanonik qeyri-müəyyənlik var.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Əhəngdaşı</summary>
+        <p>Əsasən kalsium karbonatdan ibarət çökmə süxur.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Sevinc</summary>
+        <p>Xoşbəxtlik, məmnunluq və ya fərəh şəklində müsbət hiss.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Əncir</summary>
+        <p>Əncir meyvəsi və ya əncir ağacı.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Nineva</summary>
+        <p>Nineva, indiki Mosulun qarşı tərəfində, Dəclə sahilində yerləşmiş qədim Assuriya şəhəri.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Qurbağa</summary>
+        <p>Qurbağalar və quru qurbağalarını əhatə edən qrupa daxil olan quyruqsuz amfibiya.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Qatran</summary>
+        <p>Başqa məqsədlərlə yanaşı, izolyasiya üçün istifadə olunan tünd və özlü maddə; ümumən hər cür asfalt deyil, qalın qatranvari maddə nəzərdə tutulur.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Lampa</summary>
+        <p>İşıqlandırma vasitəsi. Bunun mütləq fitilli mum şamı olması tələb olunmur.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Bağlı qapı</summary>
+        <p>Bağlı vəziyyətdə olan qapı. Bağlı qapı yenə də qapı olaraq qalır: divara çevrilmir, yoxa çıxmır və mütləq kilidlənmiş olmur. “Bağlı” o deməkdir ki, qapının açmaq üçün nəzərdə tutulduğu keçid hazırda qapının özü ilə tutulub; “kilidli” isə adda olmayan əlavə bir iddiadır. Buna görə açarı çevirmədən bağlanmış qapı da “Bağlı qapı” adına tam uyğundur.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Küncüt</summary>
+        <p>Küncüt bitkisi və ya onun toxumları; başqa şeylərlə yanaşı, onlardan küncüt yağı alınır.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Peysər</summary>
+        <p>Boynun arxa hissəsi.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Gümüş</summary>
+        <p>Gümüş kimyəvi elementi.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Susa</summary>
+        <p>Susa, Elamda və Farsda yerləşmiş qədim şəhər.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Fırtına</summary>
+        <p>Adətən güclü külək, bəzən də yağıntı, ildırım və başqa hadisələrlə müşayiət olunan sərt hava şəraiti.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Eşşək</summary>
+        <p>Əhliləşdirilmiş məməli olan eşşək.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Un</summary>
+        <p>Dənlərin və ya oxşar bitki materialının üyüdülməsindən alınan toz; adi kontekstdə taxıl unu.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Peşmanlıq</summary>
+        <p>Keçmişdə edilmiş hərəkətə, seçimə və ya nəticəyə görə duyulan təəssüf.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Babil</summary>
+        <p>Babil, Fərat çayı üzərində yerləşmiş qədim Mesopotamiya şəhəri; burada yer adı nəzərdə tutulur.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Dil</summary>
+        <p>Ağızda yerləşən əzələli orqan. Burada “dil” sözü danışıq dili mənasında işlənmir.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Kətan</summary>
+        <p>Kətan bitkisi və onun lifləri; başqa şeylərlə yanaşı, parça istehsalında istifadə olunur.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Duz</summary>
+        <p>Başqa məqsədlərlə yanaşı, qidada işlədilən maddə; gündəlik kontekstdə əsasən natrium xlorid.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Armud</summary>
+        <p>Armud meyvəsi.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Yay</summary>
+        <p>Ox atmaq üçün kirişi gərilən silah olan yay.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Qum</summary>
+        <p>Süxur və mineralın xırda hissəciklərindən ibarət dənəvər maddə.</p>
+      </details>
+    </li>
+  </ul>
+
+  <p>Başqa dillərə tərcümədə eyni adın həmin dil üçün qəbul edilmiş başqa standart forması işlədilə bilər. Tərcümə və ya transliterasiya yeni kotlet və ya ay yaratmır; eyni dil vahidini başqa formada göstərir. Standart formalar kanona və onda qəbul edilmiş dil qaydalarına əsasən müəyyənləşdirilir.</p>
+</section>
+
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>Gün nə vaxt dəyişir?</h2>
+  <p>Yerli Pastafari günü gecəyarısı dəyişmir. Onun sərhədi <strong>Veneranın mərkəzinin yerli meridianda aşağı kulminasiyası</strong> ilə müəyyən olunur: Veneranın mərkəzinin müşahidəçinin yerləşdiyi yerin meridianını üfüqün altındakı tərəfdən keçdiyi an.</p>
+  <p>Buna görə müşahidəçinin yeri vacibdir. Müxtəlif yerlərdə olan iki insan eyni fiziki anda iki fərqli yerli Pastafari gününə aid ola bilər. Başqa şəhərə gedəndə əvvəlki şəhərin gün sərhədindən istifadə etməyə davam edilmir.</p>
+  <p>Sərhəd Veneranın orbitinin hesablanmasından asılıdır, müşahidəçinin onu həqiqətən görməsindən yox. Buludlar, divarlar və ya Veneranın üfüqdən aşağıda olması onun hərəkətini dayandırmır.</p>
+  <p>Təqvimin diskret alqoritmi dəqiq müəyyənləşdirilib: eyni girişlər eyni qaydalardan keçdikdə eyni nəticəni qaytarır. Fiziki andan Pastafari gününə çevirmə isə hazırda reallaşdırmanın astronomik modelindən istifadə edir; astronomik ədədi profilin özü hələ qəti müəyyənləşdirilmiş kanonik hissə deyil.</p>
+</section>
+
+<section class="about-section" id="advantages" data-toc-section data-toc-level="2">
+  <h2>Təqvimin seçilən üstünlükləri</h2>
+  <ul>
+    <li><strong>Dəfələrlə yenidən hesablana bilən tarix:</strong> keçmişdəki eyni gün sabah başqa Pastafari tarixi ala bilər, çünki əməl günü də irəliləyib. Uzun müddət yararlı qalan köhnə tarixlə kifayətlənməyə ehtiyac yoxdur.</li>
+    <li><strong>Uzun illər:</strong> bir il 5,778 günə çata bilər; buna görə növbəti ili gözləyən şəxsin gözləmə müddəti adət ediləndən xeyli uzun ola bilər.</li>
+    <li><strong>Diqqət tələb edən aylar:</strong> bu gün ayın 119-cu günüdürsə, bu, onun 120-ci gününün sabah, gələn həftə və ya hətta yaxın vaxtda olacağı demək deyil. Növbəti vaxtı hesablamaq lazımdır.</li>
+    <li><strong>Coğrafi həssaslıq:</strong> eyni an müxtəlif yerlərdə müxtəlif yerli Pastafari günlərinə aid ola bilər. Buna görə başqa şəhərə səfəri koordinasiya edərkən yadda saxlanmalı daha bir təfərrüat yaranır.</li>
+    <li><strong>Çap olunmuş təqvimlər arxayınlaşmır:</strong> əvvəlcədən hazırlanmış təqvim əməl günü dəyişdikdən sonra düzgün hesablamanı təmsil etməyi dayandıra bilər; beləliklə, kimsənin illərlə eyni kağız vərəqi ilə kifayətlənməsi təhlükəsi yoxdur.</li>
+    <li><strong>Hesablama gücündən faydalı istifadə:</strong> bir baxışda başa düşülə bilən sadə cədvəllə kifayətlənmək əvəzinə, təqvim hər dəfə cavab istənəndə kompüterə həqiqi hesablama aparmaq imkanı verir.</li>
+    <li><strong>İçində günlər var:</strong> təqvim günlərlə məşğul olur. Bu, onun bütün təqvimlərlə paylaşdığı xüsusiyyətdir və istifadəçinin günləri olmayan təqvim idarə etməyə məcbur qalmamasını təmin edir.</li>
+    <li><strong>Günlər ardıcıllıqla görünür:</strong> daha erkən gün daha gec gündən əvvəl yerləşir. Bu, təqvimlərin əsas nailiyyətlərindən biridir və burada əlavə ödənişsiz təqdim olunur.</li>
+    <li><strong>Onunla tarix göstərmək olar:</strong> təqvim günə təqvim üzrə təsvir verməyə imkan yaradır. Düzdür, təqvimlərin işi elə budur, amma faydalı xüsusiyyət mövcuddursa, onu qeyd etməmək üçün səbəb yoxdur.</li>
+  </ul>
+  <p>Yuxarıda deyilənlərin hamısı eyni təqvimdə bir aradadır; bir neçə xüsusiyyət eyni təqvimə aid olanda adətən belə olur.</p>
+</section>
+
+<section class="about-section" id="practical-consequences" data-toc-section data-toc-level="2">
+  <h2>Bu, praktikada nə deməkdir?</h2>
+  <p><strong>Çap olunmuş təqvim pis qocalır.</strong> Əməl gününün dəyişməsi illərin, kotletlərin və ayların sərhədlərini dəyişə bilər. Bu gün hesablanmış almanax sabah üçün mütləq düzgün almanax deyil.</p>
+  <p><strong>Hadisə elə həmin hadisə olaraq qalır.</strong> Görüş, doğum və ya tarixi hadisə sabit xronoloji günə və ya sabit xronoloji ana bağlanmalıdır; sonra ona əməl gününə və müşahidəçinin yerinə görə Pastafari tarixi göstərmək olar. Etiketin dəyişməsi hadisəni zamanda yerindən tərpətmir.</p>
+  <p><strong>Pastafari ad günü heç də “ildə bir dəfə” qaydası deyil.</strong> Eyni ay adı ilə eyni ay gününün və ya eyni kotlet adı ilə eyni kotlet gününün növbəti görünməsini tapmaq üçün təqvimdə axtarış aparmaq lazımdır. Qonşu il tələb olunan adı ümumiyyətlə ehtiva etməyə bilər və ya həmin vahid tələb olunan gün nömrəsinə çatmaq üçün həddindən artıq qısa ola bilər.</p>
+  <p><strong>Bütün gün davam edən hadisə mütləq gecəyarısından gecəyarısınadək deyil.</strong> Hadisə yerli Pastafari gününə görə müəyyənləşdirilibsə, onun sərhədi yerli Venera sərhədidir. Onu mülki təqvimə sadəlövh şəkildə gecəyarısından növbəti gecəyarısınadək hadisə kimi ixrac etmək mənasını dəyişə bilər.</p>
+</section>
+
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>Təsis Günü və Lövhələr Günü</h2>
+  <p>Təqvimin iki mühüm sabit lövbəri var:</p>
+  <dl>
+    <dt><strong>Təsis Günü</strong></dt>
+    <dd>Proleptik Qriqorian təqvimi ilə e.ə. 41,222-ci il dekabrın 22-si.</dd>
+    <dt><strong>Lövhələr Günü</strong></dt>
+    <dd>Proleptik Yulian təqvimi ilə e.ə. 763-cü il iyunun 15-i; bu, proleptik Qriqorian təqvimi ilə e.ə. 763-cü il iyunun 7-sidir.</dd>
+  </dl>
+  <p>Aralarındakı məsafə 14,777,149 gündür. Təsis Günü hesablama lövbəridir; o, “zamanın ilk günü” deyil və təqvim ondan əvvəl də davam edir.</p>
+  <p>Lövhələr Günü ənənədə lövhələrin verilməsi ilə əlaqələndirilir və tarixi hesablamada Bur-Saqale dövründə baş vermiş Günəş tutulmasının günü ilə eyniləşdirilir. Əməl günü dəyişəndə də hər iki lövbər sabit qalır.</p>
+</section>
+
+<section class="about-section" id="calendar-math" data-toc-section data-toc-level="2">
+  <h2>Bir neçə sadə riyazi fakt</h2>
+  <p>47 ay adı var və hər ay ən çox 123-cü günə çata bilər. Buna görə “ay adı + aydakı gün” formasında <strong>5,781</strong> mümkün kombinasiya mövcuddur.</p>
+  <p>Bir ildə ən çox 5,778 gün ola bilər və hər gün belə kombinasiyalardan birini reallaşdırır. Buna görə <strong>hər ildə mümkün kombinasiyalardan ən azı üçü çatışmır</strong>. Ən uzun ildə belə hamısını reallaşdırmağa kifayət qədər gün yoxdur.</p>
+  <p>Əməl günü və il məlum olduqda, tam “kotlet adı + kotletdəki gün” cütü və ya “ay adı + aydakı gün” cütü həmin ilin daxilində ən çox bir günə işarə edir. Buna görə əməl günü ilə birlikdə tam Pastafari tarixi soruşulan günü birmənalı müəyyən edir.</p>
+  <p>Əksinə, əməl günü bilinmədikdə, tam Pastafari tarixi öz-özlüyündə zaman oxunda mütləq yeganə məsafəni göstərmir. Eyni beşlik müxtəlif hesablama kontekstlərində görünə bilər.</p>
+</section>
+
+<section class="about-section" id="research" data-toc-section data-toc-level="2">
+  <h2>Təqvim üzrə hesablama tədqiqatları nə tapıb?</h2>
+  <p>Qaydaların özünün yoxlanmasından əlavə, təqvim üzərində böyük hesablama tədqiqatları da aparılıb. Aşağıdakı məlumatlar <strong>nümunədən alınmış empirik nəticələrdir</strong>, kanonik qaydalar deyil.</p>
+  <p>4,096 əməl günündən qurulmuş və 86,016 il quruluşunun yoxlandığı struktur atlasında:</p>
+  <ul>
+    <li>nümunədə ilin orta uzunluğu təxminən 4,275 gün, medianı isə 4,343 gün idi;</li>
+    <li>ildə kotletlərin orta sayı təxminən 7.27 idi;</li>
+    <li>struktur ayların orta sayı təxminən 41.1 idi;</li>
+    <li>bir aya orta hesabla ona aid təxminən 104 gün düşürdü, amma ay adətən demək olar bütün il boyu yayılırdı;</li>
+    <li>ayın ardıcıl hissələrinin 97.482%-i yalnız bir gün uzunluğunda idi;</li>
+    <li>xronoloji olaraq yanaşı iki günün eyni aya aid olması üçün ölçülmüş ehtimal yalnız təxminən 2.998% idi.</li>
+  </ul>
+  <p>Bütün istiqamətlər üzrə 4,096 öz-tarixinin yoxlandığı ayrıca “gün-il” təkrarı tədqiqatında:</p>
+  <ul>
+    <li><strong>ay adı + aydakı gün</strong> uyğunluğunun təkrarı median üzrə artıq bir Pastafari ilindən sonra görünürdü; uyğunluqların 77.56%-i qonşu ildə idi;</li>
+    <li><strong>kotlet adı + kotletdəki gün</strong> uyğunluğunun təkrarı xeyli az proqnozlaşdırılan idi: median üç Pastafari ili idi, amma orta qiymət çox uzun quyruğun təsirinə məruz qalırdı;</li>
+    <li>nümunədə “Akkad 3063” üçün gələcəkdəki ilk təkrarın 51,954 Pastafari ili uzaqda olduğu ifrat hal da müşahidə edildi.</li>
+  </ul>
+  <p>Bu nəticələr təqvimin adətən necə davrandığını başa düşmək üçün faydalıdır. Onlar orta qiyməti qaydaya çevirmir: nümunədə orta ilin müəyyən uzunluqda olması konkret ilin həmin ortalamaya yaxın olmasını tələb etmir və 4,096 halın hamısında tapılmış nəticə öz-özlüyündə bütün mümkün girişlər üçün riyazi sübut deyil.</p>
+</section>
+
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>Təqvim necə hesablanır?</h2>
+  <p>Tarixin arxasında dəqiq müəyyən edilmiş diskret alqoritm dayanır. O, əməl günündən və soruşulan gündən bir sıra saylar çıxarır, onları <strong>sous</strong> adlanan qarışdırma mexanizmindən keçirir, qapılar yaradır, ilin və kotletlərin sərhədlərini seçir, adları seçir, ayları yaradır və sonda ayların günlərini il boyunca bir-birinə toxuyur.</p>
+  <p>Dəqiq təfərrüatlara böyük ədədlər, damcılar, kasalar, qarışdırmalar, möhürlər və kombinatorik seçim mexanizmləri daxildir. Bunlar reallaşdırma və formal yoxlama üçün vacibdir, amma tarixin mənasını başa düşmək üçün lazım deyil və buna görə burada ətraflı verilmir.</p>
+  <p>Alqoritmlə yanaşı <strong>Pastafarian Calendar Seer</strong> adlı sürətli mühərrik də var. Seer sürətli hesablama üçündür; o, səlahiyyət mənbəyi deyil və özü alqoritmin bütün mərhələlərini yerinə yetirən standart reallaşdırma sayılmır. Onun nəticəsi kanonun tələb etdiyi nəticə ilə ziddiyyət təşkil edirsə, səhv edən Seer-dir.</p>
+</section>
+
+<section class="about-section" id="about-the-monster" data-toc-section data-toc-level="2">
+  <h2>Monster haqqında</h2>
+  <p>Pastafari hekayəsi çərçivəsində <strong>Uçan Spagetti Monsteri</strong> dünyanı və onun içindəki şeylərin çoxunu yaradan varlıqdır. Bədəni əriştə və küftələrdən ibarətdir; uça, adi maddənin içindən keçə və bu onun üçün əlverişli olanda görünməz qala bilər.</p>
+  <p>Monster maddə, canlı varlıqlar, göy cisimləri və çox mürəkkəb mexanizmlər yarada bilər. Bu qabiliyyət onu işə başlamazdan əvvəl səliqəli plan hazırlamağa məcbur etmir. O, çox vaxt bir şeylə başlayır, başqasına keçir, əvvəlkinin düzəliş tələb etdiyini aşkar edir və onu düzəldib-düzəltməyəcəyinə qərar verir. Bəzən həqiqətən düzəldir.</p>
+  <p>Bu obraz, yəni düzəlişlər, istisnalar və yerində qalan qaydalarla qat-qat qurulan yaradılış, təqvimin də ədəbi fonudur. Hekayədən fərqli olaraq hesablamanın özü improvizə edilmir: girişlər verildikdə alqoritm müəyyən bir cavab qaytarır.</p>
+  <p>Pastafari hekayəsi təqvimdən xeyli genişdir və başqa şeylərlə yanaşı piratlar, karbohidratlar, dua, “Mən doğrudan da üstün tutardım ki, bunu etməyəsiniz” və başqa ənənələri də əhatə edir.</p>
+  <p class="about-actions"><a class="guide-link" href="./monster/az.html">Monster haqqında geniş izah</a></p>
+</section>
+
+<section class="about-section" id="authority" data-toc-section data-toc-level="2">
+  <h2>Hansı məzmun kanonikdir, hansı məzmun isə yalnız izah xarakteri daşıyır?</h2>
+  <p>Bu səhifə <strong>izah səhifəsidir</strong>. Cümlənin burada görünməsi öz-özlüyündə yeni qayda yaratmır.</p>
+  <p>Kanonik məzmun kanonik korpusda və onda qəbul olunmuş qaydalarda müəyyən edilir. Mətnin kanonik nəşrləri arasında birini avtomatik olaraq digərindən üstün tutan iyerarxiya yoxdur və proqram reallaşdırması sürətli və ya geniş yayıldığına görə səlahiyyət mənbəyinə çevrilmir.</p>
+  <p>Standart reallaşdırma kanonik alqoritmi bütün mərhələləri ilə yerinə yetirir. Hesablama tədqiqatı bir hadisəni təsvir edə, qanunauyğunluq tapa və ya alqoritm haqqında teoremi sübut edə bilər; söhbət sübut edilmiş ümumi qaydadan yox, nümunədən gedirsə, bu açıq şəkildə qeyd olunur.</p>
+</section>
+
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>Qısaca</h2>
+  <p>Pastafari Təqvimi intuitiv olmayan təqvimdir; burada tarix həm soruşulan gündən, həm də sorğunun aparıldığı gündən asılıdır.</p>
+  <p>5000-ci il əməl gününün ətrafında qurulur. Kotletlər ardıcıl hissələrdir. Ayların günləri bir-birinin arasına keçə bilər. Kanonik həftələr yoxdur. Yerli gün gecəyarısı yox, Veneraya görə dəyişir.</p>
+  <p>Qeyri-adi quruluşun arxasında dəqiq alqoritm dayanır; onun ətrafında Spagetti Monsteri, qat-qat yığılan yaradılış və ağlabatan həddi xeyli aşan karbohidrat miqdarı haqqında Pastafari hekayəsi var.</p>
+  <p>Əməl günü, soruşulan gün və məkan konteksti verildikdə bir cavab var.</p>
+</section>

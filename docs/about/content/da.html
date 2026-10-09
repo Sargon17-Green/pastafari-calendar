@@ -1,0 +1,552 @@
+
+<div class="about-section about-lead" id="about-calendar">
+<p><strong>Den pastafariske kalender</strong> er en bevidst særpræget og ikkeintuitiv kalender: En dags dato afhænger ikke kun af den dag, man vil beskrive, men også af den dag, man bruger som udgangspunkt for beregningen.</p>
+<p>Den rummer år, koteletter og måneder, men årene har ikke fast længde, koteletterne og månederne er to forskellige inddelinger, månederne kan forsvinde og dukke op igen i årets løb, og der findes ingen kanoniske uger.</p>
+<p>Denne side forklarer, hvad kalenderen er, hvordan en dato læses, og hvilke praktiske konsekvenser dens opbygning har. De matematiske og kryptografiske implementeringsdetaljer findes i den tekniske dokumentation, men man behøver ikke kende dem for at forstå kalenderen.</p>
+</div>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="date-parts">
+<h2>Hvordan ser en pastafarisk dato ud?</h2>
+<p>En pastafarisk dato har præcis fem dele:</p>
+<ol>
+<li><strong>År efter verdens skabelse</strong>;</li>
+<li><strong>Kotelettens navn</strong>;</li>
+<li><strong>Dag i koteletten</strong>;</li>
+<li><strong>Månedens navn</strong>;</li>
+<li><strong>Dag i måneden</strong>.</li>
+</ol>
+<p>En fuldstændig dato fortæller altså, hvilket år dagen ligger i, hvilken kotelet den tilhører, og hvor i koteletten den ligger, samt hvilken måned den tilhører, og hvilket nummer den har blandt månedens medlemsdage.</p>
+<p>Beregningsdagen, iagttagerens position og andre tekniske oplysninger kan være nødvendige for at <em>beregne</em> datoen, men de er ikke en sjette, syvende eller ottende del af selve datoen.</p>
+<p>Måden datoen vises på, ændrer heller ikke antallet af dele. Hvis webstedet udskriver de fem oplysninger på tre linjer, er der stadig fem oplysninger. Et linjeskift er et typografisk greb, ikke fødslen af et nyt kalenderfelt.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="working-day">
+<h2>Hvorfor kan den samme dag få forskellige datoer?</h2>
+<p>Enhver beregning omfatter to dage:</p>
+<ul>
+<li><strong>Beregningsdagen</strong>: den dag, der danner udgangspunkt for beregningen;</li>
+<li><strong>Den forespurgte dag</strong>: den dag, hvis dato man vil kende.</li>
+</ul>
+<p>Betegner vi beregningsdagen med <code>c</code> og den forespurgte dag med <code>t</code>, er datoen <code>F(c,t)</code>, ikke <code>F(t)</code>.</p>
+<p>Derfor kan den samme kronologiske dag få en anden pastafarisk betegnelse, når beregningsdagen ændres. Dagen flytter sig ikke; det gør kun dens pastafariske beskrivelse.</p>
+<p>Når <code>c=t</code>, ligger dagen altid i år <strong>5000</strong>. År 5000 er ikke en fast historisk periode: Det dannes på ny i forhold til beregningsdagen, og andre dage omkring beregningsdagen kan derfor også høre til det år.</p>
+<p>Eksempel: Beregner man datoen for en bestemt dag med samme dag som beregningsdag, ligger den i år 5000. Dagen efter kan man gentage beregningen med den nye dag som både beregningsdag og forespurgt dag, og også den ligger i år 5000. Det er ikke to modstridende udsagn om det samme »historiske år«; hver beregning får sit eget basisår.</p>
+<p>Årstal over 5000 ligger fremme i tiden i forhold til beregningsdagen, mens årstal under 5000 ligger tilbage i tiden. År 0 findes også, og derefter følger år med negative tal.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="year-structure">
+<h2>Hvordan er et år opbygget?</h2>
+<p>Et pastafarisk år kan indeholde mellem <strong>252</strong> og <strong>5.778</strong> dage. Begge endepunkter er inkluderet: Et år på 252 dage er gyldigt, og det samme er et år på 5.778 dage; år på 251 eller 5.779 dage er ikke gyldige efter de nuværende kanoniske regler.</p>
+<p>Disse grænser er en del af kalenderen. Året forsøger ikke at passe til et solår, et måneår, en årstid, et skoleår eller tålmodigheden hos den, der venter på næste nytår.</p>
+<p>Hvert år inddeles efter to forskellige systemer:</p>
+<ul>
+<li><strong>6–17 koteletter.</strong> Hver kotelet er en sammenhængende række dage og varer mindst 42 dage.</li>
+<li><strong>3–47 strukturelle måneder.</strong> Hver måned omfatter 4–123 dage, men disse dage behøver ikke at følge efter hinanden.</li>
+</ul>
+<p>Kalenderen har ikke noget kanonisk ugesystem. Rækker og kolonner på webstedet er kun en visningsform. At to dage vises ved siden af hinanden, gør dem ikke til medlemmer af den samme »pastafariske uge«.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="woven-months">
+<h2>Hvad betyder en »flettet måned«?</h2>
+<p>En kotelet er en sammenhængende række: Hvis det i dag er dag 250 i en kotelet, og i morgen stadig er i den samme kotelet, er i morgen dag 251.</p>
+<p>En måned fungerer anderledes. Dag 18 i en bestemt måned er <strong>den 18. dag i årets forløb, der tilhører den måned</strong>. Den behøver ikke falde dagen efter dag 17.</p>
+<blockquote>
+<p>Måned A: dag 14<br/>Måned B: dag 9<br/>Måned A: dag 15</p>
+</blockquote>
+<p>En måned kan derfor strække sig over en stor del af året, gå på tværs af flere koteletter og være flettet sammen med andre måneder. En enkelt kotelet kan tilsvarende indeholde dage fra mange måneder.</p>
+<p>En måneds længde er det samlede antal dage, der hører til den, ikke antallet af dage, der er gået fra dens første til dens sidste forekomst. En måned på 104 dage kan altså kronologisk spænde over tusindvis af dage.</p>
+<aside class="about-note">
+<h3>Hvorfor kommer dag 15 efter dag 14?</h3>
+<p>Fordi 15 er det næste hele tal efter 14. At en dag fra en anden måned kommer ind mellem de to forekomster af den første måned, ændrer ikke regnestykket: Den første måned er allerede forekommet 14 gange; næste gang er dens 15. forekomst, og derfor får den nummer 15.</p>
+<p>På samme måde gælder det, at hvis der efter dag 15 i den pågældende måned kommer fire dage fra andre måneder, bliver dens næste forekomst stadig dag 16. De fire mellemliggende dage tælles med kronologisk i kalenderen, men de tilhører ikke den pågældende måned og øger derfor ikke antallet af <em>dens</em> dage. Netop derfor er »næste dag i måneden« og »i morgen« to forskellige begreber.</p>
+</aside>
+<p>Det betyder også, at en måneds afslutning ikke nødvendigvis ligger tæt på i tid. En måned kan være nået til dag 119 ud af 120, selv om dens dag 120 først kommer meget senere.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="canonical-names">
+<h2>Koteletternes og månedernes navne</h2>
+<p>Kalenderen har <strong>17 koteletnavne</strong> og <strong>47 månedsnavne</strong>. Inden for et år bruges hvert navn højst én gang i samme kategori. Ikke alle navnene behøver optræde hvert år; et år kan nøjes med en del af kataloget.</p>
+<p>Listerne viser navnene. Klik på et navn eller på åbningssymbolet ved siden af for at se dets præcise betydning og relevante kanoniske bemærkninger. Navnet koder ikke for enhedens længde og forudsiger ikke, hvad der vil ske i den.</p>
+<h3>De 17 koteletter</h3>
+<ul class="about-name-list about-name-disclosure-list">
+<li>
+<details class="about-name-details">
+<summary>Bronze</summary>
+<p>Metallegeringen bronze, der hovedsageligt består af kobber og tin. Her er det materialets navn, ikke blot en farve.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Ræv</summary>
+<p>Ræven, et pattedyr i hundefamilien. Navnet betegner ikke en bestemt ræveart.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Nyre</summary>
+<p>Organet nyren, som filtrerer blodet og er med til at regulere kroppens væske- og saltbalance.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Lagash</summary>
+<p>Lagash, en oldtidssumerisk bystat i det sydlige Mesopotamien.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Tanke</summary>
+<p>En tanke, forstået som en forestilling i bevidstheden eller som selve det at tænke.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Fire dele af ni</summary>
+<p>Brøken 4/9: fire lige store dele ud af ni. Hele udtrykket udgør ét navn. Den værdi, der ligger til grund for navnet, er præcis 4/9; kun ved fortolkning af navnet er en talværdi x, der opfylder <code>|x − 4/9| ≤ e/103</code>, også tilladt, inklusive grænserne. Udtrykket <code>e/103</code> bevares præcist og erstattes ikke af en decimaltilnærmelse. Denne tilladelse ændrer hverken tællere, indekser, identitet eller nogen anden kalenderberegning.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Palgurash</summary>
+<p>En opdigtet stavelsesfølge. Der er ingen yderligere ordbogsbetydning at fortolke; stavelsesfølgen er selve navnet.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Papyrus-star</summary>
+<p>Papyrusplanten, som man i oldtiden brugte til at fremstille papyrus.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Klynge</summary>
+<p>En tæt samling af mennesker, dyr eller ting. På hebraisk forbindes ordet især med en klase vindruer.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Skorpion</summary>
+<p>Skorpionen, et leddyr blandt spindlerne med klosakse og en giftbrod på halen.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Aske</summary>
+<p>Det pulveragtige materiale, der er tilbage efter forbrænding.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Hvede</summary>
+<p>Kornplanten hvede, hvis kerner blandt andet bruges til at fremstille mel.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Flod</summary>
+<p>Et forholdsvis stort naturligt vandløb, der løber i et leje.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Latter</summary>
+<p>En lydlig og kropslig reaktion, som normalt forbindes med morskab, glæde eller humor.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Akkad</summary>
+<p>Akkad, den oldmesopotamiske by, som også gav navn til det akkadiske rige og området. Byens nøjagtige beliggenhed er endnu ikke identificeret med sikkerhed.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Horn</summary>
+<p>Et horn i betydningen den hårde udvækst fra hovedet hos visse dyr, ikke en lysstråle.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Den tomme krukke</summary>
+<p>En krukke uden indhold. »Tom« beskriver, hvad der er inde i krukken, nemlig ingenting, og ophæver ikke krukkens eksistens. En tom krukke kan stadig være en hel krukke med sider, bund og åbning; den er bare ikke fyldt med vand, vin, olie eller et andet stof. På samme måde betyder navnet ikke, at koteletten er tom for dage: En kotelet med navnet »Den tomme krukke« har dage ligesom alle andre koteletter. Det er kun krukken i navnet, der er tom.</p>
+</details>
+</li>
+</ul>
+<h3>De 47 måneder</h3>
+<ul class="about-name-list about-name-disclosure-list">
+<li>
+<details class="about-name-details">
+<summary>Ler</summary>
+<p>Finkornet jordmateriale, der bliver formbart, når det er vådt, og hærder ved tørring eller brænding.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Granatæble</summary>
+<p>En rund frugt med hård skal og mange saftige kerner.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Albue</summary>
+<p>Ledet mellem overarmen og underarmen.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Misundelse</summary>
+<p>Sorg eller ubehag over en andens fordel, præstation eller noget godt, vedkommende har, undertiden også med et ønske om selv at have det.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Eridu</summary>
+<p>Eridu, en oldtidssumerisk by i det sydlige Mesopotamien.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Tandpasta</summary>
+<p>En pasta, der bruges til at rense tænderne under tandbørstning. Navnet betegner selve pastaen, ikke tandbørsten eller børstningen.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Tre dele af fem</summary>
+<p>Brøken 3/5: tre lige store dele ud af fem. Hele udtrykket udgør ét navn. Den værdi, der ligger til grund for navnet, er præcis 3/5; kun ved fortolkning af navnet er en talværdi x, der opfylder <code>|x − 3/5| ≤ 1/367</code>, også tilladt, inklusive grænserne. Grænsen er en præcis værdi, ikke en decimaltilnærmelse. Denne tilladelse ændrer hverken tællere, indekser, identitet eller nogen anden kalenderberegning.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Karshumav</summary>
+<p>En opdigtet stavelsesfølge. Der ligger ingen skjult ordbogsbetydning bag; stavelsesfølgen er selve navnet.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Leopard</summary>
+<p>Den plettede leopard, ikke tigeren.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Tin</summary>
+<p>Det kemiske grundstof tin.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Tåge</summary>
+<p>En koncentration af bittesmå vanddråber i luften nær jordoverfladen, ikke røg.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Virak</summary>
+<p>Aromatisk harpiks fra viraktræer, der bruges som duftstof og som røgelse.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Ten</summary>
+<p>Et spinderedskab, der bruges til at spinde fibre til tråd.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Ribben</summary>
+<p>En af knoglerne i brystkassen.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Johannesbrød</summary>
+<p>Johannesbrødtræet eller dets frugt.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Uruk</summary>
+<p>Uruk, en oldtidssumerisk by i Mesopotamien.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Skam</summary>
+<p>En følelse af ubehag eller smerte, som udspringer af oplevelsen af en mangel, en fiasko eller pinlig opførsel.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Kamel</summary>
+<p>Pattedyret kamelen, der er tilpasset livet i tørre egne.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Kobber</summary>
+<p>Det kemiske grundstof kobber.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Brønd</summary>
+<p>Et hul eller en skakt, der er gravet ned til grundvand, så man kan hente vand op.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Æggeblomme</summary>
+<p>Den gule del af et fugleæg.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Stjerne</summary>
+<p>Et himmellegeme som Solen, der udsender energi som følge af fysiske processer i sit indre.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Honning</summary>
+<p>Det søde stof, som bier fremstiller af nektar eller planteudskillelser.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Milt</summary>
+<p>Organet milten, som blandt andet indgår i immunforsvaret og filtreringen af blodet. Ud over den almindelige betydning findes en bevidst kanonisk udvidelse uden biologisk, etymologisk eller kulturel forbindelse til milten, og en sådan forbindelse må ikke opfindes: Navnet omfatter også mælk fra en hundromedar i forbindelse med hendes første levende afkom, malket efter almindelig synlig solnedgang og før Solens centrum når en geometrisk højde på <code>−6°</code>, og inden afkommet har stået ved egen kraft. Tidligere drægtigheder, som endte i abort eller dødfødsel, udelukker ikke, at betingelsen er opfyldt. Hvis afkommet dør, før det har stået ved egen kraft, ophører betingelsen ikke af den grund. Beholderen skal være af keramik med rød glasur og have en kapacitet på 180–220 ml, inklusive begge kapacitetsgrænser. Det kræves ikke, at mælken malkes direkte fra yveret ned i beholderen, og det er beholderens kapacitet, ikke den faktisk opsamlede mælkemængde, der er det talmæssige kriterium. Det er bevidst kanonisk uafklaret, om selve grænseøjeblikkene i tidsvinduet er inkluderet.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Kalksten</summary>
+<p>En sedimentær bjergart, der hovedsageligt består af calciumcarbonat.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Glæde</summary>
+<p>En positiv følelse af lykke, tilfredshed eller fryd.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Figen</summary>
+<p>Figenfrugten eller figentræet.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Nineve</summary>
+<p>Nineve, den oldassyriske by, der lå på bredden af Tigris over for det nuværende Mosul.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Frø</summary>
+<p>Et haleløst paddedyr fra gruppen af frøer og tudser.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Beg</summary>
+<p>Et mørkt, tyktflydende stof, der blandt andet bruges til tætning. Der menes et tykt tjæreagtigt stof, ikke en samlebetegnelse for enhver form for asfalt.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Lampe</summary>
+<p>En lampe eller anden lyskilde. Der behøver ikke at være tale om et vokslys med væge.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Den lukkede dør</summary>
+<p>En dør, der er lukket. En lukket dør er stadig en dør: Den bliver ikke til en væg, forsvinder ikke og behøver ikke være låst. »Lukket« betyder, at døren i øjeblikket spærrer den åbning, den er sat i; »låst« er en yderligere påstand, som navnet ikke indeholder. Derfor passer en dør, man har lukket uden at dreje nøglen, også fuldt ud på navnet »Den lukkede dør«.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Sesam</summary>
+<p>Sesamplanten eller dens frø, som blandt andet bruges til at fremstille sesamolie.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Nakke</summary>
+<p>Bagsiden af halsen.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Sølv</summary>
+<p>Det kemiske grundstof sølv. På hebraisk kan samme ord også betyde penge, men her er det metallet, der menes.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Susa</summary>
+<p>Susa, oldtidsbyen i Elam og Persien. På hebraisk kan ordet også betegne en blomst, men her er det bynavnet.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Storm</summary>
+<p>Voldsomt vejr, som regel med kraftig vind og undertiden nedbør, lyn eller andre ledsagende fænomener.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Æsel</summary>
+<p>Det tamme pattedyr æslet.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Mel</summary>
+<p>Pulver fremstillet ved at male kerner eller lignende plantemateriale; i almindelig sammenhæng menes kornmel.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Fortrydelse</summary>
+<p>Beklagelse over en tidligere handling, beslutning eller følge.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Babylon</summary>
+<p>Babylon, oldtidsbyen ved Eufrat i Mesopotamien; her er der tale om stednavnet.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Tunge</summary>
+<p>Det muskuløse organ i munden. På hebraisk kan samme ord også betyde sprog, men her er det organet, der menes.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Hør</summary>
+<p>Hørplanten og dens fibre, der blandt andet bruges til fremstilling af tekstiler.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Salt</summary>
+<p>Et salt stof, der blandt andet bruges i mad; i daglig tale menes især natriumchlorid. Den hebraiske betegnelse kan også betegne en sømand, men her er der tale om stoffet.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Pære</summary>
+<p>Frugten pære.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Bue</summary>
+<p>Et våben med en streng, der spændes for at skyde en pil af sted, ikke en regnbue.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Sand</summary>
+<p>Et kornet materiale, der består af små partikler af sten og mineraler. Den hebraiske betegnelse kan også betyde det verdslige som modsætning til det hellige eller en almindelig hverdag, men her er der tale om stoffet sand.</p>
+</details>
+</li>
+</ul>
+<p>Ved oversættelse til andre sprog kan man bruge en anden normeret form af det samme navn. Oversættelse eller translitteration skaber ikke en ny kotelet eller måned; det samme kalendernavn gengives blot på en anden måde. De normerede former fastsættes af kanonen og de sprogregler, der er vedtaget i den.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="day-boundary">
+<h2>Hvornår skifter dagen?</h2>
+<p>En lokal pastafarisk dag skifter ikke ved midnat. Grænsen bestemmes af <strong>Venus' nedre meridianpassage</strong>: det øjeblik, hvor Venus' centrum passerer meridianen ved iagttagerens position på den side, der ligger under horisonten.</p>
+<p>Derfor betyder iagttagerens position noget. To mennesker forskellige steder kan på samme fysiske tidspunkt høre til to forskellige lokale pastafariske dage. Når man rejser til en anden by, fortsætter man ikke med at bruge dagsgrænsen fra den forrige by.</p>
+<p>Grænsen afhænger af beregningen af Venus' bane, ikke af, om iagttageren faktisk kan se planeten. Skyer, vægge og det forhold, at Venus er under horisonten, standser ikke dens bane.</p>
+<p>Kalenderens diskrete algoritme er defineret præcist: De samme input efter de samme regler giver det samme resultat. Derimod benytter omregningen fra et fysisk tidspunkt til en pastafarisk dag i øjeblikket implementeringens astronomiske model. Den astronomiske talmodel er endnu ikke kanonisk fastlagt i alle detaljer.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="advantages">
+<h2>Kalenderens fremtrædende fordele</h2>
+<ul>
+<li><strong>En dato, der kan beregnes igen og igen:</strong> Den samme dag i fortiden kan i morgen få en anden pastafarisk dato, fordi beregningsdagen også er rykket frem. Man behøver ikke nøjes med en gammel dato, der bliver ved med at være anvendelig.</li>
+<li><strong>Rummelige år:</strong> Et år kan vare op til 5.778 dage, så den, der venter på næste år, kan komme til at vente langt længere end normalt.</li>
+<li><strong>Måneder, der kræver opmærksomhed:</strong> At det i dag er dag 119 i måneden, betyder ikke, at dag 120 kommer i morgen, i næste uge eller bare snart. Næste forekomst skal beregnes.</li>
+<li><strong>Geografisk følsomhed:</strong> Det samme øjeblik kan høre til forskellige lokale pastafariske dage forskellige steder. En rejse til en anden by føjer altså endnu en detalje til det, man bør huske, når man laver aftaler.</li>
+<li><strong>Trykte kalendere bliver ikke selvtilfredse:</strong> En kalender udarbejdet på forhånd kan holde op med at afspejle den rigtige beregning, når beregningsdagen skifter. Dermed er der ingen risiko for, at nogen stiller sig tilfreds med det samme stykke papir i årevis.</li>
+<li><strong>Fornuftig udnyttelse af computerkraft:</strong> I stedet for at nøjes med en enkel tabel, der kan forstås ved et blik, giver kalenderen computeren mulighed for at foretage en rigtig beregning, hver gang man ønsker et svar.</li>
+<li><strong>Den har dage:</strong> Kalenderen handler om dage. Det er en egenskab, den deler med enhver anden kalender, og som sikrer, at brugeren ikke behøver føre en kalender uden dage.</li>
+<li><strong>Dagene kommer i rækkefølge:</strong> En tidligere dag ligger før en senere. Det er en grundlæggende bedrift for kalendere, og her følger den med uden ekstra betaling.</li>
+<li><strong>Man kan angive datoer med den:</strong> Kalenderen gør det muligt at knytte en kalenderbetegnelse til en dag. Ganske vist er det netop det, kalendere er beregnet til, men der er ingen grund til ikke at nævne en nyttig egenskab, når den findes.</li>
+</ul>
+<p>Alt det ovenstående følger med i én og samme kalender, sådan som det gør, når flere egenskaber tilhører den samme kalender.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="practical-consequences">
+<h2>Hvad betyder det i praksis?</h2>
+<p><strong>En trykt kalender ældes dårligt.</strong> Et skift af beregningsdag kan ændre grænserne for år, koteletter og måneder. En almanak, der er beregnet i dag, er ikke nødvendigvis den rigtige i morgen.</p>
+<p><strong>En begivenhed forbliver den samme begivenhed.</strong> Et møde, en fødsel eller en historisk hændelse bør være forankret i en stabil kronologisk dag eller et bestemt tidspunkt. Bagefter kan man vise dens pastafariske dato ud fra beregningsdagen og iagttagerens position. En ny etiket flytter ikke begivenheden i tiden.</p>
+<p><strong>En pastafarisk fødselsdag følger ikke nogen »én gang om året«-regel.</strong> For at finde næste forekomst af samme månedsnavn og dag i måneden, eller samme koteletnavn og dag i koteletten, må man søge i kalenderen. Et tilstødende år indeholder måske slet ikke det ønskede navn eller har en enhed, der er for kort til at nå det ønskede dagnummer.</p>
+<p><strong>En heldagsbegivenhed varer ikke nødvendigvis fra midnat til midnat.</strong> Hvis den er defineret efter en lokal pastafarisk dag, er dens grænse den lokale Venus-grænse. En ukritisk eksport til en almindelig kalender som en begivenhed fra midnat til midnat kan ændre betydningen.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="foundation-and-tablets">
+<h2>Grundlæggelsesdagen og Dagen for tavlerne</h2>
+<p>Kalenderen har to vigtige faste holdepunkter:</p>
+<dl>
+<dt><strong>Grundlæggelsesdagen</strong></dt>
+<dd>22. december 41.222 f.v.t. i den proleptiske gregorianske kalender.</dd>
+<dt><strong>Dagen for tavlerne</strong></dt>
+<dd>15. juni 763 f.v.t. i den proleptiske julianske kalender, svarende til 7. juni 763 f.v.t. i den proleptiske gregorianske kalender.</dd>
+</dl>
+<p>Afstanden mellem dem er 14.777.149 dage. Grundlæggelsesdagen er et beregningsmæssigt holdepunkt, ikke »tidens første dag«, og kalenderen fortsætter også før den.</p>
+<p>Dagen for tavlerne forbindes i traditionen med overdragelsen af tavlerne og identificeres i den historiske beregning med dagen for solformørkelsen under Bur-Sagale. Begge holdepunkter forbliver faste, også når beregningsdagen ændres.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="calendar-math">
+<h2>Nogle enkle matematiske kendsgerninger</h2>
+<p>Der findes 47 månedsnavne, og en måned kan højst nå dag 123. Derfor er der <strong>5.781</strong> mulige kombinationer af formen »månedsnavn + dag i måneden«.</p>
+<p>Et år kan højst rumme 5.778 dage, og hver dag realiserer én sådan kombination. Derfor <strong>mangler der mindst tre af de mulige kombinationer i hvert år</strong>. Selv i det længst mulige år er der ikke dage nok til dem alle.</p>
+<p>Når beregningsdagen og året er kendt, kan en fuld kombination af »koteletnavn + dag i koteletten« eller »månedsnavn + dag i måneden« højst pege på én dag i det pågældende år. En fuldstændig pastafarisk dato identificerer derfor sammen med beregningsdagen entydigt den forespurgte dag.</p>
+<p>Uden kendskab til beregningsdagen identificerer en fuldstændig pastafarisk dato derimod ikke nødvendigvis en entydig tidsmæssig afstand. Den samme femdelte dato kan optræde i forskellige beregningssammenhænge.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="research">
+<h2>Hvad har beregningsbaserede undersøgelser af kalenderen vist?</h2>
+<p>Ud over kontrollen af reglerne er der foretaget omfattende beregningsbaserede undersøgelser af kalenderen. Tallene nedenfor er <strong>empiriske fund fra en stikprøve</strong>, ikke kanoniske love.</p>
+<p>Et strukturelt atlas byggede på 4.096 beregningsdage og omfattede 86.016 undersøgte årsstrukturer. Det viste blandt andet:</p>
+<ul>
+<li>Årets gennemsnitlige længde i stikprøven var cirka 4.275 dage, og medianen var 4.343 dage;</li>
+<li>Det gennemsnitlige antal koteletter pr. år var cirka 7,27;</li>
+<li>Det gennemsnitlige antal strukturelle måneder var cirka 41,1;</li>
+<li>En måned omfattede i gennemsnit cirka 104 dage, men strakte sig normalt over næsten hele året;</li>
+<li>97,482 % af de sammenhængende månedsafsnit var kun én dag lange;</li>
+<li>Den målte sandsynlighed for, at to kronologisk tilstødende dage tilhørte samme måned, var kun cirka 2,998 %.</li>
+</ul>
+<p>En separat undersøgelse af tilbagevendende »årsdag«-kombinationer omfattede 4.096 egendatoer, som blev undersøgt i begge tidsretninger. Undersøgelsen viste:</p>
+<ul>
+<li>En gentagelse af <strong>månedsnavn + dag i måneden</strong> indtraf i medianen allerede efter ét pastafarisk år; 77,56 % af gentagelserne lå i det tilstødende år;</li>
+<li>En gentagelse af <strong>koteletnavn + dag i koteletten</strong> var langt mindre forudsigelig: Medianen var tre pastafariske år, men gennemsnittet blev påvirket af en meget lang hale;</li>
+<li>Stikprøven indeholdt et ekstremt tilfælde, hvor den første fremtidige gentagelse af »Akkad 3063« lå 51.954 pastafariske år væk.</li>
+</ul>
+<p>Disse fund er nyttige til at forstå, hvad kalenderen har tendens til at gøre. De gør ikke et gennemsnit til en lov. At gennemsnitsåret i stikprøven havde en bestemt længde, kræver ikke, at et konkret år ligger tæt på gennemsnittet. Og et resultat observeret i alle 4.096 tilfælde er ikke i sig selv et matematisk bevis for alle mulige input.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="calculation">
+<h2>Hvordan beregnes kalenderen?</h2>
+<p>Bag datoen ligger en præcist defineret diskret algoritme. Ud fra beregningsdagen og den forespurgte dag danner den en række optællinger, fører dem gennem blandingsmekanismen <strong>Sovsen</strong>, opstiller porte, vælger grænser for år og koteletter, vælger navne, danner måneder og fletter til sidst månedernes dage ind i årets forløb.</p>
+<p>De præcise detaljer omfatter store tal, dråber, skåle, omrøringer, segl og kombinatoriske udvælgelsesmekanismer. De er vigtige for implementeringen og den formelle kontrol, men behøves ikke for at forstå datoens betydning og beskrives derfor ikke her.</p>
+<p>Ved siden af algoritmen findes en hurtig beregningsmotor med navnet <strong>Pastafarian Calendar Seer</strong>. Seer er beregnet til at regne hurtigt. Den er ikke autoriteten og er heller ikke i sig selv en forskriftsmæssig implementering af algoritmen i alle dens trin. Hvis et af dens resultater strider mod det, kanonen kræver, er det Seer, der tager fejl.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="about-the-monster">
+<h2>Om Monstret</h2>
+<p>I den pastafariske fortælling er <strong>Det Flyvende Spaghettimonster</strong> det væsen, der skabte verden og det meste af det, der findes i den. Dets krop består af nudler og kødboller, og det kan flyve, trænge gennem almindeligt stof og forblive usynligt, når det passer det.</p>
+<p>Monstret kan skabe stof, levende væsener, himmellegemer og meget indviklede mekanismer. Denne evne forpligter det ikke til at lave en ordentlig plan, inden arbejdet begynder. Det starter ofte på én ting, går videre til en anden, opdager, at det første kræver reparation, og beslutter, om det vil udbedre fejlen. Af og til gør det faktisk det.</p>
+<p>Dette billede af en skabelse, der opbygges lag på lag med rettelser, undtagelser og regler, som får lov at blive stående, er også kalenderens litterære baggrund. I modsætning til fortællingen er selve beregningen ikke improviseret: Med givne input giver algoritmen ét bestemt svar.</p>
+<p>Den pastafariske fortælling rækker langt ud over kalenderen og omfatter blandt andet pirater, kulhydrater, bøn, »Jeg ville virkelig foretrække, at du lod være« og andre traditioner.</p>
+<p class="about-actions"><a class="guide-link" href="./monster/da.html">En udførlig forklaring om Det Flyvende Spaghettimonster</a></p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="authority">
+<h2>Hvad er kanonisk, og hvad er blot en forklaring?</h2>
+<p>Denne side er en <strong>forklarende side</strong>. Den indfører ikke en ny regel, bare fordi en sætning står her.</p>
+<p>Det kanoniske indhold fastlægges i det kanoniske tekstkorpus og de regler, der er vedtaget i det. Der er ikke automatisk noget hierarki mellem kanoniske udgaver af skriftrullen, og en softwareimplementering bliver ikke en autoritet, blot fordi den er hurtig eller udbredt.</p>
+<p>En forskriftsmæssig implementering udfører den kanoniske algoritme i alle dens trin. En beregningsbaseret undersøgelse kan beskrive et fænomen, finde et mønster eller bevise en matematisk sætning om algoritmen. Når noget er et stikprøveresultat og ikke en bevist regel, fremgår det udtrykkeligt.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="summary">
+<h2>Kort fortalt</h2>
+<p>Den pastafariske kalender er en ikkeintuitiv kalender, hvor datoen afhænger både af den dag, der spørges til, og af den dag, man tager udgangspunkt i ved beregningen.</p>
+<p>År 5000 dannes omkring beregningsdagen. Koteletter er sammenhængende dagrækker. Måneder er samlinger af dage, som kan være flettet ind i hinanden. Der findes ingen kanoniske uger. Den lokale dag skifter efter Venus, ikke ved midnat.</p>
+<p>Bag den usædvanlige struktur ligger en præcis algoritme, omgivet af en pastafarisk fortælling om et spaghettimonster, en skabelse opbygget i lag og en urimelig mængde kulhydrater.</p>
+<p>Når beregningsdagen, den forespurgte dag og iagttagerens position er kendt, findes der ét svar.</p>
+</section>
+

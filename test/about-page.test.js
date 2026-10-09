@@ -77,10 +77,12 @@ test("Hebrew explanation preserves the full stable deep-link contract", async ()
   assert.match(html, /יש תשובה אחת מדויקת/);
 });
 
-test("article translation registry deliberately falls back to Hebrew until translations are added", () => {
+test("12 approved articles resolve in their own language; unapproved articles still fall back to Hebrew", () => {
   assert.equal(ARTICLE_FALLBACK_LOCALE, "he");
-  assert.deepEqual(Object.keys(ARTICLE_LOCALES), ["he"]);
-  assert.equal(resolveArticleLocale("he").code, "he");
-  assert.equal(resolveArticleLocale("en").code, "he");
-  assert.equal(resolveArticleLocale("ar").code, "he");
+  assert.deepEqual(Object.keys(ARTICLE_LOCALES), ["he", "en", "af", "ar", "az", "be", "bg", "bn", "bs", "ca", "cs", "da", "de"]);
+  for (const code of ["en", "af", "ar", "az", "be", "bg", "bn", "bs", "ca", "cs", "da", "de"]) {
+    assert.equal(resolveArticleLocale(code).code, code);
+  }
+  assert.equal(resolveArticleLocale("el").code, "he");
+  assert.equal(ARTICLE_LOCALES.ar.dir, "rtl");
 });

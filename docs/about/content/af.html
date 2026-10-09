@@ -1,0 +1,570 @@
+<div class="about-section about-lead" id="about-calendar">
+  <p><strong>Die Pastafariese kalender</strong> is ’n teenintuïtiewe kalender met ’n doelbewus ongewone struktuur: die datum van ’n dag hang nie net af van die dag wat beskryf moet word nie, maar ook van die dag waarvandaan die berekening gedoen word.</p>
+  <p>Dit het jare, kotelette en maande, maar die jare het nie ’n vaste lengte nie, kotelette en maande is nie dieselfde soort indeling nie, maande kan deur die jaar verdwyn en weer terugkeer, en daar is geen kanonieke weke nie.</p>
+  <p>Hierdie bladsy verduidelik wat die kalender is, hoe ’n datum gelees word en wat die praktiese betekenis van sy struktuur is. Die wiskundige en kriptografiese implementeringsbesonderhede word in die tegniese dokumentasie uiteengesit, maar is nie nodig om die kalender te verstaan nie.</p>
+</div>
+
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>Hoe lyk ’n Pastafariese datum?</h2>
+  <p>’n Pastafariese datum het presies vyf dele:</p>
+  <ol>
+    <li><strong>jaar sedert die Skepping van die wêreld</strong>;</li>
+    <li><strong>naam van die kotelet</strong>;</li>
+    <li><strong>dag in die kotelet</strong>;</li>
+    <li><strong>naam van die maand</strong>;</li>
+    <li><strong>dag in die maand</strong>.</li>
+  </ol>
+  <p>Met ander woorde, ’n volledige datum sê in watter jaar die dag val, in watter kotelet dit val en waar dit daarin staan, asook aan watter maand dit behoort en die hoeveelste voorkoms van daardie maand dié dag is.</p>
+  <p>Die werkdag, die waarnemer se ligging en ander tegniese besonderhede kan noodsaaklik wees om die datum te <em>bereken</em>, maar is nie ’n sesde, sewende of agtste deel van die datum self nie.</p>
+  <p>Die vertoonvorm verander ook nie die aantal dele nie. As die webwerf die vyf gegewens oor drie reëls vertoon, is daar steeds vyf gegewens; ’n reëlbreuk is ’n tipografiese handeling, nie die geboorte van ’n nuwe kalenderveld nie.</p>
+</section>
+
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>Waarom kan dieselfde dag ’n ander datum kry?</h2>
+  <p>Elke berekening het twee dae:</p>
+  <ul>
+    <li><strong>werkdag</strong> – die dag waarvandaan die berekening gedoen word;</li>
+    <li><strong>gevraagde dag</strong> – die dag waarvan die datum gevra word.</li>
+  </ul>
+  <p>As die werkdag met <code>c</code> en die gevraagde dag met <code>t</code> aangedui word, is die datum <code>F(c,t)</code>, nie <code>F(t)</code> nie.</p>
+  <p>Dieselfde chronologiese dag kan dus ’n ander Pastafariese voorstelling kry wanneer die werkdag verander. Die dag self skuif nie; net sy Pastafariese beskrywing verander.</p>
+  <p>Wanneer <code>c=t</code>, val die dag altyd in <strong>Jaar 5000</strong>. Jaar 5000 is nie ’n vaste historiese tydperk nie: dit word telkens nuut in verhouding tot die werkdag opgebou, en daarom kan ook ander dae rondom die werkdag daaraan behoort.</p>
+  <p>Byvoorbeeld: as ’n bepaalde dag sy eie werkdag is, is dit in Jaar 5000. As die berekening die volgende dag weer gedoen word en môre die nuwe werkdag word, is môre ook in Jaar 5000. Dit is nie twee teenstrydige stellings oor dieselfde “historiese jaar” nie; elke berekening kies ’n nuwe basisjaar.</p>
+  <p>Jare met nommers groter as 5000 lê in die toekoms relatief tot die werkdag, en jare met nommers kleiner as 5000 lê in die verlede. Jaar 0 bestaan ook, en daarna kom jare met negatiewe nommers.</p>
+</section>
+
+<section class="about-section" id="year-structure" data-toc-section data-toc-level="2">
+  <h2>Hoe is ’n jaar opgebou?</h2>
+  <p>’n Pastafariese jaar kan tussen <strong>252</strong> en <strong>5 778</strong> dae bevat. Albei grense is ingesluit: ’n jaar van 252 dae is geldig, en ’n jaar van 5 778 dae is ook geldig; ’n jaar van 251 of 5 779 dae is volgens die huidige kanonieke reëls ongeldig.</p>
+  <p>Hierdie grense is deel van die kalender. Die jaar probeer nie by ’n sonjaar, maanjaar, seisoen, skooljaar of die geduld van iemand wat vir die volgende nuwejaar wag, inpas nie.</p>
+  <p>Elke jaar word in twee verskillende stelsels verdeel:</p>
+  <ul>
+    <li><strong>6–17 kotelette</strong>. Elke kotelet is ’n aaneenlopende segment van dae en is minstens 42 dae lank.</li>
+    <li><strong>3–47 strukturele maande</strong>. Elke maand het 4–123 dae wat daaraan behoort, maar dié dae hoef nie aaneenlopend te wees nie.</li>
+  </ul>
+  <p>Die kalender het geen kanonieke weekstelsel nie. Rye en kolomme wat op die webwerf verskyn, is bloot ’n vertoonwyse; die feit dat twee dae langs mekaar vertoon word, maak hulle nie lede van dieselfde “Pastafariese week” nie.</p>
+</section>
+
+<section class="about-section" id="woven-months" data-toc-section data-toc-level="2">
+  <h2>Wat beteken ’n “verweefde maand”?</h2>
+  <p>’n Kotelet is ’n reeks: as vandag dag 250 in die kotelet is en môre nog in dieselfde kotelet val, is môre dag 251.</p>
+  <p>’n Maand werk anders. Dag 18 van ’n bepaalde maand is <strong>die 18de keer dat daardie maand gedurende die jaar voorkom</strong>. Dit hoef nie een dag ná dag 17 te kom nie.</p>
+  <blockquote>
+    <p>Maand A – dag 14<br>
+    Maand B – dag 9<br>
+    Maand A – dag 15</p>
+  </blockquote>
+  <p>’n Maand kan dus oor ’n groot deel van die jaar versprei wees, deur verskeie kotelette loop en met ander maande verweef wees. Net so kan een kotelet dae bevat wat aan baie verskillende maande behoort.</p>
+  <p>Die lengte van ’n maand is die totale aantal dae wat daaraan behoort, nie die aantal dae wat tussen sy eerste en laaste voorkoms verloop het nie. ’n Maand van 104 dae kan dus chronologies oor duisende dae strek.</p>
+  <aside class="about-note">
+    <h3>Waarom kom dag 15 ná dag 14?</h3>
+    <p>Omdat 15 die volgende heelgetal ná 14 is. Die feit dat ’n dag van ’n ander maand tussen die twee voorkomste van die maand verskyn het, verander nie die telling nie: die eerste maand het reeds 14 voorkomste gehad; sy volgende voorkoms is die 15de voorkoms, en daarom is sy nommer 15.</p>
+    <p>Net so, as vier dae van ander maande ná dag 15 van daardie maand verskyn, sal die oorspronklike maand se volgende voorkoms steeds sy dag 16 wees. Die vier tussenliggende dae word chronologies in die kalender getel, maar hulle behoort nie aan daardie maand nie en verhoog dus nie <em>sy</em> dagteller nie. Dit is presies waarom “die volgende dag in die maand” en “môre” twee verskillende begrippe is.</p>
+  </aside>
+  <p>Hieruit volg ook dat die einde van ’n maand nie noodwendig naby in tyd is nie. ’n Maand kan op dag 119 van 120 wees, terwyl sy dag 120 eers heelwat later verskyn.</p>
+</section>
+
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>Name van die kotelette en maande</h2>
+  <p>Die kalender het <strong>17 koteletname</strong> en <strong>47 maandname</strong>. Binne ’n jaar kom ’n naam nie twee keer in dieselfde familie voor nie. Nie al die name hoef in elke jaar te verskyn nie: ’n jaar kan net ’n deel van die katalogus gebruik.</p>
+  <p>Die lyste wys slegs die name. Klik op ’n naam of die oopmaaksimbool langsaan om die presiese betekenis en toepaslike kanonieke notas te sien. Die naam is nie ’n kode vir die lengte van die eenheid nie en voorspel nie wat daarin gaan gebeur nie.</p>
+
+  <h3>17 kotelette</h3>
+  <ul class="about-name-list about-name-disclosure-list">
+    <li>
+      <details class="about-name-details">
+        <summary>Brons</summary>
+        <p>Die metaallegering brons, wat hoofsaaklik uit koper en tin bestaan. Hier is dit die naam van die materiaal, nie bloot ’n kleur nie.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Vos</summary>
+        <p>’n Vos, ’n soogdier uit die hondfamilie. Die naam dui nie ’n bepaalde vosspesie aan nie.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Nier</summary>
+        <p>Die nier, die orgaan wat bloed filtreer en help om die liggaam se vloeistof- en soutbalans te reguleer.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Lagasj</summary>
+        <p>Lagasj, ’n antieke Sumeriese stadstaat in die suide van Mesopotamië.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Gedagte</summary>
+        <p>’n Gedagte, dit wil sê die inhoud van denke of die handeling van dink self.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Vier dele uit nege</summary>
+        <p>Die breuk 4/9 – vier gelyke dele uit nege. Die hele uitdrukking is een naam. Die sentrale numeriese betekenis is presies 4/9; slegs op leksikale vlak word ’n numeriese weergawe x ook toegelaat indien <code>|x − 4/9| ≤ e/103</code>, met die grens ingesluit. Die uitdrukking <code>e/103</code> bly presies so en word nie deur ’n desimale benadering vervang nie. Hierdie toelating verander geen tellers, indekse, identiteit of enige berekening van die kalender nie.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Palgoerasj</summary>
+        <p>’n Uitgedinkte reeks lettergrepe. Dit het geen verdere woordeboekbetekenis wat vertolk moet word nie; dit is die naam self.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Papirus</summary>
+        <p>Die papirusplant, die plant waaruit papirus in die oudheid gemaak is.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Bondel</summary>
+        <p>’n Diggepakte groep of bondel items.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Skerpioen</summary>
+        <p>’n Skerpioen, ’n geleedpotige uit die spinagtiges, met knypers en ’n angel aan die stert.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>As</summary>
+        <p>Die poeieragtige oorblyfsel wat ná verbranding agterbly.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Koring</summary>
+        <p>Die graanplant koring, waarvan die korrels onder meer gebruik word om meel te maak.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Rivier</summary>
+        <p>’n Betreklik groot natuurlike stroom water wat in ’n bedding vloei.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Gelag</summary>
+        <p>’n Klank- en liggaamsreaksie wat gewoonlik met vermaak, vreugde of humor verbind word.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Akkad</summary>
+        <p>Akkad, die antieke Mesopotamiese stad waarna ook die Akkadiese Ryk en die streek vernoem is; die presiese ligging van die stad is nog nie met sekerheid geïdentifiseer nie.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Horing</summary>
+        <p>’n Horing in die sin van die harde uitsteeksel wat uit die kop van sekere diere groei.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Die leë kruik</summary>
+        <p>’n Kruik met niks daarin nie. “Leeg” beskryf wat binne-in die kruik is, naamlik niks, en kanselleer nie die bestaan van die kruik nie. ’n Leë kruik kan steeds ’n heel kruik wees, met wande, ’n bodem en ’n opening; dit is eenvoudig nie met water, wyn, olie of ’n ander stof gevul nie. Net so beteken die naam nie dat die kotelet geen dae bevat nie: die kotelet met die naam “Die leë kruik” het dae soos enige ander kotelet, en dit is slegs die kruik in die naam wat leeg is.</p>
+      </details>
+    </li>
+  </ul>
+
+  <h3>47 maande</h3>
+  <ul class="about-name-list about-name-disclosure-list">
+    <li>
+      <details class="about-name-details">
+        <summary>Klei</summary>
+        <p>’n Fynkorrelige grondmateriaal wat plasties word wanneer dit nat is en hard word wanneer dit droog of gebak word.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Granaatappel</summary>
+        <p>Die granaatappel, ’n ronde vrug met ’n harde skil en baie sappige pitte.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Elmboog</summary>
+        <p>Die gewrig tussen die boarm en die voorarm.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Afguns</summary>
+        <p>Hartseer of ontevredenheid oor ’n voordeel, prestasie of iets goeds wat iemand anders het, soms saam met die begeerte om dit self te hê.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Eridoe</summary>
+        <p>Eridoe, ’n antieke Sumeriese stad in die suide van Mesopotamië.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Tandepasta</summary>
+        <p>’n Pasta-agtige stof wat gebruik word om tande tydens borsel skoon te maak. Die naam verwys na die pasta self, nie na die tandeborsel of die handeling van borsel nie.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Drie dele uit vyf</summary>
+        <p>Die breuk 3/5 – drie gelyke dele uit vyf. Die hele uitdrukking is een naam. Die sentrale numeriese betekenis is presies 3/5; slegs op leksikale vlak word ’n numeriese weergawe x ook toegelaat indien <code>|x − 3/5| ≤ 1/367</code>, met die grens ingesluit. Die grens is ’n presiese waarde, nie ’n desimale benadering nie. Hierdie toelating verander geen tellers, indekse, identiteit of enige berekening van die kalender nie.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Karsjoemav</summary>
+        <p>’n Uitgedinkte reeks lettergrepe. Dit het geen verborge woordeboekbetekenis nie; dit is die naam self.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Luiperd</summary>
+        <p>Die gevlekte luiperd; nie ’n tier nie.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Tin</summary>
+        <p>Die chemiese element tin.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Mis</summary>
+        <p>’n Konsentrasie van baie klein waterdruppeltjies in die lug naby die grondoppervlak; nie rook nie.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Wierook</summary>
+        <p>’n Aromatiese hars wat uit bome van die wierookfamilie verkry word en vir geur en reukwerk gebruik word.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Spil</summary>
+        <p>’n Werktuig waarmee vesels tot draad gespin word.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Rib</summary>
+        <p>Een van die bene van die borskas.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Karob</summary>
+        <p>Die karobboom of sy vrug.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Oeroek</summary>
+        <p>Oeroek, ’n antieke Sumeriese stad in Mesopotamië.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Skaamte</summary>
+        <p>’n Gevoel van ongemak of pyn wat voortspruit uit die besef van ’n gebrek, mislukking of verleentheid.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Kameel</summary>
+        <p>Die kameel, ’n soogdier wat vir lewe in droë streke aangepas is.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Koper</summary>
+        <p>Die chemiese element koper.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Put</summary>
+        <p>’n Gat of skag wat tot by ’n ondergrondse waterbron gegrawe word om water daaruit te haal.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Eiergeel</summary>
+        <p>Die geel deel van ’n voëleier.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Ster</summary>
+        <p>’n Hemelliggaam soos die Son wat energie uit fisiese prosesse in sy binneste uitstraal.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Heuning</summary>
+        <p>Die soet stof wat bye uit nektar of plantafskeidings vervaardig.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Milt</summary>
+        <p>Die milt, ’n orgaan wat onder meer deel van die immuunstelsel is en bloed filtreer. Benewens die gewone betekenis is daar ’n doelbewuste kanonieke uitbreiding wat geen biologiese, etimologiese of kulturele verband met ’n milt het nie, en so ’n verband moet nie uitgedink word nie: die naam sluit ook melk van ’n eenboggelige kameelwyfie in wat met haar eerste lewende nakomeling verband hou, gemelk ná ’n gewone sigbare sonsondergang en voordat die middelpunt van die Son ’n geometriese hoogte van <code>−6°</code> bereik, en voordat die nakomeling op eie bene gestaan het. Vorige dragtighede wat in ’n miskraam of doodgebore kalf geëindig het, diskwalifiseer die voorwaarde nie; as die nakomeling sterf voordat dit op eie bene gestaan het, word die voorwaarde nie om dié rede beëindig nie. Die houer moet keramiek wees, met ’n rooi glasuur en ’n inhoudsvermoë van 180–220 ml, met albei inhoudsgrense ingesluit. Daar is geen vereiste dat die melk direk van die uier in die houer gemelk moet word nie, en die houer se inhoudsvermoë, nie die hoeveelheid melk wat werklik versamel is nie, is die numeriese toets. Oor die insluiting van die grensoomblikke van die tydvenster self bly daar doelbewus ’n kanonieke onbeslistheid.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Kalksteen</summary>
+        <p>’n Sedimentêre gesteente wat hoofsaaklik uit kalsiumkarbonaat bestaan.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Vreugde</summary>
+        <p>’n Positiewe gevoel van geluk, tevredenheid of blydskap.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Vy</summary>
+        <p>Die vy of die vyeboom.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Nineve</summary>
+        <p>Nineve, die antieke Assiriese stad wat oorkant die hedendaagse Mosoel aan die oewer van die Tigris gelê het.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Padda</summary>
+        <p>’n Stertlose amfibie uit die groep wat paddas en skurwepaddas insluit.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Teer</summary>
+        <p>’n Donker, taai stof wat onder meer vir verseëling gebruik word; hier gaan dit om ’n dik teeragtige stof, nie ’n algemene naam vir alle asfalt nie.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Lamp</summary>
+        <p>’n Verligtingstoestel. Dit hoef nie spesifiek ’n waskers met ’n pit te wees nie.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Die geslote deur</summary>
+        <p>’n Deur wat toe is. ’n Geslote deur bly steeds ’n deur: dit word nie ’n muur nie, verdwyn nie en hoef nie met ’n slot toegesluit te wees nie. “Gesluit” beteken dat die opening wat die deur bedoel is om oop te maak, tans deur die deur versper word; “toegesluit” is ’n verdere bewering wat nie by die naam ingesluit is nie. Dus pas selfs ’n deur wat toegemaak is sonder dat iemand ’n sleutel gedraai het, heeltemal by die naam “Die geslote deur”.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Sesam</summary>
+        <p>Die sesamplant of sy sade, waaruit onder meer sesamolie verkry word.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Agternek</summary>
+        <p>Die agterkant van die nek.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Silwer</summary>
+        <p>Die chemiese element silwer.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Susa</summary>
+        <p>Susa, die antieke stad in Elam en Persië.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Storm</summary>
+        <p>Stormagtige weer, gewoonlik met sterk wind en soms neerslag, weerlig of gepaardgaande verskynsels.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Donkie</summary>
+        <p>Die mak donkie.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Meel</summary>
+        <p>’n Poeier wat verkry word deur graan of soortgelyke plantmateriaal te maal; in die gewone konteks beteken dit graanmeel.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Berou</summary>
+        <p>Spyt oor ’n handeling, keuse of uitkoms in die verlede.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Babilon</summary>
+        <p>Babilon, die antieke Mesopotamiese stad aan die Eufraat; hier is dit die pleknaam.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Tong</summary>
+        <p>Die gespierde orgaan in die mond.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Vlas</summary>
+        <p>Die vlasplant en sy vesels, wat onder meer gebruik word om materiaal te vervaardig.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Sout</summary>
+        <p>Die souterige stof wat onder meer in voedsel gebruik word; in die alledaagse konteks is dit hoofsaaklik natriumchloried.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Peer</summary>
+        <p>Die peervrug.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Boog</summary>
+        <p>Die wapen waarmee ’n snaar gespan word om ’n pyl af te skiet.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Sand</summary>
+        <p>’n Korrelrige materiaal wat uit klein deeltjies van gesteentes en minerale bestaan.</p>
+      </details>
+    </li>
+  </ul>
+
+  <p>In vertalings na ander tale kan ’n ander standaardvorm van dieselfde naam gebruik word. Vertaling of transliterasie skep nie ’n nuwe kotelet of maand nie; dit gee dieselfde naam in ’n ander taalvorm weer. Die standaardvorme word deur die kanon en die taalreëls wat daarin aanvaar is, bepaal.</p>
+</section>
+
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>Wanneer verander die dag?</h2>
+  <p>’n Plaaslike Pastafariese dag verander nie om middernag nie. Sy grens word bepaal deur <strong>die onderste deurgang van die middelpunt van Venus oor die plaaslike meridiaan</strong>: die oomblik wanneer die middelpunt van Venus oor die waarnemer se plaaslike meridiaan beweeg aan die kant wat onder die horison lê.</p>
+  <p>Die waarnemer se ligging is dus belangrik. Twee mense op verskillende plekke kan op dieselfde fisiese oomblik aan twee verskillende plaaslike Pastafariese dae toegeken wees. Wanneer iemand na ’n ander stad gaan, word die vorige stad se daggrens nie verder gebruik nie.</p>
+  <p>Die grens hang van ’n berekening van Venus se baan af, nie daarvan of die waarnemer Venus werklik kan sien nie. Wolke, mure of die feit dat Venus onder die horison is, stop nie sy baan nie.</p>
+  <p>Die kalender se diskrete algoritme is presies omskryf: dieselfde insette lewer, wanneer hulle deur dieselfde reëls gaan, dieselfde resultaat. Die omskakeling van ’n fisiese oomblik na ’n Pastafariese dag gebruik tans daarenteen ’n astronomiese model van die implementering; die numeriese profiel van die astronomiese model self is nog nie ’n afgeslote kanonieke deel nie.</p>
+</section>
+
+<section class="about-section" id="advantages" data-toc-section data-toc-level="2">
+  <h2>Die kalender se uitstaande voordele</h2>
+  <ul>
+    <li><strong>’n Datum wat telkens weer bereken kan word:</strong> dieselfde dag uit die verlede kan môre ’n ander Pastafariese datum kry, omdat die werkdag ook aangeskuif het. Daar is geen rede om met ’n ou datum tevrede te wees wat lank bruikbaar bly nie.</li>
+    <li><strong>Ruim jare:</strong> ’n jaar kan tot 5 778 dae lank wees, dus kan iemand wat vir die volgende jaar wag veel langer as gewoonlik moet wag.</li>
+    <li><strong>Maande wat aandag verg:</strong> om te weet dat vandag dag 119 van ’n maand is, beteken nie dat sy dag 120 môre, volgende week of selfs binnekort sal val nie. Die volgende datum moet bereken word.</li>
+    <li><strong>Geografiese sensitiwiteit:</strong> dieselfde oomblik kan op verskillende plekke aan verskillende plaaslike Pastafariese dae behoort. ’n Reis na ’n ander stad voeg dus nog ’n besonderheid by om tydens koördinering te onthou.</li>
+    <li><strong>Gedrukte kalenders raak nie selftevrede nie:</strong> ’n kalender wat vooraf opgestel is, kan ophou om die korrekte berekening voor te stel nadat die werkdag verander het, dus is daar geen gevaar dat iemand jare lank met dieselfde vel papier tevrede sal wees nie.</li>
+    <li><strong>Nuttige gebruik van rekenkrag:</strong> in plaas daarvan om met ’n eenvoudige tabel te volstaan wat met een oogopslag verstaan kan word, gee die kalender die rekenaar die geleentheid om elke keer ’n werklike berekening te doen wanneer ’n antwoord verlang word.</li>
+    <li><strong>Dit het dae:</strong> die kalender handel oor dae. Dit is ’n eienskap wat dit met elke kalender deel, en dit verseker dat die gebruiker nie ’n kalender sonder dae hoef te bestuur nie.</li>
+    <li><strong>Die dae verskyn in volgorde:</strong> ’n vroeër dag kom voor ’n later dag. Dit is ’n fundamentele prestasie van kalenders, en in hierdie geval is dit sonder ekstra koste beskikbaar.</li>
+    <li><strong>’n Mens kan datums daarmee aandui:</strong> die kalender maak dit moontlik om ’n kalenderbeskrywing aan ’n dag toe te ken. Dit is wel presies waarvoor kalenders bedoel is, maar daar is geen rede om nie ’n nuttige eienskap te noem wanneer dit bestaan nie.</li>
+  </ul>
+  <p>En al bogenoemde kom saam binne een kalender, soos gebeur wanneer verskeie eienskappe aan dieselfde kalender behoort.</p>
+</section>
+
+<section class="about-section" id="practical-consequences" data-toc-section data-toc-level="2">
+  <h2>Wat beteken dit in die praktyk?</h2>
+  <p><strong>’n Gedrukte kalender verouder sleg.</strong> ’n Verandering van die werkdag kan die grense van jare, kotelette en maande verander. ’n Almanak wat vandag bereken is, is nie noodwendig môre se korrekte almanak nie.</p>
+  <p><strong>’n Gebeurtenis bly dieselfde gebeurtenis.</strong> ’n Afspraak, geboorte of historiese gebeurtenis moet aan ’n stabiele chronologiese dag of oomblik geanker word; daarna kan ’n Pastafariese datum daarvoor vertoon word volgens die werkdag en die waarnemer se ligging. ’n Verandering van die etiket skuif nie die gebeurtenis in tyd nie.</p>
+  <p><strong>’n Pastafariese verjaardag is glad nie noodwendig “een keer per jaar” nie.</strong> Om die volgende voorkoms van dieselfde maandnaam en dieselfde dag in die maand, of dieselfde koteletnaam en dieselfde dag in die kotelet, te vind, moet ’n mens in die kalender soek. ’n Aangrensende jaar kan die vereiste naam glad nie bevat nie, of dit kan ’n eenheid bevat wat te kort is om die verlangde dagnommer te bereik.</p>
+  <p><strong>’n Heeldaggebeurtenis is nie noodwendig van middernag tot middernag nie.</strong> As die gebeurtenis volgens ’n plaaslike Pastafariese dag gedefinieer word, is sy grens die plaaslike Venusgrens. ’n Naïewe uitvoer na ’n burgerlike kalender as ’n gebeurtenis van middernag tot middernag kan die betekenis daarvan verander.</p>
+</section>
+
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>Stigtingsdag en Dag van die Tablette</h2>
+  <p>Die kalender het twee belangrike vaste ankers:</p>
+  <dl>
+    <dt><strong>Stigtingsdag</strong></dt>
+    <dd>22 Desember 41 222 voor die gewone jaartelling in die Gregoriaanse kalender wat terugwaarts verleng is.</dd>
+    <dt><strong>Dag van die Tablette</strong></dt>
+    <dd>15 Junie 763 voor die gewone jaartelling in die Juliaanse kalender wat terugwaarts verleng is, oftewel 7 Junie 763 voor die gewone jaartelling in die Gregoriaanse kalender wat terugwaarts verleng is.</dd>
+  </dl>
+  <p>Die afstand tussen hulle is 14 777 149 dae. Stigtingsdag is ’n berekeningsanker; dit is nie “die eerste dag van tyd” nie, en die kalender gaan ook vóór dié dag voort.</p>
+  <p>Dag van die Tablette word in die tradisie verbind met die oorhandiging van die tablette en word in die historiese berekening met die dag van ’n sonsverduistering in die tyd van Bur-Sagale geïdentifiseer. Albei ankers bly vas, selfs wanneer die werkdag verander.</p>
+</section>
+
+<section class="about-section" id="calendar-math" data-toc-section data-toc-level="2">
+  <h2>’n Paar eenvoudige wiskundige feite</h2>
+  <p>Daar is 47 maandname, en elke maand kan hoogstens dag 123 bereik. Daar is dus <strong>5 781</strong> moontlike kombinasies van die vorm “maandnaam + dag in die maand”.</p>
+  <p>’n Jaar kan hoogstens 5 778 dae bevat, en elke dag verteenwoordig een so ’n kombinasie. Daarom <strong>ontbreek minstens drie van die moontlike kombinasies in elke jaar</strong>. Selfs die langste jaar het nie genoeg dae om almal te verwesenlik nie.</p>
+  <p>Wanneer die werkdag en die jaar bekend is, dui ’n volledige paar van “koteletnaam + dag in die kotelet” of “maandnaam + dag in die maand” hoogstens een dag binne daardie jaar aan. ’n Volledige Pastafariese datum, saam met die werkdag, identifiseer dus die gevraagde dag ondubbelsinnig.</p>
+  <p>Sonder kennis van die werkdag identifiseer ’n volledige Pastafariese datum daarenteen nie noodwendig op sy eie ’n enkele posisie op die tydlyn nie. Dieselfde vyftal kan in verskillende berekeningskontekste voorkom.</p>
+</section>
+
+<section class="about-section" id="research" data-toc-section data-toc-level="2">
+  <h2>Wat het berekeningsnavorsing oor die kalender gevind?</h2>
+  <p>Benewens die toetsing van die reëls self is groot berekeningsondersoeke na die kalender uitgevoer. Die volgende gegewens is <strong>empiriese bevindings uit ’n steekproef</strong>, nie kanonieke reëls nie.</p>
+  <p>In ’n strukturele atlas wat uit 4 096 werkdae opgebou is en waarin 86 016 jaarstrukture ondersoek is:</p>
+  <ul>
+    <li>was die gemiddelde jaarlengte in die steekproef ongeveer 4 275 dae, met ’n mediaan van 4 343 dae;</li>
+    <li>was die gemiddelde aantal kotelette per jaar ongeveer 7,27;</li>
+    <li>was die gemiddelde aantal strukturele maande ongeveer 41,1;</li>
+    <li>het ’n maand gemiddeld ongeveer 104 dae bevat wat daaraan behoort, maar gewoonlik oor byna die hele jaar gestrek;</li>
+    <li>was 97,482% van die aaneenlopende segmente van ’n maand slegs een dag lank;</li>
+    <li>was die gemete kans dat twee aangrensende chronologiese dae aan dieselfde maand behoort slegs ongeveer 2,998%.</li>
+  </ul>
+  <p>In ’n aparte studie van “dag-jaar”-herhalings, waarin 4 096 selfdatums in albei rigtings ondersoek is:</p>
+  <ul>
+    <li>het ’n herhaalde passing van <strong>maandnaam + dag in die maand</strong> by die mediaan reeds ná een Pastafariese jaar verskyn; 77,56% van die passings was in die aangrensende jaar;</li>
+    <li>was ’n herhaalde passing van <strong>koteletnaam + dag in die kotelet</strong> baie minder voorspelbaar: die mediaan was drie Pastafariese jare, maar die gemiddelde is deur ’n baie lang stert beïnvloed;</li>
+    <li>het die steekproef ’n uiterste geval bevat waarin die eerste toekomstige herhaling van “Akkad 3063” 51 954 Pastafariese jare ver was.</li>
+  </ul>
+  <p>Hierdie bevindings is nuttig om te verstaan wat die kalender geneig is om te doen. Dit maak nie van ’n gemiddelde ’n wet nie: die feit dat die gemiddelde jaar in die steekproef ’n bepaalde lengte gehad het, verplig geen spesifieke jaar om naby die gemiddelde te wees nie, en ’n resultaat wat in al 4 096 gevalle gevind is, is op sigself nie ’n wiskundige bewys vir alle moontlike insette nie.</p>
+</section>
+
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>Hoe word die kalender bereken?</h2>
+  <p>Agter die datum is ’n diskrete algoritme wat presies omskryf is. Dit lei ’n reeks tellings uit die werkdag en die gevraagde dag af, voer hulle deur die mengmeganisme wat <strong>die sous</strong> genoem word, skep hekke, kies die grense van die jaar en die kotelette, kies name, skep maande en verweef uiteindelik die maanddae deur die jaar.</p>
+  <p>Die presiese besonderhede sluit groot getalle, druppels, bakke, roerslae, seëls en kombinatoriese keusemeganismes in. Hulle is belangrik vir implementering en formele toetsing, maar is nie nodig om die betekenis van die datum te verstaan nie en word daarom nie hier uiteengesit nie.</p>
+  <p>Benewens die algoritme is daar ’n vinnige enjin met die naam <strong>Pastafarian Calendar Seer</strong>. Die Seer is bedoel om vinnig te bereken; dit is nie die bron van gesag nie en is self nie ’n standaardimplementering van elke stap van die algoritme nie. As ’n resultaat daarvan bots met die resultaat wat die kanon vereis, is dit die Seer wat verkeerd is.</p>
+</section>
+
+<section class="about-section" id="about-the-monster" data-toc-section data-toc-level="2">
+  <h2>Oor die Monster</h2>
+  <p>Binne die Pastafariese verhaal is die <strong>Vlieënde Spaghettimonster</strong> die wese wat die wêreld en die meeste dinge daarin geskep het. Haar liggaam bestaan uit noedels en frikkadelle, en sy kan vlieg, deur gewone materie beweeg en onsigbaar bly wanneer dit haar pas.</p>
+  <p>Die Monster kan materie, lewende wesens, hemelliggame en baie ingewikkelde meganismes skep. Dié vermoë verplig haar nie om ’n netjiese plan op te stel voordat sy begin werk nie. Sy begin dikwels met een ding, beweeg na ’n ander, ontdek dat die vorige ding herstelwerk nodig het en besluit dan of sy dit gaan herstel. Soms doen sy dit inderdaad.</p>
+  <p>Hierdie beeld, ’n skepping wat laag vir laag opgebou word, met herstelwerk, uitsonderings en reëls wat op hul plek bly, vorm ook die literêre agtergrond van die kalender. Anders as die verhaal is die berekening self nie geïmproviseer nie: wanneer die insette gegee is, lewer die algoritme een bepaalde antwoord.</p>
+  <p>Die Pastafariese verhaal strek veel verder as die kalender en sluit onder meer seerowers, koolhidrate, gebed, “Ek sou regtig verkies dat jy nie” en ander tradisies in.</p>
+  <p class="about-actions"><a class="guide-link" href="./monster/af.html">Meer oor die Monster</a></p>
+</section>
+
+<section class="about-section" id="authority" data-toc-section data-toc-level="2">
+  <h2>Wat is kanoniek en wat is net verduideliking?</h2>
+  <p>Hierdie bladsy is ’n <strong>verduidelikingsblad</strong>. Dit skep nie ’n nuwe reël bloot omdat ’n sin hier verskyn nie.</p>
+  <p>Die kanonieke inhoud word deur die kanonieke korpus en die reëls wat daarin aanvaar is, bepaal. Kanonieke uitgawes van die rol het nie outomaties ’n hiërargie bo mekaar nie, en ’n sagteware-implementering word nie ’n gesagsbron bloot omdat dit vinnig of algemeen gebruik is nie.</p>
+  <p>’n Standaardimplementering voer die kanonieke algoritme in al sy stappe uit. Berekeningsnavorsing kan ’n verskynsel beskryf, ’n patroon vind of ’n stelling oor die algoritme bewys; wanneer iets op ’n steekproef eerder as ’n bewese reël berus, word dit uitdruklik aangedui.</p>
+</section>
+
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>Kortliks</h2>
+  <p>Die Pastafariese kalender is ’n teenintuïtiewe kalender waarin die datum afhang van sowel die dag waaroor gevra word as die dag waarvandaan gevra word.</p>
+  <p>Jaar 5000 word rondom die werkdag opgebou. Kotelette is aaneenlopende segmente. Maande is groepe dae wat met mekaar verweef kan wees. Daar is geen kanonieke weke nie. Die plaaslike dag verander volgens Venus, nie om middernag nie.</p>
+  <p>Agter die ongewone struktuur is ’n presiese algoritme; daaromheen is ’n Pastafariese verhaal oor ’n Spaghettimonster, oor ’n skepping wat laag vir laag opgebou is en oor ’n onredelike hoeveelheid koolhidrate.</p>
+  <p>Wanneer die werkdag, die gevraagde dag en die liggingkonteks gegee is, is daar een antwoord.</p>
+</section>

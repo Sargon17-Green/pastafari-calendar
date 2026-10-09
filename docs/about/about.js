@@ -14,7 +14,7 @@ import {
 import {
   ARTICLE_FALLBACK_LOCALE,
   resolveArticleLocale,
-} from "./content/registry.js?v=4-about-polish";
+} from "./content/registry.js?v=20261009-approved12";
 
 const elements = Object.fromEntries(
   [...document.querySelectorAll("[id]")].map((element) => [element.id, element]),

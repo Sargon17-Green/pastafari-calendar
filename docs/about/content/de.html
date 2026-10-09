@@ -1,0 +1,551 @@
+<!-- Hebrew semantic-master candidate, rebuilt for an external reader. -->
+<div class="about-section about-lead" id="about-calendar">
+<p><strong>Der Pastafarische Kalender</strong> ist ein bewusst ungewöhnlich aufgebauter Kalender, der sich nicht auf Anhieb erschließt: Das Datum eines Tages hängt nicht nur davon ab, welchen Tag man beschreiben möchte, sondern auch davon, von welchem Tag aus man die Berechnung durchführt.</p>
+<p>Er besitzt Jahre, Schnitzel und Monate. Die Jahre haben jedoch keine feste Länge, Schnitzel und Monate bilden zwei verschiedene Einteilungen, Monate können im Laufe eines Jahres verschwinden und wieder auftauchen, und kanonische Wochen gibt es nicht.</p>
+<p>Diese Seite erklärt, was der Kalender ist, wie man ein Datum liest und welche praktischen Folgen sein Aufbau hat. Die mathematischen und kryptografischen Einzelheiten der Implementierung stehen in der technischen Dokumentation; man braucht sie aber nicht, um den Kalender zu verstehen.</p>
+</div>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="date-parts">
+<h2>Wie sieht ein pastafarisches Datum aus?</h2>
+<p>Ein pastafarisches Datum besteht aus genau fünf Bestandteilen:</p>
+<ol>
+<li><strong>Jahr seit der Erschaffung der Welt</strong>;</li>
+<li><strong>Name des Schnitzels</strong>;</li>
+<li><strong>Tag im Schnitzel</strong>;</li>
+<li><strong>Name des Monats</strong>;</li>
+<li><strong>Tag im Monat</strong>.</li>
+</ol>
+<p>Ein vollständiges Datum gibt also an, in welchem Jahr der Tag liegt, zu welchem Schnitzel er gehört und an welcher Stelle darin er steht sowie welchem Monat er zugeordnet ist und der wievielte Tag dieses Monats er ist.</p>
+<p>Der Ausführungstag, der Standort des Beobachters und andere technische Angaben können notwendig sein, um das Datum zu <em>berechnen</em>. Sie bilden aber keinen sechsten, siebten oder achten Bestandteil des Datums selbst.</p>
+<p>Auch die Darstellung ändert nichts an der Anzahl der Bestandteile. Wenn die Website die fünf Angaben auf drei Zeilen verteilt, bleiben es fünf Angaben; ein Zeilenumbruch ist eine typografische Entscheidung, keine Geburt eines neuen Kalenderfeldes.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="working-day">
+<h2>Warum kann derselbe Tag ein anderes Datum erhalten?</h2>
+<p>Bei jeder Berechnung gibt es zwei Tage:</p>
+<ul>
+<li><strong>Ausführungstag</strong> – der Tag, von dem aus die Berechnung erfolgt;</li>
+<li><strong>abgefragter Tag</strong> – der Tag, dessen Datum man wissen möchte.</li>
+</ul>
+<p>Bezeichnen wir den Ausführungstag mit <code>c</code> und den abgefragten Tag mit <code>t</code>, so lautet die Datumsfunktion <code>F(c,t)</code>, nicht <code>F(t)</code>.</p>
+<p>Derselbe chronologische Tag kann deshalb eine andere pastafarische Datumsangabe erhalten, wenn sich der Ausführungstag ändert. Der Tag selbst verschiebt sich nicht; lediglich seine pastafarische Beschreibung ändert sich.</p>
+<p>Wenn <code>c=t</code>, liegt der Tag immer im Jahr <strong>5000</strong>. Das Jahr 5000 ist kein feststehender historischer Zeitraum: Es wird relativ zum Ausführungstag immer wieder neu gebildet. Auch weitere Tage rund um den Ausführungstag können deshalb zu diesem Jahr gehören.</p>
+<p>Ein Beispiel: Ist ein bestimmter Tag sein eigener Ausführungstag, liegt er im Jahr 5000. Berechnet man das Datum am nächsten Tag erneut und ist dieser nächste Tag nun der neue Ausführungstag, liegt auch er im Jahr 5000. Das sind keine widersprüchlichen Aussagen über ein und dasselbe „historische Jahr“; bei jeder Berechnung wird ein neues Basisjahr gewählt.</p>
+<p>Jahre mit einer Nummer über 5000 liegen vom Ausführungstag aus gesehen in der Zukunft, Jahre mit einer Nummer unter 5000 in der Vergangenheit. Es gibt auch das Jahr 0 und danach Jahre mit negativen Jahreszahlen.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="year-structure">
+<h2>Wie ist ein Jahr aufgebaut?</h2>
+<p>Ein pastafarisches Jahr kann zwischen <strong>252</strong> und <strong>5,778</strong> Tagen umfassen. Beide Grenzen sind eingeschlossen: Ein Jahr mit 252 Tagen ist zulässig, ebenso eines mit 5,778 Tagen. Jahre mit 251 oder 5,779 Tagen sind nach den derzeitigen kanonischen Regeln unzulässig.</p>
+<p>Diese Grenzen gehören zum Kalender selbst. Das Jahr versucht nicht, sich dem Sonnenjahr, dem Mondjahr, einer Jahreszeit, einem Schuljahr oder der Geduld jener anzupassen, die auf das nächste Neujahr warten.</p>
+<p>Jedes Jahr ist in zwei verschiedene Systeme gegliedert:</p>
+<ul>
+<li><strong>6–17 Schnitzel</strong>. Jedes Schnitzel ist ein zusammenhängender Tagesabschnitt von mindestens 42 Tagen.</li>
+<li><strong>3–47 strukturelle Monate</strong>. Zu jedem Monat gehören 4–123 Tage, die jedoch nicht unmittelbar aufeinanderfolgen müssen.</li>
+</ul>
+<p>Ein kanonisches Wochensystem gibt es nicht. Die Zeilen und Spalten auf der Website dienen nur der Darstellung. Wenn zwei Tage nebeneinander stehen, gehören sie deshalb noch lange nicht derselben „pastafarischen Woche“ an.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="woven-months">
+<h2>Was bedeutet „verflochtener Monat“?</h2>
+<p>Ein Schnitzel ist eine durchgehende Folge: Ist heute Tag 250 eines Schnitzels und gehört morgen noch zu demselben Schnitzel, dann ist morgen dessen Tag 251.</p>
+<p>Ein Monat funktioniert anders. Tag 18 eines bestimmten Monats bedeutet: <strong>Dieser Monat tritt im Verlauf des Jahres zum 18. Mal auf.</strong> Dieser Tag muss nicht unmittelbar auf Tag 17 folgen.</p>
+<blockquote>
+<p>Monat A – Tag 14<br/>Monat B – Tag 9<br/>Monat A – Tag 15</p>
+</blockquote>
+<p>Ein Monat kann sich also über einen großen Teil des Jahres erstrecken, mehrere Schnitzel durchlaufen und mit anderen Monaten verflochten sein. Umgekehrt kann ein einzelnes Schnitzel Tage aus vielen verschiedenen Monaten enthalten.</p>
+<p>Die Länge eines Monats ist die Gesamtzahl der ihm zugeordneten Tage, nicht die Anzahl der Tage zwischen seinem ersten und letzten Auftreten. Ein Monat mit 104 Mitgliedstagen kann sich somit chronologisch über Tausende von Tagen erstrecken.</p>
+<aside class="about-note">
+<h3>Warum kommt Tag 15 nach Tag 14?</h3>
+<p>Weil 15 die nächste ganze Zahl nach 14 ist. Dass zwischen den beiden Auftritten des Monats ein Tag eines anderen Monats liegt, ändert nichts an der Rechnung: Der erste Monat ist bereits 14-mal aufgetreten; sein nächster Auftritt ist der 15., also trägt er die Nummer 15.</p>
+<p>Genauso verhält es sich, wenn nach Tag 15 desselben Monats vier Tage anderer Monate auftreten: Der nächste Auftritt des ursprünglichen Monats ist nach wie vor sein Tag 16. Die vier dazwischenliegenden Tage werden im Kalender chronologisch mitgezählt, gehören aber nicht zu diesem Monat und erhöhen daher <em>seinen</em> Tageszähler nicht. Genau deshalb sind „der nächste Tag im Monat“ und „morgen“ zwei unterschiedliche Begriffe.</p>
+</aside>
+<p>Auch das Monatsende muss zeitlich nicht nahe sein. Ein Monat kann bereits Tag 119 von 120 erreicht haben, während Tag 120 erst erheblich später auftritt.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="canonical-names">
+<h2>Die Namen der Schnitzel und Monate</h2>
+<p>Der Kalender kennt <strong>17 Schnitzelnamen</strong> und <strong>47 Monatsnamen</strong>. Innerhalb eines Jahres kommt ein Name in seiner jeweiligen Gruppe nicht zweimal vor. Nicht alle Namen müssen in jedem Jahr vorkommen: Ein Jahr kann nur einen Teil des Katalogs nutzen.</p>
+<p>Die Listen zeigen zunächst nur die Namen. Ein Klick auf einen Namen oder das danebenstehende Aufklappsymbol zeigt seine genaue Bedeutung und die einschlägigen kanonischen Anmerkungen. Der Name verrät weder die Länge der Einheit noch, was in ihr geschehen wird.</p>
+<h3>Die 17 Schnitzel</h3>
+<ul class="about-name-list about-name-disclosure-list">
+<li>
+<details class="about-name-details">
+<summary>Bronze</summary>
+<p>Eine Metalllegierung, die hauptsächlich aus Kupfer und Zinn besteht. Gemeint ist hier der Werkstoff Bronze, nicht bloß eine Farbe.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Fuchs</summary>
+<p>Ein Fuchs, ein Säugetier aus der Familie der Hunde. Der Name bezeichnet keine bestimmte Fuchsart.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Niere</summary>
+<p>Das Organ Niere, das Blut filtert und zur Regulierung des Flüssigkeits- und Salzhaushalts des Körpers beiträgt.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Lagash</summary>
+<p>Lagash, ein alt-sumerischer Stadtstaat im südlichen Mesopotamien.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Gedanke</summary>
+<p>Ein Gedanke, also der Inhalt eines Denkakts oder das Denken selbst.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Vier Teile von Neun</summary>
+<p>Der Bruch 4/9, also vier von neun gleichen Teilen. Der gesamte Ausdruck bildet einen einzigen Namen. Der zugrunde liegende Zahlenwert ist exakt 4/9. Ausschließlich auf lexikalischer Ebene ist auch eine numerische Darstellung x zulässig, die <code>|x − 4/9| ≤ e/103</code> erfüllt, einschließlich des Grenzwerts. Der Ausdruck <code>e/103</code> bleibt exakt erhalten und wird nicht durch eine Dezimalnäherung ersetzt. Diese Erlaubnis ändert weder Zähler noch Indizes, Identität oder irgendeine Berechnung des Kalenders.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Palgurash</summary>
+<p>Eine erfundene Silbenfolge. Sie hat keine zusätzliche lexikalische Bedeutung, die es zu deuten gäbe; sie ist schlicht der Name.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Papyrus-Segge</summary>
+<p>Die Papyrus-Segge, also die Pflanze, aus der man in der Antike Papyrus herstellte.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Büschel</summary>
+<p>Eine dichte Ansammlung oder ein Bündel von Dingen; die entsprechende hebräische Bezeichnung wird besonders mit Weintrauben in Verbindung gebracht, ist aber nicht auf sie beschränkt.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Skorpion</summary>
+<p>Ein Skorpion, ein Gliederfüßer aus der Klasse der Spinnentiere mit Scheren und einem Stachel am Schwanz.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Asche</summary>
+<p>Der pulverige Rückstand, der nach einem Verbrennungsvorgang übrig bleibt.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Weizen</summary>
+<p>Die Getreidepflanze Weizen, aus deren Körnern unter anderem Mehl hergestellt wird.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Fluss</summary>
+<p>Ein vergleichsweise großer natürlicher Wasserlauf in einem Flussbett.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Lachen</summary>
+<p>Eine mit Lautäußerungen verbundene körperliche Reaktion, die gewöhnlich mit Belustigung, Freude oder Humor verbunden ist.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Akkad</summary>
+<p>Akkad, die antike mesopotamische Stadt, nach der auch das Akkadische Reich und die Region benannt wurden. Die genaue Lage der Stadt ist bislang nicht sicher bestimmt.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Horn</summary>
+<p>Ein Horn im Sinne eines harten Auswuchses am Kopf bestimmter Tiere, nicht ein Lichtstrahl.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Der leere Krug</summary>
+<p>Ein Krug ohne Inhalt. „Leer“ beschreibt, was sich im Krug befindet, nämlich nichts; es hebt die Existenz des Krugs nicht auf. Ein leerer Krug kann weiterhin ein unversehrter Krug mit Wänden, Boden und Öffnung sein. Er ist lediglich nicht mit Wasser, Wein, Öl oder einer anderen Substanz gefüllt. Ebenso wenig bedeutet der Name, dass das Schnitzel keine Tage enthält: Das Schnitzel namens „Der leere Krug“ hat Tage wie jedes andere Schnitzel auch. Nur der Krug im Namen ist leer.</p>
+</details>
+</li>
+</ul>
+<h3>Die 47 Monate</h3>
+<ul class="about-name-list about-name-disclosure-list">
+<li>
+<details class="about-name-details">
+<summary>Ton</summary>
+<p>Ein feinkörniges Erdmaterial, das in feuchtem Zustand plastisch formbar wird und beim Trocknen oder Brennen erhärtet.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Granatapfel</summary>
+<p>Die Frucht des Granatapfelbaums: eine runde Frucht mit fester Schale und zahlreichen saftigen Samen.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Ellenbogen</summary>
+<p>Das Gelenk, das Ober- und Unterarm verbindet.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Neid</summary>
+<p>Missmut oder Unbehagen angesichts eines Vorteils, Erfolgs oder erfreulichen Besitzes eines anderen, manchmal verbunden mit dem Wunsch, ihn selbst zu haben.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Eridu</summary>
+<p>Eridu, eine alte sumerische Stadt im südlichen Mesopotamien.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Zahnpasta</summary>
+<p>Eine pastenartige Substanz zur Reinigung der Zähne beim Putzen. Der Name bezeichnet die Paste selbst, nicht die Zahnbürste und nicht das Zähneputzen.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Drei Teile von Fünf</summary>
+<p>Der Bruch 3/5, also drei von fünf gleichen Teilen. Der gesamte Ausdruck bildet einen einzigen Namen. Der zugrunde liegende Zahlenwert ist exakt 3/5. Ausschließlich auf lexikalischer Ebene ist auch eine numerische Darstellung x zulässig, die <code>|x − 3/5| ≤ 1/367</code> erfüllt, einschließlich des Grenzwerts. Diese Grenze ist ein exakter Wert, keine Dezimalnäherung. Die Erlaubnis ändert weder Zähler noch Indizes, Identität oder irgendeine Berechnung des Kalenders.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Karshumav</summary>
+<p>Eine erfundene Silbenfolge. Sie besitzt keine verborgene lexikalische Bedeutung; sie ist schlicht der Name.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Leopard</summary>
+<p>Der gefleckte Leopard; gemeint ist kein Tiger.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Zinn</summary>
+<p>Das chemische Element Zinn.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Nebel</summary>
+<p>Eine Ansammlung winziger Wassertröpfchen in der Luft nahe dem Erdboden; kein Rauch.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Weihrauch</summary>
+<p>Das aromatische Harz von Weihrauchbäumen, das als Duftstoff und zum Räuchern verwendet wird.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Spindel</summary>
+<p>Ein Spinnwerkzeug, mit dem Fasern zu einem Faden versponnen werden.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Rippe</summary>
+<p>Einer der Knochen des Brustkorbs.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Johannisbrot</summary>
+<p>Der Johannisbrotbaum oder seine Frucht.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Uruk</summary>
+<p>Uruk, eine antike sumerische Stadt in Mesopotamien.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Scham</summary>
+<p>Ein Gefühl von Unbehagen oder Schmerz, das aus dem Bewusstsein eines Mangels, Versagens oder peinlichen Verhaltens entsteht.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Kamel</summary>
+<p>Das Säugetier Kamel, das an das Leben in trockenen Gebieten angepasst ist.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Kupfer</summary>
+<p>Das chemische Element Kupfer.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Brunnen</summary>
+<p>Ein zum Wasserschöpfen angelegter Schacht oder eine Grube mit Zugang zu einer unterirdischen Wasserquelle.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Eigelb</summary>
+<p>Der gelbe Teil eines Hühnereis.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Stern</summary>
+<p>Ein Himmelskörper wie die Sonne, der durch physikalische Prozesse in seinem Inneren Energie abstrahlt.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Honig</summary>
+<p>Die süße Substanz, die Bienen aus Blütennektar oder pflanzlichen Ausscheidungen herstellen.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Milz</summary>
+<p>Das Organ Milz, das unter anderem zum Immunsystem gehört und das Blut filtert. Neben dieser gewöhnlichen Bedeutung gibt es eine absichtlich sachfremde kanonische Erweiterung. Sie hat keinerlei biologischen, etymologischen oder kulturellen Bezug zur Milz; ein solcher Bezug darf auch nicht hinzuerfunden werden: Zum Namen gehört außerdem Milch einer Dromedarstute im Zusammenhang mit ihrem ersten lebenden Nachwuchs. Die Milch muss nach dem gewöhnlichen sichtbaren Sonnenuntergang, aber bevor das Zentrum der Sonne eine geometrische Höhe von <code>−6°</code> erreicht, gemolken worden sein. Zum Zeitpunkt des Melkens darf der Nachwuchs noch nie aus eigener Kraft gestanden haben. Frühere Schwangerschaften, die mit einer Fehlgeburt, einem Schwangerschaftsabbruch oder einer Totgeburt endeten, schließen die Bedingung nicht aus. Stirbt der Nachwuchs, bevor er jemals selbstständig gestanden hat, bleibt die Voraussetzung, dass er noch nie selbstständig gestanden hat, weiterhin erfüllt. Das Gefäß muss aus Keramik bestehen, rot glasiert sein und ein Fassungsvermögen von 180–220 ml haben, wobei beide Kapazitätsgrenzen eingeschlossen sind. Die Milch muss nicht direkt vom Euter in das Gefäß gemolken werden. Maßgeblich für die Zahlenvorgabe ist das Fassungsvermögen des Gefäßes, nicht die tatsächlich gesammelte Milchmenge. Ob die Grenzzeitpunkte des Zeitfensters selbst eingeschlossen sind, bleibt bewusst kanonisch ungeklärt.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Kalkstein</summary>
+<p>Ein Sedimentgestein, das überwiegend aus Calciumcarbonat besteht.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Freude</summary>
+<p>Ein positives Gefühl von Glück, Zufriedenheit oder Frohsinn.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Feige</summary>
+<p>Die Feigenfrucht oder der Feigenbaum.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Ninive</summary>
+<p>Ninive, die antike assyrische Stadt am Tigris, gegenüber dem heutigen Mossul.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Frosch</summary>
+<p>Ein schwanzloses Amphibium aus der Gruppe, zu der Frösche und Kröten gehören.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Pech</summary>
+<p>Ein dunkler, zähflüssiger Stoff, der unter anderem zum Abdichten dient; gemeint ist Pech als Material, nicht Asphalt im Allgemeinen.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Lampe</summary>
+<p>Eine Vorrichtung, die Licht spendet. Es muss sich nicht um eine Wachskerze mit Docht handeln.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Die geschlossene Tür</summary>
+<p>Eine Tür, die sich in geschlossenem Zustand befindet. Eine geschlossene Tür bleibt eine Tür: Sie wird nicht zur Wand, verschwindet nicht und muss auch nicht abgeschlossen sein. „Geschlossen“ bedeutet, dass die dafür vorgesehene Öffnung gegenwärtig durch die Tür versperrt ist; „abgeschlossen“ wäre eine zusätzliche Aussage, die der Name nicht enthält. Daher passt auch eine Tür, die jemand zugezogen hat, ohne einen Schlüssel umzudrehen, sehr gut zum Namen „Die geschlossene Tür“.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Sesam</summary>
+<p>Die Sesampflanze oder ihre Samen, aus denen unter anderem Sesamöl gewonnen wird.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Nacken</summary>
+<p>Die Rückseite des Halses.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Silber</summary>
+<p>Das chemische Element Silber, nicht Geld als Zahlungsmittel.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Susa</summary>
+<p>Susa, die antike Stadt in Elam und Persien; gemeint ist keine Lilienblume.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Sturm</summary>
+<p>Stürmisches Wetter, meist mit starkem Wind und gelegentlich auch mit Niederschlag, Blitzen oder anderen Begleiterscheinungen.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Esel</summary>
+<p>Das domestizierte Säugetier Esel.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Mehl</summary>
+<p>Ein Pulver, das beim Mahlen von Körnern oder ähnlichem pflanzlichen Material entsteht; gewöhnlich ist Getreidemehl gemeint.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Bedauern</summary>
+<p>Kummer über eine frühere Handlung, Entscheidung oder deren Ergebnis.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Babylon</summary>
+<p>Babylon, die antike mesopotamische Stadt am Euphrat; hier ist der Ortsname gemeint.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Zunge</summary>
+<p>Das muskulöse Organ im Mund, nicht „Zunge“ im übertragenen Sinn einer Sprache.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Flachs</summary>
+<p>Die Flachspflanze und ihre Fasern, die unter anderem zur Stoffherstellung dienen.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Salz</summary>
+<p>Der salzige Stoff, der unter anderem in Lebensmitteln verwendet wird, im Alltag hauptsächlich Natriumchlorid; kein Seemann, wie die gleichlautende hebräische Bezeichnung nahelegen könnte.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Birne</summary>
+<p>Die Frucht des Birnbaums.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Bogen</summary>
+<p>Die Waffe, bei der eine gespannte Sehne einen Pfeil abschießt; kein Regenbogen.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Sand</summary>
+<p>Ein körniges Material aus kleinen Gesteins- und Mineralteilchen; nicht „profan“ im Gegensatz zu „heilig“ und auch kein Werktag, wie andere Bedeutungen des hebräischen Wortes nahelegen könnten.</p>
+</details>
+</li>
+</ul>
+<p>Bei der Übersetzung in andere Sprachen kann derselbe Name eine andere normgerechte Form erhalten. Übersetzung oder Transkription erzeugen kein neues Schnitzel und keinen neuen Monat; sie geben dieselbe sprachliche Einheit in anderer Gestalt wieder. Welche Formen zulässig sind, bestimmen der Kanon und die dort übernommenen Sprachregeln.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="day-boundary">
+<h2>Wann beginnt ein neuer Tag?</h2>
+<p>Ein lokaler pastafarischer Tag wechselt nicht um Mitternacht. Seine Grenze wird durch die <strong>untere Meridiankulmination des Venuszentrums am örtlichen Meridian</strong> bestimmt: den Augenblick, in dem das Zentrum der Venus den Meridian des Beobachtungsorts auf dessen unterhalb des Horizonts liegendem Teil passiert.</p>
+<p>Deshalb spielt der Standort des Beobachters eine Rolle. Zwei Menschen an verschiedenen Orten können zum selben physikalischen Zeitpunkt zwei verschiedenen lokalen pastafarischen Tagen zugeordnet sein. Wer in eine andere Stadt reist, verwendet nicht einfach weiter die Tagesgrenze der vorherigen Stadt.</p>
+<p>Entscheidend ist die berechnete Bahn der Venus, nicht ihre tatsächliche Sichtbarkeit. Wolken, Wände und die Tatsache, dass die Venus unter dem Horizont steht, halten sie auf ihrer Bahn nicht auf.</p>
+<p>Der diskrete Kalenderalgorithmus ist exakt definiert: Dieselben Eingaben ergeben bei Anwendung derselben Regeln dasselbe Ergebnis. Dagegen beruht die Zuordnung eines physikalischen Zeitpunkts zu einem pastafarischen Tag gegenwärtig auf einem astronomischen Modell der Implementierung; das numerische astronomische Profil ist selbst noch nicht abschließend kanonisch festgelegt.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="advantages">
+<h2>Die herausragenden Vorzüge des Kalenders</h2>
+<ul>
+<li><strong>Ein Datum, das sich immer wieder neu berechnen lässt:</strong> Derselbe vergangene Tag kann morgen ein anderes pastafarisches Datum bekommen, weil auch der Ausführungstag weitergerückt ist. Man muss sich nicht mit einem alten Datum begnügen, das über längere Zeit brauchbar bleibt.</li>
+<li><strong>Geräumige Jahre:</strong> Ein Jahr kann 5,778 Tage dauern. Wer auf das nächste Jahr wartet, muss daher unter Umständen erheblich länger warten als gewöhnlich.</li>
+<li><strong>Monate, die Aufmerksamkeit verlangen:</strong> Aus der Angabe „Tag 119 des Monats“ folgt nicht, dass dessen Tag 120 morgen, nächste Woche oder auch nur bald stattfindet. Den nächsten Termin muss man berechnen.</li>
+<li><strong>Geografische Empfindlichkeit:</strong> Derselbe Augenblick kann an verschiedenen Orten unterschiedlichen lokalen pastafarischen Tagen angehören. Eine Reise in eine andere Stadt fügt der Terminabsprache somit noch eine Angabe hinzu, die man sich merken sollte.</li>
+<li><strong>Gedruckte Kalender werden nicht selbstzufrieden:</strong> Ein im Voraus erstellter Kalender kann nach einem Wechsel des Ausführungstags aufhören, die richtige Berechnung abzubilden. Es besteht also keine Gefahr, dass jemand jahrelang mit demselben Blatt Papier auskommt.</li>
+<li><strong>Sinnvolle Nutzung von Rechenleistung:</strong> Statt sich auf eine einfache, auf einen Blick verständliche Tabelle zu beschränken, bietet der Kalender dem Computer bei jeder Frage die Gelegenheit zu einer echten Berechnung.</li>
+<li><strong>Er hat Tage:</strong> Der Kalender beschäftigt sich mit Tagen. Diese Eigenschaft teilt er mit jedem Kalender überhaupt, und sie stellt sicher, dass niemand einen Kalender ohne Tage führen muss.</li>
+<li><strong>Die Tage erscheinen in einer Reihenfolge:</strong> Ein früherer Tag liegt vor einem späteren. Das ist eine grundlegende Leistung von Kalendern, die hier ohne Aufpreis erhältlich ist.</li>
+<li><strong>Man kann mit ihm Daten angeben:</strong> Der Kalender erlaubt es, einem Tag eine kalendarische Beschreibung zuzuweisen. Zwar ist das genau der Zweck von Kalendern, aber es gibt keinen Grund, eine nützliche Eigenschaft nicht zu erwähnen, wenn sie vorhanden ist.</li>
+</ul>
+<p>Und all dies ist in einem einzigen Kalender vereint, wie es eben vorkommt, wenn mehrere Eigenschaften zu demselben Kalender gehören.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="practical-consequences">
+<h2>Was bedeutet das in der Praxis?</h2>
+<p><strong>Ein gedruckter Kalender altert schlecht.</strong> Ein Wechsel des Ausführungstags kann die Grenzen der Jahre, Schnitzel und Monate verändern. Ein heute berechneter Almanach muss morgen nicht mehr stimmen.</p>
+<p><strong>Ein Ereignis bleibt dasselbe Ereignis.</strong> Eine Verabredung, eine Geburt oder ein historisches Geschehen muss an einem stabilen chronologischen Tag oder Zeitpunkt festgemacht werden. Anschließend kann man ihm je nach Ausführungstag und Beobachtungsort ein pastafarisches Datum zuweisen. Die Änderung der Bezeichnung verschiebt das Ereignis nicht in der Zeit.</p>
+<p><strong>Ein pastafarischer Geburtstag findet keineswegs einfach „einmal im Jahr“ statt.</strong> Um das nächste Auftreten desselben Monatsnamens mit demselben Monatstag oder desselben Schnitzelnamens mit demselben Schnitzeltag zu finden, muss man den Kalender durchsuchen. Ein benachbartes Jahr kann den benötigten Namen überhaupt nicht enthalten oder eine zu kurze Einheit aufweisen, um die gesuchte Tagesnummer zu erreichen.</p>
+<p><strong>Ein ganztägiges Ereignis dauert nicht unbedingt von Mitternacht bis Mitternacht.</strong> Ist es durch einen lokalen pastafarischen Tag definiert, gilt die örtliche Venus-Tagesgrenze. Wer es unbedacht als Ereignis von Mitternacht bis Mitternacht in einen bürgerlichen Kalender überträgt, könnte seine Bedeutung verändern.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="foundation-and-tablets">
+<h2>Gründungstag und Tag der Tafeln</h2>
+<p>Der Kalender hat zwei wichtige feste Bezugspunkte:</p>
+<dl>
+<dt><strong>Gründungstag</strong></dt>
+<dd>22. Dezember 41,222 v. Chr. im proleptischen gregorianischen Kalender.</dd>
+<dt><strong>Tag der Tafeln</strong></dt>
+<dd>15. Juni 763 v. Chr. im proleptischen julianischen Kalender, entsprechend dem 7. Juni 763 v. Chr. im proleptischen gregorianischen Kalender.</dd>
+</dl>
+<p>Zwischen ihnen liegen 14,777,149 Tage. Der Gründungstag ist ein rechnerischer Bezugspunkt, nicht „der erste Tag der Zeit“. Der Kalender erstreckt sich auch auf die Zeit davor.</p>
+<p>Der Tag der Tafeln ist der Überlieferung nach mit der Übergabe der Tafeln verbunden und wird in der historischen Berechnung dem Tag einer Sonnenfinsternis zur Zeit des Bur-Sagale zugeordnet. Beide Bezugspunkte bleiben fest, auch wenn sich der Ausführungstag ändert.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="calendar-math">
+<h2>Ein paar einfache mathematische Tatsachen</h2>
+<p>Es gibt 47 Monatsnamen, und jeder Monat kann höchstens Tag 123 erreichen. Somit sind <strong>5,781</strong> Kombinationen der Form „Monatsname + Tag im Monat“ möglich.</p>
+<p>Ein Jahr kann höchstens 5,778 Tage enthalten, und jeder Tag verwirklicht genau eine solche Kombination. Daher <strong>fehlen in jedem Jahr mindestens drei der möglichen Kombinationen</strong>. Selbst im längsten Jahr gibt es nicht genügend Tage, um alle zu verwirklichen.</p>
+<p>Sind Ausführungstag und Jahr bekannt, bezeichnet ein vollständiges Paar aus „Schnitzelname + Tag im Schnitzel“ oder „Monatsname + Tag im Monat“ höchstens einen Tag innerhalb dieses Jahres. Ein vollständiges pastafarisches Datum identifiziert zusammen mit dem Ausführungstag den abgefragten Tag deshalb eindeutig.</p>
+<p>Ohne Kenntnis des Ausführungstags muss ein vollständiges pastafarisches Datum dagegen für sich genommen keinen eindeutigen Abstand auf der Zeitachse festlegen. Dieselbe Fünferkombination kann in verschiedenen Berechnungskontexten auftreten.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="research">
+<h2>Was haben computergestützte Untersuchungen über den Kalender ergeben?</h2>
+<p>Neben der Prüfung der Regeln selbst wurden umfangreiche computergestützte Untersuchungen durchgeführt. Die folgenden Daten sind <strong>empirische Stichprobenergebnisse</strong>, keine kanonischen Gesetze.</p>
+<p>In einem Strukturatlas auf der Grundlage von 4,096 Ausführungstagen wurden 86,016 Jahresstrukturen untersucht:</p>
+<ul>
+<li>Die mittlere Jahreslänge lag in der Stichprobe bei rund 4,275 Tagen, der Median bei 4,343 Tagen;</li>
+<li>die durchschnittliche Schnitzelzahl pro Jahr betrug etwa 7.27;</li>
+<li>die durchschnittliche Zahl struktureller Monate betrug etwa 41.1;</li>
+<li>ein Monat umfasste im Durchschnitt etwa 104 ihm zugeordnete Tage, erstreckte sich gewöhnlich aber beinahe über das ganze Jahr;</li>
+<li>97.482% der zusammenhängenden Monatsabschnitte waren nur einen Tag lang;</li>
+<li>die gemessene Wahrscheinlichkeit, dass zwei chronologisch aufeinanderfolgende Tage demselben Monat angehören, lag bei lediglich etwa 2.998%.</li>
+</ul>
+<p>In einer separaten Untersuchung von „Tag-Jahr“-Wiederholungen wurden 4,096 Fälle, in denen der abgefragte Tag zugleich der Ausführungstag war, in beide Richtungen untersucht:</p>
+<ul>
+<li>Eine Wiederholung von <strong>Monatsname + Tag im Monat</strong> trat im Median bereits nach einem pastafarischen Jahr auf; 77.56% der Übereinstimmungen lagen im angrenzenden Jahr;</li>
+<li>eine Wiederholung von <strong>Schnitzelname + Tag im Schnitzel</strong> war viel weniger vorhersehbar: Der Median betrug drei pastafarische Jahre, der Mittelwert wurde jedoch von einem sehr langen Ausläufer der Verteilung beeinflusst;</li>
+<li>in der Stichprobe gab es einen Extremfall, bei dem die erste zukünftige Wiederkehr von „Akkad 3063“ erst nach 51,954 pastafarischen Jahren eintrat.</li>
+</ul>
+<p>Diese Befunde helfen zu verstehen, wozu der Kalender neigt. Sie machen aus einem Durchschnitt aber kein Gesetz: Dass die durchschnittliche Jahreslänge der Stichprobe einen bestimmten Wert hatte, verpflichtet kein einzelnes Jahr dazu, nahe diesem Wert zu liegen. Und ein Ergebnis, das in allen 4,096 untersuchten Fällen auftrat, ist allein noch kein mathematischer Beweis für sämtliche möglichen Eingaben.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="calculation">
+<h2>Wie wird der Kalender berechnet?</h2>
+<p>Hinter dem Datum steht ein exakt definierter diskreter Algorithmus. Er bildet aus Ausführungstag und abgefragtem Tag eine Folge von Zählwerten, führt diese durch den Mischmechanismus namens <strong>die Soße</strong>, erzeugt Tore, bestimmt die Jahres- und Schnitzelgrenzen, wählt Namen, erzeugt Monate und verflicht schließlich die Monatstage über das Jahr hinweg.</p>
+<p>Zu den genauen Einzelheiten gehören große Zahlen, Tropfen, Schüsseln, Rührvorgänge, Siegel und kombinatorische Auswahlmechanismen. Sie sind für die Implementierung und die formale Prüfung wichtig, zum Verständnis des Datums aber nicht nötig und werden deshalb hier nicht ausgeführt.</p>
+<p>Neben dem Algorithmus gibt es eine schnelle Rechen-Engine namens <strong>Pastafarian Calendar Seer</strong>. Der Seer ist auf schnelle Berechnungen ausgelegt; er ist keine kanonische Autorität und selbst auch keine normgerechte Implementierung sämtlicher Algorithmusschritte. Widerspricht sein Ergebnis der kanonisch vorgeschriebenen Ausgabe, liegt der Seer falsch.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="about-the-monster">
+<h2>Über das Monster</h2>
+<p>In der pastafarischen Erzählung ist das <strong>Fliegende Spaghettimonster</strong> das Wesen, das die Welt und die meisten Dinge darin erschaffen hat. Sein Körper besteht aus Nudeln und Fleischbällchen. Es kann fliegen, gewöhnliche Materie durchdringen und unsichtbar bleiben, wenn es ihm gelegen kommt.</p>
+<p>Das Monster kann Materie, Lebewesen, Himmelskörper und überaus komplexe Mechanismen erschaffen. Dazu muss es vor Beginn der Arbeit keinen geordneten Plan aufstellen. Oft fängt es mit etwas an, wendet sich etwas anderem zu, stellt fest, dass das Vorherige korrigiert werden müsste, und entscheidet dann, ob es die Korrektur vornimmt. Manchmal tut es das tatsächlich.</p>
+<p>Dieses Bild einer Schöpfung, die Schicht um Schicht entsteht, mitsamt Korrekturen, Ausnahmen und Regeln, die einfach bestehen bleiben, bildet auch den literarischen Hintergrund des Kalenders. Anders als die Erzählung ist die Berechnung selbst keine Improvisation: Bei vorgegebenen Eingaben liefert der Algorithmus genau ein festgelegtes Ergebnis.</p>
+<p>Die pastafarische Erzählung reicht weit über den Kalender hinaus und umfasst unter anderem Piraten, Kohlenhydrate, Gebete, die „Ich würde wirklich lieber nicht“-Gebote und weitere Traditionen.</p>
+<p class="about-actions"><a class="guide-link" href="./monster/de.html">Mehr über das Monster erfahren</a></p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="authority">
+<h2>Was ist kanonisch, was nur eine Erklärung?</h2>
+<p>Diese Seite ist eine <strong>Erklärungsseite</strong>. Ein Satz wird nicht allein dadurch zu einer neuen Regel, dass er hier steht.</p>
+<p>Der kanonische Inhalt wird durch das kanonische Textkorpus und die darin übernommenen Regeln bestimmt. Zwischen kanonischen Ausgaben der Schriftrolle besteht keine automatische Rangordnung, und eine Softwareimplementierung wird nicht allein deshalb zur Autorität, weil sie schnell oder weit verbreitet ist.</p>
+<p>Eine normgerechte Implementierung führt den kanonischen Algorithmus vollständig und Schritt für Schritt aus. Eine computergestützte Untersuchung kann ein Phänomen beschreiben, ein Muster entdecken oder einen Satz über den Algorithmus beweisen. Handelt es sich um eine Stichprobe statt um einen bewiesenen allgemeinen Satz, wird das ausdrücklich kenntlich gemacht.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="summary">
+<h2>Kurz gesagt</h2>
+<p>Der Pastafarische Kalender ist nicht leicht zu durchschauen: Das Datum hängt sowohl von dem Tag ab, nach dem man fragt, als auch von dem Tag, von dem aus man fragt.</p>
+<p>Das Jahr 5000 wird rund um den Ausführungstag gebildet. Schnitzel sind zusammenhängende Abschnitte; Monate bestehen aus Tagesmengen, die ineinander verflochten sein können. Kanonische Wochen gibt es nicht. Der lokale Tag wechselt nach dem Stand der Venus, nicht um Mitternacht.</p>
+<p>Hinter diesem ungewöhnlichen Aufbau steht ein präziser Algorithmus; darum herum rankt sich eine pastafarische Erzählung von einem Spaghettimonster, einer Schöpfung aus übereinandergeschichteten Arbeiten und einer unvernünftigen Menge Kohlenhydrate.</p>
+<p>Sind Ausführungstag, abgefragter Tag und örtlicher Kontext gegeben, gibt es genau eine Antwort.</p>
+</section>
