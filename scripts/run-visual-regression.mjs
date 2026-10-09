@@ -859,15 +859,19 @@ async function aboutPageSmoke(browser, baseURL, state) {
       assert.equal(await page.locator("html").getAttribute("dir"), "rtl");
       assert.equal(await page.locator("#article-content").getAttribute("lang"), "he");
       assert.equal(await page.locator("#calendar-workspace").count(), 0, "About page must not load calendar UI");
-      assert.ok(await page.locator("#about-toc-list a").count() >= 29, "About page TOC is incomplete");
+      const contentsIds = await page.locator("#about-toc-list a").evaluateAll((links) => links.map((link) => new URL(link.href).hash.slice(1)));
+      const sectionIds = await page.locator("#article-content [data-toc-section][id], #site-usage[data-toc-section][id]").evaluateAll((sections) => sections.map((section) => section.id));
+      assert.deepEqual(contentsIds, sectionIds, `About TOC at ${name} must match every visible section in order`);
+      assert.ok(sectionIds.includes("day-boundary") && sectionIds.includes("site-usage"), "About deep-link and guide must be in TOC");
       const tocOpen = await page.locator("#about-toc").evaluate((element) => element.open);
       assert.equal(tocOpen, name === "desktop", `About-page TOC default state is wrong for ${name}`);
       await assertNoPageOverflow(page, `about page ${name}`);
       await assertVisibleAndSized(page, [".about-toc", "#article-content", "#site-usage"]);
       const readingWidth = await page.locator("#article-content p").first().evaluate((element) => element.getBoundingClientRect().width);
       assert.ok(readingWidth <= 850, `About-page reading measure is too wide at ${name}: ${readingWidth}px`);
-      const kvOverflow = await page.locator(".about-kv-table-wrap").first().evaluate((element) => element.scrollWidth - element.clientWidth);
-      assert.ok(kvOverflow <= 1, `Key/value table should not require horizontal scrolling at ${name}: ${kvOverflow}px`);
+      // The editorial rebuild retired the old key/value tables; check the current article instead.
+      const articleOverflow = await page.locator("#article-content").evaluate((element) => element.scrollWidth - element.clientWidth);
+      assert.ok(articleOverflow <= 1, `About article should not require horizontal scrolling at ${name}: ${articleOverflow}px`);
       state.layoutChecks.push({ page: "about", viewport: name, deepLink: "#day-boundary", result: "PASS" });
     }, state);
   }
