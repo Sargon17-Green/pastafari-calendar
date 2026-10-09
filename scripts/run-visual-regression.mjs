@@ -747,6 +747,7 @@ async function engineErrorState(browser, baseURL, state) {
       status: 200,
       contentType: "application/javascript",
       body: `
+        self.postMessage({ kind: "ready", degraded: false });
         self.addEventListener("message", (event) => {
           const id = event.data?.id;
           self.postMessage({
