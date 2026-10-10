@@ -1,0 +1,552 @@
+<!-- Hebrew semantic-master candidate, rebuilt for an external reader. -->
+<div class="about-section about-lead" id="about-calendar">
+<p><strong>La Pastafaria Kalendaro</strong> estas neintuicia kalendaro kun intence nekutima strukturo: la dato de tago dependas ne nur de la tago, kiun oni volas priskribi, sed ankaŭ de la tago, de kiu oni faras la kalkulon.</p>
+<p>Ĝi havas jarojn, kotletojn kaj monatojn, sed la jaroj ne havas fiksan longon, la kotletoj kaj monatoj ne konsistigas la saman dividon, la monatoj povas malaperi kaj reaperi dum la jaro, kaj en ĝi ne ekzistas kanonaj semajnoj.</p>
+<p>Ĉi tiu paĝo celas klarigi, kio estas la kalendaro, kiel oni legas daton kaj kion ĝia strukturo signifas praktike. La matematikaj kaj kriptografiaj detaloj de la realigo troviĝas en la teknika dokumentaro, sed oni ne bezonas ilin por kompreni la kalendaron.</p>
+</div>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="date-parts">
+<h2>Kia estas Pastafaria dato?</h2>
+<p>Pastafaria dato havas precize kvin partojn:</p>
+<ol>
+<li><strong>Jaro ekde la kreado de la mondo</strong>;</li>
+<li><strong>Nomo de la kotleto</strong>;</li>
+<li><strong>Tago en la kotleto</strong>;</li>
+<li><strong>Nomo de la monato</strong>;</li>
+<li><strong>Tago en la monato</strong>.</li>
+</ol>
+<p>Alivorte, plena dato indikas, en kiu jaro troviĝas la tago, en kiu kotleto ĝi troviĝas kaj ĝian lokon ene de ĝi, kaj al kiu monato ĝi apartenas kaj kioma apero de tiu monato ĝi estas.</p>
+<p>La kalkultago, la loko de la observanto kaj aliaj teknikaj detaloj povas esti nepraj por <em>kalkuli</em> la daton, sed ili ne konsistigas sesan, sepan aŭ okan parton de la dato mem.</p>
+<p>Ankaŭ la prezenta aranĝo ne ŝanĝas la nombron de partoj. Se la retejo presas la kvin datumojn sur tri linioj, restas kvin datumoj; linisalto estas tipografia ago, ne la naskiĝo de nova kalendara kampo.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="working-day">
+<h2>Kial la sama tago povas ricevi alian daton?</h2>
+<p>En ĉiu kalkulo estas du tagoj:</p>
+<ul>
+<li><strong>La kalkultago</strong>, la tago de kiu oni faras la kalkulon;</li>
+<li><strong>La pridemandata tago</strong>, la tago, kies daton oni volas scii.</li>
+</ul>
+<p>Se oni signas la kalkultagon per <code>c</code> kaj la pridemandatan tagon per <code>t</code>, la dato estas <code>F(c,t)</code>, ne <code>F(t)</code>.</p>
+<p>Tial la sama kronologia tago povas ricevi alian Pastafarian prezenton kiam oni ŝanĝas la kalkultagon. La tago mem ne moviĝas; ŝanĝiĝas nur ĝia Pastafaria priskribo.</p>
+<p>Kiam <code>c=t</code>, la tago ĉiam troviĝas en la jaro <strong>5000</strong>. La jaro 5000 ne estas fiksa historia periodo: ĝi estas rekonstruata rilate al la kalkultago, kaj tial ankaŭ pliaj tagoj ĉirkaŭ la kalkultago povas aparteni al ĝi.</p>
+<p>Ekzemple, se certa tago estas sia propra kalkultago, ĝi troviĝas en la jaro 5000. Se oni denove kalkulas la sekvan tagon, kiam tiu morgaŭa tago fariĝas la nova kalkultago, ankaŭ ĝi troviĝas en la jaro 5000. Ne temas pri du kontraŭdiraj asertoj pri la sama «historia jaro»; en ĉiu kalkulo oni elektas novan bazan jaron.</p>
+<p>Jaroj numeritaj super 5000 situas en la estonteca direkto rilate al la kalkultago, kaj jaroj numeritaj sub 5000 situas en la pasinteca direkto. Ekzistas ankaŭ jaro 0, kaj post ĝi jaroj kun negativaj nombroj.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="year-structure">
+<h2>El kio konsistas jaro?</h2>
+<p>Pastafaria jaro povas enhavi inter <strong>252</strong> kaj <strong>5,778</strong> tagoj. Ambaŭ ekstremoj estas inkluzivitaj: jaro kun 252 tagoj estas valida, kaj jaro kun 5,778 tagoj ankaŭ estas valida; jaro kun 251 aŭ 5,779 tagoj ne estas valida laŭ la nunaj kanonaj reguloj.</p>
+<p>Tiuj limoj estas parto de la kalendaro. La jaro ne provas kongrui kun suna jaro, luna jaro, sezono, lerneja jaro aŭ la pacienco de tiu, kiu atendas la venontan novjaron.</p>
+<p>Ĉiu jaro estas dividita laŭ du malsamaj sistemoj:</p>
+<ul>
+<li><strong>6–17 kotletoj</strong>. Ĉiu kotleto estas kontinua segmento de tagoj kaj havas longon de almenaŭ 42 tagoj.</li>
+<li><strong>3–47 strukturaj monatoj</strong>. Ĉiu monato havas 4–123 tagojn apartenantajn al ĝi, sed tiuj tagoj ne nepre estas sinsekvaj.</li>
+</ul>
+<p>En la kalendaro ne ekzistas kanona semajnosistemo. Vicoj kaj kolumnoj montrataj en la retejo estas nur prezenta maniero; tio, ke du tagoj aperas unu apud la alia, ne igas ilin anoj de la sama «Pastafaria semajno».</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="woven-months">
+<h2>Kion signifas «interplektita monato»?</h2>
+<p>Kotleto estas sinsekvo: se hodiaŭ estas la 250-a tago de kotleto kaj morgaŭ ankoraŭ apartenas al la sama kotleto, morgaŭ estos ĝia 251-a tago.</p>
+<p>Monato funkcias alimaniere. La 18-a tago de certa monato estas <strong>la 18-a fojo, kiam tiu monato aperas dum la jaro</strong>. Ĝi ne devas veni unu tagon post la 17-a tago.</p>
+<blockquote>
+<p>Monato A, tago 14<br/>Monato B, tago 9<br/>Monato A, tago 15</p>
+</blockquote>
+<p>Tial monato povas etendiĝi tra granda parto de la jaro, pasi tra pluraj kotletoj kaj interplektiĝi kun aliaj monatoj. Unu kotleto povas same enhavi tagojn apartenantajn al multaj monatoj.</p>
+<p>La longo de monato estas la suma nombro de tagoj apartenantaj al ĝi, ne la nombro de tagoj pasintaj inter ĝia unua kaj lasta aperoj. Monato kun 104 tagoj povas do kronologie etendiĝi tra miloj da tagoj.</p>
+<aside class="about-note">
+<h3>Kial la 15-a tago venas post la 14-a?</h3>
+<p>Ĉar 15 estas la sekva entjero post 14. Tio, ke inter la du aperoj de la monato troviĝis tago de alia monato, ne ŝanĝas la kalkulon: la unua monato jam havis 14 aperojn; ĝia sekva apero estas la 15-a, kaj tial ĝia numero estas 15.</p>
+<p>Same, se post la 15-a tago de tiu monato aperas kvar tagoj de aliaj monatoj, la sekva apero de la origina monato ankoraŭ estos ĝia 16-a tago. La kvar interaj tagoj estas kalkulataj kronologie en la kalendaro, sed ne apartenas al tiu monato, kaj tial ne pliigas <em>ĝian</em> tagonombrilon. Ĝuste pro tio «la sekva tago en la monato» kaj «morgaŭ» estas du malsamaj nocioj.</p>
+</aside>
+<p>El tio sekvas ankaŭ, ke la fino de monato ne nepre estas proksima en la tempo. Monato povas esti atinginta la tagon 119 el 120, kaj tamen ĝia 120-a tago eble aperos multe pli malfrue.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="canonical-names">
+<h2>Nomoj de la kotletoj kaj monatoj</h2>
+<p>La kalendaro havas <strong>17 nomojn de kotletoj</strong> kaj <strong>47 nomojn de monatoj</strong>. Ene de jaro nomo ne ripetiĝas dufoje en la sama familio. Ne ĉiuj nomoj devas aperi en ĉiu jaro: jaro povas uzi nur parton de la katalogo.</p>
+<p>La listoj prezentas la nomojn mem. Alklako de nomo aŭ de la malferma simbolo apud ĝi montras ĝian precizan signifon kaj koncernajn kanonajn rimarkojn. La nomo ne estas kodo indikanta la longon de la unuo nek prognozo pri tio, kio okazos en ĝi.</p>
+<h3>La 17 kotletoj</h3>
+<ul class="about-name-list about-name-disclosure-list">
+<li>
+<details class="about-name-details">
+<summary>Bronzo</summary>
+<p>La metala alojo bronzo, konsistanta ĉefe el kupro kaj stano. Ĉi tie temas pri la nomo de la materialo, ne nur pri koloro.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Vulpo</summary>
+<p>Vulpo, mamulo el la familio de kanisedoj. La nomo ne indikas iun apartan specion de vulpo.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Reno</summary>
+<p>La organo reno, kiu filtras la sangon kaj partoprenas en la reguligo de la ekvilibro de likvaĵoj kaj saloj en la korpo.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Lagaŝo</summary>
+<p>Lagaŝo, antikva sumera urboŝtato en suda Mezopotamio.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Penso</summary>
+<p>Penso, tio estas la enhavo de pensado aŭ la ago de pensado mem.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Kvar partoj el naŭ</summary>
+<p>La frakcio 4/9, kvar egalaj partoj el naŭ. La tuta esprimo estas unu nomo. Ĝia ĉefa nombra signifo estas precize 4/9; nur je la leksika nivelo estas permesata ankaŭ nombra realigo x, kiu plenumas <code>|x − 4/9| ≤ e/103</code>, inkluzive de la limo. La esprimo <code>e/103</code> restas precize tia kaj ne estas anstataŭigata per dekuma proksimumaĵo. Tiu permeso ŝanĝas nek nombrilojn, nek indeksojn, nek identecon, nek iun ajn kalkulon de la kalendaro.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Palguraŝ</summary>
+<p>Elpensita sinsekvo de silaboj. Ĝi ne havas alian vortaran signifon, kiun necesus interpreti; ĝi estas la nomo mem.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Papiruscipero</summary>
+<p>La papiruscipero, la planto, el kiu oni faris papiruson en la antikveco.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Fasko</summary>
+<p>Densa grupo aŭ fasko da eroj; en la hebrea la vorto estas aparte ligata al grapolo da vinberoj.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Skorpio</summary>
+<p>Skorpio, artropodo el la araknidoj, kun pinĉiloj kaj pikilo ĉe la vosto.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Cindro</summary>
+<p>La pulvora restaĵo post brulado.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Tritiko</summary>
+<p>La grenplanto tritiko, el kies grajnoj oni produktas interalie farunon.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Rivero</summary>
+<p>Relative granda natura akvofluo fluanta laŭ fluejo.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Rido</summary>
+<p>Voĉa kaj korpa reago kutime ligata al amuzo, ĝojo aŭ humuro.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Akado</summary>
+<p>Akado, la antikva mezopotamia urbo, laŭ kiu oni nomis ankaŭ la Akadan Imperion kaj la regionon; la preciza loko de la urbo ankoraŭ ne estas certe identigita.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Korno</summary>
+<p>Korno en la senco de malmola elstaraĵo kreskanta el la kapo de iuj bestoj, ne lumradio.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>La malplena kruĉo</summary>
+<p>Kruĉo, kiu enhavas nenion. «Malplena» priskribas tion, kio troviĝas ene de la kruĉo, nome nenio, kaj ne nuligas la ekziston de la kruĉo. Malplena kruĉo ankoraŭ povas esti tuta kruĉo, kun muroj, fundo kaj aperturo; ĝi simple ne estas plena de akvo, vino, oleo aŭ alia substanco. Same la nomo ne signifas, ke la kotleto ne enhavas tagojn: kotleto nomata «La malplena kruĉo» havas tagojn kiel ĉiu alia kotleto, kaj nur la kruĉo en la nomo estas malplena.</p>
+</details>
+</li>
+</ul>
+<h3>La 47 monatoj</h3>
+<ul class="about-name-list about-name-disclosure-list">
+<li>
+<details class="about-name-details">
+<summary>Argilo</summary>
+<p>Fajngrajna tera materialo, kiu fariĝas plaste formebla kiam ĝi estas malseka kaj malmoliĝas per sekigado aŭ bruligo.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Granato</summary>
+<p>La frukto de la granatarbo, ronda frukto kun malmola ŝelo kaj multaj sukoplenaj semoj.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Kubuto</summary>
+<p>La artiko inter la supra brako kaj la antaŭbrako.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Envio</summary>
+<p>Malĝojo aŭ malkontento pro avantaĝo, atingo aŭ bonaĵo posedata de alia homo, foje kun deziro mem posedi ĝin.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Eriduo</summary>
+<p>Eriduo, antikva sumera urbo en suda Mezopotamio.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Dentopasto</summary>
+<p>Pasteca substanco uzata por purigi dentojn dum dentobrosado. La nomo rilatas al la pasto mem, ne al la dentobroso nek al la brosado.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Tri partoj el kvin</summary>
+<p>La frakcio 3/5, tri egalaj partoj el kvin. La tuta esprimo estas unu nomo. Ĝia ĉefa nombra signifo estas precize 3/5; nur je la leksika nivelo estas permesata ankaŭ nombra realigo x, kiu plenumas <code>|x − 3/5| ≤ 1/367</code>, inkluzive de la limo. La limo estas preciza valoro, ne dekuma proksimumaĵo. Tiu permeso ŝanĝas nek nombrilojn, nek indeksojn, nek identecon, nek iun ajn kalkulon de la kalendaro.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Karŝumav</summary>
+<p>Elpensita sinsekvo de silaboj. Ĝi ne havas kaŝitan vortaran signifon; ĝi estas la nomo mem.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Leopardo</summary>
+<p>La makulhava leopardo; ne temas pri tigro.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Stano</summary>
+<p>La kemia elemento stano.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Nebulo</summary>
+<p>Koncentriĝo de etaj akvogutetoj en la aero proksime al la tersurfaco; ne temas pri fumo.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Olibano</summary>
+<p>Aroma rezino el arboj de la familio de olibanoarboj, uzata por parfumado kaj incensado.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Ŝpinilo</summary>
+<p>Ilo uzata por ŝpini fibrojn en fadenon.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Ripo</summary>
+<p>Unu el la ostoj de la torako.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Karobo</summary>
+<p>La karobarbo aŭ ĝia frukto.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Uruko</summary>
+<p>Uruko, antikva sumera urbo en Mezopotamio.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Honto</summary>
+<p>Sento de malkomforto aŭ doloro pro perceptita difekto, malsukceso aŭ embarasa konduto.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Kamelo</summary>
+<p>La mamulo kamelo, adaptiĝinta al vivo en aridaj regionoj.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Kupro</summary>
+<p>La kemia elemento kupro.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Puto</summary>
+<p>Fosaĵo aŭ ŝakto fosita ĝis subtera akvofonto por ĉerpi akvon el ĝi.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Ovoflavo</summary>
+<p>La flava parto de birda ovo.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Stelo</summary>
+<p>Ĉielkorpo kiel la Suno, kiu elsendas energion pro fizikaj procezoj okazantaj en ĝia interno.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Mielo</summary>
+<p>La dolĉa substanco, kiun abeloj produktas el nektaro aŭ plantaj sekreciaĵoj.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Lieno</summary>
+<p>La organo lieno, kiu apartenas interalie al la imunsistemo kaj partoprenas en la filtrado de sango. Krom la ordinara signifo ekzistas intenca kanona plivastigo, kiu havas nenian biologian, etimologian aŭ kulturan rilaton al la lieno, kaj tian rilaton oni ne elpensu: la nomo inkluzivas ankaŭ lakton de ina unugiba kamelo, ligitan al ĝia unua viva ido, melkitan post ordinara videbla sunsubiro kaj antaŭ ol la centro de la Suno atingas la geometrian alton de <code>−6°</code>, kaj antaŭ ol la ido unuafoje staris per propraj fortoj. Antaŭaj gravedecoj finiĝintaj per aborto aŭ mortnaskiĝo ne nuligas la kondiĉon; se la ido mortas antaŭ ol ĝi staris per propraj fortoj, la kondiĉo ne fermiĝas pro tio. La ujo devas esti ceramika, kun ruĝa glazuro kaj kapacito de 180–220 mL, inkluzive de ambaŭ limoj de la kapacito. Ne estas postulate, ke la melkado okazu rekte el la mamaro en la ujon, kaj la nombra kriterio estas la kapacito de la ujo, ne la kvanto da lakto efektive kolektita. Restas intenca kanona nedecido pri tio, ĉu la precizaj limmomentoj de la tempa intervalo mem estas inkluzivitaj.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Kalkŝtono</summary>
+<p>Sedimenta roko konsistanta plejparte el kalcia karbonato.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Ĝojo</summary>
+<p>Pozitiva emocio de feliĉo, kontento aŭ ĝojego.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Figo</summary>
+<p>La frukto de la figarbo aŭ la figarbo mem.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Ninevo</summary>
+<p>Ninevo, la antikva asiria urbo, kiu situis ĉe la bordo de Tigriso, kontraŭ la nuna Mosulo.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Rano</summary>
+<p>Senvosta amfibio el la grupo, kiu inkluzivas ranojn kaj bufojn.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Gudro</summary>
+<p>Malhela, viskoza substanco uzata interalie por hermetika sigelado; temas pri densa gudra substanco, ne pri ĝenerala nomo por ĉia asfalto.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Lumilo</summary>
+<p>Lumiga aparato. Ne nepre temas specife pri vakskandelo kun meĉo.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>La fermita pordo</summary>
+<p>Pordo en fermita stato. Fermita pordo plu estas pordo: ĝi ne fariĝas muro, ne malaperas kaj ne nepre estas ŝlosita. «Fermita» signifas, ke la aperturo, por kies malfermado ĝi estas destinita, estas nun barita de la pordo; «ŝlosita» estas plia aserto, kiu ne apartenas al la nomo. Do ankaŭ pordo fermita sen turni ŝlosilon plene respondas al la nomo «La fermita pordo».</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Sezamo</summary>
+<p>La sezamplanto aŭ ĝiaj semoj, el kiuj oni produktas interalie sezamoleon.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Nuko</summary>
+<p>La malantaŭa parto de la kolo.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Arĝento</summary>
+<p>La kemia elemento arĝento. Ne temas pri mono kiel pagrimedo.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Suzo</summary>
+<p>Suzo, la antikva urbo en Elamo kaj Persio. Ne temas pri la floro lilio.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Ŝtormo</summary>
+<p>Ŝtorma veterstato, kutime kun fortaj ventoj kaj foje kun precipitaĵo, fulmoj aŭ akompanaj fenomenoj.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Azeno</summary>
+<p>La malsovaĝigita mamulo azeno.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Faruno</summary>
+<p>Pulvoro akirata per muelado de grajnoj aŭ simila planta materialo; en la ordinara kunteksto temas pri grenfaruno.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Bedaŭro</summary>
+<p>Malĝojo pro ago, elekto aŭ rezulto en la pasinteco.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Babilono</summary>
+<p>Babilono, la antikva mezopotamia urbo ĉe la rivero Eŭfrato; ĉi tie temas pri la loknomo.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Lango</summary>
+<p>La muskola organo en la buŝo. Ne temas pri «lango» en la senco de lingvo.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Lino</summary>
+<p>La linplanto kaj ĝiaj fibroj, uzataj interalie por produkti ŝtofon.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Salo</summary>
+<p>La sala substanco uzata interalie en manĝaĵoj, en la ĉiutaga kunteksto ĉefe natria klorido. Ne temas pri maristo, ŝipano.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Piro</summary>
+<p>La frukto piro.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Pafarko</summary>
+<p>La armilo, kies ŝnuro estas streĉata por pafi sagon. Ne temas pri ĉielarko.</p>
+</details>
+</li>
+<li>
+<details class="about-name-details">
+<summary>Sablo</summary>
+<p>Grajna materialo konsistanta el malgrandaj partikloj de rokoj kaj mineraloj. Ne temas pri «profana» kontraste al «sankta», nek pri labortago.</p>
+</details>
+</li>
+</ul>
+<p>Por tradukoj al aliaj lingvoj oni povas uzi alian norman formon de la sama nomo. Traduko aŭ transskribo ne kreas novan kotleton aŭ monaton; ĝi montras la saman lingvan enton en alia formo. La normajn formojn determinas la kanono kaj la lingvaj reguloj akceptitaj en ĝi.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="day-boundary">
+<h2>Kiam ŝanĝiĝas la tago?</h2>
+<p>Loka Pastafaria tago ne ŝanĝiĝas je noktomezo. Ĝian limon difinas <strong>la malsupra meridiana kulmino de la centro de Venuso ĉe la loka meridiano</strong>: la momento, kiam la centro de Venuso trapasas la meridianon de la observanto sur ĝia subhorizonta flanko.</p>
+<p>Tial gravas la loko de la observanto. Du homoj en malsamaj lokoj povas, en la sama fizika momento, esti asignitaj al du malsamaj lokaj Pastafariaj tagoj. Kiam oni iras al alia urbo, oni ne plu uzas la tagolimon de la antaŭa urbo.</p>
+<p>La limo dependas de la kalkulita orbito de Venuso, ne de tio, ĉu la observanto efektive vidas ĝin. Nuboj, muroj aŭ la fakto, ke Venuso troviĝas sub la horizonto, ne haltigas ĝian orbitadon.</p>
+<p>La diskreta algoritmo de la kalendaro estas precize difinita: la samaj enigaĵoj, prilaboritaj laŭ la samaj reguloj, donas la saman rezulton. Kontraste, la konvertado de fizika momento al Pastafaria tago nuntempe uzas astronomian modelon de la programrealigo; la astronomia nombra profilo mem ankoraŭ ne estas fermita kanona difino.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="advantages">
+<h2>Elstaraj avantaĝoj de la kalendaro</h2>
+<ul>
+<li><strong>Dato, kiun oni povas rekalkuli ree kaj ree:</strong> La sama pasinta tago povas morgaŭ ricevi alian Pastafarian daton, ĉar ankaŭ la kalkultago antaŭeniris. Ne necesas kontentiĝi per malnova dato, kiu restas utila dum longa tempo.</li>
+<li><strong>Spacohavaj jaroj:</strong> Jaro povas atingi 5,778 tagojn, do homo atendanta la sekvan jaron eble devos atendi multe pli longe ol kutime.</li>
+<li><strong>Monatoj postulantaj atenton:</strong> Scii, ke hodiaŭ estas la 119-a tago de monato, ne signifas, ke ĝia 120-a tago okazos morgaŭ, venontsemajne aŭ eĉ baldaŭ. La sekvan okazon oni devas kalkuli.</li>
+<li><strong>Geografia sentemo:</strong> La sama momento povas aparteni al malsamaj lokaj Pastafariaj tagoj en malsamaj lokoj. Vojaĝo al alia urbo do aldonas plian detalon, kiun indas memori dum kunordigado.</li>
+<li><strong>Presitaj kalendaroj ne povas memkontentiĝi:</strong> Antaŭe preparita kalendaro povas ĉesi reprezenti la ĝustan kalkulon post ŝanĝo de la kalkultago, kaj do ne estas risko, ke iu kontentiĝu per la sama paperfolio dum jaroj.</li>
+<li><strong>Utila uzo de komputila kalkulpovo:</strong> Anstataŭ kontentiĝi per simpla tabelo komprenebla per unu rigardo, la kalendaro donas al la komputilo ŝancon fari efektivan kalkulon ĉiufoje kiam oni volas respondon.</li>
+<li><strong>Ĝi enhavas tagojn:</strong> La kalendaro temas pri tagoj. Tiun econ ĝi dividas kun ĉiu ajn kalendaro, kaj ĝi garantias, ke la uzanto ne devos administri kalendaron sen tagoj.</li>
+<li><strong>La tagoj aperas en ordo:</strong> Pli frua tago troviĝas antaŭ pli malfrua tago. Tio estas fundamenta atingo de kalendaroj, kaj ĉi-okaze ĝi estas havebla sen aldona pago.</li>
+<li><strong>Oni povas indiki datojn per ĝi:</strong> La kalendaro ebligas atribui kalendaran priskribon al tago. Kvankam ĝuste por tio kalendaroj ekzistas, ne estas kialo ne mencii utilan econ kiam ĝi ĉeestas.</li>
+</ul>
+<p>Kaj ĉio ĉi-supre venas kune en unu kalendaro, kiel okazas kiam pluraj ecoj apartenas al la sama kalendaro.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="practical-consequences">
+<h2>Kion tio signifas praktike?</h2>
+<p><strong>Presita kalendaro malbone eltenas malnoviĝon.</strong> Ŝanĝo de la kalkultago povas ŝanĝi la limojn de jaroj, kotletoj kaj monatoj. Almanako kalkulita hodiaŭ ne nepre estas la ĝusta almanako por morgaŭ.</p>
+<p><strong>Evento restas la sama evento.</strong> Renkontiĝo, naskiĝo aŭ historia okazaĵo devas esti ankrita al stabila kronologia tago aŭ momento; oni povas poste prezenti ĝian Pastafarian daton laŭ la kalkultago kaj la loko de la observanto. Ŝanĝi la etikedon ne movas la eventon tra la tempo.</p>
+<p><strong>Pastafaria naskiĝtago tute ne sekvas regulon «unufoje jare».</strong> Por trovi la sekvan aperon de la sama monatonomo kaj monatotago, aŭ de la sama kotletonomo kaj kotletotago, necesas serĉi en la kalendaro. Apuda jaro povas tute ne enhavi la bezonatan nomon aŭ enhavi unuon tro mallongan por atingi la petitan tagonumeron.</p>
+<p><strong>Tuttaga evento ne nepre daŭras de noktomezo ĝis noktomezo.</strong> Se evento estas difinita laŭ loka Pastafaria tago, ĝia limo estas la loka limmomento laŭ Venuso. Naiva eksportado al civila kalendaro kiel evento de noktomezo ĝis noktomezo povas ŝanĝi ĝian signifon.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="foundation-and-tablets">
+<h2>La Fondotago kaj la Tago de la Tabuloj</h2>
+<p>La kalendaro havas du gravajn fiksajn ankrojn:</p>
+<dl>
+<dt><strong>Fondotago</strong></dt>
+<dd>La 22-a de decembro 41,222 a.K. laŭ la prolepsa gregoria kalendaro.</dd>
+<dt><strong>Tago de la Tabuloj</strong></dt>
+<dd>La 15-a de junio 763 a.K. laŭ la prolepsa julia kalendaro, nome la 7-a de junio 763 a.K. laŭ la prolepsa gregoria kalendaro.</dd>
+</dl>
+<p>La distanco inter ili estas 14,777,149 tagoj. La Fondotago estas kalkula ankro; ĝi ne estas «la unua tago de la tempo», kaj la kalendaro etendiĝas ankaŭ antaŭ ĝi.</p>
+<p>La Tago de la Tabuloj estas tradicie ligata al la transdono de la tabuloj kaj en historia kalkulado estas identigita kun la tago de suneklipso en la epoko de Bur-Sagale. Ambaŭ ankroj restas fiksaj ankaŭ kiam la kalkultago ŝanĝiĝas.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="calendar-math">
+<h2>Kelkaj simplaj matematikaj faktoj</h2>
+<p>Estas 47 monatonomoj, kaj ĉiu monato povas atingi maksimume la tagon 123. Sekve ekzistas <strong>5,781</strong> eblaj kombinaĵoj de la formo «monatonomo + tago en la monato».</p>
+<p>Jaro povas enhavi maksimume 5,778 tagojn, kaj ĉiu tago realigas unu tian kombinaĵon. Tial <strong>en ĉiu jaro mankas almenaŭ tri el la eblaj kombinaĵoj</strong>. Eĉ la plej longa jaro ne havas sufiĉe da tagoj por realigi ĉiujn.</p>
+<p>Kiam oni konas la kalkultagon kaj la jaron, plena paro «kotletonomo + tago en la kotleto» aŭ «monatonomo + tago en la monato» indikas maksimume unu tagon en tiu jaro. Tial plena Pastafaria dato kune kun la kalkultago identigas la pridemandatan tagon unusence.</p>
+<p>Kontraste, sen kono de la kalkultago plena Pastafaria dato ne nepre identigas per si mem unu solan distancon laŭ la tempakso. La sama kvinopo povas aperi en malsamaj kalkulkuntekstoj.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="research">
+<h2>Kion trovis komputilaj esploroj pri la kalendaro?</h2>
+<p>Krom la kontrolado de la reguloj mem, oni faris grandajn komputilajn esplorojn pri la kalendaro. La jenaj datumoj estas <strong>empiriaj trovaĵoj el specimeno</strong>, ne kanonaj leĝoj.</p>
+<p>En struktura atlaso konstruita el 4,096 kalkultagoj, en kiu oni ekzamenis 86,016 jarstrukturojn:</p>
+<ul>
+<li>La averaĝa jarlongo en la specimeno estis proksimume 4,275 tagoj, kaj la mediano 4,343 tagoj;</li>
+<li>La averaĝa nombro de kotletoj en jaro estis proksimume 7.27;</li>
+<li>La averaĝa nombro de strukturaj monatoj estis proksimume 41.1;</li>
+<li>Monato enhavis averaĝe ĉirkaŭ 104 tagojn apartenantajn al ĝi, sed kutime etendiĝis preskaŭ tra la tuta jaro;</li>
+<li>97.482% de la kontinuaj segmentoj de monato estis longaj nur unu tagon;</li>
+<li>La mezurita probablo, ke du kronologie apudaj tagoj apartenu al la sama monato, estis nur ĉirkaŭ 2.998%.</li>
+</ul>
+<p>En aparta esploro pri ripetiĝoj de «tago-jaro», en kiu oni ekzamenis 4,096 memdatojn en ambaŭ tempaj direktoj:</p>
+<ul>
+<li>Ripeta kongruo de <strong>monatonomo + tago en la monato</strong> aperis laŭ la mediano jam post unu Pastafaria jaro; 77.56% de la kongruoj okazis en la apuda jaro;</li>
+<li>Ripeta kongruo de <strong>kotletonomo + tago en la kotleto</strong> estis multe malpli antaŭvidebla: la mediano estis tri Pastafariaj jaroj, sed la averaĝon forte influis tre longa vosto;</li>
+<li>En la specimeno aperis ekstrema okazo, en kiu la unua estonta ripetiĝo de «Akado 3063» troviĝis je distanco de 51,954 Pastafariaj jaroj.</li>
+</ul>
+<p>Tiuj trovaĵoj utilas por kompreni, kion la kalendaro emas fari. Ili ne transformas averaĝon en leĝon: la fakto, ke la specimena averaĝa jarlongo havis certan valoron, ne devigas iun apartan jaron havi proksimume tiun longon, kaj rezulto trovita en ĉiuj 4,096 kazoj ne estas per si mem matematika pruvo por ĉiuj eblaj enigaĵoj.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="calculation">
+<h2>Kiel oni kalkulas la kalendaron?</h2>
+<p>Malantaŭ la dato troviĝas precize difinita diskreta algoritmo. Ĝi produktas serion da nombroj el la kalkultago kaj la pridemandata tago, pasigas ilin tra la miksomekanismo nomata <strong>la saŭco</strong>, kreas pordegojn, elektas la jarajn kaj kotletajn limojn, elektas nomojn, kreas monatojn kaj fine interplektas la monatotagojn laŭlonge de la jaro.</p>
+<p>La precizaj detaloj inkluzivas grandajn nombrojn, gutojn, bovlojn, kirlojn, sigelojn kaj kombinatoriajn elektomekanismojn. Ili gravas por programrealigo kaj formala kontrolado, sed ne necesas por kompreni la signifon de la dato, kaj tial ili ne estas ĉi tie detale priskribitaj.</p>
+<p>Apud la algoritmo ekzistas rapida kalkulilo nomata <strong>Pastafarian Calendar Seer</strong>. La Seer celas kalkuli rapide; ĝi ne estas la aŭtoritata fonto kaj mem ne estas norma realigo de ĉiuj paŝoj de la algoritmo. Se ĝia rezulto kontraŭdiras la rezulton postulatan de la kanono, eraras la Seer.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="about-the-monster">
+<h2>Pri la Monstro</h2>
+<p>Laŭ la Pastafaria rakonto, <strong>la Fluganta Spageta Monstro</strong> estas la estaĵo, kiu kreis la mondon kaj la plej multajn aferojn en ĝi. Ĝia korpo konsistas el nudeloj kaj viandbuloj, kaj ĝi kapablas flugi, trapasi ordinaran materion kaj resti nevidebla kiam tio konvenas al ĝi.</p>
+<p>La Monstro povas krei materion, vivulojn, ĉielkorpojn kaj tre kompleksajn mekanismojn. Tiu kapablo ne postulas, ke ĝi pretigu ordigitan planon antaŭ ol komenci la laboron. Ofte ĝi komencas unu aferon, transiras al alia, malkovras, ke la antaŭa bezonas riparon, kaj decidas, ĉu ripari ĝin. Foje ĝi efektive riparas.</p>
+<p>Tiu bildo de kreado konstruata tavolo post tavolo, kun riparoj, esceptoj kaj reguloj restigitaj surloke, estas ankaŭ la literatura fono de la kalendaro. Male al la rakonto, la kalkulo mem ne estas improvizita: por donitaj enigaĵoj la algoritmo liveras unu difinitan respondon.</p>
+<p>La Pastafaria rakonto estas multe pli ampleksa ol la kalendaro kaj inkluzivas interalie piratojn, karbonhidratojn, preĝadon, «Mi vere preferus, ke vi ne» kaj aliajn tradiciojn.</p>
+<p class="about-actions"><a class="guide-link" href="./monster/eo.html">Al la pli ampleksa klarigo pri la Monstro</a></p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="authority">
+<h2>Kio estas kanona, kaj kio estas nur klarigo?</h2>
+<p>Ĉi tiu paĝo estas <strong>klariga paĝo</strong>. Ĝi ne kreas novan regulon nur ĉar frazo aperas en ĝi.</p>
+<p>La kanonan enhavon determinas la kanona tekstaro kaj la reguloj akceptitaj en ĝi. Inter kanonaj eldonoj de la skribrulaĵo ne ekzistas aŭtomata hierarkio, kaj programrealigo ne fariĝas aŭtoritata fonto nur pro tio, ke ĝi estas rapida aŭ disvastiĝinta.</p>
+<p>Norma realigo plenumas la kanonan algoritmon laŭ ĉiuj ĝiaj paŝoj. Komputila esploro povas priskribi fenomenon, trovi ŝablonon aŭ pruvi teoremon pri la algoritmo; kiam temas pri specimeno anstataŭ pruvita regulo, tio estas eksplicite indikita.</p>
+</section>
+<section class="about-section" data-toc-level="2" data-toc-section="" id="summary">
+<h2>Mallonge</h2>
+<p>La Pastafaria Kalendaro estas neintuicia kalendaro, en kiu la dato dependas kaj de la tago, pri kiu oni demandas, kaj de la tago, de kiu oni demandas.</p>
+<p>La jaro 5000 konstruiĝas ĉirkaŭ la kalkultago. Kotletoj estas kontinuaj segmentoj. Monatoj estas tagaroj, kiuj povas interplektiĝi. Ne ekzistas kanonaj semajnoj. La loka tago ŝanĝiĝas laŭ Venuso, ne je noktomezo.</p>
+<p>Malantaŭ la nekutima strukturo troviĝas preciza algoritmo; ĉirkaŭ ĝi estas Pastafaria rakonto pri Spageta Monstro, kreado amasigita en tavoloj kaj neracia kvanto da karbonhidratoj.</p>
+<p>Kiam estas donitaj la kalkultago, la pridemandata tago kaj la loka kunteksto, ekzistas unu respondo.</p>
+</section>
+

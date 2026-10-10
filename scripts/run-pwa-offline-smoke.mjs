@@ -662,7 +662,7 @@ const swSource = await readFile(SW_PATH, "utf8");
 const coreAssets = parseStringArray(swSource, "CORE_ASSETS");
 const optionalAssets = parseStringArray(swSource, "OPTIONAL_ASSETS");
 assert.equal(coreAssets.length, 25, `Expected 25 core assets, got ${coreAssets.length}`);
-assert.equal(optionalAssets.length, 30, `Expected 30 optional static assets (four original + 26 approved translation pages), got ${optionalAssets.length}`);
+assert.equal(optionalAssets.length, 32, `Expected 32 optional static assets (four original + 28 approved translation pages), got ${optionalAssets.length}`);
 console.log(`[INFO] install composition: core=${coreAssets.length}, optional-precache=0, optional-static=${optionalAssets.length}`);
 
 const serverState = createServerState(swSource);
