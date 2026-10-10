@@ -14,7 +14,7 @@ import {
 import {
   ARTICLE_FALLBACK_LOCALE,
   resolveArticleLocale,
-} from "./content/registry.js?v=20261009-approved13";
+} from "./content/registry.js?v=20261010-approved15";
 
 const elements = Object.fromEntries(
   [...document.querySelectorAll("[id]")].map((element) => [element.id, element]),
@@ -117,6 +117,23 @@ function buildTableOfContents() {
   }
 }
 
+// F012: legacy hashes with a substantively close current section only.
+// Never silently map withdrawn or materially shortened sections.
+const LEGACY_CLOSE_ANCHOR_TARGETS = Object.freeze({
+  "day-identity": "working-day",
+  "year-5000": "working-day",
+  "cutlets": "year-structure",
+  "months-and-weaving": "woven-months",
+  "month-interleaving": "woven-months",
+  "next-day-in-month": "woven-months",
+  "no-weeks": "about-calendar",
+  "month-day-pairs": "calendar-math",
+  "anniversaries": "practical-consequences",
+  "printed-calendar": "practical-consequences",
+  "seer": "calculation",
+  "anchors": "foundation-and-tablets",
+});
+
 function focusHashTarget() {
   let id;
   try {
@@ -126,7 +143,11 @@ function focusHashTarget() {
     throw error;
   }
   if (!id) return;
-  const target = document.getElementById(id);
+  const legacyTargetId = Object.hasOwn(LEGACY_CLOSE_ANCHOR_TARGETS, id)
+    ? LEGACY_CLOSE_ANCHOR_TARGETS[id]
+    : null;
+  const target = document.getElementById(id)
+    ?? (legacyTargetId ? document.getElementById(legacyTargetId) : null);
   if (!target) return;
   if (id === "site-usage") elements["site-usage-details"].open = true;
   const containingDetails = target.closest("details");

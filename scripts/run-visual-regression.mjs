@@ -874,6 +874,32 @@ async function aboutPageSmoke(browser, baseURL, state) {
       // for a retired selector; retain the page-wide overflow check above.
       const articleOverflow = await page.locator("#article-content").evaluate((element) => element.scrollWidth - element.clientWidth);
       assert.ok(articleOverflow <= 1, `About article should not require horizontal scrolling at ${name}: ${articleOverflow}px`);
+      // F012: browser-level legacy deep-link checks without modifying URL hash.
+      if (name === "desktop") {
+        for (const [locale, oldHash, expectedId] of [
+          ["he", "day-identity", "working-day"],
+          ["en", "next-day-in-month", "woven-months"],
+          ["el", "printed-calendar", "practical-consequences"],
+        ]) {
+          const legacyUrl = new URL(`about/?lang=${locale}#${oldHash}`, baseURL);
+          await page.goto(legacyUrl.href, { waitUntil: "domcontentloaded" });
+          await page.waitForFunction((id) => document.activeElement?.id === id, expectedId, { timeout: 30_000 });
+          assert.equal(new URL(page.url()).hash, `#${oldHash}`, "Legacy hash must remain unchanged");
+          assert.equal(await page.locator("#article-content").getAttribute("lang"), locale);
+          state.layoutChecks.push({ page: "about-legacy", locale, oldHash, expectedId, result: "PASS" });
+        }
+        await page.evaluate(() => { location.hash = "year-5000"; });
+        await page.waitForFunction(() => document.activeElement?.id === "working-day", null, { timeout: 30_000 });
+        assert.equal(new URL(page.url()).hash, "#year-5000");
+        state.layoutChecks.push({ page: "about-legacy-hashchange", result: "PASS" });
+        await page.evaluate(() => {
+          history.pushState({ pastafariAbout: true }, "", "#no-weeks");
+          dispatchEvent(new PopStateEvent("popstate"));
+        });
+        await page.waitForFunction(() => document.activeElement?.id === "about-calendar", null, { timeout: 30_000 });
+        assert.equal(new URL(page.url()).hash, "#no-weeks");
+        state.layoutChecks.push({ page: "about-legacy-popstate", result: "PASS" });
+      }
       state.layoutChecks.push({ page: "about", viewport: name, deepLink: "#day-boundary", result: "PASS" });
     }, state);
   }

@@ -1,6 +1,6 @@
 "use strict";
 
-const VERSION = "pastafari-static-pwa-approved13-audit28-20261010";
+const VERSION = "pastafari-static-pwa-approved15-f012-close12-20261010";
 const CORE_CACHE = `${VERSION}-core`;
 const RUNTIME_CACHE = "pastafari-runtime-assets";
 const CACHE_PREFIX = "pastafari-static-";
@@ -11,8 +11,8 @@ const CORE_ASSETS = [
   "./index.html",
   "./about/index.html",
   "./about/monster/index.html",
-  "./about/about.js?v=20261009-approved13",
-  "./about/content/registry.js?v=20261009-approved13",
+  "./about/about.js?v=20261010-approved15-f012-close12",
+  "./about/content/registry.js?v=20261010-approved15",
   "./about/content/he.html?v=4-about-polish",
   "./styles.css?v=16-about-polish",
   "./app.js?v=25-audit-reverse-input",
@@ -70,6 +70,10 @@ const OPTIONAL_ASSETS = Object.freeze([
   "./about/monster/de.html",
   "./about/content/el.html?v=20261009-approved13",
   "./about/monster/el.html",
+  "./about/content/eo.html?v=20261010-approved14",
+  "./about/monster/eo.html",
+  "./about/content/es.html?v=20261010-approved15",
+  "./about/monster/es.html",
 ]);
 const OPTIONAL_LOCALE_PATH = /^\/i18n\/locales\/[A-Za-z0-9-]+\.js$/;
 const SCOPE_URL = new URL(self.registration.scope);
