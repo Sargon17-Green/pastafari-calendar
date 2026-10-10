@@ -8,7 +8,7 @@
   <script>
     (() => {
       const code = new URLSearchParams(location.search).get("lang");
-      if (code && "en,af,ar,az,be,bg,bn,bs,ca,cs,da,de,el,eo".split(",").includes(code)) {
+      if (code && "en,af,ar,az,be,bg,bn,bs,ca,cs,da,de,el,eo,es".split(",").includes(code)) {
         location.replace(`./${code}.html${location.hash}`);
       }
     })();

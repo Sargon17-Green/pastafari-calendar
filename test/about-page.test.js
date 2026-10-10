@@ -78,7 +78,7 @@ test("13 approved translations preserve canonical About and Monster structures",
   const count = (html, re) => (html.match(re) || []).length;
   const monsterIds = getIds(monsterMaster);
   assert.equal(monsterIds.length, 39);
-  for (const code of ["en", "af", "ar", "az", "be", "bg", "bn", "bs", "ca", "cs", "da", "de", "el", "eo"]) {
+  for (const code of ["en", "af", "ar", "az", "be", "bg", "bn", "bs", "ca", "cs", "da", "de", "el", "eo", "es"]) {
     const about = await readFile(path.join(DOCS, "about", "content", code + ".html"), "utf8");
     const monster = await readFile(path.join(DOCS, "about", "monster", code + ".html"), "utf8");
     assert.deepEqual(getIds(about), getIds(master), code + " About IDs");
@@ -91,12 +91,12 @@ test("13 approved translations preserve canonical About and Monster structures",
   }
 });
 
-test("14 approved articles resolve in their own language; unapproved articles still fall back to Hebrew", () => {
+test("15 approved articles resolve in their own language; unapproved articles still fall back to Hebrew", () => {
   assert.equal(ARTICLE_FALLBACK_LOCALE, "he");
-  assert.deepEqual(Object.keys(ARTICLE_LOCALES), ["he", "en", "af", "ar", "az", "be", "bg", "bn", "bs", "ca", "cs", "da", "de", "el", "eo"]);
-  for (const code of ["en", "af", "ar", "az", "be", "bg", "bn", "bs", "ca", "cs", "da", "de", "el", "eo"]) {
+  assert.deepEqual(Object.keys(ARTICLE_LOCALES), ["he", "en", "af", "ar", "az", "be", "bg", "bn", "bs", "ca", "cs", "da", "de", "el", "eo", "es"]);
+  for (const code of ["en", "af", "ar", "az", "be", "bg", "bn", "bs", "ca", "cs", "da", "de", "el", "eo", "es"]) {
     assert.equal(resolveArticleLocale(code).code, code);
   }
-  assert.equal(resolveArticleLocale("es").code, "he");
+  assert.equal(resolveArticleLocale("et").code, "he");
   assert.equal(ARTICLE_LOCALES.ar.dir, "rtl");
 });

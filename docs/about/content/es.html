@@ -1,0 +1,569 @@
+<!-- Hebrew semantic-master candidate, rebuilt for an external reader. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p>El <strong>calendario pastafari</strong> es un calendario poco intuitivo, de estructura deliberadamente insólita: la fecha de un día no depende únicamente del día que se desea describir, sino también del día desde el cual se realiza el cálculo.</p>
+  <p>Tiene años, chuletas y meses, pero los años no poseen una duración fija, las chuletas y los meses no constituyen una misma división, los meses pueden desaparecer y reaparecer a lo largo del año y no existen semanas canónicas.</p>
+  <p>Esta página explica en qué consiste el calendario, cómo se lee una fecha y cuáles son las consecuencias prácticas de su estructura. Los detalles matemáticos y criptográficos de su implementación figuran en la documentación técnica, pero no son indispensables para entender el calendario.</p>
+</div>
+
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>¿Cómo es una fecha pastafari?</h2>
+  <p>Una fecha pastafari tiene exactamente cinco partes:</p>
+  <ol>
+    <li><strong>Año desde la creación del mundo</strong>;</li>
+    <li><strong>Nombre de la chuleta</strong>;</li>
+    <li><strong>Día de la chuleta</strong>;</li>
+    <li><strong>Nombre del mes</strong>;</li>
+    <li><strong>Día del mes</strong>.</li>
+  </ol>
+  <p>Es decir, una fecha completa indica en qué año cae el día, en qué chuleta se encuentra y qué posición ocupa dentro de ella, así como a qué mes pertenece y qué número de aparición le corresponde en ese mes.</p>
+  <p>El día de cálculo, la posición del observador y otros detalles técnicos pueden ser esenciales para <em>calcular</em> la fecha, pero no constituyen una sexta, séptima u octava parte de la propia fecha.</p>
+  <p>Tampoco el formato de visualización cambia el número de partes. Si el sitio presenta los cinco datos en tres renglones, siguen siendo cinco datos; un salto de línea es una operación tipográfica, no el nacimiento de un nuevo campo calendárico.</p>
+</section>
+
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>¿Por qué un mismo día puede tener otra fecha?</h2>
+  <p>En cada cálculo intervienen dos días:</p>
+  <ul>
+    <li><strong>Día de cálculo</strong>: el día desde el cual se efectúa el cálculo;</li>
+    <li><strong>Día consultado</strong>: el día cuya fecha queremos conocer.</li>
+  </ul>
+  <p>Si llamamos <code>c</code> al día de cálculo y <code>t</code> al día consultado, la fecha es <code>F(c,t)</code>, y no <code>F(t)</code>.</p>
+  <p>Por eso un mismo día cronológico puede recibir una representación pastafari distinta cuando se cambia el día de cálculo. El día en sí no se desplaza; solo cambia su descripción pastafari.</p>
+  <p>Cuando <code>c=t</code>, el día siempre pertenece al año <strong>5000</strong>. El año 5000 no es un período histórico fijo: se reconstruye con respecto al día de cálculo, de modo que también otros días cercanos a este pueden pertenecer a él.</p>
+  <p>Por ejemplo, si un día determinado se toma como día de cálculo de sí mismo, está en el año 5000. Si al día siguiente se vuelve a calcular y ese día siguiente pasa a ser el nuevo día de cálculo, también estará en el año 5000. No son dos afirmaciones contradictorias acerca de un mismo «año histórico»: cada cálculo escoge un nuevo año de referencia.</p>
+  <p>Los años numerados por encima de 5000 se encuentran hacia el futuro con respecto al día de cálculo, y los numerados por debajo de 5000, hacia el pasado. Existe también el año 0, seguido de años con números negativos.</p>
+</section>
+
+<section class="about-section" id="year-structure" data-toc-section data-toc-level="2">
+  <h2>¿Cómo se estructura un año?</h2>
+  <p>Un año pastafari puede contener entre <strong>252</strong> y <strong>5,778</strong> días. Ambos extremos están incluidos: un año de 252 días es válido, al igual que uno de 5,778 días; uno de 251 o de 5,779 días no es válido según las reglas canónicas actuales.</p>
+  <p>Esos límites forman parte del propio calendario. El año no pretende ajustarse al año solar, al lunar, a una estación, al curso escolar ni a la paciencia de quien aguarda el próximo año nuevo.</p>
+  <p>Cada año se divide en dos sistemas distintos:</p>
+  <ul>
+    <li><strong>6–17 chuletas</strong>. Cada chuleta constituye un tramo continuo de días y dura al menos 42 días.</li>
+    <li><strong>3–47 meses estructurales</strong>. Cada mes contiene 4–123 días que le pertenecen, pero esos días no tienen por qué ser consecutivos.</li>
+  </ul>
+  <p>El calendario no tiene un sistema canónico de semanas. Las filas y columnas que aparecen en el sitio son solo una forma de presentación; que dos días se muestren juntos no los convierte en integrantes de una misma «semana pastafari».</p>
+</section>
+
+<section class="about-section" id="woven-months" data-toc-section data-toc-level="2">
+  <h2>¿Qué significa «mes entretejido»?</h2>
+  <p>Una chuleta es una secuencia continua: si hoy es el día 250 de una chuleta y mañana aún estamos en ella, mañana será el día 251.</p>
+  <p>Un mes funciona de otra manera. El día 18 de un mes determinado es <strong>la aparición número 18 de ese mes durante el año</strong>. No tiene por qué venir un día después del día 17.</p>
+  <blockquote>
+    <p>Mes A: día 14<br>    Mes B: día 9<br>    Mes A: día 15</p>
+  </blockquote>
+  <p>Por eso un mes puede extenderse por buena parte del año, atravesar varias chuletas y entretejerse con otros meses. Del mismo modo, una sola chuleta puede contener días pertenecientes a muchos meses.</p>
+  <p>La duración de un mes es el número total de días que le pertenecen, no el número de días transcurridos entre su primera y su última aparición. Así, un mes de 104 días puede extenderse cronológicamente durante miles de días.</p>
+  <aside class="about-note">
+    <h3>¿Por qué viene el día 15 después del día 14?</h3>
+    <p>Porque 15 es el número entero que sigue a 14. El hecho de que entre las dos apariciones de un mes se intercale un día de otro mes no altera la cuenta: el primer mes ya había aparecido 14 veces; su aparición siguiente es la número 15 y por eso su número es 15.</p>
+    <p>Del mismo modo, si después del día 15 de ese mes aparecen cuatro días de otros meses, la siguiente aparición del mes original seguirá siendo su día 16. Esos cuatro días intermedios cuentan cronológicamente en el calendario, pero no pertenecen al mismo mes y por tanto no incrementan el contador de días <em>de ese mes</em>. Precisamente por ello «el día siguiente del mes» y «mañana» son conceptos diferentes.</p>
+  </aside>
+  <p>De ahí se desprende también que el final de un mes no tiene por qué estar cerca en el tiempo. Un mes puede encontrarse en su día 119 de 120 y, aun así, su día 120 podría aparecer mucho más tarde.</p>
+</section>
+
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>Los nombres de las chuletas y los meses</h2>
+  <p>El calendario cuenta con <strong>17 nombres de chuletas</strong> y <strong>47 nombres de meses</strong>. Dentro de un año, ningún nombre se repite dos veces en su misma familia. No es obligatorio que aparezcan todos los nombres cada año: un año puede utilizar solo una parte del catálogo.</p>
+  <p>Las listas presentan únicamente los nombres. Al pulsar sobre un nombre o sobre el símbolo de apertura que lo acompaña aparecen su significado preciso y las notas canónicas pertinentes. El nombre no codifica la duración de la unidad ni predice lo que ocurrirá en ella.</p>
+
+  <h3>Las 17 chuletas</h3>
+  <ul class="about-name-list about-name-disclosure-list">
+    <li>
+      <details class="about-name-details">
+        <summary>Bronce</summary>
+        <p>El bronce es una aleación metálica compuesta principalmente de cobre y estaño. Aquí se trata del nombre del material, no solamente de un color.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Zorro</summary>
+        <p>El zorro, mamífero de la familia de los cánidos. El nombre no designa ninguna especie concreta de zorro.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Riñón</summary>
+        <p>El riñón, órgano que filtra la sangre y participa en la regulación del equilibrio de líquidos y sales del cuerpo.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Lagash</summary>
+        <p>Lagash, antigua ciudad-estado sumeria del sur de Mesopotamia.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Pensamiento</summary>
+        <p>Un pensamiento, es decir, el contenido de lo que se piensa o el propio acto de pensar.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Cuatro partes de nueve</summary>
+        <p>La fracción 4/9: cuatro partes iguales de un total de nueve. Toda la expresión constituye un único nombre. Su significado numérico principal es exactamente 4/9; solo en el plano léxico se permite asimismo una realización numérica x que cumpla <code>|x − 4/9| ≤ e/103</code>, incluidos los extremos. La expresión <code>e/103</code> se conserva exactamente y no se sustituye por una aproximación decimal. Esta licencia no altera contadores, índices, identidades ni ningún cálculo del calendario.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Palgurash</summary>
+        <p>Una secuencia de sílabas inventada. No tiene ningún significado léxico adicional que deba interpretarse; es el propio nombre.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Junco de papiro</summary>
+        <p>El junco del papiro: la planta con la que se elaboraba el papiro en la Antigüedad.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Racimo</summary>
+        <p>Un conjunto denso o un manojo de elementos; en hebreo la palabra se asocia especialmente con un racimo de uvas.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Escorpión</summary>
+        <p>El escorpión, artrópodo arácnido dotado de pinzas y de un aguijón en la cola.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Ceniza</summary>
+        <p>El residuo pulverulento que queda después de la combustión.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Trigo</summary>
+        <p>El trigo, planta cerealista de cuyos granos se produce, entre otras cosas, harina.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Río</summary>
+        <p>Una corriente natural de agua relativamente grande que fluye por un cauce.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Risa</summary>
+        <p>Una reacción vocal y corporal que suele asociarse con la diversión, la alegría o el humor.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Acad</summary>
+        <p>Acad, antigua ciudad mesopotámica que dio nombre también al Imperio acadio y a la región; aún no se ha identificado con certeza la ubicación exacta de la ciudad.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Cuerno</summary>
+        <p>Un cuerno en el sentido de la protuberancia dura que sobresale de la cabeza de ciertos animales, no un rayo de luz.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>La vasija vacía</summary>
+        <p>Una vasija sin contenido. «Vacía» describe lo que hay dentro de la vasija, es decir, nada, y no niega la existencia de la propia vasija. Una vasija vacía puede seguir siendo una vasija íntegra, con paredes, fondo y abertura; sencillamente no está llena de agua, vino, aceite ni ninguna otra sustancia. Del mismo modo, el nombre no quiere decir que la chuleta carezca de días: una chuleta llamada «La vasija vacía» tiene días como cualquier otra, y lo único vacío es la vasija que figura en su nombre.</p>
+      </details>
+    </li>
+  </ul>
+
+  <h3>Los 47 meses</h3>
+  <ul class="about-name-list about-name-disclosure-list">
+    <li>
+      <details class="about-name-details">
+        <summary>Arcilla</summary>
+        <p>Un material terroso de grano fino que adquiere plasticidad al mojarse y se endurece al secarse o cocerse.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Granada</summary>
+        <p>La fruta del granado, redonda, de cáscara dura y numerosas semillas jugosas.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Codo</summary>
+        <p>La articulación que une el brazo con el antebrazo.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Envidia</summary>
+        <p>Pena o malestar ante una ventaja, un logro o algo bueno que otra persona posee, a veces acompañado del deseo de poseerlo también.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Eridu</summary>
+        <p>Eridu, antigua ciudad sumeria del sur de Mesopotamia.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Pasta de dientes</summary>
+        <p>Una sustancia pastosa que sirve para limpiar los dientes al cepillarlos. El nombre se refiere a la pasta misma, no al cepillo de dientes ni al acto de cepillarse.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Tres partes de cinco</summary>
+        <p>La fracción 3/5: tres partes iguales de un total de cinco. Toda la expresión constituye un único nombre. Su significado numérico principal es exactamente 3/5; solo en el plano léxico se permite asimismo una realización numérica x que cumpla <code>|x − 3/5| ≤ 1/367</code>, incluidos los extremos. El límite es un valor exacto, no una aproximación decimal. Esta licencia no altera contadores, índices, identidades ni ningún cálculo del calendario.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Karshumab</summary>
+        <p>Una secuencia de sílabas inventada. No tiene ningún significado léxico oculto; es el propio nombre.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Leopardo</summary>
+        <p>El leopardo moteado; no se refiere al tigre.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Estaño</summary>
+        <p>El elemento químico estaño.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Niebla</summary>
+        <p>Una concentración de diminutas gotas de agua suspendidas en el aire cerca de la superficie terrestre; no se refiere al humo.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Olíbano</summary>
+        <p>Resina aromática obtenida de árboles del grupo de los olíbanos, utilizada en perfumería y para quemar como incienso.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Huso</summary>
+        <p>Instrumento utilizado para hilar fibras y convertirlas en hilo.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Costilla</summary>
+        <p>Uno de los huesos de la caja torácica.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Algarrobo</summary>
+        <p>El algarrobo o su fruto.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Uruk</summary>
+        <p>Uruk, antigua ciudad sumeria de Mesopotamia.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Vergüenza</summary>
+        <p>Sensación de incomodidad o dolor originada por la percepción de un defecto, un fracaso o un comportamiento embarazoso.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Camello</summary>
+        <p>El camello, mamífero adaptado a la vida en regiones áridas.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Cobre</summary>
+        <p>El elemento químico cobre.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Pozo</summary>
+        <p>Un hoyo o conducto vertical excavado hasta una fuente de agua subterránea para extraer agua de ella.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Yema</summary>
+        <p>La parte amarilla de un huevo de ave.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Estrella</summary>
+        <p>Un cuerpo celeste como el Sol, que emite energía procedente de procesos físicos que tienen lugar en su interior.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Miel</summary>
+        <p>La sustancia dulce que producen las abejas a partir de néctar o secreciones vegetales.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Bazo</summary>
+        <p>El bazo, órgano que participa, entre otras funciones, en el sistema inmunitario y en la filtración de la sangre. Además de su significado habitual, existe una ampliación canónica deliberada, sin ninguna relación biológica, etimológica ni cultural con el bazo, y no debe inventarse tal relación: el nombre incluye también leche de una hembra de dromedario vinculada a su primera cría nacida viva, ordeñada después de una puesta de sol visible ordinaria y antes de que el centro del Sol alcance una altura geométrica de <code>−6°</code>, y antes de que dicha cría se haya puesto de pie por sus propios medios. Los embarazos anteriores terminados en aborto o en el nacimiento de una cría muerta no invalidan la condición; si la cría muere antes de haberse puesto de pie por sus propios medios, ese hecho no cierra la condición. El recipiente debe ser de cerámica, tener un vidriado rojo y tener una capacidad de 180–220 mL, incluidos ambos extremos de capacidad. No se exige que el ordeño se realice directamente de la ubre al recipiente, y el criterio numérico es la capacidad del recipiente, no la cantidad de leche realmente recogida. La inclusión de los instantes extremos de la ventana temporal sigue siendo una cuestión deliberadamente no resuelta en el canon.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Piedra caliza</summary>
+        <p>Roca sedimentaria compuesta mayoritariamente de carbonato de calcio.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Alegría</summary>
+        <p>Una emoción positiva de felicidad, satisfacción o júbilo.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Higo</summary>
+        <p>El fruto de la higuera o el propio árbol.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Nínive</summary>
+        <p>Nínive, antigua ciudad asiria situada a orillas del Tigris, frente a la actual Mosul.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Rana</summary>
+        <p>Anfibio sin cola del grupo que comprende las ranas y los sapos.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Brea</summary>
+        <p>Sustancia oscura y viscosa utilizada, entre otros fines, para impermeabilizar; se trata de una sustancia alquitranada espesa, no de un término genérico para cualquier asfalto.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Lámpara</summary>
+        <p>Un dispositivo de iluminación. No tiene por qué ser específicamente una vela de cera con mecha.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>La puerta cerrada</summary>
+        <p>Una puerta que se encuentra cerrada. Una puerta cerrada sigue siendo una puerta: no se convierte en pared, no desaparece y no tiene por qué estar cerrada con llave. «Cerrada» significa que la abertura que la puerta está destinada a dejar libre al abrirse queda, de momento, bloqueada por la propia puerta; «cerrada con llave» es una afirmación adicional que el nombre no incluye. Por eso, incluso una puerta que se haya cerrado sin girar la llave responde perfectamente al nombre «La puerta cerrada».</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Sésamo</summary>
+        <p>La planta del sésamo o sus semillas, de las que se extrae, entre otras cosas, aceite de sésamo.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Nuca</summary>
+        <p>La parte posterior del cuello.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Plata</summary>
+        <p>El elemento químico plata. No se refiere al dinero como medio de pago.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Susa</summary>
+        <p>Susa, la antigua ciudad de Elam y Persia. No se refiere a la flor del lirio.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Tormenta</summary>
+        <p>Una situación meteorológica tempestuosa, por lo general con vientos fuertes y a veces precipitaciones, rayos u otros fenómenos asociados.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Burro</summary>
+        <p>El burro, mamífero domesticado.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Harina</summary>
+        <p>Polvo obtenido al moler granos o materia vegetal similar; en el uso habitual, harina de cereales.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Arrepentimiento</summary>
+        <p>Pesar por un acto, una decisión o un resultado del pasado.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Babilonia</summary>
+        <p>Babilonia, la antigua ciudad mesopotámica situada junto al río Éufrates; aquí se trata del nombre del lugar.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Lengua</summary>
+        <p>El órgano muscular que se encuentra en la boca. No se refiere a «lengua» en el sentido de idioma.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Lino</summary>
+        <p>La planta del lino y sus fibras, utilizadas, entre otros fines, para elaborar tejidos.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Sal</summary>
+        <p>La sustancia salada empleada, entre otras cosas, en la alimentación y que, en el contexto cotidiano, es principalmente cloruro de sodio. No se refiere a un marinero, miembro de la tripulación de un barco.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Pera</summary>
+        <p>El fruto del peral.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Arco</summary>
+        <p>El arma que utiliza una cuerda tensada para disparar una flecha. No se refiere al arcoíris.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Arena</summary>
+        <p>Material granular compuesto de partículas pequeñas de rocas y minerales. No se refiere a lo profano en oposición a lo sagrado ni a un día laborable.</p>
+      </details>
+    </li>
+  </ul>
+
+  <p>Al traducir a otros idiomas puede utilizarse otra forma normativa del mismo nombre. Una traducción o transcripción no crea una nueva chuleta ni un nuevo mes: presenta la misma entidad lingüística de otra manera. Las formas normativas se determinan según el canon y las reglas lingüísticas adoptadas en él.</p>
+</section>
+
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>¿Cuándo cambia el día?</h2>
+  <p>El día pastafari local no cambia a medianoche. Su límite viene determinado por <strong>la culminación inferior del centro de Venus en el meridiano local</strong>: el instante en el que el centro de Venus pasa por el meridiano del lugar del observador, por el lado situado bajo el horizonte.</p>
+  <p>Por eso importa la ubicación del observador. Dos personas en lugares distintos pueden quedar asignadas, en un mismo instante físico, a dos días pastafaris locales diferentes. Al trasladarse a otra ciudad, no se sigue utilizando el límite del día de la ciudad anterior.</p>
+  <p>El límite depende del cálculo de la órbita de Venus, no de que el observador pueda verlo realmente. Las nubes, los muros o el hecho de que Venus esté bajo el horizonte no detienen su trayectoria.</p>
+  <p>El algoritmo discreto del calendario está definido con exactitud: unas mismas entradas, sometidas a unas mismas reglas, producen el mismo resultado. En cambio, la conversión de un instante físico a un día pastafari utiliza actualmente un modelo astronómico de la implementación; el propio perfil numérico astronómico todavía no constituye una parte canónica definitivamente cerrada.</p>
+</section>
+
+<section class="about-section" id="advantages" data-toc-section data-toc-level="2">
+  <h2>Las notables virtudes del calendario</h2>
+  <ul>
+    <li><strong>Una fecha que puede recalcularse una y otra vez:</strong> un mismo día del pasado puede recibir mañana otra fecha pastafari, porque el día de cálculo también habrá avanzado. No hay que conformarse con una fecha antigua que siga siendo útil durante mucho tiempo.</li>
+    <li><strong>Años espaciosos:</strong> un año puede alcanzar los 5,778 días, así que quien espere al siguiente año tal vez deba esperar bastante más de lo habitual.</li>
+    <li><strong>Meses que exigen atención:</strong> saber que hoy es el día 119 de un mes no significa que su día 120 vaya a llegar mañana, la semana que viene ni siquiera pronto. Hay que calcular cuándo llegará.</li>
+    <li><strong>Sensibilidad geográfica:</strong> un mismo instante puede pertenecer a diferentes días pastafaris locales según el lugar. Un viaje a otra ciudad añade, por tanto, otro detalle digno de recordar al coordinarse.</li>
+    <li><strong>Los calendarios impresos no se acomodan:</strong> un calendario preparado de antemano puede dejar de reflejar el cálculo correcto cuando cambia el día de cálculo, así que no hay peligro de que nadie se conforme durante años con la misma hoja de papel.</li>
+    <li><strong>Uso provechoso de la potencia informática:</strong> en lugar de conformarse con una tabla sencilla que se entiende de un vistazo, el calendario ofrece al ordenador la oportunidad de realizar un cálculo de verdad cada vez que se quiere una respuesta.</li>
+    <li><strong>Tiene días:</strong> el calendario trata de días. Es una propiedad que comparte con cualquier calendario y garantiza que el usuario no tendrá que manejar un calendario sin días.</li>
+    <li><strong>Los días aparecen en orden:</strong> un día anterior va antes de otro posterior. Es un logro fundamental de los calendarios y, en este caso, se ofrece sin coste adicional.</li>
+    <li><strong>Permite indicar fechas:</strong> el calendario permite asignar una descripción calendárica a un día. Aunque eso sea exactamente para lo que sirven los calendarios, no hay motivo para dejar de mencionar una característica útil cuando existe.</li>
+  </ul>
+  <p>Y todo lo anterior viene reunido en un solo calendario, como sucede cuando varias características pertenecen a un mismo calendario.</p>
+</section>
+
+<section class="about-section" id="practical-consequences" data-toc-section data-toc-level="2">
+  <h2>¿Qué significa esto en la práctica?</h2>
+  <p><strong>Los calendarios impresos envejecen mal.</strong> Un cambio en el día de cálculo puede modificar los límites de los años, las chuletas y los meses. Un almanaque calculado hoy no es necesariamente el almanaque correcto para mañana.</p>
+  <p><strong>Un acontecimiento sigue siendo el mismo acontecimiento.</strong> Una cita, un nacimiento o un suceso histórico deben estar anclados a un día o instante cronológico estable; después se puede mostrar su fecha pastafari conforme al día de cálculo y la ubicación del observador. Cambiar la etiqueta no desplaza el acontecimiento en el tiempo.</p>
+  <p><strong>Para un cumpleaños pastafari no rige la regla de «una vez al año».</strong> Para hallar la siguiente aparición del mismo nombre de mes y día del mes, o del mismo nombre de chuleta y día de la chuleta, hay que buscar en el calendario. Un año contiguo puede no contener en absoluto el nombre necesario, o contener una unidad demasiado breve para alcanzar el número de día solicitado.</p>
+  <p><strong>Un acontecimiento de día completo no va necesariamente de medianoche a medianoche.</strong> Si se define por un día pastafari local, su límite es el límite local de Venus. Exportarlo ingenuamente a un calendario civil como acontecimiento de medianoche a medianoche puede alterar su significado.</p>
+</section>
+
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>El Día de la Fundación y el Día de las Tablas</h2>
+  <p>El calendario tiene dos anclajes fijos importantes:</p>
+  <dl>
+    <dt><strong>Día de la Fundación</strong></dt>
+    <dd>22 de diciembre de 41,222 a. C. en el calendario gregoriano proléptico.</dd>
+    <dt><strong>Día de las Tablas</strong></dt>
+    <dd>15 de junio de 763 a. C. en el calendario juliano proléptico, equivalente al 7 de junio de 763 a. C. en el calendario gregoriano proléptico.</dd>
+  </dl>
+  <p>Entre ambos hay 14,777,149 días. El Día de la Fundación es un anclaje aritmético, no «el primer día del tiempo», y el calendario se extiende también hacia antes de él.</p>
+  <p>El Día de las Tablas está vinculado tradicionalmente a la entrega de las tablas y, en el cálculo histórico, se identifica con el día del eclipse solar de la época de Bur-Sagale. Ambos anclajes permanecen fijos aunque cambie el día de cálculo.</p>
+</section>
+
+<section class="about-section" id="calendar-math" data-toc-section data-toc-level="2">
+  <h2>Algunos hechos matemáticos sencillos</h2>
+  <p>Hay 47 nombres de meses y cada mes puede llegar como máximo al día 123. Por tanto existen <strong>5,781</strong> combinaciones posibles de la forma «nombre del mes + día del mes».</p>
+  <p>Un año puede contener como máximo 5,778 días, y cada día materializa una combinación de ese tipo. Por consiguiente, <strong>en todo año faltan al menos tres de las combinaciones posibles</strong>. Ni siquiera en el año más largo hay días suficientes para materializarlas todas.</p>
+  <p>Cuando se conocen el día de cálculo y el año, el par completo «nombre de chuleta + día de la chuleta» o «nombre de mes + día del mes» señala, como máximo, un solo día dentro de ese año. Así pues, una fecha pastafari completa, junto con el día de cálculo, identifica inequívocamente el día consultado.</p>
+  <p>En cambio, sin conocer el día de cálculo, una fecha pastafari completa no identifica necesariamente por sí sola una distancia única sobre el eje temporal. Una misma quíntupla puede aparecer en distintos contextos de cálculo.</p>
+</section>
+
+<section class="about-section" id="research" data-toc-section data-toc-level="2">
+  <h2>¿Qué han descubierto los estudios computacionales del calendario?</h2>
+  <p>Además de comprobar las propias reglas, se han realizado grandes estudios computacionales del calendario. Los datos que siguen son <strong>hallazgos empíricos obtenidos de una muestra</strong>, no leyes canónicas.</p>
+  <p>En un atlas estructural construido a partir de 4,096 días de cálculo, en el que se examinaron 86,016 estructuras anuales:</p>
+  <ul>
+    <li>La duración media del año en la muestra fue de unos 4,275 días y la mediana, de 4,343 días;</li>
+    <li>El número medio de chuletas por año fue de aproximadamente 7.27;</li>
+    <li>El número medio de meses estructurales fue de aproximadamente 41.1;</li>
+    <li>Un mes contenía de media unos 104 días propios, pero por lo general se extendía a lo largo de casi todo el año;</li>
+    <li>El 97.482% de los tramos continuos de un mes tenía una duración de un solo día;</li>
+    <li>La probabilidad medida de que dos días cronológicamente consecutivos pertenecieran al mismo mes fue de aproximadamente un 2.998%.</li>
+  </ul>
+  <p>En otro estudio sobre las recurrencias de «día-año» en ambas direcciones, que examinó 4,096 fechas calculadas tomando cada día consultado como su propio día de cálculo:</p>
+  <ul>
+    <li>Una coincidencia recurrente de <strong>nombre de mes + día del mes</strong> apareció, en la mediana, al cabo de un solo año pastafari; el 77.56% de las coincidencias se produjo en el año contiguo;</li>
+    <li>Una coincidencia recurrente de <strong>nombre de chuleta + día de la chuleta</strong> resultó mucho menos predecible: la mediana fue de tres años pastafaris, pero la media estuvo afectada por una cola muy larga;</li>
+    <li>En la muestra se dio un caso extremo en el que la primera repetición futura de «Acad 3063» estaba a 51,954 años pastafaris de distancia.</li>
+  </ul>
+  <p>Estos hallazgos ayudan a comprender lo que el calendario tiende a hacer. No convierten una media en ley: que la duración media de los años de la muestra tuviera un valor concreto no obliga a ningún año concreto a acercarse a ella; y un resultado observado en los 4,096 casos tampoco demuestra por sí solo un teorema matemático para todas las entradas posibles.</p>
+</section>
+
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>¿Cómo se calcula el calendario?</h2>
+  <p>Detrás de cada fecha hay un algoritmo discreto definido con exactitud. A partir del día de cálculo y del día consultado genera una serie de recuentos, los hace pasar por el mecanismo de mezcla llamado <strong>la Salsa</strong>, crea puertas, elige los límites del año y de las chuletas, escoge nombres, crea meses y, por último, entreteje sus días a lo largo del año.</p>
+  <p>Los detalles precisos incluyen números grandes, gotas, cuencos, removidos, sellos y mecanismos combinatorios de selección. Son importantes para la implementación y la comprobación formal, pero no hacen falta para entender el significado de la fecha y por eso no se detallan aquí.</p>
+  <p>Junto al algoritmo existe un motor rápido llamado <strong>Pastafarian Calendar Seer</strong>. El Seer sirve para calcular deprisa; no es la fuente de autoridad y tampoco es, por sí mismo, una implementación normativa del algoritmo en todas sus etapas. Si uno de sus resultados contradice el exigido por el canon, quien se equivoca es el Seer.</p>
+</section>
+
+<section class="about-section" id="about-the-monster" data-toc-section data-toc-level="2">
+  <h2>Acerca del Monstruo</h2>
+  <p>Dentro del relato pastafari, el <strong>Monstruo de Espagueti Volador</strong> es el ser que creó el mundo y la mayoría de las cosas que contiene. Su cuerpo está compuesto de fideos y albóndigas, y puede volar, atravesar la materia ordinaria y permanecer invisible cuando le conviene.</p>
+  <p>El Monstruo puede crear materia, seres vivos, cuerpos celestes y mecanismos sumamente complejos. Esa capacidad no le obliga a preparar un plan ordenado antes de comenzar el trabajo. Muchas veces empieza algo, pasa a otra cosa, descubre que lo anterior necesita arreglos y decide si los hace. En ocasiones, efectivamente, los hace.</p>
+  <p>Esta imagen, la de una creación construida capa sobre capa, con reparaciones, excepciones y reglas que permanecen vigentes, constituye también el trasfondo literario del calendario. A diferencia del relato, el cálculo en sí no es improvisado: dadas las entradas, el algoritmo devuelve una única respuesta definida.</p>
+  <p>El relato pastafari abarca mucho más que el calendario e incluye, entre otras cosas, piratas, carbohidratos, oraciones, «Preferiría de verdad que no» y otras tradiciones.</p>
+  <p class="about-actions"><a class="guide-link" href="./monster/es.html">Leer más sobre el Monstruo</a></p>
+</section>
+
+<section class="about-section" id="authority" data-toc-section data-toc-level="2">
+  <h2>¿Qué es canónico y qué es solo una explicación?</h2>
+  <p>Esta página es una <strong>página explicativa</strong>. No crea una regla nueva por el mero hecho de contener una frase.</p>
+  <p>El contenido canónico viene determinado por el corpus canónico y por las reglas adoptadas en él. No existe una jerarquía automática entre las ediciones canónicas del pergamino, y una implementación informática no se convierte en fuente de autoridad solo por ser rápida o popular.</p>
+  <p>Una implementación normativa ejecuta el algoritmo canónico en todas sus etapas. Un estudio computacional puede describir un fenómeno, hallar un patrón o demostrar un teorema sobre el algoritmo; cuando se trata de una muestra y no de una regla demostrada, se indica explícitamente.</p>
+</section>
+
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>En resumen</h2>
+  <p>El calendario pastafari es un calendario poco intuitivo en el que la fecha depende tanto del día por el que se pregunta como del día desde el que se pregunta.</p>
+  <p>El año 5000 se construye alrededor del día de cálculo. Las chuletas son tramos continuos. Los meses son conjuntos de días que pueden entretejerse entre sí. No existen semanas canónicas. El día local cambia según Venus, no a medianoche.</p>
+  <p>Detrás de esta estructura inusual hay un algoritmo exacto; a su alrededor, un relato pastafari sobre un Monstruo de Espagueti, una creación acumulada por capas y una cantidad poco razonable de carbohidratos.</p>
+  <p>Dados el día de cálculo, el día consultado y el contexto de ubicación, existe una sola respuesta.</p>
+</section>
