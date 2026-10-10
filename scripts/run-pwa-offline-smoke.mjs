@@ -58,7 +58,9 @@ function createServerState(swSource) {
 async function startStaticServer(state) {
   const server = createServer(async (request, response) => {
     const requestUrl = new URL(request.url ?? "/", "http://127.0.0.1");
-    state.requests.push({ method: request.method, url: requestUrl.pathname + requestUrl.search });
+    state.requests.push({ method: request.method, url: requestUrl.pathname + requestUrl.search,
+      ...(requestUrl.pathname === `${BASE_PATH}sw.js` ? { servedVariant: state.swVariant } : {}),
+    });
 
     const forcedStatus = state.failures.get(requestUrl.pathname);
     if (forcedStatus) {
@@ -661,7 +663,7 @@ const startedAt = Date.now();
 const swSource = await readFile(SW_PATH, "utf8");
 const coreAssets = parseStringArray(swSource, "CORE_ASSETS");
 const optionalAssets = parseStringArray(swSource, "OPTIONAL_ASSETS");
-assert.equal(coreAssets.length, 25, `Expected 25 core assets, got ${coreAssets.length}`);
+assert.equal(coreAssets.length, 26, `Expected 26 core assets, got ${coreAssets.length}`);
 assert.equal(optionalAssets.length, 30, `Expected 30 optional static assets (four original + 26 approved translation pages), got ${optionalAssets.length}`);
 console.log(`[INFO] install composition: core=${coreAssets.length}, optional-precache=0, optional-static=${optionalAssets.length}`);
 
@@ -778,6 +780,8 @@ try {
     hasTarget: Boolean(document.querySelector("#day-boundary")),
     hasCalendarWorkspace: Boolean(document.querySelector("#calendar-workspace")),
     tocLinks: document.querySelectorAll("#about-toc-list a").length,
+    tocIds: [...document.querySelectorAll("#about-toc-list a")].map((link) => new URL(link.href).hash.slice(1)),
+    sectionIds: [...document.querySelectorAll("#article-content [data-toc-section][id], #site-usage[data-toc-section][id]")].map((section) => section.id),
   }));
   assert.equal(aboutSnapshot.htmlLang, "he");
   assert.equal(aboutSnapshot.htmlDir, "rtl");
@@ -785,7 +789,9 @@ try {
   assert.equal(aboutSnapshot.articleDir, "rtl");
   assert.equal(aboutSnapshot.hasTarget, true, "Deep-linked explanation section was not loaded offline");
   assert.equal(aboutSnapshot.hasCalendarWorkspace, false, "About page must not instantiate the calendar workspace");
-  assert.equal(aboutSnapshot.tocLinks, 16, "About page must expose all 15 canonical sections and the usage guide offline");
+  assert.deepEqual(aboutSnapshot.tocIds, aboutSnapshot.sectionIds, "Offline About TOC must cover each loaded section and the user guide in order");
+  assert.equal(aboutSnapshot.tocLinks, aboutSnapshot.tocIds.length, "Offline TOC link count inconsistent");
+  assert.ok(aboutSnapshot.sectionIds.includes("day-boundary") && aboutSnapshot.sectionIds.includes("site-usage"), "Offline deep link and site guide missing");
   assertOfflineResponsesCameFromServiceWorker(diagnostics, "offline-about", "offline about-page subresources");
 
   diagnostics.phase = "offline-query";
@@ -866,6 +872,11 @@ try {
   assert.equal(afterFailedNav.fromServiceWorker, true, "Version A did not serve after failed B installation");
   await calendarSnapshot(page, "offline calendar after failed version B installation", diagnostics);
   assertOfflineResponsesCameFromServiceWorker(diagnostics, "offline-after-failed-upgrade", "offline after failed upgrade subresources");
+  // A reconnect can itself trigger an automatic update check. Never offer the
+  // previously failed B worker after network access has been restored: it can
+  // win the race with the explicit C update and make the activation observation
+  // refer to B. Keep the CSS fault until after the legacy-cache fixture is set.
+  serverState.swVariant = "C";
   await context.setOffline(false);
   await server.restart();
 
@@ -887,12 +898,17 @@ try {
 
   diagnostics.phase = "successful-core-upgrade";
   serverState.failures.delete(`${BASE_PATH}styles.css`);
-  serverState.swVariant = "C";
+  assert.equal(serverState.swVariant, "C", "C must have been served ever since reconnect");
   const successfulUpgrade = await updateServiceWorker(page);
   assert.equal(successfulUpgrade.state, "activated", `Successful C update did not activate: ${JSON.stringify(successfulUpgrade)}`);
 
   const cachesC = await cacheSnapshot(page);
   const cCore = currentCoreCaches(cachesC);
+  console.log(`[UPGRADE_VERSION_EVIDENCE] ${JSON.stringify({
+    observedState: successfulUpgrade.state,
+    sourceVariants: serverState.requests.filter((entry) => entry.servedVariant).map((entry) => entry.servedVariant),
+    currentCoreCaches: cCore,
+  })}`);
   assert.equal(cCore.length, 1, `Successful activation should leave one core cache: ${JSON.stringify(cachesC.names)}`);
   assert(cCore[0].includes("test-C"), `Current core cache is not version C: ${cCore[0]}`);
   assert(!cachesC.names.includes(aCore[0]), "Old version A core cache was not cleaned up");

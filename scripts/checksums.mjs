@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 import {
   atomicWriteFile,
   buildChecksumManifest,
+  formatChecksumManifest,
   checksumPolicies,
   verifyChecksumManifest,
 } from "./release-lib.mjs";
@@ -21,7 +22,20 @@ export async function generateChecksums() {
   await atomicWriteFile(DOCS_MANIFEST, docs.text);
 
   const repository = await buildChecksumManifest(ROOT, checksumPolicies.repository);
-  await atomicWriteFile(ROOT_MANIFEST, repository.text);
+  // The one deleted Kyrgyz workflow remains a frozen checksum record by explicit policy.
+  const historical = {
+    path: ".github/workflows/one-shot-kyrgyz-complete-policy-fix-final.yml",
+    hash: "0d5475295bd76170b365f42220f6cdb1be0c00fc1600500f15821f0513492067",
+  };
+  const previous = await readFile(ROOT_MANIFEST, "utf8");
+  if (!previous.split(/\r?\n/u).includes(`${historical.hash}  ./${historical.path}`)) {
+    throw new Error("Historical Kyrgyz SHA record must remain unchanged in the root manifest.");
+  }
+  if (repository.entries.some((entry) => entry.path === historical.path)) {
+    throw new Error("Historical Kyrgyz workflow unexpectedly exists again.");
+  }
+  const preserved = [...repository.entries, historical].sort((a, b) => a.path < b.path ? -1 : a.path > b.path ? 1 : 0);
+  await atomicWriteFile(ROOT_MANIFEST, formatChecksumManifest(preserved));
 
   return { docs: docs.entries.length, repository: repository.entries.length };
 }
@@ -37,6 +51,7 @@ export async function verifyChecksums() {
   const repository = await verifyChecksumManifest(ROOT, rootText, {
     ...checksumPolicies.repository,
     manifestName: "SHA256SUMS.txt",
+    allowHistoricalRootOrphan: true,
   });
 
   return { docs: docs.count, repository: repository.count };

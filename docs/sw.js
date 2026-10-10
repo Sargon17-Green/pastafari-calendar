@@ -1,6 +1,6 @@
 "use strict";
 
-const VERSION = "pastafari-static-pwa-about-approved13-20261009-approved13";
+const VERSION = "pastafari-static-pwa-approved13-audit28-20261010";
 const CORE_CACHE = `${VERSION}-core`;
 const RUNTIME_CACHE = "pastafari-runtime-assets";
 const CACHE_PREFIX = "pastafari-static-";
@@ -10,12 +10,13 @@ const CACHE_PREFIX = "pastafari-static-";
 const CORE_ASSETS = [
   "./index.html",
   "./about/index.html",
+  "./about/monster/index.html",
   "./about/about.js?v=20261009-approved13",
   "./about/content/registry.js?v=20261009-approved13",
   "./about/content/he.html?v=4-about-polish",
   "./styles.css?v=16-about-polish",
-  "./app.js?v=24-worker-recovery",
-  "./reverse-ui.js?v=20-about-page",
+  "./app.js?v=25-audit-reverse-input",
+  "./reverse-ui.js?v=21-audit-reverse-input",
   "./reverse-search-controller.js",
   "./calendar-input-conventions.js?v=9-calendar-input-conventions",
   "./calendar-converters.js?v=9-canonical-names",
@@ -246,6 +247,9 @@ self.addEventListener("activate", (event) => {
 
 function navigationFallbackEntry(url) {
   const relativePath = scopeRelativePath(url);
+  if (relativePath === "/about/monster" || relativePath === "/about/monster/" || relativePath === "/about/monster/index.html") {
+    return CORE_BY_URL.get(scoped("./about/monster/index.html"));
+  }
   if (relativePath === "/about" || relativePath === "/about/" || relativePath === "/about/index.html") {
     return CORE_BY_URL.get(scoped("./about/index.html"));
   }

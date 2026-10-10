@@ -47,6 +47,18 @@ function defaultRepositoryExclusion(relativePath) {
     || normalized.startsWith(".git/")
     || normalized === "node_modules"
     || normalized.startsWith("node_modules/")
+    // Only known untracked CI-generated report trees. Other artifacts
+    // and all arbitrary untracked files remain checksum-visible.
+    || normalized === "artifacts/accessibility"
+    || normalized.startsWith("artifacts/accessibility/")
+    || normalized === "artifacts/visual"
+    || normalized.startsWith("artifacts/visual/")
+    || normalized === "artifacts/user-e2e"
+    || normalized.startsWith("artifacts/user-e2e/")
+    // release:verify writes reports here even when it rejects a dirty worktree.
+    // Other artifacts/ directories remain checksum-visible and are not exempt.
+    || normalized === "artifacts/release"
+    || normalized.startsWith("artifacts/release/")
     || normalized === "__pycache__"
     || normalized.startsWith("__pycache__/")
     || normalized.includes("/__pycache__/")
@@ -142,7 +154,7 @@ export function parseChecksumManifest(text) {
 export async function verifyChecksumManifest(
   root,
   manifestText,
-  { exclude = defaultRepositoryExclusion, manifestName = "SHA256SUMS.txt" } = {},
+  { exclude = defaultRepositoryExclusion, manifestName = "SHA256SUMS.txt", allowHistoricalRootOrphan = false } = {},
 ) {
   const entries = parseChecksumManifest(manifestText);
   const actualFiles = await listRegularFiles(root, { exclude });
@@ -151,6 +163,14 @@ export async function verifyChecksumManifest(
   const problems = [];
 
   for (const entry of entries) {
+    if (allowHistoricalRootOrphan && manifestName === "SHA256SUMS.txt"
+      && entry.path === ".github/workflows/one-shot-kyrgyz-complete-policy-fix-final.yml"
+      && !actualSet.has(entry.path)) {
+      if (entry.hash !== "0d5475295bd76170b365f42220f6cdb1be0c00fc1600500f15821f0513492067") {
+        problems.push(`${entry.path}: the frozen historical SHA was changed`);
+      }
+      continue;
+    }
     if (exclude(entry.path)) {
       problems.push(`${entry.path}: entry is excluded from ${manifestName}`);
       continue;

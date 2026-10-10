@@ -27,6 +27,13 @@ function t(key, values = {}) {
   return translate(activeLocale, key, values);
 }
 
+function syncMonsterLinks() {
+  for (const link of elements["article-content"].querySelectorAll('a[href="./monster/"], a[data-monster-link]')) {
+    link.href = urlWithLanguage(new URL("./monster/", location.href), activeLocale.code);
+    link.dataset.monsterLink = "true";
+  }
+}
+
 function syncCalendarLinks() {
   for (const link of document.querySelectorAll("[data-back-to-calendar]")) {
     link.href = urlWithLanguage(new URL("../", location.href), activeLocale.code);
@@ -37,12 +44,14 @@ function applyActiveLocale() {
   applyDocumentLocale(activeLocale);
   populateLanguageSelector(elements["language-selector"], activeLocale.code);
   syncCalendarLinks();
+  syncMonsterLinks();
 }
 
 async function loadArticleForLocale(localeCode) {
   const articleLocale = resolveArticleLocale(localeCode);
   if (articleLocale.code === activeArticleCode && elements["article-content"].childElementCount > 0) {
     updateLanguageNotice(articleLocale.code);
+    syncMonsterLinks();
     buildTableOfContents();
     return;
   }
@@ -59,6 +68,7 @@ async function loadArticleForLocale(localeCode) {
     elements["article-content"].lang = articleLocale.code;
     elements["article-content"].dir = articleLocale.dir;
     activeArticleCode = articleLocale.code;
+    syncMonsterLinks();
     updateLanguageNotice(articleLocale.code);
     buildTableOfContents();
     focusHashTarget();
@@ -108,7 +118,13 @@ function buildTableOfContents() {
 }
 
 function focusHashTarget() {
-  const id = decodeURIComponent(location.hash.slice(1));
+  let id;
+  try {
+    id = decodeURIComponent(location.hash.slice(1));
+  } catch (error) {
+    if (error instanceof URIError) return;
+    throw error;
+  }
   if (!id) return;
   const target = document.getElementById(id);
   if (!target) return;

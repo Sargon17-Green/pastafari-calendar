@@ -297,7 +297,10 @@ const desktopScenarios = [
       assert.equal(await page.locator('#about-toc-list a[href="#date-parts"]').getAttribute("lang"), "he");
       assert.equal(await page.locator('#about-toc-list a[href="#date-parts"]').getAttribute("dir"), "rtl");
       assert.equal(await page.locator("#calendar-workspace").count(), 0, "About page must not carry the calculation workspace");
-      assert.ok(await page.locator("#about-toc-list a").count() >= 29, "About page contents list must include the explanation and site-usage sections");
+      const contentsIds = await page.locator("#about-toc-list a").evaluateAll((links) => links.map((link) => new URL(link.href).hash.slice(1)));
+      const sectionIds = await page.locator("#article-content [data-toc-section][id], #site-usage[data-toc-section][id]").evaluateAll((sections) => sections.map((section) => section.id));
+      assert.deepEqual(contentsIds, sectionIds, "About contents must cover each live section and the site guide in order");
+      assert.ok(sectionIds.includes("date-parts") && sectionIds.includes("day-boundary") && sectionIds.includes("site-usage"), "Required About deep links are missing");
       const toc = page.locator("#about-toc");
       if (!(await toc.evaluate((element) => element.open))) await toc.locator("summary").click();
       await page.locator('#about-toc-list a[href="#day-boundary"]').click();
