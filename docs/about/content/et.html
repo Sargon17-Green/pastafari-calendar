@@ -1,0 +1,571 @@
+<!-- Hebrew semantic-master candidate, rebuilt for an external reader. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p><strong>Pastafari kalender</strong> on meelega ebatavalise ülesehitusega, raskesti hoomatav kalender: päeva kuupäev ei sõltu üksnes päevast, mida soovitakse kirjeldada, vaid ka päevast, mille seisuga arvutus tehakse.</p>
+  <p>Selles on aastad, kotletid ja kuud, kuid aastad ei ole kindla pikkusega, kotletid ja kuud ei moodusta üht ja sama jaotust, kuud võivad aasta vältel kaduda ja tagasi tulla ning kanoonilisi nädalaid selles ei ole.</p>
+  <p>See lehekülg selgitab, mis kalender see on, kuidas kuupäeva lugeda ja mida selle ülesehitus praktikas tähendab. Matemaatilise ja krüptograafilise teostuse üksikasjad on tehnilises dokumentatsioonis olemas, kuid need pole kalendri mõistmise eelduseks.</p>
+</div>
+
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>Milline näeb välja pastafari kuupäev?</h2>
+  <p>Pastafari kuupäeval on täpselt viis osa:</p>
+  <ol>
+    <li><strong>Aasta maailma loomisest</strong>;</li>
+    <li><strong>Kotleti nimi</strong>;</li>
+    <li><strong>Päev kotletis</strong>;</li>
+    <li><strong>Kuu nimi</strong>;</li>
+    <li><strong>Päev kuus</strong>.</li>
+  </ol>
+  <p>Teisisõnu ütleb täielik kuupäev, millises aastas päev paikneb, millises kotletis see on ja mitmes päev see seal on, samuti millisesse kuusse ta kuulub ja mitmes selle kuu esinemiskord see on.</p>
+  <p>Arvutuspäev, vaatleja asukoht ja muud tehnilised asjaolud võivad olla kuupäeva <em>arvutamiseks</em> hädavajalikud, kuid need ei ole kuupäeva enda kuues, seitsmes ega kaheksas osa.</p>
+  <p>Ka esitusviis ei muuda osade arvu. Kui veebisait kuvab viis andmevälja kolmel real, on andmeid ikka viis; reavahetus on tüpograafiline võte, mitte uue kalendrivälja sünd.</p>
+</section>
+
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>Miks võib sama päev saada teistsuguse kuupäeva?</h2>
+  <p>Igas arvutuses osaleb kaks päeva:</p>
+  <ul>
+    <li><strong>Arvutuspäev</strong> – päev, mille seisuga arvutatakse;</li>
+    <li><strong>Küsitav päev</strong> – päev, mille kuupäeva tahetakse teada.</li>
+  </ul>
+  <p>Kui arvutuspäeva tähistada <code>c</code> ja küsitavat päeva <code>t</code>, siis on kuupäev <code>F(c,t)</code>, mitte <code>F(t)</code>.</p>
+  <p>Seepärast võib sama kronoloogiline päev saada arvutuspäeva muutmisel teistsuguse pastafari kuupäeva. Päev ise ei liigu kuhugi; muutub ainult selle pastafarilik kirjeldus.</p>
+  <p>Kui <code>c=t</code>, kuulub see päev alati aastasse <strong>5000</strong>. Aasta 5000 ei ole kindel ajalooperiood: see moodustatakse arvutuspäeva suhtes iga kord uuesti ja seetõttu võivad sellesse kuuluda ka teised arvutuspäeva ümbritsevad päevad.</p>
+  <p>Näiteks kui teatav päev on iseenda arvutuspäev, asub see aastal 5000. Kui järgmisel päeval arvutatakse uuesti ning homsest saab uus arvutuspäev, on ka homne aastal 5000. Need ei ole kaks vastuolulist väidet sama „ajaloolise aasta” kohta; igas arvutuses valitakse uus lähteaasta.</p>
+  <p>Aastad, mille number on suurem kui 5000, jäävad arvutuspäevast tuleviku suunda, ja aastad, mille number on väiksem kui 5000, mineviku suunda. Olemas on ka aasta 0 ning sellele järgnevad negatiivse numbriga aastad.</p>
+</section>
+
+<section class="about-section" id="year-structure" data-toc-section data-toc-level="2">
+  <h2>Kuidas on aasta üles ehitatud?</h2>
+  <p>Pastafari aastas võib olla <strong>252</strong> kuni <strong>5,778</strong> päeva. Mõlemad piirid kuuluvad vahemikku: 252-päevane aasta on lubatud ja 5,778-päevane samuti; 251- või 5,779-päevane aasta ei ole praeguste kanooniliste reeglite järgi lubatud.</p>
+  <p>Need piirid on kalendri osa. Aasta ei püüa sobituda päikeseaasta, kuukalendriaasta, aastaaja, õppeaasta ega järgmise aastavahetuse ootaja kannatlikkusega.</p>
+  <p>Iga aasta jaguneb kaheks erinevaks süsteemiks:</p>
+  <ul>
+    <li><strong>6–17 kotletti</strong>. Iga kotlett on järjestikuste päevade lõik, mille pikkus on vähemalt 42 päeva.</li>
+    <li><strong>3–47 struktuurset kuud</strong>. Igasse kuusse kuulub 4–123 päeva, kuid need päevad ei pea olema järjestikused.</li>
+  </ul>
+  <p>Kalendris ei ole kanoonilist nädalate süsteemi. Veebisaidil nähtavad read ja veerud on üksnes esitusviis; see, et kahte päeva näidatakse kõrvuti, ei tee neist sama „pastafari nädala” päevi.</p>
+</section>
+
+<section class="about-section" id="woven-months" data-toc-section data-toc-level="2">
+  <h2>Mida tähendab „läbipõimunud kuu”?</h2>
+  <p>Kotlett on katkematu jada: kui täna on kotleti 250. päev ja homme on endiselt sama kotlett, siis homme on selle 251. päev.</p>
+  <p>Kuu toimib teisiti. Teatava kuu 18. päev on <strong>18. kord, mil see kuu aasta jooksul esineb</strong>. See ei pea tulema üks päev pärast 17. päeva.</p>
+  <blockquote>
+    <p>Kuu A – 14. päev<br>
+    Kuu B – 9. päev<br>
+    Kuu A – 15. päev</p>
+  </blockquote>
+  <p>Seega võib kuu ulatuda üle suure osa aastast, läbida mitu kotletti ja põimuda teiste kuudega. Samamoodi võib ühte kotletti kuuluda paljude eri kuude päevi.</p>
+  <p>Kuu pikkus on sellesse kuuluvate päevade koguarv, mitte päevade arv selle esimese ja viimase esinemise vahel. Nii võib 104-päevane kuu kronoloogiliselt ulatuda üle tuhandete päevade.</p>
+  <aside class="about-note">
+    <h3>Miks tuleb 15. päev pärast 14. päeva?</h3>
+    <p>Sest 15 on järgmine täisarv pärast 14. Asjaolu, et kahe sama kuu esinemiskorra vahele mahub teise kuu päev, ei muuda arvutust: esimest kuud oli juba esinenud 14 korda; järgmine on selle 15. esinemine ja seetõttu on päeva number 15.</p>
+    <p>Samamoodi, kui sama kuu 15. päeva järel tuleb neli teiste kuude päeva, on esialgse kuu järgmine esinemine ikkagi selle 16. päev. Vahepealset nelja päeva loetakse kalendris kronoloogiliselt, kuid need ei kuulu sellesse kuusse ega suurenda seepärast <em>selle</em> kuu päevade loendurit. Just seetõttu on „kuu järgmine päev” ja „homne” kaks erinevat mõistet.</p>
+  </aside>
+  <p>Sellest järeldub ka, et kuu lõpp ei pruugi ajaliselt lähedal olla. 120 päeva pikkusel kuul võib olla käes 119. päev ja ometi võib selle 120. päev saabuda palju hiljem.</p>
+</section>
+
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>Kotlettide ja kuude nimed</h2>
+  <p>Kalendril on <strong>17 kotletinime</strong> ja <strong>47 kuunime</strong>. Ühe aasta jooksul ei kordu sama nimi samas kategoorias kaks korda. Kõik nimed ei pea igal aastal esinema: aasta võib kasutada vaid osa kogu nimeloendist.</p>
+  <p>Loendites on esitatud üksnes nimed. Nimele või selle kõrval olevale avamisikoonile klõpsates näeb nime täpset tähendust ja asjakohaseid kanoonilisi märkusi. Nimi ei kodeeri üksuse pikkust ega ennusta, mis selles juhtub.</p>
+
+  <h3>17 kotletti</h3>
+  <ul class="about-name-list about-name-disclosure-list">
+    <li>
+      <details class="about-name-details">
+        <summary>Pronks</summary>
+        <p>Pronks on metallisulam, mis koosneb peamiselt vasest ja tinast. Siin tähistab nimi materjali, mitte pelgalt värvust.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Rebane</summary>
+        <p>Rebane on koerlaste sugukonda kuuluv imetaja. Nimi ei tähista üht kindlat rebaseliiki.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Neer</summary>
+        <p>Neer on elund, mis filtreerib verd ning osaleb keha vedeliku- ja soolatasakaalu reguleerimises.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Lagaš</summary>
+        <p>Lagaš on muistne Sumeri linnriik Lõuna-Mesopotaamias.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Mõte</summary>
+        <p>Mõte tähendab mõtlemise sisu või mõtlemistegevust ennast.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Neli üheksandikku</summary>
+        <p>Murd 4/9 tähendab nelja võrdset osa üheksast. Kogu väljend moodustab ühe nime. Selle keskne arvuline tähendus on täpselt 4/9; üksnes sõnavara tasandil on lubatud ka arvuline esitus x, mis rahuldab tingimust <code>|x − 4/9| ≤ e/103</code>, sealhulgas piirväärtus. Avaldis <code>e/103</code> säilib täpsel kujul ning seda ei asendata kümnendlähendusega. See mööndus ei muuda loendureid, indekseid, identiteeti ega ühtki kalendriarvutust.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Palguraš</summary>
+        <p>Väljamõeldud silbijada. Sellel ei ole muud sõnastikulist tähendust, mida tuleks tõlgendada; see ongi nimi ise.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Papüürustarn</summary>
+        <p>Papüürustarn on taim, millest antiikajal valmistati papüürust.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Kobar</summary>
+        <p>Tihe rühm või kokkukuuluvate esemete kimp; heebrea keeles seostatakse seda sõna eriti viinamarjakobaraga.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Skorpion</summary>
+        <p>Skorpion on ämblikulaadsete hulka kuuluv lülijalgne, kellel on sõrad ja saba otsas astel.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Tuhk</summary>
+        <p>Pärast põlemist alles jääv pulbriline jääk.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Nisu</summary>
+        <p>Nisu on teravili, mille teradest valmistatakse muu hulgas jahu.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Jõgi</summary>
+        <p>Suhteliselt suur looduslik veevool, mis voolab sängis.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Naer</summary>
+        <p>Hääleline ja kehaline reaktsioon, mida tavaliselt seostatakse lõbu, rõõmu või huumoriga.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Akkad</summary>
+        <p>Akkad on muistne Mesopotaamia linn, mille järgi said nime ka Akkadi impeerium ja piirkond; linna täpset asukohta ei ole veel kindlalt tuvastatud.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Sarv</summary>
+        <p>Sarv tähendab kõva väljakasvet mõne looma peas, mitte valguskiirt.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Tühi kann</summary>
+        <p>Kann, milles ei ole midagi. „Tühi” kirjeldab seda, mis on kannu sees, see tähendab mitte midagi, ega tühista kannu olemasolu. Tühi kann võib endiselt olla terve kann, millel on seinad, põhi ja ava; see lihtsalt ei ole täidetud vee, veini, õli ega mõne muu ainega. Samuti ei tähenda nimi, et kotlett oleks päevadest tühi: kotletil nimega „Tühi kann” on päevi nagu igal teiselgi kotletil ning tühi on ainult nimes esinev kann.</p>
+      </details>
+    </li>
+  </ul>
+
+  <h3>47 kuud</h3>
+  <ul class="about-name-list about-name-disclosure-list">
+    <li>
+      <details class="about-name-details">
+        <summary>Savi</summary>
+        <p>Peeneteraline pinnasematerjal, mis muutub märjalt plastseks ning kõvastub kuivamisel või põletamisel.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Granaatõun</summary>
+        <p>Ümar vili, millel on kõva koor ja rohkesti mahlaseid seemneid.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Küünarnukk</summary>
+        <p>Liiges, mis ühendab õlavart küünarvarrega.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Kadedus</summary>
+        <p>Kurbus või rahulolematus teise inimese eelise, saavutuse või millegi hea pärast, mis tal on, vahel ka soov seda endale saada.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Eridu</summary>
+        <p>Eridu on muistne Sumeri linn Lõuna-Mesopotaamias.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Hambapasta</summary>
+        <p>Pastataoline aine, mida kasutatakse hammaste puhastamiseks harjamisel. Nimi tähistab pastat ennast, mitte hambaharja ega hammaste harjamist.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Kolm viiendikku</summary>
+        <p>Murd 3/5 tähendab kolme võrdset osa viiest. Kogu väljend moodustab ühe nime. Selle keskne arvuline tähendus on täpselt 3/5; üksnes sõnavara tasandil on lubatud ka arvuline esitus x, mis rahuldab tingimust <code>|x − 3/5| ≤ 1/367</code>, sealhulgas piirväärtus. Piir on täpne väärtus, mitte kümnendlähend. See mööndus ei muuda loendureid, indekseid, identiteeti ega ühtki kalendriarvutust.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Karšumav</summary>
+        <p>Väljamõeldud silbijada. Sellel ei ole varjatud sõnastikulist tähendust; see ongi nimi ise.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Leopard</summary>
+        <p>Laigulise kasukaga leopard; silmas ei peeta tiigrit.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Tina</summary>
+        <p>Keemiline element tina.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Udu</summary>
+        <p>Õhus maapinna lähedal hõljuvate imepisikeste veepiiskade kogum; silmas ei peeta suitsu.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Viirukivaik</summary>
+        <p>Viirukipuuliste puudest saadav aromaatne vaik, mida kasutatakse lõhnastamiseks ja suitsutusainena.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Värten</summary>
+        <p>Vahend, millega kedratakse kiud lõngaks.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Roie</summary>
+        <p>Üks rindkere luudest.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Jaanikaun</summary>
+        <p>Jaanikaunapuu või selle vili.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Uruk</summary>
+        <p>Uruk on muistne Sumeri linn Mesopotaamias.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Häbi</summary>
+        <p>Ebamugavus- või valutunne, mis tuleneb tajutud puudusest, läbikukkumisest või piinlikust käitumisest.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Kaamel</summary>
+        <p>Kaamel on kuivade piirkondade eluks kohastunud imetaja.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Vask</summary>
+        <p>Keemiline element vask.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Kaev</summary>
+        <p>Maa-aluse veeallikani kaevatud auk või šaht, millest vett ammutada.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Munakollane</summary>
+        <p>Kanamuna kollane osa.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Täht</summary>
+        <p>Taevakeha, näiteks Päike, mis kiirgab enda sees toimuvatest füüsikalistest protsessidest pärinevat energiat.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Mesi</summary>
+        <p>Magus aine, mida mesilased valmistavad nektarist või taimsetest eritistest.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Põrn</summary>
+        <p>Põrn on elund, mis kuulub muu hulgas immuunsüsteemi ning osaleb vere filtreerimises. Lisaks tavatähendusele on olemas tahtlik kanooniline tähenduslaiendus, millel puudub põrnaga bioloogiline, etümoloogiline või kultuuriline seos, ja sellist seost ei tohi välja mõelda: nimi hõlmab ka emase üksküürkaameli piima, mis on seotud tema esimese elusalt sündinud järglasega ning mis on lüpstud pärast tavalist nähtavat päikeseloojangut ja enne seda, kui Päikese keskpunkt saavutab geomeetrilise kõrguse <code>−6°</code>, ning enne, kui järglane on esimest korda omal jõul püsti tõusnud. Eelnevad tiinused, mis lõppesid nurisünnituse või surnultsünniga, seda tingimust ei välista; kui järglane sureb enne iseseisvat püstitõusmist, ei lõpeta see tingimuse kehtimist. Nõu peab olema keraamiline, punase glasuuriga ja mahutavusega 180–220 mL, kaasa arvatud mõlemad mahutavuse piirid. Piima ei pea lüpsma otse udarast sellesse nõusse ning arvuline kriteerium on nõu mahutavus, mitte tegelikult kogutud piima kogus. Ajavahemiku täpsete piirhetkede endi kaasamise küsimus on kanooniliselt tahtlikult lahendamata.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Lubjakivi</summary>
+        <p>Settekivim, mis koosneb valdavalt kaltsiumkarbonaadist.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Rõõm</summary>
+        <p>Positiivne õnne-, rahulolu- või rõõmutunne.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Viigimari</summary>
+        <p>Viigipuu vili või viigipuu ise.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Niinive</summary>
+        <p>Niinive on muistne Assüüria linn, mis asus tänapäeva Mosuli vastas Tigrise kaldal.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Konn</summary>
+        <p>Sabatu kahepaikne rühmast, kuhu kuuluvad konnad ja kärnkonnad.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Pigi</summary>
+        <p>Tume ja viskoosne aine, mida kasutatakse muu hulgas tihendamiseks; silmas peetakse paksu pigitaolist ainet, mitte üldnimetust kogu asfaldile.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Valgusti</summary>
+        <p>Valgustamiseks kasutatav ese. See ei pea tingimata olema tahiga vahaküünal.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Suletud uks</summary>
+        <p>Uks, mis on suletud olekus. Suletud uks jääb ikka ukseks: see ei muutu seinaks, ei kao ega pea olema lukustatud. „Suletud” tähendab, et ava, mille avamiseks uks on mõeldud, on praegu uksega tõkestatud; „lukus” oleks täiendav väide, mida nimi ei sisalda. Seega vastab nimele „Suletud uks” ka uks, mis pandi kinni ilma võtit keeramata.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Seesam</summary>
+        <p>Seesamitaim või selle seemned, millest toodetakse muu hulgas seesamiõli.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Kukal</summary>
+        <p>Kaela tagumine osa.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Hõbe</summary>
+        <p>Keemiline element hõbe. Silmas ei peeta raha kui maksevahendit.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Susa</summary>
+        <p>Susa on muistne linn Eelamis ja Pärsias. Silmas ei peeta liiliaõit.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Torm</summary>
+        <p>Tormine ilm, tavaliselt tugeva tuule ning mõnikord ka sademete, välgu või muude kaasnevate nähtustega.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Eesel</summary>
+        <p>Kodustatud imetaja eesel.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Jahu</summary>
+        <p>Terade või samalaadse taimse materjali jahvatamisel saadud pulber; tavakasutuses eelkõige teraviljajahu.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Kahetsus</summary>
+        <p>Kurbus minevikus tehtud teo, valiku või selle tagajärje pärast.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Babülon</summary>
+        <p>Babülon on muistne Mesopotaamia linn Eufrati jõe ääres; siin on tegu kohanimega.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Keel</summary>
+        <p>Suus paiknev lihaseline elund. Silmas ei peeta keelt kui kõneldavat keelt.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Lina</summary>
+        <p>Linataim ja selle kiud, mida kasutatakse muu hulgas kanga valmistamiseks.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Sool</summary>
+        <p>Soolane aine, mida kasutatakse muu hulgas toidus ja mille all mõeldakse argikontekstis peamiselt naatriumkloriidi. Silmas ei peeta meremeest.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Pirn</summary>
+        <p>Pirnipuu vili.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Vibu</summary>
+        <p>Relv, mille pingutatud nööri abil lastakse nooli. Silmas ei peeta vikerkaart.</p>
+      </details>
+    </li>
+    <li>
+      <details class="about-name-details">
+        <summary>Liiv</summary>
+        <p>Kivimite ja mineraalide väikestest osakestest koosnev teraline aine. Silmas ei peeta „ilmalikku” kui „püha” vastandit ega argipäeva.</p>
+      </details>
+    </li>
+  </ul>
+
+  <p>Teistesse keeltesse tõlkimisel võib sama nime jaoks kasutada teistsugust normikohast kuju. Tõlge või transliteratsioon ei loo uut kotletti ega kuud; see esitab sama keelelise üksuse teisel kujul. Normikohased kujud määratakse kaanonis ja seal omaks võetud keelereeglite järgi.</p>
+</section>
+
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>Millal päev vahetub?</h2>
+  <p>Kohalik pastafari päev ei vahetu südaööl. Selle piiri määrab <strong>Veenuse keskpunkti alumine kulminatsioon kohalikul meridiaanil</strong>: hetk, mil Veenuse keskpunkt läbib vaatleja asukoha meridiaani horisondist allpool oleval poolel.</p>
+  <p>Seepärast on vaatleja asukoht oluline. Kaks eri paikades viibivat inimest võivad samal füüsikalisel hetkel kuuluda kahte erinevasse kohalikku pastafari päeva. Teise linna minnes ei kasutata edasi eelmise linna päevapiiri.</p>
+  <p>Piir sõltub Veenuse orbiidi arvutusest, mitte sellest, kas vaatleja teda tegelikult näeb. Pilved, seinad ega see, et Veenus asub horisondist allpool, tema liikumist ei peata.</p>
+  <p>Kalendri diskreetne algoritm on täpselt määratletud: samad sisendid annavad samade reeglite läbimisel sama tulemuse. Seevastu füüsikalise hetke teisendamisel pastafari päevaks kasutatakse praegu teostuse astronoomilist mudelit; astronoomiline numbriline profiil ise ei kuulu veel lõplikult kindlaksmääratud kaanonisse.</p>
+</section>
+
+<section class="about-section" id="advantages" data-toc-section data-toc-level="2">
+  <h2>Kalendri silmapaistvad voorused</h2>
+  <ul>
+    <li><strong>Kuupäev, mida saab ikka ja jälle uuesti arvutada:</strong> sama minevikupäev võib homme saada teistsuguse pastafari kuupäeva, sest ka arvutuspäev on edasi liikunud. Pole vaja leppida vana kuupäevaga, mis püsib kaua kasutuskõlblikuna.</li>
+    <li><strong>Avarad aastad:</strong> aastas võib olla kuni 5,778 päeva, nii et järgmise aasta ootajal võib ees olla tavapärasest märksa pikem ooteaeg.</li>
+    <li><strong>Kuud, mis nõuavad tähelepanu:</strong> teadmine, et täna on kuu 119. päev, ei tähenda, et selle 120. päev saabub homme, järgmisel nädalal või isegi varsti. Järgmine kuupäev tuleb välja arvutada.</li>
+    <li><strong>Geograafiline tundlikkus:</strong> sama hetk võib kuuluda eri paikades erinevatesse kohalikesse pastafari päevadesse. Teise linna sõit lisab kooskõlastamisel seega veel ühe meelespeetava asjaolu.</li>
+    <li><strong>Trükitud kalendrid ei muutu enesega rahulolevaks:</strong> ette valmistatud kalender ei pruugi pärast arvutuspäeva muutumist enam õiget arvutust kajastada ja seega pole ohtu, et keegi lepiks aastaid sama paberilehega.</li>
+    <li><strong>Arvutusvõimsuse kasulik rakendamine:</strong> selle asemel et piirduda lihtsa tabeliga, mille mõistmiseks piisab ühest pilgust, annab kalender arvutile iga vastusesoovi korral võimaluse teha päris arvutustööd.</li>
+    <li><strong>Selles on päevi:</strong> kalender käsitleb päevi. Seda omadust jagab see iga teise kalendriga ning nõnda ei pea kasutaja pidama kalendrit, milles pole päevi.</li>
+    <li><strong>Päevad esinevad järjekorras:</strong> varasem päev tuleb enne hilisemat. See on kalendrite põhiline saavutus ning siin on see saadaval ilma lisatasuta.</li>
+    <li><strong>Sellega saab kuupäevi märkida:</strong> kalender võimaldab omistada päevale kalendrilise kirjelduse. See on küll täpselt see, milleks kalendrid on mõeldud, kuid pole põhjust jätta kasulikku omadust mainimata, kui see olemas on.</li>
+  </ul>
+  <p>Ja kõik eespool nimetatu leidub koos ühes kalendris, nagu ikka siis, kui mitu omadust kuulub samale kalendrile.</p>
+</section>
+
+<section class="about-section" id="practical-consequences" data-toc-section data-toc-level="2">
+  <h2>Mida see praktikas tähendab?</h2>
+  <p><strong>Trükitud kalender vananeb halvasti.</strong> Arvutuspäeva muutumine võib muuta aastate, kotlettide ja kuude piire. Täna arvutatud almanahh ei pruugi olla homme õige almanahh.</p>
+  <p><strong>Sündmus jääb samaks sündmuseks.</strong> Kohtumine, sünd või ajalooline sündmus tuleb siduda püsiva kronoloogilise päeva või hetkega; hiljem saab sellele kuvada pastafari kuupäeva arvutuspäeva ja vaatleja asukoha järgi. Sildi muutmine ei nihuta sündmust ajas.</p>
+  <p><strong>Pastafari sünnipäev ei järgi tingimata reeglit „kord aastas”.</strong> Sama kuunime ja sama kuupäeva või sama kotletinime ja kotletipäeva järgmise esinemise leidmiseks tuleb kalendrist otsida. Kõrvalasuval aastal ei pruugi vajalikku nime üldse olla või võib vastav üksus olla nõutava päevanumbrini jõudmiseks liiga lühike.</p>
+  <p><strong>Kogu päeva sündmus ei kesta tingimata südaööst südaööni.</strong> Kui sündmus on määratletud kohaliku pastafari päeva alusel, on selle piir kohalik Veenuse-põhine päevapiir. Lihtsakoeline eksport tavakalendrisse südaööst südaööni kestva sündmusena võib selle tähendust muuta.</p>
+</section>
+
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>Asutamispäev ja tahvlite päev</h2>
+  <p>Kalendril on kaks tähtsat kindlat pidepunkti:</p>
+  <dl>
+    <dt><strong>Asutamispäev</strong></dt>
+    <dd>22. detsember 41,222 eKr tagasiulatuvalt laiendatud Gregoriuse kalendri järgi.</dd>
+    <dt><strong>Tahvlite päev</strong></dt>
+    <dd>15. juuni 763 eKr tagasiulatuvalt laiendatud Juliuse kalendri järgi, mis on 7. juuni 763 eKr tagasiulatuvalt laiendatud Gregoriuse kalendri järgi.</dd>
+  </dl>
+  <p>Nendevaheline kaugus on 14,777,149 päeva. Asutamispäev on arvutuslik pidepunkt; see ei ole „aja esimene päev” ning kalender ulatub ka sellest varasemasse aega.</p>
+  <p>Tahvlite päev on pärimuses seotud tahvlite üleandmisega ning ajaloolises arvutuses samastatakse see Bur-Sagale ajastu päikesevarjutuse päevaga. Mõlemad pidepunktid jäävad paigale ka arvutuspäeva muutumisel.</p>
+</section>
+
+<section class="about-section" id="calendar-math" data-toc-section data-toc-level="2">
+  <h2>Mõned lihtsad matemaatilised tõsiasjad</h2>
+  <p>Kuunimesid on 47 ja iga kuu võib ulatuda kõige rohkem 123. päevani. Seega on olemas <strong>5,781</strong> võimalikku kombinatsiooni kujul „kuunimi + kuupäev”.</p>
+  <p>Aastas võib olla kõige rohkem 5,778 päeva ning iga päev realiseerib ühe sellise kombinatsiooni. Seega <strong>jääb igal aastal vähemalt kolm võimalikku kombinatsiooni esinemata</strong>. Isegi kõige pikemas aastas ei ole piisavalt päevi kõigi kombinatsioonide realiseerimiseks.</p>
+  <p>Kui arvutuspäev ja aasta on teada, osutab täielik paar „kotletinimi + kotletipäev” või „kuunimi + kuupäev” ühes ja samas aastas kõige rohkem ühele päevale. Seega määrab täielik pastafari kuupäev koos arvutuspäevaga küsitava päeva üheselt.</p>
+  <p>Seevastu arvutuspäeva teadmata ei määra täielik pastafari kuupäev tingimata iseseisvalt ühtainsat kaugust ajateljel. Sama viieosaline kirje võib esineda erinevates arvutuskontekstides.</p>
+</section>
+
+<section class="about-section" id="research" data-toc-section data-toc-level="2">
+  <h2>Mida on arvutusuuringud kalendri kohta leidnud?</h2>
+  <p>Lisaks reeglite endi kontrollimisele on kalendri kohta tehtud ulatuslikke arvutusuuringuid. Järgmised andmed on <strong>valimil põhinevad empiirilised leiud</strong>, mitte kanoonilised seadused.</p>
+  <p>Struktuuriatlases, mis koostati 4,096 arvutuspäeva põhjal ja milles uuriti 86,016 aastastruktuuri:</p>
+  <ul>
+    <li>Valimi keskmine aasta pikkus oli ligikaudu 4,275 päeva ja mediaan 4,343 päeva;</li>
+    <li>Keskmine kotlettide arv aastas oli ligikaudu 7.27;</li>
+    <li>Struktuursete kuude keskmine arv oli ligikaudu 41.1;</li>
+    <li>Kuusse kuulus keskmiselt ligikaudu 104 päeva, kuid tavaliselt ulatus kuu üle peaaegu terve aasta;</li>
+    <li>97.482% kuu järjestikustest päevadest koosnevatest lõikudest olid ainult ühe päeva pikkused;</li>
+    <li>Mõõdetud tõenäosus, et kaks kronoloogiliselt kõrvutist päeva kuuluvad samasse kuusse, oli ainult ligikaudu 2.998%.</li>
+  </ul>
+  <p>Eraldi uuringus „päeva-aasta” kordumise kohta, kus uuriti 4,096 enda suhtes arvutatud kuupäeva mõlemas ajasuunas:</p>
+  <ul>
+    <li>Kombinatsiooni <strong>kuunimi + päev kuus</strong> korduv vaste saabus mediaani järgi juba ühe pastafari aasta pärast; 77.56% vastetest leiti naaberaastas;</li>
+    <li>Kombinatsiooni <strong>kotletinimi + päev kotletis</strong> korduv vaste oli palju vähem ennustatav: mediaan oli kolm pastafari aastat, kuid keskmist mõjutas väga pikk saba;</li>
+    <li>Valimis ilmnes äärmuslik juhtum, kus kombinatsiooni „Akkad 3063” esimene kordumine tulevikus jäi 51,954 pastafari aasta kaugusele.</li>
+  </ul>
+  <p>Need tulemused aitavad mõista, mida kalender kaldub tegema. Need ei muuda keskmist reegliks: asjaolu, et valimis oli keskmine aasta teatava pikkusega, ei nõua, et üksik aasta oleks sellele keskmisele lähedane, ning kõigis 4,096 juhtumis saadud tulemus ei ole iseenesest matemaatiline tõestus kõigi võimalike sisendite kohta.</p>
+</section>
+
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>Kuidas kalendrit arvutatakse?</h2>
+  <p>Kuupäeva taga on täpselt määratletud diskreetne algoritm. See tuletab arvutuspäevast ja küsitavast päevast loendurite jada, juhib need läbi segamismehhanismi nimega <strong>kaste</strong>, loob väravad, valib aasta ja kotlettide piirid, valib nimed, loob kuud ning põimib lõpuks kuude päevad aasta ulatuses üksteisega läbi.</p>
+  <p>Täpsete üksikasjade hulka kuuluvad suured arvud, tilgad, kausid, segamisliigutused, pitserid ja kombinatoorsed valikumehhanismid. Need on tähtsad teostuse ja formaalse kontrolli jaoks, kuid kuupäeva tähenduse mõistmiseks pole neid vaja ning seepärast neid siin ei kirjeldata.</p>
+  <p>Algoritmi kõrval on olemas kiire arvutusmootor nimega <strong>Pastafarian Calendar Seer</strong>. Seer on mõeldud kiireks arvutamiseks; see ei ole autoriteet ega kanoonilise algoritmi kõiki etappe läbiv standardne teostus. Kui selle tulemus on vastuolus kaanonist tuleneva tulemusega, eksib Seer.</p>
+</section>
+
+<section class="about-section" id="about-the-monster" data-toc-section data-toc-level="2">
+  <h2>Koletisest</h2>
+  <p>Pastafari loo järgi on <strong>Lendav Spagetikoletis</strong> olend, kes lõi maailma ja enamiku selles olevatest asjadest. Tema keha koosneb nuudlitest ja lihapallidest ning ta suudab lennata, läbida tavalist ainet ja jääda nähtamatuks, kui see talle sobib.</p>
+  <p>Koletis suudab luua ainet, elusolendeid, taevakehi ja väga keerukaid mehhanisme. See võime ei kohusta teda enne töö alustamist koostama korralikku plaani. Sageli alustab ta ühest asjast, läheb üle teisele, avastab, et eelmist tuleb parandada, ja otsustab, kas seda teha. Mõnikord ta tõepoolest parandabki.</p>
+  <p>See ettekujutus, kiht kihi peale rajatud loomine koos paranduste, erandite ja püsima jäänud reeglitega, on ka kalendri kirjanduslik taust. Erinevalt loost ei ole arvutus ise improvisatsioon: antud sisendite korral tagastab algoritm ühe kindla vastuse.</p>
+  <p>Pastafari lugu on kalendrist märksa laiem ning hõlmab muu hulgas piraate, süsivesikuid, palvetamist, „Ma tõesti eelistaksin, et sa seda ei teeks” ja muid traditsioone.</p>
+  <p class="about-actions"><a class="guide-link" href="./monster/et.html">Pikem selgitus koletise kohta</a></p>
+</section>
+
+<section class="about-section" id="authority" data-toc-section data-toc-level="2">
+  <h2>Mis on kanooniline ja mis üksnes selgitus?</h2>
+  <p>See lehekülg on <strong>selgitav lehekülg</strong>. Ükski siin esinev lause ei loo pelgalt oma olemasoluga uut reeglit.</p>
+  <p>Kanooniline sisu määratakse kanoonilise tekstikorpuse ja selles vastu võetud reeglite alusel. Rullraamatu kanoonilistel väljaannetel ei ole automaatset üksteise suhtes kehtivat hierarhiat ning tarkvarateostus ei muutu autoriteediks pelgalt kiiruse või leviku tõttu.</p>
+  <p>Standardne teostus viib kanoonilise algoritmi läbi kõigi selle etappide. Arvutusuuring võib kirjeldada nähtust, leida mustri või tõestada algoritmi kohta väite; kui tegu on valimi, mitte tõestatud üldreegliga, öeldakse seda sõnaselgelt.</p>
+</section>
+
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>Lühidalt</h2>
+  <p>Pastafari kalender on raskesti hoomatav kalender, milles kuupäev sõltub nii päevast, mille kohta küsitakse, kui ka päevast, mille seisuga küsitakse.</p>
+  <p>Aasta 5000 moodustatakse arvutuspäeva ümber. Kotletid on järjestikused lõigud. Kuud on päevade hulgad, mis võivad üksteisega läbi põimuda. Kanoonilisi nädalaid ei ole. Kohalik päev vahetub Veenuse, mitte südaöö järgi.</p>
+  <p>Ebatavalise ülesehituse taga on täpne algoritm; selle ümber on pastafari lugu spagetikoletisest, kihtidena kuhjunud loomisest ja ebamõistlikust süsivesikute kogusest.</p>
+  <p>Kui arvutuspäev, küsitav päev ja asukohakontekst on antud, on vastus üks.</p>
+</section>
