@@ -912,8 +912,10 @@ async function main() {
       assert.equal(await page.locator("#article-content").getAttribute("dir"), "rtl");
       assert.equal(await page.getByRole("heading", { level: 1 }).count(), 1);
       assert.equal(await page.locator("#calendar-workspace").count(), 0, "About page must not load the calculation workspace");
-      await page.locator("#about-toc-list a").nth(15).waitFor({ state: "attached", timeout: 30_000 });
-      assert.equal(await page.locator("#about-toc-list a").count(), 16, "About page must expose all 15 canonical sections and the usage guide");
+      const contentsIds = await page.locator("#about-toc-list a").evaluateAll((links) => links.map((link) => new URL(link.href).hash.slice(1)));
+      const sectionIds = await page.locator("#article-content [data-toc-section][id], #site-usage[data-toc-section][id]").evaluateAll((sections) => sections.map((section) => section.id));
+      assert.deepEqual(contentsIds, sectionIds, "About TOC must contain each live section exactly once, in document order");
+      assert.ok(sectionIds.includes("day-boundary") && sectionIds.includes("about-the-monster") && sectionIds.includes("site-usage"), "Required About and guide destinations must remain navigable");
       assert.equal(await page.locator("#day-boundary").isVisible(), true, "Deep-link target must be present and visible");
       await assertNoGlobalHorizontalOverflow(page, "about page desktop");
       await page.setViewportSize(MOBILE);
