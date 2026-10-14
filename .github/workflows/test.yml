@@ -92,7 +92,7 @@ jobs:
             | tee generated-standalone-SHA256SUMS.txt
       - run: npm run test:update13:intl:standalone
       - name: Upload generated standalone for Update 3 reconciliation
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: update3-generated-standalone-${{ github.sha }}
           path: |
@@ -160,7 +160,7 @@ jobs:
         run: npm run test:differential:final:browser
       - name: Upload Update 13 browser/Worker evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: update13-browser-worker-${{ github.sha }}
           path: artifacts/update-13-browser-worker-smoke.json
@@ -208,7 +208,7 @@ jobs:
         run: npm run test:accessibility
       - name: Upload accessibility failure artifacts
         if: failure()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: accessibility-failure-artifacts
           path: artifacts/accessibility
