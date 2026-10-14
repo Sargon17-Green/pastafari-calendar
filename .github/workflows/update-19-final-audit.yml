@@ -35,7 +35,7 @@ jobs:
       - run: node verification/update19/check-audit-scope.mjs
       - name: Upload scope evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: u19-scope-${{ github.sha }}
           path: artifacts/update-19/audit-scope.json
@@ -55,7 +55,7 @@ jobs:
       - run: node verification/update19/run-independent-node-audit.mjs --extended
       - name: Upload independent Node evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: u19-node-${{ github.sha }}
           path: artifacts/update-19/*.json
@@ -75,7 +75,7 @@ jobs:
       - run: node verification/update19/run-static-corpus-audit.mjs
       - name: Upload static/corpus evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: u19-static-${{ github.sha }}
           path: |
@@ -111,7 +111,7 @@ jobs:
       - run: node verification/update19/run-final-tuple-region.mjs --region=${{ matrix.region }}
       - name: Upload region evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: u19-region-${{ matrix.region }}-${{ github.sha }}
           path: artifacts/update-19/regions/${{ matrix.region }}.json
@@ -131,7 +131,7 @@ jobs:
       - run: node verification/update19/run-external-audit.mjs
       - name: Upload external-calendar evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: u19-external-${{ github.sha }}
           path: artifacts/update-19/external-calendar-foundation-matrix.json
@@ -151,7 +151,7 @@ jobs:
       - run: node --expose-gc verification/update19/run-deep-state-audit.mjs
       - name: Upload deep-state evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: u19-deep-state-${{ github.sha }}
           path: artifacts/update-19/deep-state-leak-soak.json
@@ -186,7 +186,7 @@ jobs:
       - run: node scripts/run-update19-browser-audit.mjs
       - name: Upload environment parity evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: u19-browser-worker-standalone-${{ github.sha }}
           path: artifacts/update-19/browser-worker-standalone-parity.json
@@ -208,7 +208,7 @@ jobs:
       - run: node verification/update19/run-build-package-audit.mjs
       - name: Upload build/package evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: u19-build-package-${{ github.sha }}
           path: artifacts/update-19/build-package-reproducibility.json
@@ -230,7 +230,7 @@ jobs:
       - run: node verification/update19/run-ci-command-parity.mjs
       - name: Upload CI parity evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: u19-ci-parity-${{ github.sha }}
           path: artifacts/update-19/ci-command-parity.json
@@ -265,7 +265,7 @@ jobs:
         run: node verification/update19/finalize-audit.mjs
       - name: Upload final evidence package
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: update-19-final-evidence-${{ github.sha }}
           path: artifacts/update-19/final-evidence
