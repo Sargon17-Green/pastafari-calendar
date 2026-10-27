@@ -112,7 +112,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   const articleAssets = coreAssets.filter((entry) => entry.startsWith("./about/content/") && entry.endsWith(".html?v=5-about-i18n-polish"));
   assert.deepEqual(articleAssets, ["./about/content/he.html?v=5-about-i18n-polish"], "Only the fallback article may be eagerly precached");
 
-  assert.match(source, /const VERSION = "pastafari-static-pwa-hardening-23-nojs-i18n";/);
+  assert.match(source, /const VERSION = "pastafari-static-pwa-hardening-24-reverse-generation";/);
   assert.match(source, /const RUNTIME_CACHE = "pastafari-runtime-assets";/);
   assert.match(source, /const OPTIONAL_LOCALE_PATH = \/\^\\\/i18n\\\/locales/);
   assert.match(source, /const OPTIONAL_ARTICLE_PATH = \/\^\\\/about\\\/content/);
