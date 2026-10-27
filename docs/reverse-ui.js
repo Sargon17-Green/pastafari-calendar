@@ -598,6 +598,7 @@ class ReverseSearchUi {
     this.variables = [];
     this.constraints = [];
     this.lastRun = null;
+    this.runSequence = 0;
     this.visibleErrorMessage = null;
     this.build();
   }
@@ -803,6 +804,8 @@ class ReverseSearchUi {
     this.status.setAttribute("aria-atomic", "true");
     this.progress = node("p", "reverse-progress");
     this.progress.id = "reverse-progress";
+    this.progress.dir = this.services.getLocale().dir;
+    this.progress.lang = this.services.getLocale().code;
     this.error = node("p", "form-error");
     this.error.setAttribute("role", "alert");
     this.error.hidden = true;
@@ -934,6 +937,10 @@ class ReverseSearchUi {
   }
 
   async run(problem, options, context) {
+    // Every asynchronous UI update belongs to one search generation.
+    // A cancelled/superseded promise must not hide or overwrite a newer search.
+    const generation = ++this.runSequence;
+    this.lastRun = null;
     this.output.hidden = false;
     this.error.hidden = true;
     this.visibleErrorMessage = null;
@@ -944,14 +951,17 @@ class ReverseSearchUi {
     try {
       const { result } = await this.controller.solve(problem, {
         ...options,
-        onProgress: (value) => this.renderProgress(value),
+        onProgress: (value) => {
+          if (generation === this.runSequence) this.renderProgress(value);
+        },
       });
+      if (generation !== this.runSequence) return;
       this.lastRun = { problem, result, context };
       this.renderResult(result, context);
     } catch (error) {
-      this.handleSearchError(error);
+      if (generation === this.runSequence) this.handleSearchError(error);
     } finally {
-      this.setRunning(false);
+      if (generation === this.runSequence) this.setRunning(false);
     }
   }
 
@@ -1071,12 +1081,18 @@ class ReverseSearchUi {
 
   cancel() {
     if (this.controller.cancel()) {
+      ++this.runSequence;
       this.status.textContent = this.rt("reverse.status.cancelled");
       this.setRunning(false);
     }
   }
 
   clearResults() {
+    // Clearing results also cancels computation; otherwise a late result
+    // can reopen the output after it was explicitly dismissed.
+    ++this.runSequence;
+    this.controller.cancel();
+    this.setRunning(false);
     this.lastRun = null;
     this.output.hidden = true;
     this.status.textContent = "";
@@ -1120,6 +1136,8 @@ class ReverseSearchUi {
     for (const element of this.root.querySelectorAll("[data-reverse-key]")) {
       element.textContent = this.rt(element.dataset.reverseKey);
     }
+    this.progress.dir = this.services.getLocale().dir;
+    this.progress.lang = this.services.getLocale().code;
     const mode = this.basicCalculationMode.value;
     this.populateBasicCalculationModes(mode);
     this.basicPastafari.refreshLocale();

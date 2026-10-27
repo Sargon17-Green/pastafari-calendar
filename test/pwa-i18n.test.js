@@ -70,8 +70,8 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
     "./about/content/registry.js?v=5-about-i18n-polish",
     "./about/content/he.html?v=5-about-i18n-polish",
     "./styles.css?v=16-about-polish",
-    "./app.js?v=24-about-i18n",
-    "./reverse-ui.js?v=21-about-i18n",
+    "./app.js?v=25-reverse-generation",
+    "./reverse-ui.js?v=22-reverse-generation",
     "./reverse-search-controller.js",
     "./calendar-input-conventions.js?v=9-calendar-input-conventions",
     "./calendar-converters.js?v=9-canonical-names",
@@ -142,7 +142,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   const html = await readFile(path.join(DOCS, "index.html"), "utf8");
   for (const entry of [
     "./styles.css?v=16-about-polish",
-    "./app.js?v=24-about-i18n",
+    "./app.js?v=25-reverse-generation",
     "./manifest.webmanifest?v=9-canonical-names",
     "./icons/icon.svg?v=9-canonical-names",
   ]) {
