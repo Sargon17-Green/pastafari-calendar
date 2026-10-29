@@ -65,12 +65,13 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   const requiredCore = [
     "./index.html",
     "./about/index.html",
-    "./about/about.js?v=20261010-approved16",
+    "./about/monster/index.html",
+    "./about/about.js?v=20261010-approved16-f012-close12",
     "./about/content/registry.js?v=20261010-approved16",
     "./about/content/he.html?v=4-about-polish",
     "./styles.css?v=16-about-polish",
-    "./app.js?v=24-worker-recovery",
-    "./reverse-ui.js?v=20-about-page",
+    "./app.js?v=25-audit-reverse-input",
+    "./reverse-ui.js?v=21-audit-reverse-input",
     "./reverse-search-controller.js",
     "./calendar-input-conventions.js?v=9-calendar-input-conventions",
     "./calendar-converters.js?v=9-canonical-names",
@@ -90,7 +91,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
     "./i18n/locales/en.js?v=18-about-page",
   ];
   assert.deepEqual(coreAssets, requiredCore, "CORE_ASSETS must describe the complete deterministic offline application shell");
-  assert.equal(coreAssets.length, 25);
+  assert.equal(coreAssets.length, 26);
 
   const requiredOptional = [
     "./manifest.webmanifest?v=10-kyrgyz",
@@ -98,14 +99,15 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
     "./icons/icon-192.png",
     "./icons/icon-512.png",
   ];
-  const approvedTranslations = ["en", "af", "ar", "az", "be", "bg", "bn", "bs", "ca", "cs", "da", "de", "el", "eo", "es", "et"];
-  const translationAssets = approvedTranslations.flatMap((code) => [
-    "./about/content/" + code + ".html?v=" + (code === "et" ? "20261010-approved16" : code === "es" ? "20261010-approved15" : code === "eo" ? "20261010-approved14" : code === "el" ? "20261009-approved13" : "20261009-approved12"),
-    "./about/monster/" + code + ".html",
+
+  const approvedCodes = ["en", "af", "ar", "az", "be", "bg", "bn", "bs", "ca", "cs", "da", "de", "el", "eo", "es", "et"];
+  const approvedOptional = approvedCodes.flatMap((code) => [
+    `./about/content/${code}.html?v=${code === "et" ? "20261010-approved16" : code === "es" ? "20261010-approved15" : code === "eo" ? "20261010-approved14" : code === "el" ? "20261009-approved13" : "20261009-approved12"}`,
+    `./about/monster/${code}.html`,
   ]);
-  assert.deepEqual(optionalAssets, [...requiredOptional, ...translationAssets],
-    "OPTIONAL_ASSETS must contain the four metadata/icons and exactly the 32 approved translation pages");
-  assert.equal(optionalAssets.length, 36);
+  assert.deepEqual(optionalAssets, [...requiredOptional, ...approvedOptional],
+    "Approved article and monster translations must be on-demand PWA assets");
+  assert.equal(optionalAssets.length, 4 + approvedCodes.length * 2);
   assert.deepEqual(coreAssets.filter((entry) => optionalAssets.includes(entry)), [], "Core and optional lists must not overlap");
 
   await assertDeclaredAssetsExist(coreAssets);
@@ -116,7 +118,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   assert.equal(LOCALES.length, 73, "PWA accounting expects the current 73 registered locales");
   assert.equal(LOCALES.filter(({ code }) => code !== "en").length, 72, "Every non-English locale is optional/on-demand");
 
-  assert.match(source, /const VERSION = "pastafari-static-pwa-about-approved16-20261010-approved16";/);
+  assert.match(source, /const VERSION = "pastafari-static-pwa-approved16-f012-close12-20261010";/);
   assert.match(source, /const RUNTIME_CACHE = "pastafari-runtime-assets";/);
   assert.match(source, /const OPTIONAL_LOCALE_PATH = \/\^\\\/i18n\\\/locales/);
   assert.match(source, /url\.search === LOCALE_REVISION_SEARCH/);
@@ -137,6 +139,8 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   assert.match(source, /if \(url\.origin !== SCOPE_URL\.origin\) return;/);
   assert.match(source, /if \(isOptionalLocaleRequest\(url\)\)/);
   assert.match(source, /function navigationFallbackEntry\(url\)/);
+  assert.match(source, /relativePath === "\/about\/monster" \|\| relativePath === "\/about\/monster\/" \|\| relativePath === "\/about\/monster\/index\.html"/);
+  assert.match(source, /CORE_BY_URL\.get\(scoped\("\.\/about\/monster\/index\.html"\)\)/);
   assert.match(source, /CORE_BY_URL\.get\(scoped\("\.\/about\/index\.html"\)\)/);
   assert.match(source, /event\.respondWith\(fetch\(event\.request\)\);/);
   assert.doesNotMatch(source, /if \(response\.ok\)\s*\{[\s\S]{0,250}cache\.put\(event\.request/s, "generic same-origin GET caching must not return");
@@ -144,14 +148,20 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   const html = await readFile(path.join(DOCS, "index.html"), "utf8");
   for (const entry of [
     "./styles.css?v=16-about-polish",
-    "./app.js?v=24-worker-recovery",
+    "./app.js?v=25-audit-reverse-input",
     "./manifest.webmanifest?v=10-kyrgyz",
-    "./icons/favicon-32x32.png?v=spaghetti-calendar-2",
-    "./icons/favicon-16x16.png?v=spaghetti-calendar-2",
-    "./icons/icon-192.png?v=spaghetti-calendar-2",
   ]) {
     assert.ok(html.includes(entry), `index.html must request the revisioned asset ${entry}`);
   }
+  assert.ok(optionalAssets.includes("./icons/icon.svg?v=9-canonical-names"),
+    "SVG icon remains an optional PWA asset, not a required HTML link");
+  for (const size of ["32x32", "16x16"]) {
+    const link = `<link rel="icon" type="image/png" sizes="${size}" href="./icons/favicon-${size}.png?v=spaghetti-calendar-2">`;
+    assert.ok(html.includes(link), `index.html must link the canonical ${size} PNG favicon`);
+  }
+  assert.ok(html.includes(
+    `<link rel="apple-touch-icon" href="./icons/icon-192.png?v=spaghetti-calendar-2">`
+  ), "index.html must link the canonical Apple touch icon");
   const app = await readFile(path.join(DOCS, "app.js"), "utf8");
   assert.ok(app.includes("./engine/pastafari-fast-worker.js?v=${ASSET_REVISION}"));
   assert.match(app, /const ASSET_REVISION = "10-worker-recovery";/);

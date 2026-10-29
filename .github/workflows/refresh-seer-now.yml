@@ -30,6 +30,50 @@ jobs:
           persist-credentials: true
       - name: Validate and refresh only when date changes
         run: python3 scripts/refresh-seer-date-cache.py
+      - name: Update only the three Seer checksum references
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- docs/api/seer-now.json; then
+            echo 'Unchanged date snapshot; no checksum writes.'
+            exit 0
+          fi
+          python3 - <<'PY_SEER_HASHES'
+          import hashlib
+          from pathlib import Path
+
+          def digest(data):
+              return hashlib.sha256(data).hexdigest()
+
+          def replaced_manifest(text, file_path, new_hash):
+              entry = f"  ./{file_path}"
+              lines = text.splitlines(keepends=True)
+              matches = [i for i, line in enumerate(lines) if line.rstrip("\r\n").endswith(entry)]
+              if len(matches) != 1:
+                  raise RuntimeError(f"Expected exactly one checksum entry: {file_path}, got {len(matches)}")
+              old_line = lines[matches[0]]
+              if not old_line.endswith("\n"):
+                  raise RuntimeError(f"Missing trailing newline for {file_path}")
+              lines[matches[0]] = f"{new_hash}{entry}\n"
+              return "".join(lines)
+
+          snapshot = Path("docs/api/seer-now.json")
+          docs_path = Path("docs/SHA256SUMS.txt")
+          root_path = Path("SHA256SUMS.txt")
+          docs_before = docs_path.read_text(encoding="utf-8")
+          root_before = root_path.read_text(encoding="utf-8")
+          # Keep the exact historical Kyrgyz checksum row completely untouched.
+          historical = "0d5475295bd76170b365f42220f6cdb1be0c00fc1600500f15821f0513492067  ./.github/workflows/one-shot-kyrgyz-complete-policy-fix-final.yml"
+          if root_before.splitlines().count(historical) != 1:
+              raise RuntimeError("Historical checksum row changed or missing")
+          docs_after = replaced_manifest(docs_before, "api/seer-now.json", digest(snapshot.read_bytes()))
+          root_after = replaced_manifest(root_before, "docs/api/seer-now.json", digest(snapshot.read_bytes()))
+          root_after = replaced_manifest(root_after, "docs/SHA256SUMS.txt", digest(docs_after.encode("utf-8")))
+          if root_after.splitlines().count(historical) != 1:
+              raise RuntimeError("Historical checksum row was altered")
+          docs_path.write_text(docs_after, encoding="utf-8", newline="\n")
+          root_path.write_text(root_after, encoding="utf-8", newline="\n")
+          PY_SEER_HASHES
       - name: Commit changed date snapshot
         shell: bash
         run: |
@@ -40,6 +84,6 @@ jobs:
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- docs/api/seer-now.json
+          git add -- docs/api/seer-now.json docs/SHA256SUMS.txt SHA256SUMS.txt
           git commit -m 'chore(seer): refresh current Pastafarian date snapshot'
           git push origin HEAD:main

@@ -21,6 +21,8 @@ import {
   discoverYearCandidates,
   generateStones,
   keep,
+  monthInterleavingCount,
+  unrankMonthInterleaving,
   sauce,
   selectYearCandidate,
   serializeBigInts,
@@ -394,4 +396,100 @@ test("differential normalizes the authoritative zero-based response choice", () 
   );
   assert.equal(choice?.status, "match");
   assert.equal(result.comparison.mismatchCount, 0);
+});
+
+
+// F012 audit: conditional weaving endpoint geometry, tested against the
+// source-imported normative reference, not against a transcribed implementation.
+// This is NOT a replay of the 427 historical extreme-year witnesses.
+function f012LegalWeavings(lengths) {
+  const count = lengths.length;
+  const remaining = [...lengths];
+  const word = [];
+  const result = [];
+  const length = lengths.reduce((sum, value) => sum + value, 0);
+  function visit() {
+    if (word.length === length) {
+      const first = Array(count).fill(-1);
+      const last = Array(count).fill(-1);
+      word.forEach((month, i) => {
+        if (first[month] === -1) first[month] = i;
+        last[month] = i;
+      });
+      if (first.every((value, i) => !i || first[i - 1] < value)
+          && last.every((value, i) => !i || last[i - 1] < value)) {
+        result.push([...word]);
+      }
+      return;
+    }
+    for (let month = 0; month < count; month++) {
+      if (!remaining[month]) continue;
+      remaining[month]--;
+      word.push(month);
+      visit();
+      word.pop();
+      remaining[month]++;
+    }
+  }
+  visit();
+  return result;
+}
+
+function f012ExpectedLastWeave(lengths) {
+  const m = lengths.length;
+  return [
+    ...Array.from({ length: m - 1 }, (_, i) => i),
+    ...Array(lengths[m - 1] - 1).fill(m - 1),
+    ...Array.from({ length: m - 2 }, (_, i) => m - 2 - i)
+      .flatMap(month => Array(lengths[month] - 2).fill(month)),
+    ...Array(lengths[0] - 1).fill(0),
+    ...Array.from({ length: m - 1 }, (_, i) => i + 1),
+  ];
+}
+
+function f012FragmentCounts(word, monthCount) {
+  const counts = Array(monthCount).fill(0);
+  word.forEach((month, i) => {
+    if (!i || month !== word[i - 1]) counts[month]++;
+  });
+  return counts;
+}
+
+test("F012 reference weaving ranks agree with independently enumerated legal words", () => {
+  for (const lengths of [[4, 4], [4, 4, 4]]) {
+    const legal = f012LegalWeavings(lengths);
+    const count = monthInterleavingCount(lengths);
+    assert.equal(count, BigInt(legal.length));
+    const rankSet = lengths.length === 2
+      ? legal.map((_, i) => i + 1)
+      : [...new Set([1, 2, 3, Math.floor(legal.length / 2),
+                      legal.length - 2, legal.length - 1, legal.length])];
+    for (const rank of rankSet) {
+      assert.deepEqual(unrankMonthInterleaving(lengths, BigInt(rank)), legal[rank - 1]);
+    }
+  }
+});
+
+test("F012 reference weaving endpoint ranks retain exact block geometry", () => {
+  const cases = [
+    [84, 84, 84],
+    Array(47).fill(6),
+    Array.from({ length: 47 }, (_, i) => i % 2 ? 123 : 4),
+    Array(36).fill(123),
+  ];
+  for (const lengths of cases) {
+    const m = lengths.length;
+    const total = monthInterleavingCount(lengths);
+    assert.ok(total > 1n);
+    const first = unrankMonthInterleaving(lengths, 1n);
+    const last = unrankMonthInterleaving(lengths, total);
+    assert.deepEqual(first, lengths.flatMap((length, month) => Array(length).fill(month)));
+    assert.deepEqual(last, f012ExpectedLastWeave(lengths));
+    assert.deepEqual(f012FragmentCounts(first, m), Array(m).fill(1));
+    assert.deepEqual(
+      f012FragmentCounts(last, m),
+      Array.from({ length: m }, (_, i) => i === 0 || i === m - 1 ? 2 : 3),
+    );
+    assert.equal(f012FragmentCounts(last, m).reduce((a, b) => a + b, 0), 3 * m - 2);
+  }
 });

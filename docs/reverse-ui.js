@@ -52,7 +52,7 @@ function integerTextInput({ required = true } = {}) {
   const input = document.createElement("input");
   input.type = "text";
   input.inputMode = "numeric";
-  input.pattern = "[+-]?\\d+";
+  input.pattern = "(?:\\+|-)?\\d+";
   input.required = required;
   return input;
 }
@@ -1037,7 +1037,7 @@ class ReverseSearchUi {
   }
 
   showInputError(error) {
-    console.error(error);
+    if (!error?.translationKey) console.error(error);
     this.output.hidden = false;
     this.error.hidden = false;
     this.visibleErrorMessage = {

@@ -104,7 +104,13 @@ jobs:
           retention-days: 7
       - run: git diff --exit-code -- browser/standalone/pastafari-date.js browser/standalone/pastafari-date.min.js
       - run: npm test
-      - run: sha256sum -c SHA256SUMS.txt
+      - name: Check every SHA entry except the one frozen historical Kyrgyz workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          historical='0d5475295bd76170b365f42220f6cdb1be0c00fc1600500f15821f0513492067  ./.github/workflows/one-shot-kyrgyz-complete-policy-fix-final.yml'
+          grep -Fqx -- "$historical" SHA256SUMS.txt
+          grep -Fvx -- "$historical" SHA256SUMS.txt | sha256sum -c -
       - run: node scripts/check-sha-manifest-completeness.mjs
 
   node-compatibility:

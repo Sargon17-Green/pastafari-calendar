@@ -27,6 +27,13 @@ function t(key, values = {}) {
   return translate(activeLocale, key, values);
 }
 
+function syncMonsterLinks() {
+  for (const link of elements["article-content"].querySelectorAll('a[href="./monster/"], a[data-monster-link]')) {
+    link.href = urlWithLanguage(new URL("./monster/", location.href), activeLocale.code);
+    link.dataset.monsterLink = "true";
+  }
+}
+
 function syncCalendarLinks() {
   for (const link of document.querySelectorAll("[data-back-to-calendar]")) {
     link.href = urlWithLanguage(new URL("../", location.href), activeLocale.code);
@@ -37,12 +44,14 @@ function applyActiveLocale() {
   applyDocumentLocale(activeLocale);
   populateLanguageSelector(elements["language-selector"], activeLocale.code);
   syncCalendarLinks();
+  syncMonsterLinks();
 }
 
 async function loadArticleForLocale(localeCode) {
   const articleLocale = resolveArticleLocale(localeCode);
   if (articleLocale.code === activeArticleCode && elements["article-content"].childElementCount > 0) {
     updateLanguageNotice(articleLocale.code);
+    syncMonsterLinks();
     buildTableOfContents();
     return;
   }
@@ -59,6 +68,7 @@ async function loadArticleForLocale(localeCode) {
     elements["article-content"].lang = articleLocale.code;
     elements["article-content"].dir = articleLocale.dir;
     activeArticleCode = articleLocale.code;
+    syncMonsterLinks();
     updateLanguageNotice(articleLocale.code);
     buildTableOfContents();
     focusHashTarget();
@@ -107,10 +117,37 @@ function buildTableOfContents() {
   }
 }
 
+// F012: legacy hashes with a substantively close current section only.
+// Never silently map withdrawn or materially shortened sections.
+const LEGACY_CLOSE_ANCHOR_TARGETS = Object.freeze({
+  "day-identity": "working-day",
+  "year-5000": "working-day",
+  "cutlets": "year-structure",
+  "months-and-weaving": "woven-months",
+  "month-interleaving": "woven-months",
+  "next-day-in-month": "woven-months",
+  "no-weeks": "about-calendar",
+  "month-day-pairs": "calendar-math",
+  "anniversaries": "practical-consequences",
+  "printed-calendar": "practical-consequences",
+  "seer": "calculation",
+  "anchors": "foundation-and-tablets",
+});
+
 function focusHashTarget() {
-  const id = decodeURIComponent(location.hash.slice(1));
+  let id;
+  try {
+    id = decodeURIComponent(location.hash.slice(1));
+  } catch (error) {
+    if (error instanceof URIError) return;
+    throw error;
+  }
   if (!id) return;
-  const target = document.getElementById(id);
+  const legacyTargetId = Object.hasOwn(LEGACY_CLOSE_ANCHOR_TARGETS, id)
+    ? LEGACY_CLOSE_ANCHOR_TARGETS[id]
+    : null;
+  const target = document.getElementById(id)
+    ?? (legacyTargetId ? document.getElementById(legacyTargetId) : null);
   if (!target) return;
   if (id === "site-usage") elements["site-usage-details"].open = true;
   const containingDetails = target.closest("details");
