@@ -1,11 +1,10 @@
-name: Website i18n read-only provenance audit
+name: Website i18n current-HEAD checksum provenance (read-only)
 
 on:
   push:
     branches:
       - audit/website-i18n-sha256-provenance-20261030
     paths:
-      - scripts/audit-checksum-provenance.mjs
       - .github/workflows/website-i18n-sha256-provenance.yml
 
 permissions:
@@ -13,51 +12,57 @@ permissions:
 
 jobs:
   provenance:
-    name: Verify forensic checker and capture immutable evidence
-    runs-on: ubuntu-latest
+    name: Capture current-HEAD evidence using existing canonical auditor
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Checkout exact audit branch commit, with history
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: 22
-      - name: Validate read-only auditor against isolated fixtures
-        run: node scripts/audit-checksum-provenance.mjs --self-test
-      - name: Audit the 2696-entry root SHA256 manifest without changing it
+          node-version: "22"
+      - name: Run pre-existing read-only checksum drift auditor
         shell: bash
         run: |
-          set -euo pipefail
+          set -uo pipefail
           mkdir -p artifacts/website-i18n-provenance-audit
-          node scripts/audit-checksum-provenance.mjs \
-            > artifacts/website-i18n-provenance-audit/report.json
-      - name: Check report is unresolved (never interpret as authorized changes)
+          audit_exit=0
+          node scripts/audit-checksum-drift.mjs SHA256SUMS.txt \
+            > artifacts/website-i18n-provenance-audit/report.json || audit_exit=$?
+          echo "AUDIT_EXIT=$audit_exit (expected 1 for unresolved drift)"
+          if [ "$audit_exit" -ne 1 ]; then
+            exit 2
+          fi
+      - name: Validate the current-head report without approving any content
         shell: bash
         run: |
           set -euo pipefail
           node --input-type=module <<'NODE'
           import assert from 'node:assert/strict';
           import { readFileSync } from 'node:fs';
-          const file = 'artifacts/website-i18n-provenance-audit/report.json';
-          const r = JSON.parse(readFileSync(file, 'utf8'));
-          assert.equal(r.verdict, 'UNRESOLVED_PROVENANCE');
-          assert.equal(r.manifest_entries, 2696);
-          assert.equal(r.mismatch_count, 68);
-          assert.equal(r.missing_count, 0);
+          const r = JSON.parse(readFileSync('artifacts/website-i18n-provenance-audit/report.json', 'utf8'));
+          assert.equal(r.mode, 'read-only');
+          assert.equal(r.head, process.env.GITHUB_SHA);
+          assert.equal(r.checked, 2696);
+          assert.equal(r.mismatchCount, 68);
+          assert.equal(r.missingCount, 0);
+          assert.equal(r.invalidCount, 0);
+          assert.equal(r.matched, 2696 - 68);
           assert.deepEqual(r.categories, {
-            about_content: 60, docs_other: 5, tests: 2, artifacts: 1, other: 0
+            'about-content': 60, website: 5, tests: 2, artifacts: 1
           });
-          assert.ok(r.mismatches.every(x => x.content_approved === 'NOT_DETERMINED'));
-          assert.ok(r.audited_head && /^[0-9a-f]{40}$/.test(r.audited_head));
-          assert.ok(r.manifest_last_commit?.sha);
-          console.log('WEBSITE_SHA256_FORENSIC_REPORT_CAPTURED NOT_APPROVED mismatches=68 entries=2696');
+          assert.ok(r.mismatches.every(x => x.path && x.actual && x.expected));
+          console.log('FORENSIC_EVIDENCE_CAPTURED NOT_CONTENT_APPROVAL 68_MISMATCHES');
           NODE
-      - name: Upload forensic evidence, including failure cases
+      - name: Keep forensic JSON evidence even if validation fails
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: website-i18n-read-only-provenance-${{ github.sha }}
+          name: website-i18n-current-head-provenance-${{ github.sha }}
           path: artifacts/website-i18n-provenance-audit/report.json
           if-no-files-found: warn
           retention-days: 30
