@@ -147,7 +147,7 @@ export default Object.freeze({
 
     "target.today": "This is today",
     "target.searched": "This is the date you searched for",
-    "target.context": "Queried date: {targetDate} · day of working: {actionDate}",
+    "target.context": "Target date: {targetDate} · day of working: {actionDate}",
     "target.notInView": "Your searched date remains saved; the cutlet currently displayed is different.",
     "date.aria": "Year {year} from the Creation of the World, day {dayInCutlet} in the cutlet {cutletName}, day {dayInMonth} in the month {monthName}",
     "date.yearLine": "Year {year} from the Creation of the World",
