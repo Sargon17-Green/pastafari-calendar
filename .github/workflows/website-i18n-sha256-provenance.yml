@@ -58,11 +58,50 @@ jobs:
           assert.ok(r.mismatches.every(x => x.path && x.actual && x.expected));
           console.log('FORENSIC_EVIDENCE_CAPTURED NOT_CONTENT_APPROVAL 68_MISMATCHES');
           NODE
+      - name: Attribute each mismatch to Git history without approval
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          import { readFileSync, writeFileSync } from 'node:fs';
+          import { execFileSync } from 'node:child_process';
+          const file = 'artifacts/website-i18n-provenance-audit/report.json';
+          const report = JSON.parse(readFileSync(file, 'utf8'));
+          assert.equal(report.head, process.env.GITHUB_SHA);
+          assert.equal(report.mismatchCount, 68);
+          const git = (...args) => execFileSync('git', args, { encoding: 'utf8', maxBuffer: 1048576 }).trimEnd();
+          const manifestCommit = git('log', '-1', '--format=%H', '--', 'SHA256SUMS.txt').trim();
+          assert.match(manifestCommit, /^[0-9a-f]{40}$/);
+          const files = report.mismatches.map(entry => {
+            assert.ok(entry.path && !entry.path.includes('\u0000') && !entry.path.includes('\n'));
+            const latest = git('log', '-1', '--format=%H%x09%cI%x09%s', '--', entry.path).trim().split('\t');
+            assert.match(latest[0], /^[0-9a-f]{40}$/);
+            const numstat = git('diff', '--numstat', manifestCommit, 'HEAD', '--', entry.path).trim();
+            const changedSinceManifest = numstat.length > 0;
+            return { path: entry.path, group: entry.group, lastCommit: latest[0],
+              lastCommitTime: latest[1], lastCommitSubject: latest.slice(2).join('\t'),
+              changedSinceManifest, diffNumstat: numstat || null,
+              expectedChecksum: entry.expected, actualChecksum: entry.actual,
+              contentApproval: 'NOT_DETERMINED' };
+          });
+          assert.equal(new Set(files.map(x => x.path)).size, 68);
+          const changedSinceManifest = files.filter(x => x.changedSinceManifest).length;
+          const summary = { schemaVersion: 1, auditedHead: report.head, manifestCommit,
+            total: files.length, changedSinceManifest, unchangedSinceManifest: files.length - changedSinceManifest,
+            countsByGroup: Object.fromEntries(Object.entries(report.categories).sort()),
+            approval: 'NOT_DETERMINED', files };
+          writeFileSync('artifacts/website-i18n-provenance-audit/attribution.json',
+            JSON.stringify(summary, null, 2) + '\n');
+          console.log('PROVENANCE_ATTRIBUTED total=' + files.length +
+            ' changed_since_manifest=' + changedSinceManifest +
+            ' not_approved=' + files.length);
+          NODE
       - name: Keep forensic JSON evidence even if validation fails
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: website-i18n-current-head-provenance-${{ github.sha }}
-          path: artifacts/website-i18n-provenance-audit/report.json
+          path: |\n            artifacts/website-i18n-provenance-audit/report.json\n            artifacts/website-i18n-provenance-audit/attribution.json
           if-no-files-found: warn
           retention-days: 30
