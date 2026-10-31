@@ -8,6 +8,8 @@ on:
       - scripts/qa-about-semantic-delta-provenance.mjs
       - docs/about/content/ka.html
       - test/website-about-ka-semantic.test.mjs
+      - test/website-about-followup-semantic.test.mjs
+      - artifacts/website-i18n-provenance-audit/ka-postcanonical-patch.json
       - .github/workflows/website-i18n-about-structural-qa.yml
 
 permissions:
@@ -33,6 +35,9 @@ jobs:
       - name: Verify Georgian semantic contract independently of structural audit
         if: always()
         run: node --test test/website-about-ka-semantic.test.mjs
+      - name: Verify Korean, Punjabi, Polish and additive Georgian provenance separately
+        if: always()
+        run: node --test test/website-about-followup-semantic.test.mjs
       - name: Preserve the per-locale report on failure or success
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
