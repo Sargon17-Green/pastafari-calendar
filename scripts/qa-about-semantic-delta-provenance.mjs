@@ -10,6 +10,8 @@ const status = JSON.parse(readFileSync('artifacts/about-canon-semantic-delta-sta
 const manifest = readFileSync('SHA256SUMS.txt', 'utf8').split(/\r?\n/);
 const manifestCommit = git('log', '-1', '--format=%H', '--', 'SHA256SUMS.txt');
 const expectedSections = ['canonical-names', 'printed-calendar', 'seer'];
+const numericPatch = JSON.parse(readFileSync('artifacts/website-i18n-provenance-audit/about-numeric-anchor-patch.json', 'utf8'));
+const numericByLocale = new Map(numericPatch.locales.map(e => [e.locale, e]));
 const entries = manifest.map(line => /^([a-f0-9]{64})  \*?(.+)$/.exec(line)).filter(Boolean)
   .map(m => ({ path: m[2].replace(/^\.\//, ''), expected: m[1] }))
   .filter(e => /^docs\/about\/content\/[a-z]{2,3}\.html$/.test(e.path));
@@ -43,9 +45,18 @@ for (const e of changed) {
     const liveBlob = git('hash-object', e.path);
     before = git('cat-file', 'blob', record.before_blob);
     after = readFileSync(e.path, 'utf8').trimEnd();
+    const overlay = numericByLocale.get(locale);
+    const preNumeric = overlay ? git('cat-file', 'blob', overlay.before_blob) : after;
+    if (overlay) {
+      assert.equal(overlay.path, e.path);
+      assert.equal(overlay.current_blob, liveBlob);
+      const erroneous = '<code>14{,}777{,}149</code>';
+      assert.equal(preNumeric.split(erroneous).length - 1, 1);
+      assert.equal(preNumeric.replace(erroneous, '<code>14,777,149</code>'), after);
+    }
     if (locale !== 'ka') {
-      assert.equal(liveBlob, record.after_blob);
-      historicalAfter = after;
+      assert.equal(overlay ? overlay.before_blob : liveBlob, record.after_blob);
+      historicalAfter = preNumeric;
       return;
     }
     // Georgian received an explicitly separate, later semantic patch.
@@ -55,13 +66,13 @@ for (const e of changed) {
     assert.equal(patch.locale, locale);
     assert.equal(patch.path, e.path);
     assert.equal(patch.historical_after_blob, record.after_blob);
-    assert.equal(patch.current_after_patch_blob, liveBlob);
+    assert.equal(patch.current_after_patch_blob, overlay ? overlay.before_blob : liveBlob);
     assert.equal(patch.historical_status_mutated, false);
     assert.equal(patch.semantic_translation_approval, 'NOT_DETERMINED');
     assert.match(patch.semantic_patch_commit, /^[0-9a-f]{40}$/);
     historicalAfter = git('cat-file', 'blob', record.after_blob);
     const oldSections = sections(historicalAfter);
-    const newSections = sections(after);
+    const newSections = sections(preNumeric);
     assert.deepEqual(oldSections.map(s => s.id), newSections.map(s => s.id));
     const changedPatchIds = oldSections.filter((s, i) => s.html !== newSections[i].html)
       .map(s => s.id).sort();
@@ -69,7 +80,7 @@ for (const e of changed) {
     assert.ok(changedPatchIds.every(id => expectedSections.includes(id)));
     const maskPatch = html => html.replace(sectionPattern, (full, _quote, id) =>
       changedPatchIds.includes(id) ? '<PATCHED-SECTION id="' + id + '"/>' : full);
-    assert.equal(maskPatch(historicalAfter), maskPatch(after),
+    assert.equal(maskPatch(historicalAfter), maskPatch(preNumeric),
       'Georgian postcanonical patch changed undeclared content');
     result.additionalPatch = { currentBlob: liveBlob, changedSectionIds: changedPatchIds };
   });
@@ -88,7 +99,7 @@ for (const e of changed) {
     assert.equal(mask(before), mask(historicalAfter), 'changes outside three sections');
     assert.deepEqual(sections(after).map(x => x.id), b.map(x => x.id),
       'live section IDs/order changed');
-    assert.equal(mask(historicalAfter), mask(after),
+    assert.equal(mask(historicalAfter), mask(numericByLocale.has(locale) ? git('cat-file', 'blob', numericByLocale.get(locale).before_blob) : after),
       'live content changed outside canonical sections');
   });
   let passes = [];

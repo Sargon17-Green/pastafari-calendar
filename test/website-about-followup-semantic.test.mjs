@@ -9,6 +9,8 @@ const status = JSON.parse(readFileSync('artifacts/about-canon-semantic-delta-sta
 const read = path => readFileSync(path, 'utf8');
 const git = (...args) => execFileSync('git', args, { encoding: 'utf8' }).trimEnd();
 const requiredIds = ['canonical-names', 'printed-calendar', 'seer'];
+const numericPatch = JSON.parse(read('artifacts/website-i18n-provenance-audit/about-numeric-anchor-patch.json'));
+const numericByLocale = new Map(numericPatch.locales.map(e => [e.locale, e]));
 const allSections = html => [...html.matchAll(/<section\b[^>]*\bid=(['"])([^'"\s]+)\1[^>]*>[\s\S]*?<\/section>/g)]
   .map(m => ({ id: m[2], text: m[0].replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim(), raw: m[0] }));
 
@@ -57,7 +59,9 @@ for (const [locale, spec] of Object.entries(cases)) {
     for (const id of requiredIds) assert.equal(doc.filter(s => s.id === id).length, 1);
     const record = status.locales[locale];
     assert.ok(record?.final_verified_aligned);
-    assert.equal(git('hash-object', 'docs/about/content/' + locale + '.html'), record.after_blob);
+    const overlay = numericByLocale.get(locale);
+    assert.equal(overlay?.before_blob, record.after_blob);
+    assert.equal(git('hash-object', 'docs/about/content/' + locale + '.html'), overlay.current_blob);
   });
   test(locale + ': canonical name identity smoke regressions', () => hasAll(section(locale, 'canonical-names'), spec.names));
   test(locale + ': action-day/discrete-versus-astronomical and hand-calculation smoke regressions', () =>
@@ -90,9 +94,9 @@ test('ka: additional semantic patch has independent, non-rewritten blob lineage'
   assert.equal(lineage.historical_status_mutated, false);
   assert.equal(lineage.semantic_translation_approval, 'NOT_DETERMINED');
   assert.equal(record.after_blob, '9bb0431b75d806c583f541307f906fc9a624ea1b');
-  assert.equal(git('hash-object', path), '7216c551a7d70a896a5baaeeb5d99d0eca3bb7c9');
+  assert.equal(numericByLocale.get('ka')?.before_blob, '7216c551a7d70a896a5baaeeb5d99d0eca3bb7c9');
   const previous = git('cat-file', 'blob', record.after_blob);
-  const current = read(path).trimEnd();
+  const current = git('cat-file', 'blob', lineage.current_after_patch_blob).trimEnd();
   const a = allSections(previous), b = allSections(current);
   assert.deepEqual(a.map(x => x.id), b.map(x => x.id));
   const changed = a.filter((s, i) => s.raw !== b[i].raw).map(s => s.id);
