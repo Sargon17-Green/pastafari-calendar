@@ -12,14 +12,49 @@ const manifestCommit = git('log', '-1', '--format=%H', '--', 'SHA256SUMS.txt');
 const expectedSections = ['canonical-names', 'printed-calendar', 'seer'];
 const numericPatch = JSON.parse(readFileSync('artifacts/website-i18n-provenance-audit/about-numeric-anchor-patch.json', 'utf8'));
 const numericByLocale = new Map(numericPatch.locales.map(e => [e.locale, e]));
+const secondWave = JSON.parse(readFileSync(
+  'artifacts/website-i18n-provenance-audit/about-numeric-anchor-followup-patch.json', 'utf8'));
+const secondWaveByLocale = new Map(secondWave.locales.map(e => [e.locale, e]));
 const entries = manifest.map(line => /^([a-f0-9]{64})  \*?(.+)$/.exec(line)).filter(Boolean)
   .map(m => ({ path: m[2].replace(/^\.\//, ''), expected: m[1] }))
   .filter(e => /^docs\/about\/content\/[a-z]{2,3}\.html$/.test(e.path));
 const passFiles = readdirSync('artifacts/about-canon-semantic-delta-runs');
 const failures = [];
 const inspected = [];
+const secondWaveChecks = [];
+assert.equal(secondWave.historical_status_mutated, false);
+assert.equal(secondWave.semantic_translation_approval, 'NOT_DETERMINED');
+assert.equal(secondWave.locales.length, 4);
+assert.deepEqual([...secondWaveByLocale.keys()].sort(), ['af', 'az', 'ca', 'cs']);
+const oldDistance = '<code>14{,}777{,}149</code>';
+const newDistance = '<code>14,777,149</code>';
+for (const overlay of secondWave.locales) {
+  const status = { locale: overlay.locale, path: overlay.path, passed: false };
+  try {
+    assert.equal(overlay.path, 'docs/about/content/' + overlay.locale + '.html');
+    const item = changedAll.find(e => e.path === overlay.path);
+    assert.ok(item, 'second-wave correction must appear as a current checksum delta');
+    const current = readFileSync(overlay.path, 'utf8');
+    const old = git('cat-file', 'blob', overlay.before_blob);
+    assert.equal(git('rev-parse', secondWave.source_commit + ':' + overlay.path), overlay.before_blob);
+    assert.equal(git('hash-object', overlay.path), overlay.current_blob);
+    assert.equal(old.split(oldDistance).length - 1, 1);
+    assert.equal(current.split(newDistance).length - 1, 1);
+    assert.equal(current.trimEnd(), old.replace(oldDistance, newDistance));
+    assert.equal(sha256(Buffer.from(current.replace(newDistance, oldDistance))), item.expected,
+      'historical checksum was not matched before second-wave correction');
+    status.passed = true;
+  } catch (err) {
+    status.error = err.message;
+    failures.push({ path: overlay.path, errors: ['secondWaveLineage: ' + err.message] });
+  }
+  secondWaveChecks.push(status);
+}
 const matching = entries.filter(e => sha256(readFileSync(e.path)) === e.expected);
-const changed = entries.filter(e => sha256(readFileSync(e.path)) !== e.expected);
+const changedAll = entries.filter(e => sha256(readFileSync(e.path)) !== e.expected);
+// The second wave was previously checksum-matched; treat its four new deltas
+// separately, without rewriting or falsely increasing the historical 60-file scope.
+const changed = changedAll.filter(e => !secondWaveByLocale.has(e.path.split('/').at(-1).replace(/\\.html$/, '')));
 const sectionPattern = /<section\b[^>]*\bid=(['"])([^'"\s]+)\1[^>]*>[\s\S]*?<\/section>/g;
 const sections = html => [...html.matchAll(sectionPattern)].map(m => ({ id: m[2], html: m[0] }));
 const mask = html => html.replace(sectionPattern, (full, _quote, id) =>
@@ -168,7 +203,9 @@ for (const e of changed) {
 const report = {
   schemaVersion: 1, mode: 'read-only-structural-about-qa', head: git('rev-parse', 'HEAD'),
   manifestCommit, expectedAboutMismatches: 60, aboutEntriesInManifest: entries.length,
-  aboutMatched: matching.length, aboutMismatched: changed.length,
+  aboutMatched: matching.length, aboutMismatched: changedAll.length,
+  aboutHistoricalMismatched: changed.length, aboutSecondWaveMismatched: secondWaveChecks.length,
+  secondWaveChecks,
   structurallyPassed: inspected.filter(r => r.structuralPass).length,
   structurallyFailed: failures.length,
   manualReviewFlagCount: inspected.reduce((n, r) => n + (r.manualReviewFlags?.length ?? 0), 0),
@@ -180,7 +217,7 @@ const report = {
 mkdirSync('artifacts/website-i18n-provenance-audit', { recursive: true });
 writeFileSync('artifacts/website-i18n-provenance-audit/about-60-structural-qa.json',
   JSON.stringify(report, null, 2) + '\n');
-if (changed.length !== 60 || failures.length) {
+if (changed.length !== 60 || changedAll.length !== 64 || secondWaveChecks.length !== 4 || failures.length) {
   console.error('ABOUT_STRUCTURAL_QA_FAILED inspected=' + changed.length + ' failures=' + failures.length + ' NOT_CONTENT_APPROVAL');
   process.exitCode = 1;
 } else {
