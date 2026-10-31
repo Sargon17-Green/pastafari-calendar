@@ -6,6 +6,8 @@ on:
       - audit/website-i18n-sha256-provenance-20261030
     paths:
       - scripts/qa-about-semantic-delta-provenance.mjs
+      - docs/about/content/ka.html
+      - test/website-about-ka-semantic.test.mjs
       - .github/workflows/website-i18n-about-structural-qa.yml
 
 permissions:
@@ -28,6 +30,9 @@ jobs:
           node-version: "22"
       - name: Execute scoped read-only structural audit
         run: node scripts/qa-about-semantic-delta-provenance.mjs
+      - name: Verify Georgian semantic contract independently of structural audit
+        if: always()
+        run: node --test test/website-about-ka-semantic.test.mjs
       - name: Preserve the per-locale report on failure or success
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
