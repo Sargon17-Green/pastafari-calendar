@@ -21,6 +21,11 @@ const entries = manifest.map(line => /^([a-f0-9]{64})  \*?(.+)$/.exec(line)).fil
 const passFiles = readdirSync('artifacts/about-canon-semantic-delta-runs');
 const failures = [];
 const inspected = [];
+const matching = entries.filter(e => sha256(readFileSync(e.path)) === e.expected);
+const changedAll = entries.filter(e => sha256(readFileSync(e.path)) !== e.expected);
+// The second wave was previously checksum-matched; treat its four new deltas
+// separately, without rewriting or falsely increasing the historical 60-file scope.
+const changed = changedAll.filter(e => !secondWaveByLocale.has(e.path.split('/').at(-1).slice(0, -5)));
 const secondWaveChecks = [];
 assert.equal(secondWave.historical_status_mutated, false);
 assert.equal(secondWave.semantic_translation_approval, 'NOT_DETERMINED');
@@ -50,11 +55,6 @@ for (const overlay of secondWave.locales) {
   }
   secondWaveChecks.push(status);
 }
-const matching = entries.filter(e => sha256(readFileSync(e.path)) === e.expected);
-const changedAll = entries.filter(e => sha256(readFileSync(e.path)) !== e.expected);
-// The second wave was previously checksum-matched; treat its four new deltas
-// separately, without rewriting or falsely increasing the historical 60-file scope.
-const changed = changedAll.filter(e => !secondWaveByLocale.has(e.path.split('/').at(-1).replace(/\\.html$/, '')));
 const sectionPattern = /<section\b[^>]*\bid=(['"])([^'"\s]+)\1[^>]*>[\s\S]*?<\/section>/g;
 const sections = html => [...html.matchAll(sectionPattern)].map(m => ({ id: m[2], html: m[0] }));
 const mask = html => html.replace(sectionPattern, (full, _quote, id) =>
