@@ -83,10 +83,16 @@ for (const [locale, spec] of Object.entries(cases)) {
 test('ka: additional semantic patch has independent, non-rewritten blob lineage', () => {
   const path = 'docs/about/content/ka.html';
   const record = status.locales.ka;
+  const lineage = JSON.parse(read('artifacts/website-i18n-provenance-audit/ka-postcanonical-patch.json'));
+  assert.equal(lineage.historical_after_blob, record.after_blob);
+  assert.equal(lineage.current_after_patch_blob, '7216c551a7d70a896a5baaeeb5d99d0eca3bb7c9');
+  assert.equal(lineage.semantic_patch_commit, '09257e46c36aa8befde6c8484345d3b2a6055dea');
+  assert.equal(lineage.historical_status_mutated, false);
+  assert.equal(lineage.semantic_translation_approval, 'NOT_DETERMINED');
   assert.equal(record.after_blob, '9bb0431b75d806c583f541307f906fc9a624ea1b');
   assert.equal(git('hash-object', path), '7216c551a7d70a896a5baaeeb5d99d0eca3bb7c9');
   const previous = git('cat-file', 'blob', record.after_blob);
-  const current = read(path);
+  const current = read(path).trimEnd();
   const a = allSections(previous), b = allSections(current);
   assert.deepEqual(a.map(x => x.id), b.map(x => x.id));
   const changed = a.filter((s, i) => s.raw !== b[i].raw).map(s => s.id);
