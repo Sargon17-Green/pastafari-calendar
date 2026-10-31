@@ -30,3 +30,19 @@ for (const entry of provenance.locales) {
     assert.equal(now, before.replace(oldCode, correctCode));
   });
 }
+
+// A second bounded source-grounded correction batch. First-wave evidence is immutable.
+const followup = JSON.parse(read('artifacts/website-i18n-provenance-audit/about-numeric-anchor-followup-patch.json'));
+assert.equal(followup.source_he_blob, provenance.source_he_blob);
+assert.equal(followup.historical_status_mutated, false);
+assert.equal(followup.semantic_translation_approval, 'NOT_DETERMINED');
+for (const entry of followup.locales) {
+  test(entry.locale + ': second-wave literal correction preserves all other HTML', () => {
+    const before = git('cat-file', 'blob', entry.before_blob);
+    const current = read(entry.path).trimEnd();
+    assert.equal(git('hash-object', entry.path), entry.current_blob);
+    assert.equal(section(before).split(oldCode).length - 1, 1);
+    assert.equal(section(current).split(correctCode).length - 1, 1);
+    assert.equal(current, before.replace(oldCode, correctCode));
+  });
+}

@@ -34,7 +34,6 @@ const IMMUTABLE_CODE_LITERALS = Object.freeze([
   "8e155fa4198ea7bcfeb16138ac5d6662706f4d93",
   "RRULE:FREQ=YEARLY",
   "all-day",
-  "14{,}777{,}149",
   "F(c,t)=(Y,K,d_K,M,d_M)",
   "F(c,t-H_c)= (Y-p_c,\\ K,\\ d_K,\\ M,\\ d_M)",
   "F(c+T,t+T)=F(c,t)",
@@ -151,6 +150,15 @@ test("every present locale article is structurally and semantically guarded", as
         assert.ok(html.includes(literal), `${locale.code}: missing immutable literal ${literal}`);
       }
     }
+    // Historical locale articles use either raw TeX comma markup or the corrected HTML.
+    // This compatibility check is NOT approval of legacy HTML rendering or translation.
+    const foundationStart = html.indexOf('id="foundation-and-tablets"');
+    const foundationEnd = html.indexOf("</section>", foundationStart);
+    assert.ok(foundationStart >= 0 && foundationEnd > foundationStart, `${locale.code}: missing foundation section`);
+    const foundation = html.slice(foundationStart, foundationEnd);
+    const distance = foundation.match(/<code>14(?:\{,\}|,)777(?:\{,\}|,)149<\/code>/g) || [];
+    assert.equal(distance.length, 1, `${locale.code}: missing or duplicate foundation-to-tablets day distance`);
+
     const normalizedNumericHtml = normalizeNumericFormatting(html);
     for (const literal of EMPIRICAL_LITERALS) {
       assert.ok(
