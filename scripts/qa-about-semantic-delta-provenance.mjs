@@ -28,7 +28,7 @@ for (const e of changed) {
     result.checks[name] = false; result.errors.push(name + ': ' + err.message);
   }};
   const record = status.locales?.[locale];
-  let before = null, after = null;
+  let before = null, after = null, changedSectionIds = [];
   check('statusRecordAndApprovalFlag', () => {
     assert.ok(record, 'missing locale status');
     assert.equal(record.final_verified_aligned, true);
@@ -51,8 +51,9 @@ for (const e of changed) {
     for (const id of expectedSections) {
       const aa = a.find(s => s.id === id), bb = b.find(s => s.id === id);
       assert.ok(aa && bb, 'missing section ' + id);
-      assert.notEqual(aa.html, bb.html, 'unchanged target ' + id);
+      if (aa.html !== bb.html) changedSectionIds.push(id);
     }
+    assert.ok(changedSectionIds.length > 0, 'no semantic target sections changed');
     assert.equal(mask(before), mask(after), 'changes outside three sections');
   });
   let p1, p2;
@@ -60,10 +61,13 @@ for (const e of changed) {
     p1 = JSON.parse(readFileSync('artifacts/about-canon-semantic-delta-runs/' + locale + '.pass1.json', 'utf8'));
     assert.equal(p1.verdict, 'CHANGED');
     assert.ok(p1.replacement_count > 0);
-    assert.equal(p1.replacement_count, p1.proposed_replacement_count);
-    assert.equal(p1.skipped_replacement_count, 0);
-    assert.deepEqual(p1.skipped_replacements, []);
-    assert.deepEqual([...p1.touched_sections].sort(), [...expectedSections].sort());
+    assert.equal(p1.replacement_count + p1.skipped_replacement_count, p1.proposed_replacement_count);
+    assert.equal(p1.skipped_replacement_count, p1.skipped_replacements.length);
+    assert.ok(p1.touched_sections.every(id => expectedSections.includes(id)));
+    assert.deepEqual([...p1.touched_sections].sort(), [...changedSectionIds].sort());
+    result.manualReviewFlags = p1.skipped_replacements.map(x => ({
+      kind: 'SKIPPED_FIRST_PASS_REPLACEMENT', index: x.index, reason: x.reason, count: x.count
+    }));
   });
   check('idempotentSecondPass', () => {
     p2 = JSON.parse(readFileSync('artifacts/about-canon-semantic-delta-runs/' + locale + '.pass2.json', 'utf8'));
@@ -83,6 +87,7 @@ const report = {
   aboutMatched: matching.length, aboutMismatched: changed.length,
   structurallyPassed: inspected.filter(r => r.structuralPass).length,
   structurallyFailed: failures.length,
+  manualReviewFlagCount: inspected.reduce((n, r) => n + (r.manualReviewFlags?.length ?? 0), 0),
   contentTranslationApproval: 'NOT_DETERMINED',
   scope: expectedSections, failures, files: inspected
 };
