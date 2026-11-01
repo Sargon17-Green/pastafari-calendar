@@ -46,3 +46,23 @@ for (const entry of followup.locales) {
     assert.equal(current, before.replace(oldCode, correctCode));
   });
 }
+
+
+// Third bounded batch: English, German and Danish. Independent immutable lineage.
+const thirdWave = JSON.parse(read('artifacts/website-i18n-provenance-audit/about-numeric-anchor-third-wave-patch.json'));
+assert.equal(thirdWave.source_he_blob, provenance.source_he_blob);
+assert.equal(thirdWave.historical_status_mutated, false);
+assert.equal(thirdWave.semantic_translation_approval, 'NOT_DETERMINED');
+assert.equal(thirdWave.checksum_manifest_approval, 'NOT_DETERMINED');
+assert.equal(thirdWave.visual_baseline_approval, 'NOT_DETERMINED');
+assert.equal(thirdWave.locales.length, 3);
+for (const entry of thirdWave.locales) {
+  test(entry.locale + ': third-wave source-grounded literal HTML fix only', () => {
+    const before = git('cat-file', 'blob', entry.before_blob);
+    const current = read(entry.path).trimEnd();
+    assert.equal(git('hash-object', entry.path), entry.current_blob);
+    assert.equal(section(before).split(oldCode).length - 1, 1);
+    assert.equal(section(current).split(correctCode).length - 1, 1);
+    assert.equal(current, before.replace(oldCode, correctCode));
+  });
+}
