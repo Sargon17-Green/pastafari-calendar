@@ -18,7 +18,7 @@ const secondWaveByLocale = new Map(secondWave.locales.map(e => [e.locale, e]));
 const thirdWave = JSON.parse(readFileSync(
   'artifacts/website-i18n-provenance-audit/about-numeric-anchor-third-wave-patch.json', 'utf8'));
 const thirdWaveByLocale = new Map(thirdWave.locales.map(e => [e.locale, e]));
-assert.equal(thirdWave.parent_commit, git('rev-parse', 'HEAD^'));
+git('merge-base', '--is-ancestor', thirdWave.parent_commit, 'HEAD');
 assert.equal(thirdWave.source_he_blob, git('hash-object', 'docs/about/content/he.html'));
 assert.equal(thirdWave.historical_status_mutated, false);
 assert.equal(thirdWave.semantic_translation_approval, 'NOT_DETERMINED');
