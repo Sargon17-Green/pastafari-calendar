@@ -15,6 +15,16 @@ const numericByLocale = new Map(numericPatch.locales.map(e => [e.locale, e]));
 const secondWave = JSON.parse(readFileSync(
   'artifacts/website-i18n-provenance-audit/about-numeric-anchor-followup-patch.json', 'utf8'));
 const secondWaveByLocale = new Map(secondWave.locales.map(e => [e.locale, e]));
+const thirdWave = JSON.parse(readFileSync(
+  'artifacts/website-i18n-provenance-audit/about-numeric-anchor-third-wave-patch.json', 'utf8'));
+const thirdWaveByLocale = new Map(thirdWave.locales.map(e => [e.locale, e]));
+assert.equal(thirdWave.parent_commit, git('rev-parse', 'HEAD^'));
+assert.equal(thirdWave.source_he_blob, git('hash-object', 'docs/about/content/he.html'));
+assert.equal(thirdWave.historical_status_mutated, false);
+assert.equal(thirdWave.semantic_translation_approval, 'NOT_DETERMINED');
+assert.equal(thirdWave.checksum_manifest_approval, 'NOT_DETERMINED');
+assert.equal(thirdWave.visual_baseline_approval, 'NOT_DETERMINED');
+assert.deepEqual([...thirdWaveByLocale.keys()].sort(), ['da', 'de', 'en']);
 const entries = manifest.map(line => /^([a-f0-9]{64})  \*?(.+)$/.exec(line)).filter(Boolean)
   .map(m => ({ path: m[2].replace(/^\.\//, ''), expected: m[1] }))
   .filter(e => /^docs\/about\/content\/[a-z]{2,3}\.html$/.test(e.path));
@@ -25,7 +35,11 @@ const matching = entries.filter(e => sha256(readFileSync(e.path)) === e.expected
 const changedAll = entries.filter(e => sha256(readFileSync(e.path)) !== e.expected);
 // The second wave was previously checksum-matched; treat its four new deltas
 // separately, without rewriting or falsely increasing the historical 60-file scope.
-const changed = changedAll.filter(e => !secondWaveByLocale.has(e.path.split('/').at(-1).slice(0, -5)));
+const changed = changedAll.filter(e => {
+  const locale = e.path.split('/').at(-1).slice(0, -5);
+  // da/de were checksum-matched before this patch; en was already historical.
+  return !secondWaveByLocale.has(locale) && !(thirdWaveByLocale.has(locale) && locale !== 'en');
+});
 const secondWaveChecks = [];
 assert.equal(secondWave.historical_status_mutated, false);
 assert.equal(secondWave.semantic_translation_approval, 'NOT_DETERMINED');
@@ -55,6 +69,34 @@ for (const overlay of secondWave.locales) {
   }
   secondWaveChecks.push(status);
 }
+const thirdWaveChecks = [];
+for (const overlay of thirdWave.locales) {
+  const result = { locale: overlay.locale, path: overlay.path, passed: false };
+  try {
+    assert.equal(overlay.path, 'docs/about/content/' + overlay.locale + '.html');
+    const item = changedAll.find(e => e.path === overlay.path);
+    assert.ok(item, 'third-wave correction must be a current checksum delta');
+    const current = readFileSync(overlay.path, 'utf8');
+    const original = git('cat-file', 'blob', overlay.before_blob);
+    assert.equal(git('rev-parse', thirdWave.parent_commit + ':' + overlay.path), overlay.before_blob);
+    assert.equal(git('hash-object', overlay.path), overlay.current_blob);
+    assert.equal(original.split(oldDistance).length - 1, 1);
+    assert.equal(current.split(newDistance).length - 1, 1);
+    assert.equal(current.trimEnd(), original.replace(oldDistance, newDistance));
+    if (overlay.locale === 'en') {
+      assert.equal(overlay.before_blob, status.locales.en.after_blob,
+        'English is a historical canonical delta plus a later rendering fix');
+    } else {
+      assert.equal(sha256(Buffer.from(current.replace(newDistance, oldDistance))), item.expected,
+        'da/de must have matched their checksum before the rendering fix');
+    }
+    result.passed = true;
+  } catch (err) {
+    result.error = err.message;
+    failures.push({ path: overlay.path, errors: ['thirdWaveLineage: ' + err.message] });
+  }
+  thirdWaveChecks.push(result);
+}
 const sectionPattern = /<section\b[^>]*\bid=(['"])([^'"\s]+)\1[^>]*>[\s\S]*?<\/section>/g;
 const sections = html => [...html.matchAll(sectionPattern)].map(m => ({ id: m[2], html: m[0] }));
 const mask = html => html.replace(sectionPattern, (full, _quote, id) =>
@@ -81,7 +123,9 @@ for (const e of changed) {
     before = git('cat-file', 'blob', record.before_blob);
     after = readFileSync(e.path, 'utf8').trimEnd();
     const overlay = numericByLocale.get(locale);
-    const preNumeric = overlay ? git('cat-file', 'blob', overlay.before_blob) : after;
+    const thirdOverlay = thirdWaveByLocale.get(locale);
+    const preThirdWave = thirdOverlay ? git('cat-file', 'blob', thirdOverlay.before_blob) : after;
+    const preNumeric = overlay ? git('cat-file', 'blob', overlay.before_blob) : preThirdWave;
     if (overlay) {
       assert.equal(overlay.path, e.path);
       assert.equal(overlay.current_blob, liveBlob);
@@ -90,7 +134,8 @@ for (const e of changed) {
       assert.equal(preNumeric.replace(erroneous, '<code>14,777,149</code>'), after);
     }
     if (locale !== 'ka') {
-      assert.equal(overlay ? overlay.before_blob : liveBlob, record.after_blob);
+      assert.equal(overlay ? overlay.before_blob : (thirdOverlay ? thirdOverlay.before_blob : liveBlob),
+        record.after_blob);
       historicalAfter = preNumeric;
       return;
     }
@@ -134,7 +179,12 @@ for (const e of changed) {
     assert.equal(mask(before), mask(historicalAfter), 'changes outside three sections');
     assert.deepEqual(sections(after).map(x => x.id), b.map(x => x.id),
       'live section IDs/order changed');
-    assert.equal(mask(historicalAfter), mask(numericByLocale.has(locale) ? git('cat-file', 'blob', numericByLocale.get(locale).before_blob) : after),
+    const preRendering = thirdWaveByLocale.has(locale)
+      ? git('cat-file', 'blob', thirdWaveByLocale.get(locale).before_blob)
+      : numericByLocale.has(locale)
+        ? git('cat-file', 'blob', numericByLocale.get(locale).before_blob)
+        : after;
+    assert.equal(mask(historicalAfter), mask(preRendering),
       'live content changed outside canonical sections');
   });
   let passes = [];
@@ -206,6 +256,7 @@ const report = {
   aboutMatched: matching.length, aboutMismatched: changedAll.length,
   aboutHistoricalMismatched: changed.length, aboutSecondWaveMismatched: secondWaveChecks.length,
   secondWaveChecks,
+  aboutThirdWaveMismatched: thirdWaveChecks.length, thirdWaveChecks,
   structurallyPassed: inspected.filter(r => r.structuralPass).length,
   structurallyFailed: failures.length,
   manualReviewFlagCount: inspected.reduce((n, r) => n + (r.manualReviewFlags?.length ?? 0), 0),
@@ -217,7 +268,8 @@ const report = {
 mkdirSync('artifacts/website-i18n-provenance-audit', { recursive: true });
 writeFileSync('artifacts/website-i18n-provenance-audit/about-60-structural-qa.json',
   JSON.stringify(report, null, 2) + '\n');
-if (changed.length !== 60 || changedAll.length !== 64 || secondWaveChecks.length !== 4 || failures.length) {
+if (changed.length !== 60 || changedAll.length !== 66 || secondWaveChecks.length !== 4 ||
+    thirdWaveChecks.length !== 3 || failures.length) {
   console.error('ABOUT_STRUCTURAL_QA_FAILED inspected=' + changed.length + ' failures=' + failures.length + ' NOT_CONTENT_APPROVAL');
   process.exitCode = 1;
 } else {
