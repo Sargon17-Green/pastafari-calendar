@@ -859,7 +859,18 @@ async function aboutPageSmoke(browser, baseURL, state) {
       assert.equal(await page.locator("html").getAttribute("dir"), "rtl");
       assert.equal(await page.locator("#article-content").getAttribute("lang"), "he");
       assert.equal(await page.locator("#calendar-workspace").count(), 0, "About page must not load calendar UI");
-      assert.ok(await page.locator("#about-toc-list a").count() >= 29, "About page TOC is incomplete");
+      // Every canonical article section must have exactly one link, in document order.
+      // The additional site-usage link is a separate navigable section.
+      const articleSectionIds = await page.locator("#article-content [data-toc-section][id]")
+        .evaluateAll((sections) => sections.map((section) => section.id));
+      const tocTargets = await page.locator("#about-toc-list a")
+        .evaluateAll((links) => links.map((link) => link.getAttribute("href")));
+      assert.equal(articleSectionIds.length, 15, "About article must retain its 15 canonical TOC sections");
+      assert.deepEqual(
+        tocTargets,
+        [...articleSectionIds.map((id) => `#${id}`), "#site-usage"],
+        "About TOC targets must match every canonical section and the site-usage guide, in order",
+      );
       const tocOpen = await page.locator("#about-toc").evaluate((element) => element.open);
       assert.equal(tocOpen, name === "desktop", `About-page TOC default state is wrong for ${name}`);
       await assertNoPageOverflow(page, `about page ${name}`);
