@@ -1,0 +1,59 @@
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import test from "node:test";
+
+import { CUTLETS, MONTHS } from "../docs/i18n/calendar-identifiers.js";
+import { loadLocale } from "../docs/i18n/registry.js";
+import { ARTICLE_LOCALES } from "../docs/about/content/registry.js";
+
+const ROOT = new URL("../docs/about/", import.meta.url);
+const IDS = Object.freeze([
+  "about-calendar",
+  "date-parts",
+  "working-day",
+  "year-structure",
+  "woven-months",
+  "canonical-names",
+]);
+
+test("unpublished French draft has exact current-canon initial section order", async () => {
+  const html = await readFile(new URL("drafts/fr.partial.html", ROOT), "utf8");
+  const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
+  assert.deepEqual(ids, IDS);
+  assert.equal(new Set(ids).size, IDS.length);
+  assert.equal((html.match(/data-toc-section/g) ?? []).length, 5);
+  assert.equal((html.match(/<details class="about-name-details">/g) ?? []).length, 64);
+  assert.equal((html.match(/<summary>/g) ?? []).length, 64);
+  assert.equal(ARTICLE_LOCALES.fr, undefined, "a partial translation must never be registered as published");
+});
+
+test("all 64 French names retain canonical ID order and approved UI labels", async () => {
+  const html = await readFile(new URL("drafts/fr.partial.html", ROOT), "utf8");
+  const cutlets = await readFile(new URL("drafts/fr.canonical-names.cutlets.partial.html", ROOT), "utf8");
+  const months = await readFile(new URL("drafts/fr.canonical-names.months.partial.html", ROOT), "utf8");
+  const locale = await loadLocale("fr");
+  const expected = [
+    ...CUTLETS.map(({ id }) => locale.calendar.cutlets[id]),
+    ...MONTHS.map(({ id }) => locale.calendar.months[id]),
+  ];
+  const summaries = [...html.matchAll(/<summary>([^<]+)<\/summary>/g)].map((match) => match[1]);
+  assert.equal(expected.length, 64);
+  assert.deepEqual(summaries, expected);
+  assert.deepEqual([...cutlets.matchAll(/<summary>([^<]+)<\/summary>/g)].map(m => m[1]), expected.slice(0, 17));
+  assert.deepEqual([...months.matchAll(/<summary>([^<]+)<\/summary>/g)].map(m => m[1]), expected.slice(17));
+  const explanations = [...html.matchAll(/<details class="about-name-details">\s*<summary>[^<]+<\/summary>\s*<p>([\s\S]+?)<\/p>\s*<\/details>/g)];
+  assert.equal(explanations.length, 64);
+  for (const [i, item] of explanations.entries()) {
+    assert.ok(item[1].trim().length > 20, `missing explanation for canonical index ${i}`);
+  }
+});
+
+test("exceptional French canonical descriptions retain exact numeric constraints", async () => {
+  const html = await readFile(new URL("drafts/fr.partial.html", ROOT), "utf8");
+  assert.ok(html.includes("|x − 4/9| ≤ e/103"), "four-ninths lexeme tolerance must be exact");
+  assert.ok(html.includes("|x − 3/5| ≤ 1/367"), "three-fifths lexeme tolerance must be exact");
+  assert.ok(html.includes("−6°"), "spleen extension must preserve the solar elevation boundary");
+  assert.ok(html.includes("180 à 220 ml"), "spleen extension must preserve both container-capacity limits");
+  assert.match(html, /céramique[\s\S]{0,120}glaçure rouge/);
+  assert.ok(html.includes("fause couche") === false, "unexpected spelling in canonical exception");
+});
