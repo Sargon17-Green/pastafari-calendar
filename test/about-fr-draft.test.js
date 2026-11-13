@@ -55,5 +55,8 @@ test("exceptional French canonical descriptions retain exact numeric constraints
   assert.ok(html.includes("−6°"), "spleen extension must preserve the solar elevation boundary");
   assert.ok(html.includes("180 à 220 ml"), "spleen extension must preserve both container-capacity limits");
   assert.match(html, /céramique[\s\S]{0,120}glaçure rouge/);
-  assert.ok(html.includes("fause couche") === false, "unexpected spelling in canonical exception");
+  assert.ok(html.includes("fausse couche"), "earlier miscarriage must not disqualify the first live offspring");
+  assert.ok(html.includes("mort-né"), "earlier stillbirth must not disqualify the first live offspring");
+  assert.ok(html.includes("capacité du récipient, et non sur la quantité"), "volume refers to vessel capacity, not milk collected");
+  assert.ok(html.includes("volontairement laissé indéterminé"), "sun-window endpoint inclusion is intentionally unresolved");
 });
