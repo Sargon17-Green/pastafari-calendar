@@ -518,20 +518,26 @@ async function assertKeyboardOperations(page) {
   await page.keyboard.press("ArrowUp");
   assert.equal(await select.inputValue(), "gregorian", "native select must support reverse keyboard navigation");
 
-  const initialHeading = await page.locator("#cutlet-heading").innerText();
+  // The same canonical cutlet name can occur in consecutive years. Heading
+  // equality is therefore not evidence that keyboard navigation failed.
+  // Track the chronological start JDN of the visible cutlet instead.
+  const firstVisibleJdn = await page.locator("#calendar-grid .day-card").first().getAttribute("data-jdn");
+  assert.match(firstVisibleJdn ?? "", /^-?\\d+$/, "visible cutlet must have a numeric first-day JDN");
   const next = page.locator("#next-cutlet");
   await next.focus();
   await page.keyboard.press("Enter");
-  await page.waitForFunction((heading) => document.querySelector("#cutlet-heading")?.textContent !== heading, initialHeading, {
-    timeout: DEFAULT_TIMEOUT,
-  });
+  await page.waitForFunction((initialJdn) => {
+    const firstDay = document.querySelector("#calendar-grid .day-card");
+    return firstDay && firstDay.dataset.jdn !== initialJdn;
+  }, firstVisibleJdn, { timeout: 30_000 });
   assert.equal(await page.evaluate(() => document.activeElement?.id), "next-cutlet", "focus must stay on the cutlet navigation control after dynamic rendering");
   const previous = page.locator("#previous-cutlet");
   await previous.focus();
   await page.keyboard.press("Space");
-  await page.waitForFunction((heading) => document.querySelector("#cutlet-heading")?.textContent === heading, initialHeading, {
-    timeout: DEFAULT_TIMEOUT,
-  });
+  await page.waitForFunction((initialJdn) => {
+    const firstDay = document.querySelector("#calendar-grid .day-card");
+    return firstDay && firstDay.dataset.jdn === initialJdn;
+  }, firstVisibleJdn, { timeout: 30_000 });
   assert.equal(await page.evaluate(() => document.activeElement?.id), "previous-cutlet", "Space activation must work and focus must remain on navigation");
 }
 
