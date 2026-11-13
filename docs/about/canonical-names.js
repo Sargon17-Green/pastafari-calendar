@@ -1,6 +1,6 @@
 "use strict";
 
-import { CUTLETS, MONTHS } from "../i18n/calendar-identifiers.js";
+import { CUTLETS, MONTHS } from "../i18n/calendar-identifiers.js?v=9-canonical-names";
 
 const NAME_FAMILIES = Object.freeze([
   Object.freeze({ type: "cutlet", entries: CUTLETS, key: "cutlets" }),
