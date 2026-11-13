@@ -1,7 +1,7 @@
 <!-- BROUILLON NON PUBLIÉ — NE PAS INSCRIRE DANS content/registry.js.
      Traduction à partir du modèle sémantique actuel he.html / en.html (main, 2026-11-14).
      Étapes 1–2 : introduction + date-parts + working-day + year-structure + woven-months.
-     Il reste 9 sections à traduire ; les 64 explications sont en brouillon.
+     Il reste 6 sections à traduire ; les 64 explications sont en brouillon.
      Les identifiants de section et les expressions mathématiques ne sont pas traduits. -->
 <div class="about-section about-lead" id="about-calendar">
   <p><strong>Le calendrier pastafari</strong> est un calendrier contre-intuitif, à la structure volontairement inhabituelle : la date d’un jour dépend non seulement du jour que l’on souhaite décrire, mais aussi du jour à partir duquel on effectue le calcul.</p>
@@ -475,4 +475,41 @@
   <p>La position de l’observateur est donc importante. Deux personnes se trouvant en des lieux différents peuvent appartenir, au même instant physique, à deux jours pastafari locaux différents. Lorsqu’on se rend dans une autre ville, on ne conserve pas la limite du jour de la ville précédente.</p>
   <p>Cette limite dépend du calcul de l’orbite de Vénus, et non de la possibilité pour l’observateur de la voir effectivement. Les nuages, les murs ou le fait que Vénus se trouve sous l’horizon n’interrompent pas sa trajectoire.</p>
   <p>L’algorithme discret du calendrier est défini avec précision : des entrées identiques, soumises aux mêmes règles, produisent un résultat identique. En revanche, la conversion d’un instant physique en jour pastafari repose actuellement sur le modèle astronomique utilisé par l’implémentation ; le profil numérique de ce modèle astronomique n’est pas encore entièrement fixé par le canon.</p>
+</section>
+
+<section class="about-section" id="advantages" data-toc-section data-toc-level="2">
+  <h2>Les avantages remarquables du calendrier</h2>
+  <ul>
+    <li><strong>Une date que l’on peut recalculer sans cesse :</strong> un même jour passé peut recevoir demain une autre date pastafari, puisque le jour de travail aura lui aussi avancé. Inutile de se contenter d’une ancienne date qui resterait utile indéfiniment.</li>
+    <li><strong>Des années spacieuses :</strong> une année peut atteindre 5 778 jours. Quiconque attend la nouvelle année peut donc bénéficier d’une attente nettement plus longue qu’à l’ordinaire.</li>
+    <li><strong>Des mois qui exigent de l’attention :</strong> savoir qu’aujourd’hui est le jour 119 d’un mois ne signifie pas que son jour 120 arrivera demain, la semaine prochaine, ni même bientôt. Il faut calculer sa prochaine apparition.</li>
+    <li><strong>Une sensibilité géographique :</strong> un même instant peut appartenir à des jours pastafari locaux différents selon le lieu. Voyager dans une autre ville ajoute donc un détail supplémentaire à ne pas oublier pour coordonner ses projets.</li>
+    <li><strong>Des calendriers imprimés qui ne peuvent pas se reposer sur leurs lauriers :</strong> un calendrier établi à l’avance peut cesser de représenter le calcul correct dès que le jour de travail change. Personne ne risque donc de se satisfaire de la même feuille de papier pendant des années.</li>
+    <li><strong>Un emploi profitable de la puissance informatique :</strong> plutôt que de se contenter d’un tableau simple, compréhensible d’un coup d’œil, le calendrier permet à l’ordinateur d’effectuer un véritable calcul chaque fois qu’on souhaite obtenir une réponse.</li>
+    <li><strong>Il comporte des jours :</strong> le calendrier traite des jours. Il partage cette propriété avec tous les calendriers et garantit que personne ne sera contraint de gérer un calendrier dépourvu de jours.</li>
+    <li><strong>Les jours apparaissent dans l’ordre :</strong> un jour antérieur précède un jour ultérieur. C’est une réussite fondamentale des calendriers, offerte ici sans supplément de prix.</li>
+    <li><strong>Il permet d’indiquer des dates :</strong> le calendrier permet d’attribuer une description calendaire à un jour. Certes, c’est exactement le rôle d’un calendrier, mais il n’y a aucune raison de passer sous silence une qualité utile lorsqu’elle existe.</li>
+  </ul>
+  <p>Et tout cela est réuni dans un seul calendrier, comme il arrive lorsque plusieurs qualités appartiennent à un même calendrier.</p>
+</section>
+
+<section class="about-section" id="practical-consequences" data-toc-section data-toc-level="2">
+  <h2>Quelles conséquences pratiques ?</h2>
+  <p><strong>Un calendrier imprimé vieillit mal.</strong> Changer le jour de travail peut déplacer les limites des années, des boulettes et des mois. Un almanach calculé aujourd’hui n’est pas nécessairement celui qui conviendra demain.</p>
+  <p><strong>Un événement reste le même événement.</strong> Une rencontre, une naissance ou un fait historique doivent être rattachés à un jour ou à un instant chronologique stable. On peut ensuite leur attribuer une date pastafari selon le jour de travail et la position de l’observateur. Changer leur étiquette ne les déplace pas dans le temps.</p>
+  <p><strong>Un anniversaire pastafari ne revient pas nécessairement « une fois par an ».</strong> Pour trouver la prochaine apparition d’un même nom de mois associé au même numéro de jour dans le mois — ou d’un nom de boulette associé au même numéro de jour dans la boulette —, il faut effectuer une recherche dans le calendrier. L’année voisine peut ne pas contenir le nom recherché, ou contenir une unité trop courte pour atteindre le numéro voulu.</p>
+  <p><strong>Un événement couvrant toute une journée ne va pas nécessairement de minuit à minuit.</strong> S’il est défini selon un jour pastafari local, ses limites sont celles du jour déterminées localement par Vénus. L’exporter naïvement vers un calendrier civil sous la forme d’un événement de minuit à minuit risque d’en changer le sens.</p>
+</section>
+
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>Jour de la Fondation et Jour des Tablettes</h2>
+  <p>Le calendrier possède deux repères fixes importants :</p>
+  <dl>
+    <dt><strong>Jour de la Fondation</strong></dt>
+    <dd>Le 22 décembre 41 222 avant notre ère, dans le calendrier grégorien proleptique.</dd>
+    <dt><strong>Jour des Tablettes</strong></dt>
+    <dd>Le 15 juin 763 avant notre ère, dans le calendrier julien proleptique, ce qui correspond au 7 juin 763 avant notre ère dans le calendrier grégorien proleptique.</dd>
+  </dl>
+  <p>Il s’écoule <strong>14 777 149 jours</strong> entre ces deux repères. Le Jour de la Fondation est un point d’ancrage pour les calculs : il n’est pas « le premier jour du temps », et le calendrier s’étend aussi avant cette date.</p>
+  <p>Selon la tradition, le Jour des Tablettes est associé à la remise des tablettes. Dans le calcul historique, il correspond au jour de l’éclipse solaire survenue à l’époque de Bur-Sagale. Ces deux repères restent fixes même lorsque le jour de travail change.</p>
 </section>
