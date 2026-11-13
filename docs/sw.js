@@ -36,7 +36,7 @@ const CORE_ASSETS = [
   "./i18n/calendar-identifiers.js?v=9-canonical-names",
   "./i18n/registry.js?v=19-about-page",
   "./i18n/runtime.js?v=19-about-page",
-  "./i18n/locales/en.js?v=18-about-page"
+  "./i18n/locales/en.js?v=20-about-canonical-names"
 ];
 
 const OPTIONAL_ASSETS = Object.freeze([
