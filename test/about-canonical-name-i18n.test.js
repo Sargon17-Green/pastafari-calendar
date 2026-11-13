@@ -97,3 +97,20 @@ test("new multilingual About module is included in the offline core and versione
   assert.match(shell, /about\.js\?v=20261113-multilingual/);
   assert.match(about, /synchronizeCanonicalNameSummaries\(elements\["article-content"\], activeLocale\)/);
 });
+
+test("the PWA invalidates stale localized name dictionaries", async () => {
+  const registry = await readFile(new URL("../docs/i18n/registry.js", import.meta.url), "utf8");
+  const sw = await readFile(new URL("../docs/sw.js", import.meta.url), "utf8");
+  const revision = registry.match(/const LOCALE_ASSET_REVISION = "([^"]+)"/)?.[1];
+  assert.ok(revision, "the locale asset version must be explicit");
+  const importVersions = [...registry.matchAll(/import\("\.\/locales\/[a-z-]+\.js\?v=([^"]+)"\)/g)]
+    .map((match) => match[1]);
+  assert.equal(importVersions.length, LOCALES.length, "every language must have a versioned import");
+  assert.ok(importVersions.every((value) => value === revision), "locale imports must agree on the revision");
+  assert.ok(
+    sw.includes(`"./i18n/locales/en.js?v=${revision}"`),
+    "the offline English core must use the same locale revision",
+  );
+  assert.match(sw, /const LOCALE_REVISION_SEARCH = /);
+  assert.match(sw, /await pruneRuntimeCache\(\)/);
+});
