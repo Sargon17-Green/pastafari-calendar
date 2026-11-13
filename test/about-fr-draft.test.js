@@ -14,6 +14,7 @@ const IDS = Object.freeze([
   "year-structure",
   "woven-months",
   "canonical-names",
+  "day-boundary",
 ]);
 
 test("unpublished French draft has exact current-canon initial section order", async () => {
@@ -21,7 +22,7 @@ test("unpublished French draft has exact current-canon initial section order", a
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
   assert.deepEqual(ids, IDS);
   assert.equal(new Set(ids).size, IDS.length);
-  assert.equal((html.match(/data-toc-section/g) ?? []).length, 5);
+  assert.equal((html.match(/data-toc-section/g) ?? []).length, 6);
   assert.equal((html.match(/<details class="about-name-details">/g) ?? []).length, 64);
   assert.equal((html.match(/<summary>/g) ?? []).length, 64);
   assert.equal(ARTICLE_LOCALES.fr, undefined, "a partial translation must never be registered as published");
@@ -59,4 +60,6 @@ test("exceptional French canonical descriptions retain exact numeric constraints
   assert.ok(html.includes("mort-né"), "earlier stillbirth must not disqualify the first live offspring");
   assert.ok(html.includes("capacité du récipient, et non sur la quantité"), "volume refers to vessel capacity, not milk collected");
   assert.ok(html.includes("volontairement laissé indéterminé"), "sun-window endpoint inclusion is intentionally unresolved");
+  assert.ok(html.includes("passage inférieur du centre de Vénus"), "day boundary must use Venus lower meridian transit");
+  assert.ok(html.includes("pas encore entièrement fixé par le canon"), "astronomical numeric model must not be treated as canonically closed");
 });
