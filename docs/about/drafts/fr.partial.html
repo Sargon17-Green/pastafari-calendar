@@ -1,7 +1,7 @@
 <!-- BROUILLON NON PUBLIÉ — NE PAS INSCRIRE DANS content/registry.js.
      Traduction à partir du modèle sémantique actuel he.html / en.html (main, 2026-11-14).
      Étapes 1–2 : introduction + date-parts + working-day + year-structure + woven-months.
-     Il reste 6 sections à traduire ; les 64 explications sont en brouillon.
+     Il reste 3 sections à traduire ; les 64 explications sont en brouillon.
      Les identifiants de section et les expressions mathématiques ne sont pas traduits. -->
 <div class="about-section about-lead" id="about-calendar">
   <p><strong>Le calendrier pastafari</strong> est un calendrier contre-intuitif, à la structure volontairement inhabituelle : la date d’un jour dépend non seulement du jour que l’on souhaite décrire, mais aussi du jour à partir duquel on effectue le calcul.</p>
@@ -512,4 +512,40 @@
   </dl>
   <p>Il s’écoule <strong>14 777 149 jours</strong> entre ces deux repères. Le Jour de la Fondation est un point d’ancrage pour les calculs : il n’est pas « le premier jour du temps », et le calendrier s’étend aussi avant cette date.</p>
   <p>Selon la tradition, le Jour des Tablettes est associé à la remise des tablettes. Dans le calcul historique, il correspond au jour de l’éclipse solaire survenue à l’époque de Bur-Sagale. Ces deux repères restent fixes même lorsque le jour de travail change.</p>
+</section>
+
+<section class="about-section" id="calendar-math" data-toc-section data-toc-level="2">
+  <h2>Quelques faits mathématiques simples</h2>
+  <p>Il existe 47 noms de mois, et chaque mois peut aller jusqu’au jour 123. Il existe donc <strong>5 781</strong> combinaisons possibles de la forme « nom du mois + numéro du jour dans ce mois ».</p>
+  <p>Une année peut contenir au maximum 5 778 jours, et chacun de ses jours correspond à une de ces combinaisons. Par conséquent, <strong>dans chaque année, au moins trois combinaisons possibles sont absentes</strong>. Même l’année la plus longue ne comporte pas suffisamment de jours pour les réaliser toutes.</p>
+  <p>Lorsque le jour de travail et l’année sont connus, une paire complète « nom de la boulette + jour dans la boulette » ou « nom du mois + jour dans le mois » désigne au plus un jour de cette année. Ainsi, une date pastafari complète, accompagnée du jour de travail, identifie sans ambiguïté le jour interrogé.</p>
+  <p>En revanche, sans connaître le jour de travail, une date pastafari complète n’identifie pas nécessairement, à elle seule, une position unique sur l’axe du temps. La même combinaison de cinq éléments peut apparaître dans des contextes de calcul différents.</p>
+</section>
+
+<section class="about-section" id="research" data-toc-section data-toc-level="2">
+  <h2>Que révèlent les études informatiques sur ce calendrier ?</h2>
+  <p>Outre la vérification de ses règles, le calendrier a fait l’objet de vastes études informatiques. Les chiffres suivants sont des <strong>constatations empiriques tirées d’un échantillon</strong>, et non des lois canoniques.</p>
+  <p>Dans un atlas structurel fondé sur 4 096 jours de travail et portant sur 86 016 structures annuelles :</p>
+  <ul>
+    <li>la durée moyenne d’une année dans l’échantillon était d’environ 4 275 jours, et la médiane était de 4 343 jours ;</li>
+    <li>le nombre moyen de boulettes par année était d’environ 7,27 ;</li>
+    <li>le nombre moyen de mois structurels était d’environ 41,1 ;</li>
+    <li>un mois contenait en moyenne environ 104 jours lui appartenant, tout en s’étendant généralement sur presque toute l’année ;</li>
+    <li>97,482 % des segments continus d’un mois ne duraient qu’un seul jour ;</li>
+    <li>la probabilité mesurée que deux jours chronologiques consécutifs appartiennent au même mois était d’environ 2,998 %.</li>
+  </ul>
+  <p>Dans une étude distincte sur la récurrence des « jours-années », portant sur 4 096 dates calculées pour leur propre jour de travail dans chaque direction :</p>
+  <ul>
+    <li>une nouvelle correspondance pour <strong>nom du mois + jour dans le mois</strong> apparaissait à une distance médiane d’une seule année pastafari ; 77,56 % des correspondances se trouvaient dans l’année voisine ;</li>
+    <li>une nouvelle correspondance pour <strong>nom de la boulette + jour dans la boulette</strong> était beaucoup moins prévisible : la médiane était de trois années pastafari, tandis que la moyenne était influencée par une très longue traîne ;</li>
+    <li>l’échantillon comportait un cas extrême où la première récurrence future de « Akkad 3063 » se situait à 51 954 années pastafari de distance.</li>
+  </ul>
+  <p>Ces résultats aident à comprendre les tendances du calendrier. Ils ne transforment pas une moyenne en loi : la durée moyenne constatée n’oblige aucune année particulière à s’en approcher, et un résultat observé dans les 4 096 cas ne constitue pas, à lui seul, une preuve mathématique valable pour toutes les entrées possibles.</p>
+</section>
+
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>Comment le calendrier est-il calculé ?</h2>
+  <p>La date est produite par un algorithme discret, défini avec précision. À partir du jour de travail et du jour interrogé, il élabore une série de compteurs, les fait passer par le mécanisme de mélange appelé <strong>la Sauce</strong>, crée des portes, détermine les limites de l’année et des boulettes, sélectionne des noms, forme les mois, puis entrelace les jours des mois tout au long de l’année.</p>
+  <p>Les détails exacts font intervenir de grands nombres, des gouttes, des bols, des brassages, des sceaux et des mécanismes de sélection combinatoire. Ils sont importants pour l’implémentation et la vérification formelle, mais ne sont pas nécessaires pour comprendre ce que signifie une date ; ils ne sont donc pas détaillés ici.</p>
+  <p>À côté de l’algorithme existe un moteur rapide nommé <strong>Pastafarian Calendar Seer</strong>. Le Seer est conçu pour calculer rapidement ; il n’est pas la source de l’autorité, et il ne constitue pas lui-même une implémentation normative de toutes les étapes de l’algorithme. Si l’un de ses résultats contredit celui qu’exige le canon, c’est le Seer qui est erroné.</p>
 </section>
