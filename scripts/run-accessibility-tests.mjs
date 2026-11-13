@@ -522,7 +522,7 @@ async function assertKeyboardOperations(page) {
   // equality is therefore not evidence that keyboard navigation failed.
   // Track the chronological start JDN of the visible cutlet instead.
   const firstVisibleJdn = await page.locator("#calendar-grid .day-card").first().getAttribute("data-jdn");
-  assert.match(firstVisibleJdn ?? "", /^-?\\d+$/, "visible cutlet must have a numeric first-day JDN");
+  assert.match(firstVisibleJdn ?? "", /^-?\d+$/, "visible cutlet must have a numeric first-day JDN");
   const next = page.locator("#next-cutlet");
   await next.focus();
   await page.keyboard.press("Enter");
