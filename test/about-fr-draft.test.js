@@ -91,7 +91,7 @@ test("French draft explicitly separates the canon, implementation, and untransla
   const html = await readFile(new URL("drafts/fr.partial.html", ROOT), "utf8");
   const existingMonster = await readFile(new URL("monster/en.html", ROOT), "utf8");
   assert.ok(existingMonster.length > 300, "linked English Monster fallback must exist");
-  assert.match(html, /href="\.\/monster\/en\.html" lang="en"/);
+  assert.match(html, /href="\.\/monster\/en\.html" hreflang="en"/);
   assert.match(html, /en anglais/);
   assert.match(html, /ne constitue pas lui-même une implémentation normative/);
   assert.match(html, /éditions canoniques de la Megillah ne sont pas automatiquement hiérarchisées/);
