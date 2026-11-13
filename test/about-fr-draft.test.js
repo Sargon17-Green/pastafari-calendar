@@ -96,3 +96,26 @@ test("French draft explicitly separates the canon, implementation, and untransla
   assert.match(html, /ne constitue pas lui-même une implémentation normative/);
   assert.match(html, /éditions canoniques de la Megillah ne sont pas automatiquement hiérarchisées/);
 });
+
+// Compare the *complete* structural tag sequence, not only section IDs.
+// This catches missing paragraphs, list entries, definitions, and name disclosures
+// even if the translated text still carries the right 16 section anchors.
+test("French draft retains the canonical 16-section semantic HTML skeleton", async () => {
+  const sourceHe = await readFile(new URL("content/he.html", ROOT), "utf8");
+  const sourceEn = await readFile(new URL("content/en.html", ROOT), "utf8");
+  const draftFr = await readFile(new URL("drafts/fr.partial.html", ROOT), "utf8");
+  const structureTags = [
+    "section", "div", "p", "ul", "ol", "li",
+    "dl", "dt", "dd", "blockquote", "aside",
+    "h2", "h3", "details", "summary", "a",
+  ];
+  const sequence = (html) => [...html.matchAll(
+    new RegExp(`<(\\/?)(${structureTags.join("|")})(?=[\\s>])[^>]*>`, "g"),
+  )].map((match) => (match[1] ? "/" : "") + match[2]);
+  const hebrew = sequence(sourceHe);
+  const english = sequence(sourceEn);
+  const french = sequence(draftFr);
+  assert.ok(hebrew.length > 700, "full canonical article skeleton must be examined");
+  assert.deepEqual(english, hebrew, "Hebrew and English masters should agree structurally");
+  assert.deepEqual(french, hebrew, "French draft must not omit or reorder canonical content blocks");
+});
