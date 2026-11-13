@@ -810,6 +810,11 @@ async function main() {
 
     if (options.browser === "chromium") {
       await check("forced-colors", async () => {
+        // This test needs a visible selected day independently of earlier
+        // keyboard-navigation checks (which may have browsed to another cutlet).
+        await page.locator("#today-button").click();
+        await page.locator('#calendar-grid .day-card[data-target="true"]').first()
+          .waitFor({ state: "attached", timeout: 30_000 });
         await page.emulateMedia({ forcedColors: "active" });
         assert.equal(await page.evaluate(() => matchMedia("(forced-colors: active)").matches), true);
         const targetStyle = await page.locator('#calendar-grid .day-card[data-target="true"]').evaluate((element) => {
