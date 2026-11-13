@@ -1,7 +1,7 @@
 <!-- BROUILLON NON PUBLIÉ — NE PAS INSCRIRE DANS content/registry.js.
      Traduction à partir du modèle sémantique actuel he.html / en.html (main, 2026-11-14).
-     Étape 1 : introduction + date-parts + working-day.
-     Il reste 13 sections, dont les 64 explications canoniques.
+     Étapes 1–2 : introduction + date-parts + working-day + year-structure + woven-months.
+     Il reste 11 sections, dont les 64 explications canoniques.
      Les identifiants de section et les expressions mathématiques ne sont pas traduits. -->
 <div class="about-section about-lead" id="about-calendar">
   <p><strong>Le calendrier pastafari</strong> est un calendrier contre-intuitif, à la structure volontairement inhabituelle : la date d’un jour dépend non seulement du jour que l’on souhaite décrire, mais aussi du jour à partir duquel on effectue le calcul.</p>
@@ -36,4 +36,35 @@
   <p>Lorsque <code>c=t</code>, le jour appartient toujours à <strong>l’année 5000</strong>. Cette année ne correspond pas à une période historique fixe : elle est reconstruite par rapport au jour de travail, de sorte que d’autres jours situés autour de celui-ci peuvent également en faire partie.</p>
   <p>Par exemple, si un jour donné sert de jour de travail pour son propre calcul, il appartient à l’année 5000. Si l’on recommence le calcul le lendemain en prenant ce nouveau jour comme jour de travail, ce lendemain appartient lui aussi à l’année 5000. Il ne s’agit pas de deux affirmations contradictoires concernant une même « année historique » : chaque calcul choisit une nouvelle année de référence.</p>
   <p>Les années dont le numéro est supérieur à 5000 se situent dans le futur par rapport au jour de travail, tandis que celles dont le numéro est inférieur à 5000 se situent dans le passé. L’année 0 existe également, suivie d’années portant des numéros négatifs.</p>
+</section>
+
+<section class="about-section" id="year-structure" data-toc-section data-toc-level="2">
+  <h2>Comment une année est-elle structurée ?</h2>
+  <p>Une année pastafari peut compter de <strong>252</strong> à <strong>5 778</strong> jours. Ces deux limites sont incluses : une année de 252 jours est valide, tout comme une année de 5 778 jours. En revanche, une année de 251 ou de 5 779 jours ne respecte pas les règles canoniques actuelles.</p>
+  <p>Ces limites font partie de la définition du calendrier. L’année ne cherche à correspondre ni à l’année solaire, ni à l’année lunaire, ni à une saison, ni à l’année scolaire, ni à la patience de quiconque attend la prochaine nouvelle année.</p>
+  <p>Chaque année est organisée selon deux systèmes distincts :</p>
+  <ul>
+    <li><strong>6 à 17 boulettes</strong>. Chaque boulette forme une suite continue de jours et dure au moins 42 jours.</li>
+    <li><strong>3 à 47 mois structurels</strong>. De 4 à 123 jours appartiennent à chaque mois, sans nécessairement se suivre dans le temps.</li>
+  </ul>
+  <p>Le calendrier ne comporte aucun système de semaines canonique. Les lignes et les colonnes affichées sur le site ne sont qu’une méthode de présentation : deux jours placés côte à côte ne font pas pour autant partie d’une même « semaine pastafari ».</p>
+</section>
+
+<section class="about-section" id="woven-months" data-toc-section data-toc-level="2">
+  <h2>Qu’est-ce qu’un « mois entrelacé » ?</h2>
+  <p>Les jours d’une boulette se succèdent sans interruption : si aujourd’hui est le 250e jour d’une boulette et que demain appartient encore à cette boulette, demain en sera le 251e jour.</p>
+  <p>Un mois fonctionne autrement. Le jour 18 d’un mois donné désigne <strong>la 18e apparition de ce mois au cours de l’année</strong>. Il ne vient pas nécessairement le lendemain de son jour 17.</p>
+  <blockquote>
+    <p>Mois A — jour 14<br>
+    Mois B — jour 9<br>
+    Mois A — jour 15</p>
+  </blockquote>
+  <p>Un mois peut donc s’étendre sur une grande partie de l’année, traverser plusieurs boulettes et s’entrelacer avec d’autres mois. Inversement, une même boulette peut contenir des jours appartenant à de nombreux mois différents.</p>
+  <p>La longueur d’un mois est le nombre total de jours qui lui appartiennent, et non le nombre de jours écoulés entre sa première et sa dernière apparition. Un mois de 104 jours peut ainsi s’étendre, sur l’axe chronologique, sur plusieurs milliers de jours.</p>
+  <aside class="about-note">
+    <h3>Pourquoi le jour 15 suit-il le jour 14 ?</h3>
+    <p>Parce que 15 est l’entier qui suit 14. Qu’un jour d’un autre mois soit intercalé entre ces deux apparitions ne change rien au calcul : le premier mois est déjà apparu 14 fois ; sa prochaine apparition est la 15e, et porte donc le numéro 15.</p>
+    <p>De même, si quatre jours appartenant à d’autres mois suivent le jour 15 de ce mois, la prochaine apparition du mois initial reste son jour 16. Les quatre jours intercalés comptent dans la chronologie du calendrier, mais n’appartiennent pas à ce mois : ils ne font donc pas avancer <em>son</em> compteur de jours. Voilà précisément pourquoi « le jour suivant dans le mois » et « demain » sont deux notions différentes.</p>
+  </aside>
+  <p>Il s’ensuit également que la fin d’un mois n’est pas nécessairement proche dans le temps. Un mois peut être arrivé à son jour 119 sur 120, alors que son jour 120 n’apparaîtra que bien plus tard.</p>
 </section>
