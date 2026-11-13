@@ -1,8 +1,10 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 import { CUTLETS, MONTHS } from "../docs/i18n/calendar-identifiers.js";
 import { LOCALES, loadLocale } from "../docs/i18n/registry.js";
+import { ARTICLE_LOCALES } from "../docs/about/content/registry.js";
 import {
   canonicalNameGroups,
   synchronizeCanonicalNameSummaries,
@@ -72,4 +74,26 @@ test("malformed name markup is rejected before mutating any summary", async () =
   const article = fakeArticle([17, 46]);
   assert.throws(() => synchronizeCanonicalNameSummaries(article, locale), /47/);
   assert.ok(article.summaries.flat().every((summary) => summary.textContent === "initial"));
+});
+
+test("published About translations and site name dictionaries have identical approved labels", async () => {
+  for (const code of Object.keys(ARTICLE_LOCALES)) {
+    const html = await readFile(new URL(`../docs/about/content/${code}.html`, import.meta.url), "utf8");
+    const labels = [...html.matchAll(/<summary>([^<]*)<\/summary>/g)].map((match) =>
+      match[1].replace(/&amp;/g, "&").replace(/&lt;/g, "<")
+        .replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'")
+    );
+    const locale = await loadLocale(code);
+    assert.deepEqual(labels, canonicalNameGroups(locale).flatMap(({ names }) => names.map(({ label }) => label)), code);
+  }
+});
+
+test("new multilingual About module is included in the offline core and versioned shell", async () => {
+  const sw = await readFile(new URL("../docs/sw.js", import.meta.url), "utf8");
+  const shell = await readFile(new URL("../docs/about/index.html", import.meta.url), "utf8");
+  const about = await readFile(new URL("../docs/about/about.js", import.meta.url), "utf8");
+  assert.match(sw, /about\/canonical-names\.js\?v=20261113-multilingual/);
+  assert.match(sw, /about\/about\.js\?v=20261113-multilingual/);
+  assert.match(shell, /about\.js\?v=20261113-multilingual/);
+  assert.match(about, /synchronizeCanonicalNameSummaries\(elements\["article-content"\], activeLocale\)/);
 });
