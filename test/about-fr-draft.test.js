@@ -15,14 +15,23 @@ const IDS = Object.freeze([
   "woven-months",
   "canonical-names",
   "day-boundary",
+  "advantages",
+  "practical-consequences",
+  "foundation-and-tablets",
+  "calendar-math",
+  "research",
+  "calculation",
+  "about-the-monster",
+  "authority",
+  "summary",
 ]);
 
-test("unpublished French draft has exact current-canon initial section order", async () => {
+test("unpublished French draft has all 16 current-canon article IDs and 15 navigable sections", async () => {
   const html = await readFile(new URL("drafts/fr.partial.html", ROOT), "utf8");
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
   assert.deepEqual(ids, IDS);
   assert.equal(new Set(ids).size, IDS.length);
-  assert.equal((html.match(/data-toc-section/g) ?? []).length, 6);
+  assert.equal((html.match(/data-toc-section/g) ?? []).length, 15);
   assert.equal((html.match(/<details class="about-name-details">/g) ?? []).length, 64);
   assert.equal((html.match(/<summary>/g) ?? []).length, 64);
   assert.equal(ARTICLE_LOCALES.fr, undefined, "a partial translation must never be registered as published");
@@ -62,4 +71,28 @@ test("exceptional French canonical descriptions retain exact numeric constraints
   assert.ok(html.includes("volontairement laissé indéterminé"), "sun-window endpoint inclusion is intentionally unresolved");
   assert.ok(html.includes("passage inférieur du centre de Vénus"), "day boundary must use Venus lower meridian transit");
   assert.ok(html.includes("pas encore entièrement fixé par le canon"), "astronomical numeric model must not be treated as canonically closed");
+});
+
+test("French full draft preserves fixed historical anchors and marks empirical findings", async () => {
+  const html = await readFile(new URL("drafts/fr.partial.html", ROOT), "utf8");
+  for (const exactNumber of [
+    "5 781", "5 778", "4 096", "86 016",
+    "4 275", "4 343", "7,27", "41,1", "97,482 %",
+    "2,998 %", "77,56 %", "51 954", "14 777 149",
+  ]) assert.ok(html.includes(exactNumber), `missing factual boundary: ${exactNumber}`);
+  assert.match(html, /22 décembre 41 222 avant notre ère/);
+  assert.match(html, /15 juin 763 avant notre ère/);
+  assert.match(html, /7 juin 763 avant notre ère/);
+  assert.match(html, /constatations empiriques tirées d’un échantillon/);
+  assert.match(html, /ne constitue pas, à lui seul, une preuve mathématique/);
+});
+
+test("French draft explicitly separates the canon, implementation, and untranslated Monster page", async () => {
+  const html = await readFile(new URL("drafts/fr.partial.html", ROOT), "utf8");
+  const existingMonster = await readFile(new URL("monster/en.html", ROOT), "utf8");
+  assert.ok(existingMonster.length > 300, "linked English Monster fallback must exist");
+  assert.match(html, /href="\.\/monster\/en\.html" lang="en"/);
+  assert.match(html, /en anglais/);
+  assert.match(html, /ne constitue pas lui-même une implémentation normative/);
+  assert.match(html, /éditions canoniques de la Megillah ne sont pas automatiquement hiérarchisées/);
 });
