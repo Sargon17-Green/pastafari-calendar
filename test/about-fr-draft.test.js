@@ -104,13 +104,8 @@ test("French draft retains the canonical 16-section semantic HTML skeleton", asy
   const sourceHe = await readFile(new URL("content/he.html", ROOT), "utf8");
   const sourceEn = await readFile(new URL("content/en.html", ROOT), "utf8");
   const draftFr = await readFile(new URL("drafts/fr.partial.html", ROOT), "utf8");
-  const structureTags = [
-    "section", "div", "p", "ul", "ol", "li",
-    "dl", "dt", "dd", "blockquote", "aside",
-    "h2", "h3", "details", "summary", "a",
-  ];
   const sequence = (html) => [...html.matchAll(
-    new RegExp(`<(\\/?)(${structureTags.join("|")})(?=[\\s>])[^>]*>`, "g"),
+    /<(\/?)(section|div|p|ul|ol|li|dl|dt|dd|blockquote|aside|h2|h3|details|summary|a)(?=[\s>])[^>]*>/g,
   )].map((match) => (match[1] ? "/" : "") + match[2]);
   const hebrew = sequence(sourceHe);
   const english = sequence(sourceEn);
