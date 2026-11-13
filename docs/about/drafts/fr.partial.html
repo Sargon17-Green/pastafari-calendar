@@ -1,7 +1,7 @@
 <!-- BROUILLON NON PUBLIÉ — NE PAS INSCRIRE DANS content/registry.js.
      Traduction à partir du modèle sémantique actuel he.html / en.html (main, 2026-11-14).
      Étapes 1–2 : introduction + date-parts + working-day + year-structure + woven-months.
-     Il reste 10 sections à traduire ; les 64 explications sont en brouillon.
+     Il reste 9 sections à traduire ; les 64 explications sont en brouillon.
      Les identifiants de section et les expressions mathématiques ne sont pas traduits. -->
 <div class="about-section about-lead" id="about-calendar">
   <p><strong>Le calendrier pastafari</strong> est un calendrier contre-intuitif, à la structure volontairement inhabituelle : la date d’un jour dépend non seulement du jour que l’on souhaite décrire, mais aussi du jour à partir duquel on effectue le calcul.</p>
@@ -467,4 +467,12 @@
   </ul>
 
   <p>Dans d’autres langues, le même nom peut prendre une forme usuelle différente. La traduction ou la translittération ne crée ni nouvelle boulette ni nouveau mois : elle présente le même nom sous une autre forme. Les formes admises sont définies par le canon et les règles linguistiques qu’il retient.</p>
+</section>
+
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>À quel moment le jour change-t-il ?</h2>
+  <p>Un jour pastafari local ne change pas à minuit. Sa limite est déterminée par <strong>le passage inférieur du centre de Vénus au méridien local</strong> : l’instant où le centre de Vénus franchit le méridien du lieu de l’observateur du côté situé sous l’horizon.</p>
+  <p>La position de l’observateur est donc importante. Deux personnes se trouvant en des lieux différents peuvent appartenir, au même instant physique, à deux jours pastafari locaux différents. Lorsqu’on se rend dans une autre ville, on ne conserve pas la limite du jour de la ville précédente.</p>
+  <p>Cette limite dépend du calcul de l’orbite de Vénus, et non de la possibilité pour l’observateur de la voir effectivement. Les nuages, les murs ou le fait que Vénus se trouve sous l’horizon n’interrompent pas sa trajectoire.</p>
+  <p>L’algorithme discret du calendrier est défini avec précision : des entrées identiques, soumises aux mêmes règles, produisent un résultat identique. En revanche, la conversion d’un instant physique en jour pastafari repose actuellement sur le modèle astronomique utilisé par l’implémentation ; le profil numérique de ce modèle astronomique n’est pas encore entièrement fixé par le canon.</p>
 </section>
