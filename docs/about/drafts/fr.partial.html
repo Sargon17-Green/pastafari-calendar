@@ -1,0 +1,39 @@
+<!-- BROUILLON NON PUBLIÉ — NE PAS INSCRIRE DANS content/registry.js.
+     Traduction à partir du modèle sémantique actuel he.html / en.html (main, 2026-11-14).
+     Étape 1 : introduction + date-parts + working-day.
+     Il reste 13 sections, dont les 64 explications canoniques.
+     Les identifiants de section et les expressions mathématiques ne sont pas traduits. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p><strong>Le calendrier pastafari</strong> est un calendrier contre-intuitif, à la structure volontairement inhabituelle : la date d’un jour dépend non seulement du jour que l’on souhaite décrire, mais aussi du jour à partir duquel on effectue le calcul.</p>
+  <p>Il comporte des années, des boulettes et des mois. Cependant, les années n’ont pas une durée fixe, les boulettes et les mois constituent deux découpages différents de l’année, les mois peuvent disparaître puis réapparaître au cours d’une même année, et il n’existe pas de semaines canoniques.</p>
+  <p>Cette page explique ce qu’est le calendrier, comment lire une date et quelles sont les conséquences pratiques de sa structure. Les détails mathématiques et cryptographiques de son implémentation figurent dans la documentation technique, mais il n’est pas nécessaire de les connaître pour comprendre le calendrier.</p>
+</div>
+
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>Comment se présente une date pastafari ?</h2>
+  <p>Une date pastafari comporte exactement cinq éléments :</p>
+  <ol>
+    <li><strong>l’année depuis la création du monde</strong> ;</li>
+    <li><strong>le nom de la boulette</strong> ;</li>
+    <li><strong>le jour dans la boulette</strong> ;</li>
+    <li><strong>le nom du mois</strong> ;</li>
+    <li><strong>le jour dans le mois</strong>.</li>
+  </ol>
+  <p>Autrement dit, une date complète indique dans quelle année et dans quelle boulette se trouve le jour considéré, sa position dans cette boulette, ainsi que le mois auquel il appartient et son rang d’apparition dans ce mois.</p>
+  <p>Le jour de travail, la position de l’observateur et d’autres renseignements techniques peuvent être indispensables pour <em>calculer</em> la date. Ils n’en constituent pas pour autant un sixième, un septième ou un huitième élément.</p>
+  <p>La présentation à l’écran ne modifie pas non plus le nombre d’éléments. Si le site répartit les cinq données sur trois lignes, il s’agit toujours de cinq données : un retour à la ligne est une opération typographique, pas la création d’un nouveau champ calendaire.</p>
+</section>
+
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>Pourquoi un même jour peut-il recevoir une date différente ?</h2>
+  <p>Chaque calcul fait intervenir deux jours :</p>
+  <ul>
+    <li><strong>le jour de travail</strong> — celui à partir duquel le calcul est effectué ;</li>
+    <li><strong>le jour interrogé</strong> — celui dont on cherche à connaître la date.</li>
+  </ul>
+  <p>Si l’on désigne le jour de travail par <code>c</code> et le jour interrogé par <code>t</code>, la date s’écrit <code>F(c,t)</code>, et non <code>F(t)</code>.</p>
+  <p>Un même jour chronologique peut donc recevoir une représentation pastafari différente lorsque le jour de travail change. Le jour lui-même ne se déplace pas : seule sa description pastafari change.</p>
+  <p>Lorsque <code>c=t</code>, le jour appartient toujours à <strong>l’année 5000</strong>. Cette année ne correspond pas à une période historique fixe : elle est reconstruite par rapport au jour de travail, de sorte que d’autres jours situés autour de celui-ci peuvent également en faire partie.</p>
+  <p>Par exemple, si un jour donné sert de jour de travail pour son propre calcul, il appartient à l’année 5000. Si l’on recommence le calcul le lendemain en prenant ce nouveau jour comme jour de travail, ce lendemain appartient lui aussi à l’année 5000. Il ne s’agit pas de deux affirmations contradictoires concernant une même « année historique » : chaque calcul choisit une nouvelle année de référence.</p>
+  <p>Les années dont le numéro est supérieur à 5000 se situent dans le futur par rapport au jour de travail, tandis que celles dont le numéro est inférieur à 5000 se situent dans le passé. L’année 0 existe également, suivie d’années portant des numéros négatifs.</p>
+</section>
