@@ -192,19 +192,19 @@ test("complete unpublished Persian draft retains all 16 units and source structu
 });
 
 
-test("first eight Persian Monster companion sections retain canonical Hebrew structure", async () => {
+test("first sixteen Persian Monster companion sections retain canonical Hebrew structure", async () => {
   const [source, target] = await Promise.all([
     readFile(new URL("monster/index.html", ROOT), "utf8"),
     readFile(new URL("drafts/fa.monster.core.partial.html", ROOT), "utf8"),
   ]);
   const sourceStarts = [...source.matchAll(/<section id="([^"]+)" class="level2">/g)];
-  const firstEight = source.slice(sourceStarts[0].index, sourceStarts[8].index);
+  const firstSixteen = source.slice(sourceStarts[0].index, sourceStarts[16].index);
   const ids = s => [...s.matchAll(/<section id="([^"]+)" class="level2">/g)].map(m => m[1]);
   const tagStructure = s => [...s.matchAll(/<(\/?)(section|h2|p|strong)\b[^>]*>/g)].map(m => m[1] + m[2]);
-  assert.deepEqual(ids(target), ids(firstEight));
-  assert.equal(ids(target).length, 8);
-  assert.equal(tagStructure(firstEight).length, 104);
-  assert.deepEqual(tagStructure(target), tagStructure(firstEight));
+  assert.deepEqual(ids(target), ids(firstSixteen));
+  assert.equal(ids(target).length, 16);
+  assert.equal(tagStructure(firstSixteen).length, 194);
+  assert.deepEqual(tagStructure(target), tagStructure(firstSixteen));
   assert.match(target, /پیش‌نویسِ منتشرنشده/);
   assert.match(target, /نر، ماده و کربوهیدرات/);
   assert.match(target, /تیغِ اوکام/);
