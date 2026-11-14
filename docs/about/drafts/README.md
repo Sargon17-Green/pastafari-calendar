@@ -31,3 +31,10 @@ These files are **unpublished working materials**. Files in this folder must **n
 - The published About coverage is still 17 of 73 UI locales unless an actual release updates the production registry; 56 locales fall back to Hebrew article prose.
 - A queued or in-progress CI run is neither PASS nor a failure. Inspect completed job logs before classifying a regression or merging.
 - Never change the calendar's discrete algorithm, canonical Hebrew name identities or canonical source wording to accommodate a translation.
+
+### French Monster appendix (unpublished, partial)
+
+- File: `fr.monster.penguin.partial.html`. This is **separate** from the complete 25 regular Monster sections.
+- Semantic source: the Hebrew `docs/about/monster/index.html`, **not** the shortened English appendix. The Hebrew version includes editorial counterarguments in nested `<details class="penguin-note">` elements, and these must not be lost.
+- Current draft: introductory appendix argument and **2 of 13** `level3` subsections (`מבנה-הגוף`, `תקשורת`) with **3** editorial notes, maintaining the original IDs and the locations of the notes.
+- Still required: translate the remaining 11 subsections and all their notes, compare the complete nested structural sequence and register only as part of a fully reviewed French Monster page. The main public About article continues to link to the **English** Monster companion.
