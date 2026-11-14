@@ -39,7 +39,7 @@ jobs:
       - run: node verification/update20/run-api-compatibility.mjs
       - name: Upload scope evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: u20-scope-${{ github.sha }}
           path: |
@@ -63,7 +63,7 @@ jobs:
       - run: node verification/update20/run-seal-holdout.mjs
       - name: Upload seal evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: u20-seal-${{ github.sha }}
           path: artifacts/final-release/seal-holdout.json
@@ -85,7 +85,7 @@ jobs:
       - run: node verification/update20/run-post-bump-regression.mjs
       - name: Upload regression evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: u20-regression-${{ github.sha }}
           path: artifacts/final-release/post-bump-regression.json
@@ -107,7 +107,7 @@ jobs:
       - run: node verification/update20/run-ci-release-parity.mjs
       - name: Upload CI parity evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: u20-ci-parity-${{ github.sha }}
           path: artifacts/final-release/ci-release-parity.json
@@ -142,7 +142,7 @@ jobs:
       - run: node verification/update20/run-browser-seal.mjs
       - name: Upload browser/Worker/standalone evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: u20-browser-${{ github.sha }}
           path: artifacts/final-release/browser-worker-standalone-seal.json
@@ -185,7 +185,7 @@ jobs:
       - run: node verification/update20/run-package-seal.mjs
       - name: Upload exact release/package evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: u20-release-verify-${{ github.sha }}
           path: |
@@ -221,7 +221,7 @@ jobs:
         run: node verification/update20/finalize-release.mjs
       - name: Upload final release closure evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: update-20-final-release-evidence-${{ github.sha }}
           path: |
