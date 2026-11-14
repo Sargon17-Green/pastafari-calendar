@@ -255,12 +255,12 @@ test("French release references and Service Worker optional assets are exactly v
     readFile(new URL("content/registry.js", ROOT), "utf8"),
     readFile(new URL("monster/index.html", ROOT), "utf8"),
   ]);
-  assert.match(aboutScript, /registry\.js\?v=20261114-fr17/);
-  assert.match(aboutShell, /about\.js\?v=20261114-fr17/);
-  assert.match(worker, /const VERSION = "pastafari-static-pwa-about-fr-20261114";/);
+  assert.match(aboutScript, /registry\.js\?v=20261114-fa18/);
+  assert.match(aboutShell, /about\.js\?v=20261114-fa18/);
+  assert.match(worker, /const VERSION = "pastafari-static-pwa-about-fa-20261114";/);
   for (const asset of [
-    "./about/about.js?v=20261114-fr17",
-    "./about/content/registry.js?v=20261114-fr17",
+    "./about/about.js?v=20261114-fa18",
+    "./about/content/registry.js?v=20261114-fa18",
     "./about/content/fr.html?v=20261114-fr17",
     "./about/monster/fr.html",
   ]) assert.ok(worker.includes('"' + asset + '"'), "missing PWA asset " + asset);
