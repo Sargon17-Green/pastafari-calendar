@@ -1,0 +1,125 @@
+{
+  "schema": "PBD-H1000-PUBLIC-REPORT/1.0",
+  "language": "he",
+  "as_of": "2026-11-14",
+  "experiment_id": "RATE-ASYM-001-H1000-FULL-001",
+  "source_pre_registration": "PBD-ER-1.0 (2026-09-20)",
+  "source_pre_registration_sha256": "7252c9c4ba053e8f6a53b13bf42646e660e6c85dfd8b407fdff98d1e13e9e954",
+  "archive_filename": "PBD_H1000_FULL_EXACT_FINAL_HANDOFF_v006.zip",
+  "archive_sha256": "3fd6931b4e4e00cbecc899e5d3af090f10ed1c28419f30d170a3d2f9067216dc",
+  "archive_publicly_downloadable_here": false,
+  "units": "Deterministic sample of canonical integer birth-day × target-day pairs, not people or IID random trials",
+  "sample": {
+    "births": 1000,
+    "epochs": 8,
+    "births_per_epoch": 125,
+    "candidate_births_per_epoch": 10000,
+    "method": "Precommitted SHA-256 stratified one-per-stratum selection",
+    "horizon_days_per_birth": 365243,
+    "pairs": 365243000
+  },
+  "counts": {
+    "cutlet_only": 24540,
+    "month_only": 65472,
+    "both": 6,
+    "cutlet_total": 24546,
+    "month_total": 65478,
+    "union": 90018
+  },
+  "rate_per_pair": 0.0002464605755620231,
+  "mean_events_per_birth": 90.018,
+  "first_wait_days": {
+    "n_observed": 1000,
+    "min": 219,
+    "median": 4892,
+    "mean": 6321.731,
+    "max": 27730,
+    "all_first_events_before_day": 36524
+  },
+  "interevent_gaps": {
+    "fully_observed_count": 89018,
+    "median_days": 2764
+  },
+  "fano_h1000": {
+    "union": 1.8255460908708039,
+    "cutlet_only": 3.080113528361287,
+    "month_only": 1.0965146475899166
+  },
+  "between_epochs_variance_share_h1000": 0.0016139352548305555,
+  "within_epochs_variance_share_h1000": 0.9983860647451694,
+  "epoch_summaries": [
+    {
+      "epoch": "E0",
+      "set": "DISCOVERY",
+      "births": 125,
+      "union": 11378,
+      "rate_per_pair": 0.0002492149062405029
+    },
+    {
+      "epoch": "E1",
+      "set": "VALIDATION",
+      "births": 125,
+      "union": 11275,
+      "rate_per_pair": 0.00024695887395514765
+    },
+    {
+      "epoch": "E2",
+      "set": "DISCOVERY",
+      "births": 125,
+      "union": 11195,
+      "rate_per_pair": 0.00024520661586943486
+    },
+    {
+      "epoch": "E3",
+      "set": "VALIDATION",
+      "births": 125,
+      "union": 11141,
+      "rate_per_pair": 0.00024402384166157873
+    },
+    {
+      "epoch": "E4",
+      "set": "DISCOVERY",
+      "births": 125,
+      "union": 11264,
+      "rate_per_pair": 0.00024671793846836213
+    },
+    {
+      "epoch": "E5",
+      "set": "VALIDATION",
+      "births": 125,
+      "union": 11276,
+      "rate_per_pair": 0.00024698077718121906
+    },
+    {
+      "epoch": "E6",
+      "set": "DISCOVERY",
+      "births": 125,
+      "union": 11257,
+      "rate_per_pair": 0.0002465646158858623
+    },
+    {
+      "epoch": "E7",
+      "set": "VALIDATION",
+      "births": 125,
+      "union": 11232,
+      "rate_per_pair": 0.00024601703523407706
+    }
+  ],
+  "audit": {
+    "archive_consistency": "PASS",
+    "completed_chunks": 5864,
+    "data_quality_checks_pass": 13,
+    "regression_tests_pass": 8,
+    "independent_positive_event_engine_oracle": "NOT_ESTABLISHED",
+    "historical_gold_cases": "all 24 were zero-events",
+    "model_diagnostics": "EXPLORATORY_AFTER_UNBLINDING",
+    "asymptotic_limit": "NOT_ESTABLISHED"
+  },
+  "not_proven": [
+    "An asymptotic rate limit",
+    "Independence of the two birthday mechanisms",
+    "IID across births or target-days",
+    "Full independent positive engine verification",
+    "Universal first-birthday waiting-time upper bound"
+  ]
+}
