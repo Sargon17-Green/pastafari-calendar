@@ -65,12 +65,12 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   const requiredCore = [
     "./index.html",
     "./about/index.html",
-    "./about/about.js?v=20261114-fr17",
+    "./about/about.js?v=20261114-fa18",
     "./about/canonical-names.js?v=20261113-multilingual",
-    "./about/content/registry.js?v=20261114-fr17",
+    "./about/content/registry.js?v=20261114-fa18",
     "./about/content/he.html?v=4-about-polish",
     "./styles.css?v=16-about-polish",
-    "./app.js?v=24-worker-recovery",
+    "./app.js?v=25-about-fa-20261114",
     "./reverse-ui.js?v=20-about-page",
     "./reverse-search-controller.js",
     "./calendar-input-conventions.js?v=9-calendar-input-conventions",
@@ -86,9 +86,9 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
     "./engine/pastafari-constraints.js",
     "./engine/pastafari-reverse-worker.js",
     "./i18n/calendar-identifiers.js?v=9-canonical-names",
-    "./i18n/registry.js?v=19-about-page",
-    "./i18n/runtime.js?v=19-about-page",
-    "./i18n/locales/en.js?v=20-about-canonical-names",
+    "./i18n/registry.js?v=20-about-fa-20261114",
+    "./i18n/runtime.js?v=20-about-fa-20261114",
+    "./i18n/locales/en.js?v=21-about-fa-20261114",
   ];
   assert.deepEqual(coreAssets, requiredCore, "CORE_ASSETS must describe the complete deterministic offline application shell");
   assert.equal(coreAssets.length, 26);
@@ -99,25 +99,25 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
     "./icons/icon-192.png",
     "./icons/icon-512.png",
   ];
-  const approvedTranslations = ["en", "af", "ar", "az", "be", "bg", "bn", "bs", "ca", "cs", "da", "de", "el", "eo", "es", "et", "fr"];
+  const approvedTranslations = ["en", "af", "ar", "az", "be", "bg", "bn", "bs", "ca", "cs", "da", "de", "el", "eo", "es", "et", "fr", "fa"];
   const translationAssets = approvedTranslations.flatMap((code) => [
-    "./about/content/" + code + ".html?v=" + (code === "fr" ? "20261114-fr17" : code === "et" ? "20261010-approved16" : code === "es" ? "20261010-approved15" : code === "eo" ? "20261010-approved14" : code === "el" ? "20261009-approved13" : "20261009-approved12"),
+    "./about/content/" + code + ".html?v=" + (code === "fa" ? "20261114-fa18" : code === "fr" ? "20261114-fr17" : code === "et" ? "20261010-approved16" : code === "es" ? "20261010-approved15" : code === "eo" ? "20261010-approved14" : code === "el" ? "20261009-approved13" : "20261009-approved12"),
     "./about/monster/" + code + ".html",
   ]);
   assert.deepEqual(optionalAssets, [...requiredOptional, ...translationAssets],
-    "OPTIONAL_ASSETS must contain the four metadata/icons and exactly the 34 published translation pages");
-  assert.equal(optionalAssets.length, 38);
+    "OPTIONAL_ASSETS must contain the four metadata/icons and exactly the 36 published translation pages");
+  assert.equal(optionalAssets.length, 40);
   assert.deepEqual(coreAssets.filter((entry) => optionalAssets.includes(entry)), [], "Core and optional lists must not overlap");
 
   await assertDeclaredAssetsExist(coreAssets);
   await assertDeclaredAssetsExist(optionalAssets);
 
   const localeAssets = coreAssets.filter((entry) => entry.startsWith("./i18n/locales/"));
-  assert.deepEqual(localeAssets, ["./i18n/locales/en.js?v=20-about-canonical-names"]);
+  assert.deepEqual(localeAssets, ["./i18n/locales/en.js?v=21-about-fa-20261114"]);
   assert.equal(LOCALES.length, 73, "PWA accounting expects the current 73 registered locales");
   assert.equal(LOCALES.filter(({ code }) => code !== "en").length, 72, "Every non-English locale is optional/on-demand");
 
-  assert.match(source, /const VERSION = "pastafari-static-pwa-about-fr-20261114";/);
+  assert.match(source, /const VERSION = "pastafari-static-pwa-about-fa-20261114";/);
   assert.match(source, /const RUNTIME_CACHE = "pastafari-runtime-assets";/);
   assert.match(source, /const OPTIONAL_LOCALE_PATH = \/\^\\\/i18n\\\/locales/);
   assert.match(source, /url\.search === LOCALE_REVISION_SEARCH/);
@@ -145,7 +145,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   const html = await readFile(path.join(DOCS, "index.html"), "utf8");
   for (const entry of [
     "./styles.css?v=16-about-polish",
-    "./app.js?v=24-worker-recovery",
+    "./app.js?v=25-about-fa-20261114",
     "./manifest.webmanifest?v=10-kyrgyz",
     "./icons/favicon-32x32.png?v=spaghetti-calendar-2",
     "./icons/favicon-16x16.png?v=spaghetti-calendar-2",
@@ -169,7 +169,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
 test("registry contains only dynamic locale imports", async () => {
   const source = await readFile(path.join(DOCS, "i18n", "registry.js"), "utf8");
   assert.doesNotMatch(source, /^import\s+\w+\s+from\s+["']\.\/locales\//m);
-  const dynamicImports = [...source.matchAll(/import\(["']\.\/locales\/([^"'?]+)\.js\?v=20-about-canonical-names["']\)/g)].map((match) => match[1]);
+  const dynamicImports = [...source.matchAll(/import\(["']\.\/locales\/([^"'?]+)\.js\?v=21-about-fa-20261114["']\)/g)].map((match) => match[1]);
   assert.deepEqual(dynamicImports, LOCALES.map(({ code }) => code));
 });
 
