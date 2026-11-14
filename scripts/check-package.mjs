@@ -19,6 +19,13 @@ const PACKAGE_BUDGET = Object.freeze({
 const INTENTIONAL_PACKAGE_EXCLUSIONS = Object.freeze([
   "src/ABSTRACT.txt",
   "types/soak-fast-engine.mjs",
+  // CI-only browser tests must never bloat the distributable npm package.
+  "scripts/run-pwa-production-upgrade-smoke.mjs",
+  "scripts/run-pwa-offline-smoke.mjs",
+  "scripts/run-accessibility-tests.mjs",
+  "scripts/run-visual-regression.mjs",
+  "scripts/run-reverse-ui-smoke.mjs",
+  "scripts/run-i18n-support-smoke.mjs",
 ]);
 const INTENTIONAL_PACKAGE_EXCLUDED_PREFIXES = Object.freeze([
   "61fe/",

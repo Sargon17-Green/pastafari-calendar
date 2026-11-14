@@ -672,6 +672,7 @@ async function main() {
     } catch (error) {
       entry.result = "FAIL";
       entry.error = errorText(error);
+      console.error(`[FAIL details] ${id}: ${entry.error}`);
       report.failures += 1;
       try {
         entry.screenshot = await saveScreenshot(page, `FAIL-${slug(id)}.png`);
