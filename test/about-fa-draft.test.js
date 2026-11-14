@@ -213,3 +213,46 @@ test("all 25 Persian Monster main sections retain canonical Hebrew structure", a
   assert.match(target, /کربوهیدرات/);
   assert.equal(ARTICLE_LOCALES.fa, undefined);
 });
+
+
+test("full unpublished Persian Monster companion preserves all source paragraphs and 21 rebuttals", async () => {
+  const [source, core, appendix, full] = await Promise.all([
+    readFile(new URL("monster/index.html", ROOT), "utf8"),
+    readFile(new URL("drafts/fa.monster.core.partial.html", ROOT), "utf8"),
+    readFile(new URL("drafts/fa.monster.penguin.partial.html", ROOT), "utf8"),
+    readFile(new URL("drafts/fa.monster.complete.html", ROOT), "utf8"),
+  ]);
+  const stripComment = html => html.replace(/^\s*<!--[\s\S]*?-->\s*/, "").trim();
+  assert.ok(full.includes(stripComment(core)), "assembled Monster must contain all 25 core sections");
+  assert.ok(full.includes(stripComment(appendix)), "assembled Monster must contain the entire penguin appendix");
+
+  const articleStart = source.indexOf('<article class="about-article">');
+  const articleEnd = source.indexOf("</article>", articleStart) + "</article>".length;
+  assert.ok(articleStart >= 0 && articleEnd > articleStart);
+  const hebrew = source.slice(articleStart, articleEnd);
+  const persianStart = full.indexOf('<article class="about-article">');
+  const persianEnd = full.indexOf("</article>", persianStart) + "</article>".length;
+  const persian = full.slice(persianStart, persianEnd);
+  const semanticTags = html => [...html.matchAll(
+    /<(\/?)(article|section|details|summary|div|h2|h3|p|strong|em|ul|ol|li|a)(?=[\s>])[^>]*>/g,
+  )].map(match => (match[1] ? "/" : "") + match[2]);
+  assert.equal(semanticTags(hebrew).length, 652);
+  assert.deepEqual(semanticTags(persian), semanticTags(hebrew));
+  const ids = html => [...html.matchAll(/<section id="([^"]+)"/g)].map(m => m[1]);
+  assert.deepEqual(ids(persian), ids(hebrew));
+  assert.equal(ids(persian).length, 39);
+  assert.equal((persian.match(/<section id="[^"]+" class="level2">/g) ?? []).length, 25);
+  assert.equal((persian.match(/<section id="[^"]+" class="level3">/g) ?? []).length, 13);
+  assert.equal((persian.match(/<details class="penguin-note">/g) ?? []).length, 21);
+  assert.equal((persian.match(/<details class="penguin-appendix">/g) ?? []).length, 1);
+  for (const tag of ["section", "details"]) {
+    assert.equal((persian.match(new RegExp("<" + tag + "\\b", "g")) ?? []).length,
+      (persian.match(new RegExp("</" + tag + ">", "g")) ?? []).length, tag + " must be balanced");
+  }
+  assert.ok(full.startsWith('<!doctype html>\n<html lang="fa" dir="rtl">'));
+  assert.match(full, /<meta name="robots" content="noindex">/);
+  assert.doesNotMatch(full, /new URLSearchParams|location\.replace/);
+  assert.match(full, /حضورِ هیولا/);
+  assert.match(full, /یادداشت/);
+  assert.equal(ARTICLE_LOCALES.fa, undefined, "draft must never be published automatically");
+});
