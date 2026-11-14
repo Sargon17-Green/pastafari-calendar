@@ -230,3 +230,12 @@ test("French Monster preserves the Hebrew source's Einstein qualification of New
     assert.match(text, /sans pour autant identifier, lui non plus, les appendices de nouille/);
   }
 });
+
+
+test("French About uses precise, natural labels for the reference and queried days", async () => {
+  const article = await readFile(new URL("drafts/fr.partial.html", ROOT), "utf8");
+  assert.match(article, /le jour de référence<\/strong>/);
+  assert.match(article, /le jour recherché<\/strong>/);
+  assert.match(article, /F\(c,t\)/);
+  assert.doesNotMatch(article, /jour de travail|jour interrogé/);
+});
