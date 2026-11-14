@@ -192,3 +192,27 @@ test("all 25 French Monster core sections match the Hebrew canonical paragraph a
     }
   }
 });
+
+
+test("complete standalone French Monster draft is correctly assembled and still unpublished", async () => {
+  const [full, core, appendix] = await Promise.all([
+    readFile(new URL("drafts/fr.monster.complete.html", ROOT), "utf8"),
+    readFile(new URL("drafts/fr.monster.partial.html", ROOT), "utf8"),
+    readFile(new URL("drafts/fr.monster.penguin.partial.html", ROOT), "utf8"),
+  ]);
+  assert.ok(full.startsWith('<!doctype html>\n<html lang="fr" dir="ltr">'));
+  assert.match(full, /<meta name="robots" content="noindex">/);
+  assert.match(full, /href="\.\.\/\.\.\/styles\.css"/);
+  assert.match(full, /href="\.\.\/\?lang=fr"/);
+  assert.doesNotMatch(full, /<script>/, "Hebrew locale redirect must not leak into the French preview");
+  const stripLeadingComment = html => html.replace(/^\s*<!--[\s\S]*?-->\s*/, "").trim();
+  assert.ok(full.includes(stripLeadingComment(core)), "all 25 core sections must be present verbatim");
+  assert.ok(full.includes(stripLeadingComment(appendix)), "complete 21-note appendix must be present verbatim");
+  assert.equal((full.match(/<article\b/g) ?? []).length, 1);
+  assert.equal((full.match(/<\/article>/g) ?? []).length, 1);
+  assert.equal((full.match(/<section\b/g) ?? []).length, 39);
+  assert.equal((full.match(/<section\b/g) ?? []).length, (full.match(/<\/section>/g) ?? []).length);
+  assert.equal((full.match(/<details\b/g) ?? []).length, 22);
+  assert.equal((full.match(/<details\b/g) ?? []).length, (full.match(/<\/details>/g) ?? []).length);
+  assert.equal((full.match(/<details class="penguin-note">/g) ?? []).length, 21);
+});
