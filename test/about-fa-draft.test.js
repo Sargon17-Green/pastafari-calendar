@@ -160,3 +160,33 @@ test("assembled Persian sixth article unit is 1:1 with the Hebrew canonical-name
   assert.match(canonicalNames, /ترجمه یا آوانویسی/);
   assert.equal(ARTICLE_LOCALES.fa, undefined, "a complete sixth unit does not imply a complete article");
 });
+
+
+test("complete unpublished Persian draft retains all 16 units and source structure", async () => {
+  const [source, full, prefix, names, remainder] = await Promise.all([
+    readFile(new URL("content/he.html", ROOT), "utf8"),
+    readFile(new URL("drafts/fa.complete.partial.html", ROOT), "utf8"),
+    readFile(new URL("drafts/fa.partial.html", ROOT), "utf8"),
+    readFile(new URL("drafts/fa.canonical-names.partial.html", ROOT), "utf8"),
+    readFile(new URL("drafts/fa.remaining.partial.html", ROOT), "utf8"),
+  ]);
+  const clean = html => html.replace(/^\s*<!--[\s\S]*?-->\s*/, "").trimEnd();
+  for (const fragment of [prefix, names, remainder]) assert.ok(full.includes(clean(fragment)));
+  const sourceBody = source.slice(source.indexOf('<div class="about-section about-lead"'));
+  const tags = html => [...html.matchAll(
+    /<(\/?)(section|div|p|ul|ol|li|dl|dt|dd|blockquote|aside|h2|h3|details|summary|a|strong|em|code|br)(?=[\s>])[^>]*>/g,
+  )].map(m => (m[1] ? "/" : "") + m[2]);
+  assert.deepEqual(tags(full), tags(sourceBody));
+  assert.deepEqual(sectionIds(full), sectionIds(sourceBody));
+  assert.equal(sectionIds(full).length, 16);
+  assert.equal((full.match(/data-toc-section/g) ?? []).length, 15);
+  assert.equal((full.match(/<summary>/g) ?? []).length, 64);
+  for (const n of ["365,243,000", "14,777,149", "5,781", "5,778", "4,096", "86,016", "97.482%", "2.998%", "77.56%", "51,954", "180–220"]) {
+    assert.ok(full.includes(n), "canonical number missing: " + n);
+  }
+  assert.ok(full.includes('href="./birthdays/"'));
+  assert.ok(full.includes('href="./birthdays/technical.html"'));
+  assert.match(full, /یافته‌های تجربیِ به‌دست‌آمده از نمونه/);
+  assert.match(full, /هنوز به‌طور کامل در کانون تثبیت نشده‌اند/);
+  assert.equal(ARTICLE_LOCALES.fa, undefined, "a complete draft remains unpublished");
+});
