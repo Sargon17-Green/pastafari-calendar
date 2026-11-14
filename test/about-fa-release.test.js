@@ -118,17 +118,15 @@ test("all browser modules use the same live i18n registry revision", async () =>
     readFile(new URL("../scripts/run-i18n-lazy-loading-smoke.mjs", import.meta.url), "utf8"),
   ]);
   const current = "20-about-fa-20261114";
-  const reverseRevision = "21-about-fa-20261114";
   for (const [name, source] of [
     ["app", app], ["reverse", reverse], ["about", about],
     ["runtime", runtime], ["support probe", supportProbe], ["lazy probe", lazyProbe],
   ]) {
-    assert.match(source, new RegExp("i18n/registry\\\\.js\\\\?v=" + current + "|\\./registry\\\\.js\\\\?v=" + current));
+    assert.ok(source.includes("i18n/registry.js?v=" + current) || source.includes("./registry.js?v=" + current), name + " must import current registry");
     assert.doesNotMatch(source, /registry\.js\?v=19-about-page/, name + " may not import stale i18n code");
   }
   assert.match(app, /reverse-ui\.js\?v=21-about-fa-20261114/);
   assert.match(worker, /"\.\/reverse-ui\.js\?v=21-about-fa-20261114"/);
   assert.doesNotMatch(worker, /reverse-ui\.js\?v=20-about-page/);
   assert.match(reverse, /registry\.js\?v=20-about-fa-20261114/);
-  assert.equal(reverseRevision, "21-about-fa-20261114");
 });
