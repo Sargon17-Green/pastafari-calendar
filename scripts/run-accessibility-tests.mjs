@@ -830,9 +830,18 @@ async function main() {
         assert.ok(targetStyle.borderWidth >= 2, "target-day border must survive forced colors");
         assert.notEqual(targetStyle.outlineStyle, "none", "target-day outline must survive forced colors");
         assert.ok(targetStyle.outlineWidth >= 2, "target-day outline must remain visible in forced colors");
+        // CSS intentionally uses :focus-visible rather than :focus, so validate
+        // real keyboard navigation, not a script-driven focus() after pointer input.
         await page.locator("#previous-cutlet").focus();
-        const focus = await page.locator("#previous-cutlet").evaluate((element) => getComputedStyle(element).outlineStyle);
-        assert.notEqual(focus, "none", "button focus indication must survive forced colors");
+        await page.keyboard.press("Tab");
+        const keyboardTarget = page.locator("#today-button");
+        assert.equal(
+          await keyboardTarget.evaluate((element) => document.activeElement === element),
+          true,
+          "Tab must reach the next toolbar button under forced colors",
+        );
+        const focus = await keyboardTarget.evaluate((element) => getComputedStyle(element).outlineStyle);
+        assert.notEqual(focus, "none", "keyboard focus indication must survive forced colors");
         const shot = await saveScreenshot(page, "forced-colors.png");
         report.screenshots.push(shot);
         await page.emulateMedia({ forcedColors: "none" });
