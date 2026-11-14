@@ -444,7 +444,14 @@ async function assertTabCycle(page) {
   await page.locator(".skip-link").focus();
   const seen = [];
   let returned = false;
-  for (let index = 0; index < 250; index += 1) {
+  // Full-page calendars can expose more than 250 focusable elements.
+  // Bound the traversal by the current DOM inventory, not a Chromium-specific
+  // historical constant; still fail closed if focus never returns.
+  const candidates = await page.locator(
+    'a[href], button, input, select, textarea, summary, [tabindex]',
+  ).count();
+  const limit = Math.min(2000, Math.max(300, candidates + 32));
+  for (let index = 0; index < limit; index += 1) {
     await page.keyboard.press("Tab");
     const current = await page.evaluate(() => {
       const element = document.activeElement;
@@ -480,7 +487,7 @@ async function assertTabCycle(page) {
       break;
     }
   }
-  assert.equal(returned, true, "Tab traversal must leave every region and eventually cycle back to the skip link");
+  assert.equal(returned, true, `Tab traversal must cycle back to the skip link within ${limit} presses (DOM candidates: ${candidates}); final focus sequence: ${JSON.stringify(seen.slice(-16))}`);
   for (const id of ["language-selector", "target-calendar", "comparison-toggle", "previous-cutlet", "today-button", "next-cutlet"]) {
     assert.ok(seen.some((item) => item.id === id), `keyboard traversal must reach #${id}`);
   }
@@ -541,9 +548,9 @@ async function assertKeyboardOperations(page) {
   assert.equal(await page.evaluate(() => document.activeElement?.id), "previous-cutlet", "Space activation must work and focus must remain on navigation");
 }
 
-async function saveScreenshot(page, name) {
+async function saveScreenshot(page, name, { fullPage = true } = {}) {
   const filename = path.join(SCREENSHOTS, name);
-  await page.screenshot({ path: filename, fullPage: true });
+  await page.screenshot({ path: filename, fullPage });
   return path.relative(ROOT, filename).replaceAll(path.sep, "/");
 }
 
@@ -904,7 +911,9 @@ async function main() {
       await page.setViewportSize(REFLOW_400);
       await assertNoGlobalHorizontalOverflow(page, "400% reflow proxy (320 CSS px from 1280px reference)");
       await assertKeyControlsInsideViewport(page);
-      const shot = await saveScreenshot(page, "reflow-400-percent-proxy.png");
+      // Firefox rejects full-page screenshots taller than 32,767 px.
+      // Reflow/clip assertions above still cover the entire document.
+      const shot = await saveScreenshot(page, "reflow-400-percent-proxy.png", { fullPage: false });
       report.screenshots.push(shot);
     });
 
