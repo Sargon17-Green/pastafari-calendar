@@ -237,6 +237,7 @@ test("French release candidate has complete localized About and Monster pages wi
   assert.ok(draftArticle.includes('href="./monster/en.html" hreflang="en"'));
   assert.ok(monster.startsWith('<!doctype html>\n<html lang="fr" dir="ltr">'));
   assert.ok(monster.includes('href="../?lang=fr"'));
+  assert.ok(monster.includes('href="../../styles.css?v=16-about-polish"'), "offline Monster must use the core-cached stylesheet URL");
   assert.ok(monster.includes("penguin-appendix"));
   assert.equal((monster.match(/<details class="penguin-note">/g) ?? []).length, 21);
   assert.equal((monster.match(/<section\b/g) ?? []).length, 39);
