@@ -1,6 +1,6 @@
 "use strict";
 
-const VERSION = "pastafari-static-pwa-about-fa-20261114";
+const VERSION = "pastafari-static-pwa-about-fa-20261114-translate-guard";
 const CORE_CACHE = `${VERSION}-core`;
 const RUNTIME_CACHE = "pastafari-runtime-assets";
 const CACHE_PREFIX = "pastafari-static-";
@@ -10,8 +10,8 @@ const CACHE_PREFIX = "pastafari-static-";
 const CORE_ASSETS = [
   "./index.html",
   "./about/index.html",
-  "./about/about.js?v=20261114-fa18",
-  "./about/canonical-names.js?v=20261113-multilingual",
+  "./about/about.js?v=20261114-fa19",
+  "./about/canonical-names.js?v=20261114-translate-guard",
   "./about/content/registry.js?v=20261114-fa18",
   "./about/content/he.html?v=4-about-polish",
   "./styles.css?v=16-about-polish",

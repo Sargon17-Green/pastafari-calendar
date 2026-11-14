@@ -15,7 +15,7 @@ import {
   ARTICLE_FALLBACK_LOCALE,
   resolveArticleLocale,
 } from "./content/registry.js?v=20261114-fa18";
-import { synchronizeCanonicalNameSummaries } from "./canonical-names.js?v=20261113-multilingual";
+import { synchronizeCanonicalNameSummaries } from "./canonical-names.js?v=20261114-translate-guard";
 
 const elements = Object.fromEntries(
   [...document.querySelectorAll("[id]")].map((element) => [element.id, element]),
@@ -42,6 +42,11 @@ function applyActiveLocale() {
 
 async function loadArticleForLocale(localeCode) {
   const articleLocale = resolveArticleLocale(localeCode);
+  // Respect an article already written in the selected language. The Hebrew
+  // fallback remains eligible for browser translation if a locale lacks prose.
+  const exact = articleLocale.code === activeLocale.code;
+  elements["article-content"].translate = !exact;
+  elements["article-content"].classList.toggle("notranslate", exact);
   if (articleLocale.code === activeArticleCode && elements["article-content"].childElementCount > 0) {
     synchronizeCanonicalNameSummaries(elements["article-content"], activeLocale);
     updateLanguageNotice(articleLocale.code);

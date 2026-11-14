@@ -53,6 +53,10 @@ export function synchronizeCanonicalNameSummaries(article, locale) {
   });
 
   for (const { summary, id, label } of changes) {
+    // The canonical display name already comes from the selected UI locale.
+    // Browser auto-translation must not transliterate or replace this identifier.
+    summary.translate = false;
+    summary.classList.add("notranslate");
     summary.textContent = label;
     summary.dataset.canonicalNameId = id;
     summary.lang = locale.code;

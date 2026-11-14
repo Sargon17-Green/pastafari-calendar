@@ -16,6 +16,12 @@ function fakeArticle(lengths = [CUTLETS.length, MONTHS.length]) {
     dataset: {},
     lang: "",
     dir: "",
+    translate: true,
+    classList: {
+      values: new Set(),
+      add(name) { this.values.add(name); },
+      contains(name) { return this.values.has(name); },
+    },
   })));
   const lists = summaries.map((values) => ({
     querySelectorAll(query) {
@@ -65,6 +71,8 @@ test("the About name disclosures follow the selected locale even on article fall
       assert.equal(summary.textContent, names[index].label);
       assert.equal(summary.lang, code);
       assert.equal(summary.dir, locale.dir);
+      assert.equal(summary.translate, false);
+      assert.equal(summary.classList.contains("notranslate"), true);
     }
   }
 });

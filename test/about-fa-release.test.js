@@ -81,7 +81,7 @@ test("Persian route and optional PWA assets are version-consistent across the UI
       read("about/monster/index.html"),
     ]);
   assert.match(shell, /app\.js\?v=25-about-fa-20261114/);
-  assert.match(aboutShell, /about\.js\?v=20261114-fa18/);
+  assert.match(aboutShell, /about\.js\?v=20261114-fa19/);
   assert.match(app, /i18n\/registry\.js\?v=20-about-fa-20261114/);
   assert.match(aboutJs, /content\/registry\.js\?v=20261114-fa18/);
   assert.match(runtime, /registry\.js\?v=20-about-fa-20261114/);
@@ -242,4 +242,17 @@ test("Monster reviewer prose matrix spans the entire source and preserves sectio
       "numerical source parity changed in Monster section " + id);
   }
   assert.match(packet, /NOT HUMAN-APPROVED/);
+});
+
+
+test("localized articles and canonical names reject destructive Chrome auto-translation", async () => {
+  const [aboutJs, namesJs, monster] = await Promise.all([
+    read("about/about.js"), read("about/canonical-names.js"), read("about/monster/fa.html"),
+  ]);
+  assert.match(aboutJs, /const exact = articleLocale\.code === activeLocale\.code/);
+  assert.match(aboutJs, /elements\["article-content"\]\.translate = !exact/);
+  assert.match(aboutJs, /classList\.toggle\("notranslate", exact\)/);
+  assert.match(namesJs, /summary\.translate = false/);
+  assert.match(namesJs, /summary\.classList\.add\("notranslate"\)/);
+  assert.match(monster, /<meta name="google" content="notranslate">/);
 });
