@@ -873,6 +873,8 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
+The [full 40-block Monster prose comparison](./monster-prose-matrix.md) supplements the anchor headings and 21 rebuttals below; it covers the introduction and all 39 anchored sections, and remains **NOT HUMAN-APPROVED**.
+
 ## C. Monster anchors — all 39 section IDs
 
 Hebrew IDs are deliberately stable cross-language link targets and must not be translated.

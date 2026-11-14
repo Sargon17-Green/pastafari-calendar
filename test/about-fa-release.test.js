@@ -185,3 +185,61 @@ test("reviewer matrix is not stale relative to the Hebrew and Persian sources", 
   assert.equal((matrix.match(/^### D\d{2} /gm) ?? []).length, 21);
   assert.match(matrix, /Status: NOT HUMAN-APPROVED/);
 });
+
+
+test("Monster reviewer prose matrix spans the entire source and preserves section-scoped numbers", async () => {
+  const { createHash } = await import("node:crypto");
+  const packet = await readFile(new URL("../verification/fa-release/monster-prose-matrix.md", import.meta.url), "utf8");
+  const splitArticle = html => {
+    const start = html.indexOf('<article class="about-article">');
+    const end = html.indexOf("</article>", start);
+    assert.ok(start >= 0 && end > start, "complete Monster article expected");
+    const article = html.slice(start, end);
+    const anchors = [...article.matchAll(/<section id="([^"]+)"[^>]*>/g)];
+    assert.equal(anchors.length, 39, "39 stable Monster section anchors expected");
+    return [
+      { id: "__introduction__", body: article.slice(0, anchors[0].index) },
+      ...anchors.map((match, index) => ({
+        id: match[1],
+        body: article.slice(match.index, anchors[index + 1]?.index ?? article.length),
+      })),
+    ];
+  };
+  const numbers = html => {
+    const visible = html.replace(/<[^>]+>/g, " ")
+      .replace(/[\u06f0-\u06f9\u0660-\u0669]/g, digit =>
+        String(digit.codePointAt(0) - (digit.codePointAt(0) >= 0x6f0 ? 0x6f0 : 0x660)));
+    return [...new Set([...visible.matchAll(/(?<![\w-])[-−]?\d+(?:[,.]\d+)?/g)]
+      .map(match => match[0]))].sort();
+  };
+  const [hebrew, persian] = await Promise.all([
+    read("about/monster/index.html"), read("about/monster/fa.html"),
+  ]);
+  for (const [relativePath, content] of [
+    ["about/monster/index.html", hebrew], ["about/monster/fa.html", persian],
+  ]) {
+    const bytes = Buffer.from(content, "utf8");
+    const gitBlobSha = createHash("sha1").update("blob " + bytes.length + "\0")
+      .update(bytes).digest("hex");
+    assert.ok(packet.includes("| \`docs/" + relativePath + "\` | \`" + gitBlobSha + "\` |"),
+      "full Monster reviewer prose matrix is stale for docs/" + relativePath);
+  }
+  const source = splitArticle(hebrew);
+  const translated = splitArticle(persian);
+  assert.equal(source.length, 40);
+  assert.deepEqual(translated.map(x => x.id), source.map(x => x.id));
+  assert.equal((packet.match(/^### M\d{2} —/gm) ?? []).length, 40);
+  assert.match(packet, /Status: NOT HUMAN-APPROVED/);
+  for (let index = 0; index < source.length; index++) {
+    const id = source[index].id;
+    const countParagraphs = html => (html.match(/<p(?:\s[^>]*)?>/g) ?? []).length;
+    const countNotes = html => (html.match(/<details class="penguin-note">/g) ?? []).length;
+    assert.equal(countParagraphs(translated[index].body), countParagraphs(source[index].body),
+      "paragraph count changed in Monster section " + id);
+    assert.equal(countNotes(translated[index].body), countNotes(source[index].body),
+      "penguin note count changed in Monster section " + id);
+    assert.deepEqual(numbers(translated[index].body), numbers(source[index].body),
+      "numerical source parity changed in Monster section " + id);
+  }
+  assert.match(packet, /NOT HUMAN-APPROVED/);
+});
