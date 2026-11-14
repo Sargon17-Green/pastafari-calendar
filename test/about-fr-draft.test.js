@@ -151,3 +151,34 @@ test("unpublished French penguin appendix mirrors the Hebrew subheading prefix a
   assert.match(partial, /BROUILLON NON PUBLIÉ/);
   assert.match(partial, /SOUS-SECTIONS RESTANTES : 11 sur 13/);
 });
+
+
+test("all 25 French Monster core sections match the Hebrew canonical paragraph and element counts", async () => {
+  const [hebrew, french] = await Promise.all([
+    readFile(new URL("monster/index.html", ROOT), "utf8"),
+    readFile(new URL("drafts/fr.monster.partial.html", ROOT), "utf8"),
+  ]);
+  const sliceSections = (html) => {
+    const starts = [...html.matchAll(/<section id="([^"]+)" class="level2">/g)];
+    const appendix = html.indexOf('<section id="נספח-');
+    return starts.map((match, index) => ({
+      id: match[1],
+      body: html.slice(
+        match.index,
+        Math.min(starts[index + 1]?.index ?? html.length, appendix < 0 ? html.length : appendix),
+      ),
+    }));
+  };
+  const source = sliceSections(hebrew), target = sliceSections(french);
+  assert.equal(source.length, 25);
+  assert.deepEqual(target.map(({ id }) => id), source.map(({ id }) => id));
+  for (const [index, expected] of source.entries()) {
+    for (const tag of ["p", "strong", "ul", "ol", "li", "a", "details"]) {
+      const count = (s) => (s.match(new RegExp("<" + tag + "(?=[\\s>])", "g")) ?? []).length;
+      assert.equal(
+        count(target[index].body), count(expected.body),
+        "French Monster " + expected.id + ": missing or extra <" + tag + "> element",
+      );
+    }
+  }
+});
