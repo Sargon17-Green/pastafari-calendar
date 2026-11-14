@@ -1,0 +1,577 @@
+<!-- BROUILLON NON PUBLIÉ — NE PAS INSCRIRE DANS content/registry.js.
+     Traduction à partir du modèle sémantique actuel he.html / en.html (main, 2026-11-14).
+     16 unités : introduction et 15 sections, avec les 64 explications des noms.
+     Traduction complète en brouillon ; révision linguistique et validation avant publication.
+     Les identifiants de section et les expressions mathématiques ne sont pas traduits. -->
+<div class="about-section about-lead" id="about-calendar">
+  <p><strong>Le calendrier pastafari</strong> est un calendrier contre-intuitif, à la structure volontairement inhabituelle : la date d’un jour dépend non seulement du jour que l’on souhaite décrire, mais aussi du jour à partir duquel on effectue le calcul.</p>
+  <p>Il comporte des années, des boulettes et des mois. Cependant, les années n’ont pas une durée fixe, les boulettes et les mois constituent deux découpages différents de l’année, les mois peuvent disparaître puis réapparaître au cours d’une même année, et il n’existe pas de semaines canoniques.</p>
+  <p>Cette page explique ce qu’est le calendrier, comment lire une date et quelles sont les conséquences pratiques de sa structure. Les détails mathématiques et cryptographiques de son implémentation figurent dans la documentation technique, mais il n’est pas nécessaire de les connaître pour comprendre le calendrier.</p>
+</div>
+
+<section class="about-section" id="date-parts" data-toc-section data-toc-level="2">
+  <h2>Comment se présente une date pastafari ?</h2>
+  <p>Une date pastafari comporte exactement cinq éléments :</p>
+  <ol>
+    <li><strong>l’année depuis la création du monde</strong> ;</li>
+    <li><strong>le nom de la boulette</strong> ;</li>
+    <li><strong>le jour dans la boulette</strong> ;</li>
+    <li><strong>le nom du mois</strong> ;</li>
+    <li><strong>le jour dans le mois</strong>.</li>
+  </ol>
+  <p>Autrement dit, une date complète indique dans quelle année et dans quelle boulette se trouve le jour considéré, sa position dans cette boulette, ainsi que le mois auquel il appartient et son rang d’apparition dans ce mois.</p>
+  <p>Le jour de travail, la position de l’observateur et d’autres renseignements techniques peuvent être indispensables pour <em>calculer</em> la date. Ils n’en constituent pas pour autant un sixième, un septième ou un huitième élément.</p>
+  <p>La présentation à l’écran ne modifie pas non plus le nombre d’éléments. Si le site répartit les cinq données sur trois lignes, il s’agit toujours de cinq données : un retour à la ligne est une opération typographique, pas la création d’un nouveau champ calendaire.</p>
+</section>
+
+<section class="about-section" id="working-day" data-toc-section data-toc-level="2">
+  <h2>Pourquoi un même jour peut-il recevoir une date différente ?</h2>
+  <p>Chaque calcul fait intervenir deux jours :</p>
+  <ul>
+    <li><strong>le jour de travail</strong> — celui à partir duquel le calcul est effectué ;</li>
+    <li><strong>le jour interrogé</strong> — celui dont on cherche à connaître la date.</li>
+  </ul>
+  <p>Si l’on désigne le jour de travail par <code>c</code> et le jour interrogé par <code>t</code>, la date s’écrit <code>F(c,t)</code>, et non <code>F(t)</code>.</p>
+  <p>Un même jour chronologique peut donc recevoir une représentation pastafari différente lorsque le jour de travail change. Le jour lui-même ne se déplace pas : seule sa description pastafari change.</p>
+  <p>Lorsque <code>c=t</code>, le jour appartient toujours à <strong>l’année 5000</strong>. Cette année ne correspond pas à une période historique fixe : elle est reconstruite par rapport au jour de travail, de sorte que d’autres jours situés autour de celui-ci peuvent également en faire partie.</p>
+  <p>Par exemple, si un jour donné sert de jour de travail pour son propre calcul, il appartient à l’année 5000. Si l’on recommence le calcul le lendemain en prenant ce nouveau jour comme jour de travail, ce lendemain appartient lui aussi à l’année 5000. Il ne s’agit pas de deux affirmations contradictoires concernant une même « année historique » : chaque calcul choisit une nouvelle année de référence.</p>
+  <p>Les années dont le numéro est supérieur à 5000 se situent dans le futur par rapport au jour de travail, tandis que celles dont le numéro est inférieur à 5000 se situent dans le passé. L’année 0 existe également, suivie d’années portant des numéros négatifs.</p>
+</section>
+
+<section class="about-section" id="year-structure" data-toc-section data-toc-level="2">
+  <h2>Comment une année est-elle structurée ?</h2>
+  <p>Une année pastafari peut compter de <strong>252</strong> à <strong>5 778</strong> jours. Ces deux limites sont incluses : une année de 252 jours est valide, tout comme une année de 5 778 jours. En revanche, une année de 251 ou de 5 779 jours ne respecte pas les règles canoniques actuelles.</p>
+  <p>Ces limites font partie de la définition du calendrier. L’année ne cherche à correspondre ni à l’année solaire, ni à l’année lunaire, ni à une saison, ni à l’année scolaire, ni à la patience de quiconque attend la prochaine nouvelle année.</p>
+  <p>Chaque année est organisée selon deux systèmes distincts :</p>
+  <ul>
+    <li><strong>6 à 17 boulettes</strong>. Chaque boulette forme une suite continue de jours et dure au moins 42 jours.</li>
+    <li><strong>3 à 47 mois structurels</strong>. De 4 à 123 jours appartiennent à chaque mois, sans nécessairement se suivre dans le temps.</li>
+  </ul>
+  <p>Le calendrier ne comporte aucun système de semaines canonique. Les lignes et les colonnes affichées sur le site ne sont qu’une méthode de présentation : deux jours placés côte à côte ne font pas pour autant partie d’une même « semaine pastafari ».</p>
+</section>
+
+<section class="about-section" id="woven-months" data-toc-section data-toc-level="2">
+  <h2>Qu’est-ce qu’un « mois entrelacé » ?</h2>
+  <p>Les jours d’une boulette se succèdent sans interruption : si aujourd’hui est le 250e jour d’une boulette et que demain appartient encore à cette boulette, demain en sera le 251e jour.</p>
+  <p>Un mois fonctionne autrement. Le jour 18 d’un mois donné désigne <strong>la 18e apparition de ce mois au cours de l’année</strong>. Il ne vient pas nécessairement le lendemain de son jour 17.</p>
+  <blockquote>
+    <p>Mois A — jour 14<br>
+    Mois B — jour 9<br>
+    Mois A — jour 15</p>
+  </blockquote>
+  <p>Un mois peut donc s’étendre sur une grande partie de l’année, traverser plusieurs boulettes et s’entrelacer avec d’autres mois. Inversement, une même boulette peut contenir des jours appartenant à de nombreux mois différents.</p>
+  <p>La longueur d’un mois est le nombre total de jours qui lui appartiennent, et non le nombre de jours écoulés entre sa première et sa dernière apparition. Un mois de 104 jours peut ainsi s’étendre, sur l’axe chronologique, sur plusieurs milliers de jours.</p>
+  <aside class="about-note">
+    <h3>Pourquoi le jour 15 suit-il le jour 14 ?</h3>
+    <p>Parce que 15 est l’entier qui suit 14. Qu’un jour d’un autre mois soit intercalé entre ces deux apparitions ne change rien au calcul : le premier mois est déjà apparu 14 fois ; sa prochaine apparition est la 15e, et porte donc le numéro 15.</p>
+    <p>De même, si quatre jours appartenant à d’autres mois suivent le jour 15 de ce mois, la prochaine apparition du mois initial reste son jour 16. Les quatre jours intercalés comptent dans la chronologie du calendrier, mais n’appartiennent pas à ce mois : ils ne font donc pas avancer <em>son</em> compteur de jours. Voilà précisément pourquoi « le jour suivant dans le mois » et « demain » sont deux notions différentes.</p>
+  </aside>
+  <p>Il s’ensuit également que la fin d’un mois n’est pas nécessairement proche dans le temps. Un mois peut être arrivé à son jour 119 sur 120, alors que son jour 120 n’apparaîtra que bien plus tard.</p>
+</section>
+
+<section class="about-section" id="canonical-names" data-toc-section data-toc-level="2">
+  <h2>Noms des boulettes et des mois</h2>
+  <p>Le calendrier possède <strong>17 noms de boulettes</strong> et <strong>47 noms de mois</strong>. Au cours d’une même année, chaque nom n’apparaît qu’une seule fois dans sa famille. Une année n’emploie pas nécessairement tous les noms : elle peut n’utiliser qu’une partie du catalogue.</p>
+  <p>Les listes présentent d’abord les noms. En sélectionnant un nom ou son symbole d’ouverture, on découvre son sens précis et les éventuelles précisions canoniques. Un nom ne code pas la longueur de l’unité et ne prédit pas ce qui s’y produira.</p>
+
+  <h3>Les 17 boulettes</h3>
+  <ul class="about-name-list about-name-disclosure-list">
+      <li>
+        <details class="about-name-details">
+          <summary>Bronze</summary>
+          <p>Alliage métallique constitué principalement de cuivre et d’étain. Il s’agit ici du matériau, et non seulement de sa couleur.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Renard</summary>
+          <p>Le renard est un mammifère de la famille des canidés. Le nom ne désigne aucune espèce particulière de renard.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Rein</summary>
+          <p>Organe qui filtre le sang et contribue à la régulation de l’équilibre des liquides et des sels dans l’organisme.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Lagash</summary>
+          <p>Lagash, ancienne cité-État sumérienne du sud de la Mésopotamie.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Pensée</summary>
+          <p>Une pensée : le contenu d’une réflexion ou l’activité même de penser.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Quatre parties de neuf</summary>
+          <p>La fraction 4/9, soit quatre parts égales sur neuf. L’expression entière constitue un seul nom. Sa valeur numérique centrale est exactement 4/9 ; au seul niveau lexical, une réalisation numérique <code>x</code> est également admise si elle satisfait <code>|x − 4/9| ≤ e/103</code>, bornes comprises. L’expression <code>e/103</code> doit être conservée telle quelle, sans approximation décimale. Cette tolérance ne modifie ni les compteurs, ni les indices, ni les identités, ni aucun calcul du calendrier.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Palgurash</summary>
+          <p>Suite de syllabes inventée. Elle ne possède pas d’autre sens lexical à interpréter : ce nom se suffit à lui-même.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Papyrus</summary>
+          <p>Le papyrus, plante dont on fabriquait le support d’écriture portant le même nom dans l’Antiquité.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Grappe</summary>
+          <p>Ensemble dense ou groupe d’éléments ; en hébreu, le mot évoque particulièrement une grappe de raisins.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Scorpion</summary>
+          <p>Arthropode appartenant aux arachnides, muni de pinces et d’un aiguillon à l’extrémité de sa queue.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Cendre</summary>
+          <p>Résidu poudreux qui subsiste après une combustion.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Blé</summary>
+          <p>Plante céréalière dont les grains servent notamment à produire de la farine.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Rivière</summary>
+          <p>Cours d’eau naturel relativement important, s’écoulant dans un lit.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Rire</summary>
+          <p>Réaction vocale et corporelle généralement associée à l’amusement, à la joie ou à l’humour.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Akkad</summary>
+          <p>Akkad, ancienne ville mésopotamienne qui a également donné son nom à l’Empire akkadien et à la région. Son emplacement exact n’a pas été identifié avec certitude.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Corne</summary>
+          <p>Excrescence dure qui pousse sur la tête de certains animaux, et non un rayon de lumière.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>La jarre vide</summary>
+          <p>Un récipient qui ne contient rien. « Vide » qualifie son contenu — autrement dit, l’absence de contenu —, sans nier l’existence de la jarre. Une jarre vide peut rester entière, avec ses parois, son fond et son ouverture : elle ne contient simplement ni eau, ni vin, ni huile, ni autre substance. Le nom ne signifie pas non plus que la boulette est dépourvue de jours : comme toute autre boulette, « La jarre vide » contient des jours ; seule la jarre évoquée dans son nom est vide.</p>
+        </details>
+      </li>
+  </ul>
+
+  <h3>Les 47 mois</h3>
+  <ul class="about-name-list about-name-disclosure-list">
+      <li>
+        <details class="about-name-details">
+          <summary>Argile</summary>
+          <p>Matière terreuse à grains fins, qui devient plastique lorsqu’elle est humide et durcit par séchage ou cuisson.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Grenade</summary>
+          <p>Fruit du grenadier : fruit rond à peau coriace, contenant de nombreuses graines entourées d’une pulpe juteuse.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Coude</summary>
+          <p>Articulation reliant le bras à l’avant-bras.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Envie</summary>
+          <p>Peine ou malaise éprouvé devant l’avantage, la réussite ou le bien que possède une autre personne ; parfois aussi, désir de posséder la même chose.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Eridu</summary>
+          <p>Eridu, ancienne ville sumérienne du sud de la Mésopotamie.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Dentifrice</summary>
+          <p>Pâte utilisée pour nettoyer les dents lors du brossage. Le nom désigne la pâte elle-même, et non la brosse à dents ou l’action de se brosser les dents.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Trois parties de cinq</summary>
+          <p>La fraction 3/5 : trois parts égales sur cinq. L’expression entière constitue un seul nom. Sa valeur numérique centrale est exactement 3/5 ; au seul niveau lexical, une réalisation numérique <code>x</code> est également admise si elle satisfait <code>|x − 3/5| ≤ 1/367</code>, bornes comprises. Cette borne est une valeur exacte et non une approximation décimale. La tolérance ne modifie ni les compteurs, ni les indices, ni les identités, ni aucun calcul du calendrier.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Karshumav</summary>
+          <p>Suite de syllabes inventée. Elle ne recèle aucune signification lexicale cachée : ce nom se suffit à lui-même.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Léopard</summary>
+          <p>Le léopard tacheté, et non le tigre.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Étain</summary>
+          <p>L’élément chimique étain.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Brume</summary>
+          <p>Concentration de minuscules gouttelettes d’eau dans l’air près du sol ; il ne s’agit pas de fumée.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Encens</summary>
+          <p>Résine aromatique extraite des arbres à encens, utilisée en parfumerie et pour les fumigations.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Fuseau</summary>
+          <p>Instrument servant à filer des fibres pour en faire du fil.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Côte</summary>
+          <p>L’un des os de la cage thoracique.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Caroube</summary>
+          <p>Le caroubier ou son fruit, la caroube.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Uruk</summary>
+          <p>Uruk, ancienne ville sumérienne de Mésopotamie.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Honte</summary>
+          <p>Sentiment de gêne ou de souffrance né de la perception d’un défaut, d’un échec ou d’un comportement embarrassant.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Chameau</summary>
+          <p>Mammifère adapté à la vie dans les régions arides, le chameau.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Cuivre</summary>
+          <p>L’élément chimique cuivre.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Puits</summary>
+          <p>Trou ou puits creusé jusqu’à une source d’eau souterraine afin de pouvoir en tirer de l’eau.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Jaune d’œuf</summary>
+          <p>Partie jaune d’un œuf de poule.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Étoile</summary>
+          <p>Astre tel que le Soleil, qui émet de l’énergie issue de processus physiques se déroulant en son sein.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Miel</summary>
+          <p>Substance sucrée que les abeilles produisent à partir de nectar ou de sécrétions végétales.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Rate</summary>
+          <p>La rate, organe qui participe notamment au système immunitaire et à la filtration du sang. Une extension canonique délibérée, sans rapport biologique, étymologique ou culturel avec la rate — et il ne faut inventer aucun rapport de ce genre — inclut également le lait d’une chamelle à une bosse, associé à son premier petit né vivant, recueilli après un coucher du soleil visible ordinaire et avant que le centre du Soleil atteigne la hauteur géométrique de <code>−6°</code>, alors que le petit ne s’est pas encore tenu debout par ses propres moyens. Des grossesses antérieures achevées par une fausse couche ou la naissance d’un petit mort-né n’excluent pas cette condition ; si le petit meurt avant d’avoir pu se tenir debout sans aide, cette condition ne prend pas fin pour ce seul motif. Le récipient doit être en céramique, pourvu d’une glaçure rouge et d’une capacité de 180 à 220 ml, limites comprises. Il n’est pas exigé que la traite ait lieu directement du pis vers le récipient : le critère numérique porte sur la capacité du récipient, et non sur la quantité de lait effectivement recueillie. Le caractère inclusif ou exclusif des instants marquant les limites de la fenêtre temporelle est volontairement laissé indéterminé par le canon.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Calcaire</summary>
+          <p>Roche sédimentaire composée en majeure partie de carbonate de calcium.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Joie</summary>
+          <p>Émotion positive de bonheur, de satisfaction ou d’allégresse.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Figue</summary>
+          <p>Le fruit du figuier, ou le figuier lui-même.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Ninive</summary>
+          <p>Ninive, ancienne ville assyrienne située sur le Tigre, face à l’actuelle Mossoul.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Grenouille</summary>
+          <p>Amphibien sans queue appartenant au groupe qui comprend les grenouilles et les crapauds.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Poix</summary>
+          <p>Matière sombre et visqueuse servant notamment à l’étanchéité. Il s’agit d’une substance épaisse de type poix, et non d’un terme générique désignant tout asphalte.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Lampe</summary>
+          <p>Dispositif d’éclairage. Il ne s’agit pas nécessairement d’une bougie en cire munie d’une mèche.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>La porte fermée</summary>
+          <p>Une porte en position fermée. Une porte fermée demeure une porte : elle ne devient pas un mur, ne disparaît pas et n’est pas nécessairement verrouillée. « Fermée » signifie que la porte obture actuellement l’ouverture qu’elle est destinée à dégager ; « verrouillée » est une affirmation supplémentaire, qui ne fait pas partie du nom. Une porte que l’on ferme sans tourner de clé correspond donc parfaitement à « La porte fermée ».</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Sésame</summary>
+          <p>Le sésame, plante ou graines de cette plante, dont on extrait notamment de l’huile de sésame.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Nuque</summary>
+          <p>Partie postérieure du cou.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Argent</summary>
+          <p>L’élément chimique argent, et non l’argent en tant que moyen de paiement.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Suse</summary>
+          <p>Suse, ancienne ville d’Élam et de Perse. Il ne s’agit pas de la fleur appelée « lys ».</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Tempête</summary>
+          <p>Épisode météorologique agité, généralement accompagné de vents violents et parfois de précipitations, d’éclairs ou d’autres phénomènes associés.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Âne</summary>
+          <p>L’âne, mammifère domestiqué.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Farine</summary>
+          <p>Poudre obtenue en moulant des grains ou une matière végétale comparable ; dans l’usage courant, la farine de céréales.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Regret</summary>
+          <p>Peine ressentie à propos d’un acte, d’un choix ou d’un résultat passé.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Babylone</summary>
+          <p>Babylone, ancienne ville mésopotamienne sur l’Euphrate ; ce nom désigne ici le lieu.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Langue</summary>
+          <p>Organe musculaire situé dans la bouche, et non la « langue » en tant que système linguistique.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Lin</summary>
+          <p>Le lin, plante et fibres utilisées notamment pour fabriquer des tissus.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Sel</summary>
+          <p>Substance salée utilisée notamment dans l’alimentation ; dans l’usage quotidien, principalement le chlorure de sodium. Il ne s’agit pas d’un marin, qui porte un nom homonyme en hébreu.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Poire</summary>
+          <p>Le fruit du poirier, la poire.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Arc</summary>
+          <p>Arme dont la corde tendue permet de propulser une flèche. Il ne s’agit pas d’un arc-en-ciel.</p>
+        </details>
+      </li>
+      <li>
+        <details class="about-name-details">
+          <summary>Sable</summary>
+          <p>Matière granuleuse constituée de petites particules de roches et de minéraux. Il ne s’agit pas du sens hébreu de « profane », opposé à « sacré », ni de la notion de jour ouvrable.</p>
+        </details>
+      </li>
+  </ul>
+
+  <p>Dans d’autres langues, le même nom peut prendre une forme usuelle différente. La traduction ou la translittération ne crée ni nouvelle boulette ni nouveau mois : elle présente le même nom sous une autre forme. Les formes admises sont définies par le canon et les règles linguistiques qu’il retient.</p>
+</section>
+
+<section class="about-section" id="day-boundary" data-toc-section data-toc-level="2">
+  <h2>À quel moment le jour change-t-il ?</h2>
+  <p>Un jour pastafari local ne change pas à minuit. Sa limite est déterminée par <strong>le passage inférieur du centre de Vénus au méridien local</strong> : l’instant où le centre de Vénus franchit le méridien du lieu de l’observateur du côté situé sous l’horizon.</p>
+  <p>La position de l’observateur est donc importante. Deux personnes se trouvant en des lieux différents peuvent appartenir, au même instant physique, à deux jours pastafari locaux différents. Lorsqu’on se rend dans une autre ville, on ne conserve pas la limite du jour de la ville précédente.</p>
+  <p>Cette limite dépend du calcul de l’orbite de Vénus, et non de la possibilité pour l’observateur de la voir effectivement. Les nuages, les murs ou le fait que Vénus se trouve sous l’horizon n’interrompent pas sa trajectoire.</p>
+  <p>L’algorithme discret du calendrier est défini avec précision : des entrées identiques, soumises aux mêmes règles, produisent un résultat identique. En revanche, la conversion d’un instant physique en jour pastafari repose actuellement sur le modèle astronomique utilisé par l’implémentation ; le profil numérique de ce modèle astronomique n’est pas encore entièrement fixé par le canon.</p>
+</section>
+
+<section class="about-section" id="advantages" data-toc-section data-toc-level="2">
+  <h2>Les avantages remarquables du calendrier</h2>
+  <ul>
+    <li><strong>Une date que l’on peut recalculer sans cesse :</strong> un même jour passé peut recevoir demain une autre date pastafari, puisque le jour de travail aura lui aussi avancé. Inutile de se contenter d’une ancienne date qui resterait utile indéfiniment.</li>
+    <li><strong>Des années spacieuses :</strong> une année peut atteindre 5 778 jours. Quiconque attend la nouvelle année peut donc bénéficier d’une attente nettement plus longue qu’à l’ordinaire.</li>
+    <li><strong>Des mois qui exigent de l’attention :</strong> savoir qu’aujourd’hui est le jour 119 d’un mois ne signifie pas que son jour 120 arrivera demain, la semaine prochaine, ni même bientôt. Il faut calculer sa prochaine apparition.</li>
+    <li><strong>Une sensibilité géographique :</strong> un même instant peut appartenir à des jours pastafari locaux différents selon le lieu. Voyager dans une autre ville ajoute donc un détail supplémentaire à ne pas oublier pour coordonner ses projets.</li>
+    <li><strong>Des calendriers imprimés qui ne peuvent pas se reposer sur leurs lauriers :</strong> un calendrier établi à l’avance peut cesser de représenter le calcul correct dès que le jour de travail change. Personne ne risque donc de se satisfaire de la même feuille de papier pendant des années.</li>
+    <li><strong>Un emploi profitable de la puissance informatique :</strong> plutôt que de se contenter d’un tableau simple, compréhensible d’un coup d’œil, le calendrier permet à l’ordinateur d’effectuer un véritable calcul chaque fois qu’on souhaite obtenir une réponse.</li>
+    <li><strong>Il comporte des jours :</strong> le calendrier traite des jours. Il partage cette propriété avec tous les calendriers et garantit que personne ne sera contraint de gérer un calendrier dépourvu de jours.</li>
+    <li><strong>Les jours apparaissent dans l’ordre :</strong> un jour antérieur précède un jour ultérieur. C’est une réussite fondamentale des calendriers, offerte ici sans supplément de prix.</li>
+    <li><strong>Il permet d’indiquer des dates :</strong> le calendrier permet d’attribuer une description calendaire à un jour. Certes, c’est exactement le rôle d’un calendrier, mais il n’y a aucune raison de passer sous silence une qualité utile lorsqu’elle existe.</li>
+  </ul>
+  <p>Et tout cela est réuni dans un seul calendrier, comme il arrive lorsque plusieurs qualités appartiennent à un même calendrier.</p>
+</section>
+
+<section class="about-section" id="practical-consequences" data-toc-section data-toc-level="2">
+  <h2>Quelles conséquences pratiques ?</h2>
+  <p><strong>Un calendrier imprimé vieillit mal.</strong> Changer le jour de travail peut déplacer les limites des années, des boulettes et des mois. Un almanach calculé aujourd’hui n’est pas nécessairement celui qui conviendra demain.</p>
+  <p><strong>Un événement reste le même événement.</strong> Une rencontre, une naissance ou un fait historique doivent être rattachés à un jour ou à un instant chronologique stable. On peut ensuite leur attribuer une date pastafari selon le jour de travail et la position de l’observateur. Changer leur étiquette ne les déplace pas dans le temps.</p>
+  <p><strong>Un anniversaire pastafari ne revient pas nécessairement « une fois par an ».</strong> Pour trouver la prochaine apparition d’un même nom de mois associé au même numéro de jour dans le mois — ou d’un nom de boulette associé au même numéro de jour dans la boulette —, il faut effectuer une recherche dans le calendrier. L’année voisine peut ne pas contenir le nom recherché, ou contenir une unité trop courte pour atteindre le numéro voulu.</p>
+  <p><strong>Un événement couvrant toute une journée ne va pas nécessairement de minuit à minuit.</strong> S’il est défini selon un jour pastafari local, ses limites sont celles du jour déterminées localement par Vénus. L’exporter naïvement vers un calendrier civil sous la forme d’un événement de minuit à minuit risque d’en changer le sens.</p>
+</section>
+
+<section class="about-section" id="foundation-and-tablets" data-toc-section data-toc-level="2">
+  <h2>Jour de la Fondation et Jour des Tablettes</h2>
+  <p>Le calendrier possède deux repères fixes importants :</p>
+  <dl>
+    <dt><strong>Jour de la Fondation</strong></dt>
+    <dd>Le 22 décembre 41 222 avant notre ère, dans le calendrier grégorien proleptique.</dd>
+    <dt><strong>Jour des Tablettes</strong></dt>
+    <dd>Le 15 juin 763 avant notre ère, dans le calendrier julien proleptique, ce qui correspond au 7 juin 763 avant notre ère dans le calendrier grégorien proleptique.</dd>
+  </dl>
+  <p>Il s’écoule <strong>14 777 149 jours</strong> entre ces deux repères. Le Jour de la Fondation est un point d’ancrage pour les calculs : il n’est pas « le premier jour du temps », et le calendrier s’étend aussi avant cette date.</p>
+  <p>Selon la tradition, le Jour des Tablettes est associé à la remise des tablettes. Dans le calcul historique, il correspond au jour de l’éclipse solaire survenue à l’époque de Bur-Sagale. Ces deux repères restent fixes même lorsque le jour de travail change.</p>
+</section>
+
+<section class="about-section" id="calendar-math" data-toc-section data-toc-level="2">
+  <h2>Quelques faits mathématiques simples</h2>
+  <p>Il existe 47 noms de mois, et chaque mois peut aller jusqu’au jour 123. Il existe donc <strong>5 781</strong> combinaisons possibles de la forme « nom du mois + numéro du jour dans ce mois ».</p>
+  <p>Une année peut contenir au maximum 5 778 jours, et chacun de ses jours correspond à une de ces combinaisons. Par conséquent, <strong>dans chaque année, au moins trois combinaisons possibles sont absentes</strong>. Même l’année la plus longue ne comporte pas suffisamment de jours pour les réaliser toutes.</p>
+  <p>Lorsque le jour de travail et l’année sont connus, une paire complète « nom de la boulette + jour dans la boulette » ou « nom du mois + jour dans le mois » désigne au plus un jour de cette année. Ainsi, une date pastafari complète, accompagnée du jour de travail, identifie sans ambiguïté le jour interrogé.</p>
+  <p>En revanche, sans connaître le jour de travail, une date pastafari complète n’identifie pas nécessairement, à elle seule, une position unique sur l’axe du temps. La même combinaison de cinq éléments peut apparaître dans des contextes de calcul différents.</p>
+</section>
+
+<section class="about-section" id="research" data-toc-section data-toc-level="2">
+  <h2>Que révèlent les études informatiques sur ce calendrier ?</h2>
+  <p>Outre la vérification de ses règles, le calendrier a fait l’objet de vastes études informatiques. Les chiffres suivants sont des <strong>constatations empiriques tirées d’un échantillon</strong>, et non des lois canoniques.</p>
+  <p>Dans un atlas structurel fondé sur 4 096 jours de travail et portant sur 86 016 structures annuelles :</p>
+  <ul>
+    <li>la durée moyenne d’une année dans l’échantillon était d’environ 4 275 jours, et la médiane était de 4 343 jours ;</li>
+    <li>le nombre moyen de boulettes par année était d’environ 7,27 ;</li>
+    <li>le nombre moyen de mois structurels était d’environ 41,1 ;</li>
+    <li>un mois contenait en moyenne environ 104 jours lui appartenant, tout en s’étendant généralement sur presque toute l’année ;</li>
+    <li>97,482 % des segments continus d’un mois ne duraient qu’un seul jour ;</li>
+    <li>la probabilité mesurée que deux jours chronologiques consécutifs appartiennent au même mois était d’environ 2,998 %.</li>
+  </ul>
+  <p>Dans une étude distincte sur la récurrence des « jours-années », portant sur 4 096 dates calculées pour leur propre jour de travail dans chaque direction :</p>
+  <ul>
+    <li>une nouvelle correspondance pour <strong>nom du mois + jour dans le mois</strong> apparaissait à une distance médiane d’une seule année pastafari ; 77,56 % des correspondances se trouvaient dans l’année voisine ;</li>
+    <li>une nouvelle correspondance pour <strong>nom de la boulette + jour dans la boulette</strong> était beaucoup moins prévisible : la médiane était de trois années pastafari, tandis que la moyenne était influencée par une très longue traîne ;</li>
+    <li>l’échantillon comportait un cas extrême où la première récurrence future de « Akkad 3063 » se situait à 51 954 années pastafari de distance.</li>
+  </ul>
+  <p>Ces résultats aident à comprendre les tendances du calendrier. Ils ne transforment pas une moyenne en loi : la durée moyenne constatée n’oblige aucune année particulière à s’en approcher, et un résultat observé dans les 4 096 cas ne constitue pas, à lui seul, une preuve mathématique valable pour toutes les entrées possibles.</p>
+</section>
+
+<section class="about-section" id="calculation" data-toc-section data-toc-level="2">
+  <h2>Comment le calendrier est-il calculé ?</h2>
+  <p>La date est produite par un algorithme discret, défini avec précision. À partir du jour de travail et du jour interrogé, il élabore une série de compteurs, les fait passer par le mécanisme de mélange appelé <strong>la Sauce</strong>, crée des portes, détermine les limites de l’année et des boulettes, sélectionne des noms, forme les mois, puis entrelace les jours des mois tout au long de l’année.</p>
+  <p>Les détails exacts font intervenir de grands nombres, des gouttes, des bols, des brassages, des sceaux et des mécanismes de sélection combinatoire. Ils sont importants pour l’implémentation et la vérification formelle, mais ne sont pas nécessaires pour comprendre ce que signifie une date ; ils ne sont donc pas détaillés ici.</p>
+  <p>À côté de l’algorithme existe un moteur rapide nommé <strong>Pastafarian Calendar Seer</strong>. Le Seer est conçu pour calculer rapidement ; il n’est pas la source de l’autorité, et il ne constitue pas lui-même une implémentation normative de toutes les étapes de l’algorithme. Si l’un de ses résultats contredit celui qu’exige le canon, c’est le Seer qui est erroné.</p>
+</section>
+
+<section class="about-section" id="about-the-monster" data-toc-section data-toc-level="2">
+  <h2>À propos du Monstre</h2>
+  <p>Dans le récit pastafari, <strong>le Monstre en spaghetti volant</strong> est l’être qui a créé le monde et la plupart de ce qu’il contient. Son corps est composé de nouilles et de boulettes de viande ; il peut voler, traverser la matière ordinaire et rester invisible lorsque cela lui convient.</p>
+  <p>Le Monstre peut créer de la matière, des êtres vivants, des corps célestes et des mécanismes extrêmement complexes. Cette aptitude ne l’oblige pas à établir un plan méthodique avant de commencer. Souvent, il commence une chose, passe à une autre, découvre que la précédente doit être corrigée et décide s’il souhaite la réparer. Il lui arrive effectivement de le faire.</p>
+  <p>Cette image d’une création construite couche après couche, avec des réparations, des exceptions et des règles qui subsistent, constitue aussi l’arrière-plan littéraire du calendrier. Contrairement au récit, le calcul n’est pas improvisé : lorsque les entrées sont connues, l’algorithme fournit une seule réponse définie.</p>
+  <p>La tradition pastafari dépasse largement le calendrier : elle comporte notamment des pirates, des glucides, des prières, des « Je préférerais vraiment que vous évitiez de… » et d’autres traditions.</p>
+  <!-- Publication gate: a French Monster expansion does not yet exist.
+       The English destination is real, but must not be labeled as French. -->
+  <p class="about-actions"><a class="guide-link" href="./monster/fr.html" hreflang="fr">En savoir plus sur le Monstre</a></p>
+</section>
+
+<section class="about-section" id="authority" data-toc-section data-toc-level="2">
+  <h2>Qu’est-ce qui fait autorité, et qu’est-ce qui relève de l’explication ?</h2>
+  <p>Cette page est une <strong>page explicative</strong>. Une phrase qui y apparaît ne devient pas, de ce seul fait, une nouvelle règle.</p>
+  <p>Le contenu canonique est déterminé par le corpus canonique et les règles adoptées en son sein. Les éditions canoniques de la Megillah ne sont pas automatiquement hiérarchisées entre elles. De même, une implémentation logicielle ne devient pas une source d’autorité au seul motif qu’elle est rapide ou largement utilisée.</p>
+  <p>Une implémentation conforme exécute toutes les étapes de l’algorithme canonique. Une étude informatique peut décrire un phénomène, mettre en évidence une régularité ou démontrer un théorème concernant l’algorithme ; lorsqu’un résultat provient d’un échantillon plutôt que d’une règle démontrée, cela doit être indiqué explicitement.</p>
+</section>
+
+<section class="about-section" id="summary" data-toc-section data-toc-level="2">
+  <h2>En bref</h2>
+  <p>Le calendrier pastafari est un calendrier contre-intuitif dans lequel la date dépend à la fois du jour interrogé et du jour à partir duquel on pose la question.</p>
+  <p>L’année 5000 est construite autour du jour de travail. Les boulettes forment des segments continus. Les mois sont des ensembles de jours qui peuvent s’entrelacer. Il n’existe pas de semaines canoniques. Le jour local change selon Vénus, et non à minuit.</p>
+  <p>Derrière cette structure inhabituelle se trouve un algorithme précis ; autour d’elle, un récit pastafari sur un monstre de spaghetti, une création accumulée couche après couche et une quantité déraisonnable de glucides.</p>
+  <p>Lorsque le jour de travail, le jour interrogé et le contexte géographique sont connus, il existe une seule réponse.</p>
+</section>

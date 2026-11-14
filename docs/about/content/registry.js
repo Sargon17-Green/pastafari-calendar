@@ -88,6 +88,11 @@ export const ARTICLE_LOCALES = Object.freeze({
     dir: "ltr",
     asset: "./content/et.html?v=20261010-approved16",
   }),
+  fr: Object.freeze({
+    code: "fr",
+    dir: "ltr",
+    asset: "./content/fr.html?v=20261114-fr17",
+  }),
 });
 
 export function resolveArticleLocale(code) {
