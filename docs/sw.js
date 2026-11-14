@@ -1,6 +1,6 @@
 "use strict";
 
-const VERSION = "pastafari-static-pwa-about-fr-20261114";
+const VERSION = "pastafari-static-pwa-about-fa-20261114";
 const CORE_CACHE = `${VERSION}-core`;
 const RUNTIME_CACHE = "pastafari-runtime-assets";
 const CACHE_PREFIX = "pastafari-static-";
@@ -10,12 +10,12 @@ const CACHE_PREFIX = "pastafari-static-";
 const CORE_ASSETS = [
   "./index.html",
   "./about/index.html",
-  "./about/about.js?v=20261114-fr17",
+  "./about/about.js?v=20261114-fa18",
   "./about/canonical-names.js?v=20261113-multilingual",
-  "./about/content/registry.js?v=20261114-fr17",
+  "./about/content/registry.js?v=20261114-fa18",
   "./about/content/he.html?v=4-about-polish",
   "./styles.css?v=16-about-polish",
-  "./app.js?v=24-worker-recovery",
+  "./app.js?v=25-about-fa-20261114",
   "./reverse-ui.js?v=20-about-page",
   "./reverse-search-controller.js",
   "./calendar-input-conventions.js?v=9-calendar-input-conventions",
@@ -34,9 +34,9 @@ const CORE_ASSETS = [
   "./engine/pastafari-constraints.js",
   "./engine/pastafari-reverse-worker.js",
   "./i18n/calendar-identifiers.js?v=9-canonical-names",
-  "./i18n/registry.js?v=19-about-page",
-  "./i18n/runtime.js?v=19-about-page",
-  "./i18n/locales/en.js?v=20-about-canonical-names"
+  "./i18n/registry.js?v=20-about-fa-20261114",
+  "./i18n/runtime.js?v=20-about-fa-20261114",
+  "./i18n/locales/en.js?v=21-about-fa-20261114"
 ];
 
 const OPTIONAL_ASSETS = Object.freeze([
@@ -78,6 +78,8 @@ const OPTIONAL_ASSETS = Object.freeze([
   "./about/monster/et.html",
   "./about/content/fr.html?v=20261114-fr17",
   "./about/monster/fr.html",
+  "./about/content/fa.html?v=20261114-fa18",
+  "./about/monster/fa.html",
 ]);
 const OPTIONAL_LOCALE_PATH = /^\/i18n\/locales\/[A-Za-z0-9-]+\.js$/;
 const SCOPE_URL = new URL(self.registration.scope);
