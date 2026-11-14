@@ -190,3 +190,24 @@ test("complete unpublished Persian draft retains all 16 units and source structu
   assert.match(full, /هنوز به‌طور کامل در کانون تثبیت نشده‌اند/);
   assert.equal(ARTICLE_LOCALES.fa, undefined, "a complete draft remains unpublished");
 });
+
+
+test("first four Persian Monster companion sections retain canonical Hebrew structure", async () => {
+  const [source, target] = await Promise.all([
+    readFile(new URL("monster/index.html", ROOT), "utf8"),
+    readFile(new URL("drafts/fa.monster.core.partial.html", ROOT), "utf8"),
+  ]);
+  const sourceStarts = [...source.matchAll(/<section id="([^"]+)" class="level2">/g)];
+  const firstFour = source.slice(sourceStarts[0].index, sourceStarts[4].index);
+  const ids = s => [...s.matchAll(/<section id="([^"]+)" class="level2">/g)].map(m => m[1]);
+  const tagStructure = s => [...s.matchAll(/<(\/?)(section|h2|p|strong)\b[^>]*>/g)].map(m => m[1] + m[2]);
+  assert.deepEqual(ids(target), ids(firstFour));
+  assert.equal(ids(target).length, 4);
+  assert.equal(tagStructure(firstFour).length, 48);
+  assert.deepEqual(tagStructure(target), tagStructure(firstFour));
+  assert.match(target, /پیش‌نویسِ منتشرنشده/);
+  assert.match(target, /نر، ماده و کربوهیدرات/);
+  assert.match(target, /تیغِ اوکام/);
+  assert.match(target, /گرانش/);
+  assert.equal(ARTICLE_LOCALES.fa, undefined);
+});
