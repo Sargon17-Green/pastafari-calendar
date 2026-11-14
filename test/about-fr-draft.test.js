@@ -216,3 +216,17 @@ test("complete standalone French Monster draft is correctly assembled and still 
   assert.equal((full.match(/<details\b/g) ?? []).length, (full.match(/<\/details>/g) ?? []).length);
   assert.equal((full.match(/<details class="penguin-note">/g) ?? []).length, 21);
 });
+
+
+test("French Monster preserves the Hebrew source's Einstein qualification of Newton", async () => {
+  const [source, core, assembled] = await Promise.all([
+    readFile(new URL("monster/index.html", ROOT), "utf8"),
+    readFile(new URL("drafts/fr.monster.partial.html", ROOT), "utf8"),
+    readFile(new URL("drafts/fr.monster.complete.html", ROOT), "utf8"),
+  ]);
+  assert.match(source, /איינשטיין כבר הראה/);
+  for (const text of [core, assembled]) {
+    assert.match(text, /Newton l’aurait cru à tort\. Einstein a montré/);
+    assert.match(text, /sans pour autant identifier, lui non plus, les appendices de nouille/);
+  }
+});
