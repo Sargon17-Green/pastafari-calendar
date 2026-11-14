@@ -91,3 +91,20 @@ test("Persian route and optional PWA assets are version-consistent across the UI
   assert.match(worker, /\.\/about\/monster\/fa\.html/);
   assert.match(monsterIndex, /es,et,fr,fa/);
 });
+
+
+test("Persian source-language adaptation avoids stale Hebrew-only copy and circular definitions", async () => {
+  const [about, monster] = await Promise.all([
+    read("about/content/fa.html"), read("about/monster/fa.html"),
+  ]);
+  assert.match(about, /بیشتر دربارهٔ هیولای اسپاگتیِ پرنده/);
+  assert.doesNotMatch(about, /متنِ کامل فعلاً به عبری/);
+  assert.doesNotMatch(about, /پستاندارِ اهلیِ الاغ|عنصر شیمیاییِ قلع|عنصر شیمیاییِ مس/);
+  assert.match(about, /Sn/);
+  assert.match(about, /Cu/);
+  assert.match(about, /Ag/);
+  assert.match(monster, /در فارسی این پرسش از نظرِ دستورِ زبان/);
+  assert.match(monster, /به زبانِ فارسی قاطی کرده‌ای/);
+  assert.doesNotMatch(monster, /به زبانِ عبری قاطی کرده‌ای/);
+  assert.match(monster, /پنجاه شیرِ یک‌طرفه/);
+});
