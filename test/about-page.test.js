@@ -71,7 +71,7 @@ test("Hebrew explanation preserves the 16 canonical section identifiers and all 
   }
 });
 
-test("18 published translations preserve canonical About and Monster structures", async () => {
+test("registered translated About and Monster pairs preserve canonical structures", async () => {
   const master = await readFile(path.join(DOCS, "about", "content", "he.html"), "utf8");
   const monsterMaster = await readFile(path.join(DOCS, "about", "monster", "index.html"), "utf8");
   const getIds = (html) => [...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
@@ -91,7 +91,7 @@ test("18 published translations preserve canonical About and Monster structures"
   }
 });
 
-test("18 published translations resolve in their own language; unapproved articles still fall back to Hebrew", () => {
+test("registered articles resolve directly and missing articles fall back to Hebrew", () => {
   assert.equal(ARTICLE_FALLBACK_LOCALE, "he");
   assert.deepEqual(Object.keys(ARTICLE_LOCALES), ["he", "en", "af", "ar", "az", "be", "bg", "bn", "bs", "ca", "cs", "da", "de", "el", "eo", "es", "et", "fr", "fa"]);
   for (const code of ["en", "af", "ar", "az", "be", "bg", "bn", "bs", "ca", "cs", "da", "de", "el", "eo", "es", "et", "fr", "fa"]) {
@@ -100,4 +100,36 @@ test("18 published translations resolve in their own language; unapproved articl
   assert.equal(resolveArticleLocale("fa").code, "fa");
   assert.equal(ARTICLE_LOCALES.ar.dir, "rtl");
   assert.equal(ARTICLE_LOCALES.fa.dir, "rtl");
+});
+
+
+test("every registered UI locale has either a same-language About article or explicit Hebrew fallback", async () => {
+  const { LOCALES } = await import("../docs/i18n/registry.js");
+  assert.equal(LOCALES.length, 73, "unexpected change to the registered UI locale catalog");
+  const known = new Map(LOCALES.map(locale => [locale.code, locale]));
+  const articleCodes = Object.keys(ARTICLE_LOCALES);
+  assert.equal(new Set(articleCodes).size, articleCodes.length);
+  assert.equal(ARTICLE_LOCALES[ARTICLE_FALLBACK_LOCALE].dir, "rtl");
+  for (const code of articleCodes) {
+    assert.ok(known.has(code), "published About article without a registered UI locale: " + code);
+    assert.equal(ARTICLE_LOCALES[code].dir, known.get(code).dir,
+      "article direction disagrees with UI language direction: " + code);
+  }
+  const missing = [];
+  for (const { code } of LOCALES) {
+    const resolved = resolveArticleLocale(code);
+    assert.ok(resolved && typeof resolved.asset === "string");
+    if (Object.hasOwn(ARTICLE_LOCALES, code)) {
+      assert.equal(resolved.code, code, "misrouted translated article: " + code);
+    } else {
+      missing.push(code);
+      assert.equal(resolved.code, ARTICLE_FALLBACK_LOCALE,
+        "missing article falsely marked as translated: " + code);
+    }
+  }
+  assert.equal(missing.length + articleCodes.length, LOCALES.length);
+  // UI resource completeness does not imply that its narrative is translated:
+  assert.ok(missing.includes("ky"), "complete Kyrgyz UI must not masquerade as a translated article");
+  const aboutPage = await readFile(path.join(DOCS, "about", "about.js"), "utf8");
+  assert.match(aboutPage, /elements\["about-language-notice"\]\.hidden = articleCode === activeLocale\.code/);
 });
