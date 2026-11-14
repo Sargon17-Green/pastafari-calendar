@@ -20,7 +20,7 @@
     <li><strong>le jour dans le mois</strong>.</li>
   </ol>
   <p>Autrement dit, une date complète indique dans quelle année et dans quelle boulette se trouve le jour considéré, sa position dans cette boulette, ainsi que le mois auquel il appartient et son rang d’apparition dans ce mois.</p>
-  <p>Le jour de travail, la position de l’observateur et d’autres renseignements techniques peuvent être indispensables pour <em>calculer</em> la date. Ils n’en constituent pas pour autant un sixième, un septième ou un huitième élément.</p>
+  <p>Le jour de référence, la position de l’observateur et d’autres renseignements techniques peuvent être indispensables pour <em>calculer</em> la date. Ils n’en constituent pas pour autant un sixième, un septième ou un huitième élément.</p>
   <p>La présentation à l’écran ne modifie pas non plus le nombre d’éléments. Si le site répartit les cinq données sur trois lignes, il s’agit toujours de cinq données : un retour à la ligne est une opération typographique, pas la création d’un nouveau champ calendaire.</p>
 </section>
 
@@ -28,14 +28,14 @@
   <h2>Pourquoi un même jour peut-il recevoir une date différente ?</h2>
   <p>Chaque calcul fait intervenir deux jours :</p>
   <ul>
-    <li><strong>le jour de travail</strong> — celui à partir duquel le calcul est effectué ;</li>
-    <li><strong>le jour interrogé</strong> — celui dont on cherche à connaître la date.</li>
+    <li><strong>le jour de référence</strong> — celui à partir duquel le calcul est effectué ;</li>
+    <li><strong>le jour recherché</strong> — celui dont on cherche à connaître la date.</li>
   </ul>
-  <p>Si l’on désigne le jour de travail par <code>c</code> et le jour interrogé par <code>t</code>, la date s’écrit <code>F(c,t)</code>, et non <code>F(t)</code>.</p>
-  <p>Un même jour chronologique peut donc recevoir une représentation pastafari différente lorsque le jour de travail change. Le jour lui-même ne se déplace pas : seule sa description pastafari change.</p>
-  <p>Lorsque <code>c=t</code>, le jour appartient toujours à <strong>l’année 5000</strong>. Cette année ne correspond pas à une période historique fixe : elle est reconstruite par rapport au jour de travail, de sorte que d’autres jours situés autour de celui-ci peuvent également en faire partie.</p>
-  <p>Par exemple, si un jour donné sert de jour de travail pour son propre calcul, il appartient à l’année 5000. Si l’on recommence le calcul le lendemain en prenant ce nouveau jour comme jour de travail, ce lendemain appartient lui aussi à l’année 5000. Il ne s’agit pas de deux affirmations contradictoires concernant une même « année historique » : chaque calcul choisit une nouvelle année de référence.</p>
-  <p>Les années dont le numéro est supérieur à 5000 se situent dans le futur par rapport au jour de travail, tandis que celles dont le numéro est inférieur à 5000 se situent dans le passé. L’année 0 existe également, suivie d’années portant des numéros négatifs.</p>
+  <p>Si l’on désigne le jour de référence par <code>c</code> et le jour recherché par <code>t</code>, la date s’écrit <code>F(c,t)</code>, et non <code>F(t)</code>.</p>
+  <p>Un même jour chronologique peut donc recevoir une représentation pastafari différente lorsque le jour de référence change. Le jour lui-même ne se déplace pas : seule sa description pastafari change.</p>
+  <p>Lorsque <code>c=t</code>, le jour appartient toujours à <strong>l’année 5000</strong>. Cette année ne correspond pas à une période historique fixe : elle est reconstruite par rapport au jour de référence, de sorte que d’autres jours situés autour de celui-ci peuvent également en faire partie.</p>
+  <p>Par exemple, si un jour donné sert de jour de référence pour son propre calcul, il appartient à l’année 5000. Si l’on recommence le calcul le lendemain en prenant ce nouveau jour comme jour de référence, ce lendemain appartient lui aussi à l’année 5000. Il ne s’agit pas de deux affirmations contradictoires concernant une même « année historique » : chaque calcul choisit une nouvelle année de référence.</p>
+  <p>Les années dont le numéro est supérieur à 5000 se situent dans le futur par rapport au jour de référence, tandis que celles dont le numéro est inférieur à 5000 se situent dans le passé. L’année 0 existe également, suivie d’années portant des numéros négatifs.</p>
 </section>
 
 <section class="about-section" id="year-structure" data-toc-section data-toc-level="2">
@@ -480,11 +480,11 @@
 <section class="about-section" id="advantages" data-toc-section data-toc-level="2">
   <h2>Les avantages remarquables du calendrier</h2>
   <ul>
-    <li><strong>Une date que l’on peut recalculer sans cesse :</strong> un même jour passé peut recevoir demain une autre date pastafari, puisque le jour de travail aura lui aussi avancé. Inutile de se contenter d’une ancienne date qui resterait utile indéfiniment.</li>
+    <li><strong>Une date que l’on peut recalculer sans cesse :</strong> un même jour passé peut recevoir demain une autre date pastafari, puisque le jour de référence aura lui aussi avancé. Inutile de se contenter d’une ancienne date qui resterait utile indéfiniment.</li>
     <li><strong>Des années spacieuses :</strong> une année peut atteindre 5 778 jours. Quiconque attend la nouvelle année peut donc bénéficier d’une attente nettement plus longue qu’à l’ordinaire.</li>
     <li><strong>Des mois qui exigent de l’attention :</strong> savoir qu’aujourd’hui est le jour 119 d’un mois ne signifie pas que son jour 120 arrivera demain, la semaine prochaine, ni même bientôt. Il faut calculer sa prochaine apparition.</li>
     <li><strong>Une sensibilité géographique :</strong> un même instant peut appartenir à des jours pastafari locaux différents selon le lieu. Voyager dans une autre ville ajoute donc un détail supplémentaire à ne pas oublier pour coordonner ses projets.</li>
-    <li><strong>Des calendriers imprimés qui ne peuvent pas se reposer sur leurs lauriers :</strong> un calendrier établi à l’avance peut cesser de représenter le calcul correct dès que le jour de travail change. Personne ne risque donc de se satisfaire de la même feuille de papier pendant des années.</li>
+    <li><strong>Des calendriers imprimés qui ne peuvent pas se reposer sur leurs lauriers :</strong> un calendrier établi à l’avance peut cesser de représenter le calcul correct dès que le jour de référence change. Personne ne risque donc de se satisfaire de la même feuille de papier pendant des années.</li>
     <li><strong>Un emploi profitable de la puissance informatique :</strong> plutôt que de se contenter d’un tableau simple, compréhensible d’un coup d’œil, le calendrier permet à l’ordinateur d’effectuer un véritable calcul chaque fois qu’on souhaite obtenir une réponse.</li>
     <li><strong>Il comporte des jours :</strong> le calendrier traite des jours. Il partage cette propriété avec tous les calendriers et garantit que personne ne sera contraint de gérer un calendrier dépourvu de jours.</li>
     <li><strong>Les jours apparaissent dans l’ordre :</strong> un jour antérieur précède un jour ultérieur. C’est une réussite fondamentale des calendriers, offerte ici sans supplément de prix.</li>
@@ -495,8 +495,8 @@
 
 <section class="about-section" id="practical-consequences" data-toc-section data-toc-level="2">
   <h2>Quelles conséquences pratiques ?</h2>
-  <p><strong>Un calendrier imprimé vieillit mal.</strong> Changer le jour de travail peut déplacer les limites des années, des boulettes et des mois. Un almanach calculé aujourd’hui n’est pas nécessairement celui qui conviendra demain.</p>
-  <p><strong>Un événement reste le même événement.</strong> Une rencontre, une naissance ou un fait historique doivent être rattachés à un jour ou à un instant chronologique stable. On peut ensuite leur attribuer une date pastafari selon le jour de travail et la position de l’observateur. Changer leur étiquette ne les déplace pas dans le temps.</p>
+  <p><strong>Un calendrier imprimé vieillit mal.</strong> Changer le jour de référence peut déplacer les limites des années, des boulettes et des mois. Un almanach calculé aujourd’hui n’est pas nécessairement celui qui conviendra demain.</p>
+  <p><strong>Un événement reste le même événement.</strong> Une rencontre, une naissance ou un fait historique doivent être rattachés à un jour ou à un instant chronologique stable. On peut ensuite leur attribuer une date pastafari selon le jour de référence et la position de l’observateur. Changer leur étiquette ne les déplace pas dans le temps.</p>
   <p><strong>Un anniversaire pastafari ne revient pas nécessairement « une fois par an ».</strong> Pour trouver la prochaine apparition d’un même nom de mois associé au même numéro de jour dans le mois — ou d’un nom de boulette associé au même numéro de jour dans la boulette —, il faut effectuer une recherche dans le calendrier. L’année voisine peut ne pas contenir le nom recherché, ou contenir une unité trop courte pour atteindre le numéro voulu.</p>
   <p><strong>Un événement couvrant toute une journée ne va pas nécessairement de minuit à minuit.</strong> S’il est défini selon un jour pastafari local, ses limites sont celles du jour déterminées localement par Vénus. L’exporter naïvement vers un calendrier civil sous la forme d’un événement de minuit à minuit risque d’en changer le sens.</p>
 </section>
@@ -511,15 +511,15 @@
     <dd>Le 15 juin 763 avant notre ère, dans le calendrier julien proleptique, ce qui correspond au 7 juin 763 avant notre ère dans le calendrier grégorien proleptique.</dd>
   </dl>
   <p>Il s’écoule <strong>14 777 149 jours</strong> entre ces deux repères. Le Jour de la Fondation est un point d’ancrage pour les calculs : il n’est pas « le premier jour du temps », et le calendrier s’étend aussi avant cette date.</p>
-  <p>Selon la tradition, le Jour des Tablettes est associé à la remise des tablettes. Dans le calcul historique, il correspond au jour de l’éclipse solaire survenue à l’époque de Bur-Sagale. Ces deux repères restent fixes même lorsque le jour de travail change.</p>
+  <p>Selon la tradition, le Jour des Tablettes est associé à la remise des tablettes. Dans le calcul historique, il correspond au jour de l’éclipse solaire survenue à l’époque de Bur-Sagale. Ces deux repères restent fixes même lorsque le jour de référence change.</p>
 </section>
 
 <section class="about-section" id="calendar-math" data-toc-section data-toc-level="2">
   <h2>Quelques faits mathématiques simples</h2>
   <p>Il existe 47 noms de mois, et chaque mois peut aller jusqu’au jour 123. Il existe donc <strong>5 781</strong> combinaisons possibles de la forme « nom du mois + numéro du jour dans ce mois ».</p>
   <p>Une année peut contenir au maximum 5 778 jours, et chacun de ses jours correspond à une de ces combinaisons. Par conséquent, <strong>dans chaque année, au moins trois combinaisons possibles sont absentes</strong>. Même l’année la plus longue ne comporte pas suffisamment de jours pour les réaliser toutes.</p>
-  <p>Lorsque le jour de travail et l’année sont connus, une paire complète « nom de la boulette + jour dans la boulette » ou « nom du mois + jour dans le mois » désigne au plus un jour de cette année. Ainsi, une date pastafari complète, accompagnée du jour de travail, identifie sans ambiguïté le jour interrogé.</p>
-  <p>En revanche, sans connaître le jour de travail, une date pastafari complète n’identifie pas nécessairement, à elle seule, une position unique sur l’axe du temps. La même combinaison de cinq éléments peut apparaître dans des contextes de calcul différents.</p>
+  <p>Lorsque le jour de référence et l’année sont connus, une paire complète « nom de la boulette + jour dans la boulette » ou « nom du mois + jour dans le mois » désigne au plus un jour de cette année. Ainsi, une date pastafari complète, accompagnée du jour de référence, identifie sans ambiguïté le jour recherché.</p>
+  <p>En revanche, sans connaître le jour de référence, une date pastafari complète n’identifie pas nécessairement, à elle seule, une position unique sur l’axe du temps. La même combinaison de cinq éléments peut apparaître dans des contextes de calcul différents.</p>
 </section>
 
 <section class="about-section" id="research" data-toc-section data-toc-level="2">
@@ -534,7 +534,7 @@
     <li>97,482 % des segments continus d’un mois ne duraient qu’un seul jour ;</li>
     <li>la probabilité mesurée que deux jours chronologiques consécutifs appartiennent au même mois était d’environ 2,998 %.</li>
   </ul>
-  <p>Dans une étude distincte sur la récurrence des « jours-années », portant sur 4 096 dates calculées pour leur propre jour de travail dans chaque direction :</p>
+  <p>Dans une étude distincte sur la récurrence des « jours-années », portant sur 4 096 dates calculées pour leur propre jour de référence dans chaque direction :</p>
   <ul>
     <li>une nouvelle correspondance pour <strong>nom du mois + jour dans le mois</strong> apparaissait à une distance médiane d’une seule année pastafari ; 77,56 % des correspondances se trouvaient dans l’année voisine ;</li>
     <li>une nouvelle correspondance pour <strong>nom de la boulette + jour dans la boulette</strong> était beaucoup moins prévisible : la médiane était de trois années pastafari, tandis que la moyenne était influencée par une très longue traîne ;</li>
@@ -545,7 +545,7 @@
 
 <section class="about-section" id="calculation" data-toc-section data-toc-level="2">
   <h2>Comment le calendrier est-il calculé ?</h2>
-  <p>La date est produite par un algorithme discret, défini avec précision. À partir du jour de travail et du jour interrogé, il élabore une série de compteurs, les fait passer par le mécanisme de mélange appelé <strong>la Sauce</strong>, crée des portes, détermine les limites de l’année et des boulettes, sélectionne des noms, forme les mois, puis entrelace les jours des mois tout au long de l’année.</p>
+  <p>La date est produite par un algorithme discret, défini avec précision. À partir du jour de référence et du jour recherché, il élabore une série de compteurs, les fait passer par le mécanisme de mélange appelé <strong>la Sauce</strong>, crée des portes, détermine les limites de l’année et des boulettes, sélectionne des noms, forme les mois, puis entrelace les jours des mois tout au long de l’année.</p>
   <p>Les détails exacts font intervenir de grands nombres, des gouttes, des bols, des brassages, des sceaux et des mécanismes de sélection combinatoire. Ils sont importants pour l’implémentation et la vérification formelle, mais ne sont pas nécessaires pour comprendre ce que signifie une date ; ils ne sont donc pas détaillés ici.</p>
   <p>À côté de l’algorithme existe un moteur rapide nommé <strong>Pastafarian Calendar Seer</strong>. Le Seer est conçu pour calculer rapidement ; il n’est pas la source de l’autorité, et il ne constitue pas lui-même une implémentation normative de toutes les étapes de l’algorithme. Si l’un de ses résultats contredit celui qu’exige le canon, c’est le Seer qui est erroné.</p>
 </section>
@@ -568,8 +568,8 @@
 
 <section class="about-section" id="summary" data-toc-section data-toc-level="2">
   <h2>En bref</h2>
-  <p>Le calendrier pastafari est un calendrier contre-intuitif dans lequel la date dépend à la fois du jour interrogé et du jour à partir duquel on pose la question.</p>
-  <p>L’année 5000 est construite autour du jour de travail. Les boulettes forment des segments continus. Les mois sont des ensembles de jours qui peuvent s’entrelacer. Il n’existe pas de semaines canoniques. Le jour local change selon Vénus, et non à minuit.</p>
+  <p>Le calendrier pastafari est un calendrier contre-intuitif dans lequel la date dépend à la fois du jour recherché et du jour à partir duquel on pose la question.</p>
+  <p>L’année 5000 est construite autour du jour de référence. Les boulettes forment des segments continus. Les mois sont des ensembles de jours qui peuvent s’entrelacer. Il n’existe pas de semaines canoniques. Le jour local change selon Vénus, et non à minuit.</p>
   <p>Derrière cette structure inhabituelle se trouve un algorithme précis ; autour d’elle, un récit pastafari sur un monstre de spaghetti, une création accumulée couche après couche et une quantité déraisonnable de glucides.</p>
-  <p>Lorsque le jour de travail, le jour interrogé et le contexte géographique sont connus, il existe une seule réponse.</p>
+  <p>Lorsque le jour de référence, le jour recherché et le contexte géographique sont connus, il existe une seule réponse.</p>
 </section>
