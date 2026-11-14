@@ -18,13 +18,15 @@ Language: **Persian / فارسی** (`fa`; RTL; UI module `docs/i18n/locales/fa.j
 - `fa.complete.partial.html`: **16/16** canonical About units and **64/64** name explanations assembled as a complete **unpublished and unapproved** Persian article; its **906/906** selected HTML structural tags match the current Hebrew master.
 - This branch incorporates the current Hebrew and English About birthday-research text and aligns the French draft and French published content with the updated three research links and birthday definition. This is branch-only; the public site is unchanged until an approved merge.
 
-- `fa.monster.core.partial.html`: all **25 of 25** Monster main sections translated, preserving the Hebrew canonical section IDs and exact 290-tag section structure. The remaining Monster text is not translated yet, including the 13-part penguin appendix and all 21 editorial notes.
+- `fa.monster.core.partial.html`: **25/25** core sections drafted, preserving Hebrew IDs and the exact 290-token structural tag sequence.
+- `fa.monster.penguin.partial.html`: all **13/13** appendix subsections and **21/21** embedded editorial rebuttal notes drafted from the full Hebrew source, preserving all IDs, their positions and the complete 354-tag source structure.
+- `fa.monster.complete.html`: the complete **unpublished** Persian Monster companion, with 39 source-parallel section IDs, 21 rebuttal notes, 652 matching semantic HTML tokens in the article body, RTL document metadata and `noindex`. No redirect or public routing is registered.
 
 ## Remaining; never present this as published
 
 1. Independently proofread all **16** Persian units for natural expression and canonical accuracy. Draft completion is not linguistic, scientific or canonical approval.
 2. Independently review **all 64** name definitions, exact boundary qualifiers and the `شن` versus `ماسه` lexical question before release.
-3. Translate and verify the remaining **0 of 25** Monster main sections, all **13** penguin appendix subsections, and **21** inline editorial rebuttal notes from Hebrew. Do not use the shorter English article as master.
+3. Independently proofread and source-audit the entire **25 + 13 + 21** Persian Monster companion for semantic accuracy, satirical voice, technical claims and fluent language, especially the rebuttal notes. The full Hebrew Monster is the master, not the shorter English page.
 4. Independently proofread Persian prose for natural local expression, technical accuracy and mixed RTL/LTR notation. In particular, review whether the current UI label `شن` faithfully conveys canonical `sand` (`חול`) or should be `ماسه`; do not silently change a published locale label. Verify mobile wrapping, focus, keyboard and accessibility.
 5. Reconcile the branch against current `main`, validate complete GitHub CI and real offline/mobile RTL/accessibility behavior, and only then create a separate release PR covering complete Persian About/Monster, registries, routing and integrity manifests. Never publish a partial translation.
 
