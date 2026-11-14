@@ -4,6 +4,7 @@ import test from "node:test";
 
 import { ARTICLE_LOCALES } from "../docs/about/content/registry.js";
 import faLocale from "../docs/i18n/locales/fa.js";
+import { CUTLETS } from "../docs/i18n/calendar-identifiers.js";
 
 const ROOT = new URL("../docs/about/", import.meta.url);
 const EXPECTED_PREFIX = Object.freeze([
@@ -78,4 +79,31 @@ test("Persian year and interwoven-month examples preserve canonical numeric boun
   assert.match(draft, /ماه ب — روز 9/);
   assert.match(draft, /ماه الف — روز 15/);
   assert.match(draft, /هفتهٔ رسمی یا کانونی/);
+});
+
+
+test("Persian 17 cutlet disclosure texts match the canonical labels and Hebrew markup", async () => {
+  const [hebrew, cutlets] = await Promise.all([
+    readFile(new URL("content/he.html", ROOT), "utf8"),
+    readFile(new URL("drafts/fa.canonical-names.cutlets.partial.html", ROOT), "utf8"),
+  ]);
+  const start = hebrew.indexOf("<h3>17 הקציצות</h3>");
+  const end = hebrew.indexOf("<h3>47 החודשים</h3>");
+  assert.ok(start >= 0 && end > start, "Hebrew canonical cutlet block");
+  const hebrewCutlets = hebrew.slice(start, end);
+  const ids = CUTLETS.map(({ id }) => id);
+  const labels = [...cutlets.matchAll(/<summary>([^<]+)<\/summary>/g)].map((m) => m[1]);
+  assert.equal(labels.length, 17);
+  assert.deepEqual(labels, ids.map((id) => faLocale.calendar.cutlets[id]));
+  assert.equal((cutlets.match(/<p>/g) ?? []).length, 17);
+  const innerStructure = (s) => [...s.matchAll(
+    /<(\/?)(h3|ul|li|details|summary|p|code)\b[^>]*>/g,
+  )].map((m) => m[1] + m[2]);
+  assert.equal(innerStructure(hebrewCutlets).length, 144);
+  assert.deepEqual(innerStructure(cutlets), innerStructure(hebrewCutlets));
+  assert.ok(cutlets.includes("<code>|x − 4/9| ≤ e/103</code>"));
+  assert.ok(cutlets.includes("<code>e/103</code>"));
+  assert.match(cutlets, /این اجازهٔ واژگانی هیچ تغییری/);
+  assert.match(cutlets, /کوزهٔ خالی/);
+  assert.equal(ARTICLE_LOCALES.fa, undefined);
 });
