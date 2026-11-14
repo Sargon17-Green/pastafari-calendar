@@ -267,3 +267,18 @@ test("French release references and Service Worker optional assets are exactly v
   assert.match(registry, /fr:\s*Object\.freeze\(\{/);
   assert.match(monsterIndex, /en,af,ar,az,be,bg,bn,bs,ca,cs,da,de,el,eo,es,et,fr/);
 });
+
+
+test("French Monster preserves the Hebrew source's Einstein qualification of Newton", async () => {
+  const [source, core, assembled, published] = await Promise.all([
+    readFile(new URL("monster/index.html", ROOT), "utf8"),
+    readFile(new URL("drafts/fr.monster.partial.html", ROOT), "utf8"),
+    readFile(new URL("drafts/fr.monster.complete.html", ROOT), "utf8"),
+    readFile(new URL("monster/fr.html", ROOT), "utf8"),
+  ]);
+  assert.match(source, /איינשטיין כבר הראה/);
+  for (const text of [core, assembled, published]) {
+    assert.match(text, /Newton l’aurait cru à tort\. Einstein a montré/);
+    assert.match(text, /sans pour autant identifier, lui non plus, les appendices de nouille/);
+  }
+});
