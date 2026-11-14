@@ -15,6 +15,7 @@ import {
   ARTICLE_FALLBACK_LOCALE,
   resolveArticleLocale,
 } from "./content/registry.js?v=20261010-approved16";
+import { synchronizeCanonicalNameSummaries } from "./canonical-names.js?v=20261113-multilingual";
 
 const elements = Object.fromEntries(
   [...document.querySelectorAll("[id]")].map((element) => [element.id, element]),
@@ -42,6 +43,7 @@ function applyActiveLocale() {
 async function loadArticleForLocale(localeCode) {
   const articleLocale = resolveArticleLocale(localeCode);
   if (articleLocale.code === activeArticleCode && elements["article-content"].childElementCount > 0) {
+    synchronizeCanonicalNameSummaries(elements["article-content"], activeLocale);
     updateLanguageNotice(articleLocale.code);
     buildTableOfContents();
     return;
@@ -58,6 +60,7 @@ async function loadArticleForLocale(localeCode) {
     elements["article-content"].innerHTML = html;
     elements["article-content"].lang = articleLocale.code;
     elements["article-content"].dir = articleLocale.dir;
+    synchronizeCanonicalNameSummaries(elements["article-content"], activeLocale);
     activeArticleCode = articleLocale.code;
     updateLanguageNotice(articleLocale.code);
     buildTableOfContents();

@@ -1,6 +1,6 @@
 "use strict";
 
-const VERSION = "pastafari-static-pwa-about-approved16-20261010-approved16";
+const VERSION = "pastafari-static-pwa-about-canonical-multilingual-20261113";
 const CORE_CACHE = `${VERSION}-core`;
 const RUNTIME_CACHE = "pastafari-runtime-assets";
 const CACHE_PREFIX = "pastafari-static-";
@@ -10,7 +10,8 @@ const CACHE_PREFIX = "pastafari-static-";
 const CORE_ASSETS = [
   "./index.html",
   "./about/index.html",
-  "./about/about.js?v=20261010-approved16",
+  "./about/about.js?v=20261113-multilingual",
+  "./about/canonical-names.js?v=20261113-multilingual",
   "./about/content/registry.js?v=20261010-approved16",
   "./about/content/he.html?v=4-about-polish",
   "./styles.css?v=16-about-polish",
@@ -35,7 +36,7 @@ const CORE_ASSETS = [
   "./i18n/calendar-identifiers.js?v=9-canonical-names",
   "./i18n/registry.js?v=19-about-page",
   "./i18n/runtime.js?v=19-about-page",
-  "./i18n/locales/en.js?v=18-about-page"
+  "./i18n/locales/en.js?v=20-about-canonical-names"
 ];
 
 const OPTIONAL_ASSETS = Object.freeze([
