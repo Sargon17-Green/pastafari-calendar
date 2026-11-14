@@ -233,6 +233,7 @@ test("French release candidate has complete localized About and Monster pages wi
   assert.equal((article.match(/data-toc-section/g) ?? []).length, 15);
   assert.equal((article.match(/<summary>([^<]+)<\/summary>/g) ?? []).length, 64);
   assert.ok(article.includes('href="./monster/fr.html" hreflang="fr"'));
+  assert.doesNotMatch(article, /Publication gate|English destination is real/, "no stale draft-only disclaimer in the published article");
   assert.ok(draftArticle.includes('href="./monster/en.html" hreflang="en"'));
   assert.ok(monster.startsWith('<!doctype html>\n<html lang="fr" dir="ltr">'));
   assert.ok(monster.includes('href="../?lang=fr"'));
