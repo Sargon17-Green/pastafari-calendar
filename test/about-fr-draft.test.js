@@ -114,3 +114,20 @@ test("French draft retains the canonical 16-section semantic HTML skeleton", asy
   assert.deepEqual(english, hebrew, "Hebrew and English masters should agree structurally");
   assert.deepEqual(french, hebrew, "French draft must not omit or reorder canonical content blocks");
 });
+
+test("unpublished French Monster companion preserves the first source section identifiers", async () => {
+  const [he, en, partial] = await Promise.all([
+    readFile(new URL("monster/index.html", ROOT), "utf8"),
+    readFile(new URL("monster/en.html", ROOT), "utf8"),
+    readFile(new URL("drafts/fr.monster.partial.html", ROOT), "utf8"),
+  ]);
+  const names = (html) => [...html.matchAll(/<section id="([^"]+)" class="level2">/g)]
+    .map((match) => match[1]);
+  const heIds = names(he), enIds = names(en), frIds = names(partial);
+  assert.ok(heIds.length >= 20, "the source must contain the full Monster article");
+  assert.deepEqual(enIds, heIds, "source articles must share stable section identifiers");
+  assert.equal(frIds.length, 4, "the French Monster companion is an explicitly partial draft");
+  assert.deepEqual(frIds, heIds.slice(0, frIds.length));
+  assert.equal((partial.match(/<section id=/g) ?? []).length, (partial.match(/<\/section>/g) ?? []).length);
+  assert.match(partial, /BROUILLON NON PUBLIÉ/);
+});
