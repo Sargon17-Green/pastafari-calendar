@@ -126,7 +126,7 @@ test("unpublished French Monster companion preserves the first source section id
   const heIds = names(he), enIds = names(en), frIds = names(partial);
   assert.ok(heIds.length >= 20, "the source must contain the full Monster article");
   assert.deepEqual(enIds, heIds, "source articles must share stable section identifiers");
-  assert.equal(frIds.length, 8, "the French Monster companion is an explicitly partial draft");
+  assert.equal(frIds.length, 12, "the French Monster companion is an explicitly partial draft");
   assert.deepEqual(frIds, heIds.slice(0, frIds.length));
   assert.equal((partial.match(/<section id=/g) ?? []).length, (partial.match(/<\/section>/g) ?? []).length);
   assert.match(partial, /BROUILLON NON PUBLIÉ/);
