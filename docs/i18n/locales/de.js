@@ -261,7 +261,7 @@ export default Object.freeze({
       "fourPartsOfNine": "Vier Teile von Neun",
       "palgurash": "Palgurash",
       "papyrusSedge": "Papyrus-Segge",
-      "cluster": "Traube",
+      "cluster": "Büschel",
       "scorpion": "Skorpion",
       "ash": "Asche",
       "wheat": "Weizen",

@@ -106,6 +106,58 @@ jobs:
       - run: npm test
       - run: sha256sum -c SHA256SUMS.txt
       - run: node scripts/check-sha-manifest-completeness.mjs
+      # Diagnostic candidates only: never auto-commit/rewrite integrity manifests
+      # on a CI failure. Collect SHA-256 values from precisely the tracked files.
+      - name: Generate review-only checksum candidates after failure
+        if: failure()
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from hashlib import sha256
+          from pathlib import Path
+          from subprocess import check_output
+          import os
+
+          repo = Path.cwd()
+          output = Path(os.environ["RUNNER_TEMP"]) / "checksum-review"
+          output.mkdir(parents=True, exist_ok=True)
+          paths = sorted(
+              raw.decode("utf-8") for raw in
+              check_output(["git", "ls-files", "-z"]).split(b"\0") if raw
+          )
+          def digest(data):
+              return sha256(data).hexdigest()
+          docs_paths = [
+              p for p in paths
+              if p.startswith("docs/") and p != "docs/SHA256SUMS.txt"
+          ]
+          docs_manifest = "".join(
+              f"{digest((repo / p).read_bytes())}  ./{p[5:]}\n"
+              for p in docs_paths
+          ).encode("utf-8")
+          (output / "docs-SHA256SUMS.txt").write_bytes(docs_manifest)
+          root_paths = [
+              p for p in paths
+              if p != "SHA256SUMS.txt" and not p.endswith(".tgz")
+          ]
+          root_manifest = "".join(
+              f"{digest(docs_manifest if p == 'docs/SHA256SUMS.txt' else (repo / p).read_bytes())}  ./{p}\n"
+              for p in root_paths
+          )
+          (output / "root-SHA256SUMS.txt").write_text(root_manifest, encoding="utf-8")
+          source_audit = repo / "artifacts/update16/oracle-authority-audit.json"
+          if source_audit.is_file():
+              (output / "oracle-authority-audit.json").write_bytes(source_audit.read_bytes())
+          print(f"Review candidates: root={len(root_paths)} docs={len(docs_paths)}")
+          PY
+      - name: Upload checksum review candidates after failure
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: checksum-review-candidates
+          path: ${{ runner.temp }}/checksum-review/
+          if-no-files-found: error
+          retention-days: 7
 
   node-compatibility:
     needs: changes

@@ -518,20 +518,26 @@ async function assertKeyboardOperations(page) {
   await page.keyboard.press("ArrowUp");
   assert.equal(await select.inputValue(), "gregorian", "native select must support reverse keyboard navigation");
 
-  const initialHeading = await page.locator("#cutlet-heading").innerText();
+  // The same canonical cutlet name can occur in consecutive years. Heading
+  // equality is therefore not evidence that keyboard navigation failed.
+  // Track the chronological start JDN of the visible cutlet instead.
+  const firstVisibleJdn = await page.locator("#calendar-grid .day-card").first().getAttribute("data-jdn");
+  assert.match(firstVisibleJdn ?? "", /^-?\d+$/, "visible cutlet must have a numeric first-day JDN");
   const next = page.locator("#next-cutlet");
   await next.focus();
   await page.keyboard.press("Enter");
-  await page.waitForFunction((heading) => document.querySelector("#cutlet-heading")?.textContent !== heading, initialHeading, {
-    timeout: DEFAULT_TIMEOUT,
-  });
+  await page.waitForFunction((initialJdn) => {
+    const firstDay = document.querySelector("#calendar-grid .day-card");
+    return firstDay && firstDay.dataset.jdn !== initialJdn;
+  }, firstVisibleJdn, { timeout: 30_000 });
   assert.equal(await page.evaluate(() => document.activeElement?.id), "next-cutlet", "focus must stay on the cutlet navigation control after dynamic rendering");
   const previous = page.locator("#previous-cutlet");
   await previous.focus();
   await page.keyboard.press("Space");
-  await page.waitForFunction((heading) => document.querySelector("#cutlet-heading")?.textContent === heading, initialHeading, {
-    timeout: DEFAULT_TIMEOUT,
-  });
+  await page.waitForFunction((initialJdn) => {
+    const firstDay = document.querySelector("#calendar-grid .day-card");
+    return firstDay && firstDay.dataset.jdn === initialJdn;
+  }, firstVisibleJdn, { timeout: 30_000 });
   assert.equal(await page.evaluate(() => document.activeElement?.id), "previous-cutlet", "Space activation must work and focus must remain on navigation");
 }
 
@@ -804,6 +810,11 @@ async function main() {
 
     if (options.browser === "chromium") {
       await check("forced-colors", async () => {
+        // This test needs a visible selected day independently of earlier
+        // keyboard-navigation checks (which may have browsed to another cutlet).
+        await page.locator("#today-button").click();
+        await page.locator('#calendar-grid .day-card[data-target="true"]').first()
+          .waitFor({ state: "attached", timeout: 30_000 });
         await page.emulateMedia({ forcedColors: "active" });
         assert.equal(await page.evaluate(() => matchMedia("(forced-colors: active)").matches), true);
         const targetStyle = await page.locator('#calendar-grid .day-card[data-target="true"]').evaluate((element) => {
@@ -819,9 +830,18 @@ async function main() {
         assert.ok(targetStyle.borderWidth >= 2, "target-day border must survive forced colors");
         assert.notEqual(targetStyle.outlineStyle, "none", "target-day outline must survive forced colors");
         assert.ok(targetStyle.outlineWidth >= 2, "target-day outline must remain visible in forced colors");
+        // CSS intentionally uses :focus-visible rather than :focus, so validate
+        // real keyboard navigation, not a script-driven focus() after pointer input.
         await page.locator("#previous-cutlet").focus();
-        const focus = await page.locator("#previous-cutlet").evaluate((element) => getComputedStyle(element).outlineStyle);
-        assert.notEqual(focus, "none", "button focus indication must survive forced colors");
+        await page.keyboard.press("Tab");
+        const keyboardTarget = page.locator("#today-button");
+        assert.equal(
+          await keyboardTarget.evaluate((element) => document.activeElement === element),
+          true,
+          "Tab must reach the next toolbar button under forced colors",
+        );
+        const focus = await keyboardTarget.evaluate((element) => getComputedStyle(element).outlineStyle);
+        assert.notEqual(focus, "none", "keyboard focus indication must survive forced colors");
         const shot = await saveScreenshot(page, "forced-colors.png");
         report.screenshots.push(shot);
         await page.emulateMedia({ forcedColors: "none" });

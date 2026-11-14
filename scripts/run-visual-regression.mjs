@@ -859,15 +859,33 @@ async function aboutPageSmoke(browser, baseURL, state) {
       assert.equal(await page.locator("html").getAttribute("dir"), "rtl");
       assert.equal(await page.locator("#article-content").getAttribute("lang"), "he");
       assert.equal(await page.locator("#calendar-workspace").count(), 0, "About page must not load calendar UI");
-      assert.ok(await page.locator("#about-toc-list a").count() >= 29, "About page TOC is incomplete");
+      // Every canonical article section must have exactly one link, in document order.
+      // The additional site-usage link is a separate navigable section.
+      const articleSectionIds = await page.locator("#article-content [data-toc-section][id]")
+        .evaluateAll((sections) => sections.map((section) => section.id));
+      const tocTargets = await page.locator("#about-toc-list a")
+        .evaluateAll((links) => links.map((link) => link.getAttribute("href")));
+      assert.equal(articleSectionIds.length, 15, "About article must retain its 15 canonical TOC sections");
+      assert.deepEqual(
+        tocTargets,
+        [...articleSectionIds.map((id) => `#${id}`), "#site-usage"],
+        "About TOC targets must match every canonical section and the site-usage guide, in order",
+      );
       const tocOpen = await page.locator("#about-toc").evaluate((element) => element.open);
       assert.equal(tocOpen, name === "desktop", `About-page TOC default state is wrong for ${name}`);
       await assertNoPageOverflow(page, `about page ${name}`);
       await assertVisibleAndSized(page, [".about-toc", "#article-content", "#site-usage"]);
       const readingWidth = await page.locator("#article-content p").first().evaluate((element) => element.getBoundingClientRect().width);
       assert.ok(readingWidth <= 850, `About-page reading measure is too wide at ${name}: ${readingWidth}px`);
-      const kvOverflow = await page.locator(".about-kv-table-wrap").first().evaluate((element) => element.scrollWidth - element.clientWidth);
-      assert.ok(kvOverflow <= 1, `Key/value table should not require horizontal scrolling at ${name}: ${kvOverflow}px`);
+      // The modern canonical article uses two expandable name lists, not the
+      // obsolete key/value table. Verify their complete browser-rendered structure.
+      const nameLists = page.locator("#canonical-names ul.about-name-disclosure-list");
+      assert.equal(await nameLists.count(), 2, "Canonical names must contain cutlet and month lists");
+      assert.equal(
+        await nameLists.locator(":scope > li > details > summary").count(),
+        64,
+        "Canonical names must display all 17 cutlets and 47 months",
+      );
       state.layoutChecks.push({ page: "about", viewport: name, deepLink: "#day-boundary", result: "PASS" });
     }, state);
   }
