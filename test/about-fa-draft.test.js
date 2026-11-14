@@ -256,3 +256,24 @@ test("full unpublished Persian Monster companion preserves all source paragraphs
   assert.match(full, /یادداشت/);
   assert.equal(ARTICLE_LOCALES.fa, undefined, "draft must never be published automatically");
 });
+
+
+test("Persian sand and cluster terminology reads natively and matches the canonical UI", async () => {
+  const [cutlets, months, canonicalSection, fullArticle] = await Promise.all([
+    readFile(new URL("drafts/fa.canonical-names.cutlets.partial.html", ROOT), "utf8"),
+    readFile(new URL("drafts/fa.canonical-names.months.partial.html", ROOT), "utf8"),
+    readFile(new URL("drafts/fa.canonical-names.partial.html", ROOT), "utf8"),
+    readFile(new URL("drafts/fa.complete.partial.html", ROOT), "utf8"),
+  ]);
+  assert.equal(faLocale.calendar.months.sand, "ماسه");
+  for (const html of [months, canonicalSection, fullArticle]) {
+    assert.match(html, /<summary>ماسه<\/summary>/);
+    assert.match(html, /ماسه، ماده‌ای دانه‌ای که از ذراتِ کوچکِ سنگ و کانی‌ها تشکیل شده است/);
+    assert.doesNotMatch(html, /<summary>شن<\/summary>|واژهٔ عبریِ متنِ مرجع/);
+  }
+  for (const html of [cutlets, canonicalSection, fullArticle]) {
+    assert.match(html, /مانند دانه‌هایی که کنارِ هم خوشهٔ انگور را تشکیل می‌دهند/);
+    assert.doesNotMatch(html, /واژهٔ متنِ عبری/);
+  }
+  assert.equal(ARTICLE_LOCALES.fa, undefined, "unapproved Persian article must remain unpublished");
+});
