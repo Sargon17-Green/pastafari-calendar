@@ -138,3 +138,25 @@ test("Persian 47 month disclosures match canonical IDs, Hebrew structure and cri
   assert.match(months, /منظور ببر نیست/);
   assert.equal(ARTICLE_LOCALES.fa, undefined, "incomplete draft must stay unpublished");
 });
+
+test("assembled Persian sixth article unit is 1:1 with the Hebrew canonical-names structure", async () => {
+  const [hebrew, canonicalNames] = await Promise.all([
+    readFile(new URL("content/he.html", ROOT), "utf8"),
+    readFile(new URL("drafts/fa.canonical-names.partial.html", ROOT), "utf8"),
+  ]);
+  const start = hebrew.indexOf('<section class="about-section" id="canonical-names"');
+  const end = hebrew.indexOf("</section>", start) + "</section>".length;
+  assert.ok(start >= 0 && end > start, "Hebrew sixth section must exist");
+  const source = hebrew.slice(start, end);
+  const sectionStructure = (html) => [...html.matchAll(
+    /<(\/?)(section|h2|h3|p|ul|li|details|summary|strong|code)\b[^>]*>/g,
+  )].map((match) => match[1] + match[2]);
+  assert.deepEqual(sectionStructure(canonicalNames), sectionStructure(source));
+  assert.deepEqual(sectionIds(canonicalNames), ["canonical-names"]);
+  assert.equal((canonicalNames.match(/<summary>/g) ?? []).length, 64);
+  assert.match(canonicalNames, /۱۷ نامِ کتلت/);
+  assert.match(canonicalNames, /۴۷ نامِ ماه/);
+  assert.match(canonicalNames, /هیچ نامی در یک خانواده دو بار/);
+  assert.match(canonicalNames, /ترجمه یا آوانویسی/);
+  assert.equal(ARTICLE_LOCALES.fa, undefined, "a complete sixth unit does not imply a complete article");
+});
