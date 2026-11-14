@@ -165,3 +165,23 @@ test("Persian About preserves all numeric constraints within each Hebrew source 
       "Numerical source parity changed in About unit " + source[index].id);
   }
 });
+
+
+test("reviewer matrix is not stale relative to the Hebrew and Persian sources", async () => {
+  const { createHash } = await import("node:crypto");
+  const matrix = await readFile(new URL("../verification/fa-release/reviewer-matrix.md", import.meta.url), "utf8");
+  for (const path of [
+    "about/content/he.html", "about/content/fa.html",
+    "about/monster/index.html", "about/monster/fa.html",
+  ]) {
+    const blob = await readFile(new URL(path, DOCS));
+    const actual = createHash("sha1").update("blob " + blob.length + "\0")
+      .update(blob).digest("hex");
+    assert.ok(matrix.includes("| \`docs/" + path + "\` | \`" + actual + "\` |"),
+      "review matrix is stale for docs/" + path);
+  }
+  assert.equal((matrix.match(/^### A\d{2} —/gm) ?? []).length, 16);
+  assert.equal((matrix.match(/^### B\d{2} —/gm) ?? []).length, 64);
+  assert.equal((matrix.match(/^### D\d{2} /gm) ?? []).length, 21);
+  assert.match(matrix, /Status: NOT HUMAN-APPROVED/);
+});
