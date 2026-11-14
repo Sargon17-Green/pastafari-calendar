@@ -210,6 +210,8 @@ jobs:
       - run: npm run test:update13:intl:browser
       - name: Verify Update 18 browser differential smoke
         run: npm run test:differential:final:browser
+      - name: Verify Persian RTL and accessibility in Firefox desktop/mobile
+        run: npm run test:accessibility -- --browser=firefox
       - name: Upload Update 13 browser/Worker evidence
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1

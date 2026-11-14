@@ -130,3 +130,38 @@ test("all browser modules use the same live i18n registry revision", async () =>
   assert.doesNotMatch(worker, /reverse-ui\.js\?v=20-about-page/);
   assert.match(reverse, /registry\.js\?v=20-about-fa-20261114/);
 });
+
+
+test("Persian About preserves all numeric constraints within each Hebrew source unit", async () => {
+  const [hebrew, persian] = await Promise.all([
+    read("about/content/he.html"),
+    read("about/content/fa.html"),
+  ]);
+  const units = html => {
+    const starts = [...html.matchAll(
+      /<(?:div|section) class="about-section(?: about-lead)?" id="([^"]+)"/g,
+    )];
+    return starts.map((match, index) => ({
+      id: match[1],
+      body: html.slice(match.index, starts[index + 1]?.index ?? html.length),
+    }));
+  };
+  const numbers = html => {
+    const visible = html.replace(/<[^>]+>/g, " ").replace(/&[^;]{1,15};/g, " ")
+      .replace(/[\u06f0-\u06f9\u0660-\u0669]/g, digit => {
+        const code = digit.codePointAt(0);
+        return String(code >= 0x6f0 ? code - 0x6f0 : code - 0x660);
+      })
+      .replace(/\u066c/g, ",").replace(/\u066b/g, ".");
+    return [...new Set([...visible.matchAll(/(?<![\w-])[-−]?\d+(?:[,.]\d+)?/g)]
+      .map(match => match[0]))].sort();
+  };
+  const source = units(hebrew);
+  const localized = units(persian);
+  assert.equal(source.length, 16);
+  assert.deepEqual(localized.map(unit => unit.id), source.map(unit => unit.id));
+  for (let index = 0; index < source.length; index++) {
+    assert.deepEqual(numbers(localized[index].body), numbers(source[index].body),
+      "Numerical source parity changed in About unit " + source[index].id);
+  }
+});
