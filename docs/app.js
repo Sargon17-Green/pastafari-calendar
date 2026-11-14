@@ -17,7 +17,7 @@ import {
   loadLocale,
   messageTemplate,
   translate,
-} from "./i18n/registry.js?v=19-about-page";
+} from "./i18n/registry.js?v=20-about-fa-20261114";
 import {
   KISURRA_OBSERVER,
   requestObserverLocation,
@@ -32,7 +32,7 @@ import {
   populateLanguageSelector,
   resolveBrowserLocale,
   urlWithLanguage,
-} from "./i18n/runtime.js?v=19-about-page";
+} from "./i18n/runtime.js?v=20-about-fa-20261114";
 
 
 const ASSET_REVISION = "10-worker-recovery";
