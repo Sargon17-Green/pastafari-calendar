@@ -71,7 +71,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
     "./about/content/he.html?v=4-about-polish",
     "./styles.css?v=16-about-polish",
     "./app.js?v=25-about-fa-20261114",
-    "./reverse-ui.js?v=20-about-page",
+    "./reverse-ui.js?v=21-about-fa-20261114",
     "./reverse-search-controller.js",
     "./calendar-input-conventions.js?v=9-calendar-input-conventions",
     "./calendar-converters.js?v=9-canonical-names",
