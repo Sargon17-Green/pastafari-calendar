@@ -942,6 +942,45 @@ async function main() {
       assert.equal(await page.locator("#site-usage").isVisible(), true);
       await axeScan(page, report, "about-page-hebrew", { locale: "he" });
     });
+
+    await check("persian-about-and-monster-rtl-responsive-navigation", async () => {
+      await page.setViewportSize(DESKTOP);
+      const persianAboutUrl = new URL("about/?lang=fa#canonical-names", server.baseURL).href;
+      await page.goto(persianAboutUrl, { waitUntil: "domcontentloaded" });
+      await page.locator("#canonical-names summary").first().waitFor({ state: "visible", timeout: 30_000 });
+      assert.equal(await page.locator("html").getAttribute("lang"), "fa");
+      assert.equal(await page.locator("html").getAttribute("dir"), "rtl");
+      assert.equal(await page.locator("#article-content").getAttribute("lang"), "fa");
+      assert.equal(await page.locator("#article-content").getAttribute("dir"), "rtl");
+      assert.equal(await page.locator("#canonical-names summary").count(), 64);
+      assert.equal(await page.locator("#about-toc-list a").count(), 16);
+      assert.equal(await page.locator("#about-language-notice").isHidden(), true);
+      assert.equal(await page.locator("#canonical-names summary").filter({ hasText: "ماسه" }).count(), 1);
+      const monsterHref = await page.locator('#about-the-monster a[href="./monster/fa.html"]').getAttribute("href");
+      assert.equal(monsterHref, "./monster/fa.html");
+      await assertNoGlobalHorizontalOverflow(page, "Persian About desktop");
+      await axeScan(page, report, "persian-about-desktop", { locale: "fa" });
+
+      await page.setViewportSize(MOBILE);
+      await assertNoGlobalHorizontalOverflow(page, "Persian About mobile");
+      assert.equal(await page.locator("#about-toc").isVisible(), true);
+      await axeScan(page, report, "persian-about-mobile", { locale: "fa" });
+
+      const monsterUrl = new URL("about/monster/fa.html", server.baseURL).href;
+      await page.goto(monsterUrl, { waitUntil: "domcontentloaded" });
+      assert.equal(await page.locator("html").getAttribute("lang"), "fa");
+      assert.equal(await page.locator("html").getAttribute("dir"), "rtl");
+      assert.equal(await page.locator('section.level2').count(), 26);
+      assert.equal(await page.locator('section.level3').count(), 13);
+      assert.equal(await page.locator('details.penguin-note').count(), 21);
+      assert.equal(await page.locator('a[href="../?lang=fa"]').count(), 1);
+      await assertNoGlobalHorizontalOverflow(page, "Persian Monster mobile collapsed");
+      await page.locator("details.penguin-appendix > summary").click();
+      await page.locator("details.penguin-note > summary").first().click();
+      assert.equal(await page.locator("details.penguin-note").first().evaluate(el => el.open), true);
+      await assertNoGlobalHorizontalOverflow(page, "Persian Monster mobile expanded");
+      await axeScan(page, report, "persian-monster-mobile", { locale: "fa" });
+    });
   } catch (error) {
     fatalSuiteError = error;
     report.failures += 1;
