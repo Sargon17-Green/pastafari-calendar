@@ -93,8 +93,8 @@ test("new multilingual About module is included in the offline core and versione
   const shell = await readFile(new URL("../docs/about/index.html", import.meta.url), "utf8");
   const about = await readFile(new URL("../docs/about/about.js", import.meta.url), "utf8");
   assert.match(sw, /about\/canonical-names\.js\?v=20261113-multilingual/);
-  assert.match(sw, /about\/about\.js\?v=20261114-fr17/);
-  assert.match(shell, /about\.js\?v=20261114-fr17/);
+  assert.match(sw, /about\/about\.js\?v=20261114-fa18/);
+  assert.match(shell, /about\.js\?v=20261114-fa18/);
   assert.match(about, /synchronizeCanonicalNameSummaries\(elements\["article-content"\], activeLocale\)/);
 });
 

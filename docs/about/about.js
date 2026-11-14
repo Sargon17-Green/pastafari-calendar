@@ -3,18 +3,18 @@
 import {
   loadLocale,
   translate,
-} from "../i18n/registry.js?v=19-about-page";
+} from "../i18n/registry.js?v=20-about-fa-20261114";
 import {
   applyDocumentLocale,
   persistLanguage,
   populateLanguageSelector,
   resolveBrowserLocale,
   urlWithLanguage,
-} from "../i18n/runtime.js?v=19-about-page";
+} from "../i18n/runtime.js?v=20-about-fa-20261114";
 import {
   ARTICLE_FALLBACK_LOCALE,
   resolveArticleLocale,
-} from "./content/registry.js?v=20261114-fr17";
+} from "./content/registry.js?v=20261114-fa18";
 import { synchronizeCanonicalNameSummaries } from "./canonical-names.js?v=20261113-multilingual";
 
 const elements = Object.fromEntries(

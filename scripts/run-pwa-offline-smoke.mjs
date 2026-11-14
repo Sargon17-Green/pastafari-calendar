@@ -662,7 +662,7 @@ const swSource = await readFile(SW_PATH, "utf8");
 const coreAssets = parseStringArray(swSource, "CORE_ASSETS");
 const optionalAssets = parseStringArray(swSource, "OPTIONAL_ASSETS");
 assert.equal(coreAssets.length, 26, `Expected 26 core assets, got ${coreAssets.length}`);
-assert.equal(optionalAssets.length, 38, `Expected 38 optional static assets (four original + 34 published translation pages), got ${optionalAssets.length}`);
+assert.equal(optionalAssets.length, 40, `Expected 40 optional static assets (four original + 36 published translation pages), got ${optionalAssets.length}`);
 console.log(`[INFO] install composition: core=${coreAssets.length}, optional-precache=0, optional-static=${optionalAssets.length}`);
 
 const serverState = createServerState(swSource);
@@ -711,7 +711,7 @@ try {
   assert.equal(failedLocale.workspaceHidden, false, "Failed optional locale hid the application");
   assert.equal(failedLocale.loadingHidden, true, "Failed optional locale left the application loading");
   assert.equal(failedLocale.errorHidden, true, "Failed optional locale displayed the engine error panel");
-  assert.equal((await assertRuntimePresence(page, "./i18n/locales/fr.js?v=20-about-canonical-names", false)).present, false);
+  assert.equal((await assertRuntimePresence(page, "./i18n/locales/fr.js?v=21-about-fa-20261114", false)).present, false);
   const newFrBad = diagnostics.badResponses.slice(expectedFr.badResponses);
   assert(newFrBad.every((entry) => entry.status === 503 && entry.url.includes("/i18n/locales/fr.js")), `Unexpected HTTP diagnostics during failed optional locale: ${JSON.stringify(newFrBad)}`);
   const newFrFailures = diagnostics.requestFailures.slice(expectedFr.requestFailures);
@@ -729,7 +729,7 @@ try {
   const hebrew = await selectLocale(page, "he", "he");
   const heAfter = serverState.requests.filter((entry) => entry.url.includes("/i18n/locales/he.js")).length;
   assert.equal(heAfter - heBefore, 1, "Hebrew locale should be fetched once on first successful use");
-  const cachedHebrew = await assertRuntimePresence(page, "./i18n/locales/he.js?v=20-about-canonical-names", true);
+  const cachedHebrew = await assertRuntimePresence(page, "./i18n/locales/he.js?v=21-about-fa-20261114", true);
   assert.equal(hebrew.lang, "he");
   console.log(`[PASS] successful on-demand locale cached: ${JSON.stringify(cachedHebrew)}`);
 
@@ -745,7 +745,7 @@ try {
   const onlineFrenchSummaries = await page.locator("#article-content #canonical-names summary").count();
   assert.equal(onlineFrenchSummaries, 64, "French About must expose all canonical names");
   await assertRuntimePresence(page, "./about/content/fr.html?v=20261114-fr17", true);
-  await assertRuntimePresence(page, "./i18n/locales/fr.js?v=20-about-canonical-names", true);
+  await assertRuntimePresence(page, "./i18n/locales/fr.js?v=21-about-fa-20261114", true);
 
   const onlineFrMonster = await page.goto(`${origin}${BASE_PATH}about/monster/fr.html`, {
     waitUntil: "load", timeout: UI_TIMEOUT_MS,
@@ -754,6 +754,30 @@ try {
   assert.equal(await page.locator("details.penguin-note").count(), 21);
   await assertRuntimePresence(page, "./about/monster/fr.html", true);
   console.log("[PASS] French About and annotated Monster pages cached on first online visit");
+
+  // The newly published Persian pages and language dictionary must also be
+  // cached on first use, not installed eagerly or fetched after disconnect.
+  diagnostics.phase = "prime-persian-pages";
+  const onlineFaAbout = await page.goto(`${origin}${BASE_PATH}about/?lang=fa#canonical-names`, {
+    waitUntil: "load", timeout: UI_TIMEOUT_MS,
+  });
+  assertSuccessfulNavigation(onlineFaAbout, "online Persian About");
+  await page.locator('#article-content[lang="fa"] #canonical-names')
+    .waitFor({ state: "attached", timeout: UI_TIMEOUT_MS });
+  assert.equal(await page.locator("#article-content #canonical-names summary").count(), 64);
+  assert.equal(await page.locator("html").getAttribute("dir"), "rtl");
+  assert.equal(await page.locator("#canonical-names summary").filter({ hasText: "ماسه" }).count(), 1);
+  await assertRuntimePresence(page, "./about/content/fa.html?v=20261114-fa18", true);
+  await assertRuntimePresence(page, "./i18n/locales/fa.js?v=21-about-fa-20261114", true);
+
+  const onlineFaMonster = await page.goto(`${origin}${BASE_PATH}about/monster/fa.html`, {
+    waitUntil: "load", timeout: UI_TIMEOUT_MS,
+  });
+  assertSuccessfulNavigation(onlineFaMonster, "online Persian Monster");
+  assert.equal(await page.locator("details.penguin-note").count(), 21);
+  assert.equal(await page.locator("html").getAttribute("lang"), "fa");
+  await assertRuntimePresence(page, "./about/monster/fa.html", true);
+  console.log("[PASS] Persian About, native locale and annotated Monster cached on first online visit");
 
   // Keep the original Hebrew persisted-locale and offline baseline unchanged.
   const restoreHebrew = await page.goto(`${origin}${BASE_PATH}?lang=he`, {
@@ -861,6 +885,54 @@ try {
   assertOfflineResponsesCameFromServiceWorker(diagnostics, "offline-french-monster", "French Monster offline assets");
   console.log("[PASS] both French explanation pages survive offline navigation with annotations and stylesheet");
 
+  diagnostics.phase = "offline-persian-about";
+  const faOffline = await page.goto(`${origin}${BASE_PATH}about/?lang=fa#canonical-names`, {
+    waitUntil: "load", timeout: UI_TIMEOUT_MS,
+  });
+  const faOfflineNavigation = assertSuccessfulNavigation(faOffline, "offline Persian About");
+  diagnostics.successfulOfflineNavigationPhases.add("offline-persian-about");
+  assert.equal(faOfflineNavigation.fromServiceWorker, true);
+  await page.locator('#article-content[lang="fa"] #canonical-names')
+    .waitFor({ state: "attached", timeout: UI_TIMEOUT_MS });
+  const faOfflineState = await page.evaluate(() => ({
+    pageLanguage: document.documentElement.lang,
+    pageDirection: document.documentElement.dir,
+    articleLanguage: document.querySelector("#article-content")?.lang,
+    articleDirection: document.querySelector("#article-content")?.dir,
+    names: document.querySelectorAll("#article-content #canonical-names summary").length,
+    localizedMonsterLink: Boolean(document.querySelector('#article-content a[href="./monster/fa.html"]')),
+    sandLabel: [...document.querySelectorAll("#article-content #canonical-names summary")]
+      .some(element => element.textContent === "ماسه"),
+  }));
+  assert.deepEqual(faOfflineState, {
+    pageLanguage: "fa", pageDirection: "rtl",
+    articleLanguage: "fa", articleDirection: "rtl",
+    names: 64, localizedMonsterLink: true, sandLabel: true,
+  });
+  assertOfflineResponsesCameFromServiceWorker(diagnostics, "offline-persian-about", "Persian About offline assets");
+
+  diagnostics.phase = "offline-persian-monster";
+  const faMonsterOffline = await page.goto(`${origin}${BASE_PATH}about/monster/fa.html`, {
+    waitUntil: "load", timeout: UI_TIMEOUT_MS,
+  });
+  const faMonsterNavigation = assertSuccessfulNavigation(faMonsterOffline, "offline Persian Monster");
+  diagnostics.successfulOfflineNavigationPhases.add("offline-persian-monster");
+  assert.equal(faMonsterNavigation.fromServiceWorker, true);
+  const faMonsterState = await page.evaluate(() => ({
+    lang: document.documentElement.lang,
+    dir: document.documentElement.dir,
+    notes: document.querySelectorAll("details.penguin-note").length,
+    sectionCount: document.querySelectorAll("section.level2, section.level3").length,
+    stylesheet: document.querySelector('link[rel="stylesheet"]')?.getAttribute("href"),
+    returnLink: Boolean(document.querySelector('a[href="../?lang=fa"]')),
+  }));
+  assert.deepEqual(faMonsterState, {
+    lang: "fa", dir: "rtl", notes: 21, sectionCount: 39,
+    stylesheet: "../../styles.css?v=16-about-polish", returnLink: true,
+  });
+  assertOfflineResponsesCameFromServiceWorker(diagnostics, "offline-persian-monster", "Persian Monster offline assets");
+  console.log("[PASS] Persian About, Monster and localized names survive fully offline navigation");
+
   diagnostics.phase = "offline-query";
   const queryUrl = `${origin}${BASE_PATH}?lang=he&offline-state=1`;
   const offlineQuery = await page.goto(queryUrl, { waitUntil: "load", timeout: UI_TIMEOUT_MS });
@@ -890,7 +962,7 @@ try {
   assert.equal(neverLoaded.workspaceHidden, false, "Never-loaded offline locale broke the application");
   assert.equal(neverLoaded.loadingHidden, true, "Never-loaded offline locale left loading state active");
   assert.equal(neverLoaded.errorHidden, true, "Never-loaded offline locale displayed the engine error panel");
-  assert.equal((await assertRuntimePresence(page, "./i18n/locales/de.js?v=20-about-canonical-names", false)).present, false);
+  assert.equal((await assertRuntimePresence(page, "./i18n/locales/de.js?v=21-about-fa-20261114", false)).present, false);
   const newDeFailures = diagnostics.requestFailures.slice(expectedDe.requestFailures);
   assert(newDeFailures.every((entry) => entry.url.includes("/i18n/locales/de.js")), `Unexpected request failure during never-loaded offline locale: ${JSON.stringify(newDeFailures)}`);
   const newDeBad = diagnostics.badResponses.slice(expectedDe.badResponses);
@@ -920,7 +992,7 @@ try {
   const cachesAfterFailedUpgrade = await cacheSnapshot(page);
   assert.deepEqual(currentCoreCaches(cachesAfterFailedUpgrade), aCore, "Failed upgrade replaced or removed the previous core cache");
   assert(!cachesAfterFailedUpgrade.names.some((name) => name.includes("test-B")), "Failed B core cache residue remains");
-  await assertRuntimePresence(page, "./i18n/locales/he.js?v=20-about-canonical-names", true);
+  await assertRuntimePresence(page, "./i18n/locales/he.js?v=21-about-fa-20261114", true);
   const newBBad = diagnostics.badResponses.slice(expectedB.badResponses);
   assert(newBBad.every((entry) => entry.status === 503 && entry.url.includes("/styles.css")), `Unexpected HTTP diagnostic during failed core upgrade: ${JSON.stringify(newBBad)}`);
   const newBFailures = diagnostics.requestFailures.slice(expectedB.requestFailures);
@@ -945,7 +1017,7 @@ try {
   diagnostics.phase = "legacy-runtime-migration";
   const legacyMigration = await page.evaluate(async ({ runtimeCache }) => {
     const registration = await navigator.serviceWorker.ready;
-    const localeUrl = new URL("./i18n/locales/fr.js?v=20-about-canonical-names", registration.scope).href;
+    const localeUrl = new URL("./i18n/locales/fr.js?v=21-about-fa-20261114", registration.scope).href;
     const response = await fetch(localeUrl);
     if (!response.ok) throw new Error(`Could not seed legacy locale fixture: HTTP ${response.status}`);
     const legacyName = "pastafari-static-reverse-search-lazy-i18n-10-unified-i18n";
@@ -955,7 +1027,7 @@ try {
     await runtime.delete(localeUrl);
     return { legacyName, localeUrl };
   }, { runtimeCache: RUNTIME_CACHE });
-  assert.equal((await assertRuntimePresence(page, "./i18n/locales/fr.js?v=20-about-canonical-names", false)).present, false);
+  assert.equal((await assertRuntimePresence(page, "./i18n/locales/fr.js?v=21-about-fa-20261114", false)).present, false);
   console.log(`[PASS] seeded legacy static-cache locale for migration test: ${JSON.stringify(legacyMigration)}`);
 
   diagnostics.phase = "successful-core-upgrade";
@@ -970,8 +1042,8 @@ try {
   assert(cCore[0].includes("test-C"), `Current core cache is not version C: ${cCore[0]}`);
   assert(!cachesC.names.includes(aCore[0]), "Old version A core cache was not cleaned up");
   assert(cachesC.names.includes(RUNTIME_CACHE), "Runtime cache was removed during successful upgrade");
-  await assertRuntimePresence(page, "./i18n/locales/he.js?v=20-about-canonical-names", true);
-  await assertRuntimePresence(page, "./i18n/locales/fr.js?v=20-about-canonical-names", true);
+  await assertRuntimePresence(page, "./i18n/locales/he.js?v=21-about-fa-20261114", true);
+  await assertRuntimePresence(page, "./i18n/locales/fr.js?v=21-about-fa-20261114", true);
   assert(!cachesC.names.includes(legacyMigration.legacyName), "Legacy static cache was not removed after compatible locale migration");
   console.log("[PASS] successful activation cleans old static caches and preserves/migrates compatible runtime locale entries");
 

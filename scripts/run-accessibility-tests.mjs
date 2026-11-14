@@ -444,7 +444,14 @@ async function assertTabCycle(page) {
   await page.locator(".skip-link").focus();
   const seen = [];
   let returned = false;
-  for (let index = 0; index < 250; index += 1) {
+  // Full-page calendars can expose more than 250 focusable elements.
+  // Bound the traversal by the current DOM inventory, not a Chromium-specific
+  // historical constant; still fail closed if focus never returns.
+  const candidates = await page.locator(
+    'a[href], button, input, select, textarea, summary, [tabindex]',
+  ).count();
+  const limit = Math.min(2000, Math.max(300, candidates + 32));
+  for (let index = 0; index < limit; index += 1) {
     await page.keyboard.press("Tab");
     const current = await page.evaluate(() => {
       const element = document.activeElement;
@@ -480,7 +487,7 @@ async function assertTabCycle(page) {
       break;
     }
   }
-  assert.equal(returned, true, "Tab traversal must leave every region and eventually cycle back to the skip link");
+  assert.equal(returned, true, `Tab traversal must cycle back to the skip link within ${limit} presses (DOM candidates: ${candidates}); final focus sequence: ${JSON.stringify(seen.slice(-16))}`);
   for (const id of ["language-selector", "target-calendar", "comparison-toggle", "previous-cutlet", "today-button", "next-cutlet"]) {
     assert.ok(seen.some((item) => item.id === id), `keyboard traversal must reach #${id}`);
   }
@@ -541,9 +548,9 @@ async function assertKeyboardOperations(page) {
   assert.equal(await page.evaluate(() => document.activeElement?.id), "previous-cutlet", "Space activation must work and focus must remain on navigation");
 }
 
-async function saveScreenshot(page, name) {
+async function saveScreenshot(page, name, { fullPage = true } = {}) {
   const filename = path.join(SCREENSHOTS, name);
-  await page.screenshot({ path: filename, fullPage: true });
+  await page.screenshot({ path: filename, fullPage });
   return path.relative(ROOT, filename).replaceAll(path.sep, "/");
 }
 
@@ -672,6 +679,7 @@ async function main() {
     } catch (error) {
       entry.result = "FAIL";
       entry.error = errorText(error);
+      console.error(`[FAIL details] ${id}: ${entry.error}`);
       report.failures += 1;
       try {
         entry.screenshot = await saveScreenshot(page, `FAIL-${slug(id)}.png`);
@@ -903,7 +911,9 @@ async function main() {
       await page.setViewportSize(REFLOW_400);
       await assertNoGlobalHorizontalOverflow(page, "400% reflow proxy (320 CSS px from 1280px reference)");
       await assertKeyControlsInsideViewport(page);
-      const shot = await saveScreenshot(page, "reflow-400-percent-proxy.png");
+      // Firefox rejects full-page screenshots taller than 32,767 px.
+      // Reflow/clip assertions above still cover the entire document.
+      const shot = await saveScreenshot(page, "reflow-400-percent-proxy.png", { fullPage: false });
       report.screenshots.push(shot);
     });
 
@@ -941,6 +951,45 @@ async function main() {
       assert.equal(await page.locator(".about-toc").isVisible(), true);
       assert.equal(await page.locator("#site-usage").isVisible(), true);
       await axeScan(page, report, "about-page-hebrew", { locale: "he" });
+    });
+
+    await check("persian-about-and-monster-rtl-responsive-navigation", async () => {
+      await page.setViewportSize(DESKTOP);
+      const persianAboutUrl = new URL("about/?lang=fa#canonical-names", server.baseURL).href;
+      await page.goto(persianAboutUrl, { waitUntil: "domcontentloaded" });
+      await page.locator("#canonical-names summary").first().waitFor({ state: "visible", timeout: 30_000 });
+      assert.equal(await page.locator("html").getAttribute("lang"), "fa");
+      assert.equal(await page.locator("html").getAttribute("dir"), "rtl");
+      assert.equal(await page.locator("#article-content").getAttribute("lang"), "fa");
+      assert.equal(await page.locator("#article-content").getAttribute("dir"), "rtl");
+      assert.equal(await page.locator("#canonical-names summary").count(), 64);
+      assert.equal(await page.locator("#about-toc-list a").count(), 16);
+      assert.equal(await page.locator("#about-language-notice").isHidden(), true);
+      assert.equal(await page.locator("#canonical-names summary").filter({ hasText: "ماسه" }).count(), 1);
+      const monsterHref = await page.locator('#about-the-monster a[href="./monster/fa.html"]').getAttribute("href");
+      assert.equal(monsterHref, "./monster/fa.html");
+      await assertNoGlobalHorizontalOverflow(page, "Persian About desktop");
+      await axeScan(page, report, "persian-about-desktop", { locale: "fa" });
+
+      await page.setViewportSize(MOBILE);
+      await assertNoGlobalHorizontalOverflow(page, "Persian About mobile");
+      assert.equal(await page.locator("#about-toc").isVisible(), true);
+      await axeScan(page, report, "persian-about-mobile", { locale: "fa" });
+
+      const monsterUrl = new URL("about/monster/fa.html", server.baseURL).href;
+      await page.goto(monsterUrl, { waitUntil: "domcontentloaded" });
+      assert.equal(await page.locator("html").getAttribute("lang"), "fa");
+      assert.equal(await page.locator("html").getAttribute("dir"), "rtl");
+      assert.equal(await page.locator('section.level2').count(), 26);
+      assert.equal(await page.locator('section.level3').count(), 13);
+      assert.equal(await page.locator('details.penguin-note').count(), 21);
+      assert.equal(await page.locator('a[href="../?lang=fa"]').count(), 1);
+      await assertNoGlobalHorizontalOverflow(page, "Persian Monster mobile collapsed");
+      await page.locator("details.penguin-appendix > summary").click();
+      await page.locator("details.penguin-note > summary").first().click();
+      assert.equal(await page.locator("details.penguin-note").first().evaluate(el => el.open), true);
+      await assertNoGlobalHorizontalOverflow(page, "Persian Monster mobile expanded");
+      await axeScan(page, report, "persian-monster-mobile", { locale: "fa" });
     });
   } catch (error) {
     fatalSuiteError = error;
