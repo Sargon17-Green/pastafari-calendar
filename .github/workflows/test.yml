@@ -123,7 +123,7 @@ jobs:
           output.mkdir(parents=True, exist_ok=True)
           paths = sorted(
               raw.decode("utf-8") for raw in
-              check_output(["git", "ls-files", "-z"]).split(b"\\0") if raw
+              check_output(["git", "ls-files", "-z"]).split(b"\0") if raw
           )
           def digest(data):
               return sha256(data).hexdigest()
@@ -132,7 +132,7 @@ jobs:
               if p.startswith("docs/") and p != "docs/SHA256SUMS.txt"
           ]
           docs_manifest = "".join(
-              f"{digest((repo / p).read_bytes())}  ./{p[5:]}\\n"
+              f"{digest((repo / p).read_bytes())}  ./{p[5:]}\n"
               for p in docs_paths
           ).encode("utf-8")
           (output / "docs-SHA256SUMS.txt").write_bytes(docs_manifest)
@@ -141,7 +141,7 @@ jobs:
               if p != "SHA256SUMS.txt" and not p.endswith(".tgz")
           ]
           root_manifest = "".join(
-              f"{digest(docs_manifest if p == 'docs/SHA256SUMS.txt' else (repo / p).read_bytes())}  ./{p}\\n"
+              f"{digest(docs_manifest if p == 'docs/SHA256SUMS.txt' else (repo / p).read_bytes())}  ./{p}\n"
               for p in root_paths
           )
           (output / "root-SHA256SUMS.txt").write_text(root_manifest, encoding="utf-8")
