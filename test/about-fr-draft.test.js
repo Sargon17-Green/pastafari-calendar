@@ -134,22 +134,32 @@ test("unpublished French Monster companion preserves the first source section id
 });
 
 
-test("unpublished French penguin appendix mirrors the Hebrew subheading prefix and editorial notes", async () => {
-  const [hebrew, partial] = await Promise.all([
+test("full unpublished French penguin appendix preserves 13 IDs, 21 notes and complete Hebrew structure", async () => {
+  const [hebrew, french] = await Promise.all([
     readFile(new URL("monster/index.html", ROOT), "utf8"),
     readFile(new URL("drafts/fr.monster.penguin.partial.html", ROOT), "utf8"),
   ]);
-  const sectionIds = (html) => [...html.matchAll(/<section id="([^"]+)" class="level3">/g)]
-    .map((m) => m[1]);
-  const source = sectionIds(hebrew);
-  const translated = sectionIds(partial);
-  assert.equal(source.length, 13);
-  assert.deepEqual(translated, source.slice(0, 2));
-  assert.equal((partial.match(/<details class="penguin-note">/g) ?? []).length, 3);
-  assert.equal((partial.match(/<section\b/g) ?? []).length, (partial.match(/<\/section>/g) ?? []).length);
-  assert.equal((partial.match(/<details\b/g) ?? []).length, (partial.match(/<\/details>/g) ?? []).length);
-  assert.match(partial, /BROUILLON NON PUBLIÉ/);
-  assert.match(partial, /SOUS-SECTIONS RESTANTES : 11 sur 13/);
+  const appendixStart = '<section id="נספח-מדוע-אין-להפקיד-ביתחרושת-לדודישמש-בידי-פינגווינים"';
+  const begin = hebrew.indexOf(appendixStart);
+  assert.ok(begin >= 0, "Hebrew canonical appendix must exist");
+  const source = hebrew.slice(begin, hebrew.indexOf("</article>", begin));
+  const target = french.slice(french.indexOf(appendixStart));
+  const sectionIds = html => [...html.matchAll(/<section id="([^"]+)" class="level3">/g)]
+    .map(match => match[1]);
+  assert.equal(sectionIds(source).length, 13);
+  assert.deepEqual(sectionIds(target), sectionIds(source));
+  assert.equal((source.match(/<details class="penguin-note">/g) ?? []).length, 21);
+  assert.equal((target.match(/<details class="penguin-note">/g) ?? []).length, 21);
+  const structure = html => [...html.matchAll(
+    /<(\/?)(section|details|summary|div|h2|h3|p|strong|em|ul|ol|li|a)\b[^>]*>/g,
+  )].map(match => match[1] + match[2]);
+  const referenceSequence = structure(source);
+  assert.equal(referenceSequence.length, 354);
+  assert.deepEqual(structure(target), referenceSequence, "nested notes must retain exact source positions");
+  assert.equal((target.match(/<section\b/g) ?? []).length, (target.match(/<\/section>/g) ?? []).length);
+  assert.equal((target.match(/<details\b/g) ?? []).length, (target.match(/<\/details>/g) ?? []).length);
+  assert.match(french, /BROUILLON NON PUBLIÉ/);
+  assert.doesNotMatch(french, /SOUS-SECTIONS RESTANTES/);
 });
 
 
