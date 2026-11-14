@@ -4,7 +4,7 @@ import test from "node:test";
 
 import { ARTICLE_LOCALES } from "../docs/about/content/registry.js";
 import faLocale from "../docs/i18n/locales/fa.js";
-import { CUTLETS } from "../docs/i18n/calendar-identifiers.js";
+import { CUTLETS, MONTHS } from "../docs/i18n/calendar-identifiers.js";
 
 const ROOT = new URL("../docs/about/", import.meta.url);
 const EXPECTED_PREFIX = Object.freeze([
@@ -106,4 +106,35 @@ test("Persian 17 cutlet disclosure texts match the canonical labels and Hebrew m
   assert.match(cutlets, /این اجازهٔ واژگانی هیچ تغییری/);
   assert.match(cutlets, /کوزهٔ خالی/);
   assert.equal(ARTICLE_LOCALES.fa, undefined);
+});
+
+test("Persian 47 month disclosures match canonical IDs, Hebrew structure and critical exceptions", async () => {
+  const [hebrew, months] = await Promise.all([
+    readFile(new URL("content/he.html", ROOT), "utf8"),
+    readFile(new URL("drafts/fa.canonical-names.months.partial.html", ROOT), "utf8"),
+  ]);
+  const start = hebrew.indexOf("<h3>47 החודשים</h3>");
+  assert.ok(start >= 0, "Hebrew canonical month heading");
+  const end = hebrew.indexOf("</ul>", start) + "</ul>".length;
+  assert.ok(end > start, "Hebrew canonical month disclosures");
+  const sourceBlock = hebrew.slice(start, end);
+  const labels = [...months.matchAll(/<summary>([^<]+)<\/summary>/g)].map((match) => match[1]);
+  assert.equal(labels.length, 47);
+  assert.deepEqual(labels, MONTHS.map(({ id }) => faLocale.calendar.months[id]));
+  assert.equal((months.match(/<p>/g) ?? []).length, 47);
+  const structure = (html) => [...html.matchAll(
+    /<(\/?)(h3|ul|li|details|summary|p|code)\b[^>]*>/g,
+  )].map((match) => match[1] + match[2]);
+  assert.equal(structure(sourceBlock).length, 384);
+  assert.deepEqual(structure(months), structure(sourceBlock));
+  assert.ok(months.includes("<code>|x − 3/5| ≤ 1/367</code>"));
+  assert.ok(months.includes("<code>−6°</code>"));
+  assert.match(months, /نخستین نوزادِ زنده/);
+  assert.match(months, /سقط یا مرده‌زایی/);
+  assert.match(months, /180–220 میلی‌لیتر/);
+  assert.match(months, /گنجایشِ ظرف است، نه مقدار/);
+  assert.match(months, /هیچ تصمیمِ کانونیِ قطعی/);
+  assert.match(months, /دری که بدون چرخاندنِ کلید بسته شده/);
+  assert.match(months, /منظور ببر نیست/);
+  assert.equal(ARTICLE_LOCALES.fa, undefined, "incomplete draft must stay unpublished");
 });
