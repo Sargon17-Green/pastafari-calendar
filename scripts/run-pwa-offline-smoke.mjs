@@ -662,7 +662,7 @@ const swSource = await readFile(SW_PATH, "utf8");
 const coreAssets = parseStringArray(swSource, "CORE_ASSETS");
 const optionalAssets = parseStringArray(swSource, "OPTIONAL_ASSETS");
 assert.equal(coreAssets.length, 26, `Expected 26 core assets, got ${coreAssets.length}`);
-assert.equal(optionalAssets.length, 36, `Expected 36 optional static assets (four original + 32 approved translation pages), got ${optionalAssets.length}`);
+assert.equal(optionalAssets.length, 38, `Expected 38 optional static assets (four original + 34 published translation pages), got ${optionalAssets.length}`);
 console.log(`[INFO] install composition: core=${coreAssets.length}, optional-precache=0, optional-static=${optionalAssets.length}`);
 
 const serverState = createServerState(swSource);
@@ -733,6 +733,35 @@ try {
   assert.equal(hebrew.lang, "he");
   console.log(`[PASS] successful on-demand locale cached: ${JSON.stringify(cachedHebrew)}`);
 
+  // Prime French article and Monster as optional assets before disconnecting.
+  // They must be available on later visits without network or browser HTTP cache.
+  diagnostics.phase = "prime-french-pages";
+  const onlineFrAbout = await page.goto(`${origin}${BASE_PATH}about/?lang=fr#canonical-names`, {
+    waitUntil: "load", timeout: UI_TIMEOUT_MS,
+  });
+  assertSuccessfulNavigation(onlineFrAbout, "online French About");
+  await page.locator('#article-content[lang="fr"] #canonical-names')
+    .waitFor({ state: "attached", timeout: UI_TIMEOUT_MS });
+  const onlineFrenchSummaries = await page.locator("#article-content #canonical-names summary").count();
+  assert.equal(onlineFrenchSummaries, 64, "French About must expose all canonical names");
+  await assertRuntimePresence(page, "./about/content/fr.html?v=20261114-fr17", true);
+  await assertRuntimePresence(page, "./i18n/locales/fr.js?v=20-about-canonical-names", true);
+
+  const onlineFrMonster = await page.goto(`${origin}${BASE_PATH}about/monster/fr.html`, {
+    waitUntil: "load", timeout: UI_TIMEOUT_MS,
+  });
+  assertSuccessfulNavigation(onlineFrMonster, "online French Monster");
+  assert.equal(await page.locator("details.penguin-note").count(), 21);
+  await assertRuntimePresence(page, "./about/monster/fr.html", true);
+  console.log("[PASS] French About and annotated Monster pages cached on first online visit");
+
+  // Keep the original Hebrew persisted-locale and offline baseline unchanged.
+  const restoreHebrew = await page.goto(`${origin}${BASE_PATH}?lang=he`, {
+    waitUntil: "load", timeout: UI_TIMEOUT_MS,
+  });
+  assertSuccessfulNavigation(restoreHebrew, "restore Hebrew calendar before offline checks");
+  assert.equal((await calendarSnapshot(page, "restored Hebrew calendar", diagnostics)).lang, "he");
+
   diagnostics.phase = "generic-network-only";
   const networkOnlyUrl = `${origin}${BASE_PATH}__network_only__.txt?state=12345`;
   const networkOnlyText = await page.evaluate(async (url) => (await fetch(url)).text(), networkOnlyUrl);
@@ -787,6 +816,50 @@ try {
   assert.equal(aboutSnapshot.hasCalendarWorkspace, false, "About page must not instantiate the calendar workspace");
   assert.equal(aboutSnapshot.tocLinks, 16, "About page must expose all 15 canonical sections and the usage guide offline");
   assertOfflineResponsesCameFromServiceWorker(diagnostics, "offline-about", "offline about-page subresources");
+
+  diagnostics.phase = "offline-french-about";
+  const frOffline = await page.goto(`${origin}${BASE_PATH}about/?lang=fr#canonical-names`, {
+    waitUntil: "load", timeout: UI_TIMEOUT_MS,
+  });
+  const frOfflineNavigation = assertSuccessfulNavigation(frOffline, "offline French About");
+  diagnostics.successfulOfflineNavigationPhases.add("offline-french-about");
+  assert.equal(frOfflineNavigation.fromServiceWorker, true);
+  await page.locator('#article-content[lang="fr"] #canonical-names')
+    .waitFor({ state: "attached", timeout: UI_TIMEOUT_MS });
+  const frOfflineState = await page.evaluate(() => ({
+    pageLanguage: document.documentElement.lang,
+    pageDirection: document.documentElement.dir,
+    articleLanguage: document.querySelector("#article-content")?.lang,
+    articleDirection: document.querySelector("#article-content")?.dir,
+    names: document.querySelectorAll("#article-content #canonical-names summary").length,
+    localizedMonsterLink: Boolean(document.querySelector('#article-content a[href="./monster/fr.html"]')),
+  }));
+  assert.deepEqual(frOfflineState, {
+    pageLanguage: "fr", pageDirection: "ltr",
+    articleLanguage: "fr", articleDirection: "ltr",
+    names: 64, localizedMonsterLink: true,
+  });
+  assertOfflineResponsesCameFromServiceWorker(diagnostics, "offline-french-about", "French About offline assets");
+
+  diagnostics.phase = "offline-french-monster";
+  const frMonsterOffline = await page.goto(`${origin}${BASE_PATH}about/monster/fr.html`, {
+    waitUntil: "load", timeout: UI_TIMEOUT_MS,
+  });
+  const monsterNavigation = assertSuccessfulNavigation(frMonsterOffline, "offline French Monster");
+  diagnostics.successfulOfflineNavigationPhases.add("offline-french-monster");
+  assert.equal(monsterNavigation.fromServiceWorker, true);
+  const monsterState = await page.evaluate(() => ({
+    lang: document.documentElement.lang,
+    dir: document.documentElement.dir,
+    notes: document.querySelectorAll("details.penguin-note").length,
+    stylesheet: document.querySelector('link[rel="stylesheet"]')?.getAttribute("href"),
+  }));
+  assert.deepEqual(monsterState, {
+    lang: "fr", dir: "ltr", notes: 21,
+    stylesheet: "../../styles.css?v=16-about-polish",
+  });
+  assertOfflineResponsesCameFromServiceWorker(diagnostics, "offline-french-monster", "French Monster offline assets");
+  console.log("[PASS] both French explanation pages survive offline navigation with annotations and stylesheet");
 
   diagnostics.phase = "offline-query";
   const queryUrl = `${origin}${BASE_PATH}?lang=he&offline-state=1`;

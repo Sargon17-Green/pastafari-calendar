@@ -65,9 +65,9 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   const requiredCore = [
     "./index.html",
     "./about/index.html",
-    "./about/about.js?v=20261113-multilingual",
+    "./about/about.js?v=20261114-fr17",
     "./about/canonical-names.js?v=20261113-multilingual",
-    "./about/content/registry.js?v=20261010-approved16",
+    "./about/content/registry.js?v=20261114-fr17",
     "./about/content/he.html?v=4-about-polish",
     "./styles.css?v=16-about-polish",
     "./app.js?v=24-worker-recovery",
@@ -99,14 +99,14 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
     "./icons/icon-192.png",
     "./icons/icon-512.png",
   ];
-  const approvedTranslations = ["en", "af", "ar", "az", "be", "bg", "bn", "bs", "ca", "cs", "da", "de", "el", "eo", "es", "et"];
+  const approvedTranslations = ["en", "af", "ar", "az", "be", "bg", "bn", "bs", "ca", "cs", "da", "de", "el", "eo", "es", "et", "fr"];
   const translationAssets = approvedTranslations.flatMap((code) => [
-    "./about/content/" + code + ".html?v=" + (code === "et" ? "20261010-approved16" : code === "es" ? "20261010-approved15" : code === "eo" ? "20261010-approved14" : code === "el" ? "20261009-approved13" : "20261009-approved12"),
+    "./about/content/" + code + ".html?v=" + (code === "fr" ? "20261114-fr17" : code === "et" ? "20261010-approved16" : code === "es" ? "20261010-approved15" : code === "eo" ? "20261010-approved14" : code === "el" ? "20261009-approved13" : "20261009-approved12"),
     "./about/monster/" + code + ".html",
   ]);
   assert.deepEqual(optionalAssets, [...requiredOptional, ...translationAssets],
-    "OPTIONAL_ASSETS must contain the four metadata/icons and exactly the 32 approved translation pages");
-  assert.equal(optionalAssets.length, 36);
+    "OPTIONAL_ASSETS must contain the four metadata/icons and exactly the 34 published translation pages");
+  assert.equal(optionalAssets.length, 38);
   assert.deepEqual(coreAssets.filter((entry) => optionalAssets.includes(entry)), [], "Core and optional lists must not overlap");
 
   await assertDeclaredAssetsExist(coreAssets);
@@ -117,7 +117,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   assert.equal(LOCALES.length, 73, "PWA accounting expects the current 73 registered locales");
   assert.equal(LOCALES.filter(({ code }) => code !== "en").length, 72, "Every non-English locale is optional/on-demand");
 
-  assert.match(source, /const VERSION = "pastafari-static-pwa-about-canonical-multilingual-20261113";/);
+  assert.match(source, /const VERSION = "pastafari-static-pwa-about-fr-20261114";/);
   assert.match(source, /const RUNTIME_CACHE = "pastafari-runtime-assets";/);
   assert.match(source, /const OPTIONAL_LOCALE_PATH = \/\^\\\/i18n\\\/locales/);
   assert.match(source, /url\.search === LOCALE_REVISION_SEARCH/);

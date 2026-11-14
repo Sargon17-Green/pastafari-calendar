@@ -26,7 +26,7 @@ const IDS = Object.freeze([
   "summary",
 ]);
 
-test("unpublished French draft has all 16 current-canon article IDs and 15 navigable sections", async () => {
+test("the original French source draft has all 16 current-canon article IDs and 15 navigable sections", async () => {
   const html = await readFile(new URL("drafts/fr.partial.html", ROOT), "utf8");
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
   assert.deepEqual(ids, IDS);
@@ -34,7 +34,7 @@ test("unpublished French draft has all 16 current-canon article IDs and 15 navig
   assert.equal((html.match(/data-toc-section/g) ?? []).length, 15);
   assert.equal((html.match(/<details class="about-name-details">/g) ?? []).length, 64);
   assert.equal((html.match(/<summary>/g) ?? []).length, 64);
-  assert.equal(ARTICLE_LOCALES.fr, undefined, "a partial translation must never be registered as published");
+  assert.equal(ARTICLE_LOCALES.fr?.code, "fr", "only the release candidate branch may register the complete French article");
 });
 
 test("all 64 French names retain canonical ID order and approved UI labels", async () => {
@@ -218,14 +218,66 @@ test("complete standalone French Monster draft is correctly assembled and still 
 });
 
 
+test("French release candidate has complete localized About and Monster pages without draft indexing instructions", async () => {
+  const [article, monster, draftArticle, draftMonster] = await Promise.all([
+    readFile(new URL("content/fr.html", ROOT), "utf8"),
+    readFile(new URL("monster/fr.html", ROOT), "utf8"),
+    readFile(new URL("drafts/fr.partial.html", ROOT), "utf8"),
+    readFile(new URL("drafts/fr.monster.complete.html", ROOT), "utf8"),
+  ]);
+  assert.equal(ARTICLE_LOCALES.fr.code, "fr");
+  assert.equal(ARTICLE_LOCALES.fr.dir, "ltr");
+  assert.equal(ARTICLE_LOCALES.fr.asset, "./content/fr.html?v=20261114-fr17");
+  assert.equal((article.match(/<details class="about-name-details">/g) ?? []).length, 64);
+  assert.deepEqual([...article.matchAll(/\bid="([^"]+)"/g)].map(m => m[1]), IDS);
+  assert.equal((article.match(/data-toc-section/g) ?? []).length, 15);
+  assert.equal((article.match(/<summary>([^<]+)<\/summary>/g) ?? []).length, 64);
+  assert.ok(article.includes('href="./monster/fr.html" hreflang="fr"'));
+  assert.doesNotMatch(article, /Publication gate|English destination is real/, "no stale draft-only disclaimer in the published article");
+  assert.ok(draftArticle.includes('href="./monster/en.html" hreflang="en"'));
+  assert.ok(monster.startsWith('<!doctype html>\n<html lang="fr" dir="ltr">'));
+  assert.ok(monster.includes('href="../?lang=fr"'));
+  assert.ok(monster.includes('href="../../styles.css?v=16-about-polish"'), "offline Monster must use the core-cached stylesheet URL");
+  assert.ok(monster.includes("penguin-appendix"));
+  assert.equal((monster.match(/<details class="penguin-note">/g) ?? []).length, 21);
+  assert.equal((monster.match(/<section\b/g) ?? []).length, 39);
+  assert.doesNotMatch(monster, /<meta name="robots" content="noindex">/);
+  assert.match(draftMonster, /<meta name="robots" content="noindex">/);
+  const regularNames = html => [...html.matchAll(/<section id="([^"]+)" class="level2">/g)].map(m => m[1]);
+  assert.deepEqual(regularNames(monster), regularNames(draftMonster));
+});
+
+test("French release references and Service Worker optional assets are exactly version-aligned", async () => {
+  const [aboutScript, aboutShell, worker, registry, monsterIndex] = await Promise.all([
+    readFile(new URL("about.js", ROOT), "utf8"),
+    readFile(new URL("index.html", ROOT), "utf8"),
+    readFile(new URL("../sw.js", ROOT), "utf8"),
+    readFile(new URL("content/registry.js", ROOT), "utf8"),
+    readFile(new URL("monster/index.html", ROOT), "utf8"),
+  ]);
+  assert.match(aboutScript, /registry\.js\?v=20261114-fr17/);
+  assert.match(aboutShell, /about\.js\?v=20261114-fr17/);
+  assert.match(worker, /const VERSION = "pastafari-static-pwa-about-fr-20261114";/);
+  for (const asset of [
+    "./about/about.js?v=20261114-fr17",
+    "./about/content/registry.js?v=20261114-fr17",
+    "./about/content/fr.html?v=20261114-fr17",
+    "./about/monster/fr.html",
+  ]) assert.ok(worker.includes('"' + asset + '"'), "missing PWA asset " + asset);
+  assert.match(registry, /fr:\s*Object\.freeze\(\{/);
+  assert.match(monsterIndex, /en,af,ar,az,be,bg,bn,bs,ca,cs,da,de,el,eo,es,et,fr/);
+});
+
+
 test("French Monster preserves the Hebrew source's Einstein qualification of Newton", async () => {
-  const [source, core, assembled] = await Promise.all([
+  const [source, core, assembled, published] = await Promise.all([
     readFile(new URL("monster/index.html", ROOT), "utf8"),
     readFile(new URL("drafts/fr.monster.partial.html", ROOT), "utf8"),
     readFile(new URL("drafts/fr.monster.complete.html", ROOT), "utf8"),
+    readFile(new URL("monster/fr.html", ROOT), "utf8"),
   ]);
   assert.match(source, /איינשטיין כבר הראה/);
-  for (const text of [core, assembled]) {
+  for (const text of [core, assembled, published]) {
     assert.match(text, /Newton l’aurait cru à tort\. Einstein a montré/);
     assert.match(text, /sans pour autant identifier, lui non plus, les appendices de nouille/);
   }
@@ -233,9 +285,14 @@ test("French Monster preserves the Hebrew source's Einstein qualification of New
 
 
 test("French About uses precise, natural labels for the reference and queried days", async () => {
-  const article = await readFile(new URL("drafts/fr.partial.html", ROOT), "utf8");
-  assert.match(article, /le jour de référence<\/strong>/);
-  assert.match(article, /le jour recherché<\/strong>/);
-  assert.match(article, /F\(c,t\)/);
-  assert.doesNotMatch(article, /jour de travail|jour interrogé/);
+  const [draft, published] = await Promise.all([
+    readFile(new URL("drafts/fr.partial.html", ROOT), "utf8"),
+    readFile(new URL("content/fr.html", ROOT), "utf8"),
+  ]);
+  for (const article of [draft, published]) {
+    assert.match(article, /le jour de référence<\/strong>/);
+    assert.match(article, /le jour recherché<\/strong>/);
+    assert.match(article, /F\(c,t\)/);
+    assert.doesNotMatch(article, /jour de travail|jour interrogé/);
+  }
 });
