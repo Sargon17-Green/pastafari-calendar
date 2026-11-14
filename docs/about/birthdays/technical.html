@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/><meta content="הגדרה מתמטית של יום הולדת פסטפרי, תוכנית ניסוי H1000, תוצאות מדויקות, מודלים ומגבלות האימות." name="description"/><title>ימי הולדת פסטפריים — נספח טכני</title><link href="./birthdays.css" rel="stylesheet"/></head><body><a class="skip" href="#content">דלג לתוכן</a><div class="shell"><header class="top"><a class="brand" href="../../?lang=he">הלוח הפסטפרי</a><nav aria-label="ניווט" class="top-links"><a href="./">הסבר פשוט</a><a href="../?lang=he">על הלוח</a></nav></header><main id="content"><p class="eyebrow">שיטות וממצאים · נספח טכני</p><h1>ימי הולדת פסטפריים: ההגדרה, המתמטיקה והראיות</h1><details class="toc"><summary>תוכן הנספח</summary><ol><li><a href="#guide">מדריך לקריאה</a></li><li><a href="#definition">1. מה בדיוק נקרא ״יום הולדת״?</a></li><li><a href="#sample">2. מה בדיוק נבדק?</a></li><li><a href="#rates">3. איך מחושבים שיעור האירועים ומספרם?</a></li><li><a href="#waits">4. המתנה ראשונה ופערים בין אירועים</a></li><li><a href="#horizons">5. איך משתנה השיעור כאשר מאריכים את הבדיקה?</a></li><li><a href="#variation">6. האם הפיזור נובע מתקופות הלידה או מהבדלים בתוכן?</a></li><li><a href="#models">7. האם אפשר לגלות חוק התכנסות?</a></li><li><a href="#verification">8. מה באמת אומת, ומה לא?</a></li><li><a href="#sources">9. מקור, נתונים ושחזור</a></li></ol></details>
+<p><em>נספח טכני להסבר <a href="./">״יום הולדת, אבל לא בכל שנה״</a>. העדכון מבוסס על תוצאות H1000 v006 ועל ניתוח RATE-ASYM-001 שנשמרו ב־14 בנובמבר 2026. זהו מסמך מחקרי, <strong>לא שינוי בקאנון</strong>.</em></p>
+<h2 id="guide">מדריך לקריאה</h2>
+<p>המסמך בנוי מהפשוט אל המתקדם. אין צורך לדעת סטטיסטיקה כדי להבין את ההגדרה, אבל בהמשך נשתמש במושגים כגון <strong>מדגם</strong>, <strong>חציון</strong>, <strong>שונות</strong>, <strong>קו־וריאנס</strong>, <strong>פואסון</strong> ו־<strong>גבול אסימפטוטי</strong>. כל אחד מהם מוסבר בקצרה ליד השימוש בו. הקורא יכול לחפש את השם המלא של המושג להעמקה.</p>
+<h2 id="definition">1. מה בדיוק נקרא ״יום הולדת״?</h2>
+<p>נשתמש בשלושה סימנים:</p>
+<ul>
+<li><strong><code>b</code></strong> — יום הלידה המקורי, כנקודה שלמה על ציר ימים כרונולוגי יציב.</li>
+<li><strong><code>t</code></strong> — יום מאוחר יותר שבודקים, כלומר <code>t &gt; b</code>.</li>
+<li><strong><code>F(c,x)</code></strong> — התאריך הפסטפרי של יום <code>x</code>, <strong>כאשר יום המעשה הוא <code>c</code></strong>. הפלט הוא חמישייה: שנה, שם קציצה, יום בקציצה, שם חודש, יום בחודש.</li>
+</ul>
+<p>האות <code>c</code> חיונית: התאריך הוא פונקציה של <em>שני</em> ימים, לא של יום אחד. בעת בדיקת יום הולדת, יום המעשה הוא <code>t</code> הן עבור יום הלידה והן עבור היום הנבדק. כלומר משווים <code>F(t,b)</code> ל־<code>F(t,t)</code>, <strong>לא</strong> <code>F(b,b)</code> ל־<code>F(t,t)</code>.</p>
+<p>מכל תאריך ניקח שני זוגות של שדות:</p>
+<pre class="formula"><code class="language-text">C(c,x) = (שם הקציצה, מספר היום בקציצה) מתוך F(c,x)
+M(c,x) = (שם החודש, מספר היום בחודש) מתוך F(c,x)
+</code></pre>
+<p>יום הולדת מתקיים כאשר לפחות אחד הזוגות תואם:</p>
+<pre class="formula"><code class="language-text">I_C(b,t) = 1 אם C(t,b) = C(t,t), ואחרת 0
+I_M(b,t) = 1 אם M(t,b) = M(t,t), ואחרת 0
+B(b,t)   = 1 אם I_C = 1 או I_M = 1, ואחרת 0
+         = I_C + I_M - I_C × I_M
+</code></pre>
+<p>הסימן <code>I</code> מציין <strong>אינדיקטור</strong>, מספר שהוא 1 כשהתנאי מתקיים ו־0 אחרת. לכן הביטוי האחרון הוא <a href="https://he.wikipedia.org/wiki/%D7%A2%D7%A7%D7%A8%D7%95%D7%9F_%D7%94%D7%94%D7%9B%D7%9C%D7%94_%D7%95%D7%94%D7%94%D7%A4%D7%A8%D7%93%D7%94">עקרון ההכלה וההפרדה</a>: אם שני המסלולים מתאימים, מחסרים 1 כדי שלא לספור את אותו יום פעמיים. מספר השנה <em>אינו</em> נבדק להתאמה. כאשר <code>c=t</code>, היום הנבדק נמצא בשנת 5000, בעוד יום הלידה ממוקם בשנתו יחסית ליום המעשה.</p>
+<p><strong>תחום ההגדרה הניסויית:</strong> המחקר מנה ימים שלמים לאחר הלידה, <code>t=b+k</code> עבור <code>k=1,...,H</code>. הוא לא מנה את יום הלידה עצמו כאירוע. כל אלה הם ימים ליניאריים קנוניים — לא שעות מקומיות. ליישום באפליקציה יש לקבוע גם כיצד רגע לידה ו״היום״ מתורגמים ליום המקומי בגבול האסטרונומי המתאים, ולא להניח שהיום הפסטפרי מתחיל בחצות.</p>
+<h2 id="sample">2. מה בדיוק נבדק?</h2>
+<p>תוכנית המחקר המקורית <strong><code>PBD-ER-1.0</code></strong> מתאריך 20.9.2026 הוקפאה לפני החישוב. היא הגדירה שמונה תקופות <code>E0</code> עד <code>E7</code>; בכל תקופה 10,000 ימי לידה רצופים על ציר <code>u</code> הקנוני. עבור H1000 נבחרו <strong>125 לידות מכל תקופה</strong>: חילקו את 10,000 הימים ל־125 שכבות, ובכל שכבה נבחר יום באמצעות גיבוב <code>SHA-256</code> על מזהי התוכנית, התקופה והשכבה. זוהי דגימה דטרמיניסטית, שנועדה שלא להתאים את המדגם בדיעבד לתוצאות.</p>
+<p>קבוצות <strong>הגילוי</strong>: <code>E0, E2, E4, E6</code>. קבוצות <strong>האימות</strong> שנקבעו מראש: <code>E1, E3, E5, E7</code>. בניתוחי המודלים המאוחרים השתמשו בתוצאות שכבר נחשפו מכל הקבוצות, ולכן אין לקרוא לניסוי החדש <em>אימות בלתי תלוי</em>, אף שהחלוקה המקורית נשמרה.</p>
+<p><strong>אופק החישוב:</strong> <code>H = 365,243</code> ימים לאחר כל לידה, המקבילים בקירוב ל־1,000 שנים אזרחיות ממוצעות. זהו מרווח של מספר ימים קבוע ולא רשימה של 1,000 ימי שנה גריגוריאניים. בסך הכול <code>1,000 × 365,243 = 365,243,000</code> זוגות לידה–יום.</p>
+<p>התוצאה היא עובדה על <em>הפלט השמור של המנוע עבור 1,000 לידות שנבחרו</em>: לא סריקה של כל 80,000 ימי הלידה שבשמונה התקופות, לא מחקר דמוגרפי על אנשים ולא מדידה של הסתברות פיזיקלית אקראית.</p>
+<h2 id="rates">3. איך מחושבים שיעור האירועים ומספרם?</h2>
+<p>לכל תאריך לידה <code>b</code>, נסמן ב־<code>N_b(H)</code> את מספר ימי היעד עד <code>H</code> שבהם מתקיים התנאי <code>B=1</code>:</p>
+<pre class="formula"><code class="language-text">N_b(H) = B(b,b+1) + B(b,b+2) + ... + B(b,b+H)
+r_b(H) = N_b(H) / H                    # שיעור האירועים של הלידה b
+r(H)   = [ Σ_b N_b(H) ] / (n × H)     # השיעור המאוגד על n לידות
+</code></pre>
+<p>כדי לקבל קירוב למספר אירועים ל־365.2425 ימים מכפילים שיעור יומי ב־<code>365.2425</code>. מכאן באופק H1000:</p>
+<ul>
+<li><code>n = 1,000</code>, מספר האירועים <code>90,018</code>.</li>
+<li><code>r = 90,018 / 365,243,000 = 0.00024646057556</code> אירועים לזוג לידה–יום.</li>
+<li>באחוזים: <strong><code>0.02464605756%</code></strong>.</li>
+<li>ממוצע מספר האירועים ללידה: <strong><code>90.018</code></strong> בכל האופק, כלומר כ־<code>0.0900</code> אירועים לשנה אזרחית ממוצעת של אופק זה.</li>
+<li>חלוקת <code>365,243,000 / 90,018 ≈ 4,057.44</code> נותנת יחס של ימי בדיקה לאירוע. <strong>זה אינו אומדן של זמן המתנה אישי קבוע</strong>, ואינו חציון הפער בין אירועים.</li>
+</ul>
+<h3>שלושה סוגי התאמות, ללא כפילות</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>סוג</th>
+<th style="text-align:right">מספר אירועים</th>
+<th style="text-align:right">חלק מאירועי UNION</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>רק קציצה (<code>CUTLET_only</code>)</td>
+<td style="text-align:right">24,540</td>
+<td style="text-align:right">27.261%</td>
+</tr>
+<tr>
+<td>רק חודש (<code>MONTH_only</code>)</td>
+<td style="text-align:right">65,472</td>
+<td style="text-align:right">72.732%</td>
+</tr>
+<tr>
+<td>שניהם (<code>BOTH</code>)</td>
+<td style="text-align:right">6</td>
+<td style="text-align:right">0.006665%</td>
+</tr>
+<tr>
+<td><strong>לפחות אחד (<code>UNION</code>)</strong></td>
+<td style="text-align:right"><strong>90,018</strong></td>
+<td style="text-align:right"><strong>100%</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>אם סופרים כל מנגנון גם כאשר שניהם מתאימים, מקבלים <code>CUTLET_total = 24,546</code> ו־<code>MONTH_total = 65,478</code>. הבקרה היא <code>24,546 + 65,478 − 6 = 90,018</code>. מספרם של אירועי <code>BOTH</code> קטן מדי כדי להסיק מן המדגם לבדו שהמסלולים בלתי תלויים.</p>
+<h2 id="waits">4. המתנה ראשונה ופערים בין אירועים</h2>
+<p><strong>זמן ההמתנה הראשון</strong> של לידה הוא המספר <code>k</code> הקטן ביותר שמקיים <code>B(b,b+k)=1</code>. במדגם הזה נמצאו 1,000 זמני המתנה ראשונים: הקטן ביותר 219 ימים, הגדול ביותר 27,730 ימים, הממוצע 6,321.731 ימים, והחציון <strong>4,892 ימים</strong>.</p>
+<p><strong>חציון</strong> הוא הערך האמצעי בסדרה מסודרת (או ממוצע שני הערכים האמצעיים במקרה של מספר זוגי). הוא אינו הבטחה למקרה יחיד. כל 1,000 ימי הלידה שנדגמו קיבלו אירוע ראשון בתוך 36,524 ימים, אך אין לכך מעמד של הוכחה כללית; מחקר <code>WAIT1-001</code> שנרשם מראש תוכנן על <strong>8,000 לידות אחרות/נרחבות יותר</strong>, וטרם הושלם באמצעות המדגם הנוכחי.</p>
+<p>באותו ארכיון נמדדו <strong>89,018 מרווחים מלאים בין אירועים עוקבים באותה שורת לידה</strong>, והחציון שלהם היה 2,764 ימים. ההפרש בין 90,018 אירועים ל־89,018 מרווחים נובע מכך שלכל אחת מ־1,000 לידות האירוע הראשון אינו מתחיל <em>מרווח בין שני אירועים</em>. המרווח האחרון שאחרי האירוע האחרון ועד סוף האופק אינו מופיע כמרווח שהושלם; לכן נתוני הפערים חשופים ל<strong>צנזורה ימנית</strong>: אי־ידיעת האירוע הבא אחרי תום המעקב.</p>
+<h2 id="horizons">5. איך משתנה השיעור כאשר מאריכים את הבדיקה?</h2>
+<p>ניצלו את אותו ארכיון כדי להסתכל על <strong>אופקים מקוננים</strong>: למשל, 100 השנים הראשונות של אותן לידות, אחר כך 500, ולבסוף כל 1,000 השנים. כך נמנע ערבוב של מדגמים שונים.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>אופק נומינלי</th>
+<th style="text-align:right">ימים</th>
+<th style="text-align:right">אירועי UNION</th>
+<th style="text-align:right">שיעור למיליון זוגות</th>
+<th style="text-align:right">Fano של ספירות</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>20 שנה</td>
+<td style="text-align:right">7,305</td>
+<td style="text-align:right">1,210</td>
+<td style="text-align:right">165.640</td>
+<td style="text-align:right">0.968</td>
+</tr>
+<tr>
+<td>100 שנה</td>
+<td style="text-align:right">36,524</td>
+<td style="text-align:right">8,630</td>
+<td style="text-align:right">236.283</td>
+<td style="text-align:right">1.008</td>
+</tr>
+<tr>
+<td>500 שנה</td>
+<td style="text-align:right">182,621</td>
+<td style="text-align:right">44,649</td>
+<td style="text-align:right">244.490</td>
+<td style="text-align:right">1.406</td>
+</tr>
+<tr>
+<td>1,000 שנה</td>
+<td style="text-align:right">365,243</td>
+<td style="text-align:right">90,018</td>
+<td style="text-align:right">246.461</td>
+<td style="text-align:right">1.826</td>
+</tr>
+</tbody>
+</table></div>
+<p>השיעור המצטבר מתקרב באזור המאוחר לכ־246 אירועים למיליון זוגות. זו <strong>תצפית על אופק סופי</strong>, לא הוכחה שקיים גבול כאשר <code>H</code> נמשך לאינסוף. גם אין להסיק מכך שהשיעור הממוצע של כל תקופה זהה או שיום הולדת של לידה מסוימת יתנהג לפי הממוצע.</p>
+<h3>מהו מדד Fano?</h3>
+<p><strong>שונות</strong> מודדת את הפיזור סביב הממוצע באמצעות ריבועי הסטיות. <strong>מדד Fano</strong> של ספירות הוא השונות חלקי הממוצע. במדגם זה השתמשו בשונות מדגמית — סכום ריבועי הסטיות מחולק ב־<code>n−1</code> — ולא בשונות אוכלוסייה המחולקת ב־<code>n</code>:</p>
+<pre class="formula"><code class="language-text">s²(N) = Σ_b [N_b(H) − N̄(H)]² / (n − 1)
+Fano(H) = s²(N) / N̄(H)
+</code></pre>
+<p>בהתפלגות <strong>פואסון</strong> סטנדרטית השונות שווה לממוצע, ולכן Fano תאורטי שווה 1. כאן הערך 1.826 באופק 1,000 שנה מעיד על <em>פיזור־יתר של הספירות במדגם ביחס לייחוס פואסוני פשוט</em>. אין בכך הוכחה שהלוח מתנהל בתהליך אקראי — המנגנון עצמו דטרמיניסטי.</p>
+<p>אף שה־Fano גדל, פיזור <strong>שיעור האירועים לכל לידה</strong> פוחת: סטיית התקן של שיעורי האירועים ירדה מכ־80.77 למיליון באופק 100 שנה לכ־35.10 למיליון באופק 1,000 שנה. אין סתירה:</p>
+<pre class="formula"><code class="language-text">r_b(H) = N_b(H)/H  ⇒  s²(r_b(H)) = s²(N_b(H))/H².
+</code></pre>
+<p>כאשר האופק גדל, חלוקת הספירה במספר הימים עשויה לצמצם את פיזור השיעור גם אם יחס השונות לממוצע של הספירה גדל.</p>
+<h2 id="variation">6. האם הפיזור נובע מתקופות הלידה או מהבדלים בתוכן?</h2>
+<p>חילקנו כל לידה לאחת משמונה התקופות שבהן נבחרה. <strong>פירוק שונות בין־קבוצתי</strong> (הזהות החשבונית העומדת גם בבסיס ניתוח שונות — ANOVA) מאפשר לייחס את סכום ריבועי הסטיות לשני רכיבים:</p>
+<pre class="formula"><code class="language-text">SS_total = Σ_e Σ_{b∈e} (N_b − N̄_e)²   +   Σ_e n_e (N̄_e − N̄)²
+                בתוך כל תקופה                 בין ממוצעי התקופות
+</code></pre>
+<p>באופק 1,000 שנה השונות המדגמית הכוללת של מספר האירועים היא <strong>164.332008</strong>. בפירוק התקבלו כ־<strong>99.839%</strong> ממנה בהבדלים <em>בתוך התקופות</em>, ורק <strong>0.161%</strong> בין ממוצעי שמונה התקופות. מדובר בפירוק זהותי במדגם, <strong>לא</strong> בבדיקה אם התקופות זהות סטטיסטית, ולא בהוכחת סיבתיות.</p>
+<p>כעת נפריד גם לפי מסלולי היום הולדת:</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>מסלול (ספירה זרה)</th>
+<th style="text-align:right">ממוצע אירועים ללידה ב־H1000</th>
+<th style="text-align:right">Fano</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>רק קציצה</td>
+<td style="text-align:right">24.540</td>
+<td style="text-align:right">3.080</td>
+</tr>
+<tr>
+<td>רק חודש</td>
+<td style="text-align:right">65.472</td>
+<td style="text-align:right">1.097</td>
+</tr>
+<tr>
+<td>איחוד המסלולים</td>
+<td style="text-align:right">90.018</td>
+<td style="text-align:right">1.826</td>
+</tr>
+</tbody>
+</table></div>
+<p>למרות שמסלול החודש מייצר יותר אירועים, הפיזור ביחס לממוצע חזק הרבה יותר בספירות של מסלול הקציצה. בפירוק אלגברי של <strong>עודף השונות מעל הממוצע</strong> של הספירה המאוחדת, רכיב הקציצה לבדו אחראי לכ־68.7%, החודש לכ־8.5%, ואיברי קו־וריאנס ולכידה משותפת לכ־22.8%. <strong>קו־וריאנס</strong> מודד כיצד שני גדלים נוטים להשתנות יחד; החלוקה אינה מייחסת סיבה לאחד מהם.</p>
+<h2 id="models">7. האם אפשר לגלות חוק התכנסות?</h2>
+<p><strong>גבול אסימפטוטי</strong> הוא מספר שמתקרבים אליו כאשר המשתנה (כאן מספר הימים <code>H</code>) גדל ללא גבול. מדידה עד 1,000 שנה יכולה לרמוז על גבול, אבל אין היא מוכיחה שהוא קיים.</p>
+<p>אחרי השלמת הניסוי הושוו תיאורית מודלים של שיעור ממוצע מהצורה <code>μ(H)=c+a·f(H)</code>, כאשר <code>f(H)</code> נבחר מתוך <code>1</code>, <code>1/H</code>, <code>log(H)/H</code>, <code>H^(−1/2)</code> ו־<code>H^(−α)</code>; לפיזור נבחנו פונקציות דעיכה דומות. הסימן <code>α</code> הוא מעריך שמותאם לנתונים, ו־<code>c</code> הוא מרכז אפשרי. ניסוי המודלים השתמש בגילוי באופקי 100–500 שנה ובמדידות מאוחרות בתקופות אימות באופקי 600–1,000 שנה.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>משפחת מודל</th>
+<th style="text-align:right">שגיאת חיזוי לשיעור הממוצע (RMSE למיליון)</th>
+<th style="text-align:right">שגיאת חיזוי לפיזור השיעורים (RMSE למיליון)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>קבוע</td>
+<td style="text-align:right">3.910</td>
+<td style="text-align:right">19.637</td>
+</tr>
+<tr>
+<td><code>1/H</code></td>
+<td style="text-align:right">1.975</td>
+<td style="text-align:right">24.287</td>
+</tr>
+<tr>
+<td><code>log(H)/H</code></td>
+<td style="text-align:right">2.088</td>
+<td style="text-align:right">22.006</td>
+</tr>
+<tr>
+<td><code>H^(−1/2)</code></td>
+<td style="text-align:right">2.829</td>
+<td style="text-align:right">6.722</td>
+</tr>
+<tr>
+<td><code>H^(−α)</code></td>
+<td style="text-align:right"><strong>1.735</strong></td>
+<td style="text-align:right"><strong>1.030</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>RMSE</strong> פירושו שורש ממוצע ריבועי השגיאות: מדד המשקלל שגיאות גדולות יותר באופן ניכר. לטווח הזה התאימו ערכים <code>α≈1.95</code> לממוצע ו־<code>α≈0.35</code> לפיזור. <strong>לא ניתן לפרשם כחוקי הטבע של האלגוריתם</strong> או אפילו כאומדנים יציבים של ההתנהגות באינסוף.</p>
+<p>כאן יש מגבלה חשובה במיוחד: אף ששמות התקופות ״גילוי״ ו״אימות״ נקבעו מראש, תוצאות כולן כבר נחשפו לפני שהוחלט על התאמת המודלים הזאת. לכן הניתוח הוא <strong>exploratory-after-unblinding</strong> — אבחון בדיעבד, ולא מבחן מאשר מול נתונים שלא נראו. גם האופקים המקוננים תלויים זה בזה: 500 השנים הראשונות נכללות באלף השנים.</p>
+<h2 id="verification">8. מה באמת אומת, ומה לא?</h2>
+<p>יש שלושה סוגי טענות, וחשוב להפריד ביניהם:</p>
+<ol>
+<li><strong>שלמות החבילה:</strong> ארכיון H1000 v006 נבדק מבחינת ZIP, גיבובים, 5,864 מקטעי חישוב, דיווחי איכות וספירות שורות. נתוני H1000 וניתוחי ההמשך תואמים במבחני החשבון שנערכו.</li>
+<li><strong>נכונות חישוב התאריך והזיהוי:</strong> אימות ארכיוני אינו אימות מנוע מלא. 24 מקרי בדיקה שמורים של Gold היו מקרי אפס; לא הושגה ביקורת חיובית עצמאית שמחשבת מחדש אירועי יום הולדת שנמצאו. סיווג הקבלה הוא <strong><code>ARCHIVE-VERIFIED / ENGINE-POSITIVE-INDEPENDENT-NOT-ESTABLISHED</code></strong>.</li>
+<li><strong>הסקה מעבר למדגם:</strong> העובדה שהדגימה מרובדת ומשתמשת ב־SHA-256 מונעת בחירה שרירותית <em>אחרי</em> צפייה בתוצאות, אך אינה מספיקה כדי להניח שכל הזוגות או הלידות עצמאיים ומתפלגים באופן זהה (IID). אין להציג רווחי סמך או ערכי p כאילו נבחר מודל דגימה הסתברותי כזה.</li>
+</ol>
+<p>משום כך המספרים הם <strong>תוצאות דטרמיניסטיות של המדגם כפי שהן שמורות בארכיון</strong>, בכפוף למגבלת האימות של המנוע. זו ראיה ממשית לתכונות של הפלט הנבדק, אך לא משפט מתמטי על כל תאריך אפשרי ולא הוכחת גבול.</p>
+<h2 id="sources">9. מקור, נתונים ושחזור</h2>
+<ul>
+<li><strong>תוכנית ניסוי מקורית:</strong> <code>PBD-ER-1.0</code>, 20.9.2026, נשמרה ללא שינוי במאגר המחקר הפרטי <code>M-BIRTHDAY</code> (גיבוב SHA-256: <code>7252c9c4ba053e8f6a53b13bf42646e660e6c85dfd8b407fdff98d1e13e9e954</code>).</li>
+<li><strong>חבילת מקור H1000 v006:</strong> <code>PBD_H1000_FULL_EXACT_FINAL_HANDOFF_v006.zip</code> (גיבוב SHA-256: <code>3fd6931b4e4e00cbecc899e5d3af090f10ed1c28419f30d170a3d2f9067216dc</code>). הארכיון הבינארי המלא <strong>אינו מפורסם כאן</strong>, ולכן אין לטעון שאפשר לשחזר את כל 365 מיליון הבדיקות אך ורק מהעמוד הזה.</li>
+<li><strong><a href="./research/h1000-summary.json">נתוני סיכום פתוחים</a></strong>: JSON ציבורי עם כמויות, יחידות, גבולות ההיסק, תקופות ושיטות האימות. <strong><a href="./research/h1000-horizon-metrics.tsv">פרופיל 16 האופקים</a></strong> זמין כ־TSV. אלה מספיקים לבדיקת חלק מן החישובים והתצוגות, <strong>לא</strong> לאימות עצמאי של מנוע החישוב או לשחזור רשימת האירועים הפרטנית.</li>
+<li><strong><a href="./research/rate-asym-model-diagnostics.json">דוח אבחון המודלים במכונה</a></strong>: נתונים ופרמטרים של ניתוח ההמשך שנגזר מן הארכיון.</li>
+<li><strong><a href="https://github.com/Sargon17-Green/pastafari-calendar/blob/main/docs/about/birthdays/research/README.md">README של נתוני המחקר הפומביים</a></strong>: מה נכלל, מה אינו נכלל ואיך לבצע בדיקות חשבון ישירות.</li>
+<li><strong><a href="../?lang=he">על מבנה לוח השנה</a></strong>; <strong><a href="https://github.com/Sargon17-Green/pastafari-calendar/blob/main/docs/ASTRONOMICAL-DAY.md">על גבול היום המקומי</a></strong>; <strong><a href="https://github.com/Sargon17-Green/pastafari-calendar/blob/main/docs/AUTHORITATIVE-ENGINE-ARCHITECTURE.md">על מנוע ההמרה</a></strong>. אלה מסמכי רקע על הלוח, ולא אישור עצמאי לתוצאות H1000.</li>
+</ul>
+<p><strong>סטטוס המחקר:</strong> <code>H1000 COMPLETE / ARCHIVE VERIFIED</code>. אבחון התכנסות לאורך זמן: <code>INCONCLUSIVE</code>. מחקרים נוספים על הטרוגניות מנגנון הקציצה, המתנות, פערים ואימות חיובי עצמאי עדיין פתוחים.</p>
+</main><footer class="foot">מסמך מחקרי, לא כלל קאנוני. <a href="./">חזרה להסבר האינטואיטיבי</a></footer></div></body></html>
