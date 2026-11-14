@@ -444,6 +444,15 @@ async function assertTabCycle(page) {
   await page.locator(".skip-link").focus();
   const seen = [];
   let returned = false;
+  let exitedToBrowser = false;
+  // Distinguish a real focus trap from Firefox/Playwright moving Tab into
+  // browser chrome while document.activeElement retains the last DOM element.
+  await page.evaluate(() => {
+    const probe = { count: 0 };
+    const listener = (event) => { if (event.key === "Tab") probe.count++; };
+    document.addEventListener("keydown", listener, true);
+    window.__a11yTabProbe = { probe, listener };
+  });
   // Full-page calendars can expose more than 250 focusable elements.
   // Bound the traversal by the current DOM inventory, not a Chromium-specific
   // historical constant; still fail closed if focus never returns.
@@ -452,10 +461,12 @@ async function assertTabCycle(page) {
   ).count();
   const limit = Math.min(2000, Math.max(300, candidates + 32));
   for (let index = 0; index < limit; index += 1) {
+    const before = await page.evaluate(() => window.__a11yTabProbe.probe.count);
     await page.keyboard.press("Tab");
     const current = await page.evaluate(() => {
       const element = document.activeElement;
       return {
+        deliveredTabCount: window.__a11yTabProbe.probe.count,
         tag: element?.tagName || "",
         id: element?.id || "",
         className: typeof element?.className === "string" ? element.className : "",
@@ -463,6 +474,11 @@ async function assertTabCycle(page) {
       };
     });
     seen.push(current);
+    if (current.deliveredTabCount === before) {
+      exitedToBrowser = true;
+      console.log(`[INFO] Tab left document for browser chrome at step ${index + 1}; last DOM focus: ${current.tag}#${current.id}`);
+      break;
+    }
     if (current.tag === "A" && current.className.split(/\s+/).includes("skip-link")) {
       returned = true;
       break;
@@ -487,7 +503,12 @@ async function assertTabCycle(page) {
       break;
     }
   }
-  assert.equal(returned, true, `Tab traversal must cycle back to the skip link within ${limit} presses (DOM candidates: ${candidates}); final focus sequence: ${JSON.stringify(seen.slice(-16))}`);
+  await page.evaluate(() => {
+    const state = window.__a11yTabProbe;
+    if (state) document.removeEventListener("keydown", state.listener, true);
+    delete window.__a11yTabProbe;
+  });
+  assert.equal(returned || exitedToBrowser, true, `Tab traversal must reach the skip link or leave the document for browser chrome within ${limit} presses (DOM candidates: ${candidates}); final focus sequence: ${JSON.stringify(seen.slice(-16))}`);
   for (const id of ["language-selector", "target-calendar", "comparison-toggle", "previous-cutlet", "today-button", "next-cutlet"]) {
     assert.ok(seen.some((item) => item.id === id), `keyboard traversal must reach #${id}`);
   }
@@ -497,6 +518,11 @@ async function assertTabCycle(page) {
 
 async function assertKeyboardOperations(page) {
   const skip = page.locator(".skip-link");
+  // The scrollable month list must not trap backward keyboard navigation.
+  await page.locator("#year-month-list").focus();
+  await page.keyboard.press("Shift+Tab");
+  assert.equal(await page.evaluate(() => document.activeElement?.id), "year-months-summary",
+    "Shift+Tab must leave the scrollable month list for its summary");
   const calendarSelect = page.locator("#target-calendar");
   await calendarSelect.focus();
   await page.keyboard.press("Shift+Tab");
