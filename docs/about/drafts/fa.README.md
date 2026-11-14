@@ -18,13 +18,13 @@ Language: **Persian / فارسی** (`fa`; RTL; UI module `docs/i18n/locales/fa.j
 - `fa.complete.partial.html`: **16/16** canonical About units and **64/64** name explanations assembled as a complete **unpublished and unapproved** Persian article; its **906/906** selected HTML structural tags match the current Hebrew master.
 - This branch incorporates the current Hebrew and English About birthday-research text and aligns the French draft and French published content with the updated three research links and birthday definition. This is branch-only; the public site is unchanged until an approved merge.
 
-- `fa.monster.core.partial.html`: first **8 of 25** Monster main sections translated, preserving the Hebrew canonical section IDs and exact 104-tag section structure. The remaining Monster text is not translated yet, including the 13-part penguin appendix and all 21 editorial notes.
+- `fa.monster.core.partial.html`: first **16 of 25** Monster main sections translated, preserving the Hebrew canonical section IDs and exact 194-tag section structure. The remaining Monster text is not translated yet, including the 13-part penguin appendix and all 21 editorial notes.
 
 ## Remaining; never present this as published
 
 1. Independently proofread all **16** Persian units for natural expression and canonical accuracy. Draft completion is not linguistic, scientific or canonical approval.
 2. Independently review **all 64** name definitions, exact boundary qualifiers and the `شن` versus `ماسه` lexical question before release.
-3. Translate and verify the remaining **17 of 25** Monster main sections, all **13** penguin appendix subsections, and **21** inline editorial rebuttal notes from Hebrew. Do not use the shorter English article as master.
+3. Translate and verify the remaining **9 of 25** Monster main sections, all **13** penguin appendix subsections, and **21** inline editorial rebuttal notes from Hebrew. Do not use the shorter English article as master.
 4. Independently proofread Persian prose for natural local expression, technical accuracy and mixed RTL/LTR notation. In particular, review whether the current UI label `شن` faithfully conveys canonical `sand` (`חול`) or should be `ماسه`; do not silently change a published locale label. Verify mobile wrapping, focus, keyboard and accessibility.
 5. Reconcile the branch against current `main`, validate complete GitHub CI and real offline/mobile RTL/accessibility behavior, and only then create a separate release PR covering complete Persian About/Monster, registries, routing and integrity manifests. Never publish a partial translation.
 
