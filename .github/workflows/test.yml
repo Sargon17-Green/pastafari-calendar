@@ -383,6 +383,13 @@ jobs:
       - run: ./node_modules/.bin/playwright install --with-deps chromium
       - name: Run PWA offline smoke
         run: node scripts/run-pwa-offline-smoke.mjs
+      - name: Fetch immutable previous production commit
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin 6b580f9fe914968c57470bec9d8cf3903c463483
+          git cat-file -e '6b580f9fe914968c57470bec9d8cf3903c463483^{commit}'
+      - name: Test actual predecessor-to-Persian PWA upgrade
+        run: node scripts/run-pwa-production-upgrade-smoke.mjs
       - name: Run reverse UI smoke
         run: npm run test:reverse-ui
 
