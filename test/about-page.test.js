@@ -71,14 +71,14 @@ test("Hebrew explanation preserves the 16 canonical section identifiers and all 
   }
 });
 
-test("17 published translations preserve canonical About and Monster structures", async () => {
+test("18 published translations preserve canonical About and Monster structures", async () => {
   const master = await readFile(path.join(DOCS, "about", "content", "he.html"), "utf8");
   const monsterMaster = await readFile(path.join(DOCS, "about", "monster", "index.html"), "utf8");
   const getIds = (html) => [...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
   const count = (html, re) => (html.match(re) || []).length;
   const monsterIds = getIds(monsterMaster);
   assert.equal(monsterIds.length, 39);
-  for (const code of ["en", "af", "ar", "az", "be", "bg", "bn", "bs", "ca", "cs", "da", "de", "el", "eo", "es", "et", "fr"]) {
+  for (const code of ["en", "af", "ar", "az", "be", "bg", "bn", "bs", "ca", "cs", "da", "de", "el", "eo", "es", "et", "fr", "fa"]) {
     const about = await readFile(path.join(DOCS, "about", "content", code + ".html"), "utf8");
     const monster = await readFile(path.join(DOCS, "about", "monster", code + ".html"), "utf8");
     assert.deepEqual(getIds(about), getIds(master), code + " About IDs");
@@ -91,12 +91,13 @@ test("17 published translations preserve canonical About and Monster structures"
   }
 });
 
-test("17 published translations resolve in their own language; unapproved articles still fall back to Hebrew", () => {
+test("18 published translations resolve in their own language; unapproved articles still fall back to Hebrew", () => {
   assert.equal(ARTICLE_FALLBACK_LOCALE, "he");
-  assert.deepEqual(Object.keys(ARTICLE_LOCALES), ["he", "en", "af", "ar", "az", "be", "bg", "bn", "bs", "ca", "cs", "da", "de", "el", "eo", "es", "et", "fr"]);
-  for (const code of ["en", "af", "ar", "az", "be", "bg", "bn", "bs", "ca", "cs", "da", "de", "el", "eo", "es", "et", "fr"]) {
+  assert.deepEqual(Object.keys(ARTICLE_LOCALES), ["he", "en", "af", "ar", "az", "be", "bg", "bn", "bs", "ca", "cs", "da", "de", "el", "eo", "es", "et", "fr", "fa"]);
+  for (const code of ["en", "af", "ar", "az", "be", "bg", "bn", "bs", "ca", "cs", "da", "de", "el", "eo", "es", "et", "fr", "fa"]) {
     assert.equal(resolveArticleLocale(code).code, code);
   }
-  assert.equal(resolveArticleLocale("fa").code, "he");
+  assert.equal(resolveArticleLocale("fa").code, "fa");
   assert.equal(ARTICLE_LOCALES.ar.dir, "rtl");
+  assert.equal(ARTICLE_LOCALES.fa.dir, "rtl");
 });
