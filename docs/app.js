@@ -25,7 +25,7 @@ import {
   watchObserverPermission,
 } from "./observer-location.js?v=10-venus-day-boundary";
 import { currentDayAt } from "./venus-day-boundary.js?v=10-venus-day-boundary";
-import { createReverseSearchUi } from "./reverse-ui.js?v=20-about-page";
+import { createReverseSearchUi } from "./reverse-ui.js?v=21-about-fa-20261114";
 import {
   applyDocumentLocale,
   persistLanguage,
