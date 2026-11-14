@@ -14,12 +14,16 @@ Language: **Persian / فارسی** (`fa`; RTL; UI module `docs/i18n/locales/fa.j
 - `fa.canonical-names.partial.html`: the **sixth canonical article unit** assembled from the complete 17 + 47 name disclosures, including the full Persian introduction and closing lexical/canonical caveat, with exact Hebrew structural-tag parity; unpublished.
 - `test/about-fa-draft.test.js` checks registration exclusion, RTL direction, prefix structure, date operands, range qualifiers, concrete examples, 17 name labels and Hebrew tag parity; it is included in `npm run test:fast`.
 
+- `fa.remaining.partial.html`: all **10** final units (7–16) translated in draft Persian, including the published H1000 birthday definition, astronomical uncertainty and mathematical empirical qualifiers.
+- `fa.complete.partial.html`: **16/16** canonical About units and **64/64** name explanations assembled as a complete **unpublished and unapproved** Persian article; its **906/906** selected HTML structural tags match the current Hebrew master.
+- This branch incorporates the current Hebrew and English About birthday-research text and aligns the French draft and French published content with the updated three research links and birthday definition. This is branch-only; the public site is unchanged until an approved merge.
+
 ## Remaining; never present this as published
 
-1. Translate and re-edit the remaining **10** About units, preserving their order and numeric/semantic qualifiers.
-2. Assemble the complete **16-unit** Persian article from the five published-structure prefix drafts, the standalone sixth `canonical-names` unit and the ten further units when ready; independently review every canonical name and all source qualifiers before release.
+1. Independently proofread all **16** Persian units for natural expression and canonical accuracy. Draft completion is not linguistic, scientific or canonical approval.
+2. Independently review **all 64** name definitions, exact boundary qualifiers and the `شن` versus `ماسه` lexical question before release.
 3. Translate all 25 Monster main sections and the 13-subsection penguin appendix, including **21** inline editorial rebuttal notes from Hebrew. Do not use the shorter English article as a complete master.
 4. Independently proofread Persian prose for natural local expression, technical accuracy and mixed RTL/LTR notation. In particular, review whether the current UI label `شن` faithfully conveys canonical `sand` (`חול`) or should be `ماسه`; do not silently change a published locale label. Verify mobile wrapping, focus, keyboard and accessibility.
-5. Prepare a *separate release PR* for `docs/about/content/fa.html`, `docs/about/monster/fa.html`, the article registry, Monster routing, versioned PWA assets, tests and SHA-256 manifests. Verify actual browser offline navigation before approval.
+5. Reconcile the branch against current `main`, validate complete GitHub CI and real offline/mobile RTL/accessibility behavior, and only then create a separate release PR covering complete Persian About/Monster, registries, routing and integrity manifests. Never publish a partial translation.
 
 **Release state:** `fa` is **not** registered in `docs/about/content/registry.js`; public `?lang=fa` uses the site's current Hebrew About fallback. No public language selector or production HTML is modified by this draft.
