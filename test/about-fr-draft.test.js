@@ -132,3 +132,22 @@ test("unpublished French Monster companion preserves the first source section id
   assert.match(partial, /BROUILLON NON PUBLIÉ/);
   assert.ok(!partial.includes("penguin-appendix"), "Hebrew appendix and its notes are not yet translated or published");
 });
+
+
+test("unpublished French penguin appendix mirrors the Hebrew subheading prefix and editorial notes", async () => {
+  const [hebrew, partial] = await Promise.all([
+    readFile(new URL("monster/index.html", ROOT), "utf8"),
+    readFile(new URL("drafts/fr.monster.penguin.partial.html", ROOT), "utf8"),
+  ]);
+  const sectionIds = (html) => [...html.matchAll(/<section id="([^"]+)" class="level3">/g)]
+    .map((m) => m[1]);
+  const source = sectionIds(hebrew);
+  const translated = sectionIds(partial);
+  assert.equal(source.length, 13);
+  assert.deepEqual(translated, source.slice(0, 2));
+  assert.equal((partial.match(/<details class="penguin-note">/g) ?? []).length, 3);
+  assert.equal((partial.match(/<section\b/g) ?? []).length, (partial.match(/<\/section>/g) ?? []).length);
+  assert.equal((partial.match(/<details\b/g) ?? []).length, (partial.match(/<\/details>/g) ?? []).length);
+  assert.match(partial, /BROUILLON NON PUBLIÉ/);
+  assert.match(partial, /SOUS-SECTIONS RESTANTES : 11 sur 13/);
+});
