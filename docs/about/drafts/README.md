@@ -1,40 +1,33 @@
-# About article drafts: publication and canonical-parity ledger
+# About-article language coverage and translation drafts
 
-These files are **unpublished working materials**. Files in this folder must **never** be registered as production About articles. The public registry is `docs/about/content/registry.js`; do not change it until a complete translation has been accepted.
+This folder stores **historical source drafts, partial translations and QA material**. Its files are not production pages. Public About locales are explicitly registered in `docs/about/content/registry.js`; the live Monster pages reside under `docs/about/monster/`. Never treat a draft's completeness or a green structure test as proof of linguistic equivalence.
 
-## Current French candidate (`fr`)
+## Published baseline — 2026-11-14
 
-- Tracking: issue [#33](https://github.com/Sargon17-Green/pastafari-calendar/issues/33), draft PR [#34](https://github.com/Sargon17-Green/pastafari-calendar/pull/34).
-- Complete draft (16 article units): `fr.partial.html`.
-- Source fragments, retained for parallel review: `fr.canonical-names.cutlets.partial.html` (17 explanations) and `fr.canonical-names.months.partial.html` (47 explanations).
-- Structural baseline: current `docs/about/content/he.html` and `docs/about/content/en.html`. The historical French translation in `feature/about-i18n-72-locales` uses obsolete 28-section navigation and has no 64 disclosure explanations; it is **not** a drop-in replacement.
-- Stable section IDs, in order: `about-calendar`, `date-parts`, `working-day`, `year-structure`, `woven-months`, `canonical-names`, `day-boundary`, `advantages`, `practical-consequences`, `foundation-and-tablets`, `calendar-math`, `research`, `calculation`, `about-the-monster`, `authority`, `summary`.
-- French summary text is matched against `docs/i18n/locales/fr.js`, but **canonical identity and order** are defined by `docs/i18n/calendar-identifiers.js`. Translation alone does not alter the canonical identity.
-- 15 `data-toc-section` anchors, 64 `<details><summary>` explanations and a source-parallel structural block sequence.
-- Required exact numerical caveats in French: `|x − 4/9| ≤ e/103`; `|x − 3/5| ≤ 1/367`; solar-height `−6°`, container **capacity** 180–220 ml including endpoints, and deliberately unresolved time-window endpoint inclusion in the “spleen” extension. Do **not** round these values or present the 4/9 or 3/5 lexical allowances as computation changes.
-- The **unpublished complete French Monster companion** is assembled as `fr.monster.complete.html`, using the 25 core sections from `fr.monster.partial.html` and the fully translated annotated appendix from `fr.monster.penguin.partial.html`. The assembled draft has `lang="fr"`, `dir="ltr"`, valid CSS/navigation and a `noindex` meta tag. No production `docs/about/monster/fr.html` exists yet.
-- The local-day boundary is the lower transit of **Venus's center** across the observer's local meridian. The discrete algorithm is normative, but the numerical astronomical model is not yet canonically closed.
-- Statistics in `research` are empirical sample observations, not proven universal rules. The Seer performance engine is not canonical authority.
+- The public About article now supports **18 of 73** interface locales, including Hebrew. The remaining **55** use the documented Hebrew article fallback. This count is derived from the current article registry and UI locale modules; update it whenever publishing another language.
+- The current canonical Hebrew article is `docs/about/content/he.html`. Hebrew Monster semantic source: `docs/about/monster/index.html`. Translation must not change canonical identifiers, the discrete calendar algorithm or the original Hebrew legal/technical qualifiers.
+- French `fr` is **published**, not pending: full article `docs/about/content/fr.html` and complete Monster `docs/about/monster/fr.html`. Publication was merged through [PR #35](https://github.com/Sargon17-Green/pastafari-calendar/pull/35) at `7b5cfbaebc3b5627a1e242640315b68c8690b60f`, after draft [PR #34](https://github.com/Sargon17-Green/pastafari-calendar/pull/34) merged at `4bb48d3055d8c7fe1673b0e1181eff14f9dabbbd`.
+- GitHub Pages deployment for the French publication completed with a success conclusion on 2026-11-14. The local CI verified actual offline navigation in Chromium, responsive visual regression, accessibility and checksum completeness. This does **not** substitute for independent human linguistic review or a verified external HTTP response.
 
-## Acceptance gates before exposing a new article language
+## French source files retained for reference
 
-1. **Complete semantic translation:** all 16 current article units, all 64 explanation paragraphs, accurate special cases and qualifiers; no historical text substituted without review.
-2. **Automated structure/data gate:** run `node --test test/about-fr-draft.test.js` and `npm run test:fast`. Current tests verify section ID order, name labels and paragraph completeness, source-parallel structural block sequence, critical numeric constraints and nonpublication. A green test is **not** proof of linguistic equivalence.
-3. **Human-readable/canonical proofreading:** review against the current Hebrew canonical source, the matching English explanation and, when interpretation is genuinely disputed, the canonical corpus. Review especially lexical ambiguity, first live camel offspring, the vessel-capacity vs. milk-volume distinction, boundary inclusion, proleptic historical dates and empirical-vs-normative claims.
-4. **Companion content and links:** `docs/about/monster/fr.html` does not exist yet. The current draft links openly to `./monster/en.html` with `hreflang="en"`; do not mislabel this as French support. The standalone French Monster preview now exists as a draft. Check its 21 Hebrew-source editorial notes, French language, browser rendering, and links before copying it into `docs/about/monster/fr.html`.
-5. **Promotion (separate change):** create the approved `docs/about/content/fr.html`, add only then to the article registry, update the service-worker optional assets and their revisions, update tests that enumerate published article languages, and verify `?lang=fr` and deep links under HTTP, offline and narrow viewports. PR #32 has already been merged to `main` as `056d8b4894e11b1015147bdfd0d58eadb705a9f4`; preserve its multilingual name synchronization and offline cache keys.
-6. **CI and final approval:** only after the release PR's relevant completed checks pass may the translation be called published. PR #34 is a draft and must not silently promote `fr.partial.html` to production.
+- `fr.partial.html`: original 16-unit article source. Its English Monster hyperlink is a **historical draft fallback**, **not** the live French link. The published article now links to `./monster/fr.html`.
+- `fr.canonical-names.cutlets.partial.html` (17) and `fr.canonical-names.months.partial.html` (47): French source paragraphs for all 64 canonical-name disclosures.
+- `fr.monster.partial.html`: 25 core Monster sections.
+- `fr.monster.penguin.partial.html`: the complete 13-section penguin appendix with all 21 Hebrew editorial counterarguments retained at their source positions.
+- `fr.monster.complete.html`: prepublication standalone preview, intentionally marked `noindex`; do not substitute it for the public Monster page without explicit review.
+- `test/about-fr-draft.test.js` covers structural, numeric, locale, navigation and source-parity properties. It includes checks of the Newton/Einstein qualification and the French terms `jour de référence` (`c`) and `jour recherché` (`t`).
+- The canonical hexadecimal or decimal appearance of a number in a translated explanation must never silently change its meaning. Canonical examples include `|x − 4/9| ≤ e/103`, `|x − 3/5| ≤ 1/367`, solar elevation `−6°`, and the **180–220 ml vessel-capacity** constraint with both endpoints included. The spleen-interval endpoint semantics remain intentionally unresolved where the Hebrew canonical text says so.
 
-## Known limitations and stop conditions
+## Required workflow for each additional language
 
-- The French draft's lexical/content parity remains subject to language review. Counts and structural checks cannot certify its meaning.
-- The published About coverage is still 17 of 73 UI locales unless an actual release updates the production registry; 56 locales fall back to Hebrew article prose.
-- A queued or in-progress CI run is neither PASS nor a failure. Inspect completed job logs before classifying a regression or merging.
-- Never change the calendar's discrete algorithm, canonical Hebrew name identities or canonical source wording to accommodate a translation.
+1. Start a separate **unregistered draft** in this directory. Use the Hebrew About source as semantic authority and the existing approved UI locale's identifiers and direction as the presentation basis. Preserve the current 16 article unit IDs (15 TOC sections), the 17 cutlet + 47 month disclosure meanings and all critical numerical constraints.
+2. Translate and independently edit the prose for natural native-language usage. Maintain the separation between the reference/action day `c`, queried day `t`, the observer's location and the five actual date fields. Do not confuse source evidence from empirical samples with normative statements.
+3. Translate the Monster companion **from the Hebrew page**: all 25 regular sections, 13 penguin appendix subsections, and all 21 nested editorial rebuttals. The English Monster article is not an adequate semantic master for the appendix because it omits Hebrew-source notes. Preserve source section IDs and the relative position of nested notes.
+4. Add automated draft QA: IDs/order, counts and structural parity, exact special-case qualifiers, scope of values, no new registration or public linking. A passing parser/structure test is **not** a proof of translation quality.
+5. Promote content through a **separate, reviewable release PR**, only after translation review. Update the article registry, About loader revision, Monster locale selector, service-worker optional assets, tests and both `SHA256SUMS.txt` manifests. Check real offline browser navigation of both About and Monster pages, visual layout, keyboard/accessibility and the proper language direction.
+6. Merge only when GitHub checks for the *actual release head* have completed successfully. Verify both the GitHub Pages deployment result and, when possible, the public HTTP pages. Never infer a PASS from queued, in-progress or skipped jobs.
 
-### French Monster appendix (translation complete, unpublished)
+## Next language
 
-- File: `fr.monster.penguin.partial.html`. This is **separate** from the complete 25 regular Monster sections.
-- Semantic source: the Hebrew `docs/about/monster/index.html`, **not** the shortened English appendix. The Hebrew version includes editorial counterarguments in nested `<details class="penguin-note">` elements, and these must not be lost.
-- Current draft: introductory appendix argument and **all 13 of 13** `level3` subsections, with **all 21** editorial notes inserted at their exact Hebrew-source positions. The complete source/translation HTML tag sequence has **354 elements** and matches exactly; the IDs are identical and in the same order.
-- Still required: test the assembled French page, proofread the French against the Hebrew source, verify mobile layout/accessibility, and update the main About link to the French Monster page only when both pages are approved and released together. The current production About fallback must not be changed prematurely.
+The next not-yet-published language selected for the serial translation workflow is **Persian (`fa`)**, the first absent UI locale by ascending code. Its existing interface module is `docs/i18n/locales/fa.js`, with RTL direction. No Persian About article or Monster article is yet registered. Keep Persian drafts unpublished until the same acceptance gates are satisfied.
