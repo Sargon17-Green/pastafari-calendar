@@ -25,9 +25,9 @@ Language: **Persian / فارسی** (`fa`; RTL; UI module `docs/i18n/locales/fa.j
 ## Remaining; never present this as published
 
 1. Independently proofread all **16** Persian units for natural expression and canonical accuracy. Draft completion is not linguistic, scientific or canonical approval.
-2. Independently review **all 64** name definitions, exact boundary qualifiers and the `شن` versus `ماسه` lexical question before release.
+2. Independently review **all 64** name definitions and exact boundary qualifiers. The canonical `sand` label was changed in this draft branch from `شن` (typically gravel) to `ماسه` (sand), consistent with Persian geological usage; verify the displayed form and corresponding published UI assets before release.
 3. Independently proofread and source-audit the entire **25 + 13 + 21** Persian Monster companion for semantic accuracy, satirical voice, technical claims and fluent language, especially the rebuttal notes. The full Hebrew Monster is the master, not the shorter English page.
-4. Independently proofread Persian prose for natural local expression, technical accuracy and mixed RTL/LTR notation. In particular, review whether the current UI label `شن` faithfully conveys canonical `sand` (`חול`) or should be `ماسه`; do not silently change a published locale label. Verify mobile wrapping, focus, keyboard and accessibility.
+4. Independently proofread Persian prose for natural local expression, technical accuracy and mixed RTL/LTR notation. The draft now avoids Hebrew-only disambiguation notes where they would be confusing in native Persian. Verify UI consistency, mobile wrapping, focus, keyboard, accessibility and any additional Persian-specific lexical differences.
 5. Reconcile the branch against current `main`, validate complete GitHub CI and real offline/mobile RTL/accessibility behavior, and only then create a separate release PR covering complete Persian About/Monster, registries, routing and integrity manifests. Never publish a partial translation.
 
 **Release state:** `fa` is **not** registered in `docs/about/content/registry.js`; public `?lang=fa` uses the site's current Hebrew About fallback. No public language selector or production HTML is modified by this draft.
