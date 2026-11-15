@@ -8,7 +8,7 @@
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 @media print{.sidebar,.controls,#groups,.statusrow,#footer-tools,#filter,#notice{display:none!important}.layout{display:block}header{padding:0}.langblock{break-inside:avoid}.panel{border:none}}
 </style></head><body>
-<header><h1>بازبینی مستقلِ ترجمهٔ فارسی — تقویم و هیولا</h1><p class="warning">پیش‌نویسِ منتشرنشده؛ هیچ تأییدِ انسانی ثبت نشده است. این ابزار هرگز مجوزِ انتشار صادر نمی‌کند.</p><p class="meta">کامیتِ دقیق (SHA): <code dir="ltr" id="sha"></code> | <span id="source-counts"></span></p><p class="small">آفلاین و بدونِ کتابخانه یا درخواستِ شبکه کار می‌کند. وضعیت‌ها تنها در این مرورگر نگهداری می‌شوند و باید جداگانه صادر شوند. برای هر بخش، متن عبریِ مبنا در کنار متن فارسیِ نامزد آمده است. داده‌های این پرونده باید با همان SHA بررسی شوند.</p></header>
+<header><h1>بازبینی مستقلِ ترجمهٔ فارسی — تقویم و هیولا</h1><p class="warning">پیش‌نویسِ منتشرنشده؛ هیچ تأییدِ انسانی ثبت نشده است. این ابزار هرگز مجوزِ انتشار صادر نمی‌کند.</p><p class="meta">کامیتِ دقیق (SHA): <code dir="ltr" id="sha"></code> | <span id="source-counts"></span></p><p class="small">آفلاین و بدونِ کتابخانه یا درخواستِ شبکه کار می‌کند. وضعیت‌ها تنها در این مرورگر نگهداری می‌شوند و باید جداگانه صادر شوند. برای هر بخش، متن عبریِ مبنا در کنار متن فارسیِ نامزد آمده است. داده‌های این پرونده باید با همان SHA بررسی شوند. یادداشت‌های پیش‌نویس، حتی پیش از تأییدِ بررسیِ یک بخش، در گزارش خروجی ذخیره می‌شوند؛ بارگذاری گزارش موجود می‌تواند کارِ محلی را جایگزین کند.</p></header>
 <main class="wrap">
 <section class="panel"><h2>اطلاعاتِ بازبین</h2><div class="controls"><div class="wide"><label for="reviewer">نامِ بازبین — فقط برای گزارشِ خروجی</label><input id="reviewer" type="text" autocomplete="name" placeholder="نام و هویتِ حرفه‌ایِ بازبین"></div><div><label for="qualification">دامنهٔ مهارتِ بازبین</label><select id="qualification"><option value="">انتخاب کنید</option><option value="he-fa-fidelity">تطبیقِ معنای عبری و فارسی</option><option value="fa-style-only">روانی و درستیِ فارسی، بدونِ تأییدِ عبری</option></select></div><div><label for="filter">جست‌وجو در گروه</label><input id="filter" type="text" placeholder="نام، عبارت یا شناسه"></div></div>
 <div id="groups" role="group" aria-label="گروه‌های بازبینی"></div><p id="progress" role="status" aria-live="polite"></p></section>
@@ -70,16 +70,21 @@
   function exportJson(){
     const reviewer=$("reviewer").value.trim(),qualification=$("qualification").value;
     if(!reviewer || !qualification){notify("پیش از خروجی، نام و نوعِ صلاحیتِ بازبین را وارد کنید.");return}
-    const reviewed=Object.entries(state.items).filter(([id,v])=>entry(id)&&v.status&&v.status!=="unreviewed");
-    if(!reviewed.length){notify("هنوز بخشی بررسی نشده است؛ ابتدا وضعیتِ دست‌کم یک بخش را مشخص کنید.");return}
-    const results=Object.fromEntries(reviewed.map(([id,v])=>[id,{status:v.status,note:v.note||"",proposedReplacement:v.replacement||""}]));
-    const exportObj={schema:"fa-release-editorial-audit-result/v1",candidateSha:data.candidateSha,sourceBlobSha1:data.sourceBlobSha1,reviewer,competence:qualification,date:new Date().toISOString(),reviewedCount:reviewed.length,totalUnits:data.items.length,results,releaseApproval:"NOT_GRANTED_BY_THIS_TOOL",instruction:"Submit findings and explicit scope verdict separately in GitHub Issue #42. Do not infer full editorial or accessibility sign-off."};
+    // Preserve drafts as well as reviewed units: a note is not an approval.
+    const saved=Object.entries(state.items).filter(([id,v])=>entry(id)&&v&&(["approved","changes"].includes(v.status)||(v.note||"").trim()||(v.replacement||"").trim()));
+    if(!saved.length){notify("هیچ وضعیت یا یادداشتی برای خروجی وجود ندارد.");return}
+    const reviewed=saved.filter(([,v])=>v.status==="approved"||v.status==="changes");
+    const results=Object.fromEntries(saved.map(([id,v])=>[id,{status:v.status||"unreviewed",note:v.note||"",proposedReplacement:v.replacement||""}]));
+    const exportObj={schema:"fa-release-editorial-audit-result/v1",candidateSha:data.candidateSha,sourceBlobSha1:data.sourceBlobSha1,reviewer,competence:qualification,date:new Date().toISOString(),reviewedCount:reviewed.length,savedCount:saved.length,draftCount:saved.length-reviewed.length,totalUnits:data.items.length,results,releaseApproval:"NOT_GRANTED_BY_THIS_TOOL",instruction:"Submit findings and explicit scope verdict separately in GitHub Issue #42. Draft notes and unreviewed items are not approvals."};
     const json=JSON.stringify(exportObj,null,2)+"\n",blob=new Blob([json],{type:"application/json;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="fa-review-"+data.candidateSha.slice(0,8)+"-"+new Date().toISOString().slice(0,10)+".json";document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),5000);notify("گزارشِ محدودهٔ بررسی‌شده ذخیره شد؛ تأییدِ انتشار محسوب نمی‌شود.");
   }
   function importJson(file){
     if(!file)return;file.text().then(s=>{const imported=JSON.parse(s);
       if(imported.schema!=="fa-release-editorial-audit-result/v1"||imported.candidateSha!==data.candidateSha||JSON.stringify(imported.sourceBlobSha1)!==JSON.stringify(data.sourceBlobSha1))throw Error("نسخهٔ منبع با این فایل یکی نیست");
-      for(const [id,v] of Object.entries(imported.results||{})){if(!entry(id)||!["approved","changes"].includes(v.status))throw Error("دادهٔ بررسی نامعتبر: "+id);}
+      for(const [id,v] of Object.entries(imported.results||{})){if(!entry(id)||!v||!["approved","changes","unreviewed"].includes(v.status)||typeof(v.note??"")!=="string"||typeof(v.proposedReplacement??"")!=="string")throw Error("دادهٔ بررسی نامعتبر: "+id);}
+      // Import replaces this browser's current review. Never silently discard existing work.
+      const existing=Object.values(state.items).some(v=>v&&(["approved","changes"].includes(v.status)||(v.note||"").trim()||(v.replacement||"").trim()));
+      if(existing&&!confirm("بارگذاری این گزارش، یادداشت‌ها و وضعیت‌های فعلی را جایگزین می‌کند. پیش از ادامه، از کار خود خروجی بگیرید. ادامه می‌دهید؟")){notify("بارگذاری لغو شد؛ یادداشت‌های فعلی حفظ شدند.");return;}
       state.items=Object.fromEntries(Object.entries(imported.results||{}).map(([id,v])=>[id,{status:v.status,note:v.note||"",replacement:v.proposedReplacement||""}]));
       state.reviewer=imported.reviewer||"";state.qualification=imported.competence||"";$("reviewer").value=state.reviewer;$("qualification").value=state.qualification;save();render();notify("گزارشِ محلی از همین نسخهٔ منبع بارگذاری شد. صحتِ هویت یا کیفیتِ بررسی به‌طور خودکار تأیید نشده است.");
     }).catch(e=>notify("بارگذاری نشد: "+e.message));

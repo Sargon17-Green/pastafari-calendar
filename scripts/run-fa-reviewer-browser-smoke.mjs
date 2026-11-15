@@ -48,6 +48,11 @@ try {
   assert.equal(await page.evaluate(() => document.activeElement?.getAttribute("aria-pressed")), "true");
   assert.equal(await page.locator(".navitem").filter({ hasText: "B55" }).getAttribute("data-status"), "changes");
   assert.match(await page.locator("#progress").textContent(), /1 \/ 141/);
+  // A real reviewer often writes a draft note before marking an item reviewed.
+  await page.locator(".navitem").filter({ hasText: "B56" }).press("Enter");
+  await page.locator("#note").fill("Draft, not reviewed: please check this idiom.");
+  await page.locator("#replacement").fill("متنِ پیشنهادیِ موقت");
+  assert.equal(await page.locator(".navitem").filter({ hasText: "B56" }).getAttribute("data-status"), "unreviewed");
   await page.locator("#reviewer").fill("E2E Test Reviewer");
   await page.locator("#qualification").selectOption("he-fa-fidelity");
 
@@ -58,6 +63,11 @@ try {
   const output = JSON.parse(await readFile(await download.path(), "utf8"));
   assert.equal(output.candidateSha, expectedSource);
   assert.equal(output.reviewedCount, 1);
+  assert.equal(output.savedCount, 2);
+  assert.equal(output.draftCount, 1);
+  assert.equal(output.results.B56.status, "unreviewed");
+  assert.equal(output.results.B56.note, "Draft, not reviewed: please check this idiom.");
+  assert.equal(output.results.B56.proposedReplacement, "متنِ پیشنهادیِ موقت");
   assert.equal(output.releaseApproval, "NOT_GRANTED_BY_THIS_TOOL");
   assert.equal(output.results.B55.status, "changes");
   assert.equal(output.results.B55.note, "Reviewer test: verify source-fidelity scope.");
@@ -72,8 +82,38 @@ try {
     name: "review.json", mimeType: "application/json",
     buffer: Buffer.from(JSON.stringify(output), "utf8"),
   });
-  await page.waitForFunction(() => document.getElementById("note").value === "Reviewer test: verify source-fidelity scope.");
+  await page.waitForFunction(() => document.getElementById("note").value === "Reviewer test: verify source-fidelity scope." || document.getElementById("note").value === "Draft, not reviewed: please check this idiom.");
+  await page.locator(".navitem").filter({ hasText: "B55" }).click();
+  assert.equal(await page.locator("#note").inputValue(), "Reviewer test: verify source-fidelity scope.");
   assert.equal(await page.locator(".navitem").filter({ hasText: "B55" }).getAttribute("data-status"), "changes");
+  await page.locator(".navitem").filter({ hasText: "B56" }).click();
+  assert.equal(await page.locator("#note").inputValue(), "Draft, not reviewed: please check this idiom.");
+  assert.equal(await page.locator("#replacement").inputValue(), "متنِ پیشنهادیِ موقت");
+  assert.equal(await page.locator(".navitem").filter({ hasText: "B56" }).getAttribute("data-status"), "unreviewed");
+  assert.match(await page.locator("#progress").textContent(), /1 \/ 141/);
+
+  // Cancel a same-source import: existing notes must never be overwritten silently.
+  const legacy = { ...output, results: { B55: output.results.B55 } };
+  delete legacy.savedCount;
+  delete legacy.draftCount;
+  page.once("dialog", dialog => dialog.dismiss());
+  await page.locator("#import").setInputFiles({
+    name: "legacy-review.json", mimeType: "application/json",
+    buffer: Buffer.from(JSON.stringify(legacy), "utf8"),
+  });
+  await page.waitForFunction(() => document.getElementById("notice").textContent.includes("بارگذاری لغو شد"));
+  assert.equal(await page.locator("#note").inputValue(), "Draft, not reviewed: please check this idiom.");
+
+  // Legacy, reviewed-only files remain importable with explicit replacement consent.
+  page.once("dialog", dialog => dialog.accept());
+  await page.locator("#import").setInputFiles({
+    name: "legacy-review.json", mimeType: "application/json",
+    buffer: Buffer.from(JSON.stringify(legacy), "utf8"),
+  });
+  await page.waitForFunction(() => document.getElementById("note").value === "" && document.getElementById("notice").textContent.includes("گزارشِ محلی"));
+  assert.equal(await page.locator(".navitem").filter({ hasText: "B56" }).getAttribute("data-status"), "unreviewed");
+  await page.locator(".navitem").filter({ hasText: "B55" }).click();
+  assert.equal(await page.locator("#note").inputValue(), "Reviewer test: verify source-fidelity scope.");
 
   const corrupted = { ...output, candidateSha: "0".repeat(40) };
   await page.locator("#import").setInputFiles({
