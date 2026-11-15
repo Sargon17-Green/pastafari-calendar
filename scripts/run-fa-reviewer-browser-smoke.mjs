@@ -32,16 +32,20 @@ try {
   assert.match(await page.locator("#fa-text").textContent(), /تقویم/);
 
   // Exercise all four groups, source links, and a targeted N3 correction.
-  await page.getByRole("button", { name: /نام‌های کانونی/ }).click();
+  await page.getByRole("button", { name: /نام‌های کانونی/ }).press("Enter");
+  assert.equal(await page.evaluate(() => document.activeElement?.id), "heading", "group keyboard navigation should focus heading");
   assert.equal(await page.locator(".navitem").count(), 64);
-  await page.locator(".navitem").filter({ hasText: "B55" }).click();
+  await page.locator(".navitem").filter({ hasText: "B55" }).press("Enter");
+  assert.equal(await page.evaluate(() => document.activeElement?.id), "heading", "selected unit should focus its heading");
   assert.match(await page.locator("#fa-text").textContent(), /پستانداری اهلی/);
   assert.match(await page.locator("#he-text").textContent(), /היונק המבוית/);
   assert.match(await page.locator("#he-link").getAttribute("href"), /\/docs\/about\/content\/he.html#L/);
   assert.match(await page.locator("#fa-link").getAttribute("href"), /\/docs\/about\/content\/fa.html#L/);
   await page.locator("#note").fill("Reviewer test: verify source-fidelity scope.");
   await page.locator("#replacement").fill("پیشنهادِ ویرایشیِ آزمایشی.");
-  await page.getByRole("button", { name: "نیازمند اصلاح" }).click();
+  await page.getByRole("button", { name: "نیازمند اصلاح" }).press("Enter");
+  assert.equal(await page.evaluate(() => document.activeElement?.textContent?.trim()), "نیازمند اصلاح", "status button must retain focus after re-render");
+  assert.equal(await page.evaluate(() => document.activeElement?.getAttribute("aria-pressed")), "true");
   assert.equal(await page.locator(".navitem").filter({ hasText: "B55" }).getAttribute("data-status"), "changes");
   assert.match(await page.locator("#progress").textContent(), /1 \/ 141/);
   await page.locator("#reviewer").fill("E2E Test Reviewer");
@@ -79,11 +83,13 @@ try {
   await page.waitForFunction(() => document.getElementById("notice").textContent.includes("بارگذاری نشد"));
   assert.equal(await page.locator("#note").inputValue(), "Reviewer test: verify source-fidelity scope.");
 
-  await page.getByRole("button", { name: /متن هیولا/ }).click();
+  await page.getByRole("button", { name: /متن هیولا/ }).press("Enter");
+  assert.equal(await page.evaluate(() => document.activeElement?.id), "heading");
   assert.equal(await page.locator(".navitem").count(), 40);
   await page.locator(".navitem").filter({ hasText: "M39" }).click();
   assert.match(await page.locator("#fa-text").textContent(), /پنگوئن/);
-  await page.getByRole("button", { name: /یادداشت‌های پنگوئن/ }).click();
+  await page.getByRole("button", { name: /یادداشت‌های پنگوئن/ }).press("Enter");
+  assert.equal(await page.evaluate(() => document.activeElement?.id), "heading");
   assert.equal(await page.locator(".navitem").count(), 21);
   await page.locator("#filter").fill("D21");
   assert.equal(await page.locator(".navitem").count(), 1);
