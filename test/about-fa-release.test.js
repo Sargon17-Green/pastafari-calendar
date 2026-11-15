@@ -86,7 +86,7 @@ test("Persian route and optional PWA assets are version-consistent across the UI
   assert.match(aboutJs, /content\/registry\.js\?v=20261115-fa20/);
   assert.match(runtime, /registry\.js\?v=20-about-fa-20261114/);
   assert.match(registry, /LOCALE_ASSET_REVISION = "21-about-fa-20261114"/);
-  assert.match(worker, /pastafari-static-pwa-about-fa-20261114/);
+  assert.match(worker, /pastafari-static-pwa-about-fa-20261115-editorial-v2/);
   assert.match(worker, /\.\/about\/content\/fa\.html\?v=20261115-fa20/);
   assert.match(worker, /\.\/about\/monster\/fa\.html/);
   assert.match(monsterIndex, /es,et,fr,fa/);
