@@ -263,3 +263,45 @@ test("localized articles and canonical names reject destructive Chrome auto-tran
   assert.match(namesJs, /summary\.classList\.add\("notranslate"\)/);
   assert.match(monster, /<meta name="google" content="notranslate">/);
 });
+
+
+test("offline Persian human-review dashboard is self-contained, complete and source-locked", async () => {
+  const { createHash } = await import("node:crypto");
+  const { Script } = await import("node:vm");
+  const html = await readFile(new URL("../verification/fa-release/offline-reviewer.html", import.meta.url), "utf8");
+  const embedded = html.match(/<script id="fa-review-dataset" type="application\/json">([\s\S]*?)<\/script>/);
+  assert.ok(embedded, "embedded offline reviewer data");
+  const d = JSON.parse(embedded[1]);
+  assert.equal(d.schema, "fa-release-editorial-audit-v1");
+  assert.equal(d.candidateSha, "55c0f8a33114a7c6858a024cf5b75ca0cff89242");
+  assert.deepEqual(d.counts, { A: 16, B: 64, M: 40, D: 21 });
+  assert.equal(d.items.length, 141);
+  assert.equal(new Set(d.items.map(x => x.id)).size, 141);
+  for (const [kind,n,start] of [["A",16,1],["B",64,1],["M",40,0],["D",21,1]]) {
+    assert.deepEqual(d.items.filter(x=>x.kind===kind).map(x=>x.id),
+      Array.from({length:n},(_,i)=>kind+String(start+i).padStart(2,"0")));
+  }
+  for (const e of d.items) {
+    assert.ok(e.he.trim() && e.fa.trim() && e.title.trim(),e.id);
+    assert.match(e.heUrl,/^https:\/\/github\.com\/Sargon17-Green\/pastafari-calendar\/blob\/[a-f0-9]{40}\/docs\/about\//);
+    assert.match(e.faUrl,/^https:\/\/github\.com\/Sargon17-Green\/pastafari-calendar\/blob\/[a-f0-9]{40}\/docs\/about\//);
+  }
+  for(const [path,expected] of Object.entries(d.sourceBlobSha1)){
+    const bytes=await readFile(new URL("../"+path,import.meta.url));
+    const actual=createHash("sha1").update("blob "+bytes.length+"\0").update(bytes).digest("hex");
+    assert.equal(actual,expected,"source mismatch: "+path);
+  }
+  assert.match(d.items.find(x=>x.id==="B55").fa,/پستانداری اهلی/);
+  assert.match(d.items.find(x=>x.id==="B57").fa,/تأسف/);
+  assert.match(d.items.find(x=>x.id==="A06").he,/64/);
+  const script=html.match(/<script>\s*("use strict";[\s\S]*?)<\/script>/);
+  assert.ok(script,"embedded offline UI script");
+  new Script(script[1],{filename:"offline-reviewer.html"});
+  assert.match(script[1],/releaseApproval:"NOT_GRANTED_BY_THIS_TOOL"/);
+  assert.match(script[1],/candidateSha!==data\.candidateSha/);
+  assert.match(script[1],/sourceBlobSha1/);
+  assert.doesNotMatch(script[1],/\bfetch\s*\(|XMLHttpRequest|sendBeacon/);
+  assert.doesNotMatch(html,/<script[^>]+\bsrc=/i);
+  assert.doesNotMatch(html,/<link[^>]+\bhref=/i);
+  assert.match(html,/هیچ تأییدِ انسانی ثبت نشده است/);
+});
