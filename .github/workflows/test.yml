@@ -272,6 +272,8 @@ jobs:
           done
       - name: Run automated accessibility checks
         run: npm run test:accessibility
+      - name: Exercise offline Persian reviewer UI in Chromium
+        run: node scripts/run-fa-reviewer-browser-smoke.mjs
       - name: Upload accessibility failure artifacts
         if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
