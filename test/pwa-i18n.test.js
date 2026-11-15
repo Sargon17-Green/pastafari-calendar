@@ -65,9 +65,9 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   const requiredCore = [
     "./index.html",
     "./about/index.html",
-    "./about/about.js?v=20261114-fa19",
+    "./about/about.js?v=20261115-fa21",
     "./about/canonical-names.js?v=20261114-translate-guard",
-    "./about/content/registry.js?v=20261114-fa18",
+    "./about/content/registry.js?v=20261115-fa20",
     "./about/content/he.html?v=4-about-polish",
     "./styles.css?v=16-about-polish",
     "./app.js?v=25-about-fa-20261114",
@@ -101,7 +101,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   ];
   const approvedTranslations = ["en", "af", "ar", "az", "be", "bg", "bn", "bs", "ca", "cs", "da", "de", "el", "eo", "es", "et", "fr", "fa"];
   const translationAssets = approvedTranslations.flatMap((code) => [
-    "./about/content/" + code + ".html?v=" + (code === "fa" ? "20261114-fa18" : code === "fr" ? "20261114-fr17" : code === "et" ? "20261010-approved16" : code === "es" ? "20261010-approved15" : code === "eo" ? "20261010-approved14" : code === "el" ? "20261009-approved13" : "20261009-approved12"),
+    "./about/content/" + code + ".html?v=" + (code === "fa" ? "20261115-fa20" : code === "fr" ? "20261114-fr17" : code === "et" ? "20261010-approved16" : code === "es" ? "20261010-approved15" : code === "eo" ? "20261010-approved14" : code === "el" ? "20261009-approved13" : "20261009-approved12"),
     "./about/monster/" + code + ".html",
   ]);
   assert.deepEqual(optionalAssets, [...requiredOptional, ...translationAssets],
@@ -117,7 +117,7 @@ test("service worker keeps an atomic core shell and a bounded optional/on-demand
   assert.equal(LOCALES.length, 73, "PWA accounting expects the current 73 registered locales");
   assert.equal(LOCALES.filter(({ code }) => code !== "en").length, 72, "Every non-English locale is optional/on-demand");
 
-  assert.match(source, /const VERSION = "pastafari-static-pwa-about-fa-20261114-translate-guard";/);
+  assert.match(source, /const VERSION = "pastafari-static-pwa-about-fa-20261115-editorial-v2";/);
   assert.match(source, /const RUNTIME_CACHE = "pastafari-runtime-assets";/);
   assert.match(source, /const OPTIONAL_LOCALE_PATH = \/\^\\\/i18n\\\/locales/);
   assert.match(source, /url\.search === LOCALE_REVISION_SEARCH/);

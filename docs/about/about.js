@@ -14,7 +14,7 @@ import {
 import {
   ARTICLE_FALLBACK_LOCALE,
   resolveArticleLocale,
-} from "./content/registry.js?v=20261114-fa18";
+} from "./content/registry.js?v=20261115-fa20";
 import { synchronizeCanonicalNameSummaries } from "./canonical-names.js?v=20261114-translate-guard";
 
 const elements = Object.fromEntries(

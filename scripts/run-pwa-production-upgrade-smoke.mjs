@@ -17,7 +17,7 @@ const DOCS = path.join(ROOT, "docs");
 const BASE = "/pastafari-calendar/";
 const PREDECESSOR = "6b580f9fe914968c57470bec9d8cf3903c463483";
 const PREDECESSOR_CACHE = "pastafari-static-pwa-about-fr-20261114-core";
-const CANDIDATE_CACHE = "pastafari-static-pwa-about-fa-20261114-translate-guard-core";
+const CANDIDATE_CACHE = "pastafari-static-pwa-about-fa-20261115-editorial-v2-core";
 const TIMEOUT = 180_000;
 const mime = new Map([
   [".html", "text/html; charset=utf-8"],
@@ -173,7 +173,7 @@ try {
     const paths = (await runtime.keys()).map(request => new URL(request.url).pathname + new URL(request.url).search);
     return { names, paths };
   });
-  for (const required of ["/about/content/fa.html?v=20261114-fa18", "/about/monster/fa.html", "/i18n/locales/fa.js?v=21-about-fa-20261114"]) {
+  for (const required of ["/about/content/fa.html?v=20261115-fa20", "/about/monster/fa.html", "/i18n/locales/fa.js?v=21-about-fa-20261114"]) {
     assert(persisted.paths.some(p => p.endsWith(required)), "First online use did not cache: " + required);
   }
   console.log("[PASS] upgraded Persian About/Monster and locale cached in the original browser profile");

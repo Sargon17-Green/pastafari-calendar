@@ -1,6 +1,6 @@
 "use strict";
 
-const VERSION = "pastafari-static-pwa-about-fa-20261114-translate-guard";
+const VERSION = "pastafari-static-pwa-about-fa-20261115-editorial-v2";
 const CORE_CACHE = `${VERSION}-core`;
 const RUNTIME_CACHE = "pastafari-runtime-assets";
 const CACHE_PREFIX = "pastafari-static-";
@@ -10,9 +10,9 @@ const CACHE_PREFIX = "pastafari-static-";
 const CORE_ASSETS = [
   "./index.html",
   "./about/index.html",
-  "./about/about.js?v=20261114-fa19",
+  "./about/about.js?v=20261115-fa21",
   "./about/canonical-names.js?v=20261114-translate-guard",
-  "./about/content/registry.js?v=20261114-fa18",
+  "./about/content/registry.js?v=20261115-fa20",
   "./about/content/he.html?v=4-about-polish",
   "./styles.css?v=16-about-polish",
   "./app.js?v=25-about-fa-20261114",
@@ -78,7 +78,7 @@ const OPTIONAL_ASSETS = Object.freeze([
   "./about/monster/et.html",
   "./about/content/fr.html?v=20261114-fr17",
   "./about/monster/fr.html",
-  "./about/content/fa.html?v=20261114-fa18",
+  "./about/content/fa.html?v=20261115-fa20",
   "./about/monster/fa.html",
 ]);
 const OPTIONAL_LOCALE_PATH = /^\/i18n\/locales\/[A-Za-z0-9-]+\.js$/;

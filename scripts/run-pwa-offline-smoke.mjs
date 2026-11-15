@@ -767,7 +767,7 @@ try {
   assert.equal(await page.locator("#article-content #canonical-names summary").count(), 64);
   assert.equal(await page.locator("html").getAttribute("dir"), "rtl");
   assert.equal(await page.locator("#canonical-names summary").filter({ hasText: "ماسه" }).count(), 1);
-  await assertRuntimePresence(page, "./about/content/fa.html?v=20261114-fa18", true);
+  await assertRuntimePresence(page, "./about/content/fa.html?v=20261115-fa20", true);
   await assertRuntimePresence(page, "./i18n/locales/fa.js?v=21-about-fa-20261114", true);
 
   const onlineFaMonster = await page.goto(`${origin}${BASE_PATH}about/monster/fa.html`, {

@@ -96,7 +96,7 @@ export const ARTICLE_LOCALES = Object.freeze({
   fa: Object.freeze({
     code: "fa",
     dir: "rtl",
-    asset: "./content/fa.html?v=20261114-fa18",
+    asset: "./content/fa.html?v=20261115-fa20",
   }),
 });
 

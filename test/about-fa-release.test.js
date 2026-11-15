@@ -19,7 +19,7 @@ test("Persian article is registered and links to its own Monster, not Hebrew fal
   assert.equal(ARTICLE_LOCALES.fa.code, "fa");
   assert.equal(ARTICLE_LOCALES.fa.dir, "rtl");
   assert.equal(resolveArticleLocale("fa").code, "fa");
-  assert.match(ARTICLE_LOCALES.fa.asset, /\.\/content\/fa\.html\?v=20261114-fa18/);
+  assert.match(ARTICLE_LOCALES.fa.asset, /\.\/content\/fa\.html\?v=20261115-fa20/);
   assert.match(article, /href="\.\/monster\/fa\.html" hreflang="fa"/);
   assert.doesNotMatch(article, /href="\.\/monster\/"(?:\s|>)/);
   assert.equal((article.match(/<summary>/g) ?? []).length, 64);
@@ -81,17 +81,24 @@ test("Persian route and optional PWA assets are version-consistent across the UI
       read("about/monster/index.html"),
     ]);
   assert.match(shell, /app\.js\?v=25-about-fa-20261114/);
-  assert.match(aboutShell, /about\.js\?v=20261114-fa19/);
+  assert.match(aboutShell, /about\.js\?v=20261115-fa21/);
   assert.match(app, /i18n\/registry\.js\?v=20-about-fa-20261114/);
-  assert.match(aboutJs, /content\/registry\.js\?v=20261114-fa18/);
+  assert.match(aboutJs, /content\/registry\.js\?v=20261115-fa20/);
   assert.match(runtime, /registry\.js\?v=20-about-fa-20261114/);
   assert.match(registry, /LOCALE_ASSET_REVISION = "21-about-fa-20261114"/);
   assert.match(worker, /pastafari-static-pwa-about-fa-20261114/);
-  assert.match(worker, /\.\/about\/content\/fa\.html\?v=20261114-fa18/);
+  assert.match(worker, /\.\/about\/content\/fa\.html\?v=20261115-fa20/);
   assert.match(worker, /\.\/about\/monster\/fa\.html/);
   assert.match(monsterIndex, /es,et,fr,fa/);
 });
 
+
+test("editorial candidate N3/N4: canonical donkey and regret glosses preserve Hebrew meaning", async () => {
+  const about = await read("about/content/fa.html");
+  assert.match(about, /الاغ، پستانداری اهلی\./);
+  assert.match(about, /پشیمانی، اندوه یا تأسف از کاری، انتخابی یا نتیجه‌ای در گذشته\./);
+  assert.doesNotMatch(about, /با گوش‌های بلند و سم‌های محکم|کاش طورِ دیگری رخ داده بود/);
+});
 
 test("Persian source-language adaptation avoids stale Hebrew-only copy and circular definitions", async () => {
   const [about, monster] = await Promise.all([
