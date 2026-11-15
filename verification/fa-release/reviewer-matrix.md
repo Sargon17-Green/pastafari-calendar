@@ -2,12 +2,12 @@
 
 > **Status: NOT HUMAN-APPROVED.** This matrix is automatically assembled from the Hebrew semantic source and Persian candidate. It records no independent linguistic approval and is not a replacement for professional/native Persian review.
 
-Pinned source commit: `81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84`. Exact source Git blob SHA-1 values follow; CI checks that none of the sources drift from this packet.
+Pinned source commit: `a827c18234d5a6037942dad4942ee7f6ec62b3f8`. Exact source Git blob SHA-1 values follow; CI checks that none of the sources drift from this packet.
 
 | Source | Git blob SHA-1 |
 |---|---|
 | `docs/about/content/he.html` | `e664c64765c94168631cb176652886560d23d92b` |
-| `docs/about/content/fa.html` | `75d646cb81791e09a068dc2db22659c148bc794e` |
+| `docs/about/content/fa.html` | `4642e1a92b7915850c90048015e9aaae69260d12` |
 | `docs/about/monster/index.html` | `fd36d1b6b8ceb215545e6d9a7610d8f19a679e2f` |
 | `docs/about/monster/fa.html` | `b5923f35ecb22aeed189b188fd521cdac0bf7eb9` |
 
@@ -15,7 +15,7 @@ Pinned source commit: `81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84`. Exact source G
 
 Each pair is given in source order. The 64 names are expanded separately in section B to avoid hiding a discrepancy in a single long unit.
 
-### A01 — `about-calendar` ([L2](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L2) · [L2](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L2))
+### A01 — `about-calendar` ([L2](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L2) · [L2](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L2))
 
 **עברית**
 
@@ -29,7 +29,7 @@ Each pair is given in source order. The 64 names are expanded separately in sect
 > این تقویم سال، کتلت و ماه دارد، اما سال‌ها هم‌اندازه نیستند، کتلت‌ها و ماه‌ها دو جور تقسیم‌بندیِ متفاوت‌اند، یک ماه می‌تواند در طول سال ناپدید شود و دوباره برگردد، و چیزی به نام هفتهٔ رسمی یا کانونی در آن تعریف نشده است.
 > در این نوشته روشن می‌شود که تقویم چگونه ساخته شده، یک تاریخ را چطور باید خواند و ساختار نامعمول آن در عمل چه پیامدی دارد. جزئیات ریاضی و رمزنگاری در مستندات فنی آمده‌اند، ولی برای فهمیدن خودِ تقویم لازم نیست پیشاپیش آن‌ها را بدانید.
 
-### A02 — `date-parts` ([L8](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L8) · [L8](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L8))
+### A02 — `date-parts` ([L8](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L8) · [L8](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L8))
 
 **עברית**
 
@@ -57,7 +57,7 @@ Each pair is given in source order. The 64 names are expanded separately in sect
 > روزِ عمل، موقعیت ناظر و بعضی داده‌های فنیِ دیگر ممکن است برای محاسبهٔ تاریخ ضروری باشند؛ بااین‌حال، هیچ‌یک جزء ششم یا هفتم یا هشتمِ خودِ تاریخ نیستند.
 > شیوهٔ نمایش هم شمار اجزا را عوض نمی‌کند. اگر وب‌سایت این پنج داده را در سه سطر نشان دهد، باز هم با پنج داده روبه‌روییم. رفتن به سطر بعد یک انتخابِ صفحه‌آرایی است، نه اضافه‌شدن جزء تازه‌ای به تقویم.
 
-### A03 — `working-day` ([L23](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L23) · [L23](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L23))
+### A03 — `working-day` ([L23](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L23) · [L23](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L23))
 
 **עברית**
 
@@ -83,7 +83,7 @@ Each pair is given in source order. The 64 names are expanded separately in sect
 > مثلاً اگر تاریخ روزی را با انتخاب همان روز به‌عنوان روزِ عمل حساب کنیم، نتیجه در سال 5000 است. فردا اگر دوباره محاسبه کنیم و این بار فردا روزِ عمل باشد، فردا هم در سال 5000 قرار می‌گیرد. این دو گزاره دربارهٔ یک «سال تاریخی» ثابت با هم تعارض ندارند؛ در هر محاسبه، سالِ مبنای تازه‌ای تعیین شده است.
 > سال‌های با شمارهٔ بزرگ‌تر از 5000 در جهت آیندهٔ روزِ عمل قرار می‌گیرند و سال‌های با شمارهٔ کوچک‌تر از 5000 در جهت گذشتهٔ آن. سال 0 هم وجود دارد و پس از آن، سال‌هایی با شمارهٔ منفی می‌آیند.
 
-### A04 — `year-structure` ([L37](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L37) · [L37](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L37))
+### A04 — `year-structure` ([L37](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L37) · [L37](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L37))
 
 **עברית**
 
@@ -105,7 +105,7 @@ Each pair is given in source order. The 64 names are expanded separately in sect
 > 3 تا 47 ماهِ ساختاری. هر ماه 4 تا 123 روزِ متعلق به خود دارد، اما این روزها لزوماً پشت سرِ هم نمی‌آیند.
 > در این تقویم، نظامِ هفته‌های کانونی وجود ندارد. سطرها و ستون‌هایی که در سایت دیده می‌شوند صرفاً شیوه‌ای برای نمایش‌اند؛ کنار هم قرار گرفتن دو روز روی صفحه، آن‌ها را عضو یک «هفتهٔ پاستافاری» نمی‌کند.
 
-### A05 — `woven-months` ([L49](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L49) · [L49](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L49))
+### A05 — `woven-months` ([L49](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L49) · [L49](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L49))
 
 **עברית**
 
@@ -137,11 +137,11 @@ Each pair is given in source order. The 64 names are expanded separately in sect
 > همین‌طور اگر بعد از روز 15 این ماه، چهار روز متعلق به ماه‌های دیگر بیاید، ظهور بعدیِ ماه نخست همچنان روز 16 آن خواهد بود. آن چهار روز در ترتیب زمانیِ تقویم شمرده می‌شوند، اما چون متعلق به آن ماه نیستند، شمارندهٔ روزهای آن ماه را جلو نمی‌برند. به همین خاطر «روز بعدِ یک ماه» لزوماً همان «فردا» نیست.
 > پس نزدیک شدن به پایان ماه لزوماً به معنای نزدیک بودنِ آن در زمان نیست. ممکن است ماه به روز 119 از 120 رسیده باشد، اما روز 120 آن بسیار دیرتر از راه برسد.
 
-### A06 — `canonical-names` ([L68](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L68) · [L68](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L68))
+### A06 — `canonical-names` ([L68](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L68) · [L68](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L68))
 
 See the 64 complete name/explanation pairs in section B; source introduction at the line links above.
 
-### A07 — `day-boundary` ([L468](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L468) · [L468](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L468))
+### A07 — `day-boundary` ([L468](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L468) · [L468](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L468))
 
 **עברית**
 
@@ -159,7 +159,7 @@ See the 64 complete name/explanation pairs in section B; source introduction at 
 > این مرز بر پایهٔ محاسبهٔ حرکتِ زهره تعیین می‌شود، نه بر پایهٔ این‌که ناظر واقعاً بتواند آن را ببیند. ابرها، دیوارها یا قرارداشتنِ زهره زیرِ افق، حرکتِ آن را متوقف نمی‌کنند.
 > الگوریتمِ گسستهٔ تقویم دقیقاً تعریف شده است: ورودی‌های یکسان با اجرای قواعدِ یکسان، خروجیِ یکسان دارند. اما تبدیلِ یک لحظهٔ فیزیکی به روزِ پاستافاری اکنون از مدلِ اخترشناختیِ پیاده‌سازی استفاده می‌کند؛ مشخصاتِ عددیِ مدلِ اخترشناختی هنوز به‌طور کامل در کانون تثبیت نشده‌اند.
 
-### A08 — `advantages` ([L476](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L476) · [L476](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L476))
+### A08 — `advantages` ([L476](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L476) · [L476](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L476))
 
 **עברית**
 
@@ -189,7 +189,7 @@ See the 64 complete name/explanation pairs in section B; source introduction at 
 > می‌توان با آن تاریخ بیان کرد: تقویم اجازه می‌دهد برای یک روز توصیفی تقویمی ارائه کنیم. البته این دقیقاً همان کاری است که تقویم‌ها برایش ساخته شده‌اند، ولی دلیلی ندارد از ذکرِ یک قابلیتِ مفید صرف‌نظر کنیم.
 > همهٔ این ویژگی‌ها با هم در یک تقویم گرد آمده‌اند؛ همان‌طور که معمولاً وقتی چند ویژگی به یک تقویم تعلق دارند، چنین می‌شود.
 
-### A09 — `practical-consequences` ([L492](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L492) · [L492](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L492))
+### A09 — `practical-consequences` ([L492](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L492) · [L492](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L492))
 
 **עברית**
 
@@ -207,7 +207,7 @@ See the 64 complete name/explanation pairs in section B; source introduction at 
 > زادروزِ پاستافاری از قاعدهٔ «سالی یک بار» پیروی نمی‌کند. برای هر روزِ نامزد، هم تاریخِ پاستافاریِ همان روز و هم تاریخِ پاستافاریِ روزِ اصلیِ تولد با یک روزِ عملِ مشترک از نو محاسبه می‌شوند. زادروز زمانی رخ می‌دهد که نامِ کتلت و شمارهٔ روزِ آن، یا نامِ ماه و شمارهٔ روزِ آن، برابر باشند؛ شمارهٔ سال مقایسه نمی‌شود. توضیح و یافته‌های پژوهش دربارهٔ زادروزهای پاستافاری (در حال حاضر به عبری).
 > رویدادی که یک روزِ کامل را در بر می‌گیرد، لزوماً از نیمه‌شب تا نیمه‌شب نیست. اگر رویداد بر حسبِ روزِ محلیِ پاستافاری تعریف شده باشد، مرزِ آن همان مرزِ محلیِ زهره است. انتقالِ ساده‌انگارانهٔ آن به تقویمِ مدنی به صورتِ رویدادی از نیمه‌شب تا نیمه‌شب می‌تواند معنایش را عوض کند.
 
-### A10 — `foundation-and-tablets` ([L500](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L500) · [L500](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L500))
+### A10 — `foundation-and-tablets` ([L500](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L500) · [L500](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L500))
 
 **עברית**
 
@@ -231,7 +231,7 @@ See the 64 complete name/explanation pairs in section B; source introduction at 
 > فاصلهٔ این دو روز دقیقاً 14,777,149 روز است. روزِ بنیاد یک مبدأِ محاسباتی است؛ «نخستین روزِ زمان» نیست و تقویم پیش از آن نیز ادامه دارد.
 > در روایتِ سنتی، روزِ لوح‌ها با تحویلِ لوح‌ها پیوند دارد؛ در محاسبهٔ تاریخی، این روز با خورشیدگرفتگیِ دورانِ بور-ساگاله شناخته می‌شود. هر دو نقطهٔ مرجع با تغییرِ روزِ عمل هم ثابت می‌مانند.
 
-### A11 — `calendar-math` ([L513](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L513) · [L513](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L513))
+### A11 — `calendar-math` ([L513](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L513) · [L513](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L513))
 
 **עברית**
 
@@ -249,7 +249,7 @@ See the 64 complete name/explanation pairs in section B; source introduction at 
 > وقتی روزِ عمل و سال معلوم باشند، زوجِ کاملِ «نامِ کتلت + شمارهٔ روز در کتلت» یا «نامِ ماه + شمارهٔ روز در ماه» حداکثر به یک روزِ مشخص در همان سال اشاره می‌کند. ازاین‌رو تاریخِ کاملِ پاستافاری همراه با روزِ عمل، روزِ موردِ پرسش را به‌طور یکتا مشخص می‌کند.
 > اما بدون دانستنِ روزِ عمل، یک تاریخِ کاملِ پاستافاری لزوماً به‌تنهایی یک فاصلهٔ زمانیِ یکتا را تعیین نمی‌کند. همان پنج جزء می‌توانند در زمینه‌های محاسباتیِ متفاوت تکرار شوند.
 
-### A12 — `research` ([L521](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L521) · [L521](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L521))
+### A12 — `research` ([L521](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L521) · [L521](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L521))
 
 **עברית**
 
@@ -287,7 +287,7 @@ See the 64 complete name/explanation pairs in section B; source introduction at 
 > در نمونه، موردی افراطی دیده شد که نخستین تکرارِ آیندهٔ «اکد 3063» در فاصلهٔ 51,954 سالِ پاستافاری رخ می‌داد.
 > این یافته‌ها برای شناختِ رفتارِ معمولِ تقویم مفیدند، اما میانگین را به قانون تبدیل نمی‌کنند: میانگینِ مشاهده‌شدهٔ طولِ سال الزام نمی‌آورد که سالِ معینی نزدیک به آن باشد؛ همچنین مشاهدهٔ نتیجه‌ای در هر 4,096 مورد، به‌تنهایی اثباتِ ریاضیِ آن برای همهٔ ورودی‌های ممکن نیست.
 
-### A13 — `calculation` ([L543](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L543) · [L543](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L543))
+### A13 — `calculation` ([L543](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L543) · [L543](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L543))
 
 **עברית**
 
@@ -303,7 +303,7 @@ See the 64 complete name/explanation pairs in section B; source introduction at 
 > جزئیاتِ دقیقِ آن شاملِ عددهای بزرگ، قطره‌ها، کاسه‌ها، هم‌زدن‌ها، مهرها و سازوکارهای گزینشِ ترکیبیاتی است. این جزئیات برای پیاده‌سازی و وارسیِ صوری اهمیت دارند، اما برای فهمِ معنای تاریخ لازم نیستند و به همین دلیل این‌جا شرح داده نمی‌شوند.
 > در کنارِ این الگوریتم، موتورِ سریعی به نامِ Pastafarian Calendar Seer وجود دارد. Seer برای محاسبهٔ سریع طراحی شده است؛ مرجعِ صاحبِ اختیار نیست و خودِ آن نیز پیاده‌سازیِ هنجاریِ همهٔ مراحلِ الگوریتم به شمار نمی‌رود. اگر نتیجهٔ Seer با نتیجه‌ای که کانون ایجاب می‌کند ناسازگار باشد، خطا از Seer است.
 
-### A14 — `about-the-monster` ([L550](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L550) · [L550](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L550))
+### A14 — `about-the-monster` ([L550](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L550) · [L550](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L550))
 
 **עברית**
 
@@ -323,7 +323,7 @@ See the 64 complete name/explanation pairs in section B; source introduction at 
 > روایتِ پاستافاری بسیار گسترده‌تر از این تقویم است و از جمله دزدانِ دریایی، کربوهیدرات‌ها، دعا، عبارتِ «واقعاً ترجیح می‌دهم این کار را نکنی» و سنت‌های دیگر را در بر می‌گیرد.
 > بیشتر دربارهٔ هیولای اسپاگتیِ پرنده
 
-### A15 — `authority` ([L559](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L559) · [L559](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L559))
+### A15 — `authority` ([L559](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L559) · [L559](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L559))
 
 **עברית**
 
@@ -339,7 +339,7 @@ See the 64 complete name/explanation pairs in section B; source introduction at 
 > محتوای کانونی را مجموعهٔ متونِ کانونی و قواعدِ پذیرفته‌شده در آن تعیین می‌کنند. نسخه‌های کانونیِ مگیلا به‌طور خودکار نسبت به یکدیگر سلسله‌مراتب ندارند، و یک پیاده‌سازیِ نرم‌افزاری صرفاً به سببِ سرعت یا رواجش مرجعِ صاحبِ اختیار نمی‌شود.
 > پیاده‌سازیِ هنجاری، الگوریتمِ کانونی را در همهٔ مراحلش اجرا می‌کند. پژوهشِ محاسباتی می‌تواند پدیده‌ای را توصیف کند، الگویی بیابد یا قضیه‌ای دربارهٔ الگوریتم ثابت کند؛ هرگاه نتیجه فقط حاصلِ نمونه باشد و نه قاعده‌ای اثبات‌شده، این تمایز صریحاً بیان می‌شود.
 
-### A16 — `summary` ([L566](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L566) · [L566](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L566))
+### A16 — `summary` ([L566](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L566) · [L566](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L566))
 
 **עברית**
 
@@ -361,7 +361,7 @@ See the 64 complete name/explanation pairs in section B; source introduction at 
 
 Review exact definitions, constructed words and intentional exceptions. A lexical tolerance must never alter calendar arithmetic.
 
-### B01 — ארד / برنز ([L76](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L76) · [L76](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L76))
+### B01 — ארד / برنز ([L76](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L76) · [L76](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L76))
 
 **עברית:** סגסוגת המתכת ארד, המורכבת בעיקר מנחושת ובדיל. כאן זהו שם החומר, לא צבע בלבד.
 
@@ -369,7 +369,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B02 — שועל / روباه ([L82](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L82) · [L82](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L82))
+### B02 — שועל / روباه ([L82](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L82) · [L82](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L82))
 
 **עברית:** שועל, יונק ממשפחת הכלביים. השם אינו מציין מין מסוים של שועל.
 
@@ -377,7 +377,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B03 — כליה / کلیه ([L88](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L88) · [L88](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L88))
+### B03 — כליה / کلیه ([L88](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L88) · [L88](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L88))
 
 **עברית:** איבר הכליה, המסנן את הדם ומשתתף בוויסות מאזן הנוזלים והמלחים בגוף.
 
@@ -385,7 +385,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B04 — לגש / لاگاش ([L94](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L94) · [L94](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L94))
+### B04 — לגש / لاگاش ([L94](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L94) · [L94](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L94))
 
 **עברית:** לַגַשׁ, עיר־מדינה שומרית קדומה בדרום מסופוטמיה.
 
@@ -393,7 +393,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B05 — מחשבה / اندیشه ([L100](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L100) · [L100](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L100))
+### B05 — מחשבה / اندیشه ([L100](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L100) · [L100](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L100))
 
 **עברית:** מחשבה, כלומר תוכן של חשיבה או פעולת החשיבה עצמה.
 
@@ -401,7 +401,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B06 — ארבעה חלקים מתשעה / چهار بخش از نه ([L106](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L106) · [L106](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L106))
+### B06 — ארבעה חלקים מתשעה / چهار بخش از نه ([L106](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L106) · [L106](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L106))
 
 **עברית:** השבר 4/9 – ארבעה חלקים שווים מתוך תשעה. כל הביטוי הוא שם אחד. המשמעות המספרית המרכזית היא בדיוק 4/9; ברובד הלקסיקלי בלבד מותר גם מימוש מספרי x המקיים |x − 4/9| ≤ e/103, כולל הגבול. הביטוי e/103 נשמר במדויק ואינו מוחלף בקירוב עשרוני. ההיתר הזה אינו משנה מונים, אינדקסים, זהות או שום חישוב של הלוח.
 
@@ -409,7 +409,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B07 — פַּלְגּוּרַשׁ / پالگوراش ([L112](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L112) · [L112](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L112))
+### B07 — פַּלְגּוּרַשׁ / پالگوراش ([L112](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L112) · [L112](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L112))
 
 **עברית:** רצף הברות מומצא. אין לו משמעות מילונית נוספת שצריך לפרש; זהו השם עצמו.
 
@@ -417,7 +417,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B08 — גומא / پاپیروس ([L118](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L118) · [L118](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L118))
+### B08 — גומא / پاپیروس ([L118](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L118) · [L118](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L118))
 
 **עברית:** גומא הפפירוס – הצמח שממנו הוכן הפפירוס בעת העתיקה.
 
@@ -425,7 +425,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B09 — אשכול / خوشه ([L124](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L124) · [L124](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L124))
+### B09 — אשכול / خوشه ([L124](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L124) · [L124](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L124))
 
 **עברית:** קבוצה צפופה או צרור של פריטים; בעברית המילה מזוהה במיוחד עם אשכול ענבים.
 
@@ -433,7 +433,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B10 — עקרב / عقرب ([L130](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L130) · [L130](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L130))
+### B10 — עקרב / عقرب ([L130](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L130) · [L130](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L130))
 
 **עברית:** עקרב, פרוק־רגליים מן העכבישניים, בעל צבתות ועוקץ בזנב.
 
@@ -441,7 +441,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B11 — אפר / خاکستر ([L136](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L136) · [L136](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L136))
+### B11 — אפר / خاکستر ([L136](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L136) · [L136](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L136))
 
 **עברית:** השארית האבקתית שנשארת לאחר בעירה.
 
@@ -449,7 +449,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B12 — חיטה / گندم ([L142](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L142) · [L142](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L142))
+### B12 — חיטה / گندم ([L142](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L142) · [L142](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L142))
 
 **עברית:** צמח הדגן חיטה, שמגרגריו מייצרים בין השאר קמח.
 
@@ -457,7 +457,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B13 — נהר / رود ([L148](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L148) · [L148](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L148))
+### B13 — נהר / رود ([L148](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L148) · [L148](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L148))
 
 **עברית:** זרם מים טבעי גדול יחסית הזורם באפיק.
 
@@ -465,7 +465,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B14 — צחוק / خنده ([L154](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L154) · [L154](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L154))
+### B14 — צחוק / خنده ([L154](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L154) · [L154](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L154))
 
 **עברית:** תגובה קולית וגופנית המזוהה בדרך כלל עם שעשוע, שמחה או הומור.
 
@@ -473,7 +473,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B15 — אכד / اکد ([L160](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L160) · [L160](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L160))
+### B15 — אכד / اکد ([L160](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L160) · [L160](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L160))
 
 **עברית:** אַכַּד, העיר המסופוטמית הקדומה שעל שמה נקראו גם האימפריה האכדית והאזור; מקומה המדויק של העיר טרם זוהה בוודאות.
 
@@ -481,7 +481,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B16 — קרן / شاخ ([L166](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L166) · [L166](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L166))
+### B16 — קרן / شاخ ([L166](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L166) · [L166](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L166))
 
 **עברית:** קרן במובן של הבליטה הקשה היוצאת מראשם של בעלי חיים מסוימים, לא קרן אור.
 
@@ -489,7 +489,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B17 — הכד הריק / کوزهٔ خالی ([L172](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L172) · [L172](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L172))
+### B17 — הכד הריק / کوزهٔ خالی ([L172](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L172) · [L172](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L172))
 
 **עברית:** כד שאין בו תוכן. „ריק” מתאר את מה שנמצא בתוך הכד – כלומר שום דבר – ואינו מבטל את קיומו של הכד. כד ריק עדיין יכול להיות כד שלם, בעל דפנות, תחתית ופתח; הוא פשוט אינו מלא במים, יין, שמן או חומר אחר. באותה מידה, השם אינו אומר שהקציצה ריקה מימים: לקציצה בשם „הכד הריק” יש ימים ככל קציצה אחרת, ורק הכד שבשם הוא הריק.
 
@@ -497,7 +497,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B18 — טין / رس ([L182](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L182) · [L182](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L182))
+### B18 — טין / رس ([L182](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L182) · [L182](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L182))
 
 **עברית:** חומר אדמה דק־גרגר שנעשה פלסטי כשהוא רטוב ומתקשה בייבוש או בשרפה.
 
@@ -505,7 +505,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B19 — רימון / انار ([L188](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L188) · [L188](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L188))
+### B19 — רימון / انار ([L188](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L188) · [L188](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L188))
 
 **עברית:** פרי הרימון, פרי עגול בעל קליפה קשה וריבוי גרעינים עסיסיים.
 
@@ -513,7 +513,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B20 — מרפק / آرنج ([L194](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L194) · [L194](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L194))
+### B20 — מרפק / آرنج ([L194](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L194) · [L194](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L194))
 
 **עברית:** המפרק המחבר בין הזרוע לאמה.
 
@@ -521,7 +521,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B21 — קנאה / حسادت ([L200](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L200) · [L200](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L200))
+### B21 — קנאה / حسادت ([L200](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L200) · [L200](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L200))
 
 **עברית:** צער או אי־נחת לנוכח יתרון, הישג או דבר טוב שיש לאחר, ולעיתים גם רצון שיהיה אצל המקנא.
 
@@ -529,7 +529,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B22 — ארידו / اریدو ([L206](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L206) · [L206](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L206))
+### B22 — ארידו / اریدو ([L206](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L206) · [L206](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L206))
 
 **עברית:** אֶרִידוּ, עיר שומרית קדומה בדרום מסופוטמיה.
 
@@ -537,7 +537,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B23 — משחת־שיניים / خمیردندان ([L212](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L212) · [L212](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L212))
+### B23 — משחת־שיניים / خمیردندان ([L212](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L212) · [L212](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L212))
 
 **עברית:** חומר משחתי המשמש לניקוי השיניים בעת צחצוח. השם מתייחס למשחה עצמה, לא למברשת השיניים ולא לפעולת הצחצוח.
 
@@ -545,7 +545,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B24 — שלושה חלקים מחמישה / سه بخش از پنج ([L218](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L218) · [L218](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L218))
+### B24 — שלושה חלקים מחמישה / سه بخش از پنج ([L218](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L218) · [L218](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L218))
 
 **עברית:** השבר 3/5 – שלושה חלקים שווים מתוך חמישה. כל הביטוי הוא שם אחד. המשמעות המספרית המרכזית היא בדיוק 3/5; ברובד הלקסיקלי בלבד מותר גם מימוש מספרי x המקיים |x − 3/5| ≤ 1/367, כולל הגבול. הגבול הוא ערך מדויק, לא קירוב עשרוני. ההיתר הזה אינו משנה מונים, אינדקסים, זהות או שום חישוב של הלוח.
 
@@ -553,7 +553,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B25 — כַּרְשׁוּמַב / کارشوماو ([L224](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L224) · [L224](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L224))
+### B25 — כַּרְשׁוּמַב / کارشوماو ([L224](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L224) · [L224](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L224))
 
 **עברית:** רצף הברות מומצא. אין לו משמעות מילונית נסתרת; זהו השם עצמו.
 
@@ -561,7 +561,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B26 — נמר / پلنگ ([L230](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L230) · [L230](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L230))
+### B26 — נמר / پلنگ ([L230](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L230) · [L230](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L230))
 
 **עברית:** הנמר המנומר; אין הכוונה לטיגריס.
 
@@ -569,7 +569,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B27 — בדיל / قلع ([L236](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L236) · [L236](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L236))
+### B27 — בדיל / قلع ([L236](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L236) · [L236](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L236))
 
 **עברית:** היסוד הכימי בדיל.
 
@@ -577,7 +577,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B28 — ערפל / مه ([L242](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L242) · [L242](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L242))
+### B28 — ערפל / مه ([L242](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L242) · [L242](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L242))
 
 **עברית:** ריכוז של טיפות מים זעירות באוויר סמוך לפני הקרקע; אין הכוונה לעשן.
 
@@ -585,7 +585,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B29 — לבונה / کندر ([L248](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L248) · [L248](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L248))
+### B29 — לבונה / کندر ([L248](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L248) · [L248](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L248))
 
 **עברית:** שרף ארומטי המופק מעצים ממשפחת עצי הלבונה ומשמש לבישום ולקטורת.
 
@@ -593,7 +593,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B30 — כישור / دوک ([L254](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L254) · [L254](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L254))
+### B30 — כישור / دوک ([L254](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L254) · [L254](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L254))
 
 **עברית:** כלי המשמש לטוויית סיבים לחוט.
 
@@ -601,7 +601,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B31 — צלע / دنده ([L260](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L260) · [L260](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L260))
+### B31 — צלע / دنده ([L260](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L260) · [L260](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L260))
 
 **עברית:** אחת מעצמות בית החזה.
 
@@ -609,7 +609,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B32 — חרוב / خرنوب ([L266](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L266) · [L266](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L266))
+### B32 — חרוב / خرنوب ([L266](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L266) · [L266](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L266))
 
 **עברית:** עץ החרוב או פריו.
 
@@ -617,7 +617,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B33 — אורוק / اوروک ([L272](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L272) · [L272](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L272))
+### B33 — אורוק / اوروک ([L272](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L272) · [L272](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L272))
 
 **עברית:** אוּרוּכּ, עיר שומרית קדומה במסופוטמיה.
 
@@ -625,7 +625,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B34 — בושה / شرم ([L278](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L278) · [L278](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L278))
+### B34 — בושה / شرم ([L278](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L278) · [L278](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L278))
 
 **עברית:** תחושת אי־נוחות או כאב הנובעים מתפיסה של פגם, כישלון או התנהגות מביכה.
 
@@ -633,7 +633,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B35 — גמל / شتر ([L284](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L284) · [L284](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L284))
+### B35 — גמל / شتر ([L284](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L284) · [L284](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L284))
 
 **עברית:** היונק גמל, המותאם לחיים באזורים צחיחים.
 
@@ -641,7 +641,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B36 — נחושת / مس ([L290](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L290) · [L290](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L290))
+### B36 — נחושת / مس ([L290](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L290) · [L290](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L290))
 
 **עברית:** היסוד הכימי נחושת.
 
@@ -649,7 +649,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B37 — באר / چاه ([L296](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L296) · [L296](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L296))
+### B37 — באר / چاه ([L296](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L296) · [L296](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L296))
 
 **עברית:** בור או פיר שנחפר אל מקור מים תת־קרקעי כדי לשאוב ממנו מים.
 
@@ -657,7 +657,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B38 — חלמון / زرده ([L302](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L302) · [L302](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L302))
+### B38 — חלמון / زرده ([L302](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L302) · [L302](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L302))
 
 **עברית:** החלק הצהוב של ביצת עוף.
 
@@ -665,7 +665,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B39 — כוכב / ستاره ([L308](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L308) · [L308](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L308))
+### B39 — כוכב / ستاره ([L308](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L308) · [L308](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L308))
 
 **עברית:** גרם שמים דוגמת השמש, הפולט אנרגיה מתהליכים פיזיקליים המתרחשים בתוכו.
 
@@ -673,7 +673,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B40 — דבש / عسل ([L314](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L314) · [L314](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L314))
+### B40 — דבש / عسل ([L314](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L314) · [L314](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L314))
 
 **עברית:** החומר המתוק שמייצרות דבורים מצוף או מהפרשות צמחיות.
 
@@ -681,7 +681,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B41 — טחול / طحال ([L320](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L320) · [L320](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L320))
+### B41 — טחול / طحال ([L320](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L320) · [L320](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L320))
 
 **עברית:** האיבר טחול, השייך בין השאר למערכת החיסון ולסינון הדם. נוסף על המשמעות הרגילה קיימת הרחבה קאנונית מכוונת, שאין לה קשר ביולוגי, אטימולוגי או תרבותי לטחול ואין להמציא קשר כזה: השם כולל גם חלב מנאקה חד־דבשתית הקשור לצאצא החי הראשון שלה, שנחלב לאחר שקיעה נראית רגילה ולפני שמרכז השמש מגיע לגובה גאומטרי של −6°, ובטרם הצאצא עמד בכוחות עצמו. הריונות קודמים שהסתיימו בהפלה או בלידת ולד מת אינם פוסלים את התנאי; אם הצאצא מת לפני שעמד בכוחות עצמו, התנאי אינו נסגר בשל כך. הכלי צריך להיות קרמי, בעל זיגוג אדום וקיבולת של 180–220 מ״ל, כולל שני גבולות הקיבולת. אין דרישה שהחליבה תהיה ישירות מן העטין לכלי, וקיבולת הכלי – לא כמות החלב שנאספה בפועל – היא המבחן המספרי. לגבי הכללת רגעי הגבול של חלון הזמן עצמם נשארה אי־הכרעה קאנונית מכוונת.
 
@@ -689,7 +689,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B42 — אבן־גיר / سنگ آهک ([L326](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L326) · [L326](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L326))
+### B42 — אבן־גיר / سنگ آهک ([L326](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L326) · [L326](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L326))
 
 **עברית:** סלע משקע המורכב ברובו מסידן פחמתי.
 
@@ -697,7 +697,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B43 — שמחה / شادی ([L332](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L332) · [L332](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L332))
+### B43 — שמחה / شادی ([L332](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L332) · [L332](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L332))
 
 **עברית:** רגש חיובי של אושר, סיפוק או חדווה.
 
@@ -705,7 +705,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B44 — תאנה / انجیر ([L338](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L338) · [L338](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L338))
+### B44 — תאנה / انجیر ([L338](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L338) · [L338](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L338))
 
 **עברית:** פרי התאנה או עץ התאנה.
 
@@ -713,7 +713,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B45 — נינוה / نینوا ([L344](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L344) · [L344](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L344))
+### B45 — נינוה / نینوا ([L344](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L344) · [L344](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L344))
 
 **עברית:** נִינְוֵה, העיר האשורית הקדומה ששכנה מול מוסול של ימינו, על גדת החידקל.
 
@@ -721,7 +721,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B46 — צפרדע / قورباغه ([L350](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L350) · [L350](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L350))
+### B46 — צפרדע / قورباغه ([L350](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L350) · [L350](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L350))
 
 **עברית:** דו־חי חסר זנב מן הקבוצה הכוללת את הצפרדעים והקרפדות.
 
@@ -729,7 +729,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B47 — זפת / قیر ([L356](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L356) · [L356](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L356))
+### B47 — זפת / قیر ([L356](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L356) · [L356](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L356))
 
 **עברית:** חומר כהה וצמיג המשמש בין השאר לאיטום; הכוונה לחומר זפתי סמיך, לא לשם כללי לכל אספלט.
 
@@ -737,7 +737,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B48 — נר / چراغ ([L362](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L362) · [L362](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L362))
+### B48 — נר / چراغ ([L362](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L362) · [L362](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L362))
 
 **עברית:** כלי מאור. אין הכרח שמדובר דווקא בנר שעווה עם פתיל.
 
@@ -745,7 +745,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B49 — הדלת הסגורה / در بسته ([L368](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L368) · [L368](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L368))
+### B49 — הדלת הסגורה / در بسته ([L368](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L368) · [L368](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L368))
 
 **עברית:** דלת שנמצאת במצב סגור. דלת סגורה עדיין נשארת דלת: היא לא נעשית קיר, אינה נעלמת ואינה חייבת להיות נעולה. „סגורה” אומר שהפתח שהיא מיועדת לפתוח חסום כרגע על־ידי הדלת; „נעולה” היא טענה נוספת שאינה כלולה בשם. לכן גם דלת שסגרו בלי לסובב מפתח עונה היטב לשם „הדלת הסגורה”.
 
@@ -753,7 +753,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B50 — שומשום / کنجد ([L374](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L374) · [L374](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L374))
+### B50 — שומשום / کنجد ([L374](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L374) · [L374](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L374))
 
 **עברית:** צמח השומשום או זרעיו, שמהם מופק בין השאר שמן שומשום.
 
@@ -761,7 +761,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B51 — עורף / پس‌گردن ([L380](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L380) · [L380](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L380))
+### B51 — עורף / پس‌گردن ([L380](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L380) · [L380](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L380))
 
 **עברית:** החלק האחורי של הצוואר.
 
@@ -769,7 +769,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B52 — כסף / نقره ([L386](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L386) · [L386](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L386))
+### B52 — כסף / نقره ([L386](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L386) · [L386](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L386))
 
 **עברית:** היסוד הכימי כסף. אין הכוונה לכסף כאמצעי תשלום.
 
@@ -777,7 +777,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B53 — שושן / شوش ([L392](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L392) · [L392](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L392))
+### B53 — שושן / شوش ([L392](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L392) · [L392](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L392))
 
 **עברית:** שׁוּשַׁן, העיר העתיקה בעילם ובפרס. אין הכוונה לפרח שושן.
 
@@ -785,7 +785,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B54 — סערה / طوفان ([L398](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L398) · [L398](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L398))
+### B54 — סערה / طوفان ([L398](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L398) · [L398](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L398))
 
 **עברית:** מצב מזג אוויר סוער, בדרך כלל עם רוחות חזקות ולעיתים משקעים, ברקים או תופעות נלוות.
 
@@ -793,15 +793,15 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B55 — חמור / الاغ ([L404](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L404) · [L404](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L404))
+### B55 — חמור / الاغ ([L404](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L404) · [L404](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L404))
 
 **עברית:** היונק המבוית חמור.
 
-**فارسی:** جانوری اهلی از خانوادهٔ اسبان، با گوش‌های بلند و سم‌های محکم.
+**فارسی:** الاغ، پستانداری اهلی.
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B56 — קמח / آرد ([L410](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L410) · [L410](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L410))
+### B56 — קמח / آرد ([L410](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L410) · [L410](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L410))
 
 **עברית:** אבקה המתקבלת מטחינת גרעינים או חומר צמחי דומה; בהקשר הרגיל – קמח דגנים.
 
@@ -809,15 +809,15 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B57 — חרטה / پشیمانی ([L416](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L416) · [L416](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L416))
+### B57 — חרטה / پشیمانی ([L416](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L416) · [L416](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L416))
 
 **עברית:** צער על מעשה, בחירה או תוצאה בעבר.
 
-**فارسی:** احساسِ ناراحتی از کار، تصمیم یا نتیجه‌ای در گذشته، همراه با این اندیشه که کاش طورِ دیگری رخ داده بود.
+**فارسی:** پشیمانی، اندوه یا تأسف از کاری، انتخابی یا نتیجه‌ای در گذشته.
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B58 — בבל / بابل ([L422](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L422) · [L422](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L422))
+### B58 — בבל / بابل ([L422](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L422) · [L422](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L422))
 
 **עברית:** בָּבֶל, העיר המסופוטמית הקדומה שעל נהר הפרת; כאן זהו שם המקום.
 
@@ -825,7 +825,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B59 — לשון / زبان ([L428](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L428) · [L428](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L428))
+### B59 — לשון / زبان ([L428](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L428) · [L428](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L428))
 
 **עברית:** האיבר השרירי שבפה. אין הכוונה ל„לשון” במובן של שפה.
 
@@ -833,7 +833,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B60 — פשתן / کتان ([L434](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L434) · [L434](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L434))
+### B60 — פשתן / کتان ([L434](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L434) · [L434](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L434))
 
 **עברית:** צמח הפשתן וסיביו, המשמשים בין השאר לייצור בד.
 
@@ -841,7 +841,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B61 — מלח / نمک ([L440](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L440) · [L440](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L440))
+### B61 — מלח / نمک ([L440](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L440) · [L440](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L440))
 
 **עברית:** החומר המלוח המשמש בין השאר במזון, ובהקשר היומיומי בעיקר נתרן כלורי. אין הכוונה למַלָּח, איש צוות של ספינה.
 
@@ -849,7 +849,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B62 — אגס / گلابی ([L446](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L446) · [L446](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L446))
+### B62 — אגס / گلابی ([L446](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L446) · [L446](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L446))
 
 **עברית:** פרי האגס.
 
@@ -857,7 +857,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B63 — קשת / کمان ([L452](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L452) · [L452](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L452))
+### B63 — קשת / کمان ([L452](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L452) · [L452](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L452))
 
 **עברית:** כלי הנשק שמותח מיתר כדי לירות חץ. אין הכוונה לקשת בענן.
 
@@ -865,7 +865,7 @@ Review exact definitions, constructed words and intentional exceptions. A lexica
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### B64 — חול / ماسه ([L458](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/he.html#L458) · [L458](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/content/fa.html#L458))
+### B64 — חול / ماسه ([L458](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/he.html#L458) · [L458](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/content/fa.html#L458))
 
 **עברית:** חומר גרגירי המורכב מחלקיקים קטנים של סלעים ומינרלים. אין הכוונה ל„חול” כניגוד ל„קודש” ולא ליום חול.
 
@@ -881,51 +881,51 @@ Hebrew IDs are deliberately stable cross-language link targets and must not be t
 
 | # | Stable ID | Hebrew heading | Persian heading | Source positions |
 |---:|---|---|---|---|
-| 1 | `זכר-נקבה-או-פחמימה` | זכר, נקבה או פחמימה | نر، ماده یا کربوهیدرات؟ | [L96](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L96) / [L83](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L84) |
-| 2 | `איך-היא-נראית` | איך היא נראית | او چه شکلی است؟ | [L108](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L108) / [L89](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L90) |
-| 3 | `תחילת-הבריאה` | תחילת הבריאה | آغازِ آفرینش | [L123](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L123) / [L96](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L97) |
-| 4 | `העולם-שנוצר` | העולם שנוצר | جهانی که آفریده شد | [L141](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L141) / [L105](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L106) |
-| 5 | `כיצד-פועלת-הכבידה-בפועל` | כיצד פועלת הכבידה בפועל | گرانش در عمل چگونه کار می‌کند؟ | [L159](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L159) / [L113](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L114) |
-| 6 | `גילו-של-העולם` | גילו של העולם | سنِ جهان | [L175](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L175) / [L121](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L122) |
-| 7 | `הפחמימות` | הפחמימות | کربوهیدرات‌ها | [L189](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L189) / [L128](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L129) |
-| 8 | `אנטיפסטי-והגיהנום` | אנטיפסטי והגיהנום | آنتی‌پاستی و دوزخ | [L205](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L205) / [L136](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L137) |
-| 9 | `למה-ארוחה-צריכה-להיות-ארוחה` | למה ארוחה צריכה להיות ארוחה | چرا یک وعدهٔ غذا باید واقعاً غذا باشد؟ | [L228](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L228) / [L146](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L147) |
-| 10 | `סימנים-שהמפלצת-משאירה` | סימנים שהמפלצת משאירה | نشانه‌هایی که هیولا از خود به جا می‌گذارد | [L239](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L239) / [L153](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L154) |
-| 11 | `תפילות-שנענו` | תפילות שנענו | دعاهایی که مستجاب شدند | [L254](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L254) / [L161](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L162) |
-| 12 | `פיראטים` | פיראטים | دزدانِ دریایی | [L269](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L269) / [L170](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L171) |
-| 13 | `בני-האדם` | בני האדם | انسان‌ها | [L285](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L285) / [L178](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L179) |
-| 14 | `עבודה-שכחה-ותיקונים` | עבודה, שכחה ותיקונים | کار، فراموشی و تعمیرات | [L296](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L296) / [L185](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L186) |
-| 15 | `המבול` | המבול | سیلابِ بزرگ | [L307](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L307) / [L192](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L193) |
-| 16 | `מה-אפשר-לדעת-מתוצאות` | מה אפשר לדעת מתוצאות | از نتیجه‌ها چه می‌توان فهمید؟ | [L317](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L317) / [L199](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L200) |
-| 17 | `צירופי-מקרים` | צירופי מקרים | تصادف‌ها | [L328](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L328) / [L207](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L208) |
-| 18 | `התערבות-בעולם` | התערבות בעולם | دخالت در جهان | [L340](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L340) / [L214](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L215) |
-| 19 | `תפילה` | תפילה | دعا | [L349](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L349) / [L220](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L221) |
-| 20 | `פולחן` | פולחן | آیین‌ها | [L360](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L360) / [L227](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L228) |
-| 21 | `אני-ממש-מעדיף-שלא` | “אני ממש מעדיף שלא” | «واقعاً ترجیح می‌دهم این کار را نکنی» | [L371](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L371) / [L235](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L236) |
-| 22 | `אמונה-וספק` | אמונה וספק | ایمان و تردید | [L382](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L382) / [L242](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L243) |
-| 23 | `האם-יש-ראיות-נגדיות` | האם יש ראיות נגדיות | آیا شاهدی بر خلافِ آن وجود دارد؟ | [L390](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L390) / [L249](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L250) |
-| 24 | `מסורת-זיכרון-ודיוק` | מסורת, זיכרון ודיוק | سنت، حافظه و دقت | [L400](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L400) / [L257](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L258) |
-| 25 | `כך-הדבר-עובד` | כך הדבר עובד | ماجرا از این قرار است | [L412](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L412) / [L264](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L265) |
-| 26 | `נספח-מדוע-אין-להפקיד-ביתחרושת-לדודישמש-בידי-פינגווינים` | נספח: מדוע אין להפקיד בית־חרושת לדודי־שמש בידי פינגווינים | پیوست: چرا نباید مدیریتِ کارخانهٔ آبگرمکنِ خورشیدی را به پنگوئن‌ها سپرد؟ | [L420](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L420) / [L270](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L271) |
-| 27 | `מבנה-הגוף` | מבנה הגוף | ساختمانِ بدن | [L431](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L431) / [L276](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L277) |
-| 28 | `תקשורת` | תקשורת | ارتباط | [L448](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L448) / [L286](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L287) |
-| 29 | `קריאה-כתיבה-וחישוב` | קריאה, כתיבה וחישוב | خواندن، نوشتن و حساب‌کردن | [L464](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L464) / [L296](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L297) |
-| 30 | `בקרת-איכות` | בקרת איכות | کنترلِ کیفیت | [L478](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L478) / [L307](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L308) |
-| 31 | `בטיחות` | בטיחות | ایمنی | [L491](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L491) / [L315](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L316) |
-| 32 | `אקלים` | אקלים | آب‌وهوا و دما | [L506](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L506) / [L326](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L327) |
-| 33 | `חומרי-גלם` | חומרי גלם | موادِ اولیه | [L521](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L521) / [L336](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L337) |
-| 34 | `לוגיסטיקה` | לוגיסטיקה | لجستیک | [L535](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L535) / [L347](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L348) |
-| 35 | `משאבי-אנוש` | משאבי אנוש | منابعِ انسانی | [L545](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L545) / [L356](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L357) |
-| 36 | `אחריות-משפטית` | אחריות משפטית | مسئولیتِ حقوقی | [L561](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L561) / [L367](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L368) |
-| 37 | `שאלת-הניסיון` | שאלת הניסיון | مسئلهٔ تجربه | [L573](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L573) / [L377](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L378) |
-| 38 | `יתרונות-אפשריים` | יתרונות אפשריים | مزیت‌های احتمالی | [L586](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L586) / [L387](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L388) |
-| 39 | `מסקנה` | מסקנה | نتیجه‌گیری | [L597](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L597) / [L397](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L398) |
+| 1 | `זכר-נקבה-או-פחמימה` | זכר, נקבה או פחמימה | نر، ماده یا کربوهیدرات؟ | [L96](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L96) / [L83](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L84) |
+| 2 | `איך-היא-נראית` | איך היא נראית | او چه شکلی است؟ | [L108](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L108) / [L89](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L90) |
+| 3 | `תחילת-הבריאה` | תחילת הבריאה | آغازِ آفرینش | [L123](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L123) / [L96](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L97) |
+| 4 | `העולם-שנוצר` | העולם שנוצר | جهانی که آفریده شد | [L141](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L141) / [L105](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L106) |
+| 5 | `כיצד-פועלת-הכבידה-בפועל` | כיצד פועלת הכבידה בפועל | گرانش در عمل چگونه کار می‌کند؟ | [L159](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L159) / [L113](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L114) |
+| 6 | `גילו-של-העולם` | גילו של העולם | سنِ جهان | [L175](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L175) / [L121](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L122) |
+| 7 | `הפחמימות` | הפחמימות | کربوهیدرات‌ها | [L189](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L189) / [L128](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L129) |
+| 8 | `אנטיפסטי-והגיהנום` | אנטיפסטי והגיהנום | آنتی‌پاستی و دوزخ | [L205](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L205) / [L136](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L137) |
+| 9 | `למה-ארוחה-צריכה-להיות-ארוחה` | למה ארוחה צריכה להיות ארוחה | چرا یک وعدهٔ غذا باید واقعاً غذا باشد؟ | [L228](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L228) / [L146](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L147) |
+| 10 | `סימנים-שהמפלצת-משאירה` | סימנים שהמפלצת משאירה | نشانه‌هایی که هیولا از خود به جا می‌گذارد | [L239](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L239) / [L153](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L154) |
+| 11 | `תפילות-שנענו` | תפילות שנענו | دعاهایی که مستجاب شدند | [L254](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L254) / [L161](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L162) |
+| 12 | `פיראטים` | פיראטים | دزدانِ دریایی | [L269](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L269) / [L170](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L171) |
+| 13 | `בני-האדם` | בני האדם | انسان‌ها | [L285](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L285) / [L178](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L179) |
+| 14 | `עבודה-שכחה-ותיקונים` | עבודה, שכחה ותיקונים | کار، فراموشی و تعمیرات | [L296](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L296) / [L185](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L186) |
+| 15 | `המבול` | המבול | سیلابِ بزرگ | [L307](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L307) / [L192](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L193) |
+| 16 | `מה-אפשר-לדעת-מתוצאות` | מה אפשר לדעת מתוצאות | از نتیجه‌ها چه می‌توان فهمید؟ | [L317](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L317) / [L199](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L200) |
+| 17 | `צירופי-מקרים` | צירופי מקרים | تصادف‌ها | [L328](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L328) / [L207](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L208) |
+| 18 | `התערבות-בעולם` | התערבות בעולם | دخالت در جهان | [L340](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L340) / [L214](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L215) |
+| 19 | `תפילה` | תפילה | دعا | [L349](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L349) / [L220](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L221) |
+| 20 | `פולחן` | פולחן | آیین‌ها | [L360](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L360) / [L227](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L228) |
+| 21 | `אני-ממש-מעדיף-שלא` | “אני ממש מעדיף שלא” | «واقعاً ترجیح می‌دهم این کار را نکنی» | [L371](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L371) / [L235](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L236) |
+| 22 | `אמונה-וספק` | אמונה וספק | ایمان و تردید | [L382](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L382) / [L242](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L243) |
+| 23 | `האם-יש-ראיות-נגדיות` | האם יש ראיות נגדיות | آیا شاهدی بر خلافِ آن وجود دارد؟ | [L390](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L390) / [L249](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L250) |
+| 24 | `מסורת-זיכרון-ודיוק` | מסורת, זיכרון ודיוק | سنت، حافظه و دقت | [L400](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L400) / [L257](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L258) |
+| 25 | `כך-הדבר-עובד` | כך הדבר עובד | ماجرا از این قرار است | [L412](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L412) / [L264](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L265) |
+| 26 | `נספח-מדוע-אין-להפקיד-ביתחרושת-לדודישמש-בידי-פינגווינים` | נספח: מדוע אין להפקיד בית־חרושת לדודי־שמש בידי פינגווינים | پیوست: چرا نباید مدیریتِ کارخانهٔ آبگرمکنِ خورشیدی را به پنگوئن‌ها سپرد؟ | [L420](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L420) / [L270](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L271) |
+| 27 | `מבנה-הגוף` | מבנה הגוף | ساختمانِ بدن | [L431](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L431) / [L276](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L277) |
+| 28 | `תקשורת` | תקשורת | ارتباط | [L448](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L448) / [L286](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L287) |
+| 29 | `קריאה-כתיבה-וחישוב` | קריאה, כתיבה וחישוב | خواندن، نوشتن و حساب‌کردن | [L464](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L464) / [L296](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L297) |
+| 30 | `בקרת-איכות` | בקרת איכות | کنترلِ کیفیت | [L478](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L478) / [L307](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L308) |
+| 31 | `בטיחות` | בטיחות | ایمنی | [L491](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L491) / [L315](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L316) |
+| 32 | `אקלים` | אקלים | آب‌وهوا و دما | [L506](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L506) / [L326](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L327) |
+| 33 | `חומרי-גלם` | חומרי גלם | موادِ اولیه | [L521](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L521) / [L336](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L337) |
+| 34 | `לוגיסטיקה` | לוגיסטיקה | لجستیک | [L535](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L535) / [L347](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L348) |
+| 35 | `משאבי-אנוש` | משאבי אנוש | منابعِ انسانی | [L545](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L545) / [L356](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L357) |
+| 36 | `אחריות-משפטית` | אחריות משפטית | مسئولیتِ حقوقی | [L561](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L561) / [L367](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L368) |
+| 37 | `שאלת-הניסיון` | שאלת הניסיון | مسئلهٔ تجربه | [L573](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L573) / [L377](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L378) |
+| 38 | `יתרונות-אפשריים` | יתרונות אפשריים | مزیت‌های احتمالی | [L586](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L586) / [L387](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L388) |
+| 39 | `מסקנה` | מסקנה | نتیجه‌گیری | [L597](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L597) / [L397](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L398) |
 
 ## D. Penguin appendix — all 21 editorial notes
 
 Verify semantic continuity and satirical voice. The 39 heading pairs above do not replace reading the whole Monster article.
 
-### D01 ([L441](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L441) · [L281](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L282))
+### D01 ([L441](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L441) · [L281](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L282))
 
 **עברית:** הערה
 
@@ -937,7 +937,7 @@ Verify semantic continuity and satirical voice. The 39 heading pairs above do no
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### D02 ([L446](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L446) · [L283](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L284))
+### D02 ([L446](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L446) · [L283](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L284))
 
 **עברית:** הערה
 
@@ -949,7 +949,7 @@ Verify semantic continuity and satirical voice. The 39 heading pairs above do no
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### D03 ([L459](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L459) · [L291](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L292))
+### D03 ([L459](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L459) · [L291](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L292))
 
 **עברית:** הערה
 
@@ -961,7 +961,7 @@ Verify semantic continuity and satirical voice. The 39 heading pairs above do no
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### D04 ([L471](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L471) · [L301](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L302))
+### D04 ([L471](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L471) · [L301](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L302))
 
 **עברית:** הערה
 
@@ -973,7 +973,7 @@ Verify semantic continuity and satirical voice. The 39 heading pairs above do no
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### D05 ([L476](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L476) · [L304](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L305))
+### D05 ([L476](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L476) · [L304](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L305))
 
 **עברית:** הערה
 
@@ -985,7 +985,7 @@ Verify semantic continuity and satirical voice. The 39 heading pairs above do no
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### D06 ([L489](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L489) · [L312](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L313))
+### D06 ([L489](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L489) · [L312](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L313))
 
 **עברית:** הערה
 
@@ -997,7 +997,7 @@ Verify semantic continuity and satirical voice. The 39 heading pairs above do no
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### D07 ([L497](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L497) · [L320](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L321))
+### D07 ([L497](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L497) · [L320](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L321))
 
 **עברית:** הערה
 
@@ -1009,7 +1009,7 @@ Verify semantic continuity and satirical voice. The 39 heading pairs above do no
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### D08 ([L502](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L502) · [L322](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L323))
+### D08 ([L502](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L502) · [L322](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L323))
 
 **עברית:** הערה
 
@@ -1021,7 +1021,7 @@ Verify semantic continuity and satirical voice. The 39 heading pairs above do no
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### D09 ([L517](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L517) · [L331](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L332))
+### D09 ([L517](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L517) · [L331](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L332))
 
 **עברית:** הערה
 
@@ -1033,7 +1033,7 @@ Verify semantic continuity and satirical voice. The 39 heading pairs above do no
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### D10 ([L526](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L526) · [L340](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L341))
+### D10 ([L526](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L526) · [L340](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L341))
 
 **עברית:** הערה
 
@@ -1045,7 +1045,7 @@ Verify semantic continuity and satirical voice. The 39 heading pairs above do no
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### D11 ([L530](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L530) · [L342](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L343))
+### D11 ([L530](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L530) · [L342](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L343))
 
 **עברית:** הערה
 
@@ -1057,7 +1057,7 @@ Verify semantic continuity and satirical voice. The 39 heading pairs above do no
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### D12 ([L533](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L533) · [L344](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L345))
+### D12 ([L533](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L533) · [L344](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L345))
 
 **עברית:** הערה
 
@@ -1069,7 +1069,7 @@ Verify semantic continuity and satirical voice. The 39 heading pairs above do no
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### D13 ([L541](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L541) · [L351](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L352))
+### D13 ([L541](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L541) · [L351](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L352))
 
 **עברית:** הערה
 
@@ -1081,7 +1081,7 @@ Verify semantic continuity and satirical voice. The 39 heading pairs above do no
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### D14 ([L554](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L554) · [L361](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L362))
+### D14 ([L554](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L554) · [L361](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L362))
 
 **עברית:** הערה
 
@@ -1093,7 +1093,7 @@ Verify semantic continuity and satirical voice. The 39 heading pairs above do no
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### D15 ([L559](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L559) · [L364](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L365))
+### D15 ([L559](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L559) · [L364](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L365))
 
 **עברית:** הערה
 
@@ -1105,7 +1105,7 @@ Verify semantic continuity and satirical voice. The 39 heading pairs above do no
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### D16 ([L568](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L568) · [L372](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L373))
+### D16 ([L568](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L568) · [L372](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L373))
 
 **עברית:** הערה
 
@@ -1117,7 +1117,7 @@ Verify semantic continuity and satirical voice. The 39 heading pairs above do no
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### D17 ([L571](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L571) · [L374](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L375))
+### D17 ([L571](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L571) · [L374](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L375))
 
 **עברית:** הערה
 
@@ -1129,7 +1129,7 @@ Verify semantic continuity and satirical voice. The 39 heading pairs above do no
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### D18 ([L581](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L581) · [L382](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L383))
+### D18 ([L581](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L581) · [L382](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L383))
 
 **עברית:** הערה
 
@@ -1141,7 +1141,7 @@ Verify semantic continuity and satirical voice. The 39 heading pairs above do no
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### D19 ([L584](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L584) · [L384](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L385))
+### D19 ([L584](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L584) · [L384](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L385))
 
 **עברית:** הערה
 
@@ -1153,7 +1153,7 @@ Verify semantic continuity and satirical voice. The 39 heading pairs above do no
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### D20 ([L595](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L595) · [L394](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L395))
+### D20 ([L595](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L595) · [L394](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L395))
 
 **עברית:** הערה
 
@@ -1165,7 +1165,7 @@ Verify semantic continuity and satirical voice. The 39 heading pairs above do no
 
 - [ ] Reviewed by an independent fluent Persian reader
 
-### D21 ([L608](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L608) · [L403](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L404))
+### D21 ([L608](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/index.html#L608) · [L403](https://github.com/Sargon17-Green/pastafari-calendar/blob/a827c18234d5a6037942dad4942ee7f6ec62b3f8/docs/about/monster/fa.html#L404))
 
 **עברית:** הערה
 
