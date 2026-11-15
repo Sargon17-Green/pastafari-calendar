@@ -53,6 +53,8 @@ jobs:
       - run: npm run security:supply-chain
       - run: npm ci
       - run: npm run gate-data:check
+      - name: Test Seer cache refresh integrity and monotonicity
+        run: python3 -m unittest discover -s test -p 'test_refresh_seer_cache.py' -v
       - name: Verify oracle authority boundary
         run: npm run test:update16
       - name: Verify Update 17 canonical evidence and fast/reference matrix
