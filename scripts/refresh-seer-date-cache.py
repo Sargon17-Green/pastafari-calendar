@@ -10,6 +10,9 @@ import datetime as dt
 import json
 import os
 from pathlib import Path
+import hashlib
+import re
+import subprocess
 import sys
 import time
 from urllib.error import HTTPError, URLError
@@ -98,16 +101,128 @@ def fetch_seer():
     raise RuntimeError("All Seer attempts failed; old JSON left unchanged:\n" + "\n".join(errors))
 
 
+
+def file_digest(filename):
+    value = hashlib.sha256()
+    with filename.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            value.update(chunk)
+    return value.hexdigest()
+
+
+def read_manifest(filename):
+    raw = filename.read_text(encoding="utf-8")
+    if not raw.endswith("\n") or "\r" in raw:
+        raise ValueError(f"Invalid manifest line endings: {filename}")
+    entries = []
+    seen = set()
+    for line in raw.splitlines():
+        match = re.fullmatch(r"([0-9a-f]{64})  \./(.+)", line)
+        if not match:
+            raise ValueError(f"Malformed checksum entry in {filename}")
+        digest, rel = match.groups()
+        if rel in seen:
+            raise ValueError(f"Duplicate manifest path: {rel}")
+        if "\\" in rel or any(part in ("", ".", "..") for part in rel.split("/")):
+            raise ValueError(f"Unsafe manifest path: {rel}")
+        seen.add(rel)
+        entries.append((rel, digest))
+    if [rel for rel, _ in entries] != sorted(seen, key=lambda s: s.encode("utf-8")):
+        raise ValueError(f"Unsorted manifest: {filename}")
+    return entries
+
+
+def tracked_paths(root):
+    raw = subprocess.check_output(["git", "-C", str(root), "ls-files", "-z"], timeout=30)
+    return {v.decode("utf-8") for v in raw.split(b"\0") if v}
+
+
+def existing_file(root, rel):
+    candidate = (root / rel).resolve()
+    if not candidate.is_relative_to(root.resolve()) or not candidate.is_file():
+        raise ValueError(f"Missing/unsafe checksum path: {rel}")
+    return candidate
+
+
+def reconcile_seer_manifest_chain(root):
+    """Fail closed on unrelated hash drift; update only Seer and nested manifest hashes.
+
+    All three files are published as one Git commit, never as separate pushes.
+    """
+    root = root.resolve()
+    docs = root / "docs"
+    docs_file = docs / "SHA256SUMS.txt"
+    root_file = root / "SHA256SUMS.txt"
+    docs_entries = read_manifest(docs_file)
+    root_entries = read_manifest(root_file)
+    doc_hashes = dict(docs_entries)
+    root_hashes = dict(root_entries)
+    allowed = {"docs/api/seer-now.json", "docs/SHA256SUMS.txt"}
+    if "api/seer-now.json" not in doc_hashes or not allowed.issubset(root_hashes):
+        raise ValueError("Missing required Seer checksum entries")
+    if doc_hashes["api/seer-now.json"] != root_hashes["docs/api/seer-now.json"]:
+        raise ValueError("Seer checksum entries disagree")
+    if root_hashes["docs/SHA256SUMS.txt"] != file_digest(docs_file):
+        raise ValueError("Existing nested manifest checksum mismatch")
+
+    tracked = tracked_paths(root)
+    root_expected = tracked - {"SHA256SUMS.txt"}
+    docs_expected = {rel[5:] for rel in tracked
+                     if rel.startswith("docs/") and rel != "docs/SHA256SUMS.txt"}
+    if set(root_hashes) != root_expected or set(doc_hashes) != docs_expected:
+        raise ValueError("Checksum manifest tracked-file coverage mismatch")
+    for rel, expected in docs_entries:
+        if rel != "api/seer-now.json" and file_digest(existing_file(docs, rel)) != expected:
+            raise ValueError(f"Unrelated docs checksum drift: {rel}")
+    for rel, expected in root_entries:
+        if rel not in allowed and file_digest(existing_file(root, rel)) != expected:
+            raise ValueError(f"Unrelated root checksum drift: {rel}")
+
+    seer_hash = file_digest(existing_file(docs, "api/seer-now.json"))
+    new_docs = "".join(
+        f"{seer_hash if rel == 'api/seer-now.json' else expected}  ./{rel}\n"
+        for rel, expected in docs_entries
+    )
+    next_digests = {
+        "docs/api/seer-now.json": seer_hash,
+        "docs/SHA256SUMS.txt": hashlib.sha256(new_docs.encode("utf-8")).hexdigest(),
+    }
+    new_root = "".join(
+        f"{next_digests.get(rel, expected)}  ./{rel}\n"
+        for rel, expected in root_entries
+    )
+    if file_digest(existing_file(docs, "api/seer-now.json")) != seer_hash:
+        raise RuntimeError("Seer JSON changed during checksum verification")
+    if new_docs == docs_file.read_text(encoding="utf-8") and \
+            new_root == root_file.read_text(encoding="utf-8"):
+        return False
+    for dest, data in ((docs_file, new_docs), (root_file, new_root)):
+        temporary = dest.with_name(dest.name + ".tmp")
+        try:
+            temporary.write_text(data, encoding="utf-8", newline="\n")
+            os.replace(temporary, dest)
+        finally:
+            temporary.unlink(missing_ok=True)
+    print("MANIFESTS_UPDATED: seer / nested docs / root", flush=True)
+    return True
+
 def main():
     fresh = fetch_seer()
     key = date_key(fresh)
     if OUTPUT.exists():
         try:
             old = json.loads(OUTPUT.read_text(encoding="utf-8"))
-            if (old.get("cacheMeta", {}).get("mode") == "automated-seer-snapshot"
-                    and date_key(old) == key):
-                print("UNCHANGED_DATE: skip write and skip commit", flush=True)
-                return
+            if old.get("cacheMeta", {}).get("mode") == "automated-seer-snapshot":
+                old_key = date_key(old)
+                if old_key == key:
+                    print("UNCHANGED_DATE: skip write and skip commit", flush=True)
+                    return
+                previous_at = dt.datetime.fromisoformat(old["calculationAt"].replace("Z", "+00:00"))
+                incoming_at = dt.datetime.fromisoformat(fresh["calculationAt"].replace("Z", "+00:00"))
+                if previous_at.tzinfo is None or incoming_at.tzinfo is None:
+                    raise RuntimeError("Cannot compare unzoned Seer snapshots")
+                if incoming_at <= previous_at:
+                    raise RuntimeError("Refusing to replace newer Seer snapshot with older data")
         except (OSError, ValueError, KeyError, TypeError) as e:
             print("Replacing invalid previous cache:", e, flush=True)
     fresh["cacheMeta"] = {
@@ -121,6 +236,7 @@ def main():
     temp = OUTPUT.with_suffix(".json.tmp")
     temp.write_text(json.dumps(fresh, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     os.replace(temp, OUTPUT)
+    reconcile_seer_manifest_chain(Path.cwd())
     print("UPDATED_DATE:", OUTPUT, flush=True)
 
 

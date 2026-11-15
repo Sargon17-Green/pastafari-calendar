@@ -3,9 +3,9 @@
 972581cf79c533380c39a53b29ca83931db27d5876e432f9756879b9588d7bf4  ./.github/workflows/implementations.yml
 977a4f0c7c49113da91fff9d1e11441db7b5d1d1c87362a0d250ea3566bfd773  ./.github/workflows/post-series-packed-package-parity.yml
 8a708cc001a988079fadfe0a76daa5bff670f2190ea3a0849a46c53f0d8ec7b7  ./.github/workflows/property-soak.yml
-b2df39b64bcadf210e1c99f86d6df09ca0ea1062c2e4f2d2aa8392b9081962a2  ./.github/workflows/refresh-seer-now.yml
+8aa9ff5f3f2fedb93a8d28e53c2bb580ff4a4e8f20a5b9cc2545f9adb2a6486b  ./.github/workflows/refresh-seer-now.yml
 cbd181462c0621c4ee5f8f18655582ddd2076f2ae8832b3c29f8efc5c79de07f  ./.github/workflows/release-verification.yml
-d39833020d41048f5de128c9db8cca7733bf01b7f02ee3161cf6a0e8d749a9b6  ./.github/workflows/test.yml
+d3e3b7fa6e8bea83c38aadd077ad6930aeecbba117230645292dd30a058d1d97  ./.github/workflows/test.yml
 243b84e6971a15390fedfb410d7546eba523fa89ec68abc526308dcebca9eaf2  ./.github/workflows/update-08-stage-04a.yml
 90bf94095e2398eec6dfc5b6260411d2cdc51e70985db8e067f03834ed559a5b  ./.github/workflows/update-08-stage-07-router-fix.yml
 d503b168723b347a1d78b3db1f1feef5b27015036a1587102bb2f4ab7241a383  ./.github/workflows/update-13-intl-audit.yml
@@ -363,7 +363,7 @@ c040204e38cde0f84f2be761aedcdf7714ca0f606dd1931a92f118f724adc77b  ./docs/LICENSE
 edb2f9ecf9b4e1004194797f8924b519feb2551b3632c0daf18f1b3b52e67df6  ./docs/MEMORY-TESTING.md
 80019dd65798ec19fcee2b3429272f7bb3a3d67b6b47f87aefa176475164305d  ./docs/README.md
 87853fc8efc0ce9710f8100526e0aad5ca1925f2c7e12f8c5a27fe7231a7ba7f  ./docs/REVERSE-CONSTRAINTS.md
-ca0ba1ffa02edcc7063d491ae16a7226eb1842cf814fc5fce57c3f00c2ba7c87  ./docs/SHA256SUMS.txt
+c4d41e0e564635c606e0b8cc760514e2f592cf5208056723084a8e287165ffd1  ./docs/SHA256SUMS.txt
 2e431b15b351d9253537ac65d0eabb316b450da4576a2d7e399b253ffd738310  ./docs/SUPPLY-CHAIN-SECURITY.md
 afcd41c96e35892d1f0942fac6642b175c1a13cb08c8c86bfcabd194d2f33b47  ./docs/UPLOAD-TO-GITHUB.md
 b21151b32430df823e95e9eabd36a7019d2707eac0f34aa9d3960184c14ddc92  ./docs/about/about.js
@@ -413,7 +413,7 @@ e5e853347d4f6720383f82d88cfaa456891a80a625548e0fd98c51ad0e9124a2  ./docs/about/m
 22b0bbb7d351ab22fe127042204244ebfab95b1f8dfa343cc8f2219ccac6d35f  ./docs/about/monster/et.html
 5fed61adc71ae4bdd3d0bc69f99c8a6442ae1aca10d219695b941d750bf7191d  ./docs/about/monster/fr.html
 1f0dc051da19a1eeeeba06b833492de8c409546e04db38d9f75cfb48790895ef  ./docs/about/monster/index.html
-8397ad96026cf7e94903cf248a2979728040a02c79838ec6f38ae2271d3d080e  ./docs/api/seer-now.json
+1ce0492f1684277138a4b9d73b3044d6defb6d5a4d6ef45d452edde1004909c3  ./docs/api/seer-now.json
 5af58a42f78622e04d04c1523526f853d5a2572f70b9ac307aa1046d458c694c  ./docs/app.js
 029db4ce5b9a8a99565d277472eddb764ab80f80b2c5085e24cad826d699abb9  ./docs/authority/ORACLE-AUTHORITY.md
 0d25e6ddfd04ba0e8e691825ff7110fb463280114d2d5aaa381a20c9dc02b168  ./docs/calendar-converters.js
@@ -605,7 +605,7 @@ c36f5dbd80bdb1d8a10c53611f4b23b8f9bc541a866ed56a41bd30d0c042df90  ./scripts/diag
 510275a9661b1e3aa8b5ac54ab27fc1fe0b8fd7de98776367b26742c6557205d  ./scripts/docs-consistency.mjs
 dc49a16a0c7a71098eed60b4313ad6a5be947dc5ebc8b9d9633842cbd6b54844  ./scripts/docs-project-facts.mjs
 dde78b68a253e66bddddbd3298567174c83ff7b1a7a63556dd7cc414753dd2df  ./scripts/i18n-coverage.mjs
-99db9aa62d6b58d7520dcbeb341b1eb12845e5a5b1582d3e45b1aa2569c4c820  ./scripts/refresh-seer-date-cache.py
+e78eef1414c4a7fac6cbe2b713b4d8460f884a6a2fda51c98c4268ef0e4e1811  ./scripts/refresh-seer-date-cache.py
 76f623f861cd9f8b8df4439880cc2d76f8807231076724b97f6af5bd4a557cee  ./scripts/regenerate-gate-artifacts.mjs
 2c03fdff3b67397244654d72b268e94ff16c07dafeca5da0357252c42ec07c5b  ./scripts/release-lib.mjs
 c805f84e803ac101a660cb6315a4d12c742a56937b2422515ad3dbea158f841c  ./scripts/release.mjs
@@ -892,6 +892,7 @@ c0339026a1b5a9d6b4f7fa3f002e7095b0fd7c6221f52c87eedc8b6ea9d6c13d  ./test/reverse
 e566520b12afea301de0e2fd04ddb3725d5cf6e223df1e2540086ee12e21a81d  ./test/runtime-patching.test.js
 b385a66eb7cf9b477fc00ef23615b4e62438c3c7b2d9ab9c7ecf1c063a5e2701  ./test/standalone-build.test.js
 bcba8b834fc91971a2c50f145c193da9a8e0ebdc84ff47b82ca57e55a9332650  ./test/standard-equivalence.html
+04d6107c7775c6bc32108b6481b8765309bb4b87cc980a3ee57d51f7c415a54d  ./test/test_refresh_seer_cache.py
 9c4ebf7e6767fef12516ad64208f4eb49492c8dcef778062e24c071b61af691e  ./test/update-08-stage-05-transactionality.test.js
 50ec29651a78910cd6fc443d79eb4c2f9ff8dddef7a1e2ebefc0242f575b0628  ./test/update09-proleptic-negative-year.test.js
 f70748e80a571e6c002d8a9c0196fd5003c92800bc0585fc2e1c25234ba968e4  ./test/update11-vikrama-browser.html
