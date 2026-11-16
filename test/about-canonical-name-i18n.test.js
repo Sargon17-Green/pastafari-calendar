@@ -158,3 +158,31 @@ test("canonical name catalog order matches the normative Scroll rather than only
   assert.deepEqual(hebrewLabels[1], orderedScrollNames("## שמות החודשים"),
     "Hebrew month UI labels must match the normative Scroll");
 });
+
+test("About year limit honors Scroll footnote 13 and the month-space deduction", async () => {
+  const scroll = await readFile(new URL("../sources/מגילת העיתים.md", import.meta.url), "utf8");
+  const about = await readFile(new URL("../docs/about/content/he.html", import.meta.url), "utf8");
+  const note = scroll.match(/^\[\^13\]:[^\r\n]+/m)?.[0];
+  assert.ok(note, "The binding year-limit footnote must exist");
+  assert.match(note, /במקום זה בלבד נכתב 5,781/);
+
+  const upper = note.match(/הגבול המחייב הוא ([\d,]+) ימים/);
+  const arithmetic = note.match(/([\d,]+)×([\d,]+)=([\d,]+)/);
+  assert.ok(upper && arithmetic, "The corrected limit and its multiplication must be explicit");
+  const integer = (value) => Number(value.replaceAll(",", ""));
+  const limit = integer(upper[1]);
+  assert.equal(integer(arithmetic[1]) * integer(arithmetic[2]), limit);
+  assert.equal(integer(arithmetic[3]), limit);
+
+  const year = about.match(/<section[^>]+id="year-structure"[^>]*>[\s\S]*?<\/section>/)?.[0];
+  const math = about.match(/<section[^>]+id="calendar-math"[^>]*>[\s\S]*?<\/section>/)?.[0];
+  assert.ok(year && math, "The explanatory sections must exist");
+  assert.ok(year.includes("<strong>" + limit.toLocaleString("en-US") + "</strong>"),
+    "The article must use the corrected upper bound, not the superseded number");
+
+  assert.match(scroll, /כל חודש יכיל לפחות ארבעה ימים ולא יותר משלושה ועשרים ומאה ימים/);
+  const combinations = MONTHS.length * 123;
+  assert.equal(combinations - limit, 3, "The two different 5,7xx quantities must not be conflated");
+  assert.ok(math.includes("<strong>" + combinations.toLocaleString("en-US") + "</strong>"));
+  assert.match(math, /חסרים לפחות שלושה/);
+});
