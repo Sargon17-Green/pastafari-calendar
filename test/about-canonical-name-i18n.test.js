@@ -148,4 +148,13 @@ test("canonical name catalog order matches the normative Scroll rather than only
     orderedScrollNames("## שמות החודשים"),
     "month names and ordering must agree with the normative Scroll",
   );
+
+  // Keep the public Hebrew display vocabulary tied to the source, not just
+  // the internal identity keys. The About markup follows these locale labels.
+  const hebrewLabels = canonicalNameGroups(await loadLocale("he"))
+    .map(({ names }) => names.map(({ label }) => label));
+  assert.deepEqual(hebrewLabels[0], orderedScrollNames("## שמות הקציצות"),
+    "Hebrew cutlet UI labels must match the normative Scroll");
+  assert.deepEqual(hebrewLabels[1], orderedScrollNames("## שמות החודשים"),
+    "Hebrew month UI labels must match the normative Scroll");
 });
