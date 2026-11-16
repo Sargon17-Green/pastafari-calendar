@@ -152,7 +152,7 @@ try {
     }));
   }, expectedSource);
   await page.reload({ waitUntil: "load" });
-  assert.match(await page.locator("#progress").textContent(), /1 \\/ 141/,
+  assert.match(await page.locator("#progress").textContent(), /1 \/ 141/,
     "invalid statuses must never inflate the reviewed count");
   assert.match(await page.locator("#notice").textContent(), /نامعتبر/);
   assert.equal(await page.locator("#reviewer").inputValue(), "Recovered reviewer");
@@ -173,7 +173,7 @@ try {
   }, expectedSource);
   await page.reload({ waitUntil: "load" });
   assert.match(await page.locator("#heading").textContent(), /^A01/);
-  assert.match(await page.locator("#progress").textContent(), /0 \\/ 141/);
+  assert.match(await page.locator("#progress").textContent(), /0 \/ 141/);
   assert.match(await page.locator("#notice").textContent(), /خواندنی نیستند/);
   assert.equal(await page.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"),
     expectedSource), "{broken JSON", "damaged data must not be silently overwritten");
