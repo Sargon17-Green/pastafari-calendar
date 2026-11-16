@@ -135,6 +135,49 @@ try {
   assert.equal(await page.locator(".navitem").count(), 1);
   await page.locator("#filter").fill("");
 
+  // Persisted local state is untrusted. A bad status must not count as reviewed;
+  // valid notes survive partial damage and the original stored bytes are not
+  // silently overwritten during recovery.
+  await page.evaluate(source => {
+    localStorage.setItem("fa-review:" + source + ":v1", JSON.stringify({
+      reviewer: "Recovered reviewer", qualification: "he-fa-fidelity",
+      items: {
+        B55: { status: "changes", note: "Preserved reviewed note", replacement: "متنِ سالم" },
+        B56: { status: "unexpected", note: "Preserved unreviewed draft", replacement: "" },
+        A02: { note: "Legacy draft missing status", replacement: "" },
+        A01: null,
+        M01: "invalid primitive",
+        Z99: { status: "approved", note: "unknown ID must be ignored" },
+      },
+    }));
+  }, expectedSource);
+  await page.reload({ waitUntil: "load" });
+  assert.match(await page.locator("#progress").textContent(), /1 \\/ 141/,
+    "invalid statuses must never inflate the reviewed count");
+  assert.match(await page.locator("#notice").textContent(), /نامعتبر/);
+  assert.equal(await page.locator("#reviewer").inputValue(), "Recovered reviewer");
+  await page.getByRole("button", { name: /نام‌های کانونی/ }).click();
+  await page.locator(".navitem").filter({ hasText: "B55" }).click();
+  assert.equal(await page.locator("#note").inputValue(), "Preserved reviewed note");
+  assert.equal(await page.locator(".navitem").filter({ hasText: "B55" }).getAttribute("data-status"), "changes");
+  await page.locator(".navitem").filter({ hasText: "B56" }).click();
+  assert.equal(await page.locator("#note").inputValue(), "Preserved unreviewed draft");
+  assert.equal(await page.locator(".navitem").filter({ hasText: "B56" }).getAttribute("data-status"), "unreviewed");
+  await page.getByRole("button", { name: /دربارهٔ تقویم/ }).click();
+  await page.locator(".navitem").filter({ hasText: "A02" }).click();
+  assert.equal(await page.locator("#note").inputValue(), "Legacy draft missing status");
+  assert.equal(await page.locator(".navitem").filter({ hasText: "A02" }).getAttribute("data-status"), "unreviewed");
+
+  await page.evaluate(source => {
+    localStorage.setItem("fa-review:" + source + ":v1", "{broken JSON");
+  }, expectedSource);
+  await page.reload({ waitUntil: "load" });
+  assert.match(await page.locator("#heading").textContent(), /^A01/);
+  assert.match(await page.locator("#progress").textContent(), /0 \\/ 141/);
+  assert.match(await page.locator("#notice").textContent(), /خواندنی نیستند/);
+  assert.equal(await page.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"),
+    expectedSource), "{broken JSON", "damaged data must not be silently overwritten");
+
   // Small/mobile viewport must not force horizontal clipping.
   await page.setViewportSize({ width: 390, height: 844 });
   const viewport = await page.evaluate(() => ({
@@ -145,7 +188,7 @@ try {
     "mobile content overflow: " + JSON.stringify(viewport));
   assert.deepEqual(errors, [], "reviewer UI must have no runtime JS errors");
   assert.deepEqual(networkRequests, [], "reviewer HTML must issue no network requests");
-  console.log("[fa-review-browser] PASS — 141 source-locked units, notes, export/import, bad-source rejection, mobile reflow, 0 remote requests");
+  console.log("[fa-review-browser] PASS — 141 source-locked units, notes, export/import, bad-source rejection, corrupt local recovery, mobile reflow, 0 remote requests");
 } finally {
   await browser.close();
 }

@@ -36,7 +36,42 @@
   const choices = [["unreviewed","بررسی نشده"],["approved","این بخش بررسی شد"],["changes","نیازمند اصلاح"]];
   function notify(message) { $("notice").textContent = message; }
   function save() { try { localStorage.setItem(key, JSON.stringify(state)); } catch(e) { notify("ذخیرهٔ مرورگر ممکن نیست؛ از پروندهٔ خروجی استفاده کنید."); } }
-  function load() { try { const x=JSON.parse(localStorage.getItem(key)||"null"); if(x && x.items && typeof x.items==="object") state=x; } catch(e){} }
+  function load() {
+    try {
+      const stored = localStorage.getItem(key);
+      if (stored === null) return;
+      const x = JSON.parse(stored);
+      if (!x || typeof x !== "object" || Array.isArray(x) ||
+          !x.items || typeof x.items !== "object" || Array.isArray(x.items)) {
+        throw new Error("Invalid saved review state");
+      }
+      const recovered = {};
+      let normalized = 0;
+      for (const [id, value] of Object.entries(x.items)) {
+        if (!entry(id) || !value || typeof value !== "object" || Array.isArray(value)) {
+          normalized++;
+          continue;
+        }
+        const status = ["approved", "changes", "unreviewed"].includes(value.status)
+          ? value.status : "unreviewed";
+        const note = typeof value.note === "string" ? value.note : "";
+        const replacement = typeof value.replacement === "string" ? value.replacement : "";
+        if (status !== value.status || note !== (value.note ?? "") ||
+            replacement !== (value.replacement ?? "")) normalized++;
+        recovered[id] = { status, note, replacement };
+      }
+      state = {
+        reviewer: typeof x.reviewer === "string" ? x.reviewer : "",
+        qualification: typeof x.qualification === "string" ? x.qualification : "",
+        items: recovered,
+      };
+      if (normalized) notify("برخی داده‌های ذخیره‌شده نامعتبر بودند. یادداشت‌های سالم بازیابی شدند؛ وضعیت نامعتبر تأیید محسوب نمی‌شود. پیش از ادامه خروجیِ پشتیبان بگیرید.");
+    } catch (error) {
+      // Do not overwrite a damaged stored report. An explicit export or reset
+      // is safer than silently treating it as completed editorial work.
+      notify("داده‌های ذخیره‌شدهٔ مرورگر خواندنی نیستند. نسخهٔ اصلی پاک نشده است؛ از گزارشِ پشتیبان استفاده کنید.");
+    }
+  }
   function entry(id) { return data.items.find(x=>x.id===id); }
   function one(id) { return state.items[id] || {status:"unreviewed",note:"",replacement:""}; }
   function statusCounts() { const v=data.items.map(x=>one(x.id).status);return {reviewed:v.filter(s=>s!=="unreviewed").length,changes:v.filter(s=>s==="changes").length}; }
