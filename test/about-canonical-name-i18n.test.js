@@ -122,3 +122,30 @@ test("the PWA invalidates stale localized name dictionaries", async () => {
   assert.match(sw, /const LOCALE_REVISION_SEARCH = /);
   assert.match(sw, /await pruneRuntimeCache\(\)/);
 });
+
+test("canonical name catalog order matches the normative Scroll rather than only locale dictionaries", async () => {
+  const scroll = await readFile(new URL("../sources/מגילת העיתים.md", import.meta.url), "utf8");
+
+  function orderedScrollNames(heading) {
+    const sectionStart = scroll.indexOf(`\n${heading}\n`);
+    assert.notEqual(sectionStart, -1, `Missing normative Scroll heading: ${heading}`);
+    const section = scroll.slice(sectionStart + heading.length + 2);
+    const match = section.match(/^אלה[^\n]*שמות[^\n]*:\s*\n+((?:- [^\n]+(?:\n|$))+)/m);
+    assert.ok(match, `Missing ordered name list under ${heading}`);
+    return match[1].trim().split("\n").map((line) => {
+      assert.match(line, /^- /);
+      return line.slice(2).trim();
+    });
+  }
+
+  assert.deepEqual(
+    CUTLETS.map(({ internalName }) => internalName),
+    orderedScrollNames("## שמות הקציצות"),
+    "cutlet names and ordering must agree with the normative Scroll",
+  );
+  assert.deepEqual(
+    MONTHS.map(({ internalName }) => internalName),
+    orderedScrollNames("## שמות החודשים"),
+    "month names and ordering must agree with the normative Scroll",
+  );
+});
