@@ -27,6 +27,9 @@ try {
   assert.match(await page.locator("#heading").textContent(), /^A01/);
   assert.match(await page.locator("#sha").textContent(), /^[a-f0-9]{40}$/);
   assert.equal(await page.locator("#sha").textContent(), expectedSource);
+  assert.match(await page.locator("header .meta").textContent(), /کامیتِ مرجعِ محتوا \(نه HEAD کد\)/);
+  assert.equal(await page.locator('header .meta a').getAttribute("href"),
+    "https://github.com/Sargon17-Green/pastafari-calendar/pull/41");
   assert.equal(await page.locator(".navitem").count(), 16);
   assert.match(await page.locator("#he-text").textContent(), /לוח השנה/);
   assert.match(await page.locator("#fa-text").textContent(), /تقویم/);
