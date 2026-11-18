@@ -33,9 +33,11 @@
   const $ = x => document.getElementById(x);
   let group = "A", active = "A01";
   let state = {reviewer:"", qualification:"", items:{}};
+  let recoveryLocked = false; // damaged browser data cannot be overwritten by typing or a status click
   const choices = [["unreviewed","بررسی نشده"],["approved","این بخش بررسی شد"],["changes","نیازمند اصلاح"]];
   function notify(message) { $("notice").textContent = message; }
-  function save() { try { localStorage.setItem(key, JSON.stringify(state)); } catch(e) { notify("ذخیرهٔ مرورگر ممکن نیست؛ از پروندهٔ خروجی استفاده کنید."); } }
+  function save() { if(recoveryLocked) { notify("داده‌های پیشین آسیب دیده‌اند. تا زمانی که یک گزارشِ پشتیبان را با تأیید وارد نکنید یا داده‌های محلی را صریحاً پاک نکنید، ذخیره و ویرایش غیرفعال است."); return; } try { localStorage.setItem(key, JSON.stringify(state)); } catch(e) { notify("ذخیرهٔ مرورگر ممکن نیست؛ از پروندهٔ خروجی استفاده کنید."); } }
+  function lockEditing() { for(const id of ["reviewer","qualification","note","replacement"]) $(id).disabled=recoveryLocked; for(const button of $("status-buttons").children) button.disabled=recoveryLocked; }
   function load() {
     try {
       const stored = localStorage.getItem(key);
@@ -60,16 +62,18 @@
             replacement !== (value.replacement ?? "")) normalized++;
         recovered[id] = { status, note, replacement };
       }
+      if(typeof x.reviewer !== "string" || typeof x.qualification !== "string") normalized++;
       state = {
         reviewer: typeof x.reviewer === "string" ? x.reviewer : "",
         qualification: typeof x.qualification === "string" ? x.qualification : "",
         items: recovered,
       };
-      if (normalized) notify("برخی داده‌های ذخیره‌شده نامعتبر بودند. یادداشت‌های سالم بازیابی شدند؛ وضعیت نامعتبر تأیید محسوب نمی‌شود. پیش از ادامه خروجیِ پشتیبان بگیرید.");
+      if (normalized) { recoveryLocked = true; notify("برخی داده‌های ذخیره‌شده نامعتبر بودند. یادداشت‌های سالم بازیابی شدند؛ تا زمانی که گزارشِ پشتیبان وارد نشود یا داده‌های محلی صریحاً پاک نشوند، ویرایش غیرفعال است. ابتدا نسخهٔ پشتیبان بگیرید."); }
     } catch (error) {
       // Do not overwrite a damaged stored report. An explicit export or reset
       // is safer than silently treating it as completed editorial work.
-      notify("داده‌های ذخیره‌شدهٔ مرورگر خواندنی نیستند. نسخهٔ اصلی پاک نشده است؛ از گزارشِ پشتیبان استفاده کنید.");
+      recoveryLocked = true;
+      notify("داده‌های ذخیره‌شدهٔ مرورگر خواندنی نیستند. نسخهٔ اصلی پاک نشده و ویرایش غیرفعال است. گزارشِ پشتیبان وارد کنید یا با تأیید داده‌های محلی را پاک کنید.");
     }
   }
   function entry(id) { return data.items.find(x=>x.id===id); }
@@ -96,7 +100,7 @@
     $("he-link").href=e.heUrl;$("fa-link").href=e.faUrl;
     const item=one(e.id),buttons=$("status-buttons");buttons.replaceChildren();
     for(const [status,label] of choices){const b=document.createElement("button");b.type="button";b.textContent=label;b.setAttribute("aria-pressed",String(item.status===status));b.addEventListener("click",()=>{state.items[e.id]={...one(e.id),status};save();renderList();renderDetail();renderProgress();const pressed=[...buttons.children].find(next=>next.textContent===label);pressed?.focus();});buttons.append(b)}
-    $("note").value=item.note||"";$("replacement").value=item.replacement||"";
+    $("note").value=item.note||"";$("replacement").value=item.replacement||"";lockEditing();
     $("active-scope").textContent=e.kind==="M"?"متن کامل هیولا (پاسخ‌های پنگوئن نیز داخل متن‌اند)":e.kind==="D"?"یادداشتِ پنگوئن — بازبینیِ مستقل":e.kind==="B"?"تعریفِ نامِ کانونی":"بخشِ توضیح تقویم";
   }
   function renderProgress(){const stats=statusCounts();$("progress").textContent=stats.reviewed+" / "+data.items.length+" بررسی‌شده، "+stats.changes+" نیازمند اصلاح. این آمار تأییدِ انتشار نیست.";}
@@ -118,17 +122,17 @@
       if(imported.schema!=="fa-release-editorial-audit-result/v1"||imported.candidateSha!==data.candidateSha||JSON.stringify(imported.sourceBlobSha1)!==JSON.stringify(data.sourceBlobSha1))throw Error("نسخهٔ منبع با این فایل یکی نیست");
       for(const [id,v] of Object.entries(imported.results||{})){if(!entry(id)||!v||!["approved","changes","unreviewed"].includes(v.status)||typeof(v.note??"")!=="string"||typeof(v.proposedReplacement??"")!=="string")throw Error("دادهٔ بررسی نامعتبر: "+id);}
       // Import replaces this browser's current review. Never silently discard existing work.
-      const existing=Object.values(state.items).some(v=>v&&(["approved","changes"].includes(v.status)||(v.note||"").trim()||(v.replacement||"").trim()));
+      const existing=recoveryLocked||Object.values(state.items).some(v=>v&&(["approved","changes"].includes(v.status)||(v.note||"").trim()||(v.replacement||"").trim()));
       if(existing&&!confirm("بارگذاری این گزارش، یادداشت‌ها و وضعیت‌های فعلی را جایگزین می‌کند. پیش از ادامه، از کار خود خروجی بگیرید. ادامه می‌دهید؟")){notify("بارگذاری لغو شد؛ یادداشت‌های فعلی حفظ شدند.");return;}
       state.items=Object.fromEntries(Object.entries(imported.results||{}).map(([id,v])=>[id,{status:v.status,note:v.note||"",replacement:v.proposedReplacement||""}]));
-      state.reviewer=imported.reviewer||"";state.qualification=imported.competence||"";$("reviewer").value=state.reviewer;$("qualification").value=state.qualification;save();render();notify("گزارشِ محلی از همین نسخهٔ منبع بارگذاری شد. صحتِ هویت یا کیفیتِ بررسی به‌طور خودکار تأیید نشده است.");
+      state.reviewer=imported.reviewer||"";state.qualification=imported.competence||"";recoveryLocked=false;$("reviewer").value=state.reviewer;$("qualification").value=state.qualification;save();render();notify("گزارشِ محلی از همین نسخهٔ منبع بارگذاری شد. صحتِ هویت یا کیفیتِ بررسی به‌طور خودکار تأیید نشده است.");
     }).catch(e=>notify("بارگذاری نشد: "+e.message));
   }
   load();$("reviewer").value=state.reviewer||"";$("qualification").value=state.qualification||"";
   $("reviewer").addEventListener("input",e=>{state.reviewer=e.target.value;save()});$("qualification").addEventListener("change",e=>{state.qualification=e.target.value;save()});
   $("note").addEventListener("input",e=>changeText("note",e.target.value));$("replacement").addEventListener("input",e=>changeText("replacement",e.target.value));
   $("filter").addEventListener("input",renderList);$("export").addEventListener("click",exportJson);$("import").addEventListener("change",e=>{importJson(e.target.files?.[0]);e.target.value=""});
-  $("clear").addEventListener("click",()=>{if(confirm("پاک‌شدنِ تمام یادداشت‌ها و وضعیت‌های ذخیره‌شده در همین مرورگر؟")){state={reviewer:"",qualification:"",items:{}};save();$("reviewer").value="";$("qualification").value="";render();notify("داده‌های محلی پاک شدند.")}});
+  $("clear").addEventListener("click",()=>{if(confirm("پاک‌شدنِ تمام یادداشت‌ها و وضعیت‌های ذخیره‌شده در همین مرورگر؟")){recoveryLocked=false;state={reviewer:"",qualification:"",items:{}};save();$("reviewer").value="";$("qualification").value="";render();notify("داده‌های محلی پاک شدند.")}});
   $("sha").textContent=data.candidateSha;$("source-counts").textContent=data.items.length+" واحد: ۱۶ دربارهٔ تقویم + ۶۴ نام + ۴۰ بخش هیولا + ۲۱ یادداشت";
   render();
 }());

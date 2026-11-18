@@ -159,6 +159,9 @@ try {
     "invalid statuses must never inflate the reviewed count");
   assert.match(await page.locator("#notice").textContent(), /نامعتبر/);
   assert.equal(await page.locator("#reviewer").inputValue(), "Recovered reviewer");
+  assert.equal(await page.locator("#reviewer").isDisabled(), true, "partial corruption must lock reviewer edits until explicit recovery");
+  assert.equal(await page.locator("#note").isDisabled(), true, "recovered notes must not be overwritten before backup/import/reset");
+  assert.equal(await page.locator("#status-buttons button").first().isDisabled(), true, "cannot record approval while recovery is unresolved");
   await page.getByRole("button", { name: /نام‌های کانونی/ }).click();
   await page.locator(".navitem").filter({ hasText: "B55" }).click();
   assert.equal(await page.locator("#note").inputValue(), "Preserved reviewed note");
@@ -180,6 +183,47 @@ try {
   assert.match(await page.locator("#notice").textContent(), /خواندنی نیستند/);
   assert.equal(await page.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"),
     expectedSource), "{broken JSON", "damaged data must not be silently overwritten");
+  assert.equal(await page.locator("#reviewer").isDisabled(), true);
+  assert.equal(await page.locator("#note").isDisabled(), true);
+  assert.equal(await page.locator("#replacement").isDisabled(), true);
+  assert.equal(await page.locator("#status-buttons button").first().isDisabled(), true);
+
+  // Import on a damaged source must obtain explicit permission, not silently
+  // replace the original even if no in-memory reviewed items were recovered.
+  page.once("dialog", dialog => dialog.dismiss());
+  await page.locator("#import").setInputFiles({
+    name: "recovery.json", mimeType: "application/json",
+    buffer: Buffer.from(JSON.stringify(output), "utf8"),
+  });
+  await page.waitForFunction(() => document.getElementById("notice").textContent.includes("بارگذاری لغو شد"));
+  assert.equal(await page.locator("#note").isDisabled(), true, "canceled import must keep review editing locked");
+  assert.equal(await page.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"),
+    expectedSource), "{broken JSON", "cancelled import must preserve the corrupted bytes");
+
+  page.once("dialog", dialog => dialog.accept());
+  await page.locator("#import").setInputFiles({
+    name: "recovery.json", mimeType: "application/json",
+    buffer: Buffer.from(JSON.stringify(output), "utf8"),
+  });
+  await page.waitForFunction(() => !document.getElementById("note").disabled);
+  assert.match(await page.locator("#progress").textContent(), /1 \/ 141/);
+  assert.equal(await page.locator("#reviewer").isDisabled(), false);
+  assert.equal(await page.locator("#status-buttons button").first().isDisabled(), false);
+  assert.equal((await page.evaluate(source => JSON.parse(localStorage.getItem("fa-review:" + source + ":v1")),
+    expectedSource)).items.B55.note, "Reviewer test: verify source-fidelity scope.");
+
+  // Explicitly confirmed reset is the other permitted recovery path.
+  await page.evaluate(source => localStorage.setItem("fa-review:" + source + ":v1", "{broken JSON"),
+    expectedSource);
+  await page.reload({ waitUntil: "load" });
+  assert.equal(await page.locator("#note").isDisabled(), true);
+  page.once("dialog", dialog => dialog.accept());
+  await page.locator("#clear").click();
+  assert.equal(await page.locator("#note").isDisabled(), false);
+  assert.match(await page.locator("#progress").textContent(), /0 \/ 141/);
+  assert.deepEqual((await page.evaluate(source => JSON.parse(localStorage.getItem("fa-review:" + source + ":v1")),
+    expectedSource)).items, {});
+
 
   // Small/mobile viewport must not force horizontal clipping.
   await page.setViewportSize({ width: 390, height: 844 });
