@@ -168,7 +168,7 @@ try {
   const partialWait = page.waitForEvent("download");
   await page.locator("#backup-corrupt").click();
   const partialDownload = await partialWait;
-  assert.match(partialDownload.suggestedFilename(), /^fa-review-damaged-[a-f0-9]{8}-\\d{4}-\\d{2}-\\d{2}\\.txt$/);
+  assert.match(partialDownload.suggestedFilename(), /^fa-review-damaged-[a-f0-9]{8}-\d{4}-\d{2}-\d{2}\.txt$/);
   assert.equal(await readFile(await partialDownload.path(), "utf8"), partialRaw, "partial damage backup must preserve every raw byte");
   await page.getByRole("button", { name: /نام‌های کانونی/ }).click();
   await page.locator(".navitem").filter({ hasText: "B55" }).click();
