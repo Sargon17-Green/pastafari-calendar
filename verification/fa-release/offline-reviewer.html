@@ -19,7 +19,7 @@
 <p class="small">وضعیتِ «بررسی شد» فقط ادعای بازبین دربارهٔ همین بخش است، نه تأییدِ خودکار یا اجازهٔ انتشار.</p>
 <label for="note">مشاهده‌ها / دلیلِ پذیرش یا مشکل</label><textarea id="note" placeholder="مقایسهٔ جمله‌ها، دقتِ مفهوم، طبیعی‌بودنِ فارسی..."></textarea>
 <label for="replacement">متنِ جایگزینِ پیشنهادی (در صورتِ نیاز)</label><textarea id="replacement" dir="rtl" lang="fa" placeholder="پیشنهادِ دقیق برای جایگزینی در منبع"></textarea>
-<div id="footer-tools"><button id="export" type="button">ذخیرهٔ گزارش JSON</button><label for="import" style="display:inline-block;padding:.5rem;border:1px solid #8b98ad;border-radius:.4rem;background:white;cursor:pointer">بازکردنِ گزارش JSON</label><input id="import" type="file" accept=".json,application/json" style="max-width:180px"><button id="clear" type="button">پاک‌کردنِ داده‌های محلی</button></div>
+<div id="footer-tools"><button id="export" type="button">ذخیرهٔ گزارش JSON</button><button id="backup-corrupt" type="button" hidden>ذخیرهٔ نسخهٔ خامِ داده‌های آسیب‌دیده</button><label for="import" style="display:inline-block;padding:.5rem;border:1px solid #8b98ad;border-radius:.4rem;background:white;cursor:pointer">بازکردنِ گزارش JSON</label><input id="import" type="file" accept=".json,application/json" style="max-width:180px"><button id="clear" type="button">پاک‌کردنِ داده‌های محلی</button></div>
 <p id="notice" role="status" aria-live="polite"></p><p class="small">برای تصمیمِ انتشار، گزارش را در <a target="_blank" rel="noopener noreferrer" href="https://github.com/Sargon17-Green/pastafari-calendar/issues/42">Issue #42</a> ثبت کنید. بررسیِ دسترس‌پذیری در دستگاه‌های واقعی، تأییدِ مستقل و تصمیمِ انتشار در این ابزار انجام نمی‌شوند.</p>
 </article></div>
 </main>
@@ -37,7 +37,7 @@
   const choices = [["unreviewed","بررسی نشده"],["approved","این بخش بررسی شد"],["changes","نیازمند اصلاح"]];
   function notify(message) { $("notice").textContent = message; }
   function save() { if(recoveryLocked) { notify("داده‌های پیشین آسیب دیده‌اند. تا زمانی که یک گزارشِ پشتیبان را با تأیید وارد نکنید یا داده‌های محلی را صریحاً پاک نکنید، ذخیره و ویرایش غیرفعال است."); return; } try { localStorage.setItem(key, JSON.stringify(state)); } catch(e) { notify("ذخیرهٔ مرورگر ممکن نیست؛ از پروندهٔ خروجی استفاده کنید."); } }
-  function lockEditing() { for(const id of ["reviewer","qualification","note","replacement"]) $(id).disabled=recoveryLocked; for(const button of $("status-buttons").children) button.disabled=recoveryLocked; }
+  function lockEditing() { for(const id of ["reviewer","qualification","note","replacement"]) $(id).disabled=recoveryLocked; for(const button of $("status-buttons").children) button.disabled=recoveryLocked; $("backup-corrupt").hidden=!recoveryLocked; }
   function load() {
     try {
       const stored = localStorage.getItem(key);
@@ -106,6 +106,19 @@
   function renderProgress(){const stats=statusCounts();$("progress").textContent=stats.reviewed+" / "+data.items.length+" بررسی‌شده، "+stats.changes+" نیازمند اصلاح. این آمار تأییدِ انتشار نیست.";}
   function render(){renderGroups();renderList();renderDetail();renderProgress();}
   function changeText(id,val){state.items[active]={...one(active),[id]:val};save();}
+  // Keep the exact damaged localStorage bytes before any explicit import or reset.
+  // This backup is raw data, NOT an approved review report or trusted JSON.
+  function backupDamagedRaw(){
+    if(!recoveryLocked)return;
+    try{
+      const raw=localStorage.getItem(key);
+      if(raw===null){notify("نسخهٔ خامی از داده‌ها در حافظه پیدا نشد.");return;}
+      const file=new Blob([raw],{type:"text/plain;charset=utf-8"}),url=URL.createObjectURL(file),a=document.createElement("a");
+      a.href=url;a.download="fa-review-damaged-"+data.candidateSha.slice(0,8)+"-"+new Date().toISOString().slice(0,10)+".txt";
+      document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),5000);
+      notify("نسخهٔ خامِ داده‌های آسیب‌دیده ذخیره شد. آن را پیش از بازنشانی یا واردکردن نگه دارید؛ تأییدِ بررسی نیست.");
+    }catch(e){notify("ذخیرهٔ نسخهٔ خام ممکن نیست: "+String(e?.message||e));}
+  }
   function exportJson(){
     const reviewer=$("reviewer").value.trim(),qualification=$("qualification").value;
     if(!reviewer || !qualification){notify("پیش از خروجی، نام و نوعِ صلاحیتِ بازبین را وارد کنید.");return}
@@ -131,7 +144,7 @@
   load();$("reviewer").value=state.reviewer||"";$("qualification").value=state.qualification||"";
   $("reviewer").addEventListener("input",e=>{state.reviewer=e.target.value;save()});$("qualification").addEventListener("change",e=>{state.qualification=e.target.value;save()});
   $("note").addEventListener("input",e=>changeText("note",e.target.value));$("replacement").addEventListener("input",e=>changeText("replacement",e.target.value));
-  $("filter").addEventListener("input",renderList);$("export").addEventListener("click",exportJson);$("import").addEventListener("change",e=>{importJson(e.target.files?.[0]);e.target.value=""});
+  $("filter").addEventListener("input",renderList);$("export").addEventListener("click",exportJson);$("backup-corrupt").addEventListener("click",backupDamagedRaw);$("import").addEventListener("change",e=>{importJson(e.target.files?.[0]);e.target.value=""});
   $("clear").addEventListener("click",()=>{if(confirm("پاک‌شدنِ تمام یادداشت‌ها و وضعیت‌های ذخیره‌شده در همین مرورگر؟")){recoveryLocked=false;state={reviewer:"",qualification:"",items:{}};save();$("reviewer").value="";$("qualification").value="";render();notify("داده‌های محلی پاک شدند.")}});
   $("sha").textContent=data.candidateSha;$("source-counts").textContent=data.items.length+" واحد: ۱۶ دربارهٔ تقویم + ۶۴ نام + ۴۰ بخش هیولا + ۲۱ یادداشت";
   render();

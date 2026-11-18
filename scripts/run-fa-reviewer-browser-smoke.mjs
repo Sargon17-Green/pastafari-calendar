@@ -27,6 +27,7 @@ try {
   assert.match(await page.locator("#heading").textContent(), /^A01/);
   assert.match(await page.locator("#sha").textContent(), /^[a-f0-9]{40}$/);
   assert.equal(await page.locator("#sha").textContent(), expectedSource);
+  assert.equal(await page.locator("#backup-corrupt").isVisible(), false, "raw recovery backup is shown only if browser state is damaged");
   assert.match(await page.locator("header .meta").textContent(), /کامیتِ مرجعِ محتوا \(نه HEAD کد\)/);
   assert.equal(await page.locator('header .meta a').getAttribute("href"),
     "https://github.com/Sargon17-Green/pastafari-calendar/pull/41");
@@ -162,6 +163,13 @@ try {
   assert.equal(await page.locator("#reviewer").isDisabled(), true, "partial corruption must lock reviewer edits until explicit recovery");
   assert.equal(await page.locator("#note").isDisabled(), true, "recovered notes must not be overwritten before backup/import/reset");
   assert.equal(await page.locator("#status-buttons button").first().isDisabled(), true, "cannot record approval while recovery is unresolved");
+  assert.equal(await page.locator("#backup-corrupt").isVisible(), true);
+  const partialRaw = await page.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"), expectedSource);
+  const partialWait = page.waitForEvent("download");
+  await page.locator("#backup-corrupt").click();
+  const partialDownload = await partialWait;
+  assert.match(partialDownload.suggestedFilename(), /^fa-review-damaged-[a-f0-9]{8}-\\d{4}-\\d{2}-\\d{2}\\.txt$/);
+  assert.equal(await readFile(await partialDownload.path(), "utf8"), partialRaw, "partial damage backup must preserve every raw byte");
   await page.getByRole("button", { name: /نام‌های کانونی/ }).click();
   await page.locator(".navitem").filter({ hasText: "B55" }).click();
   assert.equal(await page.locator("#note").inputValue(), "Preserved reviewed note");
@@ -187,6 +195,11 @@ try {
   assert.equal(await page.locator("#note").isDisabled(), true);
   assert.equal(await page.locator("#replacement").isDisabled(), true);
   assert.equal(await page.locator("#status-buttons button").first().isDisabled(), true);
+  assert.equal(await page.locator("#backup-corrupt").isVisible(), true);
+  const badRawWait = page.waitForEvent("download");
+  await page.locator("#backup-corrupt").click();
+  const badRaw = await badRawWait;
+  assert.equal(await readFile(await badRaw.path(), "utf8"), "{broken JSON", "invalid JSON bytes must be downloadable verbatim");
 
   // Import on a damaged source must obtain explicit permission, not silently
   // replace the original even if no in-memory reviewed items were recovered.
@@ -209,6 +222,7 @@ try {
   assert.match(await page.locator("#progress").textContent(), /1 \/ 141/);
   assert.equal(await page.locator("#reviewer").isDisabled(), false);
   assert.equal(await page.locator("#status-buttons button").first().isDisabled(), false);
+  assert.equal(await page.locator("#backup-corrupt").isVisible(), false, "a successful import removes the emergency raw-backup control");
   assert.equal((await page.evaluate(source => JSON.parse(localStorage.getItem("fa-review:" + source + ":v1")),
     expectedSource)).items.B55.note, "Reviewer test: verify source-fidelity scope.");
 
@@ -220,6 +234,7 @@ try {
   page.once("dialog", dialog => dialog.accept());
   await page.locator("#clear").click();
   assert.equal(await page.locator("#note").isDisabled(), false);
+  assert.equal(await page.locator("#backup-corrupt").isVisible(), false, "confirmed reset clears the recovery-only button");
   assert.match(await page.locator("#progress").textContent(), /0 \/ 141/);
   assert.deepEqual((await page.evaluate(source => JSON.parse(localStorage.getItem("fa-review:" + source + ":v1")),
     expectedSource)).items, {});
