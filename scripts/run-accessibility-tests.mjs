@@ -9,6 +9,7 @@ import { fileURLToPath } from "node:url";
 
 import axe from "axe-core";
 import { chromium, firefox } from "playwright";
+import { captureScreenshotWithSizeFallback } from "./screenshot-bounds.mjs";
 import { calendarDateToJdn } from "../docs/calendar-converters.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -584,7 +585,9 @@ async function assertKeyboardOperations(page) {
 
 async function saveScreenshot(page, name, { fullPage = true } = {}) {
   const filename = path.join(SCREENSHOTS, name);
-  await page.screenshot({ path: filename, fullPage });
+  await captureScreenshotWithSizeFallback(page, { path: filename, fullPage }, () => {
+    console.warn(`[screenshot] ${name}: full-page capture exceeded the 32767-pixel browser limit; saved viewport-only diagnostic evidence.`);
+  });
   return path.relative(ROOT, filename).replaceAll(path.sep, "/");
 }
 

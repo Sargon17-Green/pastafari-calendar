@@ -23,6 +23,7 @@ const INTENTIONAL_PACKAGE_EXCLUSIONS = Object.freeze([
   "scripts/run-pwa-production-upgrade-smoke.mjs",
   "scripts/run-pwa-offline-smoke.mjs",
   "scripts/run-accessibility-tests.mjs",
+  "scripts/screenshot-bounds.mjs",
   "scripts/run-visual-regression.mjs",
   "scripts/run-reverse-ui-smoke.mjs",
   "scripts/run-i18n-support-smoke.mjs",
