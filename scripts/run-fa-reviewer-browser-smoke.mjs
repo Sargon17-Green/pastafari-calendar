@@ -82,9 +82,12 @@ try {
   await page.locator("#clear").click();
   assert.equal(await page.locator("#note").inputValue(), "");
   assert.equal(await page.locator(".navitem").filter({ hasText: "B55" }).getAttribute("data-status"), "unreviewed");
+  // Equivalent maps with different JSON key orders must reimport successfully.
+  const reversedBlobs = { ...output, sourceBlobSha1: Object.fromEntries(Object.entries(output.sourceBlobSha1).reverse()) };
+  assert.notEqual(JSON.stringify(reversedBlobs.sourceBlobSha1), JSON.stringify(output.sourceBlobSha1));
   await page.locator("#import").setInputFiles({
-    name: "review.json", mimeType: "application/json",
-    buffer: Buffer.from(JSON.stringify(output), "utf8"),
+    name: "review-reordered.json", mimeType: "application/json",
+    buffer: Buffer.from(JSON.stringify(reversedBlobs), "utf8"),
   });
   await page.waitForFunction(() => document.getElementById("note").value === "Reviewer test: verify source-fidelity scope." || document.getElementById("note").value === "Draft, not reviewed: please check this idiom.");
   await page.locator(".navitem").filter({ hasText: "B55" }).click();
@@ -118,6 +121,26 @@ try {
   assert.equal(await page.locator(".navitem").filter({ hasText: "B56" }).getAttribute("data-status"), "unreviewed");
   await page.locator(".navitem").filter({ hasText: "B55" }).click();
   assert.equal(await page.locator("#note").inputValue(), "Reviewer test: verify source-fidelity scope.");
+
+  // Reject missing, extra and mismatching file-to-hash mappings without
+  // relying on their serialization order. Keep the existing review untouched.
+  const sourceEntries = Object.entries(output.sourceBlobSha1);
+  assert.ok(sourceEntries.length >= 2);
+  for (const [label, blobs] of [
+    ["changed-hash", { ...output.sourceBlobSha1, [sourceEntries[0][0]]: "0".repeat(40) }],
+    ["missing-file", Object.fromEntries(sourceEntries.slice(1))],
+    ["extra-file", { ...output.sourceBlobSha1, "unexpected/report-source.html": "0".repeat(40) }],
+  ]) {
+    await page.evaluate(() => { document.getElementById("notice").textContent = ""; });
+    await page.locator("#import").setInputFiles({
+      name: label + ".json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify({ ...output, sourceBlobSha1: blobs }), "utf8"),
+    });
+    await page.waitForFunction(() => document.getElementById("notice").textContent.includes("بارگذاری نشد"));
+    assert.equal(await page.locator("#note").inputValue(), "Reviewer test: verify source-fidelity scope.",
+      label + " must preserve the imported review");
+    assert.equal(await page.locator(".navitem").filter({ hasText: "B55" }).getAttribute("data-status"), "changes");
+  }
 
   const corrupted = { ...output, candidateSha: "0".repeat(40) };
   await page.locator("#import").setInputFiles({

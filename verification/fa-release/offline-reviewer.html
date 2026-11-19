@@ -76,6 +76,13 @@
       notify("داده‌های ذخیره‌شدهٔ مرورگر خواندنی نیستند. نسخهٔ اصلی پاک نشده و ویرایش غیرفعال است. گزارشِ پشتیبان وارد کنید یا با تأیید داده‌های محلی را پاک کنید.");
     }
   }
+  function sameSourceBlobs(blobs) {
+    // JSON member order is irrelevant; reject missing, additional and changed source hashes.
+    if (!blobs || typeof blobs !== "object" || Array.isArray(blobs)) return false;
+    const expected = data.sourceBlobSha1, keys = Object.keys(expected);
+    return Object.keys(blobs).length === keys.length &&
+      keys.every(path => Object.prototype.hasOwnProperty.call(blobs, path) && blobs[path] === expected[path]);
+  }
   function entry(id) { return data.items.find(x=>x.id===id); }
   function one(id) { return state.items[id] || {status:"unreviewed",note:"",replacement:""}; }
   function statusCounts() { const v=data.items.map(x=>one(x.id).status);return {reviewed:v.filter(s=>s!=="unreviewed").length,changes:v.filter(s=>s==="changes").length}; }
@@ -132,7 +139,7 @@
   }
   function importJson(file){
     if(!file)return;file.text().then(s=>{const imported=JSON.parse(s);
-      if(imported.schema!=="fa-release-editorial-audit-result/v1"||imported.candidateSha!==data.candidateSha||JSON.stringify(imported.sourceBlobSha1)!==JSON.stringify(data.sourceBlobSha1))throw Error("نسخهٔ منبع با این فایل یکی نیست");
+      if(imported.schema!=="fa-release-editorial-audit-result/v1"||imported.candidateSha!==data.candidateSha||!sameSourceBlobs(imported.sourceBlobSha1))throw Error("نسخهٔ منبع با این فایل یکی نیست");
       for(const [id,v] of Object.entries(imported.results||{})){if(!entry(id)||!v||!["approved","changes","unreviewed"].includes(v.status)||typeof(v.note??"")!=="string"||typeof(v.proposedReplacement??"")!=="string")throw Error("دادهٔ بررسی نامعتبر: "+id);}
       // Import replaces this browser's current review. Never silently discard existing work.
       const existing=recoveryLocked||Object.values(state.items).some(v=>v&&(["approved","changes"].includes(v.status)||(v.note||"").trim()||(v.replacement||"").trim()));
