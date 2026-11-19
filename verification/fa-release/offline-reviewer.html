@@ -148,8 +148,15 @@
       // Import replaces this browser's current review. Never silently discard existing work.
       const existing=recoveryLocked||Object.values(state.items).some(v=>v&&(["approved","changes"].includes(v.status)||(v.note||"").trim()||(v.replacement||"").trim()));
       if(existing&&!confirm("بارگذاری این گزارش، یادداشت‌ها و وضعیت‌های فعلی را جایگزین می‌کند. پیش از ادامه، از کار خود خروجی بگیرید. ادامه می‌دهید؟")){notify("بارگذاری لغو شد؛ یادداشت‌های فعلی حفظ شدند.");return;}
-      state.items=Object.fromEntries(Object.entries(results).map(([id,v])=>[id,{status:v.status,note:v.note||"",replacement:v.proposedReplacement||""}]));
-      state.reviewer=imported.reviewer||"";state.qualification=imported.competence||"";recoveryLocked=false;$("reviewer").value=state.reviewer;$("qualification").value=state.qualification;save();render();notify("گزارشِ محلی از همین نسخهٔ منبع بارگذاری شد. صحتِ هویت یا کیفیتِ بررسی به‌طور خودکار تأیید نشده است.");
+      const nextState={
+        items:Object.fromEntries(Object.entries(results).map(([id,v])=>[id,{status:v.status,note:v.note||"",replacement:v.proposedReplacement||""}])),
+        reviewer:imported.reviewer||"",qualification:imported.competence||""
+      };
+      // A failed quota/security write must not unlock damaged state, lose prior
+      // notes in memory or falsely advertise a successful import.
+      try { localStorage.setItem(key,JSON.stringify(nextState)); }
+      catch(e) { throw Error("ذخیرهٔ مرورگر انجام نشد؛ گزارش وارد نشد و داده‌های پیشین حفظ شدند."); }
+      state=nextState;recoveryLocked=false;$("reviewer").value=state.reviewer;$("qualification").value=state.qualification;render();notify("گزارشِ محلی از همین نسخهٔ منبع بارگذاری شد. صحتِ هویت یا کیفیتِ بررسی به‌طور خودکار تأیید نشده است.");
     }).catch(e=>notify("بارگذاری نشد: "+e.message));
   }
   load();$("reviewer").value=state.reviewer||"";$("qualification").value=state.qualification||"";

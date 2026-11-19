@@ -122,6 +122,35 @@ try {
   await page.locator(".navitem").filter({ hasText: "B55" }).click();
   assert.equal(await page.locator("#note").inputValue(), "Reviewer test: verify source-fidelity scope.");
 
+  // A browser storage failure must never replace the in-memory report or
+  // display an import-success notice. Simulate a quota/security denial.
+  const beforeWriteFailure = await page.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"), expectedSource);
+  await page.evaluate(() => {
+    window.__reviewerStorageOriginalSetItem = Storage.prototype.setItem;
+    Storage.prototype.setItem = function(key, value) {
+      if (key.startsWith("fa-review:")) throw new DOMException("Storage unavailable", "QuotaExceededError");
+      return window.__reviewerStorageOriginalSetItem.call(this, key, value);
+    };
+  });
+  page.once("dialog", dialog => dialog.accept());
+  await page.locator("#import").setInputFiles({
+    name: "storage-denied.json", mimeType: "application/json",
+    buffer: Buffer.from(JSON.stringify(output), "utf8"),
+  });
+  await page.waitForFunction(() => document.getElementById("notice").textContent.includes("بارگذاری نشد"));
+  assert.match(await page.locator("#notice").textContent(), /ذخیرهٔ مرورگر/);
+  assert.equal(await page.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"), expectedSource),
+    beforeWriteFailure, "failed import must retain existing persisted bytes");
+  assert.match(await page.locator("#progress").textContent(), /1 \/ 141/);
+  await page.locator(".navitem").filter({ hasText: "B56" }).click();
+  assert.equal(await page.locator("#note").inputValue(), "", "failed import must not add a draft note to in-memory state");
+  await page.locator(".navitem").filter({ hasText: "B55" }).click();
+  assert.equal(await page.locator("#note").inputValue(), "Reviewer test: verify source-fidelity scope.");
+  await page.evaluate(() => {
+    Storage.prototype.setItem = window.__reviewerStorageOriginalSetItem;
+    delete window.__reviewerStorageOriginalSetItem;
+  });
+
   // Reject missing, extra and mismatching file-to-hash mappings without
   // relying on their serialization order. Keep the existing review untouched.
   const sourceEntries = Object.entries(output.sourceBlobSha1);
@@ -258,6 +287,30 @@ try {
   assert.equal(await page.locator("#note").isDisabled(), true, "canceled import must keep review editing locked");
   assert.equal(await page.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"),
     expectedSource), "{broken JSON", "cancelled import must preserve the corrupted bytes");
+
+  // Failed storage when recovering damaged state must keep the emergency
+  // backup available, editing locked and the exact damaged bytes untouched.
+  await page.evaluate(() => {
+    window.__reviewerStorageOriginalSetItem = Storage.prototype.setItem;
+    Storage.prototype.setItem = function(key, value) {
+      if (key.startsWith("fa-review:")) throw new DOMException("Storage unavailable", "QuotaExceededError");
+      return window.__reviewerStorageOriginalSetItem.call(this, key, value);
+    };
+  });
+  page.once("dialog", dialog => dialog.accept());
+  await page.locator("#import").setInputFiles({
+    name: "recovery-storage-denied.json", mimeType: "application/json",
+    buffer: Buffer.from(JSON.stringify(output), "utf8"),
+  });
+  await page.waitForFunction(() => document.getElementById("notice").textContent.includes("بارگذاری نشد"));
+  assert.equal(await page.locator("#note").isDisabled(), true);
+  assert.equal(await page.locator("#backup-corrupt").isVisible(), true);
+  assert.equal(await page.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"), expectedSource),
+    "{broken JSON", "failed recovery must not replace damaged data");
+  await page.evaluate(() => {
+    Storage.prototype.setItem = window.__reviewerStorageOriginalSetItem;
+    delete window.__reviewerStorageOriginalSetItem;
+  });
 
   page.once("dialog", dialog => dialog.accept());
   await page.locator("#import").setInputFiles({
