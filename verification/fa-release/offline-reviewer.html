@@ -140,11 +140,15 @@
   function importJson(file){
     if(!file)return;file.text().then(s=>{const imported=JSON.parse(s);
       if(imported.schema!=="fa-release-editorial-audit-result/v1"||imported.candidateSha!==data.candidateSha||!sameSourceBlobs(imported.sourceBlobSha1))throw Error("نسخهٔ منبع با این فایل یکی نیست");
-      for(const [id,v] of Object.entries(imported.results||{})){if(!entry(id)||!v||!["approved","changes","unreviewed"].includes(v.status)||typeof(v.note??"")!=="string"||typeof(v.proposedReplacement??"")!=="string")throw Error("دادهٔ بررسی نامعتبر: "+id);}
+      // Export never creates an empty results map. An absent/null/empty or
+      // non-object map must not masquerade as a valid report and erase notes.
+      const results=imported.results;
+      if(!results||typeof results!=="object"||Array.isArray(results)||!Object.keys(results).length)throw Error("گزارش دادهٔ معتبرِ بررسی ندارد");
+      for(const [id,v] of Object.entries(results)){if(!entry(id)||!v||!["approved","changes","unreviewed"].includes(v.status)||typeof(v.note??"")!=="string"||typeof(v.proposedReplacement??"")!=="string")throw Error("دادهٔ بررسی نامعتبر: "+id);}
       // Import replaces this browser's current review. Never silently discard existing work.
       const existing=recoveryLocked||Object.values(state.items).some(v=>v&&(["approved","changes"].includes(v.status)||(v.note||"").trim()||(v.replacement||"").trim()));
       if(existing&&!confirm("بارگذاری این گزارش، یادداشت‌ها و وضعیت‌های فعلی را جایگزین می‌کند. پیش از ادامه، از کار خود خروجی بگیرید. ادامه می‌دهید؟")){notify("بارگذاری لغو شد؛ یادداشت‌های فعلی حفظ شدند.");return;}
-      state.items=Object.fromEntries(Object.entries(imported.results||{}).map(([id,v])=>[id,{status:v.status,note:v.note||"",replacement:v.proposedReplacement||""}]));
+      state.items=Object.fromEntries(Object.entries(results).map(([id,v])=>[id,{status:v.status,note:v.note||"",replacement:v.proposedReplacement||""}]));
       state.reviewer=imported.reviewer||"";state.qualification=imported.competence||"";recoveryLocked=false;$("reviewer").value=state.reviewer;$("qualification").value=state.qualification;save();render();notify("گزارشِ محلی از همین نسخهٔ منبع بارگذاری شد. صحتِ هویت یا کیفیتِ بررسی به‌طور خودکار تأیید نشده است.");
     }).catch(e=>notify("بارگذاری نشد: "+e.message));
   }

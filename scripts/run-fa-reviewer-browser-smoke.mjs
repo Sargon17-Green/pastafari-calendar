@@ -142,6 +142,29 @@ try {
     assert.equal(await page.locator(".navitem").filter({ hasText: "B55" }).getAttribute("data-status"), "changes");
   }
 
+  // Invalid or missing results must not be interpreted as an empty valid
+  // report: doing so could wipe existing draft notes after an import.
+  const { results: _discardedResults, ...withoutResults } = output;
+  const beforeMalformed = await page.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"), expectedSource);
+  for (const [label, imported] of [
+    ["missing-results", withoutResults],
+    ["null-results", { ...output, results: null }],
+    ["empty-results", { ...output, results: {} }],
+    ["array-results", { ...output, results: [] }],
+    ["string-results", { ...output, results: "" }],
+  ]) {
+    await page.evaluate(() => { document.getElementById("notice").textContent = ""; });
+    await page.locator("#import").setInputFiles({
+      name: label + ".json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(imported), "utf8"),
+    });
+    await page.waitForFunction(() => document.getElementById("notice").textContent.includes("بارگذاری نشد"));
+    assert.equal(await page.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"), expectedSource),
+      beforeMalformed, label + " must not overwrite valid local review notes");
+    assert.equal(await page.locator("#note").inputValue(), "Reviewer test: verify source-fidelity scope.");
+    assert.equal(await page.locator(".navitem").filter({ hasText: "B55" }).getAttribute("data-status"), "changes");
+  }
+
   const corrupted = { ...output, candidateSha: "0".repeat(40) };
   await page.locator("#import").setInputFiles({
     name: "wrong-source.json", mimeType: "application/json",
