@@ -82,6 +82,25 @@ try {
   await page.locator("#clear").click();
   assert.equal(await page.locator("#note").inputValue(), "");
   assert.equal(await page.locator(".navitem").filter({ hasText: "B55" }).getAttribute("data-status"), "unreviewed");
+  // Metadata-only work must also require explicit confirmation before import.
+  await page.locator("#reviewer").fill("Metadata-only reviewer");
+  await page.locator("#qualification").selectOption("fa-style-only");
+  const metadataOnlyStored = await page.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"), expectedSource);
+  page.once("dialog", dialog => dialog.dismiss());
+  await page.locator("#import").setInputFiles({
+    name: "metadata-only-cancel.json", mimeType: "application/json",
+    buffer: Buffer.from(JSON.stringify(output), "utf8"),
+  });
+  await page.waitForFunction(() => document.getElementById("notice").textContent.includes("بارگذاری لغو شد"));
+  assert.equal(await page.locator("#reviewer").inputValue(), "Metadata-only reviewer");
+  assert.equal(await page.locator("#qualification").inputValue(), "fa-style-only");
+  assert.equal(await page.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"), expectedSource),
+    metadataOnlyStored, "canceled metadata-only import must retain stored reviewer fields");
+  page.once("dialog", dialog => dialog.accept());
+  await page.locator("#clear").click();
+  assert.equal(await page.locator("#reviewer").inputValue(), "");
+  assert.equal(await page.locator("#qualification").inputValue(), "");
+
   // Equivalent maps with different JSON key orders must reimport successfully.
   const reversedBlobs = { ...output, sourceBlobSha1: Object.fromEntries(Object.entries(output.sourceBlobSha1).reverse()) };
   assert.notEqual(JSON.stringify(reversedBlobs.sourceBlobSha1), JSON.stringify(output.sourceBlobSha1));
@@ -223,6 +242,31 @@ try {
   });
   await page.waitForFunction(() => document.getElementById("notice").textContent.includes("بارگذاری نشد"));
   assert.equal(await page.locator("#note").inputValue(), "Reviewer test: verify source-fidelity scope.");
+
+  // A locally stored unknown qualification must enter raw-backup recovery,
+  // rather than silently appear as an empty but editable competence.
+  const beforeInvalidQualification = await page.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"), expectedSource);
+  const invalidQualificationRaw = await page.evaluate(source => {
+    const k = "fa-review:" + source + ":v1";
+    const old = JSON.parse(localStorage.getItem(k));
+    old.qualification = "unverified-fidelity";
+    const raw = JSON.stringify(old);
+    localStorage.setItem(k, raw);
+    return raw;
+  }, expectedSource);
+  await page.reload({ waitUntil: "load" });
+  assert.match(await page.locator("#notice").textContent(), /نامعتبر/);
+  assert.equal(await page.locator("#qualification").isDisabled(), true);
+  assert.equal(await page.locator("#qualification").inputValue(), "");
+  assert.equal(await page.locator("#backup-corrupt").isVisible(), true);
+  assert.equal(await page.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"), expectedSource),
+    invalidQualificationRaw, "unsupported competence must not overwrite original raw bytes");
+  await page.evaluate(([source, raw]) => localStorage.setItem("fa-review:" + source + ":v1", raw),
+    [expectedSource, beforeInvalidQualification]);
+  await page.reload({ waitUntil: "load" });
+  assert.equal(await page.locator("#qualification").isDisabled(), false);
+  assert.equal(await page.locator("#qualification").inputValue(), "he-fa-fidelity");
+  assert.equal(await page.locator("#backup-corrupt").isVisible(), false);
 
   await page.getByRole("button", { name: /متن هیولا/ }).press("Enter");
   assert.equal(await page.evaluate(() => document.activeElement?.id), "heading");
