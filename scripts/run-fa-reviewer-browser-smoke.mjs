@@ -99,6 +99,42 @@ try {
   assert.equal(output.results.B55.proposedReplacement, "پیشنهادِ ویرایشیِ آزمایشی.");
   assert.equal(output.competence, "he-fa-fidelity");
 
+  // Simulate a second tab storing newer data while this page is still open.
+  const beforeConcurrent = await page.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"), expectedSource);
+  const otherTabRaw = await page.evaluate(source => {
+    const k = "fa-review:" + source + ":v1";
+    const updated = JSON.parse(localStorage.getItem(k));
+    updated.items.A02 = { status: "changes", note: "Saved in another tab", replacement: "" };
+    const raw = JSON.stringify(updated);
+    localStorage.setItem(k, raw);
+    return raw;
+  }, expectedSource);
+  await page.locator("#note").fill("Draft in this tab after concurrent edit.");
+  assert.match(await page.locator("#notice").textContent(), /برگهٔ دیگری/);
+  await page.getByRole("button", { name: "این بخش بررسی شد" }).press("Enter");
+  assert.equal(await page.getByRole("button", { name: "این بخش بررسی شد" }).getAttribute("aria-pressed"), "false");
+  assert.match(await page.locator("#progress").textContent(), /1 \/ 141/);
+  assert.equal(await page.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"), expectedSource),
+    otherTabRaw, "status click cannot overwrite a concurrent review");
+  page.once("dialog", dialog => dialog.accept());
+  await page.locator("#import").setInputFiles({
+    name: "same-source-concurrent.json", mimeType: "application/json",
+    buffer: Buffer.from(JSON.stringify(output), "utf8"),
+  });
+  await page.waitForFunction(() => document.getElementById("notice").textContent.includes("بارگذاری نشد"));
+  assert.match(await page.locator("#notice").textContent(), /برگهٔ دیگری/);
+  assert.equal(await page.locator("#note").inputValue(), "Draft in this tab after concurrent edit.");
+  page.once("dialog", dialog => dialog.accept());
+  await page.locator("#clear").click();
+  assert.match(await page.locator("#notice").textContent(), /برگهٔ دیگری/);
+  assert.equal(await page.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"), expectedSource),
+    otherTabRaw, "reset cannot overwrite a concurrent review");
+  await page.evaluate(([source, raw]) => localStorage.setItem("fa-review:" + source + ":v1", raw),
+    [expectedSource, beforeConcurrent]);
+  await page.locator("#note").fill("Draft, not reviewed: please check this idiom.");
+  assert.equal(await page.evaluate(source => JSON.parse(localStorage.getItem("fa-review:" + source + ":v1")).items.B56.note,
+    expectedSource), "Draft, not reviewed: please check this idiom.");
+
   page.once("dialog", dialog => dialog.accept());
   await page.locator("#clear").click();
   assert.equal(await page.locator("#note").inputValue(), "");

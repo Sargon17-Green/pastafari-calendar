@@ -34,13 +34,24 @@
   let group = "A", active = "A01";
   let state = {reviewer:"", qualification:"", items:{}};
   let recoveryLocked = false; // damaged browser data cannot be overwritten by typing or a status click
+  let persistedRaw = null; // last exact browser bytes known by this tab
+  const storageConflict = "داده‌های ذخیره‌شده در برگهٔ دیگری تغییر کرده‌اند؛ پیش از بازخوانی، یادداشت‌های این برگه را به گزارش JSON صادر کنید.";
   const choices = [["unreviewed","بررسی نشده"],["approved","این بخش بررسی شد"],["changes","نیازمند اصلاح"]];
   function notify(message) { $("notice").textContent = message; }
-  function save() { if(recoveryLocked) { notify("داده‌های پیشین آسیب دیده‌اند. تا زمانی که یک گزارشِ پشتیبان را با تأیید وارد نکنید یا داده‌های محلی را صریحاً پاک نکنید، ذخیره و ویرایش غیرفعال است."); return; } try { localStorage.setItem(key, JSON.stringify(state)); } catch(e) { notify("ذخیرهٔ مرورگر ممکن نیست؛ از پروندهٔ خروجی استفاده کنید."); } }
+  function persist(nextState) {
+    // Refuse stale writes from a second tab; never overwrite unseen review work.
+    if(localStorage.getItem(key)!==persistedRaw)throw Error(storageConflict);
+    const raw=JSON.stringify(nextState);
+    localStorage.setItem(key,raw);
+    persistedRaw=raw;
+  }
+  function storageMessage(e,fallback){return e?.message===storageConflict?storageConflict:fallback;}
+  function save() { if(recoveryLocked) { notify("داده‌های پیشین آسیب دیده‌اند. تا زمانی که یک گزارشِ پشتیبان را با تأیید وارد نکنید یا داده‌های محلی را صریحاً پاک نکنید، ذخیره و ویرایش غیرفعال است."); return; } try { persist(state); } catch(e) { notify(storageMessage(e,"ذخیرهٔ مرورگر ممکن نیست؛ از پروندهٔ خروجی استفاده کنید.")); } }
   function lockEditing() { for(const id of ["reviewer","qualification","note","replacement"]) $(id).disabled=recoveryLocked; for(const button of $("status-buttons").children) button.disabled=recoveryLocked; $("backup-corrupt").hidden=!recoveryLocked; }
   function load() {
     try {
       const stored = localStorage.getItem(key);
+      persistedRaw=stored;
       if (stored === null) return;
       const x = JSON.parse(stored);
       if (!x || typeof x !== "object" || Array.isArray(x) ||
@@ -113,8 +124,8 @@
       // Marking a unit as reviewed is an editorial claim: do not change the
       // UI, review counts or in-memory verdict until the write is durable.
       const nextState={...state,items:{...state.items,[e.id]:{...one(e.id),status}}};
-      try{localStorage.setItem(key,JSON.stringify(nextState));}
-      catch(e){notify("وضعیت ذخیره نشد؛ وضعیتِ بررسیِ قبلی حفظ شد. از گزارشِ خروجی برای نگهداریِ یادداشت‌ها استفاده کنید.");return;}
+      try{persist(nextState);}
+      catch(e){notify(storageMessage(e,"وضعیت ذخیره نشد؛ وضعیتِ بررسیِ قبلی حفظ شد. از گزارشِ خروجی برای نگهداریِ یادداشت‌ها استفاده کنید."));return;}
       state=nextState;renderList();renderDetail();renderProgress();const pressed=[...buttons.children].find(next=>next.textContent===label);pressed?.focus();
     });buttons.append(b)}
     $("note").value=item.note||"";$("replacement").value=item.replacement||"";lockEditing();
@@ -173,8 +184,8 @@
       };
       // A failed quota/security write must not unlock damaged state, lose prior
       // notes in memory or falsely advertise a successful import.
-      try { localStorage.setItem(key,JSON.stringify(nextState)); }
-      catch(e) { throw Error("ذخیرهٔ مرورگر انجام نشد؛ گزارش وارد نشد و داده‌های پیشین حفظ شدند."); }
+      try { persist(nextState); }
+      catch(e) { throw Error(storageMessage(e,"ذخیرهٔ مرورگر انجام نشد؛ گزارش وارد نشد و داده‌های پیشین حفظ شدند.")); }
       state=nextState;recoveryLocked=false;$("reviewer").value=state.reviewer;$("qualification").value=state.qualification;render();notify("گزارشِ محلی از همین نسخهٔ منبع بارگذاری شد. صحتِ هویت یا کیفیتِ بررسی به‌طور خودکار تأیید نشده است.");
     }).catch(e=>notify("بارگذاری نشد: "+e.message));
   }
@@ -187,8 +198,8 @@
     const empty={reviewer:"",qualification:"",items:{}};
     // An explicit reset must not unlock damaged storage or erase visible notes
     // until the replacement has actually been persisted.
-    try { localStorage.setItem(key,JSON.stringify(empty)); }
-    catch(e) { notify("بازنشانی انجام نشد؛ داده‌های پیشین حفظ شدند."); return; }
+    try { persist(empty); }
+    catch(e) { notify(storageMessage(e,"بازنشانی انجام نشد؛ داده‌های پیشین حفظ شدند.")); return; }
     state=empty;recoveryLocked=false;$("reviewer").value="";$("qualification").value="";render();notify("داده‌های محلی پاک شدند.");
   });
   $("sha").textContent=data.candidateSha;$("source-counts").textContent=data.items.length+" واحد: ۱۶ دربارهٔ تقویم + ۶۴ نام + ۴۰ بخش هیولا + ۲۱ یادداشت";
