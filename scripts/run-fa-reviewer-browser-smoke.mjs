@@ -252,7 +252,11 @@ try {
     name: "review-reordered.json", mimeType: "application/json",
     buffer: Buffer.from(JSON.stringify(reversedBlobs), "utf8"),
   });
-  await page.waitForFunction(() => document.getElementById("note").value === "Reviewer test: verify source-fidelity scope." || document.getElementById("note").value === "Draft, not reviewed: please check this idiom.");
+  // The preceding page.reload() resets the active unit to A01. Importing JSON
+  // restores review data, not the currently selected navigation unit.
+  await page.waitForFunction(() => document.getElementById("notice").textContent.includes("گزارشِ محلی"));
+  assert.match(await page.locator("#heading").textContent(), /^A01/,
+    "re-import must not implicitly navigate away from the selected unit");
   await page.locator(".navitem").filter({ hasText: "B55" }).click();
   assert.equal(await page.locator("#note").inputValue(), "Reviewer test: verify source-fidelity scope.");
   assert.equal(await page.locator(".navitem").filter({ hasText: "B55" }).getAttribute("data-status"), "changes");
