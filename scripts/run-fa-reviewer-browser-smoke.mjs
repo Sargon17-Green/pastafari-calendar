@@ -49,6 +49,13 @@ try {
   await page.getByRole("button", { name: /نام‌های کانونی/ }).press("Enter");
   assert.equal(await page.evaluate(() => document.activeElement?.id), "heading", "group keyboard navigation should focus heading");
   assert.equal(await page.locator(".navitem").count(), 64);
+  const bilingualNav = page.locator(".navitem").filter({ hasText: "B55" });
+  assert.equal(await bilingualNav.locator('[lang="he"]').textContent(), "חמור",
+    "Hebrew canonical-name fragment must use the Hebrew language tag");
+  assert.equal(await bilingualNav.locator('[lang="fa"]').first().textContent(), "الاغ",
+    "Persian canonical-name fragment must use the Persian language tag");
+  assert.equal(await bilingualNav.locator(".sr-only").textContent(), " — بررسی نشده",
+    "unreviewed navigation item must announce its status in Persian");
   await page.locator(".navitem").filter({ hasText: "B55" }).press("Enter");
   assert.equal(await page.evaluate(() => document.activeElement?.id), "heading", "selected unit should focus its heading");
   assert.match(await page.locator("#fa-text").textContent(), /پستانداری اهلی/);
@@ -82,6 +89,8 @@ try {
   assert.equal(await page.evaluate(() => document.activeElement?.textContent?.trim()), "نیازمند اصلاح", "status button must retain focus after re-render");
   assert.equal(await page.evaluate(() => document.activeElement?.getAttribute("aria-pressed")), "true");
   assert.equal(await page.locator(".navitem").filter({ hasText: "B55" }).getAttribute("data-status"), "changes");
+  assert.equal(await page.locator(".navitem").filter({ hasText: "B55" }).locator(".sr-only").textContent(),
+    " — نیازمند اصلاح", "a changed verdict must update the announced navigation status");
   assert.match(await page.locator("#progress").textContent(), /1 \/ 141/);
   // A real reviewer often writes a draft note before marking an item reviewed.
   await page.locator(".navitem").filter({ hasText: "B56" }).press("Enter");
@@ -341,6 +350,10 @@ try {
   await page.getByRole("button", { name: /متن هیولا/ }).press("Enter");
   assert.equal(await page.evaluate(() => document.activeElement?.id), "heading");
   assert.equal(await page.locator(".navitem").count(), 40);
+  assert.equal(await page.locator(".navitem").filter({ hasText: "M39" }).locator('[lang="he"]').textContent(),
+    "מסקנה", "Hebrew Monster source slugs must use Hebrew language spans");
+  assert.equal(await page.locator(".navitem").filter({ hasText: "M39" }).locator('[lang="en"]').textContent(),
+    "Section 39 (", "English section descriptor must use an English language span");
   await page.locator(".navitem").filter({ hasText: "M39" }).click();
   assert.match(await page.locator("#fa-text").textContent(), /پنگوئن/);
   await page.getByRole("button", { name: /یادداشت‌های پنگوئن/ }).press("Enter");
