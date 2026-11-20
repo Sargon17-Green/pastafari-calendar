@@ -357,7 +357,7 @@ try {
   page.once("dialog", dialog => dialog.accept());
   await page.locator("#clear").click();
   assert.match(await page.locator("#notice").textContent(), /بازنشانی انجام نشد/);
-  assert.match(await page.locator("#progress").textContent(), /1 \\/ 141/);
+  assert.match(await page.locator("#progress").textContent(), /1 \/ 141/);
   assert.equal(await page.locator("#reviewer").inputValue(), "E2E Test Reviewer");
   assert.equal(await page.locator("#backup-corrupt").isVisible(), false);
   assert.equal(await page.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"), expectedSource),
