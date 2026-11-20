@@ -112,6 +112,19 @@
     }
   }
   function textNode(tag,text,cls){const e=document.createElement(tag);e.textContent=text;if(cls)e.className=cls;return e;}
+  function appendLocalizedTitle(host,e){
+    // Used in both the navigable list and the focus target heading.
+    // Their textContent remains identical to e.title; language switching
+    // is expressed only through nested semantic spans.
+    const part=(label,lang)=>{const span=document.createElement("span");span.lang=lang;span.textContent=label;host.append(span);};
+    if(e.kind==="B"&&e.title.includes(" / ")){
+      const [he,fa]=e.title.split(" / ");
+      part(he,"he");host.append(document.createTextNode(" / "));part(fa,"fa");
+    }else if(e.kind==="M"&&/[\u0590-\u05ff]/.test(e.title)&&e.title.endsWith(")")){
+      const open=e.title.indexOf("(");
+      part(e.title.slice(0,open+1),"en");part(e.title.slice(open+1,-1),"he");host.append(document.createTextNode(")"));
+    }else part(e.title,"en");
+  }
   function renderList(){
     const q=$("filter").value.trim().toLocaleLowerCase(),host=$("entry-list");host.replaceChildren();
     const matches=data.items.filter(x=>x.kind===group && (!q || [x.id,x.title,x.he,x.fa].some(v=>v.toLocaleLowerCase().includes(q))));
@@ -119,16 +132,7 @@
       const b=document.createElement("button");b.type="button";b.className="navitem";
       b.dataset.status=one(e.id).status;b.setAttribute("aria-current",String(active===e.id));
       b.append(document.createTextNode(e.id+" · "));
-      const part=(label,lang)=>{const span=document.createElement("span");span.lang=lang;span.textContent=label;b.append(span);};
-      // Keep the existing bilingual visible name while assigning an explicit
-      // language to each source phrase, so assistive technology can switch voices.
-      if(e.kind==="B"&&e.title.includes(" / ")){
-        const [he,fa]=e.title.split(" / ");
-        part(he,"he");b.append(document.createTextNode(" / "));part(fa,"fa");
-      }else if(e.kind==="M"&&/[\u0590-\u05ff]/.test(e.title)&&e.title.endsWith(")")){
-        const open=e.title.indexOf("(");
-        part(e.title.slice(0,open+1),"en");part(e.title.slice(open+1,-1),"he");b.append(document.createTextNode(")"));
-      }else part(e.title,"en");
+      appendLocalizedTitle(b,e);
       // CSS status glyphs alone are not a reliable accessible announcement.
       const statusLabel=choices.find(([status])=>status===b.dataset.status)?.[1]||choices[0][1];
       const accessibleStatus=document.createElement("span");accessibleStatus.className="sr-only";
@@ -140,7 +144,7 @@
   }
   function renderDetail(){
     const e=entry(active);if(!e)return;
-    $("heading").textContent=e.id+" — "+e.title;
+    const heading=$("heading");heading.replaceChildren(document.createTextNode(e.id+" — "));appendLocalizedTitle(heading,e);
     $("he-text").textContent=e.he;$("fa-text").textContent=e.fa;
     $("he-link").href=e.heUrl;$("fa-link").href=e.faUrl;
     const item=one(e.id),buttons=$("status-buttons");buttons.replaceChildren();

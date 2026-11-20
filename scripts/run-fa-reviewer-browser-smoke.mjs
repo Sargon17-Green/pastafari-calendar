@@ -58,6 +58,12 @@ try {
     "unreviewed navigation item must announce its status in Persian");
   await page.locator(".navitem").filter({ hasText: "B55" }).press("Enter");
   assert.equal(await page.evaluate(() => document.activeElement?.id), "heading", "selected unit should focus its heading");
+  assert.equal(await page.locator("#heading").textContent(), "B55 — חמור / الاغ",
+    "language span wrappers must not alter the heading's visible content");
+  assert.deepEqual(await page.locator("#heading span").evaluateAll(nodes =>
+    nodes.map(node => ({ lang: node.lang, text: node.textContent }))), [
+      { lang: "he", text: "חמור" }, { lang: "fa", text: "الاغ" },
+    ], "focused canonical-name heading must identify Hebrew and Persian fragments");
   assert.match(await page.locator("#fa-text").textContent(), /پستانداری اهلی/);
   assert.match(await page.locator("#he-text").textContent(), /היונק המבוית/);
   assert.match(await page.locator("#he-link").getAttribute("href"), /\/docs\/about\/content\/he.html#L/);
@@ -356,6 +362,12 @@ try {
     "Section 39 (", "English section descriptor must use an English language span");
   await page.locator(".navitem").filter({ hasText: "M39" }).click();
   assert.match(await page.locator("#fa-text").textContent(), /پنگوئن/);
+  assert.equal(await page.locator("#heading").textContent(), "M39 — Section 39 (מסקנה)",
+    "Monster heading's text must remain unchanged");
+  assert.deepEqual(await page.locator("#heading span").evaluateAll(nodes =>
+    nodes.map(node => ({ lang: node.lang, text: node.textContent }))), [
+      { lang: "en", text: "Section 39 (" }, { lang: "he", text: "מסקנה" },
+    ], "focused Monster heading must mark English and Hebrew fragments");
   await page.getByRole("button", { name: /یادداشت‌های پنگوئن/ }).press("Enter");
   assert.equal(await page.evaluate(() => document.activeElement?.id), "heading");
   assert.equal(await page.locator(".navitem").count(), 21);
