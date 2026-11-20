@@ -312,6 +312,26 @@ try {
     delete window.__reviewerStorageOriginalSetItem;
   });
 
+  // A denied reset must not clear or unlock a damaged review; raw backup stays available.
+  await page.evaluate(() => {
+    window.__reviewerStorageOriginalSetItem = Storage.prototype.setItem;
+    Storage.prototype.setItem = function(key, value) {
+      if (key.startsWith("fa-review:")) throw new DOMException("Reset denied", "QuotaExceededError");
+      return window.__reviewerStorageOriginalSetItem.call(this, key, value);
+    };
+  });
+  page.once("dialog", dialog => dialog.accept());
+  await page.locator("#clear").click();
+  assert.match(await page.locator("#notice").textContent(), /بازنشانی انجام نشد/);
+  assert.equal(await page.locator("#note").isDisabled(), true, "failed reset must preserve recovery lock");
+  assert.equal(await page.locator("#backup-corrupt").isVisible(), true, "failed reset must preserve raw backup");
+  assert.equal(await page.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"), expectedSource),
+    "{broken JSON", "failed reset must preserve damaged browser bytes");
+  await page.evaluate(() => {
+    Storage.prototype.setItem = window.__reviewerStorageOriginalSetItem;
+    delete window.__reviewerStorageOriginalSetItem;
+  });
+
   page.once("dialog", dialog => dialog.accept());
   await page.locator("#import").setInputFiles({
     name: "recovery.json", mimeType: "application/json",
@@ -324,6 +344,32 @@ try {
   assert.equal(await page.locator("#backup-corrupt").isVisible(), false, "a successful import removes the emergency raw-backup control");
   assert.equal((await page.evaluate(source => JSON.parse(localStorage.getItem("fa-review:" + source + ":v1")),
     expectedSource)).items.B55.note, "Reviewer test: verify source-fidelity scope.");
+
+  // A denied reset of healthy work must preserve the stored report and visible state.
+  const beforeResetDenial = await page.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"), expectedSource);
+  await page.evaluate(() => {
+    window.__reviewerStorageOriginalSetItem = Storage.prototype.setItem;
+    Storage.prototype.setItem = function(key, value) {
+      if (key.startsWith("fa-review:")) throw new DOMException("Reset denied", "QuotaExceededError");
+      return window.__reviewerStorageOriginalSetItem.call(this, key, value);
+    };
+  });
+  page.once("dialog", dialog => dialog.accept());
+  await page.locator("#clear").click();
+  assert.match(await page.locator("#notice").textContent(), /بازنشانی انجام نشد/);
+  assert.match(await page.locator("#progress").textContent(), /1 \\/ 141/);
+  assert.equal(await page.locator("#reviewer").inputValue(), "E2E Test Reviewer");
+  assert.equal(await page.locator("#backup-corrupt").isVisible(), false);
+  assert.equal(await page.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"), expectedSource),
+    beforeResetDenial, "failed reset must preserve the healthy stored report");
+  await page.getByRole("button", { name: /نام‌های کانونی/ }).click();
+  await page.locator(".navitem").filter({ hasText: "B55" }).click();
+  assert.equal(await page.locator("#note").inputValue(), "Reviewer test: verify source-fidelity scope.",
+    "failed reset must preserve the healthy in-memory notes");
+  await page.evaluate(() => {
+    Storage.prototype.setItem = window.__reviewerStorageOriginalSetItem;
+    delete window.__reviewerStorageOriginalSetItem;
+  });
 
   // Explicitly confirmed reset is the other permitted recovery path.
   await page.evaluate(source => localStorage.setItem("fa-review:" + source + ":v1", "{broken JSON"),

@@ -163,7 +163,15 @@
   $("reviewer").addEventListener("input",e=>{state.reviewer=e.target.value;save()});$("qualification").addEventListener("change",e=>{state.qualification=e.target.value;save()});
   $("note").addEventListener("input",e=>changeText("note",e.target.value));$("replacement").addEventListener("input",e=>changeText("replacement",e.target.value));
   $("filter").addEventListener("input",renderList);$("export").addEventListener("click",exportJson);$("backup-corrupt").addEventListener("click",backupDamagedRaw);$("import").addEventListener("change",e=>{importJson(e.target.files?.[0]);e.target.value=""});
-  $("clear").addEventListener("click",()=>{if(confirm("پاک‌شدنِ تمام یادداشت‌ها و وضعیت‌های ذخیره‌شده در همین مرورگر؟")){recoveryLocked=false;state={reviewer:"",qualification:"",items:{}};save();$("reviewer").value="";$("qualification").value="";render();notify("داده‌های محلی پاک شدند.")}});
+  $("clear").addEventListener("click",()=>{
+    if(!confirm("پاک‌شدنِ تمام یادداشت‌ها و وضعیت‌های ذخیره‌شده در همین مرورگر؟"))return;
+    const empty={reviewer:"",qualification:"",items:{}};
+    // An explicit reset must not unlock damaged storage or erase visible notes
+    // until the replacement has actually been persisted.
+    try { localStorage.setItem(key,JSON.stringify(empty)); }
+    catch(e) { notify("بازنشانی انجام نشد؛ داده‌های پیشین حفظ شدند."); return; }
+    state=empty;recoveryLocked=false;$("reviewer").value="";$("qualification").value="";render();notify("داده‌های محلی پاک شدند.");
+  });
   $("sha").textContent=data.candidateSha;$("source-counts").textContent=data.items.length+" واحد: ۱۶ دربارهٔ تقویم + ۶۴ نام + ۴۰ بخش هیولا + ۲۱ یادداشت";
   render();
 }());
