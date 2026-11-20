@@ -112,6 +112,8 @@ try {
   const download = await dlWait;
   const output = JSON.parse(await readFile(await download.path(), "utf8"));
   assert.equal(output.candidateSha, expectedSource);
+  assert.equal(output.storageSnapshotStatus, "CURRENT", "normal export must confirm current stored bytes");
+  assert.equal(output.unsavedLocalEdits, false, "normal export must not claim unsaved work");
   assert.equal(output.reviewedCount, 1);
   assert.equal(output.savedCount, 2);
   assert.equal(output.draftCount, 1);
@@ -144,6 +146,22 @@ try {
   assert.match(await page.locator("#progress").textContent(), /1 \/ 141/);
   assert.equal(await page.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"), expectedSource),
     otherTabRaw, "status click cannot overwrite a concurrent review");
+  // Rescue a stale tab's unsaved notes without producing an unlabeled
+  // apparently-current report or overwriting the other tab's saved work.
+  const conflictDownloadWait = page.waitForEvent("download");
+  await page.locator("#export").click();
+  const conflictDownload = await conflictDownloadWait;
+  assert.match(conflictDownload.suggestedFilename(), /-conflict\.json$/,
+    "stale export must have an unmistakable conflict suffix");
+  const conflictedExport = JSON.parse(await readFile(await conflictDownload.path(), "utf8"));
+  assert.equal(conflictedExport.storageSnapshotStatus, "STALE_AFTER_EXTERNAL_CHANGE");
+  assert.equal(conflictedExport.unsavedLocalEdits, true);
+  assert.equal(conflictedExport.results.B56.note, "Draft in this tab after concurrent edit.",
+    "stale rescue export must preserve the in-memory note");
+  assert.match(await page.locator("#notice").textContent(), /تعارض/,
+    "the page must announce that the downloaded report conflicts with newer browser storage");
+  assert.equal(await page.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"), expectedSource),
+    otherTabRaw, "rescue export must not overwrite the other tab's saved report");
   page.once("dialog", dialog => dialog.accept());
   await page.locator("#import").setInputFiles({
     name: "same-source-concurrent.json", mimeType: "application/json",

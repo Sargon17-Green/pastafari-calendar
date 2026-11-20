@@ -35,6 +35,7 @@
   let state = {reviewer:"", qualification:"", items:{}};
   let recoveryLocked = false; // damaged browser data cannot be overwritten by typing or a status click
   let persistedRaw = null; // last exact browser bytes known by this tab
+  let unsavedLocalEdits = false; // notes/metadata edited in memory after a failed browser write
   const storageConflict = "داده‌های ذخیره‌شده در برگهٔ دیگری تغییر کرده‌اند؛ پیش از بازخوانی، یادداشت‌های این برگه را به گزارش JSON صادر کنید.";
   const choices = [["unreviewed","بررسی نشده"],["approved","این بخش بررسی شد"],["changes","نیازمند اصلاح"]];
   function notify(message) { $("notice").textContent = message; }
@@ -44,6 +45,7 @@
     const raw=JSON.stringify(nextState);
     localStorage.setItem(key,raw);
     persistedRaw=raw;
+    unsavedLocalEdits=false;
   }
   function storageMessage(e,fallback){return e?.message===storageConflict?storageConflict:fallback;}
   // Notify the first tab as soon as another tab changes the source-locked report.
@@ -51,7 +53,7 @@
   window.addEventListener("storage",event=>{
     if(event.key===key&&event.newValue!==persistedRaw)notify(storageConflict);
   });
-  function save() { if(recoveryLocked) { notify("داده‌های پیشین آسیب دیده‌اند. تا زمانی که یک گزارشِ پشتیبان را با تأیید وارد نکنید یا داده‌های محلی را صریحاً پاک نکنید، ذخیره و ویرایش غیرفعال است."); return; } try { persist(state); } catch(e) { notify(storageMessage(e,"ذخیرهٔ مرورگر ممکن نیست؛ از پروندهٔ خروجی استفاده کنید.")); } }
+  function save() { if(recoveryLocked) { notify("داده‌های پیشین آسیب دیده‌اند. تا زمانی که یک گزارشِ پشتیبان را با تأیید وارد نکنید یا داده‌های محلی را صریحاً پاک نکنید، ذخیره و ویرایش غیرفعال است."); return; } try { persist(state); } catch(e) { unsavedLocalEdits=true; notify(storageMessage(e,"ذخیرهٔ مرورگر ممکن نیست؛ از پروندهٔ خروجی استفاده کنید.")); } }
   function lockEditing() { for(const id of ["reviewer","qualification","note","replacement","export"]) $(id).disabled=recoveryLocked; for(const button of $("status-buttons").children) button.disabled=recoveryLocked; $("backup-corrupt").hidden=!recoveryLocked; }
   function load() {
     try {
@@ -183,6 +185,12 @@
     // A partially recovered state can omit damaged units: it must never be
     // exported as a normal, complete-looking editorial audit report.
     if(recoveryLocked){notify("داده‌های ذخیره‌شده آسیب دیده‌اند؛ گزارشِ عادی صادر نمی‌شود. ابتدا نسخهٔ خام را ذخیره کنید و سپس با گزارشِ سالم بازیابی کنید.");return;}
+    // Keep exports available to rescue unsaved notes from a stale/denied tab.
+    // Never misrepresent that snapshot as synchronized with browser storage.
+    let storageSnapshotStatus="CURRENT";
+    try{
+      if(localStorage.getItem(key)!==persistedRaw)storageSnapshotStatus="STALE_AFTER_EXTERNAL_CHANGE";
+    }catch(e){storageSnapshotStatus="STORAGE_UNAVAILABLE";}
     const reviewer=$("reviewer").value.trim(),qualification=$("qualification").value;
     if(!reviewer || !qualification){notify("پیش از خروجی، نام و نوعِ صلاحیتِ بازبین را وارد کنید.");return}
     // Preserve drafts as well as reviewed units: a note is not an approval.
@@ -190,8 +198,14 @@
     if(!saved.length){notify("هیچ وضعیت یا یادداشتی برای خروجی وجود ندارد.");return}
     const reviewed=saved.filter(([,v])=>v.status==="approved"||v.status==="changes");
     const results=Object.fromEntries(saved.map(([id,v])=>[id,{status:v.status||"unreviewed",note:v.note||"",proposedReplacement:v.replacement||""}]));
-    const exportObj={schema:"fa-release-editorial-audit-result/v1",candidateSha:data.candidateSha,sourceBlobSha1:data.sourceBlobSha1,reviewer,competence:qualification,date:new Date().toISOString(),reviewedCount:reviewed.length,savedCount:saved.length,draftCount:saved.length-reviewed.length,totalUnits:data.items.length,results,releaseApproval:"NOT_GRANTED_BY_THIS_TOOL",instruction:"Submit findings and explicit scope verdict separately in GitHub Issue #42. Draft notes and unreviewed items are not approvals."};
-    const json=JSON.stringify(exportObj,null,2)+"\n",blob=new Blob([json],{type:"application/json;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="fa-review-"+data.candidateSha.slice(0,8)+"-"+new Date().toISOString().slice(0,10)+".json";document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),5000);notify("گزارشِ محدودهٔ بررسی‌شده ذخیره شد؛ تأییدِ انتشار محسوب نمی‌شود.");
+    const exportObj={schema:"fa-release-editorial-audit-result/v1",candidateSha:data.candidateSha,sourceBlobSha1:data.sourceBlobSha1,reviewer,competence:qualification,date:new Date().toISOString(),reviewedCount:reviewed.length,savedCount:saved.length,draftCount:saved.length-reviewed.length,totalUnits:data.items.length,results,storageSnapshotStatus,unsavedLocalEdits,releaseApproval:"NOT_GRANTED_BY_THIS_TOOL",instruction:"Submit findings and explicit scope verdict separately in GitHub Issue #42. Draft notes and unreviewed items are not approvals. When storageSnapshotStatus is not CURRENT or unsavedLocalEdits is true, compare this rescue snapshot against the browser's latest report before any import."};
+    const json=JSON.stringify(exportObj,null,2)+"\n",blob=new Blob([json],{type:"application/json;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");
+    const suffix=storageSnapshotStatus==="STALE_AFTER_EXTERNAL_CHANGE"?"-conflict":storageSnapshotStatus==="STORAGE_UNAVAILABLE"?"-storage-unverified":unsavedLocalEdits?"-unsaved":"";
+    a.href=url;a.download="fa-review-"+data.candidateSha.slice(0,8)+"-"+new Date().toISOString().slice(0,10)+suffix+".json";document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),5000);
+    if(storageSnapshotStatus==="STALE_AFTER_EXTERNAL_CHANGE")notify("نسخهٔ پشتیبان با برچسبِ تعارض ذخیره شد؛ داده‌های برگهٔ دیگر دست‌نخورده‌اند. پیش از واردکردن، دو گزارش را مقایسه کنید. این گزارش مجوزِ انتشار نیست.");
+    else if(storageSnapshotStatus==="STORAGE_UNAVAILABLE")notify("گزارش ذخیره شد، اما بررسیِ حافظهٔ مرورگر ممکن نبود؛ همگام‌بودنِ داده‌ها تأیید نشده است.");
+    else if(unsavedLocalEdits)notify("گزارشِ پشتیبانِ تغییراتِ ذخیره‌نشده ذخیره شد؛ پیش از واردکردن، نسخهٔ موجود در مرورگر را بررسی کنید.");
+    else notify("گزارشِ محدودهٔ بررسی‌شده ذخیره شد؛ تأییدِ انتشار محسوب نمی‌شود.");
   }
   function importJson(file){
     if(!file)return;file.text().then(s=>{const imported=JSON.parse(s);
