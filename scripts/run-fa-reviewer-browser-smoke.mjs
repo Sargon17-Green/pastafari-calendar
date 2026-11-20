@@ -194,6 +194,28 @@ try {
     assert.equal(await page.locator(".navitem").filter({ hasText: "B55" }).getAttribute("data-status"), "changes");
   }
 
+  // Untrusted metadata must not create a "successful" import that becomes
+  // malformed persisted state on the next reload.
+  for (const [label, fields] of [
+    ["reviewer-object", { reviewer: { name: "spoofed" } }],
+    ["reviewer-number", { reviewer: 17 }],
+    ["competence-array", { competence: ["he-fa-fidelity"] }],
+    ["competence-unsupported", { competence: "unverified-fidelity" }],
+  ]) {
+    await page.evaluate(() => { document.getElementById("notice").textContent = ""; });
+    await page.locator("#import").setInputFiles({
+      name: label + ".json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify({ ...output, ...fields }), "utf8"),
+    });
+    await page.waitForFunction(() => document.getElementById("notice").textContent.includes("بارگذاری نشد"));
+    assert.match(await page.locator("#notice").textContent(), /بازبین/);
+    assert.equal(await page.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"), expectedSource),
+      beforeMalformed, label + " must preserve existing local review bytes");
+    assert.equal(await page.locator("#reviewer").inputValue(), "E2E Test Reviewer");
+    assert.equal(await page.locator("#qualification").inputValue(), "he-fa-fidelity");
+    assert.equal(await page.locator("#note").inputValue(), "Reviewer test: verify source-fidelity scope.");
+  }
+
   const corrupted = { ...output, candidateSha: "0".repeat(40) };
   await page.locator("#import").setInputFiles({
     name: "wrong-source.json", mimeType: "application/json",

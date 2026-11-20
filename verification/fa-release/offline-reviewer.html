@@ -144,6 +144,12 @@
       // non-object map must not masquerade as a valid report and erase notes.
       const results=imported.results;
       if(!results||typeof results!=="object"||Array.isArray(results)||!Object.keys(results).length)throw Error("گزارش دادهٔ معتبرِ بررسی ندارد");
+      // Import metadata is untrusted. Accept omitted legacy fields, but never
+      // store non-string reviewer identities or unsupported competence values:
+      // these would be persisted as "success" and invalidate state on reload.
+      if((imported.reviewer!=null&&typeof imported.reviewer!=="string")||
+         (imported.competence!=null&&!["","he-fa-fidelity","fa-style-only"].includes(imported.competence)))
+        throw Error("اطلاعاتِ بازبین در گزارش نامعتبر است");
       for(const [id,v] of Object.entries(results)){if(!entry(id)||!v||!["approved","changes","unreviewed"].includes(v.status)||typeof(v.note??"")!=="string"||typeof(v.proposedReplacement??"")!=="string")throw Error("دادهٔ بررسی نامعتبر: "+id);}
       // Import replaces this browser's current review. Never silently discard existing work.
       const existing=recoveryLocked||Object.values(state.items).some(v=>v&&(["approved","changes"].includes(v.status)||(v.note||"").trim()||(v.replacement||"").trim()));
