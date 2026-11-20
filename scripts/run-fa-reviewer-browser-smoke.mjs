@@ -101,14 +101,17 @@ try {
 
   // Simulate a second tab storing newer data while this page is still open.
   const beforeConcurrent = await page.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"), expectedSource);
-  const otherTabRaw = await page.evaluate(source => {
-    const k = "fa-review:" + source + ":v1";
-    const updated = JSON.parse(localStorage.getItem(k));
-    updated.items.A02 = { status: "changes", note: "Saved in another tab", replacement: "" };
-    const raw = JSON.stringify(updated);
-    localStorage.setItem(k, raw);
-    return raw;
-  }, expectedSource);
+  const secondTab = await context.newPage();
+  await secondTab.goto(pathToFileURL(html).href, { waitUntil: "load" });
+  assert.equal(await secondTab.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"), expectedSource),
+    beforeConcurrent, "the second real browser tab must share the same offline report");
+  await secondTab.locator(".navitem").filter({ hasText: "A02" }).click();
+  await secondTab.locator("#note").fill("Saved in another tab");
+  const otherTabRaw = await secondTab.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"), expectedSource);
+  assert.equal(JSON.parse(otherTabRaw).items.A02.note, "Saved in another tab",
+    "second tab must save through the actual reviewer UI");
+  await page.waitForFunction(() => document.getElementById("notice").textContent.includes("برگهٔ دیگری"));
+  await secondTab.close();
   await page.locator("#note").fill("Draft in this tab after concurrent edit.");
   assert.match(await page.locator("#notice").textContent(), /برگهٔ دیگری/);
   await page.getByRole("button", { name: "این بخش بررسی شد" }).press("Enter");

@@ -46,6 +46,11 @@
     persistedRaw=raw;
   }
   function storageMessage(e,fallback){return e?.message===storageConflict?storageConflict:fallback;}
+  // Notify the first tab as soon as another tab changes the source-locked report.
+  // The separate persist() check still decides whether a write is safe.
+  window.addEventListener("storage",event=>{
+    if(event.key===key&&event.newValue!==persistedRaw)notify(storageConflict);
+  });
   function save() { if(recoveryLocked) { notify("داده‌های پیشین آسیب دیده‌اند. تا زمانی که یک گزارشِ پشتیبان را با تأیید وارد نکنید یا داده‌های محلی را صریحاً پاک نکنید، ذخیره و ویرایش غیرفعال است."); return; } try { persist(state); } catch(e) { notify(storageMessage(e,"ذخیرهٔ مرورگر ممکن نیست؛ از پروندهٔ خروجی استفاده کنید.")); } }
   function lockEditing() { for(const id of ["reviewer","qualification","note","replacement"]) $(id).disabled=recoveryLocked; for(const button of $("status-buttons").children) button.disabled=recoveryLocked; $("backup-corrupt").hidden=!recoveryLocked; }
   function load() {
