@@ -32,6 +32,16 @@ try {
   assert.equal(await page.locator('header .meta a').getAttribute("href"),
     "https://github.com/Sargon17-Green/pastafari-calendar/pull/41");
   assert.equal(await page.locator(".navitem").count(), 16);
+  // The reviewer chrome is Persian; Hebrew belongs only inside the explicit
+  // lang="he" source comparison section, never the accessible control names.
+  assert.equal(await page.locator("#status-buttons").getAttribute("aria-label"),
+    "نتیجهٔ بررسیِ این بخش");
+  assert.equal(await page.getByRole("group", { name: "نتیجهٔ بررسیِ این بخش" }).count(), 1);
+  const hebrewAriaLabels = await page.locator("[aria-label]").evaluateAll(nodes =>
+    nodes.filter(n => /[\u0590-\u05ff]/.test(n.getAttribute("aria-label") || ""))
+      .map(n => ({ id: n.id, label: n.getAttribute("aria-label") })));
+  assert.deepEqual(hebrewAriaLabels, [],
+    "the Persian reviewer must not announce its controls under Hebrew aria-labels");
   assert.match(await page.locator("#he-text").textContent(), /לוח השנה/);
   assert.match(await page.locator("#fa-text").textContent(), /تقویم/);
 
