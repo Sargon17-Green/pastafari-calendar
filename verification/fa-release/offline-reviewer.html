@@ -32,7 +32,7 @@
   const key = "fa-review:" + data.candidateSha + ":v1";
   const $ = x => document.getElementById(x);
   let group = "A", active = "A01";
-  let state = {reviewer:"", qualification:"", items:{}};
+  let state = {reviewer:"", qualification:"", items:{}, reconciliationRequired:false};
   let recoveryLocked = false; // damaged browser data cannot be overwritten by typing or a status click
   let persistedRaw = null; // last exact browser bytes known by this tab
   let unsavedLocalEdits = false; // notes/metadata edited in memory after a failed browser write
@@ -81,12 +81,15 @@
         recovered[id] = { status, note, replacement };
       }
       const qualificationValid=["","he-fa-fidelity","fa-style-only"].includes(x.qualification);
-      // An unknown local competence is damaged state, not proof of bilingual review.
-      if(typeof x.reviewer !== "string" || !qualificationValid) normalized++;
+      const reconciliationValid=x.reconciliationRequired===undefined||typeof x.reconciliationRequired==="boolean";
+      // An unknown local competence or malformed provenance is damaged state,
+      // not proof of a trustworthy bilingual review.
+      if(typeof x.reviewer !== "string" || !qualificationValid || !reconciliationValid) normalized++;
       state = {
         reviewer: typeof x.reviewer === "string" ? x.reviewer : "",
         qualification: qualificationValid ? x.qualification : "",
         items: recovered,
+        reconciliationRequired: x.reconciliationRequired===true,
       };
       if (normalized) { recoveryLocked = true; notify("برخی داده‌های ذخیره‌شده نامعتبر بودند. یادداشت‌های سالم بازیابی شدند؛ تا زمانی که گزارشِ پشتیبان وارد نشود یا داده‌های محلی صریحاً پاک نشوند، ویرایش غیرفعال است. ابتدا نسخهٔ پشتیبان بگیرید."); }
     } catch (error) {
@@ -198,13 +201,15 @@
     if(!saved.length){notify("هیچ وضعیت یا یادداشتی برای خروجی وجود ندارد.");return}
     const reviewed=saved.filter(([,v])=>v.status==="approved"||v.status==="changes");
     const results=Object.fromEntries(saved.map(([id,v])=>[id,{status:v.status||"unreviewed",note:v.note||"",proposedReplacement:v.replacement||""}]));
-    const exportObj={schema:"fa-release-editorial-audit-result/v1",candidateSha:data.candidateSha,sourceBlobSha1:data.sourceBlobSha1,reviewer,competence:qualification,date:new Date().toISOString(),reviewedCount:reviewed.length,savedCount:saved.length,draftCount:saved.length-reviewed.length,totalUnits:data.items.length,results,storageSnapshotStatus,unsavedLocalEdits,releaseApproval:"NOT_GRANTED_BY_THIS_TOOL",instruction:"Submit findings and explicit scope verdict separately in GitHub Issue #42. Draft notes and unreviewed items are not approvals. When storageSnapshotStatus is not CURRENT or unsavedLocalEdits is true, compare this rescue snapshot against the browser's latest report before any import."};
+    const reconciliationRequired=state.reconciliationRequired===true;
+    const exportObj={schema:"fa-release-editorial-audit-result/v1",candidateSha:data.candidateSha,sourceBlobSha1:data.sourceBlobSha1,reviewer,competence:qualification,date:new Date().toISOString(),reviewedCount:reviewed.length,savedCount:saved.length,draftCount:saved.length-reviewed.length,totalUnits:data.items.length,results,storageSnapshotStatus,unsavedLocalEdits,reconciliationRequired,releaseApproval:"NOT_GRANTED_BY_THIS_TOOL",instruction:"Submit findings and explicit scope verdict separately in GitHub Issue #42. Draft notes and unreviewed items are not approvals. When storageSnapshotStatus is not CURRENT or unsavedLocalEdits is true, compare this rescue snapshot against the browser's latest report before any import."};
     const json=JSON.stringify(exportObj,null,2)+"\n",blob=new Blob([json],{type:"application/json;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");
-    const suffix=storageSnapshotStatus==="STALE_AFTER_EXTERNAL_CHANGE"?"-conflict":storageSnapshotStatus==="STORAGE_UNAVAILABLE"?"-storage-unverified":unsavedLocalEdits?"-unsaved":"";
+    const suffix=storageSnapshotStatus==="STALE_AFTER_EXTERNAL_CHANGE"?"-conflict":storageSnapshotStatus==="STORAGE_UNAVAILABLE"?"-storage-unverified":unsavedLocalEdits?"-unsaved":reconciliationRequired?"-needs-reconciliation":"";
     a.href=url;a.download="fa-review-"+data.candidateSha.slice(0,8)+"-"+new Date().toISOString().slice(0,10)+suffix+".json";document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),5000);
     if(storageSnapshotStatus==="STALE_AFTER_EXTERNAL_CHANGE")notify("نسخهٔ پشتیبان با برچسبِ تعارض ذخیره شد؛ داده‌های برگهٔ دیگر دست‌نخورده‌اند. پیش از واردکردن، دو گزارش را مقایسه کنید. این گزارش مجوزِ انتشار نیست.");
     else if(storageSnapshotStatus==="STORAGE_UNAVAILABLE")notify("گزارش ذخیره شد، اما بررسیِ حافظهٔ مرورگر ممکن نبود؛ همگام‌بودنِ داده‌ها تأیید نشده است.");
     else if(unsavedLocalEdits)notify("گزارشِ پشتیبانِ تغییراتِ ذخیره‌نشده ذخیره شد؛ پیش از واردکردن، نسخهٔ موجود در مرورگر را بررسی کنید.");
+    else if(reconciliationRequired)notify("این گزارش از یک نسخهٔ پشتیبانِ دارای تعارض بازیابی شده و هنوز نیازمند تطبیقِ دستی است؛ مجوزِ انتشار نیست.");
     else notify("گزارشِ محدودهٔ بررسی‌شده ذخیره شد؛ تأییدِ انتشار محسوب نمی‌شود.");
   }
   function importJson(file){
@@ -220,22 +225,34 @@
       if((imported.reviewer!=null&&typeof imported.reviewer!=="string")||
          (imported.competence!=null&&!["","he-fa-fidelity","fa-style-only"].includes(imported.competence)))
         throw Error("اطلاعاتِ بازبین در گزارش نامعتبر است");
+      // Source and review metadata remain untrusted. Legacy reports may omit
+      // these fields; newer conflict-rescue exports must not be laundered.
+      if((imported.storageSnapshotStatus!==undefined&&!["CURRENT","STALE_AFTER_EXTERNAL_CHANGE","STORAGE_UNAVAILABLE"].includes(imported.storageSnapshotStatus))||
+         (imported.unsavedLocalEdits!==undefined&&typeof imported.unsavedLocalEdits!=="boolean")||
+         (imported.reconciliationRequired!==undefined&&typeof imported.reconciliationRequired!=="boolean"))
+        throw Error("وضعیتِ نسخهٔ پشتیبان در گزارش نامعتبر است");
+      const needsReconciliation=imported.reconciliationRequired===true||imported.unsavedLocalEdits===true||
+        (imported.storageSnapshotStatus!==undefined&&imported.storageSnapshotStatus!=="CURRENT");
       for(const [id,v] of Object.entries(results)){if(!entry(id)||!v||!["approved","changes","unreviewed"].includes(v.status)||typeof(v.note??"")!=="string"||typeof(v.proposedReplacement??"")!=="string")throw Error("دادهٔ بررسی نامعتبر: "+id);}
       // Import replaces this browser's current review. Never silently discard existing work.
       // Reviewer identity/competence is also unsaved editorial work. Never
       // silently replace it merely because no unit has a note or verdict yet.
       const existing=recoveryLocked||Boolean(state.reviewer.trim()||state.qualification.trim())||
         Object.values(state.items).some(v=>v&&(["approved","changes"].includes(v.status)||(v.note||"").trim()||(v.replacement||"").trim()));
-      if(existing&&!confirm("بارگذاری این گزارش، یادداشت‌ها و وضعیت‌های فعلی را جایگزین می‌کند. پیش از ادامه، از کار خود خروجی بگیرید. ادامه می‌دهید؟")){notify("بارگذاری لغو شد؛ یادداشت‌های فعلی حفظ شدند.");return;}
+      const warning=needsReconciliation
+        ?"این گزارش از داده‌های دارای تعارض، نامطمئن یا ذخیره‌نشده صادر شده است. ورود آن تعارض را خودکار حل نمی‌کند و داده‌های فعلی را جایگزین می‌کند. ابتدا گزارش‌ها را مقایسه کنید. با ثبتِ نیاز به تطبیقِ دستی ادامه می‌دهید؟"
+        :"بارگذاری این گزارش، یادداشت‌ها و وضعیت‌های فعلی را جایگزین می‌کند. پیش از ادامه، از کار خود خروجی بگیرید. ادامه می‌دهید؟";
+      if((existing||needsReconciliation)&&!confirm(warning)){notify("بارگذاری لغو شد؛ یادداشت‌های فعلی حفظ شدند.");return;}
       const nextState={
         items:Object.fromEntries(Object.entries(results).map(([id,v])=>[id,{status:v.status,note:v.note||"",replacement:v.proposedReplacement||""}])),
-        reviewer:imported.reviewer||"",qualification:imported.competence||""
+        reviewer:imported.reviewer||"",qualification:imported.competence||"",
+        reconciliationRequired:needsReconciliation
       };
       // A failed quota/security write must not unlock damaged state, lose prior
       // notes in memory or falsely advertise a successful import.
       try { persist(nextState); }
       catch(e) { throw Error(storageMessage(e,"ذخیرهٔ مرورگر انجام نشد؛ گزارش وارد نشد و داده‌های پیشین حفظ شدند.")); }
-      state=nextState;recoveryLocked=false;$("reviewer").value=state.reviewer;$("qualification").value=state.qualification;render();notify("گزارشِ محلی از همین نسخهٔ منبع بارگذاری شد. صحتِ هویت یا کیفیتِ بررسی به‌طور خودکار تأیید نشده است.");
+      state=nextState;recoveryLocked=false;$("reviewer").value=state.reviewer;$("qualification").value=state.qualification;render();notify(needsReconciliation?"گزارشِ دارای تعارض بازیابی شد، اما هنوز نیازمند تطبیقِ دستی با نسخه‌های دیگر است؛ تأییدِ انتشار نیست.":"گزارشِ محلی از همین نسخهٔ منبع بارگذاری شد. صحتِ هویت یا کیفیتِ بررسی به‌طور خودکار تأیید نشده است.");
     }).catch(e=>notify("بارگذاری نشد: "+e.message));
   }
   load();$("reviewer").value=state.reviewer||"";$("qualification").value=state.qualification||"";

@@ -185,6 +185,47 @@ try {
   await page.locator("#clear").click();
   assert.equal(await page.locator("#note").inputValue(), "");
   assert.equal(await page.locator(".navitem").filter({ hasText: "B55" }).getAttribute("data-status"), "unreviewed");
+  // A conflicted rescue JSON must not become a normal clean report merely
+  // because the target browser is empty. It needs explicit opt-in and must
+  // carry a persistent reconciliation marker across reloads and re-exports.
+  page.once("dialog", async dialog => {
+    assert.match(dialog.message(), /تعارض/);
+    await dialog.dismiss();
+  });
+  await page.locator("#import").setInputFiles({
+    name: "conflict-rescue-declined.json", mimeType: "application/json",
+    buffer: Buffer.from(JSON.stringify(conflictedExport), "utf8"),
+  });
+  await page.waitForFunction(() => document.getElementById("notice").textContent.includes("بارگذاری لغو شد"));
+  assert.equal(await page.locator("#reviewer").inputValue(), "",
+    "declined conflict import must preserve the empty report");
+  page.once("dialog", async dialog => {
+    assert.match(dialog.message(), /تعارض/);
+    await dialog.accept();
+  });
+  await page.locator("#import").setInputFiles({
+    name: "conflict-rescue-accepted.json", mimeType: "application/json",
+    buffer: Buffer.from(JSON.stringify(conflictedExport), "utf8"),
+  });
+  await page.waitForFunction(() => document.getElementById("notice").textContent.includes("نیازمند تطبیق"));
+  assert.equal(await page.evaluate(source => JSON.parse(localStorage.getItem("fa-review:" + source + ":v1")).reconciliationRequired,
+    expectedSource), true, "reconciliation marker must persist in local storage");
+  await page.reload({ waitUntil: "load" });
+  const unreconciledWait = page.waitForEvent("download");
+  await page.locator("#export").click();
+  const unreconciledFile = await unreconciledWait;
+  assert.match(unreconciledFile.suggestedFilename(), /-needs-reconciliation\.json$/);
+  const reExport = JSON.parse(await readFile(await unreconciledFile.path(), "utf8"));
+  assert.equal(reExport.storageSnapshotStatus, "CURRENT");
+  assert.equal(reExport.unsavedLocalEdits, false);
+  assert.equal(reExport.reconciliationRequired, true,
+    "rescue provenance must survive later nominally CURRENT exports");
+  assert.match(await page.locator("#notice").textContent(), /تطبیقِ دستی/);
+  page.once("dialog", dialog => dialog.accept());
+  await page.locator("#clear").click();
+  assert.equal(await page.evaluate(source => JSON.parse(localStorage.getItem("fa-review:" + source + ":v1")).reconciliationRequired,
+    expectedSource), undefined, "explicit reset clears rescue provenance");
+
   // Metadata-only work must also require explicit confirmation before import.
   await page.locator("#reviewer").fill("Metadata-only reviewer");
   await page.locator("#qualification").selectOption("fa-style-only");
