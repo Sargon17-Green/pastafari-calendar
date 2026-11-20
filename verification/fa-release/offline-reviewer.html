@@ -108,7 +108,15 @@
     $("he-text").textContent=e.he;$("fa-text").textContent=e.fa;
     $("he-link").href=e.heUrl;$("fa-link").href=e.faUrl;
     const item=one(e.id),buttons=$("status-buttons");buttons.replaceChildren();
-    for(const [status,label] of choices){const b=document.createElement("button");b.type="button";b.textContent=label;b.setAttribute("aria-pressed",String(item.status===status));b.addEventListener("click",()=>{state.items[e.id]={...one(e.id),status};save();renderList();renderDetail();renderProgress();const pressed=[...buttons.children].find(next=>next.textContent===label);pressed?.focus();});buttons.append(b)}
+    for(const [status,label] of choices){const b=document.createElement("button");b.type="button";b.textContent=label;b.setAttribute("aria-pressed",String(item.status===status));b.addEventListener("click",()=>{
+      if(recoveryLocked)return;
+      // Marking a unit as reviewed is an editorial claim: do not change the
+      // UI, review counts or in-memory verdict until the write is durable.
+      const nextState={...state,items:{...state.items,[e.id]:{...one(e.id),status}}};
+      try{localStorage.setItem(key,JSON.stringify(nextState));}
+      catch(e){notify("وضعیت ذخیره نشد؛ وضعیتِ بررسیِ قبلی حفظ شد. از گزارشِ خروجی برای نگهداریِ یادداشت‌ها استفاده کنید.");return;}
+      state=nextState;renderList();renderDetail();renderProgress();const pressed=[...buttons.children].find(next=>next.textContent===label);pressed?.focus();
+    });buttons.append(b)}
     $("note").value=item.note||"";$("replacement").value=item.replacement||"";lockEditing();
     $("active-scope").textContent=e.kind==="M"?"متن کامل هیولا (پاسخ‌های پنگوئن نیز داخل متن‌اند)":e.kind==="D"?"یادداشتِ پنگوئن — بازبینیِ مستقل":e.kind==="B"?"تعریفِ نامِ کانونی":"بخشِ توضیح تقویم";
   }

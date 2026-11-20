@@ -47,6 +47,27 @@ try {
   assert.match(await page.locator("#fa-link").getAttribute("href"), /\/docs\/about\/content\/fa.html#L/);
   await page.locator("#note").fill("Reviewer test: verify source-fidelity scope.");
   await page.locator("#replacement").fill("پیشنهادِ ویرایشیِ آزمایشی.");
+  // Storage denial must not falsely count a review verdict as completed.
+  const beforeStatusDenial = await page.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"), expectedSource);
+  await page.evaluate(() => {
+    window.__reviewerStorageOriginalSetItem = Storage.prototype.setItem;
+    Storage.prototype.setItem = function(key, value) {
+      if (key.startsWith("fa-review:")) throw new DOMException("Status write denied", "QuotaExceededError");
+      return window.__reviewerStorageOriginalSetItem.call(this, key, value);
+    };
+  });
+  await page.getByRole("button", { name: "نیازمند اصلاح" }).press("Enter");
+  assert.match(await page.locator("#notice").textContent(), /وضعیت ذخیره نشد/);
+  assert.equal(await page.locator(".navitem").filter({ hasText: "B55" }).getAttribute("data-status"), "unreviewed");
+  assert.equal(await page.getByRole("button", { name: "نیازمند اصلاح" }).getAttribute("aria-pressed"), "false");
+  assert.match(await page.locator("#progress").textContent(), /0 \/ 141/);
+  assert.equal(await page.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"), expectedSource),
+    beforeStatusDenial, "failed review-verdict write must preserve original stored bytes");
+  assert.equal(await page.locator("#note").inputValue(), "Reviewer test: verify source-fidelity scope.");
+  await page.evaluate(() => {
+    Storage.prototype.setItem = window.__reviewerStorageOriginalSetItem;
+    delete window.__reviewerStorageOriginalSetItem;
+  });
   await page.getByRole("button", { name: "نیازمند اصلاح" }).press("Enter");
   assert.equal(await page.evaluate(() => document.activeElement?.textContent?.trim()), "نیازمند اصلاح", "status button must retain focus after re-render");
   assert.equal(await page.evaluate(() => document.activeElement?.getAttribute("aria-pressed")), "true");
