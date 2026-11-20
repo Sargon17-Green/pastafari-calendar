@@ -52,7 +52,7 @@
     if(event.key===key&&event.newValue!==persistedRaw)notify(storageConflict);
   });
   function save() { if(recoveryLocked) { notify("داده‌های پیشین آسیب دیده‌اند. تا زمانی که یک گزارشِ پشتیبان را با تأیید وارد نکنید یا داده‌های محلی را صریحاً پاک نکنید، ذخیره و ویرایش غیرفعال است."); return; } try { persist(state); } catch(e) { notify(storageMessage(e,"ذخیرهٔ مرورگر ممکن نیست؛ از پروندهٔ خروجی استفاده کنید.")); } }
-  function lockEditing() { for(const id of ["reviewer","qualification","note","replacement"]) $(id).disabled=recoveryLocked; for(const button of $("status-buttons").children) button.disabled=recoveryLocked; $("backup-corrupt").hidden=!recoveryLocked; }
+  function lockEditing() { for(const id of ["reviewer","qualification","note","replacement","export"]) $(id).disabled=recoveryLocked; for(const button of $("status-buttons").children) button.disabled=recoveryLocked; $("backup-corrupt").hidden=!recoveryLocked; }
   function load() {
     try {
       const stored = localStorage.getItem(key);
@@ -156,6 +156,9 @@
     }catch(e){notify("ذخیرهٔ نسخهٔ خام ممکن نیست: "+String(e?.message||e));}
   }
   function exportJson(){
+    // A partially recovered state can omit damaged units: it must never be
+    // exported as a normal, complete-looking editorial audit report.
+    if(recoveryLocked){notify("داده‌های ذخیره‌شده آسیب دیده‌اند؛ گزارشِ عادی صادر نمی‌شود. ابتدا نسخهٔ خام را ذخیره کنید و سپس با گزارشِ سالم بازیابی کنید.");return;}
     const reviewer=$("reviewer").value.trim(),qualification=$("qualification").value;
     if(!reviewer || !qualification){notify("پیش از خروجی، نام و نوعِ صلاحیتِ بازبین را وارد کنید.");return}
     // Preserve drafts as well as reviewed units: a note is not an approval.

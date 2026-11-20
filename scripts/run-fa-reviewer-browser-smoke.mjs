@@ -365,6 +365,11 @@ try {
   assert.equal(await page.locator("#note").isDisabled(), true, "recovered notes must not be overwritten before backup/import/reset");
   assert.equal(await page.locator("#status-buttons button").first().isDisabled(), true, "cannot record approval while recovery is unresolved");
   assert.equal(await page.locator("#backup-corrupt").isVisible(), true);
+  assert.equal(await page.locator("#export").isDisabled(), true,
+    "a normalized/partially corrupt review must not be exportable as an ordinary report");
+  // Defense in depth: even a synthetic click must fail while recovery is locked.
+  await page.evaluate(() => document.getElementById("export").dispatchEvent(new MouseEvent("click", { bubbles: true })));
+  assert.match(await page.locator("#notice").textContent(), /گزارشِ عادی صادر نمی‌شود/);
   const partialRaw = await page.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"), expectedSource);
   const partialWait = page.waitForEvent("download");
   await page.locator("#backup-corrupt").click();
@@ -397,6 +402,8 @@ try {
   assert.equal(await page.locator("#replacement").isDisabled(), true);
   assert.equal(await page.locator("#status-buttons button").first().isDisabled(), true);
   assert.equal(await page.locator("#backup-corrupt").isVisible(), true);
+  assert.equal(await page.locator("#export").isDisabled(), true,
+    "unparseable browser state must not produce an ordinary report");
   const badRawWait = page.waitForEvent("download");
   await page.locator("#backup-corrupt").click();
   const badRaw = await badRawWait;
@@ -489,6 +496,8 @@ try {
   assert.equal(await page.locator("#reviewer").isDisabled(), false);
   assert.equal(await page.locator("#status-buttons button").first().isDisabled(), false);
   assert.equal(await page.locator("#backup-corrupt").isVisible(), false, "a successful import removes the emergency raw-backup control");
+  assert.equal(await page.locator("#export").isDisabled(), false,
+    "successful explicit recovery must restore ordinary export");
   assert.equal((await page.evaluate(source => JSON.parse(localStorage.getItem("fa-review:" + source + ":v1")),
     expectedSource)).items.B55.note, "Reviewer test: verify source-fidelity scope.");
 
