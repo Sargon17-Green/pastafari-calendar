@@ -144,7 +144,10 @@
   function backupDamagedRaw(){
     if(!recoveryLocked)return;
     try{
-      const raw=localStorage.getItem(key);
+      // When another tab has already replaced the damaged bytes, the current
+      // localStorage value is NOT the damaged state originally recovered here.
+      // Backup the original exact snapshot captured by load(), not live storage.
+      const raw=persistedRaw===null?localStorage.getItem(key):persistedRaw;
       if(raw===null){notify("نسخهٔ خامی از داده‌ها در حافظه پیدا نشد.");return;}
       const file=new Blob([raw],{type:"text/plain;charset=utf-8"}),url=URL.createObjectURL(file),a=document.createElement("a");
       a.href=url;a.download="fa-review-damaged-"+data.candidateSha.slice(0,8)+"-"+new Date().toISOString().slice(0,10)+".txt";

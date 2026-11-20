@@ -402,6 +402,27 @@ try {
   const badRaw = await badRawWait;
   assert.equal(await readFile(await badRaw.path(), "utf8"), "{broken JSON", "invalid JSON bytes must be downloadable verbatim");
 
+  // Another real browser tab can change even a damaged report while this
+  // recovery page remains open. Its raw backup must retain the original
+  // snapshot, not silently download the other tab's replacement bytes.
+  const backupRaceTab = await context.newPage();
+  await backupRaceTab.goto(pathToFileURL(html).href, { waitUntil: "load" });
+  await backupRaceTab.evaluate(source => {
+    localStorage.setItem("fa-review:" + source + ":v1", "{new bytes from second tab");
+  }, expectedSource);
+  await page.waitForFunction(() => document.getElementById("notice").textContent.includes("برگهٔ دیگری"));
+  const originalRawWait = page.waitForEvent("download");
+  await page.locator("#backup-corrupt").click();
+  const preservedRaw = await originalRawWait;
+  assert.equal(await readFile(await preservedRaw.path(), "utf8"), "{broken JSON",
+    "raw recovery backup must preserve the initial damaged bytes after another tab changes storage");
+  assert.equal(await page.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"), expectedSource),
+    "{new bytes from second tab", "backup must not overwrite the second tab's data");
+  await backupRaceTab.evaluate(source => {
+    localStorage.setItem("fa-review:" + source + ":v1", "{broken JSON");
+  }, expectedSource);
+  await backupRaceTab.close();
+
   // Import on a damaged source must obtain explicit permission, not silently
   // replace the original even if no in-memory reviewed items were recovered.
   page.once("dialog", dialog => dialog.dismiss());
