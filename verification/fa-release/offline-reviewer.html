@@ -11,7 +11,7 @@
 <header><h1>بازبینی مستقلِ ترجمهٔ فارسی — تقویم و هیولا</h1><p class="warning">پیش‌نویسِ منتشرنشده؛ هیچ تأییدِ انسانی ثبت نشده است. این ابزار هرگز مجوزِ انتشار صادر نمی‌کند.</p><p class="meta">کامیتِ مرجعِ محتوا (نه HEAD کد): <code dir="ltr" id="sha"></code> | <span id="source-counts"></span> | <a href="https://github.com/Sargon17-Green/pastafari-calendar/pull/41" target="_blank" rel="noopener noreferrer">نسخهٔ جاریِ کد در PR #41</a></p><p class="small">آفلاین و بدونِ کتابخانه یا درخواستِ شبکه کار می‌کند. وضعیت‌ها تنها در این مرورگر نگهداری می‌شوند و باید جداگانه صادر شوند. برای هر بخش، متن عبریِ مبنا در کنار متن فارسیِ نامزد آمده است. داده‌های این پرونده باید با همان SHA بررسی شوند. یادداشت‌های پیش‌نویس، حتی پیش از تأییدِ بررسیِ یک بخش، در گزارش خروجی ذخیره می‌شوند؛ بارگذاری گزارش موجود می‌تواند کارِ محلی را جایگزین کند.</p></header>
 <main class="wrap">
 <section class="panel"><h2>اطلاعاتِ بازبین</h2><div class="controls"><div class="wide"><label for="reviewer">نامِ بازبین — فقط برای گزارشِ خروجی</label><input id="reviewer" type="text" autocomplete="name" placeholder="نام و هویتِ حرفه‌ایِ بازبین"></div><div><label for="qualification">دامنهٔ مهارتِ بازبین</label><select id="qualification"><option value="">انتخاب کنید</option><option value="he-fa-fidelity">تطبیقِ معنای عبری و فارسی</option><option value="fa-style-only">روانی و درستیِ فارسی، بدونِ تأییدِ عبری</option></select></div><div><label for="filter">جست‌وجو در گروه</label><input id="filter" type="text" placeholder="نام، عبارت یا شناسه"></div></div>
-<div id="groups" role="group" aria-label="گروه‌های بازبینی"></div><p id="progress" role="status" aria-live="polite"></p><p id="reconciliation-warning" class="warning" role="alert" hidden>این پرونده از یک گزارشِ دارای تعارض یا تغییراتِ ذخیره‌نشده بازیابی شده است. تطبیقِ دستی با نسخه‌های دیگر هنوز تأیید نشده است؛ ویرایش یا صدور گزارشِ تازه این هشدار را برطرف نمی‌کند و مجوزِ انتشار نیست.</p></section>
+<div id="groups" role="group" aria-label="گروه‌های بازبینی"></div><p id="progress" role="status" aria-live="polite"></p><p id="reconciliation-warning" class="warning" role="alert" hidden>این پرونده از یک گزارشِ دارای تعارض یا تغییراتِ ذخیره‌نشده بازیابی شده است. تطبیقِ دستی با نسخه‌های دیگر هنوز تأیید نشده است؛ ویرایش یا صدور گزارشِ تازه این هشدار را برطرف نمی‌کند و مجوزِ انتشار نیست.</p><div id="reconciliation-panel" class="panel" hidden><label for="reconciliation-note">گزارشِ تطبیقِ دستیِ نسخه‌ها</label><textarea id="reconciliation-note" placeholder="نسخه‌های مقایسه‌شده، تفاوت‌ها و دلیلِ انتخابِ نتیجه را ثبت کنید."></textarea><button id="resolve-reconciliation" type="button">ثبتِ تطبیقِ دستی و حفظِ یادداشت‌ها</button><p class="small">این ثبت صرفاً هشدارِ تعارضِ همین گزارش را برمی‌دارد؛ تأییدِ ویرایشی، هویتِ بازبین یا مجوزِ انتشار نیست.</p></div></section>
 <div class="layout"><nav class="panel sidebar" aria-label="فهرست واحدها"><h2>بخش‌ها</h2><div id="entry-list"></div></nav>
 <article class="panel"><h2 id="heading" tabindex="-1"></h2><p class="small" id="active-scope"></p>
 <div class="pair"><section class="langblock" lang="fa" dir="rtl"><h2>فارسی — نامزد</h2><div id="fa-text" class="content"></div><p class="links"><a id="fa-link" target="_blank" rel="noopener noreferrer">منبع فارسی در GitHub</a></p></section><section class="langblock" lang="he" dir="rtl"><h2>עברית — מקור</h2><div id="he-text" class="content"></div><p class="links"><a id="he-link" target="_blank" rel="noopener noreferrer">קוד המקור ב־GitHub</a></p></section></div>
@@ -32,7 +32,7 @@
   const key = "fa-review:" + data.candidateSha + ":v1";
   const $ = x => document.getElementById(x);
   let group = "A", active = "A01";
-  let state = {reviewer:"", qualification:"", items:{}, reconciliationRequired:false};
+  let state = {reviewer:"", qualification:"", items:{}, reconciliationRequired:false, reconciliationResolution:null};
   let recoveryLocked = false; // damaged browser data cannot be overwritten by typing or a status click
   let persistedRaw = null; // last exact browser bytes known by this tab
   let unsavedLocalEdits = false; // notes/metadata edited in memory after a failed browser write
@@ -55,6 +55,13 @@
   });
   function save() { if(recoveryLocked) { notify("داده‌های پیشین آسیب دیده‌اند. تا زمانی که یک گزارشِ پشتیبان را با تأیید وارد نکنید یا داده‌های محلی را صریحاً پاک نکنید، ذخیره و ویرایش غیرفعال است."); return; } try { persist(state); } catch(e) { unsavedLocalEdits=true; notify(storageMessage(e,"ذخیرهٔ مرورگر ممکن نیست؛ از پروندهٔ خروجی استفاده کنید.")); } }
   function lockEditing() { for(const id of ["reviewer","qualification","note","replacement","export"]) $(id).disabled=recoveryLocked; for(const button of $("status-buttons").children) button.disabled=recoveryLocked; $("backup-corrupt").hidden=!recoveryLocked; }
+  function validResolution(value) {
+    return value === undefined || value === null ||
+      (value && typeof value === "object" && !Array.isArray(value) &&
+       typeof value.note === "string" && value.note.trim().length >= 10 &&
+       typeof value.at === "string" && /^\\d{4}-\\d{2}-\\d{2}T/.test(value.at) &&
+       !Number.isNaN(Date.parse(value.at)));
+  }
   function load() {
     try {
       const stored = localStorage.getItem(key);
@@ -81,7 +88,8 @@
         recovered[id] = { status, note, replacement };
       }
       const qualificationValid=["","he-fa-fidelity","fa-style-only"].includes(x.qualification);
-      const reconciliationValid=x.reconciliationRequired===undefined||typeof x.reconciliationRequired==="boolean";
+      const reconciliationValid=(x.reconciliationRequired===undefined||typeof x.reconciliationRequired==="boolean") &&
+        validResolution(x.reconciliationResolution);
       // An unknown local competence or malformed provenance is damaged state,
       // not proof of a trustworthy bilingual review.
       if(typeof x.reviewer !== "string" || !qualificationValid || !reconciliationValid) normalized++;
@@ -90,6 +98,7 @@
         qualification: qualificationValid ? x.qualification : "",
         items: recovered,
         reconciliationRequired: x.reconciliationRequired===true,
+        reconciliationResolution: validResolution(x.reconciliationResolution) ? (x.reconciliationResolution || null) : null,
       };
       if (normalized) { recoveryLocked = true; notify("برخی داده‌های ذخیره‌شده نامعتبر بودند. یادداشت‌های سالم بازیابی شدند؛ تا زمانی که گزارشِ پشتیبان وارد نشود یا داده‌های محلی صریحاً پاک نشوند، ویرایش غیرفعال است. ابتدا نسخهٔ پشتیبان بگیرید."); }
     } catch (error) {
@@ -165,7 +174,7 @@
     $("note").value=item.note||"";$("replacement").value=item.replacement||"";lockEditing();
     $("active-scope").textContent=e.kind==="M"?"متن کامل هیولا (پاسخ‌های پنگوئن نیز داخل متن‌اند)":e.kind==="D"?"یادداشتِ پنگوئن — بازبینیِ مستقل":e.kind==="B"?"تعریفِ نامِ کانونی":"بخشِ توضیح تقویم";
   }
-  function renderProgress(){const stats=statusCounts();$("progress").textContent=stats.reviewed+" / "+data.items.length+" بررسی‌شده، "+stats.changes+" نیازمند اصلاح. این آمار تأییدِ انتشار نیست.";$("reconciliation-warning").hidden=state.reconciliationRequired!==true;}
+  function renderProgress(){const stats=statusCounts();$("progress").textContent=stats.reviewed+" / "+data.items.length+" بررسی‌شده، "+stats.changes+" نیازمند اصلاح. این آمار تأییدِ انتشار نیست.";$("reconciliation-warning").hidden=state.reconciliationRequired!==true;$("reconciliation-panel").hidden=state.reconciliationRequired!==true;}
   function render(){renderGroups();renderList();renderDetail();renderProgress();}
   function changeText(id,val){state.items[active]={...one(active),[id]:val};save();}
   // Keep the exact damaged localStorage bytes before any explicit import or reset.
@@ -202,7 +211,7 @@
     const reviewed=saved.filter(([,v])=>v.status==="approved"||v.status==="changes");
     const results=Object.fromEntries(saved.map(([id,v])=>[id,{status:v.status||"unreviewed",note:v.note||"",proposedReplacement:v.replacement||""}]));
     const reconciliationRequired=state.reconciliationRequired===true;
-    const exportObj={schema:"fa-release-editorial-audit-result/v1",candidateSha:data.candidateSha,sourceBlobSha1:data.sourceBlobSha1,reviewer,competence:qualification,date:new Date().toISOString(),reviewedCount:reviewed.length,savedCount:saved.length,draftCount:saved.length-reviewed.length,totalUnits:data.items.length,results,storageSnapshotStatus,unsavedLocalEdits,reconciliationRequired,releaseApproval:"NOT_GRANTED_BY_THIS_TOOL",instruction:"Submit findings and explicit scope verdict separately in GitHub Issue #42. Draft notes and unreviewed items are not approvals. When storageSnapshotStatus is not CURRENT or unsavedLocalEdits is true, compare this rescue snapshot against the browser's latest report before any import."};
+    const exportObj={schema:"fa-release-editorial-audit-result/v1",candidateSha:data.candidateSha,sourceBlobSha1:data.sourceBlobSha1,reviewer,competence:qualification,date:new Date().toISOString(),reviewedCount:reviewed.length,savedCount:saved.length,draftCount:saved.length-reviewed.length,totalUnits:data.items.length,results,storageSnapshotStatus,unsavedLocalEdits,reconciliationRequired,reconciliationResolution:state.reconciliationResolution||null,releaseApproval:"NOT_GRANTED_BY_THIS_TOOL",instruction:"Submit findings and explicit scope verdict separately in GitHub Issue #42. Draft notes and unreviewed items are not approvals. When storageSnapshotStatus is not CURRENT or unsavedLocalEdits is true, compare this rescue snapshot against the browser's latest report before any import."};
     const json=JSON.stringify(exportObj,null,2)+"\n",blob=new Blob([json],{type:"application/json;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");
     const suffix=storageSnapshotStatus==="STALE_AFTER_EXTERNAL_CHANGE"?"-conflict":storageSnapshotStatus==="STORAGE_UNAVAILABLE"?"-storage-unverified":unsavedLocalEdits?"-unsaved":reconciliationRequired?"-needs-reconciliation":"";
     a.href=url;a.download="fa-review-"+data.candidateSha.slice(0,8)+"-"+new Date().toISOString().slice(0,10)+suffix+".json";document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),5000);
@@ -229,7 +238,8 @@
       // these fields; newer conflict-rescue exports must not be laundered.
       if((imported.storageSnapshotStatus!==undefined&&!["CURRENT","STALE_AFTER_EXTERNAL_CHANGE","STORAGE_UNAVAILABLE"].includes(imported.storageSnapshotStatus))||
          (imported.unsavedLocalEdits!==undefined&&typeof imported.unsavedLocalEdits!=="boolean")||
-         (imported.reconciliationRequired!==undefined&&typeof imported.reconciliationRequired!=="boolean"))
+         (imported.reconciliationRequired!==undefined&&typeof imported.reconciliationRequired!=="boolean")||
+         !validResolution(imported.reconciliationResolution))
         throw Error("وضعیتِ نسخهٔ پشتیبان در گزارش نامعتبر است");
       const needsReconciliation=imported.reconciliationRequired===true||imported.unsavedLocalEdits===true||
         (imported.storageSnapshotStatus!==undefined&&imported.storageSnapshotStatus!=="CURRENT");
@@ -246,7 +256,8 @@
       const nextState={
         items:Object.fromEntries(Object.entries(results).map(([id,v])=>[id,{status:v.status,note:v.note||"",replacement:v.proposedReplacement||""}])),
         reviewer:imported.reviewer||"",qualification:imported.competence||"",
-        reconciliationRequired:needsReconciliation
+        reconciliationRequired:needsReconciliation,
+        reconciliationResolution:imported.reconciliationResolution||null
       };
       // A failed quota/security write must not unlock damaged state, lose prior
       // notes in memory or falsely advertise a successful import.
@@ -258,6 +269,18 @@
   load();$("reviewer").value=state.reviewer||"";$("qualification").value=state.qualification||"";
   $("reviewer").addEventListener("input",e=>{state.reviewer=e.target.value;save()});$("qualification").addEventListener("change",e=>{state.qualification=e.target.value;save()});
   $("note").addEventListener("input",e=>changeText("note",e.target.value));$("replacement").addEventListener("input",e=>changeText("replacement",e.target.value));
+  $("resolve-reconciliation").addEventListener("click",()=>{
+    if(recoveryLocked || state.reconciliationRequired!==true) return;
+    const note=$("reconciliation-note").value.trim();
+    if(note.length<10){notify("لطفاً دست‌کم ۱۰ نویسه دربارهٔ نسخه‌های مقایسه‌شده و نتیجهٔ تطبیق بنویسید.");return;}
+    if(unsavedLocalEdits){notify("تغییراتِ ذخیره‌نشده وجود دارد؛ ابتدا نسخهٔ پشتیبان تهیه کنید و خطای ذخیره را برطرف کنید.");return;}
+    if(!confirm("آیا نسخه‌های متعارض را واقعاً به‌صورت دستی مقایسه کرده‌اید؟ ثبتِ توضیح، تأییدِ انتشار یا داوریِ زبانی نیست."))return;
+    const nextState={...state,reconciliationRequired:false,reconciliationResolution:{note,at:new Date().toISOString()}};
+    try{persist(nextState);}
+    catch(e){notify(storageMessage(e,"ثبتِ تطبیق انجام نشد؛ هشدار و یادداشت‌ها حفظ شدند."));return;}
+    state=nextState;$("reconciliation-note").value="";renderProgress();
+    notify("تطبیقِ دستی به‌عنوانِ ادعای بازبین ثبت شد و یادداشت‌ها حفظ شدند. تأییدِ انتشار صادر نشده است.");
+  });
   $("filter").addEventListener("input",renderList);$("export").addEventListener("click",exportJson);$("backup-corrupt").addEventListener("click",backupDamagedRaw);$("import").addEventListener("change",e=>{importJson(e.target.files?.[0]);e.target.value=""});
   $("clear").addEventListener("click",()=>{
     if(!confirm("پاک‌شدنِ تمام یادداشت‌ها و وضعیت‌های ذخیره‌شده در همین مرورگر؟"))return;
