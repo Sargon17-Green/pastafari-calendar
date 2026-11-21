@@ -35,7 +35,7 @@ export async function assertLockedSourceFiles(dataset, root = new URL("../../", 
   // Read the actual files on disk: matching an editable in-page map is not enough.
   for (const [filename, expected] of Object.entries(LOCKED_BLOBS)) {
     const bytes = await readFile(new URL(filename, root));
-    const actual = createHash("sha1").update("blob " + bytes.length + "\\0").update(bytes).digest("hex");
+    const actual = createHash("sha1").update("blob " + bytes.length + "\0").update(bytes).digest("hex");
     if (actual !== expected)
       throw new Error("Source file changed after content lock: " + filename);
   }
