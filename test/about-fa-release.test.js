@@ -456,3 +456,43 @@ test("independent Persian reviewer verifier CLI validates files but cannot appro
     await rm(temp, { recursive: true, force: true });
   }
 });
+
+
+test("independent Persian review CLI checks actual locked source file bytes", async () => {
+  const { mkdtemp, mkdir, writeFile, appendFile, rm } = await import("node:fs/promises");
+  const { tmpdir } = await import("node:os");
+  const { join, dirname, sep } = await import("node:path");
+  const { pathToFileURL } = await import("node:url");
+  const { readLockedDataset, assertLockedSourceFiles } =
+    await import("../verification/fa-release/verify-report.mjs");
+  const dataset = await readLockedDataset();
+  await assert.rejects(
+    () => assertLockedSourceFiles({ ...dataset, candidateSha: "0".repeat(40) }),
+    /immutable source lock/);
+  const firstPath = Object.keys(dataset.sourceBlobSha1)[0];
+  await assert.rejects(
+    () => assertLockedSourceFiles({
+      ...dataset, sourceBlobSha1: {
+        ...dataset.sourceBlobSha1, [firstPath]: "0".repeat(40)
+      }
+    }), /Embedded source blob map/);
+
+  // Assemble an isolated checkout with the exact source blobs. Mutating one
+  // byte must fail even when the embedded JSON still advertises correct hashes.
+  const temp = await mkdtemp(join(tmpdir(), "fa-review-source-lock-"));
+  try {
+    for (const filename of Object.keys(dataset.sourceBlobSha1)) {
+      const target = join(temp, filename);
+      await mkdir(dirname(target), { recursive: true });
+      await writeFile(target, await readFile(new URL("../" + filename, import.meta.url)));
+    }
+    const root = pathToFileURL(temp + sep);
+    await assertLockedSourceFiles(dataset, root);
+    await appendFile(join(temp, firstPath), "\nTAMPERED_SOURCE\n");
+    await assert.rejects(
+      () => assertLockedSourceFiles(dataset, root),
+      /Source file changed after content lock/);
+  } finally {
+    await rm(temp, { recursive: true, force: true });
+  }
+});
