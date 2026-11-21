@@ -244,6 +244,23 @@
       const needsReconciliation=imported.reconciliationRequired===true||imported.unsavedLocalEdits===true||
         (imported.storageSnapshotStatus!==undefined&&imported.storageSnapshotStatus!=="CURRENT");
       for(const [id,v] of Object.entries(results)){if(!entry(id)||!v||!["approved","changes","unreviewed"].includes(v.status)||typeof(v.note??"")!=="string"||typeof(v.proposedReplacement??"")!=="string")throw Error("دادهٔ بررسی نامعتبر: "+id);}
+      // Report summary fields are evidence claims, not trusted annotations.
+      // Legacy exports may omit a field, but a supplied count must agree
+      // exactly with the validated per-unit decisions.
+      const values=Object.values(results);
+      const reviewedCount=values.filter(v=>v.status==="approved"||v.status==="changes").length;
+      const declaredCounts={
+        reviewedCount,
+        savedCount:values.length,
+        draftCount:values.length-reviewedCount,
+        totalUnits:data.items.length
+      };
+      for(const [field,expected] of Object.entries(declaredCounts)){
+        if(Object.prototype.hasOwnProperty.call(imported,field) && imported[field]!==expected)
+          throw Error("آمارِ گزارش با نتیجه‌های ثبت‌شده سازگار نیست: "+field);
+      }
+      if(imported.releaseApproval!==undefined && imported.releaseApproval!=="NOT_GRANTED_BY_THIS_TOOL")
+        throw Error("پروندهٔ بازبینی نمی‌تواند مجوزِ انتشار صادر کند");
       // Import replaces this browser's current review. Never silently discard existing work.
       // Reviewer identity/competence is also unsaved editorial work. Never
       // silently replace it merely because no unit has a note or verdict yet.
