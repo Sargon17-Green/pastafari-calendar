@@ -305,3 +305,76 @@ test("offline Persian human-review dashboard is self-contained, complete and sou
   assert.doesNotMatch(html,/<link[^>]+\bhref=/i);
   assert.match(html,/هیچ تأییدِ انسانی ثبت نشده است/);
 });
+
+
+test("independent Persian reviewer JSON verifier never grants release approval", async () => {
+  const { readLockedDataset, inspectReviewReport } =
+    await import("../verification/fa-release/verify-report.mjs");
+  const dataset = await readLockedDataset();
+  const baseline = {
+    schema: "fa-release-editorial-audit-result/v1",
+    candidateSha: dataset.candidateSha,
+    sourceBlobSha1: dataset.sourceBlobSha1,
+    reviewer: "Example human reviewer (test fixture)",
+    competence: "he-fa-fidelity",
+    releaseApproval: "NOT_GRANTED_BY_THIS_TOOL",
+    storageSnapshotStatus: "CURRENT",
+    unsavedLocalEdits: false,
+    reconciliationRequired: false,
+    results: {
+      A01: { status: "changes", note: "Check this wording", proposedReplacement: "" },
+      A02: { status: "unreviewed", note: "Draft observation", proposedReplacement: "" }
+    },
+    reviewedCount: 1, savedCount: 2, draftCount: 1, totalUnits: 141
+  };
+  const verify = patch => inspectReviewReport({ ...baseline, ...patch }, dataset);
+  const first = verify({});
+  assert.equal(first.structurallyValid, true);
+  assert.equal(first.coverageComplete, false);
+  assert.equal(first.groups.A.reviewed, 1);
+  assert.equal(first.groups.A.drafts, 1);
+  assert.equal(first.unresolvedChanges, true);
+  assert.equal(first.humanLanguageSignoff, "NOT_VERIFIED");
+  assert.equal(first.releaseApproval, "NOT_GRANTED_BY_THIS_TOOL");
+
+  for (const [field, bad] of [
+    ["reviewedCount", 141], ["savedCount", 1], ["draftCount", 0],
+    ["totalUnits", 140], ["reviewedCount", "1"],
+    ["releaseApproval", "APPROVED"], ["releaseApproval", null],
+    ["candidateSha", "0".repeat(40)], ["sourceBlobSha1", {}],
+    ["competence", "unverified-fidelity"]
+  ]) {
+    assert.equal(verify({ [field]: bad }).structurallyValid, false, field);
+  }
+  const legacy = { ...baseline };
+  delete legacy.reviewedCount;
+  delete legacy.savedCount;
+  delete legacy.draftCount;
+  delete legacy.totalUnits;
+  delete legacy.releaseApproval;
+  assert.equal(inspectReviewReport(legacy, dataset).structurallyValid, true,
+    "old reports may omit optional count/release metadata");
+
+  const unresolved = verify({
+    storageSnapshotStatus: "STALE_AFTER_EXTERNAL_CHANGE",
+    unsavedLocalEdits: true,
+    reconciliationRequired: true
+  });
+  assert.equal(unresolved.structurallyValid, true);
+  assert.equal(unresolved.needsReconciliation, true);
+  assert.equal(unresolved.releaseApproval, "NOT_GRANTED_BY_THIS_TOOL");
+
+  const fullResults = Object.fromEntries(dataset.items.map(item =>
+    [item.id, { status: "approved", note: "", proposedReplacement: "" }]));
+  const full = verify({
+    results: fullResults, reviewedCount: 141, savedCount: 141, draftCount: 0
+  });
+  assert.equal(full.structurallyValid, true);
+  assert.equal(full.coverageComplete, true);
+  assert.deepEqual(Object.fromEntries(Object.entries(full.groups).map(([k,v]) =>
+    [k, v.reviewed])), { A: 16, B: 64, M: 40, D: 21 });
+  assert.equal(full.humanLanguageSignoff, "NOT_VERIFIED",
+    "141 machine-checkable declarations never constitute independent human signoff");
+  assert.equal(full.physicalAccessibilitySignoff, "NOT_VERIFIED");
+  assert.equal(full.releaseApproval, "NOT_GRANTED_BY_THIS_TOOL");
+});
