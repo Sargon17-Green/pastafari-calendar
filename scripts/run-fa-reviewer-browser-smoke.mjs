@@ -467,6 +467,31 @@ try {
     assert.equal(await page.locator(".navitem").filter({ hasText: "B55" }).getAttribute("data-status"), "changes");
   }
 
+  // A summary can falsely claim 141 reviewed units or even publication
+  // approval while carrying only one real decision. Reject contradictory
+  // report metadata rather than importing a misleading piece of evidence.
+  for (const [label, fields] of [
+    ["overstated-reviewed-count", { reviewedCount: 141 }],
+    ["understated-saved-count", { savedCount: 1 }],
+    ["hidden-draft-count", { draftCount: 0 }],
+    ["incorrect-total-units", { totalUnits: 140 }],
+    ["string-reviewed-count", { reviewedCount: "1" }],
+    ["negative-draft-count", { draftCount: -1 }],
+    ["fabricated-release-approval", { releaseApproval: "APPROVED" }],
+    ["null-release-approval", { releaseApproval: null }],
+  ]) {
+    await page.evaluate(() => { document.getElementById("notice").textContent = ""; });
+    await page.locator("#import").setInputFiles({
+      name: label + ".json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify({ ...output, ...fields }), "utf8"),
+    });
+    await page.waitForFunction(() => document.getElementById("notice").textContent.includes("بارگذاری نشد"));
+    assert.equal(await page.evaluate(source => localStorage.getItem("fa-review:" + source + ":v1"), expectedSource),
+      beforeMalformed, label + " must never overwrite source-locked local review work");
+    assert.equal(await page.locator("#note").inputValue(), "Reviewer test: verify source-fidelity scope.");
+    assert.equal(await page.locator("#reviewer").inputValue(), "E2E Test Reviewer");
+  }
+
   // Untrusted metadata must not create a "successful" import that becomes
   // malformed persisted state on the next reload.
   for (const [label, fields] of [
