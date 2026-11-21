@@ -179,7 +179,7 @@ test("reviewer matrix is not stale relative to the Hebrew and Persian sources", 
   const matrix = await readFile(new URL("../verification/fa-release/reviewer-matrix.md", import.meta.url), "utf8");
   const contentSnapshotSha = "55c0f8a33114a7c6858a024cf5b75ca0cff89242";
   assert.ok(matrix.includes(`Pinned linguistic content snapshot (not current code HEAD): \`${contentSnapshotSha}\``));
-  const aboutSourceRefs = [...matrix.matchAll(/https:\/\/github\\.com\/Sargon17-Green\/pastafari-calendar\/blob\/([0-9a-f]{40})\//g)].map(match => match[1]);
+  const aboutSourceRefs = [...matrix.matchAll(/\/blob\/([0-9a-f]{40})\//g)].map(match => match[1]);
   assert.ok(aboutSourceRefs.length > 0 && aboutSourceRefs.every(sha => sha === contentSnapshotSha),
     "About reviewer matrix links must resolve to the locked content snapshot");
   for (const path of [
@@ -204,7 +204,7 @@ test("Monster reviewer prose matrix spans the entire source and preserves sectio
   const packet = await readFile(new URL("../verification/fa-release/monster-prose-matrix.md", import.meta.url), "utf8");
   const contentSnapshotSha = "55c0f8a33114a7c6858a024cf5b75ca0cff89242";
   assert.ok(packet.includes(`Pinned linguistic content snapshot (not current code HEAD): \`${contentSnapshotSha}\``));
-  const monsterSourceRefs = [...packet.matchAll(/https:\/\/github\\.com\/Sargon17-Green\/pastafari-calendar\/blob\/([0-9a-f]{40})\//g)].map(match => match[1]);
+  const monsterSourceRefs = [...packet.matchAll(/\/blob\/([0-9a-f]{40})\//g)].map(match => match[1]);
   assert.ok(monsterSourceRefs.length > 0 && monsterSourceRefs.every(sha => sha === contentSnapshotSha),
     "Monster reviewer matrix links must resolve to the locked content snapshot");
   const splitArticle = html => {
