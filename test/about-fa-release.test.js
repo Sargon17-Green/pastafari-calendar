@@ -496,3 +496,50 @@ test("independent Persian review CLI checks actual locked source file bytes", as
     await rm(temp, { recursive: true, force: true });
   }
 });
+
+
+test("independent reviewer rejects altered embedded 141-unit dataset and false group coverage", async () => {
+  const { readLockedDataset, assertLockedReviewDataset, inspectReviewReport } =
+    await import("../verification/fa-release/verify-report.mjs");
+  const dataset = await readLockedDataset();
+  assert.doesNotThrow(() => assertLockedReviewDataset(dataset));
+
+  const results = Object.fromEntries(dataset.items.map(item =>
+    [item.id, { status: "approved", note: "", proposedReplacement: "" }]));
+  const report = {
+    schema: "fa-release-editorial-audit-result/v1",
+    candidateSha: dataset.candidateSha, sourceBlobSha1: dataset.sourceBlobSha1,
+    results, reviewedCount: 141, savedCount: 141, draftCount: 0,
+    totalUnits: 141, releaseApproval: "NOT_GRANTED_BY_THIS_TOOL"
+  };
+  assert.equal(inspectReviewReport(report, dataset).coverageComplete, true);
+
+  // Previously the CLI said 141/141 covered despite A=15/16, B=65/64.
+  const wrongGroup = JSON.parse(JSON.stringify(dataset));
+  wrongGroup.items[0].kind = "B";
+  assert.throws(() => assertLockedReviewDataset(wrongGroup), /unit layout/);
+  const corruptSummary = inspectReviewReport(report, wrongGroup);
+  assert.equal(corruptSummary.structurallyValid, false);
+  assert.equal(corruptSummary.coverageComplete, false);
+  assert.equal(corruptSummary.groups.A.reviewed, 16);
+  assert.equal(corruptSummary.groups.B.reviewed, 64);
+  assert.equal(corruptSummary.groups.B.missing, 0);
+  assert.match(corruptSummary.errors.join(" "), /Untrusted reviewer dataset/);
+
+  const duplicate = JSON.parse(JSON.stringify(dataset));
+  duplicate.items[1].id = duplicate.items[0].id;
+  assert.throws(() => assertLockedReviewDataset(duplicate), /unit layout/);
+  assert.equal(inspectReviewReport(report, duplicate).coverageComplete, false);
+
+  // Even a content-only change that preserves the IDs, kinds and original
+  // source-file checksums must be rejected by the separately pinned SHA-256.
+  const changedPersian = JSON.parse(JSON.stringify(dataset));
+  changedPersian.items[0].fa += " متنِ تغییریافته";
+  assert.throws(() => assertLockedReviewDataset(changedPersian), /SHA-256 mismatch/);
+  assert.equal(inspectReviewReport(report, changedPersian).coverageComplete, false);
+
+  const truncated = JSON.parse(JSON.stringify(dataset));
+  truncated.items.pop();
+  assert.throws(() => assertLockedReviewDataset(truncated), /structure or count/);
+  assert.equal(inspectReviewReport(report, truncated).coverageComplete, false);
+});
