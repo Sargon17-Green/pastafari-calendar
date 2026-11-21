@@ -177,6 +177,11 @@ test("Persian About preserves all numeric constraints within each Hebrew source 
 test("reviewer matrix is not stale relative to the Hebrew and Persian sources", async () => {
   const { createHash } = await import("node:crypto");
   const matrix = await readFile(new URL("../verification/fa-release/reviewer-matrix.md", import.meta.url), "utf8");
+  const contentSnapshotSha = "55c0f8a33114a7c6858a024cf5b75ca0cff89242";
+  assert.ok(matrix.includes(`Pinned linguistic content snapshot (not current code HEAD): \`${contentSnapshotSha}\``));
+  const aboutSourceRefs = [...matrix.matchAll(/https:\/\/github\\.com\/Sargon17-Green\/pastafari-calendar\/blob\/([0-9a-f]{40})\//g)].map(match => match[1]);
+  assert.ok(aboutSourceRefs.length > 0 && aboutSourceRefs.every(sha => sha === contentSnapshotSha),
+    "About reviewer matrix links must resolve to the locked content snapshot");
   for (const path of [
     "about/content/he.html", "about/content/fa.html",
     "about/monster/index.html", "about/monster/fa.html",
@@ -197,6 +202,11 @@ test("reviewer matrix is not stale relative to the Hebrew and Persian sources", 
 test("Monster reviewer prose matrix spans the entire source and preserves section-scoped numbers", async () => {
   const { createHash } = await import("node:crypto");
   const packet = await readFile(new URL("../verification/fa-release/monster-prose-matrix.md", import.meta.url), "utf8");
+  const contentSnapshotSha = "55c0f8a33114a7c6858a024cf5b75ca0cff89242";
+  assert.ok(packet.includes(`Pinned linguistic content snapshot (not current code HEAD): \`${contentSnapshotSha}\``));
+  const monsterSourceRefs = [...packet.matchAll(/https:\/\/github\\.com\/Sargon17-Green\/pastafari-calendar\/blob\/([0-9a-f]{40})\//g)].map(match => match[1]);
+  assert.ok(monsterSourceRefs.length > 0 && monsterSourceRefs.every(sha => sha === contentSnapshotSha),
+    "Monster reviewer matrix links must resolve to the locked content snapshot");
   const splitArticle = html => {
     const start = html.indexOf('<article class="about-article">');
     const end = html.indexOf("</article>", start);

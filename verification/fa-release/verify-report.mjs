@@ -7,7 +7,9 @@ import { fileURLToPath } from "node:url";
 
 const REVIEW_SCHEMA = "fa-release-editorial-audit-result/v1";
 const NOT_GRANTED = "NOT_GRANTED_BY_THIS_TOOL";
-const LOCKED_CANDIDATE_SHA = "55c0f8a33114a7c6858a024cf5b75ca0cff89242";
+const LOCKED_CONTENT_SNAPSHOT_SHA = "55c0f8a33114a7c6858a024cf5b75ca0cff89242";
+// The v1 report field remains named candidateSha for compatibility; it identifies
+// this immutable linguistic content snapshot, never the live PR code HEAD.
 // The reference is intentionally independent of offline-reviewer.html.
 // A tampered local reviewer dataset may not redefine the source lock.
 const LOCKED_BLOBS = Object.freeze({
@@ -34,7 +36,7 @@ const own = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
 
 export function assertLockedReviewDataset(dataset) {
   if (!isRecord(dataset) || dataset.schema !== "fa-release-editorial-audit-v1" ||
-      dataset.candidateSha !== LOCKED_CANDIDATE_SHA ||
+      dataset.candidateSha !== LOCKED_CONTENT_SNAPSHOT_SHA ||
       !isRecord(dataset.counts) ||
       Object.keys(dataset.counts).length !== Object.keys(COUNTS).length ||
       Object.entries(COUNTS).some(([kind, count]) => dataset.counts[kind] !== count) ||
@@ -54,7 +56,7 @@ export function assertLockedReviewDataset(dataset) {
 }
 
 export async function assertLockedSourceFiles(dataset, root = new URL("../../", import.meta.url)) {
-  if (!isRecord(dataset) || dataset.candidateSha !== LOCKED_CANDIDATE_SHA)
+  if (!isRecord(dataset) || dataset.candidateSha !== LOCKED_CONTENT_SNAPSHOT_SHA)
     throw new Error("The embedded reviewer source SHA differs from the immutable source lock");
   const observed = dataset.sourceBlobSha1;
   if (!isRecord(observed) || Object.keys(observed).length !== Object.keys(LOCKED_BLOBS).length ||
@@ -95,7 +97,7 @@ export function inspectReviewReport(report, dataset) {
   if (!isRecord(report)) errors.push("Report must be a JSON object");
   else {
     if (report.schema !== REVIEW_SCHEMA) errors.push("Unsupported report schema");
-    if (report.candidateSha !== LOCKED_CANDIDATE_SHA) errors.push("Wrong locked source SHA");
+    if (report.candidateSha !== LOCKED_CONTENT_SNAPSHOT_SHA) errors.push("Wrong locked source SHA");
     const expected = LOCKED_BLOBS;
     const actual = report.sourceBlobSha1;
     if (!isRecord(actual) || Object.keys(actual).length !== Object.keys(expected).length ||
@@ -173,7 +175,7 @@ export function inspectReviewReport(report, dataset) {
   return {
     structurallyValid,
     errors,
-    sourceSha: LOCKED_CANDIDATE_SHA,
+    sourceSha: LOCKED_CONTENT_SNAPSHOT_SHA,
     reviewerClaim: isRecord(report) && typeof report.reviewer === "string" ? report.reviewer : "",
     competenceClaim: isRecord(report) && COMPETENCE.has(report.competence) ? report.competence : "",
     reviewedCount,

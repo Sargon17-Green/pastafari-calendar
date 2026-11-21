@@ -2,7 +2,7 @@
 
 > **Status: NOT HUMAN-APPROVED.** This is a machine-generated text comparison, not an independent native-Persian review. The content below retains the source section order, paragraph boundaries, and the 21 penguin editorial responses. Revisions require a new independent review.
 
-Pinned candidate commit: `81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84`. The Git blob IDs below are checked against the current source files by CI.
+Pinned linguistic content snapshot (not current code HEAD): `55c0f8a33114a7c6858a024cf5b75ca0cff89242`. The source-file blob hashes below are checked against the live PR candidate by CI. For browser/device review, use the current code HEAD of PR #41, not this content-snapshot SHA.
 
 | Source | Git blob SHA-1 |
 |---|---|
@@ -17,7 +17,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M00 — Introduction (`__introduction__`)
 
-[Hebrew line 88](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L88) · [Persian line 80](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L81)
+[Hebrew line 88](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L88) · [Persian line 80](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L81)
 
 **עברית — מקור**
 
@@ -38,7 +38,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M01 — Section 01 (`זכר-נקבה-או-פחמימה`)
 
-[Hebrew line 96](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L96) · [Persian line 83](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L84)
+[Hebrew line 96](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L96) · [Persian line 83](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L84)
 
 **עברית — מקור**
 
@@ -63,7 +63,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M02 — Section 02 (`איך-היא-נראית`)
 
-[Hebrew line 108](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L108) · [Persian line 89](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L90)
+[Hebrew line 108](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L108) · [Persian line 89](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L90)
 
 **עברית — מקור**
 
@@ -92,7 +92,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M03 — Section 03 (`תחילת-הבריאה`)
 
-[Hebrew line 123](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L123) · [Persian line 96](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L97)
+[Hebrew line 123](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L123) · [Persian line 96](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L97)
 
 **עברית — מקור**
 
@@ -126,7 +126,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M04 — Section 04 (`העולם-שנוצר`)
 
-[Hebrew line 141](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L141) · [Persian line 105](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L106)
+[Hebrew line 141](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L141) · [Persian line 105](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L106)
 
 **עברית — מקור**
 
@@ -159,7 +159,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M05 — Section 05 (`כיצד-פועלת-הכבידה-בפועל`)
 
-[Hebrew line 159](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L159) · [Persian line 113](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L114)
+[Hebrew line 159](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L159) · [Persian line 113](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L114)
 
 **עברית — מקור**
 
@@ -190,7 +190,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M06 — Section 06 (`גילו-של-העולם`)
 
-[Hebrew line 175](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L175) · [Persian line 121](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L122)
+[Hebrew line 175](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L175) · [Persian line 121](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L122)
 
 **עברית — מקור**
 
@@ -218,7 +218,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M07 — Section 07 (`הפחמימות`)
 
-[Hebrew line 189](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L189) · [Persian line 128](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L129)
+[Hebrew line 189](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L189) · [Persian line 128](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L129)
 
 **עברית — מקור**
 
@@ -249,7 +249,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M08 — Section 08 (`אנטיפסטי-והגיהנום`)
 
-[Hebrew line 205](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L205) · [Persian line 136](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L137)
+[Hebrew line 205](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L205) · [Persian line 136](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L137)
 
 **עברית — מקור**
 
@@ -289,7 +289,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M09 — Section 09 (`למה-ארוחה-צריכה-להיות-ארוחה`)
 
-[Hebrew line 228](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L228) · [Persian line 146](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L147)
+[Hebrew line 228](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L228) · [Persian line 146](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L147)
 
 **עברית — מקור**
 
@@ -314,7 +314,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M10 — Section 10 (`סימנים-שהמפלצת-משאירה`)
 
-[Hebrew line 239](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L239) · [Persian line 153](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L154)
+[Hebrew line 239](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L239) · [Persian line 153](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L154)
 
 **עברית — מקור**
 
@@ -344,7 +344,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M11 — Section 11 (`תפילות-שנענו`)
 
-[Hebrew line 254](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L254) · [Persian line 161](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L162)
+[Hebrew line 254](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L254) · [Persian line 161](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L162)
 
 **עברית — מקור**
 
@@ -375,7 +375,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M12 — Section 12 (`פיראטים`)
 
-[Hebrew line 269](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L269) · [Persian line 170](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L171)
+[Hebrew line 269](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L269) · [Persian line 170](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L171)
 
 **עברית — מקור**
 
@@ -406,7 +406,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M13 — Section 13 (`בני-האדם`)
 
-[Hebrew line 285](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L285) · [Persian line 178](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L179)
+[Hebrew line 285](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L285) · [Persian line 178](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L179)
 
 **עברית — מקור**
 
@@ -431,7 +431,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M14 — Section 14 (`עבודה-שכחה-ותיקונים`)
 
-[Hebrew line 296](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L296) · [Persian line 185](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L186)
+[Hebrew line 296](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L296) · [Persian line 185](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L186)
 
 **עברית — מקור**
 
@@ -456,7 +456,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M15 — Section 15 (`המבול`)
 
-[Hebrew line 307](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L307) · [Persian line 192](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L193)
+[Hebrew line 307](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L307) · [Persian line 192](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L193)
 
 **עברית — מקור**
 
@@ -480,7 +480,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M16 — Section 16 (`מה-אפשר-לדעת-מתוצאות`)
 
-[Hebrew line 317](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L317) · [Persian line 199](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L200)
+[Hebrew line 317](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L317) · [Persian line 199](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L200)
 
 **עברית — מקור**
 
@@ -506,7 +506,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M17 — Section 17 (`צירופי-מקרים`)
 
-[Hebrew line 328](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L328) · [Persian line 207](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L208)
+[Hebrew line 328](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L328) · [Persian line 207](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L208)
 
 **עברית — מקור**
 
@@ -532,7 +532,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M18 — Section 18 (`התערבות-בעולם`)
 
-[Hebrew line 340](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L340) · [Persian line 214](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L215)
+[Hebrew line 340](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L340) · [Persian line 214](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L215)
 
 **עברית — מקור**
 
@@ -554,7 +554,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M19 — Section 19 (`תפילה`)
 
-[Hebrew line 349](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L349) · [Persian line 220](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L221)
+[Hebrew line 349](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L349) · [Persian line 220](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L221)
 
 **עברית — מקור**
 
@@ -579,7 +579,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M20 — Section 20 (`פולחן`)
 
-[Hebrew line 360](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L360) · [Persian line 227](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L228)
+[Hebrew line 360](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L360) · [Persian line 227](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L228)
 
 **עברית — מקור**
 
@@ -605,7 +605,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M21 — Section 21 (`אני-ממש-מעדיף-שלא`)
 
-[Hebrew line 371](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L371) · [Persian line 235](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L236)
+[Hebrew line 371](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L371) · [Persian line 235](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L236)
 
 **עברית — מקור**
 
@@ -630,7 +630,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M22 — Section 22 (`אמונה-וספק`)
 
-[Hebrew line 382](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L382) · [Persian line 242](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L243)
+[Hebrew line 382](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L382) · [Persian line 242](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L243)
 
 **עברית — מקור**
 
@@ -652,7 +652,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M23 — Section 23 (`האם-יש-ראיות-נגדיות`)
 
-[Hebrew line 390](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L390) · [Persian line 249](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L250)
+[Hebrew line 390](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L390) · [Persian line 249](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L250)
 
 **עברית — מקור**
 
@@ -677,7 +677,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M24 — Section 24 (`מסורת-זיכרון-ודיוק`)
 
-[Hebrew line 400](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L400) · [Persian line 257](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L258)
+[Hebrew line 400](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L400) · [Persian line 257](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L258)
 
 **עברית — מקור**
 
@@ -703,7 +703,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M25 — Section 25 (`כך-הדבר-עובד`)
 
-[Hebrew line 412](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L412) · [Persian line 264](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L265)
+[Hebrew line 412](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L412) · [Persian line 264](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L265)
 
 **עברית — מקור**
 
@@ -725,7 +725,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M26 — Section 26 (`נספח-מדוע-אין-להפקיד-ביתחרושת-לדודישמש-בידי-פינגווינים`)
 
-[Hebrew line 420](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L420) · [Persian line 270](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L271)
+[Hebrew line 420](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L420) · [Persian line 270](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L271)
 
 **עברית — מקור**
 
@@ -750,7 +750,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M27 — Section 27 (`מבנה-הגוף`)
 
-[Hebrew line 431](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L431) · [Persian line 276](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L277)
+[Hebrew line 431](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L431) · [Persian line 276](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L277)
 
 **עברית — מקור**
 
@@ -788,7 +788,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M28 — Section 28 (`תקשורת`)
 
-[Hebrew line 448](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L448) · [Persian line 286](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L287)
+[Hebrew line 448](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L448) · [Persian line 286](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L287)
 
 **עברית — מקור**
 
@@ -823,7 +823,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M29 — Section 29 (`קריאה-כתיבה-וחישוב`)
 
-[Hebrew line 464](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L464) · [Persian line 296](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L297)
+[Hebrew line 464](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L464) · [Persian line 296](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L297)
 
 **עברית — מקור**
 
@@ -859,7 +859,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M30 — Section 30 (`בקרת-איכות`)
 
-[Hebrew line 478](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L478) · [Persian line 307](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L308)
+[Hebrew line 478](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L478) · [Persian line 307](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L308)
 
 **עברית — מקור**
 
@@ -889,7 +889,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M31 — Section 31 (`בטיחות`)
 
-[Hebrew line 491](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L491) · [Persian line 315](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L316)
+[Hebrew line 491](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L491) · [Persian line 315](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L316)
 
 **עברית — מקור**
 
@@ -926,7 +926,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M32 — Section 32 (`אקלים`)
 
-[Hebrew line 506](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L506) · [Persian line 326](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L327)
+[Hebrew line 506](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L506) · [Persian line 326](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L327)
 
 **עברית — מקור**
 
@@ -960,7 +960,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M33 — Section 33 (`חומרי-גלם`)
 
-[Hebrew line 521](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L521) · [Persian line 336](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L337)
+[Hebrew line 521](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L521) · [Persian line 336](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L337)
 
 **עברית — מקור**
 
@@ -998,7 +998,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M34 — Section 34 (`לוגיסטיקה`)
 
-[Hebrew line 535](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L535) · [Persian line 347](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L348)
+[Hebrew line 535](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L535) · [Persian line 347](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L348)
 
 **עברית — מקור**
 
@@ -1026,7 +1026,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M35 — Section 35 (`משאבי-אנוש`)
 
-[Hebrew line 545](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L545) · [Persian line 356](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L357)
+[Hebrew line 545](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L545) · [Persian line 356](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L357)
 
 **עברית — מקור**
 
@@ -1064,7 +1064,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M36 — Section 36 (`אחריות-משפטית`)
 
-[Hebrew line 561](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L561) · [Persian line 367](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L368)
+[Hebrew line 561](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L561) · [Persian line 367](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L368)
 
 **עברית — מקור**
 
@@ -1097,7 +1097,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M37 — Section 37 (`שאלת-הניסיון`)
 
-[Hebrew line 573](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L573) · [Persian line 377](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L378)
+[Hebrew line 573](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L573) · [Persian line 377](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L378)
 
 **עברית — מקור**
 
@@ -1131,7 +1131,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M38 — Section 38 (`יתרונות-אפשריים`)
 
-[Hebrew line 586](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L586) · [Persian line 387](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L388)
+[Hebrew line 586](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L586) · [Persian line 387](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L388)
 
 **עברית — מקור**
 
@@ -1161,7 +1161,7 @@ Do not treat identical HTML structure, paragraph counts, or numeric parity as ev
 
 ### M39 — Section 39 (`מסקנה`)
 
-[Hebrew line 597](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/index.html#L597) · [Persian line 397](https://github.com/Sargon17-Green/pastafari-calendar/blob/81f9b5f6cc1ce0ec7b9c1d62cd325ea3fe71ca84/docs/about/monster/fa.html#L398)
+[Hebrew line 597](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/index.html#L597) · [Persian line 397](https://github.com/Sargon17-Green/pastafari-calendar/blob/55c0f8a33114a7c6858a024cf5b75ca0cff89242/docs/about/monster/fa.html#L398)
 
 **עברית — מקור**
 
