@@ -3,19 +3,19 @@
 import {
   loadLocale,
   translate,
-} from "../i18n/registry.js?v=19-about-page";
+} from "../i18n/registry.js?v=20-about-fa-20261114";
 import {
   applyDocumentLocale,
   persistLanguage,
   populateLanguageSelector,
   resolveBrowserLocale,
   urlWithLanguage,
-} from "../i18n/runtime.js?v=19-about-page";
+} from "../i18n/runtime.js?v=20-about-fa-20261114";
 import {
   ARTICLE_FALLBACK_LOCALE,
   resolveArticleLocale,
-} from "./content/registry.js?v=20261114-fr17";
-import { synchronizeCanonicalNameSummaries } from "./canonical-names.js?v=20261113-multilingual";
+} from "./content/registry.js?v=20261115-fa20";
+import { synchronizeCanonicalNameSummaries } from "./canonical-names.js?v=20261114-translate-guard";
 
 const elements = Object.fromEntries(
   [...document.querySelectorAll("[id]")].map((element) => [element.id, element]),
@@ -42,6 +42,11 @@ function applyActiveLocale() {
 
 async function loadArticleForLocale(localeCode) {
   const articleLocale = resolveArticleLocale(localeCode);
+  // Respect an article already written in the selected language. The Hebrew
+  // fallback remains eligible for browser translation if a locale lacks prose.
+  const exact = articleLocale.code === activeLocale.code;
+  elements["article-content"].translate = !exact;
+  elements["article-content"].classList.toggle("notranslate", exact);
   if (articleLocale.code === activeArticleCode && elements["article-content"].childElementCount > 0) {
     synchronizeCanonicalNameSummaries(elements["article-content"], activeLocale);
     updateLanguageNotice(articleLocale.code);

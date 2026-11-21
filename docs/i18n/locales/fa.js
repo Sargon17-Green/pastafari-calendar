@@ -318,7 +318,7 @@ export default Object.freeze({
       "salt": "نمک",
       "pear": "گلابی",
       "bow": "کمان",
-      "sand": "شن"
+      "sand": "ماسه"
     }
   },
   "terminology": {
