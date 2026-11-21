@@ -1,11 +1,21 @@
 // Independent structural evidence check for a human-authored Persian review JSON.
 // It does NOT authenticate reviewer identity, substantiate translations, or approve a release.
 import { readFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const REVIEW_SCHEMA = "fa-release-editorial-audit-result/v1";
 const NOT_GRANTED = "NOT_GRANTED_BY_THIS_TOOL";
+const LOCKED_CANDIDATE_SHA = "55c0f8a33114a7c6858a024cf5b75ca0cff89242";
+// The reference is intentionally independent of offline-reviewer.html.
+// A tampered local reviewer dataset may not redefine the source lock.
+const LOCKED_BLOBS = Object.freeze({
+  "docs/about/content/he.html": "e664c64765c94168631cb176652886560d23d92b",
+  "docs/about/content/fa.html": "4642e1a92b7915850c90048015e9aaae69260d12",
+  "docs/about/monster/index.html": "fd36d1b6b8ceb215545e6d9a7610d8f19a679e2f",
+  "docs/about/monster/fa.html": "b5923f35ecb22aeed189b188fd521cdac0bf7eb9"
+});
 const COUNTS = { A: 16, B: 64, M: 40, D: 21 };
 const COMPETENCE = new Set(["", "he-fa-fidelity", "fa-style-only"]);
 const STATUSES = new Set(["approved", "changes", "unreviewed"]);
@@ -14,6 +24,23 @@ const SNAPSHOTS = new Set(["CURRENT", "STALE_AFTER_EXTERNAL_CHANGE", "STORAGE_UN
 const isRecord = value => value !== null && typeof value === "object" && !Array.isArray(value);
 const own = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
 
+export async function assertLockedSourceFiles(dataset, root = new URL("../../", import.meta.url)) {
+  if (!isRecord(dataset) || dataset.candidateSha !== LOCKED_CANDIDATE_SHA)
+    throw new Error("The embedded reviewer source SHA differs from the immutable source lock");
+  const observed = dataset.sourceBlobSha1;
+  if (!isRecord(observed) || Object.keys(observed).length !== Object.keys(LOCKED_BLOBS).length ||
+      Object.entries(LOCKED_BLOBS).some(([name, expected]) =>
+        !own(observed, name) || observed[name] !== expected))
+    throw new Error("Embedded source blob map differs from the immutable source lock");
+  // Read the actual files on disk: matching an editable in-page map is not enough.
+  for (const [filename, expected] of Object.entries(LOCKED_BLOBS)) {
+    const bytes = await readFile(new URL(filename, root));
+    const actual = createHash("sha1").update("blob " + bytes.length + "\\0").update(bytes).digest("hex");
+    if (actual !== expected)
+      throw new Error("Source file changed after content lock: " + filename);
+  }
+}
+
 export async function readLockedDataset() {
   const html = await readFile(new URL("./offline-reviewer.html", import.meta.url), "utf8");
   const match = html.match(/<script id="fa-review-dataset" type="application\/json">([\s\S]*?)<\/script>/);
@@ -21,6 +48,7 @@ export async function readLockedDataset() {
   const dataset = JSON.parse(match[1]);
   if (dataset.schema !== "fa-release-editorial-audit-v1" || dataset.items?.length !== 141)
     throw new Error("Unexpected local reviewer dataset/schema");
+  await assertLockedSourceFiles(dataset);
   return dataset;
 }
 
