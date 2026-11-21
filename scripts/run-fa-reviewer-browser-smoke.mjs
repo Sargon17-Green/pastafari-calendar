@@ -28,6 +28,8 @@ try {
   assert.match(await page.locator("#sha").textContent(), /^[a-f0-9]{40}$/);
   assert.equal(await page.locator("#sha").textContent(), expectedSource);
   assert.equal(await page.locator("#backup-corrupt").isVisible(), false, "raw recovery backup is shown only if browser state is damaged");
+  assert.equal(await page.locator("#reconciliation-warning").isVisible(), false,
+    "clean initial review must not show an unresolved-conflict warning");
   assert.match(await page.locator("header .meta").textContent(), /کامیتِ مرجعِ محتوا \(نه HEAD کد\)/);
   assert.equal(await page.locator('header .meta a').getAttribute("href"),
     "https://github.com/Sargon17-Green/pastafari-calendar/pull/41");
@@ -208,9 +210,14 @@ try {
     buffer: Buffer.from(JSON.stringify(conflictedExport), "utf8"),
   });
   await page.waitForFunction(() => document.getElementById("notice").textContent.includes("نیازمند تطبیق"));
+  assert.equal(await page.locator("#reconciliation-warning").isVisible(), true,
+    "an imported conflict report must display a persistent reconciliation warning");
   assert.equal(await page.evaluate(source => JSON.parse(localStorage.getItem("fa-review:" + source + ":v1")).reconciliationRequired,
     expectedSource), true, "reconciliation marker must persist in local storage");
   await page.reload({ waitUntil: "load" });
+  assert.equal(await page.locator("#reconciliation-warning").isVisible(), true,
+    "reconciliation warning must remain visible after reloading the browser page");
+  assert.match(await page.locator("#reconciliation-warning").textContent(), /تطبیقِ دستی/);
   const unreconciledWait = page.waitForEvent("download");
   await page.locator("#export").click();
   const unreconciledFile = await unreconciledWait;
@@ -221,10 +228,14 @@ try {
   assert.equal(reExport.reconciliationRequired, true,
     "rescue provenance must survive later nominally CURRENT exports");
   assert.match(await page.locator("#notice").textContent(), /تطبیقِ دستی/);
+  assert.equal(await page.locator("#reconciliation-warning").isVisible(), true,
+    "export notices must not dismiss the persistent unresolved-conflict warning");
   page.once("dialog", dialog => dialog.accept());
   await page.locator("#clear").click();
   assert.equal(await page.evaluate(source => JSON.parse(localStorage.getItem("fa-review:" + source + ":v1")).reconciliationRequired,
     expectedSource), undefined, "explicit reset clears rescue provenance");
+  assert.equal(await page.locator("#reconciliation-warning").isVisible(), false,
+    "a confirmed reset clears the on-screen reconciliation warning");
 
   // Metadata-only work must also require explicit confirmation before import.
   await page.locator("#reviewer").fill("Metadata-only reviewer");
