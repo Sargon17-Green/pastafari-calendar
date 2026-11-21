@@ -257,6 +257,12 @@ try {
   await page.waitForFunction(() => document.getElementById("notice").textContent.includes("گزارشِ محلی"));
   assert.match(await page.locator("#heading").textContent(), /^A01/,
     "re-import must not implicitly navigate away from the selected unit");
+  // Navigation group is transient UI state, not part of the imported JSON.
+  // After reload the visible list is A01-A16, so explicitly select B before B55.
+  assert.equal(await page.locator(".navitem").count(), 16);
+  await page.getByRole("button", { name: /نام‌های کانونی/ }).click();
+  assert.equal(await page.locator(".navitem").count(), 64,
+    "canonical-name entries must be visible before choosing B55");
   await page.locator(".navitem").filter({ hasText: "B55" }).click();
   assert.equal(await page.locator("#note").inputValue(), "Reviewer test: verify source-fidelity scope.");
   assert.equal(await page.locator(".navitem").filter({ hasText: "B55" }).getAttribute("data-status"), "changes");
