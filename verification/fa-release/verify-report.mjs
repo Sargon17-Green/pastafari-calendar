@@ -17,12 +17,41 @@ const LOCKED_BLOBS = Object.freeze({
   "docs/about/monster/fa.html": "b5923f35ecb22aeed189b188fd521cdac0bf7eb9"
 });
 const COUNTS = { A: 16, B: 64, M: 40, D: 21 };
+// Independent pin of the complete 141-unit source-locked review dataset.
+// Hash is SHA-256 of JSON.stringify(JSON.parse(the embedded JSON)) as UTF-8.
+const LOCKED_REVIEW_DATASET_SHA256 = "ee4fd52b8535b020a39d7ac6238b960295b64f6f7ca32380c7584d8a850faed4";
+const EXPECTED_UNITS = Object.entries(COUNTS).flatMap(([kind, count]) =>
+  Array.from({ length: count }, (_, index) => ({
+    kind,
+    id: kind + String(index + (kind === "M" ? 0 : 1)).padStart(2, "0")
+  })));
 const COMPETENCE = new Set(["", "he-fa-fidelity", "fa-style-only"]);
 const STATUSES = new Set(["approved", "changes", "unreviewed"]);
 const SNAPSHOTS = new Set(["CURRENT", "STALE_AFTER_EXTERNAL_CHANGE", "STORAGE_UNAVAILABLE"]);
 
 const isRecord = value => value !== null && typeof value === "object" && !Array.isArray(value);
 const own = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
+
+export function assertLockedReviewDataset(dataset) {
+  if (!isRecord(dataset) || dataset.schema !== "fa-release-editorial-audit-v1" ||
+      dataset.candidateSha !== LOCKED_CANDIDATE_SHA ||
+      !isRecord(dataset.counts) ||
+      Object.keys(dataset.counts).length !== Object.keys(COUNTS).length ||
+      Object.entries(COUNTS).some(([kind, count]) => dataset.counts[kind] !== count) ||
+      !Array.isArray(dataset.items) || dataset.items.length !== EXPECTED_UNITS.length)
+    throw new Error("Unexpected locked reviewer dataset structure or count");
+  for (let i = 0; i < EXPECTED_UNITS.length; i++) {
+    const actual = dataset.items[i], expected = EXPECTED_UNITS[i];
+    if (!isRecord(actual) || actual.id !== expected.id || actual.kind !== expected.kind ||
+        typeof actual.he !== "string" || !actual.he.trim() ||
+        typeof actual.fa !== "string" || !actual.fa.trim() ||
+        typeof actual.title !== "string" || !actual.title.trim())
+      throw new Error("Locked reviewer unit layout/content invalid: " + expected.id);
+  }
+  const digest = createHash("sha256").update(JSON.stringify(dataset), "utf8").digest("hex");
+  if (digest !== LOCKED_REVIEW_DATASET_SHA256)
+    throw new Error("Locked reviewer unit dataset SHA-256 mismatch");
+}
 
 export async function assertLockedSourceFiles(dataset, root = new URL("../../", import.meta.url)) {
   if (!isRecord(dataset) || dataset.candidateSha !== LOCKED_CANDIDATE_SHA)
@@ -46,15 +75,18 @@ export async function readLockedDataset() {
   const match = html.match(/<script id="fa-review-dataset" type="application\/json">([\s\S]*?)<\/script>/);
   if (!match) throw new Error("The local source-locked reviewer dataset is missing");
   const dataset = JSON.parse(match[1]);
-  if (dataset.schema !== "fa-release-editorial-audit-v1" || dataset.items?.length !== 141)
-    throw new Error("Unexpected local reviewer dataset/schema");
+  assertLockedReviewDataset(dataset);
   await assertLockedSourceFiles(dataset);
   return dataset;
 }
 
 export function inspectReviewReport(report, dataset) {
   const errors = [];
-  const sourceItems = new Map((dataset.items || []).map(item => [item.id, item.kind]));
+  try { assertLockedReviewDataset(dataset); }
+  catch (error) { errors.push("Untrusted reviewer dataset: " + error.message); }
+  // Always derive group mappings from the immutable expected layout, never
+  // from mutable embedded records that could falsely show 65/64 reviewed.
+  const sourceItems = new Map(EXPECTED_UNITS.map(item => [item.id, item.kind]));
   const groups = Object.fromEntries(Object.entries(COUNTS).map(([k, total]) =>
     [k, { reviewed: 0, changes: 0, drafts: 0, total }]));
   let savedCount = 0, reviewedCount = 0, changesCount = 0, draftCount = 0;
@@ -63,8 +95,8 @@ export function inspectReviewReport(report, dataset) {
   if (!isRecord(report)) errors.push("Report must be a JSON object");
   else {
     if (report.schema !== REVIEW_SCHEMA) errors.push("Unsupported report schema");
-    if (report.candidateSha !== dataset.candidateSha) errors.push("Wrong locked source SHA");
-    const expected = dataset.sourceBlobSha1;
+    if (report.candidateSha !== LOCKED_CANDIDATE_SHA) errors.push("Wrong locked source SHA");
+    const expected = LOCKED_BLOBS;
     const actual = report.sourceBlobSha1;
     if (!isRecord(actual) || Object.keys(actual).length !== Object.keys(expected).length ||
         Object.entries(expected).some(([k, sha]) => !own(actual, k) || actual[k] !== sha))
@@ -134,14 +166,14 @@ export function inspectReviewReport(report, dataset) {
   const provenanceCheckRequired = needsReconciliation || missingProvenanceFields.length > 0;
   const provenanceClaim = needsReconciliation ? "SELF_REPORTED_CONFLICT_OR_UNSAVED" :
     missingProvenanceFields.length ? "INCOMPLETE_LEGACY_METADATA" : "SELF_REPORTED_CURRENT";
-  const missingReviewedUnitIds = (dataset.items || []).filter(item => !reviewedIds.has(item.id)).map(item => item.id);
+  const missingReviewedUnitIds = EXPECTED_UNITS.filter(item => !reviewedIds.has(item.id)).map(item => item.id);
   for (const entry of Object.values(groups)) entry.missing = entry.total - entry.reviewed;
   const structurallyValid = errors.length === 0;
   const covered = sourceItems.size === 141 && reviewedCount === sourceItems.size;
   return {
     structurallyValid,
     errors,
-    sourceSha: dataset.candidateSha,
+    sourceSha: LOCKED_CANDIDATE_SHA,
     reviewerClaim: isRecord(report) && typeof report.reviewer === "string" ? report.reviewer : "",
     competenceClaim: isRecord(report) && COMPETENCE.has(report.competence) ? report.competence : "",
     reviewedCount,
