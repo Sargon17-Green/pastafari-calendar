@@ -334,6 +334,15 @@ test("independent Persian reviewer JSON verifier never grants release approval",
   assert.equal(first.groups.A.reviewed, 1);
   assert.equal(first.groups.A.drafts, 1);
   assert.equal(first.unresolvedChanges, true);
+  assert.deepEqual(first.changeRequiredUnitIds, ["A01"]);
+  assert.deepEqual(first.savedDraftUnitIds, ["A02"]);
+  assert.deepEqual(first.missingReviewedUnitIds.slice(0, 4), ["A02", "A03", "A04", "A05"]);
+  assert.equal(first.missingReviewedUnitIds.length, 140);
+  assert.equal(first.groups.A.missing, 15);
+  assert.equal(first.groups.B.missing, 64);
+  assert.equal(first.claimedReviewScope, "BILINGUAL_SELF_REPORTED");
+  assert.equal(first.provenanceClaim, "SELF_REPORTED_CURRENT");
+  assert.equal(first.provenanceCheckRequired, false);
   assert.equal(first.humanLanguageSignoff, "NOT_VERIFIED");
   assert.equal(first.releaseApproval, "NOT_GRANTED_BY_THIS_TOOL");
 
@@ -354,6 +363,17 @@ test("independent Persian reviewer JSON verifier never grants release approval",
   delete legacy.releaseApproval;
   assert.equal(inspectReviewReport(legacy, dataset).structurallyValid, true,
     "old reports may omit optional count/release metadata");
+  delete legacy.storageSnapshotStatus;
+  delete legacy.unsavedLocalEdits;
+  delete legacy.reconciliationRequired;
+  const legacyResult = inspectReviewReport(legacy, dataset);
+  assert.equal(legacyResult.structurallyValid, true);
+  assert.equal(legacyResult.needsReconciliation, false);
+  assert.equal(legacyResult.provenanceCheckRequired, true,
+    "missing legacy storage provenance cannot be treated as a verified clean snapshot");
+  assert.equal(legacyResult.provenanceClaim, "INCOMPLETE_LEGACY_METADATA");
+  assert.deepEqual(legacyResult.missingProvenanceFields,
+    ["storageSnapshotStatus", "unsavedLocalEdits", "reconciliationRequired"]);
 
   const unresolved = verify({
     storageSnapshotStatus: "STALE_AFTER_EXTERNAL_CHANGE",
@@ -362,6 +382,8 @@ test("independent Persian reviewer JSON verifier never grants release approval",
   });
   assert.equal(unresolved.structurallyValid, true);
   assert.equal(unresolved.needsReconciliation, true);
+  assert.equal(unresolved.provenanceCheckRequired, true);
+  assert.equal(unresolved.provenanceClaim, "SELF_REPORTED_CONFLICT_OR_UNSAVED");
   assert.equal(unresolved.releaseApproval, "NOT_GRANTED_BY_THIS_TOOL");
 
   const fullResults = Object.fromEntries(dataset.items.map(item =>
@@ -371,6 +393,9 @@ test("independent Persian reviewer JSON verifier never grants release approval",
   });
   assert.equal(full.structurallyValid, true);
   assert.equal(full.coverageComplete, true);
+  assert.deepEqual(full.missingReviewedUnitIds, []);
+  assert.deepEqual(full.changeRequiredUnitIds, []);
+  assert.deepEqual(full.savedDraftUnitIds, []);
   assert.deepEqual(Object.fromEntries(Object.entries(full.groups).map(([k,v]) =>
     [k, v.reviewed])), { A: 16, B: 64, M: 40, D: 21 });
   assert.equal(full.humanLanguageSignoff, "NOT_VERIFIED",
@@ -414,6 +439,11 @@ test("independent Persian reviewer verifier CLI validates files but cannot appro
     assert.equal(output.structurallyValid, true);
     assert.equal(output.groups.A.reviewed, 1);
     assert.equal(output.coverageComplete, false);
+    assert.deepEqual(output.missingReviewedUnitIds.slice(0, 3), ["A02", "A03", "A04"]);
+    assert.equal(output.missingReviewedUnitIds.length, 140);
+    assert.equal(output.claimedReviewScope, "PERSIAN_STYLE_SELF_REPORTED");
+    assert.equal(output.provenanceCheckRequired, true,
+      "missing backup provenance in a CLI report must be flagged, not assumed clean");
     assert.equal(output.humanLanguageSignoff, "NOT_VERIFIED");
     assert.equal(output.releaseApproval, "NOT_GRANTED_BY_THIS_TOOL");
 
