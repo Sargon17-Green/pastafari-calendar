@@ -230,6 +230,46 @@ try {
   assert.match(await page.locator("#notice").textContent(), /تطبیقِ دستی/);
   assert.equal(await page.locator("#reconciliation-warning").isVisible(), true,
     "export notices must not dismiss the persistent unresolved-conflict warning");
+  assert.equal(await page.locator("#reconciliation-panel").isVisible(), true,
+    "the unresolved conflict offers a manual, auditable path that preserves notes");
+  await page.locator("#resolve-reconciliation").click();
+  assert.equal(await page.locator("#reconciliation-warning").isVisible(), true,
+    "empty reconciliation explanation must not clear the warning");
+  const resolutionNote = "Compared source-locked original and rescued report; retained the reviewed B55 finding and the B56 draft note.";
+  await page.locator("#reconciliation-note").fill(resolutionNote);
+  page.once("dialog", dialog => dialog.dismiss());
+  await page.locator("#resolve-reconciliation").click();
+  assert.equal(await page.locator("#reconciliation-warning").isVisible(), true,
+    "canceled reconciliation must preserve unresolved provenance");
+  const beforeResolution = await page.evaluate(source =>
+    JSON.parse(localStorage.getItem("fa-review:" + source + ":v1")), expectedSource);
+  page.once("dialog", dialog => dialog.accept());
+  await page.locator("#resolve-reconciliation").click();
+  const afterResolution = await page.evaluate(source =>
+    JSON.parse(localStorage.getItem("fa-review:" + source + ":v1")), expectedSource);
+  assert.equal(afterResolution.reconciliationRequired, false,
+    "confirmed manual reconciliation clears only the unresolved flag");
+  assert.deepEqual(afterResolution.items, beforeResolution.items,
+    "manual reconciliation must not remove, approve or modify unit review work");
+  assert.equal(afterResolution.reconciliationResolution.note, resolutionNote);
+  assert.match(afterResolution.reconciliationResolution.at, /^\d{4}-\d{2}-\d{2}T/);
+  assert.equal(await page.locator("#reconciliation-warning").isVisible(), false);
+  assert.equal(await page.locator("#reconciliation-panel").isVisible(), false);
+  const resolvedWait = page.waitForEvent("download");
+  await page.locator("#export").click();
+  const resolvedFile = await resolvedWait;
+  assert.doesNotMatch(resolvedFile.suggestedFilename(), /needs-reconciliation/);
+  const resolvedExport = JSON.parse(await readFile(await resolvedFile.path(), "utf8"));
+  assert.equal(resolvedExport.reconciliationRequired, false);
+  assert.deepEqual(resolvedExport.reconciliationResolution, afterResolution.reconciliationResolution);
+  assert.equal(resolvedExport.releaseApproval, "NOT_GRANTED_BY_THIS_TOOL");
+  await page.reload({ waitUntil: "load" });
+  assert.equal(await page.locator("#reconciliation-warning").isVisible(), false,
+    "resolved marker must stay cleared on reload");
+  assert.deepEqual(await page.evaluate(source =>
+    JSON.parse(localStorage.getItem("fa-review:" + source + ":v1")).reconciliationResolution,
+    expectedSource), afterResolution.reconciliationResolution,
+    "manual reconciliation evidence must persist after reload");
   page.once("dialog", dialog => dialog.accept());
   await page.locator("#clear").click();
   assert.equal(await page.evaluate(source => JSON.parse(localStorage.getItem("fa-review:" + source + ":v1")).reconciliationRequired,
