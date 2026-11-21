@@ -378,3 +378,51 @@ test("independent Persian reviewer JSON verifier never grants release approval",
   assert.equal(full.physicalAccessibilitySignoff, "NOT_VERIFIED");
   assert.equal(full.releaseApproval, "NOT_GRANTED_BY_THIS_TOOL");
 });
+
+
+test("independent Persian reviewer verifier CLI validates files but cannot approve a release", async () => {
+  const { spawnSync } = await import("node:child_process");
+  const { mkdtemp, writeFile, rm } = await import("node:fs/promises");
+  const { tmpdir } = await import("node:os");
+  const { join } = await import("node:path");
+  const { fileURLToPath } = await import("node:url");
+  const { readLockedDataset } =
+    await import("../verification/fa-release/verify-report.mjs");
+  const dataset = await readLockedDataset();
+  const verifier = fileURLToPath(new URL("../verification/fa-release/verify-report.mjs", import.meta.url));
+  const temp = await mkdtemp(join(tmpdir(), "fa-review-gate-"));
+  try {
+    const input = join(temp, "review.json");
+    const report = {
+      schema: "fa-release-editorial-audit-result/v1",
+      candidateSha: dataset.candidateSha,
+      sourceBlobSha1: dataset.sourceBlobSha1,
+      reviewer: "CLI fixture reviewer",
+      competence: "fa-style-only",
+      reviewedCount: 1,
+      savedCount: 1,
+      draftCount: 0,
+      totalUnits: 141,
+      releaseApproval: "NOT_GRANTED_BY_THIS_TOOL",
+      results: { A01: { status: "approved", note: "", proposedReplacement: "" } }
+    };
+    await writeFile(input, JSON.stringify(report));
+    const good = spawnSync(process.execPath, [verifier, input],
+      { encoding: "utf8", timeout: 20000 });
+    assert.equal(good.status, 0, good.stderr);
+    const output = JSON.parse(good.stdout);
+    assert.equal(output.structurallyValid, true);
+    assert.equal(output.groups.A.reviewed, 1);
+    assert.equal(output.coverageComplete, false);
+    assert.equal(output.humanLanguageSignoff, "NOT_VERIFIED");
+    assert.equal(output.releaseApproval, "NOT_GRANTED_BY_THIS_TOOL");
+
+    await writeFile(input, JSON.stringify({ ...report, reviewedCount: 141 }));
+    const invalid = spawnSync(process.execPath, [verifier, input],
+      { encoding: "utf8", timeout: 20000 });
+    assert.equal(invalid.status, 2, invalid.stderr);
+    assert.equal(JSON.parse(invalid.stdout).structurallyValid, false);
+  } finally {
+    await rm(temp, { recursive: true, force: true });
+  }
+});
