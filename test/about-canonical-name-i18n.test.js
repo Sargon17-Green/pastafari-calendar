@@ -16,6 +16,12 @@ function fakeArticle(lengths = [CUTLETS.length, MONTHS.length]) {
     dataset: {},
     lang: "",
     dir: "",
+    translate: true,
+    classList: {
+      values: new Set(),
+      add(name) { this.values.add(name); },
+      contains(name) { return this.values.has(name); },
+    },
   })));
   const lists = summaries.map((values) => ({
     querySelectorAll(query) {
@@ -65,6 +71,8 @@ test("the About name disclosures follow the selected locale even on article fall
       assert.equal(summary.textContent, names[index].label);
       assert.equal(summary.lang, code);
       assert.equal(summary.dir, locale.dir);
+      assert.equal(summary.translate, false);
+      assert.equal(summary.classList.contains("notranslate"), true);
     }
   }
 });
@@ -92,9 +100,9 @@ test("new multilingual About module is included in the offline core and versione
   const sw = await readFile(new URL("../docs/sw.js", import.meta.url), "utf8");
   const shell = await readFile(new URL("../docs/about/index.html", import.meta.url), "utf8");
   const about = await readFile(new URL("../docs/about/about.js", import.meta.url), "utf8");
-  assert.match(sw, /about\/canonical-names\.js\?v=20261113-multilingual/);
-  assert.match(sw, /about\/about\.js\?v=20261114-fr17/);
-  assert.match(shell, /about\.js\?v=20261114-fr17/);
+  assert.match(sw, /about\/canonical-names\.js\?v=20261114-translate-guard/);
+  assert.match(sw, /about\/about\.js\?v=20261115-fa21/);
+  assert.match(shell, /about\.js\?v=20261115-fa21/);
   assert.match(about, /synchronizeCanonicalNameSummaries\(elements\["article-content"\], activeLocale\)/);
 });
 
@@ -113,4 +121,68 @@ test("the PWA invalidates stale localized name dictionaries", async () => {
   );
   assert.match(sw, /const LOCALE_REVISION_SEARCH = /);
   assert.match(sw, /await pruneRuntimeCache\(\)/);
+});
+
+test("canonical name catalog order matches the normative Scroll rather than only locale dictionaries", async () => {
+  const scroll = await readFile(new URL("../sources/מגילת העיתים.md", import.meta.url), "utf8");
+
+  function orderedScrollNames(heading) {
+    const sectionStart = scroll.indexOf(`\n${heading}\n`);
+    assert.notEqual(sectionStart, -1, `Missing normative Scroll heading: ${heading}`);
+    const section = scroll.slice(sectionStart + heading.length + 2);
+    const match = section.match(/^אלה[^\n]*שמות[^\n]*:\s*\n+((?:- [^\n]+(?:\n|$))+)/m);
+    assert.ok(match, `Missing ordered name list under ${heading}`);
+    return match[1].trim().split("\n").map((line) => {
+      assert.match(line, /^- /);
+      return line.slice(2).trim();
+    });
+  }
+
+  assert.deepEqual(
+    CUTLETS.map(({ internalName }) => internalName),
+    orderedScrollNames("## שמות הקציצות"),
+    "cutlet names and ordering must agree with the normative Scroll",
+  );
+  assert.deepEqual(
+    MONTHS.map(({ internalName }) => internalName),
+    orderedScrollNames("## שמות החודשים"),
+    "month names and ordering must agree with the normative Scroll",
+  );
+
+  // Keep the public Hebrew display vocabulary tied to the source, not just
+  // the internal identity keys. The About markup follows these locale labels.
+  const hebrewLabels = canonicalNameGroups(await loadLocale("he"))
+    .map(({ names }) => names.map(({ label }) => label));
+  assert.deepEqual(hebrewLabels[0], orderedScrollNames("## שמות הקציצות"),
+    "Hebrew cutlet UI labels must match the normative Scroll");
+  assert.deepEqual(hebrewLabels[1], orderedScrollNames("## שמות החודשים"),
+    "Hebrew month UI labels must match the normative Scroll");
+});
+
+test("About year limit honors Scroll footnote 13 and the month-space deduction", async () => {
+  const scroll = await readFile(new URL("../sources/מגילת העיתים.md", import.meta.url), "utf8");
+  const about = await readFile(new URL("../docs/about/content/he.html", import.meta.url), "utf8");
+  const note = scroll.match(/^\[\^13\]:[^\r\n]+/m)?.[0];
+  assert.ok(note, "The binding year-limit footnote must exist");
+  assert.match(note, /במקום זה בלבד נכתב 5,781/);
+
+  const upper = note.match(/הגבול המחייב הוא ([\d,]+) ימים/);
+  const arithmetic = note.match(/([\d,]+)×([\d,]+)=([\d,]+)/);
+  assert.ok(upper && arithmetic, "The corrected limit and its multiplication must be explicit");
+  const integer = (value) => Number(value.replaceAll(",", ""));
+  const limit = integer(upper[1]);
+  assert.equal(integer(arithmetic[1]) * integer(arithmetic[2]), limit);
+  assert.equal(integer(arithmetic[3]), limit);
+
+  const year = about.match(/<section[^>]+id="year-structure"[^>]*>[\s\S]*?<\/section>/)?.[0];
+  const math = about.match(/<section[^>]+id="calendar-math"[^>]*>[\s\S]*?<\/section>/)?.[0];
+  assert.ok(year && math, "The explanatory sections must exist");
+  assert.ok(year.includes("<strong>" + limit.toLocaleString("en-US") + "</strong>"),
+    "The article must use the corrected upper bound, not the superseded number");
+
+  assert.match(scroll, /כל חודש יכיל לפחות ארבעה ימים ולא יותר משלושה ועשרים ומאה ימים/);
+  const combinations = MONTHS.length * 123;
+  assert.equal(combinations - limit, 3, "The two different 5,7xx quantities must not be conflated");
+  assert.ok(math.includes("<strong>" + combinations.toLocaleString("en-US") + "</strong>"));
+  assert.match(math, /חסרים לפחות שלושה/);
 });

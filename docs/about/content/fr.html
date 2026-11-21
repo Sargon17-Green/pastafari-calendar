@@ -497,7 +497,7 @@
   <h2>Quelles conséquences pratiques ?</h2>
   <p><strong>Un calendrier imprimé vieillit mal.</strong> Changer le jour de référence peut déplacer les limites des années, des boulettes et des mois. Un almanach calculé aujourd’hui n’est pas nécessairement celui qui conviendra demain.</p>
   <p><strong>Un événement reste le même événement.</strong> Une rencontre, une naissance ou un fait historique doivent être rattachés à un jour ou à un instant chronologique stable. On peut ensuite leur attribuer une date pastafari selon le jour de référence et la position de l’observateur. Changer leur étiquette ne les déplace pas dans le temps.</p>
-  <p><strong>Un anniversaire pastafari ne revient pas nécessairement « une fois par an ».</strong> Pour trouver la prochaine apparition d’un même nom de mois associé au même numéro de jour dans le mois — ou d’un nom de boulette associé au même numéro de jour dans la boulette —, il faut effectuer une recherche dans le calendrier. L’année voisine peut ne pas contenir le nom recherché, ou contenir une unité trop courte pour atteindre le numéro voulu.</p>
+  <p><strong>Un anniversaire pastafari ne revient pas nécessairement « une fois par an ».</strong> Pour chaque jour candidat, on recalcule sa date pastafari et celle du jour initial de naissance, en utilisant le même jour de référence. Un anniversaire a lieu lorsque le nom de la boulette et son numéro de jour coïncident, ou lorsque le nom du mois et son numéro de jour coïncident ; le numéro de l’année n’est pas comparé. <a href="./birthdays/">Lire l’explication et les résultats de la recherche (actuellement en hébreu)</a>.</p>
   <p><strong>Un événement couvrant toute une journée ne va pas nécessairement de minuit à minuit.</strong> S’il est défini selon un jour pastafari local, ses limites sont celles du jour déterminées localement par Vénus. L’exporter naïvement vers un calendrier civil sous la forme d’un événement de minuit à minuit risque d’en changer le sens.</p>
 </section>
 
@@ -525,6 +525,7 @@
 <section class="about-section" id="research" data-toc-section data-toc-level="2">
   <h2>Que révèlent les études informatiques sur ce calendrier ?</h2>
   <p>Outre la vérification de ses règles, le calendrier a fait l’objet de vastes études informatiques. Les chiffres suivants sont des <strong>constatations empiriques tirées d’un échantillon</strong>, et non des lois canoniques.</p>
+  <p>L’étude H1000 sur les anniversaires a examiné 365 243 000 couples « naissance–jour candidat » dans un échantillon défini à l’avance. <a href="./birthdays/">Une présentation accessible au public (actuellement en hébreu)</a> expose les résultats, tandis que <a href="./birthdays/technical.html">l’annexe mathématique (actuellement en hébreu)</a> précise les définitions, la méthode, les données et les limites de la vérification.</p>
   <p>Dans un atlas structurel fondé sur 4 096 jours de travail et portant sur 86 016 structures annuelles :</p>
   <ul>
     <li>la durée moyenne d’une année dans l’échantillon était d’environ 4 275 jours, et la médiane était de 4 343 jours ;</li>
