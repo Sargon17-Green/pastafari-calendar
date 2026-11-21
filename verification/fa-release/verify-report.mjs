@@ -30,6 +30,7 @@ export function inspectReviewReport(report, dataset) {
   const groups = Object.fromEntries(Object.entries(COUNTS).map(([k, total]) =>
     [k, { reviewed: 0, changes: 0, drafts: 0, total }]));
   let savedCount = 0, reviewedCount = 0, changesCount = 0, draftCount = 0;
+  const reviewedIds = new Set(), changeRequiredUnitIds = [], savedDraftUnitIds = [];
 
   if (!isRecord(report)) errors.push("Report must be a JSON object");
   else {
@@ -74,11 +75,16 @@ export function inspectReviewReport(report, dataset) {
         savedCount++;
         if (value.status !== "unreviewed") {
           reviewedCount++;
+          reviewedIds.add(id);
           groups[sourceItems.get(id)].reviewed++;
-        } else groups[sourceItems.get(id)].drafts++;
+        } else {
+          groups[sourceItems.get(id)].drafts++;
+          savedDraftUnitIds.push(id);
+        }
         if (value.status === "changes") {
           changesCount++;
           groups[sourceItems.get(id)].changes++;
+          changeRequiredUnitIds.push(id);
         }
       }
       draftCount = savedCount - reviewedCount;
@@ -93,6 +99,15 @@ export function inspectReviewReport(report, dataset) {
   const needsReconciliation = !!(report && isRecord(report) &&
     (report.reconciliationRequired === true || report.unsavedLocalEdits === true ||
      (snapshot !== undefined && snapshot !== "CURRENT")));
+  // Older review exports can omit storage metadata. That is valid for import
+  // compatibility, but never proof that their local snapshot was conflict-free.
+  const provenanceFields = ["storageSnapshotStatus", "unsavedLocalEdits", "reconciliationRequired"];
+  const missingProvenanceFields = provenanceFields.filter(field => !isRecord(report) || !own(report, field));
+  const provenanceCheckRequired = needsReconciliation || missingProvenanceFields.length > 0;
+  const provenanceClaim = needsReconciliation ? "SELF_REPORTED_CONFLICT_OR_UNSAVED" :
+    missingProvenanceFields.length ? "INCOMPLETE_LEGACY_METADATA" : "SELF_REPORTED_CURRENT";
+  const missingReviewedUnitIds = (dataset.items || []).filter(item => !reviewedIds.has(item.id)).map(item => item.id);
+  for (const entry of Object.values(groups)) entry.missing = entry.total - entry.reviewed;
   const structurallyValid = errors.length === 0;
   const covered = sourceItems.size === 141 && reviewedCount === sourceItems.size;
   return {
@@ -107,14 +122,22 @@ export function inspectReviewReport(report, dataset) {
     changesCount,
     totalUnits: sourceItems.size,
     groups,
-    coverageComplete: structurallyValid && covered,
+    coverageComplete: structurallyValid && covered, // claimed unit-status coverage, not independent approval
+    missingReviewedUnitIds,
+    changeRequiredUnitIds,
+    savedDraftUnitIds,
     needsReconciliation,
+    missingProvenanceFields,
+    provenanceClaim,
+    provenanceCheckRequired,
+    claimedReviewScope: isRecord(report) && report.competence === "he-fa-fidelity" ? "BILINGUAL_SELF_REPORTED" :
+      isRecord(report) && report.competence === "fa-style-only" ? "PERSIAN_STYLE_SELF_REPORTED" : "NOT_RECORDED",
     unresolvedChanges: changesCount > 0,
     selfReportedReconciliation: !!(isRecord(report) && isRecord(report.reconciliationResolution)),
     humanLanguageSignoff: "NOT_VERIFIED",
     physicalAccessibilitySignoff: "NOT_VERIFIED",
     releaseApproval: NOT_GRANTED,
-    note: "Structural and source-lock checks only. A self-asserted reviewer and complete counts do not certify human review, accessibility, or release."
+    note: "Coverage represents recorded per-unit statuses only. Provenance, competence and reviewer identity are self-reported, not authenticated; structural validity never certifies language review, accessibility or release."
   };
 }
 
