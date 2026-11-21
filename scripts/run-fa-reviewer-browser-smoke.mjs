@@ -241,6 +241,55 @@ try {
   await page.locator("#resolve-reconciliation").click();
   assert.equal(await page.locator("#reconciliation-warning").isVisible(), true,
     "canceled reconciliation must preserve unresolved provenance");
+  // A resolution click must not erase the conflict marker if a second tab
+  // has written newer review data since the current tab last loaded.
+  const ownRawBeforeResolution = await page.evaluate(source =>
+    localStorage.getItem("fa-review:" + source + ":v1"), expectedSource);
+  const concurrentRaw = JSON.stringify({
+    ...JSON.parse(ownRawBeforeResolution),
+    reviewer: "Another-tab authoritative reviewer",
+  });
+  await page.evaluate(([source, raw]) =>
+    localStorage.setItem("fa-review:" + source + ":v1", raw),
+    [expectedSource, concurrentRaw]);
+  page.once("dialog", dialog => dialog.accept());
+  await page.locator("#resolve-reconciliation").click();
+  assert.match(await page.locator("#notice").textContent(), /برگهٔ دیگری/,
+    "stale resolution must explain the concurrent-write conflict");
+  assert.equal(await page.locator("#reconciliation-warning").isVisible(), true,
+    "stale resolution must leave the manual-reconciliation warning visible");
+  assert.equal(await page.evaluate(source =>
+    localStorage.getItem("fa-review:" + source + ":v1"), expectedSource),
+    concurrentRaw, "stale resolution must never overwrite the newer tab");
+  await page.evaluate(([source, raw]) =>
+    localStorage.setItem("fa-review:" + source + ":v1", raw),
+    [expectedSource, ownRawBeforeResolution]);
+
+  // Even without another tab, a quota/security write failure must not
+  // silently acknowledge reconciliation or lose existing review items.
+  await page.evaluate(() => {
+    window.__savedReviewerSetItem = Storage.prototype.setItem;
+    Storage.prototype.setItem = function(key, value) {
+      if (String(key).startsWith("fa-review:"))
+        throw new DOMException("Synthetic quota denial", "QuotaExceededError");
+      return window.__savedReviewerSetItem.call(this, key, value);
+    };
+  });
+  page.once("dialog", dialog => dialog.accept());
+  await page.locator("#resolve-reconciliation").click();
+  assert.match(await page.locator("#notice").textContent(), /ثبتِ تطبیق انجام نشد/,
+    "write-denied resolution must report failure, never success");
+  assert.equal(await page.locator("#reconciliation-warning").isVisible(), true,
+    "write-denied resolution must not dismiss the warning");
+  assert.equal(await page.evaluate(source =>
+    localStorage.getItem("fa-review:" + source + ":v1"), expectedSource),
+    ownRawBeforeResolution, "write-denied resolution must preserve prior bytes");
+  await page.evaluate(() => {
+    Storage.prototype.setItem = window.__savedReviewerSetItem;
+    delete window.__savedReviewerSetItem;
+  });
+  assert.equal(await page.locator("#reconciliation-note").inputValue(), resolutionNote,
+    "failed reconciliation attempts must retain the prepared justification");
   const beforeResolution = await page.evaluate(source =>
     JSON.parse(localStorage.getItem("fa-review:" + source + ":v1")), expectedSource);
   page.once("dialog", dialog => dialog.accept());
