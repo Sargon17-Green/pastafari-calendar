@@ -1,0 +1,196 @@
+name: Self-date cross-engine soak V5 (QA)
+on:
+  push:
+    branches:
+      - qa/self-date-cross-engine-v5-20261126
+    paths:
+      - .github/workflows/self-date-cross-engine-v5.yml
+      - verification/cross-engine/pastafari_self_date_differential_v5.py
+
+permissions:
+  contents: read
+
+concurrency:
+  group: self-date-cross-engine-v5-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  smoke:
+    name: Pinned source and full-year smoke
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+      - name: Install bounded native build prerequisites
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq g++ libboost-dev
+          python3 --version
+          node --version
+          g++ --version | head -1
+          test -f /usr/include/boost/multiprecision/cpp_int.hpp
+      - name: Verify one-file harness and immutable source pins
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path("verification/cross-engine/pastafari_self_date_differential_v5.py")
+          source = p.read_text(encoding="utf-8")
+          compile(source, str(p), "exec")
+          assert 'JS_SHA = "642cd881e59cfd7cafcb96e8ad30562916776cba"' in source
+          assert 'CPP_SHA = "32ad50c8177233adc87eed1721c1e6f34f24ced1"' in source
+          assert '"docs/calendar-converters.js"' in source
+          assert '"src/chinese-calendrica-detour.js"' in source
+          assert "No import scanning, GitHub directory search, or source discovery at runtime." in source
+          assert "pastafari_self_date_differential v5" in source
+          print("V5_SOURCE_LOCK_PASS")
+          PY
+      - name: Run one complete 2026 date and its full Pastafarian year
+        shell: bash
+        env:
+          OUT: ${{ runner.temp }}/pastafari-self-date-v5-smoke
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          set +e
+          timeout --signal=INT --kill-after=30s 25m \
+            python3 -B verification/cross-engine/pastafari_self_date_differential_v5.py \
+              --case-id 000000 \
+              --year all \
+              --case-timeout 180 \
+              --compile-timeout 600 \
+              --restart-every 1 \
+              --progress-every 1 \
+              --js-sha 642cd881e59cfd7cafcb96e8ad30562916776cba \
+              --cpp-sha 32ad50c8177233adc87eed1721c1e6f34f24ced1 \
+              --output "$OUT"
+          status=$?
+          set -e
+          if [[ "$status" -ne 3 ]]; then
+            echo "Unexpected smoke exit code: $status"
+            exit "$status"
+          fi
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          out = Path(os.environ["OUT"])
+          s = json.loads((out / "summary.json").read_text(encoding="utf-8"))
+          assert s["overall"] == "PARTIAL", s
+          assert s["completed"] == 1 and s["required"] == 10365, s
+          assert s["counts_by_status"] == {"PASS": 1}, s
+          assert s["year_mode"] == "all", s
+          print("V5_FULL_YEAR_SMOKE_PASS", json.dumps(s, sort_keys=True))
+          PY
+      - name: Upload smoke evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: self-date-cross-engine-v5-smoke-${{ github.run_id }}
+          path: ${{ runner.temp }}/pastafari-self-date-v5-smoke/
+          if-no-files-found: warn
+          retention-days: 30
+
+  full-soak:
+    name: 10,365 dates plus complete year structures
+    needs: smoke
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+      - name: Install bounded native build prerequisites
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq g++ libboost-dev
+          test -f /usr/include/boost/multiprecision/cpp_int.hpp
+      - name: Run the complete pinned 10,365-case differential soak
+        shell: bash
+        env:
+          OUT: ${{ runner.temp }}/pastafari-self-date-v5-full
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          set +e
+          timeout --signal=INT --kill-after=60s 345m \
+            python3 -B verification/cross-engine/pastafari_self_date_differential_v5.py \
+              --year all \
+              --case-timeout 900 \
+              --compile-timeout 1200 \
+              --restart-every 100 \
+              --progress-every 25 \
+              --js-sha 642cd881e59cfd7cafcb96e8ad30562916776cba \
+              --cpp-sha 32ad50c8177233adc87eed1721c1e6f34f24ced1 \
+              --output "$OUT"
+          status=$?
+          set -e
+          if [[ "$status" -eq 124 || "$status" -eq 130 ]]; then
+            echo "Full soak reached its 345-minute watchdog; append-only case ledger retained."
+            exit 3
+          fi
+          exit "$status"
+      - name: Build an independent CI ledger summary
+        if: always()
+        shell: bash
+        env:
+          OUT: ${{ runner.temp }}/pastafari-self-date-v5-full
+        run: |
+          python3 - <<'PY'
+          import csv, json, os
+          from collections import Counter
+          from pathlib import Path
+          out = Path(os.environ["OUT"])
+          expected = set()
+          cases = out / "cases.csv"
+          if cases.exists():
+              with cases.open(encoding="utf-8", newline="") as f:
+                  expected = {row["case_id"] for row in csv.DictReader(f)}
+          records = []
+          ledger = out / "cases_results.jsonl"
+          if ledger.exists():
+              for line in ledger.read_text(encoding="utf-8").splitlines():
+                  if line.strip():
+                      records.append(json.loads(line))
+          ids = [x["case_id"] for x in records]
+          counts = Counter(x.get("status", "MISSING_STATUS") for x in records)
+          unique = set(ids)
+          duplicate_count = len(ids) - len(unique)
+          missing_count = len(expected - unique) if expected else max(0, 10365-len(unique))
+          failed = sum(v for k,v in counts.items() if k != "PASS")
+          overall = "PASS" if expected and unique == expected and not duplicate_count and counts == {"PASS":10365} else (
+              "FAIL" if failed or duplicate_count else "PARTIAL")
+          summary = {
+              "schema": "SELF_DATE_CROSS_ENGINE_V5_CI_LEDGER/1",
+              "overall": overall,
+              "expected_cases": len(expected) if expected else 10365,
+              "completed_records": len(records),
+              "unique_completed": len(unique),
+              "missing_cases": missing_count,
+              "duplicate_records": duplicate_count,
+              "counts_by_status": dict(sorted(counts.items())),
+              "source_commits": {
+                  "javascript": "642cd881e59cfd7cafcb96e8ad30562916776cba",
+                  "cpp": "32ad50c8177233adc87eed1721c1e6f34f24ced1"
+              },
+              "whole_year_comparison": True,
+              "evidence_ledger": "cases_results.jsonl"
+          }
+          out.mkdir(parents=True, exist_ok=True)
+          (out / "ci-summary.json").write_text(json.dumps(summary, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps(summary, sort_keys=True))
+          PY
+      - name: Upload full soak evidence even on failure or watchdog
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: self-date-cross-engine-v5-full-${{ github.run_id }}
+          path: ${{ runner.temp }}/pastafari-self-date-v5-full/
+          if-no-files-found: warn
+          retention-days: 90
