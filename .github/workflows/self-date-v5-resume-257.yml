@@ -1,0 +1,138 @@
+name: Self-date V5 resume checkpoint 257 (QA)
+on:
+  push:
+    branches:
+      - qa/self-date-cross-engine-v5-20261126
+    paths:
+      - .github/workflows/self-date-v5-resume-257.yml
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: self-date-cross-engine-v5-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  resume:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    env:
+      OUT: ${{ runner.temp }}/pastafari-self-date-v5-resume
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 22
+      - name: Restore and verify immutable checkpoint (no executable reuse)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          gh api repos/Sargon17-Green/pastafari-calendar/actions/artifacts/15121179510/zip > "$RUNNER_TEMP/v5-prior.zip"
+          echo "b7f42f876347dfd637bc2e9af9038e054f64abbffb5b3e7ec1f856c4ede04b41  $RUNNER_TEMP/v5-prior.zip" | sha256sum -c -
+          python3 - <<'PY'
+          import csv, hashlib, io, json, os, zipfile
+          from pathlib import Path
+          out = Path(os.environ["OUT"])
+          script = Path("verification/cross-engine/pastafari_self_date_differential_v5.py")
+          assert hashlib.sha256(script.read_bytes()).hexdigest() == "b0f462495351d33a10e1bbcf775160e1e9c6570d9cd39a96ee2994b01b2bfaeb"
+          with zipfile.ZipFile(Path(os.environ["RUNNER_TEMP"])/"v5-prior.zip") as z:
+              expected = {
+                  "cases.csv": "5762d06a3bfd6c4405d35bf262f2e6a5dc3f15907c1f43091df6b40d6bb8490d",
+                  "cases_results.jsonl": "08adad021be596e190ad92fb4a861e190006b48ec917ab467459861acb83095e",
+                  "manifest.json": "4597c5ece89401003fe807cbab3c2a83072686d315048a344de44d579c538d21",
+                  "discrepancies.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              }
+              for name, digest in expected.items():
+                  data = z.read(name)
+                  assert hashlib.sha256(data).hexdigest() == digest, name
+                  (out/name).write_bytes(data)
+          m = json.loads((out/"manifest.json").read_text())
+          s = m["settings"]
+          assert s["js_commit"] == "642cd881e59cfd7cafcb96e8ad30562916776cba"
+          assert s["cpp_commit"] == "32ad50c8177233adc87eed1721c1e6f34f24ced1"
+          assert (s["seed"], s["random_count"], s["year_mode"]) == (20261105,10000,"all")
+          cases = list(csv.DictReader((out/"cases.csv").open()))
+          rows = [json.loads(x) for x in (out/"cases_results.jsonl").read_text().splitlines()]
+          assert len(cases)==10365 and len(rows)==257
+          for i,r in enumerate(rows):
+              assert r["case_id"]==cases[i]["case_id"]==f"{i:06d}"
+              assert r["jdn"]==int(cases[i]["jdn"]) and r["iso"]==cases[i]["iso"]
+              assert r["status"]=="PASS" and r["js_date"]==r["cpp_date"]
+              assert r["js_year_rows"]==r["cpp_year_rows"] and 252<=r["js_year_rows"]<=5778
+              assert r["year_differences"]==0 and not r["js_error"] and not r["cpp_error"]
+          assert sum(r["js_year_rows"] for r in rows)==1214886
+          print("RESUME_CHECKPOINT_PASS=257 NEXT=000257 YEAR_ROWS=1214886")
+          PY
+      - name: Install native prerequisites
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq g++ libboost-dev
+          test -f /usr/include/boost/multiprecision/cpp_int.hpp
+      - name: Continue missing cases through 000514, no duplicate executions
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          timeout --signal=INT --kill-after=60s 340m \
+            python3 -B verification/cross-engine/pastafari_self_date_differential_v5.py \
+              --resume --max-cases 515 --year all --case-timeout 900 \
+              --compile-timeout 1200 --restart-every 100 --progress-every 10 \
+              --js-sha 642cd881e59cfd7cafcb96e8ad30562916776cba \
+              --cpp-sha 32ad50c8177233adc87eed1721c1e6f34f24ced1 \
+              --output "$OUT"
+          status=$?
+          set -e
+          echo "$status" > "$OUT/runner-exit-code.txt"
+          if [[ "$status" != 3 && "$status" != 124 && "$status" != 130 && "$status" != 0 ]]; then
+            exit "$status"
+          fi
+      - name: Audit cumulative ledger and target completion
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import csv,json,os,hashlib
+          from pathlib import Path
+          from collections import Counter
+          p=Path(os.environ["OUT"])
+          if not (p/"cases_results.jsonl").exists():
+              raise SystemExit("No checkpoint ledger")
+          cases=list(csv.DictReader((p/"cases.csv").open()))
+          rows=[json.loads(x) for x in (p/"cases_results.jsonl").read_text().splitlines()]
+          assert len(cases)==10365 and len(rows)>=257
+          assert hashlib.sha256(("".join((p/"cases_results.jsonl").read_text().splitlines(keepends=True)[:257])).encode()).hexdigest()=="08adad021be596e190ad92fb4a861e190006b48ec917ab467459861acb83095e"
+          for i,r in enumerate(rows):
+              assert r["case_id"]==cases[i]["case_id"]==f"{i:06d}"
+              assert r["iso"]==cases[i]["iso"] and r["jdn"]==int(cases[i]["jdn"])
+              if r["status"]=="PASS":
+                  assert r["js_date"]==r["cpp_date"] and r["js_year_rows"]==r["cpp_year_rows"]
+                  assert 252<=r["js_year_rows"]<=5778 and r["year_differences"]==0
+                  assert not r["js_error"] and not r["cpp_error"]
+          counts=Counter(r["status"] for r in rows)
+          report={"prior_run":45777797308,"prior_artifact":15121179510,"completed":len(rows),
+                  "new_completed":len(rows)-257,"required":10365,"counts":dict(counts),
+                  "pass_2026":sum(r["status"]=="PASS" and r["group"]=="YEAR_2026" for r in rows),
+                  "pass_random":sum(r["status"]=="PASS" and r["group"]=="RANDOM" for r in rows),
+                  "equal_year_rows":sum(r["js_year_rows"] for r in rows if r["status"]=="PASS"),
+                  "target_515_complete":len(rows)==515 and counts=={"PASS":515},
+                  "overall":"FAIL" if any(k!="PASS" for k in counts) else "PARTIAL"}
+          (p/"resume-summary.json").write_text(json.dumps(report,indent=2)+"\n")
+          print(json.dumps(report,sort_keys=True))
+          if not report["target_515_complete"]:
+              raise SystemExit("Resume target incomplete or errors detected; evidence retained")
+          PY
+      - name: Upload cumulative evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: self-date-v5-resume-257-${{ github.run_id }}
+          path: |
+            ${{ env.OUT }}/*.json
+            ${{ env.OUT }}/*.jsonl
+            ${{ env.OUT }}/*.csv
+            ${{ env.OUT }}/*.log
+            ${{ env.OUT }}/*.txt
+          if-no-files-found: warn
+          retention-days: 90
